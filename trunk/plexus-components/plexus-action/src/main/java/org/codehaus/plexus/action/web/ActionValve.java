@@ -67,17 +67,7 @@ public class ActionValve
 
             try
             {
-                // The parameter map in the request consists of an array of values for
-                // the given key so this is why this is being done.
-
-                Map m = new HashMap();
-
-                for ( Enumeration e = data.getRequest().getParameterNames(); e.hasMoreElements(); )
-                {
-                    String key = (String) e.nextElement();
-
-                    m.put( key, data.getRequest().getParameter( key ) );
-                }
+                Map m = createContext(data);
 
                 m.put( "data", data );
 
@@ -88,5 +78,24 @@ public class ActionValve
                 getLogger().error( e.getMessage(), e );
             }
         }
+    }
+
+    /**
+     * @param data
+     * @return
+     */
+    protected Map createContext(RunData data)
+    {
+        // The parameter map in the request consists of an array of values for
+        // the given key so this is why this is being done.
+        Map m = new HashMap();
+        
+        for ( Enumeration e = data.getRequest().getParameterNames(); e.hasMoreElements(); )
+        {
+            String key = (String) e.nextElement();
+
+            m.put( key, data.getRequest().getParameter( key ) );
+        }
+        return m;
     }
 }
