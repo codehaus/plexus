@@ -175,7 +175,7 @@ public class DefaultServiceBuilder
             throw new ServiceBuilderException( "The application configuration file doesn't exist: '" + plexusConfigurationFile.getAbsolutePath() + "'." );
         }
 
-        FileUtils.copyFileToDirectory( plexusConfigurationFile, confDir );
+        FileUtils.copyFile( plexusConfigurationFile, new File( confDir, PlexusServiceConstants.CONFIGURATION_FILE ) );
 
         // ----------------------------------------------------------------------
         // Process the configurations
