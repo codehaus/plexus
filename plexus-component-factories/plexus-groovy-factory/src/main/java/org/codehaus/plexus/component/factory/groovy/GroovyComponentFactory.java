@@ -8,7 +8,7 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.factory.AbstractComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
-
+import org.codehaus.classworlds.ClassRealm;
 
 public class GroovyComponentFactory
     extends AbstractComponentFactory
@@ -17,7 +17,7 @@ public class GroovyComponentFactory
 
     private String groovyPath;
 
-    public Object newInstance( ComponentDescriptor componentDescriptor, ClassLoader classLoader, PlexusContainer container )
+    public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm classRealm, PlexusContainer container )
         throws ComponentInstantiationException
     {
         Object component = null;
