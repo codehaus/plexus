@@ -1,14 +1,11 @@
+<?xml version="1.0"?>
 <project>
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>plexus</groupId>
-    <artifactId>plexus-components</artifactId>
-    <version>1.0</version>
-  </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-action</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-beta-1</version>
   <name>Plexus Action Component Set</name>
+  <extend>${maven.repo.local}/plexus/poms/plexus-components-1.0.pom</extend>
+  <id>plexus-action</id>
   
   <dependencies>
     <dependency>
@@ -24,3 +21,4 @@
   </dependencies>
   
 </project>
+
