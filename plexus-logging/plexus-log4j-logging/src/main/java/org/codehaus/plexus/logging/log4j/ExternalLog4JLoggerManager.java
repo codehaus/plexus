@@ -2,7 +2,8 @@ package org.codehaus.plexus.logging.log4j;
 
 
 /**
- * This LoggerManager is supposed to be used in situtation when Plexus is
+ * Logger Manager for Log4j logging system
+ * supposed to be used in situtation when Plexus is
  * embedded in larger application which have already log4j system configured.
  *
  *

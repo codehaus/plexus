@@ -3,6 +3,13 @@ package org.codehaus.plexus.logging.log4j;
 import org.apache.log4j.Logger;
 import org.codehaus.plexus.logging.AbstractLogger;
 
+/**
+ * Logger which delgates to logger from Log4j framwork.
+ *  
+ * @author <a href="mailto:michal@codehaus.org">Michal Maczka</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
+ */
 class Log4JLogger
     extends AbstractLogger
 {

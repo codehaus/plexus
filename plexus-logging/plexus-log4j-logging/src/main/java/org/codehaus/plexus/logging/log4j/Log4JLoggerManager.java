@@ -13,6 +13,9 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 
 /**
+ * Logger Manager for Log4j logging system which is configurable
+ * by plexus services.
+ *
  * A simple configuration:
  * 
  * <pre>
@@ -288,28 +291,5 @@ public class Log4JLoggerManager
     {
         return log4JProperties;
     }
-
-    /**
-     * @todo Log4j supports following levels:
-     *
-     * OFF, FATAL, ERROR, WARN, INFO, DEBUG, ALL
-     *
-     * and ... custom levels.
-     *
-     * we can think bit longer what to do here to validate them.
-     *
-     * @return
-     */
-    public String getThresholdAsString()
-    {
-        String retValue = super.getThresholdAsString();
-
-        if ( retValue != null )
-        {
-            retValue = retValue.toUpperCase();
-        }
-
-        return retValue;
-    }
-
+   
 }
