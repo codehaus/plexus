@@ -22,6 +22,9 @@
       <archive>http://lists.codehaus.org/pipermail/plexus-dev/</archive>
     </mailingList>
   </mailingLists>
+  <ciManagement>
+    <nagEmailAddress>dev@plexus.codehaus.org</nagEmailAddress>
+  </ciManagement>
   <scm>
     <connection>scm:cvs:pserver:anonymous@cvs.plexus.codehaus.org:/scm/plexus:plexus</connection>
     <developerConnection>scm:cvs:ext:${maven.username}@cvs.plexus.codehaus.org:/scm/plexus:plexus</developerConnection>
