@@ -17,5 +17,11 @@
       <version>1.0-alpha-1-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>dumbster</groupId>
+      <artifactId>dumbster</artifactId>
+      <version>1.5</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>
