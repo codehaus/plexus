@@ -1,20 +1,5 @@
 package org.codehaus.plexus.formica.web.summary;
 
-import com.thoughtworks.xstream.xml.XMLWriter;
-import ognl.Ognl;
-import ognl.OgnlException;
-import org.codehaus.plexus.formica.Element;
-import org.codehaus.plexus.formica.Form;
-import org.codehaus.plexus.formica.Operation;
-import org.codehaus.plexus.formica.SummaryElement;
-import org.codehaus.plexus.formica.web.AbstractFormRenderer;
-import org.codehaus.plexus.formica.web.FormRenderingException;
-import org.codehaus.plexus.i18n.I18N;
-import org.codehaus.plexus.util.StringUtils;
-
-import java.util.Collection;
-import java.util.Iterator;
-
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
  *
@@ -30,6 +15,21 @@ import java.util.Iterator;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import ognl.Ognl;
+import ognl.OgnlException;
+import org.codehaus.plexus.formica.Element;
+import org.codehaus.plexus.formica.Form;
+import org.codehaus.plexus.formica.Operation;
+import org.codehaus.plexus.formica.SummaryElement;
+import org.codehaus.plexus.formica.web.AbstractFormRenderer;
+import org.codehaus.plexus.formica.web.FormRenderingException;
+import org.codehaus.plexus.i18n.I18N;
+import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.xml.XMLWriter;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
