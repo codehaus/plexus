@@ -99,9 +99,7 @@ to make sure that every artifact is build against HEAD.
     <maven:reactor
       basedir="plexus-components"
       includes="native/*/project.xml,avalon/*/project.xml"
-      excludes="native/continuum/project.xml,native/scheduler/project.xml,
-                ,avalon/jasf/project.xml,native/formica/project.xml,
-                ,native/velocity/project.xml,native/workflow/project.xml"
+      excludes="${build.components.native.excludes},${build.components.avalon.excludes}"
       goals="clean,jar:install"/>
   </goal>
 
@@ -120,9 +118,17 @@ to make sure that every artifact is build against HEAD.
     <ant:echo>*** Building the plexus servers ***</ant:echo>
     <ant:echo>***********************************</ant:echo>
     <maven:reactor
+        basedir="plexus-servers/synapse"
+        includes="project.xml"
+        goals="clean,jar:install"/>
+    <maven:reactor
+        basedir="plexus-servers"
+        includes="project.xml"
+        goals="pom:install"/>
+    <maven:reactor
       basedir="plexus-servers"
       includes="*/project.xml"
-      excludes="popd/project.xml"
+      excludes="${build.servers.excludes}"
       goals="clean,jar:install"/>
   </goal>
 
