@@ -14,7 +14,7 @@
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.action.Action</role>
-          <fieldName>actions</fieldName>
+          <field-name>actions</field-name>
         </requirement>
       </requirements>
     </component>
