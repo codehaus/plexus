@@ -57,13 +57,18 @@ public abstract class AbstractEntityAction
 
         FormValidationResult fvr = fm.validate( formId, map );
 
+        // ----------------------------------------------------------------------
+        // If validation is sucessful then we want to allow the add/update/delete
+        // operation to continue.
+        // ----------------------------------------------------------------------
+
         if ( fvr.valid() )
         {
             uponSuccessfulValidation( fm.getForm( formId ), entityId, map );
         }
     }
 
-    protected Object getApp( Form form )
+    protected Object getApplicationComponent( Form form )
         throws ComponentLookupException
     {
         return container.lookup( form.getSourceRole() );

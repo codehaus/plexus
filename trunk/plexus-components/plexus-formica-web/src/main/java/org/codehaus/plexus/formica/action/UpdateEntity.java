@@ -36,12 +36,12 @@ public class UpdateEntity
 
         m.put( "id", entityId );
 
-        Object entity = Ognl.getValue( form.getLookupExpression(), m, getApp( form ) );
+        Object entity = Ognl.getValue( form.getLookupExpression(), m, getApplicationComponent( form ) );
 
         fm.populate( form.getId(), map, entity );
 
         m.put( "entity", entity );
 
-        Object o = Ognl.getValue( form.getUpdate().getExpression(), m, getApp( form ) );
+        Ognl.getValue( form.getUpdate().getExpression(), m, getApplicationComponent( form ) );
     }
 }

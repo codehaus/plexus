@@ -27,6 +27,14 @@
       </requirements>
     </component>
 
+    <!--
+     |
+     | Form Renderers
+     |
+     | These need to be replaced with Velocity or inert templates.
+     |
+     -->
+
     <component>
       <role>org.codehaus.plexus.formica.web.FormRenderer</role>
       <implementation>org.codehaus.plexus.formica.web.add.AddFormRenderer</implementation>
@@ -47,5 +55,28 @@
       <implementation>org.codehaus.plexus.formica.web.view.ViewFormRenderer</implementation>
       <role-hint>view</role-hint>
     </component>
+
+    <!--
+     |
+     | Entity actions
+     |
+     -->
+
+    <component>
+      <role>org.plexus.action.Action</role>
+      <role-hint>addEntity</role-hint>
+      <implementation>org.plexus.formica.action.AddEntity</implementation>
+    </component>
+    <component>
+      <role>org.plexus.action.Action</role>
+      <role-hint>updateEntity</role-hint>
+      <implementation>org.plexus.formica.action.UpdateEntity</implementation>
+    </component>
+    <component>
+      <role>org.plexus.action.Action</role>
+      <role-hint>deleteEntity</role-hint>
+      <implementation>org.plexus.formica.action.DeleteEntity</implementation>
+    </component>
+
   </components>
 </component-set>
