@@ -85,9 +85,7 @@ public class ClassicResolver
         // ---------------------------------------------------------------
 
         View screenView = getView( target, SCREEN_TARGET_PREFIX );
-        System.out.println("Screen view: " + screenView);
-        System.out.println("Screen view: " + screenView.getName());
-        
+
         resolution.put( SCREEN_VIEW, screenView );
 
         return resolution;
