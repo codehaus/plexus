@@ -1,0 +1,24 @@
+<plexus>
+
+  <components>
+
+    <component>
+      <role>org.codehaus.plexus.hibernate.persister.Persister</role>
+      <implementation>worg.codehaus.plexus.hibernate.persister.DefaultPersister</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+      <configuration/>            
+    </component>
+        
+    <component>
+      <role>org.codehaus.plexus.hibernate.HibernateSessionService</role>
+      <implementation>org.codehaus.plexus.hibernate.DefaultHibernateSessionService</implementation>
+      <instantiation-strategy>singleton</instantiation-strategy>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.hibernate.HibernateService</role>
+        </requirement>
+      </requirements>
+    </component>
+
+  </components>
+</plexus>
