@@ -52,7 +52,7 @@ public class AddFormRenderer
 
         w.addAttribute( "method", "post" );
 
-        w.addAttribute( "action", baseUrl + "/" + form.getAdd().getView() );
+        w.addAttribute( "action", baseUrl + "/target/" + form.getAdd().getView() );
 
         // ----------------------------------------------------------------------
 
