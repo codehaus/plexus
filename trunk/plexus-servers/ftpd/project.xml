@@ -4,7 +4,7 @@
   <id>plexus-ftp</id>
   <artifactId>plexus-ftp</artifactId>
   <groupId>plexus</groupId>
-  <name>plexus</name>
+  <name>Plexus FTP Server</name>
   <currentVersion>1.0</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>

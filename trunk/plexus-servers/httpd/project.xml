@@ -3,6 +3,7 @@
   <extend>${maven.repo.local}/plexus/poms/plexus-components-1.0.pom</extend>
   <id>plexus-httpd</id>
   <artifactId>plexus-httpd</artifactId>
+  <groupId>plexus</groupId>
   <name>Plexus Httpd Component</name>
   <currentVersion>1.0-alpha-5</currentVersion>
   
