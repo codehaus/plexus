@@ -1,20 +1,18 @@
 <project>
-<!--
   <parent>
     <groupId>plexus</groupId>
     <artifactId>plexus-components</artifactId>
     <version>1.0</version>
   </parent>
-  -->
   <groupId>plexus</groupId>
   <artifactId>plexus-velocity</artifactId>
-  <version>1.0</version>
+  <version>1.0-beta-3</version>
   <name>Plexus Velocity Component</name>
   <dependencies>
     <dependency>
       <groupId>velocity</groupId>
       <artifactId>velocity</artifactId>
-      <version>1.4-dev</version>
+      <version>1.4</version>
     </dependency>
     <dependency>
       <groupId>commons-collections</groupId>
