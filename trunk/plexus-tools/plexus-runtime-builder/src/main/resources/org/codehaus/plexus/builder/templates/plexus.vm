@@ -59,9 +59,9 @@ if [ -z "$JAVACMD" ] ; then
   if [ -n "$JAVA_HOME"  ] ; then
     if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
       # IBM's JDK on AIX uses strange locations for the executables
-      JAVACMD=$JAVA_HOME/jre/sh/java
+      JAVACMD="$JAVA_HOME/jre/sh/java"
     else
-      JAVACMD=$JAVA_HOME/bin/java
+      JAVACMD="$JAVA_HOME/bin/java"
     fi
   else
     JAVACMD=java
@@ -104,19 +104,19 @@ echo "Using JAVA_HOME:     $JAVA_HOME"
 
 if [ "$1" = "" ]
 then
-  CONF=${PLEXUS_CONF}/plexus.xml
+  CONF="${PLEXUS_CONF}/plexus.xml"
 else
-  CONF=$1
+  CONF="$1"
 fi
 
 MAIN_CLASS=org.codehaus.classworlds.Launcher
 
-$JAVACMD \
+"$JAVACMD" \
   $PLEXUS_OPTS \
-  -classpath ${PLEXUS_HOME}/core/boot/classworlds-*.jar \
-  -Dclassworlds.conf=${PLEXUS_HOME}/conf/classworlds.conf  \
-  -Dplexus.core=${PLEXUS_HOME}/core \
-  -Djava.io.tmpdir=${PLEXUS_TMPDIR} \
-  -Dtools.jar=$TOOLS_JAR \
-  -Dplexus.home=${PLEXUS_HOME} \
+  -classpath "${PLEXUS_HOME}/core/boot/classworlds-*.jar" \
+  -Dclassworlds.conf="${PLEXUS_HOME}/conf/classworlds.conf"  \
+  -Dplexus.core="${PLEXUS_HOME}/core" \
+  -Djava.io.tmpdir="${PLEXUS_TMPDIR}" \
+  -Dtools.jar="$TOOLS_JAR" \
+  -Dplexus.home="${PLEXUS_HOME}" \
   $MAIN_CLASS ${CONF}
