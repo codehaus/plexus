@@ -1,4 +1,4 @@
-package org.codehaus.plexus.servletcontainer;
+package org.codehaus.plexus.service.jetty;
 
 /*
  * The MIT License
@@ -24,20 +24,28 @@ package org.codehaus.plexus.servletcontainer;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.net.UnknownHostException;
+
+import org.codehaus.plexus.DefaultPlexusContainer;
+
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class ServletContainerException
-    extends Exception
+public interface ServletContainer
 {
-    public ServletContainerException( String message )
-    {
-        super( message );
-    }
+    String ROLE = ServletContainer.class.getName();
 
-    public ServletContainerException( String message, Throwable cause )
-    {
-        super( message, cause );
-    }
+    void addListener( String address, int port )
+        throws ServletContainerException, UnknownHostException;
+
+    // TODO: addVirtualHost();
+
+    void deployWarFile( File war, boolean extractWar, String context,
+                        DefaultPlexusContainer container, String virtualHost )
+        throws ServletContainerException;
+
+    void deployWarDirectory( File war, String context, DefaultPlexusContainer container, String virtualHost )
+        throws ServletContainerException;
 }
