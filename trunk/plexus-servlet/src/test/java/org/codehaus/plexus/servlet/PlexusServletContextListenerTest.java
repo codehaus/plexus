@@ -5,7 +5,6 @@ import javax.servlet.ServletContextEvent;
 
 import org.apache.avalon.framework.service.ServiceManager;
 
-import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 
 import junit.framework.TestCase;
