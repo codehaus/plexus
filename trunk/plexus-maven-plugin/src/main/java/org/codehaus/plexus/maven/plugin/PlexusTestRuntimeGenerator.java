@@ -23,11 +23,11 @@ package org.apache.maven.plugin.plexus;
  */
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.Artifact;
@@ -35,14 +35,14 @@ import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
 
-import org.codehaus.plexus.builder.application.ApplicationBuilder;
+import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
 
 /**
- * @goal app
+ * @goal test-runtime
  *
  * @requiresDependencyResolution
  *
- * @description Assembles the Plexus application.
+ * @description Generates a complete runtime with the application and it's requires services.
  *
  * @parameter name="basedir"
  * type="String"
@@ -51,39 +51,32 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
  * expression="#basedir"
  * description=""
  *
- * @parameter name="projectArtifacts"
+ * @parameter name="finalName"
+ * type="java.lang.String"
+ * required="true"
+ * validator=""
+ * expression="#maven.final.name"
+ * description=""
+ *
+ * @parameter name="artifacts"
  * type="java.util.Set"
  * required="true"
  * validator=""
  * expression="#project.artifacts"
  * description=""
  *
- * @parameter name="applicationBuilder"
- * type="org.codehaus.plexus.builder.runtime.DefaultApplicationBuilder"
- * required="true"
- * validator=""
- * expression="#component.org.codehaus.plexus.builder.application.ApplicationBuilder"
- * description=""
- *
- * @parameter name="applicationConfiguration"
+ * @parameter name="testRuntimeConfiguration"
  * type="java.lang.String"
  * required="true"
  * validator=""
  * expression="#plexus.runtime.configuration"
  * description=""
  *
- * @parameter name="plexusConfigurationPropertiesFile"
- * type="java.lang.String"
- * required="false"
- * validator=""
- * expression="#plexus.runtime.configuration.propertiesfile"
- * description=""
- *
- * @parameter name="applicationName"
- * type="java.lang.String"
+ * @parameter name="runtimeBuilder"
+ * type="org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
  * required="true"
  * validator=""
- * expression="#applicationName"
+ * expression="#component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
  * description=""
  *
  * @parameter name="localRepository"
@@ -93,80 +86,66 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
  * expression="#localRepository"
  * description=""
  *
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
  */
-public class PlexusApplicationGenerator
+public class PlexusTestRuntimeGenerator
     extends AbstractPlugin
 {
     public void execute( PluginExecutionRequest request, PluginExecutionResponse response )
         throws Exception
     {
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
         String basedir = (String) request.getParameter( "basedir" );
 
-        Set projectArtifacts = (Set) request.getParameter( "projectArtifacts" );
+        String finalName = (String) request.getParameter( "finalName" );
 
-        String applicationConfiguration = (String) request.getParameter( "applicationConfiguration" );
+        Set artifacts = (Set) request.getParameter( "artifacts" );
 
-        String configurationProperties = (String) request.getParameter( "plexusConfigurationPropertiesFile" );
+        String testRuntimeConfiguration = (String) request.getParameter( "testRuntimeConfiguration" );
 
-        ApplicationBuilder builder = (ApplicationBuilder) request.getParameter( "applicationBuilder" );
-
-        String applicationName = (String) request.getParameter( "applicationName" );
+        PlexusRuntimeBuilder runtimeBuilder = (PlexusRuntimeBuilder) request.getParameter( "runtimeBuilder" );
 
         ArtifactRepository localRepository = (ArtifactRepository) request.getParameter( "localRepository" );
 
         // ----------------------------------------------------------------------
-        //
+        // Build the runtime
         // ----------------------------------------------------------------------
 
-        File workingDirectory = new File( basedir, "/plexus-application" );
+        File runtimeRoot = new File( basedir, "plexus-test-runtime" );
 
-        File configurationsDir = null;
+        List remoteRepositories = Collections.EMPTY_LIST;
 
-        File configurationPropertiesFile = null;
+        Set extraArtifacts = new HashSet(); // No extra extraArtifacts
 
-        if ( configurationProperties != null )
+        runtimeBuilder.build( runtimeRoot,
+                              remoteRepositories, localRepository, extraArtifacts,
+                              new File( testRuntimeConfiguration ), null );
+
+        // ----------------------------------------------------------------------
+        // Copy the application
+        // ----------------------------------------------------------------------
+
+        File applicationJarFile = PlexusBundleApplicationMojo.getApplicationJarFile( basedir, finalName );
+
+        if ( !applicationJarFile.canRead() )
         {
-            configurationPropertiesFile = new File( configurationProperties );
+            throw new Exception( "Cannot read Plexus application artifact '" + applicationJarFile.getAbsolutePath() + "'." );
         }
 
+        runtimeBuilder.addPlexusApplication( applicationJarFile, runtimeRoot );
+
         // ----------------------------------------------------------------------
-        // Find all services
+        // Copy any services
         // ----------------------------------------------------------------------
 
-        Set services = new HashSet();
-
-        for ( Iterator it = projectArtifacts.iterator(); it.hasNext(); )
+        for ( Iterator it = artifacts.iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
 
-            if ( artifact.getType().equals( "plexus-service" ) )
+            if( artifact.getType().equals( "plexus-service" ) )
             {
-                services.add( artifact );
+                runtimeBuilder.addPlexusService( artifact.getFile(), runtimeRoot );
             }
         }
-
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
-        List remoteRepositories = new ArrayList();
-
-        // ----------------------------------------------------------------------
-        // Build the application
-        // ----------------------------------------------------------------------
-
-        builder.assemble( applicationName,
-                          workingDirectory,
-                          remoteRepositories,
-                          localRepository,
-                          projectArtifacts,
-                          services,
-                          new File( applicationConfiguration ),
-                          configurationsDir,
-                          configurationPropertiesFile );
     }
 }

@@ -27,13 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
-import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.service.ServiceBuilder;
 
@@ -44,6 +41,8 @@ import org.codehaus.plexus.builder.service.ServiceBuilder;
  *
  * @description Assembled and bundles a Plexus service.
  *
+ * @phase package
+ *
  * @parameter name="basedir"
  * type="String"
  * required="true"
@@ -51,11 +50,11 @@ import org.codehaus.plexus.builder.service.ServiceBuilder;
  * expression="#basedir"
  * description=""
  *
- * @parameter name="project"
- * type="org.apache.maven.project.MavenProject"
+ * @parameter name="serviceAritfacts"
+ * type="java.util.Set"
  * required="true"
  * validator=""
- * expression="#project"
+ * expression="#project.artifacts"
  * description=""
  *
  * @parameter name="finalName"
@@ -65,6 +64,13 @@ import org.codehaus.plexus.builder.service.ServiceBuilder;
  * expression="#maven.final.name"
  * description=""
  *
+ * @parameter name="classes"
+ * type="java.lang.String"
+ * required="true"
+ * validator=""
+ * expression="#project.build.outputDirectory"
+ * description=""
+ *
  * @parameter name="plexusConfiguration"
  * type="java.lang.String"
  * required="true"
@@ -72,11 +78,11 @@ import org.codehaus.plexus.builder.service.ServiceBuilder;
  * expression="#plexus.runtime.configuration"
  * description=""
  *
- * @parameter name="plexusConfigurationProperties"
+ * @parameter name="plexusConfigurationPropertiesFile"
  * type="java.lang.String"
- * required="true"
+ * required="false"
  * validator=""
- * expression="#plexus.runtime.configuration.properties"
+ * expression="#plexus.runtime.configuration.propertiesFile"
  * description=""
  *
  * @parameter name="serviceName"
@@ -113,13 +119,15 @@ public class PlexusServiceGenerator
 
         String basedir = (String) request.getParameter( "basedir" );
 
-        MavenProject project = (MavenProject) request.getParameter( "project" );
+        Set serviceAritfacts = (Set) request.getParameter( "serviceAritfacts" );
 
         String finalName = (String) request.getParameter( "finalName" );
 
+        File classes = new File( (String) request.getParameter( "classes" ) );
+
         String plexusConfiguration = (String) request.getParameter( "plexusConfiguration" );
 
-        String configurationPropertiesFile = (String) request.getParameter( "plexusConfigurationProperties" );
+        String configurationProperties = (String) request.getParameter( "plexusConfigurationPropertiesFile" );
 
         String serviceName = (String) request.getParameter( "serviceName" );
 
@@ -133,9 +141,16 @@ public class PlexusServiceGenerator
 
         File workingDirectory = new File( basedir, "/plexus-service" );
 
-        File outputFile = new File( basedir, finalName + "-service.jar" );
+        File outputFile = new File( basedir, finalName + ".jar" );
 
         File configurationsDir = null;
+
+        File configurationPropertiesFile = null;
+
+        if ( configurationProperties != null )
+        {
+            configurationPropertiesFile = new File( configurationProperties );
+        }
 
         // ----------------------------------------------------------------------
         //
@@ -143,20 +158,19 @@ public class PlexusServiceGenerator
 
         List remoteRepositories = new ArrayList();
 
-        Set projectArtifacts = project.getArtifacts();
-
-        Artifact projectArtifact = new DefaultArtifact( project.getGroupId(), project.getArtifactId(),
-                                                        project.getVersion(), project.getPackaging() );
-
-        projectArtifacts.add( projectArtifact );
-
         // ----------------------------------------------------------------------
         // Build the service
         // ----------------------------------------------------------------------
 
-        builder.build( serviceName, workingDirectory,
-                       remoteRepositories, localRepository, projectArtifacts,
-                       new File( plexusConfiguration ), configurationsDir, new File( configurationPropertiesFile ) );
+        builder.build( serviceName,
+                       workingDirectory,
+                       classes,
+                       remoteRepositories,
+                       localRepository,
+                       serviceAritfacts,
+                       new File( plexusConfiguration ),
+                       configurationsDir,
+                       configurationPropertiesFile );
 
         // ----------------------------------------------------------------------
         // Bundle the service

@@ -83,7 +83,6 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
  * validator=""
  * expression="#localRepository"
  * description=""
- *
  */
 public class PlexusContainerGenerator
     extends AbstractPlugin
@@ -116,12 +115,6 @@ public class PlexusContainerGenerator
         List remoteRepositories = new ArrayList();
 
         Set artifacts = project.getArtifacts();
-
-        // TODO: Remove this check when the parameter is validated
-        if ( plexusConfiguration == null )
-        {
-            throw new Exception( "Missing parameter: 'plexus configuration'." );
-        }
 
         File plexusConfigurationFile = new File( plexusConfiguration );
 
