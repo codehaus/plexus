@@ -25,49 +25,15 @@ package org.codehaus.plexus.notification;
  */
 
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class TestRecipientDatabase
-    implements RecipientDatabase
+public interface RecipientSource
 {
-    public Set getRecipients( String messageId, String notifierType )
-        throws NotificationException
-    {
-        Set recipients = new TreeSet();
+    String ROLE = RecipientSource.class.getName();
 
-        if ( messageId.equals( "buildComplete" ) )
-        {
-            if ( notifierType.equals( "eeny" ) )
-            {
-                recipients.add( "trygve" );
-
-                recipients.add( "jason" );
-            }
-
-            if ( notifierType.equals( "meeny" ) )
-            {
-                recipients.add( "bob" );
-
-                recipients.add( "jt" );
-            }
-
-            if ( notifierType.equals( "miny" ) )
-            {
-                recipients.add( "topping" );
-
-                recipients.add( "dan" );
-            }
-
-            if ( !notifierType.equals( "mo" ) )
-            {
-                recipients.add( "brett" );
-            }
-        }
-
-        return recipients;
-    }
+    Set getRecipients( String messageId, String notifierType )
+        throws NotificationException;
 }

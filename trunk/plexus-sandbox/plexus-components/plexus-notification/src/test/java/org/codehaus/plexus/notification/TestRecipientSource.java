@@ -1,7 +1,5 @@
 package org.codehaus.plexus.notification;
 
-import java.util.Map;
-
 /*
  * The MIT License
  *
@@ -26,14 +24,50 @@ import java.util.Map;
  * SOFTWARE.
  */
 
+import java.util.Set;
+import java.util.TreeSet;
+
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public interface NotificationManager
+public class TestRecipientSource
+    implements RecipientSource
 {
-    String ROLE = NotificationManager.class.getName();
+    public Set getRecipients( String messageId, String notifierType )
+        throws NotificationException
+    {
+        Set recipients = new TreeSet();
 
-    void sendNotification( String messageId, String source, Map context )
-        throws NotificationException;
+        if ( messageId.equals( "buildComplete" ) )
+        {
+            if ( notifierType.equals( "eeny" ) )
+            {
+                recipients.add( "trygve" );
+
+                recipients.add( "jason" );
+            }
+
+            if ( notifierType.equals( "meeny" ) )
+            {
+                recipients.add( "bob" );
+
+                recipients.add( "jt" );
+            }
+
+            if ( notifierType.equals( "miny" ) )
+            {
+                recipients.add( "topping" );
+
+                recipients.add( "dan" );
+            }
+
+            if ( !notifierType.equals( "mo" ) )
+            {
+                recipients.add( "brett" );
+            }
+        }
+
+        return recipients;
+    }
 }

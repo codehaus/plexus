@@ -26,8 +26,8 @@ package org.codehaus.plexus.notification.notifier.manager;
 
 import java.util.Map;
 
-import org.codehaus.plexus.notification.notifier.Notifier;
 import org.codehaus.plexus.notification.NotificationException;
+import org.codehaus.plexus.notification.notifier.Notifier;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>

@@ -2,14 +2,14 @@
   <components>
 
     <component>
-      <role>org.codehaus.plexus.notification.NotificationManager</role>
-      <implementation>org.codehaus.plexus.notification.DefaultNotificationManager</implementation>
+      <role>org.codehaus.plexus.notification.NotificationDispatcher</role>
+      <implementation>org.codehaus.plexus.notification.DefaultNotificationDispatcher</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.notification.notifier.manager.NotifierManager</role>
         </requirement>
         <requirement>
-          <role>org.codehaus.plexus.notification.RecipientDatabase</role>
+          <role>org.codehaus.plexus.notification.RecipientSource</role>
         </requirement>
       </requirements>
     </component>
