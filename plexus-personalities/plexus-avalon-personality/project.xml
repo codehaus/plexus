@@ -28,7 +28,7 @@
   <siteDirectory>/www/plexus.codehaus.org</siteDirectory>
 
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:plexus/plexus-container</connection>
+    <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:plexus/plexus-personalities/plexus-avalon-personality</connection>
     <url>http://cvs.codehaus.org/viewcvs.cgi/plexus/plexus-container/?root=codehaus</url>
   </repository>
 
@@ -89,7 +89,7 @@
 
   <build>
 
-    <nagEmailAddress>plexus-dev@plexus.codehaus.org</nagEmailAddress>
+    <nagEmailAddress>plexus-dev@lists.codehaus.org</nagEmailAddress>
     <sourceDirectory>${basedir}/src/java</sourceDirectory>
     <aspectSourceDirectory>${basedir}/src/aspect</aspectSourceDirectory>
     <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
