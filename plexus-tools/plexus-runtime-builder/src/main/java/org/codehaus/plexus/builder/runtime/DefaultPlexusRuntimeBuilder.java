@@ -176,7 +176,7 @@ public class DefaultPlexusRuntimeBuilder
 
             Artifact appserver = new DefaultArtifact( "plexus", "plexus-appserver", "1.0-alpha-1-SNAPSHOT", "jar" );
 
-            appserver.setPath( "/home/jvanzyl/maven-repo-local/plexus/jars/plexus-appserver-1.0-alpha-1-SNAPSHOT.jar" );
+            appserver.setPath( getLocalRepository().getBasedir() + "/plexus/jars/plexus-appserver-1.0-alpha-1-SNAPSHOT.jar" );
 
             plexusArtifacts.add( appserver );
 
