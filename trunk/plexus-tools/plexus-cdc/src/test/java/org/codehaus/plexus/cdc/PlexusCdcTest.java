@@ -13,8 +13,6 @@ import org.codehaus.plexus.PlexusTestCase;
 public class PlexusCdcTest
     extends PlexusTestCase
 {
-    private String basedir = System.getProperty( "basedir" );
-
     public void testCdc()
         throws Exception
     {

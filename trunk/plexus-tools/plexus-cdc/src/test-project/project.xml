@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 
 <project>
+<!--
   <extend>parent.xml</extend>
-  <pomVersion>3</pomVersion>
+-->
   <groupId>plexus</groupId>
   <artifactId>plexus</artifactId>
-  <id>plexus-cdc-test</id>
   <name>plexus</name>
-  <currentVersion>0.14-SNAPSHOT</currentVersion>
+  <version>0.14-SNAPSHOT</version>
   <organization>
     <name>Codehaus</name>
     <url>http://www.codehaus.org/</url>
