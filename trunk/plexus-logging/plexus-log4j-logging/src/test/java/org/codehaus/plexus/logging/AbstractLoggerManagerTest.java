@@ -31,7 +31,7 @@ public abstract class AbstractLoggerManagerTest
 
         plexusHome = getContainer().getContext().get( "plexus.home" ).toString();
 
-        f = new File( getTestFile( plexusHome, "logs" ) );
+        f = getTestFile( plexusHome, "logs" );
 
         if ( !f.isDirectory() )
         {

@@ -25,11 +25,12 @@
   <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10080</issueTrackingUrl>
 
   <siteAddress>plexus.codehaus.org</siteAddress>
-  <siteDirectory>/www/plexus.codehaus.org</siteDirectory>
+  <siteDirectory>/home/projects/plexus/public_html</siteDirectory>
 
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:plexus/plexus-container</connection>
-    <url>http://cvs.codehaus.org/viewcvs.cgi/plexus/plexus-container/?root=codehaus</url>
+    <connection>scm:cvs:pserver:anoncvs@cvs.plexus.codehaus.org:/scm/plexus:plexus/plexus-logging/plexus-log4j</connection>
+    <developerConnection>scm:cvs:ext:${maven.username}@cvs.plexus.codehaus.org:/scm/plexus:plexus/plexus-logging/plexus-log4j</developerConnection>
+    <url>http://cvs.surefire.codehaus.org/surefire/</url>
   </repository>
 
   <versions/>
@@ -38,9 +39,15 @@
   <mailingLists>
     <mailingList>
       <name>Plexus Developer List</name>
-      <subscribe>http://lists.codehaus.org/mailman/listinfo/plexus-dev</subscribe>
-      <unsubscribe>http://lists.codehaus.org/mailman/listinfo/plexus-dev</unsubscribe>
-      <archive>http://lists.codehaus.org/pipermail/plexus-dev/</archive>
+      <subscribe>dev-subscribe@plexus.codehaus.org</subscribe>
+      <unsubscribe>dev-unsubscribe@plexus.codehaus.org</unsubscribe>
+      <archive>http://archive.plexus.codehaus.org/dev/</archive>
+    </mailingList>
+    <mailingList>
+      <name>Plexus User List</name>
+      <subscribe>user-subscribe@plexus.codehaus.org</subscribe>
+      <unsubscribe>user-unsubscribe@plexus.codehaus.org</unsubscribe>
+      <archive>http://archive.plexus.codehaus.org/user/</archive>
     </mailingList>
   </mailingLists>
 
@@ -62,7 +69,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>0.17-SNAPSHOT</version>
     </dependency>
 
     <dependency>
@@ -93,10 +100,9 @@
 
   <build>
 
-    <nagEmailAddress>plexus-dev@plexus.codehaus.org</nagEmailAddress>
-    <sourceDirectory>src/java</sourceDirectory>
-    <aspectSourceDirectory>src/aspect</aspectSourceDirectory>
-    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <nagEmailAddress>dev@plexus.codehaus.org</nagEmailAddress>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test/java</unitTestSourceDirectory>
 
     <unitTest>
       <excludes>
@@ -107,7 +113,7 @@
       </includes>
       <resources>
         <resource>
-          <directory>src/test</directory>
+          <directory>src/test/resources</directory>
           <includes>
             <include>**/*.xml</include>
           </includes>
