@@ -20,7 +20,15 @@ public class MarmaladeClasspathComponentFactory
 
     protected URL getScriptLocation( ComponentDescriptor componentDescriptor, ClassRealm classRealm )
     {
-        URL scriptLocation = classRealm.getResource( componentDescriptor.getImplementation() );
+        String impl = componentDescriptor.getImplementation();
+        if ( !impl.startsWith( "/" ) )
+        {
+            impl = "/" + impl;
+        }
+
+        URL scriptLocation = classRealm.getResource( impl );
+
+        System.out.println( "Script location for implementation [" + impl + "] is: " + scriptLocation );
 
         return scriptLocation;
     }
