@@ -22,4 +22,31 @@ public abstract class AbstractPersistable
     {
         this.id = id;
     }
+    
+	public boolean equals(Object o)
+	{
+        if ( !(o instanceof Persistable) )
+        {
+            return false;
+        }
+        
+		Persistable p = (Persistable) o;
+        
+        if ( p.getId() == this.getId() )
+        {
+            return true;
+        }
+        
+        return false;
+	}
+    
+	public int hashCode()
+	{
+        int hash = 7;
+        int var_code = (int)(id ^ (id >>> 32));
+
+        hash = 31 * hash + var_code;
+        
+		return hash;
+	}
 }
