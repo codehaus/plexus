@@ -2,12 +2,14 @@ package org.codehaus.plexus.cdc;
 
 import java.io.File;
 
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectBuilder;
+
 import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- *
  * @version $Id$
  */
 public class PlexusCdcTest
@@ -16,11 +18,17 @@ public class PlexusCdcTest
     public void testCdc()
         throws Exception
     {
-        ComponentDescriptorCreator cdc = (ComponentDescriptorCreator)lookup( ComponentDescriptorCreator.ROLE );
+        ComponentDescriptorCreator cdc = new ComponentDescriptorCreator();
 
-        cdc.setBasedir( new File( basedir, "src/test-project" ).getPath() );
+        MavenProjectBuilder projectBuilder = (MavenProjectBuilder) lookup( MavenProjectBuilder.ROLE );
 
-        cdc.setDestDir( new File( basedir, "target" ).getPath() );
+        MavenProject project = projectBuilder.build( new File( getTestFile( "src/test-project/project.xml" ) ) );
+
+        cdc.setProject( project );
+
+        cdc.setBasedir( getTestFile( "src/test-project" ) );
+
+        cdc.setDestDir( getTestFile( "target/output" ) );
 
         cdc.execute();
 
