@@ -53,24 +53,25 @@ public class MockSmtpServerTest extends PlexusTestCase
 
         try
         {
-            sendMessage(4000, "sender@here.com", "Test", "Test Body", "receiver@there.com");
+            sendMessage( 4000, "sender@here.com", "Test", "Test Body", "receiver@there.com" );
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            fail("Unexpected exception: " + e);
+            fail( "Unexpected exception: " + e );
         }
 
         server.stop();
 
-        assertTrue(server.getReceievedEmailSize() == 1);
+        assertTrue( server.getReceievedEmailSize() == 1 );
         Iterator emailIter = server.getReceivedEmail();
         SmtpMessage email = (SmtpMessage) emailIter.next();
-        assertTrue(email.getHeaderValue("Subject").equals("Test"));
-        assertTrue(email.getBody().equals("Test Body"));
+        assertTrue( email.getHeaderValue( "Subject" ).equals( "Test" ) );
+        assertTrue( email.getBody().equals( "Test Body" ) );
     }
 
-    private void sendMessage(int port, String from, String subject, String body, String to) throws Exception
+    private void sendMessage( int port, String from, String subject, String body, String to )
+        throws Exception
     {
         MailMessage message = new MailMessage( "localhost", port );
 
