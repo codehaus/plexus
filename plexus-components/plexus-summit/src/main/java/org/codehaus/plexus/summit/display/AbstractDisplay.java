@@ -16,14 +16,15 @@ package org.codehaus.plexus.summit.display;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.summit.AbstractSummitComponent;
-import org.codehaus.plexus.summit.rundata.RunData;
-
-import javax.servlet.ServletOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+
+import javax.servlet.ServletOutputStream;
+
+import org.codehaus.plexus.summit.AbstractSummitComponent;
+import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
  * @see org.codehaus.plexus.summit.display.Display

@@ -1,10 +1,10 @@
 package org.codehaus.plexus.summit.pipeline.valve;
 
+import java.io.IOException;
+
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.resolver.Resolver;
 import org.codehaus.plexus.summit.rundata.RunData;
-
-import java.io.IOException;
 
 public class DetermineTargetValve
     extends AbstractValve

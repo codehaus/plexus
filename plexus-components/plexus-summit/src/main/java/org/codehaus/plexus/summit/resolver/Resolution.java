@@ -1,9 +1,9 @@
 package org.codehaus.plexus.summit.resolver;
 
-import org.codehaus.plexus.summit.view.View;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.codehaus.plexus.summit.view.View;
 
 /**
  * <p>A <code>Resolution</code> is the result of target view processing that occurs
