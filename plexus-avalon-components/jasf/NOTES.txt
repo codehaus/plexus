@@ -1,3 +1,0 @@
-TODO
-* The PageResource class seems a little superfluous
-* Clean up exception handling: in catch's and in AccessController constructors
