@@ -8,6 +8,7 @@
   <groupId>plexus</groupId>
   <artifactId>plexus-services</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
+  <name>Plexus Services</name>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
