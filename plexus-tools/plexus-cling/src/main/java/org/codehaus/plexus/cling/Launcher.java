@@ -98,33 +98,64 @@ public class Launcher implements Contextualizable
         // [[4]] Setup the application class-realm with the downloaded
         //       dependencies and any specified local classpath locations.
         //
+        
+        try
+        {
+            URL localRepoUrl = new URL( config.getLocalRepository().getUrl() );
+            File localRepoDir = new File( localRepoUrl.getPath() );
+            if ( !localRepoDir.exists() )
+            {
+                localRepoDir.mkdirs();
+            }
+
+            System.out.println( "Local repo: " + localRepoDir + " (should exist. does it? " + localRepoDir.exists()
+                + ")" );
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+        
+        System.out.println("Building class realm.");
         ClassRealm appRealm = resolveClasspath(model.getClasspath(), config);
+        System.out.println("Done.");
         
         // [[5]] Setup the System environment by merging the <env> element's
         //       body content with pre-existing System properties.
         //
+        System.out.println("Setting up environment properties.");
         System.setProperties(model.getEnvironment());
+        System.out.println("Done.");
         
         // [[6]] Instantiate the main-class.
         //
+        System.out.println("Instantiating main object.");
         Object main = instantiateMain(model, appRealm);
+        System.out.println("Done");
         
         // [[7]] Parse the command-line arguments, and validate each. Set each
         //       validated argument as a property on the main-class.
         //
+        System.out.println("Parsing command-line arguments.");
         parseCommandLine(args, model, main);
+        System.out.println("Done.");
         
         // [[8]] Reflectively lookup the specified execute method. Verify that
         //       it returns an int type. If not, fail the entire application.
         //
+        System.out.println("Finding main execution method.");
         Method execute = findMethod(main, model);
+        System.out.println("Done.");
         
         // [[9]] Invoke the execute method and save the result to a local
         //       variable.
         //
+        System.out.println("Invoking main execution method.");
         int result = invokeMethod(execute, main);
+        System.out.println("Done.");
         
         // See the main() method for [9].
+        System.out.println("Returning result from execute(): " + result);
         return result;
     }
 
@@ -441,10 +472,30 @@ public class Launcher implements Contextualizable
             
             result = e.getErrorCode();
         }
+        catch ( Throwable t )
+        {
+            System.out.println(t.getLocalizedMessage());
+            t.printStackTrace(System.err);
+            
+            System.out.println("codify this error in the Errors class");
+            result = -100001;
+        }
         
-        // [[10]] Call System.exit(x) where <x> is the result from [9].
-        //
-        System.exit( result );
+        System.out.println("Result of execution: " + result);
+        
+        String resultProp = System.getProperty(CLIngConstants.APP_RESULT_SYSPROP);
+        System.out.println("System property to store result in: " + resultProp);
+        
+        if(resultProp == null || resultProp.length() < 1) {
+            // [[10]] Call System.exit(x) where <x> is the result from [9].
+            //
+            System.out.println("Exiting system");
+            System.exit( result );
+        }
+        else {
+            System.out.println("Storing result in System.properties. NOT terminating.");
+            System.setProperty(resultProp, Integer.toString(result));
+        }
     }
 
     public void contextualize( Context context ) throws Exception
