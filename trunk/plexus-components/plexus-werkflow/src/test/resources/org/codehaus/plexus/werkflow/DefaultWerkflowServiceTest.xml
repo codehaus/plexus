@@ -16,7 +16,7 @@
     
     <component>
       <role>org.codehaus.plexus.action.Action</role>
-      <role-hint>one</role-hint>
+      <role-hint>set_state</role-hint>
       <implementation>org.codehaus.plexus.werkflow.TestAction</implementation>
     </component>
         
