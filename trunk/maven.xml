@@ -1,0 +1,102 @@
+<project
+    default="help"
+    xmlns:ant="jelly:ant"
+    xmlns:maven="jelly:maven"
+    >
+
+    <!--
+     | Some basic building instructions 
+     |-->
+    <goal name="help">
+        <ant:echo></ant:echo>
+        <ant:echo>To build pleuxs: maven build</ant:echo>
+        <ant:echo></ant:echo>
+    </goal>
+
+    <goal name="build">
+        <attainGoal name="build-container"/>
+        <attainGoal name="build-logging"/>
+        <attainGoal name="build-personalities"/>
+        <attainGoal name="build-component-factories"/>
+        <attainGoal name="build-components"/>
+        <attainGoal name="build-tools"/>
+        <attainGoal name="build-other"/>
+    </goal>
+
+    <goal name="build-container">
+        <ant:echo>******************************</ant:echo>
+        <ant:echo>*** Building the container ***</ant:echo>
+        <ant:echo>******************************</ant:echo>
+        <maven:reactor basedir="plexus-container" includes="project.xml" goals="clean,jar:install"/>
+    </goal>
+
+    <goal name="build-logging">
+        <ant:echo>****************************</ant:echo>
+        <ant:echo>*** Building the loggers ***</ant:echo>
+        <ant:echo>****************************</ant:echo>
+        <maven:reactor
+            basedir="plexus-logging"
+            includes="*/project.xml"
+            goals="clean,jar:install"/>
+    </goal>
+
+    <goal name="build-personalities">
+        <ant:echo>******************************</ant:echo>
+        <ant:echo>*** Building the personalities</ant:echo>
+        <ant:echo>******************************</ant:echo>
+        <maven:reactor
+            basedir="plexus-personalities"
+            includes="*/project.xml"
+            goals="clean,jar:install"/>
+    </goal>
+
+    <goal name="build-component-factories">
+        <ant:echo>************************************</ant:echo>
+        <ant:echo>*** Building the component factories</ant:echo>
+        <ant:echo>************************************</ant:echo>
+        <maven:reactor
+            basedir="plexus-component-factories/"
+            includes="project.xml"
+            goals="pom:install"/>
+        <maven:reactor
+            basedir="plexus-component-factories"
+            includes="*/project.xml"
+            goals="clean,jar:install"/>
+    </goal>
+
+    <goal name="build-components">
+        <ant:echo>***************************</ant:echo>
+        <ant:echo>*** Building the components</ant:echo>
+        <ant:echo>***************************</ant:echo>
+        <maven:reactor
+            basedir="plexus-components/"
+            includes="native/project.xml,avalon/project.xml"
+            goals="pom:install"/>
+        <maven:reactor
+            basedir="plexus-components"
+            includes="native/*/project.xml,avalon/*/project.xml"
+            excludes="native/continuum/project.xml,native/scheduler/project.xml"
+            goals="clean,jar:install"/>
+    </goal>
+
+    <goal name="build-tools">
+        <ant:echo>*****************************</ant:echo>
+        <ant:echo>*** Building the plexus tools</ant:echo>
+        <ant:echo>*****************************</ant:echo>
+        <maven:reactor
+            basedir="plexus-tools"
+            includes="*/project.xml"
+            goals="clean,jar:install"/>
+    </goal>
+
+    <goal name="build-other">
+        <ant:echo>***********************</ant:echo>
+        <ant:echo>*** Building misc stuff</ant:echo>
+        <ant:echo>***********************</ant:echo>
+        <maven:reactor
+            basedir="${basedir}"
+            includes="plexus-runtime/project.xml,plexus-servlet/project.xml"
+            goals="clean,jar:install"/>
+    </goal>
+
+</project>
