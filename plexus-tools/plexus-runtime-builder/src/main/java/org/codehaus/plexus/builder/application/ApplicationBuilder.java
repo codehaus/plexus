@@ -33,6 +33,8 @@ public interface ApplicationBuilder
 {
     String ROLE = ApplicationBuilder.class.getName();
 
+    void setApplicationName( String applicationName );
+
     void setBaseDirectory( String outputDirectory );
 
     void setProject( MavenProject project );
@@ -40,6 +42,8 @@ public interface ApplicationBuilder
     void setLocalRepository( ArtifactRepository localRepository );
 
     void setPlexusConfiguration( String plexusConfiguration );
+
+    void setConfigurationsDirectory( String configurationsDirectory );
 
     void setConfigurationPropertiesFile( String configurationPropertiesFile );
 
