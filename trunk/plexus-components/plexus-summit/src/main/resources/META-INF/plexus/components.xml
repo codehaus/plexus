@@ -140,6 +140,23 @@
       <role>linktool</role>
       <implementation>org.codehaus.plexus.summit.pull.tools.TemplateLink</implementation>
       <configuration/>
+    </component>  
+    <component>
+      <role>org.codehaus.plexus.summit.pull.tools.TemplateRenderer</role>
+      <implementation>org.codehaus.plexus.summit.pull.tools.TemplateRenderer</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+      <lifecycle-handler>plexus</lifecycle-handler>
+      <configuration>
+        <default-view>Index.vm</default-view>
+        <error-view>Error.vm</error-view>
+      </configuration>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.summit.renderer.Renderer</role>
+          <role-hint>velocity</role-hint>
+        </requirement>
+      </requirements>
     </component>
   </components>
+
 </component-set>
