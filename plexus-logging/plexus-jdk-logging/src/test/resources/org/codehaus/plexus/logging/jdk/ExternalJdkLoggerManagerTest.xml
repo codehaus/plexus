@@ -2,7 +2,7 @@
     <components>
         <component>
             <role>org.codehaus.plexus.logging.LoggerManager</role>
-            <implementation>org.codehaus.plexus.logging.jdk.JdkLoggerManager</implementation>
+            <implementation>org.codehaus.plexus.logging.jdk.ExternalJdkLoggerManager</implementation>
             <lifecycle-handler>basic</lifecycle-handler>
             <instantiation-strategy>per-lookup</instantiation-strategy>
         </component>

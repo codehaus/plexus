@@ -1,17 +1,11 @@
 package org.codehaus.plexus.logging.jdk;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.logging.AbstractLoggerManager;
 import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:michal@codehaus.org">Michal Maczka</a>
@@ -107,7 +101,7 @@ public abstract class AbstractJdkLoggerManager
 
         debug( "Creating logger '" + key + "' " + hashCode() + "." );
 
-        logger = new JdkLogger( java.util.logging.Logger.getLogger( key ) );
+        logger = new JdkLogger( getThreshold(), java.util.logging.Logger.getLogger( key ) );
 
         loggerCache.put( key, logger );
 
@@ -134,6 +128,8 @@ public abstract class AbstractJdkLoggerManager
 
     public int getActiveLoggerCount()
     {
+        System.out.println( "loggerCache:" + loggerCache );
+
         return loggerCache.size();
     }
 
@@ -143,6 +139,6 @@ public abstract class AbstractJdkLoggerManager
      */
     protected void debug( String msg )
     {
-//        System.out.println( "[Log4j] " + msg );
+        System.out.println( "[jdk] " + msg );
     }
 }
