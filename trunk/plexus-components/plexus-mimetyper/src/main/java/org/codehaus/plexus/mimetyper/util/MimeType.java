@@ -78,6 +78,7 @@ public class MimeType
     public static MimeType MULTIPART;
     public static MimeType MULTIPART_FORM_DATA;
     public static MimeType APPLICATION_POSTSCRIPT;
+    public static MimeType APPLICATION_PDF;
     public static MimeType APPLICATION_OCTET_STREAM;
     public static MimeType APPLICATION_X_JAVA_AGENT;
     public static MimeType APPLICATION_X_WWW_FORM_URLENCODED;
@@ -107,6 +108,8 @@ public class MimeType
             new MimeType("multipart/form-data");
         APPLICATION_POSTSCRIPT =
             new MimeType("application/postscript");
+        APPLICATION_PDF =
+            new MimeType("application/pdf");
         APPLICATION_OCTET_STREAM =
             new MimeType("application/octet-stream");
         APPLICATION_X_JAVA_AGENT =
