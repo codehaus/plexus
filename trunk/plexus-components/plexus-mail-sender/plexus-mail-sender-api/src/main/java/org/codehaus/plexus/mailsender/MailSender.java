@@ -36,74 +36,35 @@ public interface MailSender
     String ROLE = MailSender.class.getName();
 
     /**
-     * Get the smtp hostname.
-     *
-     * @return The hostname of smtp server
-     */
-    String getSmtpHost();
-
-    /**
-     * Set the smtp hostname.
-     *
-     * @param smtpHost The hostname of smtp server
-     */
-    void setSmtpHost( String smtpHost );
-
-    /**
-     * Get the smtp port.
-     *
-     * @return The port of smtp server
-     */
-    int getSmtpPort();
-
-    /**
-     * Set the smtp port.
-     *
-     * @param smtpPort The port of smtp server
-     */
-    void setSmtpPort( int smtpPort );
-
-    /**
-     * Get the smtp username.
-     *
-     * @return The username of smtp server
-     */
-    String getUsername();
-
-    /**
-     * Set the smtp username.
-     *
-     * @param username The username of smtp server
-     */
-    void setUsername( String username );
-
-    /**
      * Send a mail.
      *
      * @throws MailSenderException
      */
-    void send( MailMessage message ) throws MailSenderException;
+    void send( MailMessage message )
+        throws MailSenderException;
 
     /**
      * Send a mail message.
      *
      * @throws MailSenderException
      */
-    void send( String subject, String content, String toAddress, String toName, String fromAddress, String fromName )
-         throws MailSenderException;
+    void send( String subject, String content, String toMailbox, String toName, String fromMailbox, String fromName )
+        throws MailSenderException;
 
     /**
      * Send a mail message.
      *
      * @throws MailSenderException
      */
-    void send( String subject, String content, String toAddress, String toName, String fromAddress, String fromName, Map extraHeaders )
-         throws MailSenderException;
+    void send( String subject, String content, String toMailbox, String toName, String fromMailbox, String fromName,
+               Map extraHeaders )
+        throws MailSenderException;
 
     /**
      * Verify the content of a mail message.
      *
      * @throws MailSenderException
      */
-    void verify( MailMessage message ) throws MailSenderException;
+    void verify( MailMessage message )
+        throws MailSenderException;
 }

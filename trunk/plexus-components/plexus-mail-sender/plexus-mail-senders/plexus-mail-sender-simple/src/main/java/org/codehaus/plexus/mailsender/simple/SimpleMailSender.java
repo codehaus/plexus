@@ -72,29 +72,23 @@ public class SimpleMailSender
 
         try
         {
-            org.codehaus.plexus.mailsender.simple.MailMessage message = new org.codehaus.plexus.mailsender.simple.MailMessage( getSmtpHost(), getSmtpPort() );
+            SimpleMailMessage message = new SimpleMailMessage( getSmtpHost(), getSmtpPort() );
 
-            message.from( makeEmailAddress( mail.getFromAddress(), mail.getFromName() ) );
+            message.from( mail.getFrom().getRfc2822Address() );
 
-            for( Iterator iter = mail.getToAddresses().keySet().iterator(); iter.hasNext(); )
+            for( Iterator iter = mail.getToAddresses().iterator(); iter.hasNext(); )
             {
-                String toAddress = (String) iter.next();
-                String toName = (String) mail.getToAddresses().get( toAddress );
-                message.to( makeEmailAddress( toAddress, toName ) );
+                message.to( ((MailMessage.Address) iter.next()).getRfc2822Address() );
             }
 
-            for( Iterator iter = mail.getCcAddresses().keySet().iterator(); iter.hasNext(); )
+            for( Iterator iter = mail.getCcAddresses().iterator(); iter.hasNext(); )
             {
-                String ccAddress = (String) iter.next();
-                String ccName = (String) mail.getCcAddresses().get( ccAddress );
-                message.cc( makeEmailAddress( ccAddress, ccName ) );
+                message.cc( ((MailMessage.Address) iter.next()).getRfc2822Address() );
             }
 
-            for( Iterator iter = mail.getBccAddresses().keySet().iterator(); iter.hasNext(); )
+            for( Iterator iter = mail.getBccAddresses().iterator(); iter.hasNext(); )
             {
-                String bccAddress = (String) iter.next();
-                String bccName = (String) mail.getBccAddresses().get( bccAddress );
-                message.bcc( makeEmailAddress( bccAddress, bccName ) );
+                message.bcc( ((MailMessage.Address) iter.next()).getRfc2822Address() );
             }
 
             message.setSubject( mail.getSubject() );
