@@ -106,7 +106,7 @@ goto endInit
 
 @REM The 4NT Shell from jp software
 :4NTArgs
-set PLEXUS_CMD_LINE_ARGS=%$
+set PLEXUS_CMD_LINE_ARGS=%\$
 goto endInit
 
 :Win9xArg
@@ -126,8 +126,7 @@ SET PLEXUS_JAVA_EXE="%JAVA_HOME%\bin\java.exe"
 SET PLEXUS_ENDORSED="-Djava.endorsed.dirs=%JAVA_HOME%\lib\endorsed;%PLEXUS_HOME%\lib\endorsed"
 
 @REM Start PLEXUS
-%PLEXUS_JAVA_EXE% "-Dplexus.home=%PLEXUS_HOME%" "-Dtools.jar=%JAVA_HOME%\lib\tools.jar" %PLEXUS_DEFAULT_OPTS% %PLEXUS_OPTS% -classpath %PLEXUS_CLASSPATH% %PLEXUS_MAIN_CLASS% %PLEXUS_CMD_LINE_ARGS% $PLEXUS_OPTS -classpath %PLEXUS_HOME%\lib\classworlds-%CLASSWORLDS_VERSION%.jar -Dclassworlds.conf=%PLEXUS_HOME%\conf\classworlds.conf  -Dlib=%PLEXUS_HOME%\lib -Dtools.jar=$TOOLS_JAR -Dplexus.home=%PLEXUS_HOME% org.codehaus.classworlds.Launcher %PLEXUS_HOME%\conf\plexus.conf
-  
+%PLEXUS_JAVA_EXE% "-Dplexus.home=%PLEXUS_HOME%" "-Dtools.jar=%JAVA_HOME%\lib\tools.jar" %PLEXUS_DEFAULT_OPTS% %PLEXUS_OPTS% -classpath %PLEXUS_CLASSPATH% %PLEXUS_MAIN_CLASS% %PLEXUS_CMD_LINE_ARGS% %PLEXUS_OPTS% -classpath %PLEXUS_HOME%\lib\classworlds-%CLASSWORLDS_VERSION%.jar -Dclassworlds.conf=%PLEXUS_HOME%\conf\classworlds.conf  -Dlib=%PLEXUS_HOME%\lib -Dplexus.home=%PLEXUS_HOME% org.codehaus.classworlds.Launcher %PLEXUS_HOME%\conf\plexus.conf
 
 :end
 @REM set local scope for the variables with windows NT shell

@@ -5,6 +5,12 @@
       <implementation>org.codehaus.plexus.builder.DefaultPlexusBuilder</implementation>
       <requirements>
         <requirement>
+          <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.project.MavenProjectBuilder</role>
+        </requirement>
+        <requirement>
           <role>org.codehaus.plexus.velocity.VelocityComponent</role>
         </requirement>
       </requirements>
@@ -33,6 +39,71 @@
           </property>
         </properties>
       </configuration>
+    </component>
+
+    <!-- Maven stuff -->
+    <component>
+      <role>org.apache.maven.project.MavenProjectBuilder</role>
+      <implementation>org.apache.maven.project.DefaultMavenProjectBuilder</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.project.inheritance.ModelInheritanceAssembler</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.factory.MavenArtifactFactory</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.project.validation.ModelValidator</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.wagon.manager.WagonManager</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.apache.maven.project.inheritance.ModelInheritanceAssembler</role>
+      <implementation>org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler</implementation>
+    </component>
+    <component>
+      <role>org.apache.maven.artifact.factory.MavenArtifactFactory</role>
+      <implementation>org.apache.maven.artifact.factory.DefaultMavenArtifactFactory</implementation>
+    </component>
+    <component>
+      <role>org.apache.maven.project.validation.ModelValidator</role>
+      <implementation>org.apache.maven.project.validation.DefaultModelValidator</implementation>
+    </component>
+    <component>
+      <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+      <implementation>org.apache.maven.artifact.resolver.DefaultArtifactResolver</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.artifact.snapshot.SnapshotResolver</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.downloader.ArtifactDownloader</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.apache.maven.artifact.snapshot.SnapshotResolver</role>
+      <implementation>org.apache.maven.artifact.snapshot.DefaultSnapshotResolver</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.artifact.downloader.ArtifactDownloader</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.wagon.manager.WagonManager</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.apache.maven.artifact.downloader.ArtifactDownloader</role>
+      <implementation>org.apache.maven.artifact.downloader.DefaultArtifactDownloader</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.wagon.manager.WagonManager</role>
+        </requirement>
+      </requirements>
     </component>
   </components>
 </plexus>
