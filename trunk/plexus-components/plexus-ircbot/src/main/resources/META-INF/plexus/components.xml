@@ -1,8 +1,8 @@
 <component-set>
   <components>
     <component>
-      <role>org.codehaus.plexus.botty.IrcBot</role>
-      <implementation>org.codehaus.plexus.botty.DefaultIrcBot</implementation>
+      <role>org.codehaus.plexus.ircbot.IrcBot</role>
+      <implementation>org.codehaus.plexus.ircbot.DefaultIrcBot</implementation>
       <configuration>
         <host>irc.codehaus.org</host>
         <port>6667</port>
@@ -11,38 +11,38 @@
       </configuration>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.botty.botlet.manager.BotletManager</role>
+          <role>org.codehaus.plexus.ircbot.botlet.manager.BotletManager</role>
         </requirement>
       </requirements>
     </component>
 
     <component>
-      <role>org.codehaus.plexus.botty.botlet.manager.BotletManager</role>
-      <implementation>org.codehaus.plexus.botty.botlet.manager.DefaultBotletManager</implementation>
+      <role>org.codehaus.plexus.ircbot.botlet.manager.BotletManager</role>
+      <implementation>org.codehaus.plexus.ircbot.botlet.manager.DefaultBotletManager</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.botty.botlet.Botlet</role>
+          <role>org.codehaus.plexus.ircbot.botlet.Botlet</role>
           <field-name>botlets</field-name>
         </requirement>
       </requirements>
     </component>
 
     <component>
-      <role>org.codehaus.plexus.botty.botlet.Botlet</role>
+      <role>org.codehaus.plexus.ircbot.botlet.Botlet</role>
       <role-hint>logger</role-hint>
-      <implementation>org.codehaus.plexus.botty.botlet.LoggerBotlet</implementation>
+      <implementation>org.codehaus.plexus.ircbot.botlet.LoggerBotlet</implementation>
     </component>
 
     <component>
-      <role>org.codehaus.plexus.botty.botlet.Botlet</role>
+      <role>org.codehaus.plexus.ircbot.botlet.Botlet</role>
       <role-hint>time</role-hint>
-      <implementation>org.codehaus.plexus.botty.botlet.TimeBotlet</implementation>
+      <implementation>org.codehaus.plexus.ircbot.botlet.TimeBotlet</implementation>
     </component>
 
     <component>
-      <role>org.codehaus.plexus.botty.botlet.Botlet</role>
+      <role>org.codehaus.plexus.ircbot.botlet.Botlet</role>
       <role-hint>tell</role-hint>
-      <implementation>org.codehaus.plexus.botty.botlet.TellBotlet</implementation>
+      <implementation>org.codehaus.plexus.ircbot.botlet.TellBotlet</implementation>
     </component>
   </components>
 </component-set>
