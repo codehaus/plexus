@@ -58,6 +58,12 @@ public class DefaultApplicationDeployer
     extends AbstractLogEnabled
     implements ApplicationDeployer, Contextualizable, Initializable, Disposable
 {
+    private static final String CONFIGURATION_FILE = "conf/plexus.xml";
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
     private Map deployments;
 
     // This needs to be changed to PlexusContainer and expand the PlexusContainer
@@ -73,10 +79,6 @@ public class DefaultApplicationDeployer
     private String applicationsDirectory;
 
     private Properties contextValues;
-
-    // ----------------------------------------------------------------------
-    // Accessors
-    // ----------------------------------------------------------------------
 
     // ----------------------------------------------------------------------
     // Deployment
@@ -182,7 +184,7 @@ public class DefaultApplicationDeployer
         // -> ${app}/lib
         // ----------------------------------------------------------------------
 
-        File applicationConfiguration = new File( location, "conf/plexus.conf" );
+        File applicationConfiguration = new File( location, CONFIGURATION_FILE );
 
         if ( !applicationConfiguration.exists() )
         {

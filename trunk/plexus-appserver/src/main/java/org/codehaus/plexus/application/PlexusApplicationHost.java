@@ -22,14 +22,14 @@ package org.codehaus.plexus.application;
  * SOFTWARE.
  */
 
-import org.codehaus.classworlds.ClassWorld;
-import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.logging.LoggerManager;
-import org.codehaus.plexus.application.deploy.ApplicationDeployer;
-
 import java.io.File;
 import java.io.FileReader;
+
+import org.codehaus.classworlds.ClassWorld;
+import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.application.deploy.ApplicationDeployer;
+import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.logging.LoggerManager;
 
 /**
  * A <code>ContainerHost</code>.
