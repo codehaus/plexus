@@ -42,6 +42,8 @@ import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.util.DirectoryScanner;
+import org.codehaus.plexus.util.xml.XMLWriter;
+import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -95,6 +97,8 @@ public class DefaultApplicationBuilder
         File libDir = mkdir( new File( workingDirectory, PlexusApplicationConstants.LIB_DIRECTORY ) );
 
         File logsDir = mkdir( new File( workingDirectory, "logs" ) );
+
+        File metaInfPlexus = mkdir( new File( workingDirectory, "META-INF/plexus" ) );
 
         // ----------------------------------------------------------------------
         //
@@ -153,6 +157,41 @@ public class DefaultApplicationBuilder
         catch ( IOException e )
         {
             throw new ApplicationBuilderException( "Error while copying dependencies.", e );
+        }
+
+        // ----------------------------------------------------------------------
+        // Make the generated plexus descriptor
+        // ----------------------------------------------------------------------
+
+        try
+        {
+            File descriptor = new File( workingDirectory, PlexusApplicationConstants.METADATA_FILE );
+
+            FileWriter writer = new FileWriter( descriptor );
+
+            XMLWriter xmlWriter = new PrettyPrintXMLWriter( writer );
+
+            writer.write( System.getProperty( "line.separator" ) );
+
+            xmlWriter.startElement( "plexus-application" );
+
+            xmlWriter.startElement( "name" );
+
+            xmlWriter.writeText( applicationName );
+
+            xmlWriter.endElement(); // name
+
+            // TODO: Add a list of all artifacts
+
+            xmlWriter.endElement(); // plexus-application
+
+            writer.write( System.getProperty( "line.separator" ) );
+
+            writer.close();
+        }
+        catch ( IOException e )
+        {
+            throw new ApplicationBuilderException( "Error while writing the application descriptor.", e );
         }
     }
 
