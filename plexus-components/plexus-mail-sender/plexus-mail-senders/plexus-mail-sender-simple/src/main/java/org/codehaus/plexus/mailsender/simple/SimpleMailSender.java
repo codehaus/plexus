@@ -64,7 +64,14 @@ public class SimpleMailSender
                 message.setHeader( entry.getKey().toString(), entry.getValue().toString() );
             }
 
-            message.setHeader( "Date", DateFormatUtils.getDateHeader( new Date() ) );
+            if ( mail.getSendDate() != null )
+            {
+                message.setHeader( "Date", DateFormatUtils.getDateHeader( mail.getSendDate() ) );
+            }
+            else
+            {
+                message.setHeader( "Date", DateFormatUtils.getDateHeader( new Date() ) );
+            }
 
             message.getPrintStream().print( mail.getContent() );
 
