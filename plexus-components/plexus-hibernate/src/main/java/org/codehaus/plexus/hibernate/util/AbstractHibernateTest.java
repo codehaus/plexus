@@ -17,6 +17,9 @@ public abstract class AbstractHibernateTest
 {
     private Connection conn;
 
+    public final static String SETUP_SQL = "plexus.hibernate.setupSql";
+    public final static String TEARDOWN_SQL = "plexus.hibernate.teardownSql";
+    
     protected void insertSqlFile( String filename ) throws Exception
     {
         HibernateService hib = (HibernateService) lookup( HibernateService.ROLE );
@@ -36,7 +39,7 @@ public abstract class AbstractHibernateTest
     {
         super.setUp();
 
-        String filename = getTestPath( System.getProperty("plexus.hibernate.setupSql") );
+        String filename = getTestPath( System.getProperty(SETUP_SQL) );
 
         try
         {
@@ -50,7 +53,7 @@ public abstract class AbstractHibernateTest
 
     public void tearDown() throws Exception
     {
-        String filename = getTestPath( System.getProperty("plexus.hibernate.teardownSql") );
+        String filename = getTestPath( System.getProperty(TEARDOWN_SQL) );
 
         try
         {

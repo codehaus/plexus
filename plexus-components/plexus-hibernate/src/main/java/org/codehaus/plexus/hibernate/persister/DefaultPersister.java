@@ -105,6 +105,9 @@ public class DefaultPersister
         }
         catch (HibernateException e)
         {
+            if ( e instanceof ObjectNotFoundException )
+                throw (ObjectNotFoundException) e;
+            
             throw new RuntimeException("Hibernate backend problem.", e);
         }
     }
