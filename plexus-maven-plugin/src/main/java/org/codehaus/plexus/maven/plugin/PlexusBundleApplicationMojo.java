@@ -83,8 +83,13 @@ public class PlexusBundleApplicationMojo
 
         File runtimeDirectory = new File( basedir, "plexus-application" );
 
-        File outputFile = new File( basedir, finalName + "-application.jar" );
+        File outputFile = getApplicationJarFile( basedir, finalName );
 
         builder.bundle( outputFile, runtimeDirectory );
+    }
+
+    public static File getApplicationJarFile( String basedir, String finalName )
+    {
+        return new File( basedir, finalName + "-application.jar" );
     }
 }
