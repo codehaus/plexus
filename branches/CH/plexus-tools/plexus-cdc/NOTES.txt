@@ -1,0 +1,14 @@
+o Need to make a place for components so that I can run the reactor
+  over the whole set to make the lookup table for retrieving components
+  in the configuration. DONE.
+
+o The lookup table of components needs to become an artifact so that it
+  can always be consulted when someone is trying to assemble a container.
+  This can be an option anyway so that people using plexus know when
+  new components are available.
+
+o Do not store the plexus POM in the plugin. It needs to be retrieved
+  from the repository. Which means that I need a mechanism to get the
+  path of a dependency that is not a JAR, which is what is assumed
+  right now. I want to pull the Plexus POM into the repository and
+  use it from the repository.
