@@ -44,7 +44,8 @@ public class MockMailSender
 
     /**
     * Get email received by this instance since start up.
-    * @return List of String
+    * 
+    * @return Returns a <code>Iterator</code> of <code>MailMessage</code>s.
     */
     public Iterator getReceivedEmail()
     {
@@ -52,8 +53,35 @@ public class MockMailSender
     }
 
     /**
+     * Returns the last received email or <code>null</code> if no emails has been sent.
+     * 
+     * @return Returns the last received email or <code>null</code> if no emails has been sent.
+     */
+    public MailMessage getLastReceivedEmail()
+    {
+        if ( messages.size() == 0 )
+        {
+            return null;
+        }
+
+        return (MailMessage) messages.get( messages.size() - 1 );
+    }
+
+    /**
+     * Returns the email with the specified index in the list of sent emails.
+     * 
+     * @param index The index.
+     * @return Returns the email with the specified index in the list of sent emails.
+     */
+    public MailMessage getReceivedEmail( int index )
+    {
+        return (MailMessage) messages.get( index );
+    }
+
+    /**
     * Get the number of messages received.
-    * @return size of received email list
+    * 
+    * @return Returns the number of received mails.
     */
     public int getReceievedEmailSize()
     {
