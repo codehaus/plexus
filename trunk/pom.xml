@@ -22,6 +22,10 @@
       <archive>http://lists.codehaus.org/pipermail/plexus-dev/</archive>
     </mailingList>
   </mailingLists>
+  <scm>
+    <connection>scm:cvs:ext:anonymous@cvs.plexus.codehaus.org:/home/projects/${groupId}/${artifactId}</connection>
+    <developerConnection>scm:cvs:ext:${maven.username}@cvs.plexus.codehaus.org:/home/projects/${groupId}/${artifactId}</developerConnection>
+  </scm>
   <developers>
     <developer>
       <name>Jason van Zyl</name>
@@ -103,5 +107,26 @@
       </roles>
     </developer>
   </developers>
+  
+  <!--
+   |
+   | These are project wide default for Plexus as a whole. For
+   | artifacts that are used universally, say junit or classworlds,
+   | we want to define these once and only once if possible.
+   |
+   -->
+  
+  <dependencies>
+    <dependency>
+      <groupId>classworlds</groupId>
+      <artifactId>classworlds</artifactId>
+      <version>1.0-alpha-1</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+    </dependency>    
+  </dependencies>  
 </project>
 
