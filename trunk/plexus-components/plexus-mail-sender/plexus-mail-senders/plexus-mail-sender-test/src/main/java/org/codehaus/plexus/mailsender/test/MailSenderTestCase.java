@@ -26,9 +26,9 @@ package org.codehaus.plexus.mailsender.test;
 
 import com.dumbster.smtp.SimpleSmtpServer;
 
-import org.codehaus.plexus.PlexusTestCase;
-
 import java.util.Iterator;
+
+import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -42,11 +42,8 @@ public class MailSenderTestCase
     
     public void tearDown() throws Exception
     {
-        if (smtpServer != null )
-        {
-            smtpServer.stop();
-            smtpServer = null;
-        }
+        stopSmtpServer();
+
         super.tearDown();
     }
 
@@ -57,7 +54,11 @@ public class MailSenderTestCase
 
     public void stopSmtpServer()
     {
-        smtpServer.stop();
+        if (smtpServer != null )
+        {
+            smtpServer.stop();
+            smtpServer = null;
+        }
     }
 
     public SimpleSmtpServer getSmtpServer()

@@ -26,10 +26,9 @@ package org.codehaus.plexus.mailsender.test;
 
 import com.dumbster.smtp.SimpleSmtpServer;
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
-
 import java.util.Iterator;
+
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -37,11 +36,32 @@ import java.util.Iterator;
  * @version $Id$
  */
 public class MockSmtpServer
-    implements SmtpServer, Initializable
+	extends AbstractLogEnabled
+    implements SmtpServer
 {
     private SimpleSmtpServer smtpServer;
 
     private int port;
+
+    // ----------------------------------------------------------------------
+    // Component Lifecycle
+    // ----------------------------------------------------------------------
+
+    public void start()
+        throws Exception
+    {
+        smtpServer = SimpleSmtpServer.start( port );
+    }
+
+    public void stop()
+        throws Exception
+    {
+        smtpServer.stop();
+    }
+
+    // ----------------------------------------------------------------------
+    // 
+    // ----------------------------------------------------------------------
 
     /**
     * Get email received by this instance since start up.
@@ -59,22 +79,5 @@ public class MockSmtpServer
     public int getReceievedEmailSize()
     {
         return smtpServer.getReceievedEmailSize();
-    }
-
-    public void initialize()
-        throws Exception
-    {
-    }
-
-    public void start()
-        throws Exception
-    {
-        smtpServer = SimpleSmtpServer.start( port );
-    }
-
-    public void stop()
-        throws Exception
-    {
-        smtpServer.stop();
     }
 }

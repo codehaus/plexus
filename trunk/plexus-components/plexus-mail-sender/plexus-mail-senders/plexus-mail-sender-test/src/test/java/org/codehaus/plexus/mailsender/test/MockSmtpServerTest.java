@@ -24,12 +24,9 @@ package org.codehaus.plexus.mailsender.test;
  * SOFTWARE.
  */
 
-import com.dumbster.smtp.SimpleSmtpServer;
 import com.dumbster.smtp.SmtpMessage;
 
 import java.util.Iterator;
-
-import junit.framework.TestCase;
 
 import org.codehaus.plexus.PlexusTestCase;
 
@@ -38,32 +35,17 @@ import org.codehaus.plexus.PlexusTestCase;
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id$
  */
-public class MockSmtpServerTest extends PlexusTestCase
+public class MockSmtpServerTest
+	extends PlexusTestCase
 {
-    public MockSmtpServerTest( String s )
-    {
-        super(s);
-    }
-
-    public void testSend() throws Exception
+    public void testSend()
+    	throws Exception
     {
         SmtpServer server = (SmtpServer) lookup( SmtpServer.ROLE );
 
-        server.start();
+        sendMessage( 4000, "sender@here.com", "Test", "Test Body", "receiver@there.com" );
 
-        try
-        {
-            sendMessage( 4000, "sender@here.com", "Test", "Test Body", "receiver@there.com" );
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            fail( "Unexpected exception: " + e );
-        }
-
-        server.stop();
-
-        assertTrue( server.getReceievedEmailSize() == 1 );
+        assertEquals( 1, server.getReceievedEmailSize() );
         Iterator emailIter = server.getReceivedEmail();
         SmtpMessage email = (SmtpMessage) emailIter.next();
         assertTrue( email.getHeaderValue( "Subject" ).equals( "Test" ) );
