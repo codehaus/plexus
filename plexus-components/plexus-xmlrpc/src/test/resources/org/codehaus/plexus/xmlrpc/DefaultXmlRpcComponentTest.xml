@@ -1,15 +1,12 @@
 <plexus>
   <components>
-
     <component>
       <role>org.codehaus.plexus.xmlrpc.PokerComponent</role>
       <implementation>org.codehaus.plexus.xmlrpc.DefaultPokerComponent</implementation>
     </component>
-
     <component>
       <role>org.codehaus.plexus.xmlrpc.XmlRpcComponent</role>
       <implementation>org.codehaus.plexus.xmlrpc.DefaultXmlRpcComponent</implementation>
-
       <configuration>
         <handlers>
           <handler>
@@ -17,22 +14,18 @@
             <role>org.codehaus.plexus.xmlrpc.PokerComponent</role>
           </handler>
         </handlers>
-
         <accepted-clients>
           <client>
             <hostname>127.0.0.1</hostname>
           </client>
         </accepted-clients>
-
         <denied-clients>
           <client>
             <hostname>129.0.0.1</hostname>
           </client>
         </denied-clients>
-
-        <port>8080</port>
+        <port>40000</port>
         <paranoid>false</paranoid>
-
       </configuration>
     </component>
 

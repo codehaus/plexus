@@ -19,7 +19,7 @@ public class DefaultXmlRpcComponentTest
     public void testExecution()
         throws Exception
     {
-        URL url = new URL( "http://localhost:8080/rpc2" );
+        URL url = new URL( "http://localhost:40000/rpc2" );
 
         XmlRpcComponent xmlRpc = (XmlRpcComponent) lookup( XmlRpcComponent.ROLE );
 

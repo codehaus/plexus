@@ -83,8 +83,8 @@ public interface XmlRpcComponent
      * @param methodName A String with the method name.
      * @param params A Vector with the parameters.
      * @return An Object.
-     * @exception XmlRpcException.
-     * @exception IOException.
+     * @exception XmlRpcException
+     * @exception IOException
      */
     Object executeRpc( URL url, String methodName, Vector params )
         throws Exception;
@@ -95,8 +95,8 @@ public interface XmlRpcComponent
      * @param handlerName The name under which we want
      * to register the service
      * @param handler The handler object
-     * @exception XmlRpcException.
-     * @exception IOException.
+     * @exception XmlRpcException
+     * @exception IOException
      */
     void registerHandler( String handlerName, Object handler )
         throws XmlRpcException, IOException;
@@ -106,8 +106,8 @@ public interface XmlRpcComponent
      * the XmlRpc Server part.
      *
      * @param handler The handler object
-     * @exception XmlRpcException.
-     * @exception IOException.
+     * @exception XmlRpcException
+     * @exception IOException
      */
     void registerHandler( Object handler )
         throws XmlRpcException, IOException;

@@ -441,10 +441,8 @@ public class DefaultXmlRpcComponent
      * URL https connection handler needed by JSSE to enable SSL
      * between XMLRPC client and server.
      *
-     * @param configuration the Configuration defining the System
-     * properties to be set
      */
-    private void setSystemPropertiesFromConfiguration( )
+    private void setSystemPropertiesFromConfiguration()
     {
         if ( systemProperties == null )
             return;
