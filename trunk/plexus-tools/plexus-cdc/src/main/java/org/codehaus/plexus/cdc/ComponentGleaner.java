@@ -98,7 +98,7 @@ public class ComponentGleaner
 
         DocletTag[] tags = javaClass.getTagsByName( "requirement" );
 
-        if ( tag != null )
+        if ( tags != null )
         {
             for ( int i = 0; i < tags.length; i++ )
             {
@@ -170,7 +170,7 @@ public class ComponentGleaner
             }
         }
 
-        findRequirements( javaClass, componentDescriptor );
+        findRequirements( javaClass, componentDescriptor, builder );
 
         return componentDescriptor;
     }
@@ -328,7 +328,8 @@ public class ComponentGleaner
         }
     }
 
-    private void findRequirements( JavaClass javaClass, ComponentDescriptor componentDescriptor )
+    private void findRequirements( JavaClass javaClass, ComponentDescriptor componentDescriptor,
+                                   JavaDocBuilder builder )
     {
         JavaField[] fields = javaClass.getFields();
 
@@ -355,11 +356,7 @@ public class ComponentGleaner
 
             String roleName = classType.substring( classType.lastIndexOf( "." ) + 1 );
 
-            JavaClass jc = null;
-            if ( componentCache != null )
-            {
-                jc = (JavaClass) componentCache.get( roleName );
-            }
+            JavaClass jc = findClassByName( builder, roleName );
 
             if ( jc != null )
             {
@@ -373,7 +370,7 @@ public class ComponentGleaner
 
         if ( javaClass.getSuperJavaClass() != null )
         {
-            findRequirements( javaClass.getSuperJavaClass(), componentDescriptor );
+            findRequirements( javaClass.getSuperJavaClass(), componentDescriptor, builder );
         }
     }
 }
