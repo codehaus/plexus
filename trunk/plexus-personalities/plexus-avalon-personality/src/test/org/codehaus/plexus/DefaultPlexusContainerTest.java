@@ -230,4 +230,16 @@ public class DefaultPlexusContainerTest
 
         container.release( serviceE2 );
     }
+    
+    public void testConfiguration()
+        throws Exception
+    {
+        DefaultConfigureService service = (DefaultConfigureService) 
+            container.lookup( ConfigureService.ROLE );
+
+        assertTrue( service.configure );
+        assertTrue( service.blah );
+        assertTrue( service.blahHasChildren );
+        assertTrue( service.blehHasAttribute );
+    }
 }
