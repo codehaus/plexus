@@ -32,12 +32,12 @@ public class AddEnity
     protected void uponSuccessfulValidation( Form form, String entityId, Map map )
         throws Exception
     {
-        Object target = fm.populate( form.getId(), map, getApp( form ).getClass().getClassLoader() );
+        Object target = fm.populate( form.getId(), map, getApplicationComponent( form ).getClass().getClassLoader() );
 
         Map m = new HashMap();
 
         m.put( "entity", target );
 
-        Object o = Ognl.getValue( form.getAdd().getExpression(), m, getApp( form ) );
+        Ognl.getValue( form.getAdd().getExpression(), m, getApplicationComponent( form ) );
     }
 }
