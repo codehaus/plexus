@@ -1,0 +1,14 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>plexus</groupId>
+    <artifactId>plexus-components</artifactId>
+    <version>1.0</version>
+  </parent>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-url-factory</artifactId>
+  <version>1.0.0-alpha-1-SNAPSHOT</version>
+  <name>Plexus URL Factory</name>
+  <shortDescription>Component which adds a support for pluggable URLStreamHandlers</shortDescription>
+  <description></description>
+</project>
