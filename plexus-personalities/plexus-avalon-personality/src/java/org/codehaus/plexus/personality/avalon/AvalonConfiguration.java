@@ -352,7 +352,7 @@ public class AvalonConfiguration
         if ( value == null )
             throw new PlexusConfigurationException("No value.");
         
-        value.trim();
+        value = value.trim();
         
         try
         {
@@ -388,7 +388,7 @@ public class AvalonConfiguration
         if ( value == null )
             throw new PlexusConfigurationException("No value.");
         
-        value.trim();
+        value = value.trim();
         
         try
         {
@@ -424,7 +424,7 @@ public class AvalonConfiguration
         if ( value == null )
             throw new PlexusConfigurationException("No value.");
         
-        value.trim();
+        value = value.trim();
         
         try
         {
@@ -460,7 +460,7 @@ public class AvalonConfiguration
         if ( value == null )
             throw new PlexusConfigurationException("No value.");
         
-        value.trim();
+        value = value.trim();
         
         if ( isTrue( value ) )
         {
@@ -513,7 +513,7 @@ public class AvalonConfiguration
         if ( value == null )
             throw new PlexusConfigurationException("No value.");
         
-        value.trim();
+        value = value.trim();
         
         try
         {
@@ -550,7 +550,7 @@ public class AvalonConfiguration
         if ( value == null )
             throw new PlexusConfigurationException("No value.");
         
-        value.trim();
+        value = value.trim();
         
         try
         {
@@ -586,7 +586,7 @@ public class AvalonConfiguration
         if ( value == null )
             throw new PlexusConfigurationException("No value.");
         
-        value.trim();
+        value = value.trim();
         
         try
         {
@@ -622,7 +622,7 @@ public class AvalonConfiguration
         if ( value == null )
             throw new PlexusConfigurationException("No value.");
         
-        value.trim();
+        value = value.trim();
         
         if ( isTrue( value ) )
         {
