@@ -40,9 +40,9 @@ public class Log4JLoggerTest
 
             fail( "Expected NullPointerException." );
         }
-        catch ( NullPointerException ex )
+        catch ( IllegalArgumentException ex )
         {
-            assertEquals( "ex.getMessage()", "logger", ex.getMessage() );
+            assertEquals( "ex.getMessage()", "Logger cannot be null", ex.getMessage() );
         }
     }
 
