@@ -60,6 +60,13 @@ public class AvalonComponentManager
 
     public void release( Component component )
     {
-        container.release( component );
+        try
+        {
+            container.release( component );
+        }
+        catch(Exception ex)
+        {
+            // ignore
+        }
     }
 }
