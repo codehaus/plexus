@@ -1,9 +1,10 @@
 <project>
   <pomVersion>3</pomVersion>
   <groupId>plexus</groupId>  
+  <id>plexus-tool</id>
   <artifactId>plexus-tool</artifactId>
   <name>Plexus Tools</name>
-  <version>1.0</version>
+  <currentVersion>1.0</currentVersion>
   <package>org.codehaus.plexus</package>
   <dependencies>
     <dependency>
