@@ -26,6 +26,7 @@ package org.codehaus.plexus.notification;
 
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -34,7 +35,7 @@ import java.util.TreeSet;
 public class TestRecipientSource
     implements RecipientSource
 {
-    public Set getRecipients( String messageId, String notifierType )
+    public Set getRecipients( String notifierType, String messageId, Map context )
         throws NotificationException
     {
         Set recipients = new TreeSet();

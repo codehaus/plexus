@@ -27,6 +27,7 @@ package org.codehaus.plexus.notification;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Collections;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.notification.notifier.Notifier;
@@ -63,18 +64,14 @@ public class DefaultNotificationDispatcher
 
             Notifier notifier = (Notifier) entry.getValue();
 
-            Set recipients = recipientSource.getRecipients( messageId, notifierType );
+            Set recipients = recipientSource.getRecipients( notifierType, messageId, Collections.EMPTY_MAP );
 
             if ( recipients == null )
             {
                 getLogger().error( "RecipientSource.getRecipients() returned null. " +
-                                   "Message id: '" + messageId + "', notifier type: '" + notifierType + "'." );
+                                   "Message id: '" + messageId + "', " +
+                                   "notifier type: '" + notifierType + "'." );
 
-                continue;
-            }
-
-            if ( recipients.size() == 0 )
-            {
                 continue;
             }
 
