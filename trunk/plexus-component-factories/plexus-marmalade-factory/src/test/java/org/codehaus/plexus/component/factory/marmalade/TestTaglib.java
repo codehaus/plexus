@@ -1,7 +1,7 @@
 /* Created on Aug 9, 2004 */
 package org.codehaus.plexus.component.factory.marmalade;
 
-import org.codehaus.marmalade.model.AbstractMarmaladeTagLibrary;
+import org.codehaus.marmalade.metamodel.AbstractMarmaladeTagLibrary;
 
 /**
  * @author jdcasey
