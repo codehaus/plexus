@@ -1,10 +1,7 @@
 package org.codehaus.plexus.examples.simple;
 
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.logger.LogEnabled;
-import org.apache.avalon.framework.logger.Logger;
+import org.codehaus.plexus.logging.LogEnabled;
+import org.codehaus.plexus.logging.Logger;
 
 /** 
  * Concrete implementation of a <tt>HelloWorld</tt> component.  The
@@ -14,7 +11,7 @@ import org.apache.avalon.framework.logger.Logger;
  * @version $Revision$
  */
 public class DefaultHelloWorld 
-    implements HelloWorld, LogEnabled, Configurable
+    implements HelloWorld, LogEnabled
 {
     /** The logger supplied by the Plexus container. */
     private Logger logger;
@@ -27,12 +24,6 @@ public class DefaultHelloWorld
         this.logger = logger;
     }
 
-    public void configure(Configuration conf) throws ConfigurationException
-    {
-        greeting = conf.getChild("greeting").getValue();
-        logger.info("Greeting has been configured to: " + greeting);
-    }
-    
     /** 
      * Says hello by returning a greeting to the caller.
      * 
