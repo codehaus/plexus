@@ -1,0 +1,37 @@
+<configuration>
+
+  <logging>
+    <implementation>org.codehaus.plexus.logging.ConsoleLoggerManager</implementation>
+    <logger>
+      <threshold>ERROR</threshold>
+    </logger>
+  </logging>
+
+  <components>
+    <component>
+      <role>org.codehaus.plexus.PlexusContainer</role>
+      <implementation>org.codehaus.plexus.ComponentPlexusContainer</implementation>
+      <configuration>
+        <plexus-config>org/codehaus/plexus/hierarchy/ChildPlexusOne.xml</plexus-config>
+        <context-value>
+          <name>plexus-name</name>
+          <value>ChildPlexusOne</value>
+        </context-value>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.PlexusContainer</role>
+      <role-hint>two</role-hint>
+      <implementation>org.codehaus.plexus.ComponentPlexusContainer</implementation>
+      <configuration>
+        <plexus-config>org/codehaus/plexus/hierarchy/ChildPlexusTwo.xml</plexus-config>
+        <context-value>
+          <name>plexus-name</name>
+          <value>ChildPlexusTwo</value>
+        </context-value>
+      </configuration>
+    </component>
+  </components>
+
+</configuration>
