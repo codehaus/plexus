@@ -5,7 +5,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
 
-import org.apache.avalon.framework.service.ServiceManager;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.embed.Embedder;
 
@@ -55,19 +54,5 @@ public class PlexusServletContextListener implements ServletContextListener
         ServletContext context = sce.getServletContext();
         context.log( "Disposing of Plexus container." );
         ServletContextUtils.destroyContainer( embedder, context );
-    }
-
-    /**
-     * @deprecated Moved to {@link PlexusServletUtils#getServiceManager}.
-     */
-    public static ServiceManager getServiceManager(ServletContext sc)  {
-        return PlexusServletUtils.getServiceManager(sc);
-    }
-
-    /**
-     * @deprecated Moved to {@link PlexusServletUtils#getPlexusContainer}.
-     */
-    public static PlexusContainer getPlexusContainer(ServletContext sc)  {
-        return PlexusServletUtils.getPlexusContainer(sc);
     }
 }
