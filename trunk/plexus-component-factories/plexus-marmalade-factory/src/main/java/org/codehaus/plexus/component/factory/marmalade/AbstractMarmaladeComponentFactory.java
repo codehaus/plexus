@@ -2,14 +2,15 @@
 package org.codehaus.plexus.component.factory.marmalade;
 
 import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.classworlds.NoSuchRealmException;
 import org.codehaus.marmalade.metamodel.ModelBuilderException;
 import org.codehaus.marmalade.metamodel.ScriptBuilder;
 import org.codehaus.marmalade.model.MarmaladeScript;
 import org.codehaus.marmalade.model.MarmaladeTag;
-import org.codehaus.marmalade.parsing.CachingScriptParser;
 import org.codehaus.marmalade.parsing.DefaultParsingContext;
 import org.codehaus.marmalade.parsing.MarmaladeParsetimeException;
 import org.codehaus.marmalade.parsing.MarmaladeParsingContext;
+import org.codehaus.marmalade.parsing.ScriptParser;
 import org.codehaus.marmalade.runtime.DefaultContext;
 import org.codehaus.marmalade.runtime.MarmaladeExecutionContext;
 import org.codehaus.marmalade.runtime.MarmaladeExecutionException;
@@ -35,8 +36,6 @@ import java.net.URL;
 public abstract class AbstractMarmaladeComponentFactory
     extends AbstractComponentFactory
 {
-    private CachingScriptParser cachingParser = new CachingScriptParser();
-
     protected AbstractMarmaladeComponentFactory()
     {
     }
@@ -44,16 +43,57 @@ public abstract class AbstractMarmaladeComponentFactory
     public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm classRealm, PlexusContainer container )
         throws ComponentInstantiationException
     {
-        URL scriptLocation = getScriptLocation( componentDescriptor, classRealm );
-        MarmaladeParsingContext parsingContext = buildParsingContext( scriptLocation );
-        MarmaladeScript script = getScriptInstance( parsingContext );
+        ClassRealm componentRealm = container.getComponentRealm( componentDescriptor.getComponentKey() );
 
-        Object result = executeScript( script );
+        URL scriptLocation = getScriptLocation( componentDescriptor, componentRealm );
 
+        ClassRealm parent = componentRealm.getParent();
+
+        if ( parent == null )
+        {
+            parent = classRealm;
+        }
+        
+        try
+        {
+            componentRealm.importFrom( parent.getId(), "org.codehaus.marmalade" );
+            componentRealm.importFrom( parent.getId(), "org.apache.maven" );
+        }
+        catch ( NoSuchRealmException e )
+        {
+            throw new ComponentInstantiationException("Cannot configure imported packages on component realm.", e);
+        }
+
+        Object result = null;
+        
+        ClassLoader oldCl = Thread.currentThread().getContextClassLoader();
+        try
+        {
+            Thread.currentThread().setContextClassLoader(new RealmDelegatingClassLoader(componentRealm));
+            result = parseComponent( scriptLocation );
+        }
+        finally
+        {
+            Thread.currentThread().setContextClassLoader(oldCl);
+        }
+        
         return result;
     }
 
     protected abstract URL getScriptLocation( ComponentDescriptor componentDescriptor, ClassRealm classRealm );
+
+    public Object parseComponent( URL scriptLocation ) throws ComponentInstantiationException
+    {
+        Object result = null;
+
+        MarmaladeParsingContext parsingContext = buildParsingContext( scriptLocation );
+
+        MarmaladeScript script = getScriptInstance( parsingContext );
+
+        result = executeScript( script );
+
+        return result;
+    }
 
     protected Object executeScript( MarmaladeScript script ) throws ComponentInstantiationException
     {
@@ -80,7 +120,9 @@ public abstract class AbstractMarmaladeComponentFactory
         ScriptBuilder builder = null;
         try
         {
-            builder = cachingParser.parse( parsingContext );
+            ScriptParser parser = new ScriptParser();
+
+            builder = parser.parse( parsingContext );
         }
         catch ( MarmaladeParsetimeException e )
         {
@@ -103,7 +145,8 @@ public abstract class AbstractMarmaladeComponentFactory
 
         if ( !(root instanceof PlexusComponentTag) )
         {
-            throw new ComponentInstantiationException( "marmalade script does not build a plexus component" );
+            throw new ComponentInstantiationException( "marmalade script does not build a plexus component [root tag class: "
+                + root.getClass().getName() + "]" );
         }
 
         return script;
@@ -135,5 +178,4 @@ public abstract class AbstractMarmaladeComponentFactory
 
         return context;
     }
-
 }
