@@ -43,6 +43,9 @@
     <expression>updatePerson(#entity)</expression>
     <view>view</view>
   </update>
+  <delete>
+    <expression>deletePerson(#id)</expression>
+  </delete>
   <view>
     <title-key>view.title</title-key>
   </view>

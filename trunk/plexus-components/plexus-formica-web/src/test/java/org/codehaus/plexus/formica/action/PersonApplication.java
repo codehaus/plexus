@@ -15,5 +15,7 @@ public interface PersonApplication
 
     void updatePerson( Person person );
 
+    void deletePerson( String id );
+    
     Person getPerson( String id );
 }
