@@ -25,8 +25,6 @@ public class PlexusBuilderTest
     {
         super.setUp();
 
-        String basedir = System.getProperty( "basedir" );
-
         buildDirectory = new File( basedir, "target/generated-runtime" ).getPath();
 
         plexusConfiguration = new File( basedir, "src/test/resources/conf/plexus.conf" ).getPath();
