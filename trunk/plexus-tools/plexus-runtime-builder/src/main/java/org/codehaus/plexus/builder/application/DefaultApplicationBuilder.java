@@ -42,6 +42,7 @@ public class DefaultApplicationBuilder
 
     private String configurationsDirectory;
 
+    
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
