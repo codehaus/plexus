@@ -1,22 +1,21 @@
-<project>
+<model>
   <parent>
-    <groupId>plexus</groupId>
     <artifactId>plexus-components</artifactId>
+    <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-maildir</artifactId>
-  <version>2.0-alpha-2</version>
+  <packaging>jar</packaging>
   <name>Plexus Maildir Component</name>
-  <!-- This contains both se.* and org.* stuff -->
-  <package>se</package>
+  <version>2.0-alpha-2</version>
   <developers>
     <developer>
-      <name>Eric Daugherty</name>
       <id>edaugherty</id>
+      <name>Eric Daugherty</name>
       <email>java@ericdaugherty.com</email>
-      <organization/>
       <url>http://www.ericdaugherty.com</url>
+      <organization></organization>
     </developer>
   </developers>
   <contributors>
@@ -30,6 +29,8 @@
       <groupId>javamail</groupId>
       <artifactId>javamail</artifactId>
       <version>1.3.1</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
-</project>
+</model>

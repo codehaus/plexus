@@ -1,13 +1,13 @@
-<project>
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>plexus</groupId>
-        <artifactId>plexus-root</artifactId>
-        <version>1.0</version>
-    </parent>
+<model>
+  <parent>
+    <artifactId>plexus-root</artifactId>
     <groupId>plexus</groupId>
-    <artifactId>plexus-logging</artifactId>
     <version>1.0</version>
-    <type>pom</type>
-    <name>Plexus Logging Parent</name>
-</project>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-logging</artifactId>
+  <packaging>pom</packaging>
+  <name>Plexus Logging Parent</name>
+  <version>1.0</version>
+</model>

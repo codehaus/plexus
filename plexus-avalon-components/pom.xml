@@ -1,75 +1,35 @@
-<?xml version="1.0"?>
-<project>
+<model>
   <parent>
-    <groupId>plexus</groupId>
     <artifactId>plexus-root</artifactId>
+    <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
-  <artifactId>plexus-components-avalon</artifactId>
   <groupId>plexus</groupId>
+  <artifactId>plexus-components-avalon</artifactId>
+  <packaging>jar</packaging>
   <name>Plexus Avalon Components</name>
   <version>1.0</version>
-
   <dependencies>
-    
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus</artifactId>
       <version>0.14-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
-    
     <dependency>
       <groupId>avalon</groupId>
       <artifactId>avalon-framework</artifactId>
       <version>4.1.4</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
-
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-avalon-personality</artifactId>
       <version>0.12</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
-
   </dependencies>
-<!--
-  <build>
-
-    <nagEmailAddress>plexus-dev@lists.codehaus.org</nagEmailAddress>
-    <sourceDirectory>src/main</sourceDirectory>
-    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-
-    <unitTest>
-      <includes>
-        <include>**/*Test.java</include>
-      </includes>
-      <excludes>
-        <exlude>**/Abstract*.java</exlude>
-      </excludes>
-    
-      <resources>
-        <resource>
-          <directory>src/test</directory>
-          <includes>
-            <include>**/*.xml</include>
-            <include>**/*.xsd</include>
-            <include>**/*.vm</include>
-            <include>**/*.properties</include>
-          </includes>
-        </resource>
-      </resources>
-    </unitTest>
-
-    <resources>
-      <resource>
-       <directory>src/main</directory>
-        <includes>
-          <include>**/*.properties</include>
-          <include>**/*.vsl</include>
-          <include>**/*.css</include>
-          <include>**/*.gif</include>
-        </includes>
-      </resource>
-    </resources>
-  </build>
--->
-</project>
+</model>

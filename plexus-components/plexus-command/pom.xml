@@ -1,18 +1,13 @@
-<project>
-  <modelVersion>4.0.0</modelVersion>
+<model>
   <parent>
-    <groupId>plexus</groupId>
     <artifactId>plexus-components</artifactId>
+    <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-command</artifactId>
+  <packaging>jar</packaging>
+  <name>compiler:compile</name>
   <version>1.0-alpha-5-SNAPSHOT</version>
-  <name>Plexus Command Component</name>
-  <preGoals>
-    <preGoal>
-      <name>compiler:compile</name>
-      <attain>plexus:descriptor</attain>
-    </preGoal>
-  </preGoals>
-</project>
+</model>

@@ -1,25 +1,29 @@
-<project>
-  <modelVersion>4.0.0</modelVersion>
+<model>
   <parent>
-    <groupId>plexus</groupId>
     <artifactId>plexus-root</artifactId>
+    <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
-  <groupId>plexus</groupId>  
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>plexus</groupId>
   <artifactId>plexus-tools</artifactId>
-  <version>1.0</version>
+  <packaging>jar</packaging>
   <name>Plexus Tools Parent Project</name>
-  <package>org.codehaus.plexus</package>
+  <version>1.0</version>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
       <version>1.0-alpha-1</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>1.0-alpha-1</version>
-    </dependency>    
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
-</project>
+</model>

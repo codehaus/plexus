@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<project>
-  <modelVersion>4.0.0</modelVersion>
+<model>
   <parent>
-    <groupId>plexus</groupId>
     <artifactId>plexus-component-factories</artifactId>
+    <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-groovy-factory</artifactId>
+  <packaging>jar</packaging>
   <name>Plexus Groovy Factory</name>
   <version>1.0-alpha-5</version>
   <dependencies>
@@ -14,6 +14,8 @@
       <groupId>groovy</groupId>
       <artifactId>groovy</artifactId>
       <version>1.0-beta-4</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
-</project>
+</model>
