@@ -25,6 +25,11 @@ public abstract class LongPersistable
         this.id = id;
     }
     
+    public Long getIdAsLong()
+    {
+        return id;
+    }
+    
 	public boolean equals(Object o)
 	{
         if ( !(o instanceof Persistable) )
