@@ -171,8 +171,10 @@ public class PlexusServiceGenerator
         // Build the service
         // ----------------------------------------------------------------------
 
-        builder.build( serviceName, outputFile, workingDirectory,
+        builder.build( serviceName, workingDirectory,
                        remoteRepositories, localRepository, projectArtifacts,
                        new File( plexusConfiguration ), configurationsDir, new File( configurationPropertiesFile ) );
+
+        builder.bundle( outputFile, workingDirectory );
     }
 }

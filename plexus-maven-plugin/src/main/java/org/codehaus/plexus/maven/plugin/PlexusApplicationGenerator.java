@@ -150,8 +150,6 @@ public class PlexusApplicationGenerator
 
         File workingDirectory = new File( basedir, "/plexus-application" );
 
-        File outputFile = new File( basedir, finalName + "-application.jar" );
-
         File configurationsDir = null;
 
         // ----------------------------------------------------------------------
@@ -171,7 +169,7 @@ public class PlexusApplicationGenerator
         // Build the application
         // ----------------------------------------------------------------------
 
-        builder.build( applicationName, outputFile, workingDirectory,
+        builder.assemble( applicationName, workingDirectory,
                        remoteRepositories, localRepository, projectArtifacts,
                        new File( plexusConfiguration ), configurationsDir, new File( configurationPropertiesFile ) );
     }
