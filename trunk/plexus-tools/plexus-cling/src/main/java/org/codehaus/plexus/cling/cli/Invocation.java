@@ -166,7 +166,7 @@ public class Invocation
         
         Object value = null;
         if(eqPos > 0) {
-            key = arg.substring(0, eqPos);
+            key = arg.substring(2, eqPos);
             
             value = arg.substring(eqPos+1);
         }
