@@ -20,7 +20,19 @@ public class LogEnablePhase
 
             LoggerManager lm = (LoggerManager) container.lookup( LoggerManager.ROLE );
 
-            Logger logger = new AvalonLogger( lm.getRootLogger() );
+            Logger logger = null;
+            
+            String role = manager.getComponentDescriptor().getRole();
+            String roleHint = manager.getComponentDescriptor().getRoleHint();
+            
+            if ( roleHint != null )
+            {
+                logger = new AvalonLogger( lm.getLoggerForComponent( role, roleHint ) );
+            }
+            else
+            {
+                logger = new AvalonLogger( lm.getLoggerForComponent( role ) );
+            }
 
             if ( null == logger )
             {
@@ -29,7 +41,7 @@ public class LogEnablePhase
                 throw new IllegalArgumentException( message );
             }
 
-            ( (LogEnabled) object ).enableLogging( logger.getChildLogger( object.getClass().getName() ) );
+            ( (LogEnabled) object ).enableLogging( logger );
         }
     }
 }

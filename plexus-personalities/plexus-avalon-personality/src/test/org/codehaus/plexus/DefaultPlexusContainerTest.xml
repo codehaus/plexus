@@ -2,15 +2,8 @@
 
   <configurations-directory>${basedir}/src/test-input/configurations-directory</configurations-directory>
 
-  <logging>
-    <implementation>org.codehaus.plexus.logging.console.ConsoleLoggerManager</implementation>
-    <logger>
-      <threshold>INFO</threshold>
-    </logger>
-  </logging>
-
-  <component-repository>
-    <implementation>org.codehaus.plexus.personality.avalon.AvalonComponentRepository</implementation>
+  <component-repository implementation="org.codehaus.plexus.personality.avalon.AvalonComponentRepository">
+    <composition-resolver implementation="org.codehaus.plexus.component.composition.DefaultCompositionResolver"/>
   </component-repository>
 
   <!--
