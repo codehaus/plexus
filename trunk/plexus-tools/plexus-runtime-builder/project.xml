@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project>
-  <parent>
-    <groupId>plexus</groupId>
-    <artifactId>plexus-tool</artifactId>
-    <version>1.0</version>
-  </parent>  
+  <extend>${maven.repo.local}/plexus/poms/plexus-tool-1.0.pom</extend>
   <groupId>plexus</groupId>
   <artifactId>plexus-runtime-builder</artifactId>
   <name>Plexus Runtime Builder</name>
