@@ -1,0 +1,29 @@
+ -----
+ Using Jetty with Apache
+ -----
+ Jason van Zyl
+ -----
+
+Using Jetty with Apache
+
+  This is a small guide showing how to setup a Plexus web application behind 
+  Apache efficiently using mod_rewrite and mod_proxy.
+  
+* Apache mod_rewrite rules
+
+ If your application is called ${application} then your mod_rewrite rules
+ generally look like the following:
+ 
++-----+
+RewriteEngine on
+RewriteRule ^/${application} http://localhost:8081/${applicationName}/servlet/${application} [p]
+RewriteRule ^/${application}/(.*)$ http://localhost:8081/${application}/$1 [p]
++-----+
+
+ A concrete example of what the configuration looks like this:
+
++-----+
+RewriteEngine on
+RewriteRule ^/docorama http://localhost:8081/docorama/servlet/docorama [p]
+RewriteRule ^/docorama/(.*)$ http://localhost:8081/docorama/$1 [p]
++-----+
