@@ -49,17 +49,11 @@ public class PlexusBuilderTest
 
         builder.setProject( project );
 
-        //!! @todo need a way to parameterize this
-//        builder.setMavenRepoLocal( System.getProperty( "user.home" ) + "/maven-repo-local" );
-        builder.setMavenRepoLocal( getTestFile( "src/test/repository" ) );
+        builder.setMavenRepoLocal( System.getProperty( "user.home" ) + "/maven-repo-local" );
 
-//        builder.setApplication( "tambora" );
-
-//        builder.setPlexusVersion( "0.14-SNAPSHOT" );
+        //builder.setMavenRepoLocal( getTestFile( "src/test/repository" ) );
 
         builder.setPlexusConfiguration( plexusConfiguration );
-
-//        builder.setComponentManifest( componentManifest );
 
         builder.setConfigurationsDirectory( configurationsDirectory );
 
