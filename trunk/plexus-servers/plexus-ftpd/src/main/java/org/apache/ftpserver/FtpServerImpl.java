@@ -114,8 +114,11 @@ public class FtpServerImpl
         try
         {
             configuration = new FtpConfig();
+
             configuration.setLogger( getLogger() );
+
             this.context = context;
+            
             configuration.setContext( this.context );
         }
         catch ( Exception ex )
