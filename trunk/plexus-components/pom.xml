@@ -1,15 +1,15 @@
 <project>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-root</artifactId>
     <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-components</artifactId>
   <packaging>pom</packaging>
-  <name>Plexus Components Parent Project</name>
   <version>1.0</version>
+  <name>Plexus Components Parent Project</name>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
@@ -27,11 +27,11 @@
     <module>plexus-command</module>
     <module>plexus-formica-web</module>
     <module>plexus-formica</module>
-    <module>plexus-velocity</module>
-    <module>plexus-summit</module>
-    <module>plexus-jetty</module>
-    <module>plexus-jdo</module>
     <module>plexus-hibernate</module>
+    <module>plexus-jdo</module>
+    <module>plexus-jetty</module>
+    <module>plexus-summit</module>
+    <module>plexus-velocity</module>
     <module>plexus-xmlrpc</module>
   </modules>
 </project>
