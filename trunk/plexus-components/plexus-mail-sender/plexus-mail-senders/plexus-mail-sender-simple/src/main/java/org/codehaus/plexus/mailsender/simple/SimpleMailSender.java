@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.mailsender.MailSender;
+import org.codehaus.plexus.mailsender.AbstractMailSender;
 import org.codehaus.plexus.mailsender.MailSenderException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 
@@ -19,63 +19,44 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
  * @version $Id$
  */
 public class SimpleMailSender
-	extends AbstractLogEnabled
-	implements MailSender, Initializable
+	extends AbstractMailSender
 {
-    /** @configuration */
-    private String smtpHost;
-
-    /** @configuration */
-    private int smtpPort;
-
-    // ----------------------------------------------------------------------
-    // 
-    // ----------------------------------------------------------------------
-
-    private final static int DEFAULT_SMTP_PORT = 25;
-
-    // ----------------------------------------------------------------------
-    // Component Lifecycle
-    // ----------------------------------------------------------------------
-
-    public void initialize()
-    	throws Exception
-    {
-        if ( smtpHost == null || smtpHost.length() == 0 )
-        {
-            throw new MailSenderException( "Error in configuration: Missing smtp-host." );
-        }
-
-        if ( smtpPort == 0 )
-        {
-            smtpPort = DEFAULT_SMTP_PORT;
-        }
-    }
-
     // ----------------------------------------------------------------------
     // MailSender Implementation
     // ----------------------------------------------------------------------
 
-    public void sendMail( String subject, String content, String toAddress, String toName, String fromAddress, String fromName )
-    	throws MailSenderException
+    public void send() throws MailSenderException
 	{
-        sendMail( subject, content, toAddress, toName, fromAddress, fromName );
-	}
-
-    public void sendMail( String subject, String content, String toAddress, String toName, String fromAddress, String fromName, Map extraHeaders )
-    	throws MailSenderException
-    {
         try
         {
-            MailMessage message = new MailMessage( smtpHost, smtpPort );
+            MailMessage message = new MailMessage( getSmtpHost(), getSmtpPort() );
 
-            message.from( makeEmailAddress( fromAddress, fromName ) );
+            message.from( makeEmailAddress( getFromAddress(), getFromName() ) );
 
-            message.to( makeEmailAddress( toAddress, toName ) );
+            for( Iterator iter = getToAddresses().keySet().iterator(); iter.hasNext(); )
+            {
+                String toAddress = (String) iter.next();
+                String toName = (String) getToAddresses().get( toAddress );
+                message.to( makeEmailAddress( toAddress, toName ) );
+            }
 
-            message.setSubject( subject );
+            for( Iterator iter = getCcAddresses().keySet().iterator(); iter.hasNext(); )
+            {
+                String ccAddress = (String) iter.next();
+                String ccName = (String) getCcAddresses().get( ccAddress );
+                message.cc( makeEmailAddress( ccAddress, ccName ) );
+            }
 
-            for ( Iterator it = extraHeaders.entrySet().iterator(); it.hasNext(); )
+            for( Iterator iter = getBccAddresses().keySet().iterator(); iter.hasNext(); )
+            {
+                String bccAddress = (String) iter.next();
+                String bccName = (String) getBccAddresses().get( bccAddress );
+                message.bcc( makeEmailAddress( bccAddress, bccName ) );
+            }
+
+            message.setSubject( getSubject() );
+
+            for ( Iterator it = getHeaders().entrySet().iterator(); it.hasNext(); )
             {
                 Map.Entry entry = (Map.Entry) it.next();
 
@@ -84,7 +65,7 @@ public class SimpleMailSender
 
             message.setHeader( "Date", DateFormatUtils.getDateHeader( new Date() ) );
 
-            message.getPrintStream().print( message );
+            message.getPrintStream().print( getContent() );
 
             message.sendAndClose();
         }
@@ -92,33 +73,5 @@ public class SimpleMailSender
         {
             throw new MailSenderException( "Error while sending mail.", ex );
         }
-    }
-
-    // ----------------------------------------------------------------------
-    // Getters
-    // ----------------------------------------------------------------------
-
-    public String getSmtpHost()
-    {
-        return smtpHost;
-    }
-
-    public int getSmtpPort()
-    {
-        return smtpPort;
-    }
-
-    // ----------------------------------------------------------------------
-    // 
-    // ----------------------------------------------------------------------
-
-    private String makeEmailAddress( String address, String name )
-    {
-        if ( name == null || name.length() == 0 )
-        {
-            return "<" + address + ">";
-        }
-
-        return name + "<" + address + ">";
     }
 }
