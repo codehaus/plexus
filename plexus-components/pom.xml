@@ -32,5 +32,6 @@
     <module>plexus-jetty</module>
     <module>plexus-jdo</module>
     <module>plexus-hibernate</module>
+    <module>plexus-xmlrpc</module>
   </modules>
 </project>
