@@ -51,7 +51,7 @@ public class DefaultServiceB
     {
         contextualize = true;
 
-        //classLoader = (ClassLoader) context.get( "common.classloader" );
+        classLoader = (ClassLoader) context.get( "common.classloader" );
     }
 
     public void service( ServiceManager serviceManager )
