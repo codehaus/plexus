@@ -1,17 +1,12 @@
 <?xml version="1.0"?>
 <project>
-  <extend>${maven.repo.local}/plexus/poms/plexus-components-1.0.pom</extend>
+  <extend>${maven.repo.local}/plexus/poms/plexus-components-avalon-1.0.pom</extend>
   <id>plexus-hibernate</id>
   <artifactId>plexus-hibernate</artifactId>
   <name>Plexus Hibernate Component</name>
   <currentVersion>1.0-alpha-5</currentVersion>
    
   <dependencies>
-
-    <dependency>
-      <id>avalon-framework</id>
-      <version>4.1.4</version>
-    </dependency>
 
     <dependency>
       <id>commons-lang</id>

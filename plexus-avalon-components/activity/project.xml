@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-  <extend>${maven.repo.local}/plexus/poms/plexus-components-1.0.pom</extend>
+  <extend>${maven.repo.local}/plexus/poms/plexus-components-avalon-1.0.pom</extend>
   <id>plexus-activity</id>
   <artifactId>plexus-activity</artifactId>
   <name>Activity Services</name>
@@ -10,12 +10,6 @@
   <description>
     Activity services that interact with templates.
   </description>
-  
-  <url>http://jakarta.apache.org/Summit/turbine-3/</url>
-  <cvsWebUrl>http://cvs.apache.org/viewcvs/jakarta-turbine-3/</cvsWebUrl>
-  <issueTrackingUrl>http://nagoya.apache.org:8080/scarab/servlet/scarab/</issueTrackingUrl>
-  <siteAddress>jakarta.apache.org</siteAddress>
-  <siteDirectory>/www/jakarta.apache.org/turbine/turbine-3/</siteDirectory>
 
   <developers>
     <developer>
@@ -62,7 +56,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-summit</artifactId>
-      <version>1.0-beta-1</version>
+      <version>1.0-beta-2</version>
     </dependency>
     
     <dependency>
