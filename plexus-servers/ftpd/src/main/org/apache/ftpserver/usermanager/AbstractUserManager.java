@@ -56,7 +56,7 @@
  */
 package org.apache.ftpserver.usermanager;
 
-import org.apache.avalon.phoenix.BlockContext;
+//import org.apache.avalon.phoenix.BlockContext;
 
 import org.apache.avalon.framework.logger.AbstractLogEnabled;
 import org.apache.avalon.framework.activity.Initializable;
@@ -88,22 +88,15 @@ abstract class AbstractUserManager extends AbstractLogEnabled
                                               Disposable {
 
     protected Configuration mConfig;
-    protected BlockContext mBlockContext;
     protected String mstAdminName;
+    private String mBaseDirectory;
 
     /**
      * Set context object - first step.
      */
     public void contextualize(Context context) throws ContextException {
-        mBlockContext = (BlockContext) context;
     }
 
-    /**
-     * Get block context.
-     */
-    public BlockContext getContext() {
-        return mBlockContext;
-    }
 
     /**
      * Configure user manager - third step.
@@ -116,7 +109,13 @@ abstract class AbstractUserManager extends AbstractLogEnabled
         if(adminConf != null) {
             mstAdminName = adminConf.getValue(mstAdminName);
         }
+
+        mBaseDirectory = config.getChild("base-directory").getValue(null);
+
+        if(mBaseDirectory == null)
+            throw new ConfigurationException("Missing configuration element 'base-directory'");
     }
+
 
     /**
      * Get config object.
@@ -125,6 +124,12 @@ abstract class AbstractUserManager extends AbstractLogEnabled
         return mConfig;
     }
 
+    /**
+     * Get the basedir.
+     */
+    public String getBaseDirectory() {
+        return mBaseDirectory;
+    }
 
     /**
      * Initialize - fourth step.
