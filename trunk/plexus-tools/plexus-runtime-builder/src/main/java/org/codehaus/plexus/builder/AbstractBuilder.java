@@ -193,7 +193,16 @@ public abstract class AbstractBuilder
         }
         else
         {
-            artifacts = artifactResolver.resolve( sourceArtifacts, remoteRepositories, localRepository );
+            artifacts = new HashSet();
+
+            for ( Iterator it = sourceArtifacts.iterator(); it.hasNext(); )
+            {
+                Artifact artifact = (Artifact) it.next();
+
+                artifactResolver.resolve( artifact, remoteRepositories, localRepository );
+
+                artifacts.add( artifact );
+            }
         }
 
         return artifacts;
@@ -226,7 +235,7 @@ public abstract class AbstractBuilder
         }
     }
 */
-    public class ScopeExcludeArtifactFilter
+    public static class ScopeExcludeArtifactFilter
         implements ArtifactFilter
     {
         private String scope;
@@ -247,7 +256,7 @@ public abstract class AbstractBuilder
         }
     }
 
-    public class GroupArtifactTypeArtifactFilter
+    public static class GroupArtifactTypeArtifactFilter
         implements ArtifactFilter
     {
         private Set filteredArtifacts;
@@ -275,7 +284,7 @@ public abstract class AbstractBuilder
         }
     }
 
-    public class AndArtifactFilter
+    public static class AndArtifactFilter
         implements ArtifactFilter
     {
         private ArtifactFilter filterA;
