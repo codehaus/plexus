@@ -60,20 +60,6 @@
   
   <dependencies>
 
-    <!-- Avalon -->
-    <dependency>
-      <groupId>avalon</groupId>
-      <artifactId>avalon-framework-api</artifactId>
-      <version>4.1.4</version>
-    </dependency>
-
-    <!-- AspectJ (in case one is using Plexus aspects) -->
-    <dependency>
-      <groupId>aspectj</groupId>
-      <artifactId>aspectjrt</artifactId>
-      <version>1.0.6</version>
-    </dependency>
-    
     <!-- Plexus -->
     <dependency>
       <groupId>xstream</groupId>
@@ -93,13 +79,6 @@
       <version>0.14-SNAPSHOT</version>
     </dependency>
         
-    <!-- PlexusTestCase -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-    </dependency>
-    
     <!-- Launcher -->
     <dependency>
       <groupId>classworlds</groupId>
