@@ -49,9 +49,9 @@ public class PlexusBuilderTest
 
         builder.setProject( project );
 
-        builder.setMavenRepoLocal( System.getProperty( "user.home" ) + "/maven-repo-local" );
+        //builder.setMavenRepoLocal( System.getProperty( "user.home" ) + "/maven-repo-local" );
 
-        //builder.setMavenRepoLocal( getTestFile( "src/test/repository" ) );
+        builder.setMavenRepoLocal( getTestFile( "src/test/repository" ) );
 
         builder.setPlexusConfiguration( plexusConfiguration );
 
