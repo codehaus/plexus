@@ -22,7 +22,7 @@ public abstract class AbstractMailSender extends AbstractLogEnabled
     // 
     // ----------------------------------------------------------------------
 
-    private final static int DEFAULT_SMTP_PORT = 25;
+    public final static int DEFAULT_SMTP_PORT = 25;
 
     // ----------------------------------------------------------------------
     // 
