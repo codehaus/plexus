@@ -40,11 +40,11 @@ public class PlexusRuntimeConstants
 
     public final static String CORE_DIRECTORY = "core";
 
-    public final static String LOGS_DIRECTORY = "logS";
+    public final static String LOGS_DIRECTORY = "logs";
 
     public final static String LIB_DIRECTORY = "lib";
 
-    public final static String TEMP_DIRECTORY = "TEMP";
+    public final static String TEMP_DIRECTORY = "temp";
 
     public final static String SERVICES_DIRECTORY = "services";
 
