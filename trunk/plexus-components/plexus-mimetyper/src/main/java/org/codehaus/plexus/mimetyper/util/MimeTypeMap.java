@@ -55,8 +55,8 @@ package org.codehaus.plexus.mimetyper.util;
  */
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * This class maintains a set of mappers defining mappings
@@ -76,8 +76,7 @@ public class MimeTypeMap
     /**
      * The default MIME type when nothing else is applicable.
      */
-    public static final MimeType DEFAULT_MIMETYPE =
-        MimeType.APPLICATION_OCTET_STREAM;
+    public static final MimeType DEFAULT_MIMETYPE = MimeType.APPLICATION_OCTET_STREAM;
 
     /**
      * The default MIME type as a string.
