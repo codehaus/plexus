@@ -2,6 +2,7 @@ package org.codehaus.plexus.personality.avalon;
 
 import org.apache.avalon.framework.context.Context;
 import org.apache.avalon.framework.context.ContextException;
+import org.codehaus.plexus.context.DefaultContext;
 
 /**
  * TODO document AvalonContext
@@ -16,6 +17,8 @@ public class AvalonContext implements Context
     public AvalonContext( org.codehaus.plexus.context.Context context )
     {
         this.context = context;
+        
+        ((DefaultContext) context).put( "common.classloader", this.getClass().getClassLoader() );
     }
     
     /**
