@@ -59,7 +59,7 @@ public class Element
     {
         if ( labelKey == null )
             return getId() + ".label";
-        
+
         return labelKey;
     }
 
@@ -72,7 +72,7 @@ public class Element
     {
         if ( messageKey == null )
             return getId() + ".message";
-        
+
         return messageKey;
     }
 
@@ -80,7 +80,7 @@ public class Element
     {
         if ( errorMessageKey == null )
             return getId() + ".error";
-        
+
         return errorMessageKey;
     }
 

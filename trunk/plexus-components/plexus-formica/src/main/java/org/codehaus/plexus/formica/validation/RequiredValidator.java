@@ -34,7 +34,7 @@ public class RequiredValidator
 {
     public boolean validate( String data )
     {
-        if (data == null)
+        if ( data == null )
             return false;
 
         return data.length() > 0;
