@@ -14,7 +14,7 @@ public class CommonsLoggingLoggerManager
 
     public Logger createLogger( String key )
     {
-        Logger logger = new CommonsLoggingLogger( getThreshold(), name );
+        Logger logger = new CommonsLoggingLogger( getThreshold(), key );
 
         return logger;
     }
