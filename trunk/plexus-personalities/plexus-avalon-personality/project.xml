@@ -25,8 +25,10 @@
   <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10080</issueTrackingUrl>
 
   <siteAddress>plexus.codehaus.org</siteAddress>
-  <siteDirectory>/www/plexus.codehaus.org</siteDirectory>
-
+  <siteDirectory>/home/projects/plexus/public_html/avalon</siteDirectory>
+  <distributionSite>plexus.codehaus.org</distributionSite>
+  <distributionDirectory>/home/projects/plexus/dist</distributionDirectory>
+  
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:plexus/plexus-personalities/plexus-avalon-personality</connection>
     <url>http://cvs.codehaus.org/viewcvs.cgi/plexus/plexus-container/?root=codehaus</url>
