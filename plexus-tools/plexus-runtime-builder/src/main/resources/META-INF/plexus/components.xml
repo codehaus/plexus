@@ -1,11 +1,14 @@
 <component-set>
   <components>
     <component>
-      <role>org.codehaus.plexus.builder.DefaultPlexusBuilder</role>
+      <role>org.codehaus.plexus.builder.PlexusBuilder</role>
       <implementation>org.codehaus.plexus.builder.DefaultPlexusBuilder</implementation>
       <requirements>
         <requirement>
           <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.collector.ArtifactCollector</role>
         </requirement>
         <requirement>
           <role>org.apache.maven.project.MavenProjectBuilder</role>
