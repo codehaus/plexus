@@ -11,12 +11,6 @@
     <component>
       <role>org.codehaus.plexus.action.ActionManager</role>
       <implementation>org.codehaus.plexus.werkflow.WerkflowActionManager</implementation>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.action.Action</role>
-          <field-name>actions</field-name>
-        </requirement>
-      </requirements>
     </component>
   </components>
   
