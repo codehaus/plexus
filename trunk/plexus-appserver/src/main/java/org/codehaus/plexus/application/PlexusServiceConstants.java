@@ -59,4 +59,6 @@ public class PlexusServiceConstants
     public static final String CONFIGURATION_FILE = "service.xml";
 
     public static final String LIB_DIRECTORY = "lib";
+
+    public static final String CLASSES_DIRECTORY = "classes";
 }
