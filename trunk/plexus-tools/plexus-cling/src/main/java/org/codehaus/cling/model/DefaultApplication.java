@@ -8,13 +8,15 @@ import java.util.Properties;
  * @author jdcasey
  */
 public class DefaultApplication
-    implements Application
+    implements AppModel
 {
 
     private Main main;
     private Properties environment;
     private Classpath classpath;
     private LegalUsage legalUsage;
+    private String argDescription;
+    private String appDescription;
 
     public DefaultApplication()
     {
@@ -58,6 +60,26 @@ public class DefaultApplication
     public void setLegalUsage( LegalUsage legalUsage )
     {
         this.legalUsage = legalUsage;
+    }
+
+    public void setApplicationDescription( String appDescription )
+    {
+        this.appDescription = appDescription;
+    }
+
+    public String getApplicationDescription()
+    {
+        return appDescription;
+    }
+
+    public void setArgumentDescription( String argDescription )
+    {
+        this.argDescription = argDescription;
+    }
+
+    public String getArgumentDescription()
+    {
+        return argDescription;
     }
 
 }
