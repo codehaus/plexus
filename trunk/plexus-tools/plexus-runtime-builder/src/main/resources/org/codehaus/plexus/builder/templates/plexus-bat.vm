@@ -16,35 +16,19 @@
 @REM Windows' find.exe
 @REM Windows' cmd.exe (NT) OR command.com ( 98 or ME )
 @REM ----------------------------------------------------------------------------
-set PLEXUS_HOME=
-set CLASSWORLDS_VERSION=1.1-SNAPSHOT
-set MAIN_CLASS=org.codehaus.classworlds.Launcher
-set PLEXUS_OPTS="-Xmx128m"
 
+@echo off
 @REM Begin all REM lines with '@' in case PLEXUS_BATCH_ECHO is 'on'
-@REM echo on
 @REM enable echoing my setting PLEXUS_BATCH_ECHO to 'on'
-if "%PLEXUS_BATCH_ECHO%" == "on"  echo %PLEXUS_BATCH_ECHO%
+@if "%PLEXUS_BATCH_ECHO%" == "on"  echo %PLEXUS_BATCH_ECHO%
+
+set CLASSWORLDS_VERSION=1.1-SNAPSHOT
 
 @REM Execute a user defined script before this one
 if exist "%HOME%\plexusrc_pre.bat" call "%HOME%\plexusrc_pre.bat"
 
 @REM set local scope for the variables with windows NT shell
 if "%OS%"=="Windows_NT" @setlocal
-
-@REM For Windows NT, use cmd.exe to execute the "CD" later
-@REM For Win 98ME, use comand.com - if neither is found , default to use
-@REM cmd.exe in the path and hope we'll hit a Win version of it
-@REM FYI: Using command.com on Win NT causes "Parameter format not correct" error
-set PLEXUS_COMMAND_COM="cmd.exe"
-if exist "%SystemRoot%\system32\cmd.exe" set PLEXUS_COMMAND_COM="%SystemRoot%\system32\cmd.exe"
-if exist "%SystemRoot%\command.com" set PLEXUS_COMMAND_COM="%SystemRoot%\command.com"
-
-@REM Use explicit find.exe to prevent cygwin and others find.exe from being
-@REM used instead - we use this to test dir existance in a cross-win-platform way
-set PLEXUS_FIND_EXE="find.exe"
-if exist "%SystemRoot%\system32\find.exe" set PLEXUS_FIND_EXE="%SystemRoot%\system32\find.exe"
-if exist "%SystemRoot%\command\find.exe" set PLEXUS_FIND_EXE="%SystemRoot%\command\find.exe"
 
 @REM ==== START VALIDATION ====
 if not "%JAVA_HOME%" == "" goto OkJHome
@@ -57,8 +41,7 @@ echo.
 goto end
 
 :OkJHome
-%PLEXUS_COMMAND_COM% /C DIR "%JAVA_HOME%" 2>&1 | %PLEXUS_FIND_EXE% /I /C "%JAVA_HOME%" >nul
-if not errorlevel 1 goto chkMHome
+if exist "%JAVA_HOME%\bin\java.exe" goto chkMHome
 
 echo.
 echo ERROR: JAVA_HOME is set to an invalid directory.
@@ -71,22 +54,24 @@ goto end
 :chkMHome
 if not "%PLEXUS_HOME%"=="" goto valMHome
 
+if "%OS%"=="Windows_NT" SET PLEXUS_HOME=%~dp0..
+if not "%PLEXUS_HOME%"=="" goto valMHome
+
 echo.
 echo ERROR: PLEXUS_HOME not found in your environment.
 echo Please set the PLEXUS_HOME variable in your environment to match the
-echo location of the Plexus installation
+echo location of the PLEXUS installation
 echo.
 goto end
 
 :valMHome
-%PLEXUS_COMMAND_COM% /C DIR "%PLEXUS_HOME%" 2>&1 | %PLEXUS_FIND_EXE% /I /C "%PLEXUS_HOME%" >nul
-if not errorlevel 1 goto init
+if exist "%PLEXUS_HOME%\bin\plexus.bat" goto init
 
 echo.
 echo ERROR: PLEXUS_HOME is set to an invalid directory.
 echo PLEXUS_HOME = %PLEXUS_HOME%
 echo Please set the PLEXUS_HOME variable in your environment to match the
-echo location of the Plexus installation
+echo location of the PLEXUS installation
 echo.
 goto end
 @REM ==== END VALIDATION ====
@@ -121,13 +106,20 @@ goto Win9xApp
 
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
-SET PLEXUS_DEFAULT_OPTS="-Xmx160m"
+if "%PLEXUS_OPTS%"=="" SET PLEXUS_OPTS="-Xmx128m"
 SET PLEXUS_JAVA_EXE="%JAVA_HOME%\bin\java.exe"
-SET PLEXUS_ENDORSED="-Djava.endorsed.dirs=%JAVA_HOME%\lib\endorsed;%PLEXUS_HOME%\lib\endorsed"
+SET PLEXUS_CLASSPATH="%PLEXUS_HOME%\core\boot\classworlds-%CLASSWORLDS_VERSION%.jar"
+SET PLEXUS_CORE="%PLEXUS_HOME%\core"
+SET PLEXUS_MAIN_CLASS=org.codehaus.classworlds.Launcher
+SET CLASSWORLDS_CONF="%PLEXUS_HOME%\conf\classworlds.conf"
+SET PLEXUS_TMPDIR="%PLEXUS_HOME%\temp"
+if exist %PLEXUS_TMPDIR% goto run
+mkdir "%PLEXUS_TMPDIR%"
 
-@REM Start PLEXUS
-%PLEXUS_JAVA_EXE% "-Dplexus.home=%PLEXUS_HOME%" "-Dtools.jar=%JAVA_HOME%\lib\tools.jar" %PLEXUS_DEFAULT_OPTS% %PLEXUS_OPTS% -classpath %PLEXUS_CLASSPATH% %PLEXUS_MAIN_CLASS% %PLEXUS_CMD_LINE_ARGS% $PLEXUS_OPTS -classpath %PLEXUS_HOME%\lib\classworlds-%CLASSWORLDS_VERSION%.jar -Dclassworlds.conf=%PLEXUS_HOME%\conf\classworlds.conf  -Dplexus.core=%PLEXUS_HOME%\core -Dtools.jar=$TOOLS_JAR -Dplexus.home=%PLEXUS_HOME% org.codehaus.classworlds.Launcher %PLEXUS_HOME%\conf\plexus.conf
-  
+:run
+@REM Start Plexus
+%PLEXUS_JAVA_EXE% %PLEXUS_OPTS% -classpath %PLEXUS_CLASSPATH% -Dclassworlds.conf=%CLASSWORLDS_CONF% -Dplexus.core=%PLEXUS_CORE% -Djava.io.tmpdir=%PLEXUS_TMPDIR% -Dplexus.home=%PLEXUS_HOME% %PLEXUS_MAIN_CLASS% %PLEXUS_CMD_LINE_ARGS%
+goto end
 
 :end
 @REM set local scope for the variables with windows NT shell
@@ -135,20 +127,19 @@ if "%OS%"=="Windows_NT" goto endNT
 
 @REM For old DOS remove the set variables from ENV - we assume they were not set
 @REM before we started - at least we don't leave any baggage around
-set PLEXUS_COMMAND_COM=
-set PLEXUS_FIND_EXE=
-set PLEXUS_DEFAULT_OPTS=
 set PLEXUS_JAVA_EXE=
 set PLEXUS_CLASSPATH=
+SET PLEXUS_CORE=
 set PLEXUS_MAIN_CLASS=
 set PLEXUS_CMD_LINE_ARGS=
-SET PLEXUS_ENDORSED=
+SET PLEXUS_TMPDIR=
+set CLASSWORLDS_VERSION=
 goto postExec
 
 :endNT
 @endlocal
 
 :postExec
-@REM if exist "%HOME%\plexusrc_post.bat" call "%HOME%\plexusrc_post.bat"
+if exist "%HOME%\plexusrc_post.bat" call "%HOME%\plexusrc_post.bat"
 @REM pause the batch file if PLEXUS_BATCH_PAUSE is set to 'on'
-@REM if "%PLEXUS_BATCH_PAUSE%" == "on" pause
+if "%PLEXUS_BATCH_PAUSE%" == "on" pause
