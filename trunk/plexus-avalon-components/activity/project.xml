@@ -60,31 +60,11 @@
     </dependency>
     
     <dependency>
-      <id>servletapi</id>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
       <version>2.3</version>
     </dependency>
     
   </dependencies>
 
-  <properties>
-    <implementation>org.codehaus.plexus.summit.activity.DefaultActionEventService</implementation>
-  </properties>
-  
-  <build>
-    <sourceDirectory>${basedir}/src/main</sourceDirectory>
-    <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
-    
-    <unitTest>
-      <includes>
-        <include>**/*Test.java</include>
-        <include>**/*TestCase.java</include>
-      </includes>
-      <excludes>
-        <exclude>**/*Abstract*.java</exclude>
-      </excludes>
-    </unitTest>
-  
-    <resources/>
-  </build>
-  
 </project>
