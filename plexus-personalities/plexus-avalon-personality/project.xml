@@ -90,25 +90,19 @@
   <build>
 
     <nagEmailAddress>plexus-dev@lists.codehaus.org</nagEmailAddress>
-    <sourceDirectory>${basedir}/src/java</sourceDirectory>
-    <aspectSourceDirectory>${basedir}/src/aspect</aspectSourceDirectory>
-    <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
 
     <unitTest>
       <includes>
         <include>**/*Test.java</include>
       </includes>
-      <excludes>
-        <exclude>org/codehaus/plexus/logging/AbstractLoggerManagerTest.java</exclude>
-      </excludes>
 
       <resources>
         <resource>
           <directory>${basedir}/src/test</directory>
           <includes>
             <include>**/*.xml</include>
-            <include>**/*.properties</include>
-            <include>**/*.conf</include>
           </includes>
         </resource>
       </resources>
@@ -116,10 +110,10 @@
 
     <resources>
       <resource>
-        <directory>${basedir}/src/conf</directory>
-        <targetPath>org/codehaus/plexus</targetPath>
+        <directory>src/conf</directory>
+        <targetPath>META-INF/plexus</targetPath>
         <includes>
-          <include>**/*.conf</include>
+          <include>components.xml</include>
         </includes>
       </resource>
     </resources>
@@ -141,4 +135,3 @@
   </reports>
 
 </project>
-
