@@ -1,4 +1,4 @@
-<model>
+<project>
   <parent>
     <artifactId>plexus-root</artifactId>
     <groupId>plexus</groupId>
@@ -10,4 +10,11 @@
   <packaging>pom</packaging>
   <name>Plexus Logging Parent</name>
   <version>1.0</version>
-</model>
+  <dependencies>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-2-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>

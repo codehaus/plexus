@@ -8,7 +8,7 @@ import org.codehaus.plexus.logging.Logger;
  * @version $Id$
  */
 public abstract class AbstractJdkLoggerManager
-        extends BaseLoggerManager
+    extends BaseLoggerManager
 {
     public Logger createLogger( String key )
     {

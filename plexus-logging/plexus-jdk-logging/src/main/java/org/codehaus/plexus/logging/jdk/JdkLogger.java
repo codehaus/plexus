@@ -36,7 +36,7 @@ import org.codehaus.plexus.logging.Logger;
  * @version $Revision$ $Date$
  */
 public class JdkLogger
-        extends AbstractLogger
+    extends AbstractLogger
 {
     private java.util.logging.Logger logger;
 
@@ -123,5 +123,4 @@ public class JdkLogger
 
         return new JdkLogger( getThreshold(),  java.util.logging.Logger.getLogger( childName ) );
     }
-    
 }

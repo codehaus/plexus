@@ -1,4 +1,4 @@
-<model>
+<project>
   <parent>
     <artifactId>plexus-logging</artifactId>
     <groupId>plexus</groupId>
@@ -15,15 +15,13 @@
       <groupId>plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>1.0-alpha-1-SNAPSHOT</version>
-      <type>jar</type>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
       <version>1.0-alpha-2-SNAPSHOT</version>
-      <type>jar</type>
       <scope>compile</scope>
     </dependency>
   </dependencies>
-</model>
+</project>
