@@ -97,9 +97,4 @@ public class DefaultHibernateService
         getLogger().info( "Initializing Hibernate." );
         sessionFactory = hibConfig.buildSessionFactory();
     }
-
-    public net.sf.hibernate.cfg.Configuration getConfiguration()
-    {
-        return hibConfig;
-    }
 }

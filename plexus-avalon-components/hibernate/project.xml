@@ -27,6 +27,11 @@
       <id>hibernate</id>
       <version>2.0-beta-6</version>
     </dependency>
+    
+    <dependency>
+      <id>servletapi</id>
+      <version>2.3</version>
+    </dependency>
 
   </dependencies>
 
