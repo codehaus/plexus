@@ -27,19 +27,23 @@ import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DefaultArtifact;
 
-import java.lang.reflect.Method;
 import java.io.File;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
+
+import org.codehaus.plexus.builder.service.ServiceBuilder;
 
 /**
- * @goal runtime
+ * @goal service
  *
  * @requiresDependencyResolution
  *
  * @description Builds plexus containers.
+ *
+ * @prereq jar:install
  *
  * @parameter name="basedir"
  * type="String"
@@ -62,11 +66,11 @@ import java.util.HashSet;
  * expression="#maven.final.name"
  * description=""
  *
- * @parameter name="runtimeBuilder"
- * type="org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
+ * @parameter name="serviceBuilder"
+ * type="org.codehaus.plexus.builder.runtime.DefaultApplicationBuilder"
  * required="true"
  * validator=""
- * expression="#component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
+ * expression="#component.org.codehaus.plexus.builder.service.ServiceBuilder"
  * description=""
  *
  * @parameter name="plexusConfiguration"
@@ -83,11 +87,25 @@ import java.util.HashSet;
  * expression="#plexus.runtime.configurations.directory"
  * description=""
  *
- * @parameter name="plexusConfigurationProperties"
+ * @parameter name="plexusConfigurationPropertiesFile"
  * type="java.lang.String"
  * required="true"
  * validator=""
  * expression="#plexus.runtime.configuration.propertiesfile"
+ * description=""
+ *
+ * @parameter name="serviceName"
+ * type="java.lang.String"
+ * required="true"
+ * validator=""
+ * expression="#serviceName"
+ * description=""
+ *
+ * @-parameter name="configurationDirectory"
+ * type="java.lang.String"
+ * required="true"
+ * validator=""
+ * expression="#configurationDirectory"
  * description=""
  *
  * @parameter name="localRepository"
@@ -98,7 +116,7 @@ import java.util.HashSet;
  * description=""
  *
  */
-public class PlexusContainerGenerator
+public class PlexusServiceGenerator
     extends AbstractPlugin
 {
     public void execute( PluginExecutionRequest request, PluginExecutionResponse response )
@@ -116,11 +134,13 @@ public class PlexusContainerGenerator
 
         String plexusConfiguration = (String) request.getParameter( "plexusConfiguration" );
 
-        String configurationProperties = (String) request.getParameter( "plexusConfigurationProperties" );
+        String configurationPropertiesFile = (String) request.getParameter( "plexusConfigurationPropertiesFile" );
 
-        displayClassLoader( request.getParameter( "runtimeBuilder" ) );
+//        String configurationDirectory = (String) request.getParameter( "configurationDirectory" );
 
-        PlexusRuntimeBuilder builder = (PlexusRuntimeBuilder) request.getParameter( "runtimeBuilder" );
+        ServiceBuilder builder = (ServiceBuilder) request.getParameter( "serviceBuilder" );
+
+        String serviceName = (String) request.getParameter( "serviceName" );
 
         ArtifactRepository localRepository = (ArtifactRepository) request.getParameter( "localRepository" );
 
@@ -128,41 +148,31 @@ public class PlexusContainerGenerator
         //
         // ----------------------------------------------------------------------
 
-        File outputFile = new File( basedir, finalName + "-runtime.jar" );
+        File workingDirectory = new File( basedir, "/plexus-service" );
 
-        File outputDirectory = new File( basedir, "plexus-runtime" );
+        File outputFile = new File( basedir, finalName + "-service.jar" );
+
+        File configurationsDir = null;
+
+        // ----------------------------------------------------------------------
+        //
+        // ----------------------------------------------------------------------
 
         Set remoteRepositories = new HashSet();
 
-        Set artifacts = project.getArtifacts();
+        Set projectArtifacts = project.getArtifacts();
 
-        File plexusConfigurationFile = new File( plexusConfiguration );
+        Artifact projectArtifact = new DefaultArtifact( project.getGroupId(), project.getArtifactId(),
+                                                        project.getVersion(), project.getType() );
 
-        File configurationPropertiesFile = null;
+        projectArtifacts.add( projectArtifact );
 
-        if ( configurationProperties != null )
-        {
-            configurationPropertiesFile = new File( configurationProperties );
-        }
+        // ----------------------------------------------------------------------
+        // Build the service
+        // ----------------------------------------------------------------------
 
-        builder.build( outputFile, outputDirectory,
-                       remoteRepositories, localRepository, artifacts,
-                       plexusConfigurationFile, configurationPropertiesFile );
-    }
-
-    private void displayClassLoader( Object o )
-        throws Exception
-    {
-        ClassLoader cl = o.getClass().getClassLoader();
-
-        Method getRealm = cl.getClass().getDeclaredMethod( "getRealm", null );
-
-        getRealm.setAccessible( true );
-
-        Object realm = getRealm.invoke( cl, null );
-
-        Method display = realm.getClass().getMethod( "display", null );
-
-        display.invoke( realm, null );
+        builder.build( serviceName, outputFile, workingDirectory,
+                       remoteRepositories, localRepository, projectArtifacts,
+                       new File( plexusConfiguration ), configurationsDir, new File( configurationPropertiesFile ) );
     }
 }
