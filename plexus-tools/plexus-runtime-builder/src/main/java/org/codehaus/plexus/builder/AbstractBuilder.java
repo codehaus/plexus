@@ -78,13 +78,12 @@ public abstract class AbstractBuilder
         new DefaultArtifact( "plexus", "plexus-container-api", "", "jar" ),
     } ) );
 
-    private ArtifactFilter artifactFilter = new BuilderArtifactFilter();
-
     // ----------------------------------------------------------------------
     // Components
     // ----------------------------------------------------------------------
 
-    protected ArtifactResolver artifactResolver;
+    /** @requirement */
+    private ArtifactResolver artifactResolver;
 
     // ----------------------------------------------------------------------
     // Utility methods
@@ -170,7 +169,8 @@ public abstract class AbstractBuilder
         }
     }
 
-    protected Set findArtifacts( List remoteRepositories, ArtifactRepository localRepository, Set sourceArtifacts, boolean resolveTransitively )
+    protected Set findArtifacts( List remoteRepositories, ArtifactRepository localRepository, Set sourceArtifacts,
+                                 boolean resolveTransitively, ArtifactFilter artifactFilter )
         throws ArtifactResolutionException
     {
         ArtifactResolutionResult result;
@@ -181,7 +181,11 @@ public abstract class AbstractBuilder
 
         if ( resolveTransitively )
         {
-            result = artifactResolver.resolveTransitively( sourceArtifacts, remoteRepositories, localRepository, metadata, artifactFilter );
+            result = artifactResolver.resolveTransitively( sourceArtifacts,
+                                                           remoteRepositories,
+                                                           localRepository,
+                                                           metadata,
+                                                           artifactFilter );
 
             // TODO: Assert that there wasn't any conflicts.
 
@@ -194,7 +198,7 @@ public abstract class AbstractBuilder
 
         return artifacts;
     }
-
+/*
     protected void filterArtifacts( Set candidateArtifacts, Set filteredArtifacts )
     {
         // ----------------------------------------------------------------------
@@ -211,8 +215,8 @@ public abstract class AbstractBuilder
                 Artifact artifact = (Artifact) it2.next();
 
                 if ( candiateArtifact.getGroupId().equals( artifact.getGroupId() ) &&
-                    candiateArtifact.getArtifactId().equals( artifact.getArtifactId() ) &&
-                    candiateArtifact.getType().equals( artifact.getType() ) )
+                     candiateArtifact.getArtifactId().equals( artifact.getArtifactId() ) &&
+                     candiateArtifact.getType().equals( artifact.getType() ) )
                 {
                     it.remove();
 
@@ -221,18 +225,73 @@ public abstract class AbstractBuilder
             }
         }
     }
-
-    class BuilderArtifactFilter
+*/
+    public class ScopeExcludeArtifactFilter
         implements ArtifactFilter
     {
+        private String scope;
+
+        public ScopeExcludeArtifactFilter( String scope )
+        {
+            this.scope = scope;
+        }
+
         public boolean include( Artifact artifact )
         {
-            if ( artifact.getScope().equals(  Artifact.SCOPE_TEST ) )
+            if ( artifact.getScope().equals( scope ) )
             {
                 return false;
             }
 
             return true;
+        }
+    }
+
+    public class GroupArtifactTypeArtifactFilter
+        implements ArtifactFilter
+    {
+        private Set filteredArtifacts;
+
+        public GroupArtifactTypeArtifactFilter( Set filteredArtifacts )
+        {
+            this.filteredArtifacts = filteredArtifacts;
+        }
+
+        public boolean include( Artifact candiateArtifact )
+        {
+            for ( Iterator it = filteredArtifacts.iterator(); it.hasNext(); )
+            {
+                Artifact artifact = (Artifact) it.next();
+
+                if ( candiateArtifact.getGroupId().equals( artifact.getGroupId() ) &&
+                     candiateArtifact.getArtifactId().equals( artifact.getArtifactId() ) &&
+                     candiateArtifact.getType().equals( artifact.getType() ) )
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    public class AndArtifactFilter
+        implements ArtifactFilter
+    {
+        private ArtifactFilter filterA;
+
+        private ArtifactFilter filterB;
+
+        public AndArtifactFilter( ArtifactFilter filterA, ArtifactFilter filterB )
+        {
+            this.filterA = filterA;
+
+            this.filterB = filterB;
+        }
+
+        public boolean include( Artifact artifact )
+        {
+            return filterA.include( artifact ) && filterB.include( artifact );
         }
     }
 }

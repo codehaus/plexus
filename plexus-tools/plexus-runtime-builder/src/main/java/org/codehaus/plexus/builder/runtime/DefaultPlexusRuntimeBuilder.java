@@ -29,26 +29,24 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.List;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
+import org.codehaus.plexus.application.PlexusRuntimeConstants;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
-import org.codehaus.plexus.util.CollectionUtils;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.velocity.VelocityComponent;
-import org.codehaus.plexus.application.PlexusRuntimeConstants;
 
 /**
  * @author <a href="jason@maven.org">Jason van Zyl</a>
@@ -78,10 +76,16 @@ public class DefaultPlexusRuntimeBuilder
     // ----------------------------------------------------------------------
 
     public void build( File workingDirectory,
-                       List remoteRepositories, ArtifactRepository localRepository, Set artifacts,
+                       List remoteRepositories, ArtifactRepository localRepository, Set extraArtifacts,
                        File plexusConfiguration, File configurationPropertiesFile )
         throws PlexusRuntimeBuilderException
     {
+        // TODO: Enable this feature
+        if ( extraArtifacts.size() != 0 )
+        {
+            throw new PlexusRuntimeBuilderException( "The extra artifact set has to be empty." );
+        }
+
         try
         {
             // ----------------------------------------------------------------------
@@ -129,26 +133,22 @@ public class DefaultPlexusRuntimeBuilder
 
             try
             {
-                bootArtifacts = findArtifacts( remoteRepositories, localRepository, BOOT_ARTIFACTS, false );
+                bootArtifacts = findArtifacts( remoteRepositories, localRepository, BOOT_ARTIFACTS, false, null );
 
-                coreArtifacts = findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false );
+                coreArtifacts = findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false, null );
             }
             catch ( ArtifactResolutionException e )
             {
                 throw new PlexusRuntimeBuilderException( "Could not resolve a artifact.", e );
             }
 
-//            getLogger().info( "boot:" + bootArtifacts );
-//            getLogger().info( "core:" + coreArtifacts );
-//            getLogger().info( "artifacts:" + artifacts );
-
             // Remove the classworlds dependency tree from the plexus dependencies.
-            coreArtifacts = new HashSet( CollectionUtils.subtract( coreArtifacts, bootArtifacts ) );
+//            coreArtifacts = new HashSet( CollectionUtils.subtract( coreArtifacts, bootArtifacts ) );
 
             // Remove the classworlds and plexus dependency tree from the artifacts dependencies.
-            artifacts = new HashSet( CollectionUtils.subtract( artifacts, bootArtifacts ) );
+//            extraArtifacts = new HashSet( CollectionUtils.subtract( extraArtifacts, bootArtifacts ) );
 
-            artifacts = new HashSet( CollectionUtils.subtract( artifacts, coreArtifacts ) );
+//            extraArtifacts = new HashSet( CollectionUtils.subtract( extraArtifacts, coreArtifacts ) );
 
 //            getLogger().info( "boot:" + bootArtifacts );
 //            getLogger().info( "core:" + coreArtifacts );
@@ -192,7 +192,7 @@ public class DefaultPlexusRuntimeBuilder
 
             copyArtifacts( workingDirectory, coreDir, coreArtifacts );
 
-            copyArtifacts( workingDirectory, coreDir, artifacts );
+//            copyArtifacts( workingDirectory, coreDir, extraArtifacts );
 
             // ----------------------------------------------------------------------
             // We need to separate between the container configuration that you want
@@ -223,19 +223,6 @@ public class DefaultPlexusRuntimeBuilder
         }
     }
 
-    public void addPlexusApplication( File plexusApplication, File runtimeDirectory )
-        throws PlexusRuntimeBuilderException
-    {
-        try
-        {
-            FileUtils.copyFile( plexusApplication, getAppsDirectory( runtimeDirectory ) );
-        }
-        catch ( IOException e )
-        {
-            throw new PlexusRuntimeBuilderException( "Error while copying the application into the runtime.", e );
-        }
-    }
-
     public void bundle( File outputFile, File workingDirectory )
         throws PlexusRuntimeBuilderException
     {
@@ -255,13 +242,44 @@ public class DefaultPlexusRuntimeBuilder
         }
     }
 
+    public void addPlexusApplication( File plexusApplication, File runtimeDirectory )
+        throws PlexusRuntimeBuilderException
+    {
+        try
+        {
+            FileUtils.copyFileToDirectory( plexusApplication, getAppsDirectory( runtimeDirectory ) );
+        }
+        catch ( IOException e )
+        {
+            throw new PlexusRuntimeBuilderException( "Error while copying the application into the runtime.", e );
+        }
+    }
+
+    public void addPlexusService( File plexusService, File runtimeDirectory )
+        throws PlexusRuntimeBuilderException
+    {
+        try
+        {
+            FileUtils.copyFileToDirectory( plexusService, getServicesDirectory( runtimeDirectory ) );
+        }
+        catch ( IOException e )
+        {
+            throw new PlexusRuntimeBuilderException( "Error while copying the application into the runtime.", e );
+        }
+    }
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
     private File getAppsDirectory( File workingDirectory )
     {
-        return new File( workingDirectory, "apps" );
+        return new File( workingDirectory, PlexusRuntimeConstants.APPLICATIONS_DIRECTORY);
+    }
+
+    private File getServicesDirectory( File workingDirectory )
+    {
+        return new File( workingDirectory, PlexusRuntimeConstants.SERVICES_DIRECTORY );
     }
 
     // ----------------------------------------------------------------------

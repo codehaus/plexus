@@ -65,26 +65,26 @@ public class PlexusRuntimeBuilderTest
 
         ArtifactRepository localRepository = new ArtifactRepository( "local", "file://" + getTestFile( "src/test/repository" ).getAbsolutePath() );
 
-        Set artifacts = new HashSet();
-
+        Set extraArtifacts = new HashSet();
+/*
         Artifact a1 = new DefaultArtifact( "group1", "artifact1", "2.0", "jar" );
 
         a1.setPath( localRepository.getBasedir() + "/group1/jars/artifact1-2.0.jar" );
 
-        artifacts.add( a1 );
+        extraArtifacts.add( a1 );
 
         Artifact a2 = new DefaultArtifact( "group2", "artifact2", "1.0", "jar" );
 
         a2.setPath( localRepository.getBasedir() + "/group2/jars/artifact2-1.0.jar" );
 
-        artifacts.add( a2 );
+        extraArtifacts.add( a2 );
 
         Artifact a3 = new DefaultArtifact( "plexus", "plexus-container-default", "1.0-alpha-2-SNAPSHOT", "jar" );
 
         a3.setPath( localRepository.getBasedir() + "/plexus/jars/plexus-container-default-1.0-alpha-2-SNAPSHOT.jar" );
 
-        artifacts.add( a3 );
-
+        extraArtifacts.add( a3 );
+*/
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
@@ -94,7 +94,7 @@ public class PlexusRuntimeBuilderTest
         File configurationPropertiesFile = getTestFile( "src/test/resources/configuration.properties" );
 
         runtimeBuilder.build( workingDirectory,
-                              remoteRepositories, localRepository, artifacts,
+                              remoteRepositories, localRepository, extraArtifacts,
                               plexusConfiguration, configurationPropertiesFile );
     }
 }

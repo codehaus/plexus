@@ -37,9 +37,15 @@ public interface ApplicationBuilder
 {
     String ROLE = ApplicationBuilder.class.getName();
 
-    void assemble( String applicationName, File workingDirectory,
-                List remoteRepositories, ArtifactRepository localRespository, Set projectArtifacts,
-                File plexusConfiguration, File configurationsDirectory, File configurationPropertiesFile )
+    void assemble( String applicationName, 
+                   File workingDirectory,
+                   List remoteRepositories,
+                   ArtifactRepository localRespository,
+                   Set projectArtifacts,
+                   Set serviceArtifacts,
+                   File plexusConfiguration,
+                   File configurationsDirectory,
+                   File configurationPropertiesFile )
         throws ApplicationBuilderException;
 
     void bundle( File outputFile, File workingDirectory )
