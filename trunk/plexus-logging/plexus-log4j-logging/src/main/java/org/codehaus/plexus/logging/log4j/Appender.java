@@ -7,11 +7,11 @@ package org.codehaus.plexus.logging.log4j;
 import java.util.Properties;
 
 /**
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l </a>
  * @version $Id$
  */
 public class Appender
-{    
+{
     /** */
     private String id;
 
@@ -40,9 +40,10 @@ public class Appender
     }
 
     /**
-     * @param id The id to set.
+     * @param id
+     *            The id to set.
      */
-    public void setId(String id)
+    public void setId( String id )
     {
         this.id = id;
     }
@@ -56,9 +57,10 @@ public class Appender
     }
 
     /**
-     * @param threshold The threshold to set.
+     * @param threshold
+     *            The threshold to set.
      */
-    public void setThreshold(String threshold)
+    public void setThreshold( String threshold )
     {
         this.threshold = threshold;
     }
@@ -72,9 +74,10 @@ public class Appender
     }
 
     /**
-     * @param type The type to set.
+     * @param type
+     *            The type to set.
      */
-    public void setType(String type)
+    public void setType( String type )
     {
         this.type = type;
     }
@@ -88,38 +91,43 @@ public class Appender
     }
 
     /**
-     * @param conversionPattern The conversionPattern to set.
+     * @param conversionPattern
+     *            The conversionPattern to set.
      */
-    public void setConversionPattern(String conversionPattern)
+    public void setConversionPattern( String conversionPattern )
     {
         this.conversionPattern = conversionPattern;
     }
 
-	/**
-	 * @return Returns the properties.
-	 */
-	public Properties getProperties()
-	{
-		if( properties == null )
-			return new Properties();
+    /**
+     * @return Returns the properties.
+     */
+    public Properties getProperties()
+    {
+        if ( properties == null )
+        {
+            return new Properties();
+        }
 
-		return properties;
-	}
+        return properties;
+    }
 
-	/**
-	 * @param key The property key.
-	 * @return The property value.
-	 */
-	public String getProperty( String key )
-	{
-		return properties.getProperty( key );
-	}
+    /**
+     * @param key
+     *            The property key.
+     * @return The property value.
+     */
+    public String getProperty( String key )
+    {
+        return properties.getProperty( key );
+    }
 
-	/**
-	 * @param properties The properties to set.
-	 */
-	public void setProperties(Properties properties)
-	{
-		this.properties = properties;
-	}
+    /**
+     * @param properties
+     *            The properties to set.
+     */
+    public void setProperties( Properties properties )
+    {
+        this.properties = properties;
+    }
 }

@@ -19,11 +19,10 @@ public class Log4JLoggerTest
     public void testLog4JLoggerInvalidLogLevel()
         throws Exception
     {
-        MockAppender target = new MockAppender();
-
         try
         {
             new Log4JLogger( -213123, Logger.getLogger( "test" ) );
+
             fail( "Expected RuntimeException." );
         }
         catch ( RuntimeException ex )
@@ -38,6 +37,7 @@ public class Log4JLoggerTest
         try
         {
             new Log4JLogger( org.codehaus.plexus.logging.Logger.LEVEL_DEBUG, null );
+
             fail( "Expected NullPointerException." );
         }
         catch ( NullPointerException ex )
@@ -50,6 +50,7 @@ public class Log4JLoggerTest
         throws Exception
     {
         MockAppender target = new MockAppender();
+
         Log4JLogger logger = createLogger( target, Level.DEBUG );
 
         assertNotSame( "logger.getChildLogger == logger",
