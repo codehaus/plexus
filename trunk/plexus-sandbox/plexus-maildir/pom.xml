@@ -6,7 +6,7 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-maildir</artifactId>
-  <version>1.0</version>
+  <version>2.0-alpha-2</version>
   <name>Plexus Maildir Component</name>
   <developers>
     <developer>

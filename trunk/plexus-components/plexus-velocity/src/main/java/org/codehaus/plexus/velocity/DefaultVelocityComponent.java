@@ -64,7 +64,7 @@ public class DefaultVelocityComponent
 
             engine.setProperty( key, value );
 
-            getLogger().debug( "Setting property: " + key + " => '" + value + "'." );
+            getLogger().info( "Setting property: " + key + " => '" + value + "'." );
         }
 
         engine.init();
