@@ -4,12 +4,12 @@ import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
+import org.codehaus.plexus.builder.application.ApplicationBuilder;
 
 import java.lang.reflect.Method;
 
 /**
- * @goal runtime
+ * @goalX app
  *
  * @requiresDependencyResolution
  *
@@ -29,11 +29,18 @@ import java.lang.reflect.Method;
  * expression="#project"
  * description=""
  *
- * @parameter name="runtimeBuilder"
- * type="org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
+ * @parameter name="applicationBuilder"
+ * type="org.codehaus.plexus.builder.runtime.DefaultApplicationBuilder"
  * required="true"
  * validator=""
- * expression="#component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
+ * expression="#component.org.codehaus.plexus.builder.application.ApplicationBuilder"
+ * description=""
+ *
+ * @parameter name="plexusConfiguration"
+ * type="java.lang.String"
+ * required="true"
+ * validator=""
+ * expression="#plexus.runtime.configuration"
  * description=""
  *
  * @parameter name="plexusConfiguration"
@@ -55,9 +62,24 @@ import java.lang.reflect.Method;
  * required="true"
  * validator=""
  * expression="#plexus.runtime.configuration.propertiesfile"
+ * description="" *
+ *
+ * @parameter name="applicationName"
+ * type="java.lang.String"
+ * required="true"
+ * validator=""
+ * expression="#applicationName"
  * description=""
+ *
+ * @parameter name="configurationDirectory"
+ * type="java.lang.String"
+ * required="true"
+ * validator=""
+ * expression="#configurationDirectory"
+ * description=""
+ *
  */
-public class PlexusContainerGenerator
+public class PlexusApplicationGenerator
     extends AbstractPlugin
 {
     public void execute( PluginExecutionRequest request, PluginExecutionResponse response )
@@ -75,9 +97,11 @@ public class PlexusContainerGenerator
 
         String configurationPropertiesFile = (String) request.getParameter( "plexusConfigurationPropertiesFile" );
 
-        displayClassLoader( request.getParameter( "runtimeBuilder" ) );
+        String configurationDirectory = (String) request.getParameter( "configurationDirectory" );
 
-        PlexusRuntimeBuilder builder = (PlexusRuntimeBuilder) request.getParameter( "runtimeBuilder" );
+        ApplicationBuilder builder = (ApplicationBuilder) request.getParameter( "applicationBuilder" );
+
+        String applicationName = (String) request.getParameter( "applicationName" );
 
         // ----------------------------------------------------------------------
         //
@@ -91,7 +115,11 @@ public class PlexusContainerGenerator
 
         builder.setPlexusConfiguration( plexusConfiguration );
 
+        builder.setConfigurationDirectory( configurationDirectory );
+
         builder.setConfigurationPropertiesFile( configurationPropertiesFile );
+
+        builder.setApplicationName( applicationName );
 
         builder.build();
     }
