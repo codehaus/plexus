@@ -78,7 +78,7 @@ public class DefaultHibernateSessionService
 
     public void closeSession() throws HibernateException
     {
-        getLogger().info("Closing session for thread.");
+        getLogger().debug("Closing session for thread.");
  
         Session s = (Session) session.get();
         sessions.remove(s);
