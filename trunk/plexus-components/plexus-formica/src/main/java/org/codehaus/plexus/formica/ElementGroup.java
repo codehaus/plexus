@@ -92,7 +92,7 @@ public class ElementGroup
         }
         return retValue;
     }
-    
+
     public void setValidatorObject( GroupValidator validatorObject )
     {
         this.validatorObject = validatorObject;

@@ -93,15 +93,20 @@ public class SummaryFormRenderer
         // show in the summary.
         // ----------------------------------------------------------------------
 
-        Collection collection = (Collection) data;
+        Iterator summaryIterator;
 
-        // We need to know what elements are going to be used for
-        // the summary. How do we define that? Really I need a list
-        // of expressions
+        if ( data instanceof Collection )
+        {
+            summaryIterator = ((Collection)data).iterator();
+        }
+        else
+        {
+            summaryIterator = (Iterator) data;
+        }
 
         String rowClass = "a";
 
-        for ( Iterator i = collection.iterator(); i.hasNext(); )
+        for ( Iterator i = summaryIterator; i.hasNext(); )
         {
             w.startElement( "tr" );
 

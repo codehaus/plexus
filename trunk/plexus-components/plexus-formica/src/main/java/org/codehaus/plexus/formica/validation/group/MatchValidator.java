@@ -54,7 +54,7 @@ public class MatchValidator
             String pattern = (String) formData.get( element.getId() );
             if ( pattern == null )
                 pattern = "";
-            
+
             while ( iterator.hasNext() )
             {
                 element = (Element) iterator.next();
@@ -62,7 +62,7 @@ public class MatchValidator
                 String currentPattern = (String) formData.get( element.getId() );
                 if ( currentPattern == null )
                     currentPattern = "";
-                
+
                 if ( !pattern.equals( currentPattern ) )
                 {
                     elementsMatch = false;

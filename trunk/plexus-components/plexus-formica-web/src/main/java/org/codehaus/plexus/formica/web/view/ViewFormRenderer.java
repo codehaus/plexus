@@ -56,6 +56,10 @@ public class ViewFormRenderer
 
         try
         {
+            //TODO: throw an exception if there is no key expression
+
+            System.out.println( "form.getKeyExpression() = " + form.getKeyExpression() );
+
             id = (String) Ognl.getValue( form.getKeyExpression(), data );
         }
         catch ( OgnlException e )
