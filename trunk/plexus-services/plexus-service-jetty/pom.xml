@@ -55,7 +55,6 @@
         <configuration>
           <serviceName>jetty</serviceName>
           <configurationDirectory>src/conf</configurationDirectory>
-          <plexusConfigurationProperties>src/plexus.properties</plexusConfigurationProperties>
           <plexusConfiguration>src/conf/plexus.xml</plexusConfiguration>
           <basedir>target</basedir>
         </configuration>
