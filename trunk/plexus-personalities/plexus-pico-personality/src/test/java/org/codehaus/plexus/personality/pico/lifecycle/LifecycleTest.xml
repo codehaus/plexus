@@ -1,0 +1,40 @@
+<plexus>
+
+    <components>
+        <component>
+            <role>org.codehaus.plexus.personality.pico.composition.array.Foo</role>
+            <role-hint>role-1</role-hint>
+            <implementation>org.codehaus.plexus.personality.pico.composition.array.FooImpl1</implementation>
+            <component-factory>pico</component-factory>
+            <component-composer>noop</component-composer>
+        </component>
+
+        <component>
+            <role>org.codehaus.plexus.personality.pico.composition.array.Foo</role>
+            <role-hint>role-2</role-hint>
+            <implementation>org.codehaus.plexus.personality.pico.composition.array.FooImpl2</implementation>
+            <component-factory>pico</component-factory>
+            <component-composer>noop</component-composer>
+        </component>
+
+
+        <!-- This seems to be strange but that matches pico 2 min tutorial -->
+        <component>
+            <role>org.codehaus.plexus.personality.pico.lifecycle.PicoComponentWithLifecyle</role>
+            <implementation>org.codehaus.plexus.personality.pico.lifecycle.PicoComponentWithLifecyle</implementation>
+            <component-factory>pico</component-factory>
+            <component-composer>noop</component-composer>
+            <lifecycle-handler>pico</lifecycle-handler>
+        </component>
+
+
+        <component>
+            <role>org.codehaus.plexus.personality.pico.composition.basic.Kisser</role>
+            <implementation>org.codehaus.plexus.personality.pico.composition.basic.Girl</implementation>
+            <component-profile>pico</component-profile>
+
+        </component>
+
+
+    </components>
+</plexus>
