@@ -1,3 +1,5 @@
+package org.codehaus.plexus.builder.application;
+
 /*
  * Copyright (c) 2004, Codehaus.org
  *
@@ -19,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.codehaus.plexus.builder.application;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

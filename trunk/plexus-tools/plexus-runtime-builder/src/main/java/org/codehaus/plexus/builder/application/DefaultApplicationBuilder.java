@@ -1,3 +1,5 @@
+package org.codehaus.plexus.builder.application;
+
 /*
  * Copyright (c) 2004, Codehaus.org
  *
@@ -19,9 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.codehaus.plexus.builder.application;
 
 import org.codehaus.plexus.builder.AbstractBuilder;
+import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DefaultArtifact;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.project.MavenProject;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -30,4 +40,77 @@ import org.codehaus.plexus.builder.AbstractBuilder;
 public class DefaultApplicationBuilder
     extends AbstractBuilder
 {
+    private String applicationName;
+
+    private File appLibDir;
+
+    public void setApplicationName( String applicationName )
+    {
+        this.applicationName = applicationName;
+    }
+
+    private void checkApplicationConfiguration()
+        throws ApplicationBuilderException
+    {
+        if ( applicationName == null || applicationName.trim().length() == 0 )
+        {
+            throw new ApplicationBuilderException( "The application name must be set." );
+        }
+    }
+
+    public void build()
+        throws ApplicationBuilderException
+    {
+        try
+        {
+            checkApplicationConfiguration();
+        }
+        catch ( ApplicationBuilderException e )
+        {
+            throw e;
+        }
+    }
+
+    protected void createDirectoryStructure()
+    {
+        appLibDir = new File( baseDirectory, "lib" );
+
+        mkdir( appLibDir );
+    }
+
+    // use the project to get the deps
+    // put copyArtifact in the abstract class
+
+    /*
+    private void copyApplicationDependencies( MavenProject project )
+        throws PlexusRuntimeBuilderException, IOException
+    {
+        Iterator it = artifacts.iterator();
+
+        Artifact artifact = new DefaultArtifact( project.getGroupId(), project.getArtifactId(), project.getVersion(), project.getType() );
+
+        try
+        {
+            artifact = artifactResolver.resolve( artifact, getRemoteRepositories(), getLocalRepository() );
+        }
+        catch ( ArtifactResolutionException ex )
+        {
+            throw new PlexusRuntimeBuilderException( "Error while resolving the project artifact.", ex );
+        }
+
+        copyArtifact( artifact, appLibDir );
+
+        while ( it.hasNext() )
+        {
+            artifact = (Artifact) it.next();
+
+            if ( isBootArtifact( artifact ) || isPlexusArtifact( artifact ) )
+            {
+                continue;
+            }
+
+            copyArtifact( artifact, appLibDir );
+        }
+    }
+    */
 }

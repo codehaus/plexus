@@ -39,8 +39,6 @@ public interface PlexusRuntimeBuilder
 
     void setLocalRepository( ArtifactRepository localRepository );
 
-    void setApplicationName( String applicationName );
-
     void setPlexusConfiguration( String plexusConfiguration );
 
     void setConfigurationsDirectory( String configurationsDirectory );
