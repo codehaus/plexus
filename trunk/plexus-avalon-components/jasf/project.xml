@@ -1,25 +1,20 @@
 <?xml version="1.0"?>
 <project>
-  <pomVersion>3</pomVersion>
+  <extend>${maven.repo.local}/plexus/poms/plexus-components-avalon-1.0.pom</extend>
+  <id>plexus-jasf</id>
+  <artifactId>plexus-jasf</artifactId>
   <name>Java Application Security Framework</name>
-  <groupId>jasf</groupId>
-  <id>jasf</id>
   <currentVersion>0.4</currentVersion>
+
   <organization>
     <name>Envoi Solutions</name>
     <url>http://envoisolutions.com</url>
     <logo>/images/envoi_small.png</logo>
   </organization>
+
   <inceptionYear>2002</inceptionYear>
   <package>org.codehaus.jasf</package>
  
-  <url>http://dan.envoisolutions.com/jasf/</url>
-  <siteAddress>dan.envoisolutions.com</siteAddress>
-  <siteDirectory>/var/www/dan.envoisolutions.com/jasf/</siteDirectory>
-  <repository>
-    <connection>scm:cvs:pserver:dan@cvs.envoisolutions.com:/usr/local/cvsroot:jasf</connection>
-  </repository>
-   
   <shortDescription>A security framework for applications</shortDescription>
 
   <description>
@@ -28,7 +23,6 @@
     different security frameworks, but the same Components from application
     to application.
   </description>
-
 
   <versions>
     <version>
@@ -51,32 +45,6 @@
 
   <dependencies>  
 
-    <dependency>
-      <id>log4j</id>
-      <version>1.2.6</version>
-    </dependency>   
-
-    <dependency>
-      <id>avalon-framework</id>
-      <version>4.0</version>
-    </dependency>
-    
-    <dependency>
-      <id>xml-apis</id>
-      <version>1.0.b2</version>
-    </dependency>
-
-    <dependency>
-      <id>xerces</id>
-      <version>2.0.2</version>
-    </dependency>
-
-    <dependency>
-      <groupId>classworlds</groupId>
-      <artifactId>classworlds</artifactId>
-      <version>1.1-SNAPSHOT</version>
-    </dependency>
-        
     <dependency>
       <groupId>commons-attributes</groupId>
 	  <artifactId>commons-attributes-api</artifactId>
@@ -106,22 +74,6 @@
     </dependency>
 
     <dependency>
-      <id>junit</id>
-      <version>3.8.1</version>
-    </dependency>
-
-    <dependency>
-      <id>plexus</id>
-      <version>0.14-SNAPSHOT</version>
-    </dependency>               
-        
-    <dependency>
-      <groupId>plexus</groupId>
-      <artifactId>plexus-avalon-personality</artifactId>
-      <version>0.12</version>
-    </dependency>
-        
-    <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-summit</artifactId>
       <version>1.0-beta-2</version>
@@ -134,68 +86,17 @@
     </dependency>
 
     <dependency>
-      <id>qdox</id>
+      <groupId>qdox</groupId>
+      <artifactId>qdox</artifactId>
       <version>1.1</version>
     </dependency>               
 
     <dependency>
-      <id>servletapi</id>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
       <version>2.2</version>
     </dependency>     
-     
-    <dependency>
-      <groupId>xpp3</groupId>
-      <artifactId>xpp3</artifactId>
-      <version>1.1.3.3</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>xstream</groupId>
-      <artifactId>xstream</artifactId>
-      <version>0.4</version>
-    </dependency>
-    
+
   </dependencies>
 
-  <build>
-
-    <nagEmailAddress>
-      dan@envoisolutions.com
-    </nagEmailAddress>
-
-    <sourceDirectory>src/java</sourceDirectory>
-
-    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-    <integrationUnitTestSourceDirectory/>
-
-    <aspectSourceDirectory/>
-
-    <!-- Unit test classes -->
-    <unitTest>
-      <includes>
-        <include>**/*Test.java</include>
-        <include>**/*TestCase.java</include>
-      </includes>
-      
-      <resources>
-        <resource>
-          <directory>${basedir}/src/test</directory>
-          <includes>
-            <include>**/*.xml</include>
-            <include>**/*.properties</include>
-            <include>**/*.conf</include>
-          </includes>
-        </resource>
-      </resources>
-    </unitTest>
-
-    <!-- Integration unit test classes -->
-    <integrationUnitTestPatterns/>
-    
-    <resources/>
-
-    <jars>
-    </jars>
-  </build>
 </project>
-
