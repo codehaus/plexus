@@ -1,7 +1,7 @@
 <plexus>
 
-  <component-repository>
-    <implementation>org.codehaus.plexus.personality.avalon.AvalonComponentRepository</implementation>
+  <component-repository implementation="org.codehaus.plexus.personality.avalon.AvalonComponentRepository">
+    <composition-resolver implementation="org.codehaus.plexus.component.composition.DefaultCompositionResolver"/>
   </component-repository>
 
   <!--
