@@ -24,17 +24,16 @@ package org.codehaus.plexus.taskqueue;
  * SOFTWARE.
  */
 
-import java.util.List;
-
 /**
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public interface TaskViabilityEvaluator
+public class BTaskEntryEvaluator
+    implements TaskEntryEvaluator
 {
-    String ROLE = TaskViabilityEvaluator.class.getName();
-
-    void evaluate( List tasks )
-        throws TaskQueueException;
+    public boolean evaluate( Task task )
+        throws TaskQueueException
+    {
+        return ( (BuildProjectTask) task ).isPassBEntryEvaluator();
+    }
 }

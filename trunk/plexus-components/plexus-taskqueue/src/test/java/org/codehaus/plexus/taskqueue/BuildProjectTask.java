@@ -24,17 +24,64 @@ package org.codehaus.plexus.taskqueue;
  * SOFTWARE.
  */
 
-import java.util.List;
-
 /**
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public interface TaskViabilityEvaluator
+public class BuildProjectTask
+    implements Task
 {
-    String ROLE = TaskViabilityEvaluator.class.getName();
+    private boolean passAEntryEvaluator;
 
-    void evaluate( List tasks )
-        throws TaskQueueException;
+    private boolean passBEntryEvaluator;
+
+    private boolean passAExitEvaluator;
+
+    private boolean passBExitEvaluator;
+
+    private long timestamp;
+
+    public BuildProjectTask( boolean passAEntryEvaluator, boolean passBEntryEvaluator, boolean passAExitEvaluator,
+                     boolean passBExitEvaluator )
+    {
+        this.passAEntryEvaluator = passAEntryEvaluator;
+
+        this.passBEntryEvaluator = passBEntryEvaluator;
+
+        this.passAExitEvaluator = passAExitEvaluator;
+
+        this.passBExitEvaluator = passBExitEvaluator;
+    }
+
+    public BuildProjectTask( long timestamp )
+    {
+        this( true, true, true, true );
+
+        this.timestamp = timestamp;
+    }
+
+    public boolean isPassAEntryEvaluator()
+    {
+        return passAEntryEvaluator;
+    }
+
+    public boolean isPassBEntryEvaluator()
+    {
+        return passBEntryEvaluator;
+    }
+
+    public boolean isPassAExitEvaluator()
+    {
+        return passAExitEvaluator;
+    }
+
+    public boolean isPassBExitEvaluator()
+    {
+        return passBExitEvaluator;
+    }
+
+    public long getTimestamp()
+    {
+        return timestamp;
+    }
 }

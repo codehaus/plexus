@@ -24,17 +24,20 @@ package org.codehaus.plexus.taskqueue;
  * SOFTWARE.
  */
 
-import java.util.List;
-
 /**
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public interface TaskViabilityEvaluator
+public class TaskQueueException
+    extends Exception
 {
-    String ROLE = TaskViabilityEvaluator.class.getName();
+    public TaskQueueException( String message )
+    {
+        super( message );
+    }
 
-    void evaluate( List tasks )
-        throws TaskQueueException;
+    public TaskQueueException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
 }
