@@ -6,13 +6,13 @@
     <version>1.0</version>
   </parent>
   <artifactId>plexus-marmalade-factory</artifactId>
-  <version>1.0-alpha-2-SNAPSHOT</version>
+  <version>1.0-alpha-2</version>
   <name>Plexus Marmalade Factory</name>
   <dependencies>
     <dependency>
       <groupId>marmalade</groupId>
       <artifactId>marmalade-core</artifactId>
-      <version>1.0-alpha2-SNAPSHOT</version>
+      <version>1.0-alpha2</version>
     </dependency>
   </dependencies>
 </project>
