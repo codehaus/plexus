@@ -3,7 +3,7 @@ package org.codehaus.plexus.security.authentication;
 
 
 /**
-  * Used by the SecurityService to handle multiple tokens.
+  * Used by the SessionManager to handle multiple tokens.
   * 
   * <p>Created on 12/08/2003</p>
   *

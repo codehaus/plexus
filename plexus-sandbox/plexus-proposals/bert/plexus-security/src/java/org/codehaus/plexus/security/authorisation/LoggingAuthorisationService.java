@@ -1,10 +1,6 @@
 package org.codehaus.plexus.security.authorisation;
 
-import java.util.Map;
-
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.security.SecurityService;
-import org.codehaus.plexus.util.ThreadSafeMap;
 
 /**
   * 

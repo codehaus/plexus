@@ -1,5 +1,8 @@
 package org.codehaus.plexus.security.remote;
 
+import java.util.Collection;
+import java.util.Vector;
+
 import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.activity.Initializable;
 import org.apache.avalon.framework.configuration.Configurable;
@@ -8,13 +11,15 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.service.ServiceException;
 import org.apache.avalon.framework.service.ServiceManager;
 import org.apache.avalon.framework.service.Serviceable;
-import org.codehaus.plexus.lifecycle.avalon.RestrictedServiceManagerDelegate;
 import org.codehaus.plexus.security.PlexusSession;
 import org.codehaus.plexus.security.SessionManager;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.request.RequestInterceptor;
 import org.codehaus.plexus.security.request.SecurityRequestInterceptorDelegate;
 import org.codehaus.plexus.security.request.proxy.ProxyServiceManagerDelegate;
+import org.codehaus.plexus.security.simple.Permission;
+import org.codehaus.plexus.security.simple.SimpleAgent;
+import org.codehaus.plexus.util.DebugUtils;
 
 /**
  * <p>Configuration format is as follows:
@@ -25,16 +30,13 @@ import org.codehaus.plexus.security.request.proxy.ProxyServiceManagerDelegate;
  * 	<minorVersion>myAppVersion.minor</minorVersion>
  * 	<build>myAppBuild</build>
  * 	<registeredTo>myAppRegisteredTo</registeredTo>
- *		<allow-components>
- *			<role>myRole</role>
- *			<role>anotherRole</role>
- *  	</allow-components>
  * ]]>
  * </pre>
  * 
  * <p>Requires:
  * <ul>
  * 	<li>SessionManager</li>
+ * 	<li>Agent to be a <code>{@ @link org.codehaus.plexus.security.simple.SimpleAgent}</code></li>
  * </ul>
  * </p>
  * 
@@ -43,7 +45,7 @@ import org.codehaus.plexus.security.request.proxy.ProxyServiceManagerDelegate;
   * @author <a href="mailto:bert@tuaworks.co.nz">Bert van Brakel</a>
   * @revision $Revision$
   */
-public class DefaultApplication
+public class PermissionsAreComponentsApplication
     implements Application, Serviceable, Initializable, Disposable, Configurable
 {
     private String appName;
@@ -82,8 +84,16 @@ public class DefaultApplication
         //to share sessions across devices like PDA's,browsers,WAP phones etc by
         //simply logging in 
         PlexusSession sess = security.authenticate(token);
-        DefaultApplicationSession appSession =
-            new DefaultApplicationSession(sess, proxyServiceManager, requestInterceptor);
+        SimpleAgent agent = (SimpleAgent)sess.getAgent();
+        //accessible components are simply the names of the permissions..
+        Permission[] permissions = agent.getACL().getPermissions();
+        Collection components = new Vector();
+        for (int i = 0; i < permissions.length; i++)
+        {
+            components.add(permissions[i].getName() );
+        }                
+        RestrictedApplicationSession appSession =
+            new RestrictedApplicationSession(sess, proxyServiceManager, requestInterceptor,components);
         return appSession;
     }
 
@@ -141,15 +151,9 @@ public class DefaultApplication
     public void initialize() throws Exception
     {
         security = (SessionManager) service.lookup(SessionManager.ROLE);
-        //configure the service manager which restricts access to only a  specified 
-        //list of components
-        RestrictedServiceManagerDelegate resServiceManager = new RestrictedServiceManagerDelegate();
-        resServiceManager.service(service);
-        resServiceManager.configure(config);
-        //now build a proxy serviceManager which exposes only these restricted 
-        //components
+
         proxyServiceManager = new ProxyServiceManagerDelegate();
-        proxyServiceManager.service(resServiceManager);
+        proxyServiceManager.service(service);
 
         //setup the request interceptor to delegate to the securityService the
         //task of handling request demarcation

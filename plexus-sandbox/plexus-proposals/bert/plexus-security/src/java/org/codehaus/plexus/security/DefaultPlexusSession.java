@@ -5,8 +5,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import org.codehaus.plexus.security.session.InvalidSessionException;
-import org.codehaus.plexus.security.session.SessionLifecycleEvent;
 import org.codehaus.plexus.security.session.SessionLifecycleListener;
 import org.codehaus.plexus.util.ThreadSafeMap;
 
@@ -27,14 +25,14 @@ public class DefaultPlexusSession implements PlexusSession
     /** The agent who owns this session */
     private Agent agent;
 
-	private List lifecycleListeners = new Vector();
+    private List lifecycleListeners = new Vector();
     /** Holds the session based components by role */
     //private Map sessionComponents = new ThreadSafeMap();
 
     /** The unique session id */
     private String id;
-    /** Delegate session. Wraps this session to only expose those defined in the ApplicationSession
-     * interface */
+    /** Delegate session. Wraps this session to only expose only those 
+     * methods defined in the PlexuSession interface */
     private PlexusSession delegate;
 
     /** Last time this session was acessed */
@@ -43,25 +41,22 @@ public class DefaultPlexusSession implements PlexusSession
     /** Holds user defined variables */
     private Map values = new ThreadSafeMap();
 
-    /** The current threads being serviced under this session . Each thread is a unique request */
-    private List currentRequests = new Vector();
+    /** Length of time between requests before a session is automatically invalidated due 
+     * to timeout. Negative values indicate no timeout*/
+    private int timeout;
 
-	/** Length of time between requests before a session is automatically invalidated due 
-	 * to timeout. Negative values indicate no timeout*/
-	private int timeout;
-	
-	/** Default session timeout */
-	public static final int DEFAULT_TIMEOUT = 30*60;
-	
-	private long created = System.currentTimeMillis();
-	
-	private boolean isValid = true;
-	
-	private SecurityService securityService;
+    /** Default session timeout */
+    public static final int DEFAULT_TIMEOUT = 30 * 60;
+
+    private long created = System.currentTimeMillis();
+
+    private boolean isValid = true;
+
+    private SessionManager sessionManager;
     /**
     	* 
     	*/
-    public DefaultPlexusSession(String id, Agent agent, int timeout)
+    public DefaultPlexusSession(String id, Agent agent, int timeout,SessionManager sessionManager)
     {
         super();
         if (id == null)
@@ -73,80 +68,79 @@ public class DefaultPlexusSession implements PlexusSession
         {
             throw new IllegalArgumentException("The agent cannot be null");
         }
+		if (sessionManager == null)
+		{
+			throw new IllegalArgumentException("The aSessionManager cannot be null");
+		}
+		this.sessionManager = sessionManager;		
         this.timeout = timeout;
-        this.agent = agent;
-    }
-    
-    public long getCreationTime()
-    {
-    	return created;
-    }
-    
-    public long getTimeout()
-    {
-    	return timeout;
-    }
-    
-    public void registerLifecycleListener(SessionLifecycleListener listener)
-    {
-		checkValidSession();
-    	if( lifecycleListeners.contains(listener) == false )    	
-    	{
-    		lifecycleListeners.add( listener );
-    	} 
-    }
-    
-    public void deregisterLifecycleListener(SessionLifecycleListener listener)
-    {
-		checkValidSession();
-    	lifecycleListeners.remove(listener);
-    }
-    
-    public PlexusSession getDelegate()
-    {
-		checkValidSession();
-    	if( delegate == null )
-    	{
-    		delegate = new PlexusSessionDelegate( this ); 
-    	}
-    	return delegate;
-    }
-    
-    public synchronized void inValidate()
-    {
-    	if( isValid )
-    	{
-    		isValid = false;
-    		//notify listeners..
-    		SessionLifecycleEvent event = new SessionLifecycleEvent( this.getDelegate() );
-    		Object[] listeners = lifecycleListeners.toArray();    		
-    		for (int i = 0; i < listeners.length; i++)
-            {
-                ((SessionLifecycleListener)listeners[ i ]).sessionDestroyed(event);
-            }    		
-    	}    	    	
-    }
-    
-    public String getId()
-    {
-    	return id;
-    }
-    
-    private void checkValidSession() throws InvalidSessionException
-    {
-    	if( isValid == false )
-    	{
-    		throw new InvalidSessionException("the session '" + getId() + "' is invalid'");
-    	}
+        this.agent = agent;        
     }
 
-	public Agent getAgent()
-	{
-		return agent;		
-	}
+    public long getCreationTime()
+    {
+        return created;
+    }
+
+    public long getTimeout()
+    {
+        return timeout;
+    }
+
+    public void registerLifecycleListener(SessionLifecycleListener listener)
+    {
+        checkValidSession();
+        if (lifecycleListeners.contains(listener) == false)
+        {
+            lifecycleListeners.add(listener);
+        }
+    }
+
+    public void deregisterLifecycleListener(SessionLifecycleListener listener)
+    {
+        checkValidSession();
+        lifecycleListeners.remove(listener);
+    }
+
+    public PlexusSession getDelegate()
+    {
+        checkValidSession();
+        if (delegate == null)
+        {
+            delegate = new PlexusSessionDelegate(this);
+        }
+        return delegate;
+    }
+
+    public synchronized void invalidate()
+    {
+        checkValidSession();
+        
+        sessionManager.inValidateSession(id);
+        isValid = false;
+        values.clear();
+    }
+
+    public String getId()
+    {
+        return id;
+    }
+
+    private void checkValidSession() throws IllegalStateException
+    {
+        if (isValid == false)
+        {
+            throw new IllegalStateException("the session '" + getId() + "' is invalid'");
+        }
+    }
+
+    public Agent getAgent()
+    {
+        return agent;
+    }
     public void setLastAccessTimeNow()
     {
-		checkValidSession();
+        checkValidSession();
         lastAccessTime = System.currentTimeMillis();
     }
 
@@ -157,13 +151,13 @@ public class DefaultPlexusSession implements PlexusSession
 
     public void put(String key, Object value)
     {
-		checkValidSession();
+        checkValidSession();
         values.put(key, value);
     }
 
     public Object get(String key)
     {
-		checkValidSession();
+        checkValidSession();
         return values.get(key);
     }
 
@@ -179,45 +173,13 @@ public class DefaultPlexusSession implements PlexusSession
 
     public Set keys()
     {
-		checkValidSession();
+        checkValidSession();
         return values.keySet();
     }
 
-    public boolean isServicingRequests()
-    {
-        return !currentRequests.isEmpty();
-    }
-
-    public void beginRequest()
-    {
-		checkValidSession();
-        setLastAccessTimeNow();
-        currentRequests.add(Thread.currentThread());
-        //bind this sess to the current thread.
-    }
-
-    public void endRequest()
-    {
-        currentRequests.remove(Thread.currentThread());
-        //unbind this sess from the current thread
-    }
-
-    /**
-     * @see org.codehaus.plexus.security.ApplicationSession#invalidate()
-     */
-    public void invalidate()
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    /**
-     * @see org.codehaus.plexus.security.ApplicationSession#isValid()
-     */
     public boolean isValid()
     {
-        // TODO Auto-generated method stub
-        return false;
+        return isValid;
     }
 
 }

@@ -44,8 +44,8 @@
 		</component>
 
 		<component>
-			<role>org.codehaus.plexus.security.SecurityService</role>
-			<implementation>org.codehaus.plexus.security.simple.SimpleSecurityService</implementation>
+			<role>org.codehaus.plexus.security.SessionManager</role>
+			<implementation>org.codehaus.plexus.security.simple.SimpleSessionManager</implementation>
 			<configuration></configuration>
 		</component>
 		

@@ -8,12 +8,12 @@ package org.codehaus.plexus.security;
   * @author <a href="mailto:bert@tuaworks.co.nz">Bert van Brakel</a>
   * @revision $Revision$
   */
-public class DefaultSecurityService extends AbstractSecurityService
+public class DefaultSessionManager extends AbstractSessionManager
 {
 
 	
     /**
-     * @see org.codehaus.plexus.security.AbstractSecurityService#createAgent(java.lang.String)
+     * @see org.codehaus.plexus.security.AbstractSessionManager#createAgent(java.lang.String)
      */
     protected Agent createAgent(String id)
     {

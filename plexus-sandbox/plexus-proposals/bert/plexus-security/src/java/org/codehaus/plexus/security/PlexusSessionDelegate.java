@@ -4,6 +4,8 @@ import java.util.Set;
 
 
 /**
+  * Wraps a PlexusSession implementation to only expose those methods defined in 
+  * the PlexusSession interface 
   * 
   * <p>Created on 16/08/2003</p>
   *

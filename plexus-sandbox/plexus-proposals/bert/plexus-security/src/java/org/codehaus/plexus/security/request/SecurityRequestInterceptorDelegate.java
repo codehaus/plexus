@@ -1,6 +1,6 @@
 package org.codehaus.plexus.security.request;
 
-import org.codehaus.plexus.security.SecurityService;
+import org.codehaus.plexus.security.SessionManager;
 import org.codehaus.plexus.security.session.InvalidSessionException;
 
 /**
@@ -13,12 +13,12 @@ import org.codehaus.plexus.security.session.InvalidSessionException;
 public class SecurityRequestInterceptorDelegate implements RequestInterceptor
 {
 	/** The securityService to notify of the begin and end of requests*/
-    private SecurityService security;
+    private SessionManager security;
 
     /**
      * 
      */
-    public SecurityRequestInterceptorDelegate(SecurityService security)
+    public SecurityRequestInterceptorDelegate(SessionManager security)
     {
         super();
         this.security = security;

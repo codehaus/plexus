@@ -1,9 +1,11 @@
 package org.codehaus.plexus.security.simple;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
+
+import org.codehaus.plexus.util.DebugUtils;
 
 /**
   * 
@@ -14,9 +16,14 @@ import java.util.List;
   */
 public class DefaultSimpleACL implements SimpleACL
 {
-    private List permissionList = new ArrayList();
-
-    private List roleList = new ArrayList();
+    private Map permissionList = new HashMap();
+	
+	
+	private Permission[] permissionArray;
+	
+	private Role[] roleArray;
+	
+    private Map roleList = new HashMap();
 
     private SimpleACLService system;
     /**
@@ -35,17 +42,17 @@ public class DefaultSimpleACL implements SimpleACL
         while (iterR.hasNext())
         {
             Role role = (Role) iterR.next();
-            if (roleList.contains(role.getName()) == false)
+            if (roleList.containsKey(role.getName()) == false)
             {
-                roleList.add(role.getName());
+                roleList.put( role.getName(), role );
             }
             Iterator iterP = role.getPermissions().iterator();
             while (iterP.hasNext())
             {
                 Permission perm = (Permission) iterP.next();
-                if (permissionList.contains(perm.getName()) == false)
+                if (permissionList.containsKey(perm.getName()) == false)
                 {
-                    permissionList.add(perm.getName());
+                    permissionList.put(perm.getName(),perm);
                 }
             }
         }
@@ -55,7 +62,7 @@ public class DefaultSimpleACL implements SimpleACL
      */
     public boolean hasPermission(String roleName, String permission)
     {
-        if (roleList.contains(roleName))
+        if (roleList.containsKey(roleName))
         {
             Role role = system.getRole(roleName);
             if (role == null)
@@ -66,7 +73,6 @@ public class DefaultSimpleACL implements SimpleACL
             {
                 return role.hasPermission(permission);
             }
-
         }
         else
             return false;
@@ -77,7 +83,7 @@ public class DefaultSimpleACL implements SimpleACL
      */
     public boolean hasPermission(String name)
     {
-        return permissionList.contains(name) && system.hasPermission(name);
+        return permissionList.containsKey(name) && system.hasPermission(name);
     }
 
     /**
@@ -85,7 +91,31 @@ public class DefaultSimpleACL implements SimpleACL
      */
     public boolean hasRole(String role)
     {
-        return roleList.contains(role) && system.hasRole(role);
+        return roleList.containsKey(role) && system.hasRole(role);
+    }
+
+    /**
+     * @see org.codehaus.plexus.security.simple.SimpleACL#getPermissions()
+     */
+    public Permission[] getPermissions()
+    {
+    	if( permissionArray == null)
+    	{
+    		permissionArray =  (Permission[]) permissionList.values().toArray(new Permission[]{});
+    	}
+        return permissionArray;
+    }
+
+    /**
+     * @see org.codehaus.plexus.security.simple.SimpleACL#getRoles()
+     */
+    public Role[] getRoles()
+    {
+        if( roleArray == null)
+        {
+        	roleArray = (Role[])roleList.values().toArray(new Role[]{});
+        }
+        return roleArray;
     }
 
 }

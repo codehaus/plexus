@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-security-bert</artifactId>
-  <id>plexus</id>
+  <id>plexus-security-bert</id>
   <name>plexus</name>
   <currentVersion>0.1</currentVersion>
   <organization>

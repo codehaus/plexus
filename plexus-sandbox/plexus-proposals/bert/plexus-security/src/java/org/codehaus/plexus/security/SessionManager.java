@@ -1,6 +1,8 @@
 package org.codehaus.plexus.security;
 
 import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.request.RequestListener;
+import org.codehaus.plexus.security.session.SessionLifecycleListener;
 
 
 /**
@@ -10,9 +12,9 @@ import org.codehaus.plexus.security.authentication.AuthenticationException;
   * @author <a href="mailto:bert@tuaworks.co.nz">Bert van Brakel</a>
   * @revision $Revision$
   */
-public interface SecurityService
+public interface SessionManager
 {
-	public static final String ROLE = SecurityService.class.getName();
+	public static final String ROLE = SessionManager.class.getName();
 	
 	/**
 	 * Authenticate and obtain a PlexusSession using the given token.
@@ -56,6 +58,31 @@ public interface SecurityService
 	 */
 	public void endRequest();
 
+	/**
+	 * Components wishing to be notified of request demarcation should 
+	 * register themselves here
+	 * 
+	 * @param listener
+	 */
+	public void registerRequestListener(RequestListener listener);
+
+	/**
+	 * Components wishing to be notified of session lifecycle events should
+	 * register themselves here
+	 * 
+	 * @param listener
+	 */
+	public void registerSessionLifecycleListener(SessionLifecycleListener listener);
 
 
+	public void unRegisterRequestListener(RequestListener listener);
+
+
+	public void unRegisterSessionLifecycleListener(SessionLifecycleListener listener);
+
+
+	public void inValidateSession(String id);
+
+	/** Test if the current thread is part of a request */
+	public boolean isThreadWithinRequestScope();
 }

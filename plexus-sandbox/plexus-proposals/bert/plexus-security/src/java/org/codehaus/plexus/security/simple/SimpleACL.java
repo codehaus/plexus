@@ -15,4 +15,7 @@ public interface SimpleACL
 
     public boolean hasPermission(String role, String permission);
 
+	public Permission[] getPermissions();
+	
+	public Role[] getRoles();
 }
