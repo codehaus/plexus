@@ -81,7 +81,7 @@ final class ServletContextUtils {
             properties = new Properties();
         }
         
-        if ( properties.containsKey( PLEXUS_HOME ) )
+        if ( !properties.containsKey( PLEXUS_HOME ) )
         {
             setPlexusHome( context, properties );
         }
