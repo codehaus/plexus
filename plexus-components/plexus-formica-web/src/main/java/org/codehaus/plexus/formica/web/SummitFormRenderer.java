@@ -64,10 +64,13 @@ public class SummitFormRenderer
         {
             Object o = lookup( form.getSourceRole() );
 
-            formData = Ognl.getValue( "issues", o );
+            formData = Ognl.getValue( form.getSummaryCollectionExpression(), o );
         }
         else if ( mode.equals( "update" ) || mode.equals( "view" ) )
         {
+            //TODO: thrown an exception if there is no source role
+            //TODO: thrown an exception if there is no lookup expression
+
             Object o = lookup( form.getSourceRole() );
 
             String i = data.getParameters().getString( "id" );

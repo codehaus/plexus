@@ -53,16 +53,16 @@ public class OgnlPopulator
         // ----------------------------------------------------------------------
 
         if ( form.getElements() != null )
-            populateElements(data, target, form.getElements());
-        
+            populateElements( data, target, form.getElements() );
+
         if ( form.getElementGroups() != null )
         {
             for ( Iterator itr = form.getElementGroups().iterator(); itr.hasNext(); )
             {
                 ElementGroup group = (ElementGroup) itr.next();
-                
+
                 if ( group.getElements() != null )
-                    populateElements(data, target, group.getElements());
+                    populateElements( data, target, group.getElements() );
             }
         }
     }
@@ -73,7 +73,7 @@ public class OgnlPopulator
      * @param elements
      * @throws TargetPopulationException
      */
-    private void populateElements(Map data, Object target, List elements)
+    private void populateElements( Map data, Object target, List elements )
         throws TargetPopulationException
     {
         for ( Iterator i = elements.iterator(); i.hasNext(); )

@@ -117,11 +117,11 @@ public class DefaultFormManager
     {
         FormValidationResult result = new FormValidationResult();
 
-        if (form.getElements() != null)
-            validateElements(form.getElements(), data, result);
+        if ( form.getElements() != null )
+            validateElements( form.getElements(), data, result );
 
-        if (form.getElementGroups() != null)
-            validateElementGroups(form, data, result);
+        if ( form.getElementGroups() != null )
+            validateElementGroups( form, data, result );
 
         return result;
     }
@@ -131,19 +131,19 @@ public class DefaultFormManager
      * @param data
      * @param result
      * @throws FormicaException
-     * @throws ValidatorNotFoundException 
+     * @throws ValidatorNotFoundException
      */
-    private void validateElementGroups(Form form, Map data, FormValidationResult result)
+    private void validateElementGroups( Form form, Map data, FormValidationResult result )
         throws FormicaException, ValidatorNotFoundException
     {
         for ( Iterator i = form.getElementGroups().iterator(); i.hasNext(); )
         {
             ElementGroup group = (ElementGroup) i.next();
-            
-            GroupValidator validator = getGroupValidator(group.getValidator());
-            
+
+            GroupValidator validator = getGroupValidator( group.getValidator() );
+
             boolean valid = validator.validate( group, data );
-            
+
             String errorMessage = null;
 
             if ( !valid )
@@ -152,8 +152,8 @@ public class DefaultFormManager
             }
 
             result.addElementValidationResult( group.getId(), valid, errorMessage );
-            
-            validateElements(group.getElements(), data, result);
+
+            validateElements( group.getElements(), data, result );
         }
     }
 
@@ -164,7 +164,7 @@ public class DefaultFormManager
      * @throws ValidatorNotFoundException
      * @throws FormicaException
      */
-    private void validateElements(List elements, Map data, FormValidationResult result)
+    private void validateElements( List elements, Map data, FormValidationResult result )
         throws ValidatorNotFoundException, FormicaException
     {
         for ( Iterator i = elements.iterator(); i.hasNext(); )
