@@ -10,6 +10,8 @@ import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
 /**
  * @goal descriptor
  *
+ * @phase process-sources
+ *
  * @description Builds a plexus descriptor.
  *
  * @parameter
