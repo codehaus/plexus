@@ -16,7 +16,7 @@ import org.codehaus.plexus.PlexusTestCase;
 public class DefaultXmlRpcComponentTest
     extends PlexusTestCase
 {
-    public void testBasic()
+    public void testExecution()
         throws Exception
     {
         URL url = new URL( "http://localhost:8080/rpc2" );

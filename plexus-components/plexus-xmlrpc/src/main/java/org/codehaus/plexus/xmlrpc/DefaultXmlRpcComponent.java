@@ -134,20 +134,13 @@ public class DefaultXmlRpcComponent
     /**  The standalone xmlrpc server. */
     private WebServer webserver;
 
-    // ----------------------------------------------------------------------
+    ///////////////////////////////////////////////////////////////////////////
     // Lifecylce
-    // ----------------------------------------------------------------------
 
     public void contextualize( Context context )
         throws ContextException
     {
         container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
-    }
-
-    public void start()
-        throws Exception
-    {
-        webserver.start();
     }
 
     /**
@@ -196,7 +189,7 @@ public class DefaultXmlRpcComponent
 
             for ( int i = 0; i < acceptedClients.size(); i++ )
             {
-                String clientIP = getIp( acceptedClients, i );
+                String clientIP = getClient( acceptedClients, i );
 
                 webserver.acceptClient( clientIP );
 
@@ -208,7 +201,7 @@ public class DefaultXmlRpcComponent
 
             for ( int i = 0; i < deniedClients.size(); i++ )
             {
-                String clientIP = getIp( acceptedClients, i );
+                String clientIP = getClient( acceptedClients, i );
 
                 webserver.denyClient( clientIP );
 
@@ -216,6 +209,34 @@ public class DefaultXmlRpcComponent
             }
         }
     }
+
+    public void start()
+        throws Exception
+    {
+        webserver.start();
+    }
+
+    public void stop()
+        throws Exception
+    {
+        // Stop the XML RPC server.  org.apache.xmlrpc.WebServer blocks in a call to
+        // ServerSocket.accept() until a socket connection is made.
+        webserver.shutdown();
+
+        try
+        {
+            Socket interrupt = new Socket( InetAddress.getLocalHost(), port );
+            interrupt.close();
+        }
+        catch ( Exception ex )
+        {
+            // Remotely possible we're leaving an open listener socket around.
+            getLogger().warn( "It's possible the xmlrpc server was not shutdown: " + ex.getMessage() );
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // XmlRpcComponent Implementation
 
     /**
      * Registers any handlers that were defined as part this component's
@@ -226,6 +247,13 @@ public class DefaultXmlRpcComponent
      */
     private void registerStartupHandlers() throws Exception
     {
+        if ( handlers == null )
+        {
+            getLogger().warn( "No handlers to configure." );
+
+            return;
+        }
+
         getLogger().info( "We have " + handlers.size() + " handlers to configure." );
 
         for ( int i = 0; i < handlers.size(); i++ )
@@ -260,36 +288,6 @@ public class DefaultXmlRpcComponent
             registerComponentHandler( name, role );
         }
     }
-
-    public void stop()
-        throws Exception
-    {
-    }
-
-    /**
-     * Shuts down this service, stopping running threads.
-     */
-    public void dispose()
-    {
-        // Stop the XML RPC server.  org.apache.xmlrpc.WebServer blocks in a call to
-        // ServerSocket.accept() until a socket connection is made.
-        webserver.shutdown();
-
-        try
-        {
-            Socket interrupt = new Socket( InetAddress.getLocalHost(), port );
-            interrupt.close();
-        }
-        catch ( Exception ex )
-        {
-            // Remotely possible we're leaving an open listener socket around.
-            getLogger().warn( "It's possible the xmlrpc server was not shutdown: " + ex.getMessage() );
-        }
-    }
-
-    // ------------------------------------------------------------------------
-    // I M P L E M E N A T I O N
-    // ------------------------------------------------------------------------
 
     /**
      * Register an Object as a default handler for the service.
@@ -463,21 +461,16 @@ public class DefaultXmlRpcComponent
         }
     }
 
-    private String getIp( List list, int index )
+    private String getClient( List list, int index )
         throws PlexusConfigurationException
     {
         Object obj = list.get( index );
 
-        if ( !(obj instanceof String) )
-            throw new PlexusConfigurationException( "The client address element must be a java.lang.String." );
+        if ( !(obj instanceof Client) )
+            throw new PlexusConfigurationException( "The client address element must be a '" + Client.class.getName() + "'." );
 
-        String string = obj.toString().trim();
+        Client client = (Client) obj;
 
-        if ( string.length() == 0 )
-            throw new PlexusConfigurationException( "The client address element can't be empty." );
-
-        // TODO: Add more validation of the IP/hostname itself
-
-        return string;
+        return client.getHostname();
     }
 }
