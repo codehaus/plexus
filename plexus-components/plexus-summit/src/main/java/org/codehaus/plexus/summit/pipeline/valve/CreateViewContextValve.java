@@ -1,12 +1,12 @@
 package org.codehaus.plexus.summit.pipeline.valve;
 
+import java.io.IOException;
+
 import org.codehaus.plexus.summit.SummitConstants;
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.rundata.RunData;
 import org.codehaus.plexus.summit.view.DefaultViewContext;
 import org.codehaus.plexus.summit.view.ViewContext;
-
-import java.io.IOException;
 
 /**
  * @todo Use a Factory to create the particular flavour of the ViewContext
