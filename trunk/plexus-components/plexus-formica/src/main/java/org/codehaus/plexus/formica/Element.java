@@ -57,6 +57,9 @@ public class Element
 
     public String getLabelKey()
     {
+        if ( labelKey == null )
+            return getId() + ".label";
+        
         return labelKey;
     }
 
@@ -67,11 +70,17 @@ public class Element
 
     public String getMessageKey()
     {
+        if ( messageKey == null )
+            return getId() + ".message";
+        
         return messageKey;
     }
 
     public String getErrorMessageKey()
     {
+        if ( errorMessageKey == null )
+            return getId() + ".error";
+        
         return errorMessageKey;
     }
 

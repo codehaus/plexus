@@ -117,7 +117,57 @@ public class DefaultFormManager
     {
         FormValidationResult result = new FormValidationResult();
 
-        for ( Iterator i = form.getElements().iterator(); i.hasNext(); )
+        if (form.getElements() != null)
+            validateElements(form.getElements(), data, result);
+
+        if (form.getElementGroups() != null)
+            validateElementGroups(form, data, result);
+
+        return result;
+    }
+
+    /**
+     * @param form
+     * @param data
+     * @param result
+     * @throws FormicaException
+     * @throws ValidatorNotFoundException 
+     */
+    private void validateElementGroups(Form form, Map data, FormValidationResult result)
+        throws FormicaException, ValidatorNotFoundException
+    {
+        for ( Iterator i = form.getElementGroups().iterator(); i.hasNext(); )
+        {
+            ElementGroup group = (ElementGroup) i.next();
+            
+            GroupValidator validator = getGroupValidator(group.getValidator());
+            
+            boolean valid = validator.validate( group, data );
+            
+            String errorMessage = null;
+
+            if ( !valid )
+            {
+                errorMessage = i18n.getString( group.getErrorMessageKey() );
+            }
+
+            result.addElementValidationResult( group.getId(), valid, errorMessage );
+            
+            validateElements(group.getElements(), data, result);
+        }
+    }
+
+    /**
+     * @param form
+     * @param data
+     * @param result
+     * @throws ValidatorNotFoundException
+     * @throws FormicaException
+     */
+    private void validateElements(List elements, Map data, FormValidationResult result)
+        throws ValidatorNotFoundException, FormicaException
+    {
+        for ( Iterator i = elements.iterator(); i.hasNext(); )
         {
             Element element = (Element) i.next();
 
@@ -136,8 +186,6 @@ public class DefaultFormManager
 
             result.addElementValidationResult( element.getId(), valid, errorMessage );
         }
-
-        return result;
     }
 
     // ----------------------------------------------------------------------
