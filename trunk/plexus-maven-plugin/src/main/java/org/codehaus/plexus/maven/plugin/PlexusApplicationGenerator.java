@@ -22,14 +22,19 @@ package org.apache.maven.plugin.plexus;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DefaultArtifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.codehaus.plexus.builder.application.ApplicationBuilder;
 
-import java.lang.reflect.Method;
+import org.codehaus.plexus.builder.application.ApplicationBuilder;
 
 /**
  * @goal app
@@ -37,6 +42,8 @@ import java.lang.reflect.Method;
  * @requiresDependencyResolution
  *
  * @description Builds plexus containers.
+ *
+ * @prereq jar:install
  *
  * @parameter name="basedir"
  * type="String"
@@ -50,6 +57,13 @@ import java.lang.reflect.Method;
  * required="true"
  * validator=""
  * expression="#project"
+ * description=""
+ *
+ * @parameter name="finalName"
+ * type="java.lang.String"
+ * required="true"
+ * validator=""
+ * expression="#maven.final.name"
  * description=""
  *
  * @parameter name="applicationBuilder"
@@ -116,6 +130,8 @@ public class PlexusApplicationGenerator
 
         MavenProject project = (MavenProject) request.getParameter( "project" );
 
+        String finalName = (String) request.getParameter( "finalName" );
+
         String plexusConfiguration = (String) request.getParameter( "plexusConfiguration" );
 
         String configurationPropertiesFile = (String) request.getParameter( "plexusConfigurationPropertiesFile" );
@@ -132,34 +148,31 @@ public class PlexusApplicationGenerator
         //
         // ----------------------------------------------------------------------
 
-        builder.setBaseDirectory( basedir + "/plexus-application" );
+        File workingDirectory = new File( basedir, "/plexus-application" );
 
-        builder.setProject( project );
+        File outputFile = new File( basedir, finalName + "-application.jar" );
 
-        builder.setLocalRepository( localRepository );
+        File configurationsDir = null;
 
-        builder.setPlexusConfiguration( plexusConfiguration );
+        // ----------------------------------------------------------------------
+        //
+        // ----------------------------------------------------------------------
 
-        builder.setConfigurationPropertiesFile( configurationPropertiesFile );
+        Set remoteRepositories = new HashSet();
 
-        builder.setApplicationName( applicationName );
+        Set projectArtifacts = project.getArtifacts();
 
-        builder.build();
-    }
+        Artifact projectArtifact = new DefaultArtifact( project.getGroupId(), project.getArtifactId(),
+                                                        project.getVersion(), project.getType() );
 
-    private void displayClassLoader( Object o )
-        throws Exception
-    {
-        ClassLoader cl = o.getClass().getClassLoader();
+        projectArtifacts.add( projectArtifact );
 
-        Method getRealm = cl.getClass().getDeclaredMethod( "getRealm", null );
+        // ----------------------------------------------------------------------
+        // Build the application
+        // ----------------------------------------------------------------------
 
-        getRealm.setAccessible( true );
-
-        Object realm = getRealm.invoke( cl, null );
-
-        Method display = realm.getClass().getMethod( "display", null );
-
-        display.invoke( realm, null );
+        builder.build( applicationName, outputFile, workingDirectory,
+                       remoteRepositories, localRepository, projectArtifacts,
+                       new File( plexusConfiguration ), configurationsDir, new File( configurationPropertiesFile ) );
     }
 }
