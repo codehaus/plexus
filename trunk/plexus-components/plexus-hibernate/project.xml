@@ -27,6 +27,12 @@
     </dependency>
     
     <dependency>
+      <artifactId>junit</artifactId>
+      <groupId>junit</groupId>
+      <version>3.8.1</version>
+    </dependency>
+        
+    <dependency>
       <artifactId>servletapi</artifactId>
       <groupId>servletapi</groupId>
       <version>2.3</version>
