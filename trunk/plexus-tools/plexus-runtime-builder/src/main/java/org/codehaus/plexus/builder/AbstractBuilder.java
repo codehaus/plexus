@@ -81,7 +81,7 @@ public abstract class AbstractBuilder
     protected Properties configurationProperties;
 
     protected File confDir;
-    
+
     // ----------------------------------------------------------------------
     // Components
     // ----------------------------------------------------------------------
@@ -303,7 +303,7 @@ public abstract class AbstractBuilder
     {
         try
         {
-            return projectBuilder.build( file );
+            return projectBuilder.build( file, localRepository );
         }
         catch ( ProjectBuildingException ex )
         {
