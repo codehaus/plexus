@@ -9,7 +9,7 @@
   <groupId>plexus</groupId>
   <artifactId>plexus-cdc</artifactId>
   <name>Plexus Component Descriptor Creator</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-alpha-1-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>maven</groupId>
