@@ -28,6 +28,15 @@ public class MarmaladeClasspathComponentFactory
 
         URL scriptLocation = classRealm.getResource( impl );
 
+        if(scriptLocation == null)
+        {
+            System.out.println("Cannot find: " + impl + " in classpath:");
+            for ( int i = 0; i < classRealm.getConstituents().length; i++ )
+            {
+                URL constituent = classRealm.getConstituents()[i];
+                System.out.println("[" + i + "]  " + constituent);
+            }
+        }
         System.out.println( "Script location for implementation [" + impl + "] is: " + scriptLocation );
 
         return scriptLocation;
