@@ -314,6 +314,12 @@ public class ComponentDescriptorCreator
             }
         }
 
+        // ----------------------------------------------------------------------
+        // We back track up the hierarchy until we find an implementation that
+        // matches the naming convention of the class in question. The default
+        // plexus naming conventions are assumed.
+        // ----------------------------------------------------------------------        
+
         // org.codehaus.foo.Sink
         // ^
         // |
@@ -334,7 +340,6 @@ public class ComponentDescriptorCreator
             findRoleHint( cd, jc, startingClassName );
         }
     }
-
 
     private JavaClass getJavaClass( JavaSource javaSource )
     {
