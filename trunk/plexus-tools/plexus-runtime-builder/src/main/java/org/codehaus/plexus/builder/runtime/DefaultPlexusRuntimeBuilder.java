@@ -173,9 +173,11 @@ public class DefaultPlexusRuntimeBuilder
 
             File bootDir = mkdir( new File( workingDirectory, "core/boot" ) );
 
-            mkdir( new File( workingDirectory, "lib" ) );
+//            mkdir( new File( workingDirectory, "lib" ) );
 
             mkdir( new File( workingDirectory, "logs" ) );
+
+            mkdir( new File( workingDirectory, "services" ) );
 
             mkdir( new File( workingDirectory, "temp" ) );
 
