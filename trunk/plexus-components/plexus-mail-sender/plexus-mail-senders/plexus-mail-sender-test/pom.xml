@@ -1,4 +1,4 @@
-<model>
+<project>
   <parent>
     <artifactId>plexus-mail-senders</artifactId>
     <groupId>plexus</groupId>
@@ -15,8 +15,6 @@
       <groupId>dumbster</groupId>
       <artifactId>dumbster</artifactId>
       <version>1.5</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
-</model>
+</project>
