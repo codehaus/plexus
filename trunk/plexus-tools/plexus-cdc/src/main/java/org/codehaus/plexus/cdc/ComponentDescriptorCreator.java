@@ -4,26 +4,20 @@ import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaSource;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import com.thoughtworks.qdox.model.Type;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.project.MavenProject;
-
-import org.codehaus.plexus.cdc.gleaner.ComponentGleaningStrategy;
-import org.codehaus.plexus.cdc.gleaner.DefaultPlexusComponentGleaningStrategy;
-import org.codehaus.plexus.cdc.gleaner.ImplComponentGleaningStrategy;
 import org.codehaus.plexus.component.repository.ComponentDependency;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 import org.codehaus.plexus.configuration.xml.xstream.PlexusXStream;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * So, in this case it is easy enough to determine the role and the implementation.
@@ -36,7 +30,7 @@ import org.codehaus.plexus.configuration.xml.xstream.PlexusXStream;
  * regex as for most cases I think some simple regex could catch most problems. I
  * don't want to have to use MSV or something like that which which triple the size
  * of a deployment.
- *
+ * <p/>
  * This is for a single project with a single POM, multiple components
  * with all deps in the POM.
  */
@@ -113,7 +107,7 @@ public class ComponentDescriptorCreator
         {
             ComponentDescriptor componentDescriptor = gleanComponent( javaSources[i] );
 
-            if ( componentDescriptor.getRole() != null )
+            if ( componentDescriptor != null )
             {
                 componentDescriptors.add( componentDescriptor );
             }
@@ -161,13 +155,6 @@ public class ComponentDescriptorCreator
         writer.close();
     }
 
-    public void registerComponentGleaningStrategy( ComponentGleaningStrategy componentGleaningStrategy )
-    {
-        componentGleaningStrategies.add( componentGleaningStrategy );
-    }
-
-    // Private
-
     private void initialize()
         throws Exception
     {
@@ -180,13 +167,6 @@ public class ComponentDescriptorCreator
         {
             basedir = mavenProject.getBasedir().getAbsolutePath();
         }
-
-        classLoader = new URLClassLoader( new URL[]{new File( basedir, "target/test-classes/" ).toURL(),
-                                                    new File( basedir, "target/classes/" ).toURL()} );
-
-        registerComponentGleaningStrategy( new DefaultPlexusComponentGleaningStrategy( classLoader ) );
-
-        registerComponentGleaningStrategy( new ImplComponentGleaningStrategy() );
     }
 
     private List convertDependencies( List dependencies )
@@ -213,51 +193,76 @@ public class ComponentDescriptorCreator
 
     private ComponentDescriptor gleanComponent( JavaSource javaSource )
     {
-        ComponentDescriptor componentDescriptor = null;
-
         JavaClass javaClass = getJavaClass( javaSource );
 
-        for ( Iterator i = componentGleaningStrategies.iterator(); i.hasNext(); )
+        DocletTag tag = javaClass.getTagByName( "component" );
+
+        if ( tag == null )
         {
-            ComponentGleaningStrategy strategy = (ComponentGleaningStrategy) i.next();
+            return null;
+        }
 
-            componentDescriptor = strategy.gleanComponent( javaClass );
+        String className = javaClass.getFullyQualifiedName();
 
-            if ( componentDescriptor.getRole() != null )
+        boolean isManager = false;
+
+        if ( className.endsWith( "Manager" ) )
+        {
+            isManager = true;
+        }
+
+        boolean isDefault = false;
+
+        if ( className.startsWith( "Default" ) )
+        {
+            isDefault = true;
+        }
+
+        ComponentDescriptor componentDescriptor = new ComponentDescriptor();
+
+        String version = tag.getNamedParameter( "version" );
+
+        if ( version != null )
+        {
+            componentDescriptor.setVersion( version );
+        }
+
+        String role = tag.getNamedParameter( "role" );
+
+        if ( role != null )
+        {
+            componentDescriptor.setRole( role );
+        }
+        else
+        {
+            if ( isManager )
             {
-                break;
+                // org.codehaus.foo.PluginManager
+                // org.codehaus.foo.DefaultPluginManager
+
+                String packageName = javaClass.getPackage();
+
+                componentDescriptor.setRole( packageName + "." + javaClass.getName().substring( 7 ) );
             }
         }
 
-        DocletTag tag;
+        String roleHint = tag.getNamedParameter( "roleHint" );
 
-        if ( componentDescriptor == null )
+        if ( roleHint != null )
         {
-            componentDescriptor = new ComponentDescriptor();
+            componentDescriptor.setRoleHint( roleHint );
+        }
+        else
+        {
+            if ( !isManager && !isDefault )
+            {
+                findRoleHint( componentDescriptor, javaClass, javaClass.getName() );
+            }
         }
 
-        tag = javaClass.getTagByName( "component.version" );
+        componentDescriptor.setImplementation( javaClass.getFullyQualifiedName() );
 
-        if ( tag != null )
-        {
-            componentDescriptor.setVersion( tag.getValue() );
-        }
-
-        tag = javaClass.getTagByName( "component.role" );
-
-        if ( tag != null )
-        {
-            componentDescriptor.setRole( tag.getValue() );
-        }
-
-        tag = javaClass.getTagByName( "component.roleHint" );
-
-        if ( tag != null )
-        {
-            componentDescriptor.setRoleHint( tag.getValue() );
-        }
-
-        DocletTag[] tags = javaClass.getTagsByName( "component.requirement" );
+        DocletTag[] tags = javaClass.getTagsByName( "requirement" );
 
         if ( tag != null )
         {
@@ -265,7 +270,9 @@ public class ComponentDescriptorCreator
             {
                 ComponentRequirement requirement = new ComponentRequirement();
 
-                requirement.setRole( tags[i].getValue() );
+                String requirementRole = tag.getNamedParameter( "role" );
+
+                requirement.setRole( requirementRole );
 
                 componentDescriptor.addRequirement( requirement );
             }
@@ -274,8 +281,81 @@ public class ComponentDescriptorCreator
         return componentDescriptor;
     }
 
+    private void findRoleHint( ComponentDescriptor cd, JavaClass javaClass, String startingClassName )
+    {
+        String roleHint = null;
+
+        String className = startingClassName;
+
+        System.out.println( "className = " + className );
+
+        Type[] types = javaClass.getImplements();
+
+        for ( int i = 0; i < types.length; i++ )
+        {
+            String interfaceName = types[i].getValue();
+
+            String roleName = interfaceName.substring( interfaceName.lastIndexOf( "." ) + 1 );
+
+            System.out.println( "roleName = " + roleName );
+
+            // org.codehaus.foo.Sink
+            // org.codehaus.bar.BigSink
+
+            if ( className.endsWith( roleName ) )
+            {
+                roleHint = className.substring( 0, className.length() - roleName.length() );
+
+                roleHint = addAndDeHump( roleHint );
+
+                cd.setRoleHint( roleHint );
+
+                cd.setRole( interfaceName );
+            }
+        }
+
+        // org.codehaus.foo.Sink
+        // ^
+        // |
+        // org.codehaus.foo.AbstractSink
+        // ^
+        // |
+        // org.codehaus.foo.AbstractXhtmlSink
+        // ^
+        // |
+        // org.codehaus.bar.CodehausXhtmlSink
+
+        JavaClass jc = javaClass.getSuperJavaClass();
+
+        if ( jc != null )
+        {
+            types = javaClass.getImplements();
+
+            findRoleHint( cd, jc, startingClassName );
+        }
+    }
+
+
     private JavaClass getJavaClass( JavaSource javaSource )
     {
         return javaSource.getClasses()[0];
+    }
+
+    private String addAndDeHump( String view )
+    {
+        StringBuffer sb = new StringBuffer();
+
+        for ( int i = 0; i < view.length(); i++ )
+        {
+            if ( i != 0 &&
+                Character.isUpperCase( view.charAt( i ) ) )
+            {
+                sb.append( '-' );
+            }
+
+            sb.append( view.charAt( i ) );
+        }
+
+        return sb.toString().trim().toLowerCase();
     }
 }
