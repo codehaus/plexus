@@ -83,7 +83,7 @@ public class MockMailSender
     * 
     * @return Returns the number of received mails.
     */
-    public int getReceievedEmailSize()
+    public int getReceivedEmailSize()
     {
         return messages.size();
     }

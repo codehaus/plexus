@@ -47,5 +47,5 @@ public interface SmtpServer extends Startable
     * Get the number of messages received.
     * @return size of received email list
     */
-    int getReceievedEmailSize();
+    int getReceivedEmailSize();
 }
