@@ -20,18 +20,9 @@ public class DefaultPersister
     extends AbstractLogEnabled
     implements Persister
 {
-
-    private Class clazz;
-    private HibernateService hib;
+	private HibernateService hib;
     private HibernateSessionService hss;
-    
-    /**
-     * @see com.moveitthere.delivery.service.Persister#setClass(java.lang.Class)
-     */
-    public void setClass(Class clazz)
-    {
-        this.clazz = clazz;
-    }
+
     
     protected Session getSession()
     {
@@ -107,7 +98,7 @@ public class DefaultPersister
     /**
      * @see com.moveitthere.delivery.service.Persister#load(java.lang.Object)
      */
-    public Object load( Serializable id )
+    public Object load( Serializable id, Class clazz )
         throws ObjectNotFoundException
     {
         Session session = getSession();
@@ -141,7 +132,7 @@ public class DefaultPersister
     /**
      * @see com.moveitthere.delivery.service.Persister#selectAll()
      */
-    public List selectAll() 
+    public List selectAll(Class clazz) 
     {
         Session session = getSession();
         try
