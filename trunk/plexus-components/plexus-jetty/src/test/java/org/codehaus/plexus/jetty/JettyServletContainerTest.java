@@ -9,14 +9,9 @@ import org.codehaus.plexus.PlexusTestCase;
 public class JettyServletContainerTest
     extends PlexusTestCase
 {
-    public JettyServletContainerTest( String name )
-    {
-        super( name );
-    }
-
     public void testJettyServletContainerLookup()
         throws Exception
     {
-        lookup( ServletContainer.ROLE );        
+        lookup( ServletContainer.ROLE );
     }
 }
