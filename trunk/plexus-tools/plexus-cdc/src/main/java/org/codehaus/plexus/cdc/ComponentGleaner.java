@@ -18,6 +18,8 @@ import java.util.Map;
  */
 public class ComponentGleaner
 {
+    public static final String PLEXUS_COMPONENT_TAG = "plexus.component";
+
     // Qdox doesn't keep a map of short name to JavaClass
     private Map componentCache;
 
@@ -25,7 +27,7 @@ public class ComponentGleaner
     {
         String packageName = javaClass.getPackage();
 
-        DocletTag tag = javaClass.getTagByName( "component" );
+        DocletTag tag = javaClass.getTagByName( PLEXUS_COMPONENT_TAG );
 
         if ( tag == null )
         {
