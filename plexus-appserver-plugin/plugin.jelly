@@ -1,0 +1,42 @@
+<project                                                                                                                                                                                                                                                                
+  xmlns:j="jelly:core" 
+  xmlns:maven="jelly:maven"
+  xmlns:define="jelly:define"
+  xmlns:plexus="plexus">
+  
+  <define:taglib uri="plexus">
+    
+    <!--
+    @basedir
+    -->
+
+    <define:tag name="create-app">
+      
+ 	  <j:useBean class="org.codehaus.plexus.application.ApplicationBuilder" var="builder"/>
+
+      ${builder.setBaseDirectory(base)}
+      ${builder.setMavenRepoLocal(mavenRepoLocal)}
+      ${builder.setProjectPom(projectPom)}
+      ${builder.setApplication(application)}
+      ${builder.setComponentManifest(componentManifest)}
+      ${builder.setConfigurationsDirectory(configurationsDirectory)}
+      ${builder.setConfigurationPropertiesFile(configurationPropertiesFile)}
+      ${builder.build()} 
+
+    </define:tag>
+
+    <define:tag name="deploy">
+    
+ 	  <j:useBean class="org.codehaus.plexus.application.DeployerClient" var="client"/>
+
+      ${client.setApplicationName(name)}
+      ${client.setApplicationUrl(applicationUrl)}
+      ${client.setServerUrl(serverUrl)}
+
+      ${client.deploy()} 
+      
+    </define:tag>
+
+  </define:taglib>
+
+</project>
