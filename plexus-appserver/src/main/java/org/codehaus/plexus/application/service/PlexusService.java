@@ -1,4 +1,4 @@
-package org.codehaus.plexus.application.supervisor;
+package org.codehaus.plexus.application.service;
 
 /*
  * The MIT License
@@ -24,39 +24,18 @@ package org.codehaus.plexus.application.supervisor;
  * SOFTWARE.
  */
 
-import java.io.File;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class SupervisedDirectory
+public interface PlexusService
 {
-    private File directory;
+    String ROLE = PlexusService.class.getName();
 
-    private SupervisorListener listener;
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    public SupervisedDirectory( File directory, SupervisorListener listener )
-    {
-        this.directory = directory;
-        this.listener = listener;
-    }
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    public File getDirectory()
-    {
-        return directory;
-    }
-
-    public SupervisorListener getListener()
-    {
-        return listener;
-    }
+    void onApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
+                             PlexusConfiguration serviceConfiguration )
+        throws Exception;
 }

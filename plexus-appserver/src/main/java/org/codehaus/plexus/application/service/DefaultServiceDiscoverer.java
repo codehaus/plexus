@@ -24,12 +24,14 @@ package org.codehaus.plexus.application.service;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Enumeration;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.application.deploy.ApplicationDeployer;
-import org.codehaus.plexus.application.event.ApplicationListener;
-import org.codehaus.plexus.application.event.DeployEvent;
+import org.codehaus.plexus.application.PlexusServiceConstants;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
@@ -154,15 +156,12 @@ public class DefaultServiceDiscoverer
 
         addJars( libdir );
 
-        getLogger().debug( "Discovering components" );
-        container.discoverComponents( container.getCoreRealm() );
-
         // Copy over the user configuration if there is one.
         File serviceConfig = new File( configurations, name + ".xml" );
         if ( !serviceConfig.exists() )
         {
 //            File config = new File( serviceDir, "META-INF/plexus/services.xml" );
-            File config = new File( serviceDir, "conf/plexus.xml" );
+            File config = new File( serviceDir, PlexusServiceConstants.CONFIGURATION_FILE );
 
             if ( config.exists() )
             {

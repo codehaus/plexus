@@ -22,5 +22,21 @@
       <implementation>org.codehaus.plexus.application.supervisor.DefaultSupervisor</implementation>
     </component>
 
+    <component>
+      <role>org.codehaus.plexus.application.ApplicationServer</role>
+      <implementation>org.codehaus.plexus.application.DefaultApplicationServer</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.application.service.ServiceDiscoverer</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.application.deploy.ApplicationDeployer</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.application.supervisor.Supervisor</role>
+        </requirement>
+      </requirements>
+    </component>
+
   </components>
 </component-set>
