@@ -22,21 +22,18 @@ package org.codehaus.plexus.builder.application;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.builder.BuilderException;
+
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class ApplicationBuilderException
-    extends Exception
+    extends BuilderException
 {
     public ApplicationBuilderException( String message )
     {
         super( message );
-    }
-
-    public ApplicationBuilderException( Throwable cause )
-    {
-        super( cause );
     }
 
     public ApplicationBuilderException( String message, Throwable cause )

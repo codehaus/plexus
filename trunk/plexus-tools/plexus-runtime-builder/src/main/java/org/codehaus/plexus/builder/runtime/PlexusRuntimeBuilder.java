@@ -25,6 +25,8 @@ package org.codehaus.plexus.builder.runtime;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
 
+import org.codehaus.plexus.builder.BuilderException;
+
 /**
  * @author <a href="jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -45,7 +47,7 @@ public interface PlexusRuntimeBuilder
     void setConfigurationPropertiesFile( String configurationPropertiesFile );
 
     void build()
-        throws PlexusRuntimeBuilderException;
+        throws BuilderException;
 }
 
 
