@@ -27,15 +27,14 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.Map;
+import java.util.Properties;
 
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
@@ -52,7 +51,6 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.util.Expand;
 
 /**
- * @component
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  * @since Mar 19, 2004
  */
@@ -79,8 +77,6 @@ public class DefaultApplicationDeployer
     // ----------------------------------------------------------------------
     // Accessors
     // ----------------------------------------------------------------------
-
-    
 
     // ----------------------------------------------------------------------
     // Deployment
@@ -124,7 +120,7 @@ public class DefaultApplicationDeployer
         File dest = new File( directory, appName );
 
         getLogger().info( "Extracting " + location + " to " + dest.getAbsolutePath() + "." );
-        
+
         // Don't extract if it has been extracted before.
         if ( dest.exists() )
         {

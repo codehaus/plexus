@@ -28,10 +28,10 @@ import java.io.FileReader;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
-import org.codehaus.plexus.configuration.xml.xstream.PlexusTools;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -48,6 +48,7 @@ public class DefaultServiceDiscoverer
     implements Initializable, ServiceDiscoverer, Contextualizable
 {
     private String serviceRepository;
+
     private String serviceDirectory;
 
     private DefaultPlexusContainer container;

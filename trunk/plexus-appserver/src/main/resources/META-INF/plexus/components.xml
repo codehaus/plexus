@@ -1,0 +1,8 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.application.deploy.ApplicationDeployer</role>
+      <implementation>org.codehaus.plexus.application.deploy.DefaultApplicationDeployer</implementation>
+    </component>
+  </components>
+</component-set>
