@@ -33,7 +33,7 @@ import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
  *  type="String"
  *  required="true"
  *  validator=""
- *  expression="#project.build.output"
+ *  expression="#project.build.outputDirectory"
  *  description=""
  * 
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
