@@ -33,8 +33,8 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 
 import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.builder.BuilderException;
-import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
 import org.codehaus.plexus.util.DirectoryScanner;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -65,9 +65,31 @@ public class DefaultApplicationBuilder
     }
 
     // ----------------------------------------------------------------------
-    //
+    // ApplicationBuilder Implementation
     // ----------------------------------------------------------------------
 
+    public void build()
+        throws BuilderException
+    {
+        try
+        {
+            checkApplicationConfiguration();
+
+            createDirectoryStructure();
+
+            processConfigurations();
+
+            copyApplicationDependencies();
+        }
+        catch ( IOException e )
+        {
+            throw new ApplicationBuilderException( "Error while copying dependencies.", e );
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     private void checkApplicationConfiguration()
         throws ApplicationBuilderException
@@ -81,14 +103,32 @@ public class DefaultApplicationBuilder
     private void processConfigurations()
         throws BuilderException, IOException
     {
+        if ( configurationPropertiesFile == null )
+        {
+            throw new ApplicationBuilderException( "The configuration properties file must be set." );
+        }
+
+        // ----------------------------------------------------------------------
+        // Copy the main plexus.xml
+        // ----------------------------------------------------------------------
+
+        File plexusConfigurationFile = new File( plexusConfiguration );
+
+        if ( !plexusConfigurationFile.exists() )
+        {
+            throw new ApplicationBuilderException( "The application configuration file doesn't exist: '" + plexusConfigurationFile.getAbsolutePath() + "'." );
+        }
+
+        FileUtils.copyFileToDirectory( plexusConfigurationFile, confDir );
+
+        // ----------------------------------------------------------------------
+        // Process the configurations
+        // ----------------------------------------------------------------------
+
         if ( configurationsDirectory == null )
         {
             return;
-        }
-
-        if ( configurationPropertiesFile == null )
-        {
-            throw new PlexusRuntimeBuilderException( "The configuration properties file must be set." );
+//            throw new ApplicationBuilderException( "The configuration directory must be set." );
         }
 
         DirectoryScanner scanner = new DirectoryScanner();
@@ -113,26 +153,6 @@ public class DefaultApplicationBuilder
         }
     }
 
-    public void build()
-        throws BuilderException
-    {
-        try
-        {
-            checkApplicationConfiguration();
-
-            createDirectoryStructure();
-
-            // TODO: Test and enable
-//            processConfigurations();
-
-            copyApplicationDependencies();
-        }
-        catch ( IOException e )
-        {
-            throw new ApplicationBuilderException( "Error while copying dependencies.", e );
-        }
-    }
-
     protected void createDirectoryStructure()
     {
         applicationLibDirectory = new File( baseDirectory, "lib" );
@@ -140,6 +160,8 @@ public class DefaultApplicationBuilder
         confDir = new File( baseDirectory, "conf" );
 
         mkdir( applicationLibDirectory );
+
+        mkdir( confDir );
     }
 
     private void copyApplicationDependencies()

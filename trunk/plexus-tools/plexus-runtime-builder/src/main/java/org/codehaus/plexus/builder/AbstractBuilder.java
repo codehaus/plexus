@@ -429,11 +429,25 @@ public abstract class AbstractBuilder
 
         plexusArtifacts.add( plexusArtifact );
 
+        // ----------------------------------------------------------------------
+        //
+        // ----------------------------------------------------------------------
+
         Artifact appserver = new DefaultArtifact( "plexus", "plexus-appserver", "1.0-alpha-1-SNAPSHOT", "jar" );
 
         appserver.setPath( getLocalRepository().getBasedir() + "/plexus/jars/plexus-appserver-1.0-alpha-1-SNAPSHOT.jar" );
 
         plexusArtifacts.add( appserver );
+
+        // ----------------------------------------------------------------------
+        //
+        // ----------------------------------------------------------------------
+
+        Artifact utils = new DefaultArtifact( "plexus", "plexus-utils", "1.0-alpha-1-SNAPSHOT", "jar" );
+
+        utils.setPath( getLocalRepository().getBasedir() + "/plexus/jars/plexus-utils-1.0-alpha-1-SNAPSHOT.jar" );
+
+        plexusArtifacts.add( utils );
 
         return plexusArtifacts;
     }
