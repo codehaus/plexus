@@ -4,7 +4,7 @@
   <id>plexus-hibernate</id>
   <artifactId>plexus-hibernate</artifactId>
   <name>Plexus Hibernate Component</name>
-  <currentVersion>1.0-alpha-5</currentVersion>
+  <currentVersion>1.0-beta-1</currentVersion>
    
   <dependencies>
 
