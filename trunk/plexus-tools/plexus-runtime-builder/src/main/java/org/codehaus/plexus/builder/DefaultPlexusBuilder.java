@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,7 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.maven.artifact.GenericMavenArtifact;
 import org.apache.maven.artifact.MavenArtifact;
+import org.apache.maven.artifact.collector.ArtifactCollectionResult;
+import org.apache.maven.artifact.collector.ArtifactCollector;
+import org.apache.maven.artifact.factory.MavenArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.project.MavenProject;
@@ -53,8 +58,6 @@ public class DefaultPlexusBuilder
     extends AbstractLogEnabled
     implements PlexusBuilder
 {
-    public final static String ROLE = DefaultPlexusBuilder.class.getName();
-
     private final static String CORE = "core";
 
     private static String JSW = "jsw";
@@ -71,11 +74,17 @@ public class DefaultPlexusBuilder
 
     private ArtifactResolver artifactResolver;
 
+    private ArtifactCollector artifactCollector;
+
+    private MavenArtifactFactory artifactFactory;
+
     private String baseDirectory;
 
     private String mavenRepoLocal;
 
     private MavenProject project;
+
+    private String applicationName;
 
     private String plexusConfiguration;
 
@@ -91,9 +100,23 @@ public class DefaultPlexusBuilder
 
     private Map artifacts;
 
+    private File applicationLibDir;
+
+    private File binDir;
+
+    private File confDir;
+
+    private File coreDir;
+
+    private File bootDir;
+
+    private File logsDir;
+
+    private File tempDir;
+
     private final static String[][] bootArtifacts =
     {
-            { "classworlds", "classworlds" }
+        { "classworlds", "classworlds" }
     };
 
     // ----------------------------------------------------------------------
@@ -108,6 +131,11 @@ public class DefaultPlexusBuilder
     public void setMavenRepoLocal( String mavenRepoLocal )
     {
         this.mavenRepoLocal = mavenRepoLocal;
+    }
+
+    public void setApplicationName( String applicationName )
+    {
+        this.applicationName = applicationName;
     }
 
     public void setPlexusConfiguration( String plexusConfiguration )
@@ -133,10 +161,10 @@ public class DefaultPlexusBuilder
     public void build()
         throws PlexusRuntimeBuilderException
     {
-        applicationBaseDirectory = "lib";
-
         try
         {
+            checkApplicationConfiguration();
+
             checkBaseDirectory();
     
             checkMavenRepoLocal();
@@ -147,13 +175,13 @@ public class DefaultPlexusBuilder
     
             createLauncherScripts();
     
-            artifacts = new HashMap();
-    
-            findArtifacts( artifacts, project.getArtifacts(), mavenRepoLocal, project.getRepositories() );
-    
+            artifacts = findArtifacts( project, mavenRepoLocal, project.getRepositories() );
+
+            copyBootDependencies();
+
             copyPlexusDependencies();
     
-            copyDependencies();
+            copyApplicationDependencies();
     
             processMainConfiguration();
     
@@ -196,22 +224,26 @@ public class DefaultPlexusBuilder
         }
     }
 
+    private void checkApplicationConfiguration()
+        throws PlexusRuntimeBuilderException
+    {
+        if ( applicationName == null || applicationName.trim().length() == 0 )
+        {
+            throw new PlexusRuntimeBuilderException( "The application name must be set." );
+        }
+    }
+
     private void checkBaseDirectory()
         throws PlexusRuntimeBuilderException
     {
         if ( baseDirectory == null )
         {
-            throw new IllegalStateException( "The f must be specified and cannot be null." );
+            throw new PlexusRuntimeBuilderException( "The basedir must be specified." );
         }
 
         File f = new File( baseDirectory );
 
-        if ( !f.exists() )
-        {
-            getLogger().info( "Creating baseDirectory: " + f );
-
-            f.mkdirs();
-        }
+        mkdir( f );
     }
 
     private void checkMavenRepoLocal()
@@ -219,68 +251,68 @@ public class DefaultPlexusBuilder
     {
         if ( mavenRepoLocal == null )
         {
-            throw new IllegalStateException( "The local Maven repository must be specified and cannot be null." );
+            throw new PlexusRuntimeBuilderException( "The local Maven repository must be specified." );
         }
 
         File mavenRepoLocalDirectory = new File( mavenRepoLocal );
 
         if ( !mavenRepoLocalDirectory.exists() )
         {
-            throw new IllegalStateException( "The specified local Maven repository does not exist." );
+            throw new PlexusRuntimeBuilderException( "The specified local Maven repository does not exist." );
         }
     }
 
     private void createDirectoryStructure()
         throws PlexusRuntimeBuilderException
     {
-        mkdir( applicationBaseDirectory );
+        applicationLibDir = new File( baseDirectory, "application/" + applicationName + "/lib" );
 
-        mkdir( "bin" );
+        binDir = new File( baseDirectory, "bin" );
 
-        mkdir( "conf" );
+        confDir = new File( baseDirectory, "conf" );
 
-        mkdir( CORE + "/boot");
+        coreDir = new File( baseDirectory, "core" );
 
-        mkdir( "logs" );
+        bootDir = new File( baseDirectory, "core/boot" );
 
-        mkdir( "temp" );
+        logsDir = new File( baseDirectory, "logs" );
+
+        tempDir = new File( baseDirectory, "temp" );
+
+        mkdir( applicationLibDir );
+
+        mkdir( binDir );
+
+        mkdir( confDir );
+
+        mkdir( bootDir );
+
+        mkdir( logsDir );
+
+        mkdir( tempDir );
+    }
+
+    private void copyBootDependencies()
+        throws PlexusRuntimeBuilderException, ProjectBuildingException, IOException
+    {
+        // Move all boot jars to /core/boot
+        for ( Iterator it = new ArrayList( artifacts.values() ).iterator(); it.hasNext(); )
+        {
+            MavenArtifact artifact = (MavenArtifact) it.next();
+
+            if ( isBootArtifact( artifact ) )
+            {
+                copyArtifact( artifact, "core/boot" );
+            }
+        }
     }
 
     private void copyPlexusDependencies()
-        throws ProjectBuildingException, IOException
+        throws PlexusRuntimeBuilderException, ProjectBuildingException, IOException
     {
-        File bootPath = new File( baseDirectory, CORE + "/boot" );
-
-        File libPath = new File( baseDirectory, "lib" );
-
-        // Move all boot jars to /core/boot
-        for ( Iterator it = artifacts.values().iterator(); it.hasNext(); )
-        {
-            MavenArtifact artifact = ( MavenArtifact )it.next();
-
-            for ( int j = 0; j < bootArtifacts.length; j++ )
-            {
-                Dependency dependency = artifact.getDependency();
-
-                String groupId = dependency.getGroupId();
-
-                String artifactId = dependency.getArtifactId();
-
-                if ( bootArtifacts[j][0].equals( groupId ) && 
-                     bootArtifacts[j][1].equals( artifactId ) )
-                {
-                    FileUtils.copyFileToDirectory( artifact.getFile(), bootPath );
-
-                    getLogger().info( "Adding " + artifact.getDependency().getId() + " to /core/boot");
-
-                    it.remove();
-
-                    break;
-                }
-            }
-        }
-
         Map plexusArtifacts = new HashMap();
+
+        MavenArtifact plexusArtifact = null;
 
         // find the plexus artifact
         for ( Iterator it = artifacts.values().iterator(); it.hasNext(); )
@@ -293,17 +325,35 @@ public class DefaultPlexusBuilder
 
             String artifactId = dependency.getArtifactId();
 
-            if ( groupId.equals( "plexus" ) && artifactId.equals( "plexus" ) )
+            String type = dependency.getType();
+
+            if ( groupId.equals( "plexus" ) && 
+                 artifactId.equals( "plexus" ) &&
+                 type.equals( "jar" ) )
             {
-                FileUtils.copyFileToDirectory( artifact.getFile(), libPath );
+                plexusArtifact = artifact;
+
+                break;
             }
-
-            MavenArtifact plexusPom = artifactResolver.getPomArtifact( dependency, mavenRepoLocal, project.getRepositories() );
-
-            MavenProject plexus = projectBuilder.build( plexusPom.getFile() );
-
-            findArtifacts( plexusArtifacts, plexus.getArtifacts(), mavenRepoLocal, plexus.getRepositories() );
         }
+
+        if ( plexusArtifact == null )
+        {
+            throw new PlexusRuntimeBuilderException( "Could not find plexus:plexus:jar in the dependency list." );
+        }
+
+        MavenArtifact plexusPom = artifactResolver.getPomArtifact( plexusArtifact.getDependency(), mavenRepoLocal, project.getRepositories() );
+
+        if ( plexusPom == null )
+        {
+            throw new PlexusRuntimeBuilderException( "Cannot find pom for: " + plexusArtifact.getDependency().getId() );
+        }
+
+        copyArtifact( plexusArtifact, "core" );
+
+        MavenProject plexus = projectBuilder.build( plexusPom.getFile(), project.getLocalRepository() );
+
+        plexusArtifacts = findArtifacts( plexus, mavenRepoLocal, plexus.getRepositories() );
 
         // move plexus itself and all dependencies to /lib
         Iterator it = plexusArtifacts.values().iterator();
@@ -312,41 +362,47 @@ public class DefaultPlexusBuilder
         {
             MavenArtifact artifact = (MavenArtifact) it.next();
 
-            getLogger().info( "Adding " + artifact.getDependency().getId() + " to /" + CORE);
+            // as the plexusArtifacs is a new list we got to avoid the bootArtifacs
+            if ( isBootArtifact( artifact ) )
+            {
+                continue;
+            }
 
-            FileUtils.copyFileToDirectory( artifact.getFile(), new File( baseDirectory, CORE ) );
+            copyArtifact( artifact, "core" );
+        }
+    }
 
-            artifacts.remove( artifact.getDependency().getId() );
+    private void copyApplicationDependencies()
+        throws MissingArtifactException, IOException
+    {
+        Iterator it = new ArrayList( artifacts.values() ).iterator();
+
+        MavenArtifact artifact = new GenericMavenArtifact( project.getGroupId(), project.getArtifactId(), project.getType(), project.getVersion() );
+
+        artifact.setPath( mavenRepoLocal + artifact.generatePath() );
+
+        copyArtifact( artifact, "apps/" + applicationName + "/lib" );
+
+        while ( it.hasNext() )
+        {
+            artifact = (MavenArtifact) it.next();
+
+            copyArtifact( artifact, "apps/" + applicationName + "/lib" );
         }
     }
 
     private void createClassworldsConfiguration()
         throws PlexusRuntimeBuilderException, IOException
     {
-        mergeTemplate( CLASSWORLDS_TEMPLATE, new File( new File( baseDirectory, "conf" ), "classworlds.conf" ) );
+        mergeTemplate( CLASSWORLDS_TEMPLATE, new File( confDir, "classworlds.conf" ) );
     }
 
     private void createLauncherScripts()
         throws PlexusRuntimeBuilderException, IOException
     {
-        mergeTemplate( UNIX_LAUNCHER_TEMPLATE, new File( new File( baseDirectory, "bin" ), "plexus.sh" ) );
+        mergeTemplate( UNIX_LAUNCHER_TEMPLATE, new File( binDir, "plexus.sh" ) );
 
-        mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( new File( baseDirectory, "bin" ), "plexus.bat" ) );
-    }
-
-    private void copyDependencies()
-        throws IOException, ProjectBuildingException
-    {
-        Iterator it = artifacts.values().iterator();
-
-        while ( it.hasNext() )
-        {
-            MavenArtifact artifact = (MavenArtifact) it.next();
-
-            getLogger().info( "Adding " + artifact.getDependency().getId() + " to /hell" );
-
-            FileUtils.copyFileToDirectory( artifact.getFile(), new File( baseDirectory, "lib" ) );
-        }
+        mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( binDir, "plexus.bat" ) );
     }
 
     /**
@@ -358,14 +414,44 @@ public class DefaultPlexusBuilder
      * @param repositories
      * @throws ProjectBuildingException
      */
-    private void findArtifacts( Map artifacts, List projectArtifacts, String mavenRepoLocal, List repositories )
+    private Map findArtifacts( MavenProject project, String mavenRepoLocal, List repositories )
+        throws PlexusRuntimeBuilderException
+    {
+        ArtifactCollectionResult artifactCollectionResult;
+
+        try
+        {
+            artifactCollectionResult = artifactCollector.collect( project.getArtifacts(), mavenRepoLocal, repositories, projectBuilder );
+        }
+        catch( Exception ex )
+        {
+            throw new PlexusRuntimeBuilderException( "Exception while getting artifacts for " + project.getId(), ex );
+        }
+
+        // TODO: Remove this when MNG-20 is solved
+        for ( Iterator it = artifactCollectionResult.getArtifacts().values().iterator(); it.hasNext(); )
+        {
+            MavenArtifact artifact = (MavenArtifact) it.next();
+
+            artifact.setPath( mavenRepoLocal + artifact.generatePath() );
+        }
+
+        return artifactCollectionResult.getArtifacts();
+    }
+/*
+    private void findArtifacts( Map artifacts, MavenProject project, String mavenRepoLocal, List repositories )
         throws ProjectBuildingException
     {
-        for ( Iterator i = projectArtifacts.iterator(); i.hasNext(); )
+        for ( Iterator i = project.getArtifacts().iterator(); i.hasNext(); )
         {
             MavenArtifact artifact = (MavenArtifact) i.next();
 
             Dependency dependency = artifact.getDependency();
+
+            if ( artifacts.containsKey( dependency.getId() ) )
+            {
+                continue;
+            }
 
             MavenArtifact pomArtifact = artifactResolver.getPomArtifact( dependency, mavenRepoLocal, repositories );
 
@@ -385,10 +471,12 @@ public class DefaultPlexusBuilder
 
             // Find all the dependencies of this dependency
 
-            findArtifacts( artifacts, pom.getArtifacts(), mavenRepoLocal, repositories );
+            System.err.println( "Finding artifacts for: " + pom.getId() );
+
+            findArtifacts( artifacts, pom, mavenRepoLocal, repositories );
         }
     }
-
+*/
     private void processMainConfiguration()
         throws PlexusRuntimeBuilderException, IOException
     {
@@ -404,7 +492,7 @@ public class DefaultPlexusBuilder
             throw new PlexusRuntimeBuilderException( "The plexus configuration file doesn't exist." );
         }
 
-        File out = new File( baseDirectory, "conf/plexus.conf" );
+        File out = new File( confDir, "plexus.conf" );
 
         filterCopy( in, out, getConfigurationProperties() );
     }
@@ -419,7 +507,7 @@ public class DefaultPlexusBuilder
 
         if ( configurationPropertiesFile == null )
         {
-            throw new PlexusRuntimeBuilderException( "Missing property: configurationPropertiesFile." );
+            throw new PlexusRuntimeBuilderException( "The configuration properties file must be set." );
         }
 
         DirectoryScanner scanner = new DirectoryScanner();
@@ -438,7 +526,7 @@ public class DefaultPlexusBuilder
 
             File in = new File( configurationsDirectory, file );
 
-            File out = new File( new File( baseDirectory, "conf" ), files[i] );
+            File out = new File( confDir, files[i] );
 
             filterCopy( in, out, getConfigurationProperties() );
         }
@@ -473,13 +561,15 @@ public class DefaultPlexusBuilder
         {
             Properties p = new Properties();
 
+            File input = new File( configurationPropertiesFile );
+
             try
             {
-                p.load( new FileInputStream( configurationPropertiesFile ) );
+                p.load( new FileInputStream( input ) );
             }
             catch( IOException ex )
             {
-                throw new PlexusRuntimeBuilderException( "Exception while reading configuration file: " + configurationPropertiesFile, ex );
+                throw new PlexusRuntimeBuilderException( "Exception while reading configuration file: " + input.getPath(), ex );
             }
 
             configurationProperties = new Properties();
@@ -518,12 +608,12 @@ public class DefaultPlexusBuilder
 
         InputStream is = cl.getResourceAsStream( JSW + "/wrapper.jar" );
 
-        OutputStream os = new FileOutputStream( new File( baseDirectory, CORE + "/wrapper.jar" ) );
+        OutputStream os = new FileOutputStream( new File( coreDir + "/wrapper.jar" ) );
 
         IOUtil.copy( is, os );
 
         filterCopy( cl.getResourceAsStream( JSW + "/wrapper.conf" ),
-                    new File( baseDirectory, "conf/wrapper.conf" ),
+                    new File( confDir, "wrapper.conf" ),
                     getConfigurationProperties() );
 
         copyResources( "bin/linux", cl, linux );
@@ -555,7 +645,7 @@ public class DefaultPlexusBuilder
                 continue;
             }
 
-            File target = new File( baseDirectory, "bin/" + resource );
+            File target = new File( binDir, resource );
 
             os = new FileOutputStream( target );
 
@@ -581,13 +671,11 @@ public class DefaultPlexusBuilder
     ///////////////////////////////////////////////////////////////////////////
     // Util Methods
 
-    private void mkdir( String directory )
+    private void mkdir( File directory )
     {
-        File f = new File( baseDirectory, directory );
-
-        if ( !f.exists() )
+        if ( !directory.exists() )
         {
-            f.mkdirs();
+            directory.mkdirs();
         }
     }
 
@@ -610,5 +698,38 @@ public class DefaultPlexusBuilder
         }
 
         output.close();
+    }
+
+    private void copyArtifact( MavenArtifact artifact, String destination )
+        throws IOException, MissingArtifactException
+    {
+        getLogger().info( "Adding " + artifact.getDependency().getId() + " to " + destination );
+
+        if ( !artifact.getFile().exists() )
+            throw new MissingArtifactException( artifact );
+
+        FileUtils.copyFileToDirectory( artifact.getFile(), new File( baseDirectory, destination ) );
+
+        artifacts.remove( artifact.getDependency().getId() );
+    }
+
+    private boolean isBootArtifact( MavenArtifact artifact )
+    {
+        for ( int i = 0; i < bootArtifacts.length; i++ )
+        {
+            Dependency dependency = artifact.getDependency();
+
+            String groupId = dependency.getGroupId();
+
+            String artifactId = dependency.getArtifactId();
+
+            if ( bootArtifacts[i][0].equals( groupId ) && 
+                 bootArtifacts[i][1].equals( artifactId ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

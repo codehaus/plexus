@@ -12,9 +12,12 @@ import org.apache.maven.project.MavenProject;
  */
 public interface PlexusBuilder
 {
+    String ROLE = PlexusBuilder.class.getName();
+
     void setBaseDirectory( String outputDirectory );
     void setProject( MavenProject project );
     void setMavenRepoLocal( String mavenRepoLocal );
+    void setApplicationName( String applicationName );
     void setPlexusConfiguration( String plexusConfiguration );
     void setConfigurationsDirectory( String configurationsDirectory );
     void setConfigurationPropertiesFile( String configurationPropertiesFile );
