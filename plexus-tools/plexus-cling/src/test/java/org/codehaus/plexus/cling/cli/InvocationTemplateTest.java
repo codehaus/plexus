@@ -2,6 +2,7 @@
 package org.codehaus.plexus.cling.cli;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,13 +22,13 @@ public class InvocationTemplateTest
 {
     
     public void testShouldConstructWithListOfOptions() {
-        List options = new LinkedList();
+        Set options = new HashSet();
         
         InvocationTemplate template = new InvocationTemplate(options);
     }
 
     public void testShouldReturnFalseForRequiredOptionsWhenNoneAreRequired() {
-        List options = new LinkedList();
+        Set options = new HashSet();
         
         InvocationTemplate template = new InvocationTemplate(options);
         
@@ -35,7 +36,7 @@ public class InvocationTemplateTest
     }
 
     public void testShouldReturnTrueForRequiredOptionsWhenAnyAreRequired() {
-        List options = new LinkedList();
+        Set options = new HashSet();
         
         Mock optionMock = mock(Option.class);
         optionMock.expects(atLeastOnce()).method("getShortName").withNoArguments().will(returnValue(new Character('t')));
@@ -50,7 +51,7 @@ public class InvocationTemplateTest
     }
 
     public void testShouldReturnTrueForIsSatisfiedWhenNoneAreRequired() {
-        List options = new LinkedList();
+        Set options = new HashSet();
         
         InvocationTemplate template = new InvocationTemplate(options);
         
@@ -58,7 +59,7 @@ public class InvocationTemplateTest
     }
 
     public void testShouldReturnFalseForIsSatisfiedWhenAnyAreRequiredAndNoneAreSet() {
-        List options = new LinkedList();
+        Set options = new HashSet();
         
         Mock optionMock = mock(Option.class);
         optionMock.expects(atLeastOnce()).method("getShortName").withNoArguments().will(returnValue(new Character('t')));
@@ -74,7 +75,7 @@ public class InvocationTemplateTest
     }
 
     public void testShouldReturnIntOneForScoreRequirementsWhenOneIsRequiredAndNoneAreSet() {
-        List options = new LinkedList();
+        Set options = new HashSet();
         
         Mock optionMock = mock(Option.class);
         optionMock.expects(atLeastOnce()).method("getShortName").withNoArguments().will(returnValue(new Character('t')));
@@ -89,7 +90,7 @@ public class InvocationTemplateTest
     }
 
     public void testShouldReturnIntZeroForScoreRequirementsWhenNoneAreRequired() {
-        List options = new LinkedList();
+        Set options = new HashSet();
         
         InvocationTemplate template = new InvocationTemplate(options);
         
@@ -97,7 +98,7 @@ public class InvocationTemplateTest
     }
 
     public void testShouldReturnUnsatisfiedSizeOneWhenOneIsRequiredAndNoneAreSet() {
-        List options = new LinkedList();
+        Set options = new HashSet();
         
         Mock optionMock = mock(Option.class);
         optionMock.expects(atLeastOnce()).method("getShortName").withNoArguments().will(returnValue(new Character('t')));
@@ -115,7 +116,7 @@ public class InvocationTemplateTest
     }
 
     public void testShouldReturnUnsatisfiedSizeZeroWhenAllRequiredAreSet() {
-        List options = new LinkedList();
+        Set options = new HashSet();
         
         Mock optionMock = mock(Option.class);
         optionMock.expects(atLeastOnce()).method("getShortName").withNoArguments().will(returnValue(new Character('t')));
@@ -133,7 +134,7 @@ public class InvocationTemplateTest
     }
 
     public void testShouldReturnOptionByShortName() {
-        List options = new LinkedList();
+        Set options = new HashSet();
         
         Mock optionMock = mock(Option.class);
         optionMock.expects(atLeastOnce()).method("getShortName").withNoArguments().will(returnValue(new Character('t')));
@@ -150,7 +151,7 @@ public class InvocationTemplateTest
     }
 
     public void testShouldReturnOptionByLongName() {
-        List options = new LinkedList();
+        Set options = new HashSet();
         
         Mock optionMock = mock(Option.class);
         optionMock.expects(atLeastOnce()).method("getShortName").withNoArguments().will(returnValue(new Character('t')));
@@ -167,7 +168,7 @@ public class InvocationTemplateTest
     }
 
     public void testShouldReturnSizeOfOneWhenOneOptionSupplied() {
-        List options = new LinkedList();
+        Set options = new HashSet();
         
         Mock optionMock = mock(Option.class);
         optionMock.expects(atLeastOnce()).method("getShortName").withNoArguments().will(returnValue(new Character('t')));
@@ -182,7 +183,7 @@ public class InvocationTemplateTest
     }
     
     public void testShouldSetSuppliedOptionWhenSetValuesCalled() {
-        List options = new LinkedList();
+        Set options = new HashSet();
         
         NoArgOption option = new NoArgOption(true, new Character('t'), "test", "description", "property");
         
@@ -199,7 +200,7 @@ public class InvocationTemplateTest
     }
 
     public void testShouldReturnMappingWithOptionPropertiesToValues() {
-        List options = new LinkedList();
+        Set options = new HashSet();
         
         NoArgOption option = new NoArgOption(true, new Character('t'), "test", "description", "property");
         

@@ -12,19 +12,23 @@ public class DefaultMainTest
 
     public void testShouldConstructWithMainClassAndMainMethodStrings()
     {
-        DefaultMain main = new DefaultMain( DefaultMain.class.getName(), "getMainMethod" );
+        DefaultMain main = new DefaultMain();
     }
 
-    public void testShouldRetrieveMainClass()
+    public void testShouldSetAndRetrieveMainClass()
     {
-        DefaultMain main = new DefaultMain( DefaultMain.class.getName(), "getMainMethod" );
+        DefaultMain main = new DefaultMain( );
+        
+        main.setMainClass(DefaultMain.class.getName());
 
         assertEquals( DefaultMain.class.getName(), main.getMainClass() );
     }
 
-    public void testShouldRetrieveMainMethod()
+    public void testShouldSetAndRetrieveMainMethod()
     {
-        DefaultMain main = new DefaultMain( DefaultMain.class.getName(), "getMainMethod" );
+        DefaultMain main = new DefaultMain();
+        
+        main.setMainMethod("getMainMethod");
 
         assertEquals( "getMainMethod", main.getMainMethod() );
     }

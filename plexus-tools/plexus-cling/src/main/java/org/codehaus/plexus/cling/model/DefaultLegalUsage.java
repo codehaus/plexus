@@ -2,8 +2,10 @@
 package org.codehaus.plexus.cling.model;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.codehaus.plexus.cling.cli.InvocationTemplate;
 
@@ -12,11 +14,11 @@ import org.codehaus.plexus.cling.cli.InvocationTemplate;
  */
 public class DefaultLegalUsage implements LegalUsage
 {
-    private List invocationTemplates = new LinkedList();
+    private Set invocationTemplates = new HashSet();
 
-    public List getInvocationTemplates()
+    public Set getInvocationTemplates()
     {
-        return Collections.unmodifiableList(invocationTemplates);
+        return Collections.unmodifiableSet(invocationTemplates);
     }
     
     public void addInvocationTemplate(InvocationTemplate template) {

@@ -23,6 +23,6 @@ public class MainClassTag
         }
         
         MainTag parent = (MainTag)requireParent(MainTag.class);
-        parent.setMainMethod(mainClass);
+        parent.setMainClass(mainClass);
     }
 }

@@ -2,6 +2,7 @@
 package org.codehaus.plexus.cling.model;
 
 import java.util.List;
+import java.util.Set;
 
 import org.codehaus.plexus.cling.cli.InvocationTemplate;
 
@@ -11,6 +12,6 @@ import org.codehaus.plexus.cling.cli.InvocationTemplate;
 public interface LegalUsage
 {
     
-    public List getInvocationTemplates();
+    public Set getInvocationTemplates();
 
 }

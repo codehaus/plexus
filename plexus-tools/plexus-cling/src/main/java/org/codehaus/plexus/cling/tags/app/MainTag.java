@@ -14,15 +14,12 @@ public class MainTag
     extends AbstractMarmaladeTag
 {
     
-    private String mainClass;
-    private String mainMethod;
+    private DefaultMain main = new DefaultMain();
     
     protected void doExecute( MarmaladeExecutionContext context )
     throws MarmaladeExecutionException
     {
         processChildren(context);
-        
-        Main main = new DefaultMain(mainClass, mainMethod);
         
         AppTag parent = (AppTag)requireParent(AppTag.class);
         parent.setApplicationMain(main);
@@ -30,11 +27,11 @@ public class MainTag
     
     public void setMainClass(String mainClass) 
     {
-        this.mainClass = mainClass;
+        main.setMainClass(mainClass);
     }
     
     public void setMainMethod(String mainMethod)
     {
-        this.mainMethod = mainMethod;
+        main.setMainMethod(mainMethod);
     }
 }

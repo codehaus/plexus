@@ -2,8 +2,10 @@
 package org.codehaus.plexus.cling.cli;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -27,7 +29,7 @@ public class InvocationTest
     {
         SingleArgOption option = new SingleArgOption(true, new Character('t'), "test", OptionFormat.BOOLEAN_FORMAT, "description", "property");
         
-        List options = new LinkedList();
+        Set options = new HashSet();
         options.add(option);
         
         InvocationTemplate template = new InvocationTemplate(options);
@@ -51,7 +53,7 @@ public class InvocationTest
     {
         SingleArgOption option = new SingleArgOption(true, new Character('t'), "test", OptionFormat.BOOLEAN_FORMAT, "description", "property");
         
-        List options = new LinkedList();
+        Set options = new HashSet();
         options.add(option);
         
         InvocationTemplate template = new InvocationTemplate(options);
@@ -75,7 +77,7 @@ public class InvocationTest
     {
         SingleArgOption option = new SingleArgOption(true, new Character('t'), "test", OptionFormat.BOOLEAN_FORMAT, "description", "property");
         
-        List options = new LinkedList();
+        Set options = new HashSet();
         options.add(option);
         
         InvocationTemplate template = new InvocationTemplate(options);
@@ -112,7 +114,7 @@ public class InvocationTest
     public void testShouldFailWhenOneTemplateWasAddedThenRemoved()
     throws InvocationException 
     {
-        InvocationTemplate template = new InvocationTemplate(Collections.EMPTY_LIST);
+        InvocationTemplate template = new InvocationTemplate(Collections.EMPTY_SET);
         
         Invocation inv = new Invocation("description");
         inv.addInvocationTemplate(template);
@@ -132,7 +134,7 @@ public class InvocationTest
     {
         SingleArgOption option = new SingleArgOption(false, new Character('t'), "test", OptionFormat.BOOLEAN_FORMAT, "description", "property");
         
-        List options = new LinkedList();
+        Set options = new HashSet();
         options.add(option);
         
         InvocationTemplate template = new InvocationTemplate(options);
