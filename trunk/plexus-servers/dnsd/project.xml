@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project>
 
-  <!-- the version of maven's project object model -->
   <pomVersion>3</pomVersion>
-  
-  <!-- a unique name for this project -->
-  <id>app</id>
-  
-  <!-- a short but descriptive name for the project -->
-  <name>Maven example projects</name>
+  <id>plexus-dnsd</id>
+  <artifactId>plexus-dnsd</artifactId>
+  <group>plexus</group>
+  <name>Plexus DNS Server</name>
   
   <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-dev -->
