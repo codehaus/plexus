@@ -83,10 +83,10 @@ public class MailSenderTestCase
     * Get the number of messages received.
     * @return size of received email list
     */
-    public int getReceievedEmailSize()
+    public int getReceivedEmailSize()
     {
         assertNotNull( "The SMTP server isn't started.", smtpServer );
 
-        return smtpServer.getReceievedEmailSize();
+        return smtpServer.getReceivedEmailSize();
     }
 }
