@@ -1,7 +1,7 @@
 package org.codehaus.plexus.logging.log4j;
 
 /*
- * LISENCE
+ * LICENSE
  */
 
 import java.util.Properties;

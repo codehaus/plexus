@@ -1,7 +1,7 @@
 package org.apache.ftpserver;
 
 /*
- * LISENCE
+ * LICENSE
  */
 
 import java.net.URL;
