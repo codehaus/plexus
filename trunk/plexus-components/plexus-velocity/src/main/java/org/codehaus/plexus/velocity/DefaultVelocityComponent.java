@@ -56,15 +56,18 @@ public class DefaultVelocityComponent
 
         engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, this );
 
-        for ( Enumeration e = properties.propertyNames(); e.hasMoreElements(); )
+        if ( properties != null )
         {
-            String key = e.nextElement().toString();
-
-            String value = properties.getProperty( key );
-
-            engine.setProperty( key, value );
-
-            getLogger().info( "Setting property: " + key + " => '" + value + "'." );
+            for ( Enumeration e = properties.propertyNames(); e.hasMoreElements(); )
+            {
+                String key = e.nextElement().toString();
+    
+                String value = properties.getProperty( key );
+    
+                engine.setProperty( key, value );
+    
+                getLogger().info( "Setting property: " + key + " => '" + value + "'." );
+            }
         }
 
         engine.init();
