@@ -1,7 +1,6 @@
 <plexus>
   <components>
     <component>
-      <logger>test</logger>
       <role>org.codehaus.plexus.formproc.FormProcService</role>
       <implementation>org.codehaus.plexus.formproc.DefaultFormProcService</implementation>
       <configuration/>

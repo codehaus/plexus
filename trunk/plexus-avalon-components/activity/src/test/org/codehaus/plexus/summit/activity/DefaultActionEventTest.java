@@ -27,7 +27,7 @@ public class DefaultActionEventTest extends PlexusTestCase
     {
         super.setUp();
         
-        actionEvent = ( DefaultActionEventService ) getComponent( ActionEventService.ROLE );        
+        actionEvent = ( DefaultActionEventService ) lookup( ActionEventService.ROLE );        
     }
     
     public void testMethodNaming() throws Exception
