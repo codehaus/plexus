@@ -22,9 +22,10 @@ package org.codehaus.plexus.action;
  * SOFTWARE.
  */
 
-import java.util.Map;
-
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.ServiceLocator;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
 
 /**
  *
@@ -34,20 +35,30 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
  */
 public class DefaultActionManager
     extends AbstractLogEnabled
-    implements ActionManager
+    implements ActionManager, Serviceable
 {
-    private Map actions;
-
+    private ServiceLocator locator;
+    
     public Action lookup( String id )
         throws ActionNotFoundException
     {
-        Action action = (Action) actions.get( id );
-
-        if ( action == null )
+        try
         {
-            throw new ActionNotFoundException( "Cannot find action: " + id );
-        }
+            if ( !locator.hasComponent( Action.ROLE, id ) )
+            {
+                throw new ActionNotFoundException( "Cannot find action: " + id );
+            }
 
-        return action;
+            return (Action) locator.lookup( Action.ROLE, id );
+        }
+        catch (ComponentLookupException e)
+        {
+            throw new ActionNotFoundException( "Cannot find action: " + id, e );
+        }
+    }
+
+    public void service(ServiceLocator locator)
+    {
+        this.locator = locator;
     }
 }

@@ -1,5 +1,7 @@
 package org.codehaus.plexus.action;
 
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+
 /*
  * Copyright (c) 2004, Codehaus.org
  *
@@ -35,5 +37,10 @@ public class ActionNotFoundException
     public ActionNotFoundException( String s )
     {
         super( s );
+    }
+
+    public ActionNotFoundException(String s, ComponentLookupException e)
+    {
+        super( s, e );
     }
 }
