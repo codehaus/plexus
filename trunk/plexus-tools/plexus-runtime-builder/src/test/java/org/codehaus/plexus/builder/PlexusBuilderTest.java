@@ -4,14 +4,15 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectBuilder;
 
-import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.ArtifactEnabledPlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
 
 public class PlexusBuilderTest
-    extends PlexusTestCase
+    extends ArtifactEnabledPlexusTestCase
 {
     private String buildDirectory;
 
@@ -28,7 +29,7 @@ public class PlexusBuilderTest
     {
         super.setUp();
 
-        buildDirectory = new File( getBasedir(), "target/generated-runtime" ).getPath();
+        buildDirectory = new File( getBasedir(), "target/test/generated-runtime" ).getPath();
 
         plexusConfiguration = new File( getBasedir(), "src/test/resources/conf/plexus.conf" ).getPath();
 
@@ -48,11 +49,15 @@ public class PlexusBuilderTest
 
         builder.setBaseDirectory( buildDirectory );
 
-        MavenProject project = projectBuilder.build( new File( getTestFile( "src/test/project/project.xml" ) ), getTestFile( "src/test/repository" ) );
+        MavenProject project = projectBuilder.build( getTestFile( "src/test/project/project.xml" ) );
 
         builder.setProject( project );
 
-        builder.setMavenRepoLocal( getTestFile( "src/test/repository" ) );
+        ArtifactRepository repository = new ArtifactRepository();
+
+        repository.setBasedir( getTestPath( "src/test/repository" ) );
+
+        builder.setLocalRepository( repository );
 
         builder.setApplicationName( "testapp" );
 
@@ -70,17 +75,13 @@ public class PlexusBuilderTest
 
         assertFileEquals( "plexus-plexus-dependency-1.0", "core/plexus-dependency-1.0.jar" );
 
-        assertFileEquals( "group1-artifact1-2.0", "apps/testapp/lib/artifact1-2.0.jar" );
+        assertFileEquals( "group1-artifact1-2.0", "application/testapp/lib/artifact1-2.0.jar" );
 
-        assertFileEquals( "group2-artifact2-1.0", "apps/testapp/lib/artifact2-1.0.foo" );
+        assertFileEquals( "group2-artifact2-1.0", "application/testapp/lib/artifact2-1.0.jar" );
 
-        assertFileEquals( "group2-artifact2-1.0", "apps/testapp/lib/artifact2-1.0.foo" );
+        assertFileEquals( "group3-artifact3-1.0", "application/testapp/lib/artifact3-1.0.jar" );
 
-        assertFileEquals( "plexus-plexus-runtime-builder-test-project-2.0-SNAPSHOT", "apps/testapp/lib/plexus-runtime-builder-test-project-2.0-SNAPSHOT.jar" );
-
-        assertFileEquals( "plexus-plexus-runtime-builder-test-project-2.0-SNAPSHOT", "apps/testapp/lib/plexus-runtime-builder-test-project-2.0-SNAPSHOT.jar" );
-
-        assertFileEquals( "plexus-plexus-runtime-builder-test-project-2.0-SNAPSHOT", "apps/testapp/lib/plexus-runtime-builder-test-project-2.0-SNAPSHOT.jar" );
+        assertFileEquals( "plexus-plexus-runtime-builder-test-project-2.0-SNAPSHOT", "application/testapp/lib/plexus-runtime-builder-test-project-2.0-SNAPSHOT.jar" );
 
         assertFile( "bin/plexus.bat" );
 
