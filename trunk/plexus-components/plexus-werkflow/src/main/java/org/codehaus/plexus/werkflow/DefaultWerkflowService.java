@@ -16,66 +16,66 @@ import org.codehaus.werkflow.simple.SimpleWorkflowReader;
 /**
  * The default WerkflowService implementation.
  * 
- * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
+ * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse </a>
  */
 public class DefaultWerkflowService
     extends AbstractLogEnabled
     implements WerkflowService, Initializable
 {
-	private String werkflowDirectory;
+    private String werkflowDirectory;
 
     private Engine engine;
-    
-    private ActionManager manager;
-    
-    private ExpressionFactory expressionFactory;
-    
-	public Engine getEngine()
-	{
-		return engine;
-	}
 
-	public org.codehaus.werkflow.simple.ActionManager getActionManager()
-	{
-		// Be optimistic that our plexus ActionManager also implements
+    private ActionManager manager;
+
+    private ExpressionFactory expressionFactory;
+
+    public Engine getEngine()
+    {
+        return engine;
+    }
+
+    public org.codehaus.werkflow.simple.ActionManager getActionManager()
+    {
+        // Be optimistic that our plexus ActionManager also implements
         // the necessary Werkflow ActionManager interface.
         return (org.codehaus.werkflow.simple.ActionManager) manager;
-	}
-    
-    
-	public ExpressionFactory getExpressionFactory()
-	{
-		return expressionFactory;
-	}
-    
-	/**
-	 * @see org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable#initialize()
-	 */
-	public void initialize() throws Exception
-	{
-		engine = new AutomaticEngine(new NonPersistentInstanceManager());
-        
+    }
+
+    public ExpressionFactory getExpressionFactory()
+    {
+        return expressionFactory;
+    }
+
+    /**
+     * @see org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable#initialize()
+     */
+    public void initialize() throws Exception
+    {
+        engine = new AutomaticEngine(new NonPersistentInstanceManager());
+
         expressionFactory = new OgnlExpressionFactory();
-        
+
         File werkflowDirFile = new File(werkflowDirectory);
-        
-        if ( !werkflowDirFile.isDirectory() )
+
+        if (!werkflowDirFile.isDirectory())
         {
-        	getLogger().warn(werkflowDirectory + " is not a valid directory for werkflows.");
+            getLogger().warn(
+                    werkflowDirectory
+                            + " is not a valid directory for werkflows.");
         }
         else
         {
             File[] werkflows = werkflowDirFile.listFiles();
-            
-            for ( int i = 0; i < werkflows.length; i++ )
+
+            for (int i = 0; i < werkflows.length; i++)
             {
                 Workflow workflow = SimpleWorkflowReader.read(
-                        getActionManager(), 
-                        getExpressionFactory(), 
+                        getActionManager(), getExpressionFactory(),
                         werkflows[i]);
-                
+
                 engine.addWorkflow(workflow);
             }
         }
-	}
+    }
 }
