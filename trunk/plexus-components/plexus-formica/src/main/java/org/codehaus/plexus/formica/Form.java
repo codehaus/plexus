@@ -66,6 +66,8 @@ public class Form
 
     private String lookupExpression;
 
+    private String summaryCollectionExpression;
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -172,6 +174,11 @@ public class Form
     public String getLookupExpression()
     {
         return lookupExpression;
+    }
+
+    public String getSummaryCollectionExpression()
+    {
+        return summaryCollectionExpression;
     }
 
     // ----------------------------------------------------------------------
