@@ -1,14 +1,11 @@
 <plexus>
-
   <components>
-
     <component>
       <role>org.codehaus.plexus.logging.LoggerManager</role>
       <role-hint>normal-config</role-hint>
       <implementation>org.codehaus.plexus.logging.log4j.Log4JLoggerManager</implementation>
       <lifecycle-handler>basic</lifecycle-handler>
       <instantiation-strategy>per-lookup</instantiation-strategy>
-
       <configuration>
         <threshold>DEBUG</threshold>
         <appenders>
@@ -27,17 +24,16 @@
       <implementation>org.codehaus.plexus.logging.log4j.Log4JLoggerManager</implementation>
       <lifecycle-handler>basic</lifecycle-handler>
       <instantiation-strategy>per-lookup</instantiation-strategy>
-
       <configuration>
         <threshold>DEBUG</threshold>
         <default-appender>file</default-appender>
         <appenders>
+
           <appender>
             <id>file</id>
             <threshold>INFO</threshold>
             <type>org.apache.log4j.FileAppender</type>
             <conversion-pattern>%-4r [%t] %-5p %c %x - %m%n</conversion-pattern>
-
             <properties>
               <property>
                 <key>file</key>
@@ -64,7 +60,6 @@
             <threshold>DEBUG</threshold>
             <type>org.apache.log4j.RollingFileAppender</type>
             <conversion-pattern>%-4r [%t] %-5p %c %x - %m%n</conversion-pattern>
-
             <properties>
               <property>
                 <key>file</key>
@@ -94,7 +89,6 @@
       <implementation>org.codehaus.plexus.logging.log4j.Log4JLoggerManager</implementation>
       <lifecycle-handler>basic</lifecycle-handler>
       <instantiation-strategy>per-lookup</instantiation-strategy>
-
       <configuration>
         <threshold>FATAL</threshold>
       </configuration>
@@ -106,10 +100,6 @@
       <implementation>org.codehaus.plexus.logging.log4j.Log4JLoggerManager</implementation>
       <lifecycle-handler>basic</lifecycle-handler>
       <instantiation-strategy>per-lookup</instantiation-strategy>
-
-      <configuration/>
     </component>
-
   </components>
-
 </plexus>

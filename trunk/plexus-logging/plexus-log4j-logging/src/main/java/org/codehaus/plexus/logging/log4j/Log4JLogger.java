@@ -13,7 +13,9 @@ class Log4JLogger
         super( threshold, getLoggerName(logger) );
 
         if( logger == null )
+        {
             throw new NullPointerException("logger");
+        }
 
         this.logger = logger;
     }
@@ -81,7 +83,9 @@ class Log4JLogger
     private static String getLoggerName( Logger logger)
     {
         if( logger == null )
+        {
             return "";
+        }
 
         return logger.getName();
     }

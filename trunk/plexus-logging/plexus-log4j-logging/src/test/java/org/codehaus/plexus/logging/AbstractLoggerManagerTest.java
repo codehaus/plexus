@@ -10,7 +10,7 @@ import org.codehaus.plexus.PlexusTestCase;
  *
  * @author Mark H. Wilkinson
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Revision$
+ * @version $Id$
  */
 public abstract class AbstractLoggerManagerTest
     extends PlexusTestCase
@@ -24,14 +24,9 @@ public abstract class AbstractLoggerManagerTest
     public final void setUp()
         throws Exception
     {
-        File f;
-        String plexusHome;
-
         super.setUp();
 
-        plexusHome = getContainer().getContext().get( "plexus.home" ).toString();
-
-        f = getTestFile( plexusHome, "logs" );
+        File f = getTestFile( "target/plexus-home/logs" );
 
         if ( !f.isDirectory() )
         {
@@ -42,18 +37,20 @@ public abstract class AbstractLoggerManagerTest
     public void testSetThreshold()
         throws Exception
     {
-        LoggerManager manager;
-        Logger logger1, logger2;
-
-        manager = createLoggerManager();
+        LoggerManager manager = createLoggerManager();
 
         manager.setThreshold( Logger.LEVEL_FATAL );
-        logger1 = manager.getLoggerForComponent( "role1", "roleHint1" );
+
+        Logger logger1 = manager.getLoggerForComponent( "role1", "roleHint1" );
+
         assertEquals( Logger.LEVEL_FATAL, logger1.getThreshold() );
 
         manager.setThreshold( Logger.LEVEL_DEBUG );
-        logger2 = manager.getLoggerForComponent( "role2", "roleHint2" );
+
+        Logger logger2 = manager.getLoggerForComponent( "role2", "roleHint2" );
+
         assertEquals( Logger.LEVEL_FATAL, logger1.getThreshold() );
+
         assertEquals( Logger.LEVEL_DEBUG, logger2.getThreshold() );
     }
 
@@ -63,21 +60,17 @@ public abstract class AbstractLoggerManagerTest
     public void testActiveLoggerCount()
         throws Exception
     {
-        LoggerManager manager;
-        Logger b, c1, c2;
-        Logger root;
-
-        manager = getManager( Logger.LEVEL_FATAL );
+        LoggerManager manager = getManager( Logger.LEVEL_FATAL );
         assertEquals(0, manager.getActiveLoggerCount());
 
-        b = manager.getLoggerForComponent( "b" );
+        manager.getLoggerForComponent( "b" );
         assertEquals(1, manager.getActiveLoggerCount());
 
-        c1 = manager.getLoggerForComponent( "c", "1" );
-        c1 = manager.getLoggerForComponent( "c", "1" );
+        manager.getLoggerForComponent( "c", "1" );
+        manager.getLoggerForComponent( "c", "1" );
         assertEquals(2, manager.getActiveLoggerCount());
 
-        c2 = manager.getLoggerForComponent( "c", "2" );
+        manager.getLoggerForComponent( "c", "2" );
         assertEquals(3, manager.getActiveLoggerCount());
 
         manager.returnComponentLogger( "c", "1" );
@@ -188,6 +181,7 @@ public abstract class AbstractLoggerManagerTest
         Logger logger = manager.getLoggerForComponent( "foo" );
 
         assertNotNull( logger );
+
         assertEquals( "foo", logger.getName() );
 
         return logger;
