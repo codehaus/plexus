@@ -64,7 +64,7 @@ public class DefaultNotificationDispatcher
 
             Notifier notifier = (Notifier) entry.getValue();
 
-            Set recipients = recipientSource.getRecipients( notifierType, messageId, Collections.EMPTY_MAP );
+            Set recipients = recipientSource.getRecipients( notifierType, messageId, context );
 
             if ( recipients == null )
             {
