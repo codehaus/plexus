@@ -1,4 +1,4 @@
-<model>
+<project>
   <parent>
     <artifactId>plexus-root</artifactId>
     <groupId>plexus</groupId>
@@ -15,22 +15,21 @@
       <groupId>plexus</groupId>
       <artifactId>plexus-xmlrpc</artifactId>
       <version>1.0-beta-2</version>
-      <type>jar</type>
-      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>xmlrpc</groupId>
+      <artifactId>xmlrpc</artifactId>
+      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
+      <version>1.0-alpha-2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>1.0-alpha-1-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
-</model>
+</project>
