@@ -1,0 +1,57 @@
+<plexus>
+  <components>    
+	<component>
+	  <logger>test</logger>
+	  <role>org.codehaus.jasf.SecurityService</role>
+	  <implementation>org.codehaus.jasf.JASFSecurityService</implementation>
+	  <configuration>
+		<entities>
+			<entity type="org.codehaus.jasf.entities.web.User"/>
+		</entities>
+		<resources>
+	      <resource type="org.codehaus.jasf.resources.PageResource"/>
+		  <resource type="org.codehaus.jasf.resources.ProjectPageResource"/>
+	      <resource type="org.codehaus.jasf.resources.ClassMethodResource"/>
+		</resources>
+      </configuration>
+    </component>
+
+    <component>
+      <id>org.codehaus.jasf.entities.web.User</id>
+      <role>org.codehaus.jasf.Authenticator</role>
+      <implementation>org.codehaus.jasf.impl.basic.UserAuthenticationController</implementation>
+      <configuration>
+		<users>${basedir}/src/test-conf/users.xml</users>
+		<roles>${basedir}/src/test-conf/roles.xml</roles>
+	  </configuration>
+    </component>
+
+    <component>
+      <id>org.codehaus.jasf.resources.ClassMethodResource</id>
+      <role>org.codehaus.jasf.ResourceController</role>
+      <implementation>org.codehaus.jasf.impl.basic.ClassAccessController</implementation>
+      <configuration>
+        <defaultAuthorization>true</defaultAuthorization>
+	  </configuration>
+    </component>
+
+    <component>
+      <id>org.codehaus.jasf.resources.ProjectPageResource</id>
+      <role>org.codehaus.jasf.ResourceController</role>
+      <implementation>org.codehaus.jasf.impl.global.NoAccessResourceController</implementation>
+      <configuration>
+	  </configuration>
+    </component>
+
+    <component>
+      <id>org.codehaus.jasf.resources.PageResource</id>
+      <role>org.codehaus.jasf.ResourceController</role>
+      <implementation>org.codehaus.jasf.impl.basic.PageAccessController</implementation>
+      <configuration>
+        <pages>${basedir}/src/test-conf/pages.xml</pages>
+	  </configuration>
+    </component>
+    
+  </components>
+
+</plexus>

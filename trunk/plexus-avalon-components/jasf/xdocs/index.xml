@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Main</title>
+    <author email="dan@envoisolutions.com">Dan Diephouse</author>
+  </properties>
+
+  <body>
+
+  <section name="Overview">
+    <p> 
+      JASF (Java Application Security Framework) seeks 
+      to establish a common ground for 
+      applications to integrate security for users, computers or 
+      anything else that interacts with one's code.  By creating a 
+      flexible mechanism, one can use different security methods, 
+      but still use the same Components from application to application.
+    </p>
+    <p>
+      The framework creates this flexible mechanism by utilizing the Command 
+      Pattern.  See your local bookstore for more on this pattern.
+    </p>
+    <p>
+      The framework can be downloaded <a href="./jasf-0.2.tar.gz">here</a> and
+      the source code can be found <a href="./jasf-0.2-src.tar.gz">here</a>.
+    </p>
+  </section>
+
+</body>
+</document>
