@@ -92,7 +92,7 @@ public class NotificationDispatcherTest
         assertEquals( new String[]{ "brett", "dan", "topping" },
                       (String[]) ( (Message) minyNotifier.messages.get( 0 ) ).getRecipients().toArray( new String[ 3 ] ) );
 
-        assertEquals( 0, moNotifier.messages.size() );
+        assertEquals( 1, moNotifier.messages.size() );
     }
 
     // ----------------------------------------------------------------------
