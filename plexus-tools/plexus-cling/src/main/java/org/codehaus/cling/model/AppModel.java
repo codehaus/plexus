@@ -6,7 +6,7 @@ import java.util.Properties;
 /**
  * @author jdcasey
  */
-public interface Application
+public interface AppModel
 {
 
     public Main getMain();
@@ -25,4 +25,11 @@ public interface Application
     
     public void setLegalUsage(LegalUsage legalUsage);
 
+    public void setApplicationDescription(String appDescription);
+    
+    public String getApplicationDescription();
+    
+    public void setArgumentDescription(String argDescription);
+    
+    public String getArgumentDescription();
 }

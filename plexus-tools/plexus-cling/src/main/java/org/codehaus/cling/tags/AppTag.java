@@ -3,7 +3,7 @@ package org.codehaus.cling.tags;
 
 import java.util.Properties;
 
-import org.codehaus.cling.model.Application;
+import org.codehaus.cling.model.AppModel;
 import org.codehaus.cling.model.Classpath;
 import org.codehaus.cling.model.DefaultApplication;
 import org.codehaus.cling.model.DefaultLegalUsage;
@@ -20,14 +20,14 @@ public class AppTag
     extends AbstractMarmaladeTag
 {
     
-    private Application app = new DefaultApplication();
+    private AppModel app = new DefaultApplication();
     
     protected void doExecute( MarmaladeExecutionContext context ) 
     throws MarmaladeExecutionException
     {
     }
     
-    public Application getApplication()
+    public AppModel getAppModel()
     {
         return app;
     }
