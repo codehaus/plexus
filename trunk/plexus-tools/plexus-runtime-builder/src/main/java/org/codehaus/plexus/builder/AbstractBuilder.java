@@ -175,7 +175,7 @@ public abstract class AbstractBuilder
     // ----------------------------------------------------------------------
 
     protected void executable( String file )
-        throws CommandLineException, IOException
+        throws CommandLineException
     {
         if ( Os.isFamily( "unix" ) )
         {
