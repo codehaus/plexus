@@ -54,15 +54,15 @@ package org.codehaus.plexus.mimetyper.util;
  * <http://www.codehaus.org/>.
  */
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.StringReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.Map;
+import java.io.StringReader;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
@@ -80,6 +80,7 @@ public class MimeTypeMapper
      * Mappings between MIME types and file name extensions.
      */
     private HashMap mimeTypeExtensions = new HashMap();
+
     protected HashMap extensionMimeTypes = new HashMap();
 
     /**
@@ -98,8 +99,7 @@ public class MimeTypeMapper
     public MimeTypeMapper(InputStream input)
         throws IOException
     {
-        parse(new BufferedReader(
-            new InputStreamReader(input,CharSetMap.DEFAULT_CHARSET)));
+        parse(new BufferedReader( new InputStreamReader(input,CharSetMap.DEFAULT_CHARSET)));
     }
 
     /**
@@ -147,13 +147,13 @@ public class MimeTypeMapper
      */
     public void setContentType(String spec)
     {
-      try
-      {
-          parse(new BufferedReader(new StringReader(spec)));
-      }
-      catch (IOException x)
-      {
-      }
+        try
+        {
+            parse(new BufferedReader(new StringReader(spec)));
+        }
+        catch (IOException x)
+        {
+        }
     }
 
     /**
@@ -187,39 +187,39 @@ public class MimeTypeMapper
     protected synchronized void parse(BufferedReader reader)
         throws IOException
     {
-      int l,count = 0;
-      String next;
-      String str = null;
-      HashMap mimeTypes = (HashMap) extensionMimeTypes.clone();
-      HashMap extensions = (HashMap) mimeTypeExtensions.clone();
-      while ((next = reader.readLine()) != null)
-      {
-          str = str == null ? next : str + next;
-          if ((l = str.length()) == 0)
-          {
-              str = null;
-              continue;
-          }
-          // Check for continuation line.
-          if (str.charAt(l - 1) != '\\')
-          {
-              count += parseMimeTypeExtension(str,mimeTypes,extensions);
-              str = null;
-          }
-          else
-          {
-              str = str.substring(0,l - 1);
-          }
-      }
-      if (str != null)
-      {
-          count += parseMimeTypeExtension(str,mimeTypes,extensions);
-      }
-      if (count > 0)
-      {
-          extensionMimeTypes = mimeTypes;
-          mimeTypeExtensions = extensions;
-      }
+        int l,count = 0;
+        String next;
+        String str = null;
+        HashMap mimeTypes = (HashMap) extensionMimeTypes.clone();
+        HashMap extensions = (HashMap) mimeTypeExtensions.clone();
+        while ((next = reader.readLine()) != null)
+        {
+            str = str == null ? next : str + next;
+            if ((l = str.length()) == 0)
+            {
+                str = null;
+                continue;
+            }
+            // Check for continuation line.
+            if (str.charAt(l - 1) != '\\')
+            {
+                count += parseMimeTypeExtension(str,mimeTypes,extensions);
+                str = null;
+            }
+            else
+            {
+                str = str.substring(0,l - 1);
+            }
+        }
+        if (str != null)
+        {
+            count += parseMimeTypeExtension(str,mimeTypes,extensions);
+        }
+        if (count > 0)
+        {
+            extensionMimeTypes = mimeTypes;
+            mimeTypeExtensions = extensions;
+        }
     }
 
     /**

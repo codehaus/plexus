@@ -54,15 +54,15 @@ package org.codehaus.plexus.mimetyper.util;
  * <http://www.codehaus.org/>.
  */
 
-import java.util.Locale;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Properties;
 import java.io.File;
-import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * This class maintains a set of mappers defining mappings
@@ -479,14 +479,14 @@ public class CharSetMap
         return "";
     }
 
-  /**
-   * Searches recursively for a charset for a specified locale.
-   *
-   * @param items an array of locale items.
-   * @param base a buffer of base items.
-   * @param count the number of items to go through.
-   * @return the found charset or an empty string.
-   */
+    /**
+     * Searches recursively for a charset for a specified locale.
+     *
+     * @param items an array of locale items.
+     * @param base a buffer of base items.
+     * @param count the number of items to go through.
+     * @return the found charset or an empty string.
+     */
     private String searchCharSet(String[] items,
                                  StringBuffer base,
                                  int count)
