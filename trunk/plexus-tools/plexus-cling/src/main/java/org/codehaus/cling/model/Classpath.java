@@ -10,7 +10,7 @@ import java.util.List;
 public interface Classpath
 {
 
-    public void addEntry( URL entry );
+    public void addEntry( ClasspathEntry entry );
 
     public List getEntries();
 

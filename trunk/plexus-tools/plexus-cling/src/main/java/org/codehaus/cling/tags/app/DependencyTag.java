@@ -1,5 +1,5 @@
 /* Created on Sep 13, 2004 */
-package org.codehaus.cling.tags;
+package org.codehaus.cling.tags.app;
 
 import java.net.MalformedURLException;
 import java.util.Set;
@@ -12,6 +12,7 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.codehaus.cling.CLIngConstants;
 import org.codehaus.cling.model.AppModel;
+import org.codehaus.cling.model.DependencyClasspathEntry;
 import org.codehaus.marmalade.model.AbstractMarmaladeTag;
 import org.codehaus.marmalade.runtime.MarmaladeExecutionContext;
 import org.codehaus.marmalade.runtime.MarmaladeExecutionException;
@@ -33,42 +34,9 @@ public class DependencyTag
     {
         processChildren( context );
         
-        PlexusContainer container = (PlexusContainer) context.getVariable(
-            CLIngConstants.PLEXUS_CONTAINER_CONTEXT_KEY, getExpressionEvaluator());
-        
-        ArtifactResolver resolver = null;
-        try
-        {
-            resolver = (ArtifactResolver) container.lookup(ArtifactResolver.ROLE);
-        }
-        catch ( ComponentLookupException e )
-        {
-            throw new MarmaladeExecutionException("cannot retrieve artifact resolver", e);
-        }
-        
-        Set remoteRepos = (Set)context.getVariable(CLIngConstants.REMOTE_REPOSITORIES_CONTEXT_KEY, getExpressionEvaluator());
-        ArtifactRepository localRepo = (ArtifactRepository)context.getVariable(CLIngConstants.LOCAL_REPOSITORY_CONTEXT_KEY, getExpressionEvaluator());
-        
-        Artifact artifact = new DefaultArtifact(groupId, artifactId, version, "jar", "jar");
-        
-        try
-        {
-            artifact = resolver.resolve(artifact, remoteRepos, localRepo);
-        }
-        catch ( ArtifactResolutionException e )
-        {
-            throw new MarmaladeExecutionException("cannot resolve application dependency", e);
-        }
         
         ClasspathTag parent = (ClasspathTag)requireParent(ClasspathTag.class);
-        try
-        {
-            parent.addClassEntry(artifact.getFile().toURL());
-        }
-        catch ( MalformedURLException e )
-        {
-            throw new MarmaladeExecutionException("cannot convert artifact file to URL", e);
-        }
+        parent.addClasspathEntry(new DependencyClasspathEntry(groupId, artifactId, version));
     }
     
     public void setGroupId( String groupId )

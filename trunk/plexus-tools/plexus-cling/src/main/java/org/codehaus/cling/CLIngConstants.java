@@ -15,11 +15,7 @@ public final class CLIngConstants
     // ------------------------------
     
     // - MARMALADE CONTEXT VARIABLE KEYS -
-    public static final String PLEXUS_CONTAINER_CONTEXT_KEY = "plexus-container";
-
-    public static final String LOCAL_REPOSITORY_CONTEXT_KEY = "localRepository";
-    
-    public static final String REMOTE_REPOSITORIES_CONTEXT_KEY = "remoteRepositories";
+    public static final String CLING_CONFIG_CONTEXT_KEY = "cling.config";
     // -----------------------------------
 
     private CLIngConstants()
