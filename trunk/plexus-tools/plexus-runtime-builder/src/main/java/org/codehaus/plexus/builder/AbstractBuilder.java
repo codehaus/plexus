@@ -235,6 +235,9 @@ public abstract class AbstractBuilder
         }
     }
 */
+
+    // TODO: these filters belong in maven-artifact - they are generally useful
+
     public static class ScopeExcludeArtifactFilter
         implements ArtifactFilter
     {
