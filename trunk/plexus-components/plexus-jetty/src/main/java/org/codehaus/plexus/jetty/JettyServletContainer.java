@@ -223,7 +223,7 @@ public class JettyServletContainer
 
         list.setPort( listener.getPort() );
 
-        list.setForcedHost( listener.getHost() + ":" + listener.getProxyPort() );
+        list.setForcedHost( listener.getProxyHost() + ":" + listener.getProxyPort() );
 
         server.addListener( list );
     }

@@ -13,6 +13,8 @@ public class ProxyListener
 
     private int port;
 
+    private String proxyHost;
+
     private int proxyPort;
 
     public String getHost()
@@ -23,6 +25,11 @@ public class ProxyListener
     public int getPort()
     {
         return port;
+    }
+
+    public String getProxyHost()
+    {
+        return proxyHost;
     }
 
     public int getProxyPort()
