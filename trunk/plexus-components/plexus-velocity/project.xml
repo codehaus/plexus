@@ -5,84 +5,26 @@
   <artifactId>plexus-velocity</artifactId>
   <name>Plexus Velocity Component</name>
   <currentVersion>1.0-beta-3</currentVersion>
-
   <dependencies>
-
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
-      <type>jar</type>
       <version>2.0</version>
     </dependency>
-
+    <dependency>
+      <groupId>velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>1.4</version>
+    </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.8</version>
     </dependency>
-
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.0.2</version>
     </dependency>
-
   </dependencies>
-<!--
-  <build>
-
-    <nagEmailAddress>plexus-dev@lists.codehaus.org</nagEmailAddress>
-    <sourceDirectory>src/main</sourceDirectory>
-    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-
-    <unitTest>
-      <includes>
-        <include>**/*Test.java</include>
-      </includes>
-      <excludes>
-        <exclude>**/Abstract*.java</exclude>
-      </excludes>
-    
-      <resources>
-        <resource>
-          <directory>src/test</directory>
-          <includes>
-            <include>**/*.xml</include>
-            <include>**/*.xsd</include>
-            <include>**/*.vm</include>
-            <include>**/*.txt</include>
-            <include>**/*.properties</include>
-          </includes>
-        </resource>
-      </resources>
-    </unitTest>
-
-    <resources>
-      <resource>
-       <directory>src/main</directory>
-        <includes>
-          <include>**/*.properties</include>
-          <include>**/*.vsl</include>
-          <include>**/*.css</include>
-          <include>**/*.gif</include>
-          <include>**/*.xml</include>
-        </includes>
-      </resource>
-    </resources>
-  </build>
-
-  <reports>
-    <report>maven-changelog-plugin</report>
-    <report>maven-changes-plugin</report>
-    <report>maven-checkstyle-plugin</report>
-    <report>maven-developer-activity-plugin</report>
-    <report>maven-file-activity-plugin</report>
-    <report>maven-javadoc-plugin</report>
-    <report>maven-jdepend-plugin</report>
-    <report>maven-jcoverage-plugin</report>
-    <report>maven-junit-report-plugin</report>
-    <report>maven-jxr-plugin</report>
-    <report>maven-license-plugin</report>
-  </reports>
--->
 </project>
