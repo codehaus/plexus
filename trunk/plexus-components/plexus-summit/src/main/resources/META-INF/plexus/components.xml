@@ -76,23 +76,15 @@
       <role-hint>new</role-hint>
       <implementation>org.codehaus.plexus.summit.display.NewBufferedDisplay</implementation>
     </component>
-    
-    <!-- Pipeline -->
+
     <!--
-    <component>
-      <role>org.codehaus.plexus.summit.pipeline.Pipeline</role>
-      <implementation>org.codehaus.plexus.summit.pipeline.SummitPipeline</implementation>
-      <lifecycle-handler>plexus-configurable</lifecycle-handler>
-      <configuration>
-        <valves>
-          <valve>org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve</valve>
-          <valve>org.codehaus.plexus.summit.pipeline.valve.DetermineTargetValve</valve>
-          <valve>org.codehaus.plexus.summit.pipeline.valve.ResolverValve</valve>
-          <valve>org.codehaus.plexus.summit.pipeline.valve.DisplayValve</valve>
-        </valves>
-      </configuration>
-    </component>
-    -->
+     |
+     | Standard Valves
+     |
+     | These valves can be used in any Summit webapp but the pipeline must be configured
+     | in order to use them.
+     |
+     -->
 
     <component>
       <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
@@ -122,6 +114,12 @@
       <configuration>
         <resolver>new</resolver>
       </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
+      <role-hint>org.codehaus.plexus.summit.pull.PullToolValve</role-hint>
+      <implementation>org.codehaus.plexus.summit.pull.PullToolValve</implementation>
     </component>
 
     <!-- Pull Tools -->
