@@ -21,10 +21,13 @@
  */
 package org.codehaus.plexus.builder.application;
 
+import org.codehaus.plexus.builder.AbstractBuilder;
+
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class DefaultApplicationBuilder
+    extends AbstractBuilder
 {
 }
