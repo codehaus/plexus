@@ -25,16 +25,35 @@ package org.codehaus.plexus.taskqueue;
  */
 
 import java.util.List;
+import java.util.Iterator;
 
 /**
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public interface TaskViabilityEvaluator
+public class BuildProjectTaskViabilityEvaluator
+    implements TaskViabilityEvaluator
 {
-    String ROLE = TaskViabilityEvaluator.class.getName();
+    public void evaluate( List tasks )
+        throws TaskQueueException
+    {
+        BuildProjectTask okTask = null;
 
-    void evaluate( List tasks )
-        throws TaskQueueException;
+        for ( Iterator it = tasks.iterator(); it.hasNext(); )
+        {
+            BuildProjectTask buildProjectTask = (BuildProjectTask) it.next();
+
+            if ( okTask == null )
+            {
+                okTask = buildProjectTask;
+
+                continue;
+            }
+
+            if ( buildProjectTask.getTimestamp() - okTask.getTimestamp() < 100 )
+            {
+                it.remove();
+            }
+        }
+    }
 }
