@@ -2,6 +2,9 @@ package org.codehaus.plexus.builder;
 
 import java.io.File;
 
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectBuilder;
+
 import org.codehaus.plexus.PlexusTestCase;
 
 public class PlexusBuilderTest
@@ -24,15 +27,15 @@ public class PlexusBuilderTest
 
         String basedir = System.getProperty( "basedir" );
 
-        buildDirectory = new File( basedir, "target/plexus" ).getPath();
+        buildDirectory = new File( basedir, "target/generated-runtime" ).getPath();
 
-        plexusConfiguration = new File( basedir, "src/test-input/conf/plexus.conf" ).getPath();
+        plexusConfiguration = new File( basedir, "src/test/resources/conf/plexus.conf" ).getPath();
 
-        componentManifest = new File( basedir, "src/test-input/plexus-component.manifest" ).getPath();
+        componentManifest = new File( basedir, "src/test/resources/plexus-component.manifest" ).getPath();
 
-        configurationsDirectory = new File( basedir, "src/test-input/conf" ).getPath();
+        configurationsDirectory = new File( basedir, "src/test/resources/conf" ).getPath();
 
-        configurationPropertiesFile = new File( basedir, "src/test-input/configuration.properties" ).getPath();
+        configurationPropertiesFile = new File( basedir, "src/test/resources/configuration.properties" ).getPath();
     }
 
     public void testPlexusBuilder()
@@ -40,22 +43,25 @@ public class PlexusBuilderTest
     {
         DefaultPlexusBuilder builder = (DefaultPlexusBuilder)lookup( DefaultPlexusBuilder.ROLE );
 
+        MavenProjectBuilder projectBuilder = (MavenProjectBuilder) lookup( MavenProjectBuilder.ROLE );
+
         builder.setBaseDirectory( buildDirectory );
 
-//        builder.setProjectPom( System.getProperty( "basedir" ) + "/project.xml" );
-        builder.setProjectPom( getTestFile( "src/test/project" ) + "/project.xml" );
+        MavenProject project = projectBuilder.build( new File( getTestFile( "src/test/project" ) + "/project.xml" ) );
+
+        builder.setProject( project );
 
         //!! @todo need a way to parameterize this
 //        builder.setMavenRepoLocal( System.getProperty( "user.home" ) + "/maven-repo-local" );
         builder.setMavenRepoLocal( getTestFile( "src/test/repository" ) );
 
-        builder.setApplication( "tambora" );
+//        builder.setApplication( "tambora" );
 
-        builder.setPlexusVersion( "0.14-SNAPSHOT" );
+//        builder.setPlexusVersion( "0.14-SNAPSHOT" );
 
         builder.setPlexusConfiguration( plexusConfiguration );
 
-        builder.setComponentManifest( componentManifest );
+//        builder.setComponentManifest( componentManifest );
 
         builder.setConfigurationsDirectory( configurationsDirectory );
 
