@@ -62,6 +62,7 @@ import java.net.InetAddress;
 import java.util.StringTokenizer;
 
 import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.context.Context;
 import org.apache.avalon.framework.logger.Logger;
 import org.apache.avalon.framework.service.ServiceException;
 import org.apache.avalon.framework.service.ServiceManager;
@@ -69,7 +70,6 @@ import org.apache.ftpserver.ip.IpRestrictorInterface;
 import org.apache.ftpserver.remote.RemoteHandler;
 import org.apache.ftpserver.usermanager.UserManagerInterface;
 import org.apache.ftpserver.util.AsyncMessageQueue;
-import org.apache.avalon.phoenix.BlockContext;
 
 /**
  * Ftp configuration class. It has all ftp server configuration
@@ -90,7 +90,7 @@ class FtpConfig {
     private InetAddress mSelfAddress            = null;
 
     private Configuration mConf                 = null;
-    private BlockContext mContext               = null;
+    private Context mContext                    = null;
     private Logger mLogger                      = null;
 
     private FtpStatistics mStatistics           = null;
@@ -129,7 +129,7 @@ class FtpConfig {
     /**
      * Set context - third step.
      */
-    public void setContext(BlockContext ctx) {
+    public void setContext(Context ctx) {
         mContext = ctx;
     }
 
@@ -330,7 +330,7 @@ class FtpConfig {
     /**
      * Get context
      */
-    public BlockContext getContext() {
+    public Context getContext() {
         return mContext;
     }
 
@@ -443,13 +443,6 @@ class FtpConfig {
     }
 
     /**
-     * Get base directory
-     */
-    public File getBaseDirectory() {
-        return mContext.getBaseDirectory();
-    }
-
-    /**
      * Get IP restrictor object.
      */
     public IpRestrictorInterface getIpRestrictor() {
@@ -512,16 +505,3 @@ class FtpConfig {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
