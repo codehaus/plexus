@@ -27,7 +27,7 @@
   <siteAddress>plexus.codehaus.org</siteAddress>
   <siteDirectory>/home/projects/plexus/public_html/avalon</siteDirectory>
   <distributionSite>plexus.codehaus.org</distributionSite>
-  <distributionDirectory>/home/projects/plexus/dist</distributionDirectory>
+  <distributionDirectory>/dist</distributionDirectory>
   
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:plexus/plexus-personalities/plexus-avalon-personality</connection>
