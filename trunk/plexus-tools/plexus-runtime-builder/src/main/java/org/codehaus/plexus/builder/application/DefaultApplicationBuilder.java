@@ -52,9 +52,14 @@ public class DefaultApplicationBuilder
     // ApplicationBuilder Implementation
     // ----------------------------------------------------------------------
 
-    public void assemble( String applicationName, File workingDirectory,
-                          List remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts,
-                          File plexusConfigurationFile, File configurationsDirectory, File configurationPropertiesFile )
+    public void assemble( String applicationName,
+                          File workingDirectory,
+                          List remoteRepositories,
+                          ArtifactRepository localRepository,
+                          Set projectArtifacts,
+                          File plexusConfigurationFile,
+                          File configurationsDirectory,
+                          File configurationPropertiesFile )
         throws ApplicationBuilderException
     {
         // ----------------------------------------------------------------------
@@ -164,7 +169,8 @@ public class DefaultApplicationBuilder
     //
     // ----------------------------------------------------------------------
 
-    private void processConfigurations( File confDir, File plexusConfigurationFile, File configurationPropertiesFile,
+    private void processConfigurations( File confDir, File plexusConfigurationFile,
+                                        File configurationPropertiesFile,
                                         File configurationsDirectory )
         throws ApplicationBuilderException, IOException
     {
@@ -216,23 +222,4 @@ public class DefaultApplicationBuilder
             filterCopy( in, out, configurationProperties );
         }
     }
-/*
-    private void copyApplicationDependencies( Set artifacts, File outputDir, File libDir )
-        throws IOException
-    {
-        Iterator it = artifacts.iterator();
-
-        while ( it.hasNext() )
-        {
-            Artifact artifact = (Artifact) it.next();
-
-            if ( isBootArtifact( artifact ) )
-            {
-                continue;
-            }
-
-            copyArtifact( artifact, outputDir, libDir );
-        }
-    }
-*/
 }
