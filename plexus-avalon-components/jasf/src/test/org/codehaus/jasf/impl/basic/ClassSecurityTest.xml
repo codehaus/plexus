@@ -31,7 +31,7 @@
       <role>org.codehaus.jasf.ResourceController</role>
       <implementation>org.codehaus.jasf.impl.basic.ClassAccessController</implementation>
       <configuration>
-        <defaultAuthorization>true</defaultAuthorization>
+        <defaultAuthorization>false</defaultAuthorization>
 	  </configuration>
     </component>
 

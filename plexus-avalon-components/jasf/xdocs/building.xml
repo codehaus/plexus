@@ -12,29 +12,10 @@
   <section name="Building">
     <p>
       Maven makes building easy just do "maven java:compile"!  
-      Except three things must be done first.
-    </p>
-    <p>
-      First, you must download 
+      Except, you must download 
       <a href="http://jakarta.apache.org/commons/sandbox/attributes/">Commons Attributes</a>
-      from cvs.  Then do "maven jar:install" so the jar is installed
-      into your local repository.
-    </p>
-    <p>
-      Second, you must install the commons-attributes plugin located in the 
-      "src/attributes-plugin" directory of the jasf distribution.  This is easily done with
-      the latest maven builds by doing "maven plugin:install".
-    </p>
-    <p>
-      Last you must have the latest version of Fulcrum in your maven repository.  But, you 
-      must patch it to add support for the fulcrum security service.  Just add this to the
-      avalon-roles.xml file in the org.apache.fulcrum package:
-<source>
-  <role
-    name="org.apache.fulcrum.jasf.SecurityService"
-    shorthand="jasf"
-    default-class="org.apache.fulcrum.jasf.JASFSecurityService"/>
-</source>
+      from cvs.  Make sure to install the jar via "maven jar:install" and the maven plugin
+      that comes with it.
     </p>
   </section>
 
