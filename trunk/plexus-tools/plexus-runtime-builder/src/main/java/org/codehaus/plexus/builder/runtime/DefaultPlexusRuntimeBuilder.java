@@ -28,6 +28,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.cli.CommandLineException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -168,16 +169,16 @@ public class DefaultPlexusRuntimeBuilder
 
             packageJavaRuntime();
 
-//            executable( baseDirectory + "/bin/plexus.sh" );
+            executable( baseDirectory + "/bin/plexus.sh" );
         }
         catch ( PlexusRuntimeBuilderException ex )
         {
             throw ex;
         }
-//        catch ( CommandLineException ex )
-//        {
-//            throw new PlexusRuntimeBuilderException( "Exception while building the runtime.", ex );
-//        }
+        catch ( CommandLineException ex )
+        {
+            throw new PlexusRuntimeBuilderException( "Exception while building the runtime.", ex );
+        }
         catch ( IOException ex )
         {
             throw new PlexusRuntimeBuilderException( "Exception while building the runtime.", ex );
