@@ -1,8 +1,8 @@
 package org.codehaus.plexus.summit.parameters;
 
-import org.apache.commons.fileupload.FileItem;
-
 import java.util.Map;
+
+import org.apache.commons.fileupload.FileItem;
 
 /**
  * Provides numerous convienence methods which operate on a map of

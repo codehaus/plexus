@@ -1,11 +1,11 @@
 package org.codehaus.plexus.summit.renderer;
 
+import java.io.StringWriter;
+import java.io.Writer;
+
 import org.codehaus.plexus.summit.AbstractSummitComponent;
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.rundata.RunData;
-
-import java.io.Writer;
-import java.io.StringWriter;
 
 /**
  * <p>Base class from which all <code>Renderer</code>s are

@@ -18,7 +18,6 @@ package org.codehaus.plexus.summit.display;
 
 import org.codehaus.plexus.summit.SummitConstants;
 import org.codehaus.plexus.summit.renderer.Renderer;
-import org.codehaus.plexus.summit.resolver.ClassicResolver;
 import org.codehaus.plexus.summit.resolver.NewResolver;
 import org.codehaus.plexus.summit.rundata.RunData;
 import org.codehaus.plexus.summit.view.View;

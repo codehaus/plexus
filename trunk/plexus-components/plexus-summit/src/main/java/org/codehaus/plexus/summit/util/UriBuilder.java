@@ -1,14 +1,15 @@
 package org.codehaus.plexus.summit.util;
 
-import org.codehaus.plexus.summit.SummitConstants;
-import org.codehaus.plexus.summit.parameters.RequestParameters;
-import org.codehaus.plexus.summit.rundata.RunData;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.codehaus.plexus.summit.SummitConstants;
+import org.codehaus.plexus.summit.parameters.RequestParameters;
+import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
  * This creates a Dynamic URI for use within the Turbine system

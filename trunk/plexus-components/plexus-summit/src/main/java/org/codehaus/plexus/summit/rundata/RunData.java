@@ -56,16 +56,17 @@ package org.codehaus.plexus.summit.rundata;
  * ----------------------------------------------------------------------------
  */
 
-import org.codehaus.plexus.summit.SummitComponent;
-import org.codehaus.plexus.summit.parameters.RequestParameters;
-import org.codehaus.plexus.summit.resolver.Resolution;
+import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Map;
+
+import org.codehaus.plexus.summit.SummitComponent;
+import org.codehaus.plexus.summit.parameters.RequestParameters;
+import org.codehaus.plexus.summit.resolver.Resolution;
 
 /**
  * RunData is an interface to run-rime information that is passed within

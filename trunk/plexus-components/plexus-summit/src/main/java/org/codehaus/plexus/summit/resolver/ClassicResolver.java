@@ -1,10 +1,10 @@
 package org.codehaus.plexus.summit.resolver;
 
-import org.codehaus.plexus.summit.view.View;
-
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
+import org.codehaus.plexus.summit.view.View;
 
 /**
  * <p>This resolving strategy emulates the Turbine 2.x process of matching a target
