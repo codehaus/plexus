@@ -68,6 +68,13 @@ public class AvalonServiceManager
      */
     public void release( Object service )
     {
-        container.release( service );
+        try
+        {
+            container.release( service );
+        }
+        catch(Exception ex)
+        {
+            // ignore
+        }
     }
 }
