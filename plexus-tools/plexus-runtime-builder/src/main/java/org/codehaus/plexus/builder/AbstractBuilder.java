@@ -63,7 +63,7 @@ public abstract class AbstractBuilder
     extends AbstractLogEnabled
 {
     protected final static Set BOOT_ARTIFACTS = new HashSet( Arrays.asList( new Artifact[]{
-        new DefaultArtifact( "classworlds", "classworlds", "1.1-alpha-2-SNAPSHOT", "jar" ),
+        new DefaultArtifact( "classworlds", "classworlds", "1.1-alpha-1", "jar" ),
     } ) );
 
     protected final static Set CORE_ARTIFACTS = new HashSet( Arrays.asList( new Artifact[]{
