@@ -94,6 +94,14 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Emmanuel Venisse</name>
+      <id>evenisse</id>
+      <email>evenisse@codehaus.org</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
 </project>
 
