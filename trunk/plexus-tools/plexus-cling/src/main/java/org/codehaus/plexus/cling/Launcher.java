@@ -25,6 +25,8 @@ import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.classworlds.ClassWorld;
 import org.codehaus.classworlds.DuplicateRealmException;
 import org.codehaus.marmalade.el.ognl.OgnlExpressionEvaluator;
+import org.codehaus.marmalade.el.ognl.PathSafeOgnlExpressionEvaluator;
+import org.codehaus.marmalade.metamodel.MarmaladeTaglibResolver;
 import org.codehaus.marmalade.metamodel.ModelBuilderException;
 import org.codehaus.marmalade.metamodel.ScriptBuilder;
 import org.codehaus.marmalade.model.MarmaladeScript;
@@ -47,6 +49,7 @@ import org.codehaus.plexus.cling.model.Classpath;
 import org.codehaus.plexus.cling.model.ClasspathEntry;
 import org.codehaus.plexus.cling.model.ResolvedClasspathEntry;
 import org.codehaus.plexus.cling.tags.app.AppTag;
+import org.codehaus.plexus.cling.tags.app.AppTagLibrary;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.embed.Embedder;
@@ -380,8 +383,9 @@ public class Launcher implements Contextualizable
         }
         
         MarmaladeParsingContext parsingContext = new DefaultParsingContext();
-        parsingContext.setDefaultExpressionEvaluator(new OgnlExpressionEvaluator());
+        parsingContext.setDefaultExpressionEvaluator(new PathSafeOgnlExpressionEvaluator());
         parsingContext.setInput(reader);
+        parsingContext.setDefaultTagLibrary(new AppTagLibrary());
         
         try
         {
