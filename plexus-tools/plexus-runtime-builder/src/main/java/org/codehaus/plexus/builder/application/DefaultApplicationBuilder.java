@@ -35,6 +35,7 @@ import java.io.IOException;
  */
 public class DefaultApplicationBuilder
     extends AbstractBuilder
+    implements ApplicationBuilder
 {
     private String applicationName;
 
