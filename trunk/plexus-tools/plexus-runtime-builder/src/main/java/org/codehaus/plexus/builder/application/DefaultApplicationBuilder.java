@@ -1,4 +1,4 @@
-package org.codehaus.plexus.builder.application;
+packageorg.codehaus.plexus.builder.application;
 
 /*
  * Copyright (c) 2004, Codehaus.org
@@ -25,12 +25,17 @@ package org.codehaus.plexus.builder.application;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.List;
+import java.util.HashSet;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 
 import org.codehaus.plexus.application.PlexusApplicationConstants;
 import org.codehaus.plexus.archiver.Archiver;
@@ -57,6 +62,7 @@ public class DefaultApplicationBuilder
                           List remoteRepositories,
                           ArtifactRepository localRepository,
                           Set projectArtifacts,
+                          Set serviceArtifacts,
                           File plexusConfigurationFile,
                           File configurationsDirectory,
                           File configurationPropertiesFile )
@@ -71,12 +77,7 @@ public class DefaultApplicationBuilder
             throw new ApplicationBuilderException( "The application name must be set." );
         }
 
-        if ( configurationPropertiesFile == null )
-        {
-            throw new ApplicationBuilderException( "The configuration properties file must be set." );
-        }
-
-        if ( !configurationPropertiesFile.isFile() )
+        if ( configurationPropertiesFile != null && !configurationPropertiesFile.isFile() )
         {
             throw new ApplicationBuilderException( "The configuration properties file isn't a file: '" + configurationPropertiesFile.getAbsolutePath() + "'." );
         }
@@ -94,12 +95,16 @@ public class DefaultApplicationBuilder
 
         File libDir = mkdir( new File( workingDirectory, PlexusApplicationConstants.LIB_DIRECTORY ) );
 
+        File logsDir = mkdir( new File( workingDirectory, "logs" ) );
+
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
 
         try
         {
+            new FileWriter( new File( logsDir, "foo" ) ).close();
+
             processConfigurations( confDir, plexusConfigurationFile, configurationPropertiesFile, configurationsDirectory );
         }
         catch ( IOException e )
@@ -115,17 +120,23 @@ public class DefaultApplicationBuilder
 
         try
         {
-            artifacts = findArtifacts( remoteRepositories, localRepository, projectArtifacts, true );
+            Set excludedArtifacts = new HashSet();
 
-            Set bootArtifacts = findArtifacts( remoteRepositories, localRepository, BOOT_ARTIFACTS, false );
+            excludedArtifacts.addAll( findArtifacts( remoteRepositories, localRepository, BOOT_ARTIFACTS, false, null ) );
 
-            Set coreArtifacts = findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false );
+            excludedArtifacts.addAll( findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false, null ) );
 
-            filterArtifacts( artifacts, bootArtifacts );
+            serviceArtifacts = findArtifacts( remoteRepositories, localRepository, serviceArtifacts, true, null );
 
-            filterArtifacts( artifacts, coreArtifacts );
+            excludedArtifacts.addAll( serviceArtifacts );
 
-            filterArtifacts( artifacts, EXCLUDED_ARTIFACTS );
+            excludedArtifacts.addAll( EXCLUDED_ARTIFACTS );
+
+            ArtifactFilter filter = new AndArtifactFilter(
+                new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
+                new GroupArtifactTypeArtifactFilter( excludedArtifacts ) );
+
+            artifacts = findArtifacts( remoteRepositories, localRepository, projectArtifacts, true, filter );
         }
         catch ( ArtifactResolutionException e )
         {
@@ -205,7 +216,16 @@ public class DefaultApplicationBuilder
 
         scanner.setBasedir( configurationsDirectory );
 
-        scanner.setExcludes( new String[]{configurationPropertiesFile.getAbsolutePath(), "**/CVS/**"} );
+        List excludes = new ArrayList();
+
+        excludes.add( "**/CVS/**" );
+
+        if ( configurationPropertiesFile != null )
+        {
+            excludes.add( configurationPropertiesFile.getAbsolutePath() );
+        }
+
+        scanner.setExcludes( (String[]) excludes.toArray( new String[ excludes.size() ] ) );
 
         scanner.scan();
 

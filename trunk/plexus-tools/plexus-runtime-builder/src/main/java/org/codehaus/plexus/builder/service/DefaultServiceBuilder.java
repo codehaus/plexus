@@ -27,12 +27,16 @@ package org.codehaus.plexus.builder.service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.List;
+import java.util.HashSet;
+import java.util.ArrayList;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 
 import org.codehaus.plexus.application.PlexusServiceConstants;
 import org.codehaus.plexus.archiver.Archiver;
@@ -54,7 +58,7 @@ public class DefaultServiceBuilder
     // ServiceBuilder Implementation
     // ----------------------------------------------------------------------
 
-    public void build( String serviceName, File workingDirectory,
+    public void build( String serviceName, File outputDirectory, File classes,
                        List remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts,
                        File plexusConfigurationFile, File configurationsDirectory, File configurationPropertiesFile )
         throws ServiceBuilderException
@@ -68,12 +72,7 @@ public class DefaultServiceBuilder
             throw new ServiceBuilderException( "The application name must be set." );
         }
 
-        if ( configurationPropertiesFile == null )
-        {
-            throw new ServiceBuilderException( "The configuration properties file must be set." );
-        }
-
-        if ( !configurationPropertiesFile.isFile() )
+        if ( configurationPropertiesFile != null && !configurationPropertiesFile.isFile() )
         {
             throw new ServiceBuilderException( "The configuration properties file isn't a file: '" + configurationPropertiesFile.getAbsolutePath() + "'." );
         }
@@ -87,9 +86,11 @@ public class DefaultServiceBuilder
         // Create directory structure
         // ----------------------------------------------------------------------
 
-        File confDir = mkdir( new File( workingDirectory, PlexusServiceConstants.CONF_DIRECTORY ) );
+        File confDir = mkdir( new File( outputDirectory, PlexusServiceConstants.CONF_DIRECTORY ) );
 
-        File libDir = mkdir( new File( workingDirectory, PlexusServiceConstants.LIB_DIRECTORY ) );
+        File libDir = mkdir( new File( outputDirectory, PlexusServiceConstants.LIB_DIRECTORY ) );
+
+        File classesDir = mkdir( new File( outputDirectory, PlexusServiceConstants.CLASSES_DIRECTORY ) );
 
         // ----------------------------------------------------------------------
         //
@@ -112,21 +113,34 @@ public class DefaultServiceBuilder
 
         try
         {
-            artifacts = findArtifacts( remoteRepositories, localRepository, projectArtifacts, true );
+            Set excludedArtifacts = new HashSet();
 
-            Set bootArtifacts = findArtifacts( remoteRepositories, localRepository, BOOT_ARTIFACTS, false );
+            excludedArtifacts.addAll( findArtifacts( remoteRepositories, localRepository, BOOT_ARTIFACTS, false, null ) );
 
-            Set coreArtifacts = findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false );
+            excludedArtifacts.addAll( findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false, null ) );
 
-            filterArtifacts( artifacts, bootArtifacts );
+            ArtifactFilter filter = new AndArtifactFilter(
+                new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
+                new GroupArtifactTypeArtifactFilter( excludedArtifacts ) );
 
-            filterArtifacts( artifacts, coreArtifacts );
-
-            filterArtifacts( artifacts, EXCLUDED_ARTIFACTS );
+            artifacts = findArtifacts( remoteRepositories, localRepository, projectArtifacts, true, filter );
         }
         catch ( ArtifactResolutionException e )
         {
             throw new ServiceBuilderException( "Error while finding dependencies.", e );
+        }
+
+        // ----------------------------------------------------------------------
+        // Copy the classes
+        // ----------------------------------------------------------------------
+
+        try
+        {
+            FileUtils.copyDirectoryStructure( classes, classesDir );
+        }
+        catch ( IOException e )
+        {
+            throw new ServiceBuilderException( "Error while copying the classes.", e );
         }
 
         // ----------------------------------------------------------------------
@@ -135,12 +149,15 @@ public class DefaultServiceBuilder
 
         try
         {
-            copyArtifacts( workingDirectory, libDir, artifacts );
+            copyArtifacts( outputDirectory, libDir, artifacts );
         }
         catch ( IOException e )
         {
             throw new ServiceBuilderException( "Error while copying dependencies.", e );
         }
+
+        // TODO: Make a META-INF/MANIFEST.MF that includes references to all the jar files
+        // in /lib
     }
 
     public void bundle( File outputFile, File workingDirectory )
@@ -201,7 +218,16 @@ public class DefaultServiceBuilder
 
         scanner.setBasedir( configurationsDirectory );
 
-        scanner.setExcludes( new String[]{configurationPropertiesFile.getAbsolutePath(), "**/CVS/**"} );
+        List excludes = new ArrayList();
+
+        excludes.add( "**/CVS/**" );
+
+        if ( configurationPropertiesFile != null )
+        {
+            excludes.add( configurationPropertiesFile.getAbsolutePath() );
+        }
+
+        scanner.setExcludes( (String[]) excludes.toArray( new String[ excludes.size() ] ) );
 
         scanner.scan();
 
