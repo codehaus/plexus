@@ -116,7 +116,7 @@ $JAVACMD \
   $PLEXUS_OPTS \
   -classpath ${PLEXUS_HOME}/core/boot/classworlds-${CLASSWORLDS_VERSION}.jar \
   -Dclassworlds.conf=${PLEXUS_HOME}/conf/classworlds.conf  \
-  -Dcore=${PLEXUS_HOME}/core \
+  -Dplexus.core=${PLEXUS_HOME}/core \
   -Djava.io.tmpdir=${PLEXUS_TMPDIR} \
   -Dtools.jar=$TOOLS_JAR \
   -Dplexus.home=${PLEXUS_HOME} \

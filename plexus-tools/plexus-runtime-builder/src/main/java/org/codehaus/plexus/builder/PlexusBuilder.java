@@ -4,6 +4,7 @@ package org.codehaus.plexus.builder;
  * LICENSE
  */
 
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
 
 /**
@@ -16,7 +17,7 @@ public interface PlexusBuilder
 
     void setBaseDirectory( String outputDirectory );
     void setProject( MavenProject project );
-    void setMavenRepoLocal( String mavenRepoLocal );
+    void setLocalRepository( ArtifactRepository localRepository );
     void setApplicationName( String applicationName );
     void setPlexusConfiguration( String plexusConfiguration );
     void setConfigurationsDirectory( String configurationsDirectory );
