@@ -3,7 +3,7 @@ package org.codehaus.plexus.personality.avalon;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.DefaultComponentRepository;
 import org.codehaus.plexus.component.repository.exception.ComponentRepositoryException;
-import org.codehaus.plexus.configuration.DefaultConfiguration;
+import org.codehaus.plexus.configuration.DefaultPlexusConfiguration;
 
 /**
  * A ComponentRepository for Avalon services that creates ServiceSelectors
@@ -39,9 +39,9 @@ public class AvalonComponentRepository
 
             d.setImplementation( "org.codehaus.plexus.personality.avalon.AvalonServiceSelector" );
 
-            DefaultConfiguration configuration = new DefaultConfiguration( "configuration" );
+            DefaultPlexusConfiguration configuration = new DefaultPlexusConfiguration( "configuration" );
 
-            DefaultConfiguration selectableRole = new DefaultConfiguration( "selectable-role" );
+            DefaultPlexusConfiguration selectableRole = new DefaultPlexusConfiguration( "selectable-role" );
 
             selectableRole.setValue( componentRole );
 

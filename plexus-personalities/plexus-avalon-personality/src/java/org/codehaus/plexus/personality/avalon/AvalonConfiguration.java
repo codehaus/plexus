@@ -5,19 +5,21 @@ import java.util.List;
 
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
 
 /**
  * Wrapper which translates the Plexus Configuration to an AvalonConfiguration.
- * 
+ *
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  * @since Jan 6, 2004
  */
 public class AvalonConfiguration
     implements Configuration
 {
-    org.codehaus.plexus.configuration.Configuration config;
-    
-    public AvalonConfiguration(org.codehaus.plexus.configuration.Configuration config)
+    PlexusConfiguration config;
+
+    public AvalonConfiguration( PlexusConfiguration config )
     {
         this.config = config;
     }
@@ -35,39 +37,32 @@ public class AvalonConfiguration
      */
     public String getLocation()
     {
-        return config.getLocation();
+        throw new UnsupportedOperationException();
     }
 
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getNamespace()
      */
-    public String getNamespace() throws org.apache.avalon.framework.configuration.ConfigurationException
+    public String getNamespace()
+        throws ConfigurationException
     {
-        try
-        {
-            return config.getNamespace();
-        }
-        catch ( org.codehaus.plexus.configuration.ConfigurationException e )
-        {
-            throw new ConfigurationException( "ConfigurationException.", e.getCause() );
-        }
-        
+        throw new UnsupportedOperationException();
     }
 
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getChild(java.lang.String)
      */
-    public Configuration getChild(String child)
+    public Configuration getChild( String child )
     {
-        return new AvalonConfiguration( config.getChild(child) );
+        return new AvalonConfiguration( config.getChild( child ) );
     }
 
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getChild(java.lang.String, boolean)
      */
-    public Configuration getChild(String child, boolean value)
+    public Configuration getChild( String child, boolean value )
     {
-        return new AvalonConfiguration( config.getChild(child, value) );
+        return new AvalonConfiguration( config.getChild( child, value ) );
     }
 
     /**
@@ -75,30 +70,30 @@ public class AvalonConfiguration
      */
     public Configuration[] getChildren()
     {
-        org.codehaus.plexus.configuration.Configuration[] children = config.getChildren();
+        PlexusConfiguration[] children = config.getChildren();
         List childList = new ArrayList();
-        
+
         for ( int i = 0; i < children.length; i++ )
         {
             childList.add( new AvalonConfiguration( children[i] ) );
         }
-        
+
         return (Configuration[]) childList.toArray( new AvalonConfiguration[]{} );
     }
 
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getChildren(java.lang.String)
      */
-    public Configuration[] getChildren(String name)
+    public Configuration[] getChildren( String name )
     {
-        org.codehaus.plexus.configuration.Configuration[] children = config.getChildren(name);
+        PlexusConfiguration[] children = config.getChildren( name );
         List childList = new ArrayList();
-        
+
         for ( int i = 0; i < children.length; i++ )
-           {
+        {
             childList.add( new AvalonConfiguration( children[i] ) );
         }
-        
+
         return (Configuration[]) childList.toArray( new AvalonConfiguration[]{} );
     }
 
@@ -113,13 +108,13 @@ public class AvalonConfiguration
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getAttribute(java.lang.String)
      */
-    public String getAttribute(String attr) throws ConfigurationException
+    public String getAttribute( String attr ) throws ConfigurationException
     {
         try
         {
-            return config.getAttribute(attr);
+            return config.getAttribute( attr );
         }
-        catch ( org.codehaus.plexus.configuration.ConfigurationException e )
+        catch ( PlexusConfigurationException e )
         {
             throw new ConfigurationException( "ConfigurationException.", e.getCause() );
         }
@@ -128,13 +123,13 @@ public class AvalonConfiguration
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getAttributeAsInteger(java.lang.String)
      */
-    public int getAttributeAsInteger(String attr) throws ConfigurationException
+    public int getAttributeAsInteger( String attr ) throws ConfigurationException
     {
         try
         {
-            return config.getAttributeAsInteger(attr);
+            return getAttributeAsInteger( config, attr );
         }
-        catch ( org.codehaus.plexus.configuration.ConfigurationException e )
+        catch ( PlexusConfigurationException e )
         {
             throw new ConfigurationException( "ConfigurationException.", e.getCause() );
         }
@@ -143,13 +138,13 @@ public class AvalonConfiguration
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getAttributeAsLong(java.lang.String)
      */
-    public long getAttributeAsLong(String attr) throws ConfigurationException
+    public long getAttributeAsLong( String attr ) throws ConfigurationException
     {
         try
         {
-            return config.getAttributeAsLong(attr);
+            return getAttributeAsLong( config, attr );
         }
-        catch ( org.codehaus.plexus.configuration.ConfigurationException e )
+        catch ( PlexusConfigurationException e )
         {
             throw new ConfigurationException( "ConfigurationException.", e.getCause() );
         }
@@ -158,13 +153,13 @@ public class AvalonConfiguration
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getAttributeAsFloat(java.lang.String)
      */
-    public float getAttributeAsFloat(String attr) throws ConfigurationException
+    public float getAttributeAsFloat( String attr ) throws ConfigurationException
     {
         try
         {
-            return config.getAttributeAsFloat(attr);
+            return getAttributeAsFloat( config, attr );
         }
-        catch ( org.codehaus.plexus.configuration.ConfigurationException e )
+        catch ( PlexusConfigurationException e )
         {
             throw new ConfigurationException( "ConfigurationException.", e.getCause() );
         }
@@ -173,13 +168,13 @@ public class AvalonConfiguration
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getAttributeAsBoolean(java.lang.String)
      */
-    public boolean getAttributeAsBoolean(String attr) throws ConfigurationException
+    public boolean getAttributeAsBoolean( String attr ) throws ConfigurationException
     {
         try
         {
-            return config.getAttributeAsBoolean(attr);
+            return getAttributeAsBoolean( config, attr );
         }
-        catch ( org.codehaus.plexus.configuration.ConfigurationException e )
+        catch ( PlexusConfigurationException e )
         {
             throw new ConfigurationException( "ConfigurationException.", e.getCause() );
         }
@@ -194,7 +189,7 @@ public class AvalonConfiguration
         {
             return config.getValue();
         }
-        catch ( org.codehaus.plexus.configuration.ConfigurationException e )
+        catch ( PlexusConfigurationException e )
         {
             throw new ConfigurationException( "ConfigurationException.", e.getCause() );
         }
@@ -207,9 +202,9 @@ public class AvalonConfiguration
     {
         try
         {
-            return config.getValueAsInteger();
+            return getValueAsInteger( config );
         }
-        catch ( org.codehaus.plexus.configuration.ConfigurationException e )
+        catch ( PlexusConfigurationException e )
         {
             throw new ConfigurationException( "ConfigurationException.", e.getCause() );
         }
@@ -222,9 +217,9 @@ public class AvalonConfiguration
     {
         try
         {
-            return config.getValueAsFloat();
+            return getValueAsFloat( config );
         }
-        catch ( org.codehaus.plexus.configuration.ConfigurationException e )
+        catch ( PlexusConfigurationException e )
         {
             throw new ConfigurationException( "ConfigurationException.", e.getCause() );
         }
@@ -237,9 +232,9 @@ public class AvalonConfiguration
     {
         try
         {
-            return config.getValueAsBoolean();
+            return getValueAsBoolean( config );
         }
-        catch ( org.codehaus.plexus.configuration.ConfigurationException e )
+        catch ( PlexusConfigurationException e )
         {
             throw new ConfigurationException( "ConfigurationException.", e.getCause() );
         }
@@ -252,9 +247,9 @@ public class AvalonConfiguration
     {
         try
         {
-            return config.getValueAsLong();
+            return getValueAsLong( config );
         }
-        catch ( org.codehaus.plexus.configuration.ConfigurationException e )
+        catch ( PlexusConfigurationException e )
         {
             throw new ConfigurationException( "ConfigurationException.", e.getCause() );
         }
@@ -263,7 +258,7 @@ public class AvalonConfiguration
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getValue(java.lang.String)
      */
-    public String getValue(String defaultValue)
+    public String getValue( String defaultValue )
     {
         return config.getValue( defaultValue );
     }
@@ -271,39 +266,39 @@ public class AvalonConfiguration
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getValueAsInteger(int)
      */
-    public int getValueAsInteger(int defaultValue)
+    public int getValueAsInteger( int defaultValue )
     {
-        return config.getValueAsInteger( defaultValue );
+        return getValueAsInteger( config, defaultValue );
     }
 
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getValueAsLong(long)
      */
-    public long getValueAsLong(long defaultValue)
+    public long getValueAsLong( long defaultValue )
     {
-        return config.getValueAsLong( defaultValue );
+        return getValueAsLong( config, defaultValue );
     }
 
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getValueAsFloat(float)
      */
-    public float getValueAsFloat(float defaultValue)
+    public float getValueAsFloat( float defaultValue )
     {
-        return config.getValueAsFloat( defaultValue );
+        return getValueAsFloat( config, defaultValue );
     }
 
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getValueAsBoolean(boolean)
      */
-    public boolean getValueAsBoolean(boolean defaultValue)
+    public boolean getValueAsBoolean( boolean defaultValue )
     {
-        return config.getValueAsBoolean( defaultValue );
+        return getValueAsBoolean( config, defaultValue );
     }
 
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getAttribute(java.lang.String, java.lang.String)
      */
-    public String getAttribute(String attr, String defaultValue)
+    public String getAttribute( String attr, String defaultValue )
     {
         return config.getAttribute( attr, defaultValue );
     }
@@ -311,33 +306,338 @@ public class AvalonConfiguration
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getAttributeAsInteger(java.lang.String, int)
      */
-    public int getAttributeAsInteger(String attr, int defaultValue)
+    public int getAttributeAsInteger( String attr, int defaultValue )
     {
-        return config.getAttributeAsInteger( attr, defaultValue );
+        return getAttributeAsInteger( config, attr, defaultValue );
     }
 
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getAttributeAsLong(java.lang.String, long)
      */
-    public long getAttributeAsLong(String attr, long defaultValue)
+    public long getAttributeAsLong( String attr, long defaultValue )
     {
-        return config.getAttributeAsLong( attr, defaultValue );
+        return getAttributeAsLong( config, attr, defaultValue );
     }
 
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getAttributeAsFloat(java.lang.String, float)
      */
-    public float getAttributeAsFloat(String attr, float defaultValue)
+    public float getAttributeAsFloat( String attr, float defaultValue )
     {
-        return config.getAttributeAsFloat( attr, defaultValue );
+        return getAttributeAsFloat( config, attr, defaultValue );
     }
 
     /**
      * @see org.apache.avalon.framework.configuration.Configuration#getAttributeAsBoolean(java.lang.String, boolean)
      */
-    public boolean getAttributeAsBoolean(String attr, boolean defaultValue)
+    public boolean getAttributeAsBoolean( String attr, boolean defaultValue )
     {
-        return config.getAttributeAsBoolean( attr, defaultValue );
+        return getAttributeAsBoolean( config, attr, defaultValue );
     }
 
+    // ----------------------------------------------------------------------
+    // Accessors
+    // ----------------------------------------------------------------------
+
+    public  String getPrefix()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public int getValueAsInteger( PlexusConfiguration configuration )
+        throws PlexusConfigurationException
+    {
+        String value = configuration.getValue().trim();
+
+        try
+        {
+            return Integer.parseInt( value );
+        }
+        catch ( Exception nfe )
+        {
+            String message =
+                "Cannot parse the value \"" + value
+                + "\" as an integer in the configuration element \""
+                + getName() + "\" at " + getLocation();
+            throw new PlexusConfigurationException( message );
+        }
+    }
+
+    public int getValueAsInteger( PlexusConfiguration configuration, int defaultValue )
+    {
+        try
+        {
+            return getValueAsInteger();
+        }
+        catch ( ConfigurationException ce )
+        {
+            return defaultValue;
+        }
+    }
+
+    public long getValueAsLong( PlexusConfiguration configuration )
+        throws PlexusConfigurationException
+    {
+        String value = configuration.getValue().trim();
+        try
+        {
+            return Long.parseLong( value );
+        }
+        catch ( Exception nfe )
+        {
+            String message =
+                "Cannot parse the value \"" + value
+                + "\" as a long in the configuration element \""
+                + getName() + "\" at " + getLocation();
+            throw new PlexusConfigurationException( message );
+        }
+    }
+
+    public long getValueAsLong( PlexusConfiguration configuration, long defaultValue )
+    {
+        try
+        {
+            return getValueAsLong();
+        }
+        catch ( ConfigurationException ce )
+        {
+            return defaultValue;
+        }
+    }
+
+    public float getValueAsFloat( PlexusConfiguration configuration )
+        throws PlexusConfigurationException
+    {
+        String value = configuration.getValue().trim();
+        try
+        {
+            return Float.parseFloat( value );
+        }
+        catch ( Exception nfe )
+        {
+            String message =
+                "Cannot parse the value \"" + value
+                + "\" as a float in the configuration element \""
+                + getName() + "\" at " + getLocation();
+            throw new PlexusConfigurationException( message );
+        }
+    }
+
+    public float getValueAsFloat( PlexusConfiguration configuration, float defaultValue )
+    {
+        try
+        {
+            return getValueAsFloat();
+        }
+        catch ( ConfigurationException ce )
+        {
+            return ( defaultValue );
+        }
+    }
+
+    public boolean getValueAsBoolean( PlexusConfiguration configuration )
+        throws PlexusConfigurationException
+    {
+        String value = configuration.getValue().trim();
+
+        if ( isTrue( value ) )
+        {
+            return true;
+        }
+        else if ( isFalse( value ) )
+        {
+            return false;
+        }
+        else
+        {
+            String message =
+                "Cannot parse the value \"" + value
+                + "\" as a boolean in the configuration element \""
+                + getName() + "\" at " + getLocation();
+            throw new PlexusConfigurationException( message );
+        }
+    }
+
+    public boolean getValueAsBoolean( PlexusConfiguration configuration, boolean defaultValue )
+    {
+        try
+        {
+            return getValueAsBoolean();
+        }
+        catch ( ConfigurationException ce )
+        {
+            return defaultValue;
+        }
+    }
+
+    public String getValue( PlexusConfiguration configuration, String defaultValue )
+    {
+        try
+        {
+            return getValue();
+        }
+        catch ( ConfigurationException ce )
+        {
+            return defaultValue;
+        }
+    }
+
+    public int getAttributeAsInteger( PlexusConfiguration configuration,
+                                      String name )
+        throws PlexusConfigurationException
+    {
+        String value = configuration.getAttribute( name ).trim();
+
+        try
+        {
+
+            return Integer.parseInt( value );
+        }
+        catch ( Exception nfe )
+        {
+            String message =
+                "Cannot parse the value \"" + value
+                + "\" as an integer in the attribute \""
+                + name + "\" at " + getLocation();
+            throw new PlexusConfigurationException( message );
+        }
+    }
+
+    public int getAttributeAsInteger( PlexusConfiguration configuration, String name, int defaultValue )
+    {
+        try
+        {
+            return getAttributeAsInteger( name );
+        }
+        catch ( ConfigurationException ce )
+        {
+            return defaultValue;
+        }
+    }
+
+    public long getAttributeAsLong( PlexusConfiguration configuration, String name )
+        throws PlexusConfigurationException
+    {
+        String value = configuration.getAttribute( name );
+
+        try
+        {
+            return Long.parseLong( value );
+        }
+        catch ( Exception nfe )
+        {
+            String message =
+                "Cannot parse the value \"" + value
+                + "\" as a long in the attribute \""
+                + name + "\" at " + getLocation();
+            throw new PlexusConfigurationException( message );
+        }
+    }
+
+    public long getAttributeAsLong( PlexusConfiguration configuration, String name, long defaultValue )
+    {
+        try
+        {
+            return getAttributeAsLong( name );
+        }
+        catch ( ConfigurationException ce )
+        {
+            return defaultValue;
+        }
+    }
+
+    public float getAttributeAsFloat( PlexusConfiguration configuration, String name )
+        throws PlexusConfigurationException
+    {
+        String value = configuration.getAttribute( name );
+        try
+        {
+            return Float.parseFloat( value );
+        }
+        catch ( Exception e )
+        {
+            String message =
+                "Cannot parse the value \"" + value
+                + "\" as a float in the attribute \""
+                + name + "\" at " + getLocation();
+            throw new PlexusConfigurationException( message );
+        }
+    }
+
+    public float getAttributeAsFloat( PlexusConfiguration configuration, String name, float defaultValue )
+    {
+        try
+        {
+            return getAttributeAsFloat( name );
+        }
+        catch ( ConfigurationException ce )
+        {
+            return defaultValue;
+        }
+    }
+
+    public boolean getAttributeAsBoolean( PlexusConfiguration configuration, String name )
+        throws PlexusConfigurationException
+    {
+        String value = configuration.getAttribute( name );
+
+        if ( isTrue( value ) )
+        {
+            return true;
+        }
+        else if ( isFalse( value ) )
+        {
+            return false;
+        }
+        else
+        {
+            String message =
+                "Cannot parse the value \"" + value
+                + "\" as a boolean in the attribute \""
+                + name + "\" at " + getLocation();
+            throw new PlexusConfigurationException( message );
+        }
+    }
+
+    private boolean isTrue( String value )
+    {
+        return value.equalsIgnoreCase( "true" )
+            || value.equalsIgnoreCase( "yes" )
+            || value.equalsIgnoreCase( "on" )
+            || value.equalsIgnoreCase( "1" );
+    }
+
+    private boolean isFalse( String value )
+    {
+        return value.equalsIgnoreCase( "false" )
+            || value.equalsIgnoreCase( "no" )
+            || value.equalsIgnoreCase( "off" )
+            || value.equalsIgnoreCase( "0" );
+    }
+
+    protected boolean getAttributeAsBoolean( PlexusConfiguration configuration,
+                                             String name,
+                                             boolean defaultValue )
+    {
+        try
+        {
+            return getAttributeAsBoolean( name );
+        }
+        catch ( ConfigurationException ce )
+        {
+            return defaultValue;
+        }
+    }
+
+    public String getAttribute( PlexusConfiguration configuration, String name, String defaultValue )
+    {
+        try
+        {
+            return getAttribute( name );
+        }
+        catch ( ConfigurationException ce )
+        {
+            return defaultValue;
+        }
+    }
 }
