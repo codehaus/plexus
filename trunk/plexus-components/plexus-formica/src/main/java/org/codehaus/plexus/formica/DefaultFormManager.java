@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedList;
 
 
 /**
@@ -230,6 +231,74 @@ public class DefaultFormManager
             Form form = (Form) i.next();
 
             formMap.put( form.getId(), form );
+        }
+
+        // ----------------------------------------------------------------------
+        // Walk through the forms to perform any inheritance that may be
+        // required.
+        // ----------------------------------------------------------------------
+
+        // parent <--- child <--- grandchild
+
+        for ( Iterator i = forms.iterator(); i.hasNext(); )
+        {
+            Form form = (Form) i.next();
+
+            if ( form.getExtend() != null )
+            {
+                LinkedList lineage = new LinkedList();
+
+                assembleLineage( form, lineage );
+
+                for ( int j = 0; j < lineage.size() - 1; j++ )
+                {
+                    assembleInheritance( (Form) lineage.get( j ), (Form) lineage.get( j + 1 ) );
+                }
+
+                // ----------------------------------------------------------------------
+                // This is to make sure a form in an inheritance chain already processed
+                // is not processed again.
+                // ----------------------------------------------------------------------
+
+                form.setExtend( null );
+            }
+        }
+    }
+
+    private void assembleLineage( Form form, LinkedList lineage )
+    {
+        lineage.addFirst( form );
+
+        if ( form.getExtend() != null )
+        {
+            assembleLineage( (Form) formMap.get( form.getExtend() ), lineage );
+        }
+    }
+
+    private void assembleInheritance( Form parent, Form child )
+    {
+        if ( child.getKeyExpression() == null )
+        {
+            child.setKeyExpression( parent.getKeyExpression() );
+        }
+
+        if ( child.getLookupExpression() == null )
+        {
+            child.setLookupExpression( parent.getLookupExpression() );
+        }
+
+        if ( child.getSummaryCollectionExpression() == null )
+        {
+            child.setSummaryCollectionExpression( parent.getSummaryCollectionExpression() );
+        }
+
+        // ----------------------------------------------------------------------
+        // Form elements
+        // ----------------------------------------------------------------------
+
+        if ( parent.getElements() != null )
+        {
+            child.getElements().addAll( parent.getElements() );
         }
     }
 }
