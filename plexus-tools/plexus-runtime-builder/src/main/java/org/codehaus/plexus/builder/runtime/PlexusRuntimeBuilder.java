@@ -24,6 +24,7 @@ package org.codehaus.plexus.builder.runtime;
 
 import java.io.File;
 import java.util.Set;
+import java.util.List;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 
@@ -37,7 +38,7 @@ public interface PlexusRuntimeBuilder
     String ROLE = PlexusRuntimeBuilder.class.getName();
 
     void build( File workingDirectory,
-                Set remoteRepositories, ArtifactRepository localRepository, Set artifacts,
+                List remoteRepositories, ArtifactRepository localRepository, Set artifacts,
                 File plexusConfiguration, File configurationPropertiesFile )
         throws PlexusRuntimeBuilderException;
 

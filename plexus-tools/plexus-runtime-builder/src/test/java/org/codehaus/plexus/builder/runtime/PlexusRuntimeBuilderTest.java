@@ -27,6 +27,8 @@ package org.codehaus.plexus.builder.runtime;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.DefaultArtifact;
@@ -51,8 +53,6 @@ public class PlexusRuntimeBuilderTest
         // Clean the output directory
         // ----------------------------------------------------------------------
 
-        File outputFile = getTestFile( "target/test-runtime.jar" );
-
         File workingDirectory = getTestFile( "target/test-runtime" );
 
         FileUtils.deleteDirectory( workingDirectory );
@@ -61,7 +61,7 @@ public class PlexusRuntimeBuilderTest
         //
         // ----------------------------------------------------------------------
 
-        Set remoteRepositories = new HashSet();
+        List remoteRepositories = new ArrayList();
 
         ArtifactRepository localRepository = new ArtifactRepository( "local", "file://" + getTestFile( "src/test/repository" ).getAbsolutePath() );
 

@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
@@ -54,6 +55,7 @@ import org.codehaus.plexus.util.cli.Commandline;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public abstract class AbstractBuilder
@@ -68,6 +70,11 @@ public abstract class AbstractBuilder
         new DefaultArtifact( "plexus", "plexus-container-artifact", "1.0-alpha-2-SNAPSHOT", "jar" ),
         new DefaultArtifact( "plexus", "plexus-appserver", "1.0-alpha-1-SNAPSHOT", "jar" ),
         new DefaultArtifact( "plexus", "plexus-utils", "1.0-alpha-2-SNAPSHOT", "jar" ),
+    } ) );
+
+    protected final static Set EXCLUDED_ARTIFACTS = new HashSet( Arrays.asList( new Artifact[]{
+        new DefaultArtifact( "plexus", "plexus", "", "jar" ),
+        new DefaultArtifact( "plexus", "plexus-container-api", "", "jar" ),
     } ) );
 
     // ----------------------------------------------------------------------
@@ -160,7 +167,7 @@ public abstract class AbstractBuilder
         }
     }
 
-    protected Set findArtifacts( Set remoteRepositories, ArtifactRepository localRepository, Set sourceArtifacts, boolean resolveTransitively )
+    protected Set findArtifacts( List remoteRepositories, ArtifactRepository localRepository, Set sourceArtifacts, boolean resolveTransitively )
         throws ArtifactResolutionException
     {
         ArtifactResolutionResult result;
@@ -183,5 +190,32 @@ public abstract class AbstractBuilder
         }
 
         return artifacts;
+    }
+
+    protected void filterArtifacts( Set candidateArtifacts, Set filteredArtifacts )
+    {
+        // ----------------------------------------------------------------------
+        // Remove any artifacts from the candidateArtifacts set.
+        // It will ignore the version when checking for a match
+        // ----------------------------------------------------------------------
+
+        for ( Iterator it = candidateArtifacts.iterator(); it.hasNext(); )
+        {
+            Artifact candiateArtifact = (Artifact) it.next();
+
+            for ( Iterator it2 = filteredArtifacts.iterator(); it2.hasNext(); )
+            {
+                Artifact artifact = (Artifact) it2.next();
+
+                if ( candiateArtifact.getGroupId().equals( artifact.getGroupId() ) &&
+                     candiateArtifact.getArtifactId().equals( artifact.getArtifactId() ) &&
+                     candiateArtifact.getType().equals( artifact.getType() ) )
+                {
+                    it.remove();
+
+                    continue;
+                }
+            }
+        }
     }
 }
