@@ -28,8 +28,7 @@ public class DefaultHibernateSessionService
         HibernateSessionService,
         Initializable,
         Disposable,
-        Serviceable,
-        HttpSessionListener
+        Serviceable
 {
     private ServiceManager manager;
 
@@ -89,28 +88,6 @@ public class DefaultHibernateSessionService
     public void service(ServiceManager manager) throws ServiceException
     {
         this.manager = manager;
-    }
-
-    /**
-     * @see javax.servlet.http.HttpSessionListener#sessionCreated(javax.servlet.http.HttpSessionEvent)
-     */
-    public void sessionCreated(HttpSessionEvent arg0)
-    {
-    }
-
-    /**
-     * @see javax.servlet.http.HttpSessionListener#sessionDestroyed(javax.servlet.http.HttpSessionEvent)
-     */
-    public void sessionDestroyed(HttpSessionEvent session)
-    {
-        try
-        {
-            closeSession();
-        }
-        catch (HibernateException e)
-        {
-            throw new RuntimeException(e);
-        }
     }
 
     public Session currentSession() throws HibernateException
