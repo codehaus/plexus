@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -20,7 +21,7 @@ public class Invocation
 
     private Set templates = new HashSet();
 
-    private String[] arguments;
+    private List arguments;
 
     private String description;
 
@@ -29,8 +30,6 @@ public class Invocation
     private InvocationTemplate bestMatch;
 
     private int bestScore = -1;
-
-    private boolean emptyTemplateEnabled = false;
 
     /** Creates new Invocation */
     public Invocation( String description, String argDescription )
@@ -48,33 +47,9 @@ public class Invocation
         return bestMatch.getOptionPropertyMappings();
     }
 
-    public void enableEmptyTemplate( boolean enabled )
-    {
-        if ( enabled )
-        {
-            templates.add( new InvocationTemplate( Collections.EMPTY_LIST ) );
-        }
-        else
-        {
-            templates.remove( new InvocationTemplate( Collections.EMPTY_LIST ) );
-        }
-        
-        this.emptyTemplateEnabled = enabled;
-    }
-
-    public boolean emptyTemplateEnabled()
-    {
-        return emptyTemplateEnabled;
-    }
-    
     public boolean matchesTemplate( InvocationTemplate template )
     {
         return bestMatch.equals( template );
-    }
-
-    public boolean matchesEmptyTemplate()
-    {
-        return bestMatch.equals( new InvocationTemplate( Collections.EMPTY_LIST ) );
     }
 
     public void addInvocationTemplate( InvocationTemplate template )
@@ -89,44 +64,49 @@ public class Invocation
 
     public void parseArgs( String[] args ) throws InvocationException
     {
-        bestMatch = null;
-
-        LinkedList argsList = new LinkedList(Arrays.asList(args));
-        ArrayList nonOptions = new ArrayList();
-        Map vals = new HashMap();
-        while(!argsList.isEmpty())
-        {
-            String arg = (String)argsList.getFirst();
-            if ( arg.startsWith( "--" ) )
-            {
-                processAsLongName(vals, argsList);
-            }
-            else if ( arg.charAt( 0 ) == '-' )
-            {
-                processAsShortNameCollection(vals, argsList);
-            }
-            else
-            {
-                nonOptions.add( arg );
-                argsList.removeFirst();
-            }
+        if(templates.isEmpty()) {
+            throw new IllegalStateException("at least one invocation template is required for parseArgs");
         }
+        else {
+            bestMatch = null;
 
-        this.arguments = (String[]) nonOptions.toArray( new String[nonOptions.size()] );
-
-        bestScore = Integer.MAX_VALUE;
-        for ( Iterator it = templates.iterator(); it.hasNext(); )
-        {
-            InvocationTemplate templ = (InvocationTemplate) it.next();
-            int score = templ.scoreRequirements( vals );
-            if ( score < bestScore )
+            LinkedList argsList = new LinkedList(Arrays.asList(args));
+            ArrayList nonOptions = new ArrayList();
+            Map vals = new HashMap();
+            while(!argsList.isEmpty())
             {
-                bestScore = score;
-                bestMatch = templ;
+                String arg = (String)argsList.getFirst();
+                if ( arg.startsWith( "--" ) )
+                {
+                    processAsLongName(vals, argsList);
+                }
+                else if ( arg.charAt( 0 ) == '-' )
+                {
+                    processAsShortNameCollection(vals, argsList);
+                }
+                else
+                {
+                    nonOptions.add( arg );
+                    argsList.removeFirst();
+                }
             }
-        }
 
-        bestMatch.setValues( vals );
+            this.arguments = Collections.unmodifiableList(nonOptions);
+
+            bestScore = Integer.MAX_VALUE;
+            for ( Iterator it = templates.iterator(); it.hasNext(); )
+            {
+                InvocationTemplate templ = (InvocationTemplate) it.next();
+                int score = templ.scoreRequirements( vals );
+                if ( score < bestScore )
+                {
+                    bestScore = score;
+                    bestMatch = templ;
+                }
+            }
+
+            bestMatch.setValues( vals );
+        }
     }
 
     private void processAsShortNameCollection( Map vals, LinkedList argsList )
@@ -140,7 +120,10 @@ public class Invocation
         boolean usedNextArg = false;
         
         if(argLen == 1) {
-            Character argC = new Character(args[0]);
+            throw new IllegalArgumentException("\'-\' is not a valid argument.");
+        }
+        else if(argLen == 2) {
+            Character argC = new Character(args[1]);
             String value = null;
             
             if(!nextArg.startsWith("-")) {
@@ -151,7 +134,7 @@ public class Invocation
             vals.put(argC, value);
         }
         else {
-            for ( int i = 0; i < args.length; i++ )
+            for ( int i = 1; i < args.length; i++ )
             {
                 char c = args[i];
                 Character argC = new Character(c);
@@ -181,7 +164,7 @@ public class Invocation
         String key = arg;
         String value = null;
         if(eqPos > 0) {
-            key = arg.substring(0, eqPos);
+            key = arg.substring(2, eqPos);
             
             value = arg.substring(eqPos+1);
         }
@@ -189,14 +172,14 @@ public class Invocation
         vals.put( key, value );
     }
 
-    public String[] getArguments()
+    public List getArguments()
     {
         return arguments;
     }
 
     public int getArgumentCount()
     {
-        return arguments.length;
+        return arguments.size();
     }
 
     public Option getOption( String longName )
@@ -204,7 +187,7 @@ public class Invocation
         return bestMatch.getOption( longName );
     }
 
-    public Option getOption( char shortName )
+    public Option getOption( Character shortName )
     {
         return bestMatch.getOption( shortName );
     }
@@ -214,7 +197,7 @@ public class Invocation
         return bestScore == 0;
     }
 
-    public Option[] getUnsatisfiedOptions()
+    public Set getUnsatisfiedOptions()
     {
         return bestMatch.getUnsatisfiedOptions();
     }

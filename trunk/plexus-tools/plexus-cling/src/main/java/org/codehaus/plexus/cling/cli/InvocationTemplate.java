@@ -1,11 +1,13 @@
 package org.codehaus.plexus.cling.cli;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -93,10 +95,7 @@ public class InvocationTemplate
      */
     public int size()
     {
-        HashSet set = new HashSet();
-        set.addAll( options.values() );
-
-        return set.size();
+        return optionsList.size();
     }
 
     /**
@@ -107,9 +106,9 @@ public class InvocationTemplate
      *            The single-character short name of the option to lookup.
      * @return the corresponding Option object, or null if none match.
      */
-    public Option getOption( char ch )
+    public Option getOption( Character ch )
     {
-        return (Option) options.get( new Character( ch ) );
+        return (Option) options.get( ch );
     }
 
     /**
@@ -124,29 +123,29 @@ public class InvocationTemplate
         return (Option) options.get( str );
     }
 
-    /**
-     * Return an array of all Option objects contained within this map. NOTE:
-     * Each option is only represented once within the array, even though it is
-     * keyed twice within the actual map.
-     * 
-     * @return the array of options.
-     */
-    public Option[] getOptions()
-    {
-        HashSet set = new HashSet();
-        set.addAll( options.values() );
-
-        return (Option[]) set.toArray( new Option[set.size()] );
-    }
+//    /**
+//     * Return an array of all Option objects contained within this map. NOTE:
+//     * Each option is only represented once within the array, even though it is
+//     * keyed twice within the actual map.
+//     * 
+//     * @return the array of options.
+//     */
+//    public Option[] getOptions()
+//    {
+//        HashSet set = new HashSet();
+//        set.addAll( options.values() );
+//
+//        return (Option[]) set.toArray( new Option[set.size()] );
+//    }
 
     /**
      * Return the array of Option objects that are required and still unset.
      * 
      * @return The array of unsatisfied options.
      */
-    public Option[] getUnsatisfiedOptions()
+    public Set getUnsatisfiedOptions()
     {
-        HashSet unsat = new HashSet();
+        Set unsat = new HashSet();
         for ( Iterator it = options.values().iterator(); it.hasNext(); )
         {
             Option opt = (Option) it.next();
@@ -161,7 +160,7 @@ public class InvocationTemplate
             }
         }
 
-        return (Option[]) unsat.toArray( new Option[unsat.size()] );
+        return Collections.unmodifiableSet(unsat);
     }
 
     public void setValues( Map vals )
