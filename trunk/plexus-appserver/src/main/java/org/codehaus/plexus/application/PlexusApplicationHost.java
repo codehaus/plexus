@@ -27,10 +27,6 @@ import java.io.FileReader;
 
 import org.codehaus.classworlds.ClassWorld;
 import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.application.deploy.ApplicationDeployer;
-import org.codehaus.plexus.application.service.ServiceDiscoverer;
-import org.codehaus.plexus.application.supervisor.Supervisor;
-import org.codehaus.plexus.application.supervisor.SupervisorListener;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
 
@@ -39,6 +35,7 @@ import org.codehaus.plexus.logging.LoggerManager;
  *
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class PlexusApplicationHost
@@ -52,11 +49,7 @@ public class PlexusApplicationHost
 
     private static Object waitObj;
 
-    private ApplicationDeployer applicationDeployer;
-
-    private Supervisor supervisor;
-
-    private ServiceDiscoverer serviceDiscoverer;
+    private ApplicationServer applicationServer;
 
     // ----------------------------------------------------------------------
     //  Implementation
@@ -88,73 +81,17 @@ public class PlexusApplicationHost
 
         container.start();
 
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
         LoggerManager loggerManager = (LoggerManager) container.lookup( LoggerManager.ROLE );
 
         loggerManager.setThreshold( Logger.LEVEL_DEBUG );
 
-        serviceDiscoverer = (ServiceDiscoverer) container.lookup( ServiceDiscoverer.ROLE );
-
-        applicationDeployer = (ApplicationDeployer) container.lookup( ApplicationDeployer.ROLE );
-
-        supervisor = (Supervisor) container.lookup( Supervisor.ROLE );
-
         final Logger logger = loggerManager.getLoggerForComponent( this.getClass().getName() );
 
         // ----------------------------------------------------------------------
-        // Register the deployers inside the directory supervisor so applications
-        // and services will be deployed.
+        // This lookup will start the application server
         // ----------------------------------------------------------------------
 
-        File home = new File( System.getProperty( "plexus.home" ) );
-
-        supervisor.addDirectory( new File( home, "services" ), new SupervisorListener()
-        {
-            public void onJarDiscovered( File jar )
-            {
-                String name = jar.getName();
-
-                try
-                {
-                    serviceDiscoverer.deploy( name.substring( 0, name.length() - 4 ), jar.getAbsolutePath() );
-                }
-                catch ( Exception e )
-                {
-                    System.err.println( "Error while deploying service '" + name + "'." );
-                    e.printStackTrace();
-                }
-            }
-        } );
-
-        supervisor.addDirectory( new File( home, "apps" ), new SupervisorListener()
-        {
-            public void onJarDiscovered( File jar )
-            {
-                String name = jar.getName();
-
-                try
-                {
-                    applicationDeployer.deploy( name.substring( 0, name.length() - 4 ), jar.toURL().toExternalForm() );
-                }
-                catch ( Exception e )
-                {
-                    System.err.println( "Error while deploying application '" + name + "'." );
-
-                    e.printStackTrace();
-                }
-            }
-        } );
-
-        logger.info( "The application server has been initialized." );
-
-        // ----------------------------------------------------------------------
-        // Now start the supervisor which will deploy all services and applications
-        // ----------------------------------------------------------------------
-
-        supervisor.scan();
+        applicationServer = (ApplicationServer) container.lookup( ApplicationServer.ROLE );
 
         // ----------------------------------------------------------------------
         //
@@ -231,6 +168,8 @@ public class PlexusApplicationHost
         {
             shouldStop = true;
 
+            container.release( applicationServer );
+
             container.dispose();
 
             notifyAll();
@@ -305,5 +244,3 @@ public class PlexusApplicationHost
         }
     }
 }
-
-
