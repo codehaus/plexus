@@ -12,9 +12,10 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
+import org.apache.maven.model.Dependency;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectBuilder;
 import org.codehaus.plexus.cdc.gleaner.ComponentGleaningStrategy;
 import org.codehaus.plexus.cdc.gleaner.DefaultPlexusComponentGleaningStrategy;
 import org.codehaus.plexus.cdc.gleaner.ImplComponentGleaningStrategy;
@@ -41,9 +42,17 @@ import org.codehaus.plexus.configuration.xml.xstream.PlexusXStream;
  */
 public class ComponentDescriptorCreator
 {
-    private String basedir;
+    public final static String ROLE = ComponentDescriptorCreator.class.getName();
 
-    private Properties properties = new Properties();
+    ///////////////////////////////////////////////////////////////////////////
+    // Dependencies
+
+    private MavenProjectBuilder projectBuilder;
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Privates
+
+    private String basedir;
 
     private String destDir;
 
@@ -65,25 +74,9 @@ public class ComponentDescriptorCreator
         this.basedir = basedir;
     }
 
-    // ${project.properties} is a hashmap in maven
-    public void setProperties( Map map )
-    {
-        if ( properties != null )
-        {
-            properties = new Properties();
-
-            properties.putAll( map );
-        }
-    }
-
     public void setDestDir( String destDir )
     {
         this.destDir = destDir;
-    }
-
-    public void setClassPath( String classPath )
-    {
-        this.classPath = classPath;
     }
 
     public void execute()
@@ -91,13 +84,13 @@ public class ComponentDescriptorCreator
     {
         initialize();
 
-        MavenModelParser mavenModelParser = new MavenModelParser( new File( basedir, "project.xml"), properties );
+        MavenProject mavenProject = projectBuilder.build( new File( basedir, "project.xml") );
 
-        List componentDependencies = convertDependencies( mavenModelParser.getDependencies() );
+        List componentDependencies = convertDependencies( mavenProject.getDependencies() );
 
         JavaDocBuilder builder = new JavaDocBuilder();
 
-        String sourceDirectoryName = mavenModelParser.getSourceDirectory();
+        String sourceDirectoryName = mavenProject.getBuild().getSourceDirectory();
 
         if ( sourceDirectoryName != null )
         {
@@ -188,7 +181,7 @@ public class ComponentDescriptorCreator
 
         for ( Iterator i = dependencies.iterator(); i.hasNext(); )
         {
-            MavenModelParser.Dependency d = (MavenModelParser.Dependency) i.next();
+            Dependency d = (Dependency) i.next();
 
             ComponentDependency cd = new ComponentDependency();
 
@@ -271,17 +264,4 @@ public class ComponentDescriptorCreator
     {
         return javaSource.getClasses()[0];
     }
-
-    public static void main( String[] args )
-        throws Exception
-    {
-        String basedir = args[0];
-
-        ComponentDescriptorCreator cdc = new ComponentDescriptorCreator();
-
-        cdc.setBasedir( basedir );
-
-        cdc.execute();
-    }
 }
-

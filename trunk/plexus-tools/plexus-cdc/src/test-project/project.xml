@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <project>
-  <extend>${myProperty}/parent.xml</extend>
+  <extend>parent.xml</extend>
   <pomVersion>3</pomVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus</artifactId>
