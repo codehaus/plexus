@@ -8,6 +8,7 @@
 package org.codehaus.plexus.logging.log4j;
 
 import junit.framework.TestCase;
+
 import org.apache.log4j.Appender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -15,16 +16,33 @@ import org.apache.log4j.Logger;
 public class Log4JLoggerTest
     extends TestCase
 {
-    public void testLog4JLoggerEmptyCtor()
+    public void testLog4JLoggerInvalidLogLevel()
+        throws Exception
+    {
+        MockAppender target = new MockAppender();
+
+        try
+        {
+            new Log4JLogger( -213123, Logger.getLogger( "test" ) );
+            fail( "Expected RuntimeException." );
+        }
+        catch ( RuntimeException ex )
+        {
+            assertEquals( "ex.getMessage()", "threshold", ex.getMessage() );
+        }
+    }
+
+    public void testLog4JLoggerNullLogger()
         throws Exception
     {
         try
         {
-            new Log4JLogger( null );
+            new Log4JLogger( org.codehaus.plexus.logging.Logger.LEVEL_DEBUG, null );
+            fail( "Expected NullPointerException." );
         }
-        catch ( NullPointerException npe )
+        catch ( NullPointerException ex )
         {
-            assertEquals( "npe.getMessage()", "logger", npe.getMessage() );
+            assertEquals( "ex.getMessage()", "logger", ex.getMessage() );
         }
     }
 
@@ -68,7 +86,6 @@ public class Log4JLoggerTest
         logger.fatalError( message, throwable );
         checkLogger( target, output, message, throwable, type );
     }
-
 
     public void testLog4JLoggerDebugEnabled()
         throws Exception
@@ -264,7 +281,7 @@ public class Log4JLoggerTest
         logger.error( message, throwable );
         checkLogger( target, output, message, throwable, type );
     }
-
+/* This is tested in the AbstractLoggerManagerTest
     public void testConsoleLevelComparisonWithDebugEnabled()
         throws Exception
     {
@@ -297,7 +314,6 @@ public class Log4JLoggerTest
         MockAppender target = new MockAppender();
         Log4JLogger logger = createLogger( target, Level.WARN );
 
-        //assertEquals( "logger.isTraceEnabled()", false, logger.isTraceEnabled() );
         assertEquals( "logger.isDebugEnabled()", false, logger.isDebugEnabled() );
         assertEquals( "logger.isInfoEnabled()", false, logger.isInfoEnabled() );
         assertEquals( "logger.isWarnEnabled()", true, logger.isWarnEnabled() );
@@ -310,13 +326,12 @@ public class Log4JLoggerTest
         MockAppender target = new MockAppender();
         Log4JLogger logger = createLogger( target, Level.ERROR );
 
-        //assertEquals( "logger.isTraceEnabled()", false, logger.isTraceEnabled() );
         assertEquals( "logger.isDebugEnabled()", false, logger.isDebugEnabled() );
         assertEquals( "logger.isInfoEnabled()", false, logger.isInfoEnabled() );
         assertEquals( "logger.isWarnEnabled()", false, logger.isWarnEnabled() );
         assertEquals( "logger.isErrorEnabled()", true, logger.isErrorEnabled() );
     }
-
+*/
     private Log4JLogger createLogger( Appender target,
                                       Level priority )
     {
@@ -324,7 +339,7 @@ public class Log4JLoggerTest
         log4jLogger.removeAllAppenders();
         log4jLogger.addAppender( target );
         log4jLogger.setLevel( priority );
-        return new Log4JLogger( log4jLogger );
+        return new Log4JLogger( org.codehaus.plexus.logging.Logger.LEVEL_DEBUG, log4jLogger );
     }
 
     private void checkLogger( MockAppender target,
