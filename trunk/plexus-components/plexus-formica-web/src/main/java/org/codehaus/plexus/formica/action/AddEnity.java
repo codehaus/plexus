@@ -26,22 +26,18 @@ import java.util.Map;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
-public class UpdateIssue
+public class AddEnity
     extends AbstractEntityAction
 {
     protected void uponSuccessfulValidation( Form form, String entityId, Map map )
         throws Exception
     {
+        Object target = fm.populate( form.getId(), map, getApp( form ).getClass().getClassLoader() );
+
         Map m = new HashMap();
 
-        m.put( "id", entityId );
+        m.put( "entity", target );
 
-        Object entity = Ognl.getValue( form.getLookupExpression(), m, getApp() );
-
-        fm.populate( form.getId(), map, entity );
-
-        m.put( "entity", entity );
-
-        Object o = Ognl.getValue( form.getUpdate().getExpression(), m, getApp() );
+        Object o = Ognl.getValue( form.getAdd().getExpression(), m, getApp( form ) );
     }
 }
