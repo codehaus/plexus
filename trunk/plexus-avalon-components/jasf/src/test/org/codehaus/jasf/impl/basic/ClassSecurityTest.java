@@ -1,17 +1,18 @@
 package org.codehaus.jasf.impl.basic;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.apache.avalon.framework.service.ServiceSelector;
-import org.apache.commons.attributes.Attribute;
 import org.apache.commons.attributes.Attributes;
 import org.codehaus.jasf.Authenticator;
 import org.codehaus.jasf.ResourceController;
 import org.codehaus.jasf.resources.ClassMethodResource;
+import org.codehaus.jasf.resources.Credential;
 import org.codehaus.plexus.PlexusTestCase;
 
 /**
@@ -58,17 +59,21 @@ public class ClassSecurityTest extends PlexusTestCase
         Method restrictedMethod = 
             ClassSecurityTest.class.getDeclaredMethod("myRestrictedMethod", new Class[0]);
         
-        assertTrue( Attributes.hasAttribute(restrictedMethod, "credential") );
+        assertTrue( Attributes.hasAttributeType(restrictedMethod, Credential.class) );
         
-        Attribute credential = Attributes.getAttribute( restrictedMethod, "credential" );
+        Collection attributes = Attributes.getAttributes( restrictedMethod );
         
-        assertTrue( credential.getValue().equals("employee_read") );
+        Credential cred = (Credential) attributes.iterator().next();
         
-        assertTrue( !credential.getValue().equals("blah") );
+        assertTrue( cred.getName().equals("employee_read") );
+        
+        assertTrue( !cred.getName().equals("blah") );
         
         ResourceController controller =
             (ResourceController) resSelector.select(ClassMethodResource.RESOURCE_TYPE);
         
+        assertFalse( ((ClassAccessController)controller).getDefaultAuthorization() );
+    
         assertTrue( controller.isAuthorized(entity, restrictedMethod) );
     }
 
@@ -80,13 +85,13 @@ public class ClassSecurityTest extends PlexusTestCase
         ResourceController controller =
             (ResourceController) resSelector.select(ClassMethodResource.RESOURCE_TYPE);
         
-        assertTrue( !controller.isAuthorized(entity, restrictedMethod) );
+        assertFalse( controller.isAuthorized(entity, restrictedMethod) );
     }
     
     /**
      * Pretends to do something that needs security.
      * 
-     * @credential employee_read
+     * @@Credential("employee_read")
      */
     public void myRestrictedMethod()
     {
@@ -95,7 +100,7 @@ public class ClassSecurityTest extends PlexusTestCase
     /**
      * Pretends to do something that needs security.
      * 
-     * @credential wontwork
+     * @@Credential("wontwork")
      */
     public void myBadRestrictedMethod()
     {

@@ -14,7 +14,7 @@ import org.codehaus.jasf.ResourceController;
 public abstract class AbstractClassAccessController
     implements ResourceController
 {
-    public boolean defaultAuthorization = true;
+    private boolean defaultAuthorization;
 
     /**
      * @see org.apache.avalon.framework.configuration.Configurable#configure(org.apache.avalon.framework.configuration.Configuration)
