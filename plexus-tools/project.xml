@@ -2,7 +2,7 @@
   <pomVersion>3</pomVersion>
   <groupId>plexus</groupId>  
   <id>plexus-tool</id>
-  <artifactId>plexus-tool</artifactId>
+  <artifactId>plexus-tools</artifactId>
   <name>Plexus Tools</name>
   <currentVersion>1.0</currentVersion>
   <package>org.codehaus.plexus</package>
