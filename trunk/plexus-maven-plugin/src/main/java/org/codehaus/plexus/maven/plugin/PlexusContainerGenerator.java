@@ -4,6 +4,7 @@ import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
 
 import java.lang.reflect.Method;
@@ -56,6 +57,14 @@ import java.lang.reflect.Method;
  * validator=""
  * expression="#plexus.runtime.configuration.propertiesfile"
  * description=""
+ *
+ * @parameter name="localRepository"
+ * type="org.apache.maven.artifact.ArtifactRepository"
+ * required="true"
+ * validator=""
+ * expression="#localRepository"
+ * description=""
+ *
  */
 public class PlexusContainerGenerator
     extends AbstractPlugin
@@ -79,6 +88,8 @@ public class PlexusContainerGenerator
 
         PlexusRuntimeBuilder builder = (PlexusRuntimeBuilder) request.getParameter( "runtimeBuilder" );
 
+        ArtifactRepository localRepository = (ArtifactRepository) request.getParameter( "localRepository" );
+
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
@@ -87,7 +98,7 @@ public class PlexusContainerGenerator
 
         builder.setProject( project );
 
-        builder.setLocalRepository( project.getLocalRepository() );
+        builder.setLocalRepository( localRepository );
 
         builder.setPlexusConfiguration( plexusConfiguration );
 
