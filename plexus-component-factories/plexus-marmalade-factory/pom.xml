@@ -1,21 +1,18 @@
-<model>
+<project>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-component-factories</artifactId>
     <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-marmalade-factory</artifactId>
-  <packaging>jar</packaging>
-  <name>Plexus Marmalade Factory</name>
   <version>1.0-alpha-2-SNAPSHOT</version>
+  <name>Plexus Marmalade Factory</name>
   <dependencies>
     <dependency>
       <groupId>marmalade</groupId>
       <artifactId>marmalade-core</artifactId>
       <version>1.0-alpha2-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
-</model>
+</project>

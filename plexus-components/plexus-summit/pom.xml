@@ -1,14 +1,14 @@
 <project>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-components</artifactId>
     <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-summit</artifactId>
-  <name>Plexus Summit Framework</name>
   <version>1.0-beta-4-SNAPSHOT</version>
+  <name>Plexus Summit Framework</name>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
@@ -21,9 +21,9 @@
       <version>1.0</version>
     </dependency>
     <dependency>
-      <groupId>servletapi</groupId>
-      <artifactId>servletapi</artifactId>
-      <version>2.3</version>
+      <groupId>geronimo-spec</groupId>
+      <artifactId>geronimo-spec-servlet</artifactId>
+      <version>2.4-rc2</version>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
