@@ -260,7 +260,20 @@ public class DefaultPlexusRuntimeBuilder
     {
         try
         {
-            FileUtils.copyFileToDirectory( plexusService, getServicesDirectory( runtimeDirectory ) );
+            File dir = getServicesDirectory( runtimeDirectory );
+
+            String name = plexusService.getName();
+
+            if ( !name.endsWith( ".jar" ) )
+            {
+                name = name.substring( 0, name.lastIndexOf( "." ) );
+
+                name += ".jar";
+            }
+
+            System.err.println( "name: " + name );
+
+            FileUtils.copyFile( plexusService, new File( dir, name ) );
         }
         catch ( IOException e )
         {
