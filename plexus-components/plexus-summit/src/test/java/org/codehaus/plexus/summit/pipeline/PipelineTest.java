@@ -11,7 +11,8 @@ public class PipelineTest
     public void testPipeline()
         throws Exception
     {
-        Pipeline pipeline = (Pipeline) lookup(Pipeline.ROLE);
-        assertNotNull(pipeline);
+        Pipeline pipeline = (Pipeline) lookup( Pipeline.ROLE );
+
+        assertNotNull( pipeline );
     }
 }

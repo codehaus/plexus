@@ -9,7 +9,7 @@ import org.codehaus.plexus.summit.view.DefaultViewContext;
  * @author <a href="dan@envoisolutions.com">Dan Diephouse</a>
  * @since Jan 27, 2003
  */
-public class DefaultPullServiceTestX
+public class DefaultPullServiceTest
     extends PlexusTestCase
 {    
     public void testService()

@@ -78,6 +78,7 @@
     </component>
     
     <!-- Pipeline -->
+    <!--
     <component>
       <role>org.codehaus.plexus.summit.pipeline.Pipeline</role>
       <implementation>org.codehaus.plexus.summit.pipeline.SummitPipeline</implementation>
@@ -91,6 +92,7 @@
         </valves>
       </configuration>
     </component>
+    -->
 
     <component>
       <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
