@@ -321,11 +321,12 @@ public class DefaultPlexusRuntimeBuilder
 
         plexusArtifacts.add( plexusArtifact );
 
-        Artifact appserver = new DefaultArtifact( "plexus", "plexus-appserver", "1.0-alpha-1-SNAPSHOT", "jar" );
+        //Artifact appserver = new DefaultArtifact( "plexus", "plexus-appserver", "1.0-alpha-1-SNAPSHOT", "jar" );
 
-        appserver.setPath( "/home/jvanzyl/maven-repo-local/plexus/jars/plexus-appserver-1.0-alpha-1-SNAPSHOT.jar" );
+        //appserver.setPath( "/home/jvanzyl/maven-repo-local/plexus/jars/plexus-appserver-1.0-alpha-1-SNAPSHOT.jar" );
+//        Artifact appserver = resolve( "plexus", "plexus-appserver", "1.0-alpha-1-SNAPSHOT", "jar" );
 
-        plexusArtifacts.add( appserver );
+//        plexusArtifacts.add( appserver );
     }
 
     private void copyBootDependencies()
