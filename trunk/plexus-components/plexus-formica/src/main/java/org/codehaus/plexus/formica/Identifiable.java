@@ -22,9 +22,6 @@ package org.codehaus.plexus.formica;
  * SOFTWARE.
  */
 
-/**
- * @author <a href="mailto:mmaczka@interia.pl">Michal Maczka</a>
- */
 public class Identifiable
 {
     private String id;
