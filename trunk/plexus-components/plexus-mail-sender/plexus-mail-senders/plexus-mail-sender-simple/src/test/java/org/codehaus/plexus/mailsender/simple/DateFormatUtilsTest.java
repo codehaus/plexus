@@ -20,9 +20,11 @@ public class DateFormatUtilsTest
 {
     public void testGetDateHeader()
     {
-        Calendar calendar = new GregorianCalendar( TimeZone.getTimeZone( "Europe/Oslo" ) );
+        Calendar calendar = new GregorianCalendar();
 
         calendar.setTime( new Date( 1098099262422l ) );
+
+        calendar.setTimeZone( TimeZone.getTimeZone( "Europe/Oslo" ) );
 
         String formattedDate = DateFormatUtils.getDateHeader( calendar.getTime() );
 
