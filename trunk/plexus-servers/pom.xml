@@ -8,6 +8,7 @@
     <groupId>plexus</groupId>
     <artifactId>plexus-servers</artifactId>
     <version>1.0</version>
+    <type>pom</type>
     <name>Plexus Servers Parent Project</name>
     <dependencies>
         <dependency>
