@@ -1,22 +1,22 @@
 package org.codehaus.plexus.drools;
 
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.util.DirectoryScanner;
+
 import org.drools.DroolsException;
 import org.drools.RuleBase;
 import org.drools.TransactionalWorkingMemory;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleSetLoader;
 import org.drools.rule.RuleSet;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * This service is used to retrieve and manage rules
@@ -28,9 +28,9 @@ import java.util.List;
  */
 public class DefaultDroolsComponent
     extends AbstractLogEnabled
-    implements DroolsComponent, Configurable
+    implements DroolsComponent, Initializable
 {
-    /* The store that keeps a reference to all ruleBases */
+    /** The store that keeps a reference to all ruleBases */
     private HashMap ruleBaseStore;
 
     /** Directory where rules files are stored. */
@@ -40,20 +40,17 @@ public class DefaultDroolsComponent
     // Lifecylce Management
     // ----------------------------------------------------------------------
 
-    /** @see Configurable#configure */
-    public void configure( Configuration configuration )
-        throws ConfigurationException
-    {
-        ruleFilesDirectory = configuration.getChild( "rule-files-directory" ).getValue();
-    }
-
+    /** */
     public void initialize()
         throws Exception
     {
+        if ( ruleFilesDirectory == null )
+            throw new PlexusConfigurationException( "Missing configuration element: 'ruleFilesDirectory'." );
+
         loadRules();
     }
 
-    /*
+    /**
      * Makes a working memory available from this rulebase
      */
     public WorkingMemory getWorkingMemory( String ruleBaseIdentifier )
@@ -65,8 +62,7 @@ public class DefaultDroolsComponent
         return workingMemory;
     }
 
-
-    /*
+    /**
      * Makes a transactional working memory available from this rulebase
      */
     public TransactionalWorkingMemory getTransactionalWorkingMemory( String ruleBaseIdentifier )
@@ -77,7 +73,6 @@ public class DefaultDroolsComponent
         TransactionalWorkingMemory workingMemory = ruleBase.createTransactionalWorkingMemory();
         return workingMemory;
     }
-
 
     public RuleBase getRuleBase( String identifier )
     {
@@ -170,5 +165,4 @@ public class DefaultDroolsComponent
 
         setRuleBase( identifier, ruleBase );
     }
-
 }
