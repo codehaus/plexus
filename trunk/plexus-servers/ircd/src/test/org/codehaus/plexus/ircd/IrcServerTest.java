@@ -25,9 +25,10 @@ public class IrcServerTest
         SynapseServer server = (SynapseServer) lookup( IrcServer.ROLE );
 
         assertNotNull( server );
-
+/*
         while( true )
         {
         }
+*/
     }
 }
