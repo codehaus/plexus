@@ -1,4 +1,4 @@
-<model>
+<project>
   <parent>
     <artifactId>plexus-logging</artifactId>
     <groupId>plexus</groupId>
@@ -15,15 +15,13 @@
       <groupId>plexus</groupId>
       <artifactId>plexus-logging-provider-test</artifactId>
       <version>1.0-alpha-1-SNAPSHOT</version>
-      <type>jar</type>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.8</version>
-      <type>jar</type>
       <scope>compile</scope>
     </dependency>
   </dependencies>
-</model>
+</project>

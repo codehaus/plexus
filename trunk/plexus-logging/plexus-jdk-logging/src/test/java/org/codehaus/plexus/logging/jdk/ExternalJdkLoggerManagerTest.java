@@ -8,14 +8,11 @@ import org.codehaus.plexus.logging.LoggerManager;
  * @version $Id$
  */
 public class ExternalJdkLoggerManagerTest
-        extends AbstractLoggerManagerTest
+    extends AbstractLoggerManagerTest
 {
-
-
     protected LoggerManager createLoggerManager()
-            throws Exception
-    {        
-        return ( LoggerManager ) lookup( LoggerManager.ROLE );
+        throws Exception
+    {
+        return (LoggerManager) lookup( LoggerManager.ROLE );
     }
-
 }
