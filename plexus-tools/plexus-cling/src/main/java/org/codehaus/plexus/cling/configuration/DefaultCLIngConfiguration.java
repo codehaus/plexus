@@ -27,7 +27,7 @@ public class DefaultCLIngConfiguration extends AbstractCLIngConfiguration
         
         Set remoteRepositories = new HashSet();
         
-        remoteRepositories.add(new ArtifactRepository("remote-0", "http://www.ibiblio.org/maven"));
+        remoteRepositories.add(new ArtifactRepository("remote-0", "http://repository.codehaus.org"));
         
         setRemoteRepositories(remoteRepositories);
     }
