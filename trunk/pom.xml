@@ -8,7 +8,7 @@
   <ciManagement>
     <notifiers>
       <notifier>
-        <type>email</type>
+        <type>mail</type>
         <address>dev@plexus.codehaus.org</address>
       </notifier>
     </notifiers>
