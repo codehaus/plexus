@@ -26,13 +26,13 @@ public class SimpleMailSender
     private String smtpHost;
 
     /** @configuration */
-    private Integer smtpPort;
+    private int smtpPort;
 
     // ----------------------------------------------------------------------
     // 
     // ----------------------------------------------------------------------
 
-    private final static Integer DEFAULT_SMTP_PORT = new Integer( 25 );
+    private final static int DEFAULT_SMTP_PORT = 25;
 
     // ----------------------------------------------------------------------
     // Component Lifecycle
@@ -46,7 +46,7 @@ public class SimpleMailSender
             throw new MailSenderException( "Error in configuration: Missing smtp-host." );
         }
 
-        if ( smtpPort == null )
+        if ( smtpPort == 0 )
         {
             smtpPort = DEFAULT_SMTP_PORT;
         }
@@ -67,7 +67,7 @@ public class SimpleMailSender
     {
         try
         {
-            MailMessage message = new MailMessage( smtpHost, smtpPort.intValue() );
+            MailMessage message = new MailMessage( smtpHost, smtpPort );
 
             message.from( makeEmailAddress( fromAddress, fromName ) );
 
@@ -94,6 +94,19 @@ public class SimpleMailSender
         }
     }
 
+    // ----------------------------------------------------------------------
+    // Getters
+    // ----------------------------------------------------------------------
+
+    public String getSmtpHost()
+    {
+        return smtpHost;
+    }
+
+    public int getSmtpPort()
+    {
+        return smtpPort;
+    }
 
     // ----------------------------------------------------------------------
     // 
