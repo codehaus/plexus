@@ -44,6 +44,7 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
@@ -76,6 +77,8 @@ public abstract class AbstractBuilder
         new DefaultArtifact( "plexus", "plexus", "", "jar" ),
         new DefaultArtifact( "plexus", "plexus-container-api", "", "jar" ),
     } ) );
+
+    private ArtifactFilter artifactFilter = new BuilderArtifactFilter();
 
     // ----------------------------------------------------------------------
     // Components
@@ -176,9 +179,9 @@ public abstract class AbstractBuilder
 
         Set artifacts;
 
-        if( resolveTransitively )
+        if ( resolveTransitively )
         {
-            result = artifactResolver.resolveTransitively( sourceArtifacts, remoteRepositories, localRepository, metadata );
+            result = artifactResolver.resolveTransitively( sourceArtifacts, remoteRepositories, localRepository, metadata, artifactFilter );
 
             // TODO: Assert that there wasn't any conflicts.
 
@@ -192,7 +195,7 @@ public abstract class AbstractBuilder
         return artifacts;
     }
 
-    protected void filterArtifacts( Set candidateArtifacts, Set filteredArtifacts )
+    protected void filterAhrtifacts( Set candidateArtifacts, Set filteredArtifacts )
     {
         // ----------------------------------------------------------------------
         // Remove any artifacts from the candidateArtifacts set.
@@ -208,14 +211,28 @@ public abstract class AbstractBuilder
                 Artifact artifact = (Artifact) it2.next();
 
                 if ( candiateArtifact.getGroupId().equals( artifact.getGroupId() ) &&
-                     candiateArtifact.getArtifactId().equals( artifact.getArtifactId() ) &&
-                     candiateArtifact.getType().equals( artifact.getType() ) )
+                    candiateArtifact.getArtifactId().equals( artifact.getArtifactId() ) &&
+                    candiateArtifact.getType().equals( artifact.getType() ) )
                 {
                     it.remove();
 
                     continue;
                 }
             }
+        }
+    }
+
+    class BuilderArtifactFilter
+        implements ArtifactFilter
+    {
+        public boolean include( Artifact artifact )
+        {
+            if ( artifact.getScope().equals(  Artifact.SCOPE_TEST ) )
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
