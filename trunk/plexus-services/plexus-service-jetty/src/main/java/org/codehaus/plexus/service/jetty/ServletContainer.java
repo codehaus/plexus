@@ -48,4 +48,7 @@ public interface ServletContainer
 
     void deployWarDirectory( File war, String context, DefaultPlexusContainer container, String virtualHost )
         throws ServletContainerException;
+
+    void startApplication( String context )
+        throws ServletContainerException;
 }

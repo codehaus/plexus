@@ -25,6 +25,12 @@ package org.codehaus.plexus.service.jetty;
  */
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.util.jar.JarFile;
+import java.util.jar.JarEntry;
+import java.util.Enumeration;
 
 import org.codehaus.plexus.application.deploy.ApplicationDeployer;
 import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
@@ -34,6 +40,7 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -77,8 +84,7 @@ public class JettyPlexusService
     // PlexusService Implementation
     // ----------------------------------------------------------------------
 
-    public void onApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
-                                    PlexusConfiguration serviceConfiguration )
+    public void beforeApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile, PlexusConfiguration serviceConfiguration )
         throws Exception
     {
         PlexusConfiguration[] webapps = serviceConfiguration.getChild( "webapps" ).getChildren( "webapp" );
@@ -99,6 +105,7 @@ public class JettyPlexusService
             }
 
             // TODO: Read virtual host definitions
+            File webAppDir;
 
             if ( StringUtils.isEmpty( path ) )
             {
@@ -110,30 +117,51 @@ public class JettyPlexusService
                     continue;
                 }
 
-                boolean extractWar = Boolean.valueOf( webapps[ i ].getChild( "extractWar" ).getValue( "true" ) ).booleanValue();
-
                 String extractionPath = webapps[ i ].getChild( "extractionPath" ).getValue( null );
 
-                File extractionFile = null;
-
-                if ( !StringUtils.isEmpty( extractionPath ) )
+                if ( StringUtils.isEmpty( extractionPath ) )
                 {
-                    extractionFile = new File( extractionPath );
+                    getLogger().warn( "Error while deploying web application: " +
+                                      "For each 'extractionPath' element has to be specified." );
+
+                    continue;
                 }
 
-                deployFile( new File( file ), extractWar, extractionFile, context, applicationRuntimeProfile );
+                // ----------------------------------------------------------------------
+                // Extract the jar
+                // ----------------------------------------------------------------------
+
+                extractJarFile( file, extractionPath );
+
+                webAppDir = new File( extractionPath );
             }
             else
             {
-                deployDirectory( new File( path ), context, applicationRuntimeProfile );
+                webAppDir = new File( path );
             }
+
+            deployDirectory( webAppDir, context, applicationRuntimeProfile );
+        }
+    }
+
+    public void afterApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
+                                       PlexusConfiguration serviceConfiguration )
+        throws Exception
+    {
+        PlexusConfiguration[] webapps = serviceConfiguration.getChild( "webapps" ).getChildren( "webapp" );
+
+        for ( int i = 0; i < webapps.length; i++ )
+        {
+            String context = webapps[ i ].getChild( "context" ).getValue();
+
+            servletContainer.startApplication( context );
         }
     }
 
     // ----------------------------------------------------------------------
-    //
+    // Deployment
     // ----------------------------------------------------------------------
-
+/*
     private void deployFile( File file, boolean extractWar, File extractionPath, String context,
                              ApplicationRuntimeProfile applicationRuntimeProfile )
         throws Exception
@@ -155,7 +183,7 @@ public class JettyPlexusService
             getLogger().error( "Error while deploying WAR '" + file.getAbsolutePath() + "'.", e );
         }
     }
-
+*/
     private void deployDirectory( File directory, String context, ApplicationRuntimeProfile runtimeProfile )
         throws Exception
     {
@@ -173,6 +201,57 @@ public class JettyPlexusService
         catch ( ServletContainerException e )
         {
             getLogger().error( "Error while deploying WAR '" + directory.getAbsolutePath() + "'.", e );
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    private void extractJarFile( String file, String extractionPath )
+        throws Exception
+    {
+        JarFile jarFile = new JarFile( file );
+
+        try
+        {
+            Enumeration e = jarFile.entries();
+
+            while ( e.hasMoreElements() )
+            {
+                JarEntry entry = (JarEntry) e.nextElement();
+
+                InputStream is = jarFile.getInputStream( entry );
+
+                File outputFile = new File( extractionPath, entry.getName() );
+
+                if ( entry.getName().endsWith( "/" ) )
+                {
+                    if ( !outputFile.exists() && !outputFile.mkdirs() )
+                    {
+                        throw new Exception( "Error while deploying web application: " +
+                                             "Could not make directory: '" + outputFile.getAbsolutePath() + "'." );
+                    }
+                }
+                else
+                {
+                    File parent = outputFile.getParentFile();
+
+                    if ( !parent.exists() && !parent.mkdirs() )
+                    {
+                        throw new Exception( "Error while deploying web application: " +
+                                             "Could not make directory: '" + parent.getAbsolutePath() + "'." );
+                    }
+
+                    OutputStream os = new FileOutputStream( outputFile );
+
+                    IOUtil.copy( is, os );
+                }
+            }
+        }
+        finally
+        {
+            jarFile.close();
         }
     }
 }
