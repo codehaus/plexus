@@ -1,9 +1,10 @@
 /* Created on Sep 13, 2004 */
-package org.codehaus.cling.tags;
+package org.codehaus.cling.tags.app;
 
 import java.io.File;
 import java.net.MalformedURLException;
 
+import org.codehaus.cling.model.LocalClasspathEntry;
 import org.codehaus.marmalade.el.ExpressionEvaluationException;
 import org.codehaus.marmalade.model.AbstractMarmaladeTag;
 import org.codehaus.marmalade.runtime.MarmaladeExecutionContext;
@@ -29,7 +30,7 @@ public class LocalClasspathEntryTag
         ClasspathTag parent = (ClasspathTag)requireParent(ClasspathTag.class);
         try
         {
-            parent.addClassEntry(locationFile.toURL());
+            parent.addClasspathEntry(new LocalClasspathEntry(locationFile.toURL()));
         }
         catch ( MalformedURLException e )
         {

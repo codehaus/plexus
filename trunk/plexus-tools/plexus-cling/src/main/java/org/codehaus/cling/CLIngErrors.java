@@ -45,6 +45,10 @@ public final class CLIngErrors
 
     public static final int ERROR_BUILDING_APPMODEL_FROM_APPXML = -17;
 
+    public static final int ERROR_BUILDING_DEFAULT_LOCAL_REPO_PATH = -18;
+
+    public static final int ERROR_RESOLVING_CLASSPATH_ENTRY = -19;
+
     private CLIngErrors()
     {
     }
