@@ -171,17 +171,22 @@ public class ComponentDescriptorCreator
     private void initialize()
         throws Exception
     {
-        classLoader = new URLClassLoader( new URL[]{new File( "target/test-classes/" ).toURL(),
-                                                    new File( "target/classes/" ).toURL()} );
-
-        registerComponentGleaningStrategy( new DefaultPlexusComponentGleaningStrategy( classLoader ) );
-
-        registerComponentGleaningStrategy( new ImplComponentGleaningStrategy() );
-
         if ( mavenProject == null )
         {
             throw new Exception( "The project must be set." );
         }
+
+        if ( basedir == null )
+        {
+            basedir = mavenProject.getBasedir().getAbsolutePath();
+        }
+
+        classLoader = new URLClassLoader( new URL[]{new File( basedir, "target/test-classes/" ).toURL(),
+                                                    new File( basedir, "target/classes/" ).toURL()} );
+
+        registerComponentGleaningStrategy( new DefaultPlexusComponentGleaningStrategy( classLoader ) );
+
+        registerComponentGleaningStrategy( new ImplComponentGleaningStrategy() );
     }
 
     private List convertDependencies( List dependencies )
