@@ -20,6 +20,7 @@
       <message-key>field-1-message-key</message-key>
       <error-message-key>field-1-error-message-key</error-message-key>
       <type>text</type>
+      <immutable>true</immutable>
     </element>
   </elements>
 </form>

@@ -55,6 +55,11 @@
       <implementation>org.codehaus.plexus.formica.web.view.ViewFormRenderer</implementation>
       <role-hint>view</role-hint>
     </component>
+    <component>
+      <role>org.codehaus.plexus.formica.web.FormRenderer</role>
+      <implementation>org.codehaus.plexus.formica.web.view.DeleteFormRenderer</implementation>
+      <role-hint>delete</role-hint>
+    </component>
 
     <!--
      |

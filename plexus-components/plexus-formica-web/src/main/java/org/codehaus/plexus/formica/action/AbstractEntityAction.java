@@ -19,6 +19,7 @@ package org.codehaus.plexus.formica.action;
 import org.codehaus.plexus.action.AbstractAction;
 import org.codehaus.plexus.formica.Form;
 import org.codehaus.plexus.formica.FormManager;
+import org.codehaus.plexus.formica.web.SummitFormRenderer;
 import org.codehaus.plexus.formica.validation.FormValidationResult;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.context.ContextException;
@@ -81,14 +82,18 @@ public abstract class AbstractEntityAction
         // the user.
         // ----------------------------------------------------------------------
 
+        RunData data = (RunData) map.get( "data" );
+
         if ( fvr.valid() )
         {
             uponSuccessfulValidation( form, entityId, map );
+
+            data.setTarget( form.getAdd().getView() );
+
+            data.getMap().put( "mode", "summary" );            
         }
         else
         {
-            RunData data = (RunData) map.get( "data" );
-
             // ----------------------------------------------------------------------
             // If we have a validation error then we need to make sure the target
             // goes back to the form the user was just working on with the

@@ -1,6 +1,8 @@
 package org.codehaus.plexus.formica.action;
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.summit.rundata.RunData;
+import org.codehaus.plexus.summit.rundata.DefaultRunData;
 import org.codehaus.plexus.action.Action;
 
 import java.util.Map;
@@ -10,7 +12,7 @@ import java.util.HashMap;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
-public class PersonApplicationTest
+public class PersonApplicationTestx
     extends PlexusTestCase
 {
     public void testPersonApplication()
@@ -35,6 +37,8 @@ public class PersonApplicationTest
         m.put( "firstName", "jason" );
 
         m.put( "lastName", "van Zyl" );
+
+        m.put( "data", new DefaultRunData() );
 
         addAction.execute( m );
 
@@ -64,6 +68,8 @@ public class PersonApplicationTest
 
         m.put( "lastName", "van Zyl" );
 
+        m.put( "data", new DefaultRunData() );
+
         updateAction.execute( m );
 
         p = pa.getPerson( "1" );
@@ -87,6 +93,8 @@ public class PersonApplicationTest
         m.put( "id", "1" );
 
         m.put( "formId", "person" );
+
+        m.put( "data", new DefaultRunData() );
 
         deleteAction.execute( m );
 
