@@ -230,7 +230,20 @@ public class DefaultPlexusContainerTest
 
         container.release( serviceE2 );
     }
-    
+
+    public void testServiceableComponent()
+        throws Exception
+    {
+        ServiceableComponent component = (ServiceableComponent)
+            container.lookup( ServiceableComponent.ROLE );
+
+        assertNotNull( component );
+
+        assertTrue( component.simpleServiceLookup() );
+
+        assertTrue( component.roleBasedServiceLookup() );
+    }
+
     public void testConfiguration()
         throws Exception
     {

@@ -148,6 +148,16 @@
 
     <!--
      |
+     | Serviceable component to make sure the ServiceManager stuff works.
+     |
+     -->
+    <component>
+      <role>org.codehaus.plexus.ServiceableComponent</role>
+      <implementation>org.codehaus.plexus.DefaultServiceableComponent</implementation>
+    </component>
+
+    <!--
+     |
      | Configure Service
      |
      | Make sure the configuration stuff is working.
