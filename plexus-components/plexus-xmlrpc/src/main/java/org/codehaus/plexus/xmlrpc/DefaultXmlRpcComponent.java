@@ -159,7 +159,6 @@ public class DefaultXmlRpcComponent
     // ----------------------------------------------------------------------
 
     /**  The standalone xmlrpc server. */
-//    private WebServer webserver;
     private XmlRpcServer xmlRpcServer;
 
     // ----------------------------------------------------------------------
@@ -267,7 +266,7 @@ public class DefaultXmlRpcComponent
             return;
         }
 
-        getLogger().info( "We have " + handlers.size() + " handlers to configure." );
+        getLogger().info( "There are " + handlers.size() + " handlers to configure." );
 
         for ( int i = 0; i < handlers.size(); i++ )
         {
