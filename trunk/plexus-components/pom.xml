@@ -1,4 +1,4 @@
-<model>
+<project>
   <parent>
     <artifactId>plexus-root</artifactId>
     <groupId>plexus</groupId>
@@ -7,23 +7,30 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-components</artifactId>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
   <name>Plexus Components Parent Project</name>
   <version>1.0</version>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
+      <version>1.0-alpha-2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
+      <version>1.0-alpha-2-SNAPSHOT</version>
     </dependency>
   </dependencies>
-</model>
+  <modules>
+    <module>plexus-archiver</module>
+    <module>plexus-command</module>
+    <module>plexus-formica-web</module>
+    <module>plexus-formica</module>
+    <module>plexus-velocity</module>
+    <module>plexus-summit</module>
+    <module>plexus-jetty</module>
+    <module>plexus-jdo</module>
+    <module>plexus-hibernate</module>
+  </modules>
+</project>
