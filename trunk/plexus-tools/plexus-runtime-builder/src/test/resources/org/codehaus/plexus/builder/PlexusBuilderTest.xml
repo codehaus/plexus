@@ -1,20 +1,5 @@
 <plexus>
   <components>
-    <component>
-      <role>org.codehaus.plexus.builder.DefaultPlexusBuilder</role>
-      <implementation>org.codehaus.plexus.builder.DefaultPlexusBuilder</implementation>
-      <requirements>
-        <requirement>
-          <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
-        </requirement>
-        <requirement>
-          <role>org.apache.maven.project.MavenProjectBuilder</role>
-        </requirement>
-        <requirement>
-          <role>org.codehaus.plexus.velocity.VelocityComponent</role>
-        </requirement>
-      </requirements>
-    </component>
 
     <component>
       <role>org.codehaus.plexus.velocity.VelocityComponent</role>
@@ -104,6 +89,9 @@
         <requirement>
           <role>org.apache.maven.project.validation.ModelValidator</role>
         </requirement>
+        <requirement>
+          <role>org.apache.maven.project.path.PathTranslator</role>
+        </requirement>
       </requirements>
     </component>
     <component>
@@ -180,6 +168,10 @@
           <role>org.apache.maven.wagon.manager.WagonManager</role>
        </requirement>
       </requirements>
+    </component>
+    <component>
+      <role>org.apache.maven.project.path.PathTranslator</role>
+      <implementation>org.apache.maven.project.path.DefaultPathTranslator</implementation>
     </component>
   </components>
 </plexus>
