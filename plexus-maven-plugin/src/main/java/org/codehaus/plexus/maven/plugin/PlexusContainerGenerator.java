@@ -1,4 +1,4 @@
-package org.apache.maven.plugin.plexus;
+package org.codehaus.plexus.maven.plugin;
 
 /*
  * Copyright (c) 2004, Codehaus.org
