@@ -68,7 +68,7 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.codehaus.plexus.summit.exception.SummitRuntimeException;
 import org.codehaus.plexus.summit.rundata.RunData;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.apache.avalon.framework.logger.AbstractLogEnabled;
 
 /**
  * <p>

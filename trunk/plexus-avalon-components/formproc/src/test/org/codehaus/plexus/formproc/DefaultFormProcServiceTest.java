@@ -25,7 +25,7 @@ public class DefaultFormProcServiceTest
 
     public void testService() throws Exception
     {
-        FormProcService service = (FormProcService) getComponent( FormProcService.ROLE );
+        FormProcService service = (FormProcService) lookup( FormProcService.ROLE );
         
         FormManager man = service.getFormManager();
         
@@ -51,5 +51,7 @@ public class DefaultFormProcServiceTest
             System.out.println( result.getOriginalValue( "skill") );
             fail( "Form wasn't valid." );
         }
+        
+        release(service);
     }
 }
