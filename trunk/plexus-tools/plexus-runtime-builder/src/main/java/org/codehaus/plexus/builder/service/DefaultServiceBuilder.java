@@ -27,23 +27,23 @@ package org.codehaus.plexus.builder.service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.List;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 
+import org.codehaus.plexus.application.PlexusServiceConstants;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
-import org.codehaus.plexus.util.CollectionUtils;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.application.PlexusServiceConstants;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class DefaultServiceBuilder
@@ -55,7 +55,7 @@ public class DefaultServiceBuilder
     // ----------------------------------------------------------------------
 
     public void build( String serviceName, File workingDirectory,
-                       Set remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts,
+                       List remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts,
                        File plexusConfigurationFile, File configurationsDirectory, File configurationPropertiesFile )
         throws ServiceBuilderException
     {
@@ -105,25 +105,29 @@ public class DefaultServiceBuilder
         }
 
         // ----------------------------------------------------------------------
-        // Find the dependencies
+        // Find the and filter the dependencies
         // ----------------------------------------------------------------------
 
         Set artifacts;
-
-        Set coreArtifacts;
 
         try
         {
             artifacts = findArtifacts( remoteRepositories, localRepository, projectArtifacts, true );
 
-            coreArtifacts = findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false );
+            Set bootArtifacts = findArtifacts( remoteRepositories, localRepository, BOOT_ARTIFACTS, false );
+
+            Set coreArtifacts = findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false );
+
+            filterArtifacts( artifacts, bootArtifacts );
+
+            filterArtifacts( artifacts, coreArtifacts );
+
+            filterArtifacts( artifacts, EXCLUDED_ARTIFACTS );
         }
         catch ( ArtifactResolutionException e )
         {
             throw new ServiceBuilderException( "Error while finding dependencies.", e );
         }
-
-        artifacts = new HashSet( CollectionUtils.subtract( artifacts, coreArtifacts ) );
 
         // ----------------------------------------------------------------------
         // Copy the dependencies

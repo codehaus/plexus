@@ -26,11 +26,13 @@ package org.codehaus.plexus.builder.service;
 
 import java.io.File;
 import java.util.Set;
+import java.util.List;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public interface ServiceBuilder
@@ -38,7 +40,7 @@ public interface ServiceBuilder
     String ROLE = ServiceBuilder.class.getName();
 
     void build( String servicename, File workingDirectory,
-                Set remoteRepositories, ArtifactRepository localRespository, Set projectArtifacts,
+                List remoteRepositories, ArtifactRepository localRespository, Set projectArtifacts,
                 File plexusConfiguration, File configurationsDirectory, File configurationPropertiesFile )
         throws ServiceBuilderException;
 

@@ -25,11 +25,10 @@ package org.codehaus.plexus.builder.application;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
+import java.util.List;
 
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 
@@ -42,6 +41,7 @@ import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class DefaultApplicationBuilder
@@ -53,7 +53,7 @@ public class DefaultApplicationBuilder
     // ----------------------------------------------------------------------
 
     public void assemble( String applicationName, File workingDirectory,
-                          Set remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts,
+                          List remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts,
                           File plexusConfigurationFile, File configurationsDirectory, File configurationPropertiesFile )
         throws ApplicationBuilderException
     {
@@ -103,64 +103,28 @@ public class DefaultApplicationBuilder
         }
 
         // ----------------------------------------------------------------------
-        // Find the dependencies
+        // Find the and filter the dependencies
         // ----------------------------------------------------------------------
 
         Set artifacts;
-
-        Set bootArtifacts;
-
-        Set coreArtifacts;
 
         try
         {
             artifacts = findArtifacts( remoteRepositories, localRepository, projectArtifacts, true );
 
-            bootArtifacts = findArtifacts( remoteRepositories, localRepository, BOOT_ARTIFACTS, false );
+            Set bootArtifacts = findArtifacts( remoteRepositories, localRepository, BOOT_ARTIFACTS, false );
 
-            coreArtifacts = findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false );
+            Set coreArtifacts = findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false );
+
+            filterArtifacts( artifacts, bootArtifacts );
+
+            filterArtifacts( artifacts, coreArtifacts );
+
+            filterArtifacts( artifacts, EXCLUDED_ARTIFACTS );
         }
         catch ( ArtifactResolutionException e )
         {
             throw new ApplicationBuilderException( "Error while finding dependencies.", e );
-        }
-
-        // ----------------------------------------------------------------------
-        // Remove any core or boot artifacts from the artifacts set.
-        // It will ignore the version when checking for a match
-        // ----------------------------------------------------------------------
-
-        for ( Iterator it = artifacts.iterator(); it.hasNext(); )
-        {
-            Artifact artifact = (Artifact) it.next();
-
-            for ( Iterator it2 = bootArtifacts.iterator(); it2.hasNext(); )
-            {
-                Artifact bootArtifact = (Artifact) it2.next();
-
-                if ( artifact.getGroupId().equals( bootArtifact.getGroupId() ) &&
-                     artifact.getArtifactId().equals( bootArtifact.getArtifactId() ) &&
-                     artifact.getType().equals( bootArtifact.getType() ) )
-                {
-                    it.remove();
-
-                    continue;
-                }
-            }
-
-            for ( Iterator it2 = coreArtifacts.iterator(); it2.hasNext(); )
-            {
-                Artifact coreArtifact = (Artifact) it2.next();
-
-                if ( artifact.getGroupId().equals( coreArtifact.getGroupId() ) &&
-                     artifact.getArtifactId().equals( coreArtifact.getArtifactId() ) &&
-                     artifact.getType().equals( coreArtifact.getType() ) )
-                {
-                    it.remove();
-
-                    continue;
-                }
-            }
         }
 
         // ----------------------------------------------------------------------
