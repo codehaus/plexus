@@ -32,6 +32,7 @@ import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.List;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
@@ -77,7 +78,7 @@ public class DefaultPlexusRuntimeBuilder
     // ----------------------------------------------------------------------
 
     public void build( File workingDirectory,
-                       Set remoteRepositories, ArtifactRepository localRepository, Set artifacts,
+                       List remoteRepositories, ArtifactRepository localRepository, Set artifacts,
                        File plexusConfiguration, File configurationPropertiesFile )
         throws PlexusRuntimeBuilderException
     {
