@@ -52,23 +52,6 @@
         </requirement>
       </requirements>
     </component>
-
-    <component>
-      <role>org.codehaus.plexus.summit.renderer.Renderer</role>
-      <role-hint>form</role-hint>
-      <implementation>org.codehaus.plexus.summit.renderer.WebFormRenderer</implementation>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.formica.web.FormRendererManager</role>
-        </requirement>
-        <requirement>
-          <role>org.codehaus.plexus.i18n.I18N</role>
-        </requirement>
-        <requirement>
-          <role>org.codehaus.plexus.formica.FormManager</role>
-        </requirement>
-      </requirements>
-    </component>
     <component>
       <role>org.codehaus.plexus.summit.display.Display</role>
       <role-hint>classic</role-hint>
