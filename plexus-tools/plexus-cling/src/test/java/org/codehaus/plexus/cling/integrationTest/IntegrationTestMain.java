@@ -24,7 +24,7 @@ public class IntegrationTestMain
     {
     }
     
-    public int execute(Map parameters, List arguments) {
+    public int execute(List arguments) {
         
         int result = -1;
         
@@ -32,34 +32,39 @@ public class IntegrationTestMain
         
         try
         {
-            System.out.println("Loading javax.servlet.http.HttpServlet");
-            cloader.loadClass("javax.servlet.http.HttpServlet");
+            cloader.loadClass("org.apache.commons.lang.enum.Enum");
         }
         catch ( ClassNotFoundException e )
         {
             e.printStackTrace();
+            result = -2;
         }
-        
-        URL resourceUrl = cloader.getResource("/testResource.txt");
-        System.out.println("Attempting to load resource: " + resourceUrl + " (should be classpath:testResource.txt)");
         
         InputStream stream = cloader.getResourceAsStream("testResource.txt");
         if(stream != null) {
-            System.out.println("resource found");
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             String line = null;
             try
             {
                 line = reader.readLine();
                 
-                System.out.println("resource line: \'" + line + "\'");
                 if("This is a test.".equals(line)) {
-                    result = 0;
+                    if(output) {
+                        result = 0;
+                    }
+                    else {
+                        result = -5;
+                    }
                 }
+                else {
+                    result = -3;
+                }
+                
             }
             catch ( IOException e )
             {
                 e.printStackTrace();
+                result = -4;
             }
         }
         
