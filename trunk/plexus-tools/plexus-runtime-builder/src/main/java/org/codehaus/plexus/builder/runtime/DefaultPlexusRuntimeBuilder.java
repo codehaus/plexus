@@ -26,19 +26,15 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.builder.AbstractBuilder;
-import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -64,17 +60,7 @@ public class DefaultPlexusRuntimeBuilder
     //
     // ----------------------------------------------------------------------
 
-    private String plexusConfiguration;
-
-    private String configurationsDirectory;
-
-    private String configurationPropertiesFile;
-
-    private Properties configurationProperties;
-
     private File binDir;
-
-    private File confDir;
 
     private File coreDir;
 
@@ -91,25 +77,6 @@ public class DefaultPlexusRuntimeBuilder
     private Set artifacts;
 
     private Set plexusArtifacts;
-
-    // ----------------------------------------------------------------------
-    // Accessors
-    // ----------------------------------------------------------------------
-
-    public void setPlexusConfiguration( String plexusConfiguration )
-    {
-        this.plexusConfiguration = plexusConfiguration;
-    }
-
-    public void setConfigurationsDirectory( String configurationsDirectory )
-    {
-        this.configurationsDirectory = configurationsDirectory;
-    }
-
-    public void setConfigurationPropertiesFile( String configurationPropertiesFile )
-    {
-        this.configurationPropertiesFile = configurationPropertiesFile;
-    }
 
     // ----------------------------------------------------------------------
     //
@@ -195,7 +162,7 @@ public class DefaultPlexusRuntimeBuilder
 
             processMainConfiguration();
 
-            processConfigurations();
+            //processConfigurations();
 
             javaServiceWrapper();
 
@@ -327,72 +294,6 @@ public class DefaultPlexusRuntimeBuilder
         File out = new File( confDir, "plexus.conf" );
 
         filterCopy( in, out, getConfigurationProperties() );
-    }
-
-    private void processConfigurations()
-        throws PlexusRuntimeBuilderException, IOException
-    {
-        if ( configurationsDirectory == null )
-        {
-            return;
-        }
-
-        if ( configurationPropertiesFile == null )
-        {
-            throw new PlexusRuntimeBuilderException( "The configuration properties file must be set." );
-        }
-
-        DirectoryScanner scanner = new DirectoryScanner();
-
-        scanner.setBasedir( configurationsDirectory );
-
-        scanner.setExcludes( new String[]{configurationPropertiesFile, "**/CVS/**"} );
-
-        scanner.scan();
-
-        String[] files = scanner.getIncludedFiles();
-
-        for ( int i = 0; i < files.length; i++ )
-        {
-            String file = files[i];
-
-            File in = new File( configurationsDirectory, file );
-
-            File out = new File( confDir, files[i] );
-
-            filterCopy( in, out, getConfigurationProperties() );
-        }
-    }
-
-    private Properties getConfigurationProperties()
-        throws PlexusRuntimeBuilderException
-    {
-        if ( configurationProperties == null )
-        {
-            Properties p = new Properties();
-
-            File input = new File( configurationPropertiesFile );
-
-            try
-            {
-                p.load( new FileInputStream( input ) );
-            }
-            catch ( IOException ex )
-            {
-                throw new PlexusRuntimeBuilderException( "Exception while reading configuration file: " + input.getPath(), ex );
-            }
-
-            configurationProperties = new Properties();
-
-            for ( Enumeration e = p.propertyNames(); e.hasMoreElements(); )
-            {
-                String name = (String) e.nextElement();
-
-                configurationProperties.setProperty( name, p.getProperty( name ) );
-            }
-        }
-
-        return configurationProperties;
     }
 
     private void javaServiceWrapper()
