@@ -17,15 +17,18 @@ public class CreateViewContextValve
     public void invoke( RunData data )
         throws IOException, SummitException
     {
-        //TODO: we should check here to see if a context has already been created as we could use
-        // this base valve to populate tools, scalars in the context or anything else and you
-        // don't want one valve to clobber the view context;
+        ViewContext viewContext = (ViewContext) data.getMap().get( SummitConstants.VIEW_CONTEXT );
 
-        ViewContext viewContext = new DefaultViewContext();
+        if ( viewContext == null )
+        {
+            viewContext = new DefaultViewContext();
+
+            data.getMap().put( SummitConstants.VIEW_CONTEXT, viewContext );
+        }
+
+        viewContext.put( "data", data );
 
         populateViewContext( data, viewContext );
-
-        data.getMap().put( SummitConstants.VIEW_CONTEXT, viewContext );
     }
 
     /**
@@ -42,8 +45,5 @@ public class CreateViewContextValve
      */
     protected void populateViewContext( RunData data, ViewContext viewContext )
     {
-        viewContext.put( "data", data );
-
-        viewContext.put( "name", "root" );
     }
 }
