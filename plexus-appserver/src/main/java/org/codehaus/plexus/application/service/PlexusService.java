@@ -26,6 +26,7 @@ package org.codehaus.plexus.application.service;
 
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.PlexusContainer;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -35,7 +36,11 @@ public interface PlexusService
 {
     String ROLE = PlexusService.class.getName();
 
-    void onApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
-                             PlexusConfiguration serviceConfiguration )
+    void beforeApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
+                                 PlexusConfiguration serviceConfiguration )
+        throws Exception;
+
+    void afterApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
+                                PlexusConfiguration serviceConfiguration )
         throws Exception;
 }

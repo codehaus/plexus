@@ -25,8 +25,13 @@ package org.codehaus.plexus.application.profile;
  */
 
 import java.io.File;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -42,11 +47,18 @@ public class ApplicationRuntimeProfile
 
     private DefaultPlexusContainer container;
 
+    private PlexusConfiguration applicationConfiguration;
+
+    private List services;
+
+    private List serviceConfigurations;
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
-    public ApplicationRuntimeProfile( String name, File home, File lib, DefaultPlexusContainer container )
+    public ApplicationRuntimeProfile( String name, File home, File lib, DefaultPlexusContainer container,
+                                      PlexusConfiguration applicationConfiguration )
     {
         this.name = name;
 
@@ -55,6 +67,12 @@ public class ApplicationRuntimeProfile
         this.lib = lib;
 
         this.container = container;
+
+        this.applicationConfiguration = applicationConfiguration;
+
+        this.services = new ArrayList();
+
+        this.serviceConfigurations = new ArrayList();
     }
 
     public String getName()
@@ -75,5 +93,20 @@ public class ApplicationRuntimeProfile
     public DefaultPlexusContainer getContainer()
     {
         return container;
+    }
+
+    public PlexusConfiguration getApplicationConfiguration()
+    {
+        return applicationConfiguration;
+    }
+
+    public List getServices()
+    {
+        return services;
+    }
+
+    public List getServiceConfigurations()
+    {
+        return serviceConfigurations;
     }
 }

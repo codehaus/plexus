@@ -198,12 +198,12 @@ public class DefaultApplicationDeployer
         // -> ${app}/lib
         // ----------------------------------------------------------------------
 
-        File applicationConfiguration = new File( new File( location, PlexusApplicationConstants.CONF_DIRECTORY ), PlexusApplicationConstants.CONFIGURATION_FILE );
+        File applicationConfigurationFile = new File( new File( location, PlexusApplicationConstants.CONF_DIRECTORY ), PlexusApplicationConstants.CONFIGURATION_FILE );
 
-        if ( !applicationConfiguration.exists() )
+        if ( !applicationConfigurationFile.exists() )
         {
             throw new Exception( "The application '" + name + "' does not have a valid configuration: " +
-                                 applicationConfiguration + " does not exist!" );
+                                 applicationConfigurationFile + " does not exist!" );
         }
 
         File applicationLibrary = new File( location, PlexusApplicationConstants.LIB_DIRECTORY );
@@ -220,7 +220,7 @@ public class DefaultApplicationDeployer
 
         DefaultPlexusContainer applicationContainer = new DefaultPlexusContainer();
 
-        InputStream stream = new FileInputStream( applicationConfiguration );
+        InputStream stream = new FileInputStream( applicationConfigurationFile );
 
         Reader r = new InputStreamReader( stream );
 
@@ -257,37 +257,25 @@ public class DefaultApplicationDeployer
         applicationContainer.setCoreRealm( realm );
 
         // ----------------------------------------------------------------------
-        // Start the application
-        // ----------------------------------------------------------------------
-
-        try
-        {
-            applicationContainer.initialize();
-
-            applicationContainer.start();
-        }
-        catch ( Exception e )
-        {
-            throw new Exception( "Error starting Plexus.", e );
-        }
-
-        ApplicationRuntimeProfile profile = new ApplicationRuntimeProfile( name, location, applicationLibrary, applicationContainer );
-
-        deployments.put( name, profile );
-
-        // ----------------------------------------------------------------------
-        // Notify listeners
+        //
         // ----------------------------------------------------------------------
 
         Map context = new ContextMapAdapter( applicationContainer.getContext() );
 
-        Reader configurationReader = new InterpolationFilterReader( new FileReader( applicationConfiguration ), context );
+        Reader configurationReader =
+            new InterpolationFilterReader( new FileReader( applicationConfigurationFile ), context );
 
         Xpp3Dom dom = Xpp3DomBuilder.build( configurationReader );
 
-        PlexusConfiguration applicationDescriptor = new XmlPlexusConfiguration( dom );
+        PlexusConfiguration applicationConfiguration = new XmlPlexusConfiguration( dom );
 
-        PlexusConfiguration[] services = applicationDescriptor.getChild( "services" ).getChildren( "service" );
+        ApplicationRuntimeProfile profile = new ApplicationRuntimeProfile( name, location, applicationLibrary, applicationContainer, applicationConfiguration );
+
+        // ----------------------------------------------------------------------
+        //
+        // ----------------------------------------------------------------------
+
+        PlexusConfiguration[] services = applicationConfiguration.getChild( "services" ).getChildren( "service" );
 
         for ( int i = 0; i < services.length; i++ )
         {
@@ -303,14 +291,14 @@ public class DefaultApplicationDeployer
             if ( !parentPlexus.hasComponent( PlexusService.ROLE, id ) )
             {
                 getLogger().error( "Error while loading plexus service with id '" + id + "'. " +
-                                   "The service doesn't exists.");
+                                   "The service doesn't exists." );
 
                 continue;
             }
 
             Object serviceObject = parentPlexus.lookup( PlexusService.ROLE, id );
 
-            if ( !(serviceObject instanceof PlexusService ) )
+            if ( !( serviceObject instanceof PlexusService ) )
             {
                 getLogger().error( "Error while loading plexus service with id '" + id + "'. " +
                                    "The component has to implement the PlexusService interface." );
@@ -320,17 +308,44 @@ public class DefaultApplicationDeployer
 
             PlexusService service = (PlexusService) serviceObject;
 
-            service.onApplicationStart( profile, serviceConfiguration.getChild( "configuration" ) );
+            profile.getServices().add( service );
+
+            PlexusConfiguration conf = serviceConfiguration.getChild( "configuration" );
+
+            profile.getServiceConfigurations().add( conf );
+
+            service.beforeApplicationStart( profile, conf );
         }
 
-//        DefaultDeployEvent event = createDeployEvent( profile );
-//
-//        for ( Iterator itr = applicationListeners.iterator(); itr.hasNext(); )
-//        {
-//            ApplicationListener listener = (ApplicationListener) itr.next();
-//
-//            listener.deployedApplication( event );
-//        }
+        // ----------------------------------------------------------------------
+        // Start the application
+        // ----------------------------------------------------------------------
+
+        try
+        {
+            applicationContainer.initialize();
+
+            applicationContainer.start();
+        }
+        catch ( Exception e )
+        {
+            throw new Exception( "Error starting Plexus.", e );
+        }
+
+        deployments.put( name, profile );
+
+        // ----------------------------------------------------------------------
+        //
+        // ----------------------------------------------------------------------
+
+        for ( int i = 0; i < profile.getServices().size(); i++ )
+        {
+            PlexusService service = (PlexusService) profile.getServices().get( i );
+
+            PlexusConfiguration configuration = (PlexusConfiguration) profile.getServiceConfigurations().get( i );
+
+            service.afterApplicationStart( profile, configuration );
+        }
     }
 
     // ----------------------------------------------------------------------
