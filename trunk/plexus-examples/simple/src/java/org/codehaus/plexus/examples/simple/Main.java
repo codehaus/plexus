@@ -2,7 +2,7 @@ package org.codehaus.plexus.examples.simple;
 
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.embed.Embedder;
-import org.codehaus.plexus.service.repository.ComponentRepository;
+import org.codehaus.plexus.component.repository.ComponentRepository;
 
 /** 
  * The main entry point into the "simple" application.  The class
