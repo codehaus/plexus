@@ -1,5 +1,29 @@
 package org.codehaus.plexus.xmlrpc;
 
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2004, The Codehaus
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /* ----------------------------------------------------------------------------
  * The Apache Software License, Version 1.1
  *
@@ -66,7 +90,7 @@ import org.apache.xmlrpc.XmlRpcException;
  * The interface an XmlRpcService implements.
  *
  * @author <a href="mailto:josh@stonecottage.com">Josh Lucas</a>
- * @author <a href="mailto:magnus@handtolvur.is">Magnús Þór Torfason</a>
+ * @author <a href="mailto:magnus@handtolvur.is">Magn?s ??r Torfason</a>
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -74,7 +98,7 @@ import org.apache.xmlrpc.XmlRpcException;
  */
 public interface XmlRpcComponent
 {
-    public static final String ROLE = XmlRpcComponent.class.getName();
+    String ROLE = XmlRpcComponent.class.getName();
 
     /**
      * Execute a remote procedure call.
@@ -146,7 +170,7 @@ public interface XmlRpcComponent
      * @see #setParanoid( boolean )
      */
     void denyClient( String address );
-    
+
     /** Message Listener. */
     void addMessageListener( XmlRpcMessageListener listener );
 
