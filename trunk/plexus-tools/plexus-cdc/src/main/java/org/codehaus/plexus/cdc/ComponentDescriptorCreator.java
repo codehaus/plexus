@@ -5,6 +5,7 @@ import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaSource;
 import com.thoughtworks.qdox.model.Type;
+import com.thoughtworks.qdox.model.JavaField;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.repository.ComponentDependency;
@@ -18,6 +19,8 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * So, in this case it is easy enough to determine the role and the implementation.
@@ -105,7 +108,7 @@ public class ComponentDescriptorCreator
 
         for ( int i = 0; i < javaSources.length; i++ )
         {
-            ComponentDescriptor componentDescriptor = gleanComponent( javaSources[i] );
+            ComponentDescriptor componentDescriptor = gleanComponent( builder, javaSources[i] );
 
             if ( componentDescriptor != null )
             {
@@ -191,7 +194,7 @@ public class ComponentDescriptorCreator
         return componentDependencies;
     }
 
-    private ComponentDescriptor gleanComponent( JavaSource javaSource )
+    private ComponentDescriptor gleanComponent( JavaDocBuilder builder, JavaSource javaSource )
     {
         JavaClass javaClass = getJavaClass( javaSource );
 
@@ -202,7 +205,7 @@ public class ComponentDescriptorCreator
             return null;
         }
 
-        String className = javaClass.getFullyQualifiedName();
+        String className = javaClass.getName();
 
         boolean isManager = false;
 
@@ -278,7 +281,155 @@ public class ComponentDescriptorCreator
             }
         }
 
+        // ----------------------------------------------------------------------
+        // Handle the requirements for the manager
+        // ----------------------------------------------------------------------
+
+        if ( isManager )
+        {
+            // DefaultPluginManager
+            //
+            // So we need the goop between Default and Manager ... Plugin
+            // So lookup the Plugin class and use that to create the Map
+            // requirement.
+
+            String s = className.substring( 7 );
+
+            s = s.substring( 0, s.length() - 7 );
+
+            JavaClass managed = findClassByName( builder, s );
+
+            if ( managed != null )
+            {
+                ComponentRequirement requirement = new ComponentRequirement();
+
+                requirement.setRole( managed.getFullyQualifiedName() );
+
+                String fieldName = uncapitalise( managed.getName() );
+
+                if ( fieldName.endsWith( "y" ) )
+                {
+                    fieldName = fieldName.substring( fieldName.length() - 1 ) + "ies";
+                }
+                else if ( fieldName.endsWith( "s" ) )
+                {
+                    fieldName = fieldName + "es";
+                }
+                else
+                {
+                    fieldName = fieldName + "s";
+                }
+
+                requirement.setFieldName( fieldName );
+
+                componentDescriptor.addRequirement( requirement );
+            }
+            else
+            {
+                // The interface for what this manager is supposed to be managing
+                // cannot be found which is not a good thing. There are warnings about
+                // component interfaces not having a ROLE field.
+
+                System.out.println( "Check the errors to make sure the interface of the managed class has a ROLE field." );
+
+                System.out.println( "This may be why the interface could not be found because it was not recorded as a component interface." );
+            }
+        }
+
+        JavaField[] fields = javaClass.getFields();
+
+        for ( int i = 0; i < fields.length; i++ )
+        {
+            JavaField field = fields[i];
+
+            String classType = field.getType().getValue();
+
+            if ( !isPrimitive( classType ) )
+            {
+                // If this is not a primitive field then we will attempt
+                // to look for an interface without our set of sources
+                // that is a component and try to set it as a requirement
+                //
+                // Right now we are not doing anything to search out cases
+                // where the requirement is external. We will need to build
+                // up a little database of some kind that can be queried for
+                // all the available components. But this will do for now as
+                // the requirement can be set explicity.
+
+                String roleName = classType.substring( classType.lastIndexOf( "." ) + 1 );
+
+                JavaClass jc = (JavaClass) componentCache.get( roleName );
+
+                if ( jc != null )
+                {
+                    ComponentRequirement cr = new ComponentRequirement();
+
+                    cr.setRole( classType );
+
+                    componentDescriptor.addRequirement( cr );
+                }
+            }
+        }
+
         return componentDescriptor;
+    }
+
+    // Qdox doesn't keep a map of short name to JavaClass
+    private Map componentCache;
+
+    private JavaClass findClassByName( JavaDocBuilder builder, String name )
+    {
+        // We are trying to cache classes that are components and
+        // interfaces for components.
+        //
+        // Component classes are designated with the @component tag
+        // Component interfaces contain a field named ROLE.
+
+        if ( componentCache == null )
+        {
+            componentCache = new HashMap();
+
+            JavaSource[] javaSources = builder.getSources();
+
+            for ( int i = 0; i < javaSources.length; i++ )
+            {
+                JavaClass f = getJavaClass( javaSources[i] );
+
+                if ( f.getTagByName( "component" ) != null )
+                {
+                    componentCache.put( f.getName(), f );
+                }
+                else if ( f.isInterface() )
+                {
+                    boolean hasRoleField = false;
+
+                    JavaField[] fields = f.getFields();
+
+                    for ( int j = 0; j < fields.length; j++ )
+                    {
+                        if ( fields[j].getName().equals( "ROLE" ) )
+                        {
+                            hasRoleField = true;
+
+                            break;
+                        }
+                    }
+
+                    if ( hasRoleField )
+                    {
+                        componentCache.put( f.getName(), f );
+                    }
+                    else
+                    {
+                        System.out.println( f.getFullyQualifiedName() + " is an interface but doesn't have a ROLE field!" );
+
+                        System.out.println( "If this is a plexus component interface it should have a ROLE field." );
+                    }
+                }
+            }
+        }
+
+        return (JavaClass) componentCache.get( name );
     }
 
     private void findRoleHint( ComponentDescriptor cd, JavaClass javaClass, String startingClassName )
@@ -287,8 +438,6 @@ public class ComponentDescriptorCreator
 
         String className = startingClassName;
 
-        System.out.println( "className = " + className );
-
         Type[] types = javaClass.getImplements();
 
         for ( int i = 0; i < types.length; i++ )
@@ -296,8 +445,6 @@ public class ComponentDescriptorCreator
             String interfaceName = types[i].getValue();
 
             String roleName = interfaceName.substring( interfaceName.lastIndexOf( "." ) + 1 );
-
-            System.out.println( "roleName = " + roleName );
 
             // org.codehaus.foo.Sink
             // org.codehaus.bar.BigSink
@@ -318,7 +465,7 @@ public class ComponentDescriptorCreator
         // We back track up the hierarchy until we find an implementation that
         // matches the naming convention of the class in question. The default
         // plexus naming conventions are assumed.
-        // ----------------------------------------------------------------------        
+        // ----------------------------------------------------------------------
 
         // org.codehaus.foo.Sink
         // ^
@@ -362,5 +509,49 @@ public class ComponentDescriptorCreator
         }
 
         return sb.toString().trim().toLowerCase();
+    }
+
+    private String uncapitalise( String str )
+    {
+        if ( str == null )
+        {
+            return null;
+        }
+        else if ( str.length() == 0 )
+        {
+            return "";
+        }
+        else
+        {
+            return new StringBuffer( str.length() )
+                .append( Character.toLowerCase( str.charAt( 0 ) ) )
+                .append( str.substring( 1 ) )
+                .toString();
+        }
+    }
+
+    private Class[] primitiveClasses = new Class[]{
+        String.class,
+        Boolean.class, Boolean.TYPE,
+        Byte.class, Byte.TYPE,
+        Character.class, Character.TYPE,
+        Short.class, Short.TYPE,
+        Integer.class, Integer.TYPE,
+        Long.class, Long.TYPE,
+        Float.class, Float.TYPE,
+        Double.class, Double.TYPE,
+    };
+
+    private boolean isPrimitive( String type )
+    {
+        for ( int i = 0; i < primitiveClasses.length; i++ )
+        {
+            if ( type.equals( primitiveClasses[i].getName() ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
