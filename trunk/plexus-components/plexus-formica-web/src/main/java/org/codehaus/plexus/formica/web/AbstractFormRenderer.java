@@ -16,10 +16,10 @@ package org.codehaus.plexus.formica.web;
  * limitations under the License.
  */
 
-import com.thoughtworks.xstream.xml.XMLWriter;
-import com.thoughtworks.xstream.xml.text.PrettyPrintXMLWriter;
 import org.codehaus.plexus.formica.Form;
 import org.codehaus.plexus.i18n.I18N;
+import org.codehaus.plexus.util.xml.XMLWriter;
+import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 
 import java.io.Writer;
 

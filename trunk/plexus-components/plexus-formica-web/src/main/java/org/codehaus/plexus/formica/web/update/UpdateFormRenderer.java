@@ -16,13 +16,13 @@ package org.codehaus.plexus.formica.web.update;
  * limitations under the License.
  */
 
-import com.thoughtworks.xstream.xml.XMLWriter;
 import org.codehaus.plexus.formica.Element;
 import org.codehaus.plexus.formica.Form;
 import org.codehaus.plexus.formica.web.element.TextElementRenderer;
 import org.codehaus.plexus.formica.web.AbstractFormRenderer;
 import org.codehaus.plexus.formica.web.FormRenderingException;
 import org.codehaus.plexus.i18n.I18N;
+import org.codehaus.plexus.util.xml.XMLWriter;
 
 import java.util.Iterator;
 

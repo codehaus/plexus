@@ -16,10 +16,8 @@ package org.codehaus.plexus.formica.web.element;
  * limitations under the License.
  */
 
-import com.thoughtworks.xstream.xml.XMLWriter;
 import org.codehaus.plexus.formica.Element;
-
-import java.util.Map;
+import org.codehaus.plexus.util.xml.XMLWriter;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -27,5 +25,5 @@ import java.util.Map;
  */
 public interface ElementRenderer
 {
-    void render( Element element, Object data, XMLWriter w );    
+    void render( Element element, Object data, XMLWriter w );
 }
