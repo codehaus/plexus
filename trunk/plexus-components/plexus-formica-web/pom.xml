@@ -8,7 +8,7 @@
   <groupId>plexus</groupId>
   <artifactId>plexus-formica-web</artifactId>
   <version>1.0-alpha-1</version>
-  <name>Plexus Formica Component</name>
+  <name>Plexus Formica Web Component</name>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
