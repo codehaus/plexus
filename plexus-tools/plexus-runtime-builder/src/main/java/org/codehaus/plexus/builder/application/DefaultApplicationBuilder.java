@@ -25,20 +25,20 @@ package org.codehaus.plexus.builder.application;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 
+import org.codehaus.plexus.application.PlexusApplicationConstants;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
-import org.codehaus.plexus.util.CollectionUtils;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.application.PlexusApplicationConstants;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -108,11 +108,15 @@ public class DefaultApplicationBuilder
 
         Set artifacts;
 
+        Set bootArtifacts;
+
         Set coreArtifacts;
 
         try
         {
             artifacts = findArtifacts( remoteRepositories, localRepository, projectArtifacts, true );
+
+            bootArtifacts = findArtifacts( remoteRepositories, localRepository, BOOT_ARTIFACTS, false );
 
             coreArtifacts = findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false );
         }
@@ -121,7 +125,43 @@ public class DefaultApplicationBuilder
             throw new ApplicationBuilderException( "Error while finding dependencies.", e );
         }
 
-        artifacts = new HashSet( CollectionUtils.subtract( artifacts, coreArtifacts ) );
+        // ----------------------------------------------------------------------
+        // Remove any core or boot artifacts from the artifacts set.
+        // It will ignore the version when checking for a match
+        // ----------------------------------------------------------------------
+
+        for ( Iterator it = artifacts.iterator(); it.hasNext(); )
+        {
+            Artifact artifact = (Artifact) it.next();
+
+            for ( Iterator it2 = bootArtifacts.iterator(); it2.hasNext(); )
+            {
+                Artifact bootArtifact = (Artifact) it2.next();
+
+                if ( artifact.getGroupId().equals( bootArtifact.getGroupId() ) &&
+                     artifact.getArtifactId().equals( bootArtifact.getArtifactId() ) &&
+                     artifact.getType().equals( bootArtifact.getType() ) )
+                {
+                    it.remove();
+
+                    continue;
+                }
+            }
+
+            for ( Iterator it2 = coreArtifacts.iterator(); it2.hasNext(); )
+            {
+                Artifact coreArtifact = (Artifact) it2.next();
+
+                if ( artifact.getGroupId().equals( coreArtifact.getGroupId() ) &&
+                     artifact.getArtifactId().equals( coreArtifact.getArtifactId() ) &&
+                     artifact.getType().equals( coreArtifact.getType() ) )
+                {
+                    it.remove();
+
+                    continue;
+                }
+            }
+        }
 
         // ----------------------------------------------------------------------
         // Copy the dependencies
