@@ -336,7 +336,7 @@ public class AvalonConfiguration
     }
 
     // ----------------------------------------------------------------------
-    // Accessors
+    // Little helpers to translate to PlexusConfiguration/
     // ----------------------------------------------------------------------
 
     public  String getPrefix()
