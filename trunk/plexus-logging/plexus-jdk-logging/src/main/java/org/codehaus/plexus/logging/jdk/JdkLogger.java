@@ -45,9 +45,9 @@ public class JdkLogger
      * @param logger
      * @throws IllegalArgumentException
      */
-    public JdkLogger( java.util.logging.Logger logger )
+    public JdkLogger( int threshold, java.util.logging.Logger logger )
     {
-        super( jdkLoggerLevelToThreshold( logger.getLevel() ), logger.getName() );
+        super( threshold, logger.getName() );
 
         if ( null == logger )
         {
@@ -121,46 +121,7 @@ public class JdkLogger
     {
         String childName = logger.getName() + "." + name;
 
-        return new JdkLogger( java.util.logging.Logger.getLogger( childName ) );
+        return new JdkLogger( getThreshold(),  java.util.logging.Logger.getLogger( childName ) );
     }
-
-    private static int jdkLoggerLevelToThreshold( Level level )
-    {
-        if ( level == Level.CONFIG )
-        {
-            return LEVEL_DEBUG;
-        }
-        else if ( level == Level.FINEST )
-        {
-            return LEVEL_DEBUG;
-        }
-        else if ( level == Level.FINER )
-        {
-            return LEVEL_DEBUG;
-        }
-        else if ( level == Level.FINE )
-        {
-            return LEVEL_DEBUG;
-        }
-        else if ( level == Level.INFO )
-        {
-            return LEVEL_INFO;
-        }
-        else if ( level == Level.WARNING )
-        {
-            return LEVEL_WARN;
-        }
-        else if ( level == Level.SEVERE )
-        {
-            return LEVEL_ERROR;
-        }
-        else if ( level == Level.OFF )
-        {
-            return LEVEL_DISABLED;
-        }
-        else
-        {
-            return LEVEL_DEBUG;
-        }
-    }
+    
 }
