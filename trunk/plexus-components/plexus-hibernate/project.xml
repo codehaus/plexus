@@ -4,7 +4,7 @@
   <id>plexus-hibernate</id>
   <artifactId>plexus-hibernate</artifactId>
   <name>Plexus Hibernate Component</name>
-  <currentVersion>1.0-beta-3</currentVersion>
+  <currentVersion>1.0-beta-4-SNAPSHOT</currentVersion>
    
   <dependencies>
 
@@ -74,10 +74,11 @@
       <groupId>hsqldb</groupId>
       <version>1.7.2.2</version>
     </dependency>
-    
+
     <dependency>
-      <id>jta</id>
-      <version>1.0.1</version>
+      <groupId>geronimo-spec</groupId>
+      <artifactId>geronimo-spec-jta</artifactId>
+      <version>DEV</version>
     </dependency>
     
   </dependencies>
