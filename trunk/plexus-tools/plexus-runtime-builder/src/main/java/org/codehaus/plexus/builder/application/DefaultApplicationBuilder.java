@@ -24,13 +24,13 @@ package org.codehaus.plexus.builder.application;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.HashSet;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -180,7 +180,8 @@ public class DefaultApplicationBuilder
     //
     // ----------------------------------------------------------------------
 
-    private void processConfigurations( File confDir, File plexusConfigurationFile,
+    private void processConfigurations( File confDir,
+                                        File plexusConfigurationFile,
                                         File configurationPropertiesFile,
                                         File configurationsDirectory )
         throws ApplicationBuilderException, IOException
@@ -194,8 +195,14 @@ public class DefaultApplicationBuilder
             throw new ApplicationBuilderException( "The application configuration file doesn't exist: '" + plexusConfigurationFile.getAbsolutePath() + "'." );
         }
 
-        FileUtils.copyFile( plexusConfigurationFile, new File( confDir, PlexusApplicationConstants.CONFIGURATION_FILE ) );
+        Properties configurationProperties = new Properties();
 
+        FileUtils.copyFile( plexusConfigurationFile, new File( confDir, PlexusApplicationConstants.CONFIGURATION_FILE ) );
+/*
+        filterCopy( plexusConfigurationFile,
+                    new File( confDir, PlexusApplicationConstants.CONFIGURATION_FILE ),
+                    configurationProperties );
+*/
         // ----------------------------------------------------------------------
         // Process the configurations
         // ----------------------------------------------------------------------
@@ -204,8 +211,6 @@ public class DefaultApplicationBuilder
         {
             return;
         }
-
-        Properties configurationProperties = new Properties();
 
         if ( configurationPropertiesFile != null )
         {
