@@ -30,6 +30,8 @@ public class DefaultI18N
 
     private String defaultCountry = Locale.getDefault().getCountry();
 
+    private boolean devMode;
+
     // ----------------------------------------------------------------------
     // Accessors
     // ----------------------------------------------------------------------
@@ -93,22 +95,30 @@ public class DefaultI18N
         // Assure usable inputs.
         bundleName = ( bundleName == null ? getDefaultBundleName() : bundleName.trim() );
 
-        try
+        // ----------------------------------------------------------------------
+        // A hack to make sure the properties files are always checked
+        // ----------------------------------------------------------------------
+
+        if ( devMode )
         {
-            Class klass = ResourceBundle.getBundle( bundleName ).getClass().getSuperclass();
+            try
+            {
+                Class klass = ResourceBundle.getBundle( bundleName ).getClass().getSuperclass();
 
-            Field field = klass.getDeclaredField( "cacheList" );
+                Field field = klass.getDeclaredField( "cacheList" );
 
-            field.setAccessible( true );
+                field.setAccessible( true );
 
-            sun.misc.SoftCache cache = (sun.misc.SoftCache) field.get( null );
+                sun.misc.SoftCache cache = (sun.misc.SoftCache) field.get( null );
 
-            cache.clear();
+                cache.clear();
 
-            field.setAccessible( false );
-        }
-        catch ( Exception e )
-        {
+                field.setAccessible( false );
+            }
+            catch ( Exception e )
+            {
+                // Intentional
+            }
         }
 
         if ( locale == null )
@@ -308,6 +318,11 @@ public class DefaultI18N
         defaultLocale = new Locale( defaultLanguage, defaultCountry );
 
         initializeBundleNames();
+
+        if ( "true".equals( System.getProperty( "PLEXUS_DEV_MODE" ) ) ) 
+        {
+            devMode = true;
+        }
     }
 
     // ----------------------------------------------------------------------
