@@ -22,6 +22,15 @@
       <archive>http://lists.codehaus.org/pipermail/plexus-dev/</archive>
     </mailingList>
   </mailingLists>
+  <distributionManagement>
+    <repository>
+      <id>repo1</id>
+      <name>Maven Repository</name>
+      <url>scp://repo1.maven.org/home/projects/maven/repository/ibiblio-v2</url>
+      <username>maven</username>
+    </repository>
+  </distributionManagement>
+
   <ciManagement>
     <nagEmailAddress>dev@plexus.codehaus.org</nagEmailAddress>
   </ciManagement>
