@@ -26,6 +26,7 @@ package org.codehaus.plexus.taskqueue;
 
 import java.util.List;
 import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -34,10 +35,12 @@ import java.util.Iterator;
 public class BuildProjectTaskViabilityEvaluator
     implements TaskViabilityEvaluator
 {
-    public void evaluate( List tasks )
+    public List evaluate( List tasks )
         throws TaskQueueException
     {
         BuildProjectTask okTask = null;
+
+        List toBeRemoved = new ArrayList( tasks.size() );
 
         for ( Iterator it = tasks.iterator(); it.hasNext(); )
         {
@@ -52,8 +55,10 @@ public class BuildProjectTaskViabilityEvaluator
 
             if ( buildProjectTask.getTimestamp() - okTask.getTimestamp() < 100 )
             {
-                it.remove();
+                toBeRemoved.add( buildProjectTask );
             }
         }
+
+        return toBeRemoved;
     }
 }
