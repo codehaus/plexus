@@ -32,6 +32,11 @@
     </component>
     <component>
       <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>required</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.RequiredValidator</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
       <role-hint>pattern-digits</role-hint>
       <implementation>org.codehaus.plexus.formica.validation.REValidator</implementation>
       <configuration>
