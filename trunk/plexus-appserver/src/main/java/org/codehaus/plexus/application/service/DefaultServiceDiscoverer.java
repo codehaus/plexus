@@ -24,14 +24,10 @@ package org.codehaus.plexus.application.service;
 
 import java.io.File;
 import java.io.FileReader;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Enumeration;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.application.PlexusServiceConstants;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
@@ -156,12 +152,14 @@ public class DefaultServiceDiscoverer
 
         addJars( libdir );
 
+        container.discoverComponents( container.getCoreRealm() );
+
         // Copy over the user configuration if there is one.
         File serviceConfig = new File( configurations, name + ".xml" );
         if ( !serviceConfig.exists() )
         {
-//            File config = new File( serviceDir, "META-INF/plexus/services.xml" );
-            File config = new File( serviceDir, PlexusServiceConstants.CONFIGURATION_FILE );
+            File config = new File( new File( serviceDir, PlexusServiceConstants.CONF_DIRECTORY ),
+                                    PlexusServiceConstants.CONFIGURATION_FILE );
 
             if ( config.exists() )
             {
@@ -188,8 +186,6 @@ public class DefaultServiceDiscoverer
     {
         PlexusConfiguration serviceConfig =
             PlexusTools.buildConfiguration( new FileReader( config ) );
-
-//        addComponents( serviceConfig );
 
         startComponents( serviceConfig );
     }
@@ -224,48 +220,10 @@ public class DefaultServiceDiscoverer
             }
         }
     }
-/*
-    private void addComponents( PlexusConfiguration serviceConfig )
-        throws Exception
-    {
-        PlexusConfiguration[] componentConfigurations =
-            serviceConfig.getChild( "components" ).getChildren( "component" );
 
-        for ( int i = 0; i < componentConfigurations.length; i++ )
-        {
-            PlexusConfiguration componentConfiguration = componentConfigurations[i];
-
-            ComponentDescriptor componentDescriptor = null;
-
-            try
-            {
-                componentDescriptor = PlexusTools.buildComponentDescriptor( componentConfiguration );
-            }
-            catch ( Exception e )
-            {
-                throw new Exception( "Cannot process component descriptor.", e );
-            }
-
-            container.addComponentDescriptor( componentDescriptor );
-        }
-    }
-*/
-    /**
-     * @param serviceDir
-     * @throws Exception
-     */
     private void addJars( File serviceDir )
         throws Exception
     {
         container.addJarRepository( serviceDir );
-    }
-
-    // ----------------------------------------------------------------------
-    // Application deployment
-    // ----------------------------------------------------------------------
-
-    public void applicationDeployed( String name, File lib )
-    {
-
     }
 }

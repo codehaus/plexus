@@ -56,7 +56,7 @@ public class PlexusServiceConstants
 {
     public static final String CONF_DIRECTORY = "conf";
 
-    public static final String CONFIGURATION_FILE = "/META-INF/plexus/service.xml";
+    public static final String CONFIGURATION_FILE = "service.xml";
 
     public static final String LIB_DIRECTORY = "lib";
 }
