@@ -4,12 +4,13 @@ import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.codehaus.plexus.builder.application.ApplicationBuilder;
 
 import java.lang.reflect.Method;
 
 /**
- * @goalX app
+ * @goal app
  *
  * @requiresDependencyResolution
  *
@@ -78,6 +79,13 @@ import java.lang.reflect.Method;
  * expression="#configurationDirectory"
  * description=""
  *
+ * @parameter name="localRepository"
+ * type="org.apache.maven.artifact.ArtifactRepository"
+ * required="true"
+ * validator=""
+ * expression="#localRepository"
+ * description=""
+ *
  */
 public class PlexusApplicationGenerator
     extends AbstractPlugin
@@ -103,6 +111,8 @@ public class PlexusApplicationGenerator
 
         String applicationName = (String) request.getParameter( "applicationName" );
 
+        ArtifactRepository localRepository = (ArtifactRepository) request.getParameter( "localRepository" );
+
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
@@ -111,7 +121,7 @@ public class PlexusApplicationGenerator
 
         builder.setProject( project );
 
-        builder.setLocalRepository( project.getLocalRepository() );
+        builder.setLocalRepository( localRepository );
 
         builder.setPlexusConfiguration( plexusConfiguration );
 
