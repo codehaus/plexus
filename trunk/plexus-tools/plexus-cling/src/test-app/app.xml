@@ -60,9 +60,9 @@
     <classpath>
         <local>conf</local>
         <dependency>
-            <groupId>serlvetapi</groupId>
-            <artifactId>servletapi</artifactId>
-            <version>2.3</version>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>1.0.1</version>
         </dependency>
     </classpath>
     
