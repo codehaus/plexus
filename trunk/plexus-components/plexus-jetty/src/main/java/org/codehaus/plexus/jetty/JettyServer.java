@@ -32,8 +32,19 @@ public class JettyServer
 
     private PlexusContainer plexusContainer;
 
+    private String webappConfiguration;
+
     public JettyServer()
     {
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    public void setWebappConfiguration( String webappConfiguration )
+    {
+        this.webappConfiguration = webappConfiguration;
     }
 
     public ClassLoader getClassLoader()
@@ -72,6 +83,8 @@ public class JettyServer
         throws IOException
     {
         WebApplicationContext appContext = new WebApplicationContext( webApp );
+
+        appContext.setDefaultsDescriptor( webappConfiguration );
 
         appContext.setContextPath( contextPathSpec );
 
