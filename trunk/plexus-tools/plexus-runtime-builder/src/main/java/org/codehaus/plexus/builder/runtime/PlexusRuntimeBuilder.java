@@ -23,8 +23,8 @@ package org.codehaus.plexus.builder.runtime;
  */
 
 import java.io.File;
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 
