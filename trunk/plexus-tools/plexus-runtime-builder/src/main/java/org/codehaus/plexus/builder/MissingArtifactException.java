@@ -4,7 +4,7 @@ package org.codehaus.plexus.builder;
  * LICENSE
  */
 
-import org.apache.maven.artifact.MavenArtifact;
+import org.apache.maven.artifact.Artifact;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -13,8 +13,8 @@ import org.apache.maven.artifact.MavenArtifact;
 public class MissingArtifactException
     extends PlexusRuntimeBuilderException
 {
-    public MissingArtifactException( MavenArtifact artifact )
+    public MissingArtifactException( Artifact artifact )
     {
-        super( "Missing artifact: " + artifact.getDependency().getId() + ", path: " + artifact.getPath() );
+        super( "Missing artifact: " + artifact.getId() + ", path: " + artifact.getPath() );
     }
 }
