@@ -9,9 +9,6 @@
       <lifecycle-handler>plexus</lifecycle-handler>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.hibernate.HibernateService</role>
-        </requirement>
-        <requirement>
           <role>org.codehaus.plexus.hibernate.HibernateSessionService</role>
         </requirement>
       </requirements>          
