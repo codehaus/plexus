@@ -26,27 +26,26 @@ package org.codehaus.plexus.notification;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Iterator;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.notification.notifier.EenyNotifier;
 import org.codehaus.plexus.notification.notifier.MeenyNotifier;
+import org.codehaus.plexus.notification.notifier.Message;
 import org.codehaus.plexus.notification.notifier.MinyNotifier;
 import org.codehaus.plexus.notification.notifier.MoNotifier;
-import org.codehaus.plexus.notification.notifier.Message;
 import org.codehaus.plexus.notification.notifier.manager.NotifierManager;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class NotificationManagerTest
+public class NotificationDispatcherTest
     extends PlexusTestCase
 {
     public void testBasic()
         throws Exception
     {
-        NotificationManager notificationManager = (NotificationManager) lookup( NotificationManager.ROLE );
+        NotificationDispatcher notificationDispatcher = (NotificationDispatcher) lookup( NotificationDispatcher.ROLE );
 
         NotifierManager notifierManager = (NotifierManager) lookup( NotifierManager.ROLE );
 
@@ -64,11 +63,9 @@ public class NotificationManagerTest
 
         String messageId = "buildComplete";
 
-        String source = "continuum-core";
-
         Map context = new HashMap();
 
-        notificationManager.sendNotification( messageId, source, context );
+        notificationDispatcher.sendNotification( messageId, context );
 
         // ----------------------------------------------------------------------
         // Assert

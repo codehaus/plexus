@@ -1,8 +1,8 @@
 <plexus>
   <components>
     <component>
-      <role>org.codehaus.plexus.notification.RecipientDatabase</role>
-      <implementation>org.codehaus.plexus.notification.TestRecipientDatabase</implementation>
+      <role>org.codehaus.plexus.notification.RecipientSource</role>
+      <implementation>org.codehaus.plexus.notification.TestRecipientSource</implementation>
     </component>
     <component>
       <role>org.codehaus.plexus.notification.notifier.Notifier</role>

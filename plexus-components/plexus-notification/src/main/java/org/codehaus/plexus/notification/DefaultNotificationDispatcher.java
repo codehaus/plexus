@@ -29,37 +29,28 @@ import java.util.Map;
 import java.util.Set;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.notification.notifier.manager.NotifierManager;
 import org.codehaus.plexus.notification.notifier.Notifier;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.notification.notifier.manager.NotifierManager;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class DefaultNotificationManager
+public class DefaultNotificationDispatcher
     extends AbstractLogEnabled
-    implements NotificationManager, Initializable
+    implements NotificationDispatcher
 {
     /** @requirement */
     private NotifierManager notifierManager;
 
     /** @requirement */
-    private RecipientDatabase recipientDatabase;
+    private RecipientSource recipientSource;
 
     // ----------------------------------------------------------------------
-    // Component Lifecycle
+    // NotificationDispatcher Implementation
     // ----------------------------------------------------------------------
 
-    public void initialize()
-    {
-    }
-
-    // ----------------------------------------------------------------------
-    // NotificationManager Implementation
-    // ----------------------------------------------------------------------
-
-    public void sendNotification( String messageId, String source, Map context )
+    public void sendNotification( String messageId, Map context )
         throws NotificationException
     {
         Map notifiers = notifierManager.getNotifiers();
@@ -72,11 +63,11 @@ public class DefaultNotificationManager
 
             Notifier notifier = (Notifier) entry.getValue();
 
-            Set recipients = recipientDatabase.getRecipients( messageId, notifierType );
+            Set recipients = recipientSource.getRecipients( messageId, notifierType );
 
             if ( recipients == null )
             {
-                getLogger().error( "RecipientDatabase.getRecipients() returned null. " +
+                getLogger().error( "RecipientSource.getRecipients() returned null. " +
                                    "Message id: '" + messageId + "', notifier type: '" + notifierType + "'." );
 
                 continue;
