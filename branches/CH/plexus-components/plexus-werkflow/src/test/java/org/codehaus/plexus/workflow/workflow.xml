@@ -1,0 +1,64 @@
+<processes
+  xmlns="werkflow:basic"
+  xmlns:java="werkflow:java"
+  xmlns:core="jelly:core"
+  xmlns:jelly="werkflow:jelly"
+  xmlns:jexl="werkflow:jexl"
+  >
+
+  <message-types>
+    <core:set var="message" value="org.codehaus.plexus.workflow.AddUserMessage"/>
+    <message-type id="AddUserMessage">
+      <java:selector type="${message}"/>
+    </message-type>
+  </message-types>
+
+  <actions>
+
+    <action-definition id="default" default="true">
+      <java:action bean="${actionManager}" method="execute"/>
+    </action-definition>
+
+    <action-definition id="sendMail">
+      <java:action>System.err.println("sendMail");</java:action>
+    </action-definition>
+
+  </actions>
+
+  <process initiation="message" id="addUser" package="test">
+    <sequence>
+      <receive type="AddUserMessage" bind="message">
+        <jelly:action>
+          <core:set var="message" value="${message}"/>
+        </jelly:action>
+      </receive>
+      <action id="addUser"/>
+      <action id="sendMail"/>
+    </sequence>
+  </process>
+
+  <process initiation="call" id="callableProcess" package="test">
+    <attributes>
+      <attribute id="inParam">
+        <java:attr-type type="java.lang.String"/>
+      </attribute>
+      <attribute id="outParam" in="false" out="true">
+        <java:attr-type type="java.lang.String"/>
+      </attribute>
+    </attributes>
+
+    <sequence>
+      <action id="calledAction"/>
+<!--
+      <java:action>
+        <core:set var="input" value="${inParam}"/>
+      	Thread.sleep(1000);
+      </java:action>
+-->
+      <java:action>
+        System.out.println("Called process done.");
+     </java:action>
+    </sequence>
+  </process>
+
+</processes>
