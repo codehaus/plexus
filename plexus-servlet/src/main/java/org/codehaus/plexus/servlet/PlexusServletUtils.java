@@ -72,6 +72,13 @@ public final class PlexusServletUtils {
     public static void release(ServletContext sc, Object service)
         throws ServletException
     {
-        getPlexusContainer( sc ).release(service);
+        try
+        {
+            getPlexusContainer( sc ).release(service);
+        }
+        catch( Exception ex )
+        {
+            throw new ServletException( "Exception while releasing component", ex );
+        }
     }
 }
