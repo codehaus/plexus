@@ -54,6 +54,8 @@ public class XmlRpcPlexusService
         throws Exception
     {
         xmlRpcServer.addListener( null, port, false );
+
+        xmlRpcServer.startListener( null, port );
     }
 
     public void stop()
@@ -66,8 +68,14 @@ public class XmlRpcPlexusService
     // PlexusService Implementation
     // ----------------------------------------------------------------------
 
-    public void onApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
-                                    PlexusConfiguration serviceConfiguration )
+    public void beforeApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
+                                        PlexusConfiguration serviceConfiguration )
+        throws Exception
+    {
+    }
+
+    public void afterApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
+                                       PlexusConfiguration serviceConfiguration )
         throws Exception
     {
         PlexusConfiguration[] handlers = serviceConfiguration.getChild( "handlers" ).getChildren( "handler" );
@@ -102,6 +110,8 @@ public class XmlRpcPlexusService
             }
 
             Object component = applicationRuntimeProfile.getContainer().lookup( role );
+
+            getLogger().info( "Adding XML-RPC handler for role '" + role + " to name '" + name + "'." );
 
             xmlRpcServer.addHandler( name, component );
         }

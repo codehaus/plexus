@@ -8,6 +8,7 @@
   <groupId>plexus</groupId>
   <artifactId>plexus-service-xmlrpc</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
+  <packaging>plexus-service</packaging>
   <name>Plexus XMLRPC Service</name>
   <dependencies>
     <dependency>
@@ -35,7 +36,6 @@
         <configuration>
           <serviceName>jetty</serviceName>
           <configurationDirectory>src/conf</configurationDirectory>
-          <plexusConfigurationPropertiesFile>src/plexus.properties</plexusConfigurationPropertiesFile>
           <plexusConfiguration>src/conf/plexus.xml</plexusConfiguration>
           <basedir>target</basedir>
         </configuration>
