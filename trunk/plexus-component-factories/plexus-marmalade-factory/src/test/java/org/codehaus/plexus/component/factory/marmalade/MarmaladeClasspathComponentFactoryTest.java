@@ -38,7 +38,7 @@ public class MarmaladeClasspathComponentFactoryTest extends TestCase {
             realm.addConstituent(new File(".").toURL());
             
             ComponentDescriptor descriptor = new ComponentDescriptor();
-            descriptor.setImplementation("test");
+            descriptor.setImplementation(file.getPath());
             
             Object component = factory.newInstance(descriptor, realm, container);
             
