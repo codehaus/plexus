@@ -115,7 +115,7 @@ public class JettyServletContainer
         {
             for ( Iterator i = ajpListeners.iterator(); i.hasNext(); )
             {
-                SocketListener listener = (SocketListener) i.next();
+                AjpListener listener = (AjpListener) i.next();
 
                 configureAjpListener( server, listener );
             }
@@ -177,7 +177,7 @@ public class JettyServletContainer
     //
     // ----------------------------------------------------------------------
 
-    private void configureAjpListener( JettyServer server, SocketListener listener )
+    private void configureAjpListener( JettyServer server, AjpListener listener )
         throws UnknownHostException
     {
         AJP13Listener list = new AJP13Listener();
