@@ -355,7 +355,11 @@ public class ComponentGleaner
 
             String roleName = classType.substring( classType.lastIndexOf( "." ) + 1 );
 
-            JavaClass jc = (JavaClass) componentCache.get( roleName );
+            JavaClass jc = null;
+            if ( componentCache != null )
+            {
+                jc = (JavaClass) componentCache.get( roleName );
+            }
 
             if ( jc != null )
             {
