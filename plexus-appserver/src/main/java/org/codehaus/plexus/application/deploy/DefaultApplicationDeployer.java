@@ -24,10 +24,10 @@ package org.codehaus.plexus.application.deploy;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.FileReader;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,17 +36,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.application.PlexusApplicationConstants;
-import org.codehaus.plexus.application.service.PlexusService;
 import org.codehaus.plexus.application.event.ApplicationListener;
 import org.codehaus.plexus.application.event.DefaultDeployEvent;
 import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.application.service.PlexusService;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.context.ContextMapAdapter;
@@ -55,10 +57,10 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.util.Expand;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.InterpolationFilterReader;
-import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
@@ -100,43 +102,65 @@ public class DefaultApplicationDeployer
         deploy( name, location );
     }
 
-    public void deploy( String name, URL location )
+    public void deploy( String name, URL url )
         throws Exception
     {
-        if ( !location.getProtocol().equals( "file" ) )
+        if ( !url.getProtocol().equals( "file" ) )
         {
             throw new RuntimeException( "Remote URLS not yet supported." );
         }
 
-        File locationFile = new File( new URI( location.toString() ) );
-
-        if ( location.toString().endsWith( ".jar" ) )
-        {
-            deployJar( locationFile, applicationsDirectory );
-        }
-        else
+        if ( !url.toString().endsWith( ".jar" ) )
         {
             throw new Exception( "This deployer can only deploy *.jar files." );
         }
+
+        File file = new File( new URI( url.toString() ) );
+
+        deployJar( file, applicationsDirectory );
     }
 
-    private void deployJar( File location, String directory )
+    private void deployJar( File file, String directory )
         throws Exception
     {
-        String jarName = location.getName();
+        // ----------------------------------------------------------------------
+        // Extract the META-INF/plexus/application.xml file to read the metadata
+        // ----------------------------------------------------------------------
 
-        String appName = jarName.substring( 0, jarName.indexOf( ".jar" ) );
+        JarFile jarFile = new JarFile( file );
 
-        File dest = new File( directory, appName );
+        ZipEntry entry = jarFile.getEntry( PlexusApplicationConstants.METADATA_FILE );
+
+        if ( entry == null )
+        {
+            throw new Exception( "The Plexus application jar is missing it's metadata file '" + PlexusApplicationConstants.METADATA_FILE + "'."  );
+        }
+
+        Reader reader = new InputStreamReader( jarFile.getInputStream( entry ) );
+
+        Xpp3Dom dom = Xpp3DomBuilder.build( reader );
+
+        String appId = dom.getChild( "name" ).getValue();
+
+        if ( StringUtils.isEmpty( appId ) )
+        {
+            throw new Exception( "Missing 'name' element in the application metadata file." );
+        }
+
+        // ----------------------------------------------------------------------
+        // Deploy the jar
+        // ----------------------------------------------------------------------
+
+        File dest = new File( directory, appId );
 
         // Don't extract if it has been extracted before.
         if ( dest.exists() )
         {
-            getLogger().info( "Application '" + appName + "' already extracted." );
+            getLogger().info( "Application '" + appId + "' already extracted." );
         }
         else
         {
-            getLogger().info( "Extracting " + location + " to '" + dest.getAbsolutePath() + "'." );
+            getLogger().info( "Extracting " + file + " to '" + dest.getAbsolutePath() + "'." );
 
             Expand expander = new Expand();
 
@@ -144,7 +168,7 @@ public class DefaultApplicationDeployer
 
             expander.setOverwrite( false );
 
-            expander.setSrc( location );
+            expander.setSrc( file );
 
             try
             {
@@ -152,37 +176,19 @@ public class DefaultApplicationDeployer
             }
             catch ( Exception e )
             {
-                getLogger().error( "Could not extract '" + location + "'.", e );
+                getLogger().error( "Could not extract '" + file + "'.", e );
 
                 return;
             }
         }
 
-        deployApplicationDirectory( appName, dest );
+        deployApplicationDirectory( appId, dest );
     }
-
-//    protected void deployApplications( String directory )
-//        throws Exception
-//    {
-//        getLogger().info( "Deploying directory '" + directory + "'." );
-//
-//        File appDir = new File( directory );
-//
-//        if ( appDir.isDirectory() )
-//        {
-//            File[] apps = appDir.listFiles();
-//
-//            for ( int i = 0; i < apps.length; i++ )
-//            {
-//                deploy( apps[i].getName(), new File( apps[i].getAbsolutePath() ).toURL() );
-//            }
-//        }
-//    }
 
     protected void deployApplicationDirectory( String name, File location )
         throws Exception
     {
-        getLogger().info( "Deploying application '" + name + "' at '" + location.toString() + "'." );
+        getLogger().info( "Deploying application '" + name + "' at '" + location.getAbsolutePath() + "'." );
 
         if ( deployments.containsKey( name ) )
         {
@@ -262,8 +268,8 @@ public class DefaultApplicationDeployer
 
         Map context = new ContextMapAdapter( applicationContainer.getContext() );
 
-        Reader configurationReader =
-            new InterpolationFilterReader( new FileReader( applicationConfigurationFile ), context );
+        Reader configurationReader = new InterpolationFilterReader( new FileReader( applicationConfigurationFile ),
+                                                                    context );
 
         Xpp3Dom dom = Xpp3DomBuilder.build( configurationReader );
 
@@ -285,7 +291,7 @@ public class DefaultApplicationDeployer
 
             if ( StringUtils.isEmpty( id ) )
             {
-                throw new Exception( "Missing child element 'id' in 'serviceConfiguration'." );
+                throw new Exception( "Missing child element 'id' in 'service'." );
             }
 
             if ( !parentPlexus.hasComponent( PlexusService.ROLE, id ) )
