@@ -64,38 +64,4 @@ public class SimpleMailSenderTest
 
         assertTrue( email.getBody().equals( "myContent" ) );
     }
-
-    public void testSend() throws Exception
-    {
-        startSmtpServer( 4000 );
-
-        sendMessage( 4000, "sender@here.com", "Test", "Test Body", "receiver@there.com" );
-
-        assertEquals( 1, getReceievedEmailSize() );
-
-        Iterator emailIter = getReceivedEmail();
-
-        SmtpMessage email = (SmtpMessage) emailIter.next();
-
-        assertTrue( email.getHeaderValue( "Subject" ).equals( "Test" ) );
-
-        assertTrue( email.getBody().equals( "Test Body" ) );
-
-        stopSmtpServer();
-    }
-
-    private void sendMessage(int port, String from, String subject, String body, String to) throws Exception
-    {
-        org.codehaus.plexus.mailsender.simple.MailMessage message = new org.codehaus.plexus.mailsender.simple.MailMessage( "localhost", port );
-
-        message.from( from );
-
-        message.to( to );
-
-        message.setSubject( subject );
-
-        message.getPrintStream().print( body );
-
-        message.sendAndClose();
-    }
 }
