@@ -1,4 +1,4 @@
-package org.codehaus.plexus.builder;
+package org.codehaus.plexus.builder.application;
 
 /*
  * Copyright (c) 2004, Codehaus.org
@@ -23,19 +23,9 @@ package org.codehaus.plexus.builder;
  */
 
 /**
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
-public class PlexusRuntimeBuilderException
-    extends Exception
+public interface ApplicationBuilder
 {
-    public PlexusRuntimeBuilderException( String msg )
-    {
-        super( msg );
-    }
-    
-    public PlexusRuntimeBuilderException( String msg, Throwable cause )
-    {
-        super( msg, cause );
-    }
 }

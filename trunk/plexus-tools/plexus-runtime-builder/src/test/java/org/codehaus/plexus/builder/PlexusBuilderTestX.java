@@ -22,18 +22,18 @@ package org.codehaus.plexus.builder;
  * SOFTWARE.
  */
 
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectBuilder;
+import org.codehaus.plexus.ArtifactEnabledPlexusTestCase;
+import org.codehaus.plexus.builder.runtime.DefaultPlexusRuntimeBuilder;
+import org.codehaus.plexus.util.FileUtils;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectBuilder;
-
-import org.codehaus.plexus.ArtifactEnabledPlexusTestCase;
-import org.codehaus.plexus.util.FileUtils;
-
-public class PlexusBuilderTest
+public class PlexusBuilderTestX
     extends ArtifactEnabledPlexusTestCase
 {
     private String buildDirectory;
@@ -65,19 +65,19 @@ public class PlexusBuilderTest
     public void testPlexusBuilder()
         throws Exception
     {
-        DefaultPlexusBuilder builder = (DefaultPlexusBuilder)lookup( DefaultPlexusBuilder.ROLE );
+        DefaultPlexusRuntimeBuilder builder = (DefaultPlexusRuntimeBuilder) lookup( DefaultPlexusRuntimeBuilder.ROLE );
 
         MavenProjectBuilder projectBuilder = (MavenProjectBuilder) lookup( MavenProjectBuilder.ROLE );
 
         builder.setBaseDirectory( buildDirectory );
 
-        MavenProject project = projectBuilder.build( getTestFile( "src/test/project/project.xml" ) );
+        MavenProject project = projectBuilder.build( new File( getTestFile( "src/test/project/project.xml" ) ) );
 
         builder.setProject( project );
 
         ArtifactRepository repository = new ArtifactRepository();
 
-        repository.setBasedir( getTestPath( "src/test/repository" ) );
+        repository.setBasedir( new File( getBasedir(), "src/test/repository" ).getPath() );
 
         builder.setLocalRepository( repository );
 
