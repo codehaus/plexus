@@ -1,0 +1,9 @@
+<plexus>
+  <component-factory-manager implementation="org.codehaus.plexus.component.factory.DefaultComponentFactoryManager">
+    <component-factories>
+      <component-factory implementation="org.codehaus.plexus.component.factory.marmalade.MarmaladeClasspathComponentFactory">
+        <id>marmalade</id>
+      </component-factory>
+    </component-factories>
+  </component-factory-manager>
+</plexus>
