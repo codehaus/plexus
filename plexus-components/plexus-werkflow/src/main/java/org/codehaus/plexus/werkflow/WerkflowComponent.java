@@ -7,9 +7,9 @@ import org.codehaus.werkflow.Engine;
  * 
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse </a>
  */
-public interface WerkflowService
+public interface WerkflowComponent
 {
-    String ROLE = WerkflowService.class.getName();
+    String ROLE = WerkflowComponent.class.getName();
 
     public Engine getEngine();
 }

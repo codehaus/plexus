@@ -15,7 +15,7 @@ public class DefaultWerkflowServiceTest
 {
     public void testWerkflow() throws Exception
     {
-        WerkflowService s = (WerkflowService) lookup(WerkflowService.ROLE);
+        WerkflowComponent s = (WerkflowComponent) lookup(WerkflowComponent.ROLE);
 
         Engine engine = s.getEngine();
         assertNotNull(engine);

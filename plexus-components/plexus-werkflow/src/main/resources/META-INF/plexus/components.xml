@@ -1,8 +1,8 @@
 <component-set>
   <components>
     <component>
-      <role>org.codehaus.plexus.werkflow.WerkflowService</role>
-      <implementation>org.codehaus.plexus.werkflow.DefaultWerkflowService</implementation>
+      <role>org.codehaus.plexus.werkflow.WerkflowComponent</role>
+      <implementation>org.codehaus.plexus.werkflow.DefaultWerkflowComponent</implementation>
       <configuration>
         <werkflowDirectory>${plexus.home}/werkflows/</werkflowDirectory>
       </configuration>
