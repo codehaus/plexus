@@ -1,27 +1,37 @@
 package org.codehaus.plexus.logging;
 
-import junit.framework.TestCase;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-
 import java.io.File;
+
+import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * Abtract base class for testing implementations of the {@link LoggerManager}
  * and {@link Logger} interfaces.
  *
  * @author Mark H. Wilkinson
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Revision$
  */
 public abstract class AbstractLoggerManagerTest
-    extends TestCase
+    extends PlexusTestCase
 {
-    public void setUp()
+    protected abstract LoggerManager createLoggerManager()
+        throws Exception;
+
+    /**
+     * Creates the <code>${plexus.home}/logs</code> directory.
+     */
+    public final void setUp()
+        throws Exception
     {
-        String basedir = System.getProperty( "basedir" );
+        File f;
+        String plexusHome;
 
-        File f = new File( basedir, "target/plexus-home" );
+        super.setUp();
 
-        System.setProperty( "plexus.home", f.getAbsolutePath() );
+        plexusHome = getContainer().getContext().get( "plexus.home" ).toString();
+
+        f = new File( getTestFile( plexusHome, "logs" ) );
 
         if ( !f.isDirectory() )
         {
@@ -29,128 +39,158 @@ public abstract class AbstractLoggerManagerTest
         }
     }
 
-    public void testDebugLevelConfiguration() throws Exception
+    public void testSetThreshold()
+        throws Exception
     {
-        LoggerManager manager = managerStart( "debug" );
+        LoggerManager manager;
+        Logger logger1, logger2;
 
-        Logger logger = extractRootLogger( manager );
+        manager = createLoggerManager();
+
+        manager.setThreshold( Logger.LEVEL_FATAL );
+        logger1 = manager.getLoggerForComponent( "role1", "roleHint1" );
+        assertEquals( Logger.LEVEL_FATAL, logger1.getThreshold() );
+
+        manager.setThreshold( Logger.LEVEL_DEBUG );
+        logger2 = manager.getLoggerForComponent( "role2", "roleHint2" );
+        assertEquals( Logger.LEVEL_FATAL, logger1.getThreshold() );
+        assertEquals( Logger.LEVEL_DEBUG, logger2.getThreshold() );
+    }
+
+    /**
+     * There is only one logger instance pr component even if looked up more that once.
+     */
+    public void testActiveLoggerCount()
+        throws Exception
+    {
+        LoggerManager manager;
+        Logger b, c1, c2;
+        Logger root;
+
+        manager = getManager( Logger.LEVEL_FATAL );
+        assertEquals(0, manager.getActiveLoggerCount());
+
+        b = manager.getLoggerForComponent( "b" );
+        assertEquals(1, manager.getActiveLoggerCount());
+
+        c1 = manager.getLoggerForComponent( "c", "1" );
+        c1 = manager.getLoggerForComponent( "c", "1" );
+        assertEquals(2, manager.getActiveLoggerCount());
+
+        c2 = manager.getLoggerForComponent( "c", "2" );
+        assertEquals(3, manager.getActiveLoggerCount());
+
+        manager.returnComponentLogger( "c", "1" );
+        assertEquals(2, manager.getActiveLoggerCount());
+
+        manager.returnComponentLogger( "c", "2" );
+        manager.returnComponentLogger( "c", "2" );
+        manager.returnComponentLogger( "c", "1" );
+        assertEquals(1, manager.getActiveLoggerCount());
+
+        manager.returnComponentLogger( "b" );
+        assertEquals(0, manager.getActiveLoggerCount());
+    }
+
+    public void testDebugLevelConfiguration()
+        throws Exception
+    {
+        LoggerManager manager = getManager( Logger.LEVEL_DEBUG );
+
+        Logger logger = extractLogger( manager );
 
         checkDebugLevel( logger );
 
         logger = extractLogger( manager );
 
         checkDebugLevel( logger );
-
-        managerStop( manager );
     }
 
-    public void testInfoLevelConfiguration() throws Exception
+    public void testInfoLevelConfiguration()
+        throws Exception
     {
-        LoggerManager manager = managerStart( "info" );
+        LoggerManager manager = getManager( Logger.LEVEL_INFO );
 
-        Logger logger = extractRootLogger( manager );
+        Logger logger = extractLogger( manager );
 
         checkInfoLevel( logger );
 
         logger = extractLogger( manager );
 
         checkInfoLevel( logger );
-
-        managerStop( manager );
     }
 
-    public void testWarnLevelConfiguration() throws Exception
+    public void testWarnLevelConfiguration()
+        throws Exception
     {
-        LoggerManager manager = managerStart( "warn" );
+        LoggerManager manager = getManager( Logger.LEVEL_WARN );
 
-        Logger logger = extractRootLogger( manager );
+        Logger logger = extractLogger( manager );
 
         checkWarnLevel( logger );
 
         logger = extractLogger( manager );
 
         checkWarnLevel( logger );
-
-        managerStop( manager );
     }
 
-    public void testErrorLevelConfiguration() throws Exception
+    public void testErrorLevelConfiguration()
+        throws Exception
     {
-        LoggerManager manager = managerStart( "error" );
+        LoggerManager manager = getManager( Logger.LEVEL_ERROR );
 
-        Logger logger = extractRootLogger( manager );
+        Logger logger = extractLogger( manager );
 
         checkErrorLevel( logger );
 
         logger = extractLogger( manager );
 
         checkErrorLevel( logger );
-
-        managerStop( manager );
     }
 
-    public void testFatalLevelConfiguration() throws Exception
+    public void testFatalLevelConfiguration()
+        throws Exception
     {
-        LoggerManager manager = managerStart( "fatal" );
+        LoggerManager manager = getManager( Logger.LEVEL_FATAL );
 
-        Logger logger = extractRootLogger( manager );
+        Logger logger = extractLogger( manager );
 
         checkFatalLevel( logger );
 
         logger = extractLogger( manager );
 
         checkFatalLevel( logger );
-
-        managerStop( manager );
     }
 
-    protected abstract PlexusConfiguration createConfiguration( String threshold )
-        throws Exception;
-
-    protected abstract LoggerManager createLoggerManager() throws Exception;
-
-    private LoggerManager managerStart( String threshold ) throws Exception
+    private LoggerManager getManager( int threshold )
+        throws Exception
     {
-        PlexusConfiguration config = createConfiguration( threshold );
-
-        assertNotNull( config );
-
         LoggerManager manager = createLoggerManager();
 
+        manager.setThreshold( threshold );
+
         assertNotNull( manager );
-
-        manager.configure( config );
-
-        manager.initialize();
-
-        manager.start();
 
         return manager;
     }
+    /*
+     private Logger extractRootLogger( LoggerManager manager )
+     {
+     Logger logger = manager.getRootLogger();
 
-    private Logger extractRootLogger( LoggerManager manager )
-    {
-        Logger logger = manager.getRootLogger();
+     assertNotNull( logger );
 
-        assertNotNull( logger );
-
-        return logger;
-    }
-
+     return logger;
+     }
+     */
     private Logger extractLogger( LoggerManager manager )
     {
-        Logger logger = manager.getLogger( "foo" );
+        Logger logger = manager.getLoggerForComponent( "foo" );
 
         assertNotNull( logger );
+        assertEquals( "foo", logger.getName() );
 
         return logger;
-    }
-
-    private void managerStop( LoggerManager manager ) throws Exception
-    {
-        assertNotNull( manager );
-
-        manager.stop();
     }
 
     private void checkDebugLevel( Logger logger )

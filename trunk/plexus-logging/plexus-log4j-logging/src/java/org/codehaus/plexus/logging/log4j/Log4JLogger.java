@@ -1,15 +1,20 @@
 package org.codehaus.plexus.logging.log4j;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
+import org.codehaus.plexus.logging.AbstractLogger;
 
 class Log4JLogger
-    implements org.codehaus.plexus.logging.Logger
+    extends AbstractLogger
 {
     private Logger logger;
 
-    public Log4JLogger( Logger logger )
+    public Log4JLogger( int threshold, Logger logger )
     {
+        super( threshold, getLoggerName(logger) );
+
+        if( logger == null )
+            throw new NullPointerException("logger");
+
         this.logger = logger;
     }
 
@@ -23,11 +28,6 @@ class Log4JLogger
         logger.debug( message, throwable );
     }
 
-    public boolean isDebugEnabled()
-    {
-        return logger.isDebugEnabled();
-    }
-
     public void info( String message )
     {
         logger.info( message );
@@ -36,11 +36,6 @@ class Log4JLogger
     public void info( String message, Throwable throwable )
     {
         logger.info( message, throwable );
-    }
-
-    public boolean isInfoEnabled()
-    {
-        return logger.isInfoEnabled();
     }
 
     public void warn( String message )
@@ -53,11 +48,6 @@ class Log4JLogger
         logger.warn( message, throwable );
     }
 
-    public boolean isWarnEnabled()
-    {
-        return logger.isEnabledFor( Priority.WARN );
-    }
-
     public void error( String message )
     {
         logger.error( message );
@@ -66,11 +56,6 @@ class Log4JLogger
     public void error( String message, Throwable throwable )
     {
         logger.error( message, throwable );
-    }
-
-    public boolean isErrorEnabled()
-    {
-        return logger.isEnabledFor( Priority.ERROR );
     }
 
     public void fatalError( String message )
@@ -83,13 +68,21 @@ class Log4JLogger
         logger.fatal( message, throwable );
     }
 
-    public boolean isFatalErrorEnabled()
+    public String getName()
     {
-        return logger.isEnabledFor( Priority.FATAL );
+        return logger.getName();
     }
 
     public org.codehaus.plexus.logging.Logger getChildLogger( String name )
     {
-        return new Log4JLogger( Logger.getLogger( logger.getName() + "." + name ) );
+        return new Log4JLogger( getThreshold(), Logger.getLogger( logger.getName() + "." + name ) );
+    }
+
+    private static String getLoggerName( Logger logger)
+    {
+        if( logger == null )
+            return "";
+
+        return logger.getName();
     }
 }
