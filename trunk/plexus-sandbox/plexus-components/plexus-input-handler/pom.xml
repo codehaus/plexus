@@ -22,7 +22,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>maven</groupId>
         <artifactId>maven-plexus-plugin</artifactId>
       </plugin>
     </plugins>
