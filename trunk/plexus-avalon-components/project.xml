@@ -46,54 +46,7 @@
     </mailingList>
   </mailingLists>
 
-  <developers>
-    <developer>
-      <name>Jason van Zyl</name>
-      <id>jvanzyl</id>
-      <email>jason@zenplex.com</email>
-      <organization>Zenplex</organization>
-      <roles>
-        <role>Architect</role>
-        <role>Release Manager</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Pete Kazmier</name>
-      <id>kaz</id>
-      <email></email>
-      <organization></organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>James Taylor</name>
-      <id>jtaylor</id>
-      <email>james@jamestaylor.org</email>
-      <organization></organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Dan Diephouse</name>
-      <id>dandiep</id>
-      <email>dan@envoisolutions.com</email>
-      <organization>Envoi solutions</organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Kasper Nielsen</name>
-      <id>kasper</id>
-      <email>apache@kav.dk</email>
-      <organization></organization>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-  </developers>
+  <developers/>
 
   <dependencies>
     
@@ -112,13 +65,13 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus</artifactId>
-      <version>0.7</version>
+      <version>0.8</version>
     </dependency>
 
     <dependency>
       <groupId>classworlds</groupId>
       <artifactId>classworlds</artifactId>
-      <version>1.0-beta-5</version>
+      <version>1.0-rc2</version>
     </dependency>
 
     <!--
