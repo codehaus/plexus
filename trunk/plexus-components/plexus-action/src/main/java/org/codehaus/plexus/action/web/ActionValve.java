@@ -22,18 +22,16 @@ package org.codehaus.plexus.action.web;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.action.Action;
-import org.codehaus.plexus.action.ActionManager;
-import org.codehaus.plexus.action.ActionNotFoundException;
-import org.codehaus.plexus.summit.exception.SummitException;
-import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
-import org.codehaus.plexus.summit.rundata.RunData;
-import org.codehaus.plexus.action.Action;
-
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.codehaus.plexus.action.Action;
+import org.codehaus.plexus.action.ActionManager;
+import org.codehaus.plexus.summit.exception.SummitException;
+import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
+import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
  *
@@ -89,7 +87,7 @@ public class ActionValve
             {
                 e.printStackTrace();
 
-                getLogger().error( e.getMessage() );
+                getLogger().error( e.getMessage(), e );
             }
         }
     }

@@ -22,9 +22,6 @@ package org.codehaus.plexus.action;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.action.Action;
-
-import java.util.Map;
 
 /**
  *

@@ -22,9 +22,9 @@ package org.codehaus.plexus.action;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-
 import java.util.Map;
+
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 /**
 
