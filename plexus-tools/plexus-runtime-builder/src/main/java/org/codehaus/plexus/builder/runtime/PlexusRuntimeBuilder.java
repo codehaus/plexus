@@ -1,4 +1,4 @@
-package org.codehaus.plexus.builder;
+package org.codehaus.plexus.builder.runtime;
 
 /*
  * Copyright (c) 2004, Codehaus.org
@@ -22,20 +22,31 @@ package org.codehaus.plexus.builder;
  * SOFTWARE.
  */
 
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.project.MavenProject;
+
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class PlexusBuilderException
-    extends Exception
+public interface PlexusRuntimeBuilder
 {
-    public PlexusBuilderException( String msg )
-    {
-        super( msg );
-    }
+    String ROLE = PlexusRuntimeBuilder.class.getName();
 
-    public PlexusBuilderException( String msg, Throwable cause )
-    {
-        super( msg, cause );
-    }
+    void setBaseDirectory( String outputDirectory );
+
+    void setProject( MavenProject project );
+
+    void setLocalRepository( ArtifactRepository localRepository );
+
+    void setApplicationName( String applicationName );
+
+    void setPlexusConfiguration( String plexusConfiguration );
+
+    void setConfigurationsDirectory( String configurationsDirectory );
+
+    void setConfigurationPropertiesFile( String configurationPropertiesFile );
+
+    void build()
+        throws PlexusRuntimeBuilderException;
 }

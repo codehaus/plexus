@@ -1,4 +1,4 @@
-package org.codehaus.plexus.builder;
+package org.codehaus.plexus.builder.runtime;
 
 /*
  * Copyright (c) 2004, Codehaus.org
@@ -77,9 +77,9 @@ import org.codehaus.plexus.velocity.VelocityComponent;
  * @author <a href="jason@zenplex.com">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  */
-public class DefaultPlexusBuilder
+public class DefaultPlexusRuntimeBuilder
     extends AbstractLogEnabled
-    implements PlexusBuilder
+    implements PlexusRuntimeBuilder
 {
     private static String JSW = "jsw";
 
@@ -520,7 +520,7 @@ public class DefaultPlexusBuilder
 
         if ( !in.exists() )
         {
-            throw new PlexusRuntimeBuilderException( 
+            throw new PlexusRuntimeBuilderException(
                 "The specified plexus configuration file " + "'" + in +  "'" + " doesn't exist." );
         }
 
@@ -735,16 +735,11 @@ public class DefaultPlexusBuilder
     }
 
     private void copyArtifact( Artifact artifact, File destination )
-        throws IOException, MissingArtifactException
+        throws IOException
     {
         String dest = destination.getAbsolutePath().substring( baseDirectory.length() + 1 );
 
         getLogger().info( "Adding " + artifact.getId() + " to " + dest );
-
-        if ( !artifact.exists() )
-        {
-            throw new MissingArtifactException( artifact );
-        }
 
         FileUtils.copyFileToDirectory( artifact.getFile(), destination );
 

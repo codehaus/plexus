@@ -1,5 +1,3 @@
-package org.codehaus.plexus.builder;
-
 /*
  * Copyright (c) 2004, Codehaus.org
  *
@@ -21,18 +19,12 @@ package org.codehaus.plexus.builder;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-import org.apache.maven.artifact.Artifact;
+package org.codehaus.plexus.builder.application;
 
 /**
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
-public class MissingArtifactException
-    extends PlexusRuntimeBuilderException
+public class DefaultApplicationBuilder
 {
-    public MissingArtifactException( Artifact artifact )
-    {
-        super( "Missing artifact: " + artifact.getId() + ", path: " + artifact.getPath() );
-    }
 }
