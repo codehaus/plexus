@@ -131,10 +131,7 @@
     
     <resources>
       <resource>
-        <directory>${basedir}/src/conf</directory>
-        <includes>
-          <include>**/*.xml</include>
-        </includes>
+        <directory>src/resources</directory>
       </resource>
     </resources>
   </build>
