@@ -16,7 +16,7 @@ import junit.framework.TestCase;
 /**
  * @author jdcasey
  */
-public class IntegrationTestLauncher
+public class IntegrationTest
     extends TestCase
 {
     
