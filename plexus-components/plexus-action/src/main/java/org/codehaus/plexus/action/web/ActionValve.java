@@ -43,7 +43,7 @@ import org.codehaus.plexus.summit.rundata.RunData;
 public class ActionValve
     extends AbstractValve
 {
-    //private ActionManager actionManager;
+    private ActionManager actionManager;
 
     public void invoke( RunData data )
         throws IOException, SummitException
@@ -56,8 +56,6 @@ public class ActionValve
 
             try
             {
-                ActionManager actionManager = (ActionManager) getServiceManager().lookup( ActionManager.ROLE );
-
                 action = actionManager.lookup( actionId.trim() );
             }
             catch ( Exception e )
