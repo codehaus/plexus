@@ -1,15 +1,15 @@
 <project>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-root</artifactId>
     <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-logging</artifactId>
+  <version>1.0</version>
   <packaging>pom</packaging>
   <name>Plexus Logging Parent</name>
-  <version>1.0</version>
   <modules>
     <module>plexus-logging-provider-test</module>  
     <module>plexus-commons-logging</module>
