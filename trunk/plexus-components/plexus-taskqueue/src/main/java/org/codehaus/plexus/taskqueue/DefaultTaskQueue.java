@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Collections;
 
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
@@ -144,7 +145,14 @@ public class DefaultTaskQueue
         {
             TaskViabilityEvaluator taskViabilityEvaluator = (TaskViabilityEvaluator) it.next();
 
-            taskViabilityEvaluator.evaluate( queue );
+            List toBeRemoved = taskViabilityEvaluator.evaluate( Collections.unmodifiableList( queue ) );
+
+            for ( Iterator it2 = toBeRemoved.iterator(); it2.hasNext(); )
+            {
+                Task t = (Task) it2.next();
+
+                queue.remove( t );
+            }
         }
 
         return true;

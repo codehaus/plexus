@@ -35,6 +35,11 @@ public interface TaskViabilityEvaluator
 {
     String ROLE = TaskViabilityEvaluator.class.getName();
 
-    void evaluate( List tasks )
+    /**
+     * @param tasks The tasks to evaluate
+     * @return Returns a list of tasks to remove from the queue.
+     * @throws TaskQueueException
+     */
+    List evaluate( List tasks )
         throws TaskQueueException;
 }
