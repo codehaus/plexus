@@ -1,7 +1,9 @@
-package org.codehaus.plexus.application.deploy;
+package org.codehaus.plexus.application.profile;
 
 /*
- * Copyright (c) 2004, Codehaus.org
+ * The MIT License
+ *
+ * Copyright (c) 2004, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,41 +24,56 @@ package org.codehaus.plexus.application.deploy;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.application.event.ApplicationListener;
-import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
+import java.io.File;
+
+import org.codehaus.plexus.DefaultPlexusContainer;
 
 /**
- * @author Peter Donald
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
  */
-public interface ApplicationDeployer
+public class ApplicationRuntimeProfile
 {
-    String ROLE = ApplicationDeployer.class.getName();
+    private String name;
 
-    // ----------------------------------------------------------------------
-    // Deployment
-    // ----------------------------------------------------------------------
+    private File home;
 
-    void deploy( String name, String location )
-        throws Exception;
+    private File lib;
 
-    void redeploy( String name, String location )
-        throws Exception;
-
-    void undeploy( String name )
-        throws Exception;
-
-    // ----------------------------------------------------------------------
-    // Listeners
-    // ----------------------------------------------------------------------
-
-    void addApplicationListener( ApplicationListener listener );
-
-    void removeApplicationListener( ApplicationListener listener );
+    private DefaultPlexusContainer container;
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
-    ApplicationRuntimeProfile getApplicationRuntimeProfile( String applicationName )
-        throws Exception;
+    public ApplicationRuntimeProfile( String name, File home, File lib, DefaultPlexusContainer container )
+    {
+        this.name = name;
+
+        this.home = home;
+
+        this.lib = lib;
+
+        this.container = container;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public File getHome()
+    {
+        return home;
+    }
+
+    public File getLib()
+    {
+        return lib;
+    }
+
+    public DefaultPlexusContainer getContainer()
+    {
+        return container;
+    }
 }

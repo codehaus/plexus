@@ -39,9 +39,9 @@ import java.util.Properties;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.application.event.ApplicationListener;
 import org.codehaus.plexus.application.event.DefaultDeployEvent;
+import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -84,12 +84,12 @@ public class DefaultApplicationDeployer
     // Deployment
     // ----------------------------------------------------------------------
 
-    public boolean deploy( String name, String url )
+    public void deploy( String name, String url )
         throws Exception
     {
         URL location = new URL( url );
 
-        return deploy( name, location );
+        deploy( name, location );
     }
 
     public boolean deploy( String name, URL location )
@@ -108,7 +108,8 @@ public class DefaultApplicationDeployer
         }
         else
         {
-            return deployApplicationDirectory( name, locationFile );
+            throw new Exception( "This deployer can only deploy *.jar files." );
+//            return deployApplicationDirectory( name, locationFile );
         }
     }
 
@@ -121,16 +122,15 @@ public class DefaultApplicationDeployer
 
         File dest = new File( directory, appName );
 
-        getLogger().info( "Extracting " + location + " to " + dest.getAbsolutePath() + "." );
-
         // Don't extract if it has been extracted before.
         if ( dest.exists() )
         {
-            getLogger().info( "Application " + appName + " already extracted. Skipping." );
-            return true;
+            getLogger().info( "Application " + appName + " already extracted." );
         }
         else
         {
+            getLogger().info( "Extracting " + location + " to '" + dest.getAbsolutePath() + "'." );
+
             Expand expander = new Expand();
 
             expander.setDest( dest );
@@ -145,17 +145,19 @@ public class DefaultApplicationDeployer
             }
             catch ( Exception e )
             {
-                getLogger().error( "Could not extract " + location + ".", e );
-            }
+                getLogger().error( "Could not extract '" + location + "'.", e );
 
-            return deployApplicationDirectory( appName, dest );
+                return false;
+            }
         }
+
+        return deployApplicationDirectory( appName, dest );
     }
 
     protected void deployApplications( String directory )
         throws Exception
     {
-        getLogger().info( "Deploying directory " + directory + "." );
+        getLogger().info( "Deploying directory '" + directory + "'." );
 
         File appDir = new File( directory );
 
@@ -173,7 +175,7 @@ public class DefaultApplicationDeployer
     protected boolean deployApplicationDirectory( String name, File location )
         throws Exception
     {
-        getLogger().info( "Attempting to deploy application " + name + " at " + location.toString() );
+        getLogger().info( "Deploying application " + name + " at '" + location.toString() + "'." );
 
         // ----------------------------------------------------------------------
         // We need to make sure that we have the basic requirements covered
@@ -188,7 +190,7 @@ public class DefaultApplicationDeployer
 
         if ( !applicationConfiguration.exists() )
         {
-            getLogger().error( "The application " + name + " does not have a valid configuration: " +
+            getLogger().error( "The application '" + name + "' does not have a valid configuration: " +
                                applicationConfiguration + " does not exist!" );
 
             return false;
@@ -198,7 +200,7 @@ public class DefaultApplicationDeployer
 
         if ( !applicationLibrary.exists() )
         {
-            getLogger().error( "The application " + name + " does not have a valid library: " +
+            getLogger().error( "The application '" + name + "' does not have a valid library: " +
                                applicationLibrary + " does not exist!" );
 
             return false;
@@ -208,15 +210,13 @@ public class DefaultApplicationDeployer
         //
         // ----------------------------------------------------------------------
 
-        DefaultPlexusContainer application = new DefaultPlexusContainer();
-
-        deployments.put( name, application );
+        DefaultPlexusContainer applicationContainer = new DefaultPlexusContainer();
 
         InputStream stream = new FileInputStream( applicationConfiguration );
 
         Reader r = new InputStreamReader( stream );
 
-        application.setConfigurationResource( r );
+        applicationContainer.setConfigurationResource( r );
 
         if ( contextValues != null )
         {
@@ -224,7 +224,7 @@ public class DefaultApplicationDeployer
             {
                 String contextName = (String) i.next();
 
-                application.addContextValue( contextName, contextValues.getProperty( contextName ) );
+                applicationContainer.addContextValue( contextName, contextValues.getProperty( contextName ) );
             }
         }
 
@@ -234,19 +234,29 @@ public class DefaultApplicationDeployer
         // from the parent container.
         // ----------------------------------------------------------------------
 
-        application.addContextValue( "plexus.home", location.getAbsolutePath() );
+        applicationContainer.addContextValue( "plexus.home", location.getAbsolutePath() );
 
-        application.setParentPlexusContainer( parentPlexus );
+        applicationContainer.setParentPlexusContainer( parentPlexus );
 
-        application.setClassWorld( parentPlexus.getClassWorld() );
+        applicationContainer.setClassWorld( parentPlexus.getClassWorld() );
 
-        application.setCoreRealm( parentPlexus.getCoreRealm() );
+        // ----------------------------------------------------------------------
+        // Create the realm for the application
+        // ----------------------------------------------------------------------
+
+        ClassRealm realm = parentPlexus.getCoreRealm().createChildRealm( "plexus.application." + name );
+
+        applicationContainer.setCoreRealm( realm );
+
+        // ----------------------------------------------------------------------
+        // Start the application
+        // ----------------------------------------------------------------------
 
         try
         {
-            application.initialize();
+            applicationContainer.initialize();
 
-            application.start();
+            applicationContainer.start();
         }
         catch ( Exception e )
         {
@@ -255,13 +265,21 @@ public class DefaultApplicationDeployer
             return false;
         }
 
-        DefaultDeployEvent event = createDeployEvent( name );
+        ApplicationRuntimeProfile profile = new ApplicationRuntimeProfile( name, location, applicationLibrary, applicationContainer );
+
+        deployments.put( name, profile );
+
+        // ----------------------------------------------------------------------
+        // Notify listeners
+        // ----------------------------------------------------------------------
+
+        DefaultDeployEvent event = createDeployEvent( profile );
 
         for ( Iterator itr = applicationListeners.iterator(); itr.hasNext(); )
         {
-            ApplicationListener a = (ApplicationListener) itr.next();
+            ApplicationListener listener = (ApplicationListener) itr.next();
 
-            a.deployedApplication( event );
+            listener.deployedApplication( event );
         }
 
         return true;
@@ -271,77 +289,78 @@ public class DefaultApplicationDeployer
     // Redeploy
     // ----------------------------------------------------------------------
 
-    public boolean redeploy( String name, String url ) throws Exception
+    public void redeploy( String name, String url )
+        throws Exception
     {
+        ApplicationRuntimeProfile profile = getApplicationRuntimeProfile( name );
+
         undeploy( name );
 
         deploy( name, url );
 
-        DefaultDeployEvent event = createDeployEvent( name );
+        DefaultDeployEvent event = createDeployEvent( profile );
 
         for ( Iterator itr = applicationListeners.iterator(); itr.hasNext(); )
         {
-            ApplicationListener a = (ApplicationListener) itr.next();
-            a.redeployedApplication( event );
-        }
+            ApplicationListener listener = (ApplicationListener) itr.next();
 
-        return true;
+            listener.redeployedApplication( event );
+        }
     }
 
     // ----------------------------------------------------------------------
     // Undeploy
     // ----------------------------------------------------------------------
 
-    public boolean undeploy( String name ) throws Exception
+    public void undeploy( String name )
+        throws Exception
     {
-        getLogger().info( "Undeploying " + name + "." );
+        getLogger().info( "Undeploying '" + name + "'." );
 
-        if ( deployments.containsKey( name ) )
-        {
-            DefaultPlexusContainer app = (DefaultPlexusContainer) deployments.remove( name );
+        ApplicationRuntimeProfile profile = getApplicationRuntimeProfile( name );
 
-            app.dispose();
+        deployments.remove( name );
 
-            ClassRealm realm = app.getCoreRealm();
+        DefaultPlexusContainer app = (DefaultPlexusContainer) profile.getContainer();
 
-            realm.getWorld().disposeRealm( realm.getId() );
-        }
-        else
-        {
-            getLogger().warn( "Application " + name + " does not exist!" );
-        }
+        app.dispose();
 
-        DefaultDeployEvent event = createDeployEvent( name );
+        ClassRealm realm = app.getCoreRealm();
+
+        realm.getWorld().disposeRealm( realm.getId() );
+
+        DefaultDeployEvent event = createDeployEvent( profile );
 
         for ( Iterator itr = applicationListeners.iterator(); itr.hasNext(); )
         {
-            ApplicationListener a = (ApplicationListener) itr.next();
+            ApplicationListener listener = (ApplicationListener) itr.next();
 
-            a.undeployedApplication( event );
+            listener.undeployedApplication( event );
         }
-
-        return true;
     }
 
     // ----------------------------------------------------------------------
     // Events
     // ----------------------------------------------------------------------
 
-    private DefaultDeployEvent createDeployEvent( String name )
+    private DefaultDeployEvent createDeployEvent( ApplicationRuntimeProfile runtimeProfile )
     {
-        DefaultDeployEvent event = new DefaultDeployEvent();
-
-        event.setApplicationName( name );
-
-        event.setSender( this );
+        DefaultDeployEvent event = new DefaultDeployEvent( runtimeProfile );
 
         return event;
     }
 
-
-    public PlexusContainer getApplication( String string )
+    public ApplicationRuntimeProfile getApplicationRuntimeProfile( String applicationName )
+        throws Exception
     {
-        return (PlexusContainer) deployments.get( string );
+        ApplicationRuntimeProfile profile = (ApplicationRuntimeProfile) deployments.get( applicationName );
+
+        if ( profile == null )
+        {
+            throw new Exception( "No such application: '" + applicationName + "'.");
+        }
+
+        return profile;
     }
 
     public void addApplicationListener( ApplicationListener listener )
@@ -370,31 +389,36 @@ public class DefaultApplicationDeployer
 
         applicationListeners = new ArrayList();
 
-        applicationsDirectory = new File( System.getProperty( "plexus.home" ), "apps" ).getPath();
+//        applicationsDirectory = new File( System.getProperty( "plexus.home" ), "apps" ).getPath();
 
-        System.out.println( "applicationsDirectory = " + applicationsDirectory );
-
+        getLogger().info( "Applications will be deployed in: '" + applicationsDirectory + "'." );
+/*
         if ( applicationsDirectory != null )
         {
             deployApplications( applicationsDirectory );
         }
+*/
     }
 
     public void dispose()
     {
-        for ( Iterator itr = deployments.keySet().iterator(); itr.hasNext(); )
+        for ( Iterator it = deployments.entrySet().iterator(); it.hasNext(); )
         {
-            String name = (String) itr.next();
+            Map.Entry entry = (Map.Entry) it.next();
 
-            DefaultPlexusContainer application = (DefaultPlexusContainer) deployments.remove( name );
+            String name = (String) entry.getKey();
+
+            ApplicationRuntimeProfile profile = (ApplicationRuntimeProfile) entry.getValue();
+
+            it.remove();
 
             try
             {
-                application.dispose();
+                profile.getContainer().dispose();
             }
             catch ( Exception e )
             {
-                getLogger().error( "Couldn't dipose of " + name, e );
+                getLogger().error( "Couldn't dipose of application '" + name + "'", e );
             }
         }
     }

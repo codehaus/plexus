@@ -27,9 +27,11 @@ import java.io.FileReader;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
-import org.codehaus.plexus.component.repository.io.PlexusTools;
+import org.codehaus.plexus.application.deploy.ApplicationDeployer;
+import org.codehaus.plexus.application.event.ApplicationListener;
+import org.codehaus.plexus.application.event.DeployEvent;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.context.Context;
@@ -38,6 +40,7 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.util.Expand;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
@@ -45,23 +48,20 @@ import org.codehaus.plexus.util.Expand;
  */
 public class DefaultServiceDiscoverer
     extends AbstractLogEnabled
-    implements Initializable, ServiceDiscoverer, Contextualizable
+    implements ServiceDiscoverer, Initializable, Contextualizable
 {
-    private String serviceRepository;
-
     private String serviceDirectory;
 
     private DefaultPlexusContainer container;
 
-    /**
-     * @see org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable#initialize()
-     */
-    public void initialize() throws Exception
+    // ----------------------------------------------------------------------
+    // Component Lifecycle
+    // ----------------------------------------------------------------------
+
+    public void initialize()
+        throws Exception
     {
-        if ( serviceRepository != null )
-        {
-            deployServices( serviceRepository );
-        }
+        getLogger().info( "Services will be deployed in: '" + serviceDirectory + "'." );
     }
 
     public void contextualize( Context context )
@@ -70,6 +70,22 @@ public class DefaultServiceDiscoverer
         container = (DefaultPlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
     }
 
+    // ----------------------------------------------------------------------
+    // ServiceDiscoverer Implementation
+    // ----------------------------------------------------------------------
+
+    public void deploy( String name, String location )
+        throws Exception
+    {
+        File jar = new File( location );
+
+        deploy( name, jar, new File( serviceDirectory ), new File( serviceDirectory ) );
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+/*
     private void deployServices( String directory )
         throws Exception
     {
@@ -96,19 +112,21 @@ public class DefaultServiceDiscoverer
         }
         else
         {
-            getLogger().warn( directory + " is not a directory!" );
+            getLogger().warn( "The services directory '" + directory + "' is not a directory!" );
         }
     }
-
+*/
     private void deploy( String name, File jar, File services, File configurations )
         throws Exception
     {
-        if ( !services.exists() )
-        {
-            services.mkdir();
-        }
-
         File serviceDir = new File( services, name );
+
+        if ( serviceDir.exists() )
+        {
+            getLogger().info( "Removing old service." );
+
+            FileUtils.deleteDirectory( serviceDir );
+        }
 
         Expand ex = new Expand();
         ex.setDest( serviceDir );
@@ -117,7 +135,8 @@ public class DefaultServiceDiscoverer
 
         try
         {
-            getLogger().info( "Extracting service jar " + jar + " to " + serviceDir + "." );
+            getLogger().info( "Extracting service jar '" + jar + "' to '" + serviceDir + "'." );
+
             ex.execute();
         }
         catch ( Exception e )
@@ -127,16 +146,24 @@ public class DefaultServiceDiscoverer
 
         // Add jars to the repo
         File libdir = new File( serviceDir, "lib" );
-        if ( libdir.exists() )
+
+        if ( !libdir.exists() )
         {
-            addJars( libdir );
+            throw new Exception( "The service must have a /lib directory." );
         }
+
+        addJars( libdir );
+
+        getLogger().debug( "Discovering components" );
+        container.discoverComponents( container.getCoreRealm() );
 
         // Copy over the user configuration if there is one.
         File serviceConfig = new File( configurations, name + ".xml" );
         if ( !serviceConfig.exists() )
         {
-            File config = new File( serviceDir, "META-INF/plexus/services.xml" );
+//            File config = new File( serviceDir, "META-INF/plexus/services.xml" );
+            File config = new File( serviceDir, "conf/plexus.xml" );
+
             if ( config.exists() )
             {
                 config.renameTo( serviceConfig );
@@ -163,7 +190,7 @@ public class DefaultServiceDiscoverer
         PlexusConfiguration serviceConfig =
             PlexusTools.buildConfiguration( new FileReader( config ) );
 
-        addComponents( serviceConfig );
+//        addComponents( serviceConfig );
 
         startComponents( serviceConfig );
     }
@@ -198,7 +225,7 @@ public class DefaultServiceDiscoverer
             }
         }
     }
-
+/*
     private void addComponents( PlexusConfiguration serviceConfig )
         throws Exception
     {
@@ -223,7 +250,7 @@ public class DefaultServiceDiscoverer
             container.addComponentDescriptor( componentDescriptor );
         }
     }
-
+*/
     /**
      * @param serviceDir
      * @throws Exception
@@ -232,5 +259,14 @@ public class DefaultServiceDiscoverer
         throws Exception
     {
         container.addJarRepository( serviceDir );
+    }
+
+    // ----------------------------------------------------------------------
+    // Application deployment
+    // ----------------------------------------------------------------------
+
+    public void applicationDeployed( String name, File lib )
+    {
+
     }
 }

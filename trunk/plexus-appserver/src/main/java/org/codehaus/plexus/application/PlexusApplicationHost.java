@@ -28,6 +28,9 @@ import java.io.FileReader;
 import org.codehaus.classworlds.ClassWorld;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.application.deploy.ApplicationDeployer;
+import org.codehaus.plexus.application.service.ServiceDiscoverer;
+import org.codehaus.plexus.application.supervisor.Supervisor;
+import org.codehaus.plexus.application.supervisor.SupervisorListener;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
 
@@ -50,6 +53,10 @@ public class PlexusApplicationHost
     private static Object waitObj;
 
     private ApplicationDeployer applicationDeployer;
+
+    private Supervisor supervisor;
+
+    private ServiceDiscoverer serviceDiscoverer;
 
     // ----------------------------------------------------------------------
     //  Implementation
@@ -85,15 +92,76 @@ public class PlexusApplicationHost
         //
         // ----------------------------------------------------------------------
 
+        LoggerManager loggerManager = (LoggerManager) container.lookup( LoggerManager.ROLE );
+
+        loggerManager.setThreshold( Logger.LEVEL_DEBUG );
+
+        serviceDiscoverer = (ServiceDiscoverer) container.lookup( ServiceDiscoverer.ROLE );
+
         applicationDeployer = (ApplicationDeployer) container.lookup( ApplicationDeployer.ROLE );
 
-        LoggerManager loggerManager = (LoggerManager) container.lookup( LoggerManager.ROLE );
+        supervisor = (Supervisor) container.lookup( Supervisor.ROLE );
 
         final Logger logger = loggerManager.getLoggerForComponent( this.getClass().getName() );
 
         // ----------------------------------------------------------------------
+        // Register the deployers inside the directory supervisor so applications
+        // and services will be deployed.
+        // ----------------------------------------------------------------------
+
+        File home = new File( System.getProperty( "plexus.home" ) );
+
+        supervisor.addDirectory( new File( home, "services" ), new SupervisorListener()
+        {
+            public void onJarDiscovered( File jar )
+            {
+                String name = jar.getName();
+
+                try
+                {
+                    serviceDiscoverer.deploy( name.substring( 0, name.length() - 4 ), jar.getAbsolutePath() );
+                }
+                catch ( Exception e )
+                {
+                    System.err.println( "Error while deploying service '" + name + "'." );
+                    e.printStackTrace();
+                }
+            }
+        } );
+
+        supervisor.addDirectory( new File( home, "apps" ), new SupervisorListener()
+        {
+            public void onJarDiscovered( File jar )
+            {
+                String name = jar.getName();
+
+                try
+                {
+                    applicationDeployer.deploy( name.substring( 0, name.length() - 4 ), jar.toURL().toExternalForm() );
+                }
+                catch ( Exception e )
+                {
+                    System.err.println( "Error while deploying application '" + name + "'." );
+
+                    e.printStackTrace();
+                }
+            }
+        } );
+
+        logger.info( "The application server has been initialized." );
+
+        // ----------------------------------------------------------------------
+        // Now start the supervisor which will deploy all services and applications
+        // ----------------------------------------------------------------------
+
+        supervisor.scan();
+
+        // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
+
+        // TODO: Add timing.
+        logger.info( "The application server has started." );
 
         Thread thread = new Thread( this );
 
@@ -202,7 +270,7 @@ public class PlexusApplicationHost
     {
         if ( args.length != 1 )
         {
-            System.err.println( "usage: plexus <plexus.conf>" );
+            System.err.println( "usage: plexus <plexus.xml>" );
 
             System.exit( 1 );
         }

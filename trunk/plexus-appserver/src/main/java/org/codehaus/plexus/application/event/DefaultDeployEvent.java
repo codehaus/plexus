@@ -22,50 +22,30 @@ package org.codehaus.plexus.application.event;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.application.deploy.ApplicationDeployer;
+import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 
 /**
  * Signals an (un/re)deployment event;
- * 
+ *
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  * @since Jul 17, 2004
  */
 public class DefaultDeployEvent
     implements DeployEvent
 {
-    private String applicationName;
+    private ApplicationRuntimeProfile runtimeProfile;
 
-    private ApplicationDeployer sender;
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
-    /**
-     * @return Returns the applicationName.
-     */
-    public String getApplicationName()
+    public DefaultDeployEvent( ApplicationRuntimeProfile runtimeProfile )
     {
-        return applicationName;
+        this.runtimeProfile = runtimeProfile;
     }
 
-    /**
-     * @param applicationName The applicationName to set.
-     */
-    public void setApplicationName( String applicationName )
+    public ApplicationRuntimeProfile getRuntimeProfile()
     {
-        this.applicationName = applicationName;
-    }
-
-    /**
-     * @return Returns the sender.
-     */
-    public ApplicationDeployer getSender()
-    {
-        return sender;
-    }
-
-    /**
-     * @param sender The sender to set.
-     */
-    public void setSender( ApplicationDeployer sender )
-    {
-        this.sender = sender;
+        return runtimeProfile;
     }
 }

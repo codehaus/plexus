@@ -24,22 +24,15 @@ package org.codehaus.plexus.application.event;
 
 import org.codehaus.plexus.application.deploy.ApplicationDeployer;
 import org.codehaus.plexus.application.deploy.ApplicationDeployer;
+import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 
 /**
  * Signals an (un/re)deployment event;
- * 
+ *
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  * @since Jul 17, 2004
  */
 public interface DeployEvent
 {
-    /**
-     * @return Returns the applicationName.
-     */
-    public String getApplicationName();
-
-    /**
-     * @return Returns the sender.
-     */
-    public ApplicationDeployer getSender();
+    ApplicationRuntimeProfile getRuntimeProfile();
 }
