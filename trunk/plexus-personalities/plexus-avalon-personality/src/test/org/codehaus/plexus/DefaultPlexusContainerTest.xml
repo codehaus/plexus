@@ -61,7 +61,8 @@
     <component>
       <role>org.codehaus.plexus.ServiceA</role>
       <implementation>org.codehaus.plexus.DefaultServiceA</implementation>
-      <configuration/>
+      <configuration>
+      </configuration>
     </component>
 
     <!--
@@ -120,7 +121,7 @@
       <instantiation-strategy>singleton-keep-alive</instantiation-strategy>
       <configuration/>
     </component>
-
+    
     <!--
      |
      | H Service
@@ -145,6 +146,26 @@
       <implementation>org.codehaus.plexus.DefaultLoadOnStartServiceWithRoleHint</implementation>
     </component>
 
+    <!--
+     |
+     | Configure Service
+     |
+     | Make sure the configuration stuff is working.
+     |
+     -->
+    <component>
+      <role>org.codehaus.plexus.ConfigureService</role>
+      <implementation>org.codehaus.plexus.DefaultConfigureService</implementation>
+      <instantiation-strategy>singleton-keep-alive</instantiation-strategy>
+      <configuration>
+        <blah>
+          <child>1</child>
+          <child>2</child>
+        </blah>
+        <bleh name="bleh"/>
+      </configuration>
+    </component>
+    
   </components>
 
 </plexus>
