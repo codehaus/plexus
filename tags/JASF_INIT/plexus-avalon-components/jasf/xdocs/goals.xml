@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Goals</title>
+    <author email="dan@envoisolutions.com">Dan Diephouse</author>
+  </properties>
+
+  <body>
+
+  <section name="Goals">
+    <p>
+     <ul>
+      <li>
+    	Allow Components to require certain security credentials independent
+    	of the security framework being employed.
+   	  </li>
+   	  <li>
+   	  	Secure web pages based on how much access the user is given.
+   	  </li>
+   	  <li>
+   	  	Seperate authentication, authorization, and management.
+   	  </li>
+   	  <li>
+   	  	Allow the same security model to be used whatever the view 
+   	  	mechanism - the web, FTP, WebDAV, a phone, etc.
+   	  </li>
+   	  <li>
+   	  	For a specific web page we might want to request that a user is part
+   	  	of a group and has a specific credential in the group.  That credential
+   	  	might vary from group to group.
+   	  </li>
+   	  <li>
+   	    Allow different entity types to interact with the system.
+   	  </li>
+   	 </ul>
+    </p>
+  </section>
+
+</body>
+</document>

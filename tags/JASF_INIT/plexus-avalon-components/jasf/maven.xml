@@ -1,0 +1,42 @@
+<project default="java:jar"
+  xmlns:j="jelly:core"
+  xmlns:u="jelly:util"
+  xmlns:ant="jelly:ant"
+  xmlns:maven="jelly:maven"
+  xmlns:m="maven"
+  xmlns:deploy="deploy">
+  
+  <preGoal name="test:test">
+  	<!-- compile attributes -->
+  	<attainGoal name="attributes:compile"/>
+  </preGoal>
+	
+  <path id="attributes-classpath">
+    <path refid="maven.dependency.classpath"/>
+    <pathelement path="${maven.build.dest}"/>
+  </path>
+
+  <goal name="attributes:compile">
+	<echo>${maven.attributes.src.includes}</echo>
+	<echo>${maven.attributes.src.excludes}</echo>
+	
+	<echo>Classpath: ${attributes-classpath}</echo>
+
+	<taskdef name="attr" 
+	         classname="org.apache.commons.attributes.task.AttributesCompiler"
+	         classpathref="attributes-classpath"/>  
+	
+    <attr
+	  src="${pom.build.sourceDirectory}"
+	  dest="${basedir}/target/classes"
+	  includes="${maven.attributes.src.includes}"
+	  excludes="${maven.attributes.src.excludes}"/>
+    
+    <attr
+      src="${pom.build.unitTestSourceDirectory}"
+	  dest="${basedir}/target/test-classes"
+	  includes="${maven.attributes.test.includes}"
+	  excludes="${maven.attributes.test.excludes}"/>
+      
+  </goal>  
+</project>
