@@ -7,15 +7,13 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-action</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-alpha-1-SNAPSHOT</version>
   <name>Plexus Action Component Set</name>
-  
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-summit</artifactId>
-      <version>1.0-beta-4-SNAPSHOT</version>
+      <version>1.0-beta-3-SNAPSHOT</version>
     </dependency>
   </dependencies>
-  
 </project>
