@@ -1,8 +1,5 @@
 <plexus>
 
-  <component-repository>
-    <implementation>org.codehaus.plexus.personality.avalon.AvalonComponentRepository</implementation>
-  </component-repository>
   <!--
    |
    | Lifecycle handler Manager.
