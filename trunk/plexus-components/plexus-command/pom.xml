@@ -8,6 +8,6 @@
   <groupId>plexus</groupId>
   <artifactId>plexus-command</artifactId>
   <packaging>jar</packaging>
-  <name>compiler:compile</name>
+  <name>Plexus Command Component</name>
   <version>1.0-alpha-5-SNAPSHOT</version>
 </project>
