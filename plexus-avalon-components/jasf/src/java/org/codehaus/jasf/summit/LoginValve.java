@@ -207,12 +207,6 @@ public class LoginValve
                 }
             }
         }
-        else
-        {
-            // TODO: make this message configurable
-            data.setMessage("Invalid username/password. Please try again.");
-            data.setTarget(loginPage);
-        }
     }
 
     /**
