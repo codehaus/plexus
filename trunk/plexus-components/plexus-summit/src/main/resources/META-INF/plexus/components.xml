@@ -65,15 +65,46 @@
     <component>
       <role>org.codehaus.plexus.summit.pipeline.Pipeline</role>
       <implementation>org.codehaus.plexus.summit.pipeline.SummitPipeline</implementation>
+      <lifecycle-handler>plexus-configurable</lifecycle-handler>
       <configuration>
         <valves>
-          <valve implementation="org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve"/>
-          <valve implementation="org.codehaus.plexus.summit.pipeline.valve.DetermineTargetValve"/>
-          <valve implementation="org.codehaus.plexus.summit.pipeline.valve.ResolverValve"/>
-          <valve implementation="org.codehaus.plexus.summit.pipeline.valve.DisplayValve"/>
+          <valve>org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve</valve>
+          <valve>org.codehaus.plexus.summit.pipeline.valve.DetermineTargetValve</valve>
+          <valve>org.codehaus.plexus.summit.pipeline.valve.ResolverValve</valve>
+          <valve>org.codehaus.plexus.summit.pipeline.valve.DisplayValve</valve>
         </valves>
       </configuration>
     </component>
+
+    <component>
+      <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
+      <role-hint>org.codehaus.plexus.summit.pipeline.valve.DetermineTargetValve</role-hint>
+      <implementation>org.codehaus.plexus.summit.pipeline.valve.DetermineTargetValve</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.summit.resolver.Resolver</role>
+          <role-hint>new</role-hint>
+        </requirement>
+      </requirements>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
+      <role-hint>org.codehaus.plexus.summit.pipeline.valve.DisplayValve</role-hint>
+      <implementation>org.codehaus.plexus.summit.pipeline.valve.DisplayValve</implementation>
+      <configuration>
+        <display>new</display>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
+      <role-hint>org.codehaus.plexus.summit.pipeline.valve.ResolverValve</role-hint>
+      <implementation>org.codehaus.plexus.summit.pipeline.valve.ResolverValve</implementation>
+      <configuration>
+        <resolver>new</resolver>
+      </configuration>
+    </component>        
 
     <!-- Pull Tools -->
     <component>
