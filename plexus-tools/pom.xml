@@ -1,4 +1,4 @@
-<model>
+<project>
   <parent>
     <artifactId>plexus-root</artifactId>
     <groupId>plexus</groupId>
@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-tools</artifactId>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
   <name>Plexus Tools Parent Project</name>
   <version>1.0</version>
   <dependencies>
@@ -15,15 +15,15 @@
       <groupId>plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
       <version>1.0-alpha-1</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>1.0-alpha-1</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
-</model>
+  <modules>
+    <module>plexus-cdc</module>
+    <module>plexus-runtime-builder</module>
+  </modules>
+</project>
