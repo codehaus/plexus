@@ -7,7 +7,6 @@ import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.ObjectNotFoundException;
 import net.sf.hibernate.Session;
 
-import org.codehaus.plexus.hibernate.HibernateService;
 import org.codehaus.plexus.hibernate.HibernateSessionService;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
@@ -20,9 +19,7 @@ public class DefaultPersister
     extends AbstractLogEnabled
     implements Persister
 {
-	private HibernateService hib;
     private HibernateSessionService hss;
-
     
     protected Session getSession()
     {
@@ -37,7 +34,7 @@ public class DefaultPersister
     }
     
     /**
-     * @see com.moveitthere.delivery.service.Persister#save(java.lang.Object)
+     * @see org.codehaus.plexus.hibernate.persister.Persister#save(java.lang.Object)
      */
     public void save(Object o)
     {
@@ -62,7 +59,7 @@ public class DefaultPersister
     }
     
     /**
-     * @see com.moveitthere.delivery.service.Persister#save(java.lang.Object)
+     * @see org.codehaus.plexus.hibernate.persister.Persister#save(java.lang.Object)
      */
     public void update( Object o, Serializable id )
     {
@@ -79,7 +76,7 @@ public class DefaultPersister
     }
 
     /**
-     * @see com.moveitthere.delivery.service.Persister#save(java.lang.Object)
+     * @see org.codehaus.plexus.hibernate.persister.Persister#save(java.lang.Object)
      */
     public void saveOrUpdate( Object o )
     {
@@ -96,7 +93,7 @@ public class DefaultPersister
     }
     
     /**
-     * @see com.moveitthere.delivery.service.Persister#load(java.lang.Object)
+     * @see org.codehaus.plexus.hibernate.persister.Persister#load(Serializable, Class)
      */
     public Object load( Serializable id, Class clazz )
         throws ObjectNotFoundException
@@ -113,7 +110,7 @@ public class DefaultPersister
     }
 
     /**
-     * @see com.moveitthere.delivery.service.Persister#delete(java.lang.Object)
+     * @see org.codehaus.plexus.hibernate.persister.Persister#delete(java.lang.Object)
      */
     public void delete(Object o)
     {
@@ -130,7 +127,7 @@ public class DefaultPersister
     }
 
     /**
-     * @see com.moveitthere.delivery.service.Persister#selectAll()
+     * @see org.codehaus.plexus.hibernate.persister.Persister#selectAll(Class)
      */
     public List selectAll(Class clazz) 
     {
