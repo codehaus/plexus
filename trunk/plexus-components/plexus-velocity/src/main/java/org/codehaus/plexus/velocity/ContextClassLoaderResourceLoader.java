@@ -30,7 +30,7 @@ public class ContextClassLoaderResourceLoader
         
         try 
         {
-            ClassLoader classLoader = this.getClass().getClassLoader();
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
             result= classLoader.getResourceAsStream( name );
         }
