@@ -38,7 +38,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * @author <a href="jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @component
  */
