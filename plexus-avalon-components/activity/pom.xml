@@ -7,7 +7,7 @@
   </parent>
   <artifactId>plexus-activity</artifactId>
   <name>Plexus Activity Component</name>
-  <version>1.0-alpha-6</version>
+  <version>1.0-beta-1</version>
   <shortDescription>Activity services that interact with templates.</shortDescription>
 
   <description>
