@@ -69,11 +69,11 @@ import org.apache.xmlrpc.XmlRpcException;
  * @author <a href="mailto:magnus@handtolvur.is">Magnús Þór Torfason</a>
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public interface XmlRpcComponent
 {
-    /** TurbineXmlRpcService. */
     public static final String ROLE = XmlRpcComponent.class.getName();
 
     /**
@@ -86,9 +86,7 @@ public interface XmlRpcComponent
      * @exception XmlRpcException.
      * @exception IOException.
      */
-    Object executeRpc(URL url,
-                      String methodName,
-                      Vector params)
+    Object executeRpc( URL url, String methodName, Vector params )
         throws Exception;
 
     /**
@@ -100,7 +98,7 @@ public interface XmlRpcComponent
      * @exception XmlRpcException.
      * @exception IOException.
      */
-    void registerHandler(String handlerName, Object handler)
+    void registerHandler( String handlerName, Object handler )
         throws XmlRpcException, IOException;
 
     /**
@@ -111,7 +109,7 @@ public interface XmlRpcComponent
      * @exception XmlRpcException.
      * @exception IOException.
      */
-    void registerHandler(Object handler)
+    void registerHandler( Object handler )
         throws XmlRpcException, IOException;
 
     /**
@@ -119,14 +117,14 @@ public interface XmlRpcComponent
      *
      * @param handlerName The name of the handler to unregister.
      */
-    void unregisterHandler(String handlerName);
+    void unregisterHandler( String handlerName );
 
     /**
      * Switch client filtering on/off.
-     * @see #acceptClient(java.lang.String)
-     * @see #denyClient(java.lang.String)
+     * @see #acceptClient( java.lang.String )
+     * @see #denyClient( java.lang.String )
      */
-    void setParanoid(boolean state);
+    void setParanoid( boolean state );
 
     /**
      * Add an IP address to the list of accepted clients. The parameter can
@@ -134,24 +132,24 @@ public interface XmlRpcComponent
      * call setParanoid(true) in order for this to have
      * any effect.
      *
-     * @see #denyClient(java.lang.String)
-     * @see #setParanoid(boolean)
+     * @see #denyClient( java.lang.String )
+     * @see #setParanoid( boolean )
      */
-    void acceptClient(String address);
+    void acceptClient( String address );
 
     /**
      * Add an IP address to the list of denied clients. The parameter can
      * contain '*' as wildcard character, e.g. "192.168.*.*". You must call
      * setParanoid(true) in order for this to have any effect.
      *
-     * @see #acceptClient(java.lang.String)
-     * @see #setParanoid(boolean)
+     * @see #acceptClient( java.lang.String )
+     * @see #setParanoid( boolean )
      */
-    void denyClient(String address);
+    void denyClient( String address );
     
     /** Message Listener. */
-    void addMessageListener(XmlRpcMessageListener listener);
+    void addMessageListener( XmlRpcMessageListener listener );
 
     /** Message Received. */
-    void messageReceived(String fileContents);
+    void messageReceived( String fileContents );
 }
