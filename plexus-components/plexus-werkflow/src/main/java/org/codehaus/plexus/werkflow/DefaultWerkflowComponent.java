@@ -1,22 +1,23 @@
 package org.codehaus.plexus.werkflow;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.codehaus.plexus.action.ActionManager;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.werkflow.ognl.OgnlExpressionFactory;
-import org.codehaus.werkflow.AutomaticEngine;
-import org.codehaus.werkflow.DuplicateWorkflowException;
 import org.codehaus.werkflow.Engine;
 import org.codehaus.werkflow.Workflow;
-import org.codehaus.werkflow.nonpersistent.NonPersistentInstanceManager;
+import org.codehaus.werkflow.helpers.SimpleInstanceManager;
+import org.codehaus.werkflow.helpers.SimplePersistenceManager;
+import org.codehaus.werkflow.helpers.SimpleSatisfactionManager;
+import org.codehaus.werkflow.helpers.SimpleWorkflowManager;
 import org.codehaus.werkflow.simple.ExpressionFactory;
 import org.codehaus.werkflow.simple.SimpleWorkflowReader;
-import org.xml.sax.SAXException;
+import org.codehaus.werkflow.simple.ognl.OgnlExpressionFactory;
+import org.codehaus.werkflow.spi.InstanceManager;
+import org.codehaus.werkflow.spi.PersistenceManager;
+import org.codehaus.werkflow.spi.SatisfactionManager;
+import org.codehaus.werkflow.spi.WorkflowManager;
+
+import java.io.File;
 
 /**
  * The default WerkflowComponent implementation.
@@ -57,11 +58,29 @@ public class DefaultWerkflowComponent
      */
     public void initialize() throws Exception
     {
-        engine = new AutomaticEngine(new NonPersistentInstanceManager());
+        engine = createEngine();
 
         expressionFactory = new OgnlExpressionFactory();
 
         loadWerkflows();
+    }
+
+    protected Engine createEngine()
+    {
+        PersistenceManager pm = new SimplePersistenceManager();
+        WorkflowManager wm = new SimpleWorkflowManager();
+        SatisfactionManager sm = new SimpleSatisfactionManager();
+        InstanceManager im = new SimpleInstanceManager();
+
+        Engine engine = new Engine();
+        engine.setPersistenceManager(pm);
+        engine.setSatisfactionManager(sm);
+        engine.setWorkflowManager(wm);
+        engine.setInstanceManager(im);
+
+        engine.start();
+
+        return engine;
     }
 
     private void loadWerkflows() throws Exception
@@ -87,7 +106,7 @@ public class DefaultWerkflowComponent
                             getExpressionFactory(),
                             werkflows[i]);
     
-                    engine.addWorkflow(workflow);
+                    engine.getWorkflowManager().addWorkflow(workflow);
                 }
             }
         }
