@@ -52,10 +52,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
+import java.io.FileInputStream;
 import java.util.Map;
 import java.util.Set;
 import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Properties;
+import java.util.Enumeration;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -70,6 +73,14 @@ public abstract class AbstractBuilder
 
     protected String baseDirectory;
 
+    protected String plexusConfiguration;
+
+    protected String configurationPropertiesFile;
+
+    protected Properties configurationProperties;
+
+    protected File confDir;
+    
     // ----------------------------------------------------------------------
     // Components
     // ----------------------------------------------------------------------
@@ -114,6 +125,49 @@ public abstract class AbstractBuilder
     {
         this.baseDirectory = baseDirectory;
     }
+
+
+    public void setPlexusConfiguration( String plexusConfiguration )
+    {
+        this.plexusConfiguration = plexusConfiguration;
+    }
+
+    public void setConfigurationPropertiesFile( String configurationPropertiesFile )
+    {
+        this.configurationPropertiesFile = configurationPropertiesFile;
+    }
+
+    protected Properties getConfigurationProperties()
+        throws PlexusRuntimeBuilderException
+    {
+        if ( configurationProperties == null )
+        {
+            Properties p = new Properties();
+
+            File input = new File( configurationPropertiesFile );
+
+            try
+            {
+                p.load( new FileInputStream( input ) );
+            }
+            catch ( IOException ex )
+            {
+                throw new PlexusRuntimeBuilderException( "Exception while reading configuration file: " + input.getPath(), ex );
+            }
+
+            configurationProperties = new Properties();
+
+            for ( Enumeration e = p.propertyNames(); e.hasMoreElements(); )
+            {
+                String name = (String) e.nextElement();
+
+                configurationProperties.setProperty( name, p.getProperty( name ) );
+            }
+        }
+
+        return configurationProperties;
+    }
+
 
     // ----------------------------------------------------------------------
     // Utility methods

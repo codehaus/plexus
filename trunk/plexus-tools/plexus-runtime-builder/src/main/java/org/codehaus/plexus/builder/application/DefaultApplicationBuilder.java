@@ -24,14 +24,10 @@ package org.codehaus.plexus.builder.application;
 
 import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DefaultArtifact;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.DirectoryScanner;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -42,12 +38,28 @@ public class DefaultApplicationBuilder
 {
     private String applicationName;
 
-    private File appLibDir;
+    private File applicationLibDirectory;
+
+    private String configurationsDirectory;
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     public void setApplicationName( String applicationName )
     {
         this.applicationName = applicationName;
     }
+
+    public void setConfigurationsDirectory( String configurationsDirectory )
+    {
+        this.configurationsDirectory = configurationsDirectory;
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
 
     private void checkApplicationConfiguration()
         throws ApplicationBuilderException
@@ -55,6 +67,41 @@ public class DefaultApplicationBuilder
         if ( applicationName == null || applicationName.trim().length() == 0 )
         {
             throw new ApplicationBuilderException( "The application name must be set." );
+        }
+    }
+
+    private void processConfigurations()
+        throws PlexusRuntimeBuilderException, IOException
+    {
+        if ( configurationsDirectory == null )
+        {
+            return;
+        }
+
+        if ( configurationPropertiesFile == null )
+        {
+            throw new PlexusRuntimeBuilderException( "The configuration properties file must be set." );
+        }
+
+        DirectoryScanner scanner = new DirectoryScanner();
+
+        scanner.setBasedir( configurationsDirectory );
+
+        scanner.setExcludes( new String[]{configurationPropertiesFile, "**/CVS/**"} );
+
+        scanner.scan();
+
+        String[] files = scanner.getIncludedFiles();
+
+        for ( int i = 0; i < files.length; i++ )
+        {
+            String file = files[i];
+
+            File in = new File( configurationsDirectory, file );
+
+            File out = new File( confDir, files[i] );
+
+            filterCopy( in, out, getConfigurationProperties() );
         }
     }
 
@@ -73,9 +120,11 @@ public class DefaultApplicationBuilder
 
     protected void createDirectoryStructure()
     {
-        appLibDir = new File( baseDirectory, "lib" );
+        applicationLibDirectory = new File( baseDirectory, "lib" );
 
-        mkdir( appLibDir );
+        confDir = new File( baseDirectory, "conf" );
+
+        mkdir( applicationLibDirectory );
     }
 
     // use the project to get the deps
@@ -98,7 +147,7 @@ public class DefaultApplicationBuilder
             throw new PlexusRuntimeBuilderException( "Error while resolving the project artifact.", ex );
         }
 
-        copyArtifact( artifact, appLibDir );
+        copyArtifact( artifact, applicationLibDirectory );
 
         while ( it.hasNext() )
         {
@@ -109,7 +158,7 @@ public class DefaultApplicationBuilder
                 continue;
             }
 
-            copyArtifact( artifact, appLibDir );
+            copyArtifact( artifact, applicationLibDirectory );
         }
     }
     */

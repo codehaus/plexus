@@ -41,8 +41,6 @@ public interface PlexusRuntimeBuilder
 
     void setPlexusConfiguration( String plexusConfiguration );
 
-    void setConfigurationsDirectory( String configurationsDirectory );
-
     void setConfigurationPropertiesFile( String configurationPropertiesFile );
 
     void build()
