@@ -5,7 +5,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
 
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.embed.Embedder;
 
 /**
