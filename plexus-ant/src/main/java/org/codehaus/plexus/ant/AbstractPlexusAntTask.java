@@ -1,5 +1,6 @@
 package org.codehaus.plexus.ant;
 
+import org.apache.tools.ant.AntClassLoader;
 import org.apache.tools.ant.Task;
 import org.codehaus.classworlds.ClassWorld;
 import org.codehaus.plexus.embed.Embedder;
@@ -18,7 +19,9 @@ public abstract class AbstractPlexusAntTask
     {
         Embedder embedder = new Embedder();
 
-        ClassWorld classWorld = new ClassWorld( "core", embedder.getClass().getClassLoader() );
+        AntClassLoader cl = (AntClassLoader) embedder.getClass().getClassLoader();
+
+        ClassWorld classWorld = new ClassWorld( "core", cl );
 
         embedder.start( classWorld );
 

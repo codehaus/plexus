@@ -1,4 +1,4 @@
-main is org.codehaus.plexus.application.PlexusApplicationHost from plexus.core
+main is org.codehaus.plexus.PlexusContainerHost from core
 
-[plexus.core]
-load ${plexus.core}/*.jar
+[core]
+load ${lib}/*.jar

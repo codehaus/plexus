@@ -5,7 +5,8 @@
     <version>1.0</version>
   </parent>
   <groupId>plexus</groupId>
-  <artifactId>plexus-httpserver</artifactId>
-  <version>1.0-alpha-1</version>
-  <name>Plexus HTTP Server Component</name>
+  <artifactId>plexus-</artifactId>
+  <version>1.0</version>
+  <dependencies>
+  </dependencies>
 </project>

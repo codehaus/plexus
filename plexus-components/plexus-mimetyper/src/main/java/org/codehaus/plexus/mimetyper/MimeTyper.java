@@ -71,6 +71,7 @@ import org.codehaus.plexus.mimetyper.util.MimeType;
  */
 public interface MimeTyper
 {
+    /** Avalon role - used to id the component within the manager */
     String ROLE = MimeTyper.class.getName();
 
     /**

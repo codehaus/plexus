@@ -4,12 +4,9 @@ import bsh.Interpreter;
 
 import java.io.File;
 
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.factory.AbstractComponentFactory;
-import org.codehaus.plexus.component.factory.ComponentInstantiationException;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
-import org.codehaus.classworlds.ClassRealm;
 
+import org.codehaus.plexus.component.factory.AbstractComponentFactory;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 public class BshComponentFactory
     extends AbstractComponentFactory
@@ -18,8 +15,8 @@ public class BshComponentFactory
 
     private String bshPath;
 
-    public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm realm, PlexusContainer container )
-        throws ComponentInstantiationException
+    public Object newInstance( ComponentDescriptor componentDescriptor, ClassLoader classLoader )
+        throws ClassNotFoundException, InstantiationException, IllegalAccessException
     {
         Object component = null;
 
@@ -33,7 +30,7 @@ public class BshComponentFactory
         }
         catch ( Exception e )
         {
-            throw new ComponentInstantiationException( e.getMessage() );
+            throw new InstantiationException( e.getMessage() );
         }
 
         return component;

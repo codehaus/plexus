@@ -4,11 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import groovy.lang.GroovyClassLoader;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.factory.AbstractComponentFactory;
-import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
-import org.codehaus.classworlds.ClassRealm;
 
 public class GroovyComponentFactory
     extends AbstractComponentFactory
@@ -17,8 +14,8 @@ public class GroovyComponentFactory
 
     private String groovyPath;
 
-    public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm classRealm, PlexusContainer container )
-        throws ComponentInstantiationException
+    public Object newInstance( ComponentDescriptor componentDescriptor, ClassLoader classLoader )
+        throws ClassNotFoundException, InstantiationException, IllegalAccessException
     {
         Object component = null;
 
@@ -34,7 +31,7 @@ public class GroovyComponentFactory
         }
         catch ( Exception e )
         {
-            throw new ComponentInstantiationException( e.getMessage() );
+            throw new InstantiationException( e.getMessage() );
         }
 
         return component;

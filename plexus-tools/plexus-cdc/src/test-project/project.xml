@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 
 <project>
-<!--
-  <extend>parent.xml</extend>
--->
+  <extend>${myProperty}/parent.xml</extend>
+  <pomVersion>3</pomVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus</artifactId>
+  <id>plexus-cdc-test</id>
   <name>plexus</name>
-  <version>0.14-SNAPSHOT</version>
+  <currentVersion>0.14-SNAPSHOT</currentVersion>
   <organization>
     <name>Codehaus</name>
     <url>http://www.codehaus.org/</url>
@@ -58,7 +58,33 @@
     </developer>
   </developers>
 
-  <dependencies/>
+  <dependencies>
+
+    <dependency>
+      <groupId>xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>0.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>xpp3</groupId>
+      <artifactId>xpp3</artifactId>
+      <version>1.1.3.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>classworlds</groupId>
+      <artifactId>classworlds</artifactId>
+      <version>1.1-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>1.3.4</version>
+    </dependency>
+
+  </dependencies>
 
   <build>
 

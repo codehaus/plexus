@@ -11,9 +11,9 @@ import org.codehaus.plexus.compiler.AbstractCompilerTest;
  */
 public class JavacCompilerTest extends AbstractCompilerTest
 {
-    public JavacCompilerTest()
+    public JavacCompilerTest( String s )
     {
-        super();
+        super( s );
     }
 
     protected String getRoleHint()

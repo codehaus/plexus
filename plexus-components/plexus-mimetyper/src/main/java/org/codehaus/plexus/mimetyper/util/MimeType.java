@@ -200,7 +200,7 @@ public class MimeType
         while ((start < length) &&
                ((look = spec.charAt(start)) != '/'))
         {
-            sb.append(look);
+            sb.append((char) look);
             start++;
         }
         if (look != '/')
@@ -216,7 +216,7 @@ public class MimeType
                ((look = spec.charAt(start)) != ';') &&
                !Character.isWhitespace(look))
         {
-            sb.append(look);
+            sb.append((char) look);
             start++;
         }
         mimeSubtype = sb.toString();
@@ -251,7 +251,7 @@ public class MimeType
                            ((look=spec.charAt(start)) != '=') &&
                            !Character.isWhitespace(look))
                     {
-                        sb.append(Character.toLowerCase(look));
+                        sb.append(Character.toLowerCase((char) look));
                         start++ ;
                     }
                     String name = sb.toString();
@@ -284,7 +284,7 @@ public class MimeType
                            ((delim == '"') ||
                             !Character.isWhitespace(look)))
                     {
-                        sb.append(look);
+                        sb.append((char) look);
                         start++;
                     }
                     while ((start < length) &&

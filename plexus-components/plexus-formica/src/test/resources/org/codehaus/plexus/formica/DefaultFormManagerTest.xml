@@ -26,9 +26,7 @@
         </requirement>
       </requirements>
       <configuration>
-        <forms>
-          <directory-configuration-resource source="${basedir}/src/test/resources/forms"/>
-        </forms>
+        <forms-directory>${basedir}/src/test/resources/forms</forms-directory>
       </configuration>
     </component>
   </components>

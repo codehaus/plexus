@@ -1,7 +1,6 @@
 package org.codehaus.plexus.compiler;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -14,7 +13,7 @@ public interface Compiler
 {
     static String ROLE = Compiler.class.getName();
 
-    List compile( CompilerConfiguration configuration )
+    List compile( String[] classPathElements, String[] sourceDirectories, String destinationDirectory )
         throws Exception;
 }
 

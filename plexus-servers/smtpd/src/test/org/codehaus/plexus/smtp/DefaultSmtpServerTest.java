@@ -25,10 +25,8 @@ public class DefaultSmtpServerTest
 
         assertNotNull( server );
 
-/*
         while( true )
         {
         }
-*/
     }
 }

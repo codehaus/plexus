@@ -56,15 +56,6 @@ package org.codehaus.plexus.scheduler;
  * ----------------------------------------------------------------------------
  */
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Enumeration;
-import java.util.Properties;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
-
 import org.apache.avalon.framework.activity.Initializable;
 import org.apache.avalon.framework.activity.Startable;
 import org.apache.avalon.framework.configuration.Configurable;
@@ -76,9 +67,9 @@ import org.apache.avalon.framework.context.Contextualizable;
 import org.apache.avalon.framework.service.ServiceManager;
 import org.apache.avalon.framework.service.Serviceable;
 import org.apache.avalon.framework.thread.ThreadSafe;
-
+import org.codehaus.plexus.classloader.PlexusClassLoader;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-
+import org.codehaus.plexus.configuration.XmlPullConfigurationBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
@@ -87,6 +78,15 @@ import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
 import org.quartz.impl.StdScheduler;
 import org.quartz.impl.StdSchedulerFactory;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Enumeration;
+import java.util.Properties;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 /**
  * Default <code>Scheduler</code> implementation, backed by quartz.

@@ -205,4 +205,13 @@ class FtpConfig implements FtpConfigInterface {
     public boolean isRemoteAdminAllowed() {
         return mConfig.isRemoteAdminAllowed();
     }
+
+    /**
+     * Get base directory
+     */
+    public String getBaseDirectory() {
+        return mConfig.getBaseDirectory().getAbsolutePath();
+    }
+
 }
+

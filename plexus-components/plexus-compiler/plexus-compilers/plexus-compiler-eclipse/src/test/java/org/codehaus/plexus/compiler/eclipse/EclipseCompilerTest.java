@@ -13,9 +13,9 @@ public class EclipseCompilerTest
     extends AbstractCompilerTest
 {
    
-    public EclipseCompilerTest()
+    public EclipseCompilerTest( String s )
     {
-        super();
+        super( s );
     }
     
 
@@ -26,6 +26,6 @@ public class EclipseCompilerTest
 
     protected int expectedErrors()
     {
-        return 2;
+        return 4;
     }
 }

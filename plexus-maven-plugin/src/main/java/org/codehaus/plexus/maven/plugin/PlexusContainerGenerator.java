@@ -1,75 +1,58 @@
-package org.apache.maven.plugin.plexus;
+/**
+ *
+ * Copyright 2004 The Apache Software Foundation
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+package org.apache.maven.plugin.rar;
 
-import java.net.URL;
+import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
+import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.project.MavenProject;
-
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.builder.PlexusBuilder;
-import org.codehaus.plexus.embed.Embedder;
+import org.codehaus.plexus.builder.DefaultPlexusBuilder;
 
 /**
- * @goal runtime
+ * A mojo that build a J2EE RAR archive.
  *
- * @requiresDependencyResolution
+ * @version $Revision$ $Date$
+ * @maven.plugin.id plexus
+ * @maven.plugin.description Maven pojo to build plexus containers
  *
- * @description Builds plexus containers.
+ * @parameter mavenRepoLocal String true validator description
+ * @parameter outputDirectory String true validator description
+ * @parameter pom String true validator description
+ * @parameter plexusVersion String true validator description
+ * @parameter plexusApplication String true validator description
+ * @parameter plexusConfiguration String true validator description
+ * @parameter plexusConfigurationsDirectory String true validator description
+ * @parameter plexusConfigurationPropertiesFile String true validator description
  *
- * @parameter
- *  name="basedir"
- *  type="String"
- *  required="true"
- *  validator=""
- *  expression="#basedir"
- *  description=""
- * @parameter
- *  name="project"
- *  type="org.apache.maven.project.MavenProject"
- *  required="true"
- *  validator=""
- *  expression="#project"
- *  description=""
- * @parameterXXX
- *  name="runtimeBuilder"
- *  type="org.codehaus.plexus.builder.PlexusBuilder"
- *  required="true"
- *  validator=""
- *  expression="#component.org.codehaus.plexus.builder.PlexusBuilder"
- *  description=""
- * @parameter
- *  name="plexusApplicationName"
- *  type="java.lang.String"
- *  required="true"
- *  validator=""
- *  expression="#plexus.application.name"
- *  description=""
- * @parameter
- *  name="plexusConfiguration"
- *  type="java.lang.String"
- *  required="true"
- *  validator=""
- *  expression="#plexus.runtime.configuration"
- *  description=""
- * @parameter
- *  name="plexusConfigurationsDirectory"
- *  type="java.lang.String"
- *  required="true"
- *  validator=""
- *  expression="#plexus.runtime.configurations.directory"
- *  description=""
- * @parameter
- *  name="plexusConfigurationPropertiesFile"
- *  type="java.lang.String"
- *  required="true"
- *  validator=""
- *  expression="#plexus.runtime.configuration.propertiesfile"
- *  description=""
- * 
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
+ * @goal.name plexus:container
+ * @goal.plexus:container.description assemble a container
+ * @goal.plexus:container.parameter pom #basedir/project.xml
+ * @goal.plexus:container.parameter outputDirectory #maven.build.dir/plexus
+ * @goal.plexus:container.parameter mavenRepoLocal #maven.repo.local
+ * @goal.plexus:container.parameter plexusVersion #plexus.version
+ * @goal.plexus:container.parameter plexusApplication #plexus.application
+ * @goal.plexus:container.parameter plexusConfiguration #plexus.configuration
+ * @goal.plexus:container.parameter plexusComponentManifest #plexus.componentManifest
+ * @goal.plexus:container.parameter plexusConfigurationsDirectory #plexus.configurationsDirectory
+ * @goal.plexus:container.parameter plexusConfigurationPropertiesFile #plexus.configurationPropertiesFile
  */
 public class PlexusContainerGenerator
     extends AbstractPlugin
@@ -81,70 +64,48 @@ public class PlexusContainerGenerator
         //
         // ----------------------------------------------------------------------
 
-        String basedir = (String) request.getParameter( "basedir" );
+        String outputDirectory = (String) request.getParameter( "outputDirectory" );
 
-        MavenProject project = (MavenProject) request.getParameter( "project" );
+        String pom = (String) request.getParameter( "pom" );
 
-//        String mavenRepoLocal = (String) request.getParameter( "mavenRepoLocal" );
+        String mavenRepoLocal = (String) request.getParameter( "mavenRepoLocal" );
 
-//        String plexusVersion = (String) request.getParameter( "plexusVersion" );
+        String plexusVersion = (String) request.getParameter( "plexusVersion" );
 
-        String plexusApplicationName = (String) request.getParameter( "plexusApplicationName" );
+        String plexusApplication = (String) request.getParameter( "plexusApplication" );
 
         String plexusConfiguration = (String) request.getParameter( "plexusConfiguration" );
 
-//        String componentManifest = (String) request.getParameter( "plexusComponentManifest" );
+        String componentManifest = (String) request.getParameter( "plexusComponentManifest" );
 
         String configurationsDirectory = (String) request.getParameter( "plexusConfigurationsDirectory" );
 
         String configurationPropertiesFile = (String) request.getParameter( "plexusConfigurationPropertiesFile" );
 
-        PlexusContainer plexus = getPlexus( basedir );
-
-//        PlexusBuilder builder = (PlexusBuilder) request.getParameter( "runtimeBuilder" );
-        PlexusBuilder builder = (PlexusBuilder) plexus.lookup( PlexusBuilder.ROLE );
-
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
 
-        builder.setBaseDirectory( basedir + "/generated-runtime" );
+        DefaultPlexusBuilder builder = new DefaultPlexusBuilder();
 
-        builder.setProject( project );
+        builder.setBaseDirectory( outputDirectory );
 
-        builder.setMavenRepoLocal( project.getLocalRepository() );
+        builder.setProjectPom( pom );
 
-        builder.setApplicationName( plexusApplicationName );
+        builder.setMavenRepoLocal( mavenRepoLocal );
+
+        builder.setApplication( plexusApplication );
+
+        builder.setPlexusVersion( plexusVersion );
 
         builder.setPlexusConfiguration( plexusConfiguration );
+
+        builder.setComponentManifest( componentManifest );
 
         builder.setConfigurationsDirectory( configurationsDirectory );
 
         builder.setConfigurationPropertiesFile( configurationPropertiesFile );
 
         builder.build();
-    }
-
-    public static PlexusContainer getPlexus( String outputDirectory )
-        throws Exception
-    {
-        Embedder plexus = new Embedder();
-
-        URL url = PlexusContainerGenerator.class.getResource( "/plexus.xml" );
-
-        if ( url == null )
-        {
-            throw new Exception( "Could not find /plexus.xml" );
-        }
-
-        System.err.println( "url: " + url );
-
-        plexus.setConfiguration( url );
-
-        plexus.start();
-
-        plexus.getContainer().getContext().put( "plexus.home", outputDirectory + "/plexus-home" );
-
-        return plexus.getContainer();
     }
 }

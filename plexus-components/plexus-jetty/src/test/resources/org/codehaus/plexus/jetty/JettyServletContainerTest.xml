@@ -7,15 +7,9 @@
         <socket-listeners>
           <socket-listener>
             <host>localhost</host>
-            <port>40000</port>
+            <port>8080</port>
           </socket-listener>
         </socket-listeners>
-        <ajp-listeners>
-          <ajp-listener>
-            <host>localhost</host>
-            <port>40009</port>
-          </ajp-listener>
-        </ajp-listeners>
         <webapps-directory>${basedir}/target</webapps-directory>
         <stop-gracefully>true</stop-gracefully>
         <extract-wars>true</extract-wars>

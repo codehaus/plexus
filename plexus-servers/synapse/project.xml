@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 <project>
-  <pomVersion>3</pomVersion>
-  <id>plexus-synapse</id>
-  <artifactId>plexus-synapse</artifactId>
   <groupId>plexus</groupId>
+  <artifactId>plexus-synapse</artifactId>
   <name>Synapse</name>
+  <id>plexus-synapse</id>
   <package>org.codehaus.plexus.synapse</package>
   <currentVersion>0.1</currentVersion>
   <inceptionYear>1999</inceptionYear>
@@ -21,7 +20,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>0.11</version>
     </dependency>
     <dependency>
       <groupId>mockobjects</groupId>
@@ -86,22 +85,4 @@
     </unitTest>
   </build>
   
-  <reports>
-    <report>maven-changelog-plugin</report>
-    <report>maven-changes-plugin</report>
-    <report>maven-developer-activity-plugin</report>
-    <report>maven-file-activity-plugin</report>
-    <report>maven-javadoc-plugin</report>
-    <report>maven-jdepend-plugin</report>
-    <report>maven-jcoverage-plugin</report>
-    <report>maven-junit-report-plugin</report>
-    <report>maven-jxr-plugin</report>
-    <report>maven-checkstyle-plugin</report>
-    <report>maven-license-plugin</report>
-    <!--
-    <report>maven-linkcheck-plugin</report>
-    <report>maven-tasklist-plugin</report>
-    -->
-  </reports>
-
 </project>

@@ -5,5 +5,3 @@ build.properties
 *.el
 *.ipr
 *.iws
-.classpath
-.project

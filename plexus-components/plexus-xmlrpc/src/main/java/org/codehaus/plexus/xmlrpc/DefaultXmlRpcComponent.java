@@ -56,32 +56,33 @@ package org.codehaus.plexus.xmlrpc;
  * ----------------------------------------------------------------------------
  */
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Vector;
-
+import org.apache.avalon.framework.activity.Disposable;
+import org.apache.avalon.framework.activity.Initializable;
+import org.apache.avalon.framework.activity.Startable;
+import org.apache.avalon.framework.configuration.Configurable;
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.apache.avalon.framework.context.Context;
+import org.apache.avalon.framework.context.ContextException;
+import org.apache.avalon.framework.context.Contextualizable;
+import org.apache.avalon.framework.logger.AbstractLogEnabled;
+import org.apache.avalon.framework.service.ServiceException;
+import org.apache.avalon.framework.service.ServiceManager;
+import org.apache.avalon.framework.service.Serviceable;
 import org.apache.xmlrpc.WebServer;
 import org.apache.xmlrpc.XmlRpc;
 import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.secure.SecureWebServer;
 
-import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.configuration.PlexusConfigurationException;
-import org.codehaus.plexus.context.Context;
-import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 
 /**
  *
@@ -91,13 +92,13 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
  */
 public class DefaultXmlRpcComponent
     extends AbstractLogEnabled
-    implements Contextualizable, Initializable, Startable, XmlRpcComponent
+    implements Contextualizable, Configurable, Initializable, Startable, Disposable, Serviceable, XmlRpcComponent
 {
-    /** */
-    private PlexusContainer container;
+    /** The service manager for this component. */
+    private ServiceManager manager;
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Configuration
+    /**  The standalone xmlrpc server. */
+    private WebServer webserver;
 
     /** The port to listen on. */
     private int port;
@@ -109,38 +110,120 @@ public class DefaultXmlRpcComponent
     private String saxParserClass;
 
     /** Paranoid state. */
-    private boolean paranoid;
+    private boolean isStateOfParanoia;
 
     /** Handlers. */
-    private List handlers;
+    private Configuration handlerConfiguration;
 
     /** Accepted Clients. */
-    private List acceptedClients;
+    private Configuration[] acceptedClients;
 
     /** Denied Clients. */
-    private List deniedClients;
-
-    /**
-     * A set of properties to configure SSL and JSSE
-     */
-    private Properties systemProperties;
+    private Configuration[] deniedClients;
 
     /** Message Listeners. */
-    private List listeners = new ArrayList();
+    private List listeners;
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Privates
+    /** ClassLoader */
+    private ClassLoader classLoader;
 
-    /**  The standalone xmlrpc server. */
-    private WebServer webserver;
+    /** Default Constructor. */
+    public DefaultXmlRpcComponent()
+    {
+        listeners = new ArrayList();
+    }
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Lifecylce
+    // ----------------------------------------------------------------------
+    // Lifecylce Management
+    // ----------------------------------------------------------------------
 
+    /** @see Contextualizable#contextualize */
     public void contextualize( Context context )
         throws ContextException
     {
-        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+        classLoader = (ClassLoader) context.get( "common.classloader" );
+    }
+
+    public void configure( Configuration configuration )
+        throws ConfigurationException
+    {
+        // Set system properties. These are required if you're
+        // using SSL.
+        setSystemPropertiesFromConfiguration( configuration );
+
+        // Set the port for the service
+        // Need a default value here and make sure we have a valid
+        // value or throw a config exception.
+        port = configuration.getChild( "port" ).getValueAsInteger(8080);
+
+        // Determine if the server is secure or not.
+        isSecureServer = configuration.getChild( "secureServer" ).getValueAsBoolean(false);
+
+        // Set the XML driver to the correct SAX parser class
+        saxParserClass = configuration.getChild( "parser" ).getValue();
+
+        // Turn on paranoia for the webserver if requested.
+        isStateOfParanoia = configuration.getChild( "paranoid" ).getValueAsBoolean(false);
+
+        // Check if there are any handlers to register at startup
+        handlerConfiguration = configuration.getChild( "handlers" );
+
+        // Set the list of clients that can connect
+        // to the xmlrpc server. The accepted client list
+        // will only be consulted if we are paranoid.
+        acceptedClients = configuration.getChildren( "acceptedClients" );
+
+        // Set the list of clients that can connect
+        // to the xmlrpc server. The denied client list
+        // will only be consulted if we are paranoid.
+        deniedClients = configuration.getChildren( "deniedClients" );
+    }
+
+    /* (non-Javadoc)
+     * @see org.apache.avalon.framework.service.Serviceable#service(org.apache.avalon.framework.service.ServiceManager)
+     */
+    public void service( ServiceManager manager )
+        throws ServiceException
+    {
+        this.manager = manager;
+    }
+
+    /**
+     * Create System properties using the key-value pairs in a given
+     * Configuration.  This is used to set system properties and the
+     * URL https connection handler needed by JSSE to enable SSL
+     * between XMLRPC client and server.
+     *
+     * @param configuration the Configuration defining the System
+     * properties to be set
+     */
+    void setSystemPropertiesFromConfiguration( Configuration configuration )
+        throws ConfigurationException
+    {
+        Configuration[] systemProperties = configuration.getChildren( "systemProperty" );
+
+        getLogger().debug( "system properties: " + systemProperties.length );
+
+        for ( int i = 0; i < systemProperties.length; i++ )
+        {
+            Configuration systemProperty = systemProperties[i];
+
+            String key = systemProperty.getAttribute( "name" );
+            String value = systemProperty.getAttribute( "value" );
+
+            getLogger().debug( "System property: " + key + " => " + value );
+
+            System.setProperty( key, value );
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // S T A R T A B L E
+    // ------------------------------------------------------------------------
+
+    public void start()
+        throws Exception
+    {
     }
 
     /**
@@ -149,13 +232,7 @@ public class DefaultXmlRpcComponent
     public void initialize()
         throws Exception
     {
-        // Set system properties. These are required if you're using SSL.
-        setSystemPropertiesFromConfiguration();
-
-        if ( port == 0 )
-            port = 8080;
-
-        getLogger().info( "Attempting to start the XML-RPC server on port " + port + "." );
+        getLogger().info( "Attempting to start the XML-RPC server." );
 
         // Need a default value here.
         if ( isSecureServer )
@@ -174,9 +251,9 @@ public class DefaultXmlRpcComponent
 
         registerStartupHandlers();
 
-        if ( paranoid )
+        if ( isStateOfParanoia )
         {
-            webserver.setParanoid( paranoid );
+            webserver.setParanoid( isStateOfParanoia );
 
             getLogger().info( "Operating in a state of paranoia" );
 
@@ -184,59 +261,33 @@ public class DefaultXmlRpcComponent
             // are in a state of paranoia as they will just
             // be ignored so there's no point in setting them.
 
-            if ( acceptedClients == null )
-                throw new PlexusConfigurationException( "When in state of paranoia a list of 'acceptedClients' is required." );
-
-            for ( int i = 0; i < acceptedClients.size(); i++ )
+            for ( int i = 0; i < acceptedClients.length; i++ )
             {
-                String clientIP = getClient( acceptedClients, i );
+                Configuration acceptedClient = acceptedClients[i];
+                String clientIP = acceptedClient.getAttribute( "clientIP" );
 
-                webserver.acceptClient( clientIP );
+                if ( clientIP != null && !clientIP.equals( "" ) )
+                {
+                    webserver.acceptClient( clientIP );
 
-                getLogger().info( "Accepting client -> " + clientIP );
+                    getLogger().info( "Accepting client -> " + clientIP );
+                }
             }
 
-            if ( deniedClients == null )
-                throw new PlexusConfigurationException( "When in state of paranoia a list of 'deniedClients' is required." );
-
-            for ( int i = 0; i < deniedClients.size(); i++ )
+            for ( int i = 0; i < deniedClients.length; i++ )
             {
-                String clientIP = getClient( acceptedClients, i );
+                Configuration deniedClient = deniedClients[i];
+                String clientIP = deniedClient.getAttribute( "clientIP" );
 
-                webserver.denyClient( clientIP );
+                if ( clientIP != null && !clientIP.equals( "" ) )
+                {
+                    webserver.denyClient( clientIP );
 
-                getLogger().info( "Denying client -> " + clientIP );
+                    getLogger().info( "Accepting client -> " + clientIP );
+                }
             }
         }
     }
-
-    public void start()
-        throws Exception
-    {
-        webserver.start();
-    }
-
-    public void stop()
-        throws Exception
-    {
-        // Stop the XML RPC server.  org.apache.xmlrpc.WebServer blocks in a call to
-        // ServerSocket.accept() until a socket connection is made.
-        webserver.shutdown();
-
-        try
-        {
-            Socket interrupt = new Socket( InetAddress.getLocalHost(), port );
-            interrupt.close();
-        }
-        catch ( Exception ex )
-        {
-            // Remotely possible we're leaving an open listener socket around.
-            getLogger().warn( "It's possible the xmlrpc server was not shutdown: " + ex.getMessage() );
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // XmlRpcComponent Implementation
 
     /**
      * Registers any handlers that were defined as part this component's
@@ -247,47 +298,70 @@ public class DefaultXmlRpcComponent
      */
     private void registerStartupHandlers() throws Exception
     {
-        if ( handlers == null )
+        Configuration[] handlers = handlerConfiguration.getChildren( "handler" );
+
+        getLogger().info( "We have " + handlers.length + " to configure." );
+        
+        for ( int i = 0; i < handlers.length; i++ )
         {
-            getLogger().warn( "No handlers to configure." );
+            Configuration c = handlers[i];
 
-            return;
-        }
-
-        getLogger().info( "We have " + handlers.size() + " handlers to configure." );
-
-        for ( int i = 0; i < handlers.size(); i++ )
-        {
-            Object obj = handlers.get( i );
-
-            if ( !(obj instanceof Handler) )
+            if ( c.getName().equals( "handler" ) )
             {
-                getLogger().warn( "Unknown object type in the handler array: " + obj.getClass().getName() );
+                String handlerName = c.getChild( "name" ).getValue();
+                String handlerClass = c.getChild( "class" ).getValue( null );
+                String handlerRole = c.getChild( "role" ).getValue( null );
 
-                continue;
+                if ( handlerClass != null && handlerRole == null )
+                {
+                    registerClassHandler( handlerName, handlerClass );
+                }
+                else if ( handlerRole != null && handlerClass == null )
+                {
+                    registerComponentHandler( handlerName, handlerRole );
+                }
+                else
+                {
+                    throw new ConfigurationException(
+                        "Handler must define either a 'class' or 'role'" );
+                }
             }
-
-            Handler handler = (Handler) obj;
-
-            String name = handler.getName();
-
-            String role = handler.getRole();
-
-            if ( name == null )
-                throw new PlexusConfigurationException( "Missing required configuration element: 'name' in 'handler'." );
-
-            if ( name.trim().length() == 0 )
-                throw new PlexusConfigurationException( "The 'name' element of a 'handler' cant be empty." );
-
-            if ( role == null )
-                throw new PlexusConfigurationException( "Missing required configuration element: 'role' in 'handler'." );
-
-            if ( role.trim().length() == 0 )
-                throw new PlexusConfigurationException( "The 'role element of a 'handler' cant be empty." );
-
-            registerComponentHandler( name, role );
         }
     }
+
+    public void stop()
+        throws Exception
+    {
+    }
+
+    // ------------------------------------------------------------------------
+    // D I S P O S A B L E
+    // ------------------------------------------------------------------------
+
+    /**
+     * Shuts down this service, stopping running threads.
+     */
+    public void dispose()
+    {
+        // Stop the XML RPC server.  org.apache.xmlrpc.WebServer blocks in a call to
+        // ServerSocket.accept() until a socket connection is made.
+        webserver.shutdown();
+        try
+        {
+            Socket interrupt = new Socket( InetAddress.getLocalHost(), port );
+            interrupt.close();
+        }
+        catch ( Exception notShutdown )
+        {
+            // Remotely possible we're leaving an open listener socket around.
+            getLogger().warn( "It's possible the xmlrpc server was not shutdown: " +
+                              notShutdown.getMessage() );
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // I M P L E M E N A T I O N
+    // ------------------------------------------------------------------------
 
     /**
      * Register an Object as a default handler for the service.
@@ -310,10 +384,47 @@ public class DefaultXmlRpcComponent
      * @throws XmlRpcException If an XmlRpcException occurs.
      * @throws IOException If an IOException occurs.
      */
-    public void registerHandler( String handlerName, Object handler )
+    public void registerHandler( String handlerName,
+                                 Object handler )
         throws XmlRpcException, IOException
     {
         webserver.addHandler( handlerName, handler );
+    }
+
+    /**
+     * A helper method that tries to initialize a handler and register it.
+     * The purpose is to check for all the exceptions that may occur in
+     * dynamic class loading and throw an Exception on
+     * error.
+     *
+     * @param handlerName The name the handler is registered under.
+     * @param handlerClass The name of the class to use as a handler.
+     * @exception Exception Couldn't instantiate handler.
+     */
+    private void registerClassHandler( String handlerName, String handlerClass )
+        throws Exception
+    {
+        try
+        {
+            Object handler = classLoader.loadClass( handlerClass ).newInstance();
+            webserver.addHandler( handlerName, handler );
+            getLogger().info( "registered: " + handlerName + " with class: " + handlerClass );
+
+        }
+            // those two errors must be passed to the VM
+        catch ( ThreadDeath t )
+        {
+            throw t;
+        }
+        catch ( OutOfMemoryError t )
+        {
+            throw t;
+        }
+
+        catch ( Throwable t )
+        {
+            throw new Exception( "Failed to instantiate " + handlerClass, t );
+        }
     }
 
     /**
@@ -327,8 +438,7 @@ public class DefaultXmlRpcComponent
     private void registerComponentHandler( String handlerName, String handlerRole )
         throws Exception
     {
-        registerHandler( handlerName, container.lookup( handlerRole ) );
-
+        registerHandler( handlerName, manager.lookup( handlerRole ) );
         getLogger().info( "registered: " + handlerName + " with component: " + handlerRole );
     }
 
@@ -355,13 +465,14 @@ public class DefaultXmlRpcComponent
      * @exception XmlRpcException
      * @exception IOException
      */
-    public Object executeRpc( URL url, String methodName, Vector params )
+    public Object executeRpc( URL url,
+                              String methodName,
+                              Vector params )
         throws Exception
     {
         try
         {
             XmlRpcClient client = new XmlRpcClient( url );
-
             return client.execute( methodName, params );
         }
         catch ( Exception e )
@@ -426,49 +537,7 @@ public class DefaultXmlRpcComponent
         for ( Iterator i = listeners.iterator(); i.hasNext(); )
         {
             XmlRpcMessageListener listener = (XmlRpcMessageListener) i.next();
-
             listener.xmlRpcMessageReceived( message );
         }
-    }
-
-    // ------------------------------------------------------------------------
-    // P R I V A T E
-    // ------------------------------------------------------------------------
-
-    /**
-     * Create System properties using the key-value pairs in a given
-     * Configuration.  This is used to set system properties and the
-     * URL https connection handler needed by JSSE to enable SSL
-     * between XMLRPC client and server.
-     *
-     */
-    private void setSystemPropertiesFromConfiguration()
-    {
-        if ( systemProperties == null )
-            return;
-
-        for ( Enumeration e = systemProperties.propertyNames(); e.hasMoreElements(); )
-        {
-            String key = e.nextElement().toString();
-
-            String value = systemProperties.getProperty( key );
-
-            System.setProperty( key, value );
-
-            getLogger().debug( "Setting property: " + key + " => '" + value + "'." );
-        }
-    }
-
-    private String getClient( List list, int index )
-        throws PlexusConfigurationException
-    {
-        Object obj = list.get( index );
-
-        if ( !(obj instanceof Client) )
-            throw new PlexusConfigurationException( "The client address element must be a '" + Client.class.getName() + "'." );
-
-        Client client = (Client) obj;
-
-        return client.getHostname();
     }
 }
