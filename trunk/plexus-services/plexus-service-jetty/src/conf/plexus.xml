@@ -1,7 +1,8 @@
 <plexus>
   <load-on-start>
     <component>
-      <role>org.codehaus.plexus.service.servletcontainer.ServletContainerService</role>
+      <role>org.codehaus.plexus.application.service.PlexusService</role>
+      <role-hint>servlet-container</role-hint>
     </component>
   </load-on-start>
 </plexus>

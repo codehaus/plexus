@@ -31,19 +31,22 @@ import org.codehaus.plexus.application.deploy.ApplicationDeployer;
 import org.codehaus.plexus.application.event.ApplicationListener;
 import org.codehaus.plexus.application.event.DeployEvent;
 import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.application.service.PlexusService;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.servletcontainer.ServletContainer;
 import org.codehaus.plexus.servletcontainer.ServletContainerException;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class DefaultServletContainerService
+public class ServletContainerPlexusService
     extends AbstractLogEnabled
-    implements Initializable, Startable
+    implements PlexusService, Initializable, Startable
 {
     /**
      * @requirement
@@ -54,19 +57,6 @@ public class DefaultServletContainerService
      * @requirement
      */
     private ServletContainer servletContainer;
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    private static class WarFileFilter
-        implements FileFilter
-    {
-        public boolean accept( File file )
-        {
-            return file.isFile() && file.getName().endsWith( ".war" );
-        }
-    }
 
     // ----------------------------------------------------------------------
     //
@@ -116,6 +106,52 @@ public class DefaultServletContainerService
     }
 
     // ----------------------------------------------------------------------
+    // PlexusService Implementation
+    // ----------------------------------------------------------------------
+
+    public void onApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
+                                    PlexusConfiguration serviceConfiguration )
+        throws Exception
+    {
+//        getLogger().info( "Looking for WARs to deploy in application " + applicationRuntimeProfile.getName() + "." );
+
+        String webappsDir = serviceConfiguration.getChild( "webapps" ).getValue();
+
+        if ( StringUtils.isEmpty( webappsDir ) )
+        {
+            return;
+        }
+
+        File webapps = new File( webappsDir );
+
+        if ( !webapps.isDirectory() )
+        {
+            getLogger().warn( "The specified webapps directory isn't a directory: '" + webapps + "'." );
+
+            return;
+        }
+
+        getLogger().info( "Looking for jars under '" + webapps.getAbsolutePath() + "'." );
+
+        File[] wars = webapps.listFiles( new FileFilter() {
+            public boolean accept( File file )
+            {
+                return file.isFile() && file.getName().endsWith( ".war" ) ||
+                       file.isDirectory();
+            }
+        });
+
+        for ( int i = 0; i < wars.length; i++ )
+        {
+            File war = wars[ i ];
+
+            getLogger().info( "Found WAR " + war.getAbsolutePath() + ", deploying." );
+
+            deployWebApp( war, applicationRuntimeProfile );
+        }
+    }
+
+    // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
@@ -143,21 +179,21 @@ public class DefaultServletContainerService
 
     private void applicationDeployed( ApplicationRuntimeProfile runtimeProfile )
     {
-        getLogger().info( "Looking for WARs to deploy in application " + runtimeProfile.getName() + "." );
-
-        getLogger().info( runtimeProfile.getLib().getAbsolutePath() );
-
-        File lib = runtimeProfile.getLib();
-
-        File[] wars = lib.listFiles( new WarFileFilter() );
-
-        for ( int i = 0; i < wars.length; i++ )
-        {
-            File war = wars[ i ];
-
-            getLogger().info( "Found WAR " + war.getAbsolutePath() + ", deploying." );
-
-            deployWebApp( war, runtimeProfile );
-        }
+//        getLogger().info( "Looking for WARs to deploy in application " + runtimeProfile.getName() + "." );
+//
+//        getLogger().info( runtimeProfile.getLib().getAbsolutePath() );
+//
+//        File lib = runtimeProfile.getLib();
+//
+//        File[] wars = lib.listFiles( new WarFileFilter() );
+//
+//        for ( int i = 0; i < wars.length; i++ )
+//        {
+//            File war = wars[ i ];
+//
+//            getLogger().info( "Found WAR " + war.getAbsolutePath() + ", deploying." );
+//
+//            deployWebApp( war, runtimeProfile );
+//        }
     }
 }
