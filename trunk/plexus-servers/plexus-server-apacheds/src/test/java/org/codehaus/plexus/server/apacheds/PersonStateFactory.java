@@ -35,8 +35,6 @@ import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.SchemaViolationException;
 import javax.naming.spi.DirStateFactory;
 
-import org.codehaus.plexus.server.apacheds.Person;
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -44,7 +42,7 @@ import org.codehaus.plexus.server.apacheds.Person;
 public class PersonStateFactory
     implements DirStateFactory
 {
-    public Result getStateToBind( Object obj, Name name, Context nameCtx, Hashtable environment, Attributes inAttrs )
+    public DirStateFactory.Result getStateToBind( Object obj, Name name, Context nameCtx, Hashtable environment, Attributes inAttrs )
         throws NamingException
     {
         // Only interested in Person objects
