@@ -40,6 +40,12 @@ public class JettyServletContainer
 
     private List ajpListeners;
 
+    private List proxyListeners;
+
+    private String DEFAULT_WEBAPP_CONFIGURATION = "org/codehaus/plexus/jetty/webdefault.xml";
+
+    private String webappConfiguration;
+
     public void setWebappsDirectory( String webappsDirectory )
     {
         this.webappsDirectory = webappsDirectory;
@@ -94,6 +100,18 @@ public class JettyServletContainer
         server = new JettyServer();
 
         // ----------------------------------------------------------------------
+        // Setting of the default webapp configuration. By default we will use
+        // our own descriptor which doesn't require the use of JSP.
+        // ----------------------------------------------------------------------
+
+        if ( webappConfiguration == null )
+        {
+            webappConfiguration = DEFAULT_WEBAPP_CONFIGURATION;
+        }
+
+        server.setWebappConfiguration( webappConfiguration );
+
+        // ----------------------------------------------------------------------
         // Socket listeners
         // ----------------------------------------------------------------------
 
@@ -118,6 +136,20 @@ public class JettyServletContainer
                 AjpListener listener = (AjpListener) i.next();
 
                 configureAjpListener( server, listener );
+            }
+        }
+
+        // ----------------------------------------------------------------------
+        // Proxy listeners
+        // ----------------------------------------------------------------------
+
+        if ( proxyListeners != null )
+        {
+            for ( Iterator i = proxyListeners.iterator(); i.hasNext(); )
+            {
+                ProxyListener listener = (ProxyListener) i.next();
+
+                configureProxyListener( server, listener );
             }
         }
 
@@ -169,6 +201,29 @@ public class JettyServletContainer
         }
 
         list.setPort( listener.getPort() );
+
+        server.addListener( list );
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    private void configureProxyListener( JettyServer server, ProxyListener listener )
+        throws UnknownHostException
+    {
+        org.codehaus.plexus.jetty.http.ProxyListener list = new org.codehaus.plexus.jetty.http.ProxyListener();
+
+        String host = listener.getHost();
+
+        if ( !host.equals( "*" ) )
+        {
+            list.setHost( host );
+        }
+
+        list.setPort( listener.getPort() );
+
+        list.setForcedHost( listener.getHost() + ":" + listener.getProxyPort() );
 
         server.addListener( list );
     }
