@@ -16,6 +16,14 @@ import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 public class AvalonComponentRepository
     extends DefaultComponentRepository
 {
+	/**
+	 * @see org.codehaus.plexus.component.repository.ComponentRepository#initialize()
+	 */
+	public void initialize() throws Exception
+	{
+		super.initialize();
+	}
+    
     /**
      * @see org.codehaus.plexus.component.repository.ComponentRepository#addComponentDescriptor(org.codehaus.plexus.component.repository.ComponentDescriptor)
      */
