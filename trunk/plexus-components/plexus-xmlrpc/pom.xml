@@ -5,8 +5,14 @@
     <version>1.0</version>
   </parent>
   <groupId>plexus</groupId>
-  <artifactId>plexus-</artifactId>
+  <artifactId>plexus-xmlrpc</artifactId>
   <version>1.0</version>
+  <name>Plexus XML-RPC Component</name>
   <dependencies>
+    <dependency>
+      <groupId>xmlrpc</groupId>
+      <artifactId>xmlrpc</artifactId>
+      <version>1.2</version>
+    </dependency>
   </dependencies>
 </project>
