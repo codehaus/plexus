@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.simple;
 
 import org.apache.avalon.framework.activity.Initializable;
-import org.codehaus.plexus.security.AbstractSecurityService;
+import org.codehaus.plexus.security.AbstractSessionManager;
 import org.codehaus.plexus.security.Agent;
 
 /**
@@ -11,20 +11,20 @@ import org.codehaus.plexus.security.Agent;
   * @author <a href="mailto:bert@tuaworks.co.nz">Bert van Brakel</a>
   * @revision $Revision$
   */
-public class SimpleSecurityService extends AbstractSecurityService implements Initializable
+public class SimpleSessionManager extends AbstractSessionManager implements Initializable
 {
 	private SimpleACLService builder;
 	
     /**
      * 
      */
-    public SimpleSecurityService()
+    public SimpleSessionManager()
     {
         super();
     }
 
 	/**
-	 * @see org.codehaus.plexus.security.AbstractSecurityService#createAgent(java.lang.String)
+	 * @see org.codehaus.plexus.security.AbstractSessionManager#createAgent(java.lang.String)
 	 */
 	protected Agent createAgent(String userId) 
 	{

@@ -2,13 +2,13 @@ package org.codehaus.plexus.security.request.proxy;
 
 import junit.framework.TestCase;
 
-import org.codehaus.plexus.security.dummy.DummyServiceA;
-import org.codehaus.plexus.security.dummy.DummyServiceB;
-import org.codehaus.plexus.security.dummy.DummyServiceC;
-import org.codehaus.plexus.security.dummy.ServiceA;
-import org.codehaus.plexus.security.dummy.ServiceB;
-import org.codehaus.plexus.security.dummy.ServiceC;
 import org.codehaus.plexus.security.mock.MockServiceManager;
+import org.codehaus.plexus.security.remote.DefaultServiceA;
+import org.codehaus.plexus.security.remote.DefaultServiceB;
+import org.codehaus.plexus.security.remote.DefaultServiceC;
+import org.codehaus.plexus.security.remote.ServiceA;
+import org.codehaus.plexus.security.remote.ServiceB;
+import org.codehaus.plexus.security.remote.ServiceC;
 
 /**
   * Test the ProxyServiceManager. Test to ensure proxies are generated
@@ -42,9 +42,9 @@ public class ProxyServiceManagerDelegateTest extends TestCase
     {
 		MockServiceManager mockService = new MockServiceManager();
 
-		mockService.mockAddComponents(ServiceA.ROLE, new DummyServiceA());
-		mockService.mockAddComponents(ServiceB.ROLE, new DummyServiceB());
-		mockService.mockAddComponents(ServiceC.ROLE, new DummyServiceC());
+		mockService.mockAddComponents(ServiceA.ROLE, new DefaultServiceA());
+		mockService.mockAddComponents(ServiceB.ROLE, new DefaultServiceB());
+		mockService.mockAddComponents(ServiceC.ROLE, new DefaultServiceC());
     	
     	
     	

@@ -1,6 +1,6 @@
 package org.codehaus.plexus.security;
 
-import org.apache.plexus.PlexusRuntimeException;
+import org.codehaus.plexus.PlexusRuntimeException;
 import org.codehaus.plexus.util.ExceptionIDGenerator;
 
 /**

@@ -6,7 +6,7 @@ import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.service.ServiceException;
 import org.apache.avalon.framework.service.ServiceManager;
 import org.apache.avalon.framework.service.Serviceable;
-import org.apache.plexus.PlexusException;
+import org.codehaus.plexus.PlexusException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationService;
@@ -17,6 +17,7 @@ import org.codehaus.plexus.security.request.RequestEvent;
 import org.codehaus.plexus.security.request.RequestListener;
 import org.codehaus.plexus.security.request.RequestListenerNotifier;
 import org.codehaus.plexus.security.session.SessionIdGenerator;
+import org.codehaus.plexus.security.session.SessionLifecycleEvent;
 import org.codehaus.plexus.security.session.SessionLifecycleListener;
 import org.codehaus.plexus.security.session.SessionListenerNotifier;
 import org.codehaus.plexus.util.ThreadSafeMap;
@@ -34,27 +35,27 @@ import org.codehaus.plexus.util.ThreadSafeMap;
   * @author <a href="mailto:bertvanbrakel@sourceforge.net">Bert van Brakel</a>
   * @revision $Revision$
   */
-public abstract class AbstractSecurityService extends AbstractLogEnabled implements Serviceable,SecurityService,Disposable
+public abstract class AbstractSessionManager extends AbstractLogEnabled implements Serviceable,SessionManager,Disposable
 {
     private ServiceManager service;
 
     /** System sessions by thread */
-    private Map sessionsByThread = new ThreadSafeMap();
+    private Map sessionsByThread;
 
     /** System sessions keyed by agent id */
-    private Map sessionsByAgentId = new ThreadSafeMap();
+    private Map sessionsByAgentId;
 
     /** System sessions keyed by session id */
-    private Map sessionsBySessiontId = new ThreadSafeMap();
+    private Map sessionsBySessiontId;
 
     /** Holds all the agents in the system by id */
-    private Map agentsById = new ThreadSafeMap();
+    private Map agentsById;
 
     /** Used to generate uique session ids */
-    private SessionIdGenerator sessIdGenerator = new SessionIdGenerator();
+    private SessionIdGenerator sessIdGenerator;
 
     /** ACL used if none bound to thread. By default everything is allowed */
-    private ACL defaultACL = new DefaultACL(true);
+    private ACL defaultACL;
 
     /** RequestListeners registered to be notified of request demarcation */
     private RequestListenerNotifier requestListeners;
@@ -71,9 +72,22 @@ public abstract class AbstractSecurityService extends AbstractLogEnabled impleme
     /**
      * 
      */
-    public AbstractSecurityService()
+    public AbstractSessionManager()
     {
         super();
+        init();
+    }
+    
+    private void init()
+    {
+		sessIdGenerator = new SessionIdGenerator();
+		sessionsBySessiontId = new ThreadSafeMap();
+		sessionsByAgentId = new ThreadSafeMap();
+		sessionsByThread = new ThreadSafeMap();
+		agentsById = new ThreadSafeMap();
+		sessionListeners=new SessionListenerNotifier();
+		requestListeners = new RequestListenerNotifier();
+		defaultACL= new DefaultACL(true);
     }
 
     /**
@@ -149,14 +163,22 @@ public abstract class AbstractSecurityService extends AbstractLogEnabled impleme
      * we need to notify anything??
      *
      * @param sessionId
+     * @throws IllegalStateException if there is already a request active
      */
-    public void beginRequest(String sessionId)
+    public void beginRequest(String sessionId) throws IllegalStateException
     {
         if (sessionId == null)
         {
             throw new RuntimeAuthenticationException("No sessions with a null id exist ");
         }
-
+		
+		//ensure the current thread isn't already part of a request
+		Thread ct = Thread.currentThread();
+		if( sessionsByThread.containsKey(ct))
+		{
+			throw new IllegalStateException("The current thread is already associated with a request");
+		}
+		
         DefaultPlexusSession sess = (DefaultPlexusSession) sessionsBySessiontId.get(sessionId);
 
         if (sess == null)
@@ -165,7 +187,10 @@ public abstract class AbstractSecurityService extends AbstractLogEnabled impleme
                 "No Session with the given id '" + sessionId + "' exists");
         }
 
-        Thread ct = Thread.currentThread();
+        if( sess.isValid() == false )
+        {
+        	throw new IllegalStateException("Cannot begin a request using an invalid session");
+        }
         sessionsByThread.put(ct, sess);
         requestListeners.sendRequestBegun(new RequestEvent(sess));
     }
@@ -195,8 +220,6 @@ public abstract class AbstractSecurityService extends AbstractLogEnabled impleme
         }
     }
 
-
-
     protected PlexusSession lookupSessionByAgentId(String agentId)
     {
         return (DefaultPlexusSession) sessionsByAgentId.get(agentId);
@@ -217,8 +240,8 @@ public abstract class AbstractSecurityService extends AbstractLogEnabled impleme
             new DefaultPlexusSession(
                 sessIdGenerator.generateUniqueId(),
                 agent,
-                defaultSessionTimeout);
-
+                defaultSessionTimeout,
+                this);
         return sess;
     }
     /**
@@ -249,6 +272,21 @@ public abstract class AbstractSecurityService extends AbstractLogEnabled impleme
         sessionListeners.unRegisterListener(listener);
     }
 
+	/**
+	 * Return the session with the given id, or null if no session with
+	 * this id exists or the id is null
+	 * 
+	 * @param id the session id
+	 * @return the session
+	 */
+	protected PlexusSession getSession(String id)
+	{
+		if( id == null)
+		{
+			return null;
+		}
+		return (PlexusSession)sessionsBySessiontId.get( id );		
+	}
     /**
      * @return
      */
@@ -278,7 +316,7 @@ public abstract class AbstractSecurityService extends AbstractLogEnabled impleme
     }
 
     /**
-     * @see org.codehaus.plexus.security.SecurityService#getAgent()
+     * @see org.codehaus.plexus.security.SessionManager#getAgent()
      */
     public Agent getAgent()
     {
@@ -302,6 +340,41 @@ public abstract class AbstractSecurityService extends AbstractLogEnabled impleme
         {
         	service.release(authentication);
         } 
+    }
+
+    /**
+     * @see org.codehaus.plexus.security.SessionManager#invalidateSession(java.lang.String)
+     */
+    public void inValidateSession(String id)
+    {
+        PlexusSession session = getSession( id);
+        if( session == null )
+        {
+        	//throw an error?
+			return;
+        }
+        //make sure we don't call this more than once per session...
+        synchronized( session )
+        {
+			if( session.isValid() == false)
+			{        	
+				throw new IllegalStateException("the session '" + id + "' is invalid'");
+			}					
+        	sessionsBySessiontId.remove(id);
+        	sessionsByAgentId.remove(session.getAgent().getId());
+        	        	
+			//notify listeners..
+			SessionLifecycleEvent event = new SessionLifecycleEvent( session.getDelegate() );
+			sessionListeners.sessionDestroyed(event);		
+        }
+    }
+
+    /**
+     * @see org.codehaus.plexus.security.SessionManager#isThreadWithinRequestScope()
+     */
+    public boolean isThreadWithinRequestScope()
+    {
+        return sessionsByThread.containsKey(Thread.currentThread());
     }
 
 }

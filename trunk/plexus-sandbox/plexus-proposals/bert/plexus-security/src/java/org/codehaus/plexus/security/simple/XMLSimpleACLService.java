@@ -81,9 +81,11 @@ public class XMLSimpleACLService extends AbstractLogEnabled implements Configura
         while (iter.hasNext())
         {
             RoleUserEntry entry = (RoleUserEntry) iter.next();
-            if (entry.containsUser(userId));
-            Role role = (Role) roleMap.get(entry.getRoleName());
-            roles.add(role);
+            if (entry.containsUser(userId))            
+            {
+            	Role role = (Role) roleMap.get(entry.getRoleName());
+				roles.add(role);
+            }            
         }
         //construct the acl using the roles the user belongs to
         return new DefaultSimpleACL(roles, this);

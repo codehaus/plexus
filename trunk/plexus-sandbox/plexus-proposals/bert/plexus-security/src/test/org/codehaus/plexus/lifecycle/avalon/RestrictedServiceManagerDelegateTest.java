@@ -7,13 +7,13 @@ import junit.framework.TestCase;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.service.ServiceException;
 import org.codehaus.plexus.configuration.XmlPullConfigurationBuilder;
-import org.codehaus.plexus.security.dummy.DummyServiceA;
-import org.codehaus.plexus.security.dummy.DummyServiceB;
-import org.codehaus.plexus.security.dummy.DummyServiceC;
-import org.codehaus.plexus.security.dummy.ServiceA;
-import org.codehaus.plexus.security.dummy.ServiceB;
-import org.codehaus.plexus.security.dummy.ServiceC;
 import org.codehaus.plexus.security.mock.MockServiceManager;
+import org.codehaus.plexus.security.remote.DefaultServiceA;
+import org.codehaus.plexus.security.remote.DefaultServiceB;
+import org.codehaus.plexus.security.remote.DefaultServiceC;
+import org.codehaus.plexus.security.remote.ServiceA;
+import org.codehaus.plexus.security.remote.ServiceB;
+import org.codehaus.plexus.security.remote.ServiceC;
 
 /**
   * 
@@ -45,9 +45,9 @@ public class RestrictedServiceManagerDelegateTest extends TestCase
     {
         MockServiceManager mockService = new MockServiceManager();
 
-        mockService.mockAddComponents(ServiceA.ROLE, new DummyServiceA());
-        mockService.mockAddComponents(ServiceB.ROLE, new DummyServiceB());
-        mockService.mockAddComponents(ServiceC.ROLE, new DummyServiceC());
+        mockService.mockAddComponents(ServiceA.ROLE, new DefaultServiceA());
+        mockService.mockAddComponents(ServiceB.ROLE, new DefaultServiceB());
+        mockService.mockAddComponents(ServiceC.ROLE, new DefaultServiceC());
 
         RestrictedServiceManagerDelegate resService = new RestrictedServiceManagerDelegate();
         

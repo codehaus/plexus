@@ -14,14 +14,45 @@ public interface Application
 {
 	public static final String ROLE = Application.class.getName();
 	
+	/**
+	 * Return the name of this application
+	 * @return
+	 */
 	public String getName();
 	
-	public String getVersion();
+	/**
+	 * Return the major version of this application
+	 * @return
+	 */
+	public String getMajorVersion();
 	
+	/**
+	 * Return the minor version of this application
+	 * @return
+	 */
+	public String getMinorVersion();
+	
+	/**
+	 * Return the build number of this application
+	 * 
+	 * @return
+	 */
 	public String getBuild();
 	
+	/**
+	 * Return the name of the entity who this application is registered with
+	 * @return
+	 */
 	public String getRegisteredTo();
 	
+	/**
+	 * Authenticate an agent with the given authentication token
+	 * 
+	 * @param token the authentication token
+	 * @return the ApplicationSession for the agent identified by the token
+	 * @throws AuthenticationException if the supplied token is not supported, the token is invalid,
+	 * or a backend problem occured
+	 */
 	public ApplicationSession authenticate(Object token) throws AuthenticationException;
 		
 }

@@ -1,22 +1,22 @@
-package org.codehaus.plexus.security;
+package org.codehaus.plexus;
 
-import org.codehaus.plexus.PlexusException;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 
 /**
-  * Base class for all checked security related exceptions
+  * Base class of runtime exceptions thrown within plexus
   * 
   * <p>Created on 19/08/2003</p>
   *
   * @author <a href="mailto:bert@tuaworks.co.nz">Bert van Brakel</a>
   * @revision $Revision$
   */
-public class PlexusSecurityException extends PlexusException
+public class PlexusRuntimeException extends NestableRuntimeException
 {
 
     /**
      * 
      */
-    public PlexusSecurityException()
+    public PlexusRuntimeException()
     {
         super();
     }
@@ -24,7 +24,7 @@ public class PlexusSecurityException extends PlexusException
     /**
      * @param message
      */
-    public PlexusSecurityException(String message)
+    public PlexusRuntimeException(String message)
     {
         super(message);
     }
@@ -32,7 +32,7 @@ public class PlexusSecurityException extends PlexusException
     /**
      * @param cause
      */
-    public PlexusSecurityException(Throwable cause)
+    public PlexusRuntimeException(Throwable cause)
     {
         super(cause);
     }
@@ -41,7 +41,7 @@ public class PlexusSecurityException extends PlexusException
      * @param message
      * @param cause
      */
-    public PlexusSecurityException(String message, Throwable cause)
+    public PlexusRuntimeException(String message, Throwable cause)
     {
         super(message, cause);
     }

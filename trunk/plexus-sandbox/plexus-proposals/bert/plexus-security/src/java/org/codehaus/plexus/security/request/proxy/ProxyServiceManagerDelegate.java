@@ -19,23 +19,19 @@ import org.codehaus.plexus.util.ThreadSafeMap;
   * @author <a href="mailto:bertvanbrakel@sourceforge.net">Bert van Brakel</a>
   * @revision $Revision$
   */
-public class ProxyServiceManagerDelegate implements Serviceable// extends RestrictedServiceManager
+public class ProxyServiceManagerDelegate implements Serviceable // extends RestrictedServiceManager
 {
-	
-	/** The factory to use to generate proxies */
-	private ProxyFactory factory = new ProxyFactory();
-	
-	/** **/
-	private Map proxyByTarget = new ThreadSafeMap();
-	private Map targetByProxy = new ThreadSafeMap();
 
-	
-	/**
-	 * The service manager to lookup for the real components
-	 * 
-	 */
-	private ServiceManager service;
-	
+    /** **/
+    private Map proxyByTarget = new ThreadSafeMap();
+    private Map targetByProxy = new ThreadSafeMap();
+
+    /**
+     * The service manager to lookup for the real components
+     * 
+     */
+    private ServiceManager service;
+
     /**
      * 
      */
@@ -44,27 +40,40 @@ public class ProxyServiceManagerDelegate implements Serviceable// extends Restri
         super();
     }
 
-	/**
-	 *  Return a proxied component for the given role, using the given interceptor and session.
-	 * 
-	 * @param role the role of the component to lookup
-	 * @param requestInterceptor the interceptor to use to intercept method calls
-	 * @param session the session to associate with method calls
-	 * @return a proxied component implemrnting the given role
-	 * @throws ServiceException if the component with the given role could not be found
-	 */
-    public Object lookup(String role,RequestInterceptor requestInterceptor,PlexusSession session) throws ServiceException
+    /**
+     *  Return a proxied component for the given role, using the given interceptor and session.
+     * 
+     * @param role the role of the component to lookup
+     * @param requestInterceptor the interceptor to use to intercept method calls
+     * @param session the session to associate with method calls
+     * @return a proxied component implemrnting the given role
+     * @throws ServiceException if the component with the given role could not be found
+     */
+    public Object lookup(String role, RequestInterceptor requestInterceptor, PlexusSession session)
+        throws ServiceException
     {
-
-        Object target = service.lookup(role);
-        Object proxy = proxyByTarget.get( target );
-        if( proxy == null )
+		Object proxy = null;
+        requestInterceptor.beginRequest(session.getId());
+        try
         {
-        	proxy = factory.createProxyComponent(obtainClass(role), target, requestInterceptor , session);
-        	proxyByTarget.put( target, proxy );
-        	targetByProxy.put(proxy, target);
-    	} 
-        
+            Object target = service.lookup(role);
+            proxy = proxyByTarget.get(target);
+            if (proxy == null)
+            {
+                proxy =
+				ProxyFactory.createProxyComponent(
+                        obtainClass(role),
+                        target,
+                        requestInterceptor,
+                        session);
+                proxyByTarget.put(target, proxy);
+                targetByProxy.put(proxy, target);
+            }
+        }
+        finally
+        {
+            requestInterceptor.endRequest();
+        }
         return proxy;
     }
 
@@ -73,20 +82,20 @@ public class ProxyServiceManagerDelegate implements Serviceable// extends Restri
      */
     public void release(Object role)
     {
-    	if( role == null )
-    	{
-    		return;
-    	}
-    	//obtain the original component and return it
-    	//back to the service manager
-        Object target = targetByProxy.remove(role);
-        if( target != null )
+        if (role == null)
         {
-        	proxyByTarget.remove( role );        	
-        	service.release(target);
+            return;
+        }
+        //obtain the original component and return it
+        //back to the service manager
+        Object target = targetByProxy.remove(role);
+        if (target != null)
+        {
+            proxyByTarget.remove(role);
+            service.release(target);
         }
     }
-    
+
     /**
      * Return the interface to implement for the given role. For now just assume the role
      * is a name of an interface
@@ -96,16 +105,16 @@ public class ProxyServiceManagerDelegate implements Serviceable// extends Restri
      */
     private Class obtainClass(String role) throws ServiceException
     {
-		Class clazz=null;
-    	try
+        Class clazz = null;
+        try
         {
-           clazz = getClass().getClassLoader().loadClass(role);
+            clazz = getClass().getClassLoader().loadClass(role);
         }
         catch (ClassNotFoundException e)
         {
             throw new ServiceException(role, "Could not generate proxy class for role");
         }
-    	return clazz;
+        return clazz;
     }
 
     /**

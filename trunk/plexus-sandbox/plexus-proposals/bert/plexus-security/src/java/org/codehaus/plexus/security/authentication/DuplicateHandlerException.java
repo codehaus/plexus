@@ -1,6 +1,6 @@
 package org.codehaus.plexus.security.authentication;
 
-import org.apache.plexus.PlexusException;
+import org.codehaus.plexus.PlexusException;
 
 /**
   * 

@@ -1,5 +1,6 @@
 package org.codehaus.plexus.security.remote;
 
+import java.util.Collection;
 import java.util.Set;
 
 import org.apache.avalon.framework.service.ServiceException;
@@ -7,7 +8,6 @@ import org.codehaus.plexus.security.Agent;
 import org.codehaus.plexus.security.PlexusSession;
 import org.codehaus.plexus.security.request.RequestInterceptor;
 import org.codehaus.plexus.security.request.proxy.ProxyServiceManagerDelegate;
-import org.codehaus.plexus.security.session.InvalidSessionException;
 import org.codehaus.plexus.util.ServiceManagerUtils;
 
 /**
@@ -16,35 +16,44 @@ import org.codehaus.plexus.util.ServiceManagerUtils;
   * @author <a href="mailto:bert@tuaworks.co.nz">Bert van Brakel</a>
   * @revision $Revision$
   */
-public class DefaultApplicationSession implements ApplicationSession
+public class RestrictedApplicationSession implements ApplicationSession
 {
-	/** The real session we deleagte session related stufff to. Don't want to expose 
-	 * this direct to the client */
-	private PlexusSession session;
-	
-	/** The proxy service manager we obtain client side components from  */
-	private ProxyServiceManagerDelegate service;
+    /** The real session we deleagte session related stufff to. Don't want to expose 
+     * this direct to the client */
+    private PlexusSession session;
 
-	private RequestInterceptor interceptor;
-	
+    /** The proxy service manager we obtain client side components from  */
+    private ProxyServiceManagerDelegate service;
+
+    private RequestInterceptor interceptor;
+
+    /** List of components which access is granted to. The names are the
+     * names of the roles used to lookup components. Since this list is not
+     * expected to be modified once generated then there will only be
+     * concurrent reads, so a  write threadsafe list is not required. */
+    private Collection allowedComponents;
+
     /**
      * 
      */
-    public DefaultApplicationSession(PlexusSession session, ProxyServiceManagerDelegate service,RequestInterceptor interceptor)
+    public RestrictedApplicationSession(
+        PlexusSession session,
+        ProxyServiceManagerDelegate service,
+        RequestInterceptor interceptor,
+        Collection allowedComponents)
     {
         super();
         this.service = service;
         this.session = session;
         this.interceptor = interceptor;
+        this.allowedComponents = allowedComponents;
     }
-
 
     /**
      * @see org.apache.avalon.framework.service.ServiceManager#hasService(java.lang.String)
      */
     public boolean hasService(String role)
     {
-    	checkValidSession();
         return service.hasService(role);
     }
 
@@ -53,14 +62,14 @@ public class DefaultApplicationSession implements ApplicationSession
      */
     public Object lookup(String role) throws ServiceException
     {
-    	if( session.isValid())
-    	{    	
-        	return  service.lookup(role,interceptor,session);
-    	}
-    	else
-    	{
-    		throw new ServiceException(role,"The session is invalid. Can no longer lookup components through this session");
-    	}
+        if (allowedComponents.contains(role))
+        {
+            return service.lookup(role, interceptor, session);
+        }
+        else
+        {
+            throw new ServiceException(role, "Can not find the specified role");
+        }
     }
 
     /**
@@ -68,16 +77,8 @@ public class DefaultApplicationSession implements ApplicationSession
      */
     public void release(Object obj)
     {
-		service.release(obj);
+        service.release(obj);
     }
-
-	private void checkValidSession() throws IllegalStateException
-   {
-	   if (session.isValid() == false )
-	   {
-		   throw new IllegalStateException("the session '" + session.getId() + "' is invalid'");
-	   }
-   }
 
     /**
      * @param key
@@ -192,7 +193,7 @@ public class DefaultApplicationSession implements ApplicationSession
      */
     public Object lookup(String role, String id) throws ServiceException
     {
-        return lookup( ServiceManagerUtils.getKey(role, id) );
+        return lookup(ServiceManagerUtils.getKey(role, id));
     }
 
 }

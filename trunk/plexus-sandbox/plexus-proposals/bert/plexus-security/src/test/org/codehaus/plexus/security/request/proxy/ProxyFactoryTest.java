@@ -5,6 +5,7 @@ import java.util.Vector;
 import junit.framework.TestCase;
 
 import org.codehaus.plexus.security.DefaultPlexusSession;
+import org.codehaus.plexus.security.mock.MockPlexusSession;
 import org.codehaus.plexus.security.request.RequestInterceptor;
 import org.codehaus.plexus.security.session.InvalidSessionException;
 import org.codehaus.plexus.security.simple.SimpleAgent;
@@ -41,7 +42,7 @@ public class ProxyFactoryTest extends TestCase
 		//setup supporting objects..
 		TestRequestInterceptor interceptor = new TestRequestInterceptor();
 		SimpleAgent agent = new SimpleAgent("tom","tom", null );
-		DefaultPlexusSession sess= new DefaultPlexusSession("sess1", agent,30);				
+		MockPlexusSession sess= new MockPlexusSession("sess1", agent);				
 		//the real component		
 		Foo foo = new FooImpl();
 		//the proxy component
@@ -55,9 +56,7 @@ public class ProxyFactoryTest extends TestCase
 		String id = (String)interceptor.mockGetBegins().firstElement();
 		assertEquals("sess1",id);
 		assertEquals("Expected request to of terminated", 1, interceptor.mockGetEnds().size() );
-		
-		
-		
+
 	}
 	
 
