@@ -42,6 +42,7 @@ import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.codehaus.plexus.util.Os;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.cli.Commandline;
+import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.velocity.VelocityComponent;
 
 import java.io.File;
@@ -174,7 +175,7 @@ public abstract class AbstractBuilder
     // ----------------------------------------------------------------------
 
     protected void executable( String file )
-        throws IOException
+        throws CommandLineException
     {
         if ( Os.isFamily( "unix" ) )
         {
