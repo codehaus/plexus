@@ -1,0 +1,17 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>plexus</groupId>
+    <artifactId>plexus-components</artifactId>
+    <version>1.0</version>
+  </parent>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-password-store</artifactId>
+  <version>1.0-alpha-1-SNAPSHOT</version>
+  <name>Plexus Password Store Component</name>
+  <plugins>
+    <plugin>
+      <id>plexus</id>
+    </plugin>
+  </plugins>
+</project>
