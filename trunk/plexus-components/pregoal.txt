@@ -1,0 +1,6 @@
+  <preGoals>
+    <preGoal>
+      <name>compiler:compile</name>
+      <attain>plexus:descriptor</attain>
+    </preGoal>
+  </preGoals>
