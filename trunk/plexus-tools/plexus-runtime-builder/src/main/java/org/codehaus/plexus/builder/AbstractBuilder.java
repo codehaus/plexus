@@ -30,15 +30,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.MavenMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
@@ -62,22 +60,6 @@ import org.codehaus.plexus.util.cli.Commandline;
 public abstract class AbstractBuilder
     extends AbstractLogEnabled
 {
-    protected final static Set BOOT_ARTIFACTS = new HashSet( Arrays.asList( new Artifact[]{
-        new DefaultArtifact( "classworlds", "classworlds", "1.1-alpha-1", "jar" ),
-    } ) );
-
-    protected final static Set CORE_ARTIFACTS = new HashSet( Arrays.asList( new Artifact[]{
-        new DefaultArtifact( "plexus", "plexus-container-default", "1.0-alpha-2-SNAPSHOT", "jar" ),
-        new DefaultArtifact( "plexus", "plexus-container-artifact", "1.0-alpha-2-SNAPSHOT", "jar" ),
-        new DefaultArtifact( "plexus", "plexus-appserver", "1.0-alpha-1-SNAPSHOT", "jar" ),
-        new DefaultArtifact( "plexus", "plexus-utils", "1.0-alpha-2-SNAPSHOT", "jar" ),
-    } ) );
-
-    protected final static Set EXCLUDED_ARTIFACTS = new HashSet( Arrays.asList( new Artifact[]{
-        new DefaultArtifact( "plexus", "plexus", "", "jar" ),
-        new DefaultArtifact( "plexus", "plexus-container-api", "", "jar" ),
-    } ) );
-
     // ----------------------------------------------------------------------
     // Components
     // ----------------------------------------------------------------------
@@ -169,6 +151,46 @@ public abstract class AbstractBuilder
         }
     }
 
+    protected Set getBootArtifacts( Set projectArtifacts, List remoteRepositories, ArtifactRepository localRepository )
+        throws ArtifactResolutionException
+    {
+        Set artifacts = new HashSet();
+
+        resolveVersion( "classworlds", "classworlds", projectArtifacts, false, artifacts );
+
+        artifacts = findArtifacts( remoteRepositories, localRepository, artifacts, false, null );
+
+        return artifacts;
+    }
+
+    protected Set getCoreArtifacts( Set projectArtifacts, List remoteRepositories, ArtifactRepository localRepository )
+        throws ArtifactResolutionException
+    {
+        Set artifacts = new HashSet();
+
+        resolveVersion( "plexus", "plexus-container-default", projectArtifacts, false, artifacts );
+        resolveVersion( "plexus", "plexus-container-artifact", projectArtifacts, false, artifacts );
+        resolveVersion( "plexus", "plexus-appserver", projectArtifacts, false, artifacts );
+//        resolveVersion( "plexus", "plexus-utils", projectArtifacts, false, artifacts );
+
+        artifacts = findArtifacts( remoteRepositories, localRepository, artifacts, false, null );
+
+        return artifacts;
+    }
+
+    protected Set getExcludedArtifacts( Set projectArtifacts, List remoteRepositories, ArtifactRepository localRepository )
+        throws ArtifactResolutionException
+    {
+        Set artifacts = new HashSet();
+
+        resolveVersion( "plexus", "plexus", projectArtifacts, true, artifacts );
+        resolveVersion( "plexus", "plexus-container-api", projectArtifacts, true, artifacts );
+
+        artifacts = findArtifacts( remoteRepositories, localRepository, artifacts, true, null );
+
+        return artifacts;
+    }
+
     protected Set findArtifacts( List remoteRepositories, ArtifactRepository localRepository, Set sourceArtifacts,
                                  boolean resolveTransitively, ArtifactFilter artifactFilter )
         throws ArtifactResolutionException
@@ -207,34 +229,34 @@ public abstract class AbstractBuilder
 
         return artifacts;
     }
-/*
-    protected void filterArtifacts( Set candidateArtifacts, Set filteredArtifacts )
+
+    private void resolveVersion( String groupId, String artifactId, Set projectArtifacts, boolean ignoreIfMissing,
+                                 Set resolvedArtifacts )
+        throws ArtifactResolutionException
     {
-        // ----------------------------------------------------------------------
-        // Remove any artifacts from the candidateArtifacts set.
-        // It will ignore the version when checking for a match
-        // ----------------------------------------------------------------------
-
-        for ( Iterator it = candidateArtifacts.iterator(); it.hasNext(); )
+        for ( Iterator it = projectArtifacts.iterator(); it.hasNext(); )
         {
-            Artifact candiateArtifact = (Artifact) it.next();
+            Artifact artifact = (Artifact) it.next();
 
-            for ( Iterator it2 = filteredArtifacts.iterator(); it2.hasNext(); )
+            System.err.println( "trying: " + artifact );
+            if ( artifact.getGroupId().equals( groupId ) &&
+                 artifact.getArtifactId().equals( artifactId ) &&
+                 artifact.getType().equals( "jar" ) )
             {
-                Artifact artifact = (Artifact) it2.next();
+                resolvedArtifacts.add( artifact );
 
-                if ( candiateArtifact.getGroupId().equals( artifact.getGroupId() ) &&
-                     candiateArtifact.getArtifactId().equals( artifact.getArtifactId() ) &&
-                     candiateArtifact.getType().equals( artifact.getType() ) )
-                {
-                    it.remove();
+                System.err.println( "Resolved version of '" + groupId + ":" + artifact + " to " + artifact.getVersion() );
 
-                    continue;
-                }
+                return;
             }
         }
+
+        if ( !ignoreIfMissing )
+        {
+            throw new ArtifactResolutionException( "Could not find a artifact with group id '" + groupId + "' and " +
+                                                   "artifact id '" + artifactId + "' in the project artifact set." );
+        }
     }
-*/
 
     // TODO: these filters belong in maven-artifact - they are generally useful
 

@@ -32,9 +32,11 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Iterator;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.Artifact;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
@@ -76,16 +78,10 @@ public class DefaultPlexusRuntimeBuilder
     // ----------------------------------------------------------------------
 
     public void build( File workingDirectory,
-                       List remoteRepositories, ArtifactRepository localRepository, Set extraArtifacts,
+                       List remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts,
                        File plexusConfiguration, File configurationPropertiesFile )
         throws PlexusRuntimeBuilderException
     {
-        // TODO: Enable this feature
-        if ( extraArtifacts.size() != 0 )
-        {
-            throw new PlexusRuntimeBuilderException( "The extra artifact set has to be empty." );
-        }
-
         try
         {
             // ----------------------------------------------------------------------
@@ -130,29 +126,32 @@ public class DefaultPlexusRuntimeBuilder
             Set bootArtifacts = null;
 
             Set coreArtifacts = null;
-
             try
             {
-                bootArtifacts = findArtifacts( remoteRepositories, localRepository, BOOT_ARTIFACTS, false, null );
+                bootArtifacts = getBootArtifacts( projectArtifacts, remoteRepositories, localRepository );
 
-                coreArtifacts = findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false, null );
+                System.err.println( "Boot artifacts: " );
+                for ( Iterator it = bootArtifacts.iterator(); it.hasNext(); )
+                {
+                    Artifact artifact = (Artifact) it.next();
+
+                    System.err.println( "boot: " + artifact );
+                }
+
+                coreArtifacts = getCoreArtifacts( projectArtifacts, remoteRepositories, localRepository );
+
+                System.err.println( "Core artifacts: " );
+                for ( Iterator it = coreArtifacts.iterator(); it.hasNext(); )
+                {
+                    Artifact artifact = (Artifact) it.next();
+
+                    System.err.println( "core: " + artifact );
+                }
             }
             catch ( ArtifactResolutionException e )
             {
                 throw new PlexusRuntimeBuilderException( "Could not resolve a artifact.", e );
             }
-
-            // Remove the classworlds dependency tree from the plexus dependencies.
-//            coreArtifacts = new HashSet( CollectionUtils.subtract( coreArtifacts, bootArtifacts ) );
-
-            // Remove the classworlds and plexus dependency tree from the artifacts dependencies.
-//            extraArtifacts = new HashSet( CollectionUtils.subtract( extraArtifacts, bootArtifacts ) );
-
-//            extraArtifacts = new HashSet( CollectionUtils.subtract( extraArtifacts, coreArtifacts ) );
-
-//            getLogger().info( "boot:" + bootArtifacts );
-//            getLogger().info( "core:" + coreArtifacts );
-//            getLogger().info( "artifacts:" + artifacts );
 
             // ----------------------------------------------------------------------
             // Build the runtime
@@ -176,8 +175,6 @@ public class DefaultPlexusRuntimeBuilder
 
             File bootDir = mkdir( new File( workingDirectory, PlexusRuntimeConstants.BOOT_DIRECTORY ) );
 
-//            mkdir( new File( workingDirectory, "lib" ) );
-
             mkdir( new File( workingDirectory, PlexusRuntimeConstants.LOGS_DIRECTORY ) );
 
             mkdir( new File( workingDirectory, PlexusRuntimeConstants.SERVICES_DIRECTORY ) );
@@ -191,8 +188,6 @@ public class DefaultPlexusRuntimeBuilder
             copyArtifacts( workingDirectory, bootDir, bootArtifacts );
 
             copyArtifacts( workingDirectory, coreDir, coreArtifacts );
-
-//            copyArtifacts( workingDirectory, coreDir, extraArtifacts );
 
             // ----------------------------------------------------------------------
             // We need to separate between the container configuration that you want
