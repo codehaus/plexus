@@ -1,9 +1,8 @@
 target
 *~
-*.ipr
-*.iws
-*.iml
 *.log
 .classpath
 .project
-
+*.ipr
+*.iws
+*.iml
