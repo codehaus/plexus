@@ -22,6 +22,11 @@
       <artifactId>plexus-container-default</artifactId>
       <version>1.0-alpha-1-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.0-alpha-1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
   <build>
     <sourceDirectory>src/java</sourceDirectory>
