@@ -1,0 +1,25 @@
+<component-set>
+  <components>
+    
+    <component>
+      <role>org.codehaus.plexus.werkflow.WerkflowService</role>
+      <implementation>org.codehaus.plexus.werkflow.DefaultWerkflowService</implementation>
+      <configuration>
+        <werkflowDirectory>${basedir}/src/test/werkflows/</werkflowDirectory>
+      </configuration>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.action.ActionManager</role>
+        </requirement>
+      </requirements>
+    </component>
+    
+    <component>
+      <role>org.codehaus.plexus.action.Action</role>
+      <role-hint>one</role-hint>
+      <implementation>org.codehaus.plexus.werkflow.TestAction</implementation>
+    </component>
+        
+  </components>
+  
+</component-set>

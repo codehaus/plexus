@@ -1,0 +1,23 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.werkflow.WerkflowService</role>
+      <implementation>org.codehaus.plexus.werkflow.DefaultWerkflowService</implementation>
+      <configuration>
+        <werkflowDirectory>${plexus.home}/werkflows/</werkflowDirectory>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.action.ActionManager</role>
+      <implementation>org.codehaus.plexus.werkflow.WerkflowActionManager</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.action.Action</role>
+          <fieldName>actions</fieldName>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+  
+</component-set>

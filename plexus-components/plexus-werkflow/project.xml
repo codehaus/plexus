@@ -1,14 +1,10 @@
+<?xml version="1.0"?>
 <project>
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>plexus</groupId>
-    <artifactId>plexus-components</artifactId>
-    <version>1.0</version>
-  </parent>
-  <groupId>plexus</groupId>
+  <extend>${maven.repo.local}/plexus/poms/plexus-components-1.0.pom</extend>
+  <id>plexus-werkflow</id>
   <artifactId>plexus-werkflow</artifactId>
-  <version>1.0-beta-1</version>
   <name>Plexus Werkflow Component</name>
+  <currentVersion>1.0-beta-1</currentVersion>
   <dependencies>
     <dependency>
       <groupId>werkflow</groupId>
