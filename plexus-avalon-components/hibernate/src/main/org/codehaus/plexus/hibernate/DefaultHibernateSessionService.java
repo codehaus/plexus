@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.SessionFactory;
@@ -35,9 +32,9 @@ public class DefaultHibernateSessionService
     private SessionFactory sessionFactory;
 
     private ThreadLocal session = new ThreadLocal();
-    
+
     private List sessions;
-    
+
     /**
      * @see org.codehaus.plexus.hibernate.HibernateSessionService#getSession()
      */
@@ -57,7 +54,7 @@ public class DefaultHibernateSessionService
         sessionFactory = hib.getSessionFactory();
 
         manager.release(hib);
-        
+
         sessions = new ArrayList();
     }
 
@@ -105,7 +102,7 @@ public class DefaultHibernateSessionService
     public void closeSession() throws HibernateException
     {
         getLogger().info("Closing session for thread.");
-        
+ 
         Session s = (Session) session.get();
         sessions.remove(s);
         session.set(null);
