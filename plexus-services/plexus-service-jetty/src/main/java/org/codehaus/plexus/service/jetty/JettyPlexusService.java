@@ -110,7 +110,7 @@ public class JettyPlexusService
                     continue;
                 }
 
-                boolean extractWar = Boolean.parseBoolean( webapps[ i ].getChild( "extractWar" ).getValue( "true" ) );
+                boolean extractWar = Boolean.valueOf( webapps[ i ].getChild( "extractWar" ).getValue( "true" ) ).booleanValue();
 
                 deployFile( new File( file ), extractWar, context, applicationRuntimeProfile );
             }
