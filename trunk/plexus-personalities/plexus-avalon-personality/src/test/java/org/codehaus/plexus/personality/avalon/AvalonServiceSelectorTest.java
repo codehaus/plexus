@@ -13,14 +13,7 @@ import org.codehaus.plexus.personality.avalon.AvalonServiceSelector;
 public class AvalonServiceSelectorTest
     extends PlexusTestCase
 {
-
-    /**
-     * @param testName
-     */
-    public AvalonServiceSelectorTest(String testName)
-    {
-        super(testName);
-    }
+   
 
     public void testDefaultSelector()
         throws Exception
