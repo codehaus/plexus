@@ -1,15 +1,14 @@
 <project>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-logging</artifactId>
     <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-jdk-logging</artifactId>
-  <packaging>jar</packaging>
-  <name>Plexus JDK Logger</name>
   <version>1.0-SNAPSHOT</version>
+  <name>Plexus JDK Logger</name>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
