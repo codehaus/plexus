@@ -10,20 +10,19 @@ import org.codehaus.werkflow.simple.ActionManager;
 /**
  * WerkflowActionManager
  * 
- * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
+ * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse </a>
  */
 public class WerkflowActionManager
-	extends DefaultActionManager
-	implements ActionManager
+    extends DefaultActionManager
+    implements ActionManager
 {
-	public void perform(String id, Instance instance) 
-        throws Exception
-	{
-		Action a = lookup( id );
-        
+    public void perform(String id, Instance instance) throws Exception
+    {
+        Action a = lookup(id);
+
         HashMap map = new HashMap();
         map.put("instance", instance);
-        
+
         a.execute(map);
-	}
+    }
 }
