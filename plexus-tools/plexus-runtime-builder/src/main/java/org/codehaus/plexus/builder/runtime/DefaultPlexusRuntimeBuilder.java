@@ -66,6 +66,10 @@ public class DefaultPlexusRuntimeBuilder
 
     private File bootDir;
 
+    private File libDir;
+
+    private File appsDir;
+
     private File logsDir;
 
     private File tempDir;
@@ -175,6 +179,10 @@ public class DefaultPlexusRuntimeBuilder
 
         bootDir = new File( baseDirectory, "core/boot" );
 
+        libDir = new File( baseDirectory, "lib" );
+
+        appsDir = new File( baseDirectory, "apps" );
+
         logsDir = new File( baseDirectory, "logs" );
 
         tempDir = new File( baseDirectory, "temp" );
@@ -184,6 +192,10 @@ public class DefaultPlexusRuntimeBuilder
         mkdir( confDir );
 
         mkdir( bootDir );
+
+        mkdir( libDir );
+
+        mkdir( appsDir );
 
         mkdir( logsDir );
 
