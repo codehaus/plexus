@@ -19,6 +19,7 @@ package org.codehaus.plexus.formica.population;
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.codehaus.plexus.formica.Form;
+import org.codehaus.plexus.formica.Element;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -33,22 +34,37 @@ public class OgnlPopulator
     public void populate( Form form, Map data, Object target )
         throws TargetPopulationException
     {
-        for ( Iterator i = data.keySet().iterator(); i.hasNext(); )
+        // ----------------------------------------------------------------------
+        // The incoming Map may not consist soley of form data. We may have
+        // something like a Map of parameters coming from a servlet which may
+        // contain other items. So we will walk the elements of the Form and
+        // see if there is a datum within the Map keyed by form element id
+        // in question. If the datum exists we will attempt to populate the
+        // target object with the said value.
+        // ----------------------------------------------------------------------
+
+        for ( Iterator i = form.getElements().iterator(); i.hasNext(); )
         {
-            String key = (String) i.next();
+            Element element = (Element) i.next();
 
-            String expression = form.getElement( key ).getExpression();
+            String id = element.getId();
 
-            String elementData = (String) data.get( key );
+            Object elementData = data.get( id );
 
-            try
+            if ( elementData != null )
             {
-                Ognl.setValue( expression, target, elementData );
+                String expression = element.getExpression();
+
+                try
+                {
+                    Ognl.setValue( expression, target, elementData );
+                }
+                catch ( OgnlException e )
+                {
+                    throw new TargetPopulationException( e );
+                }
             }
-            catch ( OgnlException e )
-            {
-                throw new TargetPopulationException( e );
-            }
+
         }
     }
 }

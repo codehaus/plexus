@@ -28,6 +28,8 @@ public class Add
 
     private String action;
 
+    private String expression;
+
     public String getTitleKey()
     {
         return titleKey;
@@ -41,5 +43,10 @@ public class Add
     public String getAction()
     {
         return action;
+    }
+
+    public String getExpression()
+    {
+        return expression;
     }
 }
