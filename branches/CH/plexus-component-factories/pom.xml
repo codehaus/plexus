@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<project>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-component-factories</artifactId>
+  <name>Plexus Component Factories</name>
+  <version>1.0</version>
+  <inceptionYear>2001</inceptionYear>
+  <dependencies>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus</artifactId>
+      <version>0.14-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>
