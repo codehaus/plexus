@@ -32,8 +32,6 @@ public class UpdateEntity
     protected void uponSuccessfulValidation( Form form, String entityId, Map map )
         throws Exception
     {
-        System.out.println( ">>>>>>>>>>>>>>>>> updating the entity" );        
-
         Map m = new HashMap();
 
         m.put( ID, validateEntityId( entityId ) );

@@ -127,13 +127,6 @@ public class DefaultFormManager
         return result;
     }
 
-    /**
-     * @param form
-     * @param data
-     * @param result
-     * @throws FormicaException
-     * @throws ValidatorNotFoundException
-     */
     private void validateElementGroups( Form form, Map data, FormValidationResult result )
         throws FormicaException, ValidatorNotFoundException
     {
@@ -158,13 +151,6 @@ public class DefaultFormManager
         }
     }
 
-    /**
-     * @param form
-     * @param data
-     * @param result
-     * @throws ValidatorNotFoundException
-     * @throws FormicaException
-     */
     private void validateElements( List elements, Map data, FormValidationResult result )
         throws ValidatorNotFoundException, FormicaException
     {

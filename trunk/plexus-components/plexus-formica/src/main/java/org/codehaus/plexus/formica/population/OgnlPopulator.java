@@ -53,7 +53,9 @@ public class OgnlPopulator
         // ----------------------------------------------------------------------
 
         if ( form.getElements() != null )
-            populateElements( data, target, form.getElements() );
+        {
+            populateElements( data, target, form.getElements(), form.getId() );
+        }
 
         if ( form.getElementGroups() != null )
         {
@@ -62,7 +64,9 @@ public class OgnlPopulator
                 ElementGroup group = (ElementGroup) itr.next();
 
                 if ( group.getElements() != null )
-                    populateElements( data, target, group.getElements() );
+                {
+                    populateElements( data, target, group.getElements(), form.getId() );
+                }
             }
         }
     }
@@ -73,7 +77,7 @@ public class OgnlPopulator
      * @param elements
      * @throws TargetPopulationException
      */
-    private void populateElements( Map data, Object target, List elements )
+    private void populateElements( Map data, Object target, List elements, String formId )
         throws TargetPopulationException
     {
         for ( Iterator i = elements.iterator(); i.hasNext(); )
@@ -88,6 +92,11 @@ public class OgnlPopulator
             {
                 String expression = element.getExpression();
 
+                if ( expression == null )
+                {
+                    throw new TargetPopulationException( "Expression for " + element.getId() + " in " + formId + " cannot be null." );
+                }
+
                 try
                 {
                     Ognl.setValue( expression, target, elementData );
@@ -97,7 +106,6 @@ public class OgnlPopulator
                     throw new TargetPopulationException( e );
                 }
             }
-
         }
     }
 }

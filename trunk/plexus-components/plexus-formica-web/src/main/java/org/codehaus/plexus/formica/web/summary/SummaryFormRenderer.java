@@ -24,10 +24,12 @@ import org.codehaus.plexus.formica.Operation;
 import org.codehaus.plexus.formica.SummaryElement;
 import org.codehaus.plexus.formica.web.AbstractFormRenderer;
 import org.codehaus.plexus.formica.web.FormRenderingException;
+import org.codehaus.plexus.formica.web.ContentGenerator;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.XMLWriter;
 import org.codehaus.plexus.summit.rundata.RunData;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -126,11 +128,30 @@ public class SummaryFormRenderer
 
                 try
                 {
-                    w.writeText( Ognl.getValue( element.getExpression(), item ).toString() );
+                    String text;
+
+                    if ( se.getContentGenerator() != null )
+                    {
+                        ContentGenerator cg = (ContentGenerator) container.lookup( ContentGenerator.ROLE, se.getContentGenerator() );
+
+                        text = cg.generate( item );
+                    }
+                    else
+                    {
+                        Object value =  Ognl.getValue( element.getExpression(), item );
+
+                        text = value.toString();
+                    }
+
+                    w.writeText( text );
+                }
+                catch( ComponentLookupException e )
+                {
+
                 }
                 catch ( OgnlException e )
                 {
-                    throw new FormRenderingException( "Error extracting value from " + item + " using the expression " + element.getExpression() );
+                    throw new FormRenderingException( "Error extracting value from " + item + " using the expression " + element.getExpression(), e );
                 }
 
                 w.endElement();

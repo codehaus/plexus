@@ -69,6 +69,8 @@ public class Form
 
     private String summaryCollectionExpression;
 
+    private String typeExpression;
+
     private String extend;
 
     // ----------------------------------------------------------------------
@@ -220,6 +222,20 @@ public class Form
     public void setSummaryCollectionExpression( String summaryCollectionExpression )
     {
         this.summaryCollectionExpression = summaryCollectionExpression;
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    public String getTypeExpression()
+    {
+        return typeExpression;
+    }
+
+    public void setTypeExpression( String typeExpression )
+    {
+        this.typeExpression = typeExpression;
     }
 
     // ----------------------------------------------------------------------

@@ -130,5 +130,7 @@ public class InheritanceTest
         Element overridden = form.getElement( "field-1" );
 
         assertEquals( "grandchild1-field1", overridden.getExpression() );
+
+        assertTrue( overridden.isImmutable() );
     }
 }
