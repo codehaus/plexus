@@ -38,6 +38,7 @@ import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.util.CollectionUtils;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.application.PlexusApplicationConstants;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -47,36 +48,13 @@ public class DefaultApplicationBuilder
     extends AbstractBuilder
     implements ApplicationBuilder
 {
-    /** @requirement */
-//    private Archiver archiver;
-/*
-    private String applicationName;
-
-    private File applicationLibDirectory;
-
-    private String configurationsDirectory;
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    public void setApplicationName( String applicationName )
-    {
-        this.applicationName = applicationName;
-    }
-
-    public void setConfigurationsDirectory( String configurationsDirectory )
-    {
-        this.configurationsDirectory = configurationsDirectory;
-    }
-*/
     // ----------------------------------------------------------------------
     // ApplicationBuilder Implementation
     // ----------------------------------------------------------------------
 
-    public void build( String applicationName, File outputFile, File workingDirectory,
-                       Set remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts,
-                       File plexusConfigurationFile, File configurationsDirectory, File configurationPropertiesFile )
+    public void assemble( String applicationName, File workingDirectory,
+                          Set remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts,
+                          File plexusConfigurationFile, File configurationsDirectory, File configurationPropertiesFile )
         throws ApplicationBuilderException
     {
         // ----------------------------------------------------------------------
@@ -107,9 +85,9 @@ public class DefaultApplicationBuilder
         // Create directory structure
         // ----------------------------------------------------------------------
 
-        File confDir = mkdir( new File( workingDirectory, "conf" ) );
+        File confDir = mkdir( new File( workingDirectory, PlexusApplicationConstants.CONF_DIRECTORY ) );
 
-        File libDir = mkdir( new File( workingDirectory, "lib" ) );
+        File libDir = mkdir( new File( workingDirectory, PlexusApplicationConstants.LIB_DIRECTORY ) );
 
         // ----------------------------------------------------------------------
         //
@@ -157,11 +135,11 @@ public class DefaultApplicationBuilder
         {
             throw new ApplicationBuilderException( "Error while copying dependencies.", e );
         }
+    }
 
-        // ----------------------------------------------------------------------
-        // Build the application jar
-        // ----------------------------------------------------------------------
-
+    public void bundle( File outputFile, File workingDirectory )
+        throws ApplicationBuilderException
+    {
         Archiver archiver = new JarArchiver();
 
         try
@@ -195,7 +173,7 @@ public class DefaultApplicationBuilder
             throw new ApplicationBuilderException( "The application configuration file doesn't exist: '" + plexusConfigurationFile.getAbsolutePath() + "'." );
         }
 
-        FileUtils.copyFileToDirectory( plexusConfigurationFile, confDir );
+        FileUtils.copyFile( plexusConfigurationFile, new File( confDir, PlexusApplicationConstants.CONFIGURATION_FILE ) );
 
         // ----------------------------------------------------------------------
         // Process the configurations

@@ -40,6 +40,7 @@ import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.util.CollectionUtils;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.application.PlexusServiceConstants;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -53,7 +54,7 @@ public class DefaultServiceBuilder
     // ServiceBuilder Implementation
     // ----------------------------------------------------------------------
 
-    public void build( String serviceName, File outputFile, File workingDirectory,
+    public void build( String serviceName, File workingDirectory,
                        Set remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts,
                        File plexusConfigurationFile, File configurationsDirectory, File configurationPropertiesFile )
         throws ServiceBuilderException
@@ -86,9 +87,9 @@ public class DefaultServiceBuilder
         // Create directory structure
         // ----------------------------------------------------------------------
 
-        File confDir = mkdir( new File( workingDirectory, "conf" ) );
+        File confDir = mkdir( new File( workingDirectory, PlexusServiceConstants.CONF_DIRECTORY ) );
 
-        File libDir = mkdir( new File( workingDirectory, "lib" ) );
+        File libDir = mkdir( new File( workingDirectory, PlexusServiceConstants.LIB_DIRECTORY ) );
 
         // ----------------------------------------------------------------------
         //
@@ -136,11 +137,11 @@ public class DefaultServiceBuilder
         {
             throw new ServiceBuilderException( "Error while copying dependencies.", e );
         }
+    }
 
-        // ----------------------------------------------------------------------
-        // Build the application jar
-        // ----------------------------------------------------------------------
-
+    public void bundle( File outputFile, File workingDirectory )
+        throws ServiceBuilderException
+    {
         Archiver archiver = new JarArchiver();
 
         try

@@ -36,8 +36,14 @@ public interface PlexusRuntimeBuilder
 {
     String ROLE = PlexusRuntimeBuilder.class.getName();
 
-    void build( File outputFile, File workingDirectory,
+    void build( File workingDirectory,
                 Set remoteRepositories, ArtifactRepository localRepository, Set artifacts,
                 File plexusConfiguration, File configurationPropertiesFile )
+        throws PlexusRuntimeBuilderException;
+
+    void addPlexusApplication( File plexusApplication, File runtimeDirectory )
+        throws PlexusRuntimeBuilderException;
+
+    void bundle( File outputFile, File workingDirectory )
         throws PlexusRuntimeBuilderException;
 }
