@@ -98,6 +98,11 @@ public class DefaultPlexusComponentGleaningStrategy
             return componentDescriptor;
         }
 
+        if ( className.startsWith( "Abstract" ) || javaClass.isAbstract() )
+        {
+            return componentDescriptor;
+        }
+
         Type[] types = javaClass.getImplements();
 
         for ( int i = 0; i < types.length; i++ )
