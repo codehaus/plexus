@@ -25,16 +25,16 @@ public class PlexusServletContextListenerTest extends TestCase
 
         pacl.contextInitialized(sce);
         {
-            PlexusContainer pc = (PlexusContainer) sc.getAttribute( PlexusConstants.PLEXUS_KEY );
-            ServiceManager sm = (ServiceManager) sc.getAttribute( PlexusConstants.SERVICE_MANAGER_KEY );
+            PlexusContainer pc = PlexusServletUtils.getPlexusContainer( sc );
+            ServiceManager sm = PlexusServletUtils.getServiceManager( sc );
             assertNotNull("pc", pc);
             assertNotNull("sm", sm);
         }
 
         pacl.contextDestroyed(sce);
         {
-            PlexusContainer pc = (PlexusContainer) sc.getAttribute( PlexusConstants.PLEXUS_KEY );
-            ServiceManager sm = (ServiceManager) sc.getAttribute( PlexusConstants.SERVICE_MANAGER_KEY );
+            PlexusContainer pc = PlexusServletUtils.getPlexusContainer( sc );
+            ServiceManager sm = PlexusServletUtils.getServiceManager( sc );
             assertNull("pc", pc);
             assertNull("sm", sm);
         }
