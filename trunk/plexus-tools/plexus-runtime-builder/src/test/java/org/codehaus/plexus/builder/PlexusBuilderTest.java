@@ -1,13 +1,11 @@
 package org.codehaus.plexus.builder;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import java.io.File;
 
+import org.codehaus.plexus.PlexusTestCase;
+
 public class PlexusBuilderTest
-    extends TestCase
+    extends PlexusTestCase
 {
     private String buildDirectory;
 
@@ -19,21 +17,11 @@ public class PlexusBuilderTest
 
     private String configurationPropertiesFile;
 
-    public PlexusBuilderTest( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( PlexusBuilderTest.class );
-    }
-
     public void setUp()
+        throws Exception
     {
+        super.setUp();
+
         String basedir = System.getProperty( "basedir" );
 
         buildDirectory = new File( basedir, "target/plexus" ).getPath();
@@ -47,20 +35,19 @@ public class PlexusBuilderTest
         configurationPropertiesFile = new File( basedir, "src/test-input/configuration.properties" ).getPath();
     }
 
-    /**
-     * Rigourous Test :-)
-     */
     public void testPlexusBuilder()
         throws Exception
     {
-        DefaultPlexusBuilder builder = new DefaultPlexusBuilder();
+        DefaultPlexusBuilder builder = (DefaultPlexusBuilder)lookup( DefaultPlexusBuilder.ROLE );
 
         builder.setBaseDirectory( buildDirectory );
 
-        builder.setProjectPom( System.getProperty( "basedir" ) + "/project.xml" );
+//        builder.setProjectPom( System.getProperty( "basedir" ) + "/project.xml" );
+        builder.setProjectPom( getTestFile( "src/test/project" ) + "/project.xml" );
 
         //!! @todo need a way to parameterize this
-        builder.setMavenRepoLocal( System.getProperty( "user.home" ) + "/maven-repo-local" );
+//        builder.setMavenRepoLocal( System.getProperty( "user.home" ) + "/maven-repo-local" );
+        builder.setMavenRepoLocal( getTestFile( "src/test/repository" ) );
 
         builder.setApplication( "tambora" );
 

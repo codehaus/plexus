@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -17,8 +18,11 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.exception.ResourceNotFoundException;
+import org.codehaus.plexus.cdc.MavenModelParser;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.xstream.PlexusTools;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
@@ -26,10 +30,9 @@ import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.codehaus.plexus.util.Os;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.cli.Commandline;
-import org.codehaus.plexus.cdc.MavenModelParser;
+import org.codehaus.plexus.velocity.VelocityComponent;
 
 /**
- * @author <a href="jason@zenplex.com">Jason van Zyl</a>
  * @todo Need to download artifacts if they are missing
  * @todo Need to support multiple component repositories
  * @todo Deal with generation of 1) Just the container and 2) Just an application
@@ -37,10 +40,36 @@ import org.codehaus.plexus.cdc.MavenModelParser;
  * @todo Create a simple chain of command for processing so the building of the
  * container runtime can be easily customized
  * @todo turn this into a plexus component and reuse the velocity component.
+ *
+ * @author <a href="jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  */
 public class DefaultPlexusBuilder
+    extends AbstractLogEnabled
 {
-    private static String CORE = "core";
+    /** */
+    public final static String ROLE = DefaultPlexusBuilder.class.getName();
+
+    /** */
+    private final static String CORE = "core";
+
+    /** */
+    private final static String CLASSWORLDS_TEMPLATE = "org/codehaus/plexus/builder/templates/classworlds.vm";
+
+    /** */
+    private final static String UNIX_LAUNCHER_TEMPLATE = "org/codehaus/plexus/builder/templates/plexus.vm";
+
+    /** */
+    private final static String WINDOWS_LAUNCHER_TEMPLATE = "org/codehaus/plexus/builder/templates/plexus-bat.vm";
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Requirements
+
+    /** */
+    private VelocityComponent velocity;
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Configuration
 
     /**
      * Base directory
@@ -70,7 +99,7 @@ public class DefaultPlexusBuilder
     /**
      * Velocity bean.
      */
-    private VelocityBean velocityBean;
+//    private VelocityBean velocityBean;
 
     /**
      * Component manifes used.
@@ -168,7 +197,7 @@ public class DefaultPlexusBuilder
     private void initialize()
         throws Exception
     {
-        velocityBean = new VelocityBean();
+//        velocityBean = new VelocityBean();
         properties = new Properties();
         properties.put( "maven.repo.local", mavenRepoLocal );
     }
@@ -260,7 +289,7 @@ public class DefaultPlexusBuilder
 
     void log( String message )
     {
-        System.out.println( message );
+        getLogger().info( message );
     }
 
     void createDirectoryStructure()
@@ -424,34 +453,24 @@ public class DefaultPlexusBuilder
             artifactId = dep.getId();
         }
 
-        return mavenRepoLocal + File.separator + groupId + File.separator + "jars" + File.separator + artifactId + "-" + dep.getVersion() + ".jar";
+        return mavenRepoLocal + 
+            File.separator + groupId + 
+            File.separator + dep.getType() + "s" + 
+            File.separator + artifactId + "-" + dep.getVersion() + "." + dep.getType();
     }
 
     void createClassworldsConfiguration()
         throws Exception
     {
-        velocityBean.setTemplate( "org/codehaus/plexus/builder/templates/classworlds.vm" );
-
-        velocityBean.setName( new File( new File( baseDirectory, "conf" ), "classworlds.conf" ).getPath() );
-
-        velocityBean.mergeTemplate( new VelocityContext() );
+        mergeTemplate( CLASSWORLDS_TEMPLATE, new File( new File( baseDirectory, "conf" ), "classworlds.conf" ) );
     }
 
     void createLauncherScripts()
         throws Exception
     {
-        velocityBean.setTemplate( "org/codehaus/plexus/builder/templates/plexus.vm" );
+        mergeTemplate( UNIX_LAUNCHER_TEMPLATE, new File( new File( baseDirectory, "bin" ), "plexus.sh" ) );
 
-        velocityBean.setName( new File( new File( baseDirectory, "bin" ), "plexus.sh" ).getPath() );
-
-        velocityBean.mergeTemplate( new VelocityContext() );
-
-        velocityBean.setTemplate( "org/codehaus/plexus/builder/templates/plexus-bat.vm" );
-
-        velocityBean.setName( new File( new File( baseDirectory, "bin" ), "plexus.bat" ).getPath() );
-
-        velocityBean.mergeTemplate( new VelocityContext() );
-
+        mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( new File( baseDirectory, "bin" ), "plexus.bat" ) );
     }
 
     void findComponents()
@@ -674,5 +693,26 @@ public class DefaultPlexusBuilder
     void packageJavaRuntime()
         throws Exception
     {
+    }
+
+    private void mergeTemplate( String templateName, File outputFileName )
+        throws IOException, PlexusRuntimeBuilderException
+    {
+        FileWriter output = new FileWriter( outputFileName );
+
+        try
+        {
+        	velocity.mergeTemplate( templateName, new VelocityContext(), output );
+        }
+        catch( ResourceNotFoundException ex)
+        {
+            throw new PlexusRuntimeBuilderException( "Missing Velocity template: '" + templateName + "'.", ex ); 
+        }
+        catch( Exception ex )
+        {
+            throw new PlexusRuntimeBuilderException( "Exception merging the velocity template.", ex ); 
+        }
+
+        output.close();
     }
 }
