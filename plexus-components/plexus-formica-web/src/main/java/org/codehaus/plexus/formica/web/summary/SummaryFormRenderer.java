@@ -27,9 +27,11 @@ import org.codehaus.plexus.formica.web.FormRenderingException;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.XMLWriter;
+import org.codehaus.plexus.summit.rundata.RunData;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -43,7 +45,7 @@ public class SummaryFormRenderer
         return i18n.getString( form.getSummary().getTitleKey() );
     }
 
-    public void body( Form form, XMLWriter w, I18N i18n, Object data, String baseUrl )
+    public void body( Form form, XMLWriter w, I18N i18n, Object data, String baseUrl, RunData parameters )
         throws FormRenderingException
     {
         w.startElement( "table" );
@@ -148,19 +150,25 @@ public class SummaryFormRenderer
 
                 String id = null;
 
+                String type = null;
+
                 // TODO; throw an exception if the expression key isn't there
                 try
                 {
                     id = (String) Ognl.getValue( form.getKeyExpression(), item );
+
+                    type = (String) Ognl.getValue( form.getTypeExpression(), item );
                 }
                 catch ( OgnlException e )
                 {
-                    e.printStackTrace();
+                    throw new FormRenderingException( "Error retrieving expression:", e );
                 }
 
                 String s = StringUtils.replace( op.getAction(), "$id$", id );
 
                 s = StringUtils.replace( s, "$formId$", form.getId() );
+
+                s = StringUtils.replace( s, "$type$", type );
 
                 w.addAttribute( "href", baseUrl + "/" + s );
 

@@ -47,7 +47,7 @@
     </component>
     <component>
       <role>org.codehaus.plexus.formica.web.FormRenderer</role>
-      <implementation>org.codehaus.plexus.formica.web.update.UpdateFormRenderer</implementation>
+      <implementation>org.codehaus.plexus.formica.web.add.AddFormRenderer</implementation>
       <role-hint>update</role-hint>
     </component>
     <component>
