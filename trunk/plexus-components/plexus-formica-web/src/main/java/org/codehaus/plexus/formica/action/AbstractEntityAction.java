@@ -25,6 +25,7 @@ import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.summit.rundata.RunData;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 import java.util.Map;
@@ -37,17 +38,27 @@ public abstract class AbstractEntityAction
     extends AbstractAction
     implements EntityAction, Contextualizable
 {
-    protected final String ID = "id";
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
-    protected final String FORM_ID = "formId";
+    public static final String ID = "id";
 
-    protected final String ENTITY = "entity";
+    public static final String FORM_ID = "formId";
+
+    public static final String MODE = "mode";
+
+    public static final String ENTITY = "entity";
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     protected FormManager formManager;
 
     protected PlexusContainer container;
 
-     abstract void uponSuccessfulValidation( Form form, String entityId, Map map )
+    abstract void uponSuccessfulValidation( Form form, String entityId, Map map )
         throws Exception;
 
     //TODO: we probably want the action interface to return an Object. For example after adding
@@ -61,6 +72,8 @@ public abstract class AbstractEntityAction
 
         FormValidationResult fvr = formManager.validate( formId, map );
 
+        Form form = formManager.getForm( formId );
+
         // ----------------------------------------------------------------------
         // If validation is sucessful then we want to allow the add/update/delete
         // operation to continue. Otherwise we need to pass back the form
@@ -70,13 +83,22 @@ public abstract class AbstractEntityAction
 
         if ( fvr.valid() )
         {
-            uponSuccessfulValidation( formManager.getForm( formId ), entityId, map );
+            uponSuccessfulValidation( form, entityId, map );
         }
+        else
+        {
+            RunData data = (RunData) map.get( "data" );
 
-        // The target will need to be set dependending on what the outcome
-        // of the validation is. The result can probably just go into a velocity
-        // template.
+            // ----------------------------------------------------------------------
+            // If we have a validation error then we need to make sure the target
+            // goes back to the form the user was just working on with the
+            // validation error high lighted.
+            // ----------------------------------------------------------------------
 
+            data.setTarget( formId + ".form" );
+
+            data.getMap().put( "fvr", fvr );
+        }
     }
 
     protected Object getApplicationComponent( Form form )

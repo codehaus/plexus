@@ -24,7 +24,7 @@ public interface FormRendererManager
 {
     String ROLE = FormRendererManager.class.getName();
 
-    FormRenderer getFormRenderer( String type )
+    FormRenderer lookup( String type )
         throws FormRendererNotFoundException;
 
 }

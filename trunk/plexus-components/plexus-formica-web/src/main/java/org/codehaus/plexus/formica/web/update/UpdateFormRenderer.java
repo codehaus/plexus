@@ -21,10 +21,14 @@ import org.codehaus.plexus.formica.Form;
 import org.codehaus.plexus.formica.web.element.TextElementRenderer;
 import org.codehaus.plexus.formica.web.AbstractFormRenderer;
 import org.codehaus.plexus.formica.web.FormRenderingException;
+import org.codehaus.plexus.formica.web.SummitFormRenderer;
+import org.codehaus.plexus.formica.web.add.AddFormRenderer;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.util.xml.XMLWriter;
+import org.codehaus.plexus.summit.rundata.RunData;
 
 import java.util.Iterator;
+import java.util.Map;
 
 import ognl.Ognl;
 import ognl.OgnlException;
@@ -34,7 +38,7 @@ import ognl.OgnlException;
  * @version $Id$
  */
 public class UpdateFormRenderer
-    extends AbstractFormRenderer
+    extends AddFormRenderer
 {
 
     public String getHeaderTitle( Form form, I18N i18n )
@@ -42,23 +46,20 @@ public class UpdateFormRenderer
         return i18n.getString( form.getAdd().getTitleKey() );
     }
 
-    public void body( Form form, XMLWriter w, I18N i18n, Object data, String baseUrl )
+    public void body( Form form, XMLWriter w, I18N i18n, Object data, String baseUrl, RunData rundata )
         throws FormRenderingException
     {
-        TextElementRenderer r = new TextElementRenderer();
-
         // ----------------------------------------------------------------------
 
         w.startElement( "form" );
 
         w.addAttribute( "method", "post" );
 
-        //TODO: throws an exception if view isn't present
-
-        w.addAttribute( "action", baseUrl + "/" + form.getUpdate().getView() );
+        w.addAttribute( "action", baseUrl );
 
         // ----------------------------------------------------------------------
 
+        // Action
         w.startElement( "input" );
 
         w.addAttribute( "type", "hidden" );
@@ -69,6 +70,18 @@ public class UpdateFormRenderer
 
         w.endElement();
 
+        // View
+        w.startElement( "input" );
+
+        w.addAttribute( "type", "hidden" );
+
+        w.addAttribute( "name", "view" );
+
+        w.addAttribute( "value", form.getUpdate().getView() );
+
+        w.endElement();
+
+        // form id
         w.startElement( "input" );
 
         w.addAttribute( "type", "hidden" );
@@ -79,106 +92,22 @@ public class UpdateFormRenderer
 
         w.endElement();
 
-        // ----------------------------------------------------------------------
-
-        String id = null;
-
-        try
-        {
-            id = (String) Ognl.getValue( form.getKeyExpression(), data );
-        }
-        catch ( OgnlException e )
-        {
-            e.printStackTrace();
-        }
-
+        // Mode
         w.startElement( "input" );
 
         w.addAttribute( "type", "hidden" );
 
-        w.addAttribute( "name", "id" );
+        w.addAttribute( "name", "mode" );
 
-        w.addAttribute( "value", id );
+        w.addAttribute( "value", SummitFormRenderer.MODE_UPDATE );
 
         w.endElement();
 
         // ----------------------------------------------------------------------
 
-        w.startElement( "div" );
-
-        w.addAttribute( "class", "axial" );
-
-        w.startElement( "table" );
-
-        w.addAttribute( "cellpadding", "3" );
-
-        w.addAttribute( "cellspacing", "2" );
-
-        w.addAttribute( "border", "0" );
-
-        for ( Iterator i = form.getElements().iterator(); i.hasNext(); )
-        {
-            Element element = (Element) i.next();
-
-            w.startElement( "tr" );
-
-            // ----------------------------------------------------------------------
-
-            w.startElement( "th" );
-
-            w.writeText( i18n.getString( element.getLabelKey() ) );
-
-            w.endElement();
-
-            // ----------------------------------------------------------------------
-
-            w.startElement( "td" );
-
-            try
-            {
-
-                Object o = null;
-
-                if ( data != null && element.getExpression() != null )
-                {
-                    o = Ognl.getValue( element.getExpression(), data );
-                }
-
-                r.render( element, o, w );
-            }
-            catch ( OgnlException e )
-            {
-                throw new FormRenderingException(
-                    "Error extracting value in " + data + " with the expresion '" + element.getExpression() + "'" );
-            }
-
-            w.endElement();
-
-            // ----------------------------------------------------------------------
-
-            w.endElement();
-        }
-
-        w.endElement();  // table
-
-        w.endElement();  // div
 
         // ----------------------------------------------------------------------
 
-        w.startElement( "div" );
-
-        w.addAttribute( "class", "functnbar2" );
-
-        w.startElement( "input" );
-
-        w.addAttribute( "type", "submit" );
-
-        w.addAttribute( "value", "Submit" );
-
-        w.endElement(); // input
-
-        w.endElement(); // div
-
-        w.endElement();
+        renderElements( form, w, i18n, data, rundata );
     }
 }
