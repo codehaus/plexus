@@ -34,14 +34,14 @@ public class UpdateEntity
     {
         Map m = new HashMap();
 
-        m.put( "id", entityId );
+        m.put( ID, validateEntityId( entityId ) );
 
-        Object entity = Ognl.getValue( form.getLookupExpression(), m, getApplicationComponent( form ) );
+        Object entity = Ognl.getValue( validateExpression( form.getLookupExpression() ), m, getApplicationComponent( form ) );
 
-        fm.populate( form.getId(), map, entity );
+        formManager.populate( form.getId(), map, entity );
 
-        m.put( "entity", entity );
+        m.put( ENTITY, entity );
 
-        Ognl.getValue( form.getUpdate().getExpression(), m, getApplicationComponent( form ) );
+        Ognl.getValue( validateExpression( form.getUpdate().getExpression() ), m, getApplicationComponent( form ) );
     }
 }
