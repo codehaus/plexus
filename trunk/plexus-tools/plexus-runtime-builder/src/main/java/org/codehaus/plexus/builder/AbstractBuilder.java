@@ -22,45 +22,53 @@ package org.codehaus.plexus.builder;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.velocity.VelocityComponent;
-import org.codehaus.plexus.util.Os;
-import org.codehaus.plexus.util.InterpolationFilterReader;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.cli.Commandline;
-import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
-import org.apache.maven.project.MavenProjectBuilder;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
+import org.apache.maven.artifact.MavenMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectBuilder;
+import org.apache.maven.project.ProjectBuildingException;
 import org.apache.maven.repository.RepositoryUtils;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.exception.ResourceNotFoundException;
+import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.InterpolationFilterReader;
+import org.codehaus.plexus.util.Os;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.cli.Commandline;
+import org.codehaus.plexus.velocity.VelocityComponent;
 
-import java.io.IOException;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
-import java.io.FileWriter;
 import java.util.Map;
 import java.util.Set;
+import java.util.Iterator;
+import java.util.HashSet;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
-public class AbstractBuilder
+public abstract class AbstractBuilder
     extends AbstractLogEnabled
 {
     protected ArtifactRepository localRepository;
 
     protected MavenProject project;
+
+    protected String baseDirectory;
 
     // ----------------------------------------------------------------------
     // Components
@@ -71,6 +79,12 @@ public class AbstractBuilder
     protected MavenProjectBuilder projectBuilder;
 
     protected ArtifactResolver artifactResolver;
+
+    // ----------------------------------------------------------------------
+    // Abstract methods
+    // ----------------------------------------------------------------------
+
+    protected abstract void createDirectoryStructure();
 
     // ----------------------------------------------------------------------
     //
@@ -94,6 +108,11 @@ public class AbstractBuilder
     public Set getRemoteRepositories()
     {
         return RepositoryUtils.mavenToWagon( project.getRepositories() );
+    }
+
+    public void setBaseDirectory( String baseDirectory )
+    {
+        this.baseDirectory = baseDirectory;
     }
 
     // ----------------------------------------------------------------------
@@ -195,5 +214,103 @@ public class AbstractBuilder
         {
             throw new PlexusRuntimeBuilderException( "Error while resolving artifact. id=" + artifact.getId() + ":" );
         }
+    }
+
+    protected boolean isPlexusArtifact( Artifact artifact, Set plexusArtifacts )
+    {
+        for ( Iterator it = plexusArtifacts.iterator(); it.hasNext(); )
+        {
+            Artifact a = (Artifact) it.next();
+
+            if ( a.getGroupId().equals( artifact.getGroupId() ) && a.getArtifactId().equals( artifact.getArtifactId() ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected void copyArtifact( Artifact artifact, File destination )
+        throws IOException
+    {
+        String dest = destination.getAbsolutePath().substring( baseDirectory.length() + 1 );
+
+        getLogger().info( "Adding " + artifact.getId() + " to " + dest );
+
+        FileUtils.copyFileToDirectory( artifact.getFile(), destination );
+
+        //artifacts.remove( artifact.getId() );
+    }
+
+    protected MavenProject buildProject( File file )
+        throws PlexusRuntimeBuilderException
+    {
+        try
+        {
+            return projectBuilder.build( file );
+        }
+        catch ( ProjectBuildingException ex )
+        {
+            throw new PlexusRuntimeBuilderException( "Error while building project: " + ex );
+        }
+    }
+
+    protected final static String[][] bootArtifacts =
+        {
+            {"classworlds", "classworlds"}
+        };
+
+    protected boolean isBootArtifact( Artifact artifact )
+    {
+        for ( int i = 0; i < bootArtifacts.length; i++ )
+        {
+            String groupId = artifact.getGroupId();
+
+            String artifactId = artifact.getArtifactId();
+
+            if ( bootArtifacts[i][0].equals( groupId ) &&
+                bootArtifacts[i][1].equals( artifactId ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected Set findArtifacts( MavenProject project )
+        throws PlexusRuntimeBuilderException
+    {
+        Set artifacts = findArtifacts( project, getRemoteRepositories(), getLocalRepository() );
+
+        // ----------------------------------------------------------------------
+        // Find the artifact for the application itself
+        // ----------------------------------------------------------------------
+
+        Artifact artifact = resolve( project.getGroupId(), project.getArtifactId(), project.getVersion(), project.getType() );
+
+        artifacts.add( artifact );
+
+        return artifacts;
+    }
+
+    protected Set findArtifacts( MavenProject project, Set repositories, ArtifactRepository localRepository )
+        throws PlexusRuntimeBuilderException
+    {
+        ArtifactResolutionResult result;
+
+        MavenMetadataSource metadata = new MavenMetadataSource( repositories, localRepository, artifactResolver );
+
+        try
+        {
+            result = artifactResolver.resolveTransitively( project.getArtifacts(), repositories, localRepository, metadata );
+        }
+        catch ( ArtifactResolutionException ex )
+        {
+            throw new PlexusRuntimeBuilderException( "Exception while getting artifacts for " + project.getId() + ".", ex );
+        }
+
+        return new HashSet( result.getArtifacts().values() );
     }
 }
