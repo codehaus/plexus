@@ -1,7 +1,7 @@
 package org.codehaus.plexus.hibernate;
 
 /*
- * LISENCE
+ * LICENSE
  */
 
 import org.codehaus.plexus.PlexusTestCase;
