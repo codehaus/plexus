@@ -1,9 +1,9 @@
-package org.codehaus.plexus.application.service;
-
-import java.io.File;
+package org.codehaus.plexus.application.supervisor;
 
 /*
- * Copyright (c) 2004, Codehaus.org
+ * The MIT License
+ *
+ * Copyright (c) 2004, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -25,13 +25,19 @@ import java.io.File;
  */
 
 /**
- * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
- * @since Jul 17, 2004
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
  */
-public interface ServiceDiscoverer
+public class SupervisorException
+    extends Exception
 {
-    final String ROLE = ServiceDiscoverer.class.getName();
+    public SupervisorException( String message )
+    {
+        super( message );
+    }
 
-    void deploy( String name, String jar )
-        throws Exception;
+    public SupervisorException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
 }

@@ -1,9 +1,9 @@
-package org.codehaus.plexus.application.service;
-
-import java.io.File;
+package org.codehaus.plexus.application.supervisor;
 
 /*
- * Copyright (c) 2004, Codehaus.org
+ * The MIT License
+ *
+ * Copyright (c) 2004, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,14 +24,13 @@ import java.io.File;
  * SOFTWARE.
  */
 
-/**
- * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
- * @since Jul 17, 2004
- */
-public interface ServiceDiscoverer
-{
-    final String ROLE = ServiceDiscoverer.class.getName();
+import java.io.File;
 
-    void deploy( String name, String jar )
-        throws Exception;
+/**
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
+ */
+public interface SupervisorListener
+{
+    void onJarDiscovered( File jar );
 }

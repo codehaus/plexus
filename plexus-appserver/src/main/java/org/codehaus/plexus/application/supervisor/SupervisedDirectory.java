@@ -1,7 +1,9 @@
-package org.codehaus.plexus.application.deploy;
+package org.codehaus.plexus.application.supervisor;
 
 /*
- * Copyright (c) 2004, Codehaus.org
+ * The MIT License
+ *
+ * Copyright (c) 2004, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,41 +24,39 @@ package org.codehaus.plexus.application.deploy;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.application.event.ApplicationListener;
-import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
+import java.io.File;
 
 /**
- * @author Peter Donald
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
  */
-public interface ApplicationDeployer
+class SupervisedDirectory
 {
-    String ROLE = ApplicationDeployer.class.getName();
+    private File directory;
 
-    // ----------------------------------------------------------------------
-    // Deployment
-    // ----------------------------------------------------------------------
-
-    void deploy( String name, String location )
-        throws Exception;
-
-    void redeploy( String name, String location )
-        throws Exception;
-
-    void undeploy( String name )
-        throws Exception;
-
-    // ----------------------------------------------------------------------
-    // Listeners
-    // ----------------------------------------------------------------------
-
-    void addApplicationListener( ApplicationListener listener );
-
-    void removeApplicationListener( ApplicationListener listener );
+    private SupervisorListener listener;
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
-    ApplicationRuntimeProfile getApplicationRuntimeProfile( String applicationName )
-        throws Exception;
+    public SupervisedDirectory( File directory, SupervisorListener listener )
+    {
+        this.directory = directory;
+        this.listener = listener;
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    public File getDirectory()
+    {
+        return directory;
+    }
+
+    public SupervisorListener getListener()
+    {
+        return listener;
+    }
 }
