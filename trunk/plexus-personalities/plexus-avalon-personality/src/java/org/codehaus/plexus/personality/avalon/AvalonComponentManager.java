@@ -1,13 +1,14 @@
 package org.codehaus.plexus.personality.avalon;
 
-import org.apache.avalon.framework.service.ServiceException;
-import org.apache.avalon.framework.service.ServiceManager;
-import org.apache.avalon.framework.component.ComponentManager;
 import org.apache.avalon.framework.component.Component;
 import org.apache.avalon.framework.component.ComponentException;
+import org.apache.avalon.framework.component.ComponentManager;
+import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 
 /**
  * Extended <code>ServiceManager</code> implementation.
@@ -20,20 +21,24 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
  */
 
 public class AvalonComponentManager
-    extends AbstractLogEnabled
-    implements ComponentManager
+    implements ComponentManager, Contextualizable
 {
+    /** Plexus component repository. */
     private PlexusContainer container;
 
-    public AvalonComponentManager( PlexusContainer container )
-    {
-        if ( container == null )
-        {
-            throw new IllegalStateException( "PlexusContainer is null." );
-        }
+    // ----------------------------------------------------------------------
+    // Contextualizable
+    // ----------------------------------------------------------------------
 
-        this.container = container;
+    public void contextualize( Context context )
+        throws ContextException
+    {
+        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
     }
+
+    // ----------------------------------------------------------------------
+    // Avalon ComponentManager API
+    // ----------------------------------------------------------------------
 
     public Component lookup( String role )
         throws ComponentException
