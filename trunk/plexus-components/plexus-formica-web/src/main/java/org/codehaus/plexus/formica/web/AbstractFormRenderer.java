@@ -1,12 +1,5 @@
 package org.codehaus.plexus.formica.web;
 
-import com.thoughtworks.xstream.xml.XMLWriter;
-import com.thoughtworks.xstream.xml.text.PrettyPrintXMLWriter;
-import org.codehaus.plexus.formica.Form;
-import org.codehaus.plexus.i18n.I18N;
-
-import java.io.Writer;
-
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
  *
@@ -22,6 +15,13 @@ import java.io.Writer;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import com.thoughtworks.xstream.xml.XMLWriter;
+import com.thoughtworks.xstream.xml.text.PrettyPrintXMLWriter;
+import org.codehaus.plexus.formica.Form;
+import org.codehaus.plexus.i18n.I18N;
+
+import java.io.Writer;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

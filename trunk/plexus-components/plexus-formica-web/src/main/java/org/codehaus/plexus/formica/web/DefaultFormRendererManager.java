@@ -1,10 +1,5 @@
 package org.codehaus.plexus.formica.web;
 
-import org.codehaus.plexus.formica.web.element.ElementRenderer;
-import org.codehaus.plexus.formica.web.element.manager.ElementRendererNotFoundException;
-
-import java.util.Map;
-
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
  *
@@ -20,6 +15,8 @@ import java.util.Map;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import java.util.Map;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
