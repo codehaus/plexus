@@ -142,15 +142,31 @@ public class DefaultServiceDiscoverer
             getLogger().error( "Could not extract " + serviceDir + ".", e );
         }
 
-        // Add jars to the repo
-        File libdir = new File( serviceDir, "lib" );
+        // ----------------------------------------------------------------------
+        // Set up the classpath for the service
+        // ----------------------------------------------------------------------
 
-        if ( !libdir.exists() )
+        File libDir = new File( serviceDir, "lib" );
+
+        if ( !libDir.exists() )
         {
             throw new Exception( "The service must have a /lib directory." );
         }
 
-        addJars( libdir );
+        addJars( libDir );
+
+        File classesDir = new File( serviceDir, "classes" );
+
+        if ( !classesDir.exists() )
+        {
+            throw new Exception( "The service must have a /classesDir directory." );
+        }
+
+        addClasses( classesDir );
+
+        // ----------------------------------------------------------------------
+        // Discover any components in the service
+        // ----------------------------------------------------------------------
 
         container.discoverComponents( container.getCoreRealm() );
 
@@ -227,9 +243,15 @@ public class DefaultServiceDiscoverer
         }
     }
 
-    private void addJars( File serviceDir )
+    private void addJars( File jarDir )
         throws Exception
     {
-        container.addJarRepository( serviceDir );
+        container.addJarRepository( jarDir );
+    }
+
+    private void addClasses( File classes )
+        throws Exception
+    {
+        container.addJarResource( classes );
     }
 }
