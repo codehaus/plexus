@@ -25,19 +25,18 @@ package org.codehaus.plexus.builder.runtime;
  */
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
-import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.settings.MavenSettings;
 import org.apache.maven.model.Repository;
+import org.apache.maven.settings.MavenSettings;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
@@ -55,6 +54,7 @@ public class PlexusRuntimeBuilderTest
         PlexusRuntimeBuilder runtimeBuilder = (PlexusRuntimeBuilder) lookup( PlexusRuntimeBuilder.ROLE );
 
         ArtifactRepositoryFactory artifactRepositoryFactory = (ArtifactRepositoryFactory) lookup( ArtifactRepositoryFactory.ROLE );
+
         // ----------------------------------------------------------------------
         // Clean the output directory
         // ----------------------------------------------------------------------
@@ -72,6 +72,7 @@ public class PlexusRuntimeBuilderTest
         Repository repository = new Repository();
 
         repository.setId( "local" );
+
         repository.setUrl( "file://" + getTestFile( "src/test/repository" ).getAbsolutePath() );
 
         MavenSettings settings = new MavenSettings();
@@ -81,26 +82,14 @@ public class PlexusRuntimeBuilderTest
         ArtifactRepository localRepository = artifactRepositoryFactory.
             createArtifactRepository( repository, settings, repositoryLayout );
 
-        Set extraArtifacts = new HashSet();
-/*
-        Artifact a1 = new DefaultArtifact( "group1", "artifact1", "2.0", "jar" );
+        Set projectArtifacts = new HashSet();
 
-        a1.setPath( localRepository.getBasedir() + "/group1/jars/artifact1-2.0.jar" );
+        projectArtifacts.add( makeArtifact( "classworlds", "classworlds", "1.1-alpha-1" ) );
+        projectArtifacts.add( makeArtifact( "plexus", "plexus-container-default", "1.0-alpha-2" ) );
+        projectArtifacts.add( makeArtifact( "plexus", "plexus-container-artifact", "1.0-alpha-2" ) );
+        projectArtifacts.add( makeArtifact( "plexus", "plexus-appserver", "1.0-alpha-1-SNAPSHOT" ) );
+        projectArtifacts.add( makeArtifact( "plexus", "plexus-utils", "1.0-alpha-2" ) );
 
-        extraArtifacts.add( a1 );
-
-        Artifact a2 = new DefaultArtifact( "group2", "artifact2", "1.0", "jar" );
-
-        a2.setPath( localRepository.getBasedir() + "/group2/jars/artifact2-1.0.jar" );
-
-        extraArtifacts.add( a2 );
-
-        Artifact a3 = new DefaultArtifact( "plexus", "plexus-container-default", "1.0-alpha-2-SNAPSHOT", "jar" );
-
-        a3.setPath( localRepository.getBasedir() + "/plexus/jars/plexus-container-default-1.0-alpha-2-SNAPSHOT.jar" );
-
-        extraArtifacts.add( a3 );
-*/
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
@@ -110,7 +99,20 @@ public class PlexusRuntimeBuilderTest
         File configurationPropertiesFile = getTestFile( "src/test/resources/configuration.properties" );
 
         runtimeBuilder.build( workingDirectory,
-                              remoteRepositories, localRepository, extraArtifacts,
+                              remoteRepositories, localRepository, projectArtifacts,
                               plexusConfiguration, configurationPropertiesFile );
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    private Artifact makeArtifact( String groupId, String artifactId, String version )
+    {
+        Artifact artifact = new DefaultArtifact( groupId, artifactId, version, "jar" );
+
+        artifact.setFile( getTestFile( "src/test/repository/" + groupId + "/jars/" + artifact + "-" + version + ".jar" ) );
+
+        return artifact;
     }
 }

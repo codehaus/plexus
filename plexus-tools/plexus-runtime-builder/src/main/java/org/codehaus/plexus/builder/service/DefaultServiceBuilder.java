@@ -115,9 +115,9 @@ public class DefaultServiceBuilder
         {
             Set excludedArtifacts = new HashSet();
 
-            excludedArtifacts.addAll( findArtifacts( remoteRepositories, localRepository, BOOT_ARTIFACTS, false, null ) );
+            excludedArtifacts.addAll( getBootArtifacts( projectArtifacts, remoteRepositories, localRepository ) );
 
-            excludedArtifacts.addAll( findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false, null ) );
+            excludedArtifacts.addAll( getBootArtifacts( projectArtifacts, remoteRepositories, localRepository ) );
 
             ArtifactFilter filter = new AndArtifactFilter(
                 new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
