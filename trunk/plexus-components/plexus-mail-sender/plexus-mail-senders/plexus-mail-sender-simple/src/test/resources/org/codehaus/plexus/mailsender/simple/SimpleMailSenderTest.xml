@@ -1,0 +1,12 @@
+<plexus>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.mailsender.MailSender</role>
+      <implementation>org.codehaus.plexus.mailsender.simple.SimpleMailSender</implementation>
+      <configuration>
+        <smtpHost>localhost</smtpHost>
+        <smtpPort>4000</smtpPort>
+      </configuration>
+    </component>
+  </components>
+</plexus>
