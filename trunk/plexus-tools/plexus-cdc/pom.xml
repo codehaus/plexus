@@ -2,7 +2,7 @@
 <project>
   <parent>
     <groupId>plexus</groupId>
-    <artifactId>plexus-tools</artifactId>
+    <artifactId>plexus-tool</artifactId>
     <version>1.0</version>
   </parent>
   <groupId>plexus</groupId>
