@@ -10,19 +10,19 @@
   <packaging>pom</packaging>
   <version>1.0</version>
   <name>Plexus Components Parent Project</name>
+  <!-- 
+    TODO: should this be pushed down to all the dependencies?
+      - a more stable API JAR may be useful, for the interfaces and classes such as AbstractLogEnabled
+  -->
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
       <version>1.0-alpha-2-SNAPSHOT</version>
     </dependency>
-    <dependency>
-      <groupId>plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>1.0-alpha-2-SNAPSHOT</version>
-    </dependency>
   </dependencies>
   <modules>
+    <module>plexus-action</module>
     <module>plexus-archiver</module>
     <module>plexus-command</module>
     <module>plexus-formica-web</module>
@@ -30,6 +30,7 @@
     <module>plexus-hibernate</module>
     <module>plexus-jdo</module>
     <module>plexus-jetty</module>
+    <module>plexus-mail-sender</module>
     <module>plexus-summit</module>
     <module>plexus-velocity</module>
     <module>plexus-xmlrpc</module>
