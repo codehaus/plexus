@@ -2,7 +2,6 @@ package org.codehaus.plexus.builder;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -52,6 +51,7 @@ import org.codehaus.plexus.velocity.VelocityComponent;
  */
 public class DefaultPlexusBuilder
     extends AbstractLogEnabled
+    implements PlexusBuilder
 {
     /** */
     public final static String ROLE = DefaultPlexusBuilder.class.getName();
@@ -216,7 +216,7 @@ public class DefaultPlexusBuilder
     // PlexusBuilder Implementation
 
     public void build()
-        throws Exception
+        throws PlexusRuntimeBuilderException
     {
         ///////////////////////////////////////////////////////////////////////
         // Verify parameters
@@ -226,37 +226,52 @@ public class DefaultPlexusBuilder
         ///////////////////////////////////////////////////////////////////////
         // Execute
 
-        checkBaseDirectory();
-
-        checkMavenRepoLocal();
-
-        createDirectoryStructure();
-
-        createClassworldsConfiguration();
-
-        createLauncherScripts();
-
-        artifacts = new HashMap();
-
-        findArtifacts( artifacts, project.getArtifacts(), mavenRepoLocal, project.getRepositories() );
-
-        copyPlexusDependencies();
-
-        copyDependencies();
-
-        processMainConfiguration();
-
-        processConfigurations();
-
-        javaServiceWrapper();
-
-        packageJavaRuntime();
-
-        executable( baseDirectory + "/bin/plexus.sh" );
+        try
+        {
+            checkBaseDirectory();
+    
+            checkMavenRepoLocal();
+    
+            createDirectoryStructure();
+    
+            createClassworldsConfiguration();
+    
+            createLauncherScripts();
+    
+            artifacts = new HashMap();
+    
+            findArtifacts( artifacts, project.getArtifacts(), mavenRepoLocal, project.getRepositories() );
+    
+            copyPlexusDependencies();
+    
+            copyDependencies();
+    
+            processMainConfiguration();
+    
+            processConfigurations();
+    
+            javaServiceWrapper();
+    
+            packageJavaRuntime();
+    
+            executable( baseDirectory + "/bin/plexus.sh" );
+        }
+        catch( PlexusRuntimeBuilderException ex )
+        {
+            throw ex;
+        }
+        catch( ProjectBuildingException ex)
+        {
+            throw new PlexusRuntimeBuilderException( "Exception while building the runtime.", ex );
+        }
+        catch( IOException ex)
+        {
+            throw new PlexusRuntimeBuilderException( "Exception while building the runtime.", ex );
+        }
     }
 
     private void executable( String file )
-        throws Exception
+        throws IOException
     {
         if ( Os.isFamily( "unix" ) )
         {
@@ -273,7 +288,7 @@ public class DefaultPlexusBuilder
     }
 
     private void checkBaseDirectory()
-        throws Exception
+        throws PlexusRuntimeBuilderException
     {
         if ( baseDirectory == null )
         {
@@ -291,7 +306,7 @@ public class DefaultPlexusBuilder
     }
 
     private void checkMavenRepoLocal()
-        throws Exception
+        throws PlexusRuntimeBuilderException
     {
         if ( mavenRepoLocal == null )
         {
@@ -307,7 +322,7 @@ public class DefaultPlexusBuilder
     }
 
     private void createDirectoryStructure()
-        throws Exception
+        throws PlexusRuntimeBuilderException
     {
         mkdir( applicationBaseDirectory );
 
@@ -323,7 +338,7 @@ public class DefaultPlexusBuilder
     }
 
     private void copyPlexusDependencies()
-        throws Exception
+        throws ProjectBuildingException, IOException
     {
         File bootPath = new File( baseDirectory, CORE + "/boot" );
 
@@ -489,13 +504,13 @@ public class DefaultPlexusBuilder
     }
 */
     private void createClassworldsConfiguration()
-        throws Exception
+        throws PlexusRuntimeBuilderException, IOException
     {
         mergeTemplate( CLASSWORLDS_TEMPLATE, new File( new File( baseDirectory, "conf" ), "classworlds.conf" ) );
     }
 
     private void createLauncherScripts()
-        throws Exception
+        throws PlexusRuntimeBuilderException, IOException
     {
         mergeTemplate( UNIX_LAUNCHER_TEMPLATE, new File( new File( baseDirectory, "bin" ), "plexus.sh" ) );
 
@@ -592,15 +607,15 @@ public class DefaultPlexusBuilder
     }
 */
     private void processMainConfiguration()
-        throws PlexusBuilderException
+        throws PlexusRuntimeBuilderException, IOException
     {
         if ( plexusConfiguration == null )
-            throw new PlexusBuilderException( "The plexus configuration file must be set." );
+            throw new PlexusRuntimeBuilderException( "The plexus configuration file must be set." );
 
         File in = new File( plexusConfiguration );
 
         if ( !in.exists() )
-            throw new PlexusBuilderException( "The plexus configuration file doesn't exist." );
+            throw new PlexusRuntimeBuilderException( "The plexus configuration file doesn't exist." );
 
         File out = new File( baseDirectory, "conf/plexus.conf" );
 
@@ -608,7 +623,7 @@ public class DefaultPlexusBuilder
     }
 
     private void processConfigurations()
-        throws PlexusBuilderException
+        throws PlexusRuntimeBuilderException, IOException
     {
         if ( configurationsDirectory == null )
         {
@@ -617,7 +632,7 @@ public class DefaultPlexusBuilder
 
         if ( configurationPropertiesFile == null )
         {
-            throw new PlexusBuilderException( "Missing property: configurationPropertiesFile." );
+            throw new PlexusRuntimeBuilderException( "Missing property: configurationPropertiesFile." );
         }
 
         DirectoryScanner scanner = new DirectoryScanner();
@@ -643,43 +658,29 @@ public class DefaultPlexusBuilder
     }
 
     private void filterCopy( File in, File out, Map map )
-        throws PlexusBuilderException
+        throws IOException
     {
-        try
-        {
-            filterCopy( new FileReader( in ), out, map );
-        }
-        catch( FileNotFoundException ex )
-        {
-            throw new PlexusBuilderException( "Could not find input file: " + in.getPath(), ex );
-        }
+        filterCopy( new FileReader( in ), out, map );
     }
 
     private void filterCopy( InputStream in, File out, Map map )
-        throws PlexusBuilderException
+        throws IOException
     {
         filterCopy( new InputStreamReader( in ), out, map );
     }
 
     private void filterCopy( Reader in, File out, Map map )
-        throws PlexusBuilderException
+        throws IOException
     {
         InterpolationFilterReader reader = new InterpolationFilterReader( in, map, "@", "@" );
 
-        try
-        {
-            Writer writer = new FileWriter( out );
+        Writer writer = new FileWriter( out );
 
-            IOUtil.copy( reader, writer );
-        }
-        catch( IOException ex )
-        {
-            throw new PlexusBuilderException( "Exception while copying the resource.", ex );
-        }
+        IOUtil.copy( reader, writer );
     }
 
     private Properties getConfigurationProperties()
-        throws PlexusBuilderException
+        throws PlexusRuntimeBuilderException
     {
         if ( configurationProperties == null )
         {
@@ -691,7 +692,7 @@ public class DefaultPlexusBuilder
             }
             catch( IOException ex )
             {
-                throw new PlexusBuilderException( "Exception while reading configuration file: " + configurationPropertiesFile, ex );
+                throw new PlexusRuntimeBuilderException( "Exception while reading configuration file: " + configurationPropertiesFile, ex );
             }
 
             configurationProperties = new Properties();
@@ -708,7 +709,7 @@ public class DefaultPlexusBuilder
     }
 
     private void javaServiceWrapper()
-        throws Exception
+        throws PlexusRuntimeBuilderException, IOException
     {
         ClassLoader cl = getClass().getClassLoader();
 
@@ -744,7 +745,7 @@ public class DefaultPlexusBuilder
     }
 
     private void copyResources( String directory, ClassLoader cl, String[] resources )
-        throws Exception
+        throws IOException
     {
         InputStream is;
 
@@ -786,7 +787,7 @@ public class DefaultPlexusBuilder
     }
 
     private void packageJavaRuntime()
-        throws Exception
+        throws IOException
     {
     }
 
