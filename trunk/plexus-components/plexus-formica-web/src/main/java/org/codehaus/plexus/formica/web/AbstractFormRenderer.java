@@ -21,6 +21,11 @@ import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.util.xml.XMLWriter;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 import org.codehaus.plexus.summit.rundata.RunData;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusConstants;
 
 import java.io.Writer;
 import java.util.Map;
@@ -30,8 +35,10 @@ import java.util.Map;
  * @version $Id$
  */
 public abstract class AbstractFormRenderer
-    implements FormRenderer
+    implements FormRenderer, Contextualizable
 {
+    protected PlexusContainer container;
+
     // ----------------------------------------------------------------------
     // Render
     // ----------------------------------------------------------------------
@@ -57,8 +64,6 @@ public abstract class AbstractFormRenderer
         w.startElement( "div" );
 
         w.addAttribute( "class", "app" );
-
-        // ----------------------------------------------------------------------
 
         w.startElement( "h3" );
 
@@ -87,5 +92,15 @@ public abstract class AbstractFormRenderer
         w.endElement(); // p
 
         w.endElement(); // div
+    }
+
+    // ----------------------------------------------------------------------
+    // Lifecylce Management
+    // ----------------------------------------------------------------------
+
+    public void contextualize( Context context )
+        throws ContextException
+    {
+        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
     }
 }

@@ -22,6 +22,7 @@ import org.codehaus.plexus.formica.Element;
 import org.codehaus.plexus.formica.Form;
 import org.codehaus.plexus.formica.web.AbstractFormRenderer;
 import org.codehaus.plexus.formica.web.FormRenderingException;
+import org.codehaus.plexus.formica.web.SummitFormRenderer;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.util.xml.XMLWriter;
 import org.codehaus.plexus.summit.rundata.RunData;
@@ -41,16 +42,37 @@ public class ViewFormRenderer
         return i18n.getString( form.getView().getTitleKey() );
     }
 
-    public void body( Form form, XMLWriter w, I18N i18n, Object data, String baseUrl, RunData parameters )
+    public void body( Form form, XMLWriter w, I18N i18n, Object data, String baseUrl, RunData rundata )
         throws FormRenderingException
     {
+        String mode = rundata.getParameters().getString( "mode", "add" );
+
+        if ( mode.equals( SummitFormRenderer.MODE_DELETE ) )
+        {
+            w.startElement( "div" );
+
+            w.addAttribute( "class", "warningmessage" );
+
+            w.startElement( "p" );
+
+            w.startElement( "strong" );
+
+            w.writeText( "Are you sure you want to delete this item?" );
+
+            w.endElement();
+
+            w.endElement();
+
+            w.endElement();
+        }
+
         // ----------------------------------------------------------------------
 
         w.startElement( "form" );
 
         w.addAttribute( "method", "post" );
 
-        w.addAttribute( "action", baseUrl + "/" + form.getView() );
+        w.addAttribute( "action", baseUrl );
 
         // ----------------------------------------------------------------------
 
@@ -58,10 +80,6 @@ public class ViewFormRenderer
 
         try
         {
-            //TODO: throw an exception if there is no key expression
-
-            System.out.println( "form.getKeyExpression() = " + form.getKeyExpression() );
-
             id = (String) Ognl.getValue( form.getKeyExpression(), data );
         }
         catch ( OgnlException e )
@@ -113,7 +131,6 @@ public class ViewFormRenderer
 
             try
             {
-
                 Object o = null;
 
                 if ( data != null && element.getExpression() != null )

@@ -43,6 +43,8 @@ public class Element
 
     private String validator;
 
+    private boolean immutable;
+
     private String type = "text";
 
     public Element()
@@ -70,7 +72,9 @@ public class Element
     public String getMessageKey()
     {
         if ( messageKey == null )
+        {
             return getId() + ".message";
+        }
 
         return messageKey;
     }
@@ -78,7 +82,9 @@ public class Element
     public String getErrorMessageKey()
     {
         if ( errorMessageKey == null )
+        {
             return getId() + ".error";
+        }
 
         return errorMessageKey;
     }
@@ -106,6 +112,16 @@ public class Element
     public void setOptional( boolean optional )
     {
         this.optional = optional;
+    }
+
+    public boolean isImmutable()
+    {
+        return immutable;
+    }
+
+    public void setImmutable( boolean immutable )
+    {
+        this.immutable = immutable;
     }
 
     public void setExpression( String populatorExpression )

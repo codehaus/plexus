@@ -50,8 +50,6 @@ public class AddFormRenderer
     public void body( Form form, XMLWriter w, I18N i18n, Object data, String baseUrl, RunData rundata )
         throws FormRenderingException
     {
-        String mode = rundata.getParameters().getString( "mode", "add" );
-
         // ----------------------------------------------------------------------
 
         w.startElement( "form" );
@@ -69,9 +67,18 @@ public class AddFormRenderer
 
         w.addAttribute( "name", "action" );
 
-        w.addAttribute( "value", form.getAdd().getAction() );
+        if ( data != null)
+        {
+            w.addAttribute( "value", form.getUpdate().getAction() );
+        }
+        else
+        {
+            w.addAttribute( "value", form.getAdd().getAction() );
+        }
 
         w.endElement();
+
+        // ----------------------------------------------------------------------
 
         // View
         w.startElement( "input" );
@@ -84,18 +91,7 @@ public class AddFormRenderer
 
         w.endElement();
 
-        // Mode
-        w.startElement( "input" );
-
-        w.addAttribute( "type", "hidden" );
-
-        w.addAttribute( "name", "mode" );
-
-        w.addAttribute( "value", mode  );
-
-        w.endElement();
-
-        //
+        // ----------------------------------------------------------------------
 
         w.startElement( "input" );
 
@@ -113,7 +109,6 @@ public class AddFormRenderer
 
         if ( data != null )
         {
-
             try
             {
                 String id = (String) Ognl.getValue( form.getKeyExpression(), data );
@@ -160,6 +155,11 @@ public class AddFormRenderer
         for ( Iterator i = form.getElements().iterator(); i.hasNext(); )
         {
             Element element = (Element) i.next();
+
+            if ( element.isImmutable() )
+            {
+                continue;
+            }
 
             w.startElement( "tr" );
 

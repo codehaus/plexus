@@ -35,6 +35,8 @@ public class SummitFormRenderer
 
     public static String MODE_VIEW = "view";
 
+    public static String MODE_DELETE = "delete";
+
     public static String MODE_SUMMARY = "summary";
 
     // ----------------------------------------------------------------------
@@ -47,8 +49,6 @@ public class SummitFormRenderer
 
     private FormRendererManager formRendererManager;
 
-    // How to get the collection I need to render summaries
-
     public void render( RunData data, String view, Writer writer )
         throws SummitException, Exception
     {
@@ -56,7 +56,12 @@ public class SummitFormRenderer
 
         String id = target.substring( 0, target.indexOf( "." ) );
 
-        String mode = data.getParameters().getString( MODE );
+        String mode = (String) data.getMap().get( MODE );
+
+        if ( mode == null )
+        {
+            mode = data.getParameters().getString( MODE );
+        }
 
         Object formData = null;
 
@@ -73,7 +78,7 @@ public class SummitFormRenderer
 
             formData = Ognl.getValue( form.getSummaryCollectionExpression(), o );
         }
-        else if ( mode.equals( MODE_UPDATE ) || mode.equals( MODE_VIEW ) )
+        else if ( mode.equals( MODE_UPDATE ) || mode.equals( MODE_VIEW ) || mode.equals( MODE_DELETE ) )
         {
             //TODO: thrown an exception if there is no source role
             //TODO: thrown an exception if there is no lookup expression

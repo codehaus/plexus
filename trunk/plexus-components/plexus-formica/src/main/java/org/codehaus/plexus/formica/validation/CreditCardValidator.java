@@ -39,10 +39,12 @@ package org.codehaus.plexus.formica.validation;
 public class CreditCardValidator
     extends AbstractValidator
 {
-
     private static String AMEX_PREFIX = "34,37,";
+
     private static String VISA_PREFIX = "4";
+
     private static String MASTERCARD_PREFIX = "51,52,53,54,55,";
+
     private static String DISCOVER_PREFIX = "6011";
 
     /**

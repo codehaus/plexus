@@ -21,7 +21,7 @@
       <label-key>field-1-label-key</label-key>
       <message-key>field-1-message-key</message-key>
       <error-message-key>field-1-error-message-key</error-message-key>
-      <type>text</type>
+      <type>text</type>      
     </element>
   </elements>
   <add>
