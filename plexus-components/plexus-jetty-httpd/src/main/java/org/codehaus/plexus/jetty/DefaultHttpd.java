@@ -1,15 +1,16 @@
 package org.codehaus.plexus.jetty;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.HttpRequest;
 import org.mortbay.http.HttpServer;
 import org.mortbay.http.SocketListener;
 import org.mortbay.http.handler.ResourceHandler;
-
-import java.util.Iterator;
-import java.util.List;
 
 public class DefaultHttpd
     implements Httpd, Initializable, Startable
@@ -41,23 +42,26 @@ public class DefaultHttpd
 
         server.addListener( listener );
 
-        for ( Iterator iterator = contexts.iterator(); iterator.hasNext(); )
+        if ( contexts != null )
         {
-            Context context = (Context) iterator.next();
-
-            HttpContext httpContext = new HttpContext();
-
-            httpContext.setContextPath( context.getPath() );
-
-            httpContext.setResourceBase( context.getDocumentRoot() );
-
-            ResourceHandler rh = new ResourceHandler();            
-
-            rh.setAllowedMethods( m );
-
-            httpContext.addHandler( rh );
-
-            server.addContext( httpContext );
+            for ( Iterator iterator = contexts.iterator(); iterator.hasNext(); )
+            {
+                Context context = (Context) iterator.next();
+    
+                HttpContext httpContext = new HttpContext();
+    
+                httpContext.setContextPath( context.getPath() );
+    
+                httpContext.setResourceBase( context.getDocumentRoot() );
+    
+                ResourceHandler rh = new ResourceHandler();            
+    
+                rh.setAllowedMethods( m );
+    
+                httpContext.addHandler( rh );
+    
+                server.addContext( httpContext );
+            }
         }
     }
 

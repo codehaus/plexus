@@ -6,7 +6,7 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-werkflow</artifactId>
-  <version>1.0</version>
+  <version>1.0-alpha-1</version>
   <name>Plexus Werkflow Component</name>
   <dependencies>
     <dependency>
