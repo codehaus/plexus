@@ -159,14 +159,20 @@ public class Invocation
     private void processAsLongName( Map vals, LinkedList argsList )
     {
         String arg = (String)argsList.removeFirst();
+        
+        String key = arg.substring(2);
+        
         int eqPos = arg.indexOf( '=' );
         
-        String key = arg;
-        String value = null;
+        Object value = null;
         if(eqPos > 0) {
-            key = arg.substring(2, eqPos);
+            key = arg.substring(0, eqPos);
             
             value = arg.substring(eqPos+1);
+        }
+        
+        if(value == null) {
+            value = Boolean.TRUE;
         }
         
         vals.put( key, value );
@@ -279,5 +285,10 @@ public class Invocation
         buffer.append( template.getTemplateUsage() );
 
         return buffer;
+    }
+
+    public void setInvocationTemplates( Set invocationTemplates )
+    {
+        this.templates = invocationTemplates;
     }
 }

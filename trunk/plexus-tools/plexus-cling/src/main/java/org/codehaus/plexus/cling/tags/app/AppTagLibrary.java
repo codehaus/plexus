@@ -22,18 +22,18 @@ public class AppTagLibrary extends AbstractMarmaladeTagLibrary
         registerTag("environment", EnvironmentTag.class);
         registerTag("legalUsage", LegalUsageTag.class);
         registerTag("local", LocalClasspathEntryTag.class);
-        registerTag("class", MainClassTag.class);
-        registerTag("method", MainMethodTag.class);
+        registerTag("mainClass", MainClassTag.class);
+        registerTag("mainMethod", MainMethodTag.class);
         registerTag("main", MainTag.class);
         registerTag("optionDescription", OptionDescriptionTag.class);
-        registerTag("longName", OptionLongNameTag.class);
-        registerTag("multiArg", OptionMultiArgTag.class);
-        registerTag("property", OptionPropertyTag.class);
-        registerTag("required", OptionRequiredTag.class);
+        registerTag("optionLongName", OptionLongNameTag.class);
+        registerTag("optionMultiArg", OptionMultiArgTag.class);
+        registerTag("optionProperty", OptionPropertyTag.class);
+        registerTag("optionRequired", OptionRequiredTag.class);
         registerTag("optionSet", OptionSetTag.class);
-        registerTag("shortName", OptionShortNameTag.class);
+        registerTag("optionShortName", OptionShortNameTag.class);
         registerTag("option", OptionTag.class);
-        registerTag("type", OptionTypeTag.class);
+        registerTag("optionType", OptionTypeTag.class);
     }
 
 }
