@@ -5,8 +5,34 @@
     <version>1.0</version>
   </parent>
   <groupId>plexus</groupId>
-  <artifactId>plexus-</artifactId>
+  <artifactId>plexus-jetty</artifactId>
   <version>1.0</version>
+  <name>Plexus Jetty Component</name>
   <dependencies>
+    <dependency>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
+      <version>2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>jetty</groupId>
+      <artifactId>jetty</artifactId>
+      <version>4.2.10</version>
+    </dependency>
+    <dependency>
+      <groupId>tomcat</groupId>
+      <artifactId>jasper-compiler</artifactId>
+      <version>4.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>tomcat</groupId>
+      <artifactId>jasper-runtime</artifactId>
+      <version>4.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-servlet</artifactId>
+      <version>1.0-beta-2-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>

@@ -5,8 +5,15 @@
     <version>1.0</version>
   </parent>
   <groupId>plexus</groupId>
-  <artifactId>plexus-</artifactId>
+  <artifactId>plexus-bayesian</artifactId>
   <version>1.0</version>
+  <name>Plexus Bayesian Component</name>
   <dependencies>
+    <dependency>
+      <groupId>javamail</groupId>
+      <artifactId>javamail</artifactId>
+      <version>1.3.1</version>
+      <url>http://java.sun.com/products/javamail</url>
+    </dependency>
   </dependencies>
 </project>
