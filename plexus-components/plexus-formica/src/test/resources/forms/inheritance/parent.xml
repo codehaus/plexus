@@ -2,8 +2,8 @@
   <id>parent</id>
   <key-expression>key-expression</key-expression>
   <lookup-expression>lookup-expression</lookup-expression>
-  <source-role>source-role</source-role>
   <summary-collection-expression>summary-collection-expression</summary-collection-expression>
+  <source-role>source-role</source-role>
   <elements>
     <element>
       <id>field-0</id>
@@ -25,18 +25,23 @@
     </element>
   </elements>
   <add>
-    <title-key>tpi.title</title-key>
-    <action>addTpi</action>
-    <view>view</view>
+    <title-key>add-title-key</title-key>
+    <action>add-action</action>
+    <view>add-view</view>
   </add>
   <update>
-    <title-key>tpi.title</title-key>
-    <action>updateTpi</action>
+    <title-key>update-title-key</title-key>
+    <action>update-action</action>
     <view>view</view>
   </update>
   <view>
-    <title-key>view.title</title-key>
+    <title-key>view-title-key</title-key>
   </view>
+  <delete>
+    <title-key>delete-title-key</title-key>
+    <action>delete-action</action>
+    <view>delete-view</view>
+  </delete>
   <summary>
     <title-key>title.key</title-key>
     <summary-elements>
