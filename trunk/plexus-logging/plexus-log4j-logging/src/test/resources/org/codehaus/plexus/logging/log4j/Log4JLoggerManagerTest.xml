@@ -36,11 +36,11 @@
             <conversion-pattern>%-4r [%t] %-5p %c %x - %m%n</conversion-pattern>
             <properties>
               <property>
-                <key>file</key>
+                <name>file</name>
                 <value>${plexus.home}/logs/plexus.log</value>
               </property>
               <property>
-                <key>append</key>
+                <name>append</name>
                 <value>true</value>
               </property>
             </properties>
@@ -62,19 +62,19 @@
             <conversion-pattern>%-4r [%t] %-5p %c %x - %m%n</conversion-pattern>
             <properties>
               <property>
-                <key>file</key>
+                <name>file</name>
                 <value>${plexus.home}/logs/plexus-rolling.log</value>
               </property>
               <property>
-                <key>append</key>
+                <name>append</name>
                 <value>true</value>
               </property>
               <property>
-                <key>maxBackupIndex</key>
+                <name>maxBackupIndex</name>
                 <value>10</value>
               </property>
               <property>
-                <key>maxFileSize</key>
+                <name>maxFileSize</name>
                 <value>20</value>
               </property>
             </properties>
