@@ -1,3 +1,14 @@
+<!--
+ |  //TODO: doc client configuration
+ |
+ |  Notes on client configuration:
+ |
+ |  We can make standard components available like valves and pull tools but how the
+ |  valves and pull tools are used in the client application is left up to the client and
+ |  must be done by the client.
+ |
+ -->
+
 <component-set>
   <components>
     <component>
@@ -20,7 +31,7 @@
         <temp-directory>${basedir}/temp</temp-directory>
       </configuration>
     </component>
-    
+
     <!-- Resolvers -->
     <component>
       <role>org.codehaus.plexus.summit.resolver.Resolver</role>
@@ -82,7 +93,7 @@
      | Standard Valves
      |
      | These valves can be used in any Summit webapp but the pipeline must be configured
-     | in order to use them.
+     | by the client in their webapp components.xml.
      |
      -->
 
@@ -122,26 +133,20 @@
       <implementation>org.codehaus.plexus.summit.pull.PullToolValve</implementation>
     </component>
 
-    <!-- Pull Tools -->
-    <component>
-      <role>org.codehaus.plexus.summit.pull.PullService</role>
-      <implementation>org.codehaus.plexus.summit.pull.DefaultPullService</implementation>
-      <configuration>
-        <tools>
-          <tool>
-            <name>link</name>
-            <role>linktool</role>
-            <scope>request</scope>
-          </tool>
-        </tools>
-      </configuration>
-    </component>
+    <!--
+     |
+     | These are standard PullTools that are available for use in any summit webapp but
+     | the PullService itself needs to be configured by the client.
+     |
+     -->
+
     <component>
       <role>linktool</role>
       <implementation>org.codehaus.plexus.summit.pull.tools.TemplateLink</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
       <configuration/>
-    </component>  
+    </component>
+
     <component>
       <role>org.codehaus.plexus.summit.pull.tools.TemplateRenderer</role>
       <implementation>org.codehaus.plexus.summit.pull.tools.TemplateRenderer</implementation>
