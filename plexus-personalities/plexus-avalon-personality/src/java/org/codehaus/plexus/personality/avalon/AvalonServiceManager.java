@@ -2,9 +2,12 @@ package org.codehaus.plexus.personality.avalon;
 
 import org.apache.avalon.framework.service.ServiceException;
 import org.apache.avalon.framework.service.ServiceManager;
+import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 
 /**
  * Extended <code>ServiceManager</code> implementation.
@@ -17,29 +20,19 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
  */
 
 public class AvalonServiceManager
-    extends AbstractLogEnabled
-    implements ServiceManager
+    implements ServiceManager, Contextualizable
 {
     /** Plexus component repository. */
     private PlexusContainer container;
 
     // ----------------------------------------------------------------------
-    // Constructors
+    // Contextualizable
     // ----------------------------------------------------------------------
 
-    /**
-     * Construct.
-     *
-     * @todo We shouldn't be handing the parent container to the child here.
-     */
-    public AvalonServiceManager( PlexusContainer container )
+    public void contextualize( Context context )
+        throws ContextException
     {
-        if ( container == null )
-        {
-            throw new IllegalStateException( "PlexusContainer is null." );
-        }
-
-        this.container = container;
+        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
     }
 
     // ----------------------------------------------------------------------
