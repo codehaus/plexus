@@ -1,16 +1,32 @@
 package org.codehaus.plexus.formica;
 
+/*
+ * Copyright (c) 2004, Codehaus.org
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.formica.validation.FormValidationResult;
 import org.codehaus.plexus.formica.validation.Validator;
-import org.codehaus.plexus.formica.web.FormRenderer;
-import org.codehaus.plexus.formica.web.FormRendererManager;
 import org.codehaus.plexus.i18n.I18N;
 
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,21 +39,12 @@ public class DefaultFormManagerTest
 {
     private FormManager formManager;
 
-    private FormRendererManager formRendererManager;
-
-    public DefaultFormManagerTest( String s )
-    {
-        super( s );
-    }
-
     public void setUp()
         throws Exception
     {
         super.setUp();
 
         formManager = (FormManager) lookup( FormManager.ROLE );
-
-        formRendererManager = (FormRendererManager) lookup( FormRendererManager.ROLE );
     }
 
     public void testValidatorInstantiation()
@@ -212,77 +219,4 @@ public class DefaultFormManagerTest
 
         return data;
     }
-
-    public void testAddFormRending()
-        throws Exception
-    {
-        Writer w = new OutputStreamWriter( System.out );
-
-        Form form = formManager.getForm( "login" );
-
-        I18N i18n = (I18N) lookup( I18N.ROLE );
-
-        FormRenderer renderer = formRendererManager.getFormRenderer( "add" );
-
-        renderer.render( form, w, i18n, getValidElementData(), "http://foo/bar" );
-
-        w.flush();
-    }
-
-    public void testSummaryFormRendering()
-        throws Exception
-    {
-        Writer w = new OutputStreamWriter( System.out );
-
-        Form form = formManager.getForm( "tpi" );
-
-        I18N i18n = (I18N) lookup( I18N.ROLE );
-
-        FormRenderer renderer = formRendererManager.getFormRenderer( "summary" );
-
-        Collection c = new ArrayList();
-
-        TargetObject o1 = new TargetObject();
-
-        o1.setField0( "field 0 value [1]" );
-
-        o1.setField1( "field 1 value [1]" );
-
-        c.add( o1 );
-
-        TargetObject o2 = new TargetObject();
-
-        o2.setField0( "field 0 value [2]" );
-
-        o2.setField1( "field 1 value [2]" );
-
-        c.add( o2 );
-
-        renderer.render( form, w, i18n, c, "http://foo/bar" );
-
-        w.flush();
-    }
-
-    public void testViewFormRendering()
-        throws Exception
-    {
-        Writer w = new OutputStreamWriter( System.out );
-
-        Form form = formManager.getForm( "tpi" );
-
-        I18N i18n = (I18N) lookup( I18N.ROLE );
-
-        FormRenderer renderer = formRendererManager.getFormRenderer( "view" );
-
-        TargetObject o1 = new TargetObject();
-
-        o1.setField0( "field 0 value [1]" );
-
-        o1.setField1( "field 1 value [1]" );
-
-        renderer.render( form, w, i18n, o1, "http://foo/bar" );
-
-        w.flush();
-    }
-
 }
