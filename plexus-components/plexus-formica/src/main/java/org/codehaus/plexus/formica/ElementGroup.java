@@ -25,6 +25,7 @@ package org.codehaus.plexus.formica;
 import org.codehaus.plexus.formica.validation.group.GroupValidator;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -74,6 +75,24 @@ public class ElementGroup
         elements.add( element );
     }
 
+    public Element getElement( String id )
+    {
+        Element retValue = null;
+
+        for ( Iterator iterator = elements.iterator(); iterator.hasNext(); )
+        {
+            Element element = (Element) iterator.next();
+
+            if ( element.getId().equals( id ) )
+            {
+                retValue = element;
+
+                break;
+            }
+        }
+        return retValue;
+    }
+    
     public void setValidatorObject( GroupValidator validatorObject )
     {
         this.validatorObject = validatorObject;

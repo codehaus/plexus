@@ -22,13 +22,16 @@ package org.codehaus.plexus.formica.population;
  * SOFTWARE.
  */
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import ognl.Ognl;
 import ognl.OgnlException;
-import org.codehaus.plexus.formica.Form;
-import org.codehaus.plexus.formica.Element;
 
-import java.util.Iterator;
-import java.util.Map;
+import org.codehaus.plexus.formica.Element;
+import org.codehaus.plexus.formica.ElementGroup;
+import org.codehaus.plexus.formica.Form;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -49,7 +52,31 @@ public class OgnlPopulator
         // target object with the said value.
         // ----------------------------------------------------------------------
 
-        for ( Iterator i = form.getElements().iterator(); i.hasNext(); )
+        if ( form.getElements() != null )
+            populateElements(data, target, form.getElements());
+        
+        if ( form.getElementGroups() != null )
+        {
+            for ( Iterator itr = form.getElementGroups().iterator(); itr.hasNext(); )
+            {
+                ElementGroup group = (ElementGroup) itr.next();
+                
+                if ( group.getElements() != null )
+                    populateElements(data, target, group.getElements());
+            }
+        }
+    }
+
+    /**
+     * @param data
+     * @param target
+     * @param elements
+     * @throws TargetPopulationException
+     */
+    private void populateElements(Map data, Object target, List elements)
+        throws TargetPopulationException
+    {
+        for ( Iterator i = elements.iterator(); i.hasNext(); )
         {
             Element element = (Element) i.next();
 

@@ -52,13 +52,17 @@ public class MatchValidator
             Element element = (Element) iterator.next();
 
             String pattern = (String) formData.get( element.getId() );
-
+            if ( pattern == null )
+                pattern = "";
+            
             while ( iterator.hasNext() )
             {
                 element = (Element) iterator.next();
 
                 String currentPattern = (String) formData.get( element.getId() );
-
+                if ( currentPattern == null )
+                    currentPattern = "";
+                
                 if ( !pattern.equals( currentPattern ) )
                 {
                     elementsMatch = false;
