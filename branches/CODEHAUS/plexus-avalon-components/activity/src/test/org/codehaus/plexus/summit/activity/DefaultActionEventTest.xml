@@ -1,0 +1,15 @@
+<plexus>
+  <components>
+
+    <component>
+      <role>org.codehaus.plexus.summit.activity.ActionEventService</role>
+      <implementation>org.codehaus.plexus.summit.activity.DefaultActionEventService</implementation>
+      <configuration fold-method-case="true">
+        <actionPackages>
+          <actionPackage>org.codehaus.plexus.summit</actionPackage>
+        </actionPackages>
+      </configuration>
+    </component>
+
+  </components>
+</plexus>
