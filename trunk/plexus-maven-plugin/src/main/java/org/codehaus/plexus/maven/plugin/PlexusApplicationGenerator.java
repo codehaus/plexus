@@ -141,11 +141,6 @@ public class PlexusApplicationGenerator
 
         Set projectArtifacts = project.getArtifacts();
 
-        Artifact projectArtifact = new DefaultArtifact( project.getGroupId(), project.getArtifactId(),
-                                                        project.getVersion(), project.getPackaging() );
-
-        projectArtifacts.add( projectArtifact );
-
         // ----------------------------------------------------------------------
         // Build the application
         // ----------------------------------------------------------------------
