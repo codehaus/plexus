@@ -50,6 +50,8 @@ public class MailSenderTestCase
     public void startSmtpServer( int port )
     {
         smtpServer = SimpleSmtpServer.start( port );
+
+        assertNotNull( "Error while starting smtp server.", smtpServer );
     }
 
     public void stopSmtpServer()
@@ -72,6 +74,8 @@ public class MailSenderTestCase
     */
     public Iterator getReceivedEmail()
     {
+        assertNotNull( "The SMTP server isn't started.", smtpServer );
+
         return smtpServer.getReceivedEmail();
     }
 
@@ -81,6 +85,8 @@ public class MailSenderTestCase
     */
     public int getReceievedEmailSize()
     {
+        assertNotNull( "The SMTP server isn't started.", smtpServer );
+
         return smtpServer.getReceievedEmailSize();
     }
 }
