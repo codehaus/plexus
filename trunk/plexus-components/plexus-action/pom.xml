@@ -14,12 +14,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-summit</artifactId>
-      <version>1.0-beta-3</version>
-    </dependency>
-    <dependency>
-      <groupId>servletapi</groupId>
-      <artifactId>servletapi</artifactId>
-      <version>2.2</version>
+      <version>1.0-beta-4-SNAPSHOT</version>
     </dependency>
   </dependencies>
   
