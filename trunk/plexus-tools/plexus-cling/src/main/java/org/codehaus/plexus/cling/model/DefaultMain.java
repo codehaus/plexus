@@ -8,13 +8,21 @@ public class DefaultMain
     implements Main
 {
 
-    private final String mainMethod;
-    private final String mainClass;
+    private String mainMethod;
+    private String mainClass;
 
-    public DefaultMain(String mainClass, String mainMethod)
+    public DefaultMain()
+    {
+    }
+    
+    public void setMainMethod(String mainMethod) 
+    {
+        this.mainMethod = mainMethod;
+    }
+    
+    public void setMainClass(String mainClass)
     {
         this.mainClass = mainClass;
-        this.mainMethod = mainMethod;
     }
 
     public String getMainClass()

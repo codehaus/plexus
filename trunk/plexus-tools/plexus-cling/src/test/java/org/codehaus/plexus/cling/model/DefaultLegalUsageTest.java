@@ -3,6 +3,7 @@ package org.codehaus.plexus.cling.model;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.codehaus.plexus.cling.cli.InvocationTemplate;
 
@@ -22,11 +23,11 @@ public class DefaultLegalUsageTest
     public void testShouldAddOneTemplateAndRetrieveCollectionOfSizeOne() {
         DefaultLegalUsage usage = new DefaultLegalUsage();
         
-        InvocationTemplate template = new InvocationTemplate(Collections.EMPTY_LIST);
+        InvocationTemplate template = new InvocationTemplate(Collections.EMPTY_SET);
         
         usage.addInvocationTemplate(template);
         
-        List templates = usage.getInvocationTemplates();
+        Set templates = usage.getInvocationTemplates();
         
         assertNotNull("usage templates collection is null", templates);
         assertEquals("usage templates collection has wrong size", 1, templates.size());

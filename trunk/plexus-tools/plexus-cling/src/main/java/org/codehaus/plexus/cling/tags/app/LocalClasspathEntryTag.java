@@ -2,12 +2,15 @@
 package org.codehaus.plexus.cling.tags.app;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.codehaus.marmalade.el.ExpressionEvaluationException;
 import org.codehaus.marmalade.model.AbstractMarmaladeTag;
 import org.codehaus.marmalade.runtime.MarmaladeExecutionContext;
 import org.codehaus.marmalade.runtime.MarmaladeExecutionException;
+import org.codehaus.plexus.cling.CLIngConstants;
 import org.codehaus.plexus.cling.model.LocalClasspathEntry;
 import org.codehaus.plexus.cling.tags.AbstractBodyValueTag;
 
@@ -27,11 +30,27 @@ public class LocalClasspathEntryTag
         }
         
         File locationFile = new File(location);
+
+        try
+        {
+            locationFile = locationFile.getCanonicalFile();
+        }
+        catch ( IOException e )
+        {
+            throw new MarmaladeExecutionException("local classpath entry cannot be canonicalized");
+        }
+
+        String basedir = System.getProperty(CLIngConstants.APPDIR_SYSPROP);
+        
+        if(!locationFile.getAbsolutePath().startsWith(basedir)) {
+            throw new MarmaladeExecutionException("local classpath entry must be within application basedir");
+        }
         
         ClasspathTag parent = (ClasspathTag)requireParent(ClasspathTag.class);
         try
         {
-            parent.addClasspathEntry(new LocalClasspathEntry(locationFile.toURL()));
+            URL localUrl = new URL("file://" + locationFile.getAbsolutePath());
+            parent.addClasspathEntry(new LocalClasspathEntry(localUrl));
         }
         catch ( MalformedURLException e )
         {

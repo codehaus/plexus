@@ -20,7 +20,7 @@ public class InvocationTemplate
 
     private HashMap options;
 
-    private List optionsList;
+    private Set optionsList;
 
     private boolean hasRequiredOptions;
 
@@ -30,7 +30,7 @@ public class InvocationTemplate
      * @param optionsList
      *            The array of Option objects to map here.
      */
-    public InvocationTemplate( List optionsList )
+    public InvocationTemplate( Set optionsList )
     {
         this.optionsList = optionsList;
 
@@ -251,7 +251,7 @@ public class InvocationTemplate
     {
         if ( obj instanceof InvocationTemplate )
         {
-            List others = ((InvocationTemplate) obj).optionsList;
+            Set others = ((InvocationTemplate) obj).optionsList;
 
             if ( optionsList.isEmpty() && others.isEmpty() )
             {

@@ -49,6 +49,14 @@ public final class CLIngErrors
 
     public static final int ERROR_RESOLVING_CLASSPATH_ENTRY = -19;
 
+    public static final int ERROR_CONSTRUCTING_LOCAL_REPO_URL = -20;
+
+    public static final int ERROR_FINDING_MAIN_METHOD = -21;
+
+    public static final int ERROR_CANONICALIZING_APPDIR = -22;
+
+    public static final int UNHANDLED_EXCEPTION = -22;
+
     private CLIngErrors()
     {
     }

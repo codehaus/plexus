@@ -1,6 +1,9 @@
 /* Created on Sep 16, 2004 */
 package org.codehaus.plexus.cling.integrationTest;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.net.URL;
 
@@ -18,25 +21,18 @@ public class IntegrationTestLauncher
 {
     
     public void testShouldExecuteWithSpecifiedAppDirectory() {
-        // app.xml should be in the classpath...retrieve its URL
-        URL appXmlCPUrl = getClass().getClassLoader().getResource("app.xml");
-        
-        // now use the app.xml URL to create a File pointing to it.
-        File appXmlFile = new File(appXmlCPUrl.getPath());
-        
         // next, set the appdir sysprop equal to the app.xml File's parent path
-        System.setProperty(CLIngConstants.APPDIR_SYSPROP, appXmlFile.getParent());
-        
+        System.setProperty(CLIngConstants.APPDIR_SYSPROP, "src/test-app");
         System.setProperty(CLIngConstants.APP_RESULT_SYSPROP, "result");
         
         String[] args = {
             "--output"
         };
         
-        ClassWorld cw = new ClassWorld("root", getClass().getClassLoader());
+        ClassWorld cw = new ClassWorld("cling.root", getClass().getClassLoader());
         Launcher.main(args, cw);
         
-        assertEquals("0", System.getProperty("result"));
+        assertEquals("Execution result was not success.", "0", System.getProperty("result"));
     }
 
 }
