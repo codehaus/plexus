@@ -62,13 +62,16 @@ public class SummitRequestParameterParser
             StringTokenizer tokenizer =
                 new StringTokenizer( request.getPathInfo(), "/" );
 
+            String encoding = request.getCharacterEncoding();
+            if ( encoding == null )
+                encoding = "UTF-8";
+            
             while ( tokenizer.hasMoreTokens() )
             {
                 if ( isNameToken )
                 {
                     isNameToken = false;
-                    nameToken = URLDecoder.decode( tokenizer.nextToken(), 
-                                                   request.getCharacterEncoding() );
+                    nameToken = URLDecoder.decode( tokenizer.nextToken(), encoding );
                 }
                 else
                 {
@@ -78,8 +81,7 @@ public class SummitRequestParameterParser
                         addParameter(
                             parameterMap,
                             nameToken,
-                            URLDecoder.decode( tokenizer.nextToken(), 
-                                               request.getCharacterEncoding() ) );
+                            URLDecoder.decode( tokenizer.nextToken(), encoding ));
                     }
                 }
             }
