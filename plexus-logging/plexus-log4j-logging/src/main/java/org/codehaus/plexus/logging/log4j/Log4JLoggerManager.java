@@ -11,8 +11,6 @@ import java.util.StringTokenizer;
 import org.apache.log4j.PropertyConfigurator;
 
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
-import org.codehaus.plexus.logging.AbstractLoggerManager;
-import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 
@@ -80,7 +78,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
  * </pre>
  */
 public class Log4JLoggerManager
-    extends AbstractLoggerManager
+    extends AbstractLog4JLoggerManager
     implements Initializable, Startable
 {
     /**
@@ -111,14 +109,10 @@ public class Log4JLoggerManager
     //
     // ----------------------------------------------------------------------
 
-    /** */
-    private Map loggerCache;
 
     /** Log4j properties used to init log4j. */
     private Properties log4JProperties;
 
-    /** */
-    private int currentThreshold;
 
     // ----------------------------------------------------------------------
     // Lifecycle
@@ -131,8 +125,6 @@ public class Log4JLoggerManager
         log4JProperties = new Properties();
 
         Map configuredAppenders = new HashMap();
-
-        loggerCache = new HashMap();
 
         if ( appenders == null || appenders.size() == 0 )
         {
@@ -151,8 +143,11 @@ public class Log4JLoggerManager
             debug( "No appenders configured, creating default console appender." );
 
             log4JProperties.setProperty( "log4j.appender.anonymous", "org.apache.log4j.ConsoleAppender" );
+
             log4JProperties.setProperty( "log4j.appender.anonymous.threshold", threshold );
+
             log4JProperties.setProperty( "log4j.appender.anonymous.layout", "org.apache.log4j.PatternLayout" );
+
             log4JProperties.setProperty( "log4j.appender.anonymous.layout.conversionPattern", "%-4r [%t] %-5p %c %x - %m%n" );
         }
         else
@@ -206,8 +201,11 @@ public class Log4JLoggerManager
                 String base = "log4j.appender." + id;
 
                 log4JProperties.setProperty( base, appender.getType() );
+
                 log4JProperties.setProperty( base + ".threshold", appender.getThreshold() );
+
                 log4JProperties.setProperty( base + ".layout", "org.apache.log4j.PatternLayout" );
+
                 log4JProperties.setProperty( base + ".layout.conversionPattern", appender.getConversionPattern() );
 
                 Enumeration e = appender.getProperties().keys();
@@ -290,118 +288,10 @@ public class Log4JLoggerManager
     {
     }
 
-    // ----------------------------------------------------------------------
-    // LoggerManager implementation
-    // ----------------------------------------------------------------------
-
-    /**
-     * Sets the threshold for all new loggers. It will NOT affect the existing
-     * loggers. This is usually only set once while the logger manager is
-     * configured.
-     * 
-     * @param currentThreshold The new threshold.
-     */
-    public void setThreshold( int currentThreshold )
-    {
-        this.currentThreshold = currentThreshold;
-    }
-
-    /**
-     * Returns the current threshold for all new loggers.
-     * 
-     * @return Returns the current threshold for all new loggers.
-     */
-    public int getThreshold()
-    {
-        return currentThreshold;
-    }
-
-    public void setThreshold( String role, String roleHint, int threshold )
-    {
-        String name = toMapKey( role, roleHint );
-
-        Log4JLogger logger = (Log4JLogger) loggerCache.get( name );
-
-        if ( logger == null )
-        {
-            debug( "Trying to set the threshold of a unknown logger '" + name + "'." );
-
-            return;
-        }
-
-        logger.setThreshold( threshold );
-    }
-
-    public int getThreshold( String role, String roleHint )
-    {
-        String name = toMapKey( role, roleHint );
-
-        Log4JLogger logger = (Log4JLogger) loggerCache.get( name );
-
-        if ( logger == null )
-        {
-            debug( "Trying to get the threshold of a unknown logger '" + name + "'." );
-            return Logger.LEVEL_DEBUG; // does not return null because that
-                                       // could create a NPE
-        }
-
-        return logger.getThreshold();
-    }
-
-    public Logger getLoggerForComponent( String role, String roleHint )
-    {
-        String name = toMapKey( role, roleHint );
-
-        Logger logger = (Logger) loggerCache.get( name );
-
-        if ( logger != null )
-        {
-            return logger;
-        }
-
-        debug( "Creating logger '" + name + "' " + this.hashCode() + "." );
-
-        logger = new Log4JLogger( getThreshold(), org.apache.log4j.Logger.getLogger( name ) );
-
-        loggerCache.put( name, logger );
-
-        return logger;
-    }
-
-    public void returnComponentLogger( String role, String roleHint )
-    {
-        String name = toMapKey( role, roleHint );
-
-        Object obj = loggerCache.remove( name );
-
-        if ( obj == null )
-        {
-            System.err.println( "There was no such logger '" + name + "' " + this.hashCode() + "." );
-        }
-        else
-        {
-            debug( "Removed logger '" + name + "' " + this.hashCode() + "." );
-        }
-    }
-
-    public int getActiveLoggerCount()
-    {
-        return loggerCache.size();
-    }
-
     // useful for testing
     public Properties getLog4JProperties()
     {
         return log4JProperties;
     }
 
-    /**
-     * Remove this method and all references when this code is verified.
-     * 
-     * @param msg
-     */
-    private void debug( String msg )
-    {
-//        System.out.println( "[Log4j] " + msg );
-    }
 }
