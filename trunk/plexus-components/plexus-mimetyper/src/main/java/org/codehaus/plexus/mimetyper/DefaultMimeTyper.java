@@ -308,13 +308,21 @@ public class DefaultMimeTyper
         throws Exception
     {
         if ( mimetypePath == null )
-            throw new Exception( "Missing configuration element: 'mimetypePath'." );
+        {
+            mimeTypeMap = new MimeTypeMap();
+        }
+        else
+        {
+            mimeTypeMap = new MimeTypeMap( mimetypePath );
+        }
 
         if ( charsetPath == null )
-            throw new Exception( "Missing configuration element: 'charsetPath'." );
-
-        mimeTypeMap = new MimeTypeMap( mimetypePath );
-
-        charSetMap = new CharSetMap( charsetPath );
+        {
+            charSetMap = new CharSetMap();
+        }
+        else
+        {
+            charSetMap = new CharSetMap( charsetPath );
+        }
     }
 }
