@@ -87,6 +87,8 @@ public class MimeType
     public static MimeType IMAGE_GIF;
     public static MimeType IMAGE_JPEG;
     public static MimeType IMAGE_WBMP;
+    public static MimeType IMAGE_TIFF;
+    
     static
     {
         TEXT_HTML =
@@ -121,6 +123,8 @@ public class MimeType
             new MimeType("image/gif");
         IMAGE_JPEG =
             new MimeType("image/jpeg");
+        IMAGE_TIFF =
+            new MimeType("image/tiff");
         IMAGE_WBMP =
             new MimeType("image/vnd.wap.wbmp");
     }
