@@ -1,0 +1,58 @@
+                                    ------
+                                    Comparision of Plexus and Spring
+                                    ------
+                                    Michal Maczka
+                                    ------
+                                    Last changed on Jan 10, 2005
+                                    ------
+
+
+* Plexus is simpler and much much more smaller. The most simple Spring
+  Component which has configuration settings injected is more complex in
+  case of Spring then in case of Plexus as Plexus does not require setters.
+
+
+ * Spring tries to sell itself as a "j2ee framework" and as Swiss army
+   knife - one framework for all possible problems.
+   Plexus is a container but it is also usable in the context of
+   application deployed to j2ee platform
+   but it also competes with pico/nano containers on the low end (plexus
+   jars are still under 1 mb).
+   Plexus Application Server (which is build on top of plexus container)
+   can be used replacement of j2ee application servers.
+   So for example users can deploy ftp or http servers with plexus. Users
+   are free to compose their application only from
+   pieces (jars and components) that they really need. Instead of Swiss
+   Army knife you can use better tools: hammer, screwdriver when you need to use any of
+   them.
+
+ * Complex component life cycles are not supported in Spring.
+
+ * Spring configuration files are  much longer then the one for Plexus.
+   Specifically hierarchical configuration settings a la xstream are not
+   supported by Spring.
+
+ * Spring is not using IoC for all dependecies of components  - For example
+   Spring is promoting such a terible thing like logging based on commons
+   logging, which makes most of the component dependent on ugly singleton
+   (IoC is against singletons!) and inevitably leads to plainly wrong class
+   loader hierarchies (commons logging must be in root classloader of the
+   container). Spring doesn't allow you to direct logging output from two
+   deployed instances of the same component/bean to different files (unless
+   you use AOP). This is due to the fact that "component identity" is not
+   propagated or understood by logging system. In plexus such things are
+   possible - but not yet implemented.
+
+
+ - Component  class loader isolation
+ Spring doesn't allow you to easly deploy two distinct components which are
+ using conflicting version of "the same" jar (e.g. common-collections-2.x
+ and commons-collection-3.x). for their internal stuuff
+
+
+ - In Plexus you don't have to repeat yourself - component descriptors
+ which are in jars contain the facts which are needed by the container to
+ manage components. Components personalities provide useful shortcuts for
+ saying to container this is "avalon component", this is "pico component",
+ so you don't
+ have to redefine that for every component.
