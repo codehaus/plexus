@@ -22,14 +22,6 @@ package org.codehaus.plexus.builder.runtime;
  * SOFTWARE.
  */
 
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DefaultArtifact;
-import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.builder.AbstractBuilder;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.cli.CommandLineException;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -38,10 +30,17 @@ import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.apache.maven.artifact.Artifact;
+
+import org.codehaus.plexus.builder.AbstractBuilder;
+import org.codehaus.plexus.builder.BuilderException;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.cli.CommandLineException;
+
 /**
  * @author <a href="jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @component
  */
 public class DefaultPlexusRuntimeBuilder
     extends AbstractBuilder
@@ -77,14 +76,12 @@ public class DefaultPlexusRuntimeBuilder
 
     private Set artifacts;
 
-    private Set plexusArtifacts;
-
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
     public void build()
-        throws PlexusRuntimeBuilderException
+        throws BuilderException
     {
         try
         {
@@ -94,59 +91,17 @@ public class DefaultPlexusRuntimeBuilder
 
             createDirectoryStructure();
 
+            ClassLoader old = Thread.currentThread().getContextClassLoader();
+
+            Thread.currentThread().setContextClassLoader( this.getClass().getClassLoader() );
+
             createClassworldsConfiguration();
 
             createLauncherScripts();
 
+            Thread.currentThread().setContextClassLoader( old );
+
             artifacts = findArtifacts( project );
-
-            // ----------------------------------------------------------------------
-            //
-            // ----------------------------------------------------------------------
-
-            Artifact plexusArtifact = null;
-
-            for ( Iterator it = artifacts.iterator(); it.hasNext(); )
-            {
-                Artifact artifact = (Artifact) it.next();
-
-                String groupId = artifact.getGroupId();
-
-                String artifactId = artifact.getArtifactId();
-
-                String type = artifact.getType();
-
-                if ( groupId.equals( "plexus" ) && artifactId.equals( "plexus" ) && type.equals( "jar" ) )
-                {
-                    plexusArtifact = artifact;
-
-                    break;
-                }
-            }
-
-            if ( plexusArtifact == null )
-            {
-                throw new PlexusRuntimeBuilderException( "Could not find plexus JAR in the dependency list." );
-            }
-
-            Artifact plexusPom = resolve( plexusArtifact.getGroupId(), plexusArtifact.getArtifactId(), plexusArtifact.getVersion(), "pom" );
-
-            if ( plexusPom == null )
-            {
-                throw new PlexusRuntimeBuilderException( "Cannot find pom for: " + plexusArtifact.getId() );
-            }
-
-            MavenProject plexus = buildProject( plexusPom.getFile() );
-
-            plexusArtifacts = findArtifacts( plexus, getRemoteRepositories(), getLocalRepository() );
-
-            plexusArtifacts.add( plexusArtifact );
-
-            Artifact appserver = new DefaultArtifact( "plexus", "plexus-appserver", "1.0-alpha-1-SNAPSHOT", "jar" );
-
-            appserver.setPath( getLocalRepository().getBasedir() + "/plexus/jars/plexus-appserver-1.0-alpha-1-SNAPSHOT.jar" );
-
-            plexusArtifacts.add( appserver );
 
             // ----------------------------------------------------------------------
             //
@@ -252,9 +207,9 @@ public class DefaultPlexusRuntimeBuilder
     }
 
     private void copyPlexusDependencies()
-        throws IOException
+        throws IOException, BuilderException
     {
-        for ( Iterator i = plexusArtifacts.iterator(); i.hasNext(); )
+        for ( Iterator i = findPlexusArtifacts().iterator(); i.hasNext(); )
         {
             Artifact artifact = (Artifact) i.next();
 
@@ -268,13 +223,13 @@ public class DefaultPlexusRuntimeBuilder
     }
 
     private void createClassworldsConfiguration()
-        throws PlexusRuntimeBuilderException, IOException
+        throws BuilderException, IOException
     {
         mergeTemplate( CLASSWORLDS_TEMPLATE, new File( confDir, "classworlds.conf" ) );
     }
 
     private void createLauncherScripts()
-        throws PlexusRuntimeBuilderException, IOException
+        throws BuilderException, IOException
     {
         mergeTemplate( UNIX_LAUNCHER_TEMPLATE, new File( binDir, "plexus.sh" ) );
 
@@ -282,7 +237,7 @@ public class DefaultPlexusRuntimeBuilder
     }
 
     private void processMainConfiguration()
-        throws PlexusRuntimeBuilderException, IOException
+        throws BuilderException, IOException
     {
         if ( plexusConfiguration == null )
         {
@@ -302,7 +257,7 @@ public class DefaultPlexusRuntimeBuilder
     }
 
     private void javaServiceWrapper()
-        throws PlexusRuntimeBuilderException/*, CommandLineException*/, IOException
+        throws BuilderException, CommandLineException, IOException
     {
         ClassLoader cl = getClass().getClassLoader();
 
@@ -338,7 +293,7 @@ public class DefaultPlexusRuntimeBuilder
     }
 
     protected void copyResources( String directory, ClassLoader cl, String[] resources )
-        throws /*CommandLineException, */IOException
+        throws CommandLineException, IOException
     {
         InputStream is;
 
@@ -373,7 +328,7 @@ public class DefaultPlexusRuntimeBuilder
 
                 if ( instructions.indexOf( "x" ) >= 0 )
                 {
-//                    executable( target.getPath() );
+                    executable( target.getPath() );
                 }
             }
         }

@@ -22,30 +22,8 @@ package org.codehaus.plexus.builder;
  * SOFTWARE.
  */
 
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DefaultArtifact;
-import org.apache.maven.artifact.MavenMetadataSource;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectBuilder;
-import org.apache.maven.project.ProjectBuildingException;
-import org.apache.maven.repository.RepositoryUtils;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.exception.ResourceNotFoundException;
-import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.InterpolationFilterReader;
-import org.codehaus.plexus.util.Os;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.cli.Commandline;
-import org.codehaus.plexus.util.cli.CommandLineException;
-import org.codehaus.plexus.velocity.VelocityComponent;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -53,13 +31,35 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
-import java.io.FileInputStream;
-import java.util.Map;
-import java.util.Set;
-import java.util.Iterator;
-import java.util.HashSet;
-import java.util.Properties;
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DefaultArtifact;
+import org.apache.maven.artifact.MavenMetadataSource;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectBuilder;
+import org.apache.maven.project.ProjectBuildingException;
+import org.apache.maven.repository.RepositoryUtils;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.exception.ResourceNotFoundException;
+
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.InterpolationFilterReader;
+import org.codehaus.plexus.util.Os;
+import org.codehaus.plexus.util.cli.CommandLineException;
+import org.codehaus.plexus.util.cli.Commandline;
+import org.codehaus.plexus.velocity.VelocityComponent;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -68,6 +68,10 @@ import java.util.Enumeration;
 public abstract class AbstractBuilder
     extends AbstractLogEnabled
 {
+    // ----------------------------------------------------------------------
+    // Configuration
+    // ----------------------------------------------------------------------
+
     protected ArtifactRepository localRepository;
 
     protected MavenProject project;
@@ -91,6 +95,17 @@ public abstract class AbstractBuilder
     protected MavenProjectBuilder projectBuilder;
 
     protected ArtifactResolver artifactResolver;
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    private final static String[][] bootArtifacts =
+        {
+            {"classworlds", "classworlds"}
+        };
+
+    private Set plexusArtifacts;
 
     // ----------------------------------------------------------------------
     // Abstract methods
@@ -127,7 +142,6 @@ public abstract class AbstractBuilder
         this.baseDirectory = baseDirectory;
     }
 
-
     public void setPlexusConfiguration( String plexusConfiguration )
     {
         this.plexusConfiguration = plexusConfiguration;
@@ -139,7 +153,7 @@ public abstract class AbstractBuilder
     }
 
     protected Properties getConfigurationProperties()
-        throws PlexusRuntimeBuilderException
+        throws BuilderException
     {
         if ( configurationProperties == null )
         {
@@ -153,7 +167,7 @@ public abstract class AbstractBuilder
             }
             catch ( IOException ex )
             {
-                throw new PlexusRuntimeBuilderException( "Exception while reading configuration file: " + input.getPath(), ex );
+                throw new BuilderException( "Exception while reading configuration file: " + input.getPath(), ex );
             }
 
             configurationProperties = new Properties();
@@ -168,7 +182,6 @@ public abstract class AbstractBuilder
 
         return configurationProperties;
     }
-
 
     // ----------------------------------------------------------------------
     // Utility methods
@@ -204,7 +217,7 @@ public abstract class AbstractBuilder
     // ----------------------------------------------------------------------
 
     protected void mergeTemplate( String templateName, File outputFileName )
-        throws IOException, PlexusRuntimeBuilderException
+        throws IOException, BuilderException
     {
         FileWriter output = new FileWriter( outputFileName );
 
@@ -214,11 +227,11 @@ public abstract class AbstractBuilder
         }
         catch ( ResourceNotFoundException ex )
         {
-            throw new PlexusRuntimeBuilderException( "Missing Velocity template: '" + templateName + "'.", ex );
+            throw new BuilderException( "Missing Velocity template: '" + templateName + "'.", ex );
         }
         catch ( Exception ex )
         {
-            throw new PlexusRuntimeBuilderException( "Exception merging the velocity template.", ex );
+            throw new BuilderException( "Exception merging the velocity template.", ex );
         }
 
         output.close();
@@ -257,7 +270,7 @@ public abstract class AbstractBuilder
     // ----------------------------------------------------------------------
 
     protected Artifact resolve( String groupId, String artifactId, String version, String type )
-        throws PlexusRuntimeBuilderException
+        throws BuilderException
     {
         Artifact artifact = new DefaultArtifact( groupId, artifactId, version, type );
 
@@ -267,12 +280,15 @@ public abstract class AbstractBuilder
         }
         catch ( ArtifactResolutionException ex )
         {
-            throw new PlexusRuntimeBuilderException( "Error while resolving artifact. id=" + artifact.getId() + ":" );
+            throw new BuilderException( "Error while resolving artifact. id=" + artifact.getId() + ":" );
         }
     }
 
-    protected boolean isPlexusArtifact( Artifact artifact, Set plexusArtifacts )
+    protected boolean isPlexusArtifact( Artifact artifact )
+        throws BuilderException
     {
+        Set plexusArtifacts = findPlexusArtifacts();
+
         for ( Iterator it = plexusArtifacts.iterator(); it.hasNext(); )
         {
             Artifact a = (Artifact) it.next();
@@ -299,7 +315,7 @@ public abstract class AbstractBuilder
     }
 
     protected MavenProject buildProject( File file )
-        throws PlexusRuntimeBuilderException
+        throws BuilderException
     {
         try
         {
@@ -307,14 +323,9 @@ public abstract class AbstractBuilder
         }
         catch ( ProjectBuildingException ex )
         {
-            throw new PlexusRuntimeBuilderException( "Error while building project: " + ex );
+            throw new BuilderException( "Error while building project: " + ex );
         }
     }
-
-    protected final static String[][] bootArtifacts =
-        {
-            {"classworlds", "classworlds"}
-        };
 
     protected boolean isBootArtifact( Artifact artifact )
     {
@@ -335,7 +346,7 @@ public abstract class AbstractBuilder
     }
 
     protected Set findArtifacts( MavenProject project )
-        throws PlexusRuntimeBuilderException
+        throws BuilderException
     {
         Set artifacts = findArtifacts( project, getRemoteRepositories(), getLocalRepository() );
 
@@ -351,7 +362,7 @@ public abstract class AbstractBuilder
     }
 
     protected Set findArtifacts( MavenProject project, Set repositories, ArtifactRepository localRepository )
-        throws PlexusRuntimeBuilderException
+        throws BuilderException
     {
         ArtifactResolutionResult result;
 
@@ -363,9 +374,67 @@ public abstract class AbstractBuilder
         }
         catch ( ArtifactResolutionException ex )
         {
-            throw new PlexusRuntimeBuilderException( "Exception while getting artifacts for " + project.getId() + ".", ex );
+            throw new BuilderException( "Exception while getting artifacts for " + project.getId() + ".", ex );
         }
 
         return new HashSet( result.getArtifacts().values() );
+    }
+
+    protected Set findPlexusArtifacts()
+        throws BuilderException
+    {
+        if ( plexusArtifacts != null )
+        {
+            return plexusArtifacts;
+        }
+
+        Artifact plexusArtifact = null;
+
+        for ( Iterator it = project.getArtifacts().iterator(); it.hasNext(); )
+        {
+            Artifact artifact = (Artifact) it.next();
+
+            String groupId = artifact.getGroupId();
+
+            String artifactId = artifact.getArtifactId();
+
+            String type = artifact.getType();
+
+            if ( groupId.equals( "plexus" ) &&
+                 artifactId.equals( "plexus-container-default" ) &&
+                 type.equals( "jar" ) )
+            {
+                plexusArtifact = artifact;
+
+                break;
+            }
+        }
+
+        if ( plexusArtifact == null )
+        {
+            throw new BuilderException( "Could not find plexus JAR in the dependency list." );
+        }
+
+        Artifact plexusPom = resolve( plexusArtifact.getGroupId(), plexusArtifact.getArtifactId(),
+                                      plexusArtifact.getVersion(), "pom" );
+
+        if ( plexusPom == null )
+        {
+            throw new BuilderException( "Cannot find pom for: " + plexusArtifact.getId() );
+        }
+
+        MavenProject plexus = buildProject( plexusPom.getFile() );
+
+        plexusArtifacts = findArtifacts( plexus, getRemoteRepositories(), getLocalRepository() );
+
+        plexusArtifacts.add( plexusArtifact );
+
+        Artifact appserver = new DefaultArtifact( "plexus", "plexus-appserver", "1.0-alpha-1-SNAPSHOT", "jar" );
+
+        appserver.setPath( getLocalRepository().getBasedir() + "/plexus/jars/plexus-appserver-1.0-alpha-1-SNAPSHOT.jar" );
+
+        plexusArtifacts.add( appserver );
+
+        return plexusArtifacts;
     }
 }
