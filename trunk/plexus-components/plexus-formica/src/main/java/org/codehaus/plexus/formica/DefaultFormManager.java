@@ -335,11 +335,19 @@ public class DefaultFormManager
 
         // ----------------------------------------------------------------------
         // Form elements
+        //
+        // If a child defines an element with an id that is also defined in the
+        // parent then the child wins.
         // ----------------------------------------------------------------------
 
-        if ( parent.getElements() != null )
+        for ( Iterator i = parent.getElements().iterator(); i.hasNext(); )
         {
-            child.getElements().addAll( parent.getElements() );
+            Element parentElement = (Element) i.next();
+
+            if ( child.getElement( parentElement.getId() ) == null )
+            {
+                child.addElement( parentElement );
+            }
         }
     }
 }

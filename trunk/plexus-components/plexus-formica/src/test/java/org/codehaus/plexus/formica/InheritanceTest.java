@@ -126,5 +126,9 @@ public class InheritanceTest
         Delete delete = form.getDelete();
 
         assertEquals( "delete-title-key", delete.getTitleKey() );
+
+        Element overridden = form.getElement( "field-1" );
+
+        assertEquals( "grandchild1-field1", overridden.getExpression() );
     }
 }
