@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<project>
+  <groupId>plexus</groupId>
+  <id>plexus-formica</id>
+  <artifactId>plexus-formica</artifactId>
+  <name>Plexus Formica Component</name>
+  <currentVersion>1.0-beta-2</currentVersion>
+  <extend>${maven.repo.local}/plexus/poms/plexus-components-1.0.pom</extend>
+  
+  <dependencies>
+
+    <dependency>
+      <groupId>oro</groupId>
+      <artifactId>oro</artifactId>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>2.5.1</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-i18n</artifactId>
+      <version>1.0-beta-3</version>
+    </dependency>
+
+  </dependencies>
+
+  <properties>
+    <implementation>org.codehaus.formica.DefaultFormManager</implementation>
+  </properties>
+
+</project>
+

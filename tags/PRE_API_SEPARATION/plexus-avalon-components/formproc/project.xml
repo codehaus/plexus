@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<project>
+  <extend>${maven.repo.local}/plexus/poms/plexus-components-avalon-1.0.pom</extend>
+  <id>plexus-formproc</id>
+  <artifactId>plexus-formproc</artifactId>
+  <name>Plexus FormProc Component</name>
+  <currentVersion>1.0-beta-1</currentVersion>
+  
+  <dependencies>
+
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-vfs</groupId>
+      <artifactId>commons-vfs</artifactId>
+      <version>SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>edenlib</groupId>
+      <artifactId>edenlib</artifactId>
+      <version>1.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>formproc</groupId>
+      <artifactId>formproc</artifactId>
+      <version>1.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>oro</groupId>
+      <artifactId>oro</artifactId>
+      <version>2.0.6</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-summit</artifactId>
+      <version>1.0-beta-2</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
+      <version>2.3</version>
+    </dependency>
+     
+  </dependencies>
+
+  <properties>
+    <implementation>org.codehaus.plexus.formproc.DefaultFormProcService</implementation>
+  </properties>
+
+</project>
+

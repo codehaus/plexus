@@ -1,0 +1,13 @@
+o Need to deal with bidirection population. By that I mean I need to make it
+easy to populate a target object with form values and easily populate a form
+values with an existing target object.
+
+o Have to account for populating values into nested object graphs where
+intermediary objects may not have been constructed yet. In the example test
+I'm checking for null when the nested object is requested but this would not
+be easy to add for all getters in something like generated code. My particular
+use-case is Castor generated object graphs which are huge. I haven't actually
+checked OGNL but I doubt it creates the necessary objects along the way.
+
+--> actually I could probably advise the required methods construct and set
+    the necessary objects.
