@@ -29,6 +29,7 @@ import java.util.Map;
 
 import org.codehaus.plexus.action.Action;
 import org.codehaus.plexus.action.ActionManager;
+import org.codehaus.plexus.action.ActionNotFoundException;
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
 import org.codehaus.plexus.summit.rundata.RunData;
@@ -48,9 +49,9 @@ public class ActionValve
     public void invoke( RunData data )
         throws IOException, SummitException
     {
-        String actionId = data.getRequest().getParameter( "action" );
+        String actionId = data.getParameters().getString( "action", "" );
 
-        if ( actionId != null )
+        if ( !actionId.equals("") )
         {
             Action action = null;
 
@@ -58,9 +59,10 @@ public class ActionValve
             {
                 action = actionManager.lookup( actionId.trim() );
             }
-            catch ( Exception e )
+            catch ( ActionNotFoundException e )
             {
-                getLogger().error( "Cannot find action with the id of " + actionId );
+                getLogger().error( "Cannot find action with the id of " + actionId, e );
+                return;
             }
 
             try
@@ -83,8 +85,6 @@ public class ActionValve
             }
             catch ( Exception e )
             {
-                e.printStackTrace();
-
                 getLogger().error( e.getMessage(), e );
             }
         }
