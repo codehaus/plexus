@@ -1,35 +1,25 @@
 <project>
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>plexus</groupId>
+        <artifactId>plexus-logging</artifactId>
+        <version>1.0</version>
+    </parent>
     <groupId>plexus</groupId>
-    <artifactId>plexus-logging</artifactId>
-    <version>1.0</version>
-  </parent>
-  <groupId>plexus</groupId>
-  <artifactId>plexus-log4j-logging</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>Plexus Log4J Logger</name>
-  <dependencies>
-    <dependency>
-      <groupId>plexus</groupId>
-      <artifactId>plexus-container-api</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
-    </dependency>
-    <!-- For testing -->
-    <dependency>
-      <groupId>plexus</groupId>
-      <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.8</version>
-    </dependency>
-  </dependencies>
+    <artifactId>plexus-log4j-logging</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>Plexus Log4J Logger</name>
+    <dependencies>
+        <!-- For testing -->
+        <dependency>
+            <groupId>plexus</groupId>
+            <artifactId>plexus-logging-provider-test</artifactId>
+            <version>1.0-alpha-1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.8</version>
+        </dependency>
+    </dependencies>
 </project>
