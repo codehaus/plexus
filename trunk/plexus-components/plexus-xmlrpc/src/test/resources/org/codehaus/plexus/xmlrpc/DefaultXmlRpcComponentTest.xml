@@ -17,13 +17,22 @@
             <role>org.codehaus.plexus.xmlrpc.PokerComponent</role>
           </handler>
         </handlers>
-        
-        <!-- acceptedClients>
-          <acceptedClient>127.0.0.1</acceptedClient>
-        </acceptedClients -->
-        
+
+        <accepted-clients>
+          <client>
+            <hostname>127.0.0.1</hostname>
+          </client>
+        </accepted-clients>
+
+        <denied-clients>
+          <client>
+            <hostname>129.0.0.1</hostname>
+          </client>
+        </denied-clients>
+
         <port>8080</port>
         <paranoid>false</paranoid>
+
       </configuration>
     </component>
 
