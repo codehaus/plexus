@@ -8,6 +8,9 @@ import org.codehaus.plexus.lifecycle.phase.AbstractPhase;
 import org.codehaus.plexus.logging.LoggerManager;
 import org.codehaus.plexus.personality.avalon.AvalonLogger;
 
+/**
+ * @version $Id$
+ */
 public class LogEnablePhase
     extends AbstractPhase
 {
