@@ -89,14 +89,14 @@ public abstract class AbstractMailSender
         this.username = username;
     }
 
-    public void send( String subject, String content, String toAddress, String toName, String fromAddress,
+    public void send( String subject, String content, String toMailbox, String toName, String fromMailbox,
                       String fromName )
         throws MailSenderException
     {
-        send( subject, content, toAddress, toName, fromAddress, fromName, new HashMap() );
+        send( subject, content, toMailbox, toName, fromMailbox, fromName, new HashMap() );
     }
 
-    public void send( String subject, String content, String toAddress, String toName, String fromAddress,
+    public void send( String subject, String content, String toMailbox, String toName, String fromMailbox,
                       String fromName, Map headers )
         throws MailSenderException
     {
@@ -106,11 +106,9 @@ public abstract class AbstractMailSender
 
         message.setContent( content );
 
-        message.setFromAddress( fromAddress );
+        message.setFrom( fromMailbox, fromName );
 
-        message.setFromName( fromName );
-
-        message.addTo( toName, toAddress );
+        message.addTo( toMailbox, toName );
 
         for ( Iterator iter = headers.keySet().iterator(); iter.hasNext(); )
         {
@@ -125,30 +123,18 @@ public abstract class AbstractMailSender
     public void verify( MailMessage message )
         throws MailSenderException
     {
-        if ( message.getFromAddress() == null )
+        MailMessage.Address from = message.getFrom();
+
+        if ( from.getMailbox() == null )
         {
-            throw new MailSenderException( "From address isn't set." );
+            throw new MailSenderException( "From mailbox isn't set." );
         }
 
-        if ( message.getToAddresses().size() == 0 )
+        if ( message.getToAddresses().size() == 0 &&
+             message.getCcAddresses().size() == 0 &&
+             message.getBccAddresses().size() == 0)
         {
-            throw new MailSenderException( "You must add at least one to address." );
+            throw new MailSenderException( "The mail requires at least one recipient." );
         }
-    }
-
-    public static String makeEmailAddress( String address, String name )
-        throws MailSenderException
-    {
-        if ( address == null )
-        {
-            throw new MailSenderException( "The address cannot be null." );
-        }
-
-        if ( name == null || name.length() == 0 )
-        {
-            return "<" + address + ">";
-        }
-
-        return name + " <" + address + ">";
     }
 }
