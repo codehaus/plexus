@@ -54,6 +54,9 @@ public class DefaultServiceE
 
     public void configure( Configuration configuration )
     {
+        // Check that we can actually do something with the configuration
+        configuration.getChild( "bogus" );
+
         configure = true;
     }
 

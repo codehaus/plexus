@@ -4,6 +4,7 @@ import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.codehaus.plexus.component.manager.ComponentManager;
 import org.codehaus.plexus.configuration.DefaultPlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.lifecycle.phase.AbstractPhase;
 import org.codehaus.plexus.personality.avalon.AvalonConfiguration;
 
@@ -13,14 +14,17 @@ public class ConfigurePhase
     public void execute( Object object, ComponentManager manager )
         throws Exception
     {
-        Configuration configuration = new AvalonConfiguration( manager.getComponentDescriptor().getConfiguration() );
-
         if ( object instanceof Configurable )
         {
-            if ( null == configuration )
+            PlexusConfiguration plexusConfiguration = manager.getComponentDescriptor().getConfiguration();
+
+            if ( plexusConfiguration == null )
             {
-                configuration = new AvalonConfiguration( new DefaultPlexusConfiguration( "" ) );
+                plexusConfiguration = new DefaultPlexusConfiguration( "" );
             }
+
+            Configuration configuration = new AvalonConfiguration( plexusConfiguration );
+
             ( (Configurable) object ).configure( configuration );
         }
     }
