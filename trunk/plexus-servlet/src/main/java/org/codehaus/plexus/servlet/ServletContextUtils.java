@@ -116,8 +116,7 @@ final class ServletContextUtils {
      * Create a Plexus container using the {@link Embedder}. This method
      * should be called from an environment where a
      * <code>ServletContext</code> is available. It will create and initialize
-     * the Plexus container and place references to the container and the
-     * Avalon service manager into the context.
+     * the Plexus container and place references to the container into the context.
      *
      * @param context The servlet context to place the container in.
      * @param plexusConf Name of the Plexus configuration file to load, or
@@ -129,8 +128,7 @@ final class ServletContextUtils {
         throws ServletException
     {
         final Embedder embedder = new Embedder();
-                
-        
+
         try
         {            
             plexusConf = resolveConfig( context, plexusConf );                       
