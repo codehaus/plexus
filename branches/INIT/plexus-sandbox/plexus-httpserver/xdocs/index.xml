@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Plexus Http Server - Overview</title>
+  </properties>
+
+  <body>
+    <section name="Ownership">
+    	This is an open component for any and all to modify sensibly.  
+    	Please try not to change the HttpBehaviour contract however.
+	</section>
+	
+	<section name="Usage">
+	  To use this component, use as you would any component in plexus. There
+	  are several mandatory configuration elements.
+	  
+	  <ul>
+	    <li>http.port - the port the server should listen on</li>
+	    <li>http.behaviour.role - the role of the component that controls the
+	        behaviour of the server. Must implement the HttpBehaviour interface</li>
+	  </ul>
+	</section>
+	
+  </body>
+</document>
+
