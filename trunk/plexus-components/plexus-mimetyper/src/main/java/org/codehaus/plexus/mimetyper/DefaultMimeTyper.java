@@ -54,17 +54,14 @@ package org.codehaus.plexus.mimetyper;
  * <http://www.codehaus.org/>.
  */
 
+import java.io.File;
+import java.util.Locale;
+
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.mimetyper.util.CharSetMap;
 import org.codehaus.plexus.mimetyper.util.MimeType;
 import org.codehaus.plexus.mimetyper.util.MimeTypeMap;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.activity.Initializable;
-
-import java.io.File;
-import java.util.Locale;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 
 /**
  * The MimeType Service maintains mappings between MIME types and
@@ -88,7 +85,7 @@ import java.util.Locale;
  */
 public class DefaultMimeTyper
     extends AbstractLogEnabled
-    implements MimeTyper, Configurable, Initializable
+    implements MimeTyper, Initializable
 {
     /** The MIME type file property. */
     public static final String MIME_TYPES = "mimetypes";
@@ -96,11 +93,17 @@ public class DefaultMimeTyper
     /** The charset file property. */
     public static final String CHARSETS = "charsets";
 
+    ///////////////////////////////////////////////////////////////////////////
+    // Configuration
+
     /** path to a mimetypes-file_extension mapping file */
     private String mimetypePath;
 
     /** path to a charset-language mapping file */
     private String charsetPath;
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Privates
 
     /** The MIME type map used by the service. */
     private MimeTypeMap mimeTypeMap;
@@ -301,23 +304,17 @@ public class DefaultMimeTyper
     // Lifecylce Management
     // ----------------------------------------------------------------------
 
-    /**
-     * Avalon component lifecycle method
-     */
-    public void configure( Configuration conf )
-        throws ConfigurationException
-    {
-        mimetypePath = conf.getAttribute( MIME_TYPES, null );
-        charsetPath = conf.getAttribute( CHARSETS, null );
-    }
-
-    /**
-     * Avalon component lifecycle method
-     */
     public void initialize()
         throws Exception
     {
+        if ( mimetypePath == null )
+            throw new Exception( "Missing configuration element: 'mimetypePath'." );
+
+        if ( charsetPath == null )
+            throw new Exception( "Missing configuration element: 'charsetPath'." );
+
         mimeTypeMap = new MimeTypeMap( mimetypePath );
+
         charSetMap = new CharSetMap( charsetPath );
     }
 }
