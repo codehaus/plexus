@@ -19,7 +19,7 @@ public class ClasspathTag
     extends AbstractMarmaladeTag
 {
     
-    private Classpath classpath = new DefaultClasspath();
+    private DefaultClasspath classpath = new DefaultClasspath();
     
     protected void doExecute( MarmaladeExecutionContext context )
     throws MarmaladeExecutionException

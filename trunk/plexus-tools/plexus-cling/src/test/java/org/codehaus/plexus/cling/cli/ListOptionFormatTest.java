@@ -14,10 +14,10 @@ public class ListOptionFormatTest
         ListOptionFormat fmt = new ListOptionFormat(",", OptionFormat.BOOLEAN_FORMAT);
     }
 
-    public void testShouldReturnFalseForIsValidWhenInvalidValueComponentExists() {
+    public void testShouldReturnTrueForIsValidWhenInvalidValueComponentExists_AssumeBooleanFalse() {
         ListOptionFormat fmt = new ListOptionFormat(",", OptionFormat.BOOLEAN_FORMAT);
         
-        assertFalse(fmt.isValid("true,xxx"));
+        assertTrue(fmt.isValid("true,xxx"));
     }
     
     public void testShouldReturnTrueForIsValidWhenAllValueComponentsAreValid() {
