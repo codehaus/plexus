@@ -7,9 +7,6 @@
  */
 package org.codehaus.plexus.httpd;
 
-import org.apache.plexus.logging.AbstractLogEnabled;
-import org.apache.velocity.context.Context;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
@@ -21,6 +18,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
+
+import org.apache.velocity.context.Context;
+
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 /**
  * HttpAdaptor sets the basic adaptor listening for HTTP requests
