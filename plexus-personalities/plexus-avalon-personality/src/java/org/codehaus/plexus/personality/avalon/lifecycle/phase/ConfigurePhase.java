@@ -5,6 +5,7 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.codehaus.plexus.component.manager.ComponentManager;
 import org.codehaus.plexus.configuration.DefaultConfiguration;
 import org.codehaus.plexus.lifecycle.phase.AbstractPhase;
+import org.codehaus.plexus.personality.avalon.AvalonConfiguration;
 
 public class ConfigurePhase
     extends AbstractPhase
@@ -12,13 +13,13 @@ public class ConfigurePhase
     public void execute( Object object, ComponentManager manager )
         throws Exception
     {
-        Configuration configuration = manager.getComponentDescriptor().getConfiguration();
+        Configuration configuration = new AvalonConfiguration( manager.getComponentDescriptor().getConfiguration() );
 
         if ( object instanceof Configurable )
         {
             if ( null == configuration )
             {
-                configuration = DefaultConfiguration.EMPTY_CONFIGURATION;
+                configuration = new AvalonConfiguration( DefaultConfiguration.EMPTY_CONFIGURATION );
             }
             ( (Configurable) object ).configure( configuration );
         }

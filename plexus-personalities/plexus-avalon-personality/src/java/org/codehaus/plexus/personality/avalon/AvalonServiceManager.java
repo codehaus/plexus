@@ -2,9 +2,9 @@ package org.codehaus.plexus.personality.avalon;
 
 import org.apache.avalon.framework.service.ServiceException;
 import org.apache.avalon.framework.service.ServiceManager;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.component.repository.ComponentRepository;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 /**
  * Extended <code>ServiceManager</code> implementation.
@@ -21,7 +21,7 @@ public class AvalonServiceManager
     implements ServiceManager
 {
     /** Plexus component repository. */
-    private ComponentRepository componentRepository;
+    private PlexusContainer container;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -32,14 +32,14 @@ public class AvalonServiceManager
      *
      * @todo We shouldn't be handing the parent container to the child here.
      */
-    public AvalonServiceManager( ComponentRepository componentRepository )
+    public AvalonServiceManager( PlexusContainer container )
     {
-        if ( componentRepository == null )
+        if ( container == null )
         {
-            throw new IllegalStateException( "ComponentRespository is null." );
+            throw new IllegalStateException( "PlexusContainer is null." );
         }
 
-        this.componentRepository = componentRepository;
+        this.container = container;
     }
 
     // ----------------------------------------------------------------------
@@ -54,7 +54,7 @@ public class AvalonServiceManager
     {
         try
         {
-            return componentRepository.lookup( role );
+            return container.lookup( role );
         }
         catch ( ComponentLookupException e )
         {
@@ -67,7 +67,7 @@ public class AvalonServiceManager
      */
     public boolean hasService( String role )
     {
-        return componentRepository.hasService( role );
+        return container.hasComponent( role );
     }
 
     /**
@@ -75,6 +75,6 @@ public class AvalonServiceManager
      */
     public void release( Object service )
     {
-        componentRepository.release( service );
+        container.release( service );
     }
 }

@@ -4,6 +4,7 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.Reconfigurable;
 import org.codehaus.plexus.component.manager.ComponentManager;
 import org.codehaus.plexus.lifecycle.phase.AbstractPhase;
+import org.codehaus.plexus.personality.avalon.AvalonConfiguration;
 
 public class ReconfigurePhase
     extends AbstractPhase
@@ -11,7 +12,7 @@ public class ReconfigurePhase
     public void execute( Object object, ComponentManager manager )
         throws Exception
     {
-        Configuration configuration = manager.getComponentDescriptor().getConfiguration();
+        Configuration configuration = new AvalonConfiguration( manager.getComponentDescriptor().getConfiguration() );
 
         if ( object instanceof Reconfigurable )
         {

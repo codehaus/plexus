@@ -1,8 +1,8 @@
 package org.codehaus.plexus.personality.avalon;
 
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.lifecycle.AbstractLifecycleHandler;
 import org.codehaus.plexus.lifecycle.LifecycleHandler;
-import org.codehaus.plexus.component.repository.ComponentRepository;
 
 /** An Avalon component lifecycle handler.
  *
@@ -38,10 +38,11 @@ public class AvalonLifecycleHandler
     public void initialize()
         throws Exception
     {
-        ComponentRepository cr = (ComponentRepository) getEntities().get( LifecycleHandler.SERVICE_REPOSITORY );
+        System.out.println("Initializing Avalon LifecycleHandler.");
+        
+        PlexusContainer container = (PlexusContainer) 
+            getEntities().get( LifecycleHandler.PLEXUS_CONTAINER );
 
-        System.out.println( "cr = " + cr );
-
-        addEntity( SERVICE_MANAGER, new AvalonServiceManager( cr ) );
+        addEntity( SERVICE_MANAGER, new AvalonServiceManager( container ) );
     }
 }

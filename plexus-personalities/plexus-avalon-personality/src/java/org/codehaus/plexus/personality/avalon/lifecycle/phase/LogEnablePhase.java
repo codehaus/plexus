@@ -4,6 +4,7 @@ import org.apache.avalon.framework.logger.LogEnabled;
 import org.apache.avalon.framework.logger.Logger;
 import org.codehaus.plexus.component.manager.ComponentManager;
 import org.codehaus.plexus.lifecycle.phase.AbstractPhase;
+import org.codehaus.plexus.personality.avalon.AvalonLogger;
 
 public class LogEnablePhase
     extends AbstractPhase
@@ -11,7 +12,12 @@ public class LogEnablePhase
     public void execute( Object object, ComponentManager manager )
         throws Exception
     {
-        Logger logger = (Logger) manager.getLifecycleHandler().getEntities().get( "logger" );
+        Logger logger =
+            (Logger) new AvalonLogger( 
+                (org.codehaus.plexus.logging.Logger) manager
+                    .getLifecycleHandler()
+                    .getEntities()
+                    .get("logger") );
 
         if ( object instanceof LogEnabled )
         {
