@@ -1,3 +1,0 @@
-AppServices Use Cases
-- Jetty Server available to all applications
-- JMS
