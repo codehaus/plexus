@@ -1,4 +1,4 @@
 main is org.codehaus.plexus.PlexusContainerHost from core
 
 [core]
-load \${lib}/*.jar
+load ${lib}/*.jar
