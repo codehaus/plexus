@@ -23,7 +23,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-i18n</artifactId>
-      <version>1.0-beta-2-SNAPSHOT</version>
+      <version>1.0-beta-3-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

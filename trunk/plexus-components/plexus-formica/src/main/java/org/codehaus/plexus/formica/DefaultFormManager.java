@@ -193,9 +193,31 @@ public class DefaultFormManager
         return result;
     }
 
+    // ----------------------------------------------------------------------
+    // Population
+    // ----------------------------------------------------------------------
+
     public void populate( Form form, Map data, Object target )
         throws TargetPopulationException
     {
         populator.populate( form, data, target );
+    }
+
+    public Object populate( String formId, Map data, ClassLoader classLoader )
+        throws TargetPopulationException, FormNotFoundException, ClassNotFoundException, InstantiationException, IllegalAccessException
+    {
+        Form form = getForm( formId );
+
+        Object target = classLoader.loadClass( form.getTargetClass() ).newInstance();
+
+        populator.populate( form, data, target );
+
+        return target;
+    }
+
+    public void populate( String formId, Map data, Object target )
+        throws TargetPopulationException, FormNotFoundException
+    {
+        populator.populate( getForm( formId ), data, target );
     }
 }

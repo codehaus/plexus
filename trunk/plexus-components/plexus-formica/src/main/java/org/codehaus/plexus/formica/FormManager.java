@@ -60,4 +60,10 @@ public interface FormManager
     public void populate( Form form, Map data, Object target )
         throws TargetPopulationException;
 
+    public void populate( String formId, Map data, Object target )
+        throws TargetPopulationException, FormNotFoundException;
+
+    public Object populate( String formId, Map data, ClassLoader classLoader )
+        throws TargetPopulationException, FormNotFoundException, ClassNotFoundException, InstantiationException, IllegalAccessException;
+
 }
