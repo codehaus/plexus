@@ -65,11 +65,13 @@ import java.net.InetAddress;
 import java.util.Collection;
 import java.util.Vector;
 
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.context.Context;
 import org.apache.avalon.framework.context.ContextException;
 import org.apache.ftpserver.util.IoUtils;
 import org.apache.ftpserver.util.RegularExpr;
-import org.apache.avalon.phoenix.BlockContext;
+//import org.apache.avalon.phoenix.BlockContext;
 
 
 /**
@@ -92,7 +94,8 @@ public class FileIpRestrictor extends AbstractIpRestrictor {
      */
     public void contextualize(Context context) throws ContextException {
         super.contextualize(context);
-        mIpFile = new File( ((BlockContext)context).getBaseDirectory(), "ip.properties" );
+
+        mIpFile = new File( getBaseDirectory(), "ip.properties" );
         try {
             reload();
         }
