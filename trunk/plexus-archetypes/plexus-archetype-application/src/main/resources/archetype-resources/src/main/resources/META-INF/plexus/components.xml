@@ -1,17 +1,4 @@
 <configuration>
-
-  <load-on-start>
-    <component>
-      <role>${package}.TestApp</role>
-    </component>
-  </load-on-start>
-
-  <foo>${name}</foo>
-
-  <resources>
-    <jar-repository>${plexus.home}/lib</jar-repository>
-  </resources>
-
   <components>
     <component>
       <role>${package}.TestApp</role>
