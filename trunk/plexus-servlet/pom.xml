@@ -1,30 +1,33 @@
-<?xml version="1.0"?>
-
-<project>
-  <modelVersion>4.0.0</modelVersion>
+<model>
   <parent>
-    <groupId>plexus</groupId>
     <artifactId>plexus-root</artifactId>
+    <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-servlet</artifactId>
-  <version>1.0-beta-2-SNAPSHOT</version>
+  <packaging>jar</packaging>
   <name>Plexus Servlet</name>
+  <version>1.0-beta-2-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>servletapi</groupId>
       <artifactId>servletapi</artifactId>
       <version>2.3</version>
-    </dependency>   
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
       <version>1.0-alpha-1</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
   <build>
     <sourceDirectory>src/java</sourceDirectory>
-    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <testSourceDirectory>src/test</testSourceDirectory>
   </build>
-</project>
+</model>

@@ -1,25 +1,31 @@
-<project>
+<model>
   <modelVersion>4.0.0</modelVersion>
   <groupId>$groupId</groupId>
   <artifactId>$artifactId</artifactId>
+  <packaging>jar</packaging>
   <version>$version</version>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
       <version>1.0-alpha-2-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
-  <plugins>
-    <plugin>
-      <id>plexus</id>
-      <configuration>
-        <applicationName>foo</applicationName>
-        <configurationDirectory>src/conf</configurationDirectory>
-        <basedir>target</basedir>
-        <plexusConfiguration>src/conf/application.xml</plexusConfiguration>
-        <plexusConfigurationPropertiesFile>src/plexus.properties</plexusConfigurationPropertiesFile>
-      </configuration>
-    </plugin>
-  </plugins>
-</project>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>maven</groupId>
+        <artifactId>maven-plexus-plugin</artifactId>
+        <configuration>
+          <configurationDirectory>src/conf</configurationDirectory>
+          <applicationName>foo</applicationName>
+          <plexusConfigurationPropertiesFile>src/plexus.properties</plexusConfigurationPropertiesFile>
+          <plexusConfiguration>src/conf/application.xml</plexusConfiguration>
+          <basedir>target</basedir>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</model>

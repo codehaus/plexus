@@ -1,22 +1,22 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-
-<project>
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>plexus</groupId>
-        <artifactId>plexus-logging</artifactId>
-        <version>1.0</version>
-    </parent>
+<model>
+  <parent>
+    <artifactId>plexus-logging</artifactId>
     <groupId>plexus</groupId>
-    <artifactId>plexus-jdk-logging</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>Plexus JDK Logger</name>
-    <dependencies>       
-        <!-- For testing -->
-        <dependency>
-            <groupId>plexus</groupId>
-            <artifactId>plexus-logging-provider-test</artifactId>
-            <version>1.0-alpha-1-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
-</project>
+    <version>1.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-jdk-logging</artifactId>
+  <packaging>jar</packaging>
+  <name>Plexus JDK Logger</name>
+  <version>1.0-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-logging-provider-test</artifactId>
+      <version>1.0-alpha-1-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</model>

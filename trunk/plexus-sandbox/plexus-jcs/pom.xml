@@ -1,28 +1,35 @@
-<project>
+<model>
   <parent>
-    <groupId>plexus</groupId>
     <artifactId>plexus-components</artifactId>
+    <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-jcs</artifactId>
-  <version>1.0</version>
+  <packaging>jar</packaging>
   <name>Plexus JCS Component</name>
+  <version>1.0</version>
   <dependencies>
     <dependency>
       <groupId>jcs</groupId>
       <artifactId>jcs</artifactId>
       <version>1.0-dev</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.0.2</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <version>20030203.000129</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
-</project>
+</model>

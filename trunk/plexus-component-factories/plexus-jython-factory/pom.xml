@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<project>
-  <modelVersion>4.0.0</modelVersion>
+<model>
   <parent>
-    <groupId>plexus</groupId>
     <artifactId>plexus-component-factories</artifactId>
+    <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-jython-factory</artifactId>
+  <packaging>jar</packaging>
   <name>Plexus Jython Factory</name>
   <version>1.0-alpha-5</version>
   <dependencies>
@@ -14,6 +14,8 @@
       <groupId>jython</groupId>
       <artifactId>jython</artifactId>
       <version>2.1</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
-</project>
+</model>
