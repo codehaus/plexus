@@ -33,7 +33,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
-public class PlexusBuilderTestX
+public class PlexusBuilderTest
     extends ArtifactEnabledPlexusTestCase
 {
     private String buildDirectory;
@@ -71,7 +71,7 @@ public class PlexusBuilderTestX
 
         builder.setBaseDirectory( buildDirectory );
 
-        MavenProject project = projectBuilder.build( new File( getTestFile( "src/test/project/project.xml" ) ) );
+        MavenProject project = projectBuilder.build( new File( getTestPath( "src/test/project/project.xml" ) ) );
 
         builder.setProject( project );
 
@@ -97,13 +97,13 @@ public class PlexusBuilderTestX
 
         assertFileEquals( "plexus-plexus-dependency-1.0", "core/plexus-dependency-1.0.jar" );
 
-        assertFileEquals( "group1-artifact1-2.0", "application/testapp/lib/artifact1-2.0.jar" );
+        assertFileEquals( "group1-artifact1-2.0", "apps/testapp/lib/artifact1-2.0.jar" );
 
-        assertFileEquals( "group2-artifact2-1.0", "application/testapp/lib/artifact2-1.0.jar" );
+        assertFileEquals( "group2-artifact2-1.0", "apps/testapp/lib/artifact2-1.0.jar" );
 
-        assertFileEquals( "group3-artifact3-1.0", "application/testapp/lib/artifact3-1.0.jar" );
+        assertFileEquals( "group3-artifact3-1.0", "apps/testapp/lib/artifact3-1.0.jar" );
 
-        assertFileEquals( "plexus-plexus-runtime-builder-test-project-2.0-SNAPSHOT", "application/testapp/lib/plexus-runtime-builder-test-project-2.0-SNAPSHOT.jar" );
+        assertFileEquals( "plexus-plexus-runtime-builder-test-project-2.0-SNAPSHOT", "apps/testapp/lib/plexus-runtime-builder-test-project-2.0-SNAPSHOT.jar" );
 
         assertFile( "bin/plexus.bat" );
 
