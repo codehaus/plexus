@@ -13,13 +13,10 @@ import org.codehaus.plexus.logging.Logger;
 /**
  * @author jdcasey
  */
-public class DefaultCLIngConfiguration extends AbstractLogEnabled
+public class DefaultCLIngConfiguration extends AbstractCLIngConfiguration
     implements CLIngConfiguration
 {
     
-    private ArtifactRepository localRepository;
-    private Set remoteRepositories;
-
     public DefaultCLIngConfiguration() throws MalformedURLException
     {
         String userHome = System.getProperty("user.home");
@@ -27,34 +24,13 @@ public class DefaultCLIngConfiguration extends AbstractLogEnabled
         
         File repoLocation = new File(homeDir, ".CLIng/repository");
         
-        this.localRepository = new ArtifactRepository("local", repoLocation.toURL().toExternalForm());
+        setLocalRepository(new ArtifactRepository("local", repoLocation.toURL().toExternalForm()));
         
-        this.remoteRepositories = new HashSet();
+        Set remoteRepositories = new HashSet();
         
         remoteRepositories.add(new ArtifactRepository("remote-0", "http://repository.codehaus.org"));
-    }
-
-    public ArtifactRepository getLocalRepository()
-    {
-        return localRepository;
-    }
-
-    public Set getRemoteRepositories()
-    {
-        return remoteRepositories;
-    }
-
-    public void overrideWith( CLIngConfiguration otherConfig )
-    {
-        ArtifactRepository otherLocal = otherConfig.getLocalRepository();
-        if(otherLocal != null) {
-            this.localRepository = otherLocal;
-        }
         
-        Set otherRemoteRepos = otherConfig.getRemoteRepositories();
-        if(otherRemoteRepos != null) {
-            this.remoteRepositories = otherRemoteRepos;
-        }
+        setRemoteRepositories(remoteRepositories);
     }
 
 }
