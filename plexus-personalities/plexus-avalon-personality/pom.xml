@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<project>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-avalon-personality</artifactId>
+  <name>Plexus Avalon Personality</name>
+  <version>0.12</version>
+  <dependencies>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus</artifactId>
+      <version>0.14-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>avalon</groupId>
+      <artifactId>avalon-framework</artifactId>
+      <version>4.1.4</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <nagEmailAddress>plexus-dev@lists.codehaus.org</nagEmailAddress>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+      <resources>
+        <resource>
+          <directory>src/test</directory>
+          <includes>
+            <include>**/*.xml</include>
+          </includes>
+        </resource>
+      </resources>
+    </unitTest>
+    <resources>
+      <resource>
+        <directory>src/conf</directory>
+        <targetPath>META-INF/plexus</targetPath>
+        <includes>
+          <include>components.xml</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+</project>
