@@ -1,27 +1,7 @@
 package org.codehaus.plexus.mailsender.simple;
 
 /*
- * The MIT License
- *
- * Copyright (c) 2004, The Codehaus
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * LICENSE
  */
 
 import java.io.IOException;
@@ -29,72 +9,82 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.codehaus.plexus.mailsender.AbstractMailSender;
-import org.codehaus.plexus.mailsender.MailMessage;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.mailsender.MailSender;
 import org.codehaus.plexus.mailsender.MailSenderException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id$
  */
 public class SimpleMailSender
-	extends AbstractMailSender
+	extends AbstractLogEnabled
+	implements MailSender, Initializable
 {
+    /** @configuration */
+    private String smtpHost;
+
+    /** @configuration */
+    private Integer smtpPort;
+
+    // ----------------------------------------------------------------------
+    // 
+    // ----------------------------------------------------------------------
+
+    private final static Integer DEFAULT_SMTP_PORT = new Integer( 25 );
+
+    // ----------------------------------------------------------------------
+    // Component Lifecycle
+    // ----------------------------------------------------------------------
+
+    public void initialize()
+    	throws Exception
+    {
+        if ( smtpHost == null || smtpHost.length() == 0 )
+        {
+            throw new MailSenderException( "Error in configuration: Missing smtp-host." );
+        }
+
+        if ( smtpPort == null )
+        {
+            smtpPort = DEFAULT_SMTP_PORT;
+        }
+    }
+
     // ----------------------------------------------------------------------
     // MailSender Implementation
     // ----------------------------------------------------------------------
 
-    public void send( MailMessage mail ) throws MailSenderException
+    public void sendMail( String subject, String content, String toAddress, String toName, String fromAddress, String fromName )
+    	throws MailSenderException
 	{
-	    verify( mail );
+        sendMail( subject, content, toAddress, toName, fromAddress, fromName );
+	}
 
+    public void sendMail( String subject, String content, String toAddress, String toName, String fromAddress, String fromName, Map extraHeaders )
+    	throws MailSenderException
+    {
         try
         {
-            org.codehaus.plexus.mailsender.simple.MailMessage message = new org.codehaus.plexus.mailsender.simple.MailMessage( getSmtpHost(), getSmtpPort() );
+            MailMessage message = new MailMessage( smtpHost, smtpPort.intValue() );
 
-            message.from( makeEmailAddress( mail.getFromAddress(), mail.getFromName() ) );
+            message.from( makeEmailAddress( fromAddress, fromName ) );
 
-            for( Iterator iter = mail.getToAddresses().keySet().iterator(); iter.hasNext(); )
-            {
-                String toAddress = (String) iter.next();
-                String toName = (String) mail.getToAddresses().get( toAddress );
-                message.to( makeEmailAddress( toAddress, toName ) );
-            }
+            message.to( makeEmailAddress( toAddress, toName ) );
 
-            for( Iterator iter = mail.getCcAddresses().keySet().iterator(); iter.hasNext(); )
-            {
-                String ccAddress = (String) iter.next();
-                String ccName = (String) mail.getCcAddresses().get( ccAddress );
-                message.cc( makeEmailAddress( ccAddress, ccName ) );
-            }
+            message.setSubject( subject );
 
-            for( Iterator iter = mail.getBccAddresses().keySet().iterator(); iter.hasNext(); )
-            {
-                String bccAddress = (String) iter.next();
-                String bccName = (String) mail.getBccAddresses().get( bccAddress );
-                message.bcc( makeEmailAddress( bccAddress, bccName ) );
-            }
-
-            message.setSubject( mail.getSubject() );
-
-            for ( Iterator it = mail.getHeaders().entrySet().iterator(); it.hasNext(); )
+            for ( Iterator it = extraHeaders.entrySet().iterator(); it.hasNext(); )
             {
                 Map.Entry entry = (Map.Entry) it.next();
 
                 message.setHeader( entry.getKey().toString(), entry.getValue().toString() );
             }
 
-            if ( mail.getSendDate() != null )
-            {
-                message.setHeader( "Date", DateFormatUtils.getDateHeader( mail.getSendDate() ) );
-            }
-            else
-            {
-                message.setHeader( "Date", DateFormatUtils.getDateHeader( new Date() ) );
-            }
+            message.setHeader( "Date", DateFormatUtils.getDateHeader( new Date() ) );
 
-            message.getPrintStream().print( mail.getContent() );
+            message.getPrintStream().print( message );
 
             message.sendAndClose();
         }
@@ -102,5 +92,20 @@ public class SimpleMailSender
         {
             throw new MailSenderException( "Error while sending mail.", ex );
         }
+    }
+
+
+    // ----------------------------------------------------------------------
+    // 
+    // ----------------------------------------------------------------------
+
+    private String makeEmailAddress( String address, String name )
+    {
+        if ( name == null || name.length() == 0 )
+        {
+            return "<" + address + ">";
+        }
+
+        return name + "<" + address + ">";
     }
 }

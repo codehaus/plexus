@@ -20,12 +20,7 @@ public class TestAppTest
 
         String plexusHome = (String) getContainer().getContext().get( "plexus.home" );
 
-        File lib = new File( plexusHome, "lib" );
-
-        if ( !lib.exists() )
-        {
-            assertTrue( lib.mkdir() );
-        }
+        assertTrue( new File( plexusHome, "lib" ).mkdir() );
     }
 
     public void testApplication()
@@ -37,6 +32,6 @@ public class TestAppTest
     protected InputStream getCustomConfiguration()
         throws Exception
     {
-        return new FileInputStream( getTestFile( "src/conf/application.xml" ) );
+        return new FileInputStream( getTestFile( "src/conf/plexus.conf" ) );
     }
 }

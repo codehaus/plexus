@@ -1,4 +1,4 @@
-package org.codehaus.plexus.notification.notifier.manager;
+package org.codehaus.plexus.notification;
 
 /*
  * The MIT License
@@ -24,21 +24,50 @@ package org.codehaus.plexus.notification.notifier.manager;
  * SOFTWARE.
  */
 
-import java.util.Map;
-
-import org.codehaus.plexus.notification.notifier.Notifier;
-import org.codehaus.plexus.notification.NotificationException;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public interface NotifierManager
+public class TestRecipientDatabase
+    implements RecipientDatabase
 {
-    String ROLE = NotifierManager.class.getName();
+    public Set getRecipients( String messageId, String notifierType )
+        throws NotificationException
+    {
+        Set recipients = new TreeSet();
 
-    Map getNotifiers();
+        if ( messageId.equals( "buildComplete" ) )
+        {
+            if ( notifierType.equals( "eeny" ) )
+            {
+                recipients.add( "trygve" );
 
-    Notifier getNotifier( String key )
-        throws NotificationException;
+                recipients.add( "jason" );
+            }
+
+            if ( notifierType.equals( "meeny" ) )
+            {
+                recipients.add( "bob" );
+
+                recipients.add( "jt" );
+            }
+
+            if ( notifierType.equals( "miny" ) )
+            {
+                recipients.add( "topping" );
+
+                recipients.add( "dan" );
+            }
+
+            if ( !notifierType.equals( "mo" ) )
+            {
+                recipients.add( "brett" );
+            }
+        }
+
+        return recipients;
+    }
 }

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.notification.notifier.manager;
+package org.codehaus.plexus.service.servletcontainer;
 
 /*
  * The MIT License
@@ -24,21 +24,11 @@ package org.codehaus.plexus.notification.notifier.manager;
  * SOFTWARE.
  */
 
-import java.util.Map;
-
-import org.codehaus.plexus.notification.notifier.Notifier;
-import org.codehaus.plexus.notification.NotificationException;
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public interface NotifierManager
+public interface ServletContainerService
 {
-    String ROLE = NotifierManager.class.getName();
-
-    Map getNotifiers();
-
-    Notifier getNotifier( String key )
-        throws NotificationException;
+    String ROLE = ServletContainerService.class.getName();
 }

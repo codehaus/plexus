@@ -1,12 +1,15 @@
-<model>
+<project>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>plexus-archetypes</artifactId>
     <groupId>plexus</groupId>
+    <artifactId>plexus-archetypes</artifactId>
     <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
+  <!--
   <groupId>plexus</groupId>
   <artifactId>plexus-archetype-component-simple</artifactId>
-  <packaging>jar</packaging>
+  -->
+  <groupId>maven</groupId>
+  <artifactId>maven-archetype-plexus-archetype-component-simple</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
-</model>
+</project>

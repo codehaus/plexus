@@ -5,9 +5,8 @@
     <source>src/main/java/DefaultTestApp.java</source>
   </sources>
   <resources>
-    <resource>src/conf/application.xml</resource>
+    <resource>src/conf/plexus.conf</resource>
     <resource>src/plexus.properties</resource>
-    <resource>src/main/resources/META-INF/plexus/components.xml</resource>
   </resources>
   <testSources>
     <source>src/test/java/TestAppTest.java</source>
