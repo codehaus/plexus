@@ -110,6 +110,15 @@ public class DefaultXmlRpcServer
     {
         WebServer webServer = getWebServer( host, port );
 
+        if ( host == null )
+        {
+            getLogger().info( "Starting XML-RPC listener on port '" + port + "'." );
+        }
+        else
+        {
+            getLogger().info( "Starting XML-RPC listener on host '" + host + "', port '" + port + "'." );
+        }
+
         webServer.start();
     }
 
