@@ -79,7 +79,7 @@ to make sure that every artifact is build against HEAD.
     <ant:echo>*** Building the component factories ***</ant:echo>
     <ant:echo>****************************************</ant:echo>
     <maven:reactor
-      basedir="plexus-component-factories/"
+      basedir="plexus-component-factories"
       includes="project.xml"
       goals="pom:install"/>
     <maven:reactor
@@ -93,7 +93,7 @@ to make sure that every artifact is build against HEAD.
     <ant:echo>*** Building the components ***</ant:echo>
     <ant:echo>*******************************</ant:echo>
     <maven:reactor
-      basedir="plexus-components/"
+      basedir="plexus-components"
       includes="native/project.xml,avalon/project.xml"
       goals="pom:install"/>
     <maven:reactor
@@ -107,6 +107,10 @@ to make sure that every artifact is build against HEAD.
     <ant:echo>*********************************</ant:echo>
     <ant:echo>*** Building the plexus tools ***</ant:echo>
     <ant:echo>*********************************</ant:echo>
+    <maven:reactor
+      basedir="plexus-tools"
+      includes="project.xml"
+      goals="pom:install"/>
     <maven:reactor
       basedir="plexus-tools"
       includes="*/project.xml"
