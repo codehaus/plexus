@@ -12,9 +12,9 @@ class Log4JLogger
     {
         super( threshold, getLoggerName(logger) );
 
-        if( logger == null )
+        if ( null == logger )
         {
-            throw new NullPointerException("logger");
+            throw new IllegalArgumentException( "Logger cannot be null" );
         }
 
         this.logger = logger;
