@@ -1,0 +1,8 @@
+<component-set>
+  <components>
+    <component>
+      <role></role>
+      <implementation></implementation>
+    </component>
+  </components>
+</component-set>
