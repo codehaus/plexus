@@ -43,56 +43,91 @@
 
     <!-- Maven stuff -->
     <component>
+      <role>org.apache.maven.plugin.PluginManager</role>
+      <implementation>org.apache.maven.plugin.DefaultPluginManager</implementation>
+      <configuration>
+        <maven-home>${maven.home}</maven-home>
+      </configuration>
+    </component>
+    <component>
+      <role>org.apache.maven.MavenCore</role>
+      <implementation>org.apache.maven.DefaultMavenCore</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.plugin.PluginManager</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.project.MavenProjectBuilder</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.i18n.I18N</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.lifecycle.MavenLifecycleManager</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.i18n.I18N</role>
+      <implementation>org.codehaus.plexus.i18n.DefaultI18N</implementation>
+      <configuration>
+        <default-bundle-name>org.apache.maven.messages.messages</default-bundle-name>
+      </configuration>
+    </component>
+    <component>
+      <role>org.apache.maven.lifecycle.MavenLifecycleManager</role>
+      <implementation>org.apache.maven.lifecycle.DefaultMavenLifecycleManager</implementation>
+      <configuration>
+        <lifecycle-phases>
+          <lifecycle-phase implementation="org.apache.maven.lifecycle.phase.GoalDecorationPhase"/>
+          <lifecycle-phase implementation="org.apache.maven.lifecycle.phase.GoalResolutionPhase"/>
+          <lifecycle-phase implementation="org.apache.maven.lifecycle.phase.DependencyResolutionPhase"/>
+          <lifecycle-phase implementation="org.apache.maven.lifecycle.phase.DependencyDownloadPhase"/>
+          <lifecycle-phase implementation="org.apache.maven.lifecycle.phase.PluginDownloadPhase"/>
+          <lifecycle-phase implementation="org.apache.maven.lifecycle.phase.GoalAttainmentPhase"/>
+        </lifecycle-phases>
+      </configuration>
+    </component>
+    <component>
       <role>org.apache.maven.project.MavenProjectBuilder</role>
       <implementation>org.apache.maven.project.DefaultMavenProjectBuilder</implementation>
       <requirements>
         <requirement>
           <role>org.apache.maven.project.inheritance.ModelInheritanceAssembler</role>
         </requirement>
-        <requirement>
+         <requirement>
           <role>org.apache.maven.artifact.factory.MavenArtifactFactory</role>
-        </requirement>
-        <requirement>
-          <role>org.apache.maven.project.validation.ModelValidator</role>
         </requirement>
         <requirement>
           <role>org.apache.maven.wagon.manager.WagonManager</role>
         </requirement>
+        <requirement>
+          <role>org.apache.maven.project.validation.ModelValidator</role>
+        </requirement>
       </requirements>
-    </component>
-    <component>
-      <role>org.apache.maven.project.inheritance.ModelInheritanceAssembler</role>
-      <implementation>org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler</implementation>
     </component>
     <component>
       <role>org.apache.maven.artifact.factory.MavenArtifactFactory</role>
       <implementation>org.apache.maven.artifact.factory.DefaultMavenArtifactFactory</implementation>
     </component>
     <component>
-      <role>org.apache.maven.project.validation.ModelValidator</role>
-      <implementation>org.apache.maven.project.validation.DefaultModelValidator</implementation>
+      <role>org.apache.maven.artifact.collector.ArtifactCollector</role>
+      <implementation>org.apache.maven.artifact.collector.DefaultArtifactCollector</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+        </requirement>
+      </requirements>
     </component>
     <component>
       <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
       <implementation>org.apache.maven.artifact.resolver.DefaultArtifactResolver</implementation>
       <requirements>
         <requirement>
+          <role>org.apache.maven.artifact.downloader.ArtifactDownloader</role>
+        </requirement>
+        <requirement>
           <role>org.apache.maven.artifact.snapshot.SnapshotResolver</role>
-        </requirement>
-        <requirement>
-          <role>org.apache.maven.artifact.downloader.ArtifactDownloader</role>
-        </requirement>
-      </requirements>
-    </component>
-    <component>
-      <role>org.apache.maven.artifact.snapshot.SnapshotResolver</role>
-      <implementation>org.apache.maven.artifact.snapshot.DefaultSnapshotResolver</implementation>
-      <requirements>
-        <requirement>
-          <role>org.apache.maven.artifact.downloader.ArtifactDownloader</role>
-        </requirement>
-        <requirement>
-          <role>org.apache.maven.wagon.manager.WagonManager</role>
         </requirement>
       </requirements>
     </component>
@@ -103,6 +138,47 @@
         <requirement>
           <role>org.apache.maven.wagon.manager.WagonManager</role>
         </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.apache.maven.project.inheritance.ModelInheritanceAssembler</role>
+      <implementation>org.apache.maven.project.inheritance.DefaultModelInheritanceAssembler</implementation>
+    </component>
+    <component>
+      <role>org.apache.maven.project.validation.ModelValidator</role>
+      <implementation>org.apache.maven.project.validation.DefaultModelValidator</implementation>
+    </component>
+    <component>
+      <role>org.apache.maven.artifact.snapshot.SnapshotResolver</role>
+      <implementation>org.apache.maven.artifact.snapshot.DefaultSnapshotResolver</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.wagon.manager.WagonManager</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.downloader.ArtifactDownloader</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.apache.maven.artifact.installer.ArtifactInstaller</role>
+      <implementation>org.apache.maven.artifact.installer.DefaultArtifactInstaller</implementation>
+      <requirements>
+        <requirement>
+         <role>org.apache.maven.artifact.factory.MavenArtifactFactory</role>
+       </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.apache.maven.artifact.deployer.ArtifactDeployer</role>
+      <implementation>org.apache.maven.artifact.deployer.DefaultArtifactDeployer</implementation>
+      <requirements>
+        <requirement>
+         <role>org.apache.maven.artifact.factory.MavenArtifactFactory</role>
+       </requirement>
+       <requirement>
+          <role>org.apache.maven.wagon.manager.WagonManager</role>
+       </requirement>
       </requirements>
     </component>
   </components>
