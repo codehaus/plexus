@@ -109,7 +109,7 @@ public class DefaultXmlRpcComponent
     private String saxParserClass;
 
     /** Paranoid state. */
-    private boolean isStateOfParanoia;
+    private boolean paranoid;
 
     /** Handlers. */
     private List handlers;
@@ -181,9 +181,9 @@ public class DefaultXmlRpcComponent
 
         registerStartupHandlers();
 
-        if ( isStateOfParanoia )
+        if ( paranoid )
         {
-            webserver.setParanoid( isStateOfParanoia );
+            webserver.setParanoid( paranoid );
 
             getLogger().info( "Operating in a state of paranoia" );
 
