@@ -1,28 +1,29 @@
-<model>
+<project>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>plexus-services</artifactId>
     <groupId>plexus</groupId>
+    <artifactId>plexus-services</artifactId>
     <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-service-xmlrpc</artifactId>
-  <packaging>jar</packaging>
   <version>1.0-alpha-1-SNAPSHOT</version>
+  <name>Plexus XMLRPC Service</name>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-appserver</artifactId>
       <version>1.0-alpha-1-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-xmlrpc</artifactId>
       <version>1.0-beta-3-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>xmlrpc</groupId>
+      <artifactId>xmlrpc</artifactId>
+      <version>1.2</version>
     </dependency>
   </dependencies>
   <build>
@@ -30,6 +31,7 @@
       <plugin>
         <groupId>maven</groupId>
         <artifactId>maven-plexus-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
         <configuration>
           <serviceName>jetty</serviceName>
           <configurationDirectory>src/conf</configurationDirectory>
@@ -40,4 +42,4 @@
       </plugin>
     </plugins>
   </build>
-</model>
+</project>
