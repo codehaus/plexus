@@ -134,24 +134,24 @@ public class JettyServletContainer
         }
     }
 
-    public void deployWarFile( File war, boolean extractWar, String context,
+    public void deployWarFile( File war, boolean extractWar, File extractionLocation, String context,
                                DefaultPlexusContainer container, String virtualHost )
         throws ServletContainerException
     {
-        deployWAR( war, extractWar, context, container, virtualHost );
+        deployWAR( war, extractWar, extractionLocation, context, container, virtualHost );
     }
 
     public void deployWarDirectory( File war, String context, DefaultPlexusContainer container, String virtualHost )
         throws ServletContainerException
     {
-        deployWAR( war, false, context, container, virtualHost );
+        deployWAR( war, false, null, context, container, virtualHost );
     }
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
-    private void deployWAR( File war, boolean extractWar, String context,
+    private void deployWAR( File war, boolean extractWar, File extractionLocation, String context,
                             DefaultPlexusContainer container, String virtualHost )
         throws ServletContainerException
     {
@@ -192,6 +192,11 @@ public class JettyServletContainer
         // ----------------------------------------------------------------------
 
         applicationContext.setExtractWAR( extractWar );
+
+        if ( extractionLocation != null )
+        {
+            applicationContext.setTempDirectory( extractionLocation );
+        }
 
         applicationContext.setClassLoader( container.getCoreRealm().getClassLoader() );
 

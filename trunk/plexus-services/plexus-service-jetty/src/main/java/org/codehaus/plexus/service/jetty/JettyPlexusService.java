@@ -85,11 +85,11 @@ public class JettyPlexusService
 
         for ( int i = 0; i < webapps.length; i++ )
         {
-            String path = webapps[ i ].getChild( "path" ).getValue();
+            String path = webapps[ i ].getChild( "path" ).getValue( null );
 
-            String file = webapps[ i ].getChild( "file" ).getValue();
+            String file = webapps[ i ].getChild( "file" ).getValue( null );
 
-            String context = webapps[ i ].getChild( "context" ).getValue();
+            String context = webapps[ i ].getChild( "context" ).getValue( null );
 
             if ( StringUtils.isEmpty( context ) )
             {
@@ -112,7 +112,16 @@ public class JettyPlexusService
 
                 boolean extractWar = Boolean.valueOf( webapps[ i ].getChild( "extractWar" ).getValue( "true" ) ).booleanValue();
 
-                deployFile( new File( file ), extractWar, context, applicationRuntimeProfile );
+                String extractionPath = webapps[ i ].getChild( "extractionPath" ).getValue( null );
+
+                File extractionFile = null;
+
+                if ( !StringUtils.isEmpty( extractionPath ) )
+                {
+                    extractionFile = new File( extractionPath );
+                }
+
+                deployFile( new File( file ), extractWar, extractionFile, context, applicationRuntimeProfile );
             }
             else
             {
@@ -125,7 +134,7 @@ public class JettyPlexusService
     //
     // ----------------------------------------------------------------------
 
-    private void deployFile( File file, boolean extractWar, String context,
+    private void deployFile( File file, boolean extractWar, File extractionPath, String context,
                              ApplicationRuntimeProfile applicationRuntimeProfile )
         throws Exception
     {
@@ -138,7 +147,7 @@ public class JettyPlexusService
         {
             String virtualHost = null;
 
-            servletContainer.deployWarFile( file, extractWar, context,
+            servletContainer.deployWarFile( file, extractWar, extractionPath, context,
                                             applicationRuntimeProfile.getContainer(), virtualHost );
         }
         catch ( ServletContainerException e )
