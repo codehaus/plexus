@@ -63,19 +63,34 @@
      -->
 
     <component>
-      <role>org.plexus.action.Action</role>
+      <role>org.codehaus.plexus.action.Action</role>
       <role-hint>addEntity</role-hint>
-      <implementation>org.plexus.formica.action.AddEntity</implementation>
+      <implementation>org.codehaus.plexus.formica.action.AddEntity</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.formica.FormManager</role>
+        </requirement>
+      </requirements>
     </component>
     <component>
-      <role>org.plexus.action.Action</role>
+      <role>org.codehaus.plexus.action.Action</role>
       <role-hint>updateEntity</role-hint>
-      <implementation>org.plexus.formica.action.UpdateEntity</implementation>
+      <implementation>org.codehaus.plexus.formica.action.UpdateEntity</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.formica.FormManager</role>
+        </requirement>
+      </requirements>
     </component>
     <component>
-      <role>org.plexus.action.Action</role>
+      <role>org.codehaus.plexus.action.Action</role>
       <role-hint>deleteEntity</role-hint>
-      <implementation>org.plexus.formica.action.DeleteEntity</implementation>
+      <implementation>org.codehaus.plexus.formica.action.DeleteEntity</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.formica.FormManager</role>
+        </requirement>
+      </requirements>
     </component>
 
   </components>

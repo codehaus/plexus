@@ -52,10 +52,11 @@ public class AddFormRenderer
 
         w.addAttribute( "method", "post" );
 
-        w.addAttribute( "action", baseUrl + "/target/" + form.getAdd().getView() );
+        w.addAttribute( "action", baseUrl );
 
         // ----------------------------------------------------------------------
 
+        // Action
         w.startElement( "input" );
 
         w.addAttribute( "type", "hidden" );
@@ -65,6 +66,18 @@ public class AddFormRenderer
         w.addAttribute( "value", form.getAdd().getAction() );
 
         w.endElement();
+
+        // View
+        w.startElement( "input" );
+
+        w.addAttribute( "type", "hidden" );
+
+        w.addAttribute( "name", "view" );
+
+        w.addAttribute( "value", form.getAdd().getView() );
+
+        w.endElement();
+
 
         w.startElement( "input" );
 
