@@ -139,6 +139,7 @@
     <component>
       <role>linktool</role>
       <implementation>org.codehaus.plexus.summit.pull.tools.TemplateLink</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
       <configuration/>
     </component>  
     <component>
