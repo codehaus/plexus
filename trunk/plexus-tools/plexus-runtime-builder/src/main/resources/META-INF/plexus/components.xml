@@ -1,8 +1,8 @@
 <component-set>
   <components>
     <component>
-      <role>org.codehaus.plexus.builder.PlexusBuilder</role>
-      <implementation>org.codehaus.plexus.builder.runtime.DefaultRuntimePlexusBuilder</implementation>
+      <role>org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder</role>
+      <implementation>org.codehaus.plexus.builder.runtime.DefaultPlexusRuntimeBuilder</implementation>
       <requirements>
         <requirement>
           <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
