@@ -65,13 +65,13 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus</artifactId>
-      <version>0.8</version>
+      <version>0.9</version>
     </dependency>
 
     <dependency>
       <groupId>classworlds</groupId>
       <artifactId>classworlds</artifactId>
-      <version>1.0-rc2</version>
+      <version>1.0-rc3</version>
     </dependency>
 
     <!--
