@@ -143,11 +143,5 @@ interface FtpConfigInterface extends Remote {
      * Is remote admin allowed
      */
     boolean isRemoteAdminAllowed() throws RemoteException;
-
-    /**
-     * Get base directory.
-     */
-    String getBaseDirectory() throws RemoteException;
-
 }
 
