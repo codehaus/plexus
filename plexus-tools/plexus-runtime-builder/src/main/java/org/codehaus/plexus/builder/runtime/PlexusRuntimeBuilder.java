@@ -22,10 +22,10 @@ package org.codehaus.plexus.builder.runtime;
  * SOFTWARE.
  */
 
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.project.MavenProject;
+import java.io.File;
+import java.util.Set;
 
-import org.codehaus.plexus.builder.BuilderException;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 
 /**
  * @author <a href="jason@maven.org">Jason van Zyl</a>
@@ -36,18 +36,8 @@ public interface PlexusRuntimeBuilder
 {
     String ROLE = PlexusRuntimeBuilder.class.getName();
 
-    void setBaseDirectory( String outputDirectory );
-
-    void setProject( MavenProject project );
-
-    void setLocalRepository( ArtifactRepository localRepository );
-
-    void setPlexusConfiguration( String plexusConfiguration );
-
-    void setConfigurationPropertiesFile( String configurationPropertiesFile );
-
-    void build()
-        throws BuilderException;
+    void build( File outputFile, File workingDirectory,
+                Set remoteRepositories, ArtifactRepository localRepository, Set artifacts,
+                File plexusConfiguration, File configurationPropertiesFile )
+        throws PlexusRuntimeBuilderException;
 }
-
-

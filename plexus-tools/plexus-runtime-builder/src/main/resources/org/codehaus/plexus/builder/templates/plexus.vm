@@ -55,9 +55,9 @@ if [ -z "$PLEXUS_TMPDIR" ] ; then
   mkdir -p "$PLEXUS_TMPDIR"
 fi
 
-if [ -z "$JAVACMD" ] ; then 
+if [ -z "$JAVACMD" ] ; then
   if [ -n "$JAVA_HOME"  ] ; then
-    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then 
+    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
       # IBM's JDK on AIX uses strange locations for the executables
       JAVACMD=$JAVA_HOME/jre/sh/java
     else
@@ -67,7 +67,7 @@ if [ -z "$JAVACMD" ] ; then
     JAVACMD=java
   fi
 fi
- 
+
 if [ ! -x "$JAVACMD" ] ; then
   echo "Error: JAVA_HOME is not defined correctly."
   echo "  We cannot execute $JAVACMD"
@@ -103,8 +103,8 @@ echo "Using PLEXUS_TMPDIR: $PLEXUS_TMPDIR"
 echo "Using JAVA_HOME:     $JAVA_HOME"
 
 if [ "$1" = "" ]
-then 
-  CONF=${PLEXUS_CONF}/plexus.conf
+then
+  CONF=${PLEXUS_CONF}/plexus.xml
 else
   CONF=$1
 fi
