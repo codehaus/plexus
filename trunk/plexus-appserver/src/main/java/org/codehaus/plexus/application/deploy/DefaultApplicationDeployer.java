@@ -35,6 +35,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Map;
 
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
@@ -59,7 +60,7 @@ public class DefaultApplicationDeployer
     extends AbstractLogEnabled
     implements ApplicationDeployer, Contextualizable, Initializable, Disposable
 {
-    private Hashtable deployments;
+    private Map deployments;
 
     // This needs to be changed to PlexusContainer and expand the PlexusContainer
     // interface so that it can be used here. jvz.
@@ -74,6 +75,12 @@ public class DefaultApplicationDeployer
     private String applicationsDirectory;
 
     private Properties contextValues;
+
+    // ----------------------------------------------------------------------
+    // Accessors
+    // ----------------------------------------------------------------------
+
+    
 
     // ----------------------------------------------------------------------
     // Deployment
@@ -203,15 +210,15 @@ public class DefaultApplicationDeployer
         //
         // ----------------------------------------------------------------------
 
-        DefaultPlexusContainer myPlexus = new DefaultPlexusContainer();
+        DefaultPlexusContainer application = new DefaultPlexusContainer();
 
-        deployments.put( name, myPlexus );
+        deployments.put( name, application );
 
         InputStream stream = new FileInputStream( applicationConfiguration );
 
         Reader r = new InputStreamReader( stream );
 
-        myPlexus.setConfigurationResource( r );
+        application.setConfigurationResource( r );
 
         if ( contextValues != null )
         {
@@ -219,7 +226,7 @@ public class DefaultApplicationDeployer
             {
                 String contextName = (String) i.next();
 
-                myPlexus.addContextValue( contextName, contextValues.getProperty( contextName ) );
+                application.addContextValue( contextName, contextValues.getProperty( contextName ) );
             }
         }
 
@@ -229,19 +236,19 @@ public class DefaultApplicationDeployer
         // from the parent container.
         // ----------------------------------------------------------------------
 
-        myPlexus.addContextValue( "plexus.home", location.getAbsolutePath() );
+        application.addContextValue( "plexus.home", location.getAbsolutePath() );
 
-        myPlexus.setParentPlexusContainer( parentPlexus );
+        application.setParentPlexusContainer( parentPlexus );
 
-        myPlexus.setClassWorld( parentPlexus.getClassWorld() );
+        application.setClassWorld( parentPlexus.getClassWorld() );
 
-        myPlexus.setCoreRealm( parentPlexus.getCoreRealm() );
+        application.setCoreRealm( parentPlexus.getCoreRealm() );
 
         try
         {
-            myPlexus.initialize();
+            application.initialize();
 
-            myPlexus.start();
+            application.start();
         }
         catch ( Exception e )
         {
