@@ -59,8 +59,6 @@ package org.codehaus.plexus.summit.activity;
 import java.io.IOException;
 
 import org.apache.avalon.framework.service.ServiceException;
-import org.apache.avalon.framework.service.ServiceManager;
-import org.apache.avalon.framework.service.Serviceable;
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
 import org.codehaus.plexus.summit.rundata.RunData;
@@ -73,10 +71,7 @@ import org.codehaus.plexus.summit.rundata.RunData;
  */
 public class ActionEventValve 
     extends AbstractValve
-    implements Serviceable
 {
-      
-    private ServiceManager manager;
 
     /**
      * @see org.codehaus.plexus.summit.pipeline.valve.Valve#invoke(RunData, ValveContext)
@@ -87,7 +82,7 @@ public class ActionEventValve
         try
         {
             ActionEventService actionEvent = ( ActionEventService ) 
-                manager.lookup( ActionEventService.ROLE );
+                data.getServiceManager().lookup( ActionEventService.ROLE );
             
             actionEvent.perform( data );
         }
@@ -101,13 +96,5 @@ public class ActionEventValve
             throw new SummitException( 
                "There was a problem executing the action.",  e );
         }
-    }
-
-    /**
-     * @see org.apache.avalon.framework.service.Serviceable#service(org.apache.avalon.framework.service.ServiceManager)
-     */
-    public void service(ServiceManager manager) throws ServiceException
-    {
-        this.manager = manager;
     }
 }

@@ -62,9 +62,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.codehaus.plexus.summit.activity.ActionEventService;
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
@@ -81,13 +78,9 @@ import org.codehaus.plexus.summit.rundata.RunData;
 public class LoginValve
     extends AbstractValve
 {
-    protected final static String ACTION_LOGIN = "login-action";
-    protected final static String ACTION_LOGOUT = "logout-action";    
-    protected final static String LOGIN_PAGE = "login-page";    
-    
-    private String loginAction;
-    private String logoutAction;
-    private String loginPage;
+    private String loginAction = "LoginUser";
+    private String logoutAction = "LogoutUser";
+    private String loginPage = "Login.vm";
     
     /**
      * Here we can setup objects that are thread safe and can be
@@ -124,7 +117,7 @@ public class LoginValve
     protected void process(SecureRunData data)
         throws Exception
     {
-        getLogger().debug( "Checking if the user is logging in." );
+        //getLogger().debug( "Checking if the user is logging in." );
         
         // Special case for login and logout, this must happen before the
         // session validator is executed in order either to allow a user to
@@ -138,7 +131,7 @@ public class LoginValve
             (actionName.equalsIgnoreCase(loginAction) ||
              actionName.equalsIgnoreCase(logoutAction) ) )
         {
-            getLogger().debug( "User is logging in." );
+            //getLogger().debug( "User is logging in." );
             
             // If a User is logging in, we should refresh the
             // session here.  Invalidating session and starting a
@@ -181,10 +174,10 @@ public class LoginValve
                 }
             }
             
-            getLogger().debug( "Invoking login action." );
+            //getLogger().debug( "Invoking login action." );
             
             ActionEventService action = 
-                (ActionEventService) getServiceManager().lookup( ActionEventService.ROLE );
+                (ActionEventService) data.getServiceManager().lookup( ActionEventService.ROLE );
             action.perform(data);
             
             // Remove the action parameter so the action is executed again later

@@ -2,13 +2,7 @@ package org.codehaus.jasf.summit;
 
 import java.io.IOException;
 
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.service.ServiceException;
-import org.apache.avalon.framework.service.ServiceManager;
 import org.apache.avalon.framework.service.ServiceSelector;
-import org.apache.avalon.framework.service.Serviceable;
 import org.codehaus.jasf.ResourceController;
 import org.codehaus.jasf.resources.PageResource;
 import org.codehaus.plexus.summit.exception.SummitException;
@@ -25,15 +19,9 @@ import org.codehaus.plexus.summit.rundata.RunData;
  */
 public class ResourceControllerValve
     extends AbstractValve
-    implements Serviceable, Configurable
 {
-    private String NOT_AUTHORIZED_PAGE_DEFAULT = "NotAuthroized.vm";
 
-    private String NOT_AUTHORIZED_PAGE_KEY = "not-authorized-page";
-
-    private String notAuthorizedPage;
-
-    private ServiceManager manager;
+    private String notAuthorizedPage = "NotAuthroized.vm";
 
     /**
      * @see org.codehaus.plexus.summit.pipeline.valve.Valve#invoke(org.codehaus.plexus.summit.rundata.RunData, org.codehaus.plexus.summit.pipeline.valve.ValveContext)
@@ -46,7 +34,7 @@ public class ResourceControllerValve
         try
         {
             ServiceSelector security = 
-                ( ServiceSelector ) manager.lookup( ResourceController.SELECTOR_ROLE );
+                ( ServiceSelector ) data.getServiceManager().lookup( ResourceController.SELECTOR_ROLE );
             
             ResourceController controller = 
                 (ResourceController) security.select( PageResource.RESOURCE_TYPE );
@@ -58,32 +46,12 @@ public class ResourceControllerValve
                 data.setTarget( notAuthorizedPage );
             }
             
-            manager.release( controller );
+            data.getServiceManager().release( controller );
         }
-        catch (ServiceException e)
+        catch (Exception e)
         {
             throw new SummitException( 
                 "Could not find the SecurityService!", e );
         }
-    }
-
-    /**
-     * @see org.apache.avalon.framework.service.Serviceable#service(org.apache.avalon.framework.service.ServiceManager)
-     */
-    public void service(ServiceManager manager)
-        throws ServiceException
-    {
-        this.manager = manager;
-    }
-
-    /**
-     * @see org.apache.avalon.framework.configuration.Configurable#configure(org.apache.avalon.framework.configuration.Configuration)
-     */
-    public void configure(Configuration configuration) 
-        throws ConfigurationException
-    {
-        notAuthorizedPage = 
-            configuration.getAttribute( NOT_AUTHORIZED_PAGE_KEY,
-                                        NOT_AUTHORIZED_PAGE_DEFAULT );
     }
 }
