@@ -103,6 +103,14 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Mark Wilkinson</name>
+      <id>mhw</id>
+      <email>mhw@kremvax.net</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
   
   <dependencies>
@@ -144,13 +152,12 @@
       <version>1.0-rc3</version>
     </dependency>
 
-    <!-- Servlet. This needs to be taken out as a core requirement -->
+    <!-- Servlet -->
     <dependency>
       <groupId>servletapi</groupId>
       <artifactId>servletapi</artifactId>
       <version>2.3</version>
     </dependency>   
-    
 
   </dependencies>
 
