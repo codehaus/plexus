@@ -6,7 +6,7 @@
     <version>1.0</version>
   </parent>
   <artifactId>plexus-hibernate</artifactId>
-  <groupId>plexus-hibernate</groupId>
+  <groupId>plexus</groupId>
   <name>Plexus Hibernate Component</name>
   <version>1.0-beta-4-SNAPSHOT</version>
   <dependencies>
