@@ -8,6 +8,7 @@
     <groupId>plexus</groupId>
     <artifactId>plexus-personalities</artifactId>
     <version>1.0</version>
+    <type>pom</type>
     <name>Plexus Personalities Parent Project</name>
     <dependencies>
         <dependency>
