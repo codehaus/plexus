@@ -1,21 +1,25 @@
 package org.codehaus.plexus.personality.avalon.lifecycle.phase;
 
-import org.apache.avalon.framework.component.Composable;
 import org.apache.avalon.framework.component.ComponentManager;
+import org.apache.avalon.framework.component.Composable;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.lifecycle.phase.AbstractPhase;
-import org.codehaus.plexus.personality.avalon.AvalonLifecycleHandler;
 
 public class ComposePhase
     extends AbstractPhase
 {
+    private static final String COMPONENT_MANAGER_ROLE =
+        ComponentManager.class.getName();
+
     public void execute( Object object, org.codehaus.plexus.component.manager.ComponentManager manager )
         throws Exception
     {
-        ComponentManager avalonComponentManager = (ComponentManager)
-            manager.getLifecycleHandler().getEntities().get( AvalonLifecycleHandler.COMPONENT_MANAGER );
-
         if ( object instanceof Composable )
         {
+            PlexusContainer container = manager.getContainer();
+
+            ComponentManager avalonComponentManager = (ComponentManager) container.lookup( COMPONENT_MANAGER_ROLE );
+
             if ( null == avalonComponentManager )
             {
                 final String message = "ComponentManager is null";
