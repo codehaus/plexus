@@ -11,7 +11,7 @@
           </property>
           <property>
             <name>classpath.resource.loader.class</name>
-            <value>org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader</value>
+            <value>org.codehaus.plexus.velocity.ContextClassLoaderResourceLoader</value>
           </property>
         </properties>
       </configuration>
