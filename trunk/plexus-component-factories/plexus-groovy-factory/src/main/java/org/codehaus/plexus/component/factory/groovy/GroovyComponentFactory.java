@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import groovy.lang.GroovyClassLoader;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.factory.AbstractComponentFactory;
+import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 
@@ -17,7 +18,7 @@ public class GroovyComponentFactory
     private String groovyPath;
 
     public Object newInstance( ComponentDescriptor componentDescriptor, ClassLoader classLoader, PlexusContainer container )
-        throws ClassNotFoundException, InstantiationException, IllegalAccessException
+        throws ComponentInstantiationException
     {
         Object component = null;
 
@@ -33,7 +34,7 @@ public class GroovyComponentFactory
         }
         catch ( Exception e )
         {
-            throw new InstantiationException( e.getMessage() );
+            throw new ComponentInstantiationException( e.getMessage() );
         }
 
         return component;
