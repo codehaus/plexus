@@ -7,7 +7,6 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
-import org.codehaus.plexus.summit.pipeline.valve.ValveContext;
 import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
@@ -35,7 +34,7 @@ public class SessionValidatorValve
     /**
      * @see org.codehaus.plexus.summit.pipeline.valve.AbstractValve#invoke(org.codehaus.plexus.summit.rundata.RunData, org.codehaus.plexus.summit.pipeline.valve.ValveContext)
      */
-    public void invoke(RunData data, ValveContext context)
+    public void invoke(RunData data)
         throws IOException, SummitException
     {
         SecureRunData secData = (SecureRunData) data;
@@ -50,8 +49,6 @@ public class SessionValidatorValve
             getLogger().debug( "Invalid session." );
             //data.setAction(null);
         }
-        
-        context.invokeNext( data );
     }
 
     /**

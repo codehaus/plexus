@@ -9,13 +9,11 @@ import org.apache.avalon.framework.service.ServiceException;
 import org.apache.avalon.framework.service.ServiceManager;
 import org.apache.avalon.framework.service.ServiceSelector;
 import org.apache.avalon.framework.service.Serviceable;
-import org.codehaus.plexus.summit.exception.SummitException;
-import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
-import org.codehaus.plexus.summit.pipeline.valve.ValveContext;
-import org.codehaus.plexus.summit.rundata.RunData;
-
 import org.codehaus.jasf.ResourceController;
 import org.codehaus.jasf.resources.PageResource;
+import org.codehaus.plexus.summit.exception.SummitException;
+import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
+import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
  * Checks to see if the user is authorized to access the specified target.
@@ -40,7 +38,7 @@ public class ResourceControllerValve
     /**
      * @see org.codehaus.plexus.summit.pipeline.valve.Valve#invoke(org.codehaus.plexus.summit.rundata.RunData, org.codehaus.plexus.summit.pipeline.valve.ValveContext)
      */
-    public void invoke(RunData data, ValveContext context)
+    public void invoke(RunData data)
         throws IOException, SummitException
     {
         SecureRunData secData = (SecureRunData) data;
@@ -67,8 +65,6 @@ public class ResourceControllerValve
             throw new SummitException( 
                 "Could not find the SecurityService!", e );
         }
-        
-        context.invokeNext( data );
     }
 
     /**

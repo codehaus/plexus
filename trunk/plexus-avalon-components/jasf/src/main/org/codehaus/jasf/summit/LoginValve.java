@@ -65,11 +65,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.service.Serviceable;
 import org.codehaus.plexus.summit.activity.ActionEventService;
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
-import org.codehaus.plexus.summit.pipeline.valve.ValveContext;
 import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
@@ -82,7 +80,7 @@ import org.codehaus.plexus.summit.rundata.RunData;
  */
 public class LoginValve
     extends AbstractValve
-    implements Configurable, Serviceable
+    implements Configurable
 {
     protected final static String ACTION_LOGIN = "login-action";
     protected final static String ACTION_LOGOUT = "logout-action";    
@@ -105,7 +103,7 @@ public class LoginValve
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke(RunData data, ValveContext context)
+    public void invoke(RunData data)
         throws IOException, SummitException
     {
         try
@@ -116,9 +114,6 @@ public class LoginValve
         {
             throw new SummitException( "Valve error.", e );
         }
-
-        // Pass control to the next Valve in the Pipeline
-        context.invokeNext(data);
     }
 
     /**
