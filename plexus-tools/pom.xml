@@ -1,0 +1,16 @@
+<project>
+  <pomVersion>3</pomVersion>
+  <groupId>plexus</groupId>  
+  <id>plexus-tool</id>
+  <artifactId>plexus-tool</artifactId>
+  <name>Plexus Tools</name>
+  <currentVersion>1.0</currentVersion>
+  <package>org.codehaus.plexus</package>
+  <dependencies>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus</artifactId>
+      <version>0.14-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>
