@@ -631,25 +631,31 @@ public class Commandline implements Cloneable
 
         if ( workingDir == null )
         {
-//            System.err.println( "Executing \"" + this + "\"" );
+            System.err.println( "Executing \"" + this + "\"" );
             process = Runtime.getRuntime().exec( getShellCommandline() );
         }
         else
         {
             if ( !workingDir.exists() )
             {
-                throw new IOException( "Working directory \"" + workingDir.getPath() + "\" does not exist!" );
+                throw new IOException(
+                    "Working directory \"" + workingDir.getPath() + "\" does not exist!" );
             }
             else if ( !workingDir.isDirectory() )
             {
-                throw new IOException( "Path \"" + workingDir.getPath() + "\" does not specify a directory." );
+                throw new IOException(
+                    "Path \"" + workingDir.getPath() + "\" does not specify a directory." );
             }
 
-//            System.err.println( "Executing \"" + this + "\" in directory " + workingDir.getAbsolutePath();
-
+            System.err.println(
+                "Executing \""
+                + this
+                + "\" in directory "
+                + ( workingDir != null ? workingDir.getAbsolutePath() : null ) );
             process = Runtime.getRuntime().exec( getShellCommandline(), null, workingDir );
         }
 
         return process;
     }
+
 }

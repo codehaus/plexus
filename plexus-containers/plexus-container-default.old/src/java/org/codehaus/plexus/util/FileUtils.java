@@ -62,11 +62,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Vector;
 
 /**
@@ -101,7 +99,6 @@ import java.util.Vector;
  * Taken from the commons-utils repo.
  * Also code from Alexandria's FileUtils.
  * And from Avalon Excalibur's IO.
- * And from Ant.
  *
  * @author <a href="mailto:burton@relativity.yi.org">Kevin A. Burton</A>
  * @author <a href="mailto:sanders@codehaus.org">Scott Sanders</a>
@@ -276,8 +273,7 @@ public class FileUtils
      * @param fileName The name of the file to write.
      * @param data The content to write to the file.
      */
-    public static void fileWrite( String fileName, String data )
-        throws IOException
+    public static void fileWrite( String fileName, String data ) throws Exception
     {
         FileOutputStream out = new FileOutputStream( fileName );
         out.write( data.getBytes() );
@@ -1337,88 +1333,5 @@ public class FileUtils
 
             copyFileToDirectory( file, destinationDirectory );
         }
-    }
-
-    /**
-     * Renames a file, even if that involves crossing file system boundaries.
-     *
-     * <p>This will remove <code>to</code> (if it exists), ensure that
-     * <code>to</code>'s parent directory exists and move
-     * <code>from</code>, which involves deleting <code>from</code> as
-     * well.</p>
-     *
-     * @throws IOException if anything bad happens during this
-     * process.  Note that <code>to</code> may have been deleted
-     * already when this happens.
-     *
-     * @param from the file to move
-     * @param to the new file name
-     */
-    public static void rename( File from, File to ) throws IOException
-    {
-        if ( to.exists() && !to.delete() )
-        {
-            throw new IOException( "Failed to delete " + to
-                                  + " while trying to rename " + from );
-        }
-
-        File parent = to.getParentFile();
-        if (parent != null && !parent.exists() && !parent.mkdirs())
-        {
-            throw new IOException( "Failed to create directory " + parent
-                                  + " while trying to rename " + from );
-        }
-
-        if (!from.renameTo(to))
-        {
-            copyFile(from, to);
-            if (!from.delete())
-            {
-                throw new IOException( "Failed to delete " + from
-                                      + " while trying to rename it." );
-            }
-        }
-    }
-
-    /**
-     * Create a temporary file in a given directory.
-     *
-     * <p>The file denoted by the returned abstract pathname did not
-     * exist before this method was invoked, any subsequent invocation
-     * of this method will yield a different file name.</p>
-     * <p>
-     * The filename is prefixNNNNNsuffix where NNNN is a random number
-     * </p>
-     * <p>This method is different to File.createTempFile of JDK 1.2
-     * as it doesn't create the file itself.
-     * It uses the location pointed to by java.io.tmpdir
-     * when the parentDir attribute is
-     * null.</p>
-     *
-     * @param prefix prefix before the random number
-     * @param suffix file extension; include the '.'
-     * @param parentDir Directory to create the temporary file in -
-     * java.io.tmpdir used if not specificed
-     *
-     * @return a File reference to the new temporary file.
-     */
-    public static File createTempFile(String prefix, String suffix, File parentDir) {
-
-        File result = null;
-        String parent = System.getProperty("java.io.tmpdir");
-        if (parentDir != null) {
-            parent = parentDir.getPath();
-        }
-        DecimalFormat fmt = new DecimalFormat("#####");
-        Random rand = new Random(System.currentTimeMillis()
-            +Runtime.getRuntime().freeMemory());
-        synchronized (rand) {
-            do {
-                result = new File(parent,
-                                  prefix + fmt.format(Math.abs(rand.nextInt()))
-                                  + suffix);
-            } while (result.exists());
-        }
-        return result;
     }
 }
