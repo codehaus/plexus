@@ -4,7 +4,7 @@
   <id>plexus-activity</id>
   <artifactId>plexus-activity</artifactId>
   <name>Activity Services</name>
-  <currentVersion>1.0-alpha-6</currentVersion>
+  <currentVersion>1.0-beta-1</currentVersion>
   <shortDescription>Activity services that interact with templates.</shortDescription>
 
   <description>
