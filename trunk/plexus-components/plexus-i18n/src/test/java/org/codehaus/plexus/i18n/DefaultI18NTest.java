@@ -69,39 +69,60 @@ import java.util.Locale;
 public class DefaultI18NTest
     extends PlexusTestCase
 {
-    public DefaultI18NTest( String name )
+    private I18N i18n;
+
+    protected void setUp()
+        throws Exception
     {
-        super( name );
+        super.setUp();
+
+        i18n = (I18N) lookup( I18N.ROLE );
     }
 
     public void testLocalization()
-        throws Exception
     {
-        I18N i18n = (I18N) lookup( I18N.ROLE );
         String s0 = i18n.getString( null, null, "key1" );
+
         assertEquals( "Unable to retrieve localized text for locale: default", s0, "value1" );
 
         String s1 = i18n.getString( null, new Locale( "en", "US" ), "key2" );
+
         assertEquals( "Unable to retrieve localized text for locale: en-US", s1, "value2" );
 
         String s2 = i18n.getString( "org.codehaus.plexus.i18n.BarBundle", new Locale( "ko", "KR" ), "key3" );
+
         assertEquals( "Unable to retrieve localized text for locale: ko-KR", s2, "[ko] value3" );
 
         String s4 = i18n.getString( "org.codehaus.plexus.i18n.FooBundle", new Locale( "fr" ), "key3" );
+
         assertEquals( "Unable to retrieve localized text for locale: fr-US", s4, "[fr] value3" );
 
         String s5 = i18n.getString( "org.codehaus.plexus.i18n.i18n", null, "key1" );
-        assertEquals( "value1", s5 );
 
+        assertEquals( "value1", s5 );
+    }
+
+    public void testLocalizedMessagesWithFormatting()
+    {
         // Format methods
 
         String s6 = i18n.format( "org.codehaus.plexus.i18n.i18n", null, "thanks.message", "jason" );
+
         assertEquals( s6, "Thanks jason!" );
 
         String s7 = i18n.format( "org.codehaus.plexus.i18n.i18n", null, "thanks.message1", "jason", "van zyl" );
+
         assertEquals( s7, "Thanks jason van zyl!" );
 
         String s8 = i18n.format( "org.codehaus.plexus.i18n.i18n", null, "thanks.message2", new Object[]{ "jason", "van zyl" } );
+
         assertEquals( s8, "Thanks jason van zyl!" );
+    }
+
+    public void testLocalizedMessagesWithNonStandardLocale()
+    {
+        String s0 = i18n.getString( "name", new Locale( "xx" ) );
+
+        assertEquals( "plexus", s0 );
     }
 }
