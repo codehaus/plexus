@@ -147,6 +147,7 @@
     <module>plexus-appserver</module>
     <module>plexus-components</module>
     <module>plexus-containers</module>
+    <module>plexus-logging</module>
     <module>plexus-tools</module>
     <module>plexus-utils</module>
   </modules>
