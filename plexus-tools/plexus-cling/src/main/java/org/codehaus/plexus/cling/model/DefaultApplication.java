@@ -39,7 +39,10 @@ public class DefaultApplication
 
     public void setEnvironment( Properties environment )
     {
-        this.environment = environment;
+        Properties env = new Properties();
+        env.putAll(environment);
+        
+        this.environment = env;
     }
 
     public Classpath getClasspath()
