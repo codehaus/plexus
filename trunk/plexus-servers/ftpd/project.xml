@@ -2,6 +2,7 @@
 <project>
   <extend>${maven.repo.local}/plexus/poms/plexus-server-1.0.pom</extend>
   <id>plexus-ftp</id>
+  <groupId>plexus</groupId>
   <artifactId>plexus-ftp</artifactId>
   <name>Plexus FTP Server</name>
   <currentVersion>1.0-SNAPSHOT</currentVersion>
@@ -93,9 +94,15 @@
     <unitTestSourceDirectory>src/test/java</unitTestSourceDirectory>
 
     <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
       <resources>
         <resource>
           <directory>src/test/java</directory>
+          <includes>
+            <include>**/*.xml</include>
+          </includes>
         </resource>
       </resources>
     </unitTest>
