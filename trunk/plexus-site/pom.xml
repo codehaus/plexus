@@ -1,8 +1,7 @@
-<model>
+<project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-site</artifactId>
-  <packaging>jar</packaging>
-  <name>Plexus Site</name>
   <version>1.0-alpha-1-SNAPSHOT</version>
-</model>
+  <name>Plexus Site</name>
+</project>

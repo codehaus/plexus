@@ -1,4 +1,5 @@
-<model>
+<project>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-components</artifactId>
     <groupId>plexus</groupId>
@@ -6,9 +7,8 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-maildir</artifactId>
-  <packaging>jar</packaging>
-  <name>Plexus Maildir Component</name>
   <version>2.0-alpha-2</version>
+  <name>Plexus Maildir Component</name>
   <developers>
     <developer>
       <id>edaugherty</id>
@@ -29,8 +29,6 @@
       <groupId>javamail</groupId>
       <artifactId>javamail</artifactId>
       <version>1.3.1</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
-</model>
+</project>

@@ -1,4 +1,5 @@
-<model>
+<project>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-root</artifactId>
     <groupId>plexus</groupId>
@@ -6,30 +7,23 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-components-avalon</artifactId>
-  <packaging>jar</packaging>
-  <name>Plexus Avalon Components</name>
   <version>1.0</version>
+  <name>Plexus Avalon Components</name>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus</artifactId>
       <version>0.14-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>avalon</groupId>
       <artifactId>avalon-framework</artifactId>
       <version>4.1.4</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-avalon-personality</artifactId>
       <version>0.12</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
-</model>
+</project>
