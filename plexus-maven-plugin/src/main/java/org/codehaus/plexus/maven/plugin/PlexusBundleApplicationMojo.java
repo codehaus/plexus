@@ -35,9 +35,7 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
  *
  * @requiresDependencyResolution
  *
- * @description Packages the runtime into a redistributable jar file.
- *
- * @prereq plexus:app
+ * @description Packages the Plexus application into a redistributable jar file.
  *
  * @parameter name="basedir"
  * type="String"
