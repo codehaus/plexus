@@ -98,7 +98,7 @@ public class DefaultApplicationBuilder
 
         File logsDir = mkdir( new File( workingDirectory, "logs" ) );
 
-        File metaInfPlexus = mkdir( new File( workingDirectory, "META-INF/plexus" ) );
+        mkdir( new File( workingDirectory, "META-INF/plexus" ) );
 
         // ----------------------------------------------------------------------
         //
@@ -125,15 +125,15 @@ public class DefaultApplicationBuilder
         {
             Set excludedArtifacts = new HashSet();
 
-            excludedArtifacts.addAll( findArtifacts( remoteRepositories, localRepository, BOOT_ARTIFACTS, false, null ) );
+            excludedArtifacts.addAll( getBootArtifacts( projectArtifacts, remoteRepositories, localRepository ) );
 
-            excludedArtifacts.addAll( findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false, null ) );
+            excludedArtifacts.addAll( getCoreArtifacts( projectArtifacts, remoteRepositories, localRepository ) );
 
             serviceArtifacts = findArtifacts( remoteRepositories, localRepository, serviceArtifacts, true, null );
 
             excludedArtifacts.addAll( serviceArtifacts );
 
-            excludedArtifacts.addAll( EXCLUDED_ARTIFACTS );
+            excludedArtifacts.addAll( getExcludedArtifacts( projectArtifacts, remoteRepositories, localRepository ) );
 
             ArtifactFilter filter = new AndArtifactFilter(
                 new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
