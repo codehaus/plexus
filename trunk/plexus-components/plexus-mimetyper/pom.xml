@@ -7,6 +7,6 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-mimetyper</artifactId>
-  <version>1.0-alpha-5</version>
+  <version>1.0-alpha-6-SNAPSHOT</version>
   <name>Plexus Mimetyper Component</name>
 </project>
