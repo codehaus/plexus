@@ -152,8 +152,9 @@ public class Launcher extends AbstractLogEnabled
         // [[7]] Parse the command-line arguments, and validate each. Set each
         //       validated argument as a property on the main-class.
         //
-        logger.debug( "Parsing command-line arguments." );
+        logger.debug( "Parsing command-line arguments, and configuring main-class instance." );
         Invocation invocation = parseCommandLine( args, model, main );
+        configureMain(main, invocation);
         logger.debug( "Done." );
 
         // [[8]] Reflectively lookup the specified execute method. Verify that
@@ -172,6 +173,28 @@ public class Launcher extends AbstractLogEnabled
 
         // See the main() method for [9].
         return result;
+    }
+
+    private void configureMain( Object main, Invocation invocation ) 
+    throws CLIngLaunchException
+    {
+        Map mappings = invocation.getOptionPropertyMappings();
+        
+        for ( Iterator it = mappings.entrySet().iterator(); it.hasNext(); )
+        {
+            Map.Entry entry = (Map.Entry) it.next();
+            String key = (String)entry.getKey();
+            Object value = entry.getValue();
+            
+            try
+            {
+                Ognl.setValue(key, main, value);
+            }
+            catch ( OgnlException e )
+            {
+                throw new CLIngLaunchException("Cannot configure main-class instance with one or more command-line options", CLIngErrors.ERROR_SETTING_OBJECT_PROPERTY, e);
+            }
+        }
     }
 
     private ClassRealm resolveClasspath( Classpath classpath, CLIngConfiguration config ) throws CLIngLaunchException
@@ -243,13 +266,13 @@ public class Launcher extends AbstractLogEnabled
         {
             Object[] params = null;
 
-            if ( execute.getParameterTypes().length == 2 )
+            if ( execute.getParameterTypes().length == 1 )
             {
-                params = new Object[] { invocation.getOptionPropertyMappings(), invocation.getArguments() };
+                params = new Object[] { invocation.getArguments() };
             }
             else
             {
-                params = new Object[] { invocation.getOptionPropertyMappings() };
+                params = new Object[0];
             }
 
             Integer returnValue = (Integer) execute.invoke( main, params );
@@ -289,16 +312,13 @@ public class Launcher extends AbstractLogEnabled
                 if ( method.getName().equals( methodName ) && method.getReturnType().equals( Integer.TYPE ) )
                 {
                     Class[] paramTypes = method.getParameterTypes();
-                    if ( paramTypes.length == 2 && paramTypes[0].isAssignableFrom( Map.class )
-                        && paramTypes[1].isAssignableFrom( List.class ) )
+                    if ( paramTypes.length == 1 && paramTypes[0].isAssignableFrom( List.class ) )
                     {
 
                         execute = method;
                         break;
                     }
-                    else if ( paramTypes.length == 1 && paramTypes[0].isAssignableFrom( Map.class ) )
-                    {
-
+                    else if(paramTypes.length == 0) {
                         execute = method;
                         break;
                     }
