@@ -22,6 +22,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+//!! Manager might not use a Map. Could use a container for per-lookup
+//!! Need to walk up through super classes looking for requirements
+//!! Need a database of all components as everything is not always available
+//   in the current source tree.
+
 /**
  * So, in this case it is easy enough to determine the role and the implementation.
  * We could also employ some secondary checks like looking for particular super classes
@@ -45,18 +50,7 @@ public class ComponentDescriptorCreator
 
     private JavaSource[] javaSources;
 
-    private List componentGleaningStrategies;
-
-    private ClassLoader classLoader;
-
-    private String classPath;
-
     private MavenProject mavenProject;
-
-    public ComponentDescriptorCreator()
-    {
-        componentGleaningStrategies = new ArrayList();
-    }
 
     public void setBasedir( String basedir )
     {
@@ -108,9 +102,11 @@ public class ComponentDescriptorCreator
 
         for ( int i = 0; i < javaSources.length; i++ )
         {
-            ComponentDescriptor componentDescriptor = gleanComponent( builder, javaSources[i] );
+            JavaClass javaClass = getJavaClass( javaSources[i] );
 
-            if ( componentDescriptor != null )
+            ComponentDescriptor componentDescriptor = gleanComponent( builder, javaClass );
+
+            if ( componentDescriptor != null && !javaClass.isAbstract() )
             {
                 componentDescriptors.add( componentDescriptor );
             }
@@ -194,10 +190,8 @@ public class ComponentDescriptorCreator
         return componentDependencies;
     }
 
-    private ComponentDescriptor gleanComponent( JavaDocBuilder builder, JavaSource javaSource )
+    private ComponentDescriptor gleanComponent( JavaDocBuilder builder, JavaClass javaClass )
     {
-        JavaClass javaClass = getJavaClass( javaSource );
-
         String packageName = javaClass.getPackage();
 
         DocletTag tag = javaClass.getTagByName( "component" );
@@ -296,6 +290,9 @@ public class ComponentDescriptorCreator
             // So we need the goop between Default and Manager ... Plugin
             // So lookup the Plugin class and use that to create the Map
             // requirement.
+            //
+            //!! We need to look for the presence of the field, we might have
+            // a manager that uses a container to lookup per lookup components.
 
             String s = className.substring( 7 );
 
@@ -340,6 +337,13 @@ public class ComponentDescriptorCreator
             }
         }
 
+        findRequirements( javaClass, componentDescriptor );
+
+        return componentDescriptor;
+    }
+
+    private void findRequirements( JavaClass javaClass, ComponentDescriptor componentDescriptor )
+    {
         JavaField[] fields = javaClass.getFields();
 
         for ( int i = 0; i < fields.length; i++ )
@@ -348,7 +352,7 @@ public class ComponentDescriptorCreator
 
             String classType = field.getType().getValue();
 
-            if ( !isPrimitive( classType ) )
+            if ( field.getClass().isInterface() )
             {
                 // If this is not a primitive field then we will attempt
                 // to look for an interface without our set of sources
@@ -375,8 +379,12 @@ public class ComponentDescriptorCreator
             }
         }
 
-        return componentDescriptor;
+        if ( javaClass.getSuperJavaClass() != null )
+        {
+            findRequirements( javaClass.getSuperJavaClass(), componentDescriptor );
+        }
     }
+
 
     // Qdox doesn't keep a map of short name to JavaClass
     private Map componentCache;
