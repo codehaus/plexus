@@ -4,17 +4,26 @@
   <groupId>plexus</groupId>
   <id>plexus-appserver-plugin</id>
   <name>Plexus Appserver Builder</name>
-  <currentVersion>1.0</currentVersion>
+  <currentVersion>0.14-SNAPSHOT</currentVersion>
 
-  <inceptionYear>2002</inceptionYear>
-  <package>org.codehaus.plexus.builder</package>
-  <logo>http://maven.apache.org/images/maven.jpg</logo>
-  <url>http://maven.apache.org/reference/plugins/examples/</url>
-  <issueTrackingUrl>http://nagoya.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
-  <siteAddress>jakarta.apache.org</siteAddress>
-  <siteDirectory>/www/maven.apache.org/reference/plugins/examples/</siteDirectory>
-  <distributionDirectory>/www/maven.apache.org/builds/</distributionDirectory>
+  <inceptionYear>2004</inceptionYear>
+  <package>org.codehaus.plexus.application</package>
+  <logo>/images/plexus-logo.gif</logo>
+  
+  <siteAddress>plexus.codehaus.org</siteAddress>
+  <siteDirectory>/www/plexus.codehaus.org</siteDirectory>
 
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:plexus/plexus-appserver-plugin</connection>
+    <url>http://cvs.codehaus.org/viewcvs.cgi/plexus/plexus-appserver-plugin/?root=codehaus</url>
+  </repository>
+  
+  <organization>
+    <name>Codehaus</name>
+    <url>http://www.codehaus.org/</url>
+    <logo>/images/codehaus-small.gif</logo>
+  </organization>
+  
   <repository>
     <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:maven/src/plugins-build/examples</connection>
     <url>http://cvs.apache.org/viewcvs/maven/src/plugins-build/examples/</url>
@@ -41,6 +50,12 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus</artifactId>
+      <version>0.14-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-appserver</artifactId>
       <version>0.14-SNAPSHOT</version>
     </dependency>
 
@@ -73,7 +88,25 @@
       <artifactId>velocity</artifactId>
       <version>1.4-dev</version>
     </dependency> 
+
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-avalon-personality</artifactId>
+      <version>0.12</version>
+    </dependency>
     
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-xmlrpc</artifactId>
+      <version>1.0-beta-1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>xmlrpc</groupId>
+      <artifactId>xmlrpc</artifactId>
+      <version>1.1</version>
+    </dependency>
+        
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
@@ -95,9 +128,11 @@
   </dependencies>
 
   <build>
-    <nagEmailAddress>turbine-maven-dev@jakarta.apache.org</nagEmailAddress>
-    <sourceDirectory>${basedir}/src/main</sourceDirectory>
-    <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+
+    <nagEmailAddress>plexus-dev@plexus.codehaus.org</nagEmailAddress>
+    <sourceDirectory>src/main</sourceDirectory>
+    <aspectSourceDirectory>src/aspect</aspectSourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
 
     <unitTest>
       <includes>
@@ -107,15 +142,17 @@
 
     <resources>
       <resource>
-        <directory>src/main</directory>
-        <includes>
-          <include>**/*.xml</include>
-          <include>**/*.vm</include>
-        </includes>
+        <directory>src/plugin-resources</directory>
+        <targetPath>plugin-resources</targetPath>
       </resource>
       <resource>
-        <directory>src/jsw</directory>
-        <targetPath>resources</targetPath>
+        <directory>.</directory>
+        <includes>
+          <include>plugin.jelly</include>
+          <include>plugin.properties</include>
+          <include>project.properties</include>
+          <include>project.xml</include>
+        </includes>
       </resource>
     </resources>
   </build>
