@@ -1,8 +1,8 @@
 <plexus>
   <components>
     <component>
-      <role>$package.HelloWorld</role>
-      <implementation>$package.DefaultHelloWorld</implementation>
+      <role>${package}.HelloWorld</role>
+      <implementation>${package}.DefaultHelloWorld</implementation>
       <configuration>
         <greeting>Hello Earth!</greeting>
       </configuration>
