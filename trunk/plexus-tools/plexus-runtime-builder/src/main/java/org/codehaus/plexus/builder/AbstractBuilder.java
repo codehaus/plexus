@@ -65,9 +65,9 @@ public abstract class AbstractBuilder
 
     protected final static Set CORE_ARTIFACTS = new HashSet( Arrays.asList( new Artifact[]{
         new DefaultArtifact( "plexus", "plexus-container-default", "1.0-alpha-2-SNAPSHOT", "jar" ),
-        new DefaultArtifact( "plexus", "plexus-container-artifact", "1.0-alpha-1-SNAPSHOT", "jar" ),
+        new DefaultArtifact( "plexus", "plexus-container-artifact", "1.0-alpha-2-SNAPSHOT", "jar" ),
         new DefaultArtifact( "plexus", "plexus-appserver", "1.0-alpha-1-SNAPSHOT", "jar" ),
-        new DefaultArtifact( "plexus", "plexus-utils", "1.0-alpha-1-SNAPSHOT", "jar" ),
+        new DefaultArtifact( "plexus", "plexus-utils", "1.0-alpha-2-SNAPSHOT", "jar" ),
     } ) );
 
     // ----------------------------------------------------------------------
