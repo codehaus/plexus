@@ -1,10 +1,13 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>mojo</artifactId>
-    <groupId>org.apache.maven.plugins</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>plexus-root</artifactId>
+    <groupId>plexus</groupId>
+    <version>1.0</version>
   </parent>
+  <!-- TODO: this should be removed -->
+  <groupId>org.apache.maven.plugins</groupId>
+  <!-- TODO: this should change -->
   <artifactId>maven-plexus-plugin</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
@@ -12,22 +15,17 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
-      <artifactId>maven-core</artifactId>
+      <artifactId>maven-plugin</artifactId>
       <version>2.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
-      <artifactId>maven-artifact</artifactId>
+      <artifactId>maven-core</artifactId>
       <version>2.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>maven</groupId>
-      <artifactId>wagon-provider-api</artifactId>
-      <version>1.0-alpha-2-SNAPSHOT</version>
-    </dependency>
-    <dependency>
       <groupId>plexus</groupId>
-      <artifactId>plexus-cdc</artifactId>
+      <artifactId>plexus-appserver</artifactId>
       <version>1.0-alpha-1-SNAPSHOT</version>
     </dependency>
     <dependency>
@@ -37,13 +35,8 @@
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
-      <artifactId>plexus-appserver</artifactId>
+      <artifactId>plexus-cdc</artifactId>
       <version>1.0-alpha-1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>1.0-alpha-1</version>
     </dependency>
   </dependencies>
 </project>

@@ -1,4 +1,4 @@
-package org.apache.maven.plugin.plexus;
+package org.codehaus.plexus.maven.plugin;
 
 import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
