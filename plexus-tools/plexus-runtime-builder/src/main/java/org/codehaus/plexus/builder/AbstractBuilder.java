@@ -195,7 +195,7 @@ public abstract class AbstractBuilder
         return artifacts;
     }
 
-    protected void filterAhrtifacts( Set candidateArtifacts, Set filteredArtifacts )
+    protected void filterArtifacts( Set candidateArtifacts, Set filteredArtifacts )
     {
         // ----------------------------------------------------------------------
         // Remove any artifacts from the candidateArtifacts set.
