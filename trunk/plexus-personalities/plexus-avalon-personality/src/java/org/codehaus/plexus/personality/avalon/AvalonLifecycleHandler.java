@@ -23,8 +23,9 @@ import org.codehaus.plexus.lifecycle.LifecycleHandler;
 public class AvalonLifecycleHandler
     extends AbstractLifecycleHandler
 {
-    /** */
-    public static String SERVICE_MANAGER = "component.manager";
+    public static String SERVICE_MANAGER = "service.manager";
+
+    public static String COMPONENT_MANAGER = "component.manager";
 
     // ----------------------------------------------------------------------
     //  Constructors
@@ -44,5 +45,8 @@ public class AvalonLifecycleHandler
             getEntities().get( LifecycleHandler.PLEXUS_CONTAINER );
 
         addEntity( SERVICE_MANAGER, new AvalonServiceManager( container ) );
+
+        addEntity( COMPONENT_MANAGER, new AvalonComponentManager( container ) );
+
     }
 }

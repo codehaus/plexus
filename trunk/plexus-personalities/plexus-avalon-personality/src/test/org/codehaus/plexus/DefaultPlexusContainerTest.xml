@@ -28,6 +28,7 @@
           <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.LogEnablePhase'/>
           <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.ContextualizePhase'/>
           <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.ServicePhase'/>
+          <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.ComposePhase'/>
           <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.ConfigurePhase'/>
           <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.InitializePhase'/>
           <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.StartPhase'/>
