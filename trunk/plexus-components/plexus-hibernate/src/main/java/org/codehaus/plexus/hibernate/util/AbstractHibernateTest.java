@@ -36,7 +36,15 @@ public abstract class AbstractHibernateTest
         super.setUp();
         
         String filename = getTestPath( System.getProperty("plexus.hibernate.setupSql") );
-        insertSqlFile(filename);
+
+        try
+        {
+            insertSqlFile(filename);
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
     }
     
     public void tearDown() throws Exception
@@ -45,7 +53,14 @@ public abstract class AbstractHibernateTest
         
         String filename = getTestPath( System.getProperty("plexus.hibernate.teardownSql") );
 
-        insertSqlFile(filename);
+        try
+        {
+            insertSqlFile(filename);
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
         
         conn = null;
         
