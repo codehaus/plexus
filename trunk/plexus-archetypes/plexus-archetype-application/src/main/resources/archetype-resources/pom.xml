@@ -17,7 +17,7 @@
         <applicationName>foo</applicationName>
         <configurationDirectory>src/conf</configurationDirectory>
         <basedir>target</basedir>
-        <plexusConfiguration>src/conf/plexus.conf</plexusConfiguration>
+        <plexusConfiguration>src/conf/plexus.xml</plexusConfiguration>
         <plexusConfigurationPropertiesFile>src/plexus.properties</plexusConfigurationPropertiesFile>
       </configuration>
     </plugin>
