@@ -8,11 +8,11 @@
 
 Comparision of Plexus and Spring
 
-* Plexus is simpler and much much smaller than Spring. The simplest Spring
+ * Plexus is simpler and much much smaller than Spring. The simplest Spring
   Component which has configuration settings injected is more complex than in
   an equivalent case for Plexus as Plexus does not require setters.
 
-* Spring tries to sell itself as a "j2ee framework" and as a Swiss Army knife -
+ * Spring tries to sell itself as a "j2ee framework" and as a Swiss Army knife -
   one framework for all possible problems. Plexus is a container that is also
   usable in the context of application deployment to the j2ee platform. It also
   competes with pico/nano containers at the low end (plexus jars are still
@@ -24,13 +24,13 @@ Comparision of Plexus and Spring
   hammer, screwdriver as you need to use them without having to include them
   all.
 
-* Complex component life cycles are not supported in Spring.
+ * Complex component life cycles are not supported in Spring.
 
-* Spring configuration files are much longer than the one for Plexus.
+ * Spring configuration files are much longer than the one for Plexus.
   Specifically hierarchical configuration settings ala xstream are not
   supported by Spring.
 
-* Spring is not using IoC for all dependecies of components  - For example
+ * Spring is not using IoC for all dependecies of components  - For example
   Spring is promoting terrible things like logging based on commons-logging,
   which makes most of the component dependent on an ugly singleton (IoC is
   against singletons!) and inevitably leads to incorrect class loader
@@ -41,12 +41,12 @@ Comparision of Plexus and Spring
   the logging system. In Plexus such things are possible - but not yet
   implemented.
 
-* Component class loader isolation Spring doesn't allow you to easly deploy two
+ * Component class loader isolation Spring doesn't allow you to easly deploy two
   distinct components which are using conflicting version of "the same" jar
   (e.g. common-collections-2.x and commons-collection-3.x). for their internal
   stuff
 
-* In Plexus you don't have to repeat yourself - component descriptors
+ * In Plexus you don't have to repeat yourself - component descriptors
   which are in jars contain the facts which are needed by the container to
   manage components. Component personalities provide useful shortcuts for
   saying to container this is "avalon component", this is "pico component", so
