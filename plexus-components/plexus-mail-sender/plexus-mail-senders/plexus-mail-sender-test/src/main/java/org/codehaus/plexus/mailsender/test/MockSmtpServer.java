@@ -76,8 +76,8 @@ public class MockSmtpServer
     * Get the number of messages received.
     * @return size of received email list
     */
-    public int getReceievedEmailSize()
+    public int getReceivedEmailSize()
     {
-        return smtpServer.getReceievedEmailSize();
+        return smtpServer.getReceivedEmailSize();
     }
 }

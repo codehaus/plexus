@@ -56,7 +56,7 @@ public class SimpleMailSenderTest
 
         mailSender.send( "mySubject", "myContent", "to@server.com", "to.name", "from@server.com", "from.name" );
 
-        assertEquals( 1, getReceievedEmailSize() );
+        assertEquals( 1, getReceivedEmailSize() );
 
         SmtpMessage email = (SmtpMessage) getReceivedEmail().next();
         

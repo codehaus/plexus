@@ -45,7 +45,7 @@ public class MockSmtpServerTest
 
         sendMessage( 4000, "sender@here.com", "Test", "Test Body", "receiver@there.com" );
 
-        assertEquals( 1, server.getReceievedEmailSize() );
+        assertEquals( 1, server.getReceivedEmailSize() );
         Iterator emailIter = server.getReceivedEmail();
         SmtpMessage email = (SmtpMessage) emailIter.next();
         assertTrue( email.getHeaderValue( "Subject" ).equals( "Test" ) );
