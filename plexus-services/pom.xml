@@ -1,22 +1,29 @@
-<model>
+<project>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-root</artifactId>
     <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-services</artifactId>
-  <packaging>jar</packaging>
-  <name>Plexus Services</name>
   <version>1.0-alpha-1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Plexus Services</name>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
+      <version>1.0-alpha-2-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.0-alpha-2-SNAPSHOT</version>
     </dependency>
   </dependencies>
-</model>
+  <modules>
+    <module>plexus-service-jetty</module>
+    <module>plexus-service-xmlrpc</module>
+  </modules>
+</project>
