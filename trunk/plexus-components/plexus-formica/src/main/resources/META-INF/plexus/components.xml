@@ -1,0 +1,119 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.formica.validation.manager.ValidatorManager</role>
+      <implementation>org.codehaus.plexus.formica.validation.manager.DefaultValidatorManager</implementation>
+      <requirements>
+        <requirement>
+          <field-name>validators</field-name>
+          <role>org.codehaus.plexus.formica.validation.Validator</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>credit-card</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.CreditCardValidator</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>date</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.DateValidator</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>email</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.EmailValidator</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>default</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.PassValidator</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>pattern-digits</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.REValidator</implementation>
+      <configuration>
+        <pattern>[0-9]+</pattern>
+      </configuration>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>pattern-date</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.DateValidator</implementation>
+      <configuration>
+        <pattern>MM/dd/yyyy</pattern>
+      </configuration>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>url</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.UrlValidator</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.formica.validation.group.GroupValidator</role>
+      <role-hint>match</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.group.MatchValidator</implementation>
+    </component>
+
+    <!-- Form Renderering -->
+
+    <component>
+      <role>org.codehaus.plexus.formica.web.FormRendererManager</role>
+      <implementation>org.codehaus.plexus.formica.web.DefaultFormRendererManager</implementation>
+      <requirements>
+        <requirement>
+          <field-name>formRenderers</field-name>
+          <role>org.codehaus.plexus.formica.web.FormRenderer</role>
+        </requirement>
+      </requirements>
+    </component>
+
+    <!--
+
+    Form renderers
+
+    o add
+    o update
+    o delete
+    o view
+
+    -->
+
+    <component>
+      <role>org.codehaus.plexus.formica.web.FormRenderer</role>
+      <role-hint>add</role-hint>
+      <implementation>org.codehaus.plexus.formica.web.add.AddFormRenderer</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.formica.web.FormRenderer</role>
+      <role-hint>update</role-hint>
+      <implementation>org.codehaus.plexus.formica.web.update.UpdateFormRenderer</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.formica.web.FormRenderer</role>
+      <role-hint>view</role-hint>
+      <implementation>org.codehaus.plexus.formica.web.view.ViewFormRenderer</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.formica.web.FormRenderer</role>
+      <role-hint>summary</role-hint>
+      <implementation>org.codehaus.plexus.formica.web.summary.SummaryFormRenderer</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.formica.web.element.manager.ElementRendererManager</role>
+      <implementation>org.codehaus.plexus.formica.element.manager.DefaultElementRendererManager</implementation>
+      <requirements>
+        <requirement>
+          <field-name>renderers</field-name>
+          <role>org.codehaus.plexus.formica.element.ElementRenderer</role>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+</component-set>
