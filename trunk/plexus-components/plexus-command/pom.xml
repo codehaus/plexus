@@ -9,4 +9,10 @@
   <artifactId>plexus-command</artifactId>
   <version>1.0-alpha-5-SNAPSHOT</version>
   <name>Plexus Command Component</name>
+  <preGoals>
+    <preGoal>
+      <name>compiler:compile</name>
+      <attain>plexus:descriptor</attain>
+    </preGoal>
+  </preGoals>
 </project>
