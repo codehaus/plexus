@@ -1,13 +1,13 @@
 package org.codehaus.plexus.summit.resolver;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.codehaus.plexus.summit.AbstractSummitComponent;
 import org.codehaus.plexus.summit.renderer.Renderer;
 import org.codehaus.plexus.summit.view.DefaultView;
 import org.codehaus.plexus.summit.view.View;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * <p>The base class from which all <code>Resolver</code>s are derived.</p>

@@ -1,5 +1,7 @@
 package org.codehaus.plexus.summit.renderer;
 
+import java.io.Writer;
+
 import org.apache.velocity.Template;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.codehaus.plexus.summit.SummitConstants;
@@ -7,9 +9,6 @@ import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.rundata.RunData;
 import org.codehaus.plexus.summit.view.ViewContext;
 import org.codehaus.plexus.velocity.VelocityComponent;
-
-import java.io.StringWriter;
-import java.io.Writer;
 
 /**
  * <p>A <code>Renderer</code> that can process Velocity templates.</p>

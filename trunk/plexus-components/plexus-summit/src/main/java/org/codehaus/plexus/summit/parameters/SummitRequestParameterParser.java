@@ -1,9 +1,10 @@
 package org.codehaus.plexus.summit.parameters;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URLDecoder;
 import java.util.Map;
 import java.util.StringTokenizer;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Summit implementation of a <tt>RequestParameterParser</tt>.  This

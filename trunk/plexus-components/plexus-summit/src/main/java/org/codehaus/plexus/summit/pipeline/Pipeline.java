@@ -1,10 +1,10 @@
 package org.codehaus.plexus.summit.pipeline;
 
+import java.io.IOException;
+
 import org.codehaus.plexus.summit.SummitComponent;
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.rundata.RunData;
-
-import java.io.IOException;
 
 /**
  * <p>A <code>Pipeline</code> is the entity which controls the flow

@@ -1,9 +1,9 @@
 package org.codehaus.plexus.summit.renderer;
 
+import java.io.Writer;
+
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.rundata.RunData;
-
-import java.io.Writer;
 
 /**
  * <p>A <code>Renderer</code> is a

@@ -6,8 +6,6 @@ package org.codehaus.plexus.summit.resolver;
 import org.codehaus.plexus.summit.view.DefaultView;
 import org.codehaus.plexus.summit.view.View;
 
-import javax.swing.text.*;
-
 /**
  * <p>This resolving strategy emulates the Turbine 2.x process of matching a target
  * up with:</p>
