@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<project>
+  <pomVersion>1.0</pomVersion>
+  <name>Java Email Server Core</name>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-smtpd</artifactId>
+  <id>plexus-smtpd</id>
+  <groupId>plexus</groupId>
+  <currentVersion>2.0-alpha-2</currentVersion>
+  <organization>
+    <name>Eric Daugherty</name>
+    <url>http://www.ericdaugherty.com</url>
+    <logo/>
+  </organization>
+  <inceptionYear>2003</inceptionYear>
+  <package>org.codehaus</package>
+  <shortDescription>Plugable Java Email Server</shortDescription>
+
+  <url>http://www.ericdaugherty.com/java/jes</url>
+  <logo></logo>
+  <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=38473</issueTrackingUrl>
+
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/javaemailserver:jes2/src/subprojects/core</connection>
+    <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/javaemailserver/jes2/src/subprojects/core/</url>
+  </repository>
+
+  <mailingLists>
+    <mailingList>
+      <name>User's Mailing List</name>
+      <subscribe>http://lists.sourceforge.net/mailman/listinfo/javaemailserver-users</subscribe>
+      <unsubscribe>http://lists.sourceforge.net/mailman/listinfo/javaemailserver-users</unsubscribe>
+      <archive/>
+    </mailingList>
+    <mailingList>
+      <name>Developer's Mailing List</name>
+      <subscribe>http://lists.sourceforge.net/lists/listinfo/javaemailserver-devel</subscribe>
+      <unsubscribe>http://lists.sourceforge.net/lists/listinfo/javaemailserver-devel</unsubscribe>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=9957</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+    <developer>
+      <name>Eric Daugherty</name>
+      <id>edaugherty</id>
+      <email>java@ericdaugherty.com</email>
+      <organization/>
+      <url>http://www.ericdaugherty.com</url>
+    </developer>
+  </developers>
+
+  <contributors>
+    <contributor>
+      <name>Siegfried Goeschl</name>
+      <email>siegfried.goeschl@it20one.at</email>
+    </contributor>
+  </contributors>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus</artifactId>
+      <version>0.11</version>
+    </dependency>
+
+    <dependency>
+      <groupId>avalon</groupId>
+      <artifactId>avalon-framework-api</artifactId>
+      <version>4.1.4</version>
+    </dependency>
+
+    <dependency>
+      <id>dnsjava</id>
+      <version>1.3.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.0-beta-1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-synapse</artifactId>
+      <version>0.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>classworlds</groupId>
+      <artifactId>classworlds</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>xpp3</groupId>
+      <artifactId>xpp3</artifactId>
+      <version>1.1.2a</version>
+    </dependency>
+
+
+  </dependencies>
+
+  <build>
+    <name>Java Email Server</name>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+      <resources>
+        <resource>
+          <directory>src/test</directory>
+          <includes>
+            <include>**/*.xml</include>
+          </includes>
+        </resource>
+      </resources>
+    </unitTest>
+  </build>
+
+  <reports>
+    <report>maven-changes-plugin</report>
+    <report>maven-tasklist-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-jxr-plugin</report>
+    <report>maven-jdepend-plugin</report>
+    <report>maven-changelog-plugin</report>
+    <report>maven-developer-activity-plugin</report>
+    <report>maven-file-activity-plugin</report>
+    <report>maven-statcvs-plugin</report>
+    <report>maven-linkcheck-plugin</report>
+    <report>maven-license-plugin</report>
+  </reports>
+
+</project>

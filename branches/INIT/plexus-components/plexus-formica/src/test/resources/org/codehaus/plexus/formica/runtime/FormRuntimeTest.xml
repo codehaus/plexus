@@ -1,0 +1,181 @@
+<plexus xmlns="http://plexus.codehaus.org/xml/ns/plexus" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <components>
+
+    <!-- i18n -->
+
+    <component>
+      <role>org.codehaus.plexus.i18n.I18N</role>
+      <implementation>org.codehaus.plexus.i18n.DefaultI18N</implementation>
+      <configuration>
+        <default-bundle-name>org.codehaus.plexus.formica.Formica</default-bundle-name>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.formica.FormManager</role>
+      <implementation>org.codehaus.plexus.formica.DefaultFormManager</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.formica.validation.Validator</role>
+          <fieldName>validatorMap</fieldName>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.formica.validation.group.GroupValidator</role>
+          <fieldName>groupValidatorMap</fieldName>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.i18n.I18N</role>
+        </requirement>
+      </requirements>
+      <configuration>
+        <forms>
+          <form>
+            <id>tpi</id>
+            <title-key>tpi.title</title-key>
+            <targetClass>org.codehaus.plexus.formica.TargetObject</targetClass>
+            <elements>
+              <element>
+                <id>field-0</id>
+                <expression>field0</expression>
+                <validator>credit-card</validator>
+                <label-key>field-0-label-key</label-key>
+                <message-key>field-0-message-key</message-key>
+                <error-message-key>field-0-error-message-key</error-message-key>
+              </element>
+              <element>
+                <id>field-1</id>
+                <expression>field1</expression>
+                <validator>pattern-date</validator>
+                <label-key>field-1-label-key</label-key>
+                <message-key>field-1-message-key</message-key>
+                <error-message-key>field-1-error-message-key</error-message-key>
+              </element>
+              <element>
+                <id>field-2</id>
+                <expression>field2</expression>
+                <validator>email</validator>
+                <label-key>field-2-label-key</label-key>
+                <message-key>field-2-message-key</message-key>
+                <error-message-key>field-2-error-message-key</error-message-key>
+              </element>
+              <element>
+                <id>field-3</id>
+                <expression>field3</expression>
+                <validator>pattern-digits</validator>
+                <label-key>field-3-label-key</label-key>
+                <message-key>field-3-message-key</message-key>
+                <error-message-key>field-3-error-message-key</error-message-key>
+                <default-value>0000000</default-value>
+              </element>
+              <element>
+                <id>field-4</id>
+                <expression>field4</expression>
+                <validator>url</validator>
+                <label-key>field-4-label-key</label-key>
+                <message-key>field-4-message-key</message-key>
+                <error-message-key>field-4-error-message-key</error-message-key>
+              </element>
+              <element>
+                <id>password-one</id>
+                <expression>passwordOne</expression>
+                <group>passwords</group>
+              </element>
+              <element>
+                <id>password-two</id>
+                <expression>passwordTwo</expression>
+                <group>passwords</group>
+              </element>
+              <element>
+                <id>email-one</id>
+                <expression>emailOne</expression>
+                <group>emails</group>
+              </element>
+              <element>
+                <id>email-two</id>
+                <expression>emailTwo</expression>
+                <group>emails</group>
+              </element>
+            </elements>
+            <elementGroups>
+              <elementGroup>
+                <id>passwords</id>
+                <validator>match</validator>
+              </elementGroup>
+              <elementGroup>
+                <id>emails</id>
+                <validator>match</validator>
+              </elementGroup>
+            </elementGroups>
+          </form>
+        </forms>
+
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>credit-card</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.CreditCardValidator</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>date</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.DateValidator</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>email</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.EmailValidator</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>default</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.PassValidator</implementation>
+    </component>
+
+
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>pattern-digits</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.REValidator</implementation>
+      <configuration>
+        <pattern>[0-9]+</pattern>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>pattern-date</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.DateValidator</implementation>
+      <configuration>
+        <pattern>MM/dd/yyyy</pattern>
+      </configuration>
+    </component>
+
+
+
+    <!--validator id="date">
+                                <parameter name="pattern" value=""/>
+                            </validator-->
+
+
+    <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>url</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.UrlValidator</implementation>
+    </component>
+
+    <!-- Group validators -->
+
+    <component>
+      <role>org.codehaus.plexus.formica.validation.group.GroupValidator</role>
+      <role-hint>match</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.group.MatchValidator</implementation>
+    </component>
+
+  </components>
+
+</plexus>

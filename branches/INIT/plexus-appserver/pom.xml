@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<project>
+  <modelVersion>3</modelVersion>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-appserver</artifactId>
+  <name>Plexus Application Server</name>
+  <version>1.0-alpha-1-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus</artifactId>
+      <version>0.17-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-xmlrpc</artifactId>
+      <version>1.0-beta-2</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+    </dependency>
+  </dependencies>
+
+  <preGoals>
+    <preGoal>
+      <name>compiler:compile</name>
+      <attain>plexus:descriptor</attain>
+    </preGoal>
+  </preGoals>
+
+</project>
+

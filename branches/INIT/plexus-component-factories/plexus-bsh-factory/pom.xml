@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project>
+  <parent>
+    <groupId>plexus</groupId>
+    <artifactId>plexus-component-factories</artifactId>
+    <version>1.0</version>
+  </parent>
+  <artifactId>plexus-bsh-factory</artifactId>
+  <name>Plexus BSH Factory</name>
+  <version>1.0-alpha-5</version>
+  <dependencies>
+    <dependency>
+      <groupId>bsh</groupId>
+      <artifactId>bsh</artifactId>
+      <version>1.2b7</version>
+    </dependency>
+  </dependencies>
+</project>
