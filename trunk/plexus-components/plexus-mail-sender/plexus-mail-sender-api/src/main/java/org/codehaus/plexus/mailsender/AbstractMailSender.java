@@ -29,24 +29,24 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id$
  */
-public abstract class AbstractMailSender extends AbstractLogEnabled
-    implements MailSender, Initializable
+public abstract class AbstractMailSender
+    extends AbstractLogEnabled
+    implements MailSender
 {
     // ----------------------------------------------------------------------
-    // 
+    //
     // ----------------------------------------------------------------------
 
     public final static int DEFAULT_SMTP_PORT = 25;
 
     // ----------------------------------------------------------------------
-    // 
+    //
     // ----------------------------------------------------------------------
 
     private String smtpHost;
@@ -56,7 +56,7 @@ public abstract class AbstractMailSender extends AbstractLogEnabled
     private String username;
 
     // ----------------------------------------------------------------------
-    // 
+    //
     // ----------------------------------------------------------------------
 
     public String getSmtpHost()
@@ -89,14 +89,16 @@ public abstract class AbstractMailSender extends AbstractLogEnabled
         this.username = username;
     }
 
-    public void send( String subject, String content, String toAddress, String toName, String fromAddress, String fromName )
-         throws MailSenderException
+    public void send( String subject, String content, String toAddress, String toName, String fromAddress,
+                      String fromName )
+        throws MailSenderException
     {
         send( subject, content, toAddress, toName, fromAddress, fromName, new HashMap() );
     }
 
-    public void send( String subject, String content, String toAddress, String toName, String fromAddress, String fromName, Map headers )
-         throws MailSenderException
+    public void send( String subject, String content, String toAddress, String toName, String fromAddress,
+                      String fromName, Map headers )
+        throws MailSenderException
     {
         MailMessage message = new MailMessage();
 
@@ -110,7 +112,7 @@ public abstract class AbstractMailSender extends AbstractLogEnabled
 
         message.addTo( toName, toAddress );
 
-        for( Iterator iter = headers.keySet().iterator(); iter.hasNext(); )
+        for ( Iterator iter = headers.keySet().iterator(); iter.hasNext(); )
         {
             String key = (String) iter.next();
 
@@ -120,44 +122,33 @@ public abstract class AbstractMailSender extends AbstractLogEnabled
         send( message );
     }
 
-    public void verify( MailMessage message ) throws MailSenderException
+    public void verify( MailMessage message )
+        throws MailSenderException
     {
         if ( message.getFromAddress() == null )
         {
             throw new MailSenderException( "From address isn't set." );
         }
-        
+
         if ( message.getToAddresses().size() == 0 )
         {
-            throw new MailSenderException( "You must add at least one to address.");
+            throw new MailSenderException( "You must add at least one to address." );
         }
     }
 
-    protected String makeEmailAddress( String address, String name )
+    public static String makeEmailAddress( String address, String name )
+        throws MailSenderException
     {
+        if ( address == null )
+        {
+            throw new MailSenderException( "The address cannot be null." );
+        }
+
         if ( name == null || name.length() == 0 )
         {
             return "<" + address + ">";
         }
 
-        return name + "<" + address + ">";
-    }
-
-    // ----------------------------------------------------------------------
-    // Component Lifecycle
-    // ----------------------------------------------------------------------
-
-    public void initialize()
-    	throws Exception
-    {
-        if ( smtpHost == null || smtpHost.length() == 0 )
-        {
-            throw new MailSenderException( "Error in configuration: Missing smtpHost." );
-        }
-
-        if ( smtpPort == 0 )
-        {
-            smtpPort = DEFAULT_SMTP_PORT;
-        }
+        return name + " <" + address + ">";
     }
 }

@@ -32,6 +32,7 @@ import java.util.Map;
 import org.codehaus.plexus.mailsender.AbstractMailSender;
 import org.codehaus.plexus.mailsender.MailMessage;
 import org.codehaus.plexus.mailsender.MailSenderException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -40,12 +41,32 @@ import org.codehaus.plexus.mailsender.MailSenderException;
  */
 public class SimpleMailSender
 	extends AbstractMailSender
+    implements Initializable
 {
+    // ----------------------------------------------------------------------
+    // Component Lifecycle
+    // ----------------------------------------------------------------------
+
+    public void initialize()
+        throws Exception
+    {
+        if ( getSmtpHost() == null || getSmtpHost().length() == 0 )
+        {
+            throw new MailSenderException( "Error in configuration: Missing smtpHost." );
+        }
+
+        if ( getSmtpPort() == 0 )
+        {
+            setSmtpPort( DEFAULT_SMTP_PORT );
+        }
+    }
+
     // ----------------------------------------------------------------------
     // MailSender Implementation
     // ----------------------------------------------------------------------
 
-    public void send( MailMessage mail ) throws MailSenderException
+    public void send( MailMessage mail )
+        throws MailSenderException
 	{
 	    verify( mail );
 
