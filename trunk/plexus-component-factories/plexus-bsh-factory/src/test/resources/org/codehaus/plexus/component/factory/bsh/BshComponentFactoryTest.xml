@@ -1,0 +1,11 @@
+<plexus>
+  <component-factory-manager implementation="org.codehaus.plexus.component.factory.DefaultComponentFactoryManager">
+    <component-factories>
+      <component-factory implementation="org.codehaus.plexus.component.factory.bsh.BshComponentFactory">
+        <id>bsh</id>
+        <bsh-home>${basedir}/target</bsh-home>
+        <bsh-path>${basedir}/src/bsh</bsh-path>
+      </component-factory>
+    </component-factories>
+  </component-factory-manager>
+</plexus>

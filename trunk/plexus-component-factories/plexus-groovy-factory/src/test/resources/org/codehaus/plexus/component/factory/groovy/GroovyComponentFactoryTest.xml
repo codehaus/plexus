@@ -1,0 +1,11 @@
+<plexus>
+  <component-factory-manager implementation="org.codehaus.plexus.component.factory.DefaultComponentFactoryManager">
+    <component-factories>
+      <component-factory implementation="org.codehaus.plexus.component.factory.groovy.GroovyComponentFactory">
+        <id>groovy</id>
+        <groovy-home>${basedir}/target</groovy-home>
+        <groovy-path>${basedir}/src/groovy</groovy-path>
+      </component-factory>
+    </component-factories>
+  </component-factory-manager>
+</plexus>
