@@ -34,8 +34,8 @@ public class DeleteEntity
     {
         Map m = new HashMap();
 
-        m.put( "id", entityId );
+        m.put( ID, validateEntityId( entityId ) );
 
-        Ognl.getValue( form.getDelete().getExpression(), m, getApplicationComponent( form ) );
+        Ognl.getValue( validateExpression( form.getDelete().getExpression() ), m, getApplicationComponent( form ) );
     }
 }

@@ -35,13 +35,19 @@ import java.util.Map;
  */
 public abstract class AbstractEntityAction
     extends AbstractAction
-    implements Contextualizable
+    implements EntityAction, Contextualizable
 {
-    protected FormManager fm;
+    protected final String ID = "id";
+
+    protected final String FORM_ID = "formId";
+
+    protected final String ENTITY = "entity";
+
+    protected FormManager formManager;
 
     protected PlexusContainer container;
 
-    protected abstract void uponSuccessfulValidation( Form form, String entityId, Map map )
+     abstract void uponSuccessfulValidation( Form form, String entityId, Map map )
         throws Exception;
 
     //TODO: we probably want the action interface to return an Object. For example after adding
@@ -49,29 +55,58 @@ public abstract class AbstractEntityAction
     public void execute( Map map )
         throws Exception
     {
-        fm = (FormManager) lookup( FormManager.ROLE );
+        String entityId = (String) map.get( ID );
 
-        String entityId = (String) map.get( "id" );
+        String formId = (String) map.get( FORM_ID );
 
-        String formId = (String) map.get( "formId" );
-
-        FormValidationResult fvr = fm.validate( formId, map );
+        FormValidationResult fvr = formManager.validate( formId, map );
 
         // ----------------------------------------------------------------------
         // If validation is sucessful then we want to allow the add/update/delete
-        // operation to continue.
+        // operation to continue. Otherwise we need to pass back the form
+        // validation result so that the information can be displayed to
+        // the user.
         // ----------------------------------------------------------------------
 
         if ( fvr.valid() )
         {
-            uponSuccessfulValidation( fm.getForm( formId ), entityId, map );
+            uponSuccessfulValidation( formManager.getForm( formId ), entityId, map );
         }
+
+        // The target will need to be set dependending on what the outcome
+        // of the validation is. The result can probably just go into a velocity
+        // template.
+
     }
 
     protected Object getApplicationComponent( Form form )
         throws ComponentLookupException
     {
         return container.lookup( form.getSourceRole() );
+    }
+
+    // ----------------------------------------------------------------------
+    // Validations
+    // ----------------------------------------------------------------------
+
+    protected String validateExpression( String expression )
+    {
+        if ( expression == null )
+        {
+            throw new IllegalStateException( "The entity expression cannot be null." );
+        }
+
+        return expression;
+    }
+
+    protected String validateEntityId( String expression )
+    {
+        if ( expression == null )
+        {
+            throw new IllegalStateException( "The entity ID cannot be null." );
+        }
+
+        return expression;
     }
 
     // ----------------------------------------------------------------------
