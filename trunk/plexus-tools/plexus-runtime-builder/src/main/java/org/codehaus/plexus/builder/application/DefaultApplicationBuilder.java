@@ -42,7 +42,6 @@ import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.util.DirectoryScanner;
-import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -113,7 +112,7 @@ public class DefaultApplicationBuilder
         }
 
         // ----------------------------------------------------------------------
-        // Find the and filter the dependencies
+        // Find and filter the artifacts
         // ----------------------------------------------------------------------
 
         Set artifacts;
@@ -187,6 +186,17 @@ public class DefaultApplicationBuilder
         throws ApplicationBuilderException, IOException
     {
         // ----------------------------------------------------------------------
+        // Load the configuration properties.
+        // ----------------------------------------------------------------------
+
+        Properties configurationProperties = new Properties();
+
+        if ( configurationPropertiesFile != null )
+        {
+            configurationProperties.load( new FileInputStream( configurationPropertiesFile ) );
+        }
+
+        // ----------------------------------------------------------------------
         // Copy the main plexus.xml
         // ----------------------------------------------------------------------
 
@@ -195,14 +205,10 @@ public class DefaultApplicationBuilder
             throw new ApplicationBuilderException( "The application configuration file doesn't exist: '" + plexusConfigurationFile.getAbsolutePath() + "'." );
         }
 
-        Properties configurationProperties = new Properties();
-
-        FileUtils.copyFile( plexusConfigurationFile, new File( confDir, PlexusApplicationConstants.CONFIGURATION_FILE ) );
-/*
         filterCopy( plexusConfigurationFile,
                     new File( confDir, PlexusApplicationConstants.CONFIGURATION_FILE ),
                     configurationProperties );
-*/
+
         // ----------------------------------------------------------------------
         // Process the configurations
         // ----------------------------------------------------------------------
@@ -210,11 +216,6 @@ public class DefaultApplicationBuilder
         if ( configurationsDirectory == null )
         {
             return;
-        }
-
-        if ( configurationPropertiesFile != null )
-        {
-            configurationProperties.load( new FileInputStream( configurationPropertiesFile ) );
         }
 
         DirectoryScanner scanner = new DirectoryScanner();

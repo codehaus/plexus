@@ -271,8 +271,6 @@ public class DefaultPlexusRuntimeBuilder
                 name += ".jar";
             }
 
-            System.err.println( "name: " + name );
-
             FileUtils.copyFile( plexusService, new File( dir, name ) );
         }
         catch ( IOException e )

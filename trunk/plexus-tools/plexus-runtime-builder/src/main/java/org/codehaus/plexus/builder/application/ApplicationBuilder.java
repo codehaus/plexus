@@ -23,8 +23,8 @@ package org.codehaus.plexus.builder.application;
  */
 
 import java.io.File;
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 
@@ -37,7 +37,7 @@ public interface ApplicationBuilder
 {
     String ROLE = ApplicationBuilder.class.getName();
 
-    void assemble( String applicationName, 
+    void assemble( String applicationName,
                    File workingDirectory,
                    List remoteRepositories,
                    ArtifactRepository localRespository,
