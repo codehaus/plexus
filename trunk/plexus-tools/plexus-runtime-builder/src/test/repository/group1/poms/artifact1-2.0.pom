@@ -5,6 +5,11 @@
   <version>2.0</version>
   <dependencies>
     <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-2-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>group3</groupId>
       <artifactId>artifact3</artifactId>
       <version>1.0</version>

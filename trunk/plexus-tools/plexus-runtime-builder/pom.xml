@@ -16,6 +16,7 @@
       <artifactId>maven-artifact</artifactId>
       <version>2.0-SNAPSHOT</version>
     </dependency>
+    <!-- TODO: Remove -->
     <dependency>
       <groupId>maven</groupId>
       <artifactId>maven-core</artifactId>
@@ -25,6 +26,11 @@
       <groupId>plexus</groupId>
       <artifactId>plexus-velocity</artifactId>
       <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-archiver</artifactId>
+      <version>1.0-alpha-1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

@@ -23,20 +23,29 @@ package org.codehaus.plexus.builder.runtime;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Iterator;
+import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
-import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.exception.ResourceNotFoundException;
 
+import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
-import org.codehaus.plexus.builder.BuilderException;
+import org.codehaus.plexus.util.CollectionUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.cli.CommandLineException;
+import org.codehaus.plexus.velocity.VelocityComponent;
 
 /**
  * @author <a href="jason@maven.org">Jason van Zyl</a>
@@ -54,81 +63,165 @@ public class DefaultPlexusRuntimeBuilder
 
     private final static String WINDOWS_LAUNCHER_TEMPLATE = "org/codehaus/plexus/builder/templates/plexus-bat.vm";
 
-    private final static String APPS_DIRECTORY = "apps";
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    /** @requirement */
+    protected VelocityComponent velocity;
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
-    private File binDir;
-
-    private File coreDir;
-
-    private File bootDir;
-
-    private File libDir;
-
-    private File appsDir;
-
-    private File logsDir;
-
-    private File tempDir;
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    private Set artifacts;
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    public void build()
-        throws BuilderException
+    public void build( File outputFile, File workingDirectory,
+                       Set remoteRepositories, ArtifactRepository localRepository, Set artifacts,
+                       File plexusConfiguration, File configurationPropertiesFile )
+        throws PlexusRuntimeBuilderException
     {
         try
         {
-            checkBaseDirectory();
+            // ----------------------------------------------------------------------
+            // Assert the parameters
+            // ----------------------------------------------------------------------
 
-            checkLocalRepository();
+            if ( workingDirectory == null )
+            {
+                throw new PlexusRuntimeBuilderException( "The output directory must be specified." );
+            }
 
-            createDirectoryStructure();
+            if ( localRepository == null )
+            {
+                throw new PlexusRuntimeBuilderException( "The local Maven repository must be specified." );
+            }
 
-            ClassLoader old = Thread.currentThread().getContextClassLoader();
+            if ( plexusConfiguration == null )
+            {
+                throw new PlexusRuntimeBuilderException( "The plexus configuration file must be set." );
+            }
 
-            Thread.currentThread().setContextClassLoader( this.getClass().getClassLoader() );
-
-            createClassworldsConfiguration();
-
-            createLauncherScripts();
-
-            Thread.currentThread().setContextClassLoader( old );
-
-            artifacts = findArtifacts( project );
+            if ( !plexusConfiguration.exists() )
+            {
+                throw new PlexusRuntimeBuilderException( "The specified plexus configuration file '" + plexusConfiguration.getAbsolutePath() + "' doesn't exist." );
+            }
 
             // ----------------------------------------------------------------------
             //
             // ----------------------------------------------------------------------
 
-            copyBootDependencies();
+            Properties configurationProperties = new Properties();
 
-            copyPlexusDependencies();
+            if ( configurationPropertiesFile != null )
+            {
+                configurationProperties.load( new FileInputStream( configurationPropertiesFile ) );
+            }
+
+            // ----------------------------------------------------------------------
+            // Find the artifact lists.
+            // ----------------------------------------------------------------------
+
+            Set bootArtifacts = null;
+
+            Set coreArtifacts = null;
+
+            try
+            {
+                bootArtifacts = findArtifacts( remoteRepositories, localRepository, BOOT_ARTIFACTS, false );
+
+                coreArtifacts = findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false );
+            }
+            catch ( ArtifactResolutionException e )
+            {
+                throw new PlexusRuntimeBuilderException( "Could not resolve a artifact.", e );
+            }
+
+//            getLogger().info( "boot:" + bootArtifacts );
+//            getLogger().info( "core:" + coreArtifacts );
+//            getLogger().info( "artifacts:" + artifacts );
+
+            // Remove the classworlds dependency tree from the plexus dependencies.
+            coreArtifacts = new HashSet( CollectionUtils.subtract( coreArtifacts, bootArtifacts ) );
+
+            // Remove the classworlds and plexus dependency tree from the artifacts dependencies.
+            artifacts = new HashSet( CollectionUtils.subtract( artifacts, bootArtifacts ) );
+
+            artifacts = new HashSet( CollectionUtils.subtract( artifacts, coreArtifacts ) );
+
+//            getLogger().info( "boot:" + bootArtifacts );
+//            getLogger().info( "core:" + coreArtifacts );
+//            getLogger().info( "artifacts:" + artifacts );
+
+            // ----------------------------------------------------------------------
+            // Build the runtime
+            // ----------------------------------------------------------------------
+
+            mkdir( workingDirectory );
+
+            getLogger().info( "Building runtime in " + workingDirectory.getAbsolutePath() );
+
+            // ----------------------------------------------------------------------
+            // Set up the directory structure
+            // ----------------------------------------------------------------------
+
+            mkdir( new File( workingDirectory, "apps" ) );
+
+            File binDir = mkdir( new File( workingDirectory, "bin" ) );
+
+            File confDir = mkdir( new File( workingDirectory, "conf" ) );
+
+            File coreDir = mkdir( new File( workingDirectory, "core" ) );
+
+            File bootDir = mkdir( new File( workingDirectory, "core/boot" ) );
+
+            mkdir( new File( workingDirectory, "lib" ) );
+
+            mkdir( new File( workingDirectory, "logs" ) );
+
+            mkdir( new File( workingDirectory, "temp" ) );
+
+            // ----------------------------------------------------------------------
+            //
+            // ----------------------------------------------------------------------
+
+            copyArtifacts( workingDirectory, bootDir, bootArtifacts );
+
+            copyArtifacts( workingDirectory, coreDir, coreArtifacts );
+
+            copyArtifacts( workingDirectory, coreDir, artifacts );
 
             // ----------------------------------------------------------------------
             // We need to separate between the container configuration that you want
             // shared amongst the apps and the application configuration.
             // ----------------------------------------------------------------------
 
-            processMainConfiguration();
+            processMainConfiguration( plexusConfiguration, configurationProperties, confDir );
+
+            createSystemScripts( binDir, confDir );
 
             //processConfigurations();
 
-            javaServiceWrapper();
+            javaServiceWrapper( binDir, coreDir, confDir, configurationProperties );
 
-            packageJavaRuntime();
+            executable( workingDirectory + "/bin/plexus.sh" );
 
-            executable( baseDirectory + "/bin/plexus.sh" );
+            // ----------------------------------------------------------------------
+            // Build the runtime jar
+            // ----------------------------------------------------------------------
+
+            Archiver archiver = new JarArchiver();
+
+            try
+            {
+                archiver.addDirectory( workingDirectory );
+
+                archiver.setDestFile( outputFile );
+
+                archiver.createArchive();
+            }
+            catch ( Exception e )
+            {
+                throw new PlexusRuntimeBuilderException( "Error while creating the archive.", e );
+            }
         }
         catch ( PlexusRuntimeBuilderException ex )
         {
@@ -144,132 +237,44 @@ public class DefaultPlexusRuntimeBuilder
         }
     }
 
-
-    private void checkBaseDirectory()
-        throws PlexusRuntimeBuilderException
+    private void createSystemScripts( File binDir, File confDir )
+        throws PlexusRuntimeBuilderException, IOException
     {
-        if ( baseDirectory == null )
-        {
-            throw new PlexusRuntimeBuilderException( "The basedir must be specified." );
-        }
+        ClassLoader old = Thread.currentThread().getContextClassLoader();
 
-        File f = new File( baseDirectory );
+        Thread.currentThread().setContextClassLoader( this.getClass().getClassLoader() );
 
-        mkdir( f );
+        createClassworldsConfiguration( confDir );
 
-        getLogger().info( "Building runtime in " + f.getAbsolutePath() );
+        createLauncherScripts( binDir );
+
+        Thread.currentThread().setContextClassLoader( old );
     }
 
-    private void checkLocalRepository()
-        throws PlexusRuntimeBuilderException
-    {
-        if ( localRepository == null )
-        {
-            throw new PlexusRuntimeBuilderException( "The local Maven repository must be specified." );
-        }
-    }
-
-    protected void createDirectoryStructure()
-    {
-        binDir = new File( baseDirectory, "bin" );
-
-        confDir = new File( baseDirectory, "conf" );
-
-        coreDir = new File( baseDirectory, "core" );
-
-        bootDir = new File( baseDirectory, "core/boot" );
-
-        libDir = new File( baseDirectory, "lib" );
-
-        appsDir = new File( baseDirectory, "apps" );
-
-        logsDir = new File( baseDirectory, "logs" );
-
-        tempDir = new File( baseDirectory, "temp" );
-
-        mkdir( binDir );
-
-        mkdir( confDir );
-
-        mkdir( bootDir );
-
-        mkdir( libDir );
-
-        mkdir( appsDir );
-
-        mkdir( logsDir );
-
-        mkdir( tempDir );
-    }
-
-    private void copyBootDependencies()
-        throws IOException
-    {
-        for ( Iterator it = artifacts.iterator(); it.hasNext(); )
-        {
-            Artifact artifact = (Artifact) it.next();
-
-            if ( !isBootArtifact( artifact ) )
-            {
-                continue;
-            }
-
-            copyArtifact( artifact, bootDir );
-        }
-    }
-
-    private void copyPlexusDependencies()
-        throws IOException, BuilderException
-    {
-        for ( Iterator i = findPlexusArtifacts().iterator(); i.hasNext(); )
-        {
-            Artifact artifact = (Artifact) i.next();
-
-            if ( isBootArtifact( artifact ) )
-            {
-                continue;
-            }
-
-            copyArtifact( artifact, coreDir );
-        }
-    }
-
-    private void createClassworldsConfiguration()
-        throws BuilderException, IOException
+    private void createClassworldsConfiguration( File confDir )
+        throws PlexusRuntimeBuilderException, IOException
     {
         mergeTemplate( CLASSWORLDS_TEMPLATE, new File( confDir, "classworlds.conf" ) );
     }
 
-    private void createLauncherScripts()
-        throws BuilderException, IOException
+    private void createLauncherScripts( File binDir )
+        throws PlexusRuntimeBuilderException, IOException
     {
         mergeTemplate( UNIX_LAUNCHER_TEMPLATE, new File( binDir, "plexus.sh" ) );
 
         mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( binDir, "plexus.bat" ) );
     }
 
-    private void processMainConfiguration()
-        throws BuilderException, IOException
+    private void processMainConfiguration( File plexusConfiguration, Properties configurationProperties, File confDir )
+        throws IOException
     {
-        if ( plexusConfiguration == null )
-        {
-            throw new PlexusRuntimeBuilderException( "The plexus configuration file must be set." );
-        }
+        File out = new File( confDir, "plexus.xml" );
 
-        File in = new File( plexusConfiguration );
-
-        if ( !in.exists() )
-        {
-            throw new PlexusRuntimeBuilderException( "The specified plexus configuration file " + "'" + in + "'" + " doesn't exist." );
-        }
-
-        File out = new File( confDir, "plexus.conf" );
-
-        filterCopy( in, out, getConfigurationProperties() );
+        filterCopy( plexusConfiguration, out, configurationProperties );
     }
 
-    private void javaServiceWrapper()
-        throws BuilderException, CommandLineException, IOException
+    private void javaServiceWrapper( File binDir, File coreDir, File confDir, Properties configurationProperties )
+        throws CommandLineException, IOException
     {
         ClassLoader cl = getClass().getClassLoader();
 
@@ -297,42 +302,40 @@ public class DefaultPlexusRuntimeBuilder
 
         filterCopy( cl.getResourceAsStream( JSW + "/wrapper.conf" ),
                     new File( confDir, "wrapper.conf" ),
-                    getConfigurationProperties() );
+                    configurationProperties );
 
-        copyResources( "bin/linux", cl, linux );
+        copyResources( binDir, cl, linux );
 
-        copyResources( "bin/windows", cl, windows );
+        copyResources( binDir, cl, windows );
     }
 
-    protected void copyResources( String directory, ClassLoader cl, String[] resources )
+    protected void copyResources( File dir, ClassLoader cl, String[] resources )
         throws CommandLineException, IOException
     {
-        InputStream is;
-
-        OutputStream os;
-
-        File file = new File( baseDirectory, directory );
-
-        file.mkdirs();
-
         for ( int i = 0; i < resources.length; i++ )
         {
             String[] s = StringUtils.split( resources[i], "|" );
 
             String resource = s[0];
 
-            is = cl.getResourceAsStream( JSW + "/" + resource );
+            InputStream is = cl.getResourceAsStream( JSW + "/" + resource );
 
             if ( is == null )
             {
                 continue;
             }
 
-            File target = new File( binDir, resource );
+            File target = new File( dir, resource );
 
-            os = new FileOutputStream( target );
+            mkdir( target.getParentFile() );
+
+            OutputStream os = new FileOutputStream( target );
 
             IOUtil.copy( is, os );
+
+            IOUtil.close( is );
+
+            IOUtil.close( os );
 
             if ( s.length == 2 )
             {
@@ -346,8 +349,28 @@ public class DefaultPlexusRuntimeBuilder
         }
     }
 
-    private void packageJavaRuntime()
-        throws IOException
+    // ----------------------------------------------------------------------
+    // Velocity methods
+    // ----------------------------------------------------------------------
+
+    protected void mergeTemplate( String templateName, File outputFileName )
+        throws IOException, PlexusRuntimeBuilderException
     {
+        FileWriter output = new FileWriter( outputFileName );
+
+        try
+        {
+            velocity.getEngine().mergeTemplate( templateName, new VelocityContext(), output );
+        }
+        catch ( ResourceNotFoundException ex )
+        {
+            throw new PlexusRuntimeBuilderException( "Missing Velocity template: '" + templateName + "'.", ex );
+        }
+        catch ( Exception ex )
+        {
+            throw new PlexusRuntimeBuilderException( "Exception merging the velocity template.", ex );
+        }
+
+        output.close();
     }
 }
