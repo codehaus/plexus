@@ -8,6 +8,7 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.factory.AbstractComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.classworlds.ClassRealm;
 
 
 public class BshComponentFactory
@@ -17,7 +18,7 @@ public class BshComponentFactory
 
     private String bshPath;
 
-    public Object newInstance( ComponentDescriptor componentDescriptor, ClassLoader classLoader, PlexusContainer container )
+    public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm realm, PlexusContainer container )
         throws ComponentInstantiationException
     {
         Object component = null;
