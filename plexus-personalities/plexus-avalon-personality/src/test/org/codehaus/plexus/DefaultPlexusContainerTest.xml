@@ -9,9 +9,9 @@
     </logger>
   </logging>
 
-  <service-repository>
+  <component-repository>
     <implementation>org.codehaus.plexus.personality.avalon.AvalonComponentRepository</implementation>
-  </service-repository>
+  </component-repository>
 
   <!--
    |
