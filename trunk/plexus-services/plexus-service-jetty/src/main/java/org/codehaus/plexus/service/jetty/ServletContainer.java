@@ -42,7 +42,7 @@ public interface ServletContainer
 
     // TODO: addVirtualHost();
 
-    void deployWarFile( File war, boolean extractWar, String context,
+    void deployWarFile( File war, boolean extractWar, File extractionLocation, String context,
                         DefaultPlexusContainer container, String virtualHost )
         throws ServletContainerException;
 
