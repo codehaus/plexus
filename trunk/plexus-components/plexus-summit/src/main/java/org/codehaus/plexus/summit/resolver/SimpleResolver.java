@@ -27,6 +27,6 @@ public class SimpleResolver
 
         resolution.put( SCREEN_VIEW, screenView );
 
-       return resolution;
+        return resolution;
     }
 }

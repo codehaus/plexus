@@ -9,6 +9,8 @@ import java.io.IOException;
 public class DetermineTargetValve
     extends AbstractValve
 {
+    private Resolver resolver;
+    
     public void invoke( RunData data )
         throws IOException, SummitException
     {
@@ -22,23 +24,10 @@ public class DetermineTargetValve
             }
             else
             {
-                target = getResolver( data ).getDefaultView();
+                target = resolver.getDefaultView();
 
                 data.setTarget( target );
             }
-        }
-    }
-
-    private Resolver getResolver( RunData data )
-        throws SummitException
-    {
-        try
-        {
-            return (Resolver) data.lookup( Resolver.ROLE, "new" );
-        }
-        catch ( Exception e )
-        {
-            throw new SummitException( "Could not get a Resolver", e );
         }
     }
 }

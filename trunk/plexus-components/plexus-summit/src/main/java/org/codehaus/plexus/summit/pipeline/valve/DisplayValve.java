@@ -13,14 +13,16 @@ import java.io.IOException;
 public class DisplayValve
     extends AbstractValve
 {
+    private String display;
+    
     public void invoke( RunData data )
         throws IOException, SummitException
     {
         try
         {
-            Display display = (Display) data.lookup( Display.ROLE, "new" );
+            Display d = (Display) data.lookup( Display.ROLE, display );
 
-            display.render( data );
+            d.render( data );
         }
         catch ( Exception e )
         {

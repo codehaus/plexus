@@ -10,6 +10,8 @@ import java.io.IOException;
 public class ResolverValve
     extends AbstractValve
 {
+    private String resolver;
+    
     public void invoke( RunData data )
         throws IOException, SummitException
     {
@@ -17,9 +19,9 @@ public class ResolverValve
 
         try
         {
-            Resolver resolver = (Resolver) data.lookup( Resolver.ROLE, "new" );
+            Resolver res = (Resolver) data.lookup( Resolver.ROLE, resolver );
 
-            Resolution resolution = resolver.resolve( target );
+            Resolution resolution = res.resolve( target );
 
             data.setResolution( resolution );
         }
