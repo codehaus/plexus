@@ -1,7 +1,7 @@
 <plexus>
 
   <components>
-    
+                
     <component>
       <role>org.codehaus.plexus.action.Action</role>
       <role-hint>foo</role-hint>
