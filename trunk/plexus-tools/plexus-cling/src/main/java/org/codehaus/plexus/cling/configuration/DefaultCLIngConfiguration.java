@@ -21,14 +21,13 @@ public class DefaultCLIngConfiguration extends AbstractCLIngConfiguration
     {
         String userHome = System.getProperty("user.home");
         File homeDir = new File(userHome);
-        
         File repoLocation = new File(homeDir, ".CLIng/repository");
         
-        setLocalRepository(new ArtifactRepository("local", repoLocation.toURL().toExternalForm()));
+        setLocalRepository(new ArtifactRepository("local", "file://" + repoLocation.getAbsolutePath()));
         
         Set remoteRepositories = new HashSet();
         
-        remoteRepositories.add(new ArtifactRepository("remote-0", "http://repository.codehaus.org"));
+        remoteRepositories.add(new ArtifactRepository("remote-0", "http://www.ibiblio.org/maven"));
         
         setRemoteRepositories(remoteRepositories);
     }

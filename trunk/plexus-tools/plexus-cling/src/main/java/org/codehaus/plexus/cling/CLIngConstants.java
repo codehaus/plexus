@@ -18,6 +18,8 @@ public final class CLIngConstants
     public static final String CLING_CONFIG_CONTEXT_KEY = "cling.config";
     // -----------------------------------
 
+    public static final String APP_RESULT_SYSPROP = "app.result";
+
     private CLIngConstants()
     {
     }
