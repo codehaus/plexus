@@ -66,13 +66,6 @@ import java.lang.reflect.Method;
  * expression="#plexus.runtime.configuration"
  * description=""
  *
- * @parameter name="plexusConfiguration"
- * type="java.lang.String"
- * required="true"
- * validator=""
- * expression="#plexus.runtime.configuration"
- * description=""
- *
  * @parameter name="plexusConfigurationsDirectory"
  * type="java.lang.String"
  * required="true"
@@ -85,7 +78,7 @@ import java.lang.reflect.Method;
  * required="true"
  * validator=""
  * expression="#plexus.runtime.configuration.propertiesfile"
- * description="" *
+ * description=""
  *
  * @parameter name="applicationName"
  * type="java.lang.String"
@@ -139,15 +132,13 @@ public class PlexusApplicationGenerator
         //
         // ----------------------------------------------------------------------
 
-        builder.setBaseDirectory( basedir + "/generated-runtime" );
+        builder.setBaseDirectory( basedir + "/plexus-application" );
 
         builder.setProject( project );
 
         builder.setLocalRepository( localRepository );
 
         builder.setPlexusConfiguration( plexusConfiguration );
-
-//        builder.setConfigurationDirectory( configurationDirectory );
 
         builder.setConfigurationPropertiesFile( configurationPropertiesFile );
 
