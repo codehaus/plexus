@@ -2,9 +2,6 @@ package org.codehaus.jasf.summit;
 
 import java.io.IOException;
 
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
 import org.codehaus.plexus.summit.rundata.RunData;
@@ -23,13 +20,9 @@ import org.codehaus.plexus.summit.rundata.RunData;
  */
 public class SessionValidatorValve 
     extends AbstractValve
-    implements Configurable
 {
-    private String LOGIN_TARGET_DFEAULT = "Login.vm";
 
-    private String LOGIN_TARGET_KEY = "login-target";
-
-    private String loginTarget;
+    private String loginTarget = "Login.vm";
     
     /**
      * @see org.codehaus.plexus.summit.pipeline.valve.AbstractValve#invoke(org.codehaus.plexus.summit.rundata.RunData, org.codehaus.plexus.summit.pipeline.valve.ValveContext)
@@ -38,25 +31,13 @@ public class SessionValidatorValve
         throws IOException, SummitException
     {
         SecureRunData secData = (SecureRunData) data;
-        
-        getLogger().debug( "Validating session." );
-        
+
         if ( secData.getUser() == null ||
              !secData.getUser().isLoggedIn() )
         {
             data.setTarget( loginTarget );
-            
-            getLogger().debug( "Invalid session." );
+
             //data.setAction(null);
         }
-    }
-
-    /**
-     * @see org.apache.avalon.framework.configuration.Configurable#configure(org.apache.avalon.framework.configuration.Configuration)
-     */
-    public void configure(Configuration configuration) throws ConfigurationException
-    {
-        loginTarget = configuration.getAttribute( LOGIN_TARGET_KEY, 
-                                                  LOGIN_TARGET_DFEAULT );
     }
 }
