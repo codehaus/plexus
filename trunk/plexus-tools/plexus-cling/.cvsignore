@@ -1,5 +1,8 @@
 target
+*~
+*.log
 .classpath
-.generated*
-build.aj*
 .project
+*.ipr
+*.iws
+*.iml
