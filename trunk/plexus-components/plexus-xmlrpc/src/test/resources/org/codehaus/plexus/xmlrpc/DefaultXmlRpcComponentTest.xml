@@ -4,9 +4,15 @@
       <role>org.codehaus.plexus.xmlrpc.PokerComponent</role>
       <implementation>org.codehaus.plexus.xmlrpc.DefaultPokerComponent</implementation>
     </component>
+
     <component>
       <role>org.codehaus.plexus.xmlrpc.XmlRpcComponent</role>
       <implementation>org.codehaus.plexus.xmlrpc.DefaultXmlRpcComponent</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.xmlrpc.XmlRpcServer</role>
+        </requirement>
+      </requirements>
       <configuration>
         <handlers>
           <handler>
