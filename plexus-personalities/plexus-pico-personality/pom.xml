@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<project>
+    <groupId>plexus</groupId>
+    <artifactId>plexus-pico-personality</artifactId>
+    <name>Plexus Pico Personality</name>
+    <version>0.1</version>
+    <dependencies>
+        <dependency>
+            <groupId>plexus</groupId>
+            <artifactId>plexus</artifactId>
+            <version>0.14-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>picocontainer</groupId>
+            <artifactId>picocontainer</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+</project>
