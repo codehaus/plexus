@@ -11,18 +11,12 @@
 @REM PLEXUS_OPTS - parameters passed to the Java VM when running Plexus
 @REM     e.g. to debug Plexus itself, use
 @REM set PLEXUS_OPTS=-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000
-@REM
-@REM Utility rquirements:
-@REM Windows' find.exe
-@REM Windows' cmd.exe (NT) OR command.com ( 98 or ME )
 @REM ----------------------------------------------------------------------------
 
 @echo off
 @REM Begin all REM lines with '@' in case PLEXUS_BATCH_ECHO is 'on'
 @REM enable echoing my setting PLEXUS_BATCH_ECHO to 'on'
 @if "%PLEXUS_BATCH_ECHO%" == "on"  echo %PLEXUS_BATCH_ECHO%
-
-set CLASSWORLDS_VERSION=1.1-SNAPSHOT
 
 @REM Execute a user defined script before this one
 if exist "%HOME%\plexusrc_pre.bat" call "%HOME%\plexusrc_pre.bat"
@@ -108,17 +102,14 @@ goto Win9xApp
 :endInit
 if "%PLEXUS_OPTS%"=="" SET PLEXUS_OPTS="-Xmx128m"
 SET PLEXUS_JAVA_EXE="%JAVA_HOME%\bin\java.exe"
-SET PLEXUS_CLASSPATH="%PLEXUS_HOME%\core\boot\classworlds-%CLASSWORLDS_VERSION%.jar"
 SET PLEXUS_CORE="%PLEXUS_HOME%\core"
-SET PLEXUS_MAIN_CLASS=org.codehaus.classworlds.Launcher
-SET CLASSWORLDS_CONF="%PLEXUS_HOME%\conf\classworlds.conf"
 SET PLEXUS_TMPDIR="%PLEXUS_HOME%\temp"
 if exist %PLEXUS_TMPDIR% goto run
 mkdir "%PLEXUS_TMPDIR%"
 
 :run
 @REM Start Plexus
-%PLEXUS_JAVA_EXE% %PLEXUS_OPTS% -classpath %PLEXUS_CLASSPATH% -Dclassworlds.conf=%CLASSWORLDS_CONF% -Dplexus.core=%PLEXUS_CORE% -Djava.io.tmpdir=%PLEXUS_TMPDIR% -Dplexus.home=%PLEXUS_HOME% %PLEXUS_MAIN_CLASS% %PLEXUS_CMD_LINE_ARGS%
+%PLEXUS_JAVA_EXE% %PLEXUS_OPTS% -classpath %PLEXUS_HOME%\core\boot\classworlds-*.jar "-Dclassworlds.conf=%PLEXUS_HOME%\conf\classworlds.conf" -Dplexus.core=%PLEXUS_CORE% -Djava.io.tmpdir=%PLEXUS_TMPDIR% -Dplexus.home=%PLEXUS_HOME% org.codehaus.classworlds.Launcher %PLEXUS_CMD_LINE_ARGS%
 goto end
 
 :end
@@ -128,12 +119,9 @@ if "%OS%"=="Windows_NT" goto endNT
 @REM For old DOS remove the set variables from ENV - we assume they were not set
 @REM before we started - at least we don't leave any baggage around
 set PLEXUS_JAVA_EXE=
-set PLEXUS_CLASSPATH=
 SET PLEXUS_CORE=
-set PLEXUS_MAIN_CLASS=
 set PLEXUS_CMD_LINE_ARGS=
 SET PLEXUS_TMPDIR=
-set CLASSWORLDS_VERSION=
 goto postExec
 
 :endNT
