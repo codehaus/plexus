@@ -65,14 +65,12 @@ import org.codehaus.plexus.summit.view.ViewContext;
 public class ClassicBufferedDisplay
     extends AbstractDisplay
 {
+    private Renderer renderer;
+    
     public void render( RunData data )
         throws Exception
     {
-        Renderer renderer = (Renderer) lookup( Renderer.ROLE );
-
         ViewContext viewContext = (ViewContext) data.getMap().get( SummitConstants.VIEW_CONTEXT );
-
-        viewContext.put( "data", data );
 
         // ---------------------------------------------------------------
         // Screen

@@ -151,7 +151,7 @@ public class ResolverUtilsTest
         message("Testing getPossibleViews()");
         
         List list = 
-            ResolverUtils.getPossibleViews("/science/biology/Index.vm","Default");
+            ResolverUtils.getPossibleViews("/science/biology/Index.vm", "Default.vm");
         
         System.out.println("Possible views for /science/biology/Index.vm:");
         
@@ -162,23 +162,5 @@ public class ResolverUtilsTest
         }
         
         System.out.println("\n");
-    }
-    
-    /**
-     * Test to make sure that a view path is convert properly
-     * into its class name analog. This is used to find Modules
-     * that are based on the name of the view path.
-     */
-    public void testViewToClassName()
-        throws Exception
-    {
-        message("Testing viewToClassName()");
-        String className = 
-            ResolverUtils.viewToClassName("/science/biology/Index");
-            
-        System.out.println(className);
-        System.out.println("\n");
-        
-        assertEquals("science.biology.Index", className);
     }
 }

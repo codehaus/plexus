@@ -65,11 +65,11 @@ public class Summit
 
                 out.println( "<html><head><head><body>" );
 
-                out.println( "<p><b>Error displaying template</b>. Exception =" );
+                out.println( "<p><b>Error displaying template</b>. Exception:</p><pre>" );
 
                 t.printStackTrace( out );
 
-                out.println( "</p>" );
+                out.println( "</pre>" );
 
                 out.println( "</body></html>" );
 

@@ -1,5 +1,6 @@
 package org.codehaus.plexus.summit.resolver;
 
+import org.codehaus.plexus.summit.renderer.Renderer;
 import org.codehaus.plexus.summit.view.View;
 
 /**
@@ -18,6 +19,8 @@ public class SimpleResolver
 
     public final static String DEFAULT_SCREEN_MODULE = "Default";
 
+    private Renderer renderer;
+    
     public Resolution resolve( String target )
         throws Exception
     {
@@ -28,5 +31,10 @@ public class SimpleResolver
         resolution.put( SCREEN_VIEW, screenView );
 
         return resolution;
+    }
+
+    public Renderer getRenderer( String target )
+    {
+        return renderer;
     }
 }
