@@ -7,7 +7,11 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-mail-sender</artifactId>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
   <name>Plexus Mail Sender</name>
   <version>1.0</version>
+  <modules>
+    <module>plexus-mail-sender-api</module>
+    <module>plexus-mail-senders</module>
+  </modules>
 </project>
