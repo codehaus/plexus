@@ -56,9 +56,13 @@ final class ServletContextUtils {
     {
         final Embedder embedder = new Embedder();
         
-        //XXX: This will not necessarily do what you want.  TomCat has getRealPath() == null when running out of a WAR
-        File f = new File( context.getRealPath( "/WEB-INF" ) );
-        embedder.addContextValue( "plexus.home", f.getAbsolutePath() );
+        String realPath = context.getRealPath( "/WEB-INF" );
+        if ( realPath != null ) {
+            File f = new File( realPath );
+            embedder.addContextValue( "plexus.home", f.getAbsolutePath() );
+        } else {
+            context.log("Not setting plexus.home as plexus is running inside webapp with no 'real path'");
+        }
         
         try
         {
