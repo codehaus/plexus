@@ -1,14 +1,12 @@
 <component-set>
-
   <components>
-
     <component>
       <role>org.codehaus.plexus.application.service.PlexusService</role>
-      <role-hint>servlet-container</role-hint>
-      <implementation>org.codehaus.plexus.service.servletcontainer.ServletContainerPlexusService</implementation>
+      <role-hint>jetty</role-hint>
+      <implementation>org.codehaus.plexus.service.jetty.JettyPlexusService</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.servletcontainer.ServletContainer</role>
+          <role>org.codehaus.plexus.service.jetty.ServletContainer</role>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.application.deploy.ApplicationDeployer</role>
@@ -17,10 +15,9 @@
     </component>
 
     <component>
-      <role>org.codehaus.plexus.servletcontainer.ServletContainer</role>
-      <implementation>org.codehaus.plexus.servletcontainer.jetty.JettyServletContainer</implementation>
+      <role>org.codehaus.plexus.service.jetty.ServletContainer</role>
+      <implementation>org.codehaus.plexus.service.jetty.JettyServletContainer</implementation>
     </component>
 
   </components>
-
 </component-set>
