@@ -18,7 +18,6 @@ package org.codehaus.plexus.formica.action;
 
 import ognl.Ognl;
 import org.codehaus.plexus.formica.Form;
-import org.codehaus.tissue.Issue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,14 +29,6 @@ import java.util.Map;
 public class DeleteIssue
     extends AbstractEntityAction
 {
-    public void execute( Map map )
-        throws Exception
-    {
-        String id = (String) map.get( "id" );
-
-        getApp().deleteIssue( id );
-    }
-
     protected void uponSuccessfulValidation( Form form, String entityId, Map map )
         throws Exception
     {

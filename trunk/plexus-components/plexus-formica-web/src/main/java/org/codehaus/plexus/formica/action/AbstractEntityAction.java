@@ -32,6 +32,8 @@ public abstract class AbstractEntityAction
 {
     protected FormManager fm;
 
+    protected Object app;
+
     protected abstract void uponSuccessfulValidation( Form form, String entityId, Map map )
         throws Exception;
 
@@ -54,4 +56,10 @@ public abstract class AbstractEntityAction
         {
         }
     }
+
+    protected Object getApp()
+    {
+        return app;        
+    }
+
 }

@@ -18,7 +18,6 @@ package org.codehaus.plexus.formica.action;
 
 import ognl.Ognl;
 import org.codehaus.plexus.formica.Form;
-import org.codehaus.tissue.Issue;
 
 import java.util.HashMap;
 import java.util.Map;
