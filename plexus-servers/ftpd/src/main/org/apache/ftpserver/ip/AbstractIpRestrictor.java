@@ -68,7 +68,7 @@ import org.apache.avalon.framework.context.Context;
 import org.apache.avalon.framework.context.ContextException;
 import org.apache.avalon.framework.context.Contextualizable;
 import org.apache.avalon.framework.logger.AbstractLogEnabled;
-import org.apache.avalon.phoenix.BlockContext;
+//import org.apache.avalon.phoenix.BlockContext;
 
 /**
  * Abstract ip restrictor class.
@@ -84,22 +84,16 @@ abstract class AbstractIpRestrictor extends AbstractLogEnabled
                                                Disposable {
 
     protected Configuration mConfig;
-    protected BlockContext mBlockContext;
     protected boolean mbAllowIp;
+    private String mBaseDirectory  = null;
 
     /**
      * Set context object - first step.
      */
     public void contextualize(Context context) throws ContextException {
-        mBlockContext = (BlockContext) context;
+//        mBlockContext = (BlockContext) context;
     }
 
-    /**
-     * Get block context.
-     */
-    public BlockContext getContext() {
-        return mBlockContext;
-    }
 
     /**
      * Configure user manager - third step.
@@ -113,6 +107,11 @@ abstract class AbstractIpRestrictor extends AbstractLogEnabled
         if(tmpConf != null) {
             mbAllowIp = tmpConf.getValueAsBoolean(mbAllowIp);
         }
+
+        mBaseDirectory = config.getChild("base-directory").getValue(null);
+
+        if(mBaseDirectory == null)
+            throw new ConfigurationException("Missing configuration element 'base-directory'");
     }
 
     /**
@@ -129,6 +128,13 @@ abstract class AbstractIpRestrictor extends AbstractLogEnabled
         return mConfig;
     }
 
+
+    /**
+     * 
+     */
+    public String getBaseDirectory() {
+        return mBaseDirectory;
+    }
 
     /**
      * Initialize - fourth step.
