@@ -31,7 +31,7 @@ $ mkdir my-runtime
   application.  This runtime will contain startup scripts for Unix, Windows and
   OS X and will be completly standalone.
 
-Creating the Application
+Creating a Simple Plexus Application
 
 * Making the Application Stub
 
@@ -94,11 +94,65 @@ $ m2 plexus:runtime
  over the application:
 
 +-----------------------------------------------------------------------------+
-$ cp ../my-application/target/my-application-1.0-application.jar target/plexus-runtime/apps
+$ cp ../my-application/target/my-application-1.0-application.jar \
+     target/plexus-runtime/apps
 +-----------------------------------------------------------------------------+
 
  Now you have a working Plexus runtime with your application installed. To
  start it run:
+
++-----------------------------------------------------------------------------+
+$ sh target/plexus-runtime/bin/plexus.sh
++-----------------------------------------------------------------------------+
+
+Getting fancy: Adding a Shared Servlet Container
+
+ Plexus runtimes can have a set of services thats shared between the applications.
+ One very useful service is a servlet container. This enables several isolated applications
+ to share the same Jetty instance without the need for complicated Apache HTTPD proxy
+ setups. The servlet container service will deploy any WARs that is in your
+ applications <<<lib>>> directory.
+
+  <<<TODO: Give a example on how to download the service from the web.>>>
+
+ <<<NOTE: This example assumes that you have the runtime that was created in the last section.>>>
+
+ Copy the service from your local Maven repository:
+
++-----------------------------------------------------------------------------+
+$ cp ~/.m2/repository/plexus/jars/plexus-service-jetty-1.0-alpha-1-SNAPSHOT-service.jar \
+     my-runtime/target/plexus-runtime/services
++-----------------------------------------------------------------------------+
+
+ As a simple web application we're using the Jetty JavaDocs. You can get them from
+ <<<http://repo1.maven.org/jetty/wars/javadoc-4.2.23RC0.war>>>. Execute these
+ commands from <<</my-application>>>
+
++-----------------------------------------------------------------------------+
+$ cp ~/.m2/repository/jetty/wars/javadoc-4.2.23RC0.war \
+     target/plexus-application/lib
+$ m2 plexus:app
++-----------------------------------------------------------------------------+
+
+ Remove the old application and copy it over. Execute these commands from <<</my-runtime>>>
+
++-----------------------------------------------------------------------------+
+$ rm -rf my-runtime/target/plexus-runtime/apps/*
+$ cp ../my-application/target/my-application-1.0-application.jar \
+     target/plexus-runtime/apps
++-----------------------------------------------------------------------------+
+
+ Now when the application server is started again it should
+
+ * Deploy the servlet container.
+
+ * Boot Jetty.
+
+ * Deploy the application.
+
+ * The servlet container will detect that a new application was deployed and deploy the JavaDoc WAR.
+
+ So lets start it:
 
 +-----------------------------------------------------------------------------+
 $ sh target/plexus-runtime/bin/plexus.sh
