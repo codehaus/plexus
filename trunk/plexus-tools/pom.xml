@@ -4,7 +4,7 @@
   <id>plexus-tool</id>
   <artifactId>plexus-tool</artifactId>
   <name>Plexus Tools</name>
-  <currentVersion>1.0</currentVersion>
+  <version>1.0</version>
   <package>org.codehaus.plexus</package>
   <dependencies>
     <dependency>
