@@ -57,6 +57,10 @@ public class MockServletContext implements ServletContext
         {
             return MockServletContext.class.getResource("plexus.xml");
         }
+        if (resourceName.equals("/WEB-INF/plexus.properties"))
+        {
+            return MockServletContext.class.getResource("plexus.properties");
+        }
         throw new RuntimeException("not implemented");
     }
 
