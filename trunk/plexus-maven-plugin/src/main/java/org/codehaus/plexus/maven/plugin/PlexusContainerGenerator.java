@@ -55,13 +55,6 @@ import java.util.HashSet;
  * expression="#project"
  * description=""
  *
- * @parameter name="finalName"
- * type="java.lang.String"
- * required="true"
- * validator=""
- * expression="#maven.final.name"
- * description=""
- *
  * @parameter name="runtimeBuilder"
  * type="org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
  * required="true"
@@ -112,8 +105,6 @@ public class PlexusContainerGenerator
 
         MavenProject project = (MavenProject) request.getParameter( "project" );
 
-        String finalName = (String) request.getParameter( "finalName" );
-
         String plexusConfiguration = (String) request.getParameter( "plexusConfiguration" );
 
         String configurationProperties = (String) request.getParameter( "plexusConfigurationProperties" );
@@ -127,8 +118,6 @@ public class PlexusContainerGenerator
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
-
-        File outputFile = new File( basedir, finalName + "-runtime.jar" );
 
         File outputDirectory = new File( basedir, "plexus-runtime" );
 
@@ -145,7 +134,7 @@ public class PlexusContainerGenerator
             configurationPropertiesFile = new File( configurationProperties );
         }
 
-        builder.build( outputFile, outputDirectory,
+        builder.build( outputDirectory,
                        remoteRepositories, localRepository, artifacts,
                        plexusConfigurationFile, configurationPropertiesFile );
     }
