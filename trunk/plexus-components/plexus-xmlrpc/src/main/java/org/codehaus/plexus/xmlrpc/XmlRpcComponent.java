@@ -141,7 +141,8 @@ public interface XmlRpcComponent
      *
      * @param handlerName The name of the handler to unregister.
      */
-    void unregisterHandler( String handlerName );
+    void unregisterHandler( String handlerName )
+        throws XmlRpcException;
 
     /**
      * Switch client filtering on/off.
