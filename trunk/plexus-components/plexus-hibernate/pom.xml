@@ -80,7 +80,8 @@
     </dependency>
     
     <dependency>
-      <id>jta</id>
+      <artifactId>jta</artifactId>
+      <groupId>jta</groupId>
       <version>1.0.1</version>
     </dependency>
     
