@@ -17,6 +17,10 @@ public class CreateViewContextValve
     public void invoke( RunData data )
         throws IOException, SummitException
     {
+        //TODO: we should check here to see if a context has already been created as we could use
+        // this base valve to populate tools, scalars in the context or anything else and you
+        // don't want one valve to clobber the view context;
+
         ViewContext viewContext = new DefaultViewContext();
 
         populateViewContext( data, viewContext );
