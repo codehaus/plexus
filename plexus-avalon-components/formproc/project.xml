@@ -4,7 +4,7 @@
   <id>plexus-formproc</id>
   <artifactId>plexus-formproc</artifactId>
   <name>Plexus FormProc Component</name>
-  <currentVersion>1.0-alpha-5</currentVersion>
+  <currentVersion>1.0-alpha-6</currentVersion>
   
   <dependencies>
 
@@ -47,7 +47,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-summit</artifactId>
-      <version>1.0-alpha-5</version>
+      <version>1.0-beta-1</version>
     </dependency>
     
     <dependency>
