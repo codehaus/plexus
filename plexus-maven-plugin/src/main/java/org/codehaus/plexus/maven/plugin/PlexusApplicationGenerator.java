@@ -69,14 +69,21 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
  * type="java.lang.String"
  * required="true"
  * validator=""
- * expression="#plexus.runtime.configuration"
+ * expression="#applicationConfiguration"
  * description=""
  *
- * @parameter name="plexusConfigurationPropertiesFile"
+ * @parameter name="configurationProperties"
  * type="java.lang.String"
  * required="false"
  * validator=""
- * expression="#plexus.runtime.configuration.propertiesfile"
+ * expression="#configurationProperties"
+ * description=""
+ *
+ * @parameter name="configurationDirectory"
+ * type="java.lang.String"
+ * required="false"
+ * validator=""
+ * expression="#configurationDirectory"
  * description=""
  *
  * @parameter name="applicationName"
@@ -110,7 +117,9 @@ public class PlexusApplicationGenerator
 
         String applicationConfiguration = (String) request.getParameter( "applicationConfiguration" );
 
-        String configurationProperties = (String) request.getParameter( "plexusConfigurationPropertiesFile" );
+        String configurationProperties = (String) request.getParameter( "configurationProperties" );
+
+        String configurationDirectory = (String) request.getParameter( "configurationDirectory" );
 
         ApplicationBuilder builder = (ApplicationBuilder) request.getParameter( "applicationBuilder" );
 
@@ -124,7 +133,12 @@ public class PlexusApplicationGenerator
 
         File workingDirectory = new File( basedir, "/plexus-application" );
 
-        File configurationsDir = null;
+        File configurationDirectoryFile = null;
+
+        if ( configurationDirectory != null )
+        {
+            configurationDirectoryFile = new File( configurationDirectory );
+        }
 
         File configurationPropertiesFile = null;
 
@@ -166,7 +180,7 @@ public class PlexusApplicationGenerator
                           projectArtifacts,
                           services,
                           new File( applicationConfiguration ),
-                          configurationsDir,
+                          configurationDirectoryFile,
                           configurationPropertiesFile );
     }
 }
