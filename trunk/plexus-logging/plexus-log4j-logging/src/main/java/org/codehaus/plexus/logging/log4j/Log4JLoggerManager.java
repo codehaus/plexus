@@ -1,5 +1,9 @@
 package org.codehaus.plexus.logging.log4j;
 
+import org.apache.log4j.PropertyConfigurator;
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,12 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
-
-import org.apache.log4j.PropertyConfigurator;
-
-import org.codehaus.plexus.configuration.PlexusConfigurationException;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 
 /**
  * A simple configuration:
@@ -76,22 +74,35 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
  *  &lt;/configuration&gt;
  *  
  * </pre>
+ * @author <a href="mailto:michal@codehaus.org">Michal Maczka</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
  */
 public class Log4JLoggerManager
     extends AbstractLog4JLoggerManager
-    implements Initializable, Startable
+    implements Startable
 {
     /**
      * The threshold.
-     * 
+     *
      * @default DEBUG
+     * @todo this fields resides in the class which is other module ...
+     *        what shoud we do in such cases?
      */
-    private String threshold;
+    //private String threshold;
 
     /**
-     * The default appender id
+     * The default appender id.
      * 
-     * @default console
+     * @todo it is not that obvious what's deafult appender
+     * as deafult appender is null and we can change it
+     * "anonymous" under certain circumstances.
+     * That's probably good example which highlights
+     * what can be supported by CDC.
+     *
+     *
+     * @default  null/anonymous
+     *
      */
     private String defaultAppender;
 
@@ -120,7 +131,7 @@ public class Log4JLoggerManager
 
     public void initialize() throws Exception
     {
-        debug( "Initializing." );
+        super.initialize();
 
         log4JProperties = new Properties();
 
@@ -135,16 +146,9 @@ public class Log4JLoggerManager
 
             defaultAppender = "anonymous";
 
-            if ( threshold == null )
-            {
-                threshold = "DEBUG";
-            }
-
-            debug( "No appenders configured, creating default console appender." );
-
             log4JProperties.setProperty( "log4j.appender.anonymous", "org.apache.log4j.ConsoleAppender" );
 
-            log4JProperties.setProperty( "log4j.appender.anonymous.threshold", threshold );
+            log4JProperties.setProperty( "log4j.appender.anonymous.threshold", getThresholdAsString() );
 
             log4JProperties.setProperty( "log4j.appender.anonymous.layout", "org.apache.log4j.PatternLayout" );
 
@@ -152,8 +156,6 @@ public class Log4JLoggerManager
         }
         else
         {
-            debug( " Configuring " + appenders.size() + " appenders." );
-
             for ( int i = 0; i < appenders.size(); i++ )
             {
                 Appender appender = (Appender) appenders.get( i );
@@ -172,7 +174,7 @@ public class Log4JLoggerManager
 
                 if ( appender.getThreshold() == null )
                 {
-                    appender.setThreshold( threshold );
+                    appender.setThreshold( getThresholdAsString() );
                 }
 
                 if ( appender.getConversionPattern() == null )
@@ -218,8 +220,6 @@ public class Log4JLoggerManager
                 }
 
                 configuredAppenders.put( id, appender );
-
-                debug( " Logger #" + i + ": " + appender.getType() );
             }
 
             if ( defaultAppender == null )
@@ -259,7 +259,7 @@ public class Log4JLoggerManager
             }
         }
 
-        if ( threshold == null )
+        if ( getThresholdAsString() == null )
         {
             throw new PlexusConfigurationException( "INTERNAL ERROR: The threshold must be set." );
         }
@@ -268,19 +268,14 @@ public class Log4JLoggerManager
             throw new PlexusConfigurationException( "INTERNAL ERROR: The default appender must be set." );
         }
 
-        log4JProperties.setProperty( "log4j.rootLogger", threshold + "," + defaultAppender );
+        log4JProperties.setProperty( "log4j.rootLogger", getThresholdAsString() + "," + defaultAppender );
 
-        debug( "Initialized." );
     }
 
     public void start()
         throws Exception
     {
-        debug( "Starting." );
-
         PropertyConfigurator.configure( log4JProperties );
-
-        debug( "Started." );
     }
 
     public void stop()
@@ -292,6 +287,29 @@ public class Log4JLoggerManager
     public Properties getLog4JProperties()
     {
         return log4JProperties;
+    }
+
+    /**
+     * @todo Log4j supports following levels:
+     *
+     * OFF, FATAL, ERROR, WARN, INFO, DEBUG, ALL
+     *
+     * and ... custom levels.
+     *
+     * we can think bit longer what to do here to validate them.
+     *
+     * @return
+     */
+    public String getThresholdAsString()
+    {
+        String retValue = super.getThresholdAsString();
+
+        if ( retValue != null )
+        {
+            retValue = retValue.toUpperCase();
+        }
+
+        return retValue;
     }
 
 }
