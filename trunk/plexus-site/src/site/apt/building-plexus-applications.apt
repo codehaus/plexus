@@ -1,7 +1,7 @@
  -----
 Plexus Applications and Runtimes
  -----
- Trygve Laugstol
+Trygve Laugstol
  -----
 
 Building Plexus Applications and Runtimes
@@ -27,9 +27,9 @@ $ mkdir my-runtime
 
  [<<</my-application>>>] - Here we'll make a application
 
- [<<</my-runtime>>>] - Here we'll make a runtime that will host your application.
-   This runtime will contain startup scripts for Unix, Windows and OS X and
-   will be completly standalone.
+ [<<</my-runtime>>>] - Here we'll make a runtime that will host your
+  application.  This runtime will contain startup scripts for Unix, Windows and
+  OS X and will be completly standalone.
 
 Creating the Application
 
@@ -50,20 +50,16 @@ $ m2 archetype:create \
 
 * Building the Plexus Application
 
-  <<TODO: plexus:app should package the application>>
   <<TODO: plexus:app should not copy *.pom into /lib>>
-  <<TODO: plexus:app should depend on jar:jar>>
 
 +-----------------------------------------------------------------------------+
-$ m2 jar:install plexus:app
+$ m2 plexus:app
 +-----------------------------------------------------------------------------+
 
- Now you should have a application in <<<target/plexus-application>>>. Bundle
- the application with:
-
-+-----------------------------------------------------------------------------+
-$ jar cf my-application-1.0.jar -C target/plexus-application .
-+-----------------------------------------------------------------------------+
+ Now you should have a application in <<<target/plexus-application>>>. The
+ <<<plexus:app>>> goal will also package the application ready for deployment.
+ Our example application JAR will be
+ <<<target/my-application-1.0-application.jar>>>.
 
 Creating the Runtime
 
@@ -90,19 +86,20 @@ $ m2 archetype:create \
   project is the runtime itself.>>
 
 +-----------------------------------------------------------------------------+
-$ m2 jar:install plexus:runtime
+$ m2 plexus:runtime
 +-----------------------------------------------------------------------------+
 
- You should now have a usable runtime in <<<target/generated-runtime>>>. Lets
- copy over the application:
+ You should now have a usable runtime in <<<target/plexus-runtime>>> and a
+ packaged runtime in <<<target/my-runtime-1.0-runtime.jar>>>. Now lets copy
+ over the application:
 
 +-----------------------------------------------------------------------------+
-$ cp ../my-application/my-application-1.0.jar target/generated-runtime/apps
+$ cp ../my-application/target/my-application-1.0-application.jar target/plexus-runtime/apps
 +-----------------------------------------------------------------------------+
 
  Now you have a working Plexus runtime with your application installed. To
  start it run:
 
 +-----------------------------------------------------------------------------+
-$ sh target/generated-runtime/bin/plexus.sh
+$ sh target/plexus-runtime/bin/plexus.sh
 +-----------------------------------------------------------------------------+
