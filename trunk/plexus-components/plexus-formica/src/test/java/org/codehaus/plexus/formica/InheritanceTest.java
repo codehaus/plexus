@@ -38,7 +38,25 @@ public class InheritanceTest
 
         assertEquals( "summary-collection-expression", form.getSummaryCollectionExpression() );
 
+        assertEquals( "source-role", form.getSourceRole() );
+
         assertEquals( 4, form.getElements().size() );
+
+        Add add = form.getAdd();
+
+        assertEquals( "add-title-key", add.getTitleKey() );
+
+        Update update = form.getUpdate();
+
+        assertEquals( "update-title-key", update.getTitleKey() );
+
+        View view = form.getView();
+
+        assertEquals( "view-title-key", view.getTitleKey() );
+
+        Delete delete = form.getDelete();
+
+        assertEquals( "delete-title-key", delete.getTitleKey() );
     }
 
 
@@ -55,7 +73,25 @@ public class InheritanceTest
 
         assertEquals( "summary-collection-expression", form.getSummaryCollectionExpression() );
 
+        assertEquals( "source-role", form.getSourceRole() );
+
         assertEquals( 5, form.getElements().size() );
+
+        Add add = form.getAdd();
+
+        assertEquals( "add-title-key", add.getTitleKey() );
+
+        Update update = form.getUpdate();
+
+        assertEquals( "update-title-key", update.getTitleKey() );
+
+        View view = form.getView();
+
+        assertEquals( "view-title-key", view.getTitleKey() );
+
+        Delete delete = form.getDelete();
+
+        assertEquals( "delete-title-key", delete.getTitleKey() );
     }
 
     public void testGrandchildInheritanceWhereSomeTopLevelFieldsAreInherited()
@@ -71,6 +107,24 @@ public class InheritanceTest
 
         assertEquals( "grandchild1-summary-collection-expression", form.getSummaryCollectionExpression() );
 
+        assertEquals( "source-role", form.getSourceRole() );
+
         assertEquals( 5, form.getElements().size() );
+
+        Add add = form.getAdd();
+
+        assertEquals( "add-title-key", add.getTitleKey() );
+
+        Update update = form.getUpdate();
+
+        assertEquals( "update-title-key", update.getTitleKey() );
+
+        View view = form.getView();
+
+        assertEquals( "view-title-key", view.getTitleKey() );
+
+        Delete delete = form.getDelete();
+
+        assertEquals( "delete-title-key", delete.getTitleKey() );
     }
 }

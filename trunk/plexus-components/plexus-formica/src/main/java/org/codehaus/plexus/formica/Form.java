@@ -189,6 +189,11 @@ public class Form
         return sourceRole;
     }
 
+    public void setSourceRole( String sourceRole )
+    {
+        this.sourceRole = sourceRole;
+    }
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -232,7 +237,7 @@ public class Form
     }
 
     // ----------------------------------------------------------------------
-    // Mode descriptors
+    // Add
     // ----------------------------------------------------------------------
 
     public Add getAdd()
@@ -240,20 +245,57 @@ public class Form
         return add;
     }
 
+    public void setAdd( Add add )
+    {
+        this.add = add;
+    }
+
+    // ----------------------------------------------------------------------
+    // Update
+    // ----------------------------------------------------------------------
+
+
     public Update getUpdate()
     {
         return update;
     }
+
+    public void setUpdate( Update update )
+    {
+        this.update = update;
+    }
+
+    // ----------------------------------------------------------------------
+    // View
+    // ----------------------------------------------------------------------
 
     public View getView()
     {
         return view;
     }
 
+    public void setView( View view )
+    {
+        this.view = view;
+    }
+
+    // ----------------------------------------------------------------------
+    // Delete
+    // ----------------------------------------------------------------------
+
     public Delete getDelete()
     {
         return delete;
     }
+
+    public void setDelete( Delete delete )
+    {
+        this.delete = delete;
+    }
+
+    // ----------------------------------------------------------------------
+    // Summary
+    // ----------------------------------------------------------------------
 
     public Summary getSummary()
     {
