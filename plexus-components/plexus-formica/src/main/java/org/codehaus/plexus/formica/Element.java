@@ -24,7 +24,6 @@ package org.codehaus.plexus.formica;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @author <a href="mailto:mmmaczka@interia.pl">Michal Maczka</a>
  * @version $Id$
  */
 public class Element
