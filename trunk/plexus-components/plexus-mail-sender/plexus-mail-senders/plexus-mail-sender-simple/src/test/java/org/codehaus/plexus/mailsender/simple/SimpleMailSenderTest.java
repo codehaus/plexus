@@ -29,9 +29,7 @@ import com.dumbster.smtp.SmtpMessage;
 import java.util.Iterator;
 
 import org.codehaus.plexus.mailsender.MailSender;
-import org.codehaus.plexus.mailsender.MailMessage;
 import org.codehaus.plexus.mailsender.test.MailSenderTestCase;
-import org.codehaus.plexus.mailsender.test.SmtpServer;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -71,19 +69,9 @@ public class SimpleMailSenderTest
     {
         startSmtpServer( 4000 );
 
-        try
-        {
-            sendMessage( 4000, "sender@here.com", "Test", "Test Body", "receiver@there.com" );
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-            fail( "Unexpected exception: " + e );
-        }
+        sendMessage( 4000, "sender@here.com", "Test", "Test Body", "receiver@there.com" );
 
-        stopSmtpServer();
-
-        assertTrue( getReceievedEmailSize() == 1 );
+        assertEquals( 1, getReceievedEmailSize() );
 
         Iterator emailIter = getReceivedEmail();
 
@@ -92,6 +80,8 @@ public class SimpleMailSenderTest
         assertTrue( email.getHeaderValue( "Subject" ).equals( "Test" ) );
 
         assertTrue( email.getBody().equals( "Test Body" ) );
+
+        stopSmtpServer();
     }
 
     private void sendMessage(int port, String from, String subject, String body, String to) throws Exception
