@@ -29,7 +29,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
+      <version>0.17-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
