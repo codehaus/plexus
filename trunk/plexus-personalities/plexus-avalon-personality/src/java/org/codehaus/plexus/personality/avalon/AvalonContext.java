@@ -1,5 +1,7 @@
 package org.codehaus.plexus.personality.avalon;
 
+import java.io.File;
+
 import org.apache.avalon.framework.context.Context;
 import org.apache.avalon.framework.context.ContextException;
 
@@ -20,7 +22,7 @@ public class AvalonContext
         
         try
 		{
-			context.put( "app.home", context.get("plexus.home") );
+			context.put( "app.home", new File((String)context.get("plexus.home")) );
 		}
 		catch (Exception e)
 		{
