@@ -6,7 +6,7 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-quartz</artifactId>
-  <version>1.0</version>
+  <version>1.0-beta-1</version>
   <name>Plexus Quartz Component</name>
   <dependencies>
     <dependency>
@@ -18,6 +18,11 @@
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-avalon-personality</artifactId>
+      <version>0.12</version>
     </dependency>
   </dependencies>
 </project>

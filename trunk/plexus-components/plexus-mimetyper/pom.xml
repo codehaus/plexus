@@ -6,6 +6,13 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-mimetyper</artifactId>
-  <version>1.0</version>
+  <version>1.0-alpha-5</version>
   <name>Plexus Mimetyper Component</name>
+  <dependencies>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-avalon-personality</artifactId>
+      <version>0.12</version>
+    </dependency>
+  </dependencies>
 </project>

@@ -6,7 +6,7 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-bayesian</artifactId>
-  <version>1.0</version>
+  <version>1.0-alpha-1</version>
   <name>Plexus Bayesian Component</name>
   <dependencies>
     <dependency>
