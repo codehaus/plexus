@@ -3,6 +3,7 @@
  */
 package org.codehaus.plexus.summit.resolver;
 
+import org.codehaus.plexus.summit.renderer.Renderer;
 import org.codehaus.plexus.summit.view.DefaultView;
 import org.codehaus.plexus.summit.view.View;
 
@@ -95,5 +96,30 @@ public class NewResolver
         }
 
         return resolution;
+    }
+
+    /**
+     * @param data
+     * @return
+     */
+    protected Renderer getRenderer(String target)
+        throws Exception
+    {
+        String screenType;
+
+        if ( target.indexOf( "form" ) > 0 )
+        {
+            screenType = "form";
+        }
+        else
+        {
+            screenType = "velocity";
+        }
+
+        //System.out.println( "target = " + target );
+
+        //System.out.println( "screenType = " + screenType );
+
+        return (Renderer) lookup( Renderer.ROLE, screenType );
     }
 }

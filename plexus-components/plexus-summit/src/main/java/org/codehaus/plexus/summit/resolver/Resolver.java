@@ -19,8 +19,4 @@ public interface Resolver
     String getDefaultView();
 
     String getErrorView();
-
-    String getDefaultBaseName();
-
-    String getDefaultViewExtension();
 }

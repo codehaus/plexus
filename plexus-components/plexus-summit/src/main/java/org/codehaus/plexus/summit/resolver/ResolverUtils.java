@@ -1,7 +1,6 @@
 package org.codehaus.plexus.summit.resolver;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,11 +16,12 @@ public class ResolverUtils
      * Get the parsed module name for the specified template.
      *
      * @param target The target name.
-     * @param defaultBaseName The module type key.
-     * @return The parsed module name.
+     * @param defaultTarget The target to view in the current directory if the
+     * specified target doesn't exist.
+     * @return The possible views.
      * @exception Exception a generaic exception.
      */
-    public static List getPossibleViews( String target, String defaultBaseName )
+    public static List getPossibleViews( String target, String defaultTarget )
         throws Exception
     {
         List views = new ArrayList();
@@ -33,16 +33,6 @@ public class ResolverUtils
         {
             view.deleteCharAt( 0 );
             i--;
-        }
-
-        // Remove a possible file extension.
-        for ( int j = i + 1; j < view.length(); j++ )
-        {
-            if ( view.charAt( j ) == '.' )
-            {
-                view.delete( j, view.length() );
-                break;
-            }
         }
 
         // Try first an exact match for a module having the same
@@ -73,28 +63,11 @@ public class ResolverUtils
                 j = 1;
             }
 
-            view.append( defaultBaseName );
+            view.append( defaultTarget );
         }
 
         // Not found, return the default module name.
         return views;
-    }
-
-    /**
-     * Gets the possibleModules attribute of the ResolverUtils class
-     */
-    public static List getPossibleModules( List views )
-        throws Exception
-    {
-        List modules = new ArrayList();
-
-        for ( Iterator i = views.iterator(); i.hasNext(); )
-        {
-            String view = (String) i.next();
-            modules.add( viewToClassName( view ) );
-        }
-
-        return modules;
     }
 
     /**
@@ -151,63 +124,5 @@ public class ResolverUtils
                 "Syntax error in template name '" + target + '\'' );
         }
         return index;
-    }
-
-    /**
-     * Convert a view pattern to a class pattern. Remove a leading slash if
-     * present and convert all remaining slashes to dots.
-     *
-     * @param view View to convert to a class name
-     * @return String The class name produced
-     */
-    public static String viewToClassName( String view )
-    {
-        StringBuffer sb = new StringBuffer( view );
-
-        if ( sb.charAt( 0 ) == '/' )
-        {
-            sb.deleteCharAt( 0 );
-        }
-
-        for ( int j = 0; j < sb.length(); j++ )
-        {
-            if ( sb.charAt( j ) == '/' )
-            {
-                sb.setCharAt( j, '.' );
-            }
-        }
-
-        return sb.toString();
-    }
-
-    /**
-     * For a given target and default base name produce a set of valid module
-     * suffixes. The module suffixes combined with a set of module packages can
-     * be used to produce the possible list of fully qualified modules class
-     * names.
-     */
-    public static List getPossibleModuleSuffixes( String target, String defaultBaseName )
-        throws Exception
-    {
-        List views = ResolverUtils.getPossibleViews( target, defaultBaseName );
-
-        // Now what we have is a set of views which look like paths so we need
-        // to convert these into elements that look like classes in order to
-        // create a list of possible modules.
-        List modules = new ArrayList();
-        for ( Iterator i = views.iterator(); i.hasNext(); )
-        {
-            modules.add( ResolverUtils.viewToClassName( (String) i.next() ) );
-        }
-
-        return modules;
-    }
-
-    /**
-     * Description of the Method
-     */
-    public boolean targetHasExtension( String target )
-    {
-        return target.indexOf( "." ) > 0;
     }
 }

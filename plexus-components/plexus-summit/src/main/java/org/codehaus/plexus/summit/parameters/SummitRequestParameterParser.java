@@ -67,7 +67,8 @@ public class SummitRequestParameterParser
                 if ( isNameToken )
                 {
                     isNameToken = false;
-                    nameToken = URLDecoder.decode( tokenizer.nextToken() );
+                    nameToken = URLDecoder.decode( tokenizer.nextToken(), 
+                                                   request.getCharacterEncoding() );
                 }
                 else
                 {
@@ -77,7 +78,8 @@ public class SummitRequestParameterParser
                         addParameter(
                             parameterMap,
                             nameToken,
-                            URLDecoder.decode( tokenizer.nextToken() ) );
+                            URLDecoder.decode( tokenizer.nextToken(), 
+                                               request.getCharacterEncoding() ) );
                     }
                 }
             }
