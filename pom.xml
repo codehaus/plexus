@@ -23,8 +23,8 @@
     </mailingList>
   </mailingLists>
   <scm>
-    <connection>scm:cvs:ext:anonymous@cvs.plexus.codehaus.org:/home/projects/${groupId}/${artifactId}</connection>
-    <developerConnection>scm:cvs:ext:${maven.username}@cvs.plexus.codehaus.org:/home/projects/${groupId}/${artifactId}</developerConnection>
+    <connection>scm:cvs:pserver:anonymous@cvs.plexus.codehaus.org:/scm/plexus:plexus</connection>
+    <developerConnection>scm:cvs:ext:${maven.username}@cvs.plexus.codehaus.org:/scm/plexus:plexus</developerConnection>
   </scm>
   <developers>
     <developer>
@@ -139,4 +139,3 @@
     </dependency>    
   </dependencies>  
 </project>
-
