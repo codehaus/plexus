@@ -5,8 +5,19 @@
     <version>1.0</version>
   </parent>
   <groupId>plexus</groupId>
-  <artifactId>plexus-</artifactId>
+  <artifactId>plexus-quartz</artifactId>
   <version>1.0</version>
+  <name>Plexus Quartz Component</name>
   <dependencies>
+    <dependency>
+      <artifactId>quartz</artifactId>
+      <groupId>quartz</groupId>
+      <version>1.0.7</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.2</version>
+    </dependency>
   </dependencies>
 </project>

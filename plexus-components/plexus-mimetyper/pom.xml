@@ -5,8 +5,7 @@
     <version>1.0</version>
   </parent>
   <groupId>plexus</groupId>
-  <artifactId>plexus-</artifactId>
+  <artifactId>plexus-mimetyper</artifactId>
   <version>1.0</version>
-  <dependencies>
-  </dependencies>
+  <name>Plexus Mimetyper Component</name>
 </project>

@@ -5,8 +5,44 @@
     <version>1.0</version>
   </parent>
   <groupId>plexus</groupId>
-  <artifactId>plexus-</artifactId>
+  <artifactId>plexus-maildir</artifactId>
   <version>1.0</version>
+  <name>Plexus Maildir Component</name>
+  <developers>
+    <developer>
+      <name>Eric Daugherty</name>
+      <id>edaugherty</id>
+      <email>java@ericdaugherty.com</email>
+      <organization/>
+      <url>http://www.ericdaugherty.com</url>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Siegfried Goeschl</name>
+      <email>siegfried.goeschl@it20one.at</email>
+    </contributor>
+  </contributors>
   <dependencies>
+    <dependency>
+      <groupId>javamail</groupId>
+      <artifactId>javamail</artifactId>
+      <version>1.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus</artifactId>
+      <version>0.7</version>
+    </dependency>
+    <dependency>
+      <groupId>avalon</groupId>
+      <artifactId>avalon-framework-api</artifactId>
+      <version>4.1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>dnsjava</groupId>
+      <artifactId>dnsjava</artifactId>
+      <version>1.3.2</version>
+    </dependency>
   </dependencies>
 </project>

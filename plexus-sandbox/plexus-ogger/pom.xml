@@ -5,8 +5,7 @@
     <version>1.0</version>
   </parent>
   <groupId>plexus</groupId>
-  <artifactId>plexus-</artifactId>
+  <artifactId>plexus-ogger</artifactId>
   <version>1.0</version>
-  <dependencies>
-  </dependencies>
+  <name>Plexus Ogger Component</name>
 </project>
