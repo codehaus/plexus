@@ -77,9 +77,9 @@ public class Log4JLoggerManagerTest
         Properties p = loggerManager.getLog4JProperties();
 
         assertEquals( "org.apache.log4j.ConsoleAppender", p.getProperty( "log4j.appender.anonymous" ) );
-        assertEquals( "DEBUG", p.getProperty( "log4j.appender.anonymous.threshold" ) );
+        assertEquals( "INFO", p.getProperty( "log4j.appender.anonymous.threshold" ) );
         assertEquals( "org.apache.log4j.PatternLayout", p.getProperty( "log4j.appender.anonymous.layout" ) );
         assertEquals( "%-4r [%t] %-5p %c %x - %m%n", p.getProperty( "log4j.appender.anonymous.layout.conversionPattern" ) );
-        assertEquals( "DEBUG,anonymous", p.getProperty( "log4j.rootLogger" ) );
+        assertEquals( "INFO,anonymous", p.getProperty( "log4j.rootLogger" ) );
     }
 }
