@@ -1,0 +1,16 @@
+<form>
+  <extend>child</extend>
+  <id>grandchild1</id>
+  <summary-collection-expression>grandchild1-summary-collection-expression</summary-collection-expression>
+  <elements>
+    <element>
+      <id>field-4</id>
+      <expression>field4</expression>
+      <validator>url</validator>
+      <label-key>field-4-label-key</label-key>
+      <message-key>field-4-message-key</message-key>
+      <error-message-key>field-4-error-message-key</error-message-key>
+      <type>text</type>
+    </element>
+  </elements>
+</form>
