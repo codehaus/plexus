@@ -4,7 +4,7 @@
   <id>plexus-ircd</id>
   <artifactId>plexus-ircd</artifactId>
   <groupId>plexus</groupId>
-  <name>plexus-ircd</name>
+  <name>Plexus IRC Server</name>
   <currentVersion>1.0</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>

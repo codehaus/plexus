@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <project>
-  <groupId>plexus</groupId>
-  <artifactId>plexus-synapse</artifactId>
-  <name>Synapse</name>
+  <pomVersion>3</pomVersion>
   <id>plexus-synapse</id>
+  <artifactId>plexus-synapse</artifactId>
+  <groupId>plexus</groupId>
+  <name>Synapse</name>
   <package>org.codehaus.plexus.synapse</package>
   <currentVersion>0.1</currentVersion>
   <inceptionYear>1999</inceptionYear>

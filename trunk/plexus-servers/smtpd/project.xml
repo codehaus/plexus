@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
 <project>
-  <pomVersion>1.0</pomVersion>
-  <name>Java Email Server Core</name>
-  <groupId>plexus</groupId>
-  <artifactId>plexus-smtpd</artifactId>
+  <pomVersion>3</pomVersion>
   <id>plexus-smtpd</id>
+  <artifactId>plexus-smtpd</artifactId>
   <groupId>plexus</groupId>
+  <name>Java Email Server Core - SMTPD</name>
   <currentVersion>2.0-alpha-2</currentVersion>
   <organization>
     <name>Eric Daugherty</name>

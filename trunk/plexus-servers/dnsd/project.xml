@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project>
-
   <pomVersion>3</pomVersion>
   <id>plexus-dnsd</id>
   <artifactId>plexus-dnsd</artifactId>
-  <group>plexus</group>
+  <groupId>plexus</groupId>
   <name>Plexus DNS Server</name>
   
   <!-- The version of the project under development, e.g.
