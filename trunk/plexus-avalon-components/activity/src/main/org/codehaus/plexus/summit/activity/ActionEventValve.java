@@ -63,7 +63,6 @@ import org.apache.avalon.framework.service.ServiceManager;
 import org.apache.avalon.framework.service.Serviceable;
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
-import org.codehaus.plexus.summit.pipeline.valve.ValveContext;
 import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
@@ -82,7 +81,7 @@ public class ActionEventValve
     /**
      * @see org.codehaus.plexus.summit.pipeline.valve.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke( RunData data, ValveContext context )
+    public void invoke( RunData data )
         throws IOException, SummitException
     {
         try
@@ -102,9 +101,6 @@ public class ActionEventValve
             throw new SummitException( 
                "There was a problem executing the action.",  e );
         }
-        
-        // Pass control to the next Valve in the Pipeline
-        context.invokeNext( data );
     }
 
     /**
