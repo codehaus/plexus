@@ -4,6 +4,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 
+import java.io.File;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -220,6 +221,17 @@ public class Log4JLoggerManager
                     String key = e.nextElement().toString();
 
                     log4JProperties.setProperty( base + "." + key, appender.getProperty( key ) );
+
+                    if ( "file".equals( key ) )
+                    {
+                        File logFile = new File( appender.getProperty( key ) );
+                        File logDir = logFile.getParentFile();
+
+                        if ( ! logDir.exists() )
+                        {
+                            logDir.mkdirs();
+                        }
+                    }
                 }
 
                 configuredAppenders.put( id, appender );
