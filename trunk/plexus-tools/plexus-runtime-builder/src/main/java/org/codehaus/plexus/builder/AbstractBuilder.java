@@ -23,7 +23,6 @@ package org.codehaus.plexus.builder;
  */
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -31,12 +30,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.Enumeration;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
+import java.util.Iterator;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
@@ -45,12 +43,6 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectBuilder;
-import org.apache.maven.project.ProjectBuildingException;
-import org.apache.maven.repository.RepositoryUtils;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.exception.ResourceNotFoundException;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
@@ -59,7 +51,6 @@ import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.codehaus.plexus.util.Os;
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.Commandline;
-import org.codehaus.plexus.velocity.VelocityComponent;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -68,120 +59,22 @@ import org.codehaus.plexus.velocity.VelocityComponent;
 public abstract class AbstractBuilder
     extends AbstractLogEnabled
 {
-    // ----------------------------------------------------------------------
-    // Configuration
-    // ----------------------------------------------------------------------
+    protected final static Set BOOT_ARTIFACTS = new HashSet( Arrays.asList( new Artifact[]{
+        new DefaultArtifact( "classworlds", "classworlds", "1.1-alpha-2-SNAPSHOT", "jar" ),
+    } ) );
 
-    protected ArtifactRepository localRepository;
-
-    protected MavenProject project;
-
-    protected String baseDirectory;
-
-    protected String plexusConfiguration;
-
-    protected String configurationPropertiesFile;
-
-    protected Properties configurationProperties;
-
-    protected File confDir;
+    protected final static Set CORE_ARTIFACTS = new HashSet( Arrays.asList( new Artifact[]{
+        new DefaultArtifact( "plexus", "plexus-container-default", "1.0-alpha-2-SNAPSHOT", "jar" ),
+        new DefaultArtifact( "plexus", "plexus-container-artifact", "1.0-alpha-1-SNAPSHOT", "jar" ),
+        new DefaultArtifact( "plexus", "plexus-appserver", "1.0-alpha-1-SNAPSHOT", "jar" ),
+        new DefaultArtifact( "plexus", "plexus-utils", "1.0-alpha-1-SNAPSHOT", "jar" ),
+    } ) );
 
     // ----------------------------------------------------------------------
     // Components
     // ----------------------------------------------------------------------
 
-    protected VelocityComponent velocity;
-
-    protected MavenProjectBuilder projectBuilder;
-
     protected ArtifactResolver artifactResolver;
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    private final static String[][] bootArtifacts =
-        {
-            {"classworlds", "classworlds"}
-        };
-
-    private Set plexusArtifacts;
-
-    // ----------------------------------------------------------------------
-    // Abstract methods
-    // ----------------------------------------------------------------------
-
-    protected abstract void createDirectoryStructure();
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    public void setLocalRepository( ArtifactRepository localRepository )
-    {
-        this.localRepository = localRepository;
-    }
-
-    protected ArtifactRepository getLocalRepository()
-    {
-        return localRepository;
-    }
-
-    public void setProject( MavenProject project )
-    {
-        this.project = project;
-    }
-
-    public Set getRemoteRepositories()
-    {
-        return RepositoryUtils.mavenToWagon( project.getRepositories() );
-    }
-
-    public void setBaseDirectory( String baseDirectory )
-    {
-        this.baseDirectory = baseDirectory;
-    }
-
-    public void setPlexusConfiguration( String plexusConfiguration )
-    {
-        this.plexusConfiguration = plexusConfiguration;
-    }
-
-    public void setConfigurationPropertiesFile( String configurationPropertiesFile )
-    {
-        this.configurationPropertiesFile = configurationPropertiesFile;
-    }
-
-    protected Properties getConfigurationProperties()
-        throws BuilderException
-    {
-        if ( configurationProperties == null )
-        {
-            Properties p = new Properties();
-
-            File input = new File( configurationPropertiesFile );
-
-            try
-            {
-                p.load( new FileInputStream( input ) );
-            }
-            catch ( IOException ex )
-            {
-                throw new BuilderException( "Exception while reading configuration file: " + input.getPath(), ex );
-            }
-
-            configurationProperties = new Properties();
-
-            for ( Enumeration e = p.propertyNames(); e.hasMoreElements(); )
-            {
-                String name = (String) e.nextElement();
-
-                configurationProperties.setProperty( name, p.getProperty( name ) );
-            }
-        }
-
-        return configurationProperties;
-    }
 
     // ----------------------------------------------------------------------
     // Utility methods
@@ -204,37 +97,14 @@ public abstract class AbstractBuilder
         }
     }
 
-    protected void mkdir( File directory )
+    protected File mkdir( File directory )
     {
         if ( !directory.exists() )
         {
             directory.mkdirs();
         }
-    }
 
-    // ----------------------------------------------------------------------
-    // Velocity methods
-    // ----------------------------------------------------------------------
-
-    protected void mergeTemplate( String templateName, File outputFileName )
-        throws IOException, BuilderException
-    {
-        FileWriter output = new FileWriter( outputFileName );
-
-        try
-        {
-            velocity.getEngine().mergeTemplate( templateName, new VelocityContext(), output );
-        }
-        catch ( ResourceNotFoundException ex )
-        {
-            throw new BuilderException( "Missing Velocity template: '" + templateName + "'.", ex );
-        }
-        catch ( Exception ex )
-        {
-            throw new BuilderException( "Exception merging the velocity template.", ex );
-        }
-
-        output.close();
+        return directory;
     }
 
     // ----------------------------------------------------------------------
@@ -269,186 +139,49 @@ public abstract class AbstractBuilder
     // Artifact methods
     // ----------------------------------------------------------------------
 
-    protected Artifact resolve( String groupId, String artifactId, String version, String type )
-        throws BuilderException
-    {
-        Artifact artifact = new DefaultArtifact( groupId, artifactId, version, type );
-
-        try
-        {
-            return artifactResolver.resolve( artifact, getRemoteRepositories(), getLocalRepository() );
-        }
-        catch ( ArtifactResolutionException ex )
-        {
-            throw new BuilderException( "Error while resolving artifact. id=" + artifact.getId() + ":" );
-        }
-    }
-
-    protected boolean isPlexusArtifact( Artifact artifact )
-        throws BuilderException
-    {
-        Set plexusArtifacts = findPlexusArtifacts();
-
-        for ( Iterator it = plexusArtifacts.iterator(); it.hasNext(); )
-        {
-            Artifact a = (Artifact) it.next();
-
-            if ( a.getGroupId().equals( artifact.getGroupId() ) && a.getArtifactId().equals( artifact.getArtifactId() ) )
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    protected void copyArtifact( Artifact artifact, File destination )
+    protected void copyArtifact( Artifact artifact, File outputDir, File destination )
         throws IOException
     {
-        String dest = destination.getAbsolutePath().substring( baseDirectory.length() + 1 );
+        String dest = destination.getAbsolutePath().substring( outputDir.getAbsolutePath().length() + 1 );
 
         getLogger().info( "Adding " + artifact.getId() + " to " + dest );
 
         FileUtils.copyFileToDirectory( artifact.getFile(), destination );
-
-        //artifacts.remove( artifact.getId() );
     }
 
-    protected MavenProject buildProject( File file )
-        throws BuilderException
+    protected void copyArtifacts( File outputDir, File dir, Set artifacts )
+        throws IOException
     {
-        try
-        {
-            return projectBuilder.build( file, localRepository );
-        }
-        catch ( ProjectBuildingException ex )
-        {
-            throw new BuilderException( "Error while building project: " + ex );
-        }
-    }
-
-    protected boolean isBootArtifact( Artifact artifact )
-    {
-        for ( int i = 0; i < bootArtifacts.length; i++ )
-        {
-            String groupId = artifact.getGroupId();
-
-            String artifactId = artifact.getArtifactId();
-
-            if ( bootArtifacts[i][0].equals( groupId ) &&
-                bootArtifacts[i][1].equals( artifactId ) )
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    protected Set findArtifacts( MavenProject project )
-        throws BuilderException
-    {
-        Set artifacts = findArtifacts( project, getRemoteRepositories(), getLocalRepository() );
-
-        // ----------------------------------------------------------------------
-        // Find the artifact for the application itself
-        // ----------------------------------------------------------------------
-
-        Artifact artifact = resolve( project.getGroupId(), project.getArtifactId(), project.getVersion(), project.getType() );
-
-        artifacts.add( artifact );
-
-        return artifacts;
-    }
-
-    protected Set findArtifacts( MavenProject project, Set repositories, ArtifactRepository localRepository )
-        throws BuilderException
-    {
-        ArtifactResolutionResult result;
-
-        MavenMetadataSource metadata = new MavenMetadataSource( repositories, localRepository, artifactResolver );
-
-        try
-        {
-            result = artifactResolver.resolveTransitively( project.getArtifacts(), repositories, localRepository, metadata );
-        }
-        catch ( ArtifactResolutionException ex )
-        {
-            throw new BuilderException( "Exception while getting artifacts for " + project.getId() + ".", ex );
-        }
-
-        return new HashSet( result.getArtifacts().values() );
-    }
-
-    protected Set findPlexusArtifacts()
-        throws BuilderException
-    {
-        if ( plexusArtifacts != null )
-        {
-            return plexusArtifacts;
-        }
-
-        Artifact plexusArtifact = null;
-
-        for ( Iterator it = project.getArtifacts().iterator(); it.hasNext(); )
+        for ( Iterator it = artifacts.iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
 
-            String groupId = artifact.getGroupId();
-
-            String artifactId = artifact.getArtifactId();
-
-            String type = artifact.getType();
-
-            if ( groupId.equals( "plexus" ) &&
-                 artifactId.equals( "plexus-container-default" ) &&
-                 type.equals( "jar" ) )
-            {
-                plexusArtifact = artifact;
-
-                break;
-            }
+            copyArtifact( artifact, outputDir, dir );
         }
+    }
 
-        if ( plexusArtifact == null )
+    protected Set findArtifacts( Set remoteRepositories, ArtifactRepository localRepository, Set sourceArtifacts, boolean resolveTransitively )
+        throws ArtifactResolutionException
+    {
+        ArtifactResolutionResult result;
+
+        MavenMetadataSource metadata = new MavenMetadataSource( remoteRepositories, localRepository, artifactResolver );
+
+        Set artifacts;
+
+        if( resolveTransitively )
         {
-            throw new BuilderException( "Could not find plexus JAR in the dependency list." );
+            result = artifactResolver.resolveTransitively( sourceArtifacts, remoteRepositories, localRepository, metadata );
+
+            // TODO: Assert that there wasn't any conflicts.
+
+            artifacts = new HashSet( result.getArtifacts().values() );
         }
-
-        Artifact plexusPom = resolve( plexusArtifact.getGroupId(), plexusArtifact.getArtifactId(),
-                                      plexusArtifact.getVersion(), "pom" );
-
-        if ( plexusPom == null )
+        else
         {
-            throw new BuilderException( "Cannot find pom for: " + plexusArtifact.getId() );
+            artifacts = artifactResolver.resolve( sourceArtifacts, remoteRepositories, localRepository );
         }
 
-        MavenProject plexus = buildProject( plexusPom.getFile() );
-
-        plexusArtifacts = findArtifacts( plexus, getRemoteRepositories(), getLocalRepository() );
-
-        plexusArtifacts.add( plexusArtifact );
-
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
-        Artifact appserver = new DefaultArtifact( "plexus", "plexus-appserver", "1.0-alpha-1-SNAPSHOT", "jar" );
-
-        appserver.setPath( getLocalRepository().getBasedir() + "/plexus/jars/plexus-appserver-1.0-alpha-1-SNAPSHOT.jar" );
-
-        plexusArtifacts.add( appserver );
-
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
-        Artifact utils = new DefaultArtifact( "plexus", "plexus-utils", "1.0-alpha-1-SNAPSHOT", "jar" );
-
-        utils.setPath( getLocalRepository().getBasedir() + "/plexus/jars/plexus-utils-1.0-alpha-1-SNAPSHOT.jar" );
-
-        plexusArtifacts.add( utils );
-
-        return plexusArtifacts;
+        return artifacts;
     }
 }

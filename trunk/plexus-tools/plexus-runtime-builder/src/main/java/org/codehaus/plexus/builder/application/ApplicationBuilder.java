@@ -1,10 +1,5 @@
 package org.codehaus.plexus.builder.application;
 
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.project.MavenProject;
-
-import org.codehaus.plexus.builder.BuilderException;
-
 /*
  * Copyright (c) 2004, Codehaus.org
  *
@@ -27,6 +22,11 @@ import org.codehaus.plexus.builder.BuilderException;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.util.Set;
+
+import org.apache.maven.artifact.repository.ArtifactRepository;
+
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
@@ -35,20 +35,8 @@ public interface ApplicationBuilder
 {
     String ROLE = ApplicationBuilder.class.getName();
 
-    void setApplicationName( String applicationName );
-
-    void setBaseDirectory( String outputDirectory );
-
-    void setProject( MavenProject project );
-
-    void setLocalRepository( ArtifactRepository localRepository );
-
-    void setPlexusConfiguration( String plexusConfiguration );
-
-    void setConfigurationsDirectory( String configurationsDirectory );
-
-    void setConfigurationPropertiesFile( String configurationPropertiesFile );
-
-    void build()
-        throws BuilderException;
+    void build( String applicationName, File outputFile, File workingDirectory,
+                Set remoteRepositories, ArtifactRepository localRespository, Set projectArtifacts,
+                File plexusConfiguration, File configurationsDirectory, File configurationPropertiesFile )
+        throws ApplicationBuilderException;
 }

@@ -23,16 +23,19 @@ package org.codehaus.plexus.builder.application;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DefaultArtifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 
+import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
-import org.codehaus.plexus.builder.BuilderException;
+import org.codehaus.plexus.util.CollectionUtils;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -44,6 +47,9 @@ public class DefaultApplicationBuilder
     extends AbstractBuilder
     implements ApplicationBuilder
 {
+    /** @requirement */
+//    private Archiver archiver;
+/*
     private String applicationName;
 
     private File applicationLibDirectory;
@@ -63,27 +69,112 @@ public class DefaultApplicationBuilder
     {
         this.configurationsDirectory = configurationsDirectory;
     }
-
+*/
     // ----------------------------------------------------------------------
     // ApplicationBuilder Implementation
     // ----------------------------------------------------------------------
 
-    public void build()
-        throws BuilderException
+    public void build( String applicationName, File outputFile, File workingDirectory,
+                       Set remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts,
+                       File plexusConfigurationFile, File configurationsDirectory, File configurationPropertiesFile )
+        throws ApplicationBuilderException
     {
+        // ----------------------------------------------------------------------
+        // Check the parameters
+        // ----------------------------------------------------------------------
+
+        if ( applicationName == null || applicationName.trim().length() == 0 )
+        {
+            throw new ApplicationBuilderException( "The application name must be set." );
+        }
+
+        if ( configurationPropertiesFile == null )
+        {
+            throw new ApplicationBuilderException( "The configuration properties file must be set." );
+        }
+
+        if ( !configurationPropertiesFile.isFile() )
+        {
+            throw new ApplicationBuilderException( "The configuration properties file isn't a file: '" + configurationPropertiesFile.getAbsolutePath() + "'." );
+        }
+
+        if ( configurationsDirectory != null && !configurationsDirectory.isDirectory() )
+        {
+            throw new ApplicationBuilderException( "The configurations directory isn't a directory: '" + configurationsDirectory.getAbsolutePath() + "." );
+        }
+
+        // ----------------------------------------------------------------------
+        // Create directory structure
+        // ----------------------------------------------------------------------
+
+        File confDir = mkdir( new File( workingDirectory, "conf" ) );
+
+        File libDir = mkdir( new File( workingDirectory, "lib" ) );
+
+        // ----------------------------------------------------------------------
+        //
+        // ----------------------------------------------------------------------
+
         try
         {
-            checkApplicationConfiguration();
+            processConfigurations( confDir, plexusConfigurationFile, configurationPropertiesFile, configurationsDirectory );
+        }
+        catch ( IOException e )
+        {
+            throw new ApplicationBuilderException( "Error while processing the configurations." );
+        }
 
-            createDirectoryStructure();
+        // ----------------------------------------------------------------------
+        // Find the dependencies
+        // ----------------------------------------------------------------------
 
-            processConfigurations();
+        Set artifacts;
 
-            copyApplicationDependencies();
+        Set coreArtifacts;
+
+        try
+        {
+            artifacts = findArtifacts( remoteRepositories, localRepository, projectArtifacts, true );
+
+            coreArtifacts = findArtifacts( remoteRepositories, localRepository, CORE_ARTIFACTS, false );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new ApplicationBuilderException( "Error while finding dependencies.", e );
+        }
+
+        artifacts = new HashSet( CollectionUtils.subtract( artifacts, coreArtifacts ) );
+
+        // ----------------------------------------------------------------------
+        // Copy the dependencies
+        // ----------------------------------------------------------------------
+
+        try
+        {
+            copyArtifacts( workingDirectory, libDir, artifacts );
         }
         catch ( IOException e )
         {
             throw new ApplicationBuilderException( "Error while copying dependencies.", e );
+        }
+
+        // ----------------------------------------------------------------------
+        // Build the application jar
+        // ----------------------------------------------------------------------
+
+        Archiver archiver = new JarArchiver();
+
+        try
+        {
+            archiver.addDirectory( workingDirectory );
+
+            archiver.setDestFile( outputFile );
+
+            archiver.createArchive();
+        }
+        catch ( Exception e )
+        {
+            throw new ApplicationBuilderException( "Error while creating the application archive.", e );
         }
     }
 
@@ -91,28 +182,13 @@ public class DefaultApplicationBuilder
     //
     // ----------------------------------------------------------------------
 
-    private void checkApplicationConfiguration()
-        throws ApplicationBuilderException
+    private void processConfigurations( File confDir, File plexusConfigurationFile, File configurationPropertiesFile,
+                                        File configurationsDirectory )
+        throws ApplicationBuilderException, IOException
     {
-        if ( applicationName == null || applicationName.trim().length() == 0 )
-        {
-            throw new ApplicationBuilderException( "The application name must be set." );
-        }
-    }
-
-    private void processConfigurations()
-        throws BuilderException, IOException
-    {
-        if ( configurationPropertiesFile == null )
-        {
-            throw new ApplicationBuilderException( "The configuration properties file must be set." );
-        }
-
         // ----------------------------------------------------------------------
         // Copy the main plexus.xml
         // ----------------------------------------------------------------------
-
-        File plexusConfigurationFile = new File( plexusConfiguration );
 
         if ( !plexusConfigurationFile.exists() )
         {
@@ -128,14 +204,20 @@ public class DefaultApplicationBuilder
         if ( configurationsDirectory == null )
         {
             return;
-//            throw new ApplicationBuilderException( "The configuration directory must be set." );
+        }
+
+        Properties configurationProperties = new Properties();
+
+        if ( configurationPropertiesFile != null )
+        {
+            configurationProperties.load( new FileInputStream( configurationPropertiesFile ) );
         }
 
         DirectoryScanner scanner = new DirectoryScanner();
 
         scanner.setBasedir( configurationsDirectory );
 
-        scanner.setExcludes( new String[]{configurationPropertiesFile, "**/CVS/**"} );
+        scanner.setExcludes( new String[]{configurationPropertiesFile.getAbsolutePath(), "**/CVS/**"} );
 
         scanner.scan();
 
@@ -149,51 +231,26 @@ public class DefaultApplicationBuilder
 
             File out = new File( confDir, files[i] );
 
-            filterCopy( in, out, getConfigurationProperties() );
+            filterCopy( in, out, configurationProperties );
         }
     }
-
-    protected void createDirectoryStructure()
+/*
+    private void copyApplicationDependencies( Set artifacts, File outputDir, File libDir )
+        throws IOException
     {
-        applicationLibDirectory = new File( baseDirectory, "lib" );
-
-        confDir = new File( baseDirectory, "conf" );
-
-        mkdir( applicationLibDirectory );
-
-        mkdir( confDir );
-    }
-
-    private void copyApplicationDependencies()
-        throws BuilderException, IOException
-    {
-        Set artifacts = project.getArtifacts();
-
         Iterator it = artifacts.iterator();
-
-        Artifact artifact = new DefaultArtifact( project.getGroupId(), project.getArtifactId(), project.getVersion(), project.getType() );
-
-        try
-        {
-            artifact = artifactResolver.resolve( artifact, getRemoteRepositories(), getLocalRepository() );
-        }
-        catch ( ArtifactResolutionException ex )
-        {
-            throw new ApplicationBuilderException( "Error while resolving the project artifact.", ex );
-        }
-
-        copyArtifact( artifact, applicationLibDirectory );
 
         while ( it.hasNext() )
         {
-            artifact = (Artifact) it.next();
+            Artifact artifact = (Artifact) it.next();
 
-            if ( isBootArtifact( artifact ) || isPlexusArtifact( artifact ) )
+            if ( isBootArtifact( artifact ) )
             {
                 continue;
             }
 
-            copyArtifact( artifact, applicationLibDirectory );
+            copyArtifact( artifact, outputDir, libDir );
         }
     }
+*/
 }

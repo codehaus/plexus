@@ -1,0 +1,19 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>plexus</groupId>
+  <artifactId>plexus</artifactId>
+  <name>Plexus</name>
+  <version>0.14-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-dependency</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>classworlds</groupId>
+      <artifactId>classworlds</artifactId>
+      <version>1.1-alpha-2-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>
