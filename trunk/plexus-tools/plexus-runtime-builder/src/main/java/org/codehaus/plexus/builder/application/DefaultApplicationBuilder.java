@@ -1,4 +1,4 @@
-packageorg.codehaus.plexus.builder.application;
+package org.codehaus.plexus.builder.application;
 
 /*
  * Copyright (c) 2004, Codehaus.org
