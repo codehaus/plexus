@@ -24,16 +24,16 @@ package org.codehaus.plexus.notification;
  * SOFTWARE.
  */
 
-import java.util.Set;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public interface RecipientDatabase
+public interface NotificationDispatcher
 {
-    String ROLE = RecipientDatabase.class.getName();
+    String ROLE = NotificationDispatcher.class.getName();
 
-    Set getRecipients( String messageId, String notifierType )
+    void sendNotification( String messageId, Map context )
         throws NotificationException;
 }

@@ -24,13 +24,12 @@ package org.codehaus.plexus.notification.notifier.manager;
  * SOFTWARE.
  */
 
-import java.util.Map;
 import java.util.Collections;
+import java.util.Map;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.notification.notifier.Notifier;
 import org.codehaus.plexus.notification.NotificationException;
+import org.codehaus.plexus.notification.notifier.Notifier;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
