@@ -1,6 +1,7 @@
 package org.codehaus.plexus.servlet;
 
 import java.io.File;
+import java.util.Properties;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -8,6 +9,7 @@ import javax.servlet.ServletException;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.embed.Embedder;
+import org.codehaus.plexus.util.PropertyUtils;
 
 /**
  * <code>ServletContextUtils</code> provides methods to embed a Plexus
@@ -17,10 +19,17 @@ import org.codehaus.plexus.embed.Embedder;
  * @version $Revision$
  */
 final class ServletContextUtils {
+    
+    private static final String PLEXUS_HOME = "plexus.home";
+    
     static final String PLEXUS_CONFIG_PARAM = "plexus-config";
 
+    private static final String PLEXUS_PROPERTIES_PARAM = "plexus-properties";
+    
     private static final String DEFAULT_PLEXUS_CONFIG = "/WEB-INF/plexus.xml";
 
+    private static final String DEFAULT_PLEXUS_PROPERTIES = "/WEB-INF/plexus.properties";
+    
     // prevent instantiation
     private ServletContextUtils() {
     }
@@ -35,6 +44,70 @@ final class ServletContextUtils {
         
         return plexusConf;
     }
+    
+    private static Properties resolveContextProperties( ServletContext context ) 
+    {
+        
+        Properties properties = new Properties();
+        
+        String filename = context.getInitParameter( PLEXUS_PROPERTIES_PARAM );
+        
+        if ( filename == null )
+        {
+            filename = DEFAULT_PLEXUS_PROPERTIES ;  
+        }
+                
+                
+        if ( filename!= null )
+        {
+            context.log( "Loading plexus context properties from: '" + filename + "'" );
+            
+            try
+            {
+               properties = PropertyUtils.loadProperties( context.getResource( filename )  );
+            }
+            catch( Exception e)
+            {
+                // michal: I don't think it is that good idea to ignore this error.
+                context.log( "Could not load plexus context properties from: '" + filename + "'" );
+                
+                properties = new Properties();
+            }
+        }
+        else
+        {
+            properties = new Properties();
+        }
+        if ( properties.containsKey( PLEXUS_HOME ) )
+        {
+            setPlexusHome( context, properties );
+        }
+                
+        return properties;
+    }
+    
+    /**
+     * Set plexus.home context variable
+     * @param context
+     * @param embedder
+     */
+    private static void setPlexusHome( final ServletContext context, final Properties contexProperties  )
+    {
+        String realPath = context.getRealPath( "/WEB-INF" );
+        
+        if ( realPath != null ) 
+        {
+            File f = new File( realPath );
+            
+            contexProperties.setProperty( PLEXUS_HOME, f.getAbsolutePath()  );
+            
+        } 
+        else 
+        {
+            context.log("Not setting 'plexus.home' as plexus is running inside webapp with no 'real path'");
+        }
+    }
+    
     
     /**
      * Create a Plexus container using the {@link Embedder}. This method
@@ -53,19 +126,18 @@ final class ServletContextUtils {
         throws ServletException
     {
         final Embedder embedder = new Embedder();
-        
-        String realPath = context.getRealPath( "/WEB-INF" );
-        if ( realPath != null ) {
-            File f = new File( realPath );
-            embedder.addContextValue( "plexus.home", f.getAbsolutePath() );
-        } else {
-            context.log("Not setting plexus.home as plexus is running inside webapp with no 'real path'");
-        }
+                
         
         try
-        {
-            plexusConf = resolveConfig( context, plexusConf );
+        {            
+            plexusConf = resolveConfig( context, plexusConf );                       
+            
             embedder.setConfiguration( context.getResource(plexusConf) );
+            
+            Properties properties = resolveContextProperties( context );
+            
+            embedder.setProperties( properties );
+            
             embedder.start();
         }
         catch ( Exception e )
@@ -75,9 +147,13 @@ final class ServletContextUtils {
         }
         
         PlexusContainer plexus = embedder.getContainer();
+        
         context.setAttribute( PlexusConstants.PLEXUS_KEY, plexus );
+        
         return embedder;
     }
+
+   
 
     static void destroyContainer(Embedder embedder, ServletContext context)
     {
