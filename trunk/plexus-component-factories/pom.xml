@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <project>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-component-factories</artifactId>
   <name>Plexus Component Factories</name>
