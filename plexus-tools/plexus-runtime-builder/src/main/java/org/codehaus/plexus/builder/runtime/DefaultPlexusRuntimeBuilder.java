@@ -28,6 +28,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.cli.CommandLineException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -174,6 +175,10 @@ public class DefaultPlexusRuntimeBuilder
         {
             throw ex;
         }
+        catch ( CommandLineException ex )
+        {
+            throw new PlexusRuntimeBuilderException( "Exception while building the runtime.", ex );
+        }
         catch ( IOException ex )
         {
             throw new PlexusRuntimeBuilderException( "Exception while building the runtime.", ex );
@@ -297,7 +302,7 @@ public class DefaultPlexusRuntimeBuilder
     }
 
     private void javaServiceWrapper()
-        throws PlexusRuntimeBuilderException, IOException
+        throws PlexusRuntimeBuilderException, CommandLineException, IOException
     {
         ClassLoader cl = getClass().getClassLoader();
 
@@ -333,7 +338,7 @@ public class DefaultPlexusRuntimeBuilder
     }
 
     protected void copyResources( String directory, ClassLoader cl, String[] resources )
-        throws IOException
+        throws CommandLineException, IOException
     {
         InputStream is;
 
