@@ -49,3 +49,40 @@ RewriteEngine on
 RewriteRule ^/docorama http://localhost:8081/docorama/servlet/docorama [p]
 RewriteRule ^/docorama/(.*)$ http://localhost:8081/docorama/$1 [p]
 +-----+
+
+Setting up the Plexus Jetty component
+ 
+ In order for the pages being served from Jetty to play nice with Apache you must
+ setup a <<<proxy-listener>>> which will take the request being proxied from
+ Apache and return all resources with proxied port. The proxied port is 
+ simply the port that Apache is running on. An example configuration is
+ something like the following:
+
++-----+
+    <component>
+      <role>org.codehaus.plexus.jetty.ServletContainer</role>
+      <implementation>org.codehaus.plexus.jetty.JettyServletContainer</implementation>
+      <configuration>
+        <socket-listeners>
+          <socket-listener>
+            <host>*</host>
+            <port>8080</port>
+          </socket-listener>
+        </socket-listeners>
+        <proxy-listeners>
+          <proxy-listener>
+            <host>localhost</host>
+            <port>8081</port>
+            <proxy-port>9000</proxy-port>
+          </proxy-listener>
+        </proxy-listeners>
+        <webapps-directory>${plexus.home}/apps/docorama/web</webapps-directory>
+        <extract-wars>true</extract-wars>
+      </configuration>
+    </component>
++-----+
+
+ As you can see you can setup any number of listeners that you want. So you can
+ access your web application directly via Jetty or proxied via Apache. Note that
+ you must set the host for the proxy listener explicity i.e. don't use the
+ the wildcard asterix value.
