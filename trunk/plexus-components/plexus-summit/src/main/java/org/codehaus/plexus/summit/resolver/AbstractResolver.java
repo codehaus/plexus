@@ -136,9 +136,9 @@ public abstract class AbstractResolver
             screenType = "velocity";
         }
 
-        System.out.println( "target = " + target );
-
-        System.out.println( "screenType = " + screenType );
+//        System.out.println( "target = " + target );
+//
+//        System.out.println( "screenType = " + screenType );
 
         Renderer renderer = (Renderer) lookup( Renderer.ROLE, screenType );
 
@@ -151,7 +151,7 @@ public abstract class AbstractResolver
         {
             String view = (String) i.next();
 
-            System.out.println( "view = " + view );
+//            System.out.println( "view = " + view );
 
             if ( renderer.viewExists( view ) )
             {
