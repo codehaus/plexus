@@ -2,6 +2,7 @@
 <project>
   <pomVersion>3</pomVersion>
   <name>Java Application Security Framework</name>
+  <groupId>jasf</groupId>
   <id>jasf</id>
   <currentVersion>0.4</currentVersion>
   <organization>
@@ -115,7 +116,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-summit</artifactId>
-      <version>1.0-alpha-5</version>
+      <version>1.0-alpha-6</version>
     </dependency>
         
     <dependency>
