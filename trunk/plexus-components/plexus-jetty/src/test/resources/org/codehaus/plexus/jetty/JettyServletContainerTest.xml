@@ -7,13 +7,13 @@
         <socket-listeners>
           <socket-listener>
             <host>localhost</host>
-            <port>8080</port>
+            <port>40000</port>
           </socket-listener>
         </socket-listeners>
         <ajp-listeners>
           <ajp-listener>
             <host>localhost</host>
-            <port>8009</port>
+            <port>40009</port>
           </ajp-listener>
         </ajp-listeners>
         <webapps-directory>${basedir}/target</webapps-directory>
