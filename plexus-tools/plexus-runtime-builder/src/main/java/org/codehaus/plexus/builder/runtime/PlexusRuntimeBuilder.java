@@ -32,7 +32,7 @@ import org.apache.maven.project.MavenProject;
  */
 public interface PlexusRuntimeBuilder
 {
-String ROLE = PlexusRuntimeBuilder.class.getName();
+    String ROLE = PlexusRuntimeBuilder.class.getName();
 
     void setBaseDirectory( String outputDirectory );
 

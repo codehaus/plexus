@@ -28,7 +28,6 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.cli.CommandLineException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -169,16 +168,16 @@ public class DefaultPlexusRuntimeBuilder
 
             packageJavaRuntime();
 
-            executable( baseDirectory + "/bin/plexus.sh" );
+//            executable( baseDirectory + "/bin/plexus.sh" );
         }
         catch ( PlexusRuntimeBuilderException ex )
         {
             throw ex;
         }
-        catch ( CommandLineException ex )
-        {
-            throw new PlexusRuntimeBuilderException( "Exception while building the runtime.", ex );
-        }
+//        catch ( CommandLineException ex )
+//        {
+//            throw new PlexusRuntimeBuilderException( "Exception while building the runtime.", ex );
+//        }
         catch ( IOException ex )
         {
             throw new PlexusRuntimeBuilderException( "Exception while building the runtime.", ex );
@@ -302,7 +301,7 @@ public class DefaultPlexusRuntimeBuilder
     }
 
     private void javaServiceWrapper()
-        throws PlexusRuntimeBuilderException, CommandLineException, IOException
+        throws PlexusRuntimeBuilderException/*, CommandLineException*/, IOException
     {
         ClassLoader cl = getClass().getClassLoader();
 
@@ -338,7 +337,7 @@ public class DefaultPlexusRuntimeBuilder
     }
 
     protected void copyResources( String directory, ClassLoader cl, String[] resources )
-        throws CommandLineException, IOException
+        throws /*CommandLineException, */IOException
     {
         InputStream is;
 
@@ -373,7 +372,7 @@ public class DefaultPlexusRuntimeBuilder
 
                 if ( instructions.indexOf( "x" ) >= 0 )
                 {
-                    executable( target.getPath() );
+//                    executable( target.getPath() );
                 }
             }
         }
