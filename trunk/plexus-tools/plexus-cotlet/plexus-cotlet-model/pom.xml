@@ -1,66 +1,56 @@
-<?xml version="1.0"?>
-
-<project>
-    <parent>
-        <groupId>plexus</groupId>
-        <artifactId>plexus-cotlet</artifactId>
-        <version>1.0</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
+<model>
+  <parent>
+    <artifactId>plexus-cotlet</artifactId>
     <groupId>plexus</groupId>
-    <artifactId>plexus-cotlet-model</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <name>Cotlet Model</name>
-    <description>Component Doclet</description>
-    <shortDescription>Component Doclet</shortDescription>
-
-    <developers>
-        <developer>
-            <name>Michal Maczka</name>
-            <id>mma</id>
-            <email>michal@codehaus.org</email>
-            <organization>Codehaus</organization>
-            <roles>
-                <role>Developer</role>
-                <role>Release Manager</role>
-            </roles>
-        </developer>
-
-    </developers>
-
-    <dependencies>
-
-        <dependency>
-            <groupId>plexus</groupId>
-            <artifactId>plexus-container-default</artifactId>
-            <version>1.0-alpha-1-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
-
-
-        <dependency>
-            <groupId>plexus</groupId>
-            <artifactId>plexus-velocity</artifactId>
-            <version>1.0-beta-4-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
-
-
-        <dependency>
-            <groupId>qdox</groupId>
-            <artifactId>qdox</artifactId>
-            <version>1.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-            <version>1.0-alpha-1-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
-
-    </dependencies>
-
-</project>
-
-
+    <version>1.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-cotlet-model</artifactId>
+  <packaging>jar</packaging>
+  <name>Cotlet Model</name>
+  <version>1.0.0-SNAPSHOT</version>
+  <description>Component Doclet</description>
+  <developers>
+    <developer>
+      <id>mma</id>
+      <name>Michal Maczka</name>
+      <email>michal@codehaus.org</email>
+      <organization>Codehaus</organization>
+      <roles>
+        <role>Developer</role>
+        <role>Release Manager</role>
+      </roles>
+    </developer>
+  </developers>
+  <dependencies>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-1-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-velocity</artifactId>
+      <version>1.0-beta-4-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>qdox</groupId>
+      <artifactId>qdox</artifactId>
+      <version>1.5</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.0-alpha-1-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</model>

@@ -1,24 +1,29 @@
-<project>
-  <modelVersion>4.0.0</modelVersion>
+<model>
   <parent>
-    <groupId>plexus</groupId>
     <artifactId>plexus-components</artifactId>
+    <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-jetty-httpd</artifactId>
-  <version>1.0-beta-2-SNAPSHOT</version>
+  <packaging>jar</packaging>
   <name>Plexus Jetty HTTPD Component</name>
+  <version>1.0-beta-2-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>jetty</groupId>
       <artifactId>jetty</artifactId>
       <version>4.2.10</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>servletapi</groupId>
       <artifactId>servletapi</artifactId>
       <version>2.3</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
-</project>
+</model>

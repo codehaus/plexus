@@ -1,25 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project>
-  <modelVersion>4.0.0</modelVersion>
+<model>
   <parent>
-    <groupId>plexus</groupId>
     <artifactId>plexus-components</artifactId>
+    <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-jdo</artifactId>
+  <packaging>jar</packaging>
   <version>1.0-alpha-1-SNAPSHOT</version>
-  <organization>
-    <name>STPenable Ltd.</name>
-    <url>http://www.stpenable.com</url>
-    <logo>C:/Business/collateral/STPenable_sml.jpg</logo>
-  </organization>
   <inceptionYear>2005</inceptionYear>
-  <logo>/images/logo.gif</logo>
   <developers>
     <developer>
-      <name>David Wynter</name>
       <id>3</id>
+      <name>David Wynter</name>
       <email>david (at) dwynter.plus.com</email>
       <organization>STPenable Ltd.</organization>
       <timezone>UTC+0</timezone>
@@ -30,12 +24,19 @@
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>1.7.3.0</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>jpox</groupId>
       <artifactId>jpox</artifactId>
       <version>1.1.0-beta-1</version>
-      <url>http://www.jpox.org</url>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
-</project>
+  <organization>
+    <name>STPenable Ltd.</name>
+    <url>http://www.stpenable.com</url>
+  </organization>
+</model>

@@ -1,17 +1,21 @@
-<project>
-  <modelVersion>4.0.0</modelVersion>
+<model>
   <parent>
-    <groupId>plexus</groupId>
     <artifactId>plexus-components</artifactId>
+    <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-password-store</artifactId>
-  <version>1.0-alpha-1-SNAPSHOT</version>
+  <packaging>jar</packaging>
   <name>Plexus Password Store Component</name>
-  <plugins>
-    <plugin>
-      <id>plexus</id>
-    </plugin>
-  </plugins>
-</project>
+  <version>1.0-alpha-1-SNAPSHOT</version>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>maven</groupId>
+        <artifactId>maven-plexus-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</model>

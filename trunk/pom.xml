@@ -1,19 +1,19 @@
-<?xml version="1.0"?>
-
-<project>
+<model>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>plexus</groupId>  
+  <groupId>plexus</groupId>
   <artifactId>plexus-root</artifactId>
+  <packaging>jar</packaging>
   <name>Plexus</name>
   <version>1.0</version>
-  <organization>
-    <name>Codehaus</name>
-    <url>http://www.codehaus.org/</url>
-    <logo>/images/codehaus-small.gif</logo>
-  </organization>
+  <ciManagement>
+    <notifiers>
+      <notifier>
+        <type>email</type>
+        <address>dev@plexus.codehaus.org</address>
+      </notifier>
+    </notifiers>
+  </ciManagement>
   <inceptionYear>2001</inceptionYear>
-  <package>org.codehaus.plexus</package>
-  <logo>/images/plexus-logo.gif</logo>
   <mailingLists>
     <mailingList>
       <name>Plexus Developer List</name>
@@ -22,6 +22,7 @@
       <archive>http://lists.codehaus.org/pipermail/plexus-dev/</archive>
     </mailingList>
   </mailingLists>
+
   <distributionManagement>
     <repository>
       <id>repo1</id>
@@ -30,17 +31,10 @@
     </repository>
   </distributionManagement>
 
-  <ciManagement>
-    <nagEmailAddress>dev@plexus.codehaus.org</nagEmailAddress>
-  </ciManagement>
-  <scm>
-    <connection>scm:cvs:pserver:anonymous@cvs.plexus.codehaus.org:/scm/plexus:plexus</connection>
-    <developerConnection>scm:cvs:ext:${maven.username}@cvs.plexus.codehaus.org:/scm/plexus:plexus</developerConnection>
-  </scm>
   <developers>
     <developer>
-      <name>Jason van Zyl</name>
       <id>jvanzyl</id>
+      <name>Jason van Zyl</name>
       <email>jason@zenplex.com</email>
       <organization>Zenplex</organization>
       <roles>
@@ -49,8 +43,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Pete Kazmier</name>
       <id>kaz</id>
+      <name>Pete Kazmier</name>
       <email></email>
       <organization></organization>
       <roles>
@@ -58,8 +52,8 @@
       </roles>
     </developer>
     <developer>
-      <name>James Taylor</name>
       <id>jtaylor</id>
+      <name>James Taylor</name>
       <email>james@jamestaylor.org</email>
       <organization></organization>
       <roles>
@@ -67,8 +61,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Dan Diephouse</name>
       <id>dandiep</id>
+      <name>Dan Diephouse</name>
       <email>dan@envoisolutions.com</email>
       <organization>Envoi solutions</organization>
       <roles>
@@ -76,8 +70,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Kasper Nielsen</name>
       <id>kasper</id>
+      <name>Kasper Nielsen</name>
       <email>apache@kav.dk</email>
       <organization></organization>
       <roles>
@@ -85,8 +79,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Ben Walding</name>
       <id>bwalding</id>
+      <name>Ben Walding</name>
       <email>bwalding@codehaus.org</email>
       <organization>Walding Consulting Services</organization>
       <roles>
@@ -94,49 +88,59 @@
       </roles>
     </developer>
     <developer>
-      <name>Mark Wilkinson</name>
       <id>mhw</id>
+      <name>Mark Wilkinson</name>
       <email>mhw@kremvax.net</email>
       <roles>
         <role>Developer</role>
       </roles>
     </developer>
     <developer>
-      <name>Michal Maczka</name>
       <id>michal</id>
+      <name>Michal Maczka</name>
       <email>mmaczka@interia.pl</email>
       <roles>
         <role>Developer</role>
       </roles>
     </developer>
     <developer>
-      <name>Emmanuel Venisse</name>
       <id>evenisse</id>
+      <name>Emmanuel Venisse</name>
       <email>evenisse@codehaus.org</email>
       <roles>
         <role>Developer</role>
       </roles>
     </developer>
   </developers>
-  
-  <!--
-   |
-   | These are project wide default for Plexus as a whole. For
-   | artifacts that are used universally, say junit or classworlds,
-   | we want to define these once and only once if possible.
-   |
-   -->
-  
   <dependencies>
     <dependency>
       <groupId>classworlds</groupId>
       <artifactId>classworlds</artifactId>
       <version>1.1-alpha-1</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
-    </dependency>    
-  </dependencies>  
-</project>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+  <scm>
+    <connection>scm:cvs:pserver:anonymous@cvs.plexus.codehaus.org:/scm/plexus:plexus</connection>
+    <developerConnection>scm:cvs:ext:${maven.username}@cvs.plexus.codehaus.org:/scm/plexus:plexus</developerConnection>
+  </scm>
+  <organization>
+    <name>Codehaus</name>
+    <url>http://www.codehaus.org/</url>
+  </organization>
+  <distributionManagement>
+    <repository>
+      <id>repo1</id>
+      <name>Maven Repository</name>
+      <url>scp://repo1.maven.org/home/projects/maven/repository/ibiblio-v2</url>
+    </repository>
+  </distributionManagement>
+</model>

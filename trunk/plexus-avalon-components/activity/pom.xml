@@ -1,23 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project>
+<model>
   <parent>
-    <groupId>plexus</groupId>
     <artifactId>plexus-components-avalon</artifactId>
+    <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
   <artifactId>plexus-activity</artifactId>
+  <packaging>jar</packaging>
   <name>Plexus Activity Component</name>
   <version>1.0-beta-1</version>
-  <shortDescription>Activity services that interact with templates.</shortDescription>
-
-  <description>
-    Activity services that interact with templates.
-  </description>
-
+  <description>Activity services that interact with templates.</description>
   <developers>
     <developer>
-      <name>Jason van Zyl</name>
       <id>jvanzyl</id>
+      <name>Jason van Zyl</name>
       <email>jason@zenplex.com</email>
       <organization>Zenplex</organization>
       <roles>
@@ -26,8 +21,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Pete Kazmier</name>
       <id>kaz</id>
+      <name>Pete Kazmier</name>
       <email></email>
       <organization></organization>
       <roles>
@@ -35,8 +30,8 @@
       </roles>
     </developer>
     <developer>
-      <name>James Taylor</name>
       <id>jtaylor</id>
+      <name>James Taylor</name>
       <email>james@jamestaylor.org</email>
       <organization></organization>
       <roles>
@@ -44,8 +39,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Dan Diephouse</name>
       <id>dandiep</id>
+      <name>Dan Diephouse</name>
       <email>dan@envoisolutions.com</email>
       <organization>Envoi solutions</organization>
       <roles>
@@ -53,21 +48,20 @@
       </roles>
     </developer>
   </developers>
-    
   <dependencies>
-
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-summit</artifactId>
       <version>1.0-beta-2</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
-    
     <dependency>
       <groupId>servletapi</groupId>
       <artifactId>servletapi</artifactId>
       <version>2.3</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
-    
   </dependencies>
-
-</project>
+</model>
