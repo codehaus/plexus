@@ -1,6 +1,5 @@
 package org.codehaus.plexus.summit.resolver;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -72,83 +71,13 @@ public class ClassicResolverTest
 
     // -------------------------------------------------------------------------
     // A C C E S S O R S
-    // -------------------------------------------------------------------------
-
-    public void testDefaultBaseName()
-    {
-        // defaultBaseName
-        message( "Testing {get|set}DefaultBaseName()" );
-        classicResolver.setDefaultBaseName( "Default" );
-        assertEquals( "Default", classicResolver.getDefaultBaseName() );
-    }
-
-    public void testDefaultLayoutModule()
-    {
-        // defaultLayoutModule
-        message( "Testing {get|set}DefaultLayoutModule()" );
-        classicResolver.setDefaultLayoutModule( "org.codehaus.plexus.summit.modules.layouts.DefaultLayoutModule" );
-        assertEquals( "org.codehaus.plexus.summit.modules.layouts.DefaultLayoutModule", classicResolver.getDefaultLayoutModule() );
-    }
-
-    public void testDefaultScreenModule()
-    {
-        // defaultScreenModule
-        message( "Testing {get|set}DefaultScreenModule()" );
-        classicResolver.setDefaultScreenModule( "org.codehaus.plexus.summit.modules.screens.DefaultScreenModule" );
-        assertEquals( "org.codehaus.plexus.summit.modules.screens.DefaultScreenModule", classicResolver.getDefaultScreenModule() );
-    }
-
-    public void testModulePackages()
-    {
-        // modulePackages
-        message( "Testing {get|set}ModulePackages()" );
-        List modulePackages = new ArrayList();
-        modulePackages.add( "org.codehaus.plexus.summit.modules" );
-        modulePackages.add( "org.zenplex.tambora.modules" );
-        classicResolver.setModulePackages( modulePackages );
-        assertEquals( 2, classicResolver.getModulePackages().size() );
-        assertEquals( "org.codehaus.plexus.summit.modules", classicResolver.getModulePackages().get( 0 ) );
-        assertEquals( "org.zenplex.tambora.modules", classicResolver.getModulePackages().get( 1 ) );
-    }
-
-    public void testClearModulePackages()
-    {
-        // reset the module packages list to nothing
-        message( "Testing clearModulePackages()" );
-        classicResolver.clearModulePackages();
-        assertEquals( 0, classicResolver.getModulePackages().size() );
-    }
-
-    public void testAddModulePackages()
-    {
-        // add module packages using the add method
-        message( "Testing addModulePackage()" );
-
-        classicResolver.addModulePackage( "org.codehaus.plexus.summit.modules" );
-
-        classicResolver.addModulePackage( "org.zenplex.tambora.modules" );
-
-        // The size is 3 here because if no packages are specified in
-        // the plexus config for this component, the "" package is
-        // added by default.
-
-        assertEquals( 3, classicResolver.getModulePackages().size() );
-
-        assertEquals( "", classicResolver.getModulePackages().get( 0 ) );
-
-        assertEquals( "org.codehaus.plexus.summit.modules", classicResolver.getModulePackages().get( 1 ) );
-
-        assertEquals( "org.zenplex.tambora.modules", classicResolver.getModulePackages().get( 2 ) );
-    }
+    // -------------------------------------------------------------------------   
 
     public void testGetPossibleViews()
         throws Exception
     {
         // Set up the classic resolver
         message( "Testing getPossibleViews(target, targetPrefix)" );
-        classicResolver.clearModulePackages();
-        classicResolver.setDefaultBaseName( "Default" );
-        classicResolver.setDefaultViewExtension( "vm" );
 
         List possibleViews = classicResolver.getPossibleViews( target, "layouts" );
 
@@ -158,22 +87,10 @@ public class ClassicResolverTest
         }
 
         assertEquals( "layouts/science/biology/Mitosis.vm", possibleViews.get( 0 ) );
-        assertEquals( "layouts/science/biology/Default.vm", possibleViews.get( 1 ) );
-        assertEquals( "layouts/science/Default.vm", possibleViews.get( 2 ) );
-        assertEquals( "layouts/Default.vm", possibleViews.get( 3 ) );
+        assertEquals( "layouts/science/biology/Index.vm", possibleViews.get( 1 ) );
+        assertEquals( "layouts/science/Index.vm", possibleViews.get( 2 ) );
+        assertEquals( "layouts/Index.vm", possibleViews.get( 3 ) );
 
-    }
-
-    public void testGetView()
-        throws Exception
-    {
-        // Set up the classic resolver
-        classicResolver.clearModulePackages();
-        classicResolver.setDefaultBaseName( "Default" );
-        classicResolver.setDefaultViewExtension( "vm" );
-        
-        //View view = classicResolver.getView(target);
-        //assertNotNull( view );
     }
 
     public void testConfiguredClassicResolver()
@@ -182,8 +99,6 @@ public class ClassicResolverTest
         Resolver resolver = (Resolver) lookup( Resolver.ROLE, "classic" );
 
         assertEquals( "Error.vm", resolver.getErrorView() );
-        assertEquals( "Default", resolver.getDefaultBaseName() );
-        assertEquals( "vm", resolver.getDefaultViewExtension() );
         assertEquals( "Index.vm", resolver.getDefaultView() );
     }
 }

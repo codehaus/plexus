@@ -20,6 +20,8 @@
         <temp-directory>${basedir}/temp</temp-directory>
       </configuration>
     </component>
+    
+    <!-- Resolvers -->
     <component>
       <role>org.codehaus.plexus.summit.resolver.Resolver</role>
       <role-hint>new</role-hint>
@@ -27,8 +29,6 @@
       <configuration>
         <default-view>Index.vm</default-view>
         <error-view>Error.vm</error-view>
-        <default-base-name>Default</default-base-name>
-        <default-view-extension>vm</default-view-extension>
       </configuration>
     </component>
     <component>
@@ -38,10 +38,16 @@
       <configuration>
         <default-view>Index.vm</default-view>
         <error-view>Error.vm</error-view>
-        <default-base-name>Default</default-base-name>
-        <default-view-extension>vm</default-view-extension>
       </configuration>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.summit.renderer.Renderer</role>
+          <role-hint>velocity</role-hint>
+        </requirement>
+      </requirements>
     </component>
+    
+    <!-- Renderers -->
     <component>
       <role>org.codehaus.plexus.summit.renderer.Renderer</role>
       <role-hint>velocity</role-hint>
@@ -52,16 +58,26 @@
         </requirement>
       </requirements>
     </component>
+    
+    <!-- Displays -->
     <component>
       <role>org.codehaus.plexus.summit.display.Display</role>
       <role-hint>classic</role-hint>
       <implementation>org.codehaus.plexus.summit.display.ClassicBufferedDisplay</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.summit.renderer.Renderer</role>
+          <role-hint>velocity</role-hint>
+        </requirement>
+      </requirements>
     </component>
     <component>
       <role>org.codehaus.plexus.summit.display.Display</role>
       <role-hint>new</role-hint>
       <implementation>org.codehaus.plexus.summit.display.NewBufferedDisplay</implementation>
     </component>
+    
+    <!-- Pipeline -->
     <component>
       <role>org.codehaus.plexus.summit.pipeline.Pipeline</role>
       <implementation>org.codehaus.plexus.summit.pipeline.SummitPipeline</implementation>
@@ -104,7 +120,7 @@
       <configuration>
         <resolver>new</resolver>
       </configuration>
-    </component>        
+    </component>
 
     <!-- Pull Tools -->
     <component>

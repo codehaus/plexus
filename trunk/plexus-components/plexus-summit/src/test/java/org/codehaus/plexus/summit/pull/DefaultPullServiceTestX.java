@@ -11,13 +11,7 @@ import org.codehaus.plexus.summit.view.DefaultViewContext;
  */
 public class DefaultPullServiceTestX
     extends PlexusTestCase
-{
-    public DefaultPullServiceTestX( String name )
-        throws Exception
-    {
-        super(name);
-    }
-    
+{    
     public void testService()
         throws Exception
     {

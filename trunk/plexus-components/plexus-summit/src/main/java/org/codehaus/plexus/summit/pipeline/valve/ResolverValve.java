@@ -27,7 +27,10 @@ public class ResolverValve
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
+            if (e instanceof SummitException)
+                throw (SummitException) e;
+            
+            throw new SummitException("Couldn't resolve target.", e);
         }
     }
 }
