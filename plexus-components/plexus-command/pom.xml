@@ -1,4 +1,4 @@
-<model>
+<project>
   <parent>
     <artifactId>plexus-components</artifactId>
     <groupId>plexus</groupId>
@@ -10,4 +10,4 @@
   <packaging>jar</packaging>
   <name>compiler:compile</name>
   <version>1.0-alpha-5-SNAPSHOT</version>
-</model>
+</project>

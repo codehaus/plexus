@@ -1,4 +1,4 @@
-<model>
+<project>
   <parent>
     <artifactId>plexus-mail-sender</artifactId>
     <groupId>plexus</groupId>
@@ -15,8 +15,6 @@
       <groupId>plexus</groupId>
       <artifactId>plexus-mail-sender-api</artifactId>
       <version>1.0-alpha-1-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
-</model>
+</project>

@@ -1,4 +1,4 @@
-<model>
+<project>
   <parent>
     <artifactId>plexus-components</artifactId>
     <groupId>plexus</groupId>
@@ -15,15 +15,11 @@
       <groupId>jetty</groupId>
       <artifactId>jetty</artifactId>
       <version>4.2.10</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>servletapi</groupId>
       <artifactId>servletapi</artifactId>
       <version>2.3</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
-</model>
+</project>
