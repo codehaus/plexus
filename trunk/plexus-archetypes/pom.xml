@@ -1,0 +1,11 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>plexus</groupId>
+    <artifactId>plexus-root</artifactId>
+    <version>1.0</version>
+  </parent>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-archetypes</artifactId>
+  <version>1.0-alpha-1-SNAPSHOT</version>
+</project>
