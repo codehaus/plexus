@@ -13,16 +13,16 @@ import org.codehaus.plexus.PlexusTestCase;
  * @version $Id$
  */
 public abstract class AbstractLoggerManagerTest
-    extends PlexusTestCase
+        extends PlexusTestCase
 {
     protected abstract LoggerManager createLoggerManager()
-        throws Exception;
+            throws Exception;
 
     /**
      * Creates the <code>${plexus.home}/logs</code> directory.
      */
     public final void setUp()
-        throws Exception
+            throws Exception
     {
         super.setUp();
 
@@ -35,7 +35,7 @@ public abstract class AbstractLoggerManagerTest
     }
 
     public void testSetThreshold()
-        throws Exception
+            throws Exception
     {
         LoggerManager manager = createLoggerManager();
 
@@ -58,35 +58,35 @@ public abstract class AbstractLoggerManagerTest
      * There is only one logger instance pr component even if looked up more that once.
      */
     public void testActiveLoggerCount()
-        throws Exception
+            throws Exception
     {
-        LoggerManager manager = getManager( Logger.LEVEL_FATAL );                
-        assertEquals(0, manager.getActiveLoggerCount());
+        LoggerManager manager = getManager( Logger.LEVEL_FATAL );
+        assertEquals( 0, manager.getActiveLoggerCount() );
 
         manager.getLoggerForComponent( "b" );
-        assertEquals(1, manager.getActiveLoggerCount());
+        assertEquals( 1, manager.getActiveLoggerCount() );
 
         manager.getLoggerForComponent( "c", "1" );
         manager.getLoggerForComponent( "c", "1" );
-        assertEquals(2, manager.getActiveLoggerCount());
+        assertEquals( 2, manager.getActiveLoggerCount() );
 
         manager.getLoggerForComponent( "c", "2" );
-        assertEquals(3, manager.getActiveLoggerCount());
+        assertEquals( 3, manager.getActiveLoggerCount() );
 
         manager.returnComponentLogger( "c", "1" );
-        assertEquals(2, manager.getActiveLoggerCount());
+        assertEquals( 2, manager.getActiveLoggerCount() );
 
         manager.returnComponentLogger( "c", "2" );
         manager.returnComponentLogger( "c", "2" );
         manager.returnComponentLogger( "c", "1" );
-        assertEquals(1, manager.getActiveLoggerCount());
+        assertEquals( 1, manager.getActiveLoggerCount() );
 
         manager.returnComponentLogger( "b" );
-        assertEquals(0, manager.getActiveLoggerCount());
+        assertEquals( 0, manager.getActiveLoggerCount() );
     }
 
     public void testDebugLevelConfiguration()
-        throws Exception
+            throws Exception
     {
         LoggerManager manager = getManager( Logger.LEVEL_DEBUG );
 
@@ -100,7 +100,7 @@ public abstract class AbstractLoggerManagerTest
     }
 
     public void testInfoLevelConfiguration()
-        throws Exception
+            throws Exception
     {
         LoggerManager manager = getManager( Logger.LEVEL_INFO );
 
@@ -114,7 +114,7 @@ public abstract class AbstractLoggerManagerTest
     }
 
     public void testWarnLevelConfiguration()
-        throws Exception
+            throws Exception
     {
         LoggerManager manager = getManager( Logger.LEVEL_WARN );
 
@@ -128,7 +128,7 @@ public abstract class AbstractLoggerManagerTest
     }
 
     public void testErrorLevelConfiguration()
-        throws Exception
+            throws Exception
     {
         LoggerManager manager = getManager( Logger.LEVEL_ERROR );
 
@@ -142,7 +142,7 @@ public abstract class AbstractLoggerManagerTest
     }
 
     public void testFatalLevelConfiguration()
-        throws Exception
+            throws Exception
     {
         LoggerManager manager = getManager( Logger.LEVEL_FATAL );
 
@@ -156,7 +156,7 @@ public abstract class AbstractLoggerManagerTest
     }
 
     private LoggerManager getManager( int threshold )
-        throws Exception
+            throws Exception
     {
         LoggerManager manager = createLoggerManager();
 
@@ -166,6 +166,7 @@ public abstract class AbstractLoggerManagerTest
 
         return manager;
     }
+
     /*
      private Logger extractRootLogger( LoggerManager manager )
      {
