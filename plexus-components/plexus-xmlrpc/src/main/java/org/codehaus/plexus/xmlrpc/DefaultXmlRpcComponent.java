@@ -159,7 +159,8 @@ public class DefaultXmlRpcComponent
     // ----------------------------------------------------------------------
 
     /**  The standalone xmlrpc server. */
-    private WebServer webserver;
+//    private WebServer webserver;
+    private XmlRpcServer xmlRpcServer;
 
     // ----------------------------------------------------------------------
     // Component Lifecycle
@@ -182,17 +183,9 @@ public class DefaultXmlRpcComponent
             port = 8080;
         }
 
-        getLogger().info( "Attempting to start the XML-RPC server on port " + port + "." );
+        getLogger().info( "Initializing the XML-RPC server on port " + port + "." );
 
-        // Need a default value here.
-        if ( isSecureServer )
-        {
-            webserver = new SecureWebServer( port );
-        }
-        else
-        {
-            webserver = new WebServer( port );
-        }
+        xmlRpcServer.addListener( null, port, isSecureServer );
 
         if ( !StringUtils.isEmpty( saxParserClass ) )
         {
@@ -203,8 +196,6 @@ public class DefaultXmlRpcComponent
 
         if ( paranoid )
         {
-            webserver.setParanoid( paranoid );
-
             getLogger().info( "Operating in a state of paranoia" );
 
             // Only set the accept/deny client lists if we
@@ -220,7 +211,7 @@ public class DefaultXmlRpcComponent
             {
                 String clientIP = getClient( acceptedClients, i );
 
-                webserver.acceptClient( clientIP );
+                xmlRpcServer.acceptClient( clientIP );
 
                 getLogger().info( "Accepting client -> " + clientIP );
             }
@@ -234,7 +225,7 @@ public class DefaultXmlRpcComponent
             {
                 String clientIP = getClient( acceptedClients, i );
 
-                webserver.denyClient( clientIP );
+                xmlRpcServer.denyClient( clientIP );
 
                 getLogger().info( "Denying client -> " + clientIP );
             }
@@ -244,7 +235,7 @@ public class DefaultXmlRpcComponent
     public void start()
         throws Exception
     {
-        webserver.start();
+        xmlRpcServer.startListener( null, port );
     }
 
     public void stop()
@@ -252,19 +243,7 @@ public class DefaultXmlRpcComponent
     {
         // Stop the XML RPC server.  org.apache.xmlrpc.WebServer blocks in a call to
         // ServerSocket.accept() until a socket connection is made.
-        webserver.shutdown();
-
-        try
-        {
-            Socket interrupt = new Socket( InetAddress.getLocalHost(), port );
-
-            interrupt.close();
-        }
-        catch ( Exception ex )
-        {
-            // Remotely possible we're leaving an open listener socket around.
-//            getLogger().warn( "It's possible the xmlrpc server was not shutdown: " + ex.getMessage() );
-        }
+        xmlRpcServer.removeListener( null, port );
     }
 
     // ----------------------------------------------------------------------
@@ -355,7 +334,7 @@ public class DefaultXmlRpcComponent
     public void registerHandler( String handlerName, Object handler )
         throws XmlRpcException, IOException
     {
-        webserver.addHandler( handlerName, handler );
+        xmlRpcServer.addHandler( handlerName, handler );
     }
 
     /**
@@ -380,8 +359,9 @@ public class DefaultXmlRpcComponent
      * @param handlerName The name of the handler to unregister.
      */
     public void unregisterHandler( String handlerName )
+        throws XmlRpcException
     {
-        webserver.removeHandler( handlerName );
+        xmlRpcServer.removeHandler( handlerName );
     }
 
     /**
@@ -422,7 +402,7 @@ public class DefaultXmlRpcComponent
      */
     public void setParanoid( boolean state )
     {
-        webserver.setParanoid( state );
+        xmlRpcServer.setParanoid( null, port, state );
     }
 
     /**
@@ -438,7 +418,7 @@ public class DefaultXmlRpcComponent
      */
     public void acceptClient( String address )
     {
-        webserver.acceptClient( address );
+        xmlRpcServer.acceptClient( address );
     }
 
     /**
@@ -453,7 +433,7 @@ public class DefaultXmlRpcComponent
      */
     public void denyClient( String address )
     {
-        webserver.denyClient( address );
+        xmlRpcServer.denyClient( address );
     }
 
     /** Add message listener. */
