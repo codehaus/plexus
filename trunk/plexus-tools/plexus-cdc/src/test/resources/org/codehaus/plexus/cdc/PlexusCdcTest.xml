@@ -24,6 +24,9 @@
           <role>org.apache.maven.project.validation.ModelValidator</role>
         </requirement>
         <requirement>
+          <role>org.apache.maven.project.path.PathTranslator</role>
+        </requirement>
+        <requirement>
           <role>org.apache.maven.wagon.manager.WagonManager</role>
         </requirement>
       </requirements>
@@ -39,6 +42,10 @@
     <component>
       <role>org.apache.maven.project.validation.ModelValidator</role>
       <implementation>org.apache.maven.project.validation.DefaultModelValidator</implementation>
+    </component>
+    <component>
+      <role>org.apache.maven.project.path.PathTranslator</role>
+      <implementation>org.apache.maven.project.path.DefaultPathTranslator</implementation>
     </component>
   </components>
 </plexus>
