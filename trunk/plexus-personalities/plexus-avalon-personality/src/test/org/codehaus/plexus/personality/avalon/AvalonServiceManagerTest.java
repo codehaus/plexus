@@ -1,9 +1,5 @@
 package org.codehaus.plexus.personality.avalon;
 
-import org.apache.avalon.framework.service.ServiceSelector;
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.ServiceA;
-import org.codehaus.plexus.ServiceC;
 import org.codehaus.plexus.personality.avalon.AvalonServiceManager;
 import junit.framework.TestCase;
 
@@ -29,10 +25,10 @@ public class AvalonServiceManagerTest
         try
         {
             AvalonServiceManager asm = new AvalonServiceManager( null );
+            fail( "null cannot be passed as the plexus container." );
         }
         catch ( IllegalStateException e )
         {
-            assertEquals( "ComponentRespository is null.", e.getMessage() );
         }
     }
 }

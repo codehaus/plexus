@@ -4,6 +4,7 @@ import org.apache.avalon.framework.context.Context;
 import org.apache.avalon.framework.context.Contextualizable;
 import org.codehaus.plexus.component.manager.ComponentManager;
 import org.codehaus.plexus.lifecycle.phase.AbstractPhase;
+import org.codehaus.plexus.personality.avalon.AvalonContext;
 
 public class ContextualizePhase
     extends AbstractPhase
@@ -11,7 +12,11 @@ public class ContextualizePhase
     public void execute( Object object, ComponentManager manager )
         throws Exception
     {
-        Context context = (Context) manager.getLifecycleHandler().getEntities().get( "context" );
+        Context context = (Context) new AvalonContext( 
+            (org.codehaus.plexus.context.Context) manager
+                .getLifecycleHandler()
+                .getEntities()
+                .get("context"));
 
         if ( object instanceof Contextualizable )
         {

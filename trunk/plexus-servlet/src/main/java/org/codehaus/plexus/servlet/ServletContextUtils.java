@@ -9,7 +9,7 @@ import org.apache.avalon.framework.service.ServiceManager;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.embed.Embedder;
-import org.codehaus.plexus.lifecycle.avalon.AvalonServiceManager;
+import org.codehaus.plexus.personality.avalon.AvalonServiceManager;
 
 /**
  * <code>ServletContextUtils</code> provides methods to embed a Plexus
@@ -79,7 +79,7 @@ final class ServletContextUtils {
         PlexusContainer plexus = embedder.getContainer();
         context.setAttribute( PlexusConstants.PLEXUS_KEY, plexus );
         
-        ServiceManager serviceManager = new AvalonServiceManager( plexus.getComponentRepository() );
+        ServiceManager serviceManager = new AvalonServiceManager( plexus );
         context.setAttribute( PlexusConstants.SERVICE_MANAGER_KEY, serviceManager );
         return embedder;
     }

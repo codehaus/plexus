@@ -51,18 +51,18 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus</artifactId>
-      <version>0.12</version>
+      <version>0.13</version>
     </dependency>
 
     <dependency>
       <groupId>xstream</groupId>
       <artifactId>xstream</artifactId>
-      <version>0.2</version>
+      <version>0.3</version>
     </dependency>
 
     <dependency>
       <groupId>avalon</groupId>
-      <artifactId>avalon-framework-api</artifactId>
+      <artifactId>avalon-framework</artifactId>
       <version>4.1.4</version>
     </dependency>
 

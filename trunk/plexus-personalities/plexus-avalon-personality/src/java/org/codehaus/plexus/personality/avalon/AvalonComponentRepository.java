@@ -1,9 +1,8 @@
 package org.codehaus.plexus.personality.avalon;
 
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.component.repository.exception.ComponentRepositoryException;
 import org.codehaus.plexus.component.repository.DefaultComponentRepository;
+import org.codehaus.plexus.component.repository.exception.ComponentRepositoryException;
 import org.codehaus.plexus.configuration.DefaultConfiguration;
 
 /**
@@ -17,18 +16,26 @@ import org.codehaus.plexus.configuration.DefaultConfiguration;
 public class AvalonComponentRepository
     extends DefaultComponentRepository
 {
-    public Object lookup( String componentKey )
-        throws ComponentLookupException
+    /**
+     * @see org.codehaus.plexus.component.repository.ComponentRepository#addComponentDescriptor(org.codehaus.plexus.component.repository.ComponentDescriptor)
+     */
+    public void addComponentDescriptor(ComponentDescriptor componentDescriptor)
+        throws ComponentRepositoryException
     {
-        int i = componentKey.indexOf( "Selector" );
-
-        if ( i > 0 && !hasService( componentKey ) )
+        super.addComponentDescriptor(componentDescriptor);
+        
+        String componentRole = componentDescriptor.getRole();
+        String selectorRole = componentRole + "Selector";
+        
+        if ( componentDescriptor.getRoleHint() != null 
+             &&
+             !componentDescriptor.getRoleHint().equals("")
+             &&
+             !hasComponent( selectorRole ) )
         {
             ComponentDescriptor d = new ComponentDescriptor();
 
-            String role = componentKey.substring( 0, i );
-
-            d.setRole( componentKey );
+            d.setRole( selectorRole );
 
             d.setImplementation( "org.codehaus.plexus.personality.avalon.AvalonServiceSelector" );
 
@@ -36,7 +43,7 @@ public class AvalonComponentRepository
 
             DefaultConfiguration selectableRole = new DefaultConfiguration( "selectable-role" );
 
-            selectableRole.setValue( role );
+            selectableRole.setValue( componentRole );
 
             configuration.addChild( selectableRole );
 
@@ -48,10 +55,8 @@ public class AvalonComponentRepository
             }
             catch ( ComponentRepositoryException e )
             {
+                getLogger().info( "Could not add ComponentDescriptor.", e );
             }
         }
-
-        return super.lookup( componentKey );
-
     }
 }
