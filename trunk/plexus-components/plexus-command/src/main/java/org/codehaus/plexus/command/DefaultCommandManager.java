@@ -33,6 +33,8 @@ import java.util.ListIterator;
  * See {@link Command} for more details about the command methods that this implementation uses.
  *
  * @author <a href="jason@maven.org">Jason van Zyl</a>
+ * 
+ * @plexus.component
  */
 public class DefaultCommandManager
     extends AbstractLogEnabled
