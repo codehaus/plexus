@@ -1,0 +1,11 @@
+<plexus>
+
+  <components>
+    <component>
+      <role>org.codehaus.plexus.mimetyper.MimeTyper</role>
+      <implementation>org.codehaus.plexus.mimetyper.DefaultMimeTyper</implementation>
+      <configuration/>             
+    </component>
+  </components>
+  
+</plexus>

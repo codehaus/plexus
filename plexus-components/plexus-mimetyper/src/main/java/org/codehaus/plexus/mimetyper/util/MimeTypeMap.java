@@ -101,6 +101,8 @@ public class MimeTypeMap
     public static final String EXT_GIF = "gif";
     public static final String EXT_JPEG = "jpeg";
     public static final String EXT_JPG = "jpg";
+    public static final String EXT_TIF = "tif";
+    public static final String EXT_TIFF = "tiff";
     public static final String EXT_WBMP = "wbmp";
 
     /**
@@ -132,6 +134,8 @@ public class MimeTypeMap
             MimeType.IMAGE_GIF.toString() + " " + EXT_GIF);
         commonMapper.setContentType(
             MimeType.IMAGE_JPEG.toString() + " " + EXT_JPEG + " " + EXT_JPG);
+        commonMapper.setContentType(
+            MimeType.IMAGE_TIFF.toString() + " " + EXT_TIFF + " " + EXT_TIF);
         commonMapper.setContentType(
             MimeType.IMAGE_WBMP.toString() + " " + EXT_WBMP);
     }
