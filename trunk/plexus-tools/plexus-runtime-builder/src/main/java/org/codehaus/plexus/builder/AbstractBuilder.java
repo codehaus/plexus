@@ -80,7 +80,7 @@ public abstract class AbstractBuilder
     // Utility methods
     // ----------------------------------------------------------------------
 
-    protected void executable( String file )
+    protected void executable( File file )
         throws CommandLineException, IOException
     {
         if ( Os.isFamily( "unix" ) )
@@ -91,7 +91,7 @@ public abstract class AbstractBuilder
 
             cli.createArgument().setValue( "+x" );
 
-            cli.createArgument().setValue( file );
+            cli.createArgument().setValue( file.getAbsolutePath() );
 
             cli.execute();
         }

@@ -44,8 +44,10 @@ import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.util.CollectionUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.velocity.VelocityComponent;
+import org.codehaus.plexus.application.PlexusRuntimeConstants;
 
 /**
  * @author <a href="jason@maven.org">Jason van Zyl</a>
@@ -74,7 +76,7 @@ public class DefaultPlexusRuntimeBuilder
     //
     // ----------------------------------------------------------------------
 
-    public void build( File outputFile, File workingDirectory,
+    public void build( File workingDirectory,
                        Set remoteRepositories, ArtifactRepository localRepository, Set artifacts,
                        File plexusConfiguration, File configurationPropertiesFile )
         throws PlexusRuntimeBuilderException
@@ -163,23 +165,23 @@ public class DefaultPlexusRuntimeBuilder
             // Set up the directory structure
             // ----------------------------------------------------------------------
 
-            mkdir( new File( workingDirectory, "apps" ) );
+            mkdir( getAppsDirectory( workingDirectory ) );
 
-            File binDir = mkdir( new File( workingDirectory, "bin" ) );
+            File binDir = mkdir( new File( workingDirectory, PlexusRuntimeConstants.BIN_DIRECTORY ) );
 
-            File confDir = mkdir( new File( workingDirectory, "conf" ) );
+            File confDir = mkdir( new File( workingDirectory, PlexusRuntimeConstants.CONF_DIRECTORY ) );
 
-            File coreDir = mkdir( new File( workingDirectory, "core" ) );
+            File coreDir = mkdir( new File( workingDirectory, PlexusRuntimeConstants.CORE_DIRECTORY ) );
 
-            File bootDir = mkdir( new File( workingDirectory, "core/boot" ) );
+            File bootDir = mkdir( new File( workingDirectory, PlexusRuntimeConstants.BOOT_DIRECTORY ) );
 
 //            mkdir( new File( workingDirectory, "lib" ) );
 
-            mkdir( new File( workingDirectory, "logs" ) );
+            mkdir( new File( workingDirectory, PlexusRuntimeConstants.LOGS_DIRECTORY ) );
 
-            mkdir( new File( workingDirectory, "services" ) );
+            mkdir( new File( workingDirectory, PlexusRuntimeConstants.SERVICES_DIRECTORY ) );
 
-            mkdir( new File( workingDirectory, "temp" ) );
+            mkdir( new File( workingDirectory, PlexusRuntimeConstants.TEMP_DIRECTORY ) );
 
             // ----------------------------------------------------------------------
             //
@@ -204,26 +206,7 @@ public class DefaultPlexusRuntimeBuilder
 
             javaServiceWrapper( binDir, coreDir, confDir, configurationProperties );
 
-            executable( workingDirectory + "/bin/plexus.sh" );
-
-            // ----------------------------------------------------------------------
-            // Build the runtime jar
-            // ----------------------------------------------------------------------
-
-            Archiver archiver = new JarArchiver();
-
-            try
-            {
-                archiver.addDirectory( workingDirectory );
-
-                archiver.setDestFile( outputFile );
-
-                archiver.createArchive();
-            }
-            catch ( Exception e )
-            {
-                throw new PlexusRuntimeBuilderException( "Error while creating the archive.", e );
-            }
+            executable( new File( binDir, "plexus.sh" ) );
         }
         catch ( PlexusRuntimeBuilderException ex )
         {
@@ -238,6 +221,51 @@ public class DefaultPlexusRuntimeBuilder
             throw new PlexusRuntimeBuilderException( "Exception while building the runtime.", ex );
         }
     }
+
+    public void addPlexusApplication( File plexusApplication, File runtimeDirectory )
+        throws PlexusRuntimeBuilderException
+    {
+        try
+        {
+            FileUtils.copyFile( plexusApplication, getAppsDirectory( runtimeDirectory ) );
+        }
+        catch ( IOException e )
+        {
+            throw new PlexusRuntimeBuilderException( "Error while copying the application into the runtime.", e );
+        }
+    }
+
+    public void bundle( File outputFile, File workingDirectory )
+        throws PlexusRuntimeBuilderException
+    {
+        Archiver archiver = new JarArchiver();
+
+        try
+        {
+            archiver.addDirectory( workingDirectory );
+
+            archiver.setDestFile( outputFile );
+
+            archiver.createArchive();
+        }
+        catch ( Exception e )
+        {
+            throw new PlexusRuntimeBuilderException( "Error while creating the archive.", e );
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    private File getAppsDirectory( File workingDirectory )
+    {
+        return new File( workingDirectory, "apps" );
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     private void createSystemScripts( File binDir, File confDir )
         throws PlexusRuntimeBuilderException, IOException
@@ -345,7 +373,7 @@ public class DefaultPlexusRuntimeBuilder
 
                 if ( instructions.indexOf( "x" ) >= 0 )
                 {
-                    executable( target.getPath() );
+                    executable( target );
                 }
             }
         }
