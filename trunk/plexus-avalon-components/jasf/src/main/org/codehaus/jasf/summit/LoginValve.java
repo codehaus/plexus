@@ -80,14 +80,13 @@ import org.codehaus.plexus.summit.rundata.RunData;
  */
 public class LoginValve
     extends AbstractValve
-    implements Configurable
 {
     protected final static String ACTION_LOGIN = "login-action";
     protected final static String ACTION_LOGOUT = "logout-action";    
     protected final static String LOGIN_PAGE = "login-page";    
     
-    private String login;
-    private String logout;
+    private String loginAction;
+    private String logoutAction;
     private String loginPage;
     
     /**
@@ -136,8 +135,8 @@ public class LoginValve
         // TODO: should there be a special rundata action param?
         String actionName = data.getParameters().getString( "action", "" );
         if (!actionName.equals("") &&
-            (actionName.equalsIgnoreCase(login) ||
-             actionName.equalsIgnoreCase(logout) ) )
+            (actionName.equalsIgnoreCase(loginAction) ||
+             actionName.equalsIgnoreCase(logoutAction) ) )
         {
             getLogger().debug( "User is logging in." );
             
@@ -153,7 +152,7 @@ public class LoginValve
             // only keys stored in the session are "turbine.user"
             // and "turbine.acl".
             if (actionName.equalsIgnoreCase
-                (login))
+                (loginAction))
             {
                 Enumeration names = data.getSession().getAttributeNames();
                 if (names != null)
@@ -202,15 +201,5 @@ public class LoginValve
                 }
             }
         }
-    }
-
-    /**
-     * @see org.apache.avalon.framework.configuration.Configurable#configure(org.apache.avalon.framework.configuration.Configuration)
-     */
-    public void configure(Configuration config) throws ConfigurationException
-    {
-        login = config.getAttribute( ACTION_LOGIN, "LoginUser" );
-        logout = config.getAttribute( ACTION_LOGOUT, "LogoutUser" );
-        loginPage = config.getAttribute( LOGIN_PAGE, "Login.vm" );
     }
 }
