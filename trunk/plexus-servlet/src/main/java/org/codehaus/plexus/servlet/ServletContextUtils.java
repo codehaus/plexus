@@ -1,6 +1,7 @@
 package org.codehaus.plexus.servlet;
 
 import java.io.File;
+import java.net.URL;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
@@ -54,30 +55,32 @@ final class ServletContextUtils {
         
         if ( filename == null )
         {
-            filename = DEFAULT_PLEXUS_PROPERTIES ;  
+            filename = DEFAULT_PLEXUS_PROPERTIES;  
         }
                 
                 
-        if ( filename!= null )
+        context.log( "Loading plexus context properties from: '" + filename + "'" );
+        
+        try
         {
-            context.log( "Loading plexus context properties from: '" + filename + "'" );
-            
-            try
-            {
-               properties = PropertyUtils.loadProperties( context.getResource( filename )  );
-            }
-            catch( Exception e)
-            {
-                // michal: I don't think it is that good idea to ignore this error.
-                context.log( "Could not load plexus context properties from: '" + filename + "'" );
-                
-                properties = new Properties();
-            }
+            URL url = context.getResource( filename );
+            // bwalding: I think we'd be better off not using this exception swallower!
+            properties = PropertyUtils.loadProperties( url  );
         }
-        else
+        catch( Exception e)
         {
+            // michal: I don't think it is that good idea to ignore this error.
+            // bwalding: it's actually pretty difficult to get here as the PropertyUtils.loadProperties absorbs all Exceptions
+            context.log( "Could not load plexus context properties from: '" + filename + "'" );
+        }
+
+
+        if (properties == null)
+        {
+            context.log( "Could not load plexus context properties from: '" + filename + "'" );
             properties = new Properties();
         }
+        
         if ( properties.containsKey( PLEXUS_HOME ) )
         {
             setPlexusHome( context, properties );
