@@ -26,6 +26,11 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>maven</groupId>
+      <artifactId>wagon-provider-api</artifactId>
+      <version>1.0-alpha-2-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-cdc</artifactId>
       <version>1.0-alpha-1-SNAPSHOT</version>

@@ -23,7 +23,8 @@ package org.apache.maven.plugin.plexus;
  */
 
 import java.io.File;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
@@ -41,9 +42,7 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
  *
  * @requiresDependencyResolution
  *
- * @description Builds plexus containers.
- *
- * @prereq jar:install
+ * @description Assembles the Plexus application.
  *
  * @parameter name="basedir"
  * type="String"
@@ -80,13 +79,6 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
  * expression="#plexus.runtime.configuration"
  * description=""
  *
- * @parameter name="plexusConfigurationsDirectory"
- * type="java.lang.String"
- * required="true"
- * validator=""
- * expression="#plexus.runtime.configurations.directory"
- * description=""
- *
  * @parameter name="plexusConfigurationPropertiesFile"
  * type="java.lang.String"
  * required="true"
@@ -99,13 +91,6 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
  * required="true"
  * validator=""
  * expression="#applicationName"
- * description=""
- *
- * @-parameter name="configurationDirectory"
- * type="java.lang.String"
- * required="true"
- * validator=""
- * expression="#configurationDirectory"
  * description=""
  *
  * @parameter name="localRepository"
@@ -130,13 +115,9 @@ public class PlexusApplicationGenerator
 
         MavenProject project = (MavenProject) request.getParameter( "project" );
 
-        String finalName = (String) request.getParameter( "finalName" );
-
         String plexusConfiguration = (String) request.getParameter( "plexusConfiguration" );
 
         String configurationPropertiesFile = (String) request.getParameter( "plexusConfigurationPropertiesFile" );
-
-//        String configurationDirectory = (String) request.getParameter( "configurationDirectory" );
 
         ApplicationBuilder builder = (ApplicationBuilder) request.getParameter( "applicationBuilder" );
 
@@ -156,12 +137,12 @@ public class PlexusApplicationGenerator
         //
         // ----------------------------------------------------------------------
 
-        Set remoteRepositories = new HashSet();
+        List remoteRepositories = new ArrayList();
 
         Set projectArtifacts = project.getArtifacts();
 
         Artifact projectArtifact = new DefaultArtifact( project.getGroupId(), project.getArtifactId(),
-                                                        project.getVersion(), project.getType() );
+                                                        project.getVersion(), project.getPackaging() );
 
         projectArtifacts.add( projectArtifact );
 

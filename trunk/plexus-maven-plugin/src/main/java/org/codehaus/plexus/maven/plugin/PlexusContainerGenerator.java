@@ -22,17 +22,18 @@ package org.apache.maven.plugin.plexus;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
 
-import java.lang.reflect.Method;
-import java.io.File;
-import java.util.Set;
-import java.util.HashSet;
+import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
 
 /**
  * @goal runtime
@@ -55,13 +56,6 @@ import java.util.HashSet;
  * expression="#project"
  * description=""
  *
- * @parameter name="runtimeBuilder"
- * type="org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
- * required="true"
- * validator=""
- * expression="#component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
- * description=""
- *
  * @parameter name="plexusConfiguration"
  * type="java.lang.String"
  * required="true"
@@ -69,18 +63,18 @@ import java.util.HashSet;
  * expression="#plexus.runtime.configuration"
  * description=""
  *
- * @parameter name="plexusConfigurationsDirectory"
- * type="java.lang.String"
- * required="true"
- * validator=""
- * expression="#plexus.runtime.configurations.directory"
- * description=""
- *
  * @parameter name="plexusConfigurationProperties"
  * type="java.lang.String"
  * required="true"
  * validator=""
  * expression="#plexus.runtime.configuration.propertiesfile"
+ * description=""
+ *
+ * @parameter name="runtimeBuilder"
+ * type="org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
+ * required="true"
+ * validator=""
+ * expression="#component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
  * description=""
  *
  * @parameter name="localRepository"
@@ -109,8 +103,6 @@ public class PlexusContainerGenerator
 
         String configurationProperties = (String) request.getParameter( "plexusConfigurationProperties" );
 
-        displayClassLoader( request.getParameter( "runtimeBuilder" ) );
-
         PlexusRuntimeBuilder builder = (PlexusRuntimeBuilder) request.getParameter( "runtimeBuilder" );
 
         ArtifactRepository localRepository = (ArtifactRepository) request.getParameter( "localRepository" );
@@ -121,9 +113,15 @@ public class PlexusContainerGenerator
 
         File outputDirectory = new File( basedir, "plexus-runtime" );
 
-        Set remoteRepositories = new HashSet();
+        List remoteRepositories = new ArrayList();
 
         Set artifacts = project.getArtifacts();
+
+        // TODO: Remove this check when the parameter is validated
+        if ( plexusConfiguration == null )
+        {
+            throw new Exception( "Missing parameter: 'plexus configuration'." );
+        }
 
         File plexusConfigurationFile = new File( plexusConfiguration );
 
@@ -137,21 +135,5 @@ public class PlexusContainerGenerator
         builder.build( outputDirectory,
                        remoteRepositories, localRepository, artifacts,
                        plexusConfigurationFile, configurationPropertiesFile );
-    }
-
-    private void displayClassLoader( Object o )
-        throws Exception
-    {
-        ClassLoader cl = o.getClass().getClassLoader();
-
-        Method getRealm = cl.getClass().getDeclaredMethod( "getRealm", null );
-
-        getRealm.setAccessible( true );
-
-        Object realm = getRealm.invoke( cl, null );
-
-        Method display = realm.getClass().getMethod( "display", null );
-
-        display.invoke( realm, null );
     }
 }
