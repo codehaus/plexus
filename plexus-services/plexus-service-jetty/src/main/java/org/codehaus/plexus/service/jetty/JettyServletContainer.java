@@ -1,4 +1,4 @@
-package org.codehaus.plexus.servletcontainer.jetty;
+package org.codehaus.plexus.service.jetty;
 
 /*
  * The MIT License
@@ -28,17 +28,15 @@ import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
-import org.codehaus.plexus.servletcontainer.ServletContainer;
-import org.codehaus.plexus.servletcontainer.ServletContainerException;
 
+import org.mortbay.http.HttpListener;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.WebApplicationContext;
 import org.mortbay.util.InetAddrPort;
-import org.mortbay.util.Log;
-import org.mortbay.util.LogSink;
-import org.mortbay.http.HttpListener;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -48,9 +46,11 @@ public class JettyServletContainer
     extends AbstractLogEnabled
     implements ServletContainer, Startable
 {
-    private Server server;
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
-    private LogSink jettyLogSink;
+    private Server server;
 
     // ----------------------------------------------------------------------
     // Component Lifecycle
@@ -63,12 +63,12 @@ public class JettyServletContainer
         // Initialize the Jetty logging system
         // ----------------------------------------------------------------------
 
-        Log log = Log.instance();
-
+//        Log log = Log.instance();
+//
 //        log.disableLog();
-
-        jettyLogSink = new PlexusJettyLogSink( getLogger() );
-
+//
+//        LogSink jettyLogSink = new PlexusJettyLogSink( getLogger() );
+//
 //        log.add( jettyLogSink );
 
         // ----------------------------------------------------------------------
@@ -134,7 +134,25 @@ public class JettyServletContainer
         }
     }
 
-    public void deployWAR( File war, String context, ClassLoader classLoader, String virtualHost )
+    public void deployWarFile( File war, boolean extractWar, String context,
+                               DefaultPlexusContainer container, String virtualHost )
+        throws ServletContainerException
+    {
+        deployWAR( war, extractWar, context, container, virtualHost );
+    }
+
+    public void deployWarDirectory( File war, String context, DefaultPlexusContainer container, String virtualHost )
+        throws ServletContainerException
+    {
+        deployWAR( war, false, context, container, virtualHost );
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    private void deployWAR( File war, boolean extractWar, String context,
+                            DefaultPlexusContainer container, String virtualHost )
         throws ServletContainerException
     {
         if ( war == null )
@@ -166,17 +184,18 @@ public class JettyServletContainer
         }
         catch ( IOException e )
         {
-            throw new ServletContainerException( "Error while deplying WAR.", e );
+            throw new ServletContainerException( "Error while deploying WAR.", e );
         }
 
         // ----------------------------------------------------------------------
-        // Configure the web application
+        // Configure the application context
         // ----------------------------------------------------------------------
 
-        if ( classLoader != null )
-        {
-            applicationContext.setClassLoader( classLoader );
-        }
+        applicationContext.setExtractWAR( extractWar );
+
+        applicationContext.setClassLoader( container.getCoreRealm().getClassLoader() );
+
+        applicationContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY, container );
 
         // ----------------------------------------------------------------------
         // Start it!

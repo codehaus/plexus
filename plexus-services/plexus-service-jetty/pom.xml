@@ -40,6 +40,11 @@
       <artifactId>geronimo-spec-jsp</artifactId>
       <version>2.0-rc2</version>
     </dependency>
+    <dependency>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
+      <version>2.3</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
