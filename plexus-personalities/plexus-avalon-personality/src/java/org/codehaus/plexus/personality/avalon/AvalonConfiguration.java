@@ -347,8 +347,13 @@ public class AvalonConfiguration
     public int getValueAsInteger( PlexusConfiguration configuration )
         throws PlexusConfigurationException
     {
-        String value = configuration.getValue().trim();
-
+        String value = configuration.getValue();
+        
+        if ( value == null )
+            throw new PlexusConfigurationException("No value.");
+        
+        value.trim();
+        
         try
         {
             return Integer.parseInt( value );
@@ -378,7 +383,13 @@ public class AvalonConfiguration
     public long getValueAsLong( PlexusConfiguration configuration )
         throws PlexusConfigurationException
     {
-        String value = configuration.getValue().trim();
+        String value = configuration.getValue();
+        
+        if ( value == null )
+            throw new PlexusConfigurationException("No value.");
+        
+        value.trim();
+        
         try
         {
             return Long.parseLong( value );
@@ -408,7 +419,13 @@ public class AvalonConfiguration
     public float getValueAsFloat( PlexusConfiguration configuration )
         throws PlexusConfigurationException
     {
-        String value = configuration.getValue().trim();
+        String value = configuration.getValue();
+        
+        if ( value == null )
+            throw new PlexusConfigurationException("No value.");
+        
+        value.trim();
+        
         try
         {
             return Float.parseFloat( value );
@@ -438,8 +455,13 @@ public class AvalonConfiguration
     public boolean getValueAsBoolean( PlexusConfiguration configuration )
         throws PlexusConfigurationException
     {
-        String value = configuration.getValue().trim();
-
+        String value = configuration.getValue();
+        
+        if ( value == null )
+            throw new PlexusConfigurationException("No value.");
+        
+        value.trim();
+        
         if ( isTrue( value ) )
         {
             return true;
@@ -486,8 +508,13 @@ public class AvalonConfiguration
                                       String name )
         throws PlexusConfigurationException
     {
-        String value = configuration.getAttribute( name ).trim();
-
+        String value = configuration.getAttribute( name );
+        
+        if ( value == null )
+            throw new PlexusConfigurationException("No value.");
+        
+        value.trim();
+        
         try
         {
 
@@ -519,7 +546,12 @@ public class AvalonConfiguration
         throws PlexusConfigurationException
     {
         String value = configuration.getAttribute( name );
-
+        
+        if ( value == null )
+            throw new PlexusConfigurationException("No value.");
+        
+        value.trim();
+        
         try
         {
             return Long.parseLong( value );
@@ -550,6 +582,12 @@ public class AvalonConfiguration
         throws PlexusConfigurationException
     {
         String value = configuration.getAttribute( name );
+        
+        if ( value == null )
+            throw new PlexusConfigurationException("No value.");
+        
+        value.trim();
+        
         try
         {
             return Float.parseFloat( value );
@@ -580,7 +618,12 @@ public class AvalonConfiguration
         throws PlexusConfigurationException
     {
         String value = configuration.getAttribute( name );
-
+        
+        if ( value == null )
+            throw new PlexusConfigurationException("No value.");
+        
+        value.trim();
+        
         if ( isTrue( value ) )
         {
             return true;
