@@ -48,6 +48,8 @@ public class Form
 
     private View view;
 
+    private Delete delete;
+
     private Summary summary;
 
     // ----------------------------------------------------------------------
@@ -183,6 +185,11 @@ public class Form
     public View getView()
     {
         return view;
+    }
+
+    public Delete getDelete()
+    {
+        return delete;
     }
 
     public Summary getSummary()
