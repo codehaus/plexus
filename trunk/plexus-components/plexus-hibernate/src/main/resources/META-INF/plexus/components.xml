@@ -4,7 +4,7 @@
 
     <component>
       <role>org.codehaus.plexus.hibernate.persister.Persister</role>
-      <implementation>worg.codehaus.plexus.hibernate.persister.DefaultPersister</implementation>
+      <implementation>org.codehaus.plexus.hibernate.persister.DefaultPersister</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
       <configuration/>            
     </component>
