@@ -20,7 +20,12 @@ public class TestAppTest
 
         String plexusHome = (String) getContainer().getContext().get( "plexus.home" );
 
-        assertTrue( new File( plexusHome, "lib" ).mkdir() );
+        File lib = new File( plexusHome, "lib" );
+
+        if ( !lib.exists() )
+        {
+            assertTrue( lib.mkdir() );
+        }
     }
 
     public void testApplication()
