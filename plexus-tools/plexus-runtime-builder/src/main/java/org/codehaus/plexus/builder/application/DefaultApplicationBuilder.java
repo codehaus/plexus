@@ -22,12 +22,19 @@ package org.codehaus.plexus.builder.application;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.builder.AbstractBuilder;
-import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
-import org.codehaus.plexus.util.DirectoryScanner;
-
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Set;
+
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DefaultArtifact;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+
+import org.codehaus.plexus.builder.AbstractBuilder;
+import org.codehaus.plexus.builder.BuilderException;
+import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
+import org.codehaus.plexus.util.DirectoryScanner;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -43,7 +50,6 @@ public class DefaultApplicationBuilder
 
     private String configurationsDirectory;
 
-    
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -73,7 +79,7 @@ public class DefaultApplicationBuilder
     }
 
     private void processConfigurations()
-        throws PlexusRuntimeBuilderException, IOException
+        throws BuilderException, IOException
     {
         if ( configurationsDirectory == null )
         {
@@ -108,15 +114,22 @@ public class DefaultApplicationBuilder
     }
 
     public void build()
-        throws ApplicationBuilderException
+        throws BuilderException
     {
         try
         {
             checkApplicationConfiguration();
+
+            createDirectoryStructure();
+
+            // TODO: Test and enable
+//            processConfigurations();
+
+            copyApplicationDependencies();
         }
-        catch ( ApplicationBuilderException e )
+        catch ( IOException e )
         {
-            throw e;
+            throw new ApplicationBuilderException( "Error while copying dependencies.", e );
         }
     }
 
@@ -129,13 +142,11 @@ public class DefaultApplicationBuilder
         mkdir( applicationLibDirectory );
     }
 
-    // use the project to get the deps
-    // put copyArtifact in the abstract class
-
-    /*
-    private void copyApplicationDependencies( MavenProject project )
-        throws PlexusRuntimeBuilderException, IOException
+    private void copyApplicationDependencies()
+        throws BuilderException, IOException
     {
+        Set artifacts = project.getArtifacts();
+
         Iterator it = artifacts.iterator();
 
         Artifact artifact = new DefaultArtifact( project.getGroupId(), project.getArtifactId(), project.getVersion(), project.getType() );
@@ -146,7 +157,7 @@ public class DefaultApplicationBuilder
         }
         catch ( ArtifactResolutionException ex )
         {
-            throw new PlexusRuntimeBuilderException( "Error while resolving the project artifact.", ex );
+            throw new ApplicationBuilderException( "Error while resolving the project artifact.", ex );
         }
 
         copyArtifact( artifact, applicationLibDirectory );
@@ -163,5 +174,4 @@ public class DefaultApplicationBuilder
             copyArtifact( artifact, applicationLibDirectory );
         }
     }
-    */
 }

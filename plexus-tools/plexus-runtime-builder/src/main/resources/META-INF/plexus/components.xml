@@ -15,5 +15,20 @@
         </requirement>
       </requirements>
     </component>
+    <component>
+      <role>org.codehaus.plexus.builder.application.ApplicationBuilder</role>
+      <implementation>org.codehaus.plexus.builder.application.DefaultApplicationBuilder</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.project.MavenProjectBuilder</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.velocity.VelocityComponent</role>
+        </requirement>
+      </requirements>
+    </component>
   </components>
 </component-set>

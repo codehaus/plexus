@@ -1,12 +1,9 @@
-package org.codehaus.plexus.builder.application;
-
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.project.MavenProject;
-
-import org.codehaus.plexus.builder.BuilderException;
+package org.codehaus.plexus.builder;
 
 /*
- * Copyright (c) 2004, Codehaus.org
+ * The MIT License
+ *
+ * Copyright (c) 2004, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -28,27 +25,19 @@ import org.codehaus.plexus.builder.BuilderException;
  */
 
 /**
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public interface ApplicationBuilder
+public class BuilderException
+    extends Exception
 {
-    String ROLE = ApplicationBuilder.class.getName();
+    public BuilderException( String message )
+    {
+        super( message );
+    }
 
-    void setApplicationName( String applicationName );
-
-    void setBaseDirectory( String outputDirectory );
-
-    void setProject( MavenProject project );
-
-    void setLocalRepository( ArtifactRepository localRepository );
-
-    void setPlexusConfiguration( String plexusConfiguration );
-
-    void setConfigurationsDirectory( String configurationsDirectory );
-
-    void setConfigurationPropertiesFile( String configurationPropertiesFile );
-
-    void build()
-        throws BuilderException;
+    public BuilderException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
 }
