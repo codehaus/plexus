@@ -10,11 +10,4 @@
   <packaging>jar</packaging>
   <name>Plexus Simple Mail Sender</name>
   <version>1.0-alpha-1-SNAPSHOT</version>
-  <dependencies>
-    <dependency>
-      <groupId>plexus</groupId>
-      <artifactId>plexus-mail-sender-test</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
 </project>
