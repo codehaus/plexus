@@ -20,6 +20,7 @@
         <attainGoal name="build-component-factories"/>
         <attainGoal name="build-components"/>
         <attainGoal name="build-tools"/>
+        <attainGoal name="build-servers"/>
         <attainGoal name="build-other"/>
     </goal>
 
@@ -86,6 +87,17 @@
         <maven:reactor
             basedir="plexus-tools"
             includes="*/project.xml"
+            goals="clean,jar:install"/>
+    </goal>
+
+    <goal name="build-servers">
+        <ant:echo>*******************************</ant:echo>
+        <ant:echo>*** Building the plexus servers</ant:echo>
+        <ant:echo>*******************************</ant:echo>
+        <maven:reactor
+            basedir="plexus-servers"
+            includes="*/project.xml"
+            excludes="popd/project.xml"
             goals="clean,jar:install"/>
     </goal>
 
