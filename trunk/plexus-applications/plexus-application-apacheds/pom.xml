@@ -1,16 +1,13 @@
-<model>
+<project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-application-apacheds</artifactId>
-  <packaging>jar</packaging>
   <version>0.9-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-server-apacheds</artifactId>
       <version>0.9-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
   <build>
@@ -28,4 +25,4 @@
       </plugin>
     </plugins>
   </build>
-</model>
+</project>

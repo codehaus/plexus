@@ -1,22 +1,19 @@
-<model>
+<project>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-containers</artifactId>
     <groupId>plexus</groupId>
     <version>1.0</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-container-extra</artifactId>
-  <packaging>jar</packaging>
-  <name>Extra Plexus Container Stuff</name>
   <version>1.0-alpha-1-SNAPSHOT</version>
+  <name>Extra Plexus Container Stuff</name>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
       <version>1.0-alpha-1-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
-</model>
+</project>
