@@ -73,5 +73,25 @@ public class PersonApplicationTest
         assertEquals( "sarel", p.getFirstName() );
 
         assertEquals( "van Zyl", p.getLastName() );
+
+        // ----------------------------------------------------------------------
+        // Delete the entity
+        // ----------------------------------------------------------------------
+
+        Action deleteAction = (Action) lookup( Action.ROLE, "deleteEntity" );
+
+        assertNotNull( deleteAction );
+
+        m = new HashMap();
+
+        m.put( "id", "1" );
+
+        m.put( "formId", "person" );
+
+        deleteAction.execute( m );
+
+        p = pa.getPerson( "1" );
+
+        assertNull( p );
     }
 }

@@ -27,6 +27,11 @@ public class DefaultPersonApplication
         people.put( person.getId(), person );
     }
 
+    public void deletePerson( String id )
+    {
+        people.remove( id );
+    }
+
     public Person getPerson( String id )
     {
         return (Person) people.get( id );

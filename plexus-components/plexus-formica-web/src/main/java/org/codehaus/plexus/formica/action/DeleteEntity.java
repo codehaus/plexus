@@ -36,6 +36,6 @@ public class DeleteEntity
 
         m.put( ID, validateEntityId( entityId ) );
 
-        Ognl.getValue( validateExpression( form.getDelete().getExpression() ), m, getApplicationComponent( form ) );
+        Ognl.getValue( validateExpression( validateExpression( form.getDelete().getExpression() ) ), m, getApplicationComponent( form ) );
     }
 }
