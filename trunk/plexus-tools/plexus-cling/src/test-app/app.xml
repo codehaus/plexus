@@ -58,7 +58,7 @@
     </legalUsage>
     
     <classpath>
-        <local>conf/</local>
+        <local>conf</local>
         <dependency>
             <groupId>serlvetapi</groupId>
             <artifactId>servletapi</artifactId>

@@ -40,7 +40,7 @@ public class IntegrationTestMain
             e.printStackTrace();
         }
         
-        URL resourceUrl = cloader.getResource("testResource.txt");
+        URL resourceUrl = cloader.getResource("/testResource.txt");
         System.out.println("Attempting to load resource: " + resourceUrl + " (should be classpath:testResource.txt)");
         
         InputStream stream = cloader.getResourceAsStream("testResource.txt");
@@ -51,7 +51,9 @@ public class IntegrationTestMain
             try
             {
                 line = reader.readLine();
-                if("This is a test".equals(line)) {
+                
+                System.out.println("resource line: \'" + line + "\'");
+                if("This is a test.".equals(line)) {
                     result = 0;
                 }
             }

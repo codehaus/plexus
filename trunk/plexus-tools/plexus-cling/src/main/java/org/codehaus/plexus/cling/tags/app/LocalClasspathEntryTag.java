@@ -20,6 +20,8 @@ import org.codehaus.plexus.cling.tags.AbstractBodyValueTag;
 public class LocalClasspathEntryTag
     extends AbstractBodyValueTag
 {
+    
+    private static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
     protected void doExecute( MarmaladeExecutionContext context )
     throws MarmaladeExecutionException
@@ -27,6 +29,10 @@ public class LocalClasspathEntryTag
         String location = (String)getBody(context, String.class);
         if(location == null || location.length() < 1) {
             throw new MarmaladeExecutionException("local classpath entry location not specified");
+        }
+        
+        if(!location.endsWith(FILE_SEPARATOR)) {
+            location += FILE_SEPARATOR;
         }
         
         File locationFile = new File(location);
@@ -49,7 +55,7 @@ public class LocalClasspathEntryTag
         ClasspathTag parent = (ClasspathTag)requireParent(ClasspathTag.class);
         try
         {
-            URL localUrl = new URL("file://" + locationFile.getAbsolutePath());
+            URL localUrl = locationFile.toURL();
             parent.addClasspathEntry(new LocalClasspathEntry(localUrl));
         }
         catch ( MalformedURLException e )
