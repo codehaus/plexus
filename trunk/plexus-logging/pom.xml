@@ -9,4 +9,5 @@
     <artifactId>plexus-logging</artifactId>
     <version>1.0</version>
     <type>pom</type>
+    <name>Plexus Logging Parent</name>
 </project>
