@@ -24,63 +24,64 @@ package org.codehaus.plexus.mailsender.test;
  * SOFTWARE.
  */
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import com.dumbster.smtp.SimpleSmtpServer;
+import com.dumbster.smtp.SmtpMessage;
 
-import org.codehaus.plexus.mailsender.AbstractMailSender;
-import org.codehaus.plexus.mailsender.MailMessage;
-import org.codehaus.plexus.mailsender.MailSenderException;
+import java.util.Iterator;
+
+import junit.framework.TestCase;
+
+import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id$
  */
-public class MockMailSender
-	extends AbstractMailSender
+public class MockSmtpServerTest extends PlexusTestCase
 {
-    private List messages = new ArrayList();
-
-    /**
-    * Get email received by this instance since start up.
-    * @return List of String
-    */
-    public Iterator getReceivedEmail()
+    public MockSmtpServerTest( String s )
     {
-        return messages.iterator();
+        super(s);
     }
 
-    /**
-    * Get the number of messages received.
-    * @return size of received email list
-    */
-    public int getReceievedEmailSize()
+    public void testSend() throws Exception
     {
-        return messages.size();
-    }
+        SmtpServer server = (SmtpServer) lookup( SmtpServer.ROLE );
 
-    // ----------------------------------------------------------------------
-    // MailSender Implementation
-    // ----------------------------------------------------------------------
+        server.start();
 
-    public void send( MailMessage message ) throws MailSenderException
-	{
-	    verify( message );
-
-	    messages.add( message );
-    }
-
-    // ----------------------------------------------------------------------
-    // Component Lifecycle
-    // ----------------------------------------------------------------------
-
-    public void initialize()
-    	throws Exception
-    {
-        if ( getSmtpPort() == 0 )
+        try
         {
-            setSmtpPort( AbstractMailSender.DEFAULT_SMTP_PORT );
+            sendMessage(4000, "sender@here.com", "Test", "Test Body", "receiver@there.com");
         }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            fail("Unexpected exception: " + e);
+        }
+
+        server.stop();
+
+        assertTrue(server.getReceievedEmailSize() == 1);
+        Iterator emailIter = server.getReceivedEmail();
+        SmtpMessage email = (SmtpMessage) emailIter.next();
+        assertTrue(email.getHeaderValue("Subject").equals("Test"));
+        assertTrue(email.getBody().equals("Test Body"));
+    }
+
+    private void sendMessage(int port, String from, String subject, String body, String to) throws Exception
+    {
+        MailMessage message = new MailMessage( "localhost", port );
+
+        message.from( from );
+
+        message.to( to );
+
+        message.setSubject( subject );
+
+        message.getPrintStream().print( body );
+
+        message.sendAndClose();
     }
 }
