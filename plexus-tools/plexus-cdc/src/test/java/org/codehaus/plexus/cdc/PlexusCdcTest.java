@@ -22,7 +22,8 @@ public class PlexusCdcTest
 
         MavenProjectBuilder projectBuilder = (MavenProjectBuilder) lookup( MavenProjectBuilder.ROLE );
 
-        MavenProject project = projectBuilder.build( new File( getTestFile( "src/test-project/project.xml" ) ) );
+        MavenProject project = projectBuilder.build( new File( getTestFile( "src/test-project/project.xml" ) ),
+                                                     getTestFile( "src/test/repository" ) );
 
         cdc.setProject( project );
 

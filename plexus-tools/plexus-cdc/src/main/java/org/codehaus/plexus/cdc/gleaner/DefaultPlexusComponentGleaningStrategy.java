@@ -163,28 +163,20 @@ public class DefaultPlexusComponentGleaningStrategy
                     configuration.addChild( defaultValue );
                 }
             }
-            /*
             else
             {
-                try
+                Class clazz = loadClass( classType );
+
+                if ( clazz.isInterface() )
                 {
-                    Class clazz = classLoader.loadClass( classType );
+                    ComponentRequirement requirement = new ComponentRequirement();
 
-                    if ( clazz.isInterface() )
-                    {
-                        ComponentRequirement requirement = new ComponentRequirement();
+                    requirement.setRole( classType );
 
-                        requirement.setRole( classType );
-
-                        componentDescriptor.addRequirement( requirement );
-                    }
-                }
-                catch ( ClassNotFoundException e )
-                {
-                    // ignore
+                    componentDescriptor.addRequirement( requirement );
                 }
             }
-            */
+/*
             else
             {
                 // See if we can get away without compiling.
@@ -195,6 +187,7 @@ public class DefaultPlexusComponentGleaningStrategy
 
                 componentDescriptor.addRequirement( requirement );
             }
+*/
         }
 
         /*
@@ -247,5 +240,17 @@ public class DefaultPlexusComponentGleaningStrategy
         }
 
         return sb.toString().trim().toLowerCase();
+    }
+
+    private Class loadClass( String className )
+    {
+        try
+        {
+            return classLoader.loadClass( className );
+        }
+        catch ( ClassNotFoundException e )
+        {
+            return null;
+        }
     }
 }
