@@ -1,5 +1,29 @@
 package org.codehaus.plexus.xmlrpc;
 
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2004, The Codehaus
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /* ----------------------------------------------------------------------------
  * The Apache Software License, Version 1.1
  *
@@ -75,6 +99,7 @@ import org.apache.xmlrpc.secure.SecureWebServer;
 
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
@@ -96,8 +121,9 @@ public class DefaultXmlRpcComponent
     /** */
     private PlexusContainer container;
 
-    ///////////////////////////////////////////////////////////////////////////
+    // ----------------------------------------------------------------------
     // Configuration
+    // ----------------------------------------------------------------------
 
     /** The port to listen on. */
     private int port;
@@ -128,14 +154,16 @@ public class DefaultXmlRpcComponent
     /** Message Listeners. */
     private List listeners = new ArrayList();
 
-    ///////////////////////////////////////////////////////////////////////////
+    // ----------------------------------------------------------------------
     // Privates
+    // ----------------------------------------------------------------------
 
     /**  The standalone xmlrpc server. */
     private WebServer webserver;
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Lifecylce
+    // ----------------------------------------------------------------------
+    // Component Lifecycle
+    // ----------------------------------------------------------------------
 
     public void contextualize( Context context )
         throws ContextException
@@ -143,9 +171,6 @@ public class DefaultXmlRpcComponent
         container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
     }
 
-    /**
-     * This function initializes the XmlRpcService.
-     */
     public void initialize()
         throws Exception
     {
@@ -153,7 +178,9 @@ public class DefaultXmlRpcComponent
         setSystemPropertiesFromConfiguration();
 
         if ( port == 0 )
+        {
             port = 8080;
+        }
 
         getLogger().info( "Attempting to start the XML-RPC server on port " + port + "." );
 
@@ -167,7 +194,7 @@ public class DefaultXmlRpcComponent
             webserver = new WebServer( port );
         }
 
-        if ( saxParserClass != null )
+        if ( !StringUtils.isEmpty( saxParserClass ) )
         {
             XmlRpc.setDriver( saxParserClass );
         }
@@ -185,7 +212,9 @@ public class DefaultXmlRpcComponent
             // be ignored so there's no point in setting them.
 
             if ( acceptedClients == null )
+            {
                 throw new PlexusConfigurationException( "When in state of paranoia a list of 'acceptedClients' is required." );
+            }
 
             for ( int i = 0; i < acceptedClients.size(); i++ )
             {
@@ -197,7 +226,9 @@ public class DefaultXmlRpcComponent
             }
 
             if ( deniedClients == null )
+            {
                 throw new PlexusConfigurationException( "When in state of paranoia a list of 'deniedClients' is required." );
+            }
 
             for ( int i = 0; i < deniedClients.size(); i++ )
             {
@@ -226,17 +257,19 @@ public class DefaultXmlRpcComponent
         try
         {
             Socket interrupt = new Socket( InetAddress.getLocalHost(), port );
+
             interrupt.close();
         }
         catch ( Exception ex )
         {
             // Remotely possible we're leaving an open listener socket around.
-            getLogger().warn( "It's possible the xmlrpc server was not shutdown: " + ex.getMessage() );
+//            getLogger().warn( "It's possible the xmlrpc server was not shutdown: " + ex.getMessage() );
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////
+    // ----------------------------------------------------------------------
     // XmlRpcComponent Implementation
+    // ----------------------------------------------------------------------
 
     /**
      * Registers any handlers that were defined as part this component's
@@ -245,7 +278,8 @@ public class DefaultXmlRpcComponent
      *
      * @throws Exception If there were errors registering a handler.
      */
-    private void registerStartupHandlers() throws Exception
+    private void registerStartupHandlers()
+        throws Exception
     {
         if ( handlers == null )
         {
@@ -274,16 +308,24 @@ public class DefaultXmlRpcComponent
             String role = handler.getRole();
 
             if ( name == null )
+            {
                 throw new PlexusConfigurationException( "Missing required configuration element: 'name' in 'handler'." );
+            }
 
             if ( name.trim().length() == 0 )
+            {
                 throw new PlexusConfigurationException( "The 'name' element of a 'handler' cant be empty." );
+            }
 
             if ( role == null )
+            {
                 throw new PlexusConfigurationException( "Missing required configuration element: 'role' in 'handler'." );
+            }
 
             if ( role.trim().length() == 0 )
+            {
                 throw new PlexusConfigurationException( "The 'role element of a 'handler' cant be empty." );
+            }
 
             registerComponentHandler( name, role );
         }
@@ -431,9 +473,9 @@ public class DefaultXmlRpcComponent
         }
     }
 
-    // ------------------------------------------------------------------------
-    // P R I V A T E
-    // ------------------------------------------------------------------------
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     /**
      * Create System properties using the key-value pairs in a given
@@ -445,7 +487,9 @@ public class DefaultXmlRpcComponent
     private void setSystemPropertiesFromConfiguration()
     {
         if ( systemProperties == null )
+        {
             return;
+        }
 
         for ( Enumeration e = systemProperties.propertyNames(); e.hasMoreElements(); )
         {
@@ -465,7 +509,9 @@ public class DefaultXmlRpcComponent
         Object obj = list.get( index );
 
         if ( !(obj instanceof Client) )
+        {
             throw new PlexusConfigurationException( "The client address element must be a '" + Client.class.getName() + "'." );
+        }
 
         Client client = (Client) obj;
 
