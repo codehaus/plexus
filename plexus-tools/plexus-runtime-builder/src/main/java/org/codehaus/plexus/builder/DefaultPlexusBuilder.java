@@ -471,14 +471,6 @@ public class DefaultPlexusBuilder
         mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( binDir, "plexus.bat" ) );
     }
 
-    /**
-     * Loads the POM for the artifact and then tries to download the artifact.
-     * 
-     * @param project
-     * @param repositories
-     * @param localRepository
-     * @throws ProjectBuildingException
-     */
     private Set findArtifacts( MavenProject project, Set repositories, ArtifactRepository localRepository )
         throws PlexusRuntimeBuilderException
     {
@@ -495,6 +487,9 @@ public class DefaultPlexusBuilder
             throw new PlexusRuntimeBuilderException( "Exception while getting artifacts for " + project.getId() + ".", ex );
         }
 
+        System.out.println( "result.getConflicts().getSize() = " + result.getConflicts().size() );
+
+        /*
         if ( result.getConflicts().size() > 0 )
         {
             getLogger().warn( "Conflict when resolving dependencies: " );
@@ -504,10 +499,11 @@ public class DefaultPlexusBuilder
             for ( Iterator it = artifacts.iterator(); it.hasNext(); )
             {
                 Artifact element = (Artifact) it.next();
-                
+
                 getLogger().warn( "  " + element.getArtifactId() );
             }
         }
+        */
 
         return new HashSet( result.getArtifacts().values() );
     }
@@ -524,7 +520,8 @@ public class DefaultPlexusBuilder
 
         if ( !in.exists() )
         {
-            throw new PlexusRuntimeBuilderException( "The plexus configuration file doesn't exist." );
+            throw new PlexusRuntimeBuilderException( 
+                "The specified plexus configuration file " + "'" + in +  "'" + " doesn't exist." );
         }
 
         File out = new File( confDir, "plexus.conf" );
