@@ -22,13 +22,13 @@ package org.codehaus.plexus.action;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.context.Context;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 
 /**
  *
