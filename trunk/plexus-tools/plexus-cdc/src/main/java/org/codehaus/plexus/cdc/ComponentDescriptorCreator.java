@@ -15,14 +15,14 @@ import java.util.List;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectBuilder;
+
 import org.codehaus.plexus.cdc.gleaner.ComponentGleaningStrategy;
 import org.codehaus.plexus.cdc.gleaner.DefaultPlexusComponentGleaningStrategy;
 import org.codehaus.plexus.cdc.gleaner.ImplComponentGleaningStrategy;
 import org.codehaus.plexus.component.repository.ComponentDependency;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
-import org.codehaus.plexus.component.repository.ComponentSet;
+import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 import org.codehaus.plexus.configuration.xml.xstream.PlexusXStream;
 
 /**
@@ -42,16 +42,6 @@ import org.codehaus.plexus.configuration.xml.xstream.PlexusXStream;
  */
 public class ComponentDescriptorCreator
 {
-    public final static String ROLE = ComponentDescriptorCreator.class.getName();
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Dependencies
-
-    private MavenProjectBuilder projectBuilder;
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Privates
-
     private String basedir;
 
     private String destDir;
@@ -63,6 +53,8 @@ public class ComponentDescriptorCreator
     private ClassLoader classLoader;
 
     private String classPath;
+
+    private MavenProject mavenProject;
 
     public ComponentDescriptorCreator()
     {
@@ -79,12 +71,15 @@ public class ComponentDescriptorCreator
         this.destDir = destDir;
     }
 
+    public void setProject( MavenProject mavenProject )
+    {
+        this.mavenProject = mavenProject;
+    }
+
     public void execute()
         throws Exception
     {
         initialize();
-
-        MavenProject mavenProject = projectBuilder.build( new File( basedir, "project.xml") );
 
         List componentDependencies = convertDependencies( mavenProject.getDependencies() );
 
@@ -92,23 +87,23 @@ public class ComponentDescriptorCreator
 
         String sourceDirectoryName = mavenProject.getBuild().getSourceDirectory();
 
-        if ( sourceDirectoryName != null )
+        if ( sourceDirectoryName == null )
         {
-            File sourceDirectory = new File( basedir, sourceDirectoryName );
-    
-            if ( !sourceDirectory.isDirectory() )
-            {
-                builder.addSourceTree( sourceDirectory );
-            }
-            else
-            {
-                System.err.println( "<sourceDirectory> must be a directory." );
-            }
+            System.err.println( "The source directory must be set." );
+
+            return;
         }
-        else
+
+        File sourceDirectory = new File( sourceDirectoryName );
+
+        if ( !sourceDirectory.isDirectory() )
         {
-            System.err.println( "Missing <sourceDirectory> element." );
+            System.err.println( "The source directory must be a directory." );
+
+            return;
         }
+
+        builder.addSourceTree( sourceDirectory );
 
         javaSources = builder.getSources();
 
@@ -124,15 +119,15 @@ public class ComponentDescriptorCreator
             }
         }
 
-        ComponentSet componentSet = new ComponentSet();
+        ComponentSetDescriptor componentSetDescriptor = new ComponentSetDescriptor();
 
-        componentSet.setComponents( componentDescriptors );
+        componentSetDescriptor.setComponents( componentDescriptors );
 
-        componentSet.setDependencies( componentDependencies );
+        componentSetDescriptor.setDependencies( componentDependencies );
 
         PlexusXStream xstream = new PlexusXStream();
 
-        String components = xstream.toXML( componentSet );
+        String components = xstream.toXML( componentSetDescriptor );
 
         File f;
 
@@ -150,7 +145,16 @@ public class ComponentDescriptorCreator
             f.mkdirs();
         }
 
-        FileWriter writer = new FileWriter( new File( f, "components.xml" ) );
+        File outputFile = new File( f, "components.xml" );
+
+        if ( !outputFile.getParentFile().exists() && !outputFile.getParentFile().mkdirs() )
+        {
+            throw new Exception( "Could not create parent directories for " + outputFile.getPath() );
+        }
+
+        System.out.println( "Writing component descriptor to " + outputFile.getPath() );
+
+        FileWriter writer = new FileWriter( outputFile );
 
         writer.write( components );
 
@@ -173,6 +177,11 @@ public class ComponentDescriptorCreator
         registerComponentGleaningStrategy( new DefaultPlexusComponentGleaningStrategy( classLoader ) );
 
         registerComponentGleaningStrategy( new ImplComponentGleaningStrategy() );
+
+        if ( mavenProject == null )
+        {
+            throw new Exception( "The project must be set." );
+        }
     }
 
     private List convertDependencies( List dependencies )
