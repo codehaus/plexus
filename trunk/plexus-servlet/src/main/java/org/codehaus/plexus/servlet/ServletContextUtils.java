@@ -1,7 +1,6 @@
 package org.codehaus.plexus.servlet;
 
 import java.io.File;
-import java.net.URL;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -55,7 +54,7 @@ final class ServletContextUtils {
     static Embedder createContainer(ServletContext context, String plexusConf)
         throws ServletException
     {
-        Embedder embedder = new Embedder();
+        final Embedder embedder = new Embedder();
         
         //XXX: This will not necessarily do what you want.  TomCat has getRealPath() == null when running out of a WAR
         File f = new File( context.getRealPath( "/WEB-INF" ) );
