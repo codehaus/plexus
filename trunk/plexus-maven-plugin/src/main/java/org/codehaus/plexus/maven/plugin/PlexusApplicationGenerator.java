@@ -23,14 +23,13 @@ package org.codehaus.plexus.maven.plugin;
  */
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Iterator;
-import java.util.HashSet;
 
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
@@ -100,6 +99,13 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
  * expression="#localRepository"
  * description=""
  *
+ * @parameter name="remoteRepositories"
+ * type="java.util.List"
+ * required="true"
+ * validator=""
+ * expression="#project.remoteArtifactRepositories"
+ * description=""
+ *
  */
 public class PlexusApplicationGenerator
     extends AbstractPlugin
@@ -126,6 +132,8 @@ public class PlexusApplicationGenerator
         String applicationName = (String) request.getParameter( "applicationName" );
 
         ArtifactRepository localRepository = (ArtifactRepository) request.getParameter( "localRepository" );
+
+        List remoteRepositories = (List) request.getParameter( "remoteRepositories" );
 
         // ----------------------------------------------------------------------
         //
@@ -162,12 +170,6 @@ public class PlexusApplicationGenerator
                 services.add( artifact );
             }
         }
-
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
-        List remoteRepositories = new ArrayList();
 
         // ----------------------------------------------------------------------
         // Build the application

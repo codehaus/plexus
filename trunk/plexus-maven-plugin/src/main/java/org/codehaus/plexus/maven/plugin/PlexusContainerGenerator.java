@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.Iterator;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractPlugin;
@@ -96,7 +97,7 @@ public class PlexusContainerGenerator
 
         String basedir = (String) request.getParameter( "basedir" );
 
-        MavenProject project = (MavenProject) request.getParameter( "project" );
+        Set projectArtifacts = (Set) request.getParameter( "projectArtifacts" );
 
         String plexusConfiguration = (String) request.getParameter( "plexusConfiguration" );
 
@@ -106,15 +107,13 @@ public class PlexusContainerGenerator
 
         ArtifactRepository localRepository = (ArtifactRepository) request.getParameter( "localRepository" );
 
+        List remoteRepositories = (List) request.getParameter( "remoteRepositories" );
+
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
 
         File outputDirectory = new File( basedir, "plexus-runtime" );
-
-        List remoteRepositories = new ArrayList();
-
-        Set artifacts = project.getArtifacts();
 
         File plexusConfigurationFile = new File( plexusConfiguration );
 
@@ -126,7 +125,7 @@ public class PlexusContainerGenerator
         }
 
         builder.build( outputDirectory,
-                       remoteRepositories, localRepository, artifacts,
+                       remoteRepositories, localRepository, projectArtifacts,
                        plexusConfigurationFile, configurationPropertiesFile );
     }
 }
