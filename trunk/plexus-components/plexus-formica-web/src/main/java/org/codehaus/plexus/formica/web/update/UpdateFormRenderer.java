@@ -53,6 +53,8 @@ public class UpdateFormRenderer
 
         w.addAttribute( "method", "post" );
 
+        //TODO: throws an exception if view isn't present
+
         w.addAttribute( "action", baseUrl + "/" + form.getUpdate().getView() );
 
         // ----------------------------------------------------------------------

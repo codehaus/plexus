@@ -148,6 +148,7 @@ public class SummaryFormRenderer
 
                 String id = null;
 
+                // TODO; throw an exception if the expression key isn't there
                 try
                 {
                     id = (String) Ognl.getValue( form.getKeyExpression(), item );
