@@ -26,12 +26,13 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
 
 /**
+ * @author <a href="jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public interface PlexusRuntimeBuilder
 {
-    String ROLE = PlexusRuntimeBuilder.class.getName();
+String ROLE = PlexusRuntimeBuilder.class.getName();
 
     void setBaseDirectory( String outputDirectory );
 
@@ -46,3 +47,5 @@ public interface PlexusRuntimeBuilder
     void build()
         throws PlexusRuntimeBuilderException;
 }
+
+
