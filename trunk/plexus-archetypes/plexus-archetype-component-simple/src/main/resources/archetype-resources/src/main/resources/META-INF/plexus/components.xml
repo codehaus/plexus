@@ -1,8 +1,8 @@
 <component-set>
   <components>
     <component>
-      <role>$package.HelloWorld</role>
-      <implementation>$package.DefaultHelloWorld</implementation>
+      <role>${package}.HelloWorld</role>
+      <implementation>${package}.DefaultHelloWorld</implementation>
       <configuration>
         <greeting>Hello World!</greeting>
       </configuration>
