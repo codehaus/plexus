@@ -15,8 +15,10 @@ public class CommonsLoggingLogger
 
         logger = LogFactory.getLog( name );
 
-        if( logger == null )
-            throw new NullPointerException("logger");
+        if ( null == logger )
+        {
+            throw new IllegalArgumentException( "Logger cannot be null" );
+        }
     }
 
     public boolean isDebugEnabled()
