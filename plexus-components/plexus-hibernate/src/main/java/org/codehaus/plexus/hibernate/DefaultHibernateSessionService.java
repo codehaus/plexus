@@ -39,9 +39,6 @@ public class DefaultHibernateSessionService
         return currentSession();
     }
 
-    /**
-     * @see org.apache.avalon.framework.activity.Initializable#initialize()
-     */
     public void initialize() throws Exception
     {
         sessions = new ArrayList();
@@ -49,9 +46,6 @@ public class DefaultHibernateSessionService
         sessionFactory = hibService.getSessionFactory();
     }
 
-    /**
-     * @see org.apache.avalon.framework.activity.Disposable#dispose()
-     */
     public void dispose()
     {
         for ( Iterator itr = sessions.iterator(); itr.hasNext(); )

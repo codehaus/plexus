@@ -5,6 +5,7 @@ import java.net.URL;
 
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.SessionFactory;
+import net.sf.hibernate.cfg.Configuration;
 
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -21,9 +22,13 @@ public class DefaultHibernateService
     implements HibernateService, Initializable
 {
     private SessionFactory sessionFactory;
-    private net.sf.hibernate.cfg.Configuration hibConfig;
+    private Configuration hibConfig;
     private String mapping;
-    
+
+    // ----------------------------------------------------------------------
+    // HibernateService Implementation
+    // ----------------------------------------------------------------------
+
     /**
      * @see org.codehaus.plexus.hibernate.HibernateService#getSessionFactory()
      */
@@ -32,13 +37,14 @@ public class DefaultHibernateService
         return sessionFactory;
     }
 
-    /**
-     * @see org.apache.avalon.framework.activity.Initializable#initialize()
-     */
+    // ----------------------------------------------------------------------
+    // Component Lifecycle
+    // ----------------------------------------------------------------------
+
     public void initialize() throws Exception
     {
         getLogger().info( "Initializing Hibernate." );
-        hibConfig = new net.sf.hibernate.cfg.Configuration();
+        hibConfig = new Configuration();
         
         try
         {
@@ -66,5 +72,14 @@ public class DefaultHibernateService
         }
 
         sessionFactory = hibConfig.buildSessionFactory();
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    public Configuration getConfiguration()
+    {
+        return hibConfig;
     }
 }
