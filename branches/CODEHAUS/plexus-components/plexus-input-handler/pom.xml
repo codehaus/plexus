@@ -1,0 +1,24 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>plexus</groupId>
+    <artifactId>plexus-components</artifactId>
+    <version>1.0</version>
+  </parent>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-input-handler</artifactId>
+  <version>1.0-alpha-1-SNAPSHOT</version>
+  <name>Plexus Password Store Component</name>
+  <plugins>
+    <plugin>
+      <id>plexus</id>
+    </plugin>
+  </plugins>
+  <dependencies>
+    <dependency>
+      <groupId>jline</groupId>
+      <artifactId>jline</artifactId>
+      <version>0.9.1</version>
+    </dependency>
+  </dependencies>
+</project>
