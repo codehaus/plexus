@@ -147,6 +147,19 @@ public class JettyServletContainer
         deployWAR( war, false, null, context, container, virtualHost );
     }
 
+    public void startApplication( String context )
+        throws ServletContainerException
+    {
+        try
+        {
+            server.getContext( context ).start();
+        }
+        catch ( Exception e )
+        {
+            throw new ServletContainerException( "Error while starting the web application.", e );
+        }
+    }
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -201,18 +214,5 @@ public class JettyServletContainer
         applicationContext.setClassLoader( container.getCoreRealm().getClassLoader() );
 
         applicationContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY, container );
-
-        // ----------------------------------------------------------------------
-        // Start it!
-        // ----------------------------------------------------------------------
-
-        try
-        {
-            applicationContext.start();
-        }
-        catch ( Exception e )
-        {
-            throw new ServletContainerException( "Error while starting the web application.", e );
-        }
     }
 }
