@@ -37,6 +37,6 @@ public class TestAppTest
     protected InputStream getCustomConfiguration()
         throws Exception
     {
-        return new FileInputStream( getTestFile( "src/conf/plexus.conf" ) );
+        return new FileInputStream( getTestFile( "src/conf/plexus.xml" ) );
     }
 }
