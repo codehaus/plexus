@@ -42,12 +42,17 @@ RewriteRule ^/${application} http://localhost:8081/${application}/servlet/${appl
 RewriteRule ^/${application}/(.*)$ http://localhost:8081/${application}/$1 [p]
 +-----+
 
+ The first rule just makes it convenient for your users to get to the main
+ page of the web application i.e. http://www.codehaus.org/continuum and the
+ second rule catches all URLs used by your web application i.e CSS or
+ image resources.
+
  A concrete example of what the configuration looks like this:
 
 +-----+
 RewriteEngine on
-RewriteRule ^/docorama http://localhost:8081/docorama/servlet/docorama [p]
-RewriteRule ^/docorama/(.*)$ http://localhost:8081/docorama/$1 [p]
+RewriteRule ^/continuum http://localhost:8081/continuum/servlet/continuum [p]
+RewriteRule ^/continuum/(.*)$ http://localhost:8081/continuum/$1 [p]
 +-----+
 
 Setting up the Plexus Jetty component
@@ -76,7 +81,7 @@ Setting up the Plexus Jetty component
             <proxy-port>9000</proxy-port>
           </proxy-listener>
         </proxy-listeners>
-        <webapps-directory>${plexus.home}/apps/docorama/web</webapps-directory>
+        <webapps-directory>${plexus.home}/apps/continuum/web</webapps-directory>
         <extract-wars>true</extract-wars>
       </configuration>
     </component>
