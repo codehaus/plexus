@@ -1,16 +1,5 @@
 <plexus>
 
-  <logging>
-    <implementation>org.codehaus.plexus.logging.console.ConsoleLoggerManager</implementation>
-    <logger>
-      <threshold>DEBUG</threshold>
-    </logger>
-  </logging>
-
-  <component-repository>
-    <implementation>org.codehaus.plexus.personality.avalon.AvalonComponentRepository</implementation>
-  </component-repository>
-
   <!--
    |
    | Lifecycle handler Manager.
