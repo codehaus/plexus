@@ -1,12 +1,7 @@
 package org.codehaus.plexus.logging.jdk;
 
-import java.io.File;
-
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.logging.LoggerManager;
-import org.codehaus.plexus.logging.AbstractLoggerManagerTestX;
 import org.codehaus.plexus.logging.AbstractLoggerManagerTest;
+import org.codehaus.plexus.logging.LoggerManager;
 
 /**
  * @author <a href="mailto:michal@codehaus.org">Michal Maczka</a>
