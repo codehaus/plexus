@@ -198,6 +198,8 @@ public class ComponentDescriptorCreator
     {
         JavaClass javaClass = getJavaClass( javaSource );
 
+        String packageName = javaClass.getPackage();
+
         DocletTag tag = javaClass.getTagByName( "component" );
 
         if ( tag == null )
@@ -243,8 +245,10 @@ public class ComponentDescriptorCreator
                 // org.codehaus.foo.PluginManager
                 // org.codehaus.foo.DefaultPluginManager
 
-                String packageName = javaClass.getPackage();
-
+                componentDescriptor.setRole( packageName + "." + javaClass.getName().substring( 7 ) );
+            }
+            else if ( isDefault )
+            {
                 componentDescriptor.setRole( packageName + "." + javaClass.getName().substring( 7 ) );
             }
         }
