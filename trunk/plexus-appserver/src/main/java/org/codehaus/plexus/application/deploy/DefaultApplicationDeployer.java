@@ -27,10 +27,11 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.FileReader;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -39,16 +40,25 @@ import java.util.Properties;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+import org.codehaus.plexus.application.PlexusApplicationConstants;
+import org.codehaus.plexus.application.service.PlexusService;
 import org.codehaus.plexus.application.event.ApplicationListener;
 import org.codehaus.plexus.application.event.DefaultDeployEvent;
 import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.context.ContextMapAdapter;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.util.Expand;
+import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.InterpolationFilterReader;
+import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
@@ -58,8 +68,6 @@ public class DefaultApplicationDeployer
     extends AbstractLogEnabled
     implements ApplicationDeployer, Contextualizable, Initializable, Disposable
 {
-    private static final String CONFIGURATION_FILE = "conf/plexus.xml";
-
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -92,7 +100,7 @@ public class DefaultApplicationDeployer
         deploy( name, location );
     }
 
-    public boolean deploy( String name, URL location )
+    public void deploy( String name, URL location )
         throws Exception
     {
         if ( !location.getProtocol().equals( "file" ) )
@@ -104,16 +112,15 @@ public class DefaultApplicationDeployer
 
         if ( location.toString().endsWith( ".jar" ) )
         {
-            return deployJar( locationFile, applicationsDirectory );
+            deployJar( locationFile, applicationsDirectory );
         }
         else
         {
             throw new Exception( "This deployer can only deploy *.jar files." );
-//            return deployApplicationDirectory( name, locationFile );
         }
     }
 
-    private boolean deployJar( File location, String directory )
+    private void deployJar( File location, String directory )
         throws Exception
     {
         String jarName = location.getName();
@@ -125,7 +132,7 @@ public class DefaultApplicationDeployer
         // Don't extract if it has been extracted before.
         if ( dest.exists() )
         {
-            getLogger().info( "Application " + appName + " already extracted." );
+            getLogger().info( "Application '" + appName + "' already extracted." );
         }
         else
         {
@@ -147,35 +154,40 @@ public class DefaultApplicationDeployer
             {
                 getLogger().error( "Could not extract '" + location + "'.", e );
 
-                return false;
+                return;
             }
         }
 
-        return deployApplicationDirectory( appName, dest );
+        deployApplicationDirectory( appName, dest );
     }
 
-    protected void deployApplications( String directory )
+//    protected void deployApplications( String directory )
+//        throws Exception
+//    {
+//        getLogger().info( "Deploying directory '" + directory + "'." );
+//
+//        File appDir = new File( directory );
+//
+//        if ( appDir.isDirectory() )
+//        {
+//            File[] apps = appDir.listFiles();
+//
+//            for ( int i = 0; i < apps.length; i++ )
+//            {
+//                deploy( apps[i].getName(), new File( apps[i].getAbsolutePath() ).toURL() );
+//            }
+//        }
+//    }
+
+    protected void deployApplicationDirectory( String name, File location )
         throws Exception
     {
-        getLogger().info( "Deploying directory '" + directory + "'." );
+        getLogger().info( "Deploying application '" + name + "' at '" + location.toString() + "'." );
 
-        File appDir = new File( directory );
-
-        if ( appDir.isDirectory() )
+        if ( deployments.containsKey( name ) )
         {
-            File[] apps = appDir.listFiles();
-
-            for ( int i = 0; i < apps.length; i++ )
-            {
-                deploy( apps[i].getName(), new File( apps[i].getAbsolutePath() ).toURL() );
-            }
+            throw new Exception( "A application with the specified name ('" + name + "') already exists." );
         }
-    }
-
-    protected boolean deployApplicationDirectory( String name, File location )
-        throws Exception
-    {
-        getLogger().info( "Deploying application " + name + " at '" + location.toString() + "'." );
 
         // ----------------------------------------------------------------------
         // We need to make sure that we have the basic requirements covered
@@ -186,24 +198,20 @@ public class DefaultApplicationDeployer
         // -> ${app}/lib
         // ----------------------------------------------------------------------
 
-        File applicationConfiguration = new File( location, CONFIGURATION_FILE );
+        File applicationConfiguration = new File( new File( location, PlexusApplicationConstants.CONF_DIRECTORY ), PlexusApplicationConstants.CONFIGURATION_FILE );
 
         if ( !applicationConfiguration.exists() )
         {
-            getLogger().error( "The application '" + name + "' does not have a valid configuration: " +
-                               applicationConfiguration + " does not exist!" );
-
-            return false;
+            throw new Exception( "The application '" + name + "' does not have a valid configuration: " +
+                                 applicationConfiguration + " does not exist!" );
         }
 
-        File applicationLibrary = new File( location, "lib" );
+        File applicationLibrary = new File( location, PlexusApplicationConstants.LIB_DIRECTORY );
 
         if ( !applicationLibrary.exists() )
         {
-            getLogger().error( "The application '" + name + "' does not have a valid library: " +
+            throw new Exception( "The application '" + name + "' does not have a valid library: " +
                                applicationLibrary + " does not exist!" );
-
-            return false;
         }
 
         // ----------------------------------------------------------------------
@@ -260,9 +268,7 @@ public class DefaultApplicationDeployer
         }
         catch ( Exception e )
         {
-            getLogger().error( "Error starting plexus.", e );
-
-            return false;
+            throw new Exception( "Error starting Plexus.", e );
         }
 
         ApplicationRuntimeProfile profile = new ApplicationRuntimeProfile( name, location, applicationLibrary, applicationContainer );
@@ -273,16 +279,58 @@ public class DefaultApplicationDeployer
         // Notify listeners
         // ----------------------------------------------------------------------
 
-        DefaultDeployEvent event = createDeployEvent( profile );
+        Map context = new ContextMapAdapter( applicationContainer.getContext() );
 
-        for ( Iterator itr = applicationListeners.iterator(); itr.hasNext(); )
+        Reader configurationReader = new InterpolationFilterReader( new FileReader( applicationConfiguration ), context );
+
+        Xpp3Dom dom = Xpp3DomBuilder.build( configurationReader );
+
+        PlexusConfiguration applicationDescriptor = new XmlPlexusConfiguration( dom );
+
+        PlexusConfiguration[] services = applicationDescriptor.getChild( "services" ).getChildren( "service" );
+
+        for ( int i = 0; i < services.length; i++ )
         {
-            ApplicationListener listener = (ApplicationListener) itr.next();
+            PlexusConfiguration serviceConfiguration = services[ i ];
 
-            listener.deployedApplication( event );
+            String id = serviceConfiguration.getChild( "id" ).getValue();
+
+            if ( StringUtils.isEmpty( id ) )
+            {
+                throw new Exception( "Missing child element 'id' in 'serviceConfiguration'." );
+            }
+
+            if ( !parentPlexus.hasComponent( PlexusService.ROLE, id ) )
+            {
+                getLogger().error( "Error while loading plexus service with id '" + id + "'. " +
+                                   "The service doesn't exists.");
+
+                continue;
+            }
+
+            Object serviceObject = parentPlexus.lookup( PlexusService.ROLE, id );
+
+            if ( !(serviceObject instanceof PlexusService ) )
+            {
+                getLogger().error( "Error while loading plexus service with id '" + id + "'. " +
+                                   "The component has to implement the PlexusService interface." );
+
+                continue;
+            }
+
+            PlexusService service = (PlexusService) serviceObject;
+
+            service.onApplicationStart( profile, serviceConfiguration.getChild( "configuration" ) );
         }
 
-        return true;
+//        DefaultDeployEvent event = createDeployEvent( profile );
+//
+//        for ( Iterator itr = applicationListeners.iterator(); itr.hasNext(); )
+//        {
+//            ApplicationListener listener = (ApplicationListener) itr.next();
+//
+//            listener.deployedApplication( event );
+//        }
     }
 
     // ----------------------------------------------------------------------
@@ -383,42 +431,31 @@ public class DefaultApplicationDeployer
         parentPlexus = (DefaultPlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
     }
 
-    public void initialize() throws Exception
+    public void initialize()
+        throws Exception
     {
-        deployments = new Hashtable();
+        deployments = new HashMap();
 
         applicationListeners = new ArrayList();
 
-//        applicationsDirectory = new File( System.getProperty( "plexus.home" ), "apps" ).getPath();
-
         getLogger().info( "Applications will be deployed in: '" + applicationsDirectory + "'." );
-/*
-        if ( applicationsDirectory != null )
-        {
-            deployApplications( applicationsDirectory );
-        }
-*/
     }
 
     public void dispose()
     {
-        for ( Iterator it = deployments.entrySet().iterator(); it.hasNext(); )
+        List names = new ArrayList( deployments.keySet() );
+
+        for ( Iterator it = names.iterator(); it.hasNext(); )
         {
-            Map.Entry entry = (Map.Entry) it.next();
-
-            String name = (String) entry.getKey();
-
-            ApplicationRuntimeProfile profile = (ApplicationRuntimeProfile) entry.getValue();
-
-            it.remove();
+            String name = (String) it.next();
 
             try
             {
-                profile.getContainer().dispose();
+                undeploy( name );
             }
-            catch ( Exception e )
+            catch( Exception e )
             {
-                getLogger().error( "Couldn't dipose of application '" + name + "'", e );
+                getLogger().warn( "Error while undeploying application '" + name + "'.", e );
             }
         }
     }

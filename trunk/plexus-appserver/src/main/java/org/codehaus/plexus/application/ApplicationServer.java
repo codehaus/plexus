@@ -1,4 +1,4 @@
-package org.codehaus.plexus.application.supervisor;
+package org.codehaus.plexus.application;
 
 /*
  * The MIT License
@@ -24,39 +24,11 @@ package org.codehaus.plexus.application.supervisor;
  * SOFTWARE.
  */
 
-import java.io.File;
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class SupervisedDirectory
+public interface ApplicationServer
 {
-    private File directory;
-
-    private SupervisorListener listener;
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    public SupervisedDirectory( File directory, SupervisorListener listener )
-    {
-        this.directory = directory;
-        this.listener = listener;
-    }
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    public File getDirectory()
-    {
-        return directory;
-    }
-
-    public SupervisorListener getListener()
-    {
-        return listener;
-    }
+    String ROLE = ApplicationServer.class.getName();
 }

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.application.supervisor;
+package org.codehaus.plexus.application;
 
 /*
  * The MIT License
@@ -24,39 +24,29 @@ package org.codehaus.plexus.application.supervisor;
  * SOFTWARE.
  */
 
-import java.io.File;
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class SupervisedDirectory
+public class PlexusRuntimeConstants
 {
-    private File directory;
+    public final static String APPLICATIONS_DIRECTORY = "apps";
 
-    private SupervisorListener listener;
+    public final static String BIN_DIRECTORY = "bin";
 
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
+    public final static String BOOT_DIRECTORY = "core/boot";
 
-    public SupervisedDirectory( File directory, SupervisorListener listener )
-    {
-        this.directory = directory;
-        this.listener = listener;
-    }
+    public final static String CONF_DIRECTORY = "conf";
 
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
+    public final static String CORE_DIRECTORY = "core";
 
-    public File getDirectory()
-    {
-        return directory;
-    }
+    public final static String LOGS_DIRECTORY = "logS";
 
-    public SupervisorListener getListener()
-    {
-        return listener;
-    }
+    public final static String LIB_DIRECTORY = "lib";
+
+    public final static String TEMP_DIRECTORY = "TEMP";
+
+    public final static String SERVICES_DIRECTORY = "services";
+
+    public static final String CONFIGURATION_FILE = "plexus.xml";
 }
