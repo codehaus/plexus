@@ -38,7 +38,7 @@ Settting up Apache
  
 +-----+
 RewriteEngine on
-RewriteRule ^/${application} http://localhost:8081/${applicationName}/servlet/${application} [p]
+RewriteRule ^/${application} http://localhost:8081/${application}/servlet/${application} [p]
 RewriteRule ^/${application}/(.*)$ http://localhost:8081/${application}/$1 [p]
 +-----+
 
