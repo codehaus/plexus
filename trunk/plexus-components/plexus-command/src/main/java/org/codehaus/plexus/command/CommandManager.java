@@ -27,6 +27,8 @@ package org.codehaus.plexus.command;
  */
 public interface CommandManager
 {
+    String ROLE = CommandManager.class.getName();
+    
     /**
      * Clears any redoable commands not yet redone, adds the command, and then executes the command.
      * @param command the command to execute.
