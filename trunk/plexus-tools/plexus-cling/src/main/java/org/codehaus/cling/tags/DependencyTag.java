@@ -10,8 +10,8 @@ import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.codehaus.cling.model.Application;
-import org.codehaus.cling.model.ApplicationConstants;
+import org.codehaus.cling.CLIngConstants;
+import org.codehaus.cling.model.AppModel;
 import org.codehaus.marmalade.model.AbstractMarmaladeTag;
 import org.codehaus.marmalade.runtime.MarmaladeExecutionContext;
 import org.codehaus.marmalade.runtime.MarmaladeExecutionException;
@@ -34,7 +34,7 @@ public class DependencyTag
         processChildren( context );
         
         PlexusContainer container = (PlexusContainer) context.getVariable(
-            ApplicationConstants.PLEXUS_CONTAINER_KEY, getExpressionEvaluator());
+            CLIngConstants.PLEXUS_CONTAINER_CONTEXT_KEY, getExpressionEvaluator());
         
         ArtifactResolver resolver = null;
         try
@@ -46,8 +46,8 @@ public class DependencyTag
             throw new MarmaladeExecutionException("cannot retrieve artifact resolver", e);
         }
         
-        Set remoteRepos = (Set)context.getVariable(ApplicationConstants.REMOTE_REPOSITORIES_KEY, getExpressionEvaluator());
-        ArtifactRepository localRepo = (ArtifactRepository)context.getVariable(ApplicationConstants.LOCAL_REPOSITORY_KEY, getExpressionEvaluator());
+        Set remoteRepos = (Set)context.getVariable(CLIngConstants.REMOTE_REPOSITORIES_CONTEXT_KEY, getExpressionEvaluator());
+        ArtifactRepository localRepo = (ArtifactRepository)context.getVariable(CLIngConstants.LOCAL_REPOSITORY_CONTEXT_KEY, getExpressionEvaluator());
         
         Artifact artifact = new DefaultArtifact(groupId, artifactId, version, "jar", "jar");
         

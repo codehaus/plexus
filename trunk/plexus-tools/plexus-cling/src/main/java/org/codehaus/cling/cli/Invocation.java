@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * @author John Casey
@@ -41,6 +42,10 @@ public class Invocation
     public Invocation( String description )
     {
         this.description = description;
+    }
+    
+    public Map getOptionPropertyMappings() {
+        return bestMatch.getOptionPropertyMappings();
     }
 
     public void enableEmptyTemplate( boolean enabled )

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Map of command line options, keyed both by short name and long name.
@@ -291,6 +292,30 @@ public class InvocationTemplate
         }
 
         return result;
+    }
+
+    public Map getOptionPropertyMappings()
+    {
+        Map mappings = new TreeMap();
+        
+        for ( Iterator it = optionsList.iterator(); it.hasNext(); )
+        {
+            Option option = (Option) it.next();
+            
+            Object value = null;
+            if(option instanceof NoArgOption) {
+                value = Boolean.valueOf(((NoArgOption)option).isSet());
+            }
+            else {
+                value = ((AbstractArgOption)option).getValue();
+            }
+            
+            if(value != null) {
+                mappings.put(option.getObjectProperty(), value);
+            }
+        }
+        
+        return mappings;
     }
 
 }
