@@ -53,14 +53,8 @@ public class DefaultPersister
         Session session = getSession();
         try
         {
-            try
-            {
-            	session.save( o );
-            }
-            finally
-            {
-                session.flush();
-            }
+        	session.save( o );
+            session.flush();
         }
         catch (HibernateException e)
         {
@@ -84,14 +78,8 @@ public class DefaultPersister
         Session session = getSession();
         try
         {
-            try
-            {
-                session.update(o, id);
-            }
-            finally
-            {
-                session.flush();
-            }
+            session.update(o, id);
+            session.flush();
         }
         catch (HibernateException e)
         {
@@ -107,14 +95,8 @@ public class DefaultPersister
         Session session = getSession();
         try
         {
-            try
-            {
-                session.saveOrUpdate(o);
-            }
-            finally
-            {
-                session.flush();
-            }
+            session.saveOrUpdate(o);
+            session.flush();
         }
         catch (HibernateException e)
         {
@@ -147,14 +129,8 @@ public class DefaultPersister
         Session session = getSession();
         try
         {
-            try
-            {
-                session.delete(o);
-            }
-            finally
-            {
-                session.flush();
-            }
+            session.delete(o);
+            session.flush();
         }
         catch (HibernateException e)
         {
