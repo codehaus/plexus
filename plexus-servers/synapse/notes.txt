@@ -1,0 +1,2 @@
+o possibly adding blissed to take care of state issues like in the smtp server.
+o the service handlers should be instantiated for each client request
