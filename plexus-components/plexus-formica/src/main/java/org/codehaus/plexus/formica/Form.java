@@ -24,6 +24,7 @@ package org.codehaus.plexus.formica;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author <a href="mailto:mmmaczka@interia.pl">Michal Maczka</a>
@@ -68,17 +69,29 @@ public class Form
 
     private String summaryCollectionExpression;
 
+    private String extend;
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
     public void addElement( Element element )
     {
+        if ( elements == null )
+        {
+            elements = new ArrayList();
+        }
+
         elements.add( element );
     }
 
     public List getElements()
     {
+        if ( elements == null )
+        {
+            elements = new ArrayList();
+        }
+
         return elements;
     }
 
@@ -162,6 +175,11 @@ public class Form
         return keyExpression;
     }
 
+    public void setKeyExpression( String keyExpression )
+    {
+        this.keyExpression = keyExpression;
+    }
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -171,14 +189,46 @@ public class Form
         return sourceRole;
     }
 
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
     public String getLookupExpression()
     {
         return lookupExpression;
     }
 
+    public void setLookupExpression( String lookupExpression )
+    {
+        this.lookupExpression = lookupExpression;
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
     public String getSummaryCollectionExpression()
     {
         return summaryCollectionExpression;
+    }
+
+    public void setSummaryCollectionExpression( String summaryCollectionExpression )
+    {
+        this.summaryCollectionExpression = summaryCollectionExpression;
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    public String getExtend()
+    {
+        return extend;
+    }
+
+    public void setExtend( String extend )
+    {
+        this.extend = extend;
     }
 
     // ----------------------------------------------------------------------
