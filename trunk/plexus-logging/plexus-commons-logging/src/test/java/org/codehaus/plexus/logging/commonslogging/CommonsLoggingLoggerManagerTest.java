@@ -15,5 +15,7 @@ public class CommonsLoggingLoggerManagerTest
         throws Exception
     {
         return (LoggerManager)lookup( LoggerManager.ROLE );
-    }    
+    }
+
+
 }
