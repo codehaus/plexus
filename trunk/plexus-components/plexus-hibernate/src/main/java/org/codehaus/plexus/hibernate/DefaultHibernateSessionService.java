@@ -81,9 +81,12 @@ public class DefaultHibernateSessionService
         getLogger().debug("Closing session for thread.");
  
         Session s = (Session) session.get();
-        sessions.remove(s);
-        session.set(null);
-        if (s != null)
-            s.close();
+        if (s!= null)
+        {
+            sessions.remove(s);
+            session.set(null);
+            if (s != null)
+                s.close();
+        }
     }
 }
