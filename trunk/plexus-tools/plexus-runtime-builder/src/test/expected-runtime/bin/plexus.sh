@@ -1,8 +1,5 @@
 #! /bin/sh
 
-CLASSWORLDS_VERSION=1.1-SNAPSHOT
-
-MAIN_CLASS=org.codehaus.classworlds.Launcher
 PLEXUS_OPTS="-Xmx128m"
 
 # OS specific support.  $var _must_ be set to either true or false.
@@ -112,9 +109,11 @@ else
   CONF=$1
 fi
 
+MAIN_CLASS=org.codehaus.classworlds.Launcher
+
 $JAVACMD \
   $PLEXUS_OPTS \
-  -classpath ${PLEXUS_HOME}/core/boot/classworlds-${CLASSWORLDS_VERSION}.jar \
+  -classpath ${PLEXUS_HOME}/core/boot/classworlds-*.jar \
   -Dclassworlds.conf=${PLEXUS_HOME}/conf/classworlds.conf  \
   -Dplexus.core=${PLEXUS_HOME}/core \
   -Djava.io.tmpdir=${PLEXUS_TMPDIR} \

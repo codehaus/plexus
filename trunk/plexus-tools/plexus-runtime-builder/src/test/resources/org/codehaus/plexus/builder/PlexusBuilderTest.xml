@@ -1,6 +1,5 @@
 <plexus>
   <components>
-
     <component>
       <role>org.codehaus.plexus.velocity.VelocityComponent</role>
       <implementation>org.codehaus.plexus.velocity.DefaultVelocityComponent</implementation>
