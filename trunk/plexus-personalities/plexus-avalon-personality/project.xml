@@ -100,7 +100,7 @@
 
       <resources>
         <resource>
-          <directory>${basedir}/src/test</directory>
+          <directory>src/test</directory>
           <includes>
             <include>**/*.xml</include>
           </includes>
