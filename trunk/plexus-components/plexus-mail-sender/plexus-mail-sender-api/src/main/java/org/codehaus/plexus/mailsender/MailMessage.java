@@ -24,11 +24,11 @@ package org.codehaus.plexus.mailsender;
  * SOFTWARE.
  */
 
-import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -38,7 +38,7 @@ import java.util.Map;
 public class MailMessage
 {
     // ----------------------------------------------------------------------
-    // 
+    //
     // ----------------------------------------------------------------------
 
     public static final String TYPE_HTML = "html";
@@ -46,18 +46,71 @@ public class MailMessage
     public static final String TYPE_TEXT = "text";
 
     // ----------------------------------------------------------------------
-    // 
+    //
     // ----------------------------------------------------------------------
 
-    private String fromAddress;
+    public final static class Address
+    {
+        private String mailbox;
 
-    private String fromName;
+        private String name;
 
-    private Map toAddresses = new HashMap();
+        public Address( String mailbox, String name )
+            throws MailSenderException
+        {
+            this( mailbox );
 
-    private Map ccAddresses = new HashMap();
+            this.name = name;
+        }
 
-    private Map bccAddresses = new HashMap();
+        public Address( String mailbox )
+            throws MailSenderException
+        {
+            if ( mailbox == null || mailbox.trim().length() == 0 )
+            {
+                throw new MailSenderException( "The mailbox cannot be null." );
+            }
+
+            this.mailbox = mailbox;
+        }
+
+        public String getMailbox()
+        {
+            return mailbox;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+
+        public String getRfc2822Address()
+        {
+            if ( name == null || name.trim().length() == 0 )
+            {
+                return "<" + mailbox + ">";
+            }
+
+            return "\"" + name + "\" <" + mailbox + ">";
+        }
+
+        public String toString()
+        {
+            return getRfc2822Address();
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    private Address from;
+
+    private List toAddresses = new ArrayList();
+
+    private List ccAddresses = new ArrayList();
+
+    private List bccAddresses = new ArrayList();
 
     private String subject;
 
@@ -67,63 +120,94 @@ public class MailMessage
 
     private Map headers = new HashMap();
 
-    private List files;
-
     private Date sendDate;
 
     // ----------------------------------------------------------------------
-    // 
+    //
     // ----------------------------------------------------------------------
 
-    public String getFromAddress()
+    public Address getFrom()
     {
-        return fromAddress;
+        return from;
     }
 
-    public void setFromAddress( String fromAddress)
+    public void setFrom( String mailbox, String name )
+        throws MailSenderException
     {
-        this.fromAddress = fromAddress;
+        from = new Address( mailbox, name );
     }
 
-    public String getFromName()
+    public void setFrom( Address from )
     {
-        return fromName;
+        this.from = from;
     }
 
-    public void setFromName( String fromName )
-    {
-        this.fromName = fromName;
-    }
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
-    public Map getToAddresses()
+    public List getToAddresses()
     {
         return toAddresses;
     }
 
-    public void addTo( String toName, String toAddress )
+    public void addTo( String mailbox, String name )
+        throws MailSenderException
     {
-        toAddresses.put( toName, toAddress );
+        toAddresses.add( new Address( mailbox, name ) );
     }
 
-    public Map getCcAddresses()
+    public void addTo( Address to )
+        throws MailSenderException
+    {
+        toAddresses.add( to );
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    public List getCcAddresses()
     {
         return ccAddresses;
     }
 
-    public void addCc( String ccName, String ccAddress )
+    public void addCc( String mailbox, String name )
+        throws MailSenderException
     {
-        ccAddresses.put( ccName, ccAddress );
+        ccAddresses.add( new Address( mailbox, name ) );
     }
 
-    public Map getBccAddresses()
+    public void addCc( Address cc )
+        throws MailSenderException
+    {
+        ccAddresses.add( cc );
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    public List getBccAddresses()
     {
         return bccAddresses;
     }
 
-    public void addBcc( String bccName, String bccAddress )
+    public void addBcc( String mailbox, String name )
+        throws MailSenderException
     {
-        bccAddresses.put( bccName, bccAddress );
+        bccAddresses.add( new Address( mailbox, name ) );
     }
+
+    public void addBcc( Address bcc )
+        throws MailSenderException
+    {
+        bccAddresses.add( bcc );
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     public String getSubject()
     {
@@ -134,6 +218,10 @@ public class MailMessage
     {
         this.subject = subject;
     }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     public String getContent()
     {
@@ -155,6 +243,10 @@ public class MailMessage
         this.contentType = contentType;
     }
 
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
     public Date getSendDate()
     {
         return sendDate;
@@ -165,6 +257,10 @@ public class MailMessage
         this.sendDate = sendDate;
     }
 
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
     public Map getHeaders()
     {
         return headers;
@@ -173,15 +269,5 @@ public class MailMessage
     public void addHeader( String headerName, String headerValue )
     {
         headers.put( headerName, headerValue );
-    }
-
-    public List getFiles()
-    {
-        return files;
-    }
-
-    public void addFile( File file )
-    {
-        files.add( file );
     }
 }

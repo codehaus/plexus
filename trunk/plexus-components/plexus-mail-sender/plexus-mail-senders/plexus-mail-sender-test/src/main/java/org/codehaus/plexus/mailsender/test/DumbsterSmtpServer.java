@@ -29,19 +29,21 @@ import com.dumbster.smtp.SimpleSmtpServer;
 import java.util.Iterator;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id$
  */
-public class MockSmtpServer
+public class DumbsterSmtpServer
 	extends AbstractLogEnabled
-    implements SmtpServer
+    implements SmtpServer, Startable
 {
-    private SimpleSmtpServer smtpServer;
-
+    /** @configuration */
     private int port;
+
+    private SimpleSmtpServer smtpServer;
 
     // ----------------------------------------------------------------------
     // Component Lifecycle
@@ -60,7 +62,7 @@ public class MockSmtpServer
     }
 
     // ----------------------------------------------------------------------
-    // 
+    //
     // ----------------------------------------------------------------------
 
     /**

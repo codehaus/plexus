@@ -30,19 +30,21 @@ import junit.framework.TestCase;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class AbstractMailSenderTest
+public class MailMessageTest
     extends TestCase
 {
-    public void testMakeEmailAddress()
+    public void testMakeRfc2822Address()
         throws Exception
     {
-        assertEquals( "name <address>", AbstractMailSender.makeEmailAddress( "address", "name" ) );
+        assertEquals( "\"name\" <mailbox>", new MailMessage.Address( "mailbox", "name" ).getRfc2822Address() );
 
-        assertEquals( "<address>", AbstractMailSender.makeEmailAddress( "address", null ) );
+        assertEquals( "<mailbox>", new MailMessage.Address( "mailbox" ).getRfc2822Address() );
+
+        assertEquals( "<mailbox>", new MailMessage.Address( "mailbox", null ).getRfc2822Address() );
 
         try
         {
-            AbstractMailSender.makeEmailAddress( null, "name" );
+            new MailMessage.Address( null, "name" ).getRfc2822Address();
 
             fail( "Expected MailSenderException." );
         }
@@ -53,7 +55,7 @@ public class AbstractMailSenderTest
 
         try
         {
-            AbstractMailSender.makeEmailAddress( null, null );
+            new MailMessage.Address( null, null ).getRfc2822Address();
 
             fail( "Expected MailSenderException." );
         }

@@ -35,13 +35,15 @@ import org.codehaus.plexus.PlexusTestCase;
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id$
  */
-public class MockSmtpServerTest
+public class DumbsterSmtpServerTest
 	extends PlexusTestCase
 {
     public void testSend()
     	throws Exception
     {
         SmtpServer server = (SmtpServer) lookup( SmtpServer.ROLE );
+
+        Thread.sleep( 1000 );
 
         sendMessage( 4000, "sender@here.com", "Test", "Test Body", "receiver@there.com" );
 

@@ -24,12 +24,11 @@ package org.codehaus.plexus.mailsender.simple;
  * SOFTWARE.
  */
 
-import com.dumbster.smtp.SmtpMessage;
-
-import java.util.Iterator;
-
+import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.mailsender.MailSender;
-import org.codehaus.plexus.mailsender.test.MailSenderTestCase;
+import org.codehaus.plexus.mailsender.test.SmtpServer;
+
+import com.dumbster.smtp.SmtpMessage;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -37,12 +36,14 @@ import org.codehaus.plexus.mailsender.test.MailSenderTestCase;
  * @version $Id$
  */
 public class SimpleMailSenderTest
-	extends MailSenderTestCase
+	extends PlexusTestCase
 {
     public void testDefaultComponentConfiguration()
     	throws Exception
     {
-        startSmtpServer( 4000 );
+        SmtpServer smtpServer = (SmtpServer) lookup( SmtpServer.ROLE );
+
+        Thread.sleep( 1000 );
 
         MailSender mailSender = (MailSender) lookup( MailSender.ROLE );
 
@@ -50,16 +51,18 @@ public class SimpleMailSenderTest
 
         assertTrue( mailSender instanceof SimpleMailSender );
 
-        assertEquals( "localhost", mailSender.getSmtpHost() );
+        SimpleMailSender simpleMailSender = (SimpleMailSender) mailSender;
 
-        assertEquals( 4000, mailSender.getSmtpPort() );
+        assertEquals( "localhost", simpleMailSender.getSmtpHost() );
+
+        assertEquals( 4000, simpleMailSender.getSmtpPort() );
 
         mailSender.send( "mySubject", "myContent", "to@server.com", "to.name", "from@server.com", "from.name" );
 
-        assertEquals( 1, getReceivedEmailSize() );
+        assertEquals( 1, smtpServer.getReceivedEmailSize() );
 
-        SmtpMessage email = (SmtpMessage) getReceivedEmail().next();
-        
+        SmtpMessage email = (SmtpMessage) smtpServer.getReceivedEmail().next();
+
         assertTrue( email.getHeaderValue( "Subject" ).equals( "mySubject" ) );
 
         assertTrue( email.getBody().equals( "myContent" ) );

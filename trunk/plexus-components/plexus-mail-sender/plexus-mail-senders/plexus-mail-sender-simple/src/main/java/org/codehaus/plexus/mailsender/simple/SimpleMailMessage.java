@@ -72,6 +72,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import org.codehaus.plexus.mailsender.MailSender;
+
 /**
  * A class to help send SMTP email.
  * This class is an improvement on the sun.net.smtp.SmtpClient class
@@ -89,7 +91,7 @@ import java.util.Vector;
  * String cc2 = "cc2@you.com";
  * String bcc = "bcc@you.com";
  * &nbsp;
- * MailMessage msg = new MailMessage(mailhost);
+ * SimpleMailMessage msg = new SimpleMailMessage(mailhost);
  * msg.setPort(25);
  * msg.from(from);
  * msg.to(to);
@@ -129,7 +131,7 @@ import java.util.Vector;
  * @version 1.1, 2000/03/19, added angle brackets to address, helps some servers
  * version 1.0, 1999/12/29
  */
-public class MailMessage
+public class SimpleMailMessage
 {
     /** default port for SMTP: 25 */
     public static final int DEFAULT_PORT = 25;
@@ -159,44 +161,44 @@ public class MailMessage
     private Socket socket;
 
     /**
-     * Constructs a new MailMessage to send an email.
+     * Constructs a new SimpleMailMessage to send an email.
      * Use localhost as the mail server with port 25.
      *
      * @exception IOException if there's any problem contacting the mail server
      */
-    public MailMessage() throws IOException
+    public SimpleMailMessage() throws IOException
     {
         this( "localhost", DEFAULT_PORT );
     }
 
     /**
-     * Constructs a new MailMessage to send an email.
+     * Constructs a new SimpleMailMessage to send an email.
      * Use the given host as the mail server with port 25.
      *
      * @param host the mail server to use
      * @exception IOException if there's any problem contacting the mail server
      */
-    public MailMessage( String host ) throws IOException
+    public SimpleMailMessage( String host ) throws IOException
     {
         this( host, DEFAULT_PORT );
     }
 
     /**
-     * Constructs a new MailMessage to send an email.
+     * Constructs a new SimpleMailMessage to send an email.
      * Use the given host and port as the mail server.
      *
      * @param host the mail server to use
      * @param port the port to connect to
      * @exception IOException if there's any problem contacting the mail server
      */
-    public MailMessage( String host, int port ) throws IOException
+    public SimpleMailMessage( String host, int port ) throws IOException
     {
         this.port = port;
         this.host = host;
         to = new Vector();
         cc = new Vector();
         headers = new Hashtable();
-        setHeader( "X-Mailer", MailMessage.class.getName() + " (plexus.codehaus.org)" );
+        setHeader( "X-Mailer", MailSender.class.getName() + " (plexus.codehaus.org)" );
         connect();
         sendHelo();
     }
@@ -348,7 +350,7 @@ public class MailMessage
 
     /**
      * Sends the message and closes the connection to the server.
-     * The MailMessage object cannot be reused.
+     * The SimpleMailMessage object cannot be reused.
      *
      * @exception IOException if there's any problem reported by the mail server
      */
