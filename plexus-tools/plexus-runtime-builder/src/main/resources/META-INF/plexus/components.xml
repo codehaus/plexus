@@ -2,7 +2,7 @@
   <components>
     <component>
       <role>org.codehaus.plexus.builder.PlexusBuilder</role>
-      <implementation>org.codehaus.plexus.builder.DefaultPlexusBuilder</implementation>
+      <implementation>org.codehaus.plexus.builder.runtime.DefaultRuntimePlexusBuilder</implementation>
       <requirements>
         <requirement>
           <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
