@@ -6,7 +6,14 @@
       <role>org.codehaus.plexus.hibernate.persister.Persister</role>
       <implementation>org.codehaus.plexus.hibernate.persister.DefaultPersister</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
-      <configuration/>            
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.hibernate.HibernateService</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.hibernate.HibernateSessionService</role>
+        </requirement>
+      </requirements>          
     </component>
         
     <component>
