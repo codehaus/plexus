@@ -1,11 +1,12 @@
 /* Created on Sep 13, 2004 */
-package org.codehaus.cling.tags;
+package org.codehaus.cling.tags.app;
 
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.codehaus.cling.model.Classpath;
+import org.codehaus.cling.model.ClasspathEntry;
 import org.codehaus.cling.model.DefaultClasspath;
 import org.codehaus.marmalade.model.AbstractMarmaladeTag;
 import org.codehaus.marmalade.runtime.MarmaladeExecutionContext;
@@ -29,7 +30,7 @@ public class ClasspathTag
         parent.setClasspath(classpath);
     }
 
-    public void addClassEntry(URL entry) {
+    public void addClasspathEntry(ClasspathEntry entry) {
         classpath.addEntry(entry);
     }
 

@@ -10,21 +10,29 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import ognl.Ognl;
 import ognl.OgnlException;
 
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.classworlds.ClassWorld;
 import org.codehaus.classworlds.DuplicateRealmException;
 import org.codehaus.cling.cli.Invocation;
 import org.codehaus.cling.cli.InvocationException;
+import org.codehaus.cling.configuration.CLIngConfiguration;
+import org.codehaus.cling.configuration.DefaultCLIngConfiguration;
 import org.codehaus.cling.model.AppModel;
 import org.codehaus.cling.model.Classpath;
-import org.codehaus.cling.tags.AppTag;
+import org.codehaus.cling.model.ClasspathEntry;
+import org.codehaus.cling.model.ResolvedClasspathEntry;
+import org.codehaus.cling.tags.app.AppTag;
 import org.codehaus.marmalade.el.ognl.OgnlExpressionEvaluator;
 import org.codehaus.marmalade.metamodel.ModelBuilderException;
 import org.codehaus.marmalade.metamodel.ScriptBuilder;
@@ -54,8 +62,21 @@ public class Launcher implements Contextualizable
     
     private ClassRealm containerRealm;
 
+    private ArtifactResolver resolver;
+
     public int execute( String[] args ) throws CLIngLaunchException
     {
+        // Setup the default cling configuration
+        CLIngConfiguration config = null;
+        try
+        {
+            config = new DefaultCLIngConfiguration();
+        }
+        catch ( MalformedURLException e )
+        {
+            throw new CLIngLaunchException("Cannot build default CLIng local artifact repository path", CLIngErrors.ERROR_BUILDING_DEFAULT_LOCAL_REPO_PATH, e);
+        }
+        
         // Execute the cling lifecycle:
         // [[1]] Setup the CLIng execution environment. The CLIng basedir is
         //       assumed to be <user.dir> if the JVM property <app.basedir>
@@ -66,39 +87,83 @@ public class Launcher implements Contextualizable
         // [[2]] Parse the <<<app.xml>>> file in <app.basedir> of the CLIng
         //       execution directory.
         //
-        AppModel model = parseAppXml(basedir);
+        AppModel model = parseAppXml(basedir, config);
         
-        // [[3]] Setup the application class-realm with the downloaded
+        // [[3]] Download the runtime dependencies of the application, as they 
+        //       are encountered in the <<<app.xml>>> file. If any of these fails, 
+        //       fail the entire application.
+        // [[4]] Setup the application class-realm with the downloaded
         //       dependencies and any specified local classpath locations.
         //
-        ClassRealm appRealm = buildRealm(model);
+        ClassRealm appRealm = resolveClasspath(model.getClasspath(), config);
         
-        // [[4]] Setup the System environment by merging the <env> element's
+        // [[5]] Setup the System environment by merging the <env> element's
         //       body content with pre-existing System properties.
         //
         System.setProperties(model.getEnvironment());
         
-        // [[5]] Instantiate the main-class.
+        // [[6]] Instantiate the main-class.
         //
         Object main = instantiateMain(model, appRealm);
         
-        // [[6]] Parse the command-line arguments, and validate each. Set each
+        // [[7]] Parse the command-line arguments, and validate each. Set each
         //       validated argument as a property on the main-class.
         //
         parseCommandLine(args, model, main);
         
-        // [[7]] Reflectively lookup the specified execute method. Verify that
+        // [[8]] Reflectively lookup the specified execute method. Verify that
         //       it returns an int type. If not, fail the entire application.
         //
         Method execute = findMethod(main, model);
         
-        // [[8]] Invoke the execute method and save the result to a local
+        // [[9]] Invoke the execute method and save the result to a local
         //       variable.
         //
         int result = invokeMethod(execute, main);
         
         // See the main() method for [9].
         return result;
+    }
+
+    private ClassRealm resolveClasspath( Classpath classpath, CLIngConfiguration config )
+    throws CLIngLaunchException
+    {
+        List entries = classpath.getEntries();
+        
+        ClassRealm appRealm = null;
+        try
+        {
+            appRealm = containerRealm.createChildRealm("application");
+        }
+        catch ( DuplicateRealmException e )
+        {
+            throw new CLIngLaunchException("Cannot create duplicate ClassRealm", CLIngErrors.ERROR_CREATING_DUPLICATE_CLASSREALM, e);
+        }
+        
+        for ( Iterator it = entries.iterator(); it.hasNext(); )
+        {
+            ClasspathEntry entry = (ClasspathEntry) it.next();
+            
+            // If this type of entry needs resolution, resolve it first.
+            if(entry instanceof ResolvedClasspathEntry) {
+                try
+                {
+                    ((ResolvedClasspathEntry)entry).resolve(resolver, config);
+                }
+                catch ( MalformedURLException e )
+                {
+                    throw new CLIngLaunchException("Cannot resolve classpath entry", CLIngErrors.ERROR_RESOLVING_CLASSPATH_ENTRY, e);
+                }
+                catch ( ArtifactResolutionException e )
+                {
+                    throw new CLIngLaunchException("Cannot resolve classpath entry", CLIngErrors.ERROR_RESOLVING_CLASSPATH_ENTRY, e);
+                }
+            }
+            
+            appRealm.addConstituent(entry.getURL());
+        }
+        
+        return appRealm;
     }
 
     private int invokeMethod( Method execute, Object main ) 
@@ -230,41 +295,19 @@ public class Launcher implements Contextualizable
         return main;
     }
 
-    private ClassRealm buildRealm( AppModel model ) throws CLIngLaunchException
-    {
-        ClassRealm appRealm = null;
-        try
-        {
-            appRealm = containerRealm.createChildRealm("application");
-        }
-        catch ( DuplicateRealmException e )
-        {
-            throw new CLIngLaunchException("Cannot create duplicate ClassRealm", CLIngErrors.ERROR_CREATING_DUPLICATE_CLASSREALM, e);
-        }
-        
-        Classpath classpath = model.getClasspath();
-        for ( Iterator it = classpath.getEntries().iterator(); it.hasNext(); )
-        {
-            URL entry = (URL) it.next();
-            appRealm.addConstituent(entry);
-        }
-        
-        return appRealm;
-    }
-
-    private AppModel parseAppXml( String basedir ) 
+    private AppModel parseAppXml( String basedir, CLIngConfiguration config ) 
     throws CLIngLaunchException
     {
         MarmaladeParsingContext parsingContext = initParsingContext(basedir);
         
         MarmaladeScript script = buildScript(parsingContext);
         
-        AppModel model = executeScript(script);
+        AppModel model = executeScript(script, config);
         
         return model;
     }
 
-    private AppModel executeScript( MarmaladeScript script ) 
+    private AppModel executeScript( MarmaladeScript script, CLIngConfiguration config ) 
     throws CLIngLaunchException
     {
         MarmaladeTag root = script.getRoot();
@@ -274,7 +317,7 @@ public class Launcher implements Contextualizable
         }
         
         MarmaladeExecutionContext context = new DefaultContext();
-        // TODO: setup the repo context variables...
+        context.setVariable(CLIngConstants.CLING_CONFIG_CONTEXT_KEY, config);
         
         try
         {
@@ -395,7 +438,7 @@ public class Launcher implements Contextualizable
             result = e.getErrorCode();
         }
         
-        // [[9]] Call System.exit(x) where <x> is the result from [8].
+        // [[10]] Call System.exit(x) where <x> is the result from [9].
         //
         System.exit( result );
     }

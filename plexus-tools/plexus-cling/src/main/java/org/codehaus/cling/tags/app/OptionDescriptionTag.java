@@ -1,5 +1,5 @@
 /* Created on Sep 13, 2004 */
-package org.codehaus.cling.tags;
+package org.codehaus.cling.tags.app;
 
 import org.codehaus.marmalade.model.AbstractMarmaladeTag;
 import org.codehaus.marmalade.runtime.MarmaladeExecutionContext;
@@ -8,20 +8,20 @@ import org.codehaus.marmalade.runtime.MarmaladeExecutionException;
 /**
  * @author jdcasey
  */
-public class DependencyArtifactTag
+public class OptionDescriptionTag
     extends AbstractMarmaladeTag
 {
 
     protected void doExecute( MarmaladeExecutionContext context )
     throws MarmaladeExecutionException
     {
-        String artifactId = (String)getBody(context, String.class);
+        String description = (String)getBody(context, String.class);
         
-        if(artifactId == null || artifactId.length() < 1) {
-            throw new MarmaladeExecutionException("dependency artifactId cannot be empty");
+        if(description == null || description.length() < 1) {
+            throw new MarmaladeExecutionException("option description cannot be empty");
         }
         
-        DependencyTag parent = (DependencyTag)requireParent(DependencyTag.class);
-        parent.setArtifactId(artifactId);
+        OptionTag parent = (OptionTag)requireParent(OptionTag.class);
+        parent.setDescription(description);
     }
 }

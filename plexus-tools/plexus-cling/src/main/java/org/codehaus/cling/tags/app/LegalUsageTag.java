@@ -1,5 +1,5 @@
 /* Created on Sep 14, 2004 */
-package org.codehaus.cling.tags;
+package org.codehaus.cling.tags.app;
 
 import org.codehaus.cling.cli.InvocationTemplate;
 import org.codehaus.cling.model.DefaultLegalUsage;

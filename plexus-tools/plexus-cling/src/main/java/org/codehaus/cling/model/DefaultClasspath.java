@@ -15,7 +15,7 @@ public class DefaultClasspath
 
     private List entries = new LinkedList();
 
-    public void addEntry( URL entry )
+    public void addEntry( ClasspathEntry entry )
     {
         entries.add(entry);
     }
