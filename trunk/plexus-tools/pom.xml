@@ -1,10 +1,13 @@
 <project>
-  <pomVersion>3</pomVersion>
+  <parent>
+    <groupId>plexus</groupId>
+    <artifactId>plexus-root</artifactId>
+    <version>1.0</version>
+  </parent>
   <groupId>plexus</groupId>  
-  <id>plexus-tool</id>
   <artifactId>plexus-tool</artifactId>
-  <name>Plexus Tools</name>
   <version>1.0</version>
+  <name>Plexus Tools Parent Project</name>
   <package>org.codehaus.plexus</package>
   <dependencies>
     <dependency>
