@@ -37,8 +37,11 @@ public interface ServiceBuilder
 {
     String ROLE = ServiceBuilder.class.getName();
 
-    void build( String servicename, File outputFile, File workingDirectory,
+    void build( String servicename, File workingDirectory,
                 Set remoteRepositories, ArtifactRepository localRespository, Set projectArtifacts,
                 File plexusConfiguration, File configurationsDirectory, File configurationPropertiesFile )
+        throws ServiceBuilderException;
+
+    void bundle( File outputFile, File workingDirectory )
         throws ServiceBuilderException;
 }

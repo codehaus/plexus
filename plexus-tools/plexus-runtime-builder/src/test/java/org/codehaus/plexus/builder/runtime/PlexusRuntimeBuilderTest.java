@@ -52,7 +52,7 @@ public class PlexusRuntimeBuilderTest
         // ----------------------------------------------------------------------
 
         File outputFile = getTestFile( "target/test-runtime.jar" );
-        
+
         File workingDirectory = getTestFile( "target/test-runtime" );
 
         FileUtils.deleteDirectory( workingDirectory );
@@ -93,7 +93,7 @@ public class PlexusRuntimeBuilderTest
 
         File configurationPropertiesFile = getTestFile( "src/test/resources/configuration.properties" );
 
-        runtimeBuilder.build( outputFile, workingDirectory,
+        runtimeBuilder.build( workingDirectory,
                               remoteRepositories, localRepository, artifacts,
                               plexusConfiguration, configurationPropertiesFile );
     }
