@@ -1,21 +1,18 @@
-package org.codehaus.plexus.summit.renderer;
-
-import org.codehaus.plexus.summit.rundata.RunData;
-import org.codehaus.plexus.summit.exception.SummitException;
-import org.codehaus.plexus.summit.pull.tools.TemplateLink;
-import org.codehaus.plexus.formica.FormManager;
-import org.codehaus.plexus.formica.Form;
-import org.codehaus.plexus.formica.web.FormRendererManager;
-import org.codehaus.plexus.formica.web.FormRendererNotFoundException;
-import org.codehaus.plexus.formica.web.FormRenderer;
-import org.codehaus.plexus.i18n.I18N;
-import org.codehaus.plexus.util.StringUtils;
+package org.codehaus.plexus.formica.web;
 
 import java.io.Writer;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 import ognl.Ognl;
+
+import org.codehaus.plexus.formica.Form;
+import org.codehaus.plexus.formica.FormManager;
+import org.codehaus.plexus.i18n.I18N;
+import org.codehaus.plexus.summit.exception.SummitException;
+import org.codehaus.plexus.summit.pull.tools.TemplateLink;
+import org.codehaus.plexus.summit.renderer.AbstractRenderer;
+import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -93,13 +90,15 @@ public class SummitFormRenderer
         try
         {
             renderer = formRendererManager.getFormRenderer( mode );
+
+            renderer.render( form, writer, i18n, formData, tl.toString() );
         }
         catch ( FormRendererNotFoundException e )
         {
-            e.printStackTrace();
-        }
+            getLogger().fatalError( "Could not find form renderer, type: '" + mode + "'.", e );
 
-        renderer.render( form, writer, i18n, formData, tl.toString() );
+            throw new SummitException( "Could not find form renderer, type: '" + mode + "'.", e );
+        }
     }
 
     public boolean viewExists( String view )
