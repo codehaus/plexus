@@ -23,14 +23,12 @@ package org.codehaus.plexus.maven.plugin;
  */
 
 import java.io.File;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
-import java.util.Iterator;
 
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
@@ -86,6 +84,13 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
  * expression="#localRepository"
  * description=""
  *
+ * @parameter name="remoteRepositories"
+ * type="java.util.List"
+ * required="true"
+ * validator=""
+ * expression="#project.remoteArtifactRepositories"
+ * description=""
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
@@ -99,7 +104,7 @@ public class PlexusTestRuntimeGenerator
 
         String finalName = (String) request.getParameter( "finalName" );
 
-        Set artifacts = (Set) request.getParameter( "artifacts" );
+        Set projectArtifacts = (Set) request.getParameter( "artifacts" );
 
         String testRuntimeConfiguration = (String) request.getParameter( "testRuntimeConfiguration" );
 
@@ -107,18 +112,16 @@ public class PlexusTestRuntimeGenerator
 
         ArtifactRepository localRepository = (ArtifactRepository) request.getParameter( "localRepository" );
 
+        List remoteRepositories = (List) request.getParameter( "remoteRepositories" );
+
         // ----------------------------------------------------------------------
         // Build the runtime
         // ----------------------------------------------------------------------
 
         File runtimeRoot = new File( basedir, "plexus-test-runtime" );
 
-        List remoteRepositories = Collections.EMPTY_LIST;
-
-        Set extraArtifacts = new HashSet(); // No extra extraArtifacts
-
         runtimeBuilder.build( runtimeRoot,
-                              remoteRepositories, localRepository, extraArtifacts,
+                              remoteRepositories, localRepository, projectArtifacts,
                               new File( testRuntimeConfiguration ), null );
 
         // ----------------------------------------------------------------------
@@ -129,7 +132,7 @@ public class PlexusTestRuntimeGenerator
 
         if ( !applicationJarFile.canRead() )
         {
-            throw new Exception( "Cannot read Plexus application artifact '" + applicationJarFile.getAbsolutePath() + "'." );
+            throw new Exception( "Can't read Plexus application artifact '" + applicationJarFile.getAbsolutePath() + "'." );
         }
 
         runtimeBuilder.addPlexusApplication( applicationJarFile, runtimeRoot );
@@ -138,7 +141,7 @@ public class PlexusTestRuntimeGenerator
         // Copy any services
         // ----------------------------------------------------------------------
 
-        for ( Iterator it = artifacts.iterator(); it.hasNext(); )
+        for ( Iterator it = projectArtifacts.iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
 
