@@ -35,7 +35,6 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
  *
  * @author Anthony Eden
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @author <a href="mailto:mmmaczka@interia.pl">Michal Maczka</a>
  * @version $Id$
  */
 public class REValidator

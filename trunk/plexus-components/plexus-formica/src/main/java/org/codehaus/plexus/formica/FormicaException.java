@@ -23,7 +23,7 @@ package org.codehaus.plexus.formica;
  */
 
 /**
- * @author <a href="mailto:mmaczka@interia.pl">Michal Maczka</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class FormicaException extends Exception

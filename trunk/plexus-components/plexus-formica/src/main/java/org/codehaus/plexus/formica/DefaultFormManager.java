@@ -41,7 +41,7 @@ import java.util.LinkedList;
 
 
 /**
- * @author <a href="mailto:mmaczka@interia.pl">Michal Maczka</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class DefaultFormManager

@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * @author <a href="mailto:mmmaczka@interia.pl">Michal Maczka</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class Form

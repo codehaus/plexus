@@ -32,7 +32,7 @@ package org.codehaus.plexus.formica.validation;
  * if and only if <code>validatorA.getId().equals( validatorB.getId() )</code>
  *
  * @author Anthony Eden
- * @author <a href="mailto:mmaczka@interia.pl">Michal Maczka</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  */
 public abstract class AbstractValidator implements Validator
 {
