@@ -5,11 +5,7 @@
     <artifactId>plexus-archetypes</artifactId>
     <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <!--
   <groupId>plexus</groupId>
   <artifactId>plexus-archetype-component-simple</artifactId>
-  -->
-  <groupId>maven</groupId>
-  <artifactId>maven-archetype-plexus-archetype-component-simple</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
 </project>
