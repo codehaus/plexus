@@ -85,7 +85,7 @@ public class PicoComponentFactory
 
             Object retValue = null;
 
-            Set requirements = componentDescriptor.getRequirements();
+            List requirements = componentDescriptor.getRequirements();
 
             ComponentRequirement requirement = getMatchingRequirement( componentDescriptor, requirements );
 
@@ -151,7 +151,7 @@ public class PicoComponentFactory
         }
     }
 
-    private ComponentRequirement getMatchingRequirement( ComponentDescriptor componentDescriptor, Set requirements )
+    private ComponentRequirement getMatchingRequirement( ComponentDescriptor componentDescriptor, List requirements )
     {
 
         ComponentRequirement retValue = null;
