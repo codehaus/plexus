@@ -15,20 +15,18 @@ public interface Persister
 {
     final public static String ROLE = Persister.class.getName();
 
-    public void setClass( Class clazz );
-    
     public void save( Object p );
 
     public void update( Persistable p );
     
     public void update( Object o, Serializable id );
     
-    public Object load( Serializable id ) 
+    public Object load( Serializable id, Class clazz ) 
         throws ObjectNotFoundException;
     
     public void delete( Object p );
     
-    public List selectAll();
+    public List selectAll(Class clazz);
 
     public void saveOrUpdate( Object p );
 }
