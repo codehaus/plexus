@@ -104,6 +104,7 @@ public class MimeTypeMap
     public static final String EXT_TIF = "tif";
     public static final String EXT_TIFF = "tiff";
     public static final String EXT_WBMP = "wbmp";
+    public static final String EXT_PDF = "pdf";
 
     /**
      * Priorities of available mappers.
@@ -138,6 +139,8 @@ public class MimeTypeMap
             MimeType.IMAGE_TIFF.toString() + " " + EXT_TIFF + " " + EXT_TIF);
         commonMapper.setContentType(
             MimeType.IMAGE_WBMP.toString() + " " + EXT_WBMP);
+        commonMapper.setContentType(
+            MimeType.APPLICATION_PDF.toString() + " " + EXT_PDF);
     }
 
     /**
