@@ -25,6 +25,7 @@ package org.codehaus.plexus.notification;
  */
 
 import java.util.Set;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -34,6 +35,6 @@ public interface RecipientSource
 {
     String ROLE = RecipientSource.class.getName();
 
-    Set getRecipients( String messageId, String notifierType )
+    Set getRecipients( String notifierType, String messageId, Map context )
         throws NotificationException;
 }
