@@ -20,6 +20,12 @@ import org.codehaus.plexus.action.AbstractAction;
 import org.codehaus.plexus.formica.Form;
 import org.codehaus.plexus.formica.FormManager;
 import org.codehaus.plexus.formica.validation.FormValidationResult;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 import java.util.Map;
 
@@ -29,14 +35,17 @@ import java.util.Map;
  */
 public abstract class AbstractEntityAction
     extends AbstractAction
+    implements Contextualizable
 {
     protected FormManager fm;
 
-    protected Object app;
+    protected PlexusContainer container;
 
     protected abstract void uponSuccessfulValidation( Form form, String entityId, Map map )
         throws Exception;
 
+    //TODO: we probably want the action interface to return an Object. For example after adding
+    // an entity I might want the Object reference.
     public void execute( Map map )
         throws Exception
     {
@@ -52,14 +61,21 @@ public abstract class AbstractEntityAction
         {
             uponSuccessfulValidation( fm.getForm( formId ), entityId, map );
         }
-        else
-        {
-        }
     }
 
-    protected Object getApp()
+    protected Object getApp( Form form )
+        throws ComponentLookupException
     {
-        return app;        
+        return container.lookup( form.getSourceRole() );
     }
 
+    // ----------------------------------------------------------------------
+    // Lifecylce Management
+    // ----------------------------------------------------------------------
+
+    public void contextualize( Context context )
+        throws ContextException
+    {
+        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+    }
 }

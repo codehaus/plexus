@@ -26,7 +26,7 @@ import java.util.Map;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
-public class DeleteIssue
+public class UpdateEntity
     extends AbstractEntityAction
 {
     protected void uponSuccessfulValidation( Form form, String entityId, Map map )
@@ -36,6 +36,12 @@ public class DeleteIssue
 
         m.put( "id", entityId );
 
-        Object o = Ognl.getValue( form.getDelete().getExpression(), m, getApp() );
+        Object entity = Ognl.getValue( form.getLookupExpression(), m, getApp( form ) );
+
+        fm.populate( form.getId(), map, entity );
+
+        m.put( "entity", entity );
+
+        Object o = Ognl.getValue( form.getUpdate().getExpression(), m, getApp( form ) );
     }
 }

@@ -26,18 +26,16 @@ import java.util.Map;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
-public class AddIssue
+public class DeleteEntity
     extends AbstractEntityAction
 {
     protected void uponSuccessfulValidation( Form form, String entityId, Map map )
         throws Exception
     {
-        Object target = fm.populate( form.getId(), map, getApp().getClass().getClassLoader() );
-
         Map m = new HashMap();
 
-        m.put( "entity", target );
+        m.put( "id", entityId );
 
-        Object o = Ognl.getValue( form.getAdd().getExpression(), m, getApp() );
+        Object o = Ognl.getValue( form.getDelete().getExpression(), m, getApp( form ) );
     }
 }
