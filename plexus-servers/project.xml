@@ -29,7 +29,7 @@
   
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:/plexus/plexus-servers/${pom.artifactId.substring(7)}</connection>
-    <url>http://cvs.plexus.codehaus.org/plexus-components/native/${pom.artifactId.substring(7)}/</url>
+    <url>http://cvs.plexus.codehaus.org/plexus-servers/${pom.artifactId.substring(7)}/</url>
   </repository>
 
   <mailingLists>
