@@ -2,8 +2,10 @@ package org.codehaus.plexus.formica.web;
 
 import org.codehaus.plexus.formica.Form;
 import org.codehaus.plexus.i18n.I18N;
+import org.codehaus.plexus.summit.rundata.RunData;
 
 import java.io.Writer;
+import java.util.Map;
 
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
@@ -29,6 +31,6 @@ public interface FormRenderer
 {
     String ROLE = FormRenderer.class.getName();
 
-    void render( Form form, Writer writer, I18N i18n, Object data, String baseUrl )
+    void render( Form form, Writer writer, I18N i18n, Object data, String baseUrl, RunData rundata )
         throws FormRenderingException;
 }

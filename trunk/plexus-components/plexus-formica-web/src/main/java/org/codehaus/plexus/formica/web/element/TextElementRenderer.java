@@ -18,6 +18,7 @@ package org.codehaus.plexus.formica.web.element;
 
 import org.codehaus.plexus.formica.Element;
 import org.codehaus.plexus.util.xml.XMLWriter;
+import org.codehaus.plexus.i18n.I18N;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -26,7 +27,7 @@ import org.codehaus.plexus.util.xml.XMLWriter;
 public class TextElementRenderer
     extends AbstractElementRenderer
 {
-    public void render( Element element, Object data, XMLWriter w )
+    public void render( Element element, Object data, XMLWriter w, I18N i18n )
     {
         w.startElement( "input" );
 
@@ -34,9 +35,21 @@ public class TextElementRenderer
 
         w.addAttribute( "name", element.getId() );
 
-        renderValue( element, data, w );
+        renderValue( element, data, w, i18n );
 
-        w.addAttribute( "size", "40" );
+        //TODO: take the size from the from the element. Probably need some visual
+        //      configuration there.
+        w.addAttribute( "size", "60" );
+
+        w.endElement();
+
+        // ----------------------------------------------------------------------
+        // Help message for the user
+        // ----------------------------------------------------------------------
+
+        w.startElement( "p" );
+
+        w.writeText( i18n.getString( element.getMessageKey()) );
 
         w.endElement();
     }

@@ -18,6 +18,7 @@ package org.codehaus.plexus.formica.web.element;
 
 import org.codehaus.plexus.formica.Element;
 import org.codehaus.plexus.util.xml.XMLWriter;
+import org.codehaus.plexus.i18n.I18N;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -25,9 +26,9 @@ import org.codehaus.plexus.util.xml.XMLWriter;
  */
 public abstract class AbstractElementRenderer
 {
-    public abstract void render( Element element, Object data, XMLWriter w );
+    public abstract void render( Element element, Object data, XMLWriter w, I18N i18n );
 
-    protected void renderValue( Element element, Object data, XMLWriter w )
+    protected void renderValue( Element element, Object data, XMLWriter w, I18N i18n )
     {
         String value;
 

@@ -27,7 +27,7 @@ public class DefaultFormRendererManager
 {
     private Map formRenderers;
 
-    public FormRenderer getFormRenderer( String type )
+    public FormRenderer lookup( String type )
         throws FormRendererNotFoundException
     {
         FormRenderer renderer = (FormRenderer) formRenderers.get( type );

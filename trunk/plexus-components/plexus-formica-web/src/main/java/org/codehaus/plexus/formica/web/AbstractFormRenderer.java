@@ -20,8 +20,10 @@ import org.codehaus.plexus.formica.Form;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.util.xml.XMLWriter;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
+import org.codehaus.plexus.summit.rundata.RunData;
 
 import java.io.Writer;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -34,14 +36,14 @@ public abstract class AbstractFormRenderer
     // Render
     // ----------------------------------------------------------------------
 
-    public void render( Form form, Writer writer, I18N i18n, Object data, String baseUrl )
+    public void render( Form form, Writer writer, I18N i18n, Object data, String baseUrl, RunData rundata )
         throws FormRenderingException
     {
         XMLWriter w = new PrettyPrintXMLWriter( writer );
 
         header( form, w, i18n );
 
-        body( form, w, i18n, data, baseUrl );
+        body( form, w, i18n, data, baseUrl, rundata );
 
         footer( form, w, i18n );
     }
@@ -73,7 +75,7 @@ public abstract class AbstractFormRenderer
 
     protected abstract String getHeaderTitle( Form form, I18N i18n );
 
-    protected abstract void body( Form form, XMLWriter writer, I18N i18n, Object data, String baseUrl )
+    protected abstract void body( Form form, XMLWriter writer, I18N i18n, Object data, String baseUrl, RunData rundata )
         throws FormRenderingException;
 
     // ----------------------------------------------------------------------

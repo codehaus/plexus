@@ -24,8 +24,10 @@ import org.codehaus.plexus.formica.web.AbstractFormRenderer;
 import org.codehaus.plexus.formica.web.FormRenderingException;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.util.xml.XMLWriter;
+import org.codehaus.plexus.summit.rundata.RunData;
 
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -39,7 +41,7 @@ public class ViewFormRenderer
         return i18n.getString( form.getView().getTitleKey() );
     }
 
-    public void body( Form form, XMLWriter w, I18N i18n, Object data, String baseUrl )
+    public void body( Form form, XMLWriter w, I18N i18n, Object data, String baseUrl, RunData parameters )
         throws FormRenderingException
     {
         // ----------------------------------------------------------------------

@@ -1,11 +1,6 @@
 package org.codehaus.plexus.formica.web;
 
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
-
 import ognl.Ognl;
-
 import org.codehaus.plexus.formica.Form;
 import org.codehaus.plexus.formica.FormManager;
 import org.codehaus.plexus.i18n.I18N;
@@ -13,6 +8,10 @@ import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.pull.tools.TemplateLink;
 import org.codehaus.plexus.summit.renderer.AbstractRenderer;
 import org.codehaus.plexus.summit.rundata.RunData;
+
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -24,6 +23,24 @@ import org.codehaus.plexus.summit.rundata.RunData;
 public class SummitFormRenderer
     extends AbstractRenderer
 {
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    public static String MODE  = "mode";
+
+    public static String MODE_ADD  = "add";
+
+    public static String MODE_UPDATE = "update";
+
+    public static String MODE_VIEW = "view";
+
+    public static String MODE_SUMMARY = "summary";
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
     private I18N i18n;
 
     private FormManager formManager;
@@ -39,34 +56,24 @@ public class SummitFormRenderer
 
         String id = target.substring( 0, target.indexOf( "." ) );
 
-        String mode = data.getParameters().getString( "mode" );
+        String mode = data.getParameters().getString( MODE );
 
         Object formData = null;
 
         Form form = formManager.getForm( id );
 
-        // I would like to get this and set it somewhere else...
-
         if ( mode == null )
         {
-            mode = "add";
+            mode = MODE_ADD;
         }
 
-        // I need to deal with these options polymorphically so that i can
-        // add more options that i have not forseen.
-
-        // ----------------------------------------------------------------------
-
-        // This is still a bit hackish, need to do it completely with Ognl in
-        // some fashion. Would eventually like to generate classes for the lookup.
-
-        if ( mode.equals( "summary" ) )
+        if ( mode.equals( MODE_SUMMARY ) )
         {
             Object o = lookup( form.getSourceRole() );
 
             formData = Ognl.getValue( form.getSummaryCollectionExpression(), o );
         }
-        else if ( mode.equals( "update" ) || mode.equals( "view" ) )
+        else if ( mode.equals( MODE_UPDATE ) || mode.equals( MODE_VIEW ) )
         {
             //TODO: thrown an exception if there is no source role
             //TODO: thrown an exception if there is no lookup expression
@@ -92,9 +99,9 @@ public class SummitFormRenderer
 
         try
         {
-            renderer = formRendererManager.getFormRenderer( mode );
+            renderer = formRendererManager.lookup( mode );
 
-            renderer.render( form, writer, i18n, formData, tl.toString() );
+            renderer.render( form, writer, i18n, formData, tl.toString(), data );
         }
         catch ( FormRendererNotFoundException e )
         {
