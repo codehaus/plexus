@@ -151,27 +151,29 @@ public abstract class AbstractBuilder
         }
     }
 
-    protected Set getBootArtifacts( Set projectArtifacts, List remoteRepositories, ArtifactRepository localRepository )
+    protected Set getBootArtifacts( Set projectArtifacts, List remoteRepositories, ArtifactRepository localRepository,
+                                    boolean ignoreIfMissing )
         throws ArtifactResolutionException
     {
         Set artifacts = new HashSet();
 
-        resolveVersion( "classworlds", "classworlds", projectArtifacts, false, artifacts );
+        resolveVersion( "classworlds", "classworlds", projectArtifacts, ignoreIfMissing, artifacts );
 
         artifacts = findArtifacts( remoteRepositories, localRepository, artifacts, false, null );
 
         return artifacts;
     }
 
-    protected Set getCoreArtifacts( Set projectArtifacts, List remoteRepositories, ArtifactRepository localRepository )
+    protected Set getCoreArtifacts( Set projectArtifacts, List remoteRepositories, ArtifactRepository localRepository,
+                                    boolean ignoreIfMissing )
         throws ArtifactResolutionException
     {
         Set artifacts = new HashSet();
 
-        resolveVersion( "plexus", "plexus-container-default", projectArtifacts, false, artifacts );
-        resolveVersion( "plexus", "plexus-container-artifact", projectArtifacts, false, artifacts );
-        resolveVersion( "plexus", "plexus-appserver", projectArtifacts, false, artifacts );
-//        resolveVersion( "plexus", "plexus-utils", projectArtifacts, false, artifacts );
+        resolveVersion( "plexus", "plexus-container-default", projectArtifacts, ignoreIfMissing, artifacts );
+        resolveVersion( "plexus", "plexus-container-artifact", projectArtifacts, ignoreIfMissing, artifacts );
+        resolveVersion( "plexus", "plexus-appserver", projectArtifacts, ignoreIfMissing, artifacts );
+        resolveVersion( "plexus", "plexus-utils", projectArtifacts, ignoreIfMissing, artifacts );
 
         artifacts = findArtifacts( remoteRepositories, localRepository, artifacts, false, null );
 
@@ -238,14 +240,11 @@ public abstract class AbstractBuilder
         {
             Artifact artifact = (Artifact) it.next();
 
-            System.err.println( "trying: " + artifact );
             if ( artifact.getGroupId().equals( groupId ) &&
                  artifact.getArtifactId().equals( artifactId ) &&
                  artifact.getType().equals( "jar" ) )
             {
                 resolvedArtifacts.add( artifact );
-
-                System.err.println( "Resolved version of '" + groupId + ":" + artifact + " to " + artifact.getVersion() );
 
                 return;
             }

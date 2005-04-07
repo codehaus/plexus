@@ -32,11 +32,9 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Iterator;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.Artifact;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
@@ -126,27 +124,12 @@ public class DefaultPlexusRuntimeBuilder
             Set bootArtifacts = null;
 
             Set coreArtifacts = null;
+
             try
             {
-                bootArtifacts = getBootArtifacts( projectArtifacts, remoteRepositories, localRepository );
+                bootArtifacts = getBootArtifacts( projectArtifacts, remoteRepositories, localRepository, false );
 
-                System.err.println( "Boot artifacts: " );
-                for ( Iterator it = bootArtifacts.iterator(); it.hasNext(); )
-                {
-                    Artifact artifact = (Artifact) it.next();
-
-                    System.err.println( "boot: " + artifact );
-                }
-
-                coreArtifacts = getCoreArtifacts( projectArtifacts, remoteRepositories, localRepository );
-
-                System.err.println( "Core artifacts: " );
-                for ( Iterator it = coreArtifacts.iterator(); it.hasNext(); )
-                {
-                    Artifact artifact = (Artifact) it.next();
-
-                    System.err.println( "core: " + artifact );
-                }
+                coreArtifacts = getCoreArtifacts( projectArtifacts, remoteRepositories, localRepository, false );
             }
             catch ( ArtifactResolutionException e )
             {
