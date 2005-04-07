@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Iterator;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -125,11 +126,23 @@ public class DefaultApplicationBuilder
         {
             Set excludedArtifacts = new HashSet();
 
-            excludedArtifacts.addAll( getBootArtifacts( projectArtifacts, remoteRepositories, localRepository ) );
+            excludedArtifacts.addAll( getBootArtifacts( projectArtifacts, remoteRepositories, localRepository, true ) );
 
-            excludedArtifacts.addAll( getCoreArtifacts( projectArtifacts, remoteRepositories, localRepository ) );
+            excludedArtifacts.addAll( getCoreArtifacts( projectArtifacts, remoteRepositories, localRepository, true ) );
 
+            for ( Iterator it = serviceArtifacts.iterator(); it.hasNext(); )
+            {
+                Artifact artifact = (Artifact) it.next();
+
+                System.err.println( "pre: " + artifact );
+            }
             serviceArtifacts = findArtifacts( remoteRepositories, localRepository, serviceArtifacts, true, null );
+            for ( Iterator it = serviceArtifacts.iterator(); it.hasNext(); )
+            {
+                Artifact artifact = (Artifact) it.next();
+
+                System.err.println( "post: " + artifact );
+            }
 
             excludedArtifacts.addAll( serviceArtifacts );
 
