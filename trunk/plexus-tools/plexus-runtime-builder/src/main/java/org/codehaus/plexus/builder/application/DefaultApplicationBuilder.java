@@ -130,19 +130,7 @@ public class DefaultApplicationBuilder
 
             excludedArtifacts.addAll( getCoreArtifacts( projectArtifacts, remoteRepositories, localRepository, true ) );
 
-            for ( Iterator it = serviceArtifacts.iterator(); it.hasNext(); )
-            {
-                Artifact artifact = (Artifact) it.next();
-
-                System.err.println( "pre: " + artifact );
-            }
             serviceArtifacts = findArtifacts( remoteRepositories, localRepository, serviceArtifacts, true, null );
-            for ( Iterator it = serviceArtifacts.iterator(); it.hasNext(); )
-            {
-                Artifact artifact = (Artifact) it.next();
-
-                System.err.println( "post: " + artifact );
-            }
 
             excludedArtifacts.addAll( serviceArtifacts );
 
