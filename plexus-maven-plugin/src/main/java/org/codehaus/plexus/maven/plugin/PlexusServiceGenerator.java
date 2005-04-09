@@ -50,7 +50,7 @@ import org.codehaus.plexus.builder.service.ServiceBuilder;
  * expression="#basedir"
  * description=""
  *
- * @parameter name="serviceAritfacts"
+ * @parameter name="serviceArtifacts"
  * type="java.util.Set"
  * required="true"
  * validator=""
@@ -119,7 +119,7 @@ public class PlexusServiceGenerator
 
         String basedir = (String) request.getParameter( "basedir" );
 
-        Set serviceAritfacts = (Set) request.getParameter( "serviceAritfacts" );
+        Set serviceArtifacts = (Set) request.getParameter( "serviceArtifacts" );
 
         String finalName = (String) request.getParameter( "finalName" );
 
@@ -167,8 +167,8 @@ public class PlexusServiceGenerator
                        classes,
                        remoteRepositories,
                        localRepository,
-                       serviceAritfacts,
-                       new File( plexusConfiguration ),
+                       serviceArtifacts,
+                       new File( basedir, plexusConfiguration ),
                        configurationsDir,
                        configurationPropertiesFile );
 
