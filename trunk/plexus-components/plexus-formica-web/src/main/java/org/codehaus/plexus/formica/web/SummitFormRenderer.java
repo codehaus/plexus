@@ -1,17 +1,21 @@
 package org.codehaus.plexus.formica.web;
 
-import ognl.Ognl;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Collections;
+
 import org.codehaus.plexus.formica.Form;
 import org.codehaus.plexus.formica.FormManager;
+import org.codehaus.plexus.formica.FormNotFoundException;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.pull.tools.TemplateLink;
 import org.codehaus.plexus.summit.renderer.AbstractRenderer;
 import org.codehaus.plexus.summit.rundata.RunData;
+import org.codehaus.plexus.util.StringUtils;
 
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
+import ognl.Ognl;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -65,7 +69,18 @@ public class SummitFormRenderer
 
         Object formData = null;
 
-        Form form = formManager.getForm( id );
+        Form form = null;
+
+        try
+        {
+            form = formManager.getForm( id );
+        }
+        catch ( FormNotFoundException e )
+        {
+            getLogger().error( "Could not find form with id '" + id + "'.", e );
+
+            return;
+        }
 
         if ( mode == null )
         {
@@ -74,24 +89,35 @@ public class SummitFormRenderer
 
         if ( mode.equals( MODE_SUMMARY ) )
         {
-            Object o = lookup( form.getSourceRole() );
+            Object o = lookup( assertNotEmpty( form, form.getSourceRole(), "source role" ) );
 
-            formData = Ognl.getValue( form.getSummaryCollectionExpression(), o );
+            String expr = form.getSummaryCollectionExpression();
+
+            formData = getValue( expr, Collections.EMPTY_MAP, o );
+
+            return;
         }
         else if ( mode.equals( MODE_UPDATE ) || mode.equals( MODE_VIEW ) || mode.equals( MODE_DELETE ) )
         {
             //TODO: thrown an exception if there is no source role
             //TODO: thrown an exception if there is no lookup expression
 
-            Object o = lookup( form.getSourceRole() );
+            Object o = lookup( assertNotEmpty( form, form.getSourceRole(), "source role" ) );
 
             String i = data.getParameters().getString( "id" );
+
+            if ( StringUtils.isEmpty( i ) )
+            {
+                throw new SummitException( "Missing parameter 'id'." );
+            }
 
             Map map = new HashMap();
 
             map.put( "id", i );
 
-            formData = Ognl.getValue( form.getLookupExpression(), map, o );
+            String expr = assertNotEmpty( form, form.getLookupExpression(), "lookup expression" );
+
+            formData = getValue( expr, map, o );
         }
 
         // ----------------------------------------------------------------------
@@ -114,10 +140,50 @@ public class SummitFormRenderer
 
             throw new SummitException( "Could not find form renderer, type: '" + mode + "'.", e );
         }
+        catch ( FormRenderingException e )
+        {
+            getLogger().fatalError( "Could not find form renderer, type: '" + mode + "'.", e );
+
+            throw new SummitException( "Could not find form renderer, type: '" + mode + "'.", e );
+        }
     }
 
     public boolean viewExists( String view )
     {
         return true;
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    private String assertNotEmpty( Form form, String value, String field )
+        throws SummitException
+    {
+        if ( StringUtils.isEmpty( value ) )
+        {
+            throw new SummitException( "Missing " + field + " from form '" + form.getId() + "'." );
+        }
+
+        return value;
+    }
+
+    private Object getValue( String expr, Map map, Object o )
+        throws SummitException
+    {
+        Object date;
+
+        try
+        {
+            date = Ognl.getValue( expr, map, o );
+        }
+        catch ( Throwable e )
+        {
+            getLogger().error( "Error while evaluation OGNL expression '" + expr + "'.", e );
+
+            throw new SummitException( "Error while evaluation OGNL expression '" + expr + "'.", e );
+        }
+
+        return date;
     }
 }
