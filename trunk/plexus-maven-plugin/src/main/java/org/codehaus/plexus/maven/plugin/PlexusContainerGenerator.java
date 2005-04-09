@@ -115,7 +115,7 @@ public class PlexusContainerGenerator
 
         File outputDirectory = new File( basedir, "plexus-runtime" );
 
-        File plexusConfigurationFile = new File( plexusConfiguration );
+        File plexusConfigurationFile = new File( basedir, plexusConfiguration );
 
         File configurationPropertiesFile = null;
 

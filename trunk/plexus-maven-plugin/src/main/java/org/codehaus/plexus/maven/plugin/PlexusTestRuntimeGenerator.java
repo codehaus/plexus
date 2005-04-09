@@ -122,7 +122,7 @@ public class PlexusTestRuntimeGenerator
 
         runtimeBuilder.build( runtimeRoot,
                               remoteRepositories, localRepository, projectArtifacts,
-                              new File( testRuntimeConfiguration ), null );
+                              new File( basedir, testRuntimeConfiguration ), null );
 
         // ----------------------------------------------------------------------
         // Copy the application
