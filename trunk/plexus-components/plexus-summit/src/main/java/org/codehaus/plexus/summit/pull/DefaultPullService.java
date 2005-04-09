@@ -55,6 +55,10 @@ public class DefaultPullService
         requestTools = new HashMap();
     }
 
+    // ----------------------------------------------------------------------
+    // Component Lifecycle
+    // ----------------------------------------------------------------------
+
     public void contextualize( Context context )
         throws ContextException
     {
@@ -87,6 +91,10 @@ public class DefaultPullService
         }
     }
 
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
     public void populateContext( ViewContext context, RunData data )
     {
         populateWithGlobalTools( context );
@@ -115,7 +123,7 @@ public class DefaultPullService
 
                 context.put( key, component );
 
-                getLogger().debug( "Addded tool $" + key + " to the context." );
+//                getLogger().debug( "Addded tool $" + key + " to the context." );
             }
             catch ( Exception e )
             {
@@ -153,7 +161,7 @@ public class DefaultPullService
                         tool = container.lookup( (String) sessionTools.get( key ) );
                         // Session tools should have their own interface.
                         //setRequestRunData( tool, data );
-                        
+
                         // Store the tool in the session
                         session.setAttribute( key, tool );
                     }
@@ -168,7 +176,7 @@ public class DefaultPullService
                 // put the tool in the context
                 context.put( key, tool );
 
-                getLogger().debug( "Addded tool $" + key + " to the context." );
+//                getLogger().debug( "Addded tool $" + key + " to the context." );
             }
         }
     }
@@ -243,5 +251,4 @@ public class DefaultPullService
             container.release( globalTools.remove( key ) );
         }
     }
-
 }

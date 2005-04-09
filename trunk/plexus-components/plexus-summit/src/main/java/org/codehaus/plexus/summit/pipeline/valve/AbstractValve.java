@@ -13,5 +13,3 @@ public abstract class AbstractValve
     implements Valve
 {
 }
-
-

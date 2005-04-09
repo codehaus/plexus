@@ -12,32 +12,30 @@ import org.codehaus.plexus.summit.view.ViewContext;
  * PullToolValve uses the PullService to populate the ViewContext.  After
  * populating the context it invokes the next Valve.  After the valve returns
  * the releases the tools from the context.
- * 
+ *
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  * @since Feb 7, 2003
  */
 public class PullToolValve
     extends AbstractValve
 {
-    public void invoke(RunData data )
+    public void invoke( RunData data )
         throws IOException, SummitException
     {
         PullService pull = null;
+
         try
         {
             pull = (PullService) data.lookup( PullService.ROLE );
         }
-        catch (Exception e)
+        catch ( Exception e )
         {
-            throw new SummitException( "Could not find the PullService!", e);
+            throw new SummitException( "Could not find the PullService!", e );
         }
-        
-        ViewContext viewContext = 
-            (ViewContext) data.getMap().get(SummitConstants.VIEW_CONTEXT);
-            
+
+        ViewContext viewContext = (ViewContext) data.getMap().get( SummitConstants.VIEW_CONTEXT );
+
         // Populate the context with the tools
         pull.populateContext( viewContext, data );
-
     }
-
 }
