@@ -32,6 +32,7 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
+import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
 
@@ -91,6 +92,13 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
  * expression="#project.remoteArtifactRepositories"
  * description=""
  *
+ * @parameter name="project"
+ * type="org.apache.maven.project.MavenProject"
+ * required="true"
+ * validator=""
+ * expression="#project"
+ * description="current MavenProject instance"
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
@@ -114,21 +122,37 @@ public class PlexusTestRuntimeGenerator
 
         List remoteRepositories = (List) request.getParameter( "remoteRepositories" );
 
+        MavenProject project = (MavenProject) request.getParameter( "project" );
+
         // ----------------------------------------------------------------------
         // Build the runtime
         // ----------------------------------------------------------------------
 
-        File runtimeRoot = new File( basedir, "plexus-test-runtime" );
+        String projectBasedir = project.getFile().getParentFile().getAbsolutePath();
+
+        File workingBasedir = null;
+        
+        if ( new File( basedir ).isAbsolute() )
+        {
+            workingBasedir = new File( basedir );
+        }
+        else
+        {
+            workingBasedir = new File( projectBasedir, basedir );
+        }
+
+        File runtimeRoot = new File( workingBasedir, "plexus-test-runtime" );
 
         runtimeBuilder.build( runtimeRoot,
                               remoteRepositories, localRepository, projectArtifacts,
-                              new File( basedir, testRuntimeConfiguration ), null );
+                              new File( projectBasedir, testRuntimeConfiguration ), null );
 
         // ----------------------------------------------------------------------
         // Copy the application
         // ----------------------------------------------------------------------
 
-        File applicationJarFile = PlexusBundleApplicationMojo.getApplicationJarFile( basedir, finalName );
+        File applicationJarFile = PlexusBundleApplicationMojo.getApplicationJarFile( workingBasedir.getAbsolutePath(),
+                                                                                     finalName );
 
         if ( !applicationJarFile.canRead() )
         {

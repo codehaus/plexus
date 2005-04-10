@@ -33,6 +33,7 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
+import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.application.ApplicationBuilder;
 
@@ -106,6 +107,13 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
  * expression="#project.remoteArtifactRepositories"
  * description=""
  *
+ * @parameter name="project"
+ * type="org.apache.maven.project.MavenProject"
+ * required="true"
+ * validator=""
+ * expression="#project"
+ * description="current MavenProject instance"
+ *
  */
 public class PlexusApplicationGenerator
     extends AbstractPlugin
@@ -135,24 +143,39 @@ public class PlexusApplicationGenerator
 
         List remoteRepositories = (List) request.getParameter( "remoteRepositories" );
 
+        MavenProject project = (MavenProject) request.getParameter( "project" );
+
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
 
-        File workingDirectory = new File( basedir, "/plexus-application" );
+        String projectBasedir = project.getFile().getParentFile().getAbsolutePath();
+
+        File workingBasedir = null;
+        
+        if ( new File( basedir ).isAbsolute() )
+        {
+            workingBasedir = new File( basedir );
+        }
+        else
+        {
+            workingBasedir = new File( projectBasedir, basedir );
+        }
+
+        File workingDirectory = new File( workingBasedir, "/plexus-application" );
 
         File configurationDirectoryFile = null;
 
         if ( configurationDirectory != null )
         {
-            configurationDirectoryFile = new File( configurationDirectory );
+            configurationDirectoryFile = new File( projectBasedir, configurationDirectory );
         }
 
         File configurationPropertiesFile = null;
 
         if ( configurationProperties != null )
         {
-            configurationPropertiesFile = new File( configurationProperties );
+            configurationPropertiesFile = new File( projectBasedir, configurationProperties );
         }
 
         // ----------------------------------------------------------------------
@@ -181,7 +204,7 @@ public class PlexusApplicationGenerator
                           localRepository,
                           projectArtifacts,
                           services,
-                          new File( applicationConfiguration ),
+                          new File( projectBasedir, applicationConfiguration ),
                           configurationDirectoryFile,
                           configurationPropertiesFile );
     }
