@@ -84,6 +84,13 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
  * validator=""
  * expression="#localRepository"
  * description=""
+ *
+ * @parameter name="project"
+ * type="org.apache.maven.project.MavenProject"
+ * required="true"
+ * validator=""
+ * expression="#project"
+ * description="current MavenProject instance"
  */
 public class PlexusContainerGenerator
     extends AbstractPlugin
@@ -109,19 +116,34 @@ public class PlexusContainerGenerator
 
         List remoteRepositories = (List) request.getParameter( "remoteRepositories" );
 
+        MavenProject project = (MavenProject) request.getParameter( "project" );
+
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
 
-        File outputDirectory = new File( basedir, "plexus-runtime" );
+        String projectBasedir = project.getFile().getParentFile().getAbsolutePath();
 
-        File plexusConfigurationFile = new File( basedir, plexusConfiguration );
+        File workingBasedir = null;
+        
+        if ( new File( basedir ).isAbsolute() )
+        {
+            workingBasedir = new File( basedir );
+        }
+        else
+        {
+            workingBasedir = new File( projectBasedir, basedir );
+        }
+
+        File outputDirectory = new File( workingBasedir, "plexus-runtime" );
+
+        File plexusConfigurationFile = new File( projectBasedir, plexusConfiguration );
 
         File configurationPropertiesFile = null;
 
         if ( configurationProperties != null )
         {
-            configurationPropertiesFile = new File( configurationProperties );
+            configurationPropertiesFile = new File( projectBasedir, configurationProperties );
         }
 
         builder.build( outputDirectory,

@@ -27,6 +27,7 @@ import java.io.File;
 import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
+import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.application.ApplicationBuilder;
 
@@ -58,6 +59,13 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
  * expression="#component.org.codehaus.plexus.builder.application.ApplicationBuilder"
  * description=""
  *
+ * @parameter name="project"
+ * type="org.apache.maven.project.MavenProject"
+ * required="true"
+ * validator=""
+ * expression="#project"
+ * description="current MavenProject instance"
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
@@ -77,13 +85,28 @@ public class PlexusBundleApplicationMojo
 
         ApplicationBuilder builder = (ApplicationBuilder) request.getParameter( "applicationBuilder" );
 
+        MavenProject project = (MavenProject) request.getParameter( "project" );
+
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
 
-        File runtimeDirectory = new File( basedir, "plexus-application" );
+        String projectBasedir = project.getFile().getParentFile().getAbsolutePath();
 
-        File outputFile = getApplicationJarFile( basedir, finalName );
+        File workingBasedir = null;
+        
+        if ( new File( basedir ).isAbsolute() )
+        {
+            workingBasedir = new File( basedir );
+        }
+        else
+        {
+            workingBasedir = new File( projectBasedir, basedir );
+        }
+
+        File runtimeDirectory = new File( workingBasedir, "plexus-application" );
+
+        File outputFile = getApplicationJarFile( workingBasedir.getAbsolutePath(), finalName );
 
         builder.bundle( outputFile, runtimeDirectory );
     }

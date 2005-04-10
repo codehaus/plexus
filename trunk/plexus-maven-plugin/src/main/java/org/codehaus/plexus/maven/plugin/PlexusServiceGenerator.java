@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.project.MavenProject;
 import org.apache.maven.plugin.AbstractPlugin;
 import org.apache.maven.plugin.PluginExecutionRequest;
 import org.apache.maven.plugin.PluginExecutionResponse;
@@ -106,6 +107,12 @@ import org.codehaus.plexus.builder.service.ServiceBuilder;
  * expression="#component.org.codehaus.plexus.builder.service.ServiceBuilder"
  * description=""
  *
+ * @parameter name="project"
+ * type="org.apache.maven.project.MavenProject"
+ * required="true"
+ * validator=""
+ * expression="#project"
+ * description="current MavenProject instance"
  */
 public class PlexusServiceGenerator
     extends AbstractPlugin
@@ -135,13 +142,28 @@ public class PlexusServiceGenerator
 
         ServiceBuilder builder = (ServiceBuilder) request.getParameter( "serviceBuilder" );
 
+        MavenProject project = (MavenProject) request.getParameter( "project" );
+
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
 
-        File workingDirectory = new File( basedir, "/plexus-service" );
+        String projectBasedir = project.getFile().getParentFile().getAbsolutePath();
 
-        File outputFile = new File( basedir, finalName + ".jar" );
+        File workingBasedir = null;
+        
+        if ( new File( basedir ).isAbsolute() )
+        {
+            workingBasedir = new File( basedir );
+        }
+        else
+        {
+            workingBasedir = new File( projectBasedir, basedir );
+        }
+
+        File workingDirectory = new File( workingBasedir, "/plexus-service" );
+
+        File outputFile = new File( workingBasedir, finalName + ".jar" );
 
         File configurationsDir = null;
 
@@ -149,7 +171,7 @@ public class PlexusServiceGenerator
 
         if ( configurationProperties != null )
         {
-            configurationPropertiesFile = new File( configurationProperties );
+            configurationPropertiesFile = new File( projectBasedir, configurationProperties );
         }
 
         // ----------------------------------------------------------------------
@@ -168,7 +190,7 @@ public class PlexusServiceGenerator
                        remoteRepositories,
                        localRepository,
                        serviceArtifacts,
-                       new File( basedir, plexusConfiguration ),
+                       new File( projectBasedir, plexusConfiguration ),
                        configurationsDir,
                        configurationPropertiesFile );
 
