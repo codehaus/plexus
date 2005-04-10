@@ -22,4 +22,10 @@
       <version>1.0-alpha-2</version>
     </dependency>
   </dependencies>
+  <modules>
+    <module>plexus-bsh-factory</module>
+    <!-- module>plexus-groovy-factory</module -->
+    <!-- module>plexus-jython-factory</module -->
+    <module>plexus-marmalade-factory</module>
+  </modules>
 </project>
