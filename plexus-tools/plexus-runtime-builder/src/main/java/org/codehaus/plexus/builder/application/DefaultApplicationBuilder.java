@@ -113,7 +113,7 @@ public class DefaultApplicationBuilder
         }
         catch ( IOException e )
         {
-            throw new ApplicationBuilderException( "Error while processing the configurations." );
+            throw new ApplicationBuilderException( "Error while processing the configurations.", e );
         }
 
         // ----------------------------------------------------------------------
@@ -264,7 +264,10 @@ public class DefaultApplicationBuilder
 
         List excludes = new ArrayList();
 
+        // TODO: centralize this list
         excludes.add( "**/CVS/**" );
+
+        excludes.add( "**/.svn/**" );
 
         if ( configurationPropertiesFile != null )
         {
