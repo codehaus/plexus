@@ -71,7 +71,7 @@ public class JettyPlexusService
     {
         getLogger().info( "Starting servlet container service." );
 
-        servletContainer.addListener( null, 8080 );
+        //servletContainer.addListener( null, 8080 );
     }
 
     public void stop()
