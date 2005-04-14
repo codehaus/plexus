@@ -38,7 +38,7 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.WebApplicationContext;
 import org.mortbay.util.InetAddrPort;
 
-/**
+/**                1
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
@@ -76,6 +76,8 @@ public class JettyServletContainer
         // ----------------------------------------------------------------------
 
         server = new Server();
+
+        addListener( null, 8080 );
 
         server.start();
     }
@@ -134,8 +136,12 @@ public class JettyServletContainer
         }
     }
 
-    public void deployWarFile( File war, boolean extractWar, File extractionLocation, String context,
-                               DefaultPlexusContainer container, String virtualHost )
+    public void deployWarFile( File war,
+                               boolean extractWar,
+                               File extractionLocation,
+                               String context,
+                               DefaultPlexusContainer container,
+                               String virtualHost )
         throws ServletContainerException
     {
         deployWAR( war, extractWar, extractionLocation, context, container, virtualHost );
@@ -164,8 +170,12 @@ public class JettyServletContainer
     //
     // ----------------------------------------------------------------------
 
-    private void deployWAR( File war, boolean extractWar, File extractionLocation, String context,
-                            DefaultPlexusContainer container, String virtualHost )
+    private void deployWAR( File war,
+                            boolean extractWar,
+                            File extractionLocation,
+                            String context,
+                            DefaultPlexusContainer container,
+                            String virtualHost )
         throws ServletContainerException
     {
         if ( war == null )
