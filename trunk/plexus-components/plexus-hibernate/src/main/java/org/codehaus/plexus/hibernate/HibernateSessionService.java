@@ -2,6 +2,7 @@ package org.codehaus.plexus.hibernate;
 
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Session;
+import net.sf.hibernate.Transaction;
 
 /**
  * A service which starts and ends a hibernate session over its lifecycle.
@@ -14,7 +15,13 @@ public interface HibernateSessionService
 {
     final public static String ROLE = HibernateSessionService.class.getName();
     
+    public boolean hasSession();
+    
     public Session getSession() throws HibernateException;
+
+    public Session getSession(boolean createTx) throws HibernateException;
+    
+    public Transaction getTransaction();
     
     public void closeSession() throws HibernateException;
 }
