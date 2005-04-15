@@ -151,7 +151,7 @@ public class JettyPlexusService
             else
             {
                 getLogger().info( "Deploying application '" + applicationRuntimeProfile.getName() + "' " +
-                                  "port " + application.getPort() + "." +
+                                  "port " + application.getPort() + ", " +
                                   "under the context '" + application.getContext() + "'." );
 
                 servletContainer.addListener( null, application.getPort() );
