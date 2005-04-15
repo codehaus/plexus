@@ -62,7 +62,15 @@ public class AvalonConfiguration
      */
     public Configuration getChild( String child, boolean value )
     {
-        return new AvalonConfiguration( config.getChild( child, value ) );
+        PlexusConfiguration c = config.getChild( child, value );
+        if ( c != null )
+        {
+            return new AvalonConfiguration( c );
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**
