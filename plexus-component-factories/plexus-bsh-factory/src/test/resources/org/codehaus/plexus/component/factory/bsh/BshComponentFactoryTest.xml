@@ -1,5 +1,5 @@
 <plexus>
-  <component-factory-manager implementation="org.codehaus.plexus.component.factory.DefaultComponentFactoryManager">
+  <!-- component-factory-manager implementation="org.codehaus.plexus.component.factory.DefaultComponentFactoryManager">
     <component-factories>
       <component-factory implementation="org.codehaus.plexus.component.factory.bsh.BshComponentFactory">
         <id>bsh</id>
@@ -7,5 +7,12 @@
         <bsh-path>${basedir}/src/bsh</bsh-path>
       </component-factory>
     </component-factories>
-  </component-factory-manager>
+  </component-factory-manager -->
+  <components>
+    <component>
+      <role>org.codehaus.plexus.component.factory.bsh.Hello</role>
+      <implementation>DefaultHello</implementation>
+      <component-factory>bsh</component-factory>
+    </component>
+  </components>
 </plexus>

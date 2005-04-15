@@ -5,9 +5,8 @@ import org.codehaus.plexus.PlexusTestCase;
 public class BshComponentFactoryTest
     extends PlexusTestCase
 {
-    public BshComponentFactoryTest( String name )
+    public BshComponentFactoryTest()
     {
-        super( name );
     }
 
     public void testComponent()
