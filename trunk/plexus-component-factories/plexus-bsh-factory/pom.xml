@@ -6,7 +6,7 @@
     <version>1.0</version>
   </parent>
   <artifactId>plexus-bsh-factory</artifactId>
-  <version>1.0-alpha-5</version>
+  <version>1.0-alpha-6-SNAPSHOT</version>
   <name>Plexus BSH Factory</name>
   <dependencies>
     <dependency>
