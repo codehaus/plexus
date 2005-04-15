@@ -1,9 +1,14 @@
 <component-set>
   <components>
     <component>
-      <role>org.codehaus.plexus.component.factory.bsh.Hello</role>
-      <implementation>DefaultHello</implementation>
-      <component-factory>bsh</component-factory>
+      <role>org.codehaus.plexus.component.factory.ComponentFactory</role>
+      <implementation>org.codehaus.plexus.component.factory.bsh.BshComponentFactory</implementation>
+      <role-hint>bsh</role-hint>
+      <configuration>
+        <id>bsh</id>
+        <bsh-home>${basedir}/target</bsh-home>
+        <bsh-path>${basedir}/src/bsh</bsh-path>
+      </configuration>
     </component>
   </components>
 </component-set>
