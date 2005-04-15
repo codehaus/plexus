@@ -25,12 +25,14 @@ package org.codehaus.plexus.service.jetty;
  */
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.FileOutputStream;
-import java.util.jar.JarFile;
-import java.util.jar.JarEntry;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.codehaus.plexus.application.deploy.ApplicationDeployer;
 import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
@@ -39,7 +41,9 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
-import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
+import org.codehaus.plexus.service.jetty.configuration.ServiceConfigurationBuilder;
+import org.codehaus.plexus.service.jetty.configuration.WebApplication;
 import org.codehaus.plexus.util.IOUtil;
 
 /**
@@ -50,6 +54,9 @@ public class JettyPlexusService
     extends AbstractLogEnabled
     implements PlexusService, Initializable, Startable
 {
+    /** @requirement */
+    private ServiceConfigurationBuilder configurationBuilder;
+
     /** @requirement */
     private ApplicationDeployer deployer;
 
@@ -70,8 +77,6 @@ public class JettyPlexusService
         throws Exception
     {
         getLogger().info( "Starting servlet container service." );
-
-        //servletContainer.addListener( null, 8080 );
     }
 
     public void stop()
@@ -84,63 +89,38 @@ public class JettyPlexusService
     // PlexusService Implementation
     // ----------------------------------------------------------------------
 
-    public void beforeApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile, PlexusConfiguration serviceConfiguration )
+    public void beforeApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
+                                        PlexusConfiguration serviceConfiguration )
         throws Exception
     {
-        PlexusConfiguration[] webapps = serviceConfiguration.getChild( "webapps" ).getChildren( "webapp" );
+        ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration );
 
-        for ( int i = 0; i < webapps.length; i++ )
+        for ( Iterator it = configuration.getWebapps().iterator(); it.hasNext(); )
         {
-            String path = webapps[ i ].getChild( "path" ).getValue( null );
+            WebApplication application = (WebApplication) it.next();
 
-            String file = webapps[ i ].getChild( "file" ).getValue( null );
-
-            String context = webapps[ i ].getChild( "context" ).getValue( null );
-
-            if ( StringUtils.isEmpty( context ) )
-            {
-                getLogger().warn( "Error while deploying web application: 'context' is missing or empty." );
-
-                continue;
-            }
-
-            // TODO: Read virtual host definitions
             File webAppDir;
 
-            if ( StringUtils.isEmpty( path ) )
+            if ( application.getPath() == null)
             {
-                if ( StringUtils.isEmpty( file ) )
-                {
-                    getLogger().warn( "Error while deploying web application: " +
-                                      "For each 'webapp' a 'path' or 'file' element has to be specified." );
-
-                    continue;
-                }
-
-                String extractionPath = webapps[ i ].getChild( "extractionPath" ).getValue( null );
-
-                if ( StringUtils.isEmpty( extractionPath ) )
-                {
-                    getLogger().warn( "Error while deploying web application: " +
-                                      "For each 'extractionPath' element has to be specified." );
-
-                    continue;
-                }
-
                 // ----------------------------------------------------------------------
                 // Extract the jar
                 // ----------------------------------------------------------------------
 
-                extractJarFile( file, extractionPath );
+                extractJarFile( new File( application.getFile() ), application.getExtractionPath() );
 
-                webAppDir = new File( extractionPath );
+                webAppDir = new File( application.getExtractionPath() );
             }
             else
             {
-                webAppDir = new File( path );
+                webAppDir = new File( application.getPath() );
             }
 
-            deployDirectory( webAppDir, context, applicationRuntimeProfile );
+            deployDirectory( webAppDir,
+                             application.getContext(),
+                             application.getVirtualHost(),
+                             application.getPort(),
+                             applicationRuntimeProfile );
         }
     }
 
@@ -148,43 +128,48 @@ public class JettyPlexusService
                                        PlexusConfiguration serviceConfiguration )
         throws Exception
     {
-        PlexusConfiguration[] webapps = serviceConfiguration.getChild( "webapps" ).getChildren( "webapp" );
+        ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration );
 
-        for ( int i = 0; i < webapps.length; i++ )
+        for ( Iterator it = configuration.getWebapps().iterator(); it.hasNext(); )
         {
-            String context = webapps[ i ].getChild( "context" ).getValue();
+            WebApplication application = (WebApplication) it.next();
 
-            servletContainer.startApplication( context );
+            if ( !servletContainer.hasContext( application.getContext() ) )
+            {
+                continue;
+            }
+
+            if ( application.getVirtualHost() != null )
+            {
+                getLogger().info( "Deploying application '" + applicationRuntimeProfile.getName() + "' " +
+                                  "on virtual host '" + application.getVirtualHost() + "', " +
+                                  "port " + application.getPort() + ", " +
+                                  "under the context '" + application.getContext() + "'." );
+
+                servletContainer.addListener( application.getVirtualHost(), application.getPort() );
+            }
+            else
+            {
+                getLogger().info( "Deploying application '" + applicationRuntimeProfile.getName() + "' " +
+                                  "port " + application.getPort() + "." +
+                                  "under the context '" + application.getContext() + "'." );
+
+                servletContainer.addListener( null, application.getPort() );
+            }
+
+            servletContainer.startApplication( application.getContext() );
         }
     }
 
     // ----------------------------------------------------------------------
     // Deployment
     // ----------------------------------------------------------------------
-/*
-    private void deployFile( File file, boolean extractWar, File extractionPath, String context,
-                             ApplicationRuntimeProfile applicationRuntimeProfile )
-        throws Exception
-    {
-        if ( !file.isFile() )
-        {
-            throw new Exception( "The webapp isn't a file: '" + file.getAbsolutePath() + "'." );
-        }
 
-        try
-        {
-            String virtualHost = null;
-
-            servletContainer.deployWarFile( file, extractWar, extractionPath, context,
-                                            applicationRuntimeProfile.getContainer(), virtualHost );
-        }
-        catch ( ServletContainerException e )
-        {
-            getLogger().error( "Error while deploying WAR '" + file.getAbsolutePath() + "'.", e );
-        }
-    }
-*/
-    private void deployDirectory( File directory, String context, ApplicationRuntimeProfile runtimeProfile )
+    private void deployDirectory( File directory,
+                                  String context,
+                                  String virtualHost,
+                                  int port,
+                                  ApplicationRuntimeProfile runtimeProfile )
         throws Exception
     {
         if ( !directory.isDirectory() )
@@ -194,9 +179,7 @@ public class JettyPlexusService
 
         try
         {
-            String virtualHost = null;
-
-            servletContainer.deployWarDirectory( directory, context, runtimeProfile.getContainer(), virtualHost );
+            servletContainer.deployWarDirectory( directory, context, virtualHost, port, runtimeProfile.getContainer() );
         }
         catch ( ServletContainerException e )
         {
@@ -208,9 +191,14 @@ public class JettyPlexusService
     //
     // ----------------------------------------------------------------------
 
-    private void extractJarFile( String file, String extractionPath )
+    private void extractJarFile( File file, String extractionPath )
         throws Exception
     {
+        if ( !file.exists() )
+        {
+            throw new FileNotFoundException( file.getAbsolutePath() );
+        }
+
         JarFile jarFile = new JarFile( file );
 
         try

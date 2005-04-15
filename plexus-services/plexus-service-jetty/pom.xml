@@ -10,6 +10,7 @@
   <version>1.0-alpha-1-SNAPSHOT</version>
   <packaging>plexus-service</packaging>
   <name>Plexus Jetty Service</name>
+
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
