@@ -1,9 +1,9 @@
-package org.codehaus.plexus.service.jetty;
+package org.codehaus.plexus.service.jetty.configuration;
 
 /*
  * The MIT License
  *
- * Copyright (c) 2004, The Codehaus
+ * Copyright (c) 2004-2005, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,35 +24,66 @@ package org.codehaus.plexus.service.jetty;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.net.UnknownHostException;
-
-import org.codehaus.plexus.DefaultPlexusContainer;
-
-import org.mortbay.http.HttpContext;
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public interface ServletContainer
+public class WebApplication
 {
-    String ROLE = ServletContainer.class.getName();
+    private String file;
 
-    boolean hasContext( String contextPath );
+    private String path;
 
-    void addListener( String address, int port )
-        throws ServletContainerException, UnknownHostException;
+    private String extractionPath;
 
-    // TODO: addVirtualHost();
+    private String context;
 
-    void deployWarFile( File war, boolean extractWar, File extractionLocation, DefaultPlexusContainer container, String context,
-                        String virtualHost, int port )
-        throws ServletContainerException;
+    private String virtualHost;
 
-    void deployWarDirectory( File war, String context, String virtualHost, int port, DefaultPlexusContainer container )
-        throws ServletContainerException;
+    private int port;
 
-    void startApplication( String contextPath )
-        throws ServletContainerException;
+    public WebApplication( String file, String path, String extractionPath, String context, String virtualHost, int port )
+    {
+        this.file = file;
+
+        this.path = path;
+
+        this.extractionPath = extractionPath;
+
+        this.context = context;
+
+        this.virtualHost = virtualHost;
+
+        this.port = port;
+    }
+
+    public String getFile()
+    {
+        return file;
+    }
+
+    public String getPath()
+    {
+        return path;
+    }
+
+    public String getExtractionPath()
+    {
+        return extractionPath;
+    }
+
+    public String getContext()
+    {
+        return context;
+    }
+
+    public String getVirtualHost()
+    {
+        return virtualHost;
+    }
+
+    public int getPort()
+    {
+        return port;
+    }
 }
