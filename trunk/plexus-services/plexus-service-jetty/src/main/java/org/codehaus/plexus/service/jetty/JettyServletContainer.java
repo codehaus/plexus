@@ -34,6 +34,7 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 
 import org.mortbay.http.HttpListener;
+import org.mortbay.http.HttpContext;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.WebApplicationContext;
 import org.mortbay.util.InetAddrPort;
@@ -77,8 +78,6 @@ public class JettyServletContainer
 
         server = new Server();
 
-        addListener( null, 8080 );
-
         server.start();
     }
 
@@ -107,6 +106,25 @@ public class JettyServletContainer
     // ----------------------------------------------------------------------
     // ServletContainer Implementation
     // ----------------------------------------------------------------------
+
+    public boolean hasContext( String contextPath )
+    {
+        HttpContext[] contexts = server.getContexts();
+
+        HttpContext context = null;
+
+        for ( int i = 0; i < contexts.length; i++ )
+        {
+            context = contexts[ i ];
+
+            if ( context.getContextPath().equals( contextPath ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public void addListener( String address, int port )
         throws ServletContainerException, UnknownHostException
@@ -139,26 +157,31 @@ public class JettyServletContainer
     public void deployWarFile( File war,
                                boolean extractWar,
                                File extractionLocation,
-                               String context,
                                DefaultPlexusContainer container,
-                               String virtualHost )
+                               String context,
+                               String virtualHost,
+                               int port )
         throws ServletContainerException
     {
-        deployWAR( war, extractWar, extractionLocation, context, container, virtualHost );
+        deployWAR( war, extractWar, extractionLocation, container, context, virtualHost );
     }
 
-    public void deployWarDirectory( File war, String context, DefaultPlexusContainer container, String virtualHost )
+    public void deployWarDirectory( File war,
+                                    String context,
+                                    String virtualHost,
+                                    int port,
+                                    DefaultPlexusContainer container )
         throws ServletContainerException
     {
-        deployWAR( war, false, null, context, container, virtualHost );
+        deployWAR( war, false, null, container, context, virtualHost );
     }
 
-    public void startApplication( String context )
+    public void startApplication( String contextPath )
         throws ServletContainerException
     {
         try
         {
-            server.getContext( context ).start();
+            getContext( contextPath ).start();
         }
         catch ( Exception e )
         {
@@ -170,11 +193,31 @@ public class JettyServletContainer
     //
     // ----------------------------------------------------------------------
 
+    private HttpContext getContext( String contextPath )
+        throws ServletContainerException
+    {
+        HttpContext[] contexts = server.getContexts();
+
+        HttpContext context = null;
+
+        for ( int i = 0; i < contexts.length; i++ )
+        {
+            context = contexts[ i ];
+
+            if ( context.getContextPath().equals( contextPath ) )
+            {
+                return context;
+            }
+        }
+
+        throw new ServletContainerException( "No such context '" + contextPath + "'." );
+    }
+
     private void deployWAR( File war,
                             boolean extractWar,
                             File extractionLocation,
-                            String context,
                             DefaultPlexusContainer container,
+                            String context,
                             String virtualHost )
         throws ServletContainerException
     {

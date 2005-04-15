@@ -1,9 +1,9 @@
-package org.codehaus.plexus.service.jetty;
+package org.codehaus.plexus.service.jetty.configuration;
 
 /*
  * The MIT License
  *
- * Copyright (c) 2004, The Codehaus
+ * Copyright (c) 2004-2005, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,35 +24,26 @@ package org.codehaus.plexus.service.jetty;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.net.UnknownHostException;
+import java.util.List;
+import java.util.ArrayList;
 
-import org.codehaus.plexus.DefaultPlexusContainer;
-
-import org.mortbay.http.HttpContext;
+import org.codehaus.plexus.service.jetty.configuration.WebApplication;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public interface ServletContainer
+public class ServiceConfiguration
 {
-    String ROLE = ServletContainer.class.getName();
+    private List webapps = new ArrayList();
 
-    boolean hasContext( String contextPath );
+    public void addWebApplication( WebApplication webApplication )
+    {
+        webapps.add( webApplication );
+    }
 
-    void addListener( String address, int port )
-        throws ServletContainerException, UnknownHostException;
-
-    // TODO: addVirtualHost();
-
-    void deployWarFile( File war, boolean extractWar, File extractionLocation, DefaultPlexusContainer container, String context,
-                        String virtualHost, int port )
-        throws ServletContainerException;
-
-    void deployWarDirectory( File war, String context, String virtualHost, int port, DefaultPlexusContainer container )
-        throws ServletContainerException;
-
-    void startApplication( String contextPath )
-        throws ServletContainerException;
+    public List getWebapps()
+    {
+        return webapps;
+    }
 }
