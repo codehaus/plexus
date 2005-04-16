@@ -1,0 +1,3 @@
+<testScript xmlns="marmalade:org.codehaus.plexus.component.factory.marmalade.TestTaglib">
+  <c:out value="test, test" xmlns:c="marmalade:core"/>
+</testScript>
