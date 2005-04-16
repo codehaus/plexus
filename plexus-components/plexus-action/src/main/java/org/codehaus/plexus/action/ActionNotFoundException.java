@@ -25,10 +25,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
  */
 
 /**
- *
- *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- *
  * @version $Id$
  */
 public class ActionNotFoundException
@@ -39,7 +36,7 @@ public class ActionNotFoundException
         super( s );
     }
 
-    public ActionNotFoundException(String s, ComponentLookupException e)
+    public ActionNotFoundException( String s, ComponentLookupException e )
     {
         super( s, e );
     }

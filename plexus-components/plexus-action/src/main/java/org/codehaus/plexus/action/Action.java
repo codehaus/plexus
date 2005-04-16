@@ -27,16 +27,15 @@ import java.util.Map;
 /**
  * An <code>Action</code in Plexus is meant to model the UML notion of an Action as closely
  * as possible.
- *
+ * <p/>
  * An action is an executable atomic computation. Actions may include operation calls, the
  * creation or destruction of another object, or the sending of a signal to an object.
- *
+ * <p/>
  * An action is atomic, meaning that it cannot be interrupted by an event and therefore
  * runs to completion. This is in contrast to an activity, which may be interrupted
  * by other events. 89
  *
  * @author <a href="mailto:jason@codehaus.com">Jason van Zyl</a>
- *
  * @version $Id$
  */
 public interface Action

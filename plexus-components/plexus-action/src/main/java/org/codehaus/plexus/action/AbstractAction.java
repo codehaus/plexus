@@ -31,10 +31,7 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 
 /**
- *
- *
  * @author <a href="mailto:jason@codehaus.com">Jason van Zyl</a>
- *
  * @version $Id$
  */
 public abstract class AbstractAction
