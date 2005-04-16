@@ -110,6 +110,8 @@ public class SummaryFormRenderer
 
         String rowClass = "a";
 
+        int count = 1;
+
         for ( Iterator i = summaryIterator; i.hasNext(); )
         {
             w.startElement( "tr" );
@@ -147,7 +149,7 @@ public class SummaryFormRenderer
                 }
                 catch( ComponentLookupException e )
                 {
-
+                    e.printStackTrace();
                 }
                 catch ( OgnlException e )
                 {

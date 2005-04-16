@@ -94,8 +94,6 @@ public class SummitFormRenderer
             String expr = form.getSummaryCollectionExpression();
 
             formData = getValue( expr, Collections.EMPTY_MAP, o );
-
-            return;
         }
         else if ( mode.equals( MODE_UPDATE ) || mode.equals( MODE_VIEW ) || mode.equals( MODE_DELETE ) )
         {
