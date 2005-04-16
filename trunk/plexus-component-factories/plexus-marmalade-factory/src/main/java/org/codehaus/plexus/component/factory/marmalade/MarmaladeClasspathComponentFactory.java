@@ -37,7 +37,6 @@ public class MarmaladeClasspathComponentFactory
                 System.out.println("[" + i + "]  " + constituent);
             }
         }
-        System.out.println( "Script location for implementation [" + impl + "] is: " + scriptLocation );
 
         return scriptLocation;
     }

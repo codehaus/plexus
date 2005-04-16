@@ -2,28 +2,22 @@
 package org.codehaus.plexus.component.factory.marmalade;
 
 import org.codehaus.classworlds.ClassRealm;
-import org.codehaus.classworlds.NoSuchRealmException;
-import org.codehaus.marmalade.metamodel.ModelBuilderException;
-import org.codehaus.marmalade.metamodel.ScriptBuilder;
+import org.codehaus.marmalade.launch.MarmaladeLaunchException;
+import org.codehaus.marmalade.launch.MarmaladeLauncher;
 import org.codehaus.marmalade.model.MarmaladeScript;
 import org.codehaus.marmalade.model.MarmaladeTag;
-import org.codehaus.marmalade.parsing.DefaultParsingContext;
-import org.codehaus.marmalade.parsing.MarmaladeParsetimeException;
-import org.codehaus.marmalade.parsing.MarmaladeParsingContext;
-import org.codehaus.marmalade.parsing.ScriptParser;
-import org.codehaus.marmalade.runtime.DefaultContext;
-import org.codehaus.marmalade.runtime.MarmaladeExecutionContext;
-import org.codehaus.marmalade.runtime.MarmaladeExecutionException;
-import org.codehaus.marmalade.util.RecordingReader;
+import org.codehaus.marmalade.monitor.log.CommonLogLevels;
+import org.codehaus.marmalade.monitor.log.DefaultLog;
+import org.codehaus.marmalade.monitor.log.MarmaladeLog;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.factory.AbstractComponentFactory;
+import org.codehaus.plexus.component.factory.ComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Component factory for reading marmalade scripts and executing them to return
@@ -34,148 +28,155 @@ import java.net.URL;
  * @author jdcasey
  */
 public abstract class AbstractMarmaladeComponentFactory
-    extends AbstractComponentFactory
+    implements ComponentFactory
 {
+
+    private MarmaladeLog marmaladeLog = new DefaultLog();
+
+    private String id = "marmalade";
+
     protected AbstractMarmaladeComponentFactory()
     {
+    }
+
+    public String getId()
+    {
+        return id;
     }
 
     public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm classRealm, PlexusContainer container )
         throws ComponentInstantiationException
     {
         ClassRealm componentRealm = container.getComponentRealm( componentDescriptor.getComponentKey() );
+        ClassRealm thisRealm = container.getComponentRealm(ComponentFactory.ROLE + "marmalade");
 
         URL scriptLocation = getScriptLocation( componentDescriptor, componentRealm );
 
-        ClassRealm parent = componentRealm.getParent();
-
-        if ( parent == null )
-        {
-            parent = classRealm;
-        }
-        
-        try
-        {
-            componentRealm.importFrom( parent.getId(), "org.codehaus.marmalade" );
-            componentRealm.importFrom( parent.getId(), "org.apache.maven" );
-        }
-        catch ( NoSuchRealmException e )
-        {
-            throw new ComponentInstantiationException("Cannot configure imported packages on component realm.", e);
-        }
-
         Object result = null;
-        
-        ClassLoader oldCl = Thread.currentThread().getContextClassLoader();
+
         try
         {
-            Thread.currentThread().setContextClassLoader(new RealmDelegatingClassLoader(componentRealm));
-            result = parseComponent( scriptLocation );
+            result = parseComponent( scriptLocation, componentRealm, classRealm, thisRealm );
         }
-        finally
+        catch ( Exception e )
         {
-            Thread.currentThread().setContextClassLoader(oldCl);
+            componentRealm.display();
+
+            if ( e instanceof ComponentInstantiationException )
+            {
+                throw (ComponentInstantiationException) e;
+            }
+            else
+            {
+                throw new ComponentInstantiationException( "Cannot build component for: "
+                    + componentDescriptor.getComponentKey(), e );
+            }
         }
-        
+
         return result;
     }
 
     protected abstract URL getScriptLocation( ComponentDescriptor componentDescriptor, ClassRealm classRealm );
 
-    public Object parseComponent( URL scriptLocation ) throws ComponentInstantiationException
+    public Object parseComponent( URL scriptLocation, ClassRealm realm, ClassRealm parameterRealm, ClassRealm thisRealm )
+        throws ComponentInstantiationException
     {
         Object result = null;
 
-        MarmaladeParsingContext parsingContext = buildParsingContext( scriptLocation );
-
-        MarmaladeScript script = getScriptInstance( parsingContext );
-
-        result = executeScript( script );
-
-        return result;
-    }
-
-    protected Object executeScript( MarmaladeScript script ) throws ComponentInstantiationException
-    {
-        PlexusComponentTag componentTag = (PlexusComponentTag) script.getRoot();
-
-        MarmaladeExecutionContext execCtx = new DefaultContext();
         try
         {
-            script.execute( execCtx );
-        }
-        catch ( MarmaladeExecutionException e )
-        {
-            throw new ComponentInstantiationException( "failed to execute component script: " + script.getLocation(), e );
-        }
+//            URL it0015Resource2 = realm.getResource( "META-INF/marmalade/it0015.def" );
+//            marmaladeLog.log(CommonLogLevels.INFO, "it0015 taglib definition resource from component realm is: " + it0015Resource2);
+            
+            List entries = new ArrayList();
+            entries.add("Realm loaders from each level starting at component level and moving away: ");
+            
+            ClassRealm cr = realm;
+            
+            int idx = 0;
+            while(cr != null)
+            {
+                entries.add("\n  ");
+                entries.add("[");
+                entries.add(String.valueOf(idx++));
+                entries.add(": id=");
+                entries.add(cr.getId());
+                entries.add("] ");
+                entries.add(cr.getClassLoader());
+                
+                cr = cr.getParent();
+            }
+            
+            entries.add("\n\nRealm loaders from each level starting at parameter-realm level and moving away: ");
+            
+            cr = parameterRealm;
+            
+            idx = 0;
+            while(cr != null)
+            {
+                entries.add("\n  ");
+                entries.add("[");
+                entries.add(String.valueOf(idx++));
+                entries.add(": id=");
+                entries.add(cr.getId());
+                entries.add("] ");
+                entries.add(cr.getClassLoader());
+                
+                cr = cr.getParent();
+            }
+            
+            entries.add("\n\nRealm loaders from each level starting at this-realm level and moving away: ");
+            
+            cr = thisRealm;
+            
+            idx = 0;
+            while(cr != null)
+            {
+                entries.add("\n  ");
+                entries.add("[");
+                entries.add(String.valueOf(idx++));
+                entries.add(": id=");
+                entries.add(cr.getId());
+                entries.add("] ");
+                entries.add(cr.getClassLoader());
+                
+                cr = cr.getParent();
+            }
+            
+            entries.add("\n\nRealm loader used to load this factory is: ");
+            entries.add(getClass().getClassLoader());
+            
+            marmaladeLog.log(CommonLogLevels.INFO, entries);
+            
+            MarmaladeLauncher launcher = new MarmaladeLauncher();
+            
+            launcher.withLog( marmaladeLog );
+            launcher.withInputURL(scriptLocation);
+            
+            launcher.withDefaultTagLibrary(null);
 
-        Object result = componentTag.getComponent();
+            MarmaladeScript script = launcher.buildScript();
 
-        return result;
-    }
+            MarmaladeTag rootTag = script.getRoot();
+            
+            marmaladeLog.log(CommonLogLevels.INFO, "Root tag type: " + rootTag);
+            
+            PlexusComponentTag componentTag = (PlexusComponentTag) rootTag;
 
-    protected MarmaladeScript getScriptInstance( MarmaladeParsingContext parsingContext )
-        throws ComponentInstantiationException
-    {
-        ScriptBuilder builder = null;
-        try
-        {
-            ScriptParser parser = new ScriptParser();
+            launcher.run();
 
-            builder = parser.parse( parsingContext );
-        }
-        catch ( MarmaladeParsetimeException e )
-        {
-            throw new ComponentInstantiationException( "failed to parse component script: "
-                + parsingContext.getInputLocation(), e );
-        }
-
-        MarmaladeScript script = null;
-        try
-        {
-            script = builder.build();
-        }
-        catch ( ModelBuilderException e )
-        {
-            throw new ComponentInstantiationException( "failed to build component script: "
-                + parsingContext.getInputLocation(), e );
-        }
-
-        MarmaladeTag root = script.getRoot();
-
-        if ( !(root instanceof PlexusComponentTag) )
-        {
-            throw new ComponentInstantiationException( "marmalade script does not build a plexus component [root tag class: "
-                + root.getClass().getName() + "]" );
-        }
-
-        return script;
-    }
-
-    protected MarmaladeParsingContext buildParsingContext( URL scriptLocation ) throws ComponentInstantiationException
-    {
-        InputStream scriptResource = null;
-        ;
-        try
-        {
-            scriptResource = scriptLocation.openStream();
+            result = componentTag.getComponent();
         }
         catch ( IOException e )
         {
-            throw new ComponentInstantiationException( "Cannot open stream for script location: " + scriptLocation );
+            throw new ComponentInstantiationException( "Cannot read component script: " + scriptLocation, e );
         }
-
-        if ( scriptResource == null )
+        catch ( MarmaladeLaunchException e )
         {
-            throw new ComponentInstantiationException( "can't get script from classpath: " + scriptLocation );
+            throw new ComponentInstantiationException( "Error parsing component from script: " + scriptLocation, e );
         }
 
-        RecordingReader scriptIn = new RecordingReader( new InputStreamReader( scriptResource ) );
-
-        MarmaladeParsingContext context = new DefaultParsingContext();
-        context.setInput( scriptIn );
-        context.setInputLocation( scriptLocation.toExternalForm() );
-
-        return context;
+        return result;
     }
+
 }
