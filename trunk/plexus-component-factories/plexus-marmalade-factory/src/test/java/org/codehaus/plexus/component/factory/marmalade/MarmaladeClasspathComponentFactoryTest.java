@@ -51,7 +51,7 @@ public class MarmaladeClasspathComponentFactoryTest extends TestCase {
             Object component = factory.newInstance(descriptor, realm, container.getContainer());
             
             assertNotNull(component);
-            assertEquals("TestComponent", component);
+            assertTrue(component instanceof TestTag);
         }
         finally {
             if(file.exists()) {

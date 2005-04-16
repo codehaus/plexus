@@ -9,7 +9,7 @@ import org.codehaus.marmalade.model.AbstractMarmaladeTag;
 public class TestTag extends AbstractMarmaladeTag implements PlexusComponentTag{
 
     public Object getComponent() {
-        return "TestComponent";
+        return this;
     }
-
+    
 }
