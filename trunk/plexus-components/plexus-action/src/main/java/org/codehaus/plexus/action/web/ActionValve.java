@@ -35,10 +35,7 @@ import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
 import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
- *
- *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- *
  * @version $Id$
  */
 public class ActionValve
@@ -51,7 +48,7 @@ public class ActionValve
     {
         String actionId = data.getParameters().getString( "action", "" );
 
-        if ( !actionId.equals("") )
+        if ( !actionId.equals( "" ) )
         {
             Action action = null;
 
@@ -62,12 +59,13 @@ public class ActionValve
             catch ( ActionNotFoundException e )
             {
                 getLogger().error( "Cannot find action with the id of " + actionId, e );
+
                 return;
             }
 
             try
             {
-                Map m = createContext(data);
+                Map m = createContext( data );
 
                 m.put( "data", data );
 
@@ -84,12 +82,12 @@ public class ActionValve
      * @param data
      * @return
      */
-    protected Map createContext(RunData data)
+    protected Map createContext( RunData data )
     {
         // The parameter map in the request consists of an array of values for
         // the given key so this is why this is being done.
         Map m = new HashMap();
-        
+
         for ( Enumeration e = data.getRequest().getParameterNames(); e.hasMoreElements(); )
         {
             String key = (String) e.nextElement();
