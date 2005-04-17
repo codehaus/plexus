@@ -8,7 +8,7 @@
   <groupId>plexus</groupId>
   <artifactId>plexus-action</artifactId>
   <packaging>jar</packaging>
-  <name>Plexus Action Component Set</name>
+  <name>Plexus Action</name>
   <version>1.0-alpha-1-SNAPSHOT</version>
   <dependencies>
     <dependency>
