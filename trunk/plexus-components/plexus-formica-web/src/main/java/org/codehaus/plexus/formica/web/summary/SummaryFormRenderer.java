@@ -148,11 +148,10 @@ public class SummaryFormRenderer
 
                         w.writeText( text );
                     }
-
                 }
                 catch( ComponentLookupException e )
                 {
-                    e.printStackTrace();
+                    throw new FormRenderingException( "Content generator with id = " + element.getContentGenerator() + " does not exist", e );
                 }
                 catch ( OgnlException e )
                 {
