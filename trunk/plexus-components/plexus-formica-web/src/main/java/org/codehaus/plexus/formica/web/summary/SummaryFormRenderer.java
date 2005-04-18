@@ -137,15 +137,18 @@ public class SummaryFormRenderer
                         ContentGenerator cg = (ContentGenerator) container.lookup( ContentGenerator.ROLE, se.getContentGenerator() );
 
                         text = cg.generate( item );
+
+                        w.writeMarkup( text );
                     }
                     else
                     {
                         Object value =  Ognl.getValue( element.getExpression(), item );
 
                         text = value.toString();
+
+                        w.writeText( text );
                     }
 
-                    w.writeText( text );
                 }
                 catch( ComponentLookupException e )
                 {
