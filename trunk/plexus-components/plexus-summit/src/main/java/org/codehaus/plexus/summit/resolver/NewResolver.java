@@ -53,6 +53,8 @@ public class NewResolver
         // Layout
         // ---------------------------------------------------------------
 
+        //TODO: correctly match layouts to forms 
+
         if ( target.indexOf( "form" ) > 0 )
         {
             View layoutView = getView( "Dummy.vm", LAYOUT_TARGET_PREFIX );

@@ -20,9 +20,9 @@ public class DisplayValve
     {
         try
         {
-            Display display = (Display) data.lookup( Display.ROLE, this.display );
+            Display d = (Display) data.lookup( Display.ROLE, display );
 
-            display.render( data );
+            d.render( data );
         }
         catch ( Exception e )
         {
