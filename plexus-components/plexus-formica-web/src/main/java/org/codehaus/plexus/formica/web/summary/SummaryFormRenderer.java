@@ -81,9 +81,11 @@ public class SummaryFormRenderer
 
         w.startElement( "th" );
 
-        w.addAttribute( "colspan", "3" );
+        w.addAttribute( "colspan", Integer.toString( form.getSummary().getOperations().size() ) );
 
-        w.writeText( "Operations" );
+        //w.writeText( "Operations" );
+
+        w.writeText( " " );
 
         w.endElement();
 
