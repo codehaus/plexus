@@ -45,7 +45,7 @@
         <error-view>Error.vm</error-view>
       </configuration>
     </component>
-    
+
     <component>
       <role>org.codehaus.plexus.summit.resolver.Resolver</role>
       <role-hint>classic</role-hint>

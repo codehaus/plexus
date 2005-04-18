@@ -44,6 +44,9 @@ public class NewResolver
     public Resolution resolve( String target )
         throws Exception
     {
+        //TODO: this needs to be made entirely flexible. Right now this is hacked to
+        // work with velocity and forms and that's it which is bad.
+
         Resolution resolution = new Resolution();
 
         // ---------------------------------------------------------------
@@ -98,10 +101,6 @@ public class NewResolver
         return resolution;
     }
 
-    /**
-     * @param data
-     * @return
-     */
     protected Renderer getRenderer(String target)
         throws Exception
     {
@@ -115,10 +114,6 @@ public class NewResolver
         {
             screenType = "velocity";
         }
-
-        //System.out.println( "target = " + target );
-
-        //System.out.println( "screenType = " + screenType );
 
         return (Renderer) lookup( Renderer.ROLE, screenType );
     }
