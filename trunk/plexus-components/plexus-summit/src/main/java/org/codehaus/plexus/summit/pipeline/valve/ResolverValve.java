@@ -11,7 +11,7 @@ public class ResolverValve
     extends AbstractValve
 {
     private String resolver;
-    
+
     public void invoke( RunData data )
         throws IOException, SummitException
     {
@@ -27,10 +27,12 @@ public class ResolverValve
         }
         catch ( Exception e )
         {
-            if (e instanceof SummitException)
+            if ( e instanceof SummitException )
+            {
                 throw (SummitException) e;
-            
-            throw new SummitException("Couldn't resolve target.", e);
+            }
+
+            throw new SummitException( "Couldn't resolve target.", e );
         }
     }
 }
