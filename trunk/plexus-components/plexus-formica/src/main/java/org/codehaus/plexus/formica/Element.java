@@ -47,6 +47,8 @@ public class Element
 
     private String type = "text";
 
+    private String contentGenerator;
+
     public Element()
     {
     }
@@ -147,5 +149,10 @@ public class Element
     public String getType()
     {
         return type;
+    }
+
+    public String getContentGenerator()
+    {
+        return contentGenerator;
     }
 }
