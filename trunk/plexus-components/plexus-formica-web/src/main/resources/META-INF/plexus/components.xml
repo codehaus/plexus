@@ -47,7 +47,7 @@
     </component>
     <component>
       <role>org.codehaus.plexus.formica.web.FormRenderer</role>
-      <implementation>org.codehaus.plexus.formica.web.add.AddFormRenderer</implementation>
+      <implementation>org.codehaus.plexus.formica.web.add.UpdateFormRenderer</implementation>
       <role-hint>update</role-hint>
     </component>
     <component>
@@ -91,6 +91,16 @@
       <role>org.codehaus.plexus.action.Action</role>
       <role-hint>deleteEntity</role-hint>
       <implementation>org.codehaus.plexus.formica.action.DeleteEntity</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.formica.FormManager</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.action.Action</role>
+      <role-hint>callMethod</role-hint>
+      <implementation>org.codehaus.plexus.formica.action.CallMethod</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.formica.FormManager</role>
