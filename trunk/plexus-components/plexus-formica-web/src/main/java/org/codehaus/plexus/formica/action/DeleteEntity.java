@@ -37,6 +37,11 @@ public class DeleteEntity
     public void execute( Map map )
         throws Exception
     {
+        if ( map.containsKey( "cancel" ) )
+        {
+            return;
+        }
+
         String entityId = (String) map.get( ID );
 
         String formId = (String) map.get( FORM_ID );
