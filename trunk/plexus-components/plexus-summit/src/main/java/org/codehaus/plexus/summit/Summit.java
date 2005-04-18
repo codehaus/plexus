@@ -93,6 +93,6 @@ public class Summit
 
     public final String getServletInfo()
     {
-        return "Summit Servlet @VERSION@";
+        return "Summit Servlet";
     }
 }

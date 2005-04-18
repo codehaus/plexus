@@ -7,6 +7,9 @@
  |  valves and pull tools are used in the client application is left up to the client and
  |  must be done by the client.
  |
+ |  Displays and resolvers should be configured by the user but we can leave some defaults
+ |  in here.
+ |
  -->
 
 <component-set>
@@ -42,6 +45,7 @@
         <error-view>Error.vm</error-view>
       </configuration>
     </component>
+    
     <component>
       <role>org.codehaus.plexus.summit.resolver.Resolver</role>
       <role-hint>classic</role-hint>
@@ -57,7 +61,7 @@
         </requirement>
       </requirements>
     </component>
-    
+
     <!-- Renderers -->
     <component>
       <role>org.codehaus.plexus.summit.renderer.Renderer</role>
