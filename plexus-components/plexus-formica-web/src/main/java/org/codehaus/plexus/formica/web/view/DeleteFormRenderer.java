@@ -59,7 +59,9 @@ public class DeleteFormRenderer
 
         w.startElement( "strong" );
 
-        w.writeText( "Are you sure you want to delete this item?" );
+        String deleteConfirmationMessage = i18n.getString( "delete.confirmation.message" );
+
+        w.writeText( deleteConfirmationMessage );
 
         w.endElement();
 

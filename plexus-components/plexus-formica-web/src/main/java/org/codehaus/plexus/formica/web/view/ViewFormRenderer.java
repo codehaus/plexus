@@ -23,9 +23,11 @@ import org.codehaus.plexus.formica.Form;
 import org.codehaus.plexus.formica.web.AbstractFormRenderer;
 import org.codehaus.plexus.formica.web.FormRenderingException;
 import org.codehaus.plexus.formica.web.SummitFormRenderer;
+import org.codehaus.plexus.formica.web.ContentGenerator;
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.util.xml.XMLWriter;
 import org.codehaus.plexus.summit.rundata.RunData;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -131,27 +133,35 @@ public class ViewFormRenderer
 
             try
             {
-                Object o = null;
+                String text;
 
-                if ( data != null && element.getExpression() != null )
+                if ( element.getContentGenerator() != null )
                 {
-                    o = Ognl.getValue( element.getExpression(), data );
+                    ContentGenerator cg = (ContentGenerator) container.lookup( ContentGenerator.ROLE, element.getContentGenerator() );
+
+                    text = cg.generate( data );
+
+                    w.writeMarkup( text );
+                }
+                else
+                {
+                    Object value = Ognl.getValue( element.getExpression(), data );
+
+                    text = value.toString();
+
+                    w.writeText( text );
                 }
 
-                if ( o != null )
-                {
-                    w.writeText( o.toString() );
-                }
+                w.endElement();
+            }
+            catch ( ComponentLookupException e )
+            {
+                throw new FormRenderingException( "Content generator with id = " + element.getContentGenerator() + " does not exist", e );
             }
             catch ( OgnlException e )
             {
-                throw new FormRenderingException(
-                    "Error extracting value in " + data + " with the expresion '" + element.getExpression() + "'" );
+                throw new FormRenderingException( "Error extracting value in " + data + " with the expresion '" + element.getExpression() + "'" );
             }
-
-            w.endElement();
-
-            // ----------------------------------------------------------------------
 
             w.endElement();
         }
