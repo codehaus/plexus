@@ -40,74 +40,8 @@ import ognl.OgnlException;
 public class UpdateFormRenderer
     extends AddFormRenderer
 {
-
     public String getHeaderTitle( Form form, I18N i18n )
     {
-        return i18n.getString( form.getAdd().getTitleKey() );
-    }
-
-    public void body( Form form, XMLWriter w, I18N i18n, Object data, String baseUrl, RunData rundata )
-        throws FormRenderingException
-    {
-        // ----------------------------------------------------------------------
-
-        w.startElement( "form" );
-
-        w.addAttribute( "method", "post" );
-
-        w.addAttribute( "action", baseUrl );
-
-        // ----------------------------------------------------------------------
-
-        // Action
-        w.startElement( "input" );
-
-        w.addAttribute( "type", "hidden" );
-
-        w.addAttribute( "name", "action" );
-
-        w.addAttribute( "value", form.getUpdate().getAction() );
-
-        w.endElement();
-
-        // View
-        w.startElement( "input" );
-
-        w.addAttribute( "type", "hidden" );
-
-        w.addAttribute( "name", "view" );
-
-        w.addAttribute( "value", form.getUpdate().getView() );
-
-        w.endElement();
-
-        // form id
-        w.startElement( "input" );
-
-        w.addAttribute( "type", "hidden" );
-
-        w.addAttribute( "name", "formId" );
-
-        w.addAttribute( "value", form.getId() );
-
-        w.endElement();
-
-        // Mode
-        w.startElement( "input" );
-
-        w.addAttribute( "type", "hidden" );
-
-        w.addAttribute( "name", "mode" );
-
-        w.addAttribute( "value", SummitFormRenderer.MODE_UPDATE );
-
-        w.endElement();
-
-        // ----------------------------------------------------------------------
-
-
-        // ----------------------------------------------------------------------
-
-        renderElements( form, w, i18n, data, rundata );
+        return i18n.getString( form.getUpdate().getTitleKey() );
     }
 }
