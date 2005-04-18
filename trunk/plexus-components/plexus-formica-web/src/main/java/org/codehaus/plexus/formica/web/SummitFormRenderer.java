@@ -97,9 +97,6 @@ public class SummitFormRenderer
         }
         else if ( mode.equals( MODE_UPDATE ) || mode.equals( MODE_VIEW ) || mode.equals( MODE_DELETE ) )
         {
-            //TODO: thrown an exception if there is no source role
-            //TODO: thrown an exception if there is no lookup expression
-
             Object o = lookup( assertNotEmpty( form, form.getSourceRole(), "source role" ) );
 
             String i = data.getParameters().getString( "id" );
