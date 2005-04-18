@@ -132,9 +132,9 @@ public class SummaryFormRenderer
                 {
                     String text;
 
-                    if ( se.getContentGenerator() != null )
+                    if ( element.getContentGenerator() != null )
                     {
-                        ContentGenerator cg = (ContentGenerator) container.lookup( ContentGenerator.ROLE, se.getContentGenerator() );
+                        ContentGenerator cg = (ContentGenerator) container.lookup( ContentGenerator.ROLE, element.getContentGenerator() );
 
                         text = cg.generate( item );
 
