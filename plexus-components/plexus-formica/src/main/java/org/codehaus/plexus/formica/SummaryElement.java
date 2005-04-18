@@ -30,15 +30,8 @@ public class SummaryElement
 {
     private String id;
 
-    private String contentGenerator;
-
     public String getId()
     {
         return id;
-    }
-
-    public String getContentGenerator()
-    {
-        return contentGenerator;
     }
 }
