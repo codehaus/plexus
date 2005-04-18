@@ -18,6 +18,11 @@ public class DetermineTargetValve
         {
             String target = data.getParameters().getString( "target" );
 
+            if ( target == null )
+            {
+                target = data.getParameters().getString( "view" );
+            }
+
             if ( target != null )
             {
                 data.setTarget( target );
