@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <extend>${maven.repo.local}/plexus/poms/plexus-components-1.0.pom</extend>
+  <artifactId>plexus-summit</artifactId>
+  <id>plexus-summit</id>
+  <name>Plexus Summit Component</name>
+  <currentVersion>1.0-beta-3</currentVersion>
+
+  <shortDescription>A servlet based framework.</shortDescription>
+
+  <description>
+    Summit is a servlet based framework that allows experienced 
+    Java developers to quickly build secure web applications. Parts 
+    of Summit can also be used independently of the web portion of 
+    Summit as well. In other words, we strive to make portions of 
+    Summit easily available for use in other applications.
+  </description>
+  
+  <developers>
+
+    <developer>
+      <name>Jason van Zyl</name>
+      <id>jvanzyl</id>
+      <email>jason@zenplex.com</email>
+      <organization>Zenplex</organization>
+      <roles>
+        <role>Architect</role>
+        <role>Release Manager</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>Pete Kazmier</name>
+      <id>kaz</id>
+      <email></email>
+      <organization></organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>James Taylor</name>
+      <id>jtaylor</id>
+      <email>james@jamestaylor.org</email>
+      <organization></organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>Dan Diephouse</name>
+      <id>dandiep</id>
+      <email>dan@envoisolutions.com</email>
+      <organization>Envoi solutions</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+    
+  <dependencies>
+
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-servlet</artifactId>
+      <version>1.0-beta-2-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
+      <version>2.2</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-velocity</artifactId>
+      <version>1.0-beta-3</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-formica</artifactId>
+      <version>1.0-beta-2</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-i18n</artifactId>
+      <version>1.0-beta-3</version>
+    </dependency>
+    <dependency>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>2.5.1</version>
+    </dependency>
+
+  </dependencies>
+ 
+</project>
