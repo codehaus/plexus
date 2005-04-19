@@ -16,11 +16,9 @@ import java.util.Map;
 public class CallMethod
     extends AbstractEntityAction
 {
-    protected void uponSuccessfulValidation( Form form, String entityId, Map map )
+    protected void uponSuccessfulValidation( Form form, String entityId, Map parameters )
         throws Exception
     {
-        System.out.println( "map = " + map );
-
-        Ognl.getValue( validateExpression( form.getAdd().getExpression() ), map, getApplicationComponent( form ) );
+        Ognl.getValue( validateExpression( form.getAdd().getExpression() ), parameters, getApplicationComponent( form ) );
     }
 }
