@@ -72,10 +72,18 @@ public class DefaultPullService
         {
             Tool tool = (Tool) i.next();
 
-
             if ( tool.getScope().equals( GLOBAL_SCOPE ) )
             {
-                Object o = container.lookup( tool.getRole() );
+                Object o;
+
+                if ( tool.getRoleHint() == null )
+                {
+                    o = container.lookup( tool.getRole() );
+                }
+                else
+                {
+                    o = container.lookup( tool.getRole(), tool.getRoleHint() );
+                }
 
                 globalTools.put( tool.getName(), o );
             }
@@ -112,9 +120,11 @@ public class DefaultPullService
     protected void populateWithRequestTools( ViewContext context, RunData data )
     {
         Iterator itr = requestTools.keySet().iterator();
+
         while ( itr.hasNext() )
         {
             String key = (String) itr.next();
+
             try
             {
                 Object component = container.lookup( (String) requestTools.get( key ) );
@@ -122,8 +132,6 @@ public class DefaultPullService
                 setRequestRunData( component, data );
 
                 context.put( key, component );
-
-//                getLogger().debug( "Addded tool $" + key + " to the context." );
             }
             catch ( Exception e )
             {

@@ -10,6 +10,8 @@ public class Tool
 
     private String role;
 
+    private String roleHint;
+
     private String scope;
 
     public String getName()
@@ -20,6 +22,11 @@ public class Tool
     public String getRole()
     {
         return role;
+    }
+
+    public String getRoleHint()
+    {
+        return roleHint;
     }
 
     public String getScope()
