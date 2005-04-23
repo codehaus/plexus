@@ -10,6 +10,7 @@
   <version>1.0</version>
   <name>Plexus Component Factories</name>
   <inceptionYear>2001</inceptionYear>
+  <packaging>pom</packaging>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
