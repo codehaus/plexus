@@ -37,12 +37,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.MavenMetadataSource;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+import org.apache.maven.project.artifact.MavenMetadataSource;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
@@ -66,6 +67,9 @@ public abstract class AbstractBuilder
 
     /** @requirement */
     private ArtifactResolver artifactResolver;
+
+    /** @requirement */
+    private ArtifactFactory artifactFactory;
 
     // ----------------------------------------------------------------------
     // Utility methods
@@ -151,7 +155,9 @@ public abstract class AbstractBuilder
         }
     }
 
-    protected Set getBootArtifacts( Set projectArtifacts, List remoteRepositories, ArtifactRepository localRepository,
+    protected Set getBootArtifacts( Set projectArtifacts,
+                                    List remoteRepositories,
+                                    ArtifactRepository localRepository,
                                     boolean ignoreIfMissing )
         throws ArtifactResolutionException
     {
@@ -164,7 +170,9 @@ public abstract class AbstractBuilder
         return artifacts;
     }
 
-    protected Set getCoreArtifacts( Set projectArtifacts, List remoteRepositories, ArtifactRepository localRepository,
+    protected Set getCoreArtifacts( Set projectArtifacts,
+                                    List remoteRepositories,
+                                    ArtifactRepository localRepository,
                                     boolean ignoreIfMissing )
         throws ArtifactResolutionException
     {
@@ -180,7 +188,9 @@ public abstract class AbstractBuilder
         return artifacts;
     }
 
-    protected Set getExcludedArtifacts( Set projectArtifacts, List remoteRepositories, ArtifactRepository localRepository )
+    protected Set getExcludedArtifacts( Set projectArtifacts,
+                                        List remoteRepositories,
+                                        ArtifactRepository localRepository )
         throws ArtifactResolutionException
     {
         Set artifacts = new HashSet();
@@ -188,13 +198,20 @@ public abstract class AbstractBuilder
         resolveVersion( "plexus", "plexus", projectArtifacts, true, artifacts );
         resolveVersion( "plexus", "plexus-container-api", projectArtifacts, true, artifacts );
 
-        artifacts = findArtifacts( remoteRepositories, localRepository, artifacts, true, null );
+        artifacts = findArtifacts( remoteRepositories,
+                                   localRepository,
+                                   artifacts,
+                                   true,
+                                   null );
 
         return artifacts;
     }
 
-    protected Set findArtifacts( List remoteRepositories, ArtifactRepository localRepository, Set sourceArtifacts,
-                                 boolean resolveTransitively, ArtifactFilter artifactFilter )
+    protected Set findArtifacts( List remoteRepositories,
+                                 ArtifactRepository localRepository,
+                                 Set sourceArtifacts,
+                                 boolean resolveTransitively,
+                                 ArtifactFilter artifactFilter )
         throws ArtifactResolutionException
     {
         ArtifactResolutionResult result;
@@ -232,7 +249,10 @@ public abstract class AbstractBuilder
         return artifacts;
     }
 
-    private void resolveVersion( String groupId, String artifactId, Set projectArtifacts, boolean ignoreIfMissing,
+    private void resolveVersion( String groupId,
+                                 String artifactId,
+                                 Set projectArtifacts,
+                                 boolean ignoreIfMissing,
                                  Set resolvedArtifacts )
         throws ArtifactResolutionException
     {
@@ -250,10 +270,11 @@ public abstract class AbstractBuilder
             }
         }
 
+        Artifact artifact = artifactFactory.createArtifact( groupId, artifactId, "unknown", "", "jar" );
+
         if ( !ignoreIfMissing )
         {
-            throw new ArtifactResolutionException( "Could not find a artifact with group id '" + groupId + "' and " +
-                                                   "artifact id '" + artifactId + "' in the project artifact set." );
+            throw new ArtifactResolutionException( "Could not version for artifact.", artifact, null );
         }
     }
 
