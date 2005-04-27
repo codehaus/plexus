@@ -30,13 +30,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
-import org.apache.maven.artifact.DefaultArtifact;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.model.Repository;
-import org.apache.maven.settings.MavenSettings;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
@@ -69,18 +67,13 @@ public class PlexusRuntimeBuilderTest
 
         List remoteRepositories = new ArrayList();
 
-        Repository repository = new Repository();
-
-        repository.setId( "local" );
-
-        repository.setUrl( "file://" + getTestFile( "src/test/repository" ).getAbsolutePath() );
-
-        MavenSettings settings = new MavenSettings();
-
         ArtifactRepositoryLayout repositoryLayout = (ArtifactRepositoryLayout) lookup( ArtifactRepositoryLayout.ROLE, "legacy" );
 
-        ArtifactRepository localRepository = artifactRepositoryFactory.
-            createArtifactRepository( repository, settings, repositoryLayout );
+        ArtifactRepository localRepository =
+            artifactRepositoryFactory.createArtifactRepository( "local",
+                                                                "file://" + getTestFile( "src/test/repository" ).getAbsolutePath(),
+                                                                repositoryLayout,
+                                                                null );
 
         Set projectArtifacts = new HashSet();
 
