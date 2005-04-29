@@ -1,8 +1,7 @@
 package org.codehaus.plexus.maven.plugin;
 
-import org.apache.maven.plugin.AbstractPlugin;
-import org.apache.maven.plugin.PluginExecutionRequest;
-import org.apache.maven.plugin.PluginExecutionResponse;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
@@ -14,51 +13,60 @@ import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
  *
  * @description Builds a plexus descriptor.
  *
- * @parameter
- *  name="basedir"
- *  type="String"
- *  required="true"
- *  validator=""
- *  expression="#basedir"
- *  description=""
- * @parameter
- *  name="project"
- *  type="org.apache.maven.project.MavenProject"
- *  required="true"
- *  validator=""
- *  expression="#project"
- *  description=""
- * @parameter
- *  name="output"
- *  type="String"
- *  required="true"
- *  validator=""
- *  expression="#project.build.outputDirectory"
- *  description=""
- * 
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class PlexusDescriptorMojo
-    extends AbstractPlugin
+    extends AbstractMojo
 {
-    public void execute( PluginExecutionRequest request, PluginExecutionResponse response )
-        throws Exception
+    /**
+     * @parameter name="basedir"
+     * type="String"
+     * required="true"
+     * validator=""
+     * expression="#basedir"
+     * description=""
+     */
+    private String basedir;
+
+    /**
+     * @parameter name="project"
+     * type="org.apache.maven.project.MavenProject"
+     * required="true"
+     * validator=""
+     * expression="#project"
+     * description=""
+     */
+    private MavenProject project;
+
+    /**
+     * @parameter name="output"
+     * type="String"
+     * required="true"
+     * validator=""
+     * expression="#project.build.outputDirectory"
+     * description=""
+     */
+    private String output;
+
+    public void execute()
+        throws MojoExecutionException
     {
-        String basedir = (String) request.getParameter( "basedir" );
+        ComponentDescriptorCreator cdc = new ComponentDescriptorCreator();
 
-        MavenProject project = (MavenProject) request.getParameter( "project" );
+        cdc.setBasedir( basedir );
 
-        String output = (String) request.getParameter( "output" );
+        cdc.setProject( project );
 
-        ComponentDescriptorCreator creator = new ComponentDescriptorCreator();
+        cdc.setDestDir( output + "/META-INF/plexus" );
 
-        creator.setBasedir( basedir );
-
-        creator.setProject( project );
-
-        creator.setDestDir( output + "/META-INF/plexus" );
-
-        creator.execute();
+        try
+        {
+            cdc.execute();
+        }
+        catch ( Exception e )
+        {
+            throw new MojoExecutionException( "Error while executing component descritor creator.", e );
+        }
     }
 }
