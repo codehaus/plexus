@@ -23,18 +23,16 @@ package org.codehaus.plexus.maven.plugin;
  */
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.Iterator;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.plugin.AbstractPlugin;
-import org.apache.maven.plugin.PluginExecutionRequest;
-import org.apache.maven.plugin.PluginExecutionResponse;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
+import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
 
 /**
  * @goal runtime
@@ -43,80 +41,98 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
  *
  * @description Builds plexus containers.
  *
- * @parameter name="basedir"
- * type="String"
- * required="true"
- * validator=""
- * expression="#basedir"
- * description=""
- *
- * @parameter name="project"
- * type="org.apache.maven.project.MavenProject"
- * required="true"
- * validator=""
- * expression="#project"
- * description=""
- *
- * @parameter name="plexusConfiguration"
- * type="java.lang.String"
- * required="true"
- * validator=""
- * expression="#plexus.runtime.configuration"
- * description=""
- *
- * @parameter name="plexusConfigurationProperties"
- * type="java.lang.String"
- * required="true"
- * validator=""
- * expression="#plexus.runtime.configuration.propertiesfile"
- * description=""
- *
- * @parameter name="runtimeBuilder"
- * type="org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
- * required="true"
- * validator=""
- * expression="#component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
- * description=""
- *
- * @parameter name="localRepository"
- * type="org.apache.maven.artifact.ArtifactRepository"
- * required="true"
- * validator=""
- * expression="#localRepository"
- * description=""
- *
- * @parameter name="project"
- * type="org.apache.maven.project.MavenProject"
- * required="true"
- * validator=""
- * expression="#project"
- * description="current MavenProject instance"
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
  */
 public class PlexusContainerGenerator
-    extends AbstractPlugin
+    extends AbstractMojo
 {
-    public void execute( PluginExecutionRequest request, PluginExecutionResponse response )
-        throws Exception
+    /**
+     * @parameter name="basedir"
+     * type="String"
+     * required="true"
+     * validator=""
+     * expression="#basedir"
+     * description=""
+     */
+    private String basedir;
+
+    /**
+     * @parameter name="projectArtifacts"
+     * type="java.util.Set"
+     * required="true"
+     * validator=""
+     * expression="#project.artifacts"
+     * description=""
+     */
+    private Set projectArtifacts;
+
+    /**
+     * @parameter name="plexusConfiguration"
+     * type="java.lang.String"
+     * required="true"
+     * validator=""
+     * expression="#plexus.runtime.configuration"
+     * description=""
+     */
+    private String plexusConfiguration;
+
+    /**
+     * @parameter name="plexusConfigurationProperties"
+     * type="java.lang.String"
+     * required="true"
+     * validator=""
+     * expression="#plexus.runtime.configuration.propertiesfile"
+     * description=""
+     */
+    private String configurationProperties;
+
+    /**
+     * @parameter name="runtimeBuilder"
+     * type="org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
+     * required="true"
+     * validator=""
+     * expression="#component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
+     * description=""
+     */
+    private PlexusRuntimeBuilder builder;
+
+    /**
+     * @parameter name="localRepository"
+     * type="org.apache.maven.artifact.ArtifactRepository"
+     * required="true"
+     * validator=""
+     * expression="#localRepository"
+     * description=""
+     */
+    private ArtifactRepository localRepository;
+
+    /**
+     * @parameter name="remoteRepositories"
+     * type="java.util.List"
+     * required="true"
+     * validator=""
+     * expression="#project.remoteArtifactRepositories"
+     * description=""
+     */
+    private List remoteRepositories;
+
+    /**
+     * @parameter name="project"
+     * type="org.apache.maven.project.MavenProject"
+     * required="true"
+     * validator=""
+     * expression="#project"
+     * description="current MavenProject instance"
+     */
+    private MavenProject project;
+
+    public void execute()
+        throws MojoExecutionException
     {
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
-
-        String basedir = (String) request.getParameter( "basedir" );
-
-        Set projectArtifacts = (Set) request.getParameter( "projectArtifacts" );
-
-        String plexusConfiguration = (String) request.getParameter( "plexusConfiguration" );
-
-        String configurationProperties = (String) request.getParameter( "plexusConfigurationProperties" );
-
-        PlexusRuntimeBuilder builder = (PlexusRuntimeBuilder) request.getParameter( "runtimeBuilder" );
-
-        ArtifactRepository localRepository = (ArtifactRepository) request.getParameter( "localRepository" );
-
-        List remoteRepositories = (List) request.getParameter( "remoteRepositories" );
-
-        MavenProject project = (MavenProject) request.getParameter( "project" );
 
         // ----------------------------------------------------------------------
         //
@@ -125,7 +141,7 @@ public class PlexusContainerGenerator
         String projectBasedir = project.getFile().getParentFile().getAbsolutePath();
 
         File workingBasedir = null;
-        
+
         if ( new File( basedir ).isAbsolute() )
         {
             workingBasedir = new File( basedir );
@@ -146,8 +162,18 @@ public class PlexusContainerGenerator
             configurationPropertiesFile = new File( projectBasedir, configurationProperties );
         }
 
-        builder.build( outputDirectory,
-                       remoteRepositories, localRepository, projectArtifacts,
-                       plexusConfigurationFile, configurationPropertiesFile );
+        try
+        {
+            builder.build( outputDirectory,
+                           remoteRepositories,
+                           localRepository,
+                           projectArtifacts,
+                           plexusConfigurationFile,
+                           configurationPropertiesFile );
+        }
+        catch ( PlexusRuntimeBuilderException e )
+        {
+            throw new MojoExecutionException( "Error while building runtime.", e );
+        }
     }
 }
