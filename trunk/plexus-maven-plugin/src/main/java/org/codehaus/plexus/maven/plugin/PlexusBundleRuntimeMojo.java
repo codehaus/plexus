@@ -24,12 +24,12 @@ package org.codehaus.plexus.maven.plugin;
 
 import java.io.File;
 
-import org.apache.maven.plugin.AbstractPlugin;
-import org.apache.maven.plugin.PluginExecutionRequest;
-import org.apache.maven.plugin.PluginExecutionResponse;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
+import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
 
 /**
  * @goal bundle-runtime
@@ -38,57 +38,55 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
  *
  * @description Packages the runtime into a redistributable jar file.
  *
- * @prereq plexus:runtime
- *
- * @parameter name="basedir"
- * type="String"
- * required="true"
- * validator=""
- * expression="#basedir"
- * description=""
- *
- * @parameter name="finalName"
- * type="java.lang.String"
- * required="true"
- * validator=""
- * expression="#maven.final.name"
- * description=""
- *
- * @parameter name="runtimeBuilder"
- * type="org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
- * required="true"
- * validator=""
- * expression="#component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
- * description=""
- *
- * @parameter name="project"
- * type="org.apache.maven.project.MavenProject"
- * required="true"
- * validator=""
- * expression="#project"
- * description="current MavenProject instance"
- *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class PlexusBundleRuntimeMojo
-    extends AbstractPlugin
+    extends AbstractMojo
 {
-    public void execute( PluginExecutionRequest request, PluginExecutionResponse response )
-        throws Exception
+    /**
+     * @parameter name="basedir"
+     * type="String"
+     * required="true"
+     * validator=""
+     * expression="#basedir"
+     * description=""
+     */
+    private String basedir;
+
+    /**
+     * @parameter name="finalName"
+     * type="java.lang.String"
+     * required="true"
+     * validator=""
+     * expression="#maven.final.name"
+     * description=""
+     */
+    private String finalName;
+
+    /**
+     * @parameter name="runtimeBuilder"
+     * type="org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
+     * required="true"
+     * validator=""
+     * expression="#component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
+     * description=""
+     */
+    private PlexusRuntimeBuilder builder;
+
+    /**
+     * @parameter name="project"
+     * type="org.apache.maven.project.MavenProject"
+     * required="true"
+     * validator=""
+     * expression="#project"
+     * description="current MavenProject instance"
+     */
+    private MavenProject project;
+
+    public void execute()
+        throws MojoExecutionException
     {
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
-        String basedir = (String) request.getParameter( "basedir" );
-
-        String finalName = (String) request.getParameter( "finalName" );
-
-        PlexusRuntimeBuilder builder = (PlexusRuntimeBuilder) request.getParameter( "runtimeBuilder" );
-
-        MavenProject project = (MavenProject) request.getParameter( "project" );
-
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
@@ -96,7 +94,7 @@ public class PlexusBundleRuntimeMojo
         String projectBasedir = project.getFile().getParentFile().getAbsolutePath();
 
         File workingBasedir = null;
-        
+
         if ( new File( basedir ).isAbsolute() )
         {
             workingBasedir = new File( basedir );
@@ -110,6 +108,13 @@ public class PlexusBundleRuntimeMojo
 
         File outputFile = new File( workingBasedir, finalName + "-runtime.jar" );
 
-        builder.bundle( outputFile, runtimeDirectory );
+        try
+        {
+            builder.bundle( outputFile, runtimeDirectory );
+        }
+        catch ( PlexusRuntimeBuilderException e )
+        {
+            throw new MojoExecutionException( "Error while bundling runtime.", e );
+        }
     }
 }

@@ -24,12 +24,12 @@ package org.codehaus.plexus.maven.plugin;
 
 import java.io.File;
 
-import org.apache.maven.plugin.AbstractPlugin;
-import org.apache.maven.plugin.PluginExecutionRequest;
-import org.apache.maven.plugin.PluginExecutionResponse;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.application.ApplicationBuilder;
+import org.codehaus.plexus.builder.application.ApplicationBuilderException;
 
 /**
  * @goal bundle-application
@@ -38,81 +38,84 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
  *
  * @description Packages the Plexus application into a redistributable jar file.
  *
- * @parameter name="basedir"
- * type="String"
- * required="true"
- * validator=""
- * expression="#basedir"
- * description=""
- *
- * @parameter name="finalName"
- * type="java.lang.String"
- * required="true"
- * validator=""
- * expression="#maven.final.name"
- * description=""
- *
- * @parameter name="applicationBuilder"
- * type="org.codehaus.plexus.builder.application.ApplicationBuilder"
- * required="true"
- * validator=""
- * expression="#component.org.codehaus.plexus.builder.application.ApplicationBuilder"
- * description=""
- *
- * @parameter name="project"
- * type="org.apache.maven.project.MavenProject"
- * required="true"
- * validator=""
- * expression="#project"
- * description="current MavenProject instance"
- *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class PlexusBundleApplicationMojo
-    extends AbstractPlugin
+    extends AbstractMojo
 {
-    public void execute( PluginExecutionRequest request, PluginExecutionResponse response )
-        throws Exception
+    /**
+     * @parameter name="basedir"
+     * type="String"
+     * required="true"
+     * validator=""
+     * expression="#basedir"
+     * description=""
+     */
+    private File basedir;
+
+    /**
+     * @parameter type="String"
+     * required="true"
+     * validator=""
+     * expression="#project.build.directory"
+     * description=""
+     */
+    private File target;
+
+    /**
+     * @parameter name="finalName"
+     * type="java.lang.String"
+     * required="true"
+     * validator=""
+     * expression="#maven.final.name"
+     * description=""
+     */
+    private String finalName;
+
+    /**
+     * @parameter name="applicationBuilder"
+     * type="org.codehaus.plexus.builder.application.ApplicationBuilder"
+     * required="true"
+     * validator=""
+     * expression="#component.org.codehaus.plexus.builder.application.ApplicationBuilder"
+     * description=""
+     */
+    private ApplicationBuilder builder;
+
+    /**
+     * @parameter name="project"
+     * type="org.apache.maven.project.MavenProject"
+     * required="true"
+     * validator=""
+     * expression="#project"
+     * description="current MavenProject instance"
+     */
+    private MavenProject project;
+
+    public void execute()
+        throws MojoExecutionException
     {
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
 
-        String basedir = (String) request.getParameter( "basedir" );
+        File applicationDirectory = new File( target, "plexus-application" );
 
-        String finalName = (String) request.getParameter( "finalName" );
+        File outputFile = getApplicationJarFile( target, finalName );
 
-        ApplicationBuilder builder = (ApplicationBuilder) request.getParameter( "applicationBuilder" );
-
-        MavenProject project = (MavenProject) request.getParameter( "project" );
-
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
-        String projectBasedir = project.getFile().getParentFile().getAbsolutePath();
-
-        File workingBasedir = null;
-        
-        if ( new File( basedir ).isAbsolute() )
+        try
         {
-            workingBasedir = new File( basedir );
+            builder.bundle( outputFile, applicationDirectory );
         }
-        else
+        catch ( ApplicationBuilderException e )
         {
-            workingBasedir = new File( projectBasedir, basedir );
+            throw new MojoExecutionException( "Error while bundling application.", e );
         }
-
-        File runtimeDirectory = new File( workingBasedir, "plexus-application" );
-
-        File outputFile = getApplicationJarFile( workingBasedir.getAbsolutePath(), finalName );
-
-        builder.bundle( outputFile, runtimeDirectory );
     }
 
-    public static File getApplicationJarFile( String basedir, String finalName )
+    public static File getApplicationJarFile( File outputDirectory, String finalName )
     {
-        return new File( basedir, finalName + "-application.jar" );
+        return new File( outputDirectory, finalName + "-application.jar" );
     }
 }

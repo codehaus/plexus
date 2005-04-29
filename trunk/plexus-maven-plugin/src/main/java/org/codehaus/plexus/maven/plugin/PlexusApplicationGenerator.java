@@ -30,12 +30,12 @@ import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.plugin.AbstractPlugin;
-import org.apache.maven.plugin.PluginExecutionRequest;
-import org.apache.maven.plugin.PluginExecutionResponse;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.application.ApplicationBuilder;
+import org.codehaus.plexus.builder.application.ApplicationBuilderException;
 
 /**
  * @goal app
@@ -44,138 +44,146 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
  *
  * @description Assembles the Plexus application.
  *
- * @parameter name="basedir"
- * type="String"
- * required="true"
- * validator=""
- * expression="#basedir"
- * description=""
- *
- * @parameter name="projectArtifacts"
- * type="java.util.Set"
- * required="true"
- * validator=""
- * expression="#project.artifacts"
- * description=""
- *
- * @parameter name="applicationBuilder"
- * type="org.codehaus.plexus.builder.runtime.DefaultApplicationBuilder"
- * required="true"
- * validator=""
- * expression="#component.org.codehaus.plexus.builder.application.ApplicationBuilder"
- * description=""
- *
- * @parameter name="applicationConfiguration"
- * type="java.lang.String"
- * required="true"
- * validator=""
- * expression="#applicationConfiguration"
- * description=""
- *
- * @parameter name="configurationProperties"
- * type="java.lang.String"
- * required="false"
- * validator=""
- * expression="#configurationProperties"
- * description=""
- *
- * @parameter name="configurationDirectory"
- * type="java.lang.String"
- * required="false"
- * validator=""
- * expression="#configurationDirectory"
- * description=""
- *
- * @parameter name="applicationName"
- * type="java.lang.String"
- * required="true"
- * validator=""
- * expression="#applicationName"
- * description=""
- *
- * @parameter name="localRepository"
- * type="org.apache.maven.artifact.ArtifactRepository"
- * required="true"
- * validator=""
- * expression="#localRepository"
- * description=""
- *
- * @parameter name="remoteRepositories"
- * type="java.util.List"
- * required="true"
- * validator=""
- * expression="#project.remoteArtifactRepositories"
- * description=""
- *
- * @parameter name="project"
- * type="org.apache.maven.project.MavenProject"
- * required="true"
- * validator=""
- * expression="#project"
- * description="current MavenProject instance"
- *
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
  */
 public class PlexusApplicationGenerator
-    extends AbstractPlugin
+    extends AbstractMojo
 {
-    public void execute( PluginExecutionRequest request, PluginExecutionResponse response )
-        throws Exception
+    /**
+     * @parameter name="basedir"
+     * type="String"
+     * required="true"
+     * validator=""
+     * expression="#basedir"
+     * description=""
+     */
+    private File basedir;
+
+    /**
+     * @parameter type="String"
+     * required="true"
+     * validator=""
+     * expression="#project.build.directory"
+     * description=""
+     */
+    private File target;
+
+    /**
+     * @parameter name="projectArtifacts"
+     * type="java.util.Set"
+     * required="true"
+     * validator=""
+     * expression="#project.artifacts"
+     * description=""
+     */
+    private Set projectArtifacts;
+
+    /**
+     * @parameter name="applicationConfiguration"
+     * type="java.lang.String"
+     * required="true"
+     * validator=""
+     * expression="#applicationConfiguration"
+     * description=""
+     */
+    private String applicationConfiguration;
+
+    /**
+     * @parameter name="configurationProperties"
+     * type="java.lang.String"
+     * required="false"
+     * validator=""
+     * expression="#configurationProperties"
+     * description=""
+     */
+    private String configurationProperties;
+
+    /**
+     * @parameter name="configurationDirectory"
+     * type="java.lang.String"
+     * required="false"
+     * validator=""
+     * expression="#configurationDirectory"
+     * description=""
+     */
+    private String configurationDirectory;
+
+    /**
+     * @parameter name="applicationBuilder"
+     * type="org.codehaus.plexus.builder.runtime.DefaultApplicationBuilder"
+     * required="true"
+     * validator=""
+     * expression="#component.org.codehaus.plexus.builder.application.ApplicationBuilder"
+     * description=""
+     */
+    private ApplicationBuilder builder;
+
+    /**
+     * @parameter name="applicationName"
+     * type="java.lang.String"
+     * required="true"
+     * validator=""
+     * expression="#applicationName"
+     * description=""
+     */
+    private String applicationName;
+
+    /**
+     * @parameter name="localRepository"
+     * type="org.apache.maven.artifact.ArtifactRepository"
+     * required="true"
+     * validator=""
+     * expression="#localRepository"
+     * description=""
+     */
+    private ArtifactRepository localRepository;
+
+    /**
+     * @parameter name="remoteRepositories"
+     * type="java.util.List"
+     * required="true"
+     * validator=""
+     * expression="#project.remoteArtifactRepositories"
+     * description=""
+     */
+    private List remoteRepositories;
+
+    /**
+     * @parameter name="project"
+     * type="org.apache.maven.project.MavenProject"
+     * required="true"
+     * validator=""
+     * expression="#project"
+     * description="current MavenProject instance"
+     */
+    private MavenProject project;
+
+    public void execute()
+        throws MojoExecutionException
     {
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
 
-        String basedir = (String) request.getParameter( "basedir" );
-
-        Set projectArtifacts = (Set) request.getParameter( "projectArtifacts" );
-
-        String applicationConfiguration = (String) request.getParameter( "applicationConfiguration" );
-
-        String configurationProperties = (String) request.getParameter( "configurationProperties" );
-
-        String configurationDirectory = (String) request.getParameter( "configurationDirectory" );
-
-        ApplicationBuilder builder = (ApplicationBuilder) request.getParameter( "applicationBuilder" );
-
-        String applicationName = (String) request.getParameter( "applicationName" );
-
-        ArtifactRepository localRepository = (ArtifactRepository) request.getParameter( "localRepository" );
-
-        List remoteRepositories = (List) request.getParameter( "remoteRepositories" );
-
-        MavenProject project = (MavenProject) request.getParameter( "project" );
-
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
 
-        String projectBasedir = project.getFile().getParentFile().getAbsolutePath();
-
-        File workingBasedir = null;
-        
-        if ( new File( basedir ).isAbsolute() )
-        {
-            workingBasedir = new File( basedir );
-        }
-        else
-        {
-            workingBasedir = new File( projectBasedir, basedir );
-        }
-
-        File workingDirectory = new File( workingBasedir, "/plexus-application" );
+        File workingDirectory = new File( target, "plexus-application" );
 
         File configurationDirectoryFile = null;
 
         if ( configurationDirectory != null )
         {
-            configurationDirectoryFile = new File( projectBasedir, configurationDirectory );
+            configurationDirectoryFile = new File( basedir, configurationDirectory );
         }
 
         File configurationPropertiesFile = null;
 
         if ( configurationProperties != null )
         {
-            configurationPropertiesFile = new File( projectBasedir, configurationProperties );
+            configurationPropertiesFile = new File( basedir, configurationProperties );
         }
 
         // ----------------------------------------------------------------------
@@ -198,14 +206,21 @@ public class PlexusApplicationGenerator
         // Build the application
         // ----------------------------------------------------------------------
 
-        builder.assemble( applicationName,
-                          workingDirectory,
-                          remoteRepositories,
-                          localRepository,
-                          projectArtifacts,
-                          services,
-                          new File( projectBasedir, applicationConfiguration ),
-                          configurationDirectoryFile,
-                          configurationPropertiesFile );
+        try
+        {
+            builder.assemble( applicationName,
+                              workingDirectory,
+                              remoteRepositories,
+                              localRepository,
+                              projectArtifacts,
+                              services,
+                              new File( basedir, applicationConfiguration ),
+                              configurationDirectoryFile,
+                              configurationPropertiesFile );
+        }
+        catch ( ApplicationBuilderException e )
+        {
+            throw new MojoExecutionException( "Error while assembling the application.", e );
+        }
     }
 }
