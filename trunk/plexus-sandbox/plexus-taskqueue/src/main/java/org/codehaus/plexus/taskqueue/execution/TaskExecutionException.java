@@ -24,14 +24,20 @@ package org.codehaus.plexus.taskqueue.execution;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.taskqueue.Task;
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public interface TaskExecutor
+public class TaskExecutionException
+    extends Exception
 {
-    void executeTask( Task task )
-        throws TaskExecutionException;
+    public TaskExecutionException( String message )
+    {
+        super( message );
+    }
+
+    public TaskExecutionException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
 }

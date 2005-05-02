@@ -33,5 +33,5 @@ import org.codehaus.plexus.taskqueue.Task;
 public interface TaskExecutor
 {
     void executeTask( Task task )
-        throws Exception;
+        throws TaskExecutionException;
 }
