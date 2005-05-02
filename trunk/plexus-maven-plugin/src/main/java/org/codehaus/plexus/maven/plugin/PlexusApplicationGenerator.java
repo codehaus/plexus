@@ -51,125 +51,81 @@ public class PlexusApplicationGenerator
     extends AbstractMojo
 {
     /**
-     * @parameter name="basedir"
-     * type="String"
-     * required="true"
-     * validator=""
-     * expression="#basedir"
-     * description=""
+     * @parameter expression="${basedir}"
+     *
+     * @required
      */
     private File basedir;
 
     /**
-     * @parameter type="String"
-     * required="true"
-     * validator=""
-     * expression="#project.build.directory"
-     * description=""
+     * @parameter expression="${project.build.directory}"
+     *
+     * @required
      */
     private File target;
 
     /**
-     * @parameter name="projectArtifacts"
-     * type="java.util.Set"
-     * required="true"
-     * validator=""
-     * expression="#project.artifacts"
-     * description=""
+     * @parameter expression="${project.artifacts}"
+     *
+     * @required
      */
     private Set projectArtifacts;
 
     /**
-     * @parameter name="applicationConfiguration"
-     * type="java.lang.String"
-     * required="true"
-     * validator=""
-     * expression="#applicationConfiguration"
-     * description=""
+     * @parameter expression="${applicationConfiguration}"
+     *
+     * @required
      */
     private String applicationConfiguration;
 
     /**
-     * @parameter name="configurationProperties"
-     * type="java.lang.String"
-     * required="false"
-     * validator=""
-     * expression="#configurationProperties"
-     * description=""
+     * @parameter expression="${configurationProperties}"
      */
     private String configurationProperties;
 
     /**
-     * @parameter name="configurationDirectory"
-     * type="java.lang.String"
-     * required="false"
-     * validator=""
-     * expression="#configurationDirectory"
-     * description=""
+     * @parameter expression="${configurationDirectory}"
      */
     private String configurationDirectory;
 
     /**
-     * @parameter name="applicationBuilder"
-     * type="org.codehaus.plexus.builder.runtime.DefaultApplicationBuilder"
-     * required="true"
-     * validator=""
-     * expression="#component.org.codehaus.plexus.builder.application.ApplicationBuilder"
-     * description=""
+     * @parameter expression="${component.org.codehaus.plexus.builder.application.ApplicationBuilder}"
+     *
+     * @required
      */
     private ApplicationBuilder builder;
 
     /**
-     * @parameter name="applicationName"
-     * type="java.lang.String"
-     * required="true"
-     * validator=""
-     * expression="#applicationName"
-     * description=""
+     * @parameter expression="${applicationName}"
+     *
+     * @required
      */
     private String applicationName;
 
     /**
-     * @parameter name="localRepository"
-     * type="org.apache.maven.artifact.ArtifactRepository"
-     * required="true"
-     * validator=""
-     * expression="#localRepository"
-     * description=""
+     * @parameter expression="${localRepository}"
+     *
+     * @required
      */
     private ArtifactRepository localRepository;
 
     /**
-     * @parameter name="remoteRepositories"
-     * type="java.util.List"
-     * required="true"
-     * validator=""
-     * expression="#project.remoteArtifactRepositories"
-     * description=""
+     * @parameter expression="${project.remoteArtifactRepositories}"
+     *
+     * @required
      */
     private List remoteRepositories;
 
     /**
-     * @parameter name="project"
-     * type="org.apache.maven.project.MavenProject"
-     * required="true"
-     * validator=""
-     * expression="#project"
-     * description="current MavenProject instance"
+     * @parameter expression="${project}"
+     *
+     * @required
      */
     private MavenProject project;
 
     public void execute()
         throws MojoExecutionException
     {
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
         File workingDirectory = new File( target, "plexus-application" );
 
         File configurationDirectoryFile = null;

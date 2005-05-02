@@ -45,42 +45,30 @@ public class PlexusBundleRuntimeMojo
     extends AbstractMojo
 {
     /**
-     * @parameter name="basedir"
-     * type="String"
-     * required="true"
-     * validator=""
-     * expression="#basedir"
-     * description=""
+     * @parameter expression="${basedir}"
+     *
+     * @required
      */
     private String basedir;
 
     /**
-     * @parameter name="finalName"
-     * type="java.lang.String"
-     * required="true"
-     * validator=""
-     * expression="#maven.final.name"
-     * description=""
+     * @parameter expression="${maven.final.name}"
+     *
+     * @required
      */
     private String finalName;
 
     /**
-     * @parameter name="runtimeBuilder"
-     * type="org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
-     * required="true"
-     * validator=""
-     * expression="#component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
-     * description=""
+     * @parameter expression="${component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder}"
+     *
+     * @required
      */
     private PlexusRuntimeBuilder builder;
 
     /**
-     * @parameter name="project"
-     * type="org.apache.maven.project.MavenProject"
-     * required="true"
-     * validator=""
-     * expression="#project"
-     * description="current MavenProject instance"
+     * @parameter expression="${project}"
+     *
+     * @required
      */
     private MavenProject project;
 
