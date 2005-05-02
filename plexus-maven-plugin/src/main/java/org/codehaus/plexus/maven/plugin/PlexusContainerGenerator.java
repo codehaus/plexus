@@ -48,82 +48,58 @@ public class PlexusContainerGenerator
     extends AbstractMojo
 {
     /**
-     * @parameter name="basedir"
-     * type="String"
-     * required="true"
-     * validator=""
-     * expression="#basedir"
-     * description=""
+     * @parameter expression="${basedir}"
+     *
+     * @required
      */
     private String basedir;
 
     /**
-     * @parameter name="projectArtifacts"
-     * type="java.util.Set"
-     * required="true"
-     * validator=""
-     * expression="#project.artifacts"
-     * description=""
+     * @parameter expression="${project.artifacts}"
+     *
+     * @required
      */
     private Set projectArtifacts;
 
     /**
-     * @parameter name="plexusConfiguration"
-     * type="java.lang.String"
-     * required="true"
-     * validator=""
-     * expression="#plexus.runtime.configuration"
-     * description=""
+     * @parameter expression="${plexus.runtime.configuration}"
+     *
+     * @required
      */
     private String plexusConfiguration;
 
     /**
-     * @parameter name="plexusConfigurationProperties"
-     * type="java.lang.String"
-     * required="true"
-     * validator=""
-     * expression="#plexus.runtime.configuration.propertiesfile"
-     * description=""
+     * @parameter expression="${plexus.runtime.configuration.propertiesfile}"
+     *
+     * @required
      */
     private String configurationProperties;
 
     /**
-     * @parameter name="runtimeBuilder"
-     * type="org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
-     * required="true"
-     * validator=""
-     * expression="#component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder"
-     * description=""
+     * @parameter expression="${component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder}"
+     *
+     * @required
      */
     private PlexusRuntimeBuilder builder;
 
     /**
-     * @parameter name="localRepository"
-     * type="org.apache.maven.artifact.ArtifactRepository"
-     * required="true"
-     * validator=""
-     * expression="#localRepository"
-     * description=""
+     * @parameter expression="${localRepository}"
+     *
+     * @required
      */
     private ArtifactRepository localRepository;
 
     /**
-     * @parameter name="remoteRepositories"
-     * type="java.util.List"
-     * required="true"
-     * validator=""
-     * expression="#project.remoteArtifactRepositories"
-     * description=""
+     * @parameter expression="${project.remoteArtifactRepositories}"
+     *
+     * @required
      */
     private List remoteRepositories;
 
     /**
-     * @parameter name="project"
-     * type="org.apache.maven.project.MavenProject"
-     * required="true"
-     * validator=""
-     * expression="#project"
-     * description="current MavenProject instance"
+     * @parameter expression="${project}"
+     *
+     * @required
      */
     private MavenProject project;
 
