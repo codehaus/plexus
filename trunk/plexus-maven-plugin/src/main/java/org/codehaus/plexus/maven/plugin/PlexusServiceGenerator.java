@@ -49,102 +49,72 @@ public class PlexusServiceGenerator
     extends AbstractMojo
 {
     /**
-     * @parameter name="basedir"
-     * type="String"
-     * required="true"
-     * validator=""
-     * expression="#basedir"
-     * description=""
+     * @parameter expression="${basedir}"
+     *
+     * @required
      */
     private String basedir;
 
     /**
-     * @parameter name="serviceArtifacts"
-     * type="java.util.Set"
-     * required="true"
-     * validator=""
-     * expression="#project.artifacts"
-     * description=""
+     * @parameter expression="${project.artifacts}"
+     *
+     * @required
      */
     private Set serviceArtifacts;
 
     /**
-     * @parameter name="finalName"
-     * type="java.lang.String"
-     * required="true"
-     * validator=""
-     * expression="#maven.final.name"
-     * description=""
+     * @parameter expression="${maven.final.name}"
+     *
+     * @required
      */
     private String finalName;
 
     /**
-     * @parameter name="classes"
-     * type="java.lang.String"
-     * required="true"
-     * validator=""
-     * expression="#project.build.outputDirectory"
-     * description=""
+     * @parameter expression="${project.build.outputDirectory}"
+     *
+     * @required
      */
     private File classes;
 
     /**
-     * @parameter name="plexusConfiguration"
-     * type="java.lang.String"
-     * required="true"
-     * validator=""
-     * expression="#plexus.runtime.configuration"
-     * description=""
+     * @parameter expression="${plexus.runtime.configuration}"
+     *
+     * @required
      */
     private String plexusConfiguration;
 
     /**
-     * @parameter name="plexusConfigurationPropertiesFile"
-     * type="java.lang.String"
-     * required="false"
-     * validator=""
-     * expression="#plexus.runtime.configuration.propertiesFile"
-     * description=""
+     * @parameter expression="${plexus.runtime.configuration.propertiesFile}"
+     *
+     * @required
      */
     private String configurationProperties;
 
     /**
-     * @parameter name="serviceName"
-     * type="java.lang.String"
-     * required="true"
-     * validator=""
-     * expression="#serviceName"
-     * description=""
+     * @parameter expression="${serviceName}"
+     *
+     * @required
      */
     private String serviceName;
 
     /**
-     * @parameter name="localRepository"
-     * type="org.apache.maven.artifact.ArtifactRepository"
-     * required="true"
-     * validator=""
-     * expression="#localRepository"
-     * description=""
+     * @parameter expression="${localRepository}"
+     *
+     * @required
      */
     private ArtifactRepository localRepository;
 
     /**
-     * @parameter name="serviceBuilder"
-     * type="org.codehaus.plexus.builder.runtime.DefaultApplicationBuilder"
-     * required="true"
-     * validator=""
-     * expression="#component.org.codehaus.plexus.builder.service.ServiceBuilder"
-     * description=""
+     * @parameter expression="${component.org.codehaus.plexus.builder.service.ServiceBuilder}"
+     *
+     * @required
      */
     private ServiceBuilder builder;
 
     /**
-     * @parameter name="project"
-     * type="org.apache.maven.project.MavenProject"
-     * required="true"
-     * validator=""
-     * expression="#project"
-     * description="current MavenProject instance"
+     * @parameter expression="${project}"
+     *
+     * @required
      */
     private MavenProject project;
 
