@@ -59,7 +59,7 @@ public class PlexusBundleApplicationMojo
     private File target;
 
     /**
-     * @parameter expression="${maven.final.name}"
+     * @parameter expression="${project.build.finalName}"
      *
      * @required
      */
@@ -79,6 +79,13 @@ public class PlexusBundleApplicationMojo
      */
     private MavenProject project;
 
+    /**
+     * @parameter expression="${project.build.directory}/plexus-application"
+     *
+     * @required
+     */
+    private File applicationAssemblyDirectory;
+
     public void execute()
         throws MojoExecutionException
     {
@@ -86,13 +93,11 @@ public class PlexusBundleApplicationMojo
         //
         // ----------------------------------------------------------------------
 
-        File applicationDirectory = new File( target, "plexus-application" );
-
         File outputFile = getApplicationJarFile( target, finalName );
 
         try
         {
-            builder.bundle( outputFile, applicationDirectory );
+            builder.bundle( outputFile, applicationAssemblyDirectory );
         }
         catch ( ApplicationBuilderException e )
         {
