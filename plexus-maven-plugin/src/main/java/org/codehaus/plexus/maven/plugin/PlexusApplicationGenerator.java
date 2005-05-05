@@ -103,6 +103,12 @@ public class PlexusApplicationGenerator
     private String applicationName;
 
     /**
+     * @parameter expression="${project.build.directory}/plexus-application"
+     * @required
+     */
+    private File applicationAssemblyDirectory;
+
+    /**
      * @parameter expression="${localRepository}"
      *
      * @required
@@ -126,8 +132,6 @@ public class PlexusApplicationGenerator
     public void execute()
         throws MojoExecutionException
     {
-        File workingDirectory = new File( target, "plexus-application" );
-
         File configurationDirectoryFile = null;
 
         if ( configurationDirectory != null )
@@ -162,10 +166,12 @@ public class PlexusApplicationGenerator
         // Build the application
         // ----------------------------------------------------------------------
 
+        getLog().debug( "Building the application '" + applicationName + "' into '" + applicationAssemblyDirectory.getAbsolutePath() + "'." );
+
         try
         {
             builder.assemble( applicationName,
-                              workingDirectory,
+                              applicationAssemblyDirectory,
                               remoteRepositories,
                               localRepository,
                               projectArtifacts,
