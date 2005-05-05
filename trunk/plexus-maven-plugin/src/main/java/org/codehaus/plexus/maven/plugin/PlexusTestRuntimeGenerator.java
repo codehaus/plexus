@@ -62,7 +62,7 @@ public class PlexusTestRuntimeGenerator
     private File target;
 
     /**
-     * @parameter expression="${maven.final.name}"
+     * @parameter expression="${project.build.finalName}"
      *
      * @required
      */

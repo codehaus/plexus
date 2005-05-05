@@ -63,7 +63,7 @@ public class PlexusServiceGenerator
     private Set serviceArtifacts;
 
     /**
-     * @parameter expression="${maven.final.name}"
+     * @parameter expression="${project.build.finalName}"
      *
      * @required
      */
