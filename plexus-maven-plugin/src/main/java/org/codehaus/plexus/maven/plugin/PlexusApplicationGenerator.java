@@ -81,12 +81,12 @@ public class PlexusApplicationGenerator
     /**
      * @parameter expression="${configurationProperties}"
      */
-    private String configurationProperties;
+    private File configurationProperties;
 
     /**
-     * @parameter expression="${configurationDirectory}"
+     * @parameter expression="${configurationsDirectory}"
      */
-    private String configurationDirectory;
+    private File configurationsDirectory;
 
     /**
      * @parameter expression="${component.org.codehaus.plexus.builder.application.ApplicationBuilder}"
@@ -132,20 +132,6 @@ public class PlexusApplicationGenerator
     public void execute()
         throws MojoExecutionException
     {
-        File configurationDirectoryFile = null;
-
-        if ( configurationDirectory != null )
-        {
-            configurationDirectoryFile = new File( basedir, configurationDirectory );
-        }
-
-        File configurationPropertiesFile = null;
-
-        if ( configurationProperties != null )
-        {
-            configurationPropertiesFile = new File( basedir, configurationProperties );
-        }
-
         // ----------------------------------------------------------------------
         // Find all services
         // ----------------------------------------------------------------------
@@ -177,8 +163,8 @@ public class PlexusApplicationGenerator
                               projectArtifacts,
                               services,
                               new File( basedir, applicationConfiguration ),
-                              configurationDirectoryFile,
-                              configurationPropertiesFile );
+                              configurationsDirectory,
+                              configurationProperties );
         }
         catch ( ApplicationBuilderException e )
         {
