@@ -76,8 +76,11 @@ public class DefaultPlexusRuntimeBuilder
     // ----------------------------------------------------------------------
 
     public void build( File workingDirectory,
-                       List remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts,
-                       File plexusConfiguration, File configurationPropertiesFile )
+                       List remoteRepositories,
+                       ArtifactRepository localRepository,
+                       Set projectArtifacts,
+                       File plexusConfiguration,
+                       File configurationPropertiesFile )
         throws PlexusRuntimeBuilderException
     {
         try
@@ -121,9 +124,9 @@ public class DefaultPlexusRuntimeBuilder
             // Find the artifact lists.
             // ----------------------------------------------------------------------
 
-            Set bootArtifacts = null;
+            Set bootArtifacts;
 
-            Set coreArtifacts = null;
+            Set coreArtifacts;
 
             try
             {
@@ -303,7 +306,9 @@ public class DefaultPlexusRuntimeBuilder
         mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( binDir, "plexus.bat" ) );
     }
 
-    private void processMainConfiguration( File plexusConfiguration, Properties configurationProperties, File confDir )
+    private void processMainConfiguration( File plexusConfiguration,
+                                           Properties configurationProperties,
+                                           File confDir )
         throws IOException
     {
         File out = new File( confDir, "plexus.xml" );
@@ -311,7 +316,10 @@ public class DefaultPlexusRuntimeBuilder
         filterCopy( plexusConfiguration, out, configurationProperties );
     }
 
-    private void javaServiceWrapper( File binDir, File coreDir, File confDir, Properties configurationProperties )
+    private void javaServiceWrapper( File binDir,
+                                     File coreDir,
+                                     File confDir,
+                                     Properties configurationProperties )
         throws CommandLineException, IOException
     {
         ClassLoader cl = getClass().getClassLoader();

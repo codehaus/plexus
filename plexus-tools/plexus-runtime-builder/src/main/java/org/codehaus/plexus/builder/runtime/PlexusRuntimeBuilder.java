@@ -38,8 +38,11 @@ public interface PlexusRuntimeBuilder
     String ROLE = PlexusRuntimeBuilder.class.getName();
 
     void build( File workingDirectory,
-                List remoteRepositories, ArtifactRepository localRepository, Set extraArtifacts,
-                File plexusConfiguration, File configurationPropertiesFile )
+                List remoteRepositories,
+                ArtifactRepository localRepository,
+                Set extraArtifacts,
+                File plexusConfiguration,
+                File configurationPropertiesFile )
         throws PlexusRuntimeBuilderException;
 
     void bundle( File outputFile, File workingDirectory )
