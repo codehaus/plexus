@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Iterator;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -43,8 +42,8 @@ import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.util.DirectoryScanner;
-import org.codehaus.plexus.util.xml.XMLWriter;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
+import org.codehaus.plexus.util.xml.XMLWriter;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -65,7 +64,7 @@ public class DefaultApplicationBuilder
                           ArtifactRepository localRepository,
                           Set projectArtifacts,
                           Set serviceArtifacts,
-                          File plexusConfigurationFile,
+                          File applicationConfiguration,
                           File configurationsDirectory,
                           File configurationPropertiesFile )
         throws ApplicationBuilderException
@@ -89,6 +88,11 @@ public class DefaultApplicationBuilder
             throw new ApplicationBuilderException( "The configurations directory isn't a directory: '" + configurationsDirectory.getAbsolutePath() + "." );
         }
 
+        if ( !applicationConfiguration.exists() )
+        {
+            throw new ApplicationBuilderException( "The application configuration file doesn't exist: '" + applicationConfiguration.getAbsolutePath() + "'." );
+        }
+
         // ----------------------------------------------------------------------
         // Create directory structure
         // ----------------------------------------------------------------------
@@ -109,7 +113,10 @@ public class DefaultApplicationBuilder
         {
             new FileWriter( new File( logsDir, "foo" ) ).close();
 
-            processConfigurations( confDir, plexusConfigurationFile, configurationPropertiesFile, configurationsDirectory );
+            processConfigurations( confDir,
+                                   applicationConfiguration,
+                                   configurationPropertiesFile,
+                                   configurationsDirectory );
         }
         catch ( IOException e )
         {
@@ -220,7 +227,7 @@ public class DefaultApplicationBuilder
     // ----------------------------------------------------------------------
 
     private void processConfigurations( File confDir,
-                                        File plexusConfigurationFile,
+                                        File applicationConfiguration,
                                         File configurationPropertiesFile,
                                         File configurationsDirectory )
         throws ApplicationBuilderException, IOException
@@ -237,58 +244,51 @@ public class DefaultApplicationBuilder
         }
 
         // ----------------------------------------------------------------------
-        // Copy the main plexus.xml
-        // ----------------------------------------------------------------------
-
-        if ( !plexusConfigurationFile.exists() )
-        {
-            throw new ApplicationBuilderException( "The application configuration file doesn't exist: '" + plexusConfigurationFile.getAbsolutePath() + "'." );
-        }
-
-        filterCopy( plexusConfigurationFile,
-                    new File( confDir, PlexusApplicationConstants.CONFIGURATION_FILE ),
-                    configurationProperties );
-
-        // ----------------------------------------------------------------------
         // Process the configurations
         // ----------------------------------------------------------------------
 
-        if ( configurationsDirectory == null )
+        if ( configurationsDirectory != null )
         {
-            return;
+            DirectoryScanner scanner = new DirectoryScanner();
+
+            scanner.setBasedir( configurationsDirectory );
+
+            List excludes = new ArrayList();
+
+            // TODO: centralize this list
+            excludes.add( "**/CVS/**" );
+
+            excludes.add( "**/.svn/**" );
+
+            if ( configurationPropertiesFile != null )
+            {
+                excludes.add( configurationPropertiesFile.getAbsolutePath() );
+            }
+
+            scanner.setExcludes( (String[]) excludes.toArray( new String[ excludes.size() ] ) );
+
+            scanner.scan();
+
+            String[] files = scanner.getIncludedFiles();
+
+            for ( int i = 0; i < files.length; i++ )
+            {
+                String file = files[i];
+
+                File in = new File( configurationsDirectory, file );
+
+                File out = new File( confDir, files[i] );
+
+                filterCopy( in, out, configurationProperties );
+            }
         }
 
-        DirectoryScanner scanner = new DirectoryScanner();
+        // ----------------------------------------------------------------------
+        // Copy the main application.xml
+        // ----------------------------------------------------------------------
 
-        scanner.setBasedir( configurationsDirectory );
-
-        List excludes = new ArrayList();
-
-        // TODO: centralize this list
-        excludes.add( "**/CVS/**" );
-
-        excludes.add( "**/.svn/**" );
-
-        if ( configurationPropertiesFile != null )
-        {
-            excludes.add( configurationPropertiesFile.getAbsolutePath() );
-        }
-
-        scanner.setExcludes( (String[]) excludes.toArray( new String[ excludes.size() ] ) );
-
-        scanner.scan();
-
-        String[] files = scanner.getIncludedFiles();
-
-        for ( int i = 0; i < files.length; i++ )
-        {
-            String file = files[i];
-
-            File in = new File( configurationsDirectory, file );
-
-            File out = new File( confDir, files[i] );
-
-            filterCopy( in, out, configurationProperties );
-        }
+        filterCopy( applicationConfiguration,
+                    new File( confDir, PlexusApplicationConstants.CONFIGURATION_FILE ),
+                    configurationProperties );
     }
 }
