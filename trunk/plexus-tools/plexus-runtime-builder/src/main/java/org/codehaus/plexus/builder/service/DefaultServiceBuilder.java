@@ -58,9 +58,14 @@ public class DefaultServiceBuilder
     // ServiceBuilder Implementation
     // ----------------------------------------------------------------------
 
-    public void build( String serviceName, File outputDirectory, File classes,
-                       List remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts,
-                       File plexusConfigurationFile, File configurationsDirectory, File configurationPropertiesFile )
+    public void build( String serviceName,
+                       File outputDirectory,
+                       File classes,
+                       List remoteRepositories,
+                       ArtifactRepository localRepository,
+                       Set projectArtifacts,
+                       File plexusConfigurationFile,
+                       File configurationsDirectory, File configurationPropertiesFile )
         throws ServiceBuilderException
     {
         // ----------------------------------------------------------------------
@@ -183,7 +188,9 @@ public class DefaultServiceBuilder
     //
     // ----------------------------------------------------------------------
 
-    private void processConfigurations( File confDir, File plexusConfigurationFile, File configurationPropertiesFile,
+    private void processConfigurations( File confDir,
+                                        File plexusConfigurationFile,
+                                        File configurationPropertiesFile,
                                         File configurationsDirectory )
         throws ServiceBuilderException, IOException
     {
