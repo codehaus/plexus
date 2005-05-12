@@ -43,7 +43,7 @@ public interface ApplicationBuilder
                    ArtifactRepository localRespository,
                    Set projectArtifacts,
                    Set serviceArtifacts,
-                   File plexusConfiguration,
+                   File applicationConfiguration,
                    File configurationsDirectory,
                    File configurationPropertiesFile )
         throws ApplicationBuilderException;
