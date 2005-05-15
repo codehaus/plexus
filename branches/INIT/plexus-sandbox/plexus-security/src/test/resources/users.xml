@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<users>
+	<user>
+		<username>dan</username>
+		<password>password</password>
+		<roles>
+			<role name="manager"/>			
+			<role name="employee"/>			
+		</roles>
+	</user>
+	<user>
+		<username>bob</username>
+		<password>password</password>
+		<roles>
+			<role name="employee"/>			
+		</roles>
+	</user>
+</users>
