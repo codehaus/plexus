@@ -44,29 +44,15 @@ public class NewResolver
     public Resolution resolve( String target )
         throws Exception
     {
-        //TODO: this needs to be made entirely flexible. Right now this is hacked to
-        // work with velocity and forms and that's it which is bad.
-
         Resolution resolution = new Resolution();
 
         // ---------------------------------------------------------------
         // Layout
         // ---------------------------------------------------------------
 
-        //TODO: correctly match layouts to forms 
+        View layoutView = getView( target, LAYOUT_TARGET_PREFIX );
 
-        if ( target.indexOf( "form" ) > 0 )
-        {
-            View layoutView = getView( "Dummy.vm", LAYOUT_TARGET_PREFIX );
-
-            resolution.put( LAYOUT_VIEW, layoutView );
-        }
-        else
-        {
-            View layoutView = getView( target, LAYOUT_TARGET_PREFIX );
-
-            resolution.put( LAYOUT_VIEW, layoutView );
-        }
+        resolution.put( LAYOUT_VIEW, layoutView );
 
         // ---------------------------------------------------------------
         // Navigation
@@ -80,43 +66,20 @@ public class NewResolver
         // Screen
         // ---------------------------------------------------------------
 
-        // This is where we need to look at the target and figure out what
-        // kind of view we want: velocity template view or form view.
+        System.out.println( "target = " + target );
 
-        if ( target.indexOf( "form" ) > 0 )
-        {
-            View screenView = new DefaultView( target.substring( target.indexOf( "." ) ) );
+        View screenView = getView( target, SCREEN_TARGET_PREFIX );
 
-            resolution.put( SCREEN_VIEW, screenView );
+        resolution.put( SCREEN_VIEW, screenView );
 
-            resolution.put( "screenType", "form" );
-        }
-        else
-        {
-            View screenView = getView( target, SCREEN_TARGET_PREFIX );
-
-            resolution.put( SCREEN_VIEW, screenView );
-
-            resolution.put( "screenType", "velocity" );
-        }
+        resolution.put( "screenType", "velocity" );
 
         return resolution;
     }
 
-    protected Renderer getRenderer(String target)
+    protected Renderer getRenderer( String target )
         throws Exception
     {
-        String screenType;
-
-        if ( target.indexOf( "form" ) > 0 )
-        {
-            screenType = "form";
-        }
-        else
-        {
-            screenType = "velocity";
-        }
-
-        return (Renderer) lookup( Renderer.ROLE, screenType );
+        return (Renderer) lookup( Renderer.ROLE, "velocity" );
     }
 }
