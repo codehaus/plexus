@@ -16,18 +16,19 @@ package org.codehaus.plexus.formica.action;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.action.AbstractAction;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.formica.Form;
 import org.codehaus.plexus.formica.FormManager;
-import org.codehaus.plexus.formica.web.SummitFormRenderer;
 import org.codehaus.plexus.formica.validation.FormValidationResult;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
-import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.context.Context;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.summit.SummitConstants;
 import org.codehaus.plexus.summit.rundata.RunData;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.summit.view.ViewContext;
 
 import java.util.Map;
 
@@ -62,8 +63,16 @@ public abstract class AbstractEntityAction
     abstract void uponSuccessfulValidation( Form form, String entityId, Map map )
         throws Exception;
 
-    //TODO: we probably want the action interface to return an Object. For example after adding
-    // an entity I might want the Object reference.
+    protected String getSuccessTarget( Form form )
+    {
+        return form.getAdd().getView();
+    }
+
+    protected String getFailureTarget( Form form )
+    {
+        return "Add.vm";
+    }
+
     public void execute( Map map )
         throws Exception
     {
@@ -82,15 +91,15 @@ public abstract class AbstractEntityAction
         // the user.
         // ----------------------------------------------------------------------
 
+        //TODO need a way to set views easily
+
         RunData data = (RunData) map.get( "data" );
 
         if ( fvr.valid() )
         {
             uponSuccessfulValidation( form, entityId, map );
 
-            data.setTarget( form.getAdd().getView() );
-
-            data.getMap().put( "mode", "summary" );            
+            data.setTarget( getSuccessTarget( form ) );
         }
         else
         {
@@ -100,9 +109,13 @@ public abstract class AbstractEntityAction
             // validation error high lighted.
             // ----------------------------------------------------------------------
 
-            data.setTarget( formId + ".form" );
+            data.setTarget( getFailureTarget( form ) );
 
-            data.getMap().put( "fvr", fvr );
+            ViewContext vc = (ViewContext) data.getMap().get( SummitConstants.VIEW_CONTEXT );
+
+            vc.put( "fid", formId );
+
+            vc.put( "fvr", fvr );
         }
     }
 
