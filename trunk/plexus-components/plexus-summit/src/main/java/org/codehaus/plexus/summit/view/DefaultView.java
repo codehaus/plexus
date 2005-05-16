@@ -9,7 +9,9 @@ package org.codehaus.plexus.summit.view;
 public class DefaultView
     extends AbstractView
 {
-    /** Constructor. */
+    /**
+     * Constructor.
+     */
     public DefaultView( String view )
     {
         super( view );

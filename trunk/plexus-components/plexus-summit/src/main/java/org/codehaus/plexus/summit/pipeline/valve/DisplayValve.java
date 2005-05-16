@@ -14,7 +14,7 @@ public class DisplayValve
     extends AbstractValve
 {
     private String display;
-    
+
     public void invoke( RunData data )
         throws IOException, SummitException
     {

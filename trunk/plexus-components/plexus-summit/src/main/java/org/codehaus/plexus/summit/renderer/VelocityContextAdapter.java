@@ -14,16 +14,22 @@ import org.codehaus.plexus.summit.view.ViewContext;
 public class VelocityContextAdapter
     extends AbstractContext
 {
-    /** <p>View Context instance that we are wrapping.</p> */
+    /**
+     * <p>View Context instance that we are wrapping.</p>
+     */
     private ViewContext context;
 
-    /** Constructor */
+    /**
+     * Constructor
+     */
     public VelocityContextAdapter( ViewContext context )
     {
         this.context = context;
     }
 
-    /** @see AbstractContext#internalGet */
+    /**
+     * @see AbstractContext#internalGet
+     */
     public Object internalGet( String key )
     {
         return context.get( key );
@@ -38,21 +44,27 @@ public class VelocityContextAdapter
         return null;
     }
 
-    /** @see AbstractContext#internalContainsKey */
+    /**
+     * @see AbstractContext#internalContainsKey
+     */
     public boolean internalContainsKey( Object key )
     {
         return false;
         //return context.containsKey( key );
     }
 
-    /** @see AbstractContext#internalGetKeys */
+    /**
+     * @see AbstractContext#internalGetKeys
+     */
     public Object[] internalGetKeys()
     {
         return null;
         //return context.getKeys();
     }
 
-    /** @see AbstractContext#internalRemove */
+    /**
+     * @see AbstractContext#internalRemove
+     */
     public Object internalRemove( Object key )
     {
         return null;

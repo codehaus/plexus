@@ -26,7 +26,7 @@ import org.codehaus.plexus.summit.rundata.RunData;
  * @author <a href="mailto:jvanzyl@zenplex.com">Jason van Zyl</a>
  * @version $Id$
  * @todo Determine whether we actually need RunData here and if it would
- *       simply suffice to pass in the Resolution as a parameter.
+ * simply suffice to pass in the Resolution as a parameter.
  */
 public interface Display
 {

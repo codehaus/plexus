@@ -68,7 +68,9 @@ import java.util.Map;
 public class DefaultViewContext
     implements ViewContext
 {
-    /** Collection of values to be rendered against. */
+    /**
+     * Collection of values to be rendered against.
+     */
     private HashMap context;
 
     public DefaultViewContext()

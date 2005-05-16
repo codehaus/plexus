@@ -11,9 +11,9 @@ import org.apache.commons.fileupload.FileItem;
  * not only include simple form items, but also contain any uploaded
  * files associated with the request.
  *
- * @todo Add the file upload convienence methods.
  * @author <a href="mailto:pete-apache-dev@kazmier.com">Pete Kazmier</a>
  * @version $Revision$
+ * @todo Add the file upload convienence methods.
  */
 public class RequestParameters extends BaseParameterConverter
 {
@@ -39,10 +39,10 @@ public class RequestParameters extends BaseParameterConverter
      * of <tt>String</tt>s or <tt>FileItem</tt>s even if there is only a
      * single value for the parameter.
      *
-     * @param parameters A map of name/value pairs representing parameters.
+     * @param parameters        A map of name/value pairs representing parameters.
      * @param characterEncoding The character encoding used to convert byte arrays.
      * @throws NullPointerException If the parameters map is null, or if
-     * specified character encoding is null.
+     *                              specified character encoding is null.
      */
     public RequestParameters( Map parameters, String characterEncoding )
     {
@@ -55,8 +55,8 @@ public class RequestParameters extends BaseParameterConverter
      *
      * @param name The name of the parameter containing the file uploaded.
      * @return FileItem A file item representing the uploaded file.  If the
-     * <tt>name</tt> does not exist, or if the parameter does not represent
-     * an uploaded file, <tt>null</tt> is returned.
+     *         <tt>name</tt> does not exist, or if the parameter does not represent
+     *         an uploaded file, <tt>null</tt> is returned.
      */
     public FileItem getFileItem( String name )
     {
@@ -83,8 +83,8 @@ public class RequestParameters extends BaseParameterConverter
      *
      * @param name The name of the parameter containing the file(s) uploaded.
      * @return FileItem[] An array of file items containing the files uploaded.
-     * If the <tt>name</tt> does not exist, or if the parameter does not
-     * represent an uploaded file, <tt>null</tt> is returned.
+     *         If the <tt>name</tt> does not exist, or if the parameter does not
+     *         represent an uploaded file, <tt>null</tt> is returned.
      */
     public FileItem[] getFileItems( String name )
     {

@@ -7,8 +7,6 @@ import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
  * Default <code>ExceptionHandler</code> implementation.
- *
- * @version
  */
 public class DefaultExceptionHandler
     extends AbstractSummitComponent

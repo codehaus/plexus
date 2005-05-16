@@ -6,15 +6,15 @@ import org.codehaus.plexus.summit.view.View;
 /**
  * <p>This resolving strategy emulates the Turbine 2.x process of matching a target
  * up with:</p>
- *
- * <p>
+ * <p/>
+ * <p/>
  * <ul>
- *   <li> A layout module</li>
- *   <li> A layout view</li>
- *   <li> A screen module</li>
+ * <li> A layout module</li>
+ * <li> A layout view</li>
+ * <li> A screen module</li>
  * </ul>
  * </p>
- *
+ * <p/>
  * <p>The navigation views are stated explicitly in the layout view according to
  * the resolving process in Turbine 2.x so this resolver doesn't have to do any
  * work in this respect. </p>
@@ -25,29 +25,43 @@ import org.codehaus.plexus.summit.view.View;
 public class ClassicResolver
     extends AbstractResolver
 {
-    /** Tag for the layout view in the resolution. */
+    /**
+     * Tag for the layout view in the resolution.
+     */
     public final static String LAYOUT_VIEW = "layoutView";
 
-    /** Tag for the navigation module in the resolution. */
+    /**
+     * Tag for the navigation module in the resolution.
+     */
     public final static String NAVIGATION_VIEW = "navigationView";
 
-    /** Tag for the screen view in the resolution. */
+    /**
+     * Tag for the screen view in the resolution.
+     */
     public final static String SCREEN_VIEW = "screenView";
 
-    /** The renderer for this resolution */
+    /**
+     * The renderer for this resolution
+     */
     public final static String RENDERER = "classic.renderer";
 
-    /** Tag for the layouts directory. */
+    /**
+     * Tag for the layouts directory.
+     */
     private final static String LAYOUT_TARGET_PREFIX = "layouts";
 
-    /** Tag for the navigations directory. */
+    /**
+     * Tag for the navigations directory.
+     */
     private final static String NAVIGATION_TARGET_PREFIX = "navigations";
 
-    /** Tag for the screens directory. */
+    /**
+     * Tag for the screens directory.
+     */
     private final static String SCREEN_TARGET_PREFIX = "screens";
 
     private Renderer renderer;
-    
+
     public ClassicResolver()
     {
     }
@@ -90,7 +104,7 @@ public class ClassicResolver
 
         return resolution;
     }
-    
+
     public Renderer getRenderer( String target )
     {
         return renderer;

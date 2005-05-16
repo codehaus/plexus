@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface RequestParameterParser
 {
-    /** The role. */
+    /**
+     * The role.
+     */
     public static final String ROLE = RequestParameterParser.class.getName();
 
     /**
@@ -22,7 +24,7 @@ public interface RequestParameterParser
      *
      * @param request The HTTP request to parse for parameters.
      * @return RequestParameters The requested parameters wrapped in
-     * a RequestParameters object for easy access to the parameters.
+     *         a RequestParameters object for easy access to the parameters.
      */
     public RequestParameters parse( HttpServletRequest request );
 }
