@@ -24,7 +24,7 @@ public class UrlSourceValidatorTest
         assertTrue( v.validate( u ) );
     }
 
-    public void testValidatorWithInvalidUrl()
+    public void testValidatorWithNonExistentFileSourceUrl()
         throws Exception
     {
         Validator v = (Validator) lookup( Validator.ROLE, "url-source" );
@@ -32,6 +32,18 @@ public class UrlSourceValidatorTest
         assertNotNull( v );
 
         String u = new File( getBasedir(), "nopom.xml" ).toURL().toExternalForm();
+
+        assertFalse( v.validate( u ) );
+    }
+
+    public void testValidatorWithNonExistentHttpSourceUrl()
+        throws Exception
+    {
+        Validator v = (Validator) lookup( Validator.ROLE, "url-source" );
+
+        assertNotNull( v );
+
+        String u = new URL( "http://foo/bar" ).toExternalForm();
 
         assertFalse( v.validate( u ) );
     }

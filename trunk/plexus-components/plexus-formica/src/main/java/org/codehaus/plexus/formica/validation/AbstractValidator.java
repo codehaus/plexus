@@ -34,7 +34,8 @@ package org.codehaus.plexus.formica.validation;
  * @author Anthony Eden
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  */
-public abstract class AbstractValidator implements Validator
+public abstract class AbstractValidator
+    implements Validator
 {
     protected String message;
     protected String errorMessageKey;
