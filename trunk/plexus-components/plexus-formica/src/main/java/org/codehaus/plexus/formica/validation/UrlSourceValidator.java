@@ -12,6 +12,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.io.InputStream;
 
 /**
  * An implementation of the Validator interface which validates
@@ -36,7 +37,9 @@ public class UrlSourceValidator
 
             URL url = new URL( urlString );
 
-            url.openStream();
+            InputStream is = url.openStream();
+
+            is.close();
         }
         catch ( Exception e )
         {
