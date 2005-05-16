@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2004 Your Corporation. All Rights Reserved.
- */
 package org.codehaus.plexus.summit.resolver;
 
 import org.codehaus.plexus.summit.renderer.Renderer;
@@ -65,8 +62,6 @@ public class NewResolver
         // ---------------------------------------------------------------
         // Screen
         // ---------------------------------------------------------------
-
-        System.out.println( "target = " + target );
 
         View screenView = getView( target, SCREEN_TARGET_PREFIX );
 
