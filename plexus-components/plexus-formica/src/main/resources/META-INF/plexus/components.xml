@@ -57,6 +57,11 @@
       <implementation>org.codehaus.plexus.formica.validation.UrlValidator</implementation>
     </component>
     <component>
+      <role>org.codehaus.plexus.formica.validation.Validator</role>
+      <role-hint>url-source</role-hint>
+      <implementation>org.codehaus.plexus.formica.validation.UrlSourceValidator</implementation>
+    </component>
+    <component>
       <role>org.codehaus.plexus.formica.validation.group.GroupValidator</role>
       <role-hint>match</role-hint>
       <implementation>org.codehaus.plexus.formica.validation.group.MatchValidator</implementation>
