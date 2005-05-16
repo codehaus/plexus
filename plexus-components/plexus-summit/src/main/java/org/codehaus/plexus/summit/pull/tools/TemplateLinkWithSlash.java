@@ -5,7 +5,7 @@ package org.codehaus.plexus.summit.pull.tools;
  * using '/' slash as opposed to the ',' used in TemplateLink.
  * It is less efficient as the '/' are converted to ',' to avoid
  * problems parsing the pathinfo after conversion in a web server.
- *
+ * <p/>
  * It is recommended that projects standardize on using the ','
  * separator and use TemplateLink.  But this class is available for
  * those who do not mind the inefficiency.
@@ -18,7 +18,7 @@ public class TemplateLinkWithSlash
 {
     /**
      * Default constructor
-     * <p>
+     * <p/>
      * The init method must be called before use.
      */
     public TemplateLinkWithSlash()
@@ -32,9 +32,9 @@ public class TemplateLinkWithSlash
      * @param t A String with the template name.
      * @return A TemplateLink.
      */
-    public TemplateLink setPage(String t)
+    public TemplateLink setPage( String t )
     {
-        super.setPage( t.replace('/', ',') );
+        super.setPage( t.replace( '/', ',' ) );
         return this;
     }
 }

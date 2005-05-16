@@ -10,19 +10,19 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 
 /**
  * <p>The base class for all the various components used in Summit:</p>
- *
- * <p>
- *  <ul>
- *   <li>Displays</li>
- *   <li>Modules</li>
- *   <li>Pipelines</li>
- *   <li>Valves (not yet)</li>
- *   <li>Renderers</li>
- *   <li>Resolvers</li>
- *   <li>Views</li>
- *  </ul>
+ * <p/>
+ * <p/>
+ * <ul>
+ * <li>Displays</li>
+ * <li>Modules</li>
+ * <li>Pipelines</li>
+ * <li>Valves (not yet)</li>
+ * <li>Renderers</li>
+ * <li>Resolvers</li>
+ * <li>Views</li>
+ * </ul>
  * </p>
- *
+ * <p/>
  * <p>The primary motivation for this is to share access to the
  * application view which acts a mediator between all the various
  * components so that each of the components are not directly

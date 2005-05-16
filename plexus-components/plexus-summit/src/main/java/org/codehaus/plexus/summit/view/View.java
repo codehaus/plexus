@@ -10,9 +10,13 @@ package org.codehaus.plexus.summit.view;
  */
 public interface View
 {
-    /** Set the name of the view. */
+    /**
+     * Set the name of the view.
+     */
     void setName( String name );
 
-    /** Get the name of the view. */
+    /**
+     * Get the name of the view.
+     */
     String getName();
 }

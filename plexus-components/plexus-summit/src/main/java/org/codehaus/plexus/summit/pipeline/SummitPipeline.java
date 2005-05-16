@@ -46,46 +46,46 @@ public class SummitPipeline
             }
             catch ( Exception e )
             {
-                throw new SummitException( "Cannot invoke valve:",  e );
+                throw new SummitException( "Cannot invoke valve:", e );
             }
         }
     }
 
-    public void configure(PlexusConfiguration config)
+    public void configure( PlexusConfiguration config )
         throws PlexusConfigurationException
     {
-        PlexusConfiguration[] valves = config.getChild("valves").getChildren("valve");
-        
-        for (int i = 0; i < valves.length; i++)
+        PlexusConfiguration[] valves = config.getChild( "valves" ).getChildren( "valve" );
+
+        for ( int i = 0; i < valves.length; i++ )
         {
-            configureValve(valves[i]);
+            configureValve( valves[i] );
         }
     }
 
-    protected void configureValve(PlexusConfiguration config) 
+    protected void configureValve( PlexusConfiguration config )
         throws PlexusConfigurationException
     {
         String name = config.getValue();
-        
+
         Valve valve = null;
-        
+
         try
         {
-            valve = (Valve) getContainer().lookup(Valve.ROLE, name);
+            valve = (Valve) getContainer().lookup( Valve.ROLE, name );
         }
-        catch (ComponentLookupException e)
+        catch ( ComponentLookupException e )
         {
             try
             {
-                valve = (Valve) getClass().getClassLoader().loadClass(name).newInstance();
+                valve = (Valve) getClass().getClassLoader().loadClass( name ).newInstance();
             }
-            catch (Exception e1)
+            catch ( Exception e1 )
             {
-                getLogger().error("Couldn't create valve!", e1);
-                throw new PlexusConfigurationException("Couldn't create valve!", e1);
+                getLogger().error( "Couldn't create valve!", e1 );
+                throw new PlexusConfigurationException( "Couldn't create valve!", e1 );
             }
         }
-        
-        valves.add(valve);
+
+        valves.add( valve );
     }
 }

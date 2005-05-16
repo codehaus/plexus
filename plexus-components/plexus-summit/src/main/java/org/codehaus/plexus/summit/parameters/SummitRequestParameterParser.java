@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  * <pre>
  *     /param1/value1/param2/value2/param3/value3
  * </pre>
- * <p>
+ * <p/>
  * This component is thread-safe.
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
@@ -34,7 +34,7 @@ public class SummitRequestParameterParser
      * see the {@link BaseRequestParameterParser}.
      *
      * @param request The HTTP request to parse for parameters.
-     * a RequestParameters object for easy access to the parameters.
+     *                a RequestParameters object for easy access to the parameters.
      * @see org.codehaus.plexus.summit.parameters.RequestParameterParser#parse(javax.servlet.http.HttpServletRequest)
      */
     protected void doParse( HttpServletRequest request, Map parameterMap )
@@ -47,9 +47,9 @@ public class SummitRequestParameterParser
      * the path info which are separated by a '/' character.  Each parsed pair
      * is stored in the supplied parameter map.
      *
-     * @param request The HTTP request to be parsed.
+     * @param request      The HTTP request to be parsed.
      * @param parameterMap The parameter map which is populated with the
-     * parsed name/value pairs.
+     *                     parsed name/value pairs.
      * @todo Make the '/' character configurable and modify the parser so it
      * parses the data correctly.
      */
@@ -65,7 +65,7 @@ public class SummitRequestParameterParser
             String encoding = request.getCharacterEncoding();
             if ( encoding == null )
                 encoding = "UTF-8";
-            
+
             while ( tokenizer.hasMoreTokens() )
             {
                 if ( isNameToken )
@@ -78,10 +78,9 @@ public class SummitRequestParameterParser
                     isNameToken = true;
                     if ( nameToken.length() > 0 )
                     {
-                        addParameter(
-                            parameterMap,
-                            nameToken,
-                            URLDecoder.decode( tokenizer.nextToken(), encoding ));
+                        addParameter( parameterMap,
+                                      nameToken,
+                                      URLDecoder.decode( tokenizer.nextToken(), encoding ) );
                     }
                 }
             }

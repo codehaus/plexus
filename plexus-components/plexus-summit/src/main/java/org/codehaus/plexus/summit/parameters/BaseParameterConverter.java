@@ -53,10 +53,10 @@ public class BaseParameterConverter
      * that is used when converting to byte arrays.  The map of parameters
      * must contain name/value pairs as described in the class documentation.
      *
-     * @param parameters A map of name/value pairs representing parameters.
+     * @param parameters        A map of name/value pairs representing parameters.
      * @param characterEncoding The character encoding used to convert byte arrays.
-     * If the specified value is <tt>null</tt>, the default encoding of
-     * "US-ASCII" is used.
+     *                          If the specified value is <tt>null</tt>, the default encoding of
+     *                          "US-ASCII" is used.
      * @throws NullPointerException If the parameters map is null.
      */
     public BaseParameterConverter( Map parameters, String characterEncoding )

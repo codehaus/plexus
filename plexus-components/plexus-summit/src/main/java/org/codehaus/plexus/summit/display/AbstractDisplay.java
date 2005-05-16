@@ -27,11 +27,10 @@ import org.codehaus.plexus.summit.AbstractSummitComponent;
 import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
- * @see org.codehaus.plexus.summit.display.Display
- *
  * @author <a href="mailto:jvanzyl@zenplex.com">Jason van Zyl</a>
  * @author <a href="mailto:pete-apache-dev@kazmier.com">Pete Kazmier</a>
  * @version $Id$
+ * @see org.codehaus.plexus.summit.display.Display
  */
 public abstract class AbstractDisplay
     extends AbstractSummitComponent
@@ -57,7 +56,7 @@ public abstract class AbstractDisplay
 
         return osw;
     }
-    
+
     public String getDefaultEncoding()
     {
         return encoding;

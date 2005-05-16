@@ -7,7 +7,7 @@ import org.codehaus.plexus.summit.util.UriBuilder;
 /**
  * A customized version of the RelativeDynamicUriBuilder to be used in Templates.
  * Here's an example of its Velocity/WebMacro use:
- *
+ * <p/>
  * <p><code>
  * $link.setPage("index.wm").addPathInfo("hello","world")
  * This would return: /myapp/servlet/myapp/target/index.wm/hello/world
@@ -19,19 +19,23 @@ import org.codehaus.plexus.summit.util.UriBuilder;
  */
 public class RelativeTemplateLink extends UriBuilder implements RequestTool
 {
-    /** the pathinfo key stored in the UriBuilder */
+    /**
+     * the pathinfo key stored in the UriBuilder
+     */
     private static final String TEMPLATE_KEY = "template";
-    /** cache of the target name for getPage() */
+    /**
+     * cache of the target name for getPage()
+     */
     private String target = null;
 
     /**
      * Default constructor
-     * <p>
+     * <p/>
      * The init method must be called before use.
      */
     public RelativeTemplateLink()
     {
-        setRelative(true);
+        setRelative( true );
     }
 
     /**
@@ -51,10 +55,10 @@ public class RelativeTemplateLink extends UriBuilder implements RequestTool
      * @param t A String with the target name.
      * @return A TemplateLink.
      */
-    public RelativeTemplateLink setPage(String t)
+    public RelativeTemplateLink setPage( String t )
     {
         target = t;
-        addPathInfo(TEMPLATE_KEY, t);
+        addPathInfo( TEMPLATE_KEY, t );
         return this;
     }
 
@@ -74,7 +78,7 @@ public class RelativeTemplateLink extends UriBuilder implements RequestTool
      * pathInfo and QueryString portions of the UriBuilder.
      *
      * @return A String with the URI in the form
-     * http://foo.com/Turbine/target/index.wm/hello/world
+     *         http://foo.com/Turbine/target/index.wm/hello/world
      */
     public String toString()
     {
@@ -91,7 +95,7 @@ public class RelativeTemplateLink extends UriBuilder implements RequestTool
      * (avoiding the local toString implementation).
      *
      * @return A String with the URI in the form
-     * http://foo.com/Turbine/target/index.wm/hello/world
+     *         http://foo.com/Turbine/target/index.wm/hello/world
      */
     public String getURI()
     {
@@ -101,9 +105,9 @@ public class RelativeTemplateLink extends UriBuilder implements RequestTool
     /* (non-Javadoc)
      * @see org.codehaus.plexus.summit.pull.ApplicationTool#setData(java.lang.Object)
      */
-    public void setRunData(RunData data)
+    public void setRunData( RunData data )
     {
-        init(data);
+        init( data );
     }
 
     /* (non-Javadoc)

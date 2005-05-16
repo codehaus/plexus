@@ -21,16 +21,12 @@ public abstract class AbstractResolver
     extends AbstractSummitComponent
     implements Resolver
 {
-    /** The view that will be used when there is an error. */
     private String errorView;
 
-    /** The default view i.e. index.vm */
     private String defaultView;
 
-    /**
-     * Returns the error view.
-     * @see org.codehaus.plexus.summit.resolver.Resolver#getErrorView()
-     */
+    private String initialView;
+
     public String getErrorView()
     {
         return errorView;
@@ -39,6 +35,11 @@ public abstract class AbstractResolver
     public String getDefaultView()
     {
         return defaultView;
+    }
+
+    public String getInitialView()
+    {
+        return initialView;
     }
 
     // -------------------------------------------------------------------------
@@ -82,7 +83,7 @@ public abstract class AbstractResolver
         {
             String view = (String) i.next();
 
-            if ( getRenderer(target).viewExists( view ) )
+            if ( getRenderer( target ).viewExists( view ) )
             {
                 return new DefaultView( view );
             }

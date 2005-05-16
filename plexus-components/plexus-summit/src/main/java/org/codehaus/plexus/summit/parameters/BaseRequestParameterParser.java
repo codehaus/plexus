@@ -22,7 +22,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
  * and post data to assemble a parameter map. In addition, any file uploads
  * are processed and are made available via the returned <tt>RequestParameters</tt>
  * object.
- * <p>
+ * <p/>
  * This component is thread-safe.
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
@@ -34,7 +34,9 @@ public class BaseRequestParameterParser
     extends AbstractLogEnabled
     implements RequestParameterParser, Initializable
 {
-    /** A file upload object used to parse uploaded files */
+    /**
+     * A file upload object used to parse uploaded files
+     */
     private DiskFileUpload fileUpload = new DiskFileUpload();
 
     private int maxUploadSize;
@@ -61,22 +63,22 @@ public class BaseRequestParameterParser
      * Note: This parser does not inspect the path info for name/value
      * pairs as the Turbine does.  If you want the path info parsed for
      * parameters, use the {@link SummitRequestParameterParser} instead.
-     * <p>
+     * <p/>
      * Implementation note: This method is a template method and provides
      * a hook that implementors may use for additional parsing of the
      * request.  This method does the following:
      * <ul>
-     *   <li> Processes any file upload requests.
-     *   <li> Parses the query info for parameters.
-     *   <li> Invokes <tt>doParse</tt> which may be implemented by
-     *        subclasses to do additional processing on the request.
-     *   <li> Returns the parameter map wrapped in a RequestParameter
-     *        object.
+     * <li> Processes any file upload requests.
+     * <li> Parses the query info for parameters.
+     * <li> Invokes <tt>doParse</tt> which may be implemented by
+     * subclasses to do additional processing on the request.
+     * <li> Returns the parameter map wrapped in a RequestParameter
+     * object.
      * </ul>
      *
      * @param request The HTTP request to parse for parameters.
      * @return RequestParameters The requested parameters wrapped in
-     * a RequestParameters object for easy access to the parameters.
+     *         a RequestParameters object for easy access to the parameters.
      * @see org.codehaus.plexus.summit.parameters.RequestParameterParser#parse(javax.servlet.http.HttpServletRequest)
      */
     public RequestParameters parse( HttpServletRequest request )
@@ -108,11 +110,11 @@ public class BaseRequestParameterParser
      * the value of the parameter.  Note: the value <b>must</b> be an array
      * even if there is only a single value.
      *
-     * @param request The HTTP request to parse for parameters.
+     * @param request      The HTTP request to parse for parameters.
      * @param parameterMap A map of the collected parameters which should
-     * be used to store additional parameters in the format described above.
-     * A helper method has been provided to ensure the values are stored
-     * as arrays (see <tt>addParameter</tt>).
+     *                     be used to store additional parameters in the format described above.
+     *                     A helper method has been provided to ensure the values are stored
+     *                     as arrays (see <tt>addParameter</tt>).
      */
     protected void doParse( HttpServletRequest request, Map parameterMap )
     {
@@ -125,16 +127,15 @@ public class BaseRequestParameterParser
      * the multipart request are also decoded and stored in the parameter
      * map as arrays of <tt>String</tt>s.
      *
-     * @param request The HTTP request to be parsed.
+     * @param request      The HTTP request to be parsed.
      * @param parameterMap The parameter map which is populated with the
-     * uploaded files and/or form fields.
-     * @param encoding The encoding to use when decoding a form field
-     * parameter.
+     *                     uploaded files and/or form fields.
+     * @param encoding     The encoding to use when decoding a form field
+     *                     parameter.
      */
-    private void processFileUploadItems(
-        HttpServletRequest request,
-        Map parameterMap,
-        String encoding )
+    private void processFileUploadItems( HttpServletRequest request,
+                                         Map parameterMap,
+                                         String encoding )
     {
         try
         {
@@ -144,10 +145,9 @@ public class BaseRequestParameterParser
                 FileItem item = (FileItem) i.next();
                 if ( item.isFormField() )
                 {
-                    addParameter(
-                        parameterMap,
-                        item.getFieldName(),
-                        getFormField( item, encoding ) );
+                    addParameter( parameterMap,
+                                  item.getFieldName(),
+                                  getFormField( item, encoding ) );
                 }
                 else
                 {
@@ -166,9 +166,9 @@ public class BaseRequestParameterParser
      * the query info.  Each parsed pair is stored in the supplied parameter
      * map.
      *
-     * @param request The HTTP request to be parsed.
+     * @param request      The HTTP request to be parsed.
      * @param parameterMap The parameter map which is populated with the
-     * parsed name/value pairs.
+     *                     parsed name/value pairs.
      */
     private void processQueryInfo( HttpServletRequest request, Map parameterMap )
     {
@@ -185,8 +185,8 @@ public class BaseRequestParameterParser
      * is only a single parameter.
      *
      * @param parameterMap The map which the parameter should be added.
-     * @param name The name of the parameter.
-     * @param item The file item associated with the parameter.
+     * @param name         The name of the parameter.
+     * @param item         The file item associated with the parameter.
      */
     protected void addFileItem( Map parameterMap, String name, FileItem item )
     {
@@ -212,8 +212,8 @@ public class BaseRequestParameterParser
      * single parameter.
      *
      * @param parameterMap The map which the parameter should be added.
-     * @param name The name of the parameter.
-     * @param value The value of the parameter.
+     * @param name         The name of the parameter.
+     * @param value        The value of the parameter.
      */
     protected void addParameter( Map parameterMap, String name, String value )
     {
@@ -237,7 +237,7 @@ public class BaseRequestParameterParser
      * Get the value of a form field that is part of a <tt>FileItem</tt> using
      * the specified encoding.
      *
-     * @param item The file item which contains a form value instead of a file upload.
+     * @param item     The file item which contains a form value instead of a file upload.
      * @param encoding The encoding to use when getting the form value.
      * @return String The form value encoded in the specified encoding.
      */

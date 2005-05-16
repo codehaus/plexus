@@ -9,15 +9,15 @@ import org.codehaus.plexus.summit.view.ViewContext;
  * Service you can avoid having to make Screens to populate a context for use in
  * a particular template. The Pull Service creates a set of tools, as specified
  * in the TR. props file.</p>
- *
+ * <p/>
  * <p>These tools can have global scope, request scope, session scope (i.e.
  * stored in user temp hashmap) or persistent scope (i.e. stored in user perm
  * hashmap).</p>
- *
+ * <p/>
  * <p>The standard way of referencing these global tools is through the toolbox
  * handle. This handle is typically $toolbox, but can be specified in the TR.
  * props file.</p>
- *
+ * <p/>
  * <p>So, for example, if you had a UI Manager tool which created a set of UI
  * attributes from a properties file, and one of the properties was 'bgcolor',
  * then you could access this UI attribute with $ui.bgcolor. The identifier that
@@ -28,7 +28,9 @@ import org.codehaus.plexus.summit.view.ViewContext;
  */
 public interface PullService
 {
-    /** The Avalon role */
+    /**
+     * The Avalon role
+     */
     public static final String ROLE = PullService.class.getName();
 
     /**
@@ -37,9 +39,9 @@ public interface PullService
      * and thus already contains the global tools).
      *
      * @param context a ViewContext to populate
-     * @param data a RunData object for request specific data
+     * @param data    a RunData object for request specific data
      */
-    public void populateContext(ViewContext context, RunData data);
+    public void populateContext( ViewContext context, RunData data );
 
     /**
      * Release tool instances from the given context to the
@@ -47,6 +49,6 @@ public interface PullService
      *
      * @param context a ViewContext to release tools from
      */
-    public void releaseTools(ViewContext context);
+    public void releaseTools( ViewContext context );
 
 }

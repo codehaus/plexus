@@ -7,20 +7,20 @@ import org.codehaus.plexus.summit.rundata.RunData;
  * Template context tool that will set various attributes of the HTML
  * page.  It is automatically placed in the Template context as
  * '$page'.  Here's an example of some uses:
- *
- * <p>
+ * <p/>
+ * <p/>
  * $page.setBgColor("#ffffff");
  * $page.setBgColor("white");
  * $page.setBackground("/images/standardbg.jpeg");
  * $page.setTitle("This is the title!");
  * $page.setKeywords("turbine, cool, servlet framework");
  * $page.setStyleSheet("/style.css");
- *
+ * <p/>
  * This should become a general attribute storage class
  * for a page. We should have something general like:
- *
+ * <p/>
  * $page.setAttr("bgcolor", "#ffffff")
- *
+ * <p/>
  * Instead of set methods for HTML because we might want
  * to set attributes for WML output or anything else.
  *
@@ -30,10 +30,14 @@ import org.codehaus.plexus.summit.rundata.RunData;
 public class TemplatePageAttributes
     implements RequestTool
 {
-    /** The RunData object. */
+    /**
+     * The RunData object.
+     */
     private RunData data = null;
 
-    /** The title. */
+    /**
+     * The title.
+     */
     private String title = null;
     private String bgColor = null;
 
@@ -50,7 +54,7 @@ public class TemplatePageAttributes
      *
      * @param data Assumed to be a RunData instance
      */
-    public void setRunData(RunData data)
+    public void setRunData( RunData data )
     {
         // we blithely cast to RunData as the runtime error thrown
         // if data is null or not RunData is appropriate.
@@ -76,7 +80,7 @@ public class TemplatePageAttributes
      *
      * @param title A String with the title.
      */
-    public TemplatePageAttributes setTitle(String title)
+    public TemplatePageAttributes setTitle( String title )
     {
         this.title = title;
         return this;
@@ -102,7 +106,7 @@ public class TemplatePageAttributes
      * @param bgColor the background color.
      * @return A TemplatePageAttributes (self).
      */
-    public TemplatePageAttributes setBgColor(String bgColor)
+    public TemplatePageAttributes setBgColor( String bgColor )
     {
         this.bgColor = bgColor;
         return this;

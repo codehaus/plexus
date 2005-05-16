@@ -81,10 +81,14 @@ import org.codehaus.plexus.summit.resolver.Resolution;
 public interface RunData
     extends SummitComponent
 {
-    /** Role name. */
+    /**
+     * Role name.
+     */
     public static final String ROLE = RunData.class.getName();
 
-    /** Gets the target attribute of the RunData object */
+    /**
+     * Gets the target attribute of the RunData object
+     */
     String getTarget();
 
     /**

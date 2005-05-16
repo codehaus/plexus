@@ -27,7 +27,7 @@ public abstract class AbstractRenderer
 
         return writer.toString();
     }
-       
+
     public abstract void render( RunData data, String view, Writer writer )
         throws SummitException, Exception;
 

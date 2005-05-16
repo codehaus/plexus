@@ -18,11 +18,10 @@ public interface ExceptionHandler
     /**
      * This method will be called to handle a throwable thrown by the pipeline
      *
-     * @param data RunData for the request where the error occured
+     * @param data      RunData for the request where the error occured
      * @param throwable The throwable that was thrown
-     *
      * @throw Exception if an error occurs handling the throwable. Turbine will
-     *                  then attempt to provide some minimal handling.
+     * then attempt to provide some minimal handling.
      */
     public void handleException( RunData data, Throwable throwable )
         throws Exception;

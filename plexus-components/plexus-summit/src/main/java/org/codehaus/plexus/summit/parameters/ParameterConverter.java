@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Interface that provides type-conversion methods for the values of a
@@ -47,7 +48,7 @@ public interface ParameterConverter
      * Return a boolean for the given name.  If the name does not
      * exist, return defaultValue.
      *
-     * @param name A String with the name.
+     * @param name         A String with the name.
      * @param defaultValue The default value.
      * @return A boolean.
      */
@@ -66,7 +67,7 @@ public interface ParameterConverter
      * Return a Boolean for the given name.  If the name does not
      * exist, return defaultValue.
      *
-     * @param name A String with the name.
+     * @param name         A String with the name.
      * @param defaultValue The default value.
      * @return A Boolean.
      */
@@ -85,7 +86,7 @@ public interface ParameterConverter
      * Return a double for the given name.  If the name does not
      * exist, return defaultValue.
      *
-     * @param name A String with the name.
+     * @param name         A String with the name.
      * @param defaultValue The default value.
      * @return A double.
      */
@@ -104,7 +105,7 @@ public interface ParameterConverter
      * Return a float for the given name.  If the name does not
      * exist, return defaultValue.
      *
-     * @param name A String with the name.
+     * @param name         A String with the name.
      * @param defaultValue The default value.
      * @return A float.
      */
@@ -123,7 +124,7 @@ public interface ParameterConverter
      * Return a BigDecimal for the given name.  If the name does not
      * exist, return defaultValue.
      *
-     * @param name A String with the name.
+     * @param name         A String with the name.
      * @param defaultValue The default value.
      * @return A BigDecimal.
      */
@@ -151,7 +152,7 @@ public interface ParameterConverter
      * Return an int for the given name.  If the name does not exist,
      * return defaultValue.
      *
-     * @param name A String with the name.
+     * @param name         A String with the name.
      * @param defaultValue The default value.
      * @return An int.
      */
@@ -170,7 +171,7 @@ public interface ParameterConverter
      * Return an Integer for the given name.  If the name does not
      * exist, return defaultValue.
      *
-     * @param name A String with the name.
+     * @param name         A String with the name.
      * @param defaultValue The default value.
      * @return An Integer.
      */
@@ -182,7 +183,7 @@ public interface ParameterConverter
      * the default value.
      *
      * @param name A String with the name.
-     * @param def The default value.
+     * @param def  The default value.
      * @return An Integer.
      */
     public Integer getInteger( String name, Integer def );
@@ -218,7 +219,7 @@ public interface ParameterConverter
      * Return a long for the given name.  If the name does not exist,
      * return defaultValue.
      *
-     * @param name A String with the name.
+     * @param name         A String with the name.
      * @param defaultValue The default value.
      * @return A long.
      */
@@ -255,7 +256,7 @@ public interface ParameterConverter
      * Return a byte for the given name.  If the name does not exist,
      * return defaultValue.
      *
-     * @param name A String with the name.
+     * @param name         A String with the name.
      * @param defaultValue The default value.
      * @return A byte.
      */
@@ -277,7 +278,7 @@ public interface ParameterConverter
      *
      * @param name A String with the name.
      * @return A byte[].
-     * @exception UnsupportedEncodingException
+     * @throws UnsupportedEncodingException
      */
     public byte[] getBytes( String name ) throws UnsupportedEncodingException;
 
@@ -296,7 +297,7 @@ public interface ParameterConverter
      * however has been added for simplicity when working with
      * template tools such as Velocity which allow you to do
      * something like this:
-     *
+     * <p/>
      * <code>$data.Parameters.form_variable_name</code>
      *
      * @param name A String with the name.
@@ -308,7 +309,7 @@ public interface ParameterConverter
      * Return a String for the given name.  If the name does not
      * exist, return the defaultValue.
      *
-     * @param name A String with the name.
+     * @param name         A String with the name.
      * @param defaultValue The default value.
      * @return A String.
      */
@@ -327,7 +328,7 @@ public interface ParameterConverter
      * Return an array of Strings for the given name.  If the name
      * does not exist, return the defaultValue.
      *
-     * @param name A String with the name.
+     * @param name         A String with the name.
      * @param defaultValue The default value.
      * @return A String[].
      */
@@ -356,8 +357,8 @@ public interface ParameterConverter
      * DateFormat.  If the name does not exist, return the
      * defaultValue.
      *
-     * @param name A String with the name.
-     * @param df A DateFormat.
+     * @param name         A String with the name.
+     * @param df           A DateFormat.
      * @param defaultValue The default value.
      * @return A Date.
      */
@@ -368,7 +369,7 @@ public interface ParameterConverter
      * DateFormat.  If the name does not exist, return null.
      *
      * @param name A String with the name.
-     * @param df A DateFormat.
+     * @param df   A DateFormat.
      * @return A Date.
      */
     public Date getDate( String name, DateFormat df );

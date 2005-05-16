@@ -15,23 +15,26 @@ public class ResolverUtils
     /**
      * Get the parsed module name for the specified template.
      *
-     * @param target The target name.
+     * @param target        The target name.
      * @param defaultTarget The target to view in the current directory if the
-     * specified target doesn't exist.
+     *                      specified target doesn't exist.
      * @return The possible views.
-     * @exception Exception a generaic exception.
+     * @throws Exception a generaic exception.
      */
     public static List getPossibleViews( String target, String defaultTarget )
         throws Exception
     {
         List views = new ArrayList();
+
         StringBuffer view = new StringBuffer();
+
         int i = parseTargetPath( target, view );
 
         // Remove leading slash if present
         if ( view.charAt( 0 ) == '/' )
         {
             view.deleteCharAt( 0 );
+
             i--;
         }
 
@@ -43,7 +46,9 @@ public class ResolverUtils
         while ( j-- > 0 )
         {
             module = view.toString();
+
             views.add( module );
+
             view.setLength( i + 1 );
 
             if ( i > 0 )
@@ -80,16 +85,21 @@ public class ResolverUtils
      * @param target The template name.
      * @param buffer A buffer for the result.
      * @return The index of the separator between the path and the name.
-     * @exception Exception Malformed template name.
+     * @throws Exception Malformed template name.
      */
     public static int parseTargetPath( String target, StringBuffer buffer )
         throws Exception
     {
         char c;
+
         int j = 0;
+
         int index = -1;
+
         buffer.setLength( 0 );
+
         buffer.append( target );
+
         int len = buffer.length();
 
         while ( j < len )
@@ -120,8 +130,7 @@ public class ResolverUtils
         if ( ( len == 0 ) ||
             ( index >= ( len - 1 ) ) )
         {
-            throw new Exception(
-                "Syntax error in template name '" + target + '\'' );
+            throw new Exception( "Syntax error in template name '" + target + '\'' );
         }
         return index;
     }
