@@ -20,7 +20,7 @@ public class SimpleResolver
     public final static String DEFAULT_SCREEN_MODULE = "Default";
 
     private Renderer renderer;
-    
+
     public Resolution resolve( String target )
         throws Exception
     {

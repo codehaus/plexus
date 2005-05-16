@@ -24,14 +24,14 @@ import org.codehaus.plexus.summit.view.View;
 import org.codehaus.plexus.summit.view.ViewContext;
 
 /**
- * <p>
+ * <p/>
  * A <code>ClassicDisplay</code> takes a <code>Resolution</code> computed
  * by the <code>ClassicResolver</code> and displays the resolution according
  * to the Turbine 2.x model where we have something like the following:
  * </p>
- *
+ * <p/>
  * <pre>
- *
+ * <p/>
  * +------------------------------------------------+
  * | DefaultLayout.vm                               |
  * | +--------------------------------------------+ |
@@ -50,10 +50,10 @@ import org.codehaus.plexus.summit.view.ViewContext;
  * | | TopNavigation.vm                           | |
  * | +--------------------------------------------+ |
  * +------------------------------------------------+
- *
+ * <p/>
  * </pre>
- *
- * <p>
+ * <p/>
+ * <p/>
  * This example uses Velocity templates as an example but this
  * <code>Display</code> strategy could just as easily be applied
  * to a set of JSPs.
@@ -66,7 +66,7 @@ public class ClassicBufferedDisplay
     extends AbstractDisplay
 {
     private Renderer renderer;
-    
+
     public void render( RunData data )
         throws Exception
     {

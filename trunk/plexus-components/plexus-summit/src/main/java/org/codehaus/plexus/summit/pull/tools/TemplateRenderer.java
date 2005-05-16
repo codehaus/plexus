@@ -11,7 +11,7 @@ import org.codehaus.plexus.summit.view.View;
  * This class is a hack that allows you to render templates via the old Turbine
  * 3 style.  It resolves the template, then looks up the renderer to render the
  * template it.
- * 
+ *
  * @author <a href="dan@envoisolutions.com">Dan Diephouse</a>
  * @since Feb 13, 2003
  */
@@ -22,18 +22,18 @@ public class TemplateRenderer
     private RunData data;
 
     private Renderer renderer;
-    
-    public void setRunData(RunData data)
+
+    public void setRunData( RunData data )
     {
-        this.data = data;       
+        this.data = data;
     }
 
     public void refresh()
     {
         this.data = null;
     }
-    
-    public String render( String basedir, String target ) 
+
+    public String render( String basedir, String target )
         throws Exception
     {
         View view = getView( target, basedir );
@@ -41,13 +41,13 @@ public class TemplateRenderer
         return getRenderer( target ).render( data, view.getName() );
     }
 
-    protected Renderer getRenderer(String target)
+    protected Renderer getRenderer( String target )
         throws Exception
     {
         return renderer;
     }
 
-    public Resolution resolve(String view)
+    public Resolution resolve( String view )
         throws Exception
     {
         return null;

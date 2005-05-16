@@ -24,16 +24,15 @@ public interface Pipeline
      * <p>Cause the specified request and response to be processed by
      * the sequence of Valves associated with this pipeline, until one
      * of these Valves decides to end the processing.</p>
-     *
+     * <p/>
      * <p>The implementation must ensure that multiple simultaneous
      * requests (on different threads) can be processed through the
      * same Pipeline without interfering with each other's control
      * flow.</p>
      *
      * @param data The run-time information, including the servlet
-     * request and response we are processing.
-     *
-     * @exception IOException an input/output error occurred.
+     *             request and response we are processing.
+     * @throws IOException an input/output error occurred.
      */
     void invoke( RunData data )
         throws SummitException, IOException;

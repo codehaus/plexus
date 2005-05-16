@@ -10,7 +10,7 @@ public class SummitRuntimeException
     extends Exception
 {
     /**
-     * @param message Exception message.
+     * @param message   Exception message.
      * @param throwable
      */
     public SummitRuntimeException( String message, Throwable throwable )

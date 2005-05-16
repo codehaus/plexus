@@ -19,13 +19,15 @@ public class ContentUriBuilder
     extends UriBuilder
     implements RequestTool
 {
-    /** stores the context path for servlet 2.1+ compliant containers */
+    /**
+     * stores the context path for servlet 2.1+ compliant containers
+     */
     private String contextPath;
-    
+
     /**
      * Default constructor
      */
-    public ContentUriBuilder ()
+    public ContentUriBuilder()
     {
     }
 
@@ -42,16 +44,16 @@ public class ContentUriBuilder
      *
      * @param data a RunData instance
      */
-    public void setRunData(RunData data)
+    public void setRunData( RunData data )
     {
-        init(data);
+        init( data );
         try
         {
             Class RunDataClass = RunData.class;
-            Method meth = RunDataClass.getDeclaredMethod("getContextPath", null);
-            contextPath = (String)meth.invoke(data, null);
+            Method meth = RunDataClass.getDeclaredMethod( "getContextPath", null );
+            contextPath = (String) meth.invoke( data, null );
         }
-        catch (Exception e)
+        catch ( Exception e )
         {
             /*
              * Ignore a NoSuchMethodException because it means we are
@@ -68,18 +70,18 @@ public class ContentUriBuilder
      *
      * @param pathToContent a path relative to the webapp root
      */
-    public String getURI(String pathToContent)
+    public String getURI( String pathToContent )
     {
         StringBuffer sb = new StringBuffer();
-        sb.append (getServerScheme()); //http
-        sb.append ("://");
-        sb.append (getServerName()); //www.foo.com
-        sb.append (':');
-        sb.append (getServerPort()); //port webserver running on (8080 for TDK)
+        sb.append( getServerScheme() ); //http
+        sb.append( "://" );
+        sb.append( getServerName() ); //www.foo.com
+        sb.append( ':' );
+        sb.append( getServerPort() ); //port webserver running on (8080 for TDK)
         //the context for tomcat adds a / so no need to add another
-        sb.append (contextPath); //the tomcat context
-        sb.append ('/');
-        sb.append (pathToContent);
-        return (sb.toString());
+        sb.append( contextPath ); //the tomcat context
+        sb.append( '/' );
+        sb.append( pathToContent );
+        return ( sb.toString() );
     }
 }

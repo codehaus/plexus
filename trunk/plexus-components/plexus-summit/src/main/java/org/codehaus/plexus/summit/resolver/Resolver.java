@@ -16,6 +16,8 @@ public interface Resolver
     Resolution resolve( String view )
         throws Exception;
 
+    String getInitialView();
+
     String getDefaultView();
 
     String getErrorView();

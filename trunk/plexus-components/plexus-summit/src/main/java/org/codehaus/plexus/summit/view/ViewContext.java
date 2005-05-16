@@ -13,7 +13,7 @@ public interface ViewContext
 {
     public void put( String key, Object value );
 
-    public void putAll( Map map);
+    public void putAll( Map map );
 
     public Object get( String key );
 

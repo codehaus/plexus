@@ -10,7 +10,7 @@ public class DetermineTargetValve
     extends AbstractValve
 {
     private Resolver resolver;
-    
+
     public void invoke( RunData data )
         throws IOException, SummitException
     {
@@ -29,10 +29,14 @@ public class DetermineTargetValve
             }
             else
             {
-                target = resolver.getDefaultView();
+                target = resolver.getInitialView();
+
+                System.out.println( "setting target = " + target );
 
                 data.setTarget( target );
             }
+            
+            System.out.println( "target = " + target );
         }
     }
 }

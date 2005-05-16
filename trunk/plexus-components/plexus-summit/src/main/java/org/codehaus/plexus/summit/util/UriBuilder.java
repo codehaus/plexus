@@ -13,20 +13,20 @@ import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
  * This creates a Dynamic URI for use within the Turbine system
- *
+ * <p/>
  * <p>If you use this class to generate all of your href tags as well
  * as all of your URI's, then you will not need to worry about having
  * session data setup for you or using HttpServletRequest.encodeUrl()
  * since this class does everything for you.
- *
+ * <p/>
  * <code><pre>
  * UriBuilder dui = new UriBuilder (data, "UserScreen" );
  * dui.setName("Click Here").addPathInfo("user","jon");
  * dui.getA();
  * </pre></code>
- *
+ * <p/>
  * The above call to getA() would return the String:
- *
+ * <p/>
  * &lt;A HREF="http://www.server.com:80/servlets/Turbine/screen=UserScreen&amp;amp;user=jon"&gt;Click Here&lt;/A&gt;
  *
  * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
@@ -39,38 +39,60 @@ public class UriBuilder
 {
     public static final String ROLE = UriBuilder.class.getName();
 
-    /** HTTP protocol. */
+    /**
+     * HTTP protocol.
+     */
     public static final String HTTP = "http";
 
-    /** HTTPS protocol. */
+    /**
+     * HTTPS protocol.
+     */
     public static final String HTTPS = "https";
 
-    /** Length of static part of an A tag */
+    /**
+     * Length of static part of an A tag
+     */
     public static final int ANCHOR_STATIC_PART_LENGTH
         = "<a href=\"\"></a>".length();
 
-    /** The RunData object. */
+    /**
+     * The RunData object.
+     */
     protected RunData data = null;
 
-    /** Servlet response interface. */
+    /**
+     * Servlet response interface.
+     */
     public HttpServletResponse res = null;
 
-    /** A Vector that contains all the path info if any. */
+    /**
+     * A Vector that contains all the path info if any.
+     */
     protected ArrayList pathInfo = new ArrayList();
 
-    /** A Vectory that contains all the query data if any. */
+    /**
+     * A Vectory that contains all the query data if any.
+     */
     protected ArrayList queryData = new ArrayList();
 
-    /** Whether we want to redirect or not. */
+    /**
+     * Whether we want to redirect or not.
+     */
     protected boolean redirect = false;
 
-    /** P = 0 for path info. */
+    /**
+     * P = 0 for path info.
+     */
     protected static final int PATH_INFO = 0;
 
-    /** Q = 1 for query data. */
+    /**
+     * Q = 1 for query data.
+     */
     protected static final int QUERY_DATA = 1;
 
-    /** true=relative url's; false=absolute url's */
+    /**
+     * true=relative url's; false=absolute url's
+     */
     private boolean isRelative = false;
 
     /**
@@ -120,12 +142,12 @@ public class UriBuilder
     /**
      * <p>If the type is P (0), then add name/value to the pathInfo
      * hashtable.
-     *
+     * <p/>
      * <p>If the type is Q (1), then add name/value to the queryData
      * hashtable.
      *
-     * @param type Type (P or Q) of insertion.
-     * @param name A String with the name to add.
+     * @param type  Type (P or Q) of insertion.
+     * @param name  A String with the name to add.
      * @param value A String with the value to add.
      */
     protected void add( int type,
@@ -148,8 +170,8 @@ public class UriBuilder
      * Add a key value pair (in the form of a 2 object array) to the provided
      * list
      *
-     * @param list List to add to.
-     * @param name A String with the name to add.
+     * @param list  List to add to.
+     * @param name  A String with the name to add.
      * @param value A String with the value to add.
      */
     protected void addPair( ArrayList list,
@@ -166,7 +188,7 @@ public class UriBuilder
      * RequestParameters to a given List
      *
      * @param list The list of pairs to add to
-     * @param pp A RequestParameters.
+     * @param pp   A RequestParameters.
      */
     protected void add( ArrayList list,
                         RequestParameters pp )
@@ -191,15 +213,15 @@ public class UriBuilder
     /**
      * Method for a quick way to add all the parameters in a
      * RequestParameters.
-     *
+     * <p/>
      * <p>If the type is P (0), then add name/value to the pathInfo
      * hashtable.
-     *
+     * <p/>
      * <p>If the type is Q (1), then add name/value to the queryData
      * hashtable.
      *
      * @param type Type (P or Q) of insertion.
-     * @param pp A RequestParameters.
+     * @param pp   A RequestParameters.
      */
     protected void add( int type,
                         RequestParameters pp )
@@ -217,7 +239,7 @@ public class UriBuilder
     /**
      * Adds a name=value pair to the path_info string.
      *
-     * @param name A String with the name to add.
+     * @param name  A String with the name to add.
      * @param value An Object with the value to add.
      */
     public UriBuilder addPathInfo( String name, Object value )
@@ -229,7 +251,7 @@ public class UriBuilder
     /**
      * Adds a name=value pair to the path_info string.
      *
-     * @param name A String with the name to add.
+     * @param name  A String with the name to add.
      * @param value A String with the value to add.
      */
     public UriBuilder addPathInfo( String name, String value )
@@ -241,7 +263,7 @@ public class UriBuilder
     /**
      * Adds a name=value pair to the path_info string.
      *
-     * @param name A String with the name to add.
+     * @param name  A String with the name to add.
      * @param value A double with the value to add.
      */
     public UriBuilder addPathInfo( String name, double value )
@@ -253,7 +275,7 @@ public class UriBuilder
     /**
      * Adds a name=value pair to the path_info string.
      *
-     * @param name A String with the name to add.
+     * @param name  A String with the name to add.
      * @param value An int with the value to add.
      */
     public UriBuilder addPathInfo( String name, int value )
@@ -265,7 +287,7 @@ public class UriBuilder
     /**
      * Adds a name=value pair to the path_info string.
      *
-     * @param name A String with the name to add.
+     * @param name  A String with the name to add.
      * @param value A long with the value to add.
      */
     public UriBuilder addPathInfo( String name, long value )
@@ -277,7 +299,7 @@ public class UriBuilder
     /**
      * Adds a name=value pair to the path_info string.
      *
-     * @param name A String with the name to add.
+     * @param name  A String with the name to add.
      * @param value A double with the value to add.
      */
     public UriBuilder addPathInfo( String name, boolean value )
@@ -301,7 +323,7 @@ public class UriBuilder
     /**
      * Adds a name=value pair to the query string.
      *
-     * @param name A String with the name to add.
+     * @param name  A String with the name to add.
      * @param value An Object with the value to add.
      */
     public UriBuilder addQueryData( String name, Object value )
@@ -313,7 +335,7 @@ public class UriBuilder
     /**
      * Adds a name=value pair to the query string.
      *
-     * @param name A String with the name to add.
+     * @param name  A String with the name to add.
      * @param value A String with the value to add.
      */
     public UriBuilder addQueryData( String name, String value )
@@ -325,7 +347,7 @@ public class UriBuilder
     /**
      * Adds a name=value pair to the query string.
      *
-     * @param name A String with the name to add.
+     * @param name  A String with the name to add.
      * @param value A double with the value to add.
      */
     public UriBuilder addQueryData( String name, double value )
@@ -337,7 +359,7 @@ public class UriBuilder
     /**
      * Adds a name=value pair to the query string.
      *
-     * @param name A String with the name to add.
+     * @param name  A String with the name to add.
      * @param value An int with the value to add.
      */
     public UriBuilder addQueryData( String name, int value )
@@ -349,7 +371,7 @@ public class UriBuilder
     /**
      * Adds a name=value pair to the query string.
      *
-     * @param name A String with the name to add.
+     * @param name  A String with the name to add.
      * @param value A long with the value to add.
      */
     public UriBuilder addQueryData( String name, long value )
@@ -372,15 +394,15 @@ public class UriBuilder
 
     /**
      * Create an anchor object.  This call to getA():
-     *
+     * <p/>
      * <code><pre>
      * UriBuilder dui = new UriBuilder (data, "UserScreen" );
      * dui.setName("Click Here").addPathInfo("user","jon");
      * dui.getA();
      * </pre></code>
-     *
+     * <p/>
      * would return the String:
-     *
+     * <p/>
      * <p>&lt;A HREF="http://www.server.com:80/servlets/Turbine/screen=UserScreen&amp;amp;user=jon"&gt;Click Here&lt;/A&gt;
      *
      * @param name A String with the name for the anchor.
@@ -447,7 +469,7 @@ public class UriBuilder
     /**
      * <p>If the type is P (0), then remove name/value from the
      * pathInfo hashtable.
-     *
+     * <p/>
      * <p>If the type is Q (1), then remove name/value from the
      * queryData hashtable.
      *
@@ -476,8 +498,9 @@ public class UriBuilder
     /**
      * Helper method to remove one or more pairs by its name (ie key).
      * It is intended to be used with <tt>queryData</tt> and <tt>pathInfo</tt>.
+     *
      * @param pairs the list of pairs to look over for removal.
-     * @param name the name of the pair(s) to remove.
+     * @param name  the name of the pair(s) to remove.
      */
     protected void removePairByName( ArrayList pairs, String name )
     {
@@ -552,7 +575,7 @@ public class UriBuilder
      * supplied StringBuffer as encoded path info.
      *
      * @param pairs A Vector of key/value arrays.
-     * @param out Buffer to which encoded path info is written
+     * @param out   Buffer to which encoded path info is written
      */
     protected void renderPathInfo( ArrayList pairs, StringBuffer out )
     {
@@ -581,7 +604,7 @@ public class UriBuilder
      * provided StringBuffer in encoded query string format.
      *
      * @param data A Vector of key/value arrays.
-     * @param out Buffer to which encoded query string is written.
+     * @param out  Buffer to which encoded query string is written.
      */
     protected void renderQueryString( ArrayList data, StringBuffer out )
     {
@@ -593,12 +616,12 @@ public class UriBuilder
      * into a URL encoded key/value pair format with the appropriate
      * separator.
      *
-     * @param out the buffer to write the pairs to.
-     * @param pairs A List of key/value arrays.
-     * @param pairSep the character to use as a separator between pairs.
-     * For example for a query-like rendering it would be '&'.
+     * @param out       the buffer to write the pairs to.
+     * @param pairs     A List of key/value arrays.
+     * @param pairSep   the character to use as a separator between pairs.
+     *                  For example for a query-like rendering it would be '&'.
      * @param keyValSep the character to use as a separator between
-     * key and value. For example for a query-like rendering, it would be '='.
+     *                  key and value. For example for a query-like rendering, it would be '='.
      */
     protected void renderPairs( ArrayList pairs, StringBuffer out,
                                 char pairSep, char keyValSep )
@@ -627,7 +650,7 @@ public class UriBuilder
 
     /**
      * Sets the action= value for this URL.
-     *
+     * <p/>
      * <p>By default it adds the information to the path_info instead
      * of the query data.
      *
@@ -642,7 +665,7 @@ public class UriBuilder
 
     /**
      * Sets the target = value for this URL.
-     *
+     * <p/>
      * <p>By default it adds the information to the path_info instead
      * of the query data.
      *
@@ -749,17 +772,17 @@ public class UriBuilder
     /**
      * Builds the URL with all of the data URL-encoded as well as
      * encoded using HttpServletResponse.encodeUrl().
-     *
-     * <p>
+     * <p/>
+     * <p/>
      * <code><pre>
      * UriBuilder dui = new UriBuilder (data, "UserScreen" );
      * dui.addPathInfo("user","jon");
      * dui.toString();
      * </pre></code>
-     *
-     *  The above call to toString() would return the String:
-     *
-     * <p>
+     * <p/>
+     * The above call to toString() would return the String:
+     * <p/>
+     * <p/>
      * http://www.server.com/servlets/Turbine/screen/UserScreen/user/jon
      *
      * @return A String with the built URL.
@@ -838,7 +861,7 @@ public class UriBuilder
      * This also returns the Query Data where UriBuilder normally
      * would not.
      *
-     * @param data A Turbine RunData object.
+     * @param data       A Turbine RunData object.
      * @param isAbsolute to determine absolute vs. relative links.
      * @return A String with the URL representing the RunData.
      */
@@ -890,7 +913,7 @@ public class UriBuilder
      * encoding even in i18n applications it should be much better to
      * delay the byte conversion.
      *
-     * @param in String to write.
+     * @param in  String to write.
      * @param out Buffer to write to.
      */
     protected static final void writeFastEncoded( String in, StringBuffer out )
@@ -929,7 +952,7 @@ public class UriBuilder
      * URL encodes <code>in</code> and writes it to <code>out</code>. If the
      * string is null, 'null' will be written.
      *
-     * @param in String to write.
+     * @param in  String to write.
      * @param out Buffer to write to.
      */
     protected static final void writeEncoded( String in, StringBuffer out )
