@@ -18,9 +18,6 @@ package org.codehaus.plexus.formica.action;
 
 import ognl.Ognl;
 import org.codehaus.plexus.formica.Form;
-import org.codehaus.plexus.formica.validation.FormValidationResult;
-import org.codehaus.plexus.formica.web.SummitFormRenderer;
-import org.codehaus.plexus.summit.rundata.RunData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,8 +29,6 @@ import java.util.Map;
 public class DeleteEntity
     extends AbstractEntityAction
 {
-    //TODO: we probably want the action interface to return an Object. For example after adding
-    // an entity I might want the Object reference.
     public void execute( Map map )
         throws Exception
     {

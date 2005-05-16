@@ -44,4 +44,9 @@ public class UpdateEntity
 
         Ognl.getValue( validateExpression( form.getUpdate().getExpression() ), m, getApplicationComponent( form ) );
     }
+
+    protected String getFailureTarget( Form form )
+    {
+        return "Edit.vm";
+    }
 }
