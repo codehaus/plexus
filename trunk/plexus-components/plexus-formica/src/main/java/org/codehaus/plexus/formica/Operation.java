@@ -32,6 +32,8 @@ public class Operation
 
     private String action;
 
+    private String enable;
+
     public String getName()
     {
         return name;
@@ -40,5 +42,10 @@ public class Operation
     public String getAction()
     {
         return action;
+    }
+
+    public String getEnable()
+    {
+        return enable;
     }
 }
