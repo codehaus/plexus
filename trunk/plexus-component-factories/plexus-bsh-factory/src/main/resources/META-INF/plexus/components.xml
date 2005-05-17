@@ -6,8 +6,6 @@
       <role-hint>bsh</role-hint>
       <configuration>
         <id>bsh</id>
-        <bsh-home>${basedir}/target</bsh-home>
-        <bsh-path>${basedir}/src/bsh</bsh-path>
       </configuration>
     </component>
   </components>
