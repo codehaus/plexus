@@ -8,20 +8,28 @@
     <element>
       <id>field-0</id>
       <expression>field0</expression>
-      <validator>credit-card</validator>
+      <validators>
+        <validator>
+          <id>credit-card</id>
+          <error-message-key>field-0-error-message-key</error-message-key>
+        </validator>
+      </validators>
       <label-key>field-0-label-key</label-key>
       <message-key>field-0-message-key</message-key>
-      <error-message-key>field-0-error-message-key</error-message-key>
       <type>text</type>
     </element>
     <element>
       <id>field-1</id>
       <expression>field1</expression>
-      <validator>pattern-date</validator>
+      <validators>
+        <validator>
+          <id>pattern-date</id>
+          <error-message-key>field-1-error-message-key</error-message-key>
+        </validator>
+      </validators>
       <label-key>field-1-label-key</label-key>
       <message-key>field-1-message-key</message-key>
-      <error-message-key>field-1-error-message-key</error-message-key>
-      <type>text</type>      
+      <type>text</type>
     </element>
   </elements>
   <add>

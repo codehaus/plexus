@@ -82,7 +82,6 @@ public class DefaultFormManagerTest
 
         target.setField0( "field0-value" );
 
-        // Make sure the title key is correct.
         assertEquals( "default.title", form.getAdd().getTitleKey() );
 
         Element element = form.getElement( "form.field0" );
@@ -95,7 +94,9 @@ public class DefaultFormManagerTest
 
         assertEquals( "form.field0.message", element.getMessageKey() );
 
-        assertEquals( "form.field0.error", element.getErrorMessageKey() );
+        org.codehaus.plexus.formica.Validator v = (org.codehaus.plexus.formica.Validator) element.getValidators().get( 0 );                
+
+        assertEquals( "form.field0.error", v.getErrorMessageKey() );
     }
 
     public void testFormValues()
