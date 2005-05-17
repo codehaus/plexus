@@ -8,5 +8,10 @@
         <id>bsh</id>
       </configuration>
     </component>
+    <component>
+      <role>org.codehaus.plexus.component.configurator.ComponentConfigurator</role>
+      <implementation>org.codehaus.plexus.component.factory.bsh.BshComponentConfigurator</implementation>
+      <role-hint>bsh</role-hint>
+    </component>
   </components>
 </component-set>
