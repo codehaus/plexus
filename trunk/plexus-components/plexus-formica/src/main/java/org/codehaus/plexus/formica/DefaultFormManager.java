@@ -158,6 +158,41 @@ public class DefaultFormManager
         {
             Element element = (Element) i.next();
 
+            List validators = element.getValidators();
+
+            for ( Iterator j = validators.iterator(); j.hasNext(); )
+            {
+                org.codehaus.plexus.formica.Validator v = (org.codehaus.plexus.formica.Validator) j.next();
+
+                Validator validator = getValidator( v.getId() );
+
+                String elementData = (String) data.get( element.getId() );
+
+                boolean valid = validator.validate( elementData );
+
+                if ( valid )
+                {
+                    result.addElementValidationResult( element.getId(), valid, null );
+                }
+                else
+                {
+                    // ----------------------------------------------------------------------
+                    // On the first sign of error fail fast and return the message to the
+                    // user so that they can correct the first makes and then an attempt
+                    // can be made to validate again.
+                    // ----------------------------------------------------------------------
+
+                    result.addElementValidationResult( element.getId(), valid, i18n.getString( v.getErrorMessageKey() ) );
+                                                            
+                    break;
+                }
+
+                // Do we just want to send back one error message at a time?
+
+            }
+
+            /*
+
             Validator validator = getValidator( element.getValidator() );
 
             String elementData = (String) data.get( element.getId() );
@@ -172,6 +207,8 @@ public class DefaultFormManager
             }
 
             result.addElementValidationResult( element.getId(), valid, errorMessage );
+
+            */
         }
     }
 

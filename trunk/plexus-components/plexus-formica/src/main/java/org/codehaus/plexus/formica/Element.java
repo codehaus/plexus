@@ -1,5 +1,7 @@
 package org.codehaus.plexus.formica;
 
+import java.util.List;
+
 /*
  * Copyright (c) 2004, Codehaus.org
  *
@@ -33,15 +35,13 @@ public class Element
 
     private String messageKey;
 
-    private String errorMessageKey;
-
     private String defaultValue;
 
     private boolean optional;
 
     private String expression;
 
-    private String validator;
+    private List validators;
 
     private boolean immutable;
 
@@ -61,14 +61,11 @@ public class Element
     public String getLabelKey()
     {
         if ( labelKey == null )
+        {
             return getId() + ".label";
+        }
 
         return labelKey;
-    }
-
-    public void setMessageKey( String messageKey )
-    {
-        this.messageKey = messageKey;
     }
 
     public String getMessageKey()
@@ -81,29 +78,9 @@ public class Element
         return messageKey;
     }
 
-    public String getErrorMessageKey()
-    {
-        if ( errorMessageKey == null )
-        {
-            return getId() + ".error";
-        }
-
-        return errorMessageKey;
-    }
-
-    public void setErrorMessageKey( String errorMessageKey )
-    {
-        this.errorMessageKey = errorMessageKey;
-    }
-
     public String getDefaultValue()
     {
         return defaultValue;
-    }
-
-    public void setDefaultValue( String defaultValue )
-    {
-        this.defaultValue = defaultValue;
     }
 
     public boolean isOptional()
@@ -111,24 +88,9 @@ public class Element
         return optional;
     }
 
-    public void setOptional( boolean optional )
-    {
-        this.optional = optional;
-    }
-
     public boolean isImmutable()
     {
         return immutable;
-    }
-
-    public void setImmutable( boolean immutable )
-    {
-        this.immutable = immutable;
-    }
-
-    public void setExpression( String populatorExpression )
-    {
-        this.expression = populatorExpression;
     }
 
     public String getExpression()
@@ -136,14 +98,9 @@ public class Element
         return expression;
     }
 
-    public void setValidator( String validator )
+    public List getValidators()
     {
-        this.validator = validator;
-    }
-
-    public String getValidator()
-    {
-        return validator;
+        return validators;
     }
 
     public String getType()
