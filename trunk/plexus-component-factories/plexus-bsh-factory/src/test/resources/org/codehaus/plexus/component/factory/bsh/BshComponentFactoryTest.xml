@@ -11,7 +11,7 @@
   <components>
     <component>
       <role>org.codehaus.plexus.component.factory.bsh.Hello</role>
-      <implementation>DefaultHello</implementation>
+      <implementation>/DefaultHello.bsh</implementation>
       <component-factory>bsh</component-factory>
     </component>
   </components>

@@ -28,20 +28,22 @@ public class BshComponentFactory
                                PlexusContainer container )
         throws ComponentInstantiationException
     {
-        String impl = componentDescriptor.getImplementation() + ".bsh";
+        ClassRealm componentRealm = container.getComponentRealm( componentDescriptor.getComponentKey() );
+
+        String impl = componentDescriptor.getImplementation();
         if ( !impl.startsWith( "/" ) )
         {
             impl = "/" + impl;
         }
 
-        URL scriptLocation = classRealm.getResource( impl );
+        URL scriptLocation = componentRealm.getResource( impl );
 
         if ( scriptLocation == null )
         {
             StringBuffer buf = new StringBuffer( "Cannot find: " + impl + " in classpath:" );
-            for ( int i = 0; i < classRealm.getConstituents().length; i++ )
+            for ( int i = 0; i < componentRealm.getConstituents().length; i++ )
             {
-                URL constituent = classRealm.getConstituents()[i];
+                URL constituent = componentRealm.getConstituents()[i];
                 buf.append( "\n   [" + i + "]  " + constituent );
             }
             throw new ComponentInstantiationException( buf.toString() );
@@ -77,7 +79,7 @@ public class BshComponentFactory
         }
         catch ( FileNotFoundException e )
         {
-            classRealm.display();
+            componentRealm.display();
             throw new ComponentInstantiationException( "Cannot build component for: " +
                                                        componentDescriptor.getComponentKey() +
                                                        "; unable to read BeanShell script", e );
