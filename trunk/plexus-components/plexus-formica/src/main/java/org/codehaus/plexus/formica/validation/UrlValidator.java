@@ -235,6 +235,7 @@ public class UrlValidator
         }
 
         Perl5Util matchUrlPat = new Perl5Util();
+
         Perl5Util matchAsciiPat = new Perl5Util();
 
         if ( !matchAsciiPat.match( LEGAL_ASCII_PATTERN, value ) )
