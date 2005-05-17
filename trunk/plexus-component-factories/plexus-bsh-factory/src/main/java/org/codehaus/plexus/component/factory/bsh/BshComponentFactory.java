@@ -9,10 +9,10 @@ import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.util.IOUtil;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
 
 /**
@@ -50,29 +50,19 @@ public class BshComponentFactory
         }
 
         Object result = null;
+        Reader reader = null;
 
         try
         {
             Interpreter interp = new Interpreter();
 
-            String file = null;
-            if ( scriptLocation.getProtocol().equals( "file" ) )
-            {
-                file = scriptLocation.getFile();
-            }
-            else
-            {
-                File f = File.createTempFile( "plexus", "bsh" );
-                f.deleteOnExit();
-                // TODO: need to try/finally and close?
-                IOUtil.copy( scriptLocation.openStream(), new FileWriter( f ) );
-                file = f.getAbsolutePath();
-            }
+            reader = new InputStreamReader( scriptLocation.openStream() );
 
-            result = interp.source( file );
+            result = interp.eval( reader );
         }
         catch ( EvalError evalError )
         {
+            componentRealm.display();
             throw new ComponentInstantiationException( "Cannot build component for: " +
                                                        componentDescriptor.getComponentKey() +
                                                        "; unable to read BeanShell script", evalError );
@@ -90,7 +80,12 @@ public class BshComponentFactory
                                                        componentDescriptor.getComponentKey() +
                                                        "; unable to read BeanShell script", e );
         }
+        finally
+        {
+            IOUtil.close( reader );
+        }
 
         return result;
     }
+
 }
