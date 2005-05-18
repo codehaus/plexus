@@ -43,7 +43,7 @@ public class UrlSourceValidatorTest
 
         assertNotNull( v );
 
-        String u = new URL( "http://foo/bar" ).toExternalForm();
+        String u = new URL( "http://ThisWontResolve.plexus.codehaus.org/bar" ).toExternalForm();
 
         assertFalse( v.validate( u ) );
     }
