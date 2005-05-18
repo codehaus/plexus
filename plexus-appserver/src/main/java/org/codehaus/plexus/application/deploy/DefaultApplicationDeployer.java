@@ -115,7 +115,7 @@ public class DefaultApplicationDeployer
             throw new Exception( "This deployer can only deploy *.jar files." );
         }
 
-        File file = new File( new URI( url.toString() ) );
+        File file = new File( new URI( url.toExternalForm() ) );
 
         deployJar( file, applicationsDirectory );
     }
