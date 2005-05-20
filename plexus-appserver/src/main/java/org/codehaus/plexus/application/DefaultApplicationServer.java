@@ -30,8 +30,10 @@ import org.codehaus.plexus.application.deploy.ApplicationDeployer;
 import org.codehaus.plexus.application.service.ServiceDiscoverer;
 import org.codehaus.plexus.application.supervisor.Supervisor;
 import org.codehaus.plexus.application.supervisor.SupervisorListener;
+import org.codehaus.plexus.application.supervisor.SupervisorException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 
 /**
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
@@ -54,7 +56,7 @@ public class DefaultApplicationServer
     // ----------------------------------------------------------------------
 
     public void start()
-        throws Exception
+        throws StartingException
     {
         // ----------------------------------------------------------------------
         // Register the deployers inside the directory supervisor so applications
@@ -63,42 +65,62 @@ public class DefaultApplicationServer
 
         File home = new File( System.getProperty( "plexus.home" ) );
 
-        supervisor.addDirectory( new File( home, "services" ), new SupervisorListener()
+        try
         {
-            public void onJarDiscovered( File jar )
+            supervisor.addDirectory( new File( home, "services" ), new SupervisorListener()
             {
-                String name = jar.getName();
-
-                try
+                public void onJarDiscovered( File jar )
                 {
-                    serviceDiscoverer.deploy( name.substring( 0, name.length() - 4 ), jar.getAbsolutePath() );
-                }
-                catch ( Exception e )
-                {
-                    System.err.println( "Error while deploying service '" + name + "'." );
-                    e.printStackTrace();
-                }
-            }
-        } );
+                    String name = jar.getName();
 
-        supervisor.addDirectory( new File( home, "apps" ), new SupervisorListener()
+                    try
+                    {
+                        serviceDiscoverer.deploy( name.substring( 0, name.length() - 4 ), jar.getAbsolutePath() );
+                    }
+                    catch ( Exception e )
+                    {
+                        // TDOO: remove the user of  stderr
+                        // TODO; use a more specific exception
+                        System.err.println( "Error while deploying service '" + name + "'." );
+
+                        e.printStackTrace();
+                    }
+                }
+            } );
+        }
+        catch ( SupervisorException e )
         {
-            public void onJarDiscovered( File jar )
+            throw new StartingException( "Error deploying services in the app server.", e );
+        }
+
+        try
+        {
+            supervisor.addDirectory( new File( home, "apps" ), new SupervisorListener()
             {
-                String name = jar.getName();
-
-                try
+                public void onJarDiscovered( File jar )
                 {
-                    applicationDeployer.deploy( name.substring( 0, name.length() - 4 ), jar.toURL().toExternalForm() );
-                }
-                catch ( Exception e )
-                {
-                    System.err.println( "Error while deploying application '" + name + "'." );
+                    String name = jar.getName();
 
-                    e.printStackTrace();
+                    try
+                    {
+                        applicationDeployer.deploy( name.substring( 0, name.length() - 4 ), jar.toURL().toExternalForm() );
+                    }
+                    catch ( Exception e )
+                    {
+                        // TDOO: remove the user of  stderr
+                        // TODO; use a more specific exception
+                        System.err.println( "Error while deploying application '" + name + "'." );
+
+                        e.printStackTrace();
+                    }
                 }
-            }
-        } );
+            } );
+
+        }
+        catch ( SupervisorException e )
+        {
+            throw new StartingException( "Error deploying applications in the app server.", e );
+        }
 
         getLogger().info( "The application server has been initialized." );
 
@@ -106,16 +128,20 @@ public class DefaultApplicationServer
         // Do the initial scan to deploy all services and applications
         // ----------------------------------------------------------------------
 
-        supervisor.scan();
-
-        // ----------------------------------------------------------------------
         // TODO: Start a thread that will use the supervisor to continuously scan
-        // the apps and services directories for new and deleted jars.
-        // ----------------------------------------------------------------------
+
+        try
+        {
+            supervisor.scan();
+        }
+        catch ( SupervisorException e )
+        {
+            // TODO; use a more specific exception
+            throw new StartingException( "Error while scanning for new services and applications.", e );
+        }
     }
 
     public void stop()
-        throws Exception
     {
     }
 }

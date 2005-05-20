@@ -37,6 +37,7 @@ import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.Expand;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -57,7 +58,7 @@ public class DefaultServiceDiscoverer
     // ----------------------------------------------------------------------
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         getLogger().info( "Services will be deployed in: '" + serviceDirectory + "'." );
     }
@@ -201,7 +202,7 @@ public class DefaultServiceDiscoverer
         throws Exception
     {
         PlexusConfiguration serviceConfig =
-            PlexusTools.buildConfiguration( new FileReader( config ) );
+            PlexusTools.buildConfiguration( config.getPath(), new FileReader( config ) );
 
         startComponents( serviceConfig );
     }
