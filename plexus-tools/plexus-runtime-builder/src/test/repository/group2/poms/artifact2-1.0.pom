@@ -1,7 +1,0 @@
-<model>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>group2</groupId>
-  <artifactId>artifact2</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0</version>
-</model>
