@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <parent>
+    <artifactId>plexus-components</artifactId>
+    <groupId>plexus</groupId>
+    <version>1.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-jdo</artifactId>
+  <name>Plexus JDO Component</name>
+  <packaging>jar</packaging>
+  <version>1.0-alpha-1</version>
+  <inceptionYear>2005</inceptionYear>
+  <developers>
+    <developer>
+      <id>3</id>
+      <name>David Wynter</name>
+      <email>david (at) dwynter.plus.com</email>
+      <organization>STPenable Ltd.</organization>
+      <timezone>UTC+0</timezone>
+    </developer>
+  </developers>
+  <dependencies>
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>1.7.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>jpox</groupId>
+      <artifactId>jpox</artifactId>
+      <version>1.0.4</version>
+    </dependency>
+  </dependencies>
+  <organization>
+    <name>STPenable Ltd.</name>
+    <url>http://www.stpenable.com</url>
+  </organization>
+</project>
