@@ -11,5 +11,5 @@
   <artifactId>plexus-i18n</artifactId>
   <packaging>jar</packaging>
   <name>Plexus I18N Component</name>
-  <version>1.0-beta-4</version>
+  <version>1.0-beta-4-SNAPSHOT</version>
 </project>
