@@ -11,5 +11,5 @@
   <artifactId>plexus-resource</artifactId>
   <packaging>jar</packaging>
   <name>Plexus Resource Component</name>
-  <version>1.0-alpha-3-SNAPSHOT</version>
+  <version>1.0-alpha-3</version>
 </project>
