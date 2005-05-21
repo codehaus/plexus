@@ -11,7 +11,7 @@
   <artifactId>plexus-jdo</artifactId>
   <name>Plexus JDO Component</name>
   <packaging>jar</packaging>
-  <version>1.0-alpha-1</version>
+  <version>1.0-alpha-2-SNAPSHOT</version>
   <inceptionYear>2005</inceptionYear>
   <developers>
     <developer>
