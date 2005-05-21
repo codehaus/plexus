@@ -1,4 +1,3 @@
-target
 *~
 *.log
 .classpath
@@ -6,3 +5,4 @@ target
 *.ipr
 *.iws
 *.iml
+target
