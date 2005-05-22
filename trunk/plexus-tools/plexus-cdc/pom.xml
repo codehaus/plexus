@@ -11,7 +11,7 @@
   <artifactId>plexus-cdc</artifactId>
   <packaging>jar</packaging>
   <name>Plexus Component Descriptor Creator</name>
-  <version>1.0-alpha-1</version>
+  <version>1.0-alpha-2-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
