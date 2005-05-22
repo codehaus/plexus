@@ -24,12 +24,12 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-runtime-builder</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
+      <version>1.0-alpha-1</version>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-cdc</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
+      <version>1.0-alpha-1</version>
     </dependency>
   </dependencies>
 </project>
