@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <parent>
+    <artifactId>plexus-mail-senders</artifactId>
+    <groupId>plexus</groupId>
+    <version>1.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-mail-sender-test</artifactId>
+  <packaging>jar</packaging>
+  <name>Plexus Test Mail Sender</name>
+  <version>1.0-alpha-1</version>
+  <dependencies>
+    <dependency>
+      <groupId>dumbster</groupId>
+      <artifactId>dumbster</artifactId>
+      <version>1.5</version>
+    </dependency>
+  </dependencies>
+</project>
