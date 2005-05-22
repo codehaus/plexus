@@ -44,10 +44,10 @@ public interface ServiceBuilder
                 File classes,
                 List remoteRepositories,
                 ArtifactRepository localRespository,
-                Set projectArtifacts,
+                Set serviceArtifacts,
                 File plexusConfiguration,
                 File configurationsDirectory,
-                File configurationPropertiesFile )
+                File configurationProperties )
         throws ServiceBuilderException;
 
     void bundle( File outputFile, File workingDirectory )

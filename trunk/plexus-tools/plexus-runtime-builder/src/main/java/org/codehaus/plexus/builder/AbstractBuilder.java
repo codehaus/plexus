@@ -274,7 +274,7 @@ public abstract class AbstractBuilder
 
         if ( !ignoreIfMissing )
         {
-            throw new ArtifactResolutionException( "Could not version for artifact.", artifact, null );
+            throw new RuntimeException( "Could not version for artifact: " + artifact.getId() + "." );
         }
     }
 
