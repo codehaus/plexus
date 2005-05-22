@@ -11,5 +11,5 @@
   <artifactId>plexus-notification</artifactId>
   <packaging>jar</packaging>
   <name>Plexus Notification Component</name>
-  <version>1.0-alpha-1-SNAPSHOT</version>
+  <version>1.0-alpha-2-SNAPSHOT</version>
 </model>
