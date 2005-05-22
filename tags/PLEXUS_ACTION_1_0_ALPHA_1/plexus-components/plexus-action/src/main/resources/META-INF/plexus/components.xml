@@ -1,0 +1,25 @@
+<plexus>
+
+  <components>
+    
+    <component>
+      <role>org.codehaus.plexus.action.ActionManager</role>
+      <implementation>org.codehaus.plexus.action.DefaultActionManager</implementation>
+      <lifecycle-handler>plexus-configurable</lifecycle-handler>
+    </component>
+    
+    <component>
+      <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
+      <role-hint>org.codehaus.plexus.action.web.ActionValve</role-hint>
+      <implementation>org.codehaus.plexus.action.web.ActionValve</implementation>
+      <configuration/>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.action.ActionManager</role>
+        </requirement>
+      </requirements>
+    </component>
+    
+  </components>
+  
+</plexus>
