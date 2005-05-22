@@ -23,14 +23,12 @@ package org.codehaus.plexus.maven.plugin;
  */
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.service.ServiceBuilder;
 import org.codehaus.plexus.builder.service.ServiceBuilderException;
@@ -42,81 +40,95 @@ import org.codehaus.plexus.builder.service.ServiceBuilderException;
  *
  * @description Assembled and bundles a Plexus service.
  *
+ * @phase package
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class PlexusServiceGenerator
     extends AbstractMojo
 {
-    /**
-     * @parameter expression="${basedir}"
-     *
-     * @required
-     */
-    private String basedir;
-
-    /**
-     * @parameter expression="${project.artifacts}"
-     *
-     * @required
-     */
-    private Set serviceArtifacts;
-
-    /**
-     * @parameter expression="${project.build.finalName}"
-     *
-     * @required
-     */
-    private String finalName;
-
-    /**
-     * @parameter expression="${project.build.outputDirectory}"
-     *
-     * @required
-     */
-    private File classes;
-
-    /**
-     * @parameter expression="${plexus.runtime.configuration}"
-     *
-     * @required
-     */
-    private String plexusConfiguration;
-
-    /**
-     * @parameter expression="${plexus.runtime.configuration.propertiesFile}"
-     *
-     * @required
-     */
-    private String configurationProperties;
+    // ----------------------------------------------------------------------
+    // Configuration
+    // ----------------------------------------------------------------------
 
     /**
      * @parameter expression="${serviceName}"
-     *
      * @required
      */
     private String serviceName;
 
     /**
+     * @parameter expression="${serviceConfiguration}"
+     * @required
+     */
+    private File serviceConfiguration;
+
+    /**
+     * @parameter expression="${configurationsDirectory}"
+     */
+    private File configurationsDirectory;
+
+    /**
+     * @parameter expression="${configurationProperties}"
+     */
+    private File configurationProperties;
+
+    // ----------------------------------------------------------------------
+    // Read only configuration
+    // ----------------------------------------------------------------------
+
+    /**
+     * @parameter expression="${project.build.outputDirectory}"
+     * @required
+     */
+    private File classes;
+
+    /**
+     * @parameter expression="${project.build.finalName}"
+     * @required
+     */
+    private String finalName;
+
+    /**
+     * @parameter expression="${project.build.directory}"
+     * @required
+     */
+    private File target;
+
+    /**
+     * @parameter expression="${project.artifacts}"
+     * @required
+     */
+    private Set serviceArtifacts;
+
+    /**
+     * @parameter expression="${project.build.directory}/plexus-service"
+     * @required
+     */
+    private File serviceAssemblyDirectory;
+
+    // ----------------------------------------------------------------------
+    // Components
+    // ----------------------------------------------------------------------
+
+    /**
      * @parameter expression="${localRepository}"
-     *
      * @required
      */
     private ArtifactRepository localRepository;
 
     /**
+     * @parameter expression="${project.remoteArtifactRepositories}"
+     * @required
+     */
+    private List remoteRepositories;
+
+    /**
      * @parameter expression="${component.org.codehaus.plexus.builder.service.ServiceBuilder}"
-     *
      * @required
      */
     private ServiceBuilder builder;
-
-    /**
-     * @parameter expression="${project}"
-     *
-     * @required
-     */
-    private MavenProject project;
 
     public void execute()
         throws MojoExecutionException
@@ -125,64 +137,29 @@ public class PlexusServiceGenerator
         //
         // ----------------------------------------------------------------------
 
+        File outputFile = new File( target, finalName + ".jar" );
 
         // ----------------------------------------------------------------------
-        //
+        // Build the service
         // ----------------------------------------------------------------------
-
-        String projectBasedir = project.getFile().getParentFile().getAbsolutePath();
-
-        File workingBasedir = null;
-
-        if ( new File( basedir ).isAbsolute() )
-        {
-            workingBasedir = new File( basedir );
-        }
-        else
-        {
-            workingBasedir = new File( projectBasedir, basedir );
-        }
-
-        File workingDirectory = new File( workingBasedir, "/plexus-service" );
-
-        File outputFile = new File( workingBasedir, finalName + ".jar" );
-
-        File configurationsDir = null;
-
-        File configurationPropertiesFile = null;
-
-        if ( configurationProperties != null )
-        {
-            configurationPropertiesFile = new File( projectBasedir, configurationProperties );
-        }
-
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
-        List remoteRepositories = new ArrayList();
 
         try
         {
-            // ----------------------------------------------------------------------
-            // Build the service
-            // ----------------------------------------------------------------------
-
             builder.build( serviceName,
-                           workingDirectory,
+                           serviceAssemblyDirectory,
                            classes,
                            remoteRepositories,
                            localRepository,
                            serviceArtifacts,
-                           new File( projectBasedir, plexusConfiguration ),
-                           configurationsDir,
-                           configurationPropertiesFile );
+                           serviceConfiguration,
+                           configurationsDirectory,
+                           configurationProperties );
 
             // ----------------------------------------------------------------------
             // Bundle the service
             // ----------------------------------------------------------------------
 
-            builder.bundle( outputFile, workingDirectory );
+            builder.bundle( outputFile, serviceAssemblyDirectory );
         }
         catch ( ServiceBuilderException e )
         {
