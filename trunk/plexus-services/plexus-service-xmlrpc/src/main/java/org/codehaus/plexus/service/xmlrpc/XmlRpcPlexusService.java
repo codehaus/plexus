@@ -24,12 +24,15 @@ package org.codehaus.plexus.service.xmlrpc;
  * SOFTWARE.
  */
 
+import org.apache.xmlrpc.XmlRpcException;
+
 import org.codehaus.plexus.application.service.PlexusService;
 import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.xmlrpc.XmlRpcServer;
 
 /**
@@ -51,17 +54,30 @@ public class XmlRpcPlexusService
     // ----------------------------------------------------------------------
 
     public void start()
-        throws Exception
+        throws StartingException
     {
-        xmlRpcServer.addListener( null, port, false );
+        try
+        {
+            xmlRpcServer.addListener( null, port, false );
 
-        xmlRpcServer.startListener( null, port );
+            xmlRpcServer.startListener( null, port );
+        }
+        catch ( XmlRpcException e )
+        {
+            throw new StartingException( "Error while starting XML-RPC server.", e );
+        }
     }
 
     public void stop()
-        throws Exception
     {
-        xmlRpcServer.removeListener( null, port );
+        try
+        {
+            xmlRpcServer.removeListener( null, port );
+        }
+        catch ( XmlRpcException e )
+        {
+            getLogger().error( "Error while stopping the XML-RPC server.", e );
+        }
     }
 
     // ----------------------------------------------------------------------

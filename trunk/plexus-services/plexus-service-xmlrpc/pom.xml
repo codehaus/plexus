@@ -3,7 +3,7 @@
   <parent>
     <groupId>plexus</groupId>
     <artifactId>plexus-services</artifactId>
-    <version>1.0-alpha-1-SNAPSHOT</version>
+    <version>1.0-alpha-1</version>
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-service-xmlrpc</artifactId>
@@ -13,8 +13,13 @@
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-3</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
       <artifactId>plexus-appserver</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
+      <version>1.0-alpha-1</version>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
@@ -32,12 +37,15 @@
       <plugin>
         <artifactId>maven-plexus-plugin</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <configuration>
-          <serviceName>jetty</serviceName>
-          <configurationDirectory>src/conf</configurationDirectory>
-          <plexusConfiguration>src/conf/plexus.xml</plexusConfiguration>
-          <basedir>target</basedir>
-        </configuration>
+        <goals>
+          <goal>
+            <id>service</id>
+            <configuration>
+              <serviceName>xmlrpc</serviceName>
+              <serviceConfiguration>src/conf/plexus.xml</serviceConfiguration>
+            </configuration>
+          </goal>
+        </goals>
       </plugin>
     </plugins>
   </build>
