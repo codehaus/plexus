@@ -11,7 +11,7 @@
   <artifactId>plexus-input-handler</artifactId>
   <packaging>jar</packaging>
   <name>Plexus Password Store Component</name>
-  <version>1.0-alpha-2-SNAPSHOT</version>
+  <version>1.0-alpha-2</version>
   <dependencies>
     <dependency>
       <groupId>jline</groupId>
@@ -25,6 +25,8 @@
     <plugins>
       <plugin>
         <artifactId>maven-plexus-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>1.0-20050512.085822-5</version>
       </plugin>
     </plugins>
   </build>
