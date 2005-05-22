@@ -1,0 +1,9 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.components.inputhandler.InputHandler</role>
+      <implementation>org.codehaus.plexus.components.inputhandler.DefaultInputHandler</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+    </component>
+  </components>
+</component-set>
