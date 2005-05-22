@@ -38,7 +38,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-plexus-plugin</artifactId>
-        <version>1.0-20050522.180040-7</version>
+        <version>1.0</version>
         <goals>
           <goal>
             <id>service</id>
