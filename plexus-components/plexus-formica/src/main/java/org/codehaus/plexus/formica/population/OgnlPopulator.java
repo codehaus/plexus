@@ -32,13 +32,15 @@ import ognl.OgnlException;
 import org.codehaus.plexus.formica.Element;
 import org.codehaus.plexus.formica.ElementGroup;
 import org.codehaus.plexus.formica.Form;
+import org.codehaus.plexus.formica.population.transformer.Transformer;
+import org.codehaus.plexus.formica.population.transformer.TransformerNotFoundException;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class OgnlPopulator
-    implements Populator
+    extends AbstractPopulator
 {
     public void populate( Form form, Map data, Object target )
         throws TargetPopulationException
@@ -97,14 +99,35 @@ public class OgnlPopulator
                     throw new TargetPopulationException( "Expression for " + element.getId() + " in " + formId + " cannot be null." );
                 }
 
-                try
-                {
-                    Ognl.setValue( expression, target, elementData );
-                }
-                catch ( OgnlException e )
-                {
-                    throw new TargetPopulationException( e );
-                }
+                //if ( !expression.equals( PASSIVE_EXPRESSION ) )
+                //{
+                    // ----------------------------------------------------------------------
+                    // Check to see if the elementData needs to be transformed
+                    // ----------------------------------------------------------------------
+
+                    //if ( element.getTransformer() != null )
+                    //{
+                        //try
+                        //{
+                            //Transformer transformer = getTransformer( element.getTransformer() );
+
+                            //elementData = transformer.combine( data );
+                        //}
+                        //catch ( TransformerNotFoundException e )
+                        //{
+                            //throw new TargetPopulationException( e );
+                        //}
+                    //}
+
+                    try
+                    {
+                        Ognl.setValue( expression, data, target, elementData );
+                    }
+                    catch ( OgnlException e )
+                    {
+                        throw new TargetPopulationException( e );
+                    }
+                //}
             }
         }
     }
