@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <parent>
+    <artifactId>plexus-tools</artifactId>
+    <groupId>plexus</groupId>
+    <version>1.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-cdc</artifactId>
+  <packaging>jar</packaging>
+  <name>Plexus Component Descriptor Creator</name>
+  <version>1.0-alpha-1</version>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>2.0-alpha-2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-model</artifactId>
+      <version>2.0-alpha-2</version>
+    </dependency>
+    <dependency>
+      <groupId>qdox</groupId>
+      <artifactId>qdox</artifactId>
+      <version>1.2</version>
+    </dependency>
+  </dependencies>
+</project>
