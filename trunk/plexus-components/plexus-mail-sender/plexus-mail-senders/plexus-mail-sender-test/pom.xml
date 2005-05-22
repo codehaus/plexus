@@ -11,7 +11,7 @@
   <artifactId>plexus-mail-sender-test</artifactId>
   <packaging>jar</packaging>
   <name>Plexus Test Mail Sender</name>
-  <version>1.0-alpha-1</version>
+  <version>1.0-alpha-2-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>dumbster</groupId>
