@@ -9,7 +9,7 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-service-xmlrpc</artifactId>
-  <version>1.0-alpha-2-SNAPSHOT</version>
+  <version>1.0-alpha-2</version>
   <packaging>plexus-service</packaging>
   <name>Plexus XMLRPC Service</name>
   <dependencies>
