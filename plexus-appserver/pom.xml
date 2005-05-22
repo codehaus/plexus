@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <project>
   <parent>
     <artifactId>plexus-root</artifactId>
@@ -9,7 +11,7 @@
   <artifactId>plexus-appserver</artifactId>
   <packaging>jar</packaging>
   <name>Plexus Application Server</name>
-  <version>1.0-alpha-1-SNAPSHOT</version>
+  <version>1.0-alpha-1</version>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
