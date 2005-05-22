@@ -12,6 +12,9 @@
           <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
         </requirement>
         <requirement>
+          <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
+        </requirement>
+        <requirement>
           <role>org.codehaus.plexus.velocity.VelocityComponent</role>
         </requirement>
       </requirements>
@@ -43,6 +46,9 @@
       <requirements>
         <requirement>
           <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
         </requirement>
       </requirements>
     </component>

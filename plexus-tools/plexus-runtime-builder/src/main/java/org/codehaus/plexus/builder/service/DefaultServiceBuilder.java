@@ -44,6 +44,7 @@ import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -63,23 +64,24 @@ public class DefaultServiceBuilder
                        File classes,
                        List remoteRepositories,
                        ArtifactRepository localRepository,
-                       Set projectArtifacts,
-                       File plexusConfigurationFile,
-                       File configurationsDirectory, File configurationPropertiesFile )
+                       Set serviceArtifacts,
+                       File serviceConfiguration,
+                       File configurationsDirectory,
+                       File configurationProperties )
         throws ServiceBuilderException
     {
         // ----------------------------------------------------------------------
         // Check the parameters
         // ----------------------------------------------------------------------
 
-        if ( serviceName == null || serviceName.trim().length() == 0 )
+        if ( StringUtils.isEmpty( serviceName ) )
         {
-            throw new ServiceBuilderException( "The application name must be set." );
+            throw new ServiceBuilderException( "The service name must be set." );
         }
 
-        if ( configurationPropertiesFile != null && !configurationPropertiesFile.isFile() )
+        if ( configurationProperties != null && !configurationProperties.isFile() )
         {
-            throw new ServiceBuilderException( "The configuration properties file isn't a file: '" + configurationPropertiesFile.getAbsolutePath() + "'." );
+            throw new ServiceBuilderException( "The configuration properties file isn't a file: '" + configurationProperties.getAbsolutePath() + "'." );
         }
 
         if ( configurationsDirectory != null && !configurationsDirectory.isDirectory() )
@@ -103,7 +105,7 @@ public class DefaultServiceBuilder
 
         try
         {
-            processConfigurations( confDir, plexusConfigurationFile, configurationPropertiesFile, configurationsDirectory );
+            processConfigurations( confDir, serviceConfiguration, configurationProperties, configurationsDirectory );
         }
         catch ( IOException e )
         {
@@ -120,15 +122,15 @@ public class DefaultServiceBuilder
         {
             Set excludedArtifacts = new HashSet();
 
-            excludedArtifacts.addAll( getBootArtifacts( projectArtifacts, remoteRepositories, localRepository, true ) );
+            excludedArtifacts.addAll( getBootArtifacts( serviceArtifacts, remoteRepositories, localRepository, true ) );
 
-            excludedArtifacts.addAll( getCoreArtifacts( projectArtifacts, remoteRepositories, localRepository, true ) );
+            excludedArtifacts.addAll( getCoreArtifacts( serviceArtifacts, remoteRepositories, localRepository, true ) );
 
             ArtifactFilter filter = new AndArtifactFilter(
                 new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
                 new GroupArtifactTypeArtifactFilter( excludedArtifacts ) );
 
-            artifacts = findArtifacts( remoteRepositories, localRepository, projectArtifacts, true, filter );
+            artifacts = findArtifacts( remoteRepositories, localRepository, serviceArtifacts, true, filter );
         }
         catch ( ArtifactResolutionException e )
         {
