@@ -32,7 +32,6 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.application.ApplicationBuilder;
 import org.codehaus.plexus.builder.application.ApplicationBuilderException;
@@ -50,38 +49,15 @@ import org.codehaus.plexus.builder.application.ApplicationBuilderException;
 public class PlexusApplicationGenerator
     extends AbstractMojo
 {
-    /**
-     * @parameter expression="${basedir}"
-     *
-     * @required
-     */
-    private File basedir;
-
-    /**
-     * @parameter expression="${project.build.directory}"
-     *
-     * @required
-     */
-    private File target;
-
-    /**
-     * @parameter expression="${project.artifacts}"
-     *
-     * @required
-     */
-    private Set projectArtifacts;
+    // ----------------------------------------------------------------------
+    // Configuration
+    // ----------------------------------------------------------------------
 
     /**
      * @parameter expression="${applicationConfiguration}"
-     *
      * @required
      */
-    private String applicationConfiguration;
-
-    /**
-     * @parameter expression="${configurationProperties}"
-     */
-    private File configurationProperties;
+    private File applicationConfiguration;
 
     /**
      * @parameter expression="${configurationsDirectory}"
@@ -89,18 +65,31 @@ public class PlexusApplicationGenerator
     private File configurationsDirectory;
 
     /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.application.ApplicationBuilder}"
-     *
-     * @required
+     * @parameter expression="${configurationProperties}"
      */
-    private ApplicationBuilder builder;
+    private File configurationProperties;
 
     /**
      * @parameter expression="${applicationName}"
-     *
      * @required
      */
     private String applicationName;
+
+    // ----------------------------------------------------------------------
+    // Read Only Configuration
+    // ----------------------------------------------------------------------
+
+    /**
+     * @parameter expression="${project.build.directory}"
+     * @required
+     */
+    private File target;
+
+    /**
+     * @parameter expression="${project.artifacts}"
+     * @required
+     */
+    private Set applicationArtifacts;
 
     /**
      * @parameter expression="${project.build.directory}/plexus-application"
@@ -108,26 +97,31 @@ public class PlexusApplicationGenerator
      */
     private File applicationAssemblyDirectory;
 
+    // ----------------------------------------------------------------------
+    // Components
+    // ----------------------------------------------------------------------
+
+    /**
+     * @parameter expression="${component.org.codehaus.plexus.builder.application.ApplicationBuilder}"
+     * @required
+     */
+    private ApplicationBuilder builder;
+
     /**
      * @parameter expression="${localRepository}"
-     *
      * @required
      */
     private ArtifactRepository localRepository;
 
     /**
      * @parameter expression="${project.remoteArtifactRepositories}"
-     *
      * @required
      */
     private List remoteRepositories;
 
-    /**
-     * @parameter expression="${project}"
-     *
-     * @required
-     */
-    private MavenProject project;
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     public void execute()
         throws MojoExecutionException
@@ -138,7 +132,7 @@ public class PlexusApplicationGenerator
 
         Set services = new HashSet();
 
-        for ( Iterator it = projectArtifacts.iterator(); it.hasNext(); )
+        for ( Iterator it = applicationArtifacts.iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
 
@@ -160,9 +154,9 @@ public class PlexusApplicationGenerator
                               applicationAssemblyDirectory,
                               remoteRepositories,
                               localRepository,
-                              projectArtifacts,
+                              applicationArtifacts,
                               services,
-                              new File( basedir, applicationConfiguration ),
+                              applicationConfiguration,
                               configurationsDirectory,
                               configurationProperties );
         }
