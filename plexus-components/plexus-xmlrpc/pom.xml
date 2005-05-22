@@ -9,7 +9,7 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-xmlrpc</artifactId>
-  <version>1.0-beta-3</version>
+  <version>1.0-beta-4-SNAPSHOT</version>
   <name>Plexus XML-RPC Component</name>
   <dependencies>
     <dependency>
