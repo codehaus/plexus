@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Iterator;
 
 import org.codehaus.plexus.action.Action;
 import org.codehaus.plexus.action.ActionManager;
@@ -78,21 +79,17 @@ public class ActionValve
         }
     }
 
-    /**
-     * @param data
-     * @return
-     */
     protected Map createContext( RunData data )
     {
         // The parameter map in the request consists of an array of values for
         // the given key so this is why this is being done.
         Map m = new HashMap();
 
-        for ( Enumeration e = data.getRequest().getParameterNames(); e.hasMoreElements(); )
+        for ( Iterator i = data.getParameters().keys(); i.hasNext(); )
         {
-            String key = (String) e.nextElement();
+            String key = (String) i.next();
 
-            m.put( key, data.getRequest().getParameter( key ) );
+            m.put( key, data.getParameters().get( key ) );
         }
         return m;
     }
