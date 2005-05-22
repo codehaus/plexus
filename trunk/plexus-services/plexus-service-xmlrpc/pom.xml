@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -7,7 +9,7 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-service-xmlrpc</artifactId>
-  <version>1.0-alpha-1-SNAPSHOT</version>
+  <version>1.0-alpha-1</version>
   <packaging>plexus-service</packaging>
   <name>Plexus XMLRPC Service</name>
   <dependencies>
@@ -36,7 +38,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-plexus-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0-20050522.180040-7</version>
         <goals>
           <goal>
             <id>service</id>
@@ -46,6 +48,7 @@
             </configuration>
           </goal>
         </goals>
+        <groupId>org.apache.maven.plugins</groupId>
       </plugin>
     </plugins>
   </build>
