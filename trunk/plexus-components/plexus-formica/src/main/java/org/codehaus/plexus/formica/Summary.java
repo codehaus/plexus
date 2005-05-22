@@ -32,9 +32,18 @@ public class Summary
 {
     private List summaryElements;
 
+    // TODO: these should be renmaed to item operations because they are operations to
+    // be performed on each item versus operations/actions that might be displayed
+    // at the bottom of a summary.
     private List operations;
 
     private String titleKey;
+
+    private List actions;
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     public List getSummaryElements()
     {
@@ -44,6 +53,11 @@ public class Summary
     public List getOperations()
     {
         return operations;
+    }
+
+    public List getActions()
+    {
+        return actions;
     }
 
     public String getTitleKey()
