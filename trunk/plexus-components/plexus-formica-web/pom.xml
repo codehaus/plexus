@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <project>
   <parent>
     <artifactId>plexus-components</artifactId>
@@ -9,7 +11,7 @@
   <artifactId>plexus-formica-web</artifactId>
   <packaging>jar</packaging>
   <name>Plexus Formica Web Component</name>
-  <version>1.0-alpha-1-SNAPSHOT</version>
+  <version>1.0-alpha-1</version>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
