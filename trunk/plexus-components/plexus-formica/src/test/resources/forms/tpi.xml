@@ -3,6 +3,17 @@
   <target-class>org.codehaus.plexus.formica.TargetObject</target-class>
   <key-expression>field0</key-expression>
   <source-role>source-role</source-role>
+
+  <transformations>
+    <transformation>
+      <id>scmUrl</id>
+      <elements>
+        <element implementation="java.lang.String">field-0</element>
+        <element implementation="java.lang.String">field-1</element>
+      </elements>
+    </transformation>
+  </transformations>
+
   <elements>
     <element>
       <id>field-0</id>

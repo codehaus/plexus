@@ -30,6 +30,8 @@ import java.util.List;
  */
 public class View
 {
+    // TODO: need a list of actions here
+
     private List viewElements;
 
     private String titleKey;

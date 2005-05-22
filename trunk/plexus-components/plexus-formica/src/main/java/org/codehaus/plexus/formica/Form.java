@@ -77,6 +77,13 @@ public class Form
     //
     // ----------------------------------------------------------------------
 
+    private List transformations;
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+
     public void addElement( Element element )
     {
         if ( elements == null )
@@ -316,5 +323,14 @@ public class Form
     public Summary getSummary()
     {
         return summary;
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+    
+    public List getTransformations()
+    {
+        return transformations;
     }
 }
