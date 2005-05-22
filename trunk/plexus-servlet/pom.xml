@@ -9,7 +9,7 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-servlet</artifactId>
-  <version>1.0-beta-2</version>
+  <version>1.0-beta-3-SNAPSHOT</version>
   <name>Plexus Servlet</name>
   <dependencies>
     <dependency>
