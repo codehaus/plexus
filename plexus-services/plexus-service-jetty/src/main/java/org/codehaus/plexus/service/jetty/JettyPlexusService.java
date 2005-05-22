@@ -68,19 +68,16 @@ public class JettyPlexusService
     // ----------------------------------------------------------------------
 
     public void initialize()
-        throws Exception
     {
         getLogger().info( "Initializing servlet container service." );
     }
 
     public void start()
-        throws Exception
     {
         getLogger().info( "Starting servlet container service." );
     }
 
     public void stop()
-        throws Exception
     {
         getLogger().info( "Stopping servlet container service." );
     }

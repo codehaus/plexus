@@ -32,12 +32,14 @@ import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 
 import org.mortbay.http.HttpListener;
 import org.mortbay.http.HttpContext;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.WebApplicationContext;
 import org.mortbay.util.InetAddrPort;
+import org.mortbay.util.MultiException;
 
 /**                1
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -58,7 +60,7 @@ public class JettyServletContainer
     // ----------------------------------------------------------------------
 
     public void start()
-        throws Exception
+        throws StartingException
     {
         // ----------------------------------------------------------------------
         // Initialize the Jetty logging system
@@ -78,7 +80,14 @@ public class JettyServletContainer
 
         server = new Server();
 
-        server.start();
+        try
+        {
+            server.start();
+        }
+        catch ( MultiException e )
+        {
+            throw new StartingException( "Error while starting Jetty", e );
+        }
     }
 
     public void stop()
