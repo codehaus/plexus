@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -7,7 +9,7 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-log4j-logging</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>Plexus Log4J Logger</name>
   <dependencies>
     <dependency>
