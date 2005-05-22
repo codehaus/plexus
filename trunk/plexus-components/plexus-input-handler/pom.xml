@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<model>
+<project>
   <parent>
     <artifactId>plexus-components</artifactId>
     <groupId>plexus</groupId>
@@ -28,4 +28,4 @@
       </plugin>
     </plugins>
   </build>
-</model>
+</project>
