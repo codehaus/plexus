@@ -10,7 +10,7 @@
   <groupId>plexus</groupId>
   <artifactId>plexus-runtime-builder</artifactId>
   <name>Plexus Runtime Builder</name>
-  <version>1.0-alpha-2</version>
+  <version>1.0-alpha-3-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
