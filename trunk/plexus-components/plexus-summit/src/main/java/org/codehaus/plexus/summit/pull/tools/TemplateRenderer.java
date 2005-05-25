@@ -12,6 +12,14 @@ import org.codehaus.plexus.summit.view.View;
  * 3 style.  It resolves the template, then looks up the renderer to render the
  * template it.
  *
+ * @plexus.component
+ *
+ * @plexus.role org.codehaus.plexus.summit.pull.tools.TemplateRenderer
+ *
+ * @plexus.instantiation-strategy per-lookup
+ *
+ * @plexus.lifecycle-handler plexus
+ *
  * @author <a href="dan@envoisolutions.com">Dan Diephouse</a>
  * @since Feb 13, 2003
  */
@@ -21,6 +29,11 @@ public class TemplateRenderer
 {
     private RunData data;
 
+    /**
+     * @plexus.requirement
+     *
+     * @plexus.role-hint velocity
+     */
     private Renderer renderer;
 
     public void setRunData( RunData data )

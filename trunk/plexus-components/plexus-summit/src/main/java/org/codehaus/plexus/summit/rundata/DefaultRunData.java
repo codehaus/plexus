@@ -57,7 +57,9 @@ package org.codehaus.plexus.summit.rundata;
  */
 
 /**
- * <p>Default RunData implementation. </p>
+ * @plexus.component
+ *
+ * @plexus.role org.codehaus.plexus.summit.rundata.RunData
  *
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
  * @version $Id$
