@@ -20,6 +20,12 @@ import org.codehaus.plexus.summit.view.View;
  * the resolving process in Turbine 2.x so this resolver doesn't have to do any
  * work in this respect. </p>
  *
+ * @plexus.component
+ *
+ * @plexus.role org.codehaus.plexus.summit.resolver.Resolver
+ *
+ * @plexus.role-hint new
+ *
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
  * @version $Id$
  */

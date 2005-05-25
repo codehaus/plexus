@@ -7,9 +7,21 @@ import org.codehaus.plexus.summit.resolver.Resolution;
 import org.codehaus.plexus.summit.resolver.Resolver;
 import org.codehaus.plexus.summit.rundata.RunData;
 
+/**
+ * @plexus.component
+ *
+ * @plexus.role org.codehaus.plexus.summit.pipeline.valve.Valve
+ *
+ * @plexus.role-hint org.codehaus.plexus.summit.pipeline.valve.ResolverValve
+ */
 public class ResolverValve
     extends AbstractValve
 {
+    /**
+     * @plexus.configuration
+     *
+     * @plexus.default-value new
+     */
     private String resolver;
 
     public void invoke( RunData data )
