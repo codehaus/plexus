@@ -1,7 +1,18 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>plexus</groupId>
+    <artifactId>plexus-root</artifactId>
+    <version>1.0</version>
+  </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-site</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
   <name>Plexus Site</name>
+  <distributionManagement>
+    <site>
+      <id>apache</id>
+      <url>scp://beaver.codehaus.org/home/projects/plexus/public_html/</url>
+    </site>
+  </distributionManagement>
 </project>

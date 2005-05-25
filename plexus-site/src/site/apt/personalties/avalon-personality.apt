@@ -1,13 +1,23 @@
-Avalon Personality
-h3. Overview
+ -----
+ Avalon Personality
+ -----
+ Michal Maczka
+ -----
 
-A good overview of how avalon components work can be found on the Avalon website [here|http://avalon.apache.org/central/cop/basics.html].  This should beneficial if you are programming components for the Plexus personality as well, since the Plexus personality is loosely based on the Avalon API.
+Overview
 
-h3. Enabling the Avalon Personality
+ A good overview of how avalon components work can be found on the Avalon
+ website {{{here}http://avalon.apache.org/central/cop/basics.html}}. This should
+ beneficial if you are programming components for the Plexus personality as
+ well, since the Plexus personality is loosely based on the Avalon API.
 
-You must do three things to enable the Avalon personality within plexus:
-1. Add the avalon dependencies
-{code:xml}
+ * Enabling the Avalon Personality
+
+ You must do three things to enable the Avalon personality within plexus:
+
+ [[1]] Add the avalon dependencies
+
++---+
 <dependency>
   <id>avalon-framework</id>
   <version>4.1.4</version>
@@ -19,10 +29,11 @@ You must do three things to enable the Avalon personality within plexus:
   <artifactId>plexus-avalon-personality</artifactId>
   <version>0.12</version>
 </dependency>
-{code}
++---+
 
-2. Add the lifecycle handler to the plexus configuration
-{code:xml}
+ [[1]] Add the lifecycle handler to the plexus configuration
+
++---+
 <component-repository implementation="org.codehaus.plexus.personality.avalon.AvalonComponentRepository">
     <composition-resolver implementation="org.codehaus.plexus.component.composition.DefaultCompositionResolver"/>
   </component-repository>
@@ -62,17 +73,22 @@ You must do three things to enable the Avalon personality within plexus:
       </lifecycle-handler>
     </lifecycle-handlers>
   </lifecycle-handler-manager>
-{code}
++---+
 
-If you wish to have the Avalon personality be your _default_ personality keep the line
-{code:xml}
+ If you wish to have the Avalon personality be your _default_ personality keep
+ the line
+
++---+
 <default-lifecycle-handler-id>avalon</default-lifecycle-handler-id>
-{code}
-in your code.  Otherwise remove it and add a tag to each avalon component configuration like so:
-{code:xml}
++---+
+
+ in your code.  Otherwise remove it and add a tag to each avalon component
+ configuration like so:
+
++---+
 <component>
   <role>org.codehaus.plexus.jetty.ServletContainer</role>
   <implementation>org.codehaus.plexus.jetty.JettyServletContainer</implementation>
   <lifecycle-handler>avalon</lifecycle-handler>
 </component>
-{code}
++---+
