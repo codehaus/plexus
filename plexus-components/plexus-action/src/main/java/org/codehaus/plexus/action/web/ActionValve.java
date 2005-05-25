@@ -23,10 +23,9 @@ package org.codehaus.plexus.action.web;
  */
 
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.codehaus.plexus.action.Action;
 import org.codehaus.plexus.action.ActionManager;
@@ -36,12 +35,21 @@ import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
 import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
+ * @plexus.component
+ *
+ * @plexus.role org.codehaus.plexus.summit.pipeline.valve.Valve
+ *
+ * @plexus.role-hint org.codehaus.plexus.action.web.ActionValve
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class ActionValve
     extends AbstractValve
 {
+    /**
+     * @plexus.requirement
+     */
     private ActionManager actionManager;
 
     public void invoke( RunData data )
