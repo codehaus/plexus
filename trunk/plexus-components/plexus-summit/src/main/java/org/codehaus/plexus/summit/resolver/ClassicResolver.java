@@ -19,6 +19,12 @@ import org.codehaus.plexus.summit.view.View;
  * the resolving process in Turbine 2.x so this resolver doesn't have to do any
  * work in this respect. </p>
  *
+ * @plexus.component
+ *
+ * @plexus.role org.codehaus.plexus.summit.resolver.Resolver
+ *
+ * @plexus.role-hint classic
+ *
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
  * @version $Id$
  */
@@ -60,6 +66,11 @@ public class ClassicResolver
      */
     private final static String SCREEN_TARGET_PREFIX = "screens";
 
+    /**
+     * @plexus.requirement
+     *
+     * @plexus.role-hint velocity
+     */
     private Renderer renderer;
 
     public ClassicResolver()

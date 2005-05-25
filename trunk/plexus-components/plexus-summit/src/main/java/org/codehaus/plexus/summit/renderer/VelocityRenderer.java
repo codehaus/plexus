@@ -13,6 +13,12 @@ import org.codehaus.plexus.velocity.VelocityComponent;
 /**
  * <p>A <code>Renderer</code> that can process Velocity templates.</p>
  *
+ * @plexus.component
+ *
+ * @plexus.role org.codehaus.plexus.summit.renderer.Renderer
+ *
+ * @plexus.role-hint velocity
+ *
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
  * @version $Id$
  * @todo the encoding needs to be configurable.
@@ -23,6 +29,9 @@ public class VelocityRenderer
 {
     private String encoding = "ISO-8859-1";
 
+    /**
+     * @plexus.requirement
+     */
     private VelocityComponent velocity;
 
     public void render( RunData data, String view, Writer writer )

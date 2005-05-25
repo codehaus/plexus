@@ -59,12 +59,23 @@ import org.codehaus.plexus.summit.view.ViewContext;
  * to a set of JSPs.
  * </p>
  *
+ * @plexus.component
+ *
+ * @plexus.role org.codehaus.plexus.summit.display.Display
+ *
+ * @plexus.role-hint classic
+ *
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
  * @version $Id$
  */
 public class ClassicBufferedDisplay
     extends AbstractDisplay
 {
+    /**
+     * @plexus.requirement
+     *
+     * @plexus.role-hint velocity
+     */
     private Renderer renderer;
 
     public void render( RunData data )

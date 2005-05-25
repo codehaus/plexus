@@ -39,13 +39,33 @@ public class BaseRequestParameterParser
      */
     private DiskFileUpload fileUpload = new DiskFileUpload();
 
+    /**
+     * @plexus.configuration
+     *
+     * @plexus.default-value 1048576
+     */
     private int maxUploadSize;
 
+    /**
+     * @plexus.configuration
+     *
+     * @plexus.default-value 10240
+     */
     private int maxMemorySize;
 
+    /**
+     * @plexus.configuration
+     *
+     * @plexus.default-value ${basedir}/temp
+     */
     private String tempDirectory;
 
-    private String defaultEncoding = "US-ASCII";
+    /**
+     * @plexus.configuration
+     *
+     * @plexus.default-value US-ASCII
+     */
+    private String defaultEncoding;
 
     public void initialize()
         throws Exception

@@ -16,6 +16,12 @@ import org.codehaus.plexus.summit.util.UriBuilder;
  * This would return: http://foo.com/Turbine/template/index.wm/hello/world
  * </code>
  *
+ * @plexus.component
+ *
+ * @plexus.role linktool
+ *
+ * @plexus.instantiation-strategy per-lookup
+ *
  * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>

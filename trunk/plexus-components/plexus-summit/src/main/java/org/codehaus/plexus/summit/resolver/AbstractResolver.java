@@ -21,8 +21,18 @@ public abstract class AbstractResolver
     extends AbstractSummitComponent
     implements Resolver
 {
+    /**
+     * @plexus.configuration
+     *
+     * @plexus.default-value Error.vm
+     */
     private String errorView;
 
+    /**
+     * @plexus.configuration
+     *
+     * @plexus.default-value Index.vm
+     */
     private String defaultView;
 
     private String initialView;

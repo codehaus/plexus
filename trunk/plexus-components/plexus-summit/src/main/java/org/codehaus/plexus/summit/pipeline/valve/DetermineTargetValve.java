@@ -6,9 +6,21 @@ import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.resolver.Resolver;
 import org.codehaus.plexus.summit.rundata.RunData;
 
+/**
+ * @plexus.component
+ *
+ * @plexus.role org.codehaus.plexus.summit.pipeline.valve.Valve
+ *
+ * @plexus.role-hint org.codehaus.plexus.summit.pipeline.valve.DetermineTargetValve
+ */
 public class DetermineTargetValve
     extends AbstractValve
 {
+    /**
+     * @plexus.requirement
+     *
+     * @plexus.role-hint new
+     */
     private Resolver resolver;
 
     public void invoke( RunData data )
@@ -35,7 +47,7 @@ public class DetermineTargetValve
 
                 data.setTarget( target );
             }
-            
+
             System.out.println( "target = " + target );
         }
     }
