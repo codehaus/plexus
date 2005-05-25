@@ -28,6 +28,10 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.ServiceLocator;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
 
 /**
+ * @plexus.component
+ *
+ * @plexus.lifecycle-handler plexus-configurable
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
@@ -36,6 +40,10 @@ public class DefaultActionManager
     implements ActionManager, Serviceable
 {
     private ServiceLocator locator;
+
+    // ----------------------------------------------------------------------
+    // ActionManager Implementation
+    // ----------------------------------------------------------------------
 
     public Action lookup( String id )
         throws ActionNotFoundException
@@ -55,8 +63,13 @@ public class DefaultActionManager
         }
     }
 
+    // ----------------------------------------------------------------------
+    // Component Lifecycle
+    // ----------------------------------------------------------------------
+
     public void service( ServiceLocator locator )
     {
         this.locator = locator;
     }
 }
+
