@@ -24,17 +24,20 @@ package org.codehaus.plexus.cdc;
  * SOFTWARE.
  */
 
-import java.io.File;
-
 /**
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
- public interface ComponentDescriptorCreator
+public class ComponentDescriptorCreatorException
+    extends Exception
 {
-    String ROLE = ComponentDescriptorCreator.class.getName();
+    public ComponentDescriptorCreatorException( String message )
+    {
+        super( message );
+    }
 
-    void processSources( File[] sourceDirectories, File outputDirectory )
-        throws ComponentDescriptorCreatorException;
+    public ComponentDescriptorCreatorException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
 }
