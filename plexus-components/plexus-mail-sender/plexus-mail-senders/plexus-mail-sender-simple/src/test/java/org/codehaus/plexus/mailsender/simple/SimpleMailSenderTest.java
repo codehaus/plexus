@@ -26,6 +26,7 @@ package org.codehaus.plexus.mailsender.simple;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.mailsender.MailSender;
+import org.codehaus.plexus.mailsender.MailMessage;
 import org.codehaus.plexus.mailsender.test.SmtpServer;
 
 import com.dumbster.smtp.SmtpMessage;
@@ -38,12 +39,16 @@ import com.dumbster.smtp.SmtpMessage;
 public class SimpleMailSenderTest
 	extends PlexusTestCase
 {
-    public void testDefaultComponentConfiguration()
-    	throws Exception
-    {
-        SmtpServer smtpServer = (SmtpServer) lookup( SmtpServer.ROLE );
+    private SimpleMailSender simpleMailSender;
 
-        Thread.sleep( 1000 );
+    protected void setUp()
+        throws Exception
+    {
+        super.setUp();
+
+        // ----------------------------------------------------------------------
+        // Get the sender and make sure it's the correct one
+        // ----------------------------------------------------------------------
 
         MailSender mailSender = (MailSender) lookup( MailSender.ROLE );
 
@@ -51,13 +56,25 @@ public class SimpleMailSenderTest
 
         assertTrue( mailSender instanceof SimpleMailSender );
 
-        SimpleMailSender simpleMailSender = (SimpleMailSender) mailSender;
+        simpleMailSender = (SimpleMailSender) mailSender;
 
         assertEquals( "localhost", simpleMailSender.getSmtpHost() );
 
         assertEquals( 4000, simpleMailSender.getSmtpPort() );
+    }
 
-        mailSender.send( "mySubject", "myContent", "to@server.com", "to.name", "from@server.com", "from.name" );
+    public void testDefaultComponentConfiguration()
+    	throws Exception
+    {
+        // ----------------------------------------------------------------------
+        // Start the SMTP sever
+        // ----------------------------------------------------------------------
+
+        SmtpServer smtpServer = (SmtpServer) lookup( SmtpServer.ROLE );
+
+        Thread.sleep( 1000 );
+
+        simpleMailSender.send( "mySubject", "myContent", "to@server.com", "to.name", "from@server.com", "from.name" );
 
         assertEquals( 1, smtpServer.getReceivedEmailSize() );
 
@@ -67,4 +84,24 @@ public class SimpleMailSenderTest
 
         assertTrue( email.getBody().equals( "myContent" ) );
     }
+
+//    public void testHeadersWithNullValues()
+//        throws Exception
+//    {
+//        MailMessage message = new MailMessage();
+//
+//        message.setFrom( "foo@bar", "Mr Foo");
+//
+//        message.addTo( "bar@foo", "Mr Bar" );
+//
+//        message.addHeader( "foo", null );
+//
+//        simpleMailSender.send( message );
+//
+//        assertEquals( 1, smtpServer.getReceivedEmailSize() );
+//
+//        SmtpMessage email = (SmtpMessage) smtpServer.getReceivedEmail().next();
+//
+//        assertTrue( email.getHeaderValue( "foo" ).equals( "" ) );
+//    }
 }
