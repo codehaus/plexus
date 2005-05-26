@@ -190,25 +190,6 @@ public class DefaultFormManager
                 // Do we just want to send back one error message at a time?
 
             }
-
-            /*
-
-            Validator validator = getValidator( element.getValidator() );
-
-            String elementData = (String) data.get( element.getId() );
-
-            boolean valid = validator.validate( elementData );
-
-            String errorMessage = null;
-
-            if ( !valid )
-            {
-                errorMessage = i18n.getString( element.getErrorMessageKey() );
-            }
-
-            result.addElementValidationResult( element.getId(), valid, errorMessage );
-
-            */
         }
     }
 
