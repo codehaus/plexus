@@ -167,7 +167,7 @@ public class UrlValidator
     /**
      * If no schemes are provided, default to this set.
      */
-    protected String[] defaultSchemes = {"http", "https", "ftp", "file" };
+    protected String[] defaultSchemes = {"http", "https", "ftp" };
 
     /**
      * Create a UrlValidator with default properties.
