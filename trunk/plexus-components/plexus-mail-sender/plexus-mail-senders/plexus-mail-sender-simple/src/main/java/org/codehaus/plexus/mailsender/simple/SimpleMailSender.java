@@ -33,6 +33,7 @@ import org.codehaus.plexus.mailsender.AbstractMailSender;
 import org.codehaus.plexus.mailsender.MailMessage;
 import org.codehaus.plexus.mailsender.MailSenderException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -50,9 +51,9 @@ public class SimpleMailSender
     public void initialize()
         throws Exception
     {
-        if ( getSmtpHost() == null || getSmtpHost().length() == 0 )
+        if ( StringUtils.isEmpty( getSmtpHost() ) )
         {
-            throw new MailSenderException( "Error in configuration: Missing smtpHost." );
+            throw new MailSenderException( "Error in configuration: Missing 'smtp-host'." );
         }
 
         if ( getSmtpPort() == 0 )
@@ -97,7 +98,9 @@ public class SimpleMailSender
             {
                 Map.Entry entry = (Map.Entry) it.next();
 
-                message.setHeader( entry.getKey().toString(), entry.getValue().toString() );
+                String value = (String) entry.getValue();
+
+                message.setHeader( entry.getKey().toString(), StringUtils.clean( value ) );
             }
 
             if ( mail.getSendDate() != null )
