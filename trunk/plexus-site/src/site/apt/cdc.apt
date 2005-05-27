@@ -1,14 +1,14 @@
  -----
  Plexus Component Descriptor Creator
  -----
- Trygve Laugstøl
+ Trygve Laugstï¿½l
  -----
  25th May 2005
  -----
 
 Plexus Component Descriptor Creator
 
- <<NOTE: This document and the CDC itself is currently a work in progres.>>
+ <<NOTE: This document and the CDC itself is currently a work in progress.>>
 
  The Component Descriptor Creator (or CDC for short) is a tool that will create
  the <<<components.xml>>> file from your Java code. It uses a set of JavaDoc
@@ -19,7 +19,7 @@ Plexus Component Descriptor Creator
 *-------------------------------*--------------*---------------------------------------------*
 | <<Tag>>                       | <<Required>> | <<Description>>                             |
 *-------------------------------*---*--------------------------------------------------------*
-| @plexus.component             | y | Marker tag to mark a class as a Plexus component.      |
+| @plexus.component             | y | Tag used to mark a class as a Plexus component.        |
 *-------------------------------*---*--------------------------------------------------------*
 | @plexus.role                  | y | The role of the component.                             |
 *-------------------------------*---*--------------------------------------------------------*
@@ -84,9 +84,8 @@ private ActionManager actionManager;
 
 +---+
 /**
- * @plexus.requirement
- * @plexus.role-hint velocity
+ * @plexus.configuration
  */
 private Renderer renderer; 
 +---+
-~~ [example-requirement-tags] Example Requirement Tags
+~~ [example-requirement-tags] Example Configuration Tags
