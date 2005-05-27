@@ -92,8 +92,11 @@ public class PlexusRuntimeBuilderTest
         File configurationPropertiesFile = getTestFile( "src/test/resources/configuration.properties" );
 
         runtimeBuilder.build( workingDirectory,
-                              remoteRepositories, localRepository, projectArtifacts,
-                              plexusConfiguration, configurationPropertiesFile );
+                              remoteRepositories,
+                              localRepository,
+                              projectArtifacts,
+                              plexusConfiguration,
+                              configurationPropertiesFile );
     }
 
     // ----------------------------------------------------------------------
