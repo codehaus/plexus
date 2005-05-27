@@ -1,6 +1,8 @@
 package org.codehaus.plexus.formica;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /*
  * Copyright (c) 2004, Codehaus.org
@@ -48,6 +50,8 @@ public class Element
     private String type = "text";
 
     private String contentGenerator;
+
+    private Map attributes;
 
     public Element()
     {
@@ -106,10 +110,15 @@ public class Element
     public String getType()
     {
         return type;
-    }
+    }                                 
 
     public String getContentGenerator()
     {
         return contentGenerator;
+    }
+
+    public Map getAttributes()
+    {
+        return attributes;
     }
 }

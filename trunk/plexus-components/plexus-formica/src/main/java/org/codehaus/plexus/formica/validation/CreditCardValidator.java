@@ -23,6 +23,12 @@ package org.codehaus.plexus.formica.validation;
  */
 
 /**
+ * @plexus.compponent
+ *
+ * @plexus.role org.codehaus.plexus.formica.validation.Validator
+ *
+ * @plexus.role-hint credit-card
+ *
  * <p>Perform credit card validations.</p>
  * <p/>
  * This class is a Singleton; you can retrieve the instance via the getInstance() method.

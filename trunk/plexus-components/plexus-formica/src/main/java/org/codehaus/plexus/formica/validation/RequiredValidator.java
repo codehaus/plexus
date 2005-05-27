@@ -23,6 +23,12 @@ package org.codehaus.plexus.formica.validation;
  */
 
 /**
+ * @plexus.component
+ *
+ * @plexus.role org.codehaus.plexus.formica.validation.Validator
+ *
+ * @plexus.role-hint required
+ *
  * A form validator which allows any incoming data to be passed as valid.
  * In other words, it does no validation.
  *
