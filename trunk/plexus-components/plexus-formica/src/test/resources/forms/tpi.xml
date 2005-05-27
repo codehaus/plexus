@@ -4,6 +4,7 @@
   <key-expression>field0</key-expression>
   <source-role>source-role</source-role>
 
+  <!--
   <transformations>
     <transformation>
       <id>scmUrl</id>
@@ -13,6 +14,7 @@
       </elements>
     </transformation>
   </transformations>
+  -->
 
   <elements>
     <element>
@@ -27,6 +29,9 @@
       <label-key>field-0-label-key</label-key>
       <message-key>field-0-message-key</message-key>
       <type>text</type>
+      <attributes>
+        <size>50</size>
+       </attributes>
     </element>
     <element>
       <id>field-1</id>

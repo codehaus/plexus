@@ -27,12 +27,19 @@ import org.codehaus.plexus.formica.validation.Validator;
 import java.util.Map;
 
 /**
+ * @plexus.component
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class DefaultValidatorManager
     implements ValidatorManager
 {
+    /**
+     * @plexus.requirement
+     *
+     * @plexus.role-hint org.codehaus.plexus.formica.validation.Validator
+     */
     private Map validators;
 
     public Validator getValidator( String id )

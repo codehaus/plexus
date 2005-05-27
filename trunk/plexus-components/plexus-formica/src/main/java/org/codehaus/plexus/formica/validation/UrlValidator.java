@@ -29,6 +29,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * @plexus.component
+ *
+ * @plexus.role org.codehaus.plexus.formica.validation.Validator
+ *
+ * @plexus.role-hint url
+ *
  * <p>Validates URLs.</p>
  * Behavour of validation is modified by passing in options:
  * <li>ALLOW_2_SLASHES - [FALSE]  Allows double '/' characters in the path
