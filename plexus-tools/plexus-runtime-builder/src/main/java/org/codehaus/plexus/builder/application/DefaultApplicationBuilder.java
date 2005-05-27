@@ -93,24 +93,26 @@ public class DefaultApplicationBuilder
             throw new ApplicationBuilderException( "The application configuration file doesn't exist: '" + applicationConfiguration.getAbsolutePath() + "'." );
         }
 
-        // ----------------------------------------------------------------------
-        // Create directory structure
-        // ----------------------------------------------------------------------
-
-        File confDir = mkdir( new File( workingDirectory, PlexusApplicationConstants.CONF_DIRECTORY ) );
-
-        File libDir = mkdir( new File( workingDirectory, PlexusApplicationConstants.LIB_DIRECTORY ) );
-
-        File logsDir = mkdir( new File( workingDirectory, "logs" ) );
-
-        mkdir( new File( workingDirectory, "META-INF/plexus" ) );
-
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
+        File libDir;
 
         try
         {
+            // ----------------------------------------------------------------------
+            // Create directory structure
+            // ----------------------------------------------------------------------
+
+            File confDir = mkdirs( new File( workingDirectory, PlexusApplicationConstants.CONF_DIRECTORY ) );
+
+            libDir = mkdirs( new File( workingDirectory, PlexusApplicationConstants.LIB_DIRECTORY ) );
+
+            File logsDir = mkdirs( new File( workingDirectory, "logs" ) );
+
+            mkdirs( new File( workingDirectory, "META-INF/plexus" ) );
+
+            // ----------------------------------------------------------------------
+            //
+            // ----------------------------------------------------------------------
+
             new FileWriter( new File( logsDir, "foo" ) ).close();
 
             processConfigurations( confDir,
@@ -230,7 +232,7 @@ public class DefaultApplicationBuilder
                                         File applicationConfiguration,
                                         File configurationPropertiesFile,
                                         File configurationsDirectory )
-        throws ApplicationBuilderException, IOException
+        throws IOException
     {
         // ----------------------------------------------------------------------
         // Load the configuration properties.

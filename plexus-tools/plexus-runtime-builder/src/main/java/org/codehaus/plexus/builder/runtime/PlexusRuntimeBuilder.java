@@ -41,7 +41,7 @@ public interface PlexusRuntimeBuilder
                 List remoteRepositories,
                 ArtifactRepository localRepository,
                 Set extraArtifacts,
-                File plexusConfiguration,
+                File containerConfiguration,
                 File configurationPropertiesFile )
         throws PlexusRuntimeBuilderException;
 

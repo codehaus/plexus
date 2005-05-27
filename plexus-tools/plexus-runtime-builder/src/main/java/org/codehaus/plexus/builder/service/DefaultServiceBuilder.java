@@ -89,22 +89,26 @@ public class DefaultServiceBuilder
             throw new ServiceBuilderException( "The configurations directory isn't a directory: '" + configurationsDirectory.getAbsolutePath() + "." );
         }
 
-        // ----------------------------------------------------------------------
-        // Create directory structure
-        // ----------------------------------------------------------------------
+        File libDir;
 
-        File confDir = mkdir( new File( outputDirectory, PlexusServiceConstants.CONF_DIRECTORY ) );
-
-        File libDir = mkdir( new File( outputDirectory, PlexusServiceConstants.LIB_DIRECTORY ) );
-
-        File classesDir = mkdir( new File( outputDirectory, PlexusServiceConstants.CLASSES_DIRECTORY ) );
-
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
+        File classesDir;
 
         try
         {
+            // ----------------------------------------------------------------------
+            // Create directory structure
+            // ----------------------------------------------------------------------
+
+            File confDir = mkdirs( new File( outputDirectory, PlexusServiceConstants.CONF_DIRECTORY ) );
+
+            libDir = mkdirs( new File( outputDirectory, PlexusServiceConstants.LIB_DIRECTORY ) );
+
+            classesDir = mkdirs( new File( outputDirectory, PlexusServiceConstants.CLASSES_DIRECTORY ) );
+
+            // ----------------------------------------------------------------------
+            //
+            // ----------------------------------------------------------------------
+
             processConfigurations( confDir, serviceConfiguration, configurationProperties, configurationsDirectory );
         }
         catch ( IOException e )
