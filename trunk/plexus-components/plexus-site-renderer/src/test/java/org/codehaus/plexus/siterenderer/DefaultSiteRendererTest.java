@@ -56,7 +56,7 @@ public class DefaultSiteRendererTest
     {
         try
         {
-            renderer.render( getTestFile( "src/test/site" ), getTestFile( "target/output" ), "site.xml",
+            renderer.render( getTestFile( "src/test/site" ), getTestFile( "target/output" ), "src/test/site/site.xml",
                              "maven-site.vm", null );
         }
         catch ( Exception e )
