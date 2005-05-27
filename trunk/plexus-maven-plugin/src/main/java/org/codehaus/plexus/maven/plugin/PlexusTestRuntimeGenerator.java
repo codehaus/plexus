@@ -47,12 +47,9 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
 public class PlexusTestRuntimeGenerator
     extends AbstractMojo
 {
-    /**
-     * @parameter expression="${basedir}"
-     *
-     * @required
-     */
-    private File basedir;
+    // ----------------------------------------------------------------------
+    // Configurable properties
+    // ----------------------------------------------------------------------
 
     /**
      * @parameter expression="${project.build.directory}"
@@ -80,7 +77,18 @@ public class PlexusTestRuntimeGenerator
      *
      * @required
      */
-    private String testRuntimeConfiguration;
+    private File testRuntimeConfiguration;
+
+    /**
+     * @parameter expression="${plexus.runtime.configuration.roperties}"
+     *
+     * @required
+     */
+    private File testRuntimeConfigurationProperties;
+
+    // ----------------------------------------------------------------------
+    // Components
+    // ----------------------------------------------------------------------
 
     /**
      * @parameter expression="${component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder}"
@@ -88,6 +96,10 @@ public class PlexusTestRuntimeGenerator
      * @required
      */
     private PlexusRuntimeBuilder runtimeBuilder;
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     /**
      * @parameter expression="${localRepository}"
@@ -122,8 +134,8 @@ public class PlexusTestRuntimeGenerator
                                   remoteRepositories,
                                   localRepository,
                                   projectArtifacts,
-                                  new File( basedir, testRuntimeConfiguration ),
-                                  null );
+                                  testRuntimeConfiguration,
+                                  testRuntimeConfigurationProperties );
 
             // ----------------------------------------------------------------------
             // Copy the application
