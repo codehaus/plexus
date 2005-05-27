@@ -92,14 +92,31 @@ public abstract class AbstractBuilder
         }
     }
 
-    protected File mkdir( File directory )
+    protected File mkdirs( File directory )
+        throws IOException
     {
         if ( !directory.exists() )
         {
-            directory.mkdirs();
+            if ( !directory.mkdirs() )
+            {
+                throw new IOException( "Could not make directories '" + directory.getAbsolutePath() + "'." );
+            }
         }
 
         return directory;
+    }
+
+    protected InputStream getResourceAsStream( String resource )
+        throws IOException
+    {
+        InputStream is = getClass().getClassLoader().getResourceAsStream( resource );
+
+        if ( is == null )
+        {
+            throw new IOException( "Could not find resource '" + resource + "'." );
+        }
+
+        return is;
     }
 
     // ----------------------------------------------------------------------
@@ -249,12 +266,11 @@ public abstract class AbstractBuilder
         return artifacts;
     }
 
-    private void resolveVersion( String groupId,
-                                 String artifactId,
-                                 Set projectArtifacts,
-                                 boolean ignoreIfMissing,
-                                 Set resolvedArtifacts )
-        throws ArtifactResolutionException
+    protected String resolveVersion( String groupId,
+                                     String artifactId,
+                                     Set projectArtifacts,
+                                     boolean ignoreIfMissing,
+                                     Set resolvedArtifacts )
     {
         for ( Iterator it = projectArtifacts.iterator(); it.hasNext(); )
         {
@@ -266,7 +282,7 @@ public abstract class AbstractBuilder
             {
                 resolvedArtifacts.add( artifact );
 
-                return;
+                return artifact.getVersion();
             }
         }
 
@@ -276,6 +292,8 @@ public abstract class AbstractBuilder
         {
             throw new RuntimeException( "Could not version for artifact: " + artifact.getId() + "." );
         }
+
+        return null;
     }
 
     // TODO: these filters belong in maven-artifact - they are generally useful
