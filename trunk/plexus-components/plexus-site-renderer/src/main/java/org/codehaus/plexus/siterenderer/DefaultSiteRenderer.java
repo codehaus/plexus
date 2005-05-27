@@ -280,6 +280,10 @@ public class DefaultSiteRenderer
             // ----------------------------------------------------------------------
 
             velocity.getEngine().mergeTemplate( templateName, context, writer );
+
+            writer.flush();
+
+            writer.close();
         }
         catch ( ResourceNotFoundException e )
         {
