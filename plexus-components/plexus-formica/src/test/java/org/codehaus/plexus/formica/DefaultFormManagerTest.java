@@ -94,7 +94,7 @@ public class DefaultFormManagerTest
 
         assertEquals( "form.field0.message", element.getMessageKey() );
 
-        org.codehaus.plexus.formica.Validator v = (org.codehaus.plexus.formica.Validator) element.getValidators().get( 0 );                
+        org.codehaus.plexus.formica.Validator v = (org.codehaus.plexus.formica.Validator) element.getValidators().get( 0 );
 
         assertEquals( "form.field0.error", v.getErrorMessageKey() );
     }
@@ -107,6 +107,10 @@ public class DefaultFormManagerTest
         assertNotNull( form );
 
         assertEquals( "tpi.title", form.getAdd().getTitleKey() );
+
+        Element e = form.getElement( "field-0" );
+
+        assertEquals( "50", e.getAttributes().get( "size" ) );
     }
 
     // ----------------------------------------------------------------------

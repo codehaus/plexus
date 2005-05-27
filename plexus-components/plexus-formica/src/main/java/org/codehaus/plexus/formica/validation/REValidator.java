@@ -28,8 +28,15 @@ import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.codehaus.plexus.formica.FormicaException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
+ * @plexus.component
+ *
+ * @plexus.role org.codehaus.plexus.formica.validation.Validator
+ *
+ * @plexus.role-hint pattern-digits
+ *
  * An implementation of the Validator interface which validates
  * FormElements based on a Perl 5 regular expression.
  *
@@ -38,11 +45,20 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
  * @version $Id$
  */
 public class REValidator
-    extends AbstractValidator implements Initializable
+    extends AbstractValidator
+    implements Initializable
 {
+    /**
+     * @plexus.configuration
+     *
+     * @plexus.default-value [0-9]+
+     */
     private String pattern;
+
     private Perl5Compiler compiler;
+
     private Perl5Matcher matcher;
+
     Pattern compiledPattern;
 
     /**
@@ -53,6 +69,7 @@ public class REValidator
     public REValidator()
     {
         compiler = new Perl5Compiler();
+
         matcher = new Perl5Matcher();
     }
 
@@ -78,10 +95,8 @@ public class REValidator
         this.pattern = pattern;
     }
 
-    /**
-     * @throws FormicaException
-     */
-    public void initialize() throws FormicaException
+    public void initialize()
+        throws InitializationException
     {
         // compile pattern only once
         if ( pattern != null )
@@ -92,12 +107,12 @@ public class REValidator
             }
             catch ( MalformedPatternException e )
             {
-                throw new FormicaException( "Regular expression pattern is malformed.", e );
+                throw new InitializationException( "Regular expression pattern is malformed.", e );
             }
         }
         else
         {
-            throw new FormicaException( "Regular expression cannot be null." );
+            throw new InitializationException( "Regular expression cannot be null." );
         }
     }
 }

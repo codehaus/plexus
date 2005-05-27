@@ -31,6 +31,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * @plexus.component
+ *
+ * @plexus.role-hint match
+ * 
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */

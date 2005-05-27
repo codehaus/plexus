@@ -32,6 +32,7 @@ import org.codehaus.plexus.formica.validation.manager.ValidatorNotFoundException
 import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -41,6 +42,10 @@ import java.util.LinkedList;
 
 
 /**
+ * @plexus.component
+ *
+ * @plexus.lifecycle-handler plexus-configurable
+ *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
@@ -183,7 +188,7 @@ public class DefaultFormManager
                     // ----------------------------------------------------------------------
 
                     result.addElementValidationResult( element.getId(), valid, i18n.getString( v.getErrorMessageKey() ) );
-                                                            
+
                     break;
                 }
 
@@ -226,7 +231,7 @@ public class DefaultFormManager
     // ----------------------------------------------------------------------
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         formMap = new HashMap();
 

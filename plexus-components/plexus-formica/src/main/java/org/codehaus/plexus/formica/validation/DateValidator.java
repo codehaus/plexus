@@ -28,6 +28,12 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 /**
+ * @plexus.component
+ *
+ * @plexus.role org.codehaus.plexus.formica.validation.Validator
+ *
+ * @plexus.role-hint date
+ *
  * <p>Perform date validations.</p>
  * <p/>
  * This class is a Singleton; you can retrieve the instance via the getInstance() method.
@@ -42,7 +48,13 @@ import java.util.Locale;
 public class DateValidator
     extends AbstractValidator
 {
+    /**
+     * @plexus.configuration
+     *
+     * @plexus.default-value MM/dd/yyyy
+     */
     private String pattern;
+
     private boolean strict = true;
 
     /**
