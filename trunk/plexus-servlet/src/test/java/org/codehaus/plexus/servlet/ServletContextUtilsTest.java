@@ -15,16 +15,11 @@ public class ServletContextUtilsTest extends TestCase
     public void testResolveConfig() throws Exception
     {
         ServletContext msc = new MockServletContext();
+
         Embedder embedder = (Embedder) ServletContextUtils.createContainer( msc, null );
+
         assertNotNull( "embedder != null", embedder );
-        embedder.stop();
-    }
-    
-    public void testResolveConfigNoResource() throws Exception
-    {
-        ServletContext msc = new NoResourceMockServletContext();
-        Embedder embedder = (Embedder) ServletContextUtils.createContainer( msc, null );
-        assertNotNull( "embedder != null", embedder );
+
         embedder.stop();
     }
 }

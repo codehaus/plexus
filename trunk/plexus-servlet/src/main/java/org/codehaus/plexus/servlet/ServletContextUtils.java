@@ -58,7 +58,6 @@ final class ServletContextUtils {
             filename = DEFAULT_PLEXUS_PROPERTIES;  
         }
                 
-                
         context.log( "Loading plexus context properties from: '" + filename + "'" );
         
         try
@@ -143,7 +142,6 @@ final class ServletContextUtils {
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
             throw new ServletException( "Could not start Plexus!", e );
         }
         
