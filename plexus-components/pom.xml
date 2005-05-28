@@ -19,7 +19,7 @@
   <groupId>plexus</groupId>
   <artifactId>plexus-components</artifactId>
   <packaging>pom</packaging>
-  <version>1.0</version>
+  <version>1.1</version>
   <name>Plexus Components Parent Project</name>
   <!-- 
     TODO: should this be pushed down to all the dependencies?
@@ -29,21 +29,35 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-2</version>
+      <version>1.0-alpha-4-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <modules>
     <module>plexus-action</module>
     <module>plexus-archiver</module>
+    <module>plexus-bayesian</module>  
     <module>plexus-command</module>
+    <module>plexus-compiler</module>
+    <module>plexus-drools</module>        
     <module>plexus-formica-web</module>
     <module>plexus-formica</module>
     <module>plexus-hibernate</module>
+    <module>plexus-i18n</module>            
+    <module>plexus-input-handler</module>        
+    <module>plexus-ircbot</module>    
     <module>plexus-jdo</module>
     <module>plexus-jetty</module>
+    <module>plexus-jetty-httpd</module>    
     <module>plexus-mail-sender</module>
+    <module>plexus-mimetyper</module>    
+    <module>plexus-notification</module>        
+    <module>plexus-password-store</module>        
+    <module>plexus-resource</module>
+    <module>plexus-site-renderer</module>    
     <module>plexus-summit</module>
+    <module>plexus-taskqueue</module>    
     <module>plexus-velocity</module>
+    <module>plexus-werkflow</module>    
     <module>plexus-xmlrpc</module>
   </modules>
 </project>
