@@ -62,18 +62,19 @@ import org.codehaus.plexus.mimetyper.util.CharSetMap;
 import org.codehaus.plexus.mimetyper.util.MimeType;
 import org.codehaus.plexus.mimetyper.util.MimeTypeMap;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * The MimeType Service maintains mappings between MIME types and
  * the corresponding file name extensions, and between locales and
  * character encodings.
- *
+ * <p/>
  * <p>The MIME type mappings can be defined in MIME type files
  * located in user's home directory, Java home directory or
  * the current class jar. The default mapping file is defined
  * with the mime.type.file property. In addition, the service maintains
  * a set of most common mappings.
- *
+ * <p/>
  * <p>The charset mappings can be defined in property files
  * located in user's home directory, Java home directory or
  * the current class jar. The default mapping file is defined
@@ -87,28 +88,40 @@ public class DefaultMimeTyper
     extends AbstractLogEnabled
     implements MimeTyper, Initializable
 {
-    /** The MIME type file property. */
+    /**
+     * The MIME type file property.
+     */
     public static final String MIME_TYPES = "mimetypes";
 
-    /** The charset file property. */
+    /**
+     * The charset file property.
+     */
     public static final String CHARSETS = "charsets";
 
     ///////////////////////////////////////////////////////////////////////////
     // Configuration
 
-    /** path to a mimetypes-file_extension mapping file */
+    /**
+     * path to a mimetypes-file_extension mapping file
+     */
     private String mimetypePath;
 
-    /** path to a charset-language mapping file */
+    /**
+     * path to a charset-language mapping file
+     */
     private String charsetPath;
 
     ///////////////////////////////////////////////////////////////////////////
     // Privates
 
-    /** The MIME type map used by the service. */
+    /**
+     * The MIME type map used by the service.
+     */
     private MimeTypeMap mimeTypeMap;
 
-    /** The charset map used by the service. */
+    /**
+     * The charset map used by the service.
+     */
     private CharSetMap charSetMap;
 
     // ----------------------------------------------------------------------
@@ -232,7 +245,7 @@ public class DefaultMimeTyper
     /**
      * Sets a locale-charset mapping.
      *
-     * @param key the key for the charset.
+     * @param key     the key for the charset.
      * @param charset the corresponding charset.
      */
     public void setCharSet( String key,
@@ -266,7 +279,7 @@ public class DefaultMimeTyper
      * "lang"="charset".
      * If nothing of the above is found, the default charset is returned.
      *
-     * @param locale the locale.
+     * @param locale  the locale.
      * @param variant a variant field.
      * @return the charset.
      */
@@ -305,24 +318,31 @@ public class DefaultMimeTyper
     // ----------------------------------------------------------------------
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
-        if ( mimetypePath == null )
+        try
         {
-            mimeTypeMap = new MimeTypeMap();
-        }
-        else
-        {
-            mimeTypeMap = new MimeTypeMap( mimetypePath );
-        }
+            if ( mimetypePath == null )
+            {
+                mimeTypeMap = new MimeTypeMap();
+            }
+            else
+            {
+                mimeTypeMap = new MimeTypeMap( mimetypePath );
+            }
 
-        if ( charsetPath == null )
-        {
-            charSetMap = new CharSetMap();
+            if ( charsetPath == null )
+            {
+                charSetMap = new CharSetMap();
+            }
+            else
+            {
+                charSetMap = new CharSetMap( charsetPath );
+            }
         }
-        else
+        catch ( Exception e )
         {
-            charSetMap = new CharSetMap( charsetPath );
+            throw new InitializationException( "Cannot create mime type map: ", e );
         }
     }
 }

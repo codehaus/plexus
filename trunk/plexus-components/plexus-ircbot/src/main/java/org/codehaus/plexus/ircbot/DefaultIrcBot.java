@@ -4,6 +4,8 @@ import org.codehaus.plexus.ircbot.botlet.manager.BotletManager;
 import org.codehaus.plexus.ircbot.botlet.manager.BotletNotFoundException;
 import org.codehaus.plexus.ircbot.botlet.Botlet;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -356,13 +358,11 @@ public class DefaultIrcBot
     // ----------------------------------------------------------------------
 
     public void start()
-        throws Exception
+        throws StartingException
     {
         connect( host, port );
-
+        
         logon();
-
-        ircsend( "JOIN " + channel );
 
         running = true;
 
@@ -373,7 +373,7 @@ public class DefaultIrcBot
     }
 
     public void stop()
-        throws Exception
+        throws StoppingException
     {
         running = false;
 

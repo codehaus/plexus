@@ -31,6 +31,7 @@ import javax.jdo.PersistenceManagerFactory;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * @author David Wynter
@@ -51,13 +52,25 @@ public class DefaultJdoFactory
     // ----------------------------------------------------------------------
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         getLogger().info( "Initializing JDO." );
 
         persistenceManagerFactory = JDOHelper.getPersistenceManagerFactory( properties );
 
-        Class.forName( (String) properties.get( "javax.jdo.option.ConnectionDriverName" ) );
+        String driverClass = null;
+
+        try
+        {
+            driverClass = (String) properties.get( "javax.jdo.option.ConnectionDriverName" );
+
+            //TDDO: Class.forName is evil
+            Class.forName( driverClass );
+        }
+        catch ( ClassNotFoundException e )
+        {
+            throw new InitializationException( "Cannot find driver class: " + driverClass, e );
+        }
 
         // TODO: Move this to a special DBCP version of the JdoFactory
 /*

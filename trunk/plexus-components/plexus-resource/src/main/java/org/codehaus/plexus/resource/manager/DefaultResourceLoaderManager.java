@@ -30,6 +30,7 @@ import java.util.Collections;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -47,7 +48,7 @@ public class DefaultResourceLoaderManager
     // ----------------------------------------------------------------------
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
     }
 

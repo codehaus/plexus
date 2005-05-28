@@ -33,6 +33,7 @@ import org.codehaus.plexus.mailsender.AbstractMailSender;
 import org.codehaus.plexus.mailsender.MailMessage;
 import org.codehaus.plexus.mailsender.MailSenderException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -49,11 +50,11 @@ public class SimpleMailSender
     // ----------------------------------------------------------------------
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         if ( StringUtils.isEmpty( getSmtpHost() ) )
         {
-            throw new MailSenderException( "Error in configuration: Missing 'smtp-host'." );
+            throw new InitializationException( "Error in configuration: Missing smtpHost." );
         }
 
         if ( getSmtpPort() == 0 )

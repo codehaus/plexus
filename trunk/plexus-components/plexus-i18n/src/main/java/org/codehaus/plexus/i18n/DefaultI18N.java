@@ -2,6 +2,7 @@ package org.codehaus.plexus.i18n;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.text.MessageFormat;
@@ -311,7 +312,7 @@ public class DefaultI18N
      * Called the first time the Service is used.
      */
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         bundles = new HashMap();
 

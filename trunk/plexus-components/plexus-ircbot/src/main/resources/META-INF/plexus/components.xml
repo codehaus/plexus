@@ -6,7 +6,7 @@
       <configuration>
         <host>irc.codehaus.org</host>
         <port>6667</port>
-        <channel>#mergere-private</channel>
+        <channel>#maven</channel>
         <botName>loggy</botName>
       </configuration>
       <requirements>
