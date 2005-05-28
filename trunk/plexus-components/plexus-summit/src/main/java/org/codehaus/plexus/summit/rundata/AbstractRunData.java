@@ -67,10 +67,12 @@ import javax.servlet.http.HttpSession;
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.summit.AbstractSummitComponent;
 import org.codehaus.plexus.summit.parameters.RequestParameterParser;
 import org.codehaus.plexus.summit.parameters.RequestParameters;
 import org.codehaus.plexus.summit.resolver.Resolution;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
  * <p>The base class from which all RunData implementations are derived. </p>
@@ -130,9 +132,18 @@ public abstract class AbstractRunData
      */
     private RequestParameterParser parameterParser;
 
-    public void initialize() throws Exception
+    //TODO: use a requirement to create an instance of the parameter parser
+    public void initialize()
+        throws InitializationException
     {
-        parameterParser = (RequestParameterParser) lookup( RequestParameterParser.ROLE );
+        try
+        {
+            parameterParser = (RequestParameterParser) lookup( RequestParameterParser.ROLE );
+        }
+        catch ( ComponentLookupException e )
+        {
+            throw new InitializationException( "Can't lookup parameter parser: ", e );
+        }
     }
 
     public void dispose()

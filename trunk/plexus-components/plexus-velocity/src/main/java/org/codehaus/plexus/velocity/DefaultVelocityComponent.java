@@ -8,6 +8,7 @@ import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.log.LogSystem;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 /**
@@ -50,7 +51,7 @@ public class DefaultVelocityComponent
     // ----------------------------------------------------------------------
     
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         engine = new VelocityEngine();
 
@@ -70,7 +71,14 @@ public class DefaultVelocityComponent
             }
         }
 
-        engine.init();
+        try
+        {
+            engine.init();
+        }
+        catch ( Exception e )
+        {
+            throw new InitializationException( "Cannot start the velocity engine: ", e );
+        }
     }
 
     // ----------------------------------------------------------------------

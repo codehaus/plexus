@@ -3,6 +3,7 @@ package org.codehaus.plexus.werkflow;
 import org.codehaus.plexus.action.ActionManager;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.werkflow.Engine;
 import org.codehaus.werkflow.Workflow;
 import org.codehaus.werkflow.helpers.SimpleInstanceManager;
@@ -56,13 +57,21 @@ public class DefaultWerkflowComponent
     /**
      * @see org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable#initialize()
      */
-    public void initialize() throws Exception
+    public void initialize() 
+        throws InitializationException
     {
         engine = createEngine();
 
         expressionFactory = new OgnlExpressionFactory();
 
-        loadWerkflows();
+        try
+        {
+            loadWerkflows();
+        }
+        catch ( Exception e )
+        {
+            throw new InitializationException( "Cannot load workflows: ", e );
+        }
     }
 
     protected Engine createEngine()
