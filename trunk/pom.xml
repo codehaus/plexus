@@ -129,8 +129,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:cvs:pserver:anonymous@cvs.plexus.codehaus.org:/scm/plexus:plexus/</connection>
-    <developerConnection>scm:cvs:ext:${maven.username}@cvs.plexus.codehaus.org:/scm/plexus:plexus/</developerConnection>
+    <connection>scm:cvs:pserver:anonymous@cvs.plexus.codehaus.org:/home/projects/plexus/scm:plexus/</connection>
+    <developerConnection>scm:cvs:ext:${maven.username}@cvs.plexus.codehaus.org:/home/projects/plexus/scm:plexus/</developerConnection>
   </scm>
   <organization>
     <name>Codehaus</name>
