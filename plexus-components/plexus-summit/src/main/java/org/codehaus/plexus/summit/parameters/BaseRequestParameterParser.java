@@ -15,6 +15,7 @@ import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * Default implementation of a <tt>RequestParameterParser</tt>.  This
@@ -68,7 +69,7 @@ public class BaseRequestParameterParser
     private String defaultEncoding;
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         fileUpload.setSizeMax( maxUploadSize );
 
