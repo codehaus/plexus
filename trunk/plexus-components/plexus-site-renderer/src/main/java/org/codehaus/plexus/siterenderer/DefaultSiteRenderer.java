@@ -216,6 +216,7 @@ public class DefaultSiteRenderer
 
         context.put( "bodyContent", sink.getBody() );
 
+        //TODO : Remove this and add siteDescriptor in Context for parse it in Velocity template
         // Add infos from siteDescriptor
         NavigationRenderer r = new NavigationRenderer();
 
