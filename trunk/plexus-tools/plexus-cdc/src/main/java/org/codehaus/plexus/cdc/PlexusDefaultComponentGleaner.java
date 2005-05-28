@@ -24,9 +24,6 @@ package org.codehaus.plexus.cdc;
  * SOFTWARE.
  */
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -44,9 +41,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Suspendable;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.Xpp3DomWriter;
 
-import com.thoughtworks.qdox.model.AbstractJavaEntity;
 import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaClassCache;
@@ -62,21 +57,21 @@ public class PlexusDefaultComponentGleaner
 {
     public static final String PLEXUS_COMPONENT_TAG = "plexus.component";
 
-    public static final String PLEXUS_VERSION_TAG = "plexus.version";
-
-    public static final String PLEXUS_ROLE_TAG = "plexus.role";
-
-    public static final String PLEXUS_ROLE_HINT_TAG = "plexus.role-hint";
-
     public static final String PLEXUS_REQUIREMENT_TAG = "plexus.requirement";
 
     private static final String PLEXUS_CONFIGURATION_TAG = "plexus.configuration";
 
-    private static final String PLEXUS_DEFAULT_VALUE_TAG = "plexus.default-value";
+    public static final String PLEXUS_VERSION_PARAMETER = "version";
 
-    private static final String PLEXUS_LIFECYCLE_HANDLER_TAG = "plexus.lifecycle-handler";
+    public static final String PLEXUS_ROLE_PARAMETER = "role";
 
-    private static final String PLEXUS_INSTANTIATION_STARTEGY_TAG = "plexus.instantiation-strategy";
+    public static final String PLEXUS_ROLE_HINT_PARAMETER = "role-hint";
+
+    private static final String PLEXUS_DEFAULT_VALUE_PARAMETER = "default-value";
+
+    private static final String PLEXUS_LIFECYCLE_HANDLER_PARAMETER = "lifecycle-handler";
+
+    private static final String PLEXUS_INSTANTIATION_STARTEGY_PARAMETER = "instantiation-strategy";
 
     // ----------------------------------------------------------------------
     // ComponentGleaner Implementation
@@ -91,6 +86,8 @@ public class PlexusDefaultComponentGleaner
         {
             return null;
         }
+
+        Map parameters = tag.getNamedParameterMap();
 
         // ----------------------------------------------------------------------
         //
@@ -108,7 +105,7 @@ public class PlexusDefaultComponentGleaner
         // Role
         // ----------------------------------------------------------------------
 
-        String role = getOptionalTag( javaClass, PLEXUS_ROLE_TAG );
+        String role = getParameter( parameters, PLEXUS_ROLE_PARAMETER );
 
         if ( role == null )
         {
@@ -116,8 +113,9 @@ public class PlexusDefaultComponentGleaner
 
             if ( role == null )
             {
-                getLogger().warn( "Could not figure out a role for this class. " +
-                                  "Please specify a role with the @" + PLEXUS_ROLE_TAG + " tag." );
+                getLogger().warn( "Could not figure out a role for the component '" + fqn + "'. " +
+                                  "Please specify a role with a parameter '" + PLEXUS_ROLE_PARAMETER + " " +
+                                  "on the @" + PLEXUS_COMPONENT_TAG + "tag." );
 
                 return null;
             }
@@ -131,9 +129,12 @@ public class PlexusDefaultComponentGleaner
         // Role hint
         // ----------------------------------------------------------------------
 
-        String roleHint = getOptionalTag( javaClass, PLEXUS_ROLE_HINT_TAG );
+        String roleHint = getParameter( parameters, PLEXUS_ROLE_HINT_PARAMETER );
 
-        getLogger().debug( " Role hint: " + roleHint );
+        if ( roleHint != null )
+        {
+            getLogger().debug( " Role hint: " + roleHint );
+        }
 
         componentDescriptor.setRoleHint( roleHint );
 
@@ -141,7 +142,7 @@ public class PlexusDefaultComponentGleaner
         // Version
         // ----------------------------------------------------------------------
 
-        String version = getOptionalTag( javaClass, PLEXUS_VERSION_TAG );
+        String version = getParameter( parameters, PLEXUS_VERSION_PARAMETER );
 
         componentDescriptor.setVersion( version );
 
@@ -149,7 +150,7 @@ public class PlexusDefaultComponentGleaner
         // Lifecycle handler
         // ----------------------------------------------------------------------
 
-        String lifecycleHandler = getOptionalTag( javaClass, PLEXUS_LIFECYCLE_HANDLER_TAG );
+        String lifecycleHandler = getParameter( parameters, PLEXUS_LIFECYCLE_HANDLER_PARAMETER );
 
         componentDescriptor.setLifecycleHandler( lifecycleHandler );
 
@@ -157,9 +158,15 @@ public class PlexusDefaultComponentGleaner
         // Lifecycle handler
         // ----------------------------------------------------------------------
 
-        String instatiationStrategy = getOptionalTag( javaClass, PLEXUS_INSTANTIATION_STARTEGY_TAG );
+        String instatiationStrategy = getParameter( parameters, PLEXUS_INSTANTIATION_STARTEGY_PARAMETER );
 
         componentDescriptor.setInstantiationStrategy( instatiationStrategy );
+
+        // ----------------------------------------------------------------------
+        //
+        // ----------------------------------------------------------------------
+
+        findExtraParameters( PLEXUS_COMPONENT_TAG, parameters );
 
         // ----------------------------------------------------------------------
         // Requirements
@@ -174,20 +181,6 @@ public class PlexusDefaultComponentGleaner
         XmlPlexusConfiguration configuration = new XmlPlexusConfiguration( "configuration" );
 
         findConfiguration( classCache, configuration, javaClass );
-
-        System.out.println( "---------------------------" );
-        Writer w = new OutputStreamWriter( System.out );
-        Xpp3DomWriter.write( w, configuration.getXpp3Dom() );
-        try
-        {
-            w.flush();
-        }
-        catch ( IOException e )
-        {
-            e.printStackTrace();
-        }
-        System.out.println();
-        System.out.println( "---------------------------" );
 
         componentDescriptor.setConfiguration( configuration );
 
@@ -234,11 +227,22 @@ public class PlexusDefaultComponentGleaner
             {
                 if ( role != null )
                 {
-                    getLogger().warn( "Found several possible roles for this component, " +
-                                      "will use " + role + ", found: " + ifc.getName() + "." );
+                    getLogger().warn( "Found several possible roles for component " +
+                                      "'" + javaClass.getFullyQualifiedName() + "', " +
+                                      "will use '" + role + "', found: " + ifc.getName() + "." );
                 }
 
                 role = ifc.getFullyQualifiedName();
+            }
+        }
+
+        if ( role == null )
+        {
+            JavaClass superClass = javaClass.getSuperJavaClass();
+
+            if ( superClass != null )
+            {
+                role = findRole( superClass );
             }
         }
 
@@ -268,10 +272,14 @@ public class PlexusDefaultComponentGleaner
         {
             JavaField field = fields[ i ];
 
-            if ( field.getTagByName( PLEXUS_REQUIREMENT_TAG ) == null )
+            DocletTag tag = field.getTagByName( PLEXUS_REQUIREMENT_TAG );
+
+            if ( tag == null )
             {
                 continue;
             }
+
+            Map parameters = tag.getNamedParameterMap();
 
             // ----------------------------------------------------------------------
             // Role
@@ -283,7 +291,7 @@ public class PlexusDefaultComponentGleaner
 
             cr.setRole( requirementClass );
 
-            cr.setRoleHint( getOptionalTag( field, PLEXUS_ROLE_HINT_TAG ) );
+            cr.setRoleHint( getParameter( parameters, PLEXUS_ROLE_HINT_PARAMETER ) );
 
             cr.setFieldName( field.getName() );
 
@@ -295,19 +303,20 @@ public class PlexusDefaultComponentGleaner
             {
                 if ( cr.getRoleHint() != null )
                 {
-                    getLogger().warn( "A role hint cannot be specified if the field is a java.util.Map or a " +
-                                      "java.util.List" );
+                    getLogger().warn( "Field: '" + field.getName() + "': A role hint cannot be specified if the " +
+                                      "field is a java.util.Map or a java.util.List" );
 
                     continue;
                 }
 
-                String role = getOptionalTag( field, PLEXUS_ROLE_TAG );
+                String role = getParameter( parameters, PLEXUS_ROLE_PARAMETER );
 
                 if ( role == null )
                 {
-                    getLogger().warn( "A java.util.Map or java.utils.List requirement has to specify a " +
-                                      "@" + PLEXUS_ROLE_TAG + " tag so Plexus can know which components to put in " +
-                                      "the map or list." );
+                    getLogger().warn( "Field: '" + field.getName() + "': A java.util.Map or java.utils.List " +
+                                      "requirement has to specify a '" + PLEXUS_ROLE_PARAMETER + "' parameter on " +
+                                      "the @" + PLEXUS_REQUIREMENT_TAG + " tag so Plexus can know which components to " +
+                                      "put in the map or list." );
 
                     continue;
                 }
@@ -324,6 +333,8 @@ public class PlexusDefaultComponentGleaner
                 }
 
                 cr.setRole( role );
+
+                findExtraParameters( PLEXUS_REQUIREMENT_TAG, parameters );
             }
 
             // ----------------------------------------------------------------------
@@ -358,12 +369,16 @@ public class PlexusDefaultComponentGleaner
         {
             JavaField field = fields[ i ];
 
-            if ( field.getTagByName( PLEXUS_CONFIGURATION_TAG ) == null )
+            DocletTag tag = field.getTagByName( PLEXUS_CONFIGURATION_TAG );
+
+            if ( tag == null )
             {
                 continue;
             }
 
-            String defaultValue = getOptionalTag( field, PLEXUS_DEFAULT_VALUE_TAG );
+            Map parameters = tag.getNamedParameterMap();
+
+            String defaultValue = getParameter( parameters, PLEXUS_DEFAULT_VALUE_PARAMETER );
 
             if ( defaultValue == null )
             {
@@ -381,33 +396,14 @@ public class PlexusDefaultComponentGleaner
             getLogger().debug( " Configuration: " + name + "=" + defaultValue );
 
             configuration.addChild( c );
+
+            findExtraParameters( PLEXUS_CONFIGURATION_TAG, parameters );
         }
     }
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
-
-    private String getOptionalTag( AbstractJavaEntity entity, String tagName )
-    {
-        DocletTag tag = entity.getTagByName( tagName );
-
-        String value = null;
-
-        if ( tag == null )
-        {
-            return null;
-        }
-
-        value = tag.getValue();
-
-        if ( StringUtils.isEmpty( value ) )
-        {
-            return null;
-        }
-
-        return value;
-    }
 
     private String deHump( String string )
     {
@@ -425,5 +421,27 @@ public class PlexusDefaultComponentGleaner
         }
 
         return sb.toString().trim().toLowerCase();
+    }
+
+    private void findExtraParameters( String tagName, Map parameters )
+    {
+        for ( Iterator it = parameters.keySet().iterator(); it.hasNext(); )
+        {
+            String s = (String) it.next();
+
+            getLogger().warn( "Extra parameter on the '" + tagName + "' tag: '" + s + "'." );
+        }
+    }
+
+    private String getParameter( Map parameters, String parameter )
+    {
+        String value = (String) parameters.remove( parameter );
+
+        if ( StringUtils.isEmpty( value ) )
+        {
+            return null;
+        }
+
+        return value;
     }
 }
