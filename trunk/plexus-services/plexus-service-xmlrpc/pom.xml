@@ -9,15 +9,10 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-service-xmlrpc</artifactId>
-  <version>1.0-alpha-2</version>
+  <version>1.0-alpha-3-SNAPSHOT</version>
   <packaging>plexus-service</packaging>
   <name>Plexus XMLRPC Service</name>
   <dependencies>
-    <dependency>
-      <groupId>plexus</groupId>
-      <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-3</version>
-    </dependency>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-appserver</artifactId>
