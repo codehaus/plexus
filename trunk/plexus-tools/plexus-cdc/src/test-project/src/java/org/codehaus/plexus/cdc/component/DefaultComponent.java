@@ -15,30 +15,33 @@ public class DefaultComponent
 
     /**
      * @plexus.requirement
-     * @plexus.role-hint foo
+     *   role-hint="foo"
      */
     private Component foo;
 
     /**
      * @plexus.requirement
-     * @plexus.role Component
-     * @plexus.field-name foo
+     *   role="Component"
+     *   role-hint="foo"
      */
     private Map foo;
 
     /**
+     * @plexus.requirement
+     *   role="Component"
+     */
+    private Map bar;
+
+    /**
      * @plexus.configuration
-     * @plexus.default-value localhost
+     *   default-value="localhost"
+     *   foo=bar
      */
     private String host;
 
     /**
      * @plexus.configuration
-     * @plexus.default-value
-     *  <ports>
-     *    <port>8080</port>
-     *    <port>8000</port>
-     *  </ports>
+     *   default-value="8000, 8080"
      */
-    private List ports = kewk;
+    private List ports;
 }
