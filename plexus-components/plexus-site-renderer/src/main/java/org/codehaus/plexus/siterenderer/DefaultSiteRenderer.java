@@ -1,7 +1,8 @@
 package org.codehaus.plexus.siterenderer;
 
+import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.context.Context;
 import org.codehaus.doxia.Doxia;
 import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModel;
 import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModelReader;
@@ -200,102 +201,125 @@ public class DefaultSiteRenderer
     public void generateDocument( Writer writer, String templateName, Map templateProperties, SiteRendererSink sink )
         throws RendererException
     {
+        VelocityContext context = new VelocityContext();
+
+        // ----------------------------------------------------------------------
+        // Data objects
+        // ----------------------------------------------------------------------
+
+        context.put( "relativePath", renderingContext.getRelativePath() );
+
+        // Add infos from document
+        context.put( "authors", sink.getAuthors() );
+
+        context.put( "title", sink.getTitle() );
+
+        context.put( "bodyContent", sink.getBody() );
+
+        // Add infos from siteDescriptor
+        NavigationRenderer r = new NavigationRenderer();
+
+        StringWriter sw = new StringWriter();
+
+        XMLWriter w = new PrettyPrintXMLWriter( sw );
+
+        //r.render( w, renderingContext );
+
+        context.put( "mainMenu", sw.toString() );
+
+        sw = new StringWriter();
+
+        w = new PrettyPrintXMLWriter( sw );
+
+        LinksRenderer lr = new LinksRenderer();
+
+        //lr.render( w, renderingContext );
+
+        context.put( "links", sw.toString() );
+
+        sw = new StringWriter();
+
+        w = new PrettyPrintXMLWriter( sw );
+
+        BannerRenderer br = new BannerRenderer( "bannerLeft" );
+
+        //br.render( w, renderingContext );
+
+        context.put( "bannerLeft", sw.toString() );
+
+        sw = new StringWriter();
+
+        w = new PrettyPrintXMLWriter( sw );
+
+        br = new BannerRenderer( "bannerRight" );
+
+        //br.render( w, renderingContext );
+
+        context.put( "bannerRight", sw.toString() );
+
+        context.put( "navBarLeft", "Last Published: " + new Date() );
+
+        // Add user properties
+        if ( templateProperties != null )
+        {
+            for ( Iterator i = templateProperties.keySet().iterator(); i.hasNext(); )
+            {
+                String key = (String) i.next();
+
+                context.put( key, templateProperties.get( key ) );
+            }
+        }
+
+        // ----------------------------------------------------------------------
+        // Tools
+        // ----------------------------------------------------------------------
+
+        // ----------------------------------------------------------------------
+        //
+        // ----------------------------------------------------------------------
+
+        writeTemplate( templateName, writer, context );
+    }
+
+    protected void writeTemplate( String templateName, Writer writer, Context context )
+        throws RendererException
+    {
+        Template template = null;
+
         try
         {
-            VelocityContext context = new VelocityContext();
-
-            // ----------------------------------------------------------------------
-            // Data objects
-            // ----------------------------------------------------------------------
-
-            context.put( "relativePath", renderingContext.getRelativePath() );
-
-            // Add infos from document
-            context.put( "authors", sink.getAuthors() );
-
-            context.put( "title", sink.getTitle() );
-
-            context.put( "bodyContent", sink.getBody() );
-
-            // Add infos from siteDescriptor
-            NavigationRenderer r = new NavigationRenderer();
-
-            StringWriter sw = new StringWriter();
-
-            XMLWriter w = new PrettyPrintXMLWriter( sw );
-
-            r.render( w, renderingContext );
-
-            context.put( "mainMenu", sw.toString() );
-
-            sw = new StringWriter();
-
-            w = new PrettyPrintXMLWriter( sw );
-
-            LinksRenderer lr = new LinksRenderer();
-
-            lr.render( w, renderingContext );
-
-            context.put( "links", sw.toString() );
-
-            sw = new StringWriter();
-
-            w = new PrettyPrintXMLWriter( sw );
-
-            BannerRenderer br = new BannerRenderer( "bannerLeft" );
-
-            br.render( w, renderingContext );
-
-            context.put( "bannerLeft", sw.toString() );
-
-            sw = new StringWriter();
-
-            w = new PrettyPrintXMLWriter( sw );
-
-            br = new BannerRenderer( "bannerRight" );
-
-            br.render( w, renderingContext );
-
-            context.put( "bannerRight", sw.toString() );
-
-            context.put( "navBarLeft", "Last Published: " + new Date() );
-
-            // Add user properties
-            if ( templateProperties != null )
-            {
-                for ( Iterator i = templateProperties.keySet().iterator(); i.hasNext(); )
-                {
-                    String key = (String) i.next();
-
-                    context.put( key, templateProperties.get( key ) );
-                }
-            }
-
-            // ----------------------------------------------------------------------
-            // Tools
-            // ----------------------------------------------------------------------
-
-            // ----------------------------------------------------------------------
-            //
-            // ----------------------------------------------------------------------
-
-            velocity.getEngine().mergeTemplate( templateName, context, writer );
-
-            writer.flush();
-
-            writer.close();
-        }
-        catch ( ResourceNotFoundException e )
-        {
-            getLogger().info( "No such template: '" + templateName + "'." );
-
-            return;
+            template = velocity.getEngine().getTemplate( templateName );
         }
         catch ( Exception e )
         {
-            throw new RendererException( "Error while generating page contents.", e );
+            ClassLoader old = Thread.currentThread().getContextClassLoader();
+
+            try
+            {
+                Thread.currentThread().setContextClassLoader( this.getClass().getClassLoader() );
+
+                template = velocity.getEngine().getTemplate( templateName );
+            }
+            catch ( Exception e1 )
+            {
+                throw new RendererException( "Could not find the template '" + templateName + "'." );
+            }
+            finally
+            {
+                Thread.currentThread().setContextClassLoader( old );
+            }
         }
 
+        try
+        {
+            template.merge( context, writer );
+
+            writer.close();
+        }
+        catch ( Exception e )
+        {
+            throw new RendererException( "Error while generating code.", e );
+        }
     }
 
     /**
