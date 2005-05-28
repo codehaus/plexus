@@ -26,6 +26,7 @@ package org.codehaus.plexus.xmlrpc;
 
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -44,11 +45,11 @@ public class Client
      * @return Returns the hostname.
      */
     public String getHostname()
-        throws PlexusConfigurationException
+        throws InitializationException
     {
         if ( StringUtils.isEmpty( hostname ) )
         {
-            throw new PlexusConfigurationException( "The 'hostname' element cannot be empty." );
+            throw new InitializationException( "The 'hostname' element cannot be empty." );
         }
 
         // TODO: Add more validation of the IP/hostname itself

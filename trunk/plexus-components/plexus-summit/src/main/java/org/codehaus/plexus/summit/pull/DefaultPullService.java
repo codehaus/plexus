@@ -9,12 +9,14 @@ import javax.servlet.http.HttpSession;
 
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.summit.rundata.RunData;
 import org.codehaus.plexus.summit.view.ViewContext;
 
@@ -66,7 +68,7 @@ public class DefaultPullService
     }
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         for ( Iterator i = tools.iterator(); i.hasNext(); )
         {
@@ -76,6 +78,9 @@ public class DefaultPullService
             {
                 Object o;
 
+                try
+                {
+
                 if ( tool.getRoleHint() == null )
                 {
                     o = container.lookup( tool.getRole() );
@@ -83,6 +88,12 @@ public class DefaultPullService
                 else
                 {
                     o = container.lookup( tool.getRole(), tool.getRoleHint() );
+                }
+
+                }
+                catch ( ComponentLookupException e)
+                {
+                    throw new InitializationException( "Error looking up global tool: ", e );
                 }
 
                 globalTools.put( tool.getName(), o );

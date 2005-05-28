@@ -41,6 +41,7 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Configurable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -103,7 +104,7 @@ public class DefaultTaskQueue
     }
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         queue = new LinkedList();
     }

@@ -27,6 +27,9 @@ package org.codehaus.plexus.taskqueue.execution;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
 import org.codehaus.plexus.taskqueue.Task;
 import org.codehaus.plexus.taskqueue.TaskQueue;
 import org.codehaus.plexus.taskqueue.TaskQueueException;
@@ -133,7 +136,7 @@ public class ThreadedTaskQueueExecutor
     // ----------------------------------------------------------------------
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         if ( StringUtils.isEmpty( name ) )
         {
@@ -142,7 +145,7 @@ public class ThreadedTaskQueueExecutor
     }
 
     public void start()
-        throws Exception
+        throws StartingException
     {
         getLogger().info( "Starting task executor, thread name '" + name + "'." );
 
@@ -156,7 +159,7 @@ public class ThreadedTaskQueueExecutor
     }
 
     public void stop()
-        throws Exception
+        throws StoppingException
     {
         int maxSleep = 10 * 1000; // 10 seconds
 

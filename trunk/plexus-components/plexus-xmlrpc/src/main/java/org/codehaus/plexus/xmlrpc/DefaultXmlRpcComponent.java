@@ -107,6 +107,9 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
 
 /**
  *
@@ -172,7 +175,7 @@ public class DefaultXmlRpcComponent
     }
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         // Set system properties. These are required if you're using SSL.
         setSystemPropertiesFromConfiguration();
@@ -184,14 +187,35 @@ public class DefaultXmlRpcComponent
 
         getLogger().info( "Initializing the XML-RPC server on port " + port + "." );
 
-        xmlRpcServer.addListener( null, port, isSecureServer );
+        try
+        {
+            xmlRpcServer.addListener( null, port, isSecureServer );
+        }
+        catch ( XmlRpcException e )
+        {
+            throw new InitializationException( "Cannot add listener on port " + port + " [isSecureServer=" + isSecureServer + "]", e );
+        }
 
         if ( !StringUtils.isEmpty( saxParserClass ) )
         {
-            XmlRpc.setDriver( saxParserClass );
+            try
+            {
+                XmlRpc.setDriver( saxParserClass );
+            }
+            catch ( ClassNotFoundException e )
+            {
+                throw new InitializationException( "Cannot find the specified SAX parser class: " + saxParserClass );
+            }
         }
 
-        registerStartupHandlers();
+        try
+        {
+            registerStartupHandlers();
+        }
+        catch ( Exception e )
+        {
+            throw new InitializationException( "Cannot register startup handlers: ", e );
+        }
 
         if ( paranoid )
         {
@@ -203,7 +227,7 @@ public class DefaultXmlRpcComponent
 
             if ( acceptedClients == null )
             {
-                throw new PlexusConfigurationException( "When in state of paranoia a list of 'acceptedClients' is required." );
+                throw new InitializationException( "When in state of paranoia a list of 'acceptedClients' is required." );
             }
 
             for ( int i = 0; i < acceptedClients.size(); i++ )
@@ -217,7 +241,7 @@ public class DefaultXmlRpcComponent
 
             if ( deniedClients == null )
             {
-                throw new PlexusConfigurationException( "When in state of paranoia a list of 'deniedClients' is required." );
+                throw new InitializationException( "When in state of paranoia a list of 'deniedClients' is required." );
             }
 
             for ( int i = 0; i < deniedClients.size(); i++ )
@@ -232,17 +256,31 @@ public class DefaultXmlRpcComponent
     }
 
     public void start()
-        throws Exception
+        throws StartingException
     {
-        xmlRpcServer.startListener( null, port );
+        try
+        {
+            xmlRpcServer.startListener( null, port );
+        }
+        catch ( XmlRpcException e )
+        {
+            throw new StartingException( "Cannot start xmlrpc server: ", e );
+        }
     }
 
     public void stop()
-        throws Exception
+        throws StoppingException
     {
         // Stop the XML RPC server.  org.apache.xmlrpc.WebServer blocks in a call to
         // ServerSocket.accept() until a socket connection is made.
-        xmlRpcServer.removeListener( null, port );
+        try
+        {
+            xmlRpcServer.removeListener( null, port );
+        }
+        catch ( XmlRpcException e )
+        {
+            throw new StoppingException( "Cannot stop xmlrpc server: ", e );
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -483,13 +521,13 @@ public class DefaultXmlRpcComponent
     }
 
     private String getClient( List list, int index )
-        throws PlexusConfigurationException
+        throws InitializationException
     {
         Object obj = list.get( index );
 
         if ( !(obj instanceof Client) )
         {
-            throw new PlexusConfigurationException( "The client address element must be a '" + Client.class.getName() + "'." );
+            throw new InitializationException( "The client address element must be a '" + Client.class.getName() + "'." );
         }
 
         Client client = (Client) obj;
