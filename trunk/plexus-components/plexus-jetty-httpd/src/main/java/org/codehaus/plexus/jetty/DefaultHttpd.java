@@ -5,12 +5,16 @@ import java.util.List;
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
 
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.HttpRequest;
 import org.mortbay.http.HttpServer;
 import org.mortbay.http.SocketListener;
 import org.mortbay.http.handler.ResourceHandler;
+import org.mortbay.util.MultiException;
 
 public class DefaultHttpd
     implements Httpd, Initializable, Startable
@@ -32,7 +36,7 @@ public class DefaultHttpd
         };
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         server = new HttpServer();
 
@@ -66,15 +70,28 @@ public class DefaultHttpd
     }
 
     public void start()
-        throws Exception
+        throws StartingException
     {
-        // Start the http server
-        server.start();
+        try
+        {
+            server.start();
+        }
+        catch ( MultiException e )
+        {
+            throw new StartingException( "Error starting the jetty httpd server: ", e );
+        }
     }
 
     public void stop()
-        throws Exception
+        throws StoppingException
     {
-        server.stop();
+        try
+        {
+            server.stop();
+        }
+        catch ( InterruptedException e )
+        {
+            throw new StoppingException( "Error stopping the jetty httpd server: ", e );
+        }
     }
 }

@@ -25,6 +25,7 @@ package org.codehaus.plexus.components.password;
  */
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
@@ -226,19 +227,27 @@ public class JksPasswordStore
     }
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
-        keystore = KeyStore.getInstance( KEYSTORE_TYPE );
-
-        if ( masterPassword == null )
+        try
         {
-            masterPassword = "";
+            keystore = KeyStore.getInstance( KEYSTORE_TYPE );
+
+            if ( masterPassword == null )
+            {
+                masterPassword = "";
+            }
+
+            if ( !reloadKeyStore() )
+            {
+                keystore.load( null, masterPassword.toCharArray() );
+
+                saveKeyStore();
+            }
         }
-
-        if ( !reloadKeyStore() )
+        catch ( Exception e )
         {
-            keystore.load( null, masterPassword.toCharArray() );
-            saveKeyStore();
+            throw new InitializationException( "Problem initializing keystore: ", e );
         }
     }
 

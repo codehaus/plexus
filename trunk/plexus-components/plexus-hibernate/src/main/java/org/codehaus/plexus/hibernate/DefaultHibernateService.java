@@ -10,6 +10,7 @@ import net.sf.hibernate.cfg.Configuration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * Hibernate service.
@@ -41,7 +42,8 @@ public class DefaultHibernateService
     // Component Lifecycle
     // ----------------------------------------------------------------------
 
-    public void initialize() throws Exception
+    public void initialize()
+        throws InitializationException
     {
         getLogger().info( "Initializing Hibernate." );
         hibConfig = new Configuration();
@@ -68,10 +70,17 @@ public class DefaultHibernateService
         }
         catch (HibernateException e)
         {
-            throw new PlexusConfigurationException( "Mapping problem.", e );
+            throw new InitializationException( "Mapping problem.", e );
         }
 
-        sessionFactory = hibConfig.buildSessionFactory();
+        try
+        {
+            sessionFactory = hibConfig.buildSessionFactory();
+        }
+        catch ( HibernateException e )
+        {
+            throw new InitializationException( "Problem creating session factory: ", e );
+        }
     }
 
     // ----------------------------------------------------------------------

@@ -26,6 +26,7 @@ package org.codehaus.plexus.components.inputhandler;
 
 import jline.ConsoleReader;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 import java.io.IOException;
 
@@ -54,8 +55,15 @@ public class DefaultInputHandler
     }
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
-         consoleReader = new ConsoleReader();
+        try
+        {
+            consoleReader = new ConsoleReader();
+        }
+        catch ( IOException e )
+        {
+            throw new InitializationException( "Cannot create console reader: ", e );
+        }
     }
 }

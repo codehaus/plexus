@@ -30,6 +30,8 @@ import java.util.Iterator;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -50,13 +52,13 @@ public class DumbsterSmtpServer
     // ----------------------------------------------------------------------
 
     public void start()
-        throws Exception
+        throws StartingException
     {
         smtpServer = SimpleSmtpServer.start( port );
     }
 
     public void stop()
-        throws Exception
+        throws StoppingException
     {
         smtpServer.stop();
     }
