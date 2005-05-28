@@ -14,7 +14,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-2</version>
+      <version>1.0-alpha-4-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
