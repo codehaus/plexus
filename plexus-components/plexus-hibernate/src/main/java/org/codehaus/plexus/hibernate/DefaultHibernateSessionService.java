@@ -12,6 +12,7 @@ import net.sf.hibernate.Transaction;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
@@ -53,7 +54,7 @@ public class DefaultHibernateSessionService
         return currentSession(createTxLocal);
     }
     
-    public void initialize() throws Exception
+    public void initialize() throws InitializationException
     {
         sessions = new ArrayList();
         

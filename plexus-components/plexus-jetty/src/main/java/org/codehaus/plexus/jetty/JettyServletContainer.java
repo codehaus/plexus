@@ -1,6 +1,7 @@
 package org.codehaus.plexus.jetty;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Iterator;
 import java.net.UnknownHostException;
@@ -12,9 +13,13 @@ import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.mortbay.http.ajp.AJP13Listener;
 import org.mortbay.util.Log;
+import org.mortbay.util.MultiException;
 
 public class JettyServletContainer
     extends AbstractLogEnabled
@@ -89,7 +94,7 @@ public class JettyServletContainer
     }
 
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         PlexusLogSink logSink = new PlexusLogSink();
 
@@ -111,46 +116,54 @@ public class JettyServletContainer
 
         server.setWebappConfiguration( webappConfiguration );
 
-        // ----------------------------------------------------------------------
-        // Socket listeners
-        // ----------------------------------------------------------------------
-
-        if ( socketListeners != null )
+        try
         {
-            for ( Iterator i = socketListeners.iterator(); i.hasNext(); )
-            {
-                SocketListener listener = (SocketListener) i.next();
 
-                configureSocketListener( server, listener );
+            // ----------------------------------------------------------------------
+            // Socket listeners
+            // ----------------------------------------------------------------------
+
+            if ( socketListeners != null )
+            {
+                for ( Iterator i = socketListeners.iterator(); i.hasNext(); )
+                {
+                    SocketListener listener = (SocketListener) i.next();
+
+                    configureSocketListener( server, listener );
+                }
+            }
+
+            // ----------------------------------------------------------------------
+            // Ajp listeners
+            // ----------------------------------------------------------------------
+
+            if ( ajpListeners != null )
+            {
+                for ( Iterator i = ajpListeners.iterator(); i.hasNext(); )
+                {
+                    AjpListener listener = (AjpListener) i.next();
+
+                    configureAjpListener( server, listener );
+                }
+            }
+
+            // ----------------------------------------------------------------------
+            // Proxy listeners
+            // ----------------------------------------------------------------------
+
+            if ( proxyListeners != null )
+            {
+                for ( Iterator i = proxyListeners.iterator(); i.hasNext(); )
+                {
+                    ProxyListener listener = (ProxyListener) i.next();
+
+                    configureProxyListener( server, listener );
+                }
             }
         }
-
-        // ----------------------------------------------------------------------
-        // Ajp listeners
-        // ----------------------------------------------------------------------
-
-        if ( ajpListeners != null )
+        catch ( UnknownHostException e )
         {
-            for ( Iterator i = ajpListeners.iterator(); i.hasNext(); )
-            {
-                AjpListener listener = (AjpListener) i.next();
-
-                configureAjpListener( server, listener );
-            }
-        }
-
-        // ----------------------------------------------------------------------
-        // Proxy listeners
-        // ----------------------------------------------------------------------
-
-        if ( proxyListeners != null )
-        {
-            for ( Iterator i = proxyListeners.iterator(); i.hasNext(); )
-            {
-                ProxyListener listener = (ProxyListener) i.next();
-
-                configureProxyListener( server, listener );
-            }
+            throw new InitializationException( "Error initializing listeners: ", e );
         }
 
         // ----------------------------------------------------------------------
@@ -158,7 +171,7 @@ public class JettyServletContainer
         // ----------------------------------------------------------------------
 
         server.setPlexusContainer( plexusContainer );
-        
+
         // This is wrong, but will suffice at the moment. jvz.
         server.setClassLoader( classLoader );
 
@@ -169,19 +182,40 @@ public class JettyServletContainer
             f.mkdirs();
         }
 
-        server.addWebApplications( "*", f.getCanonicalPath(), getExtractWars() );
+        try
+        {
+            server.addWebApplications( "*", f.getCanonicalPath(), getExtractWars() );
+        }
+        catch ( IOException e )
+        {
+            throw new InitializationException( "Error trying to add webapps: ", e );
+        }
     }
 
     public void start()
-        throws Exception
+        throws StartingException
     {
-        server.start();
+        try
+        {
+            server.start();
+        }
+        catch ( MultiException e )
+        {
+            throw new StartingException( "Error starting the jetty servlet container: ", e );
+        }
     }
 
     public void stop()
-        throws Exception
+        throws StoppingException
     {
-        server.stop( getStopGracefully() );
+        try
+        {
+            server.stop( getStopGracefully() );
+        }
+        catch ( InterruptedException e )
+        {
+            throw new StoppingException( "Error stopping the jetty servlet container: ", e );
+        }
     }
 
     // ----------------------------------------------------------------------

@@ -9,6 +9,7 @@ import java.util.List;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.DirectoryScanner;
 
 import org.drools.DroolsException;
@@ -42,12 +43,21 @@ public class DefaultDroolsComponent
 
     /** */
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         if ( ruleFilesDirectory == null )
-            throw new PlexusConfigurationException( "Missing configuration element: 'ruleFilesDirectory'." );
+        {
+            throw new InitializationException( "Missing configuration element: 'ruleFilesDirectory'." );
+        }
 
-        loadRules();
+        try
+        {
+            loadRules();
+        }
+        catch ( Exception e )
+        {
+            throw new InitializationException( "Error loading rules: ", e );
+        }
     }
 
     /**
