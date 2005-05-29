@@ -52,7 +52,7 @@ import java.util.Map;
  * @plexus.component
  * @plexus.role org.codehaus.plexus.siterenderer.Renderer
  * 
- * @author <a href="mailto:evenisse@codehaus.org>Emmanuel Venisse</a>
+ * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id$
  */
 public class DefaultSiteRenderer
