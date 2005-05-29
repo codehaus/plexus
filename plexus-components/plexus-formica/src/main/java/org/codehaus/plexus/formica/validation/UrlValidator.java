@@ -30,10 +30,7 @@ import java.util.Set;
 
 /**
  * @plexus.component
- *
- * @plexus.role org.codehaus.plexus.formica.validation.Validator
- *
- * @plexus.role-hint url
+ *   role-hint="url"
  *
  * <p>Validates URLs.</p>
  * Behavour of validation is modified by passing in options:
@@ -82,7 +79,6 @@ import java.util.Set;
 public class UrlValidator
     extends AbstractValidator
 {
-
     /**
      * Allows all validly formatted schemes to pass validation instead of supplying a
      * set of valid schemes.

@@ -16,10 +16,7 @@ import java.io.InputStream;
 
 /**
  * @plexus.component
- *
- * @plexus.role org.codehaus.plexus.formica.validation.Validator
- *
- * @plexus.role-hint url-source
+ *  role-hint="url-source"
  *
  * An implementation of the Validator interface which validates
  * FormElements based on a Perl 5 regular expression.

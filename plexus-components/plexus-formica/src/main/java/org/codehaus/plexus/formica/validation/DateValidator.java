@@ -29,10 +29,7 @@ import java.util.Locale;
 
 /**
  * @plexus.component
- *
- * @plexus.role org.codehaus.plexus.formica.validation.Validator
- *
- * @plexus.role-hint date
+ *  role-hint="date"
  *
  * <p>Perform date validations.</p>
  * <p/>
@@ -50,8 +47,7 @@ public class DateValidator
 {
     /**
      * @plexus.configuration
-     *
-     * @plexus.default-value MM/dd/yyyy
+     *  default-value="MM/dd/yyyy"
      */
     private String pattern;
 

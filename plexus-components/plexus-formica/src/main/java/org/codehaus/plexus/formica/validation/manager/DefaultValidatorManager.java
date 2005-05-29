@@ -37,8 +37,7 @@ public class DefaultValidatorManager
 {
     /**
      * @plexus.requirement
-     *
-     * @plexus.role-hint org.codehaus.plexus.formica.validation.Validator
+     *  role="org.codehaus.plexus.formica.validation.Validator"
      */
     private Map validators;
 

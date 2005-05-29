@@ -8,10 +8,7 @@ import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
  * @plexus.component
- *
- * @plexus.role org.codehaus.plexus.summit.pipeline.valve.Valve
- *
- * @plexus.role-hint org.codehaus.plexus.summit.pipeline.valve.DisplayValve
+ *  role-hint="org.codehaus.plexus.summit.pipeline.valve.DisplayValve"
  *
  * @todo the encoding needs to be configurable.
  * @todo Valves need to have an initialization phase
@@ -21,8 +18,7 @@ public class DisplayValve
 {
     /**
      * @plexus.configuration
-     *
-     * @plexus.default-value new
+     *  default-value="new"
      */
     private String display;
 

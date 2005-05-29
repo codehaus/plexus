@@ -14,10 +14,7 @@ import org.codehaus.plexus.summit.view.ViewContext;
  * the releases the tools from the context.
  *
  * @plexus.component
- *
- * @plexus.role org.codehaus.plexus.summit.pipeline.valve.Valve
- *
- * @plexus.role-hint org.codehaus.plexus.summit.pull.PullToolValve
+ *  role-hint="org.codehaus.plexus.summit.pull.PullToolValve"
  *
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  * @since Feb 7, 2003
