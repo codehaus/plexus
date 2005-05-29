@@ -36,6 +36,7 @@ import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
  * @plexus.component
+ *   role="org.codehaus.plexus.summit.pipeline.valve.Valve"
  *   role-hint="org.codehaus.plexus.action.web.ActionValve"
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
