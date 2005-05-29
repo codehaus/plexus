@@ -13,6 +13,7 @@ import org.codehaus.plexus.summit.view.View;
  * template it.
  *
  * @plexus.component
+ *  role="org.codehaus.plexus.summit.pull.tools.TemplateRenderer"
  *  instantiation-strategy="per-lookup"
  *
  * @author <a href="dan@envoisolutions.com">Dan Diephouse</a>
