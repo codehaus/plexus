@@ -8,18 +8,14 @@ import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
  * @plexus.component
- *
- * @plexus.role org.codehaus.plexus.summit.pipeline.valve.Valve
- *
- * @plexus.role-hint org.codehaus.plexus.summit.pipeline.valve.DetermineTargetValve
+ *  role-hint="org.codehaus.plexus.summit.pipeline.valve.DetermineTargetValve"
  */
 public class DetermineTargetValve
     extends AbstractValve
 {
     /**
      * @plexus.requirement
-     *
-     * @plexus.role-hint new
+     *  role-hint="new"
      */
     private Resolver resolver;
 

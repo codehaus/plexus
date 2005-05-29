@@ -59,8 +59,6 @@ package org.codehaus.plexus.summit.rundata;
 /**
  * @plexus.component
  *
- * @plexus.role org.codehaus.plexus.summit.rundata.RunData
- *
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
  * @version $Id$
  */

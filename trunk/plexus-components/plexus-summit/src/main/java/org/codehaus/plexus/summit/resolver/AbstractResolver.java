@@ -23,15 +23,13 @@ public abstract class AbstractResolver
 {
     /**
      * @plexus.configuration
-     *
-     * @plexus.default-value Error.vm
+     *  default-value="Error.vm"
      */
     private String errorView;
 
     /**
      * @plexus.configuration
-     *
-     * @plexus.default-value Index.vm
+     *  default-value="Index.vm"
      */
     private String defaultView;
 

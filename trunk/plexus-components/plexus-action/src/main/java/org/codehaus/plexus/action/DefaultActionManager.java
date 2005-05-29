@@ -29,8 +29,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
 
 /**
  * @plexus.component
- *
- * @plexus.lifecycle-handler plexus-configurable
+ *  lifecycle-handler="plexus-configurable"
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
