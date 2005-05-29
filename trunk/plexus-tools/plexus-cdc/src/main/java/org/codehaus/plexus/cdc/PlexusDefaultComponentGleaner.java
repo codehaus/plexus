@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
@@ -376,12 +377,16 @@ public class PlexusDefaultComponentGleaner
                 continue;
             }
 
-            Map parameters = tag.getNamedParameterMap();
+            Map parameters = new HashMap( tag.getNamedParameterMap() );
 
             String defaultValue = getParameter( parameters, PLEXUS_DEFAULT_VALUE_PARAMETER );
 
             if ( defaultValue == null )
             {
+                getLogger().warn( "Component: " + javaClass.getName() + ", field name: '" + field.getName() + "': " +
+                                  "Currently configurable fields will not be written to the descriptor " +
+                                  "without a default value." );
+
                 continue;
             }
 
