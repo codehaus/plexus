@@ -121,8 +121,6 @@ public class DefaultComponentDescriptorCreator
         // Scan the sources
         // ----------------------------------------------------------------------
 
-        getLogger().info( "Building Plexus component descritor." );
-
         javaSources = builder.getSources();
 
         List componentDescriptors = new ArrayList();
