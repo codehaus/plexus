@@ -4,6 +4,9 @@ import org.codehaus.plexus.summit.renderer.Renderer;
 import org.codehaus.plexus.summit.view.View;
 
 /**
+ * @plexus.component
+ *   role-hint="simple"
+ *
  * <p>A simple resolving strategy that simply attempts to resolve
  * the target view. </p>
  *
