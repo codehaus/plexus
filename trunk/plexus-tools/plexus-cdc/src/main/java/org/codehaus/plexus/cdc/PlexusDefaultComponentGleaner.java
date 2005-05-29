@@ -95,7 +95,7 @@ public class PlexusDefaultComponentGleaner
 
         String fqn = javaClass.getFullyQualifiedName();
 
-        getLogger().debug( "Creating descriptor for component: '" + fqn + "'." );
+        getLogger().debug( "Creating descriptor for component: " + fqn );
 
         ComponentDescriptor componentDescriptor = new ComponentDescriptor();
 
