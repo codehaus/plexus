@@ -13,12 +13,7 @@ import org.codehaus.plexus.summit.view.View;
  * template it.
  *
  * @plexus.component
- *
- * @plexus.role org.codehaus.plexus.summit.pull.tools.TemplateRenderer
- *
- * @plexus.instantiation-strategy per-lookup
- *
- * @plexus.lifecycle-handler plexus
+ *  instantiation-strategy="per-lookup"
  *
  * @author <a href="dan@envoisolutions.com">Dan Diephouse</a>
  * @since Feb 13, 2003
@@ -31,8 +26,7 @@ public class TemplateRenderer
 
     /**
      * @plexus.requirement
-     *
-     * @plexus.role-hint velocity
+     *  role-hint="velocity"
      */
     private Renderer renderer;
 

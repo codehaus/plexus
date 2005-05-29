@@ -26,10 +26,7 @@ import org.apache.oro.text.perl.Perl5Util;
 
 /**
  * @plexus.component
- *
- * @plexus.role org.codehaus.plexus.formica.validation.Validator
- *
- * @plexus.role-hint email
+ *  role-hint="email"
  *
  * <p>Perform email validations.</p>
  * <p/>

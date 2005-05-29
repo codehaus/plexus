@@ -14,10 +14,7 @@ import org.codehaus.plexus.velocity.VelocityComponent;
  * <p>A <code>Renderer</code> that can process Velocity templates.</p>
  *
  * @plexus.component
- *
- * @plexus.role org.codehaus.plexus.summit.renderer.Renderer
- *
- * @plexus.role-hint velocity
+ *  role-hint="velocity"
  *
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
  * @version $Id$

@@ -32,10 +32,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 
 /**
  * @plexus.component
- *
- * @plexus.role org.codehaus.plexus.formica.validation.Validator
- *
- * @plexus.role-hint pattern-digits
+ *  role-hint="pattern-digits"
  *
  * An implementation of the Validator interface which validates
  * FormElements based on a Perl 5 regular expression.
@@ -50,8 +47,7 @@ public class REValidator
 {
     /**
      * @plexus.configuration
-     *
-     * @plexus.default-value [0-9]+
+     *  default-value="[0-9]+"
      */
     private String pattern;
 

@@ -60,10 +60,7 @@ import org.codehaus.plexus.summit.view.ViewContext;
  * </p>
  *
  * @plexus.component
- *
- * @plexus.role org.codehaus.plexus.summit.display.Display
- *
- * @plexus.role-hint new
+ *  role-hint="new"
  *
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
  * @version $Id$

@@ -8,8 +8,6 @@ import org.codehaus.plexus.util.ExceptionUtils;
 
 /**
  * @plexus.component
- *
- * @plexus.role org.codehaus.plexus.summit.exception.ExceptionHandler
  */
 public class DefaultExceptionHandler
     extends AbstractSummitComponent

@@ -29,7 +29,8 @@ package org.codehaus.plexus.formica.validation.group;
  * @author Anthony Eden
  */
 
-public abstract class AbstractGroupValidator implements GroupValidator
+public abstract class AbstractGroupValidator
+    implements GroupValidator
 {
     private String errorMessageKey;
 

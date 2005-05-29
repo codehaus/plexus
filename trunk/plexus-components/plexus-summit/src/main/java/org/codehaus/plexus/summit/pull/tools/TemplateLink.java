@@ -17,10 +17,8 @@ import org.codehaus.plexus.summit.util.UriBuilder;
  * </code>
  *
  * @plexus.component
- *
- * @plexus.role linktool
- *
- * @plexus.instantiation-strategy per-lookup
+ *  role="linktool"
+ *  instantiation-strategy="per-lookup"
  *
  * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>

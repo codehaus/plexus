@@ -40,11 +40,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.LinkedList;
 
-
 /**
  * @plexus.component
- *
- * @plexus.lifecycle-handler plexus-configurable
+ *   lifecycle-handler="plexus-configurable"
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$

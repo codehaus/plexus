@@ -60,10 +60,7 @@ import org.codehaus.plexus.summit.view.ViewContext;
  * </p>
  *
  * @plexus.component
- *
- * @plexus.role org.codehaus.plexus.summit.display.Display
- *
- * @plexus.role-hint classic
+ *  role-hint="classic"
  *
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
  * @version $Id$
@@ -73,8 +70,7 @@ public class ClassicBufferedDisplay
 {
     /**
      * @plexus.requirement
-     *
-     * @plexus.role-hint velocity
+     *  role-hint="velocity"
      */
     private Renderer renderer;
 

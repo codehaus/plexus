@@ -21,10 +21,7 @@ import org.codehaus.plexus.summit.view.View;
  * work in this respect. </p>
  *
  * @plexus.component
- *
- * @plexus.role org.codehaus.plexus.summit.resolver.Resolver
- *
- * @plexus.role-hint new
+ *  role-hint="new"
  *
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
  * @version $Id$
