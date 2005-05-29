@@ -1,15 +1,15 @@
-<model>
-  <parent>
-    <artifactId>plexus-components</artifactId>
-    <groupId>plexus</groupId>
-    <version>1.0</version>
-  </parent>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>plexus</groupId>
+  <parent>
+    <groupId>plexus</groupId>
+    <artifactId>plexus-components</artifactId>
+    <version>1.1</version>
+  </parent>
   <artifactId>plexus-password-store</artifactId>
-  <packaging>jar</packaging>
-  <name>Plexus Password Store Component</name>
   <version>1.0-alpha-1-SNAPSHOT</version>
+  <name>Plexus Password Store Component</name>
   <build>
     <plugins>
       <plugin>
@@ -23,4 +23,4 @@
       </plugin>
     </plugins>
   </build>
-</model>
+</project>
