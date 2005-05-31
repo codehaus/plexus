@@ -30,6 +30,8 @@ import java.util.List;
 public class SiteRendererSink
     extends XhtmlSink
 {
+    private String date = "";
+
     private String title = "";
 
     private List authors = new ArrayList();
@@ -84,6 +86,24 @@ public class SiteRendererSink
     public List getAuthors()
     {
         return authors;
+    }
+
+    /**
+     * @see org.codehaus.doxia.module.xhtml.XhtmlSink#date_()
+     */
+    public void date_()
+    {
+        if ( getBuffer().length() > 0 )
+        {
+            date = getBuffer().toString();
+        }
+
+        resetBuffer();
+    }
+
+    public String getDate()
+    {
+        return date;
     }
 
     /**
