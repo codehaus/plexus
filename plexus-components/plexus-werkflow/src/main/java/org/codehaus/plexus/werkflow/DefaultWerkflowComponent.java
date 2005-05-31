@@ -1,6 +1,5 @@
 package org.codehaus.plexus.werkflow;
 
-import org.codehaus.plexus.action.ActionManager;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
@@ -22,7 +21,7 @@ import java.io.File;
 
 /**
  * The default WerkflowComponent implementation.
- * 
+ *
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse </a>
  */
 public class DefaultWerkflowComponent
@@ -31,22 +30,15 @@ public class DefaultWerkflowComponent
 {
     private String werkflowDirectory;
 
-    private Engine engine;
+    private WerkflowActionManager actionManager;
 
-    private ActionManager manager;
+    private Engine engine;
 
     private ExpressionFactory expressionFactory;
 
     public Engine getEngine()
     {
         return engine;
-    }
-
-    public org.codehaus.werkflow.simple.ActionManager getActionManager()
-    {
-        // Be optimistic that our plexus ActionManager also implements
-        // the necessary Werkflow ActionManager interface.
-        return (org.codehaus.werkflow.simple.ActionManager) manager;
     }
 
     public ExpressionFactory getExpressionFactory()
@@ -57,7 +49,7 @@ public class DefaultWerkflowComponent
     /**
      * @see org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable#initialize()
      */
-    public void initialize() 
+    public void initialize()
         throws InitializationException
     {
         engine = createEngine();
@@ -77,45 +69,50 @@ public class DefaultWerkflowComponent
     protected Engine createEngine()
     {
         PersistenceManager pm = new SimplePersistenceManager();
+
         WorkflowManager wm = new SimpleWorkflowManager();
+
         SatisfactionManager sm = new SimpleSatisfactionManager();
+
         InstanceManager im = new SimpleInstanceManager();
 
         Engine engine = new Engine();
-        engine.setPersistenceManager(pm);
-        engine.setSatisfactionManager(sm);
-        engine.setWorkflowManager(wm);
-        engine.setInstanceManager(im);
+
+        engine.setPersistenceManager( pm );
+
+        engine.setSatisfactionManager( sm );
+
+        engine.setWorkflowManager( wm );
+
+        engine.setInstanceManager( im );
 
         engine.start();
 
         return engine;
     }
 
-    private void loadWerkflows() throws Exception
+    private void loadWerkflows()
+        throws Exception
     {
-        File werkflowDirFile = new File(werkflowDirectory);
+        File werkflowDirFile = new File( werkflowDirectory );
 
-        if (!werkflowDirFile.isDirectory())
+        if ( !werkflowDirFile.isDirectory() )
         {
-            getLogger().warn(
-                    werkflowDirectory
-                            + " is not a valid directory for werkflows.");
+            getLogger().warn( werkflowDirectory + " is not a valid directory for werkflows." );
         }
         else
         {
             File[] werkflows = werkflowDirFile.listFiles();
 
-            for (int i = 0; i < werkflows.length; i++)
+            for ( int i = 0; i < werkflows.length; i++ )
             {
-                if ( werkflows[i].getAbsolutePath().endsWith(".xml") )
+                if ( werkflows[i].getAbsolutePath().endsWith( ".xml" ) )
                 {
-                    Workflow workflow = SimpleWorkflowReader.read(
-                            getActionManager(), 
-                            getExpressionFactory(),
-                            werkflows[i]);
-    
-                    engine.getWorkflowManager().addWorkflow(workflow);
+                    Workflow workflow = SimpleWorkflowReader.read( actionManager,
+                                                                   getExpressionFactory(),
+                                                                   werkflows[i] );
+
+                    engine.getWorkflowManager().addWorkflow( workflow );
                 }
             }
         }

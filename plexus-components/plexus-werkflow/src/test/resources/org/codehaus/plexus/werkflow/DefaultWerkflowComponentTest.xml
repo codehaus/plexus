@@ -9,11 +9,16 @@
       </configuration>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.action.ActionManager</role>
+          <role>org.codehaus.plexus.werkflow.WerkflowActionManager</role>
         </requirement>
       </requirements>
     </component>
-    
+
+    <component>
+      <role>org.codehaus.plexus.werkflow.WerkflowActionManager</role>
+      <implementation>org.codehaus.plexus.werkflow.DefaultWerkflowActionManager</implementation>
+    </component>
+
     <component>
       <role>org.codehaus.plexus.action.Action</role>
       <role-hint>set_state</role-hint>
