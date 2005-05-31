@@ -13,9 +13,9 @@ import java.util.Properties;
  *
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse </a>
  */
-public class DefaultWerkflowActionManager
+public class DefaultWorkflowActionManager
     extends DefaultActionManager
-    implements WerkflowActionManager
+    implements WorkflowActionManager
 {
     public void perform( String actionId, Instance instance, Properties properties )
         throws Exception
@@ -28,7 +28,7 @@ public class DefaultWerkflowActionManager
 
         properties.put( "actionId", actionId );
 
-        map.put( "action", properties );
+        map.put( "properties", properties );
 
         action.execute( map );
     }

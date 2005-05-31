@@ -8,6 +8,7 @@ import org.codehaus.werkflow.Workflow;
 import org.codehaus.werkflow.spi.RobustInstance;
 import org.codehaus.werkflow.spi.SatisfactionSpec;
 import org.codehaus.werkflow.spi.DefaultSatisfactionValues;
+import org.codehaus.werkflow.spi.Instance;
 
 import java.util.Arrays;
 
@@ -19,27 +20,18 @@ import java.util.Arrays;
 public class DefaultWerkflowComponentTest
     extends PlexusTestCase
 {
-
-    public void testWerkflow() throws Exception
+    public void testWerkflow()
+        throws Exception
     {
-        WerkflowComponent s = (WerkflowComponent) lookup( WerkflowComponent.ROLE );
+        WorkflowEngine workflowEngine = (WorkflowEngine) lookup( WorkflowEngine.ROLE );
 
-        Engine engine = s.getEngine();
+        InitialContext context = workflowEngine.createContext();
 
-        assertNotNull( engine );
+        Workflow workflow = workflowEngine.getWorkflow( "bloggie" );
 
-        InitialContext c = new InitialContext();
+        Transaction transaction = workflowEngine.beginTransaction( workflow.getId(), "instance1", context );
 
-        c.set( "true", Boolean.TRUE );
-
-        c.set( "false", Boolean.FALSE );
-
-        Workflow workflow = engine.getWorkflowManager().getWorkflow( "bloggie" );
-
-        // new user action creating a new instance
-        Transaction transaction = engine.beginTransaction( workflow.getId(), "instance1", c );
-
-        RobustInstance instance = engine.getInstanceManager().getInstance( transaction.getInstanceId() );
+        RobustInstance instance = workflowEngine.getInstance( transaction.getInstanceId() );
 
         transaction.commit();
 
@@ -65,7 +57,7 @@ public class DefaultWerkflowComponentTest
 
         assertEquals( 2, eligibleSatisfacions.length );
 
-        Transaction tx = engine.beginTransaction( instance.getId() );
+        Transaction tx = workflowEngine.beginTransaction( instance.getId() );
 
         // satisfy 1st choice
         DefaultSatisfactionValues sv = new DefaultSatisfactionValues();
@@ -92,7 +84,7 @@ public class DefaultWerkflowComponentTest
 
         assertTrue( !instance.isComplete() );
 
-        tx = engine.beginTransaction( instance.getId() );
+        tx = workflowEngine.beginTransaction( instance.getId() );
 
         // satisfy 2nd choice
         sv = new DefaultSatisfactionValues();
@@ -127,6 +119,6 @@ public class DefaultWerkflowComponentTest
 
         assertTrue( instance.isComplete() );
 
-        engine.stop();
+        workflowEngine.stop();
     }
 }

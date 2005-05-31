@@ -18,21 +18,23 @@ public class TestAction
     /**
      * @see org.codehaus.plexus.action.Action#execute(java.util.Map)
      */
-    public void execute(Map context) throws Exception
+    public void execute( Map context )
+        throws Exception
     {
-        Instance i = (Instance) context.get("instance");
-        Properties p = (Properties) context.get("action");
+        Instance instance = (Instance) context.get( "instance" );
 
-        assertNotNull(i);
-        assertNotNull(p);
-        String state = (String) p.get("state");
+        Properties properties = (Properties) context.get( "properties" );
 
-        if (state != null)
+        assertNotNull( instance );
+
+        assertNotNull( properties );
+
+        String state = (String) properties.get( "state" );
+
+        if ( state != null )
         {
-            i.put("state", state);
+            instance.put( "state", state );
         }
-
-
     }
 
 }
