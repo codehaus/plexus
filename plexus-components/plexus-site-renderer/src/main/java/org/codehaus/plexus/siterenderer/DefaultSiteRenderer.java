@@ -78,6 +78,13 @@ public class DefaultSiteRenderer
 
     private RenderingContext renderingContext;
 
+    private ClassLoader templateClassLoader;
+
+    public void setTemplateClassLoader( ClassLoader templateClassLoader )
+    {
+        this.templateClassLoader = templateClassLoader;
+    }
+    
     // ----------------------------------------------------------------------
     // Renderer implementation
     // ----------------------------------------------------------------------
@@ -85,8 +92,11 @@ public class DefaultSiteRenderer
     /**
      * @see org.codehaus.plexus.siterenderer.Renderer#render(File, File, InputStream, String, Map)
      */
-    public void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
-                       Map templateProperties )
+    public void render( File siteDirectory, 
+                        File outputDirectory, 
+                        InputStream siteDescriptor, 
+                        String templateName,
+                        Map templateProperties )
         throws RendererException, IOException
     {
         DecorationModelReader decorationModelReader = new DecorationModelReader();
@@ -224,8 +234,8 @@ public class DefaultSiteRenderer
 
         XMLWriter w = new PrettyPrintXMLWriter( sw );
 
-        //r.render( w, renderingContext );
-
+        r.render( w, renderingContext );        
+        
         context.put( "mainMenu", sw.toString() );
 
         sw = new StringWriter();
@@ -234,7 +244,7 @@ public class DefaultSiteRenderer
 
         LinksRenderer lr = new LinksRenderer();
 
-        //lr.render( w, renderingContext );
+        lr.render( w, renderingContext );
 
         context.put( "links", sw.toString() );
 
@@ -244,7 +254,7 @@ public class DefaultSiteRenderer
 
         BannerRenderer br = new BannerRenderer( "bannerLeft" );
 
-        //br.render( w, renderingContext );
+        br.render( w, renderingContext );
 
         context.put( "bannerLeft", sw.toString() );
 
@@ -254,7 +264,7 @@ public class DefaultSiteRenderer
 
         br = new BannerRenderer( "bannerRight" );
 
-        //br.render( w, renderingContext );
+        br.render( w, renderingContext );
 
         context.put( "bannerRight", sw.toString() );
 
@@ -287,25 +297,30 @@ public class DefaultSiteRenderer
     {
         Template template = null;
 
+        ClassLoader old = null;
+        
+        if ( templateClassLoader != null )
+        {
+            // -------------------------------------------------------------------------
+            // If no template classloader was set we'll just use the context classloader
+            // -------------------------------------------------------------------------
+            
+            old = Thread.currentThread().getContextClassLoader();
+            
+            Thread.currentThread().setContextClassLoader( templateClassLoader );
+        }   
+        
         try
         {
             template = velocity.getEngine().getTemplate( templateName );
         }
         catch ( Exception e )
         {
-            ClassLoader old = Thread.currentThread().getContextClassLoader();
-
-            try
-            {
-                Thread.currentThread().setContextClassLoader( this.getClass().getClassLoader() );
-
-                template = velocity.getEngine().getTemplate( templateName );
-            }
-            catch ( Exception e1 )
-            {
-                throw new RendererException( "Could not find the template '" + templateName + "'." );
-            }
-            finally
+            throw new RendererException( "Could not find the template '" + templateName + "' in " + Thread.currentThread().getContextClassLoader() );
+        }
+        finally
+        {
+            if ( old != null )
             {
                 Thread.currentThread().setContextClassLoader( old );
             }
