@@ -52,6 +52,8 @@ public class SiteRendererSink
         {
             title = getBuffer().toString();
         }
+
+        resetBuffer();
     }
 
     /**
@@ -75,6 +77,8 @@ public class SiteRendererSink
         {
             authors.add( getBuffer().toString() );
         }
+
+        resetBuffer();
     }
 
     public List getAuthors()
@@ -105,6 +109,7 @@ public class SiteRendererSink
      */
     public void head_()
     {
+        setHeadFlag( false );
     }
 
     /**
@@ -112,5 +117,6 @@ public class SiteRendererSink
      */
     public void head()
     {
+        setHeadFlag( true );
     }
 }
