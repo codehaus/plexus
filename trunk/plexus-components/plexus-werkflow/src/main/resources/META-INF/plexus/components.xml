@@ -9,8 +9,8 @@
     </component>
 
     <component>
-      <role>org.codehaus.plexus.action.ActionManager</role>
-      <implementation>org.codehaus.plexus.werkflow.WerkflowActionManager</implementation>
+      <role>org.codehaus.plexus.werkflow.WerkflowActionManager</role>
+      <implementation>org.codehaus.plexus.werkflow.DefaultWerkflowActionManager</implementation>
     </component>
   </components>
   
