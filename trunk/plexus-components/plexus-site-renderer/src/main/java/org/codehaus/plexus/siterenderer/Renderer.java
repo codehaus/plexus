@@ -48,4 +48,6 @@ public interface Renderer
 
     SiteRendererSink createSink( File moduleBaseDir, String document, String siteDescriptor )
         throws RendererException;
+    
+    void setTemplateClassLoader( ClassLoader templateClassLoader );
 }
