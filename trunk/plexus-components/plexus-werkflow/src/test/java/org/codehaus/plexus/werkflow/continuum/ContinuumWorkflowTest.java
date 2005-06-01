@@ -51,7 +51,5 @@ public class ContinuumWorkflowTest
         assertEquals( "done", instance.get( "action-build" ) );
 
         assertTrue( instance.isComplete() );
-
-        workflowEngine.stop();
     }
 }
