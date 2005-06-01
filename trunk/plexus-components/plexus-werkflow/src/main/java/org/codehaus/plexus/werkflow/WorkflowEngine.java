@@ -32,8 +32,6 @@ public interface WorkflowEngine
     RobustInstance getInstance( String instanceId )
         throws NoSuchInstanceException,Exception;
 
-    void stop();
-
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------

@@ -3,6 +3,9 @@ package org.codehaus.plexus.werkflow;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.werkflow.DuplicateInstanceException;
 import org.codehaus.werkflow.Engine;
 import org.codehaus.werkflow.InitialContext;
@@ -33,7 +36,7 @@ import java.util.Map;
  */
 public class DefaultWorkflowEngine
     extends AbstractLogEnabled
-    implements WorkflowEngine, Initializable
+    implements WorkflowEngine, Initializable, Startable
 {
     private String werkflowDirectory;
 
@@ -81,11 +84,6 @@ public class DefaultWorkflowEngine
         return engine.getInstanceManager().getInstance( instanceId );
     }
 
-    public void stop()
-    {
-        engine.stop();
-    }
-
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -110,55 +108,6 @@ public class DefaultWorkflowEngine
         return context;
     }
 
-    // ----------------------------------------------------------------------
-    // Lifecylce Management
-    // ----------------------------------------------------------------------
-
-    /**
-     * @see org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable#initialize()
-     */
-    public void initialize()
-        throws InitializationException
-    {
-        engine = createEngine();
-
-        expressionFactory = new OgnlExpressionFactory();
-
-        try
-        {
-            loadWerkflows();
-        }
-        catch ( Exception e )
-        {
-            throw new InitializationException( "Cannot load workflows: ", e );
-        }
-    }
-
-    protected Engine createEngine()
-    {
-        PersistenceManager pm = new SimplePersistenceManager();
-
-        WorkflowManager wm = new SimpleWorkflowManager();
-
-        SatisfactionManager sm = new SimpleSatisfactionManager();
-
-        InstanceManager im = new SimpleInstanceManager();
-
-        Engine engine = new Engine();
-
-        engine.setPersistenceManager( pm );
-
-        engine.setSatisfactionManager( sm );
-
-        engine.setWorkflowManager( wm );
-
-        engine.setInstanceManager( im );
-
-        engine.start();
-
-        return engine;
-    }
-
     private void loadWerkflows()
         throws Exception
     {
@@ -177,12 +126,65 @@ public class DefaultWorkflowEngine
                 if ( werkflows[i].getAbsolutePath().endsWith( ".xml" ) )
                 {
                     Workflow workflow = SimpleWorkflowReader.read( actionManager,
-                                                                   getExpressionFactory(),
+                                                                   expressionFactory,
                                                                    werkflows[i] );
 
                     engine.getWorkflowManager().addWorkflow( workflow );
                 }
             }
         }
+    }
+
+    // ----------------------------------------------------------------------
+    // Lifecylce Management
+    // ----------------------------------------------------------------------
+
+    /**
+     * @see org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable#initialize()
+     */
+    public void initialize()
+        throws InitializationException
+    {
+        PersistenceManager pm = new SimplePersistenceManager();
+
+        WorkflowManager wm = new SimpleWorkflowManager();
+
+        SatisfactionManager sm = new SimpleSatisfactionManager();
+
+        InstanceManager im = new SimpleInstanceManager();
+
+        engine = new Engine();
+
+        engine.setPersistenceManager( pm );
+
+        engine.setSatisfactionManager( sm );
+
+        engine.setWorkflowManager( wm );
+
+        engine.setInstanceManager( im );
+
+        expressionFactory = new OgnlExpressionFactory();
+
+    }
+
+    public void start()
+        throws StartingException
+    {
+        engine.start();
+
+        try
+        {
+            loadWerkflows();
+        }
+        catch ( Exception e )
+        {
+            throw new StartingException( "Cannot load workflows: ", e );
+        }
+    }
+
+    public void stop()
+        throws StoppingException
+    {
+        engine.stop();
     }
 }
