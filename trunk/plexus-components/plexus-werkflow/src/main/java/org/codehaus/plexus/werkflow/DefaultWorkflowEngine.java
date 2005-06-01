@@ -24,6 +24,7 @@ import org.codehaus.werkflow.spi.SatisfactionManager;
 import org.codehaus.werkflow.spi.WorkflowManager;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * The default WerkflowComponent implementation.
@@ -63,6 +64,16 @@ public class DefaultWorkflowEngine
         return engine.getWorkflowManager().getWorkflow( id );
     }
 
+    public void startWorkflow( String workflowId, String instanceId, Map parameters )
+        throws NoSuchWorkflowException, DuplicateInstanceException,InterruptedException,Exception
+    {
+        InitialContext context = createContext();
+
+        Transaction transaction = beginTransaction( workflowId, instanceId, context );
+
+        transaction.commit();
+    }
+
     public Transaction beginTransaction( String workflowId, String instanceId, InitialContext context )
         throws NoSuchWorkflowException, DuplicateInstanceException,InterruptedException,Exception
     {
@@ -74,7 +85,6 @@ public class DefaultWorkflowEngine
     {
         return engine.beginTransaction( instanceId );
     }
-
 
     public RobustInstance getInstance( String instanceId )
         throws NoSuchInstanceException,Exception
