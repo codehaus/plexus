@@ -9,6 +9,7 @@ import org.codehaus.werkflow.Workflow;
 import org.codehaus.werkflow.spi.RobustInstance;
 
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * The Plexus Werkflow component.
@@ -18,8 +19,6 @@ import java.util.Map;
 public interface WorkflowEngine
 {
     String ROLE = WorkflowEngine.class.getName();
-
-    InitialContext createContext();
 
     Workflow getWorkflow( String id )
         throws NoSuchWorkflowException;
@@ -39,6 +38,6 @@ public interface WorkflowEngine
     //
     // ----------------------------------------------------------------------
 
-    void startWorkflow( String workflowId, String instanceId, Map parameters )
+    void startWorkflow( String workflowId, String instanceId, Map properties )
         throws NoSuchWorkflowException, DuplicateInstanceException,InterruptedException,Exception;
 }

@@ -47,27 +47,16 @@ public class DefaultWorkflowEngine
     // Implementation
     // ----------------------------------------------------------------------
 
-    public InitialContext createContext()
-    {
-        InitialContext context = new InitialContext();
-
-        context.set( "true", Boolean.TRUE );
-
-        context.set( "false", Boolean.FALSE );
-
-        return context;
-    }
-
     public Workflow getWorkflow( String id )
         throws NoSuchWorkflowException
     {
         return engine.getWorkflowManager().getWorkflow( id );
     }
 
-    public void startWorkflow( String workflowId, String instanceId, Map parameters )
+    public void startWorkflow( String workflowId, String instanceId, Map properties )
         throws NoSuchWorkflowException, DuplicateInstanceException,InterruptedException,Exception
     {
-        InitialContext context = createContext();
+        InitialContext context = createContext( properties );
 
         Transaction transaction = beginTransaction( workflowId, instanceId, context );
 
@@ -104,6 +93,21 @@ public class DefaultWorkflowEngine
     public ExpressionFactory getExpressionFactory()
     {
         return expressionFactory;
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    protected InitialContext createContext( Map parameters )
+    {
+        InitialContext context = new InitialContext();
+
+        context.set( "true", Boolean.TRUE );
+
+        context.set( "false", Boolean.FALSE );
+
+        return context;
     }
 
     // ----------------------------------------------------------------------
