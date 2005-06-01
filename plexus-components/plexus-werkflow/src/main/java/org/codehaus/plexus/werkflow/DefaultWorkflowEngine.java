@@ -38,9 +38,23 @@ public class DefaultWorkflowEngine
     extends AbstractLogEnabled
     implements WorkflowEngine, Initializable, Startable
 {
-    private String werkflowDirectory;
+    // ----------------------------------------------------------------------
+    // Requirements
+    // ----------------------------------------------------------------------
 
     private WorkflowActionManager actionManager;
+
+    private WorkflowErrorHandler errorHandler;
+
+    // ----------------------------------------------------------------------
+    // Configuration
+    // ----------------------------------------------------------------------
+
+    private String werkflowDirectory;
+
+    // ----------------------------------------------------------------------
+    // Fields
+    // ----------------------------------------------------------------------
 
     private Engine engine;
 
@@ -99,7 +113,7 @@ public class DefaultWorkflowEngine
 
     protected InitialContext createContext( Map parameters )
     {
-        InitialContext context = new InitialContext();
+        InitialContext context = new InitialContext( parameters );
 
         context.set( "true", Boolean.TRUE );
 
@@ -162,6 +176,8 @@ public class DefaultWorkflowEngine
         engine.setWorkflowManager( wm );
 
         engine.setInstanceManager( im );
+
+        engine.setErrorHandler( errorHandler );
 
         expressionFactory = new OgnlExpressionFactory();
 

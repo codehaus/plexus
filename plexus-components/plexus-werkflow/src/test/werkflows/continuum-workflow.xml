@@ -3,5 +3,6 @@
     <action id="update-scm"/>
     <action id="update-metadata"/>
     <action id="build"/>
+    <action id="error"/>
   </sequence>
 </workflow>
