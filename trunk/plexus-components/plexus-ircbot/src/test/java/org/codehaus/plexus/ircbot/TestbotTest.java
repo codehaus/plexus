@@ -15,6 +15,6 @@ public class TestbotTest
     public void testFoo()
         throws Exception
     {
-        IrcBot bot = (IrcBot) lookup( IrcBot.ROLE );
+        //IrcBot bot = (IrcBot) lookup( IrcBot.ROLE );
     }
 }
