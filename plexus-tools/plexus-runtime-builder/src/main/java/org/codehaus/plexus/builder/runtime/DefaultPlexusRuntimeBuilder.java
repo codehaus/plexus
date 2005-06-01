@@ -348,9 +348,13 @@ public class DefaultPlexusRuntimeBuilder
 
         File win32 = new File( binDir, "win32" );
 
+        File macosx = new File( binDir, "macosx" );
+
         mkdirs( linux );
 
         mkdirs( win32 );
+
+        mkdirs( macosx );
 
         // ----------------------------------------------------------------------
         // Generic parts
@@ -388,6 +392,11 @@ public class DefaultPlexusRuntimeBuilder
         // OS X
         // ----------------------------------------------------------------------
 
+        runSh = new File( binDir, "macosx/run.sh" );
+        filterCopy( getResourceAsStream( JSW + "/run.sh" ), runSh, configurationProperties );
+        executable( runSh );
+        copyResource( "macosx/wrapper", "macosx/wrapper", true, binDir );
+        copyResource( "macosx/libwrapper.jnilib", "macosx/libwrapper.jnilib", false, binDir );
     }
 
     protected void copyResource( String filename,
