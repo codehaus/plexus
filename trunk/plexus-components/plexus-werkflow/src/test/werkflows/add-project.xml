@@ -1,0 +1,7 @@
+<workflow xmlns="http://werkflow.codehaus.org/simple" id="add-project">
+  <sequence>
+    <action id="validate-project"/>
+    <action id="add-project-to-store"/>
+    <action id="check-out-project"/>
+  </sequence>
+</workflow>

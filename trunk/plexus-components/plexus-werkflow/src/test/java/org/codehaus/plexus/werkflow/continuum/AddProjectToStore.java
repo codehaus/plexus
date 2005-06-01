@@ -17,17 +17,17 @@ package org.codehaus.plexus.werkflow.continuum;
  */
 
 import java.util.Map;
-import java.util.Properties;
-
-import junit.framework.Assert;
 
 import org.codehaus.plexus.action.Action;
 import org.codehaus.werkflow.spi.Instance;
 
+import junit.framework.Assert;
+
 /**
- * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse </a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
  */
-public class Build
+public class AddProjectToStore
     extends Assert
     implements Action
 {
@@ -36,6 +36,6 @@ public class Build
     {
         Instance instance = (Instance) context.get( "instance" );
 
-        instance.put( "action-build", "done" );
+        instance.put( "action-add-project-to-store", "done" );
     }
 }
