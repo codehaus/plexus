@@ -14,12 +14,17 @@
     <dependency>
       <groupId>werkflow</groupId>
       <artifactId>werkflow</artifactId>
-      <version>2.0-alpha-1</version>
+      <version>2.0-alpha-2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-action</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
+      <version>1.0-alpha-1</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-jdo</artifactId>
+      <version>1.0-alpha-2</version>
     </dependency>
   </dependencies>
 </project>
