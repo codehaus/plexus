@@ -1,0 +1,6 @@
+<workflow xmlns="http://werkflow.codehaus.org/simple" id="remove-project">
+  <sequence>
+    <action id="remove-project"/>
+    <action id="clean-working-directory"/>
+  </sequence>
+</workflow>
