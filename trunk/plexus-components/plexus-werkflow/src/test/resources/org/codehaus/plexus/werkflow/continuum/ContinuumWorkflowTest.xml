@@ -10,11 +10,18 @@
         <requirement>
           <role>org.codehaus.plexus.werkflow.WorkflowActionManager</role>
         </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.werkflow.WorkflowErrorHandler</role>
+        </requirement>
       </requirements>
     </component>
     <component>
       <role>org.codehaus.plexus.werkflow.WorkflowActionManager</role>
       <implementation>org.codehaus.plexus.werkflow.DefaultWorkflowActionManager</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.werkflow.WorkflowErrorHandler</role>
+      <implementation>org.codehaus.plexus.werkflow.DefaultWorkflowErrorHandler</implementation>
     </component>
     <component>
       <role>org.codehaus.plexus.action.Action</role>
@@ -30,6 +37,11 @@
       <role>org.codehaus.plexus.action.Action</role>
       <role-hint>build</role-hint>
       <implementation>org.codehaus.plexus.werkflow.continuum.Build</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.action.Action</role>
+      <role-hint>error</role-hint>
+      <implementation>org.codehaus.plexus.werkflow.continuum.ErrorProducingAction</implementation>
     </component>
   </components>
 </component-set>

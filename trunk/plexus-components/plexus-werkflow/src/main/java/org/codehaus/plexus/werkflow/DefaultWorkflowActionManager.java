@@ -28,7 +28,7 @@ public class DefaultWorkflowActionManager
         properties.put( "actionId", actionId );
 
         map.put( "properties", properties );
-
+        
         action.execute( map );
     }
 }
