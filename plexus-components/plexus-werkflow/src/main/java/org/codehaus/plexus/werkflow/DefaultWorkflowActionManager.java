@@ -3,7 +3,6 @@ package org.codehaus.plexus.werkflow;
 import org.codehaus.plexus.action.Action;
 import org.codehaus.plexus.action.DefaultActionManager;
 import org.codehaus.werkflow.spi.Instance;
-import org.codehaus.werkflow.simple.ActionManager;
 
 import java.util.HashMap;
 import java.util.Properties;

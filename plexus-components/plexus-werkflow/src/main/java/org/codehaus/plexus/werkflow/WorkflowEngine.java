@@ -1,13 +1,11 @@
 package org.codehaus.plexus.werkflow;
 
-import org.codehaus.werkflow.Engine;
-import org.codehaus.werkflow.Workflow;
-import org.codehaus.werkflow.NoSuchWorkflowException;
-import org.codehaus.werkflow.InitialContext;
-import org.codehaus.werkflow.Transaction;
 import org.codehaus.werkflow.DuplicateInstanceException;
+import org.codehaus.werkflow.InitialContext;
 import org.codehaus.werkflow.NoSuchInstanceException;
-import org.codehaus.werkflow.spi.Instance;
+import org.codehaus.werkflow.NoSuchWorkflowException;
+import org.codehaus.werkflow.Transaction;
+import org.codehaus.werkflow.Workflow;
 import org.codehaus.werkflow.spi.RobustInstance;
 
 /**
