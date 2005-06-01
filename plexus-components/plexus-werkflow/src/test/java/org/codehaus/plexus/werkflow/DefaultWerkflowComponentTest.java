@@ -108,7 +108,5 @@ public class DefaultWerkflowComponentTest
         assertEquals( "evaluated", state );
 
         assertTrue( instance.isComplete() );
-
-        workflowEngine.stop();
     }
 }
