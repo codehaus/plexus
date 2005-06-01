@@ -8,7 +8,7 @@
       </configuration>
     </component>
     <component>
-      <role>org.codehaus.plexus.werkflow.WerkflowActionManager</role>
+      <role>org.codehaus.plexus.werkflow.WorkflowActionManager</role>
       <implementation>org.codehaus.plexus.werkflow.DefaultWorkflowActionManager</implementation>
     </component>
   </components>
