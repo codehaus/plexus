@@ -18,8 +18,18 @@
     </component>
     <component>
       <role>org.codehaus.plexus.action.Action</role>
-      <role-hint>set_state</role-hint>
-      <implementation>org.codehaus.plexus.werkflow.TestAction</implementation>
+      <role-hint>update-scm</role-hint>
+      <implementation>org.codehaus.plexus.werkflow.continuum.UpdateScm</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.action.Action</role>
+      <role-hint>update-metadata</role-hint>
+      <implementation>org.codehaus.plexus.werkflow.continuum.UpdateMetadata</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.action.Action</role>
+      <role-hint>build</role-hint>
+      <implementation>org.codehaus.plexus.werkflow.continuum.Build</implementation>
     </component>
   </components>
 </component-set>

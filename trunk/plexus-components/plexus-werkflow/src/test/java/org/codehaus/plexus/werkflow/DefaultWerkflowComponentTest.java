@@ -74,8 +74,8 @@ public class DefaultWerkflowComponentTest
         }
         catch ( InterruptedException ie )
         {
-
         }
+        
         assertEquals( "green", instance.get( "pick_color.choice" ) );
 
         eligibleSatisfacions = instance.getEligibleSatisfactions();
