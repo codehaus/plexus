@@ -15,6 +15,7 @@ import org.codehaus.werkflow.spi.DefaultSatisfactionValues;
 import org.codehaus.werkflow.spi.Instance;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * DefaultWerkflowServiceTest
@@ -29,15 +30,7 @@ public class ContinuumWorkflowTest
     {
         WorkflowEngine workflowEngine = (WorkflowEngine) lookup( WorkflowEngine.ROLE );
 
-        InitialContext context = workflowEngine.createContext();
-
-        Workflow workflow = workflowEngine.getWorkflow( "continuum" );
-
-        Transaction transaction = workflowEngine.beginTransaction( workflow.getId(), "instance", context );
-
-        RobustInstance instance = workflowEngine.getInstance( transaction.getInstanceId() );
-
-        transaction.commit();
+        workflowEngine.startWorkflow( "continuum", "instance", new HashMap() );
 
         try
         {
@@ -46,6 +39,8 @@ public class ContinuumWorkflowTest
         catch ( InterruptedException ie )
         {
         }
+
+        RobustInstance instance = workflowEngine.getInstance( "instance" );
 
         assertEquals( "instance", instance.getId() );
 

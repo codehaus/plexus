@@ -8,6 +8,8 @@ import org.codehaus.werkflow.Transaction;
 import org.codehaus.werkflow.Workflow;
 import org.codehaus.werkflow.spi.RobustInstance;
 
+import java.util.Map;
+
 /**
  * The Plexus Werkflow component.
  *
@@ -32,4 +34,11 @@ public interface WorkflowEngine
         throws NoSuchInstanceException,Exception;
 
     void stop();
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    void startWorkflow( String workflowId, String instanceId, Map parameters )
+        throws NoSuchWorkflowException, DuplicateInstanceException,InterruptedException,Exception;
 }

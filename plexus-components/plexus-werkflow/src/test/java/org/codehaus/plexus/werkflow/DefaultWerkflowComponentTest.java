@@ -1,16 +1,12 @@
 package org.codehaus.plexus.werkflow;
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.werkflow.Engine;
-import org.codehaus.werkflow.InitialContext;
 import org.codehaus.werkflow.Transaction;
-import org.codehaus.werkflow.Workflow;
+import org.codehaus.werkflow.spi.DefaultSatisfactionValues;
 import org.codehaus.werkflow.spi.RobustInstance;
 import org.codehaus.werkflow.spi.SatisfactionSpec;
-import org.codehaus.werkflow.spi.DefaultSatisfactionValues;
-import org.codehaus.werkflow.spi.Instance;
 
-import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * DefaultWerkflowServiceTest
@@ -25,15 +21,7 @@ public class DefaultWerkflowComponentTest
     {
         WorkflowEngine workflowEngine = (WorkflowEngine) lookup( WorkflowEngine.ROLE );
 
-        InitialContext context = workflowEngine.createContext();
-
-        Workflow workflow = workflowEngine.getWorkflow( "bloggie" );
-
-        Transaction transaction = workflowEngine.beginTransaction( workflow.getId(), "instance1", context );
-
-        RobustInstance instance = workflowEngine.getInstance( transaction.getInstanceId() );
-
-        transaction.commit();
+        workflowEngine.startWorkflow( "bloggie", "instance1", new HashMap() );
 
         try
         {
@@ -42,6 +30,8 @@ public class DefaultWerkflowComponentTest
         catch ( InterruptedException ie )
         {
         }
+
+        RobustInstance instance = workflowEngine.getInstance( "instance1" );
 
         assertEquals( "instance1", instance.getId() );
 
