@@ -81,8 +81,8 @@ Changes
  * Container.createComponentInstance( ComponentDescriptor cd ) will be modified to
    Container.createComponentInstance( ComponentDescriptor, ClassRealm realm ).
 
- * AbstractPhase.execute( Object component, ComponentManager cm ) will be modified to
-   AbstractPhase.execute( Object component, Componentmanager cm, ClassRealm realm ). This means
+ * Phase.execute( Object component, ComponentManager cm ) will be modified to
+   Phase.execute( Object component, Componentmanager cm, ClassRealm realm ). This means
    that all the phases will have to change as well.
 
  * Container.composeComponent( Object component, ComponentDescriptor componentDescriptor ) will be modified
