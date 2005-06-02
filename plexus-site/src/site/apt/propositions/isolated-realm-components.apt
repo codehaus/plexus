@@ -65,8 +65,9 @@ Changes
  * Container lookup methods will need to take a <<<ClassRealm>>> parameter so that we can control which
    realm is used to instantiate the component and its requirements.
 
- * ComponentManager.getComponent() will be modified to ComponentManager.getComponent( ClassRealm realm ) and
-   ComponentManager.createObjectInstance() will be modified to ComponentManager.createObjectInstance( ClassRealm realm ).
+ * ComponentManager.getComponent() will be modified to ComponentManager.getComponent( ClassRealm realm )
+
+ * ComponentManager.createObjectInstance() will be modified to ComponentManager.createObjectInstance( ClassRealm realm ).
 
  * ComponentManager.startComponentLifecycle( Object component ) would be modified to
    ComponentManager.startComponentLifecycle( Object component, ClassRealm realm ). This is required so that the
