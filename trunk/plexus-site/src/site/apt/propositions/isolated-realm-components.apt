@@ -57,7 +57,7 @@ How component addition works in the artifact enabled container
  seaparate realm for components that want to be isolated makes it simpler inside the container for
  the time being.
 
-Changes
+Changes to the default container
 
  These are the proposed changes that would allow the <<<ClassRealm>>> used to instantiate a component
  and its requirements.
@@ -91,6 +91,12 @@ Changes
  * ComponentComposer.assembleComponent( Object component, ComponentDescriptor componentDescriptor, PlexusContainer container )
    will be modified to
    ComponentComposer.assembleComponent( Object component, ComponentDescriptor componentDescriptor, PlexusContainer container, ClassRealm realm ).
+
+ * The realm aliasing mechanism can go away
+
+ * The JavaComponentFactory should use the ClassRealm that it is handed and not attempt to look one up
+
+Changes to the artifact container
 
 ~~ jason's random notes
 ~~ many components
