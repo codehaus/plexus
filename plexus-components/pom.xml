@@ -50,8 +50,10 @@
     <module>plexus-jetty-httpd</module>    
     <module>plexus-mail-sender</module>
     <module>plexus-mimetyper</module>    
-    <module>plexus-notification</module>        
-    <module>plexus-password-store</module>        
+    <module>plexus-notification</module>
+    <!--
+    <module>plexus-password-store</module>
+    -->
     <module>plexus-resource</module>
     <module>plexus-site-renderer</module>    
     <module>plexus-summit</module>
