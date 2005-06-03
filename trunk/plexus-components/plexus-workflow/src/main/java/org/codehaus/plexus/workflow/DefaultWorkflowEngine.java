@@ -50,7 +50,7 @@ public class DefaultWorkflowEngine
     // Configuration
     // ----------------------------------------------------------------------
 
-    private String werkflowDirectory;
+    private String workflowDirectory;
 
     // ----------------------------------------------------------------------
     // Fields
@@ -125,11 +125,11 @@ public class DefaultWorkflowEngine
     private void loadWerkflows()
         throws Exception
     {
-        File werkflowDirFile = new File( werkflowDirectory );
+        File werkflowDirFile = new File( workflowDirectory );
 
         if ( !werkflowDirFile.isDirectory() )
         {
-            getLogger().warn( werkflowDirectory + " is not a valid directory for werkflows." );
+            getLogger().warn( workflowDirectory + " is not a valid directory for werkflows." );
         }
         else
         {
@@ -144,6 +144,8 @@ public class DefaultWorkflowEngine
                                                                    werkflows[i] );
 
                     engine.getWorkflowManager().addWorkflow( workflow );
+
+                    getLogger().info( "Loaded workflow: " + werkflows[i] );
                 }
             }
         }
