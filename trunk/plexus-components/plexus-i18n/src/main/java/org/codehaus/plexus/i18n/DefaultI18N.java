@@ -13,6 +13,10 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.lang.reflect.Field;
 
+/**
+ * @plexus.component
+ *   role="org.codehaus.plexus.i18n.I18N"
+ */
 public class DefaultI18N
     extends AbstractLogEnabled
     implements I18N, Initializable
