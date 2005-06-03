@@ -232,7 +232,7 @@ public class DefaultApplicationBuilder
                                         File applicationConfiguration,
                                         File configurationPropertiesFile,
                                         File configurationsDirectory )
-        throws IOException
+        throws IOException, ApplicationBuilderException
     {
         // ----------------------------------------------------------------------
         // Load the configuration properties.
@@ -279,7 +279,15 @@ public class DefaultApplicationBuilder
 
                 File in = new File( configurationsDirectory, file );
 
-                File out = new File( confDir, files[i] );
+                File out = new File( confDir, file );
+
+                File parent = out.getParentFile();
+
+                if ( !parent.isDirectory() && !parent.mkdirs() )
+                {
+                    throw new ApplicationBuilderException( "Could not make parent directories for " +
+                                                           "'" + out.getAbsolutePath() + "'." );
+                }
 
                 filterCopy( in, out, configurationProperties );
             }
