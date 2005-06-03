@@ -1,37 +1,5 @@
 package org.codehaus.plexus.siterenderer;
 
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.context.Context;
-import org.codehaus.doxia.Doxia;
-import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModel;
-import org.codehaus.doxia.module.xhtml.decoration.model.DecorationModelReader;
-import org.codehaus.doxia.module.xhtml.decoration.render.BannerRenderer;
-import org.codehaus.doxia.module.xhtml.decoration.render.LinksRenderer;
-import org.codehaus.doxia.module.xhtml.decoration.render.NavigationRenderer;
-import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
-import org.codehaus.doxia.site.module.SiteModule;
-import org.codehaus.doxia.site.module.manager.SiteModuleManager;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.siterenderer.sink.SiteRendererSink;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
-import org.codehaus.plexus.util.xml.XMLWriter;
-import org.codehaus.plexus.velocity.VelocityComponent;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
  *
@@ -48,9 +16,39 @@ import java.util.Map;
  * limitations under the License.
  */
 
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.context.Context;
+import org.codehaus.doxia.Doxia;
+import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
+import org.codehaus.doxia.site.module.SiteModule;
+import org.codehaus.doxia.site.module.manager.SiteModuleManager;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.siterenderer.sink.SiteRendererSink;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.StringInputStream;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.codehaus.plexus.velocity.VelocityComponent;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @plexus.component
- * @plexus.role org.codehaus.plexus.siterenderer.Renderer
+ *   role="org.codehaus.plexus.siterenderer.Renderer"
  * 
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id$
@@ -63,13 +61,19 @@ public class DefaultSiteRenderer
     // Requirements
     // ----------------------------------------------------------------------
 
-    /** @plexus.requirement */
+    /**
+     * @plexus.requirement
+     */
     private VelocityComponent velocity;
 
-    /** @plexus.requirement */
+    /**
+     * @plexus.requirement
+     */
     private SiteModuleManager siteModuleManager;
 
-    /** @plexus.requirement */
+    /**
+     * @plexus.requirement
+     */
     private Doxia doxia;
 
     // ----------------------------------------------------------------------
@@ -80,44 +84,25 @@ public class DefaultSiteRenderer
 
     private ClassLoader templateClassLoader;
 
+    private Xpp3Dom siteDescriptor;
+
     public void setTemplateClassLoader( ClassLoader templateClassLoader )
     {
         this.templateClassLoader = templateClassLoader;
     }
-    
+
     // ----------------------------------------------------------------------
     // Renderer implementation
     // ----------------------------------------------------------------------
 
     /**
-     * @see org.codehaus.plexus.siterenderer.Renderer#render(File, File, InputStream, String, Map)
+     * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.File, java.lang.String, java.util.Map)
      */
-    public void render( File siteDirectory, 
-                        File outputDirectory, 
-                        InputStream siteDescriptor, 
-                        String templateName,
-                        Map templateProperties )
+    public void render( File siteDirectory, File outputDirectory, File siteDescriptor, String templateName,
+                       Map templateProperties )
         throws RendererException, IOException
     {
-        DecorationModelReader decorationModelReader = new DecorationModelReader();
-
-        if ( siteDescriptor == null )
-        {
-            throw new RendererException( "The site descriptor is not present!" );
-        }
-
-        DecorationModel decorationModel;
-
-        try
-        {
-            decorationModel = decorationModelReader.createNavigation( new InputStreamReader( siteDescriptor ) );
-        }
-        catch ( Exception e )
-        {
-            throw new RendererException( "Can't read the siteDescriptor.", e );
-        }
-
-        render( siteDirectory, outputDirectory, templateName, null, decorationModel );
+        render( siteDirectory, outputDirectory, new FileInputStream( siteDescriptor ), templateName, templateProperties );
     }
 
     /**
@@ -127,31 +112,28 @@ public class DefaultSiteRenderer
                        Map templateProperties )
         throws RendererException, IOException
     {
-        DecorationModelReader decorationModelReader = new DecorationModelReader();
-
-        if ( siteDescriptor == null )
-        {
-            throw new RendererException( "The site descriptor is not present!" );
-        }
-
-        DecorationModel decorationModel;
-
-        try
-        {
-            decorationModel = decorationModelReader.createNavigation( siteDescriptor );
-        }
-        catch ( Exception e )
-        {
-            throw new RendererException( "Can't read the siteDescriptor.", e );
-        }
-
-        render( siteDirectory, outputDirectory, templateName, null, decorationModel );
+        render( siteDirectory, outputDirectory, new StringInputStream( siteDescriptor ), templateName,
+                templateProperties );
     }
 
-    private void render( File siteDirectory, File outputDirectory, String templateName, Map templateProperties,
-                        DecorationModel decorationModel )
+    /**
+     * @see org.codehaus.plexus.siterenderer.Renderer#render(File, File, InputStream, String, Map)
+     */
+    public void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
+                       Map templateProperties )
         throws RendererException, IOException
     {
+        try
+        {
+            InputStreamReader xmlReader = new InputStreamReader( siteDescriptor );
+
+            this.siteDescriptor = Xpp3DomBuilder.build( xmlReader );
+        }
+        catch ( XmlPullParserException e )
+        {
+            throw new RendererException( "Can't read site descriptor.", e );
+        }
+
         for ( Iterator i = siteModuleManager.getSiteModules().iterator(); i.hasNext(); )
         {
             SiteModule module = (SiteModule) i.next();
@@ -171,7 +153,7 @@ public class DefaultSiteRenderer
 
                 String fullPathDoc = new File( moduleBasedir, doc ).getPath();
 
-                SiteRendererSink sink = createSink( moduleBasedir, doc, decorationModel );
+                SiteRendererSink sink = createSink( moduleBasedir, doc );
 
                 try
                 {
@@ -228,47 +210,9 @@ public class DefaultSiteRenderer
 
         //TODO : Remove this and add siteDescriptor in Context for parse it in Velocity template
         // Add infos from siteDescriptor
-        NavigationRenderer r = new NavigationRenderer();
+        context.put( "siteDescriptor", siteDescriptor );
 
-        StringWriter sw = new StringWriter();
-
-        XMLWriter w = new PrettyPrintXMLWriter( sw );
-
-        r.render( w, renderingContext );        
-        
-        context.put( "mainMenu", sw.toString() );
-
-        sw = new StringWriter();
-
-        w = new PrettyPrintXMLWriter( sw );
-
-        LinksRenderer lr = new LinksRenderer();
-
-        lr.render( w, renderingContext );
-
-        context.put( "links", sw.toString() );
-
-        sw = new StringWriter();
-
-        w = new PrettyPrintXMLWriter( sw );
-
-        BannerRenderer br = new BannerRenderer( "bannerLeft" );
-
-        br.render( w, renderingContext );
-
-        context.put( "bannerLeft", sw.toString() );
-
-        sw = new StringWriter();
-
-        w = new PrettyPrintXMLWriter( sw );
-
-        br = new BannerRenderer( "bannerRight" );
-
-        br.render( w, renderingContext );
-
-        context.put( "bannerRight", sw.toString() );
-
-        context.put( "navBarLeft", "Last Published: " + new Date() );
+        context.put( "currentDate", new Date() );
 
         // Add user properties
         if ( templateProperties != null )
@@ -298,25 +242,26 @@ public class DefaultSiteRenderer
         Template template = null;
 
         ClassLoader old = null;
-        
+
         if ( templateClassLoader != null )
         {
             // -------------------------------------------------------------------------
             // If no template classloader was set we'll just use the context classloader
             // -------------------------------------------------------------------------
-            
+
             old = Thread.currentThread().getContextClassLoader();
-            
+
             Thread.currentThread().setContextClassLoader( templateClassLoader );
-        }   
-        
+        }
+
         try
         {
             template = velocity.getEngine().getTemplate( templateName );
         }
         catch ( Exception e )
         {
-            throw new RendererException( "Could not find the template '" + templateName + "' in " + Thread.currentThread().getContextClassLoader() );
+            throw new RendererException( "Could not find the template '" + templateName + "' in "
+                                         + Thread.currentThread().getContextClassLoader() );
         }
         finally
         {
@@ -338,63 +283,39 @@ public class DefaultSiteRenderer
         }
     }
 
-    /**
-     * @see org.codehaus.plexus.siterenderer.Renderer#createSink(java.io.File, java.lang.String, java.io.InputStream)
-     */
-    public SiteRendererSink createSink( File moduleBaseDir, String document, InputStream siteDescriptor )
-        throws RendererException
+    public SiteRendererSink createSink( File moduleBaseDir, String document, File siteDescriptor )
+        throws RendererException, IOException
     {
-        DecorationModelReader decorationModelReader = new DecorationModelReader();
-
-        if ( siteDescriptor == null )
-        {
-            throw new RendererException( "The site descriptor is not present!" );
-        }
-
-        DecorationModel decorationModel;
-
-        try
-        {
-            decorationModel = decorationModelReader.createNavigation( new InputStreamReader( siteDescriptor ) );
-        }
-        catch ( Exception e )
-        {
-            throw new RendererException( "Can't read the siteDescriptor.", e );
-        }
-
-        return createSink( moduleBaseDir, document, decorationModel );
+        return createSink( moduleBaseDir, document, new FileInputStream( siteDescriptor ) );
     }
 
-    /**
-     * @see org.codehaus.plexus.siterenderer.Renderer#createSink(java.io.File, java.lang.String, java.lang.String)
-     */
     public SiteRendererSink createSink( File moduleBaseDir, String document, String siteDescriptor )
-        throws RendererException
+        throws RendererException, IOException
     {
-        DecorationModelReader decorationModelReader = new DecorationModelReader();
-
-        if ( siteDescriptor == null )
-        {
-            throw new RendererException( "The site descriptor is not present!" );
-        }
-
-        DecorationModel decorationModel;
-
-        try
-        {
-            decorationModel = decorationModelReader.createNavigation( siteDescriptor );
-        }
-        catch ( Exception e )
-        {
-            throw new RendererException( "Can't read the siteDescriptor.", e );
-        }
-
-        return createSink( moduleBaseDir, document, decorationModel );
+        return createSink( moduleBaseDir, document, new StringInputStream( siteDescriptor ) );
     }
 
-    private SiteRendererSink createSink( File moduleBaseDir, String document, DecorationModel decorationModel )
+    public SiteRendererSink createSink( File moduleBaseDir, String document, InputStream siteDescriptor )
+        throws RendererException, IOException
     {
-        renderingContext = new RenderingContext( moduleBaseDir, document, decorationModel );
+        try
+        {
+            InputStreamReader xmlReader = new InputStreamReader( siteDescriptor );
+
+            this.siteDescriptor = Xpp3DomBuilder.build( xmlReader );
+        }
+        catch ( XmlPullParserException e )
+        {
+            throw new RendererException( "Can't read site descriptor.", e );
+        }
+
+        return createSink( moduleBaseDir, document );
+    }
+
+    private SiteRendererSink createSink( File moduleBaseDir, String document )
+        throws RendererException
+    {
+        renderingContext = new RenderingContext( moduleBaseDir, document, null );
 
         return new SiteRendererSink( new StringWriter(), renderingContext );
     }

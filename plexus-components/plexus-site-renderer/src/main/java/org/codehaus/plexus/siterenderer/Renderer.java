@@ -1,13 +1,5 @@
 package org.codehaus.plexus.siterenderer;
 
-import org.codehaus.plexus.siterenderer.sink.SiteRendererSink;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Writer;
-import java.util.Map;
-
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
  *
@@ -24,6 +16,14 @@ import java.util.Map;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.siterenderer.sink.SiteRendererSink;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
+import java.util.Map;
+
 /**
  * @author <a href="mailto:evenisse@codehaus.org>Emmanuel Venisse</a>
  * @version $Id$
@@ -31,6 +31,10 @@ import java.util.Map;
 public interface Renderer
 {
     String ROLE = Renderer.class.getName();
+
+    void render( File siteDirectory, File outputDirectory, File siteDescriptor, String templateName,
+                 Map templateProperties )
+         throws RendererException, IOException;
 
     void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
                 Map templateProperties )
@@ -43,11 +47,14 @@ public interface Renderer
     void generateDocument( Writer writer, String templateName, Map templateProperties, SiteRendererSink sink )
         throws RendererException;
 
-    SiteRendererSink createSink( File moduleBaseDir, String document, InputStream siteDescriptor )
-        throws RendererException;
+    SiteRendererSink createSink( File moduleBaseDir, String document, File siteDescriptor )
+        throws RendererException, IOException;
 
     SiteRendererSink createSink( File moduleBaseDir, String document, String siteDescriptor )
-        throws RendererException;
-    
+    throws RendererException, IOException;
+
+    SiteRendererSink createSink( File moduleBaseDir, String document, InputStream siteDescriptor )
+    throws RendererException, IOException;
+
     void setTemplateClassLoader( ClassLoader templateClassLoader );
 }
