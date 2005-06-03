@@ -53,5 +53,5 @@ public class ContinuumWorkflowTest
         assertTrue( instance.hasError() );
 
         assertFalse( instance.isComplete() );
-    }
+    }    
 }
