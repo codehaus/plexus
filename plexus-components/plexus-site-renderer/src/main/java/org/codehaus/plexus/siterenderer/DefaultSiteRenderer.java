@@ -26,6 +26,7 @@ import org.codehaus.doxia.site.module.manager.SiteModuleManager;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.siterenderer.sink.SiteRendererSink;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.PathTool;
 import org.codehaus.plexus.util.StringInputStream;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
@@ -79,6 +80,8 @@ public class DefaultSiteRenderer
     // ----------------------------------------------------------------------
     // Fields
     // ----------------------------------------------------------------------
+
+    private String currentDocument;
 
     private RenderingContext renderingContext;
 
@@ -208,11 +211,12 @@ public class DefaultSiteRenderer
 
         context.put( "bodyContent", sink.getBody() );
 
-        //TODO : Remove this and add siteDescriptor in Context for parse it in Velocity template
         // Add infos from siteDescriptor
         context.put( "siteDescriptor", siteDescriptor );
 
         context.put( "currentDate", new Date() );
+
+        context.put( "currentFileName", PathTool.calculateLink( "/" + currentDocument, renderingContext.getRelativePath() ) );
 
         // Add user properties
         if ( templateProperties != null )
@@ -229,6 +233,7 @@ public class DefaultSiteRenderer
         // Tools
         // ----------------------------------------------------------------------
 
+        context.put( "PathTool", new PathTool() );
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
@@ -315,6 +320,8 @@ public class DefaultSiteRenderer
     private SiteRendererSink createSink( File moduleBaseDir, String document )
         throws RendererException
     {
+        currentDocument = document;
+
         renderingContext = new RenderingContext( moduleBaseDir, document, null );
 
         return new SiteRendererSink( new StringWriter(), renderingContext );
