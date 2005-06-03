@@ -59,7 +59,7 @@
     <module>plexus-summit</module>
     <module>plexus-taskqueue</module>    
     <module>plexus-velocity</module>
-    <module>plexus-werkflow</module>    
+    <module>plexus-workflow</module>
     <module>plexus-xmlrpc</module>
   </modules>
 </project>
