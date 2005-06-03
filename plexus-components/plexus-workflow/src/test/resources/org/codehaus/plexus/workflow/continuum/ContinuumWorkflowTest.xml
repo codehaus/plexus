@@ -4,7 +4,7 @@
       <role>org.codehaus.plexus.workflow.WorkflowEngine</role>
       <implementation>org.codehaus.plexus.workflow.DefaultWorkflowEngine</implementation>
       <configuration>
-        <werkflowDirectory>${basedir}/src/test/werkflows/</werkflowDirectory>
+        <workflowDirectory>${basedir}/src/test/werkflows/</workflowDirectory>
       </configuration>
       <requirements>
         <requirement>
