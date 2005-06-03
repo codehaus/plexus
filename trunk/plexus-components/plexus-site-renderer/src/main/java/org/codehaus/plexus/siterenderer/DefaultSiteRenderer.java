@@ -23,6 +23,7 @@ import org.codehaus.doxia.Doxia;
 import org.codehaus.doxia.module.xhtml.decoration.render.RenderingContext;
 import org.codehaus.doxia.site.module.SiteModule;
 import org.codehaus.doxia.site.module.manager.SiteModuleManager;
+import org.codehaus.plexus.i18n.I18N;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.siterenderer.sink.SiteRendererSink;
 import org.codehaus.plexus.util.FileUtils;
@@ -45,6 +46,7 @@ import java.io.Writer;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -77,6 +79,11 @@ public class DefaultSiteRenderer
      */
     private Doxia doxia;
 
+    /**
+     * @plexus.requirement
+     */
+    private I18N i18n;
+
     // ----------------------------------------------------------------------
     // Fields
     // ----------------------------------------------------------------------
@@ -88,6 +95,8 @@ public class DefaultSiteRenderer
     private ClassLoader templateClassLoader;
 
     private Xpp3Dom siteDescriptor;
+
+    private Locale defaultLocale = Locale.ENGLISH;
 
     public void setTemplateClassLoader( ClassLoader templateClassLoader )
     {
@@ -105,7 +114,18 @@ public class DefaultSiteRenderer
                        Map templateProperties )
         throws RendererException, IOException
     {
-        render( siteDirectory, outputDirectory, new FileInputStream( siteDescriptor ), templateName, templateProperties );
+        render( siteDirectory, outputDirectory, siteDescriptor, templateName, templateProperties, defaultLocale );
+    }
+
+    /**
+     * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.File, java.lang.String, java.util.Map, java.util.Locale)
+     */
+    public void render( File siteDirectory, File outputDirectory, File siteDescriptor, String templateName,
+                       Map templateProperties, Locale locale )
+        throws RendererException, IOException
+    {
+        render( siteDirectory, outputDirectory, new FileInputStream( siteDescriptor ), templateName,
+                templateProperties, locale );
     }
 
     /**
@@ -115,8 +135,18 @@ public class DefaultSiteRenderer
                        Map templateProperties )
         throws RendererException, IOException
     {
+        render( siteDirectory, outputDirectory, siteDescriptor, templateName, templateProperties, defaultLocale );
+    }
+
+    /**
+     * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.lang.String, java.lang.String, java.util.Map, java.util.Locale)
+     */
+    public void render( File siteDirectory, File outputDirectory, String siteDescriptor, String templateName,
+                       Map templateProperties, Locale locale )
+        throws RendererException, IOException
+    {
         render( siteDirectory, outputDirectory, new StringInputStream( siteDescriptor ), templateName,
-                templateProperties );
+                templateProperties, locale );
     }
 
     /**
@@ -124,6 +154,16 @@ public class DefaultSiteRenderer
      */
     public void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
                        Map templateProperties )
+        throws RendererException, IOException
+    {
+        render( siteDirectory, outputDirectory, siteDescriptor, templateName, templateProperties, defaultLocale );
+    }
+
+    /**
+     * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.InputStream, java.lang.String, java.util.Map, java.util.Locale)
+     */
+    public void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
+                       Map templateProperties, Locale locale )
         throws RendererException, IOException
     {
         try
@@ -173,7 +213,7 @@ public class DefaultSiteRenderer
                         outputFile.getParentFile().mkdirs();
                     }
 
-                    generateDocument( new FileWriter( outputFile ), templateName, templateProperties, sink );
+                    generateDocument( new FileWriter( outputFile ), templateName, templateProperties, sink, locale );
                 }
                 catch ( Exception e )
                 {
@@ -196,6 +236,16 @@ public class DefaultSiteRenderer
     public void generateDocument( Writer writer, String templateName, Map templateProperties, SiteRendererSink sink )
         throws RendererException
     {
+        generateDocument( writer, templateName, templateProperties, sink, defaultLocale );
+    }
+
+    /**
+     * @see org.codehaus.plexus.siterenderer.Renderer#generateDocument(java.io.Writer, java.lang.String, java.util.Map, org.codehaus.plexus.siterenderer.sink.SiteRendererSink, java.util.Locale)
+     */
+    public void generateDocument( Writer writer, String templateName, Map templateProperties, SiteRendererSink sink,
+                                 Locale locale )
+        throws RendererException
+    {
         VelocityContext context = new VelocityContext();
 
         // ----------------------------------------------------------------------
@@ -216,7 +266,10 @@ public class DefaultSiteRenderer
 
         context.put( "currentDate", new Date() );
 
-        context.put( "currentFileName", PathTool.calculateLink( "/" + currentDocument, renderingContext.getRelativePath() ) );
+        context.put( "currentFileName", PathTool.calculateLink( "/" + currentDocument, renderingContext
+            .getRelativePath() ) );
+
+        context.put( "locale", locale );
 
         // Add user properties
         if ( templateProperties != null )
@@ -234,6 +287,9 @@ public class DefaultSiteRenderer
         // ----------------------------------------------------------------------
 
         context.put( "PathTool", new PathTool() );
+
+        context.put( "i18n", i18n );
+
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
