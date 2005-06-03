@@ -154,17 +154,17 @@ public class DefaultSiteRenderer
             {
                 String doc = (String) j.next();
 
+                String outputName = doc.substring( 0, doc.indexOf( "." ) + 1 ) + "html";
+
                 String fullPathDoc = new File( moduleBasedir, doc ).getPath();
 
-                SiteRendererSink sink = createSink( moduleBasedir, doc );
+                SiteRendererSink sink = createSink( moduleBasedir, outputName );
 
                 try
                 {
                     FileReader reader = new FileReader( fullPathDoc );
 
                     doxia.parse( reader, module.getParserId(), sink );
-
-                    String outputName = doc.substring( 0, doc.indexOf( "." ) + 1 ) + "html";
 
                     File outputFile = new File( outputDirectory, outputName );
 
