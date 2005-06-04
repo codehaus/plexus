@@ -20,7 +20,9 @@ public class DefaultExceptionHandler
         throws Exception
     {
         Resolver resolver = (Resolver) lookup( Resolver.ROLE );
+
         data.setTarget( resolver.getErrorView() );
+
         data.getMap().put( SummitConstants.STACK_TRACE, ExceptionUtils.getStackTrace( throwable ) );
     }
 }
