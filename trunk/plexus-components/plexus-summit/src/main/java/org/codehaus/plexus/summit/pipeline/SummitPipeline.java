@@ -17,7 +17,7 @@ import org.codehaus.plexus.summit.rundata.RunData;
 /**
  * Flexible implementation of a {@link org.codehaus.plexus.summit.pipeline.Pipeline}.
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:pete-apache-dev@kazmier.com">Pete Kazmier</a>
  */
 public class SummitPipeline

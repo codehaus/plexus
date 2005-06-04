@@ -16,7 +16,7 @@ import org.codehaus.plexus.velocity.VelocityComponent;
  * @plexus.component
  *  role-hint="velocity"
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @todo the encoding needs to be configurable.
  * @todo Valves need to have an initialization phase

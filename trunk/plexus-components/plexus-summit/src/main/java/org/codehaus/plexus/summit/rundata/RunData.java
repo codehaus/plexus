@@ -74,7 +74,7 @@ import org.codehaus.plexus.summit.resolver.Resolution;
  * multiple requests can potentially come in at the same time. Thus, there is
  * only one RunData implementation for each request that is being serviced.
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */

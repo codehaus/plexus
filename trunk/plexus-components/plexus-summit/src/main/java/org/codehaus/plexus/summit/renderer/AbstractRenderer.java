@@ -11,7 +11,7 @@ import org.codehaus.plexus.summit.rundata.RunData;
  * <p>Base class from which all <code>Renderer</code>s are
  * derived.</p>
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public abstract class AbstractRenderer

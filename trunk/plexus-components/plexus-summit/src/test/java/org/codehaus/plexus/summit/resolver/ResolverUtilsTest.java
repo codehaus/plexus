@@ -74,7 +74,7 @@ import org.codehaus.plexus.summit.AbstractTest;
  * view path.
  * </p>
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class ResolverUtilsTest
