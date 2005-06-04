@@ -6,7 +6,7 @@ package org.codehaus.plexus.summit.resolver;
  * rendered and there may be <code>Modules</code> that must be
  * executed in order to populate the <code>ViewContext</code>.</p>
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public interface Resolver

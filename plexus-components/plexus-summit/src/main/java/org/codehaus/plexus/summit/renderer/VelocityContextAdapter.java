@@ -8,7 +8,7 @@ import org.codehaus.plexus.summit.view.ViewContext;
  * <code>ViewContext</code> so that Velocity can use it as a
  * Velocity <code>Context</code> to render the view.</p>
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class VelocityContextAdapter

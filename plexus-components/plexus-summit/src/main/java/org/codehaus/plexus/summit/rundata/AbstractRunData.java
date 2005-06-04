@@ -77,7 +77,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 /**
  * <p>The base class from which all RunData implementations are derived. </p>
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @todo We should make a RunData implemenation that deals with Resolutions. It
  * Is possible that some might like to avoid the whole resolution process

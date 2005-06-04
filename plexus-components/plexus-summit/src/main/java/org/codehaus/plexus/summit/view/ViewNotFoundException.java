@@ -62,7 +62,7 @@ import org.codehaus.plexus.summit.exception.SummitException;
  * <p>Exception thrown when the requested <code>View</code>, or a default
  * <code>View</code, cannot be found.</p>
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class ViewNotFoundException

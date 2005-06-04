@@ -6,7 +6,7 @@ import java.util.Map;
  * <p>The collection of values that a native tool will use to render
  * against.</p>
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public interface ViewContext
