@@ -7,7 +7,7 @@ import java.util.List;
  * A set of utilities that help with fulling resolving a
  * target view.
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class ResolverUtils

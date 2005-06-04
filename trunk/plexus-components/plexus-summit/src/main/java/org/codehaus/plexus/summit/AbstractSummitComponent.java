@@ -28,7 +28,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
  * components so that each of the components are not directly
  * coupled to one another.</p>
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:pete-apache-dev@kazmier.com">Pete Kazmier</a>
  * @version $Id$
  */

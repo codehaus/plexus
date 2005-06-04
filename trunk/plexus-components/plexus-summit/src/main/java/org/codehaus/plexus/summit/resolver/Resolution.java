@@ -9,7 +9,7 @@ import org.codehaus.plexus.summit.view.View;
  * <p>A <code>Resolution</code> is the result of target view processing that occurs
  * within a {@link org.codehaus.plexus.summit.resolver.Resolver}. </p>
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class Resolution

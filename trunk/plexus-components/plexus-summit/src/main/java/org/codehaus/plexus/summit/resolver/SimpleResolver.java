@@ -10,7 +10,7 @@ import org.codehaus.plexus.summit.view.View;
  * <p>A simple resolving strategy that simply attempts to resolve
  * the target view. </p>
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  */
 public class SimpleResolver

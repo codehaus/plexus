@@ -12,7 +12,7 @@ import org.codehaus.plexus.summit.view.View;
 /**
  * <p>The base class from which all <code>Resolver</code>s are derived.</p>
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
  * @todo Propagate ModuleNotFoundException in getModule()
  * @todo Use a factory to instantiate the View class.
