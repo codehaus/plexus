@@ -140,8 +140,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:cvs:pserver:anonymous@cvs.plexus.codehaus.org:/home/projects/plexus/scm:plexus/</connection>
-    <developerConnection>scm:cvs:ext:${maven.username}@cvs.plexus.codehaus.org:/home/projects/plexus/scm:plexus/</developerConnection>
+    <connection>svn://svn.codehaus.org/home/projects/plexus/scm/trunk/</connection>
+    <developerConnection>svn+ssh://svn.codehaus.org/home/projects/plexus/scm/trunk/</developerConnection>
   </scm>
   <organization>
     <name>Codehaus</name>
