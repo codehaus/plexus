@@ -20,7 +20,7 @@ public class DetermineTargetValve
     private Resolver resolver;
 
     public void invoke( RunData data )
-        throws IOException, SummitException
+        throws IOException, ValveInvocationException
     {
         if ( !data.hasTarget() )
         {
@@ -39,12 +39,8 @@ public class DetermineTargetValve
             {
                 target = resolver.getInitialView();
 
-                System.out.println( "setting target = " + target );
-
                 data.setTarget( target );
             }
-
-            System.out.println( "target = " + target );
         }
     }
 }

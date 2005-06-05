@@ -10,5 +10,5 @@ public interface Valve
     static final String ROLE = Valve.class.getName();
 
     void invoke( RunData data )
-        throws IOException, SummitException;
+        throws IOException, ValveInvocationException;
 }

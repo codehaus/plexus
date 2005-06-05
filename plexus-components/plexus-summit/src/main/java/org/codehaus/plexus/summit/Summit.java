@@ -11,6 +11,7 @@ import org.codehaus.plexus.servlet.PlexusServlet;
 import org.codehaus.plexus.summit.exception.ExceptionHandler;
 import org.codehaus.plexus.summit.pipeline.Pipeline;
 import org.codehaus.plexus.summit.rundata.RunData;
+import org.codehaus.plexus.util.ExceptionUtils;
 
 public class Summit
     extends PlexusServlet
@@ -38,8 +39,6 @@ public class Summit
         }
         catch ( Throwable t )
         {
-            t.printStackTrace();
-
             try
             {
                 ExceptionHandler handler = (ExceptionHandler) lookup( ExceptionHandler.ROLE );
@@ -67,7 +66,7 @@ public class Summit
 
                 out.println( "<p><b>Error displaying template</b>. Exception:</p><pre>" );
 
-                t.printStackTrace( out );
+                out.println( ExceptionUtils.getFullStackTrace( t ) );
 
                 out.println( "</pre>" );
 

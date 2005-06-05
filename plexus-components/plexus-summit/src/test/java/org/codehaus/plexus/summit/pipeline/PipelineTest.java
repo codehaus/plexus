@@ -14,5 +14,7 @@ public class PipelineTest
         Pipeline pipeline = (Pipeline) lookup( Pipeline.ROLE );
 
         assertNotNull( pipeline );
+
+        assertEquals( 5, pipeline.getValves().size() );
     }
 }

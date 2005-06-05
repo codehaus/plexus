@@ -13,7 +13,8 @@ public class TestValve2
     }
 
     public void invoke(RunData data )
-        throws IOException, SummitException
+        throws IOException, ValveInvocationException
+
     {
     }
 }
