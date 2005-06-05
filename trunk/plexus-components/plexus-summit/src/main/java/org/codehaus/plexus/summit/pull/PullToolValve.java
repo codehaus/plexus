@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.codehaus.plexus.summit.SummitConstants;
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
+import org.codehaus.plexus.summit.pipeline.valve.ValveInvocationException;
 import org.codehaus.plexus.summit.rundata.RunData;
 import org.codehaus.plexus.summit.view.ViewContext;
 
@@ -23,7 +24,8 @@ public class PullToolValve
     extends AbstractValve
 {
     public void invoke( RunData data )
-        throws IOException, SummitException
+        throws IOException, ValveInvocationException
+
     {
         PullService pull = null;
 
@@ -33,7 +35,7 @@ public class PullToolValve
         }
         catch ( Exception e )
         {
-            throw new SummitException( "Could not find the PullService!", e );
+            throw new ValveInvocationException( "Could not find the PullService!", e );
         }
 
         ViewContext viewContext = (ViewContext) data.getMap().get( SummitConstants.VIEW_CONTEXT );

@@ -14,8 +14,6 @@ import org.codehaus.plexus.summit.view.View;
  *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
- * @todo Propagate ModuleNotFoundException in getModule()
- * @todo Use a factory to instantiate the View class.
  */
 public abstract class AbstractResolver
     extends AbstractSummitComponent

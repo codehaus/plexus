@@ -81,30 +81,6 @@ public class ResolverUtilsTest
     extends AbstractTest
 {
     /**
-     * Return the Test
-     */
-    public static Test suite() 
-    {
-        return new TestSuite(ResolverUtilsTest.class);
-    }
-
-    /**
-     * Setup the test.
-     */
-    public void setUp() 
-    {
-        // Nothing done here yet.
-    }
-   
-    /**
-     * Tear down the test.
-     */
-    public void tearDown() 
-    {
-        // Nothing to do here yet.
-    }
-
-    /**
      * Test that the view path is parsed correctly. The view path
      * can be specified from an URL or from within another view.
      */
@@ -114,53 +90,30 @@ public class ResolverUtilsTest
         // Make sure that multiple slashes are collapsed
         // into single slashes.
         String targetPath = "///science///physics///Index.vm";
-        message("Testing parseTemplatePath with " + targetPath);
+
         StringBuffer sb = new StringBuffer();
+
         ResolverUtils.parseTargetPath(targetPath,sb);
-        System.out.println(sb);
+
         assertEquals("/science/physics/Index.vm", sb.toString());
         
         // Make sure that commas are converted to slashes.
         targetPath = "///science,chemistry,Index.vm";
-        message("Testing parseTemplatePath with " + targetPath);
+
         sb = new StringBuffer();
+
         ResolverUtils.parseTargetPath(targetPath,sb);
-        System.out.println(sb);
+
         assertEquals("/science/chemistry/Index.vm", sb.toString());
     
         // Make sure that multiple commas are handled too.
+
         targetPath = "///science,,,biology,,,Index.vm";
-        message("Testing parseTemplatePath with " + targetPath);
+
         sb = new StringBuffer();
+
         ResolverUtils.parseTargetPath(targetPath,sb);
-        System.out.println(sb);
+
         assertEquals("/science/biology/Index.vm", sb.toString());
-        
-        System.out.println("\n");
-    }
-    
-    /**
-     * Test that for a given view path all the possible views are
-     * returned. What is returned is a list of bases that can be
-     * used to find Modules that correspond to the view path or
-     * sibling views.
-     */
-    public void testGetPossibleViews()
-        throws Exception
-    {
-        message("Testing getPossibleViews()");
-        
-        List list = 
-            ResolverUtils.getPossibleViews("/science/biology/Index.vm", "Default.vm");
-        
-        System.out.println("Possible views for /science/biology/Index.vm:");
-        
-        for (Iterator i = list.iterator(); i.hasNext();)
-        {
-            String view = (String) i.next();
-            System.out.println(view);
-        }
-        
-        System.out.println("\n");
     }
 }

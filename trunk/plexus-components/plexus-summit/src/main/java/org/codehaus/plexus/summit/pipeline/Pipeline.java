@@ -1,8 +1,10 @@
 package org.codehaus.plexus.summit.pipeline;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.codehaus.plexus.summit.SummitComponent;
+import org.codehaus.plexus.summit.pipeline.valve.ValveInvocationException;
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.rundata.RunData;
 
@@ -18,6 +20,7 @@ public interface Pipeline
 {
     public final static String ROLE = Pipeline.class.getName();
 
+    //TODO: don't think we need this
     public static final String SELECTOR_ROLE = Pipeline.class.getName() + "Selector";
 
     /**
@@ -35,5 +38,7 @@ public interface Pipeline
      * @throws IOException an input/output error occurred.
      */
     void invoke( RunData data )
-        throws SummitException, IOException;
+        throws IOException, ValveInvocationException;
+
+    List getValves();
 }

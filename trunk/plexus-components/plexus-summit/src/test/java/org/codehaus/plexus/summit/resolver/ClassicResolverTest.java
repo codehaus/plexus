@@ -25,28 +25,12 @@ import org.codehaus.plexus.summit.AbstractTest;
 public class ClassicResolverTest
     extends AbstractTest
 {
-    /**
-     * Classic resolver.
-     */
     private ClassicResolver classicResolver;
 
-    /**
-     * Our test target.
-     */
     private String target;
 
-    /**
-     * Return the Test
-     */
-    public static Test suite()
-    {
-        return new TestSuite( ClassicResolverTest.class );
-    }
-
-    /**
-     * Setup the test.
-     */
-    public void setUp() throws Exception
+    public void setUp()
+        throws Exception
     {
         super.setUp();
         
@@ -55,18 +39,10 @@ public class ClassicResolverTest
         // testing purposes, we cast to ClassicResolver knowing 100%
         // that we are getting a ClassicResolver because this unit
         // test has its own dedicated plexus conf.
+
         classicResolver = (ClassicResolver) lookup( Resolver.ROLE, "classic" );
 
         target = "/science/biology/Mitosis.vm";
-    }
-
-    /**
-     * Tear down the test.
-     */
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
-        // Nothing to do here yet.
     }
 
     // -------------------------------------------------------------------------
@@ -76,19 +52,14 @@ public class ClassicResolverTest
     public void testGetPossibleViews()
         throws Exception
     {
-        // Set up the classic resolver
-        message( "Testing getPossibleViews(target, targetPrefix)" );
-
         List possibleViews = classicResolver.getPossibleViews( target, "layouts" );
 
-        for ( Iterator i = possibleViews.iterator(); i.hasNext(); )
-        {
-            System.out.println( i.next() );
-        }
-
         assertEquals( "layouts/science/biology/Mitosis.vm", possibleViews.get( 0 ) );
+
         assertEquals( "layouts/science/biology/Index.vm", possibleViews.get( 1 ) );
+
         assertEquals( "layouts/science/Index.vm", possibleViews.get( 2 ) );
+
         assertEquals( "layouts/Index.vm", possibleViews.get( 3 ) );
 
     }
@@ -99,6 +70,7 @@ public class ClassicResolverTest
         Resolver resolver = (Resolver) lookup( Resolver.ROLE, "classic" );
 
         assertEquals( "Error.vm", resolver.getErrorView() );
+
         assertEquals( "Index.vm", resolver.getDefaultView() );
     }
 }

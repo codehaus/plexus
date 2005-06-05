@@ -73,7 +73,7 @@ public class TestValve1
     }
 
     public void invoke(RunData data )
-        throws IOException, SummitException
+        throws IOException, ValveInvocationException
     {
     }
 }
