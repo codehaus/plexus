@@ -164,7 +164,7 @@ public class DefaultComponentDescriptorCreator
 
         if ( componentDescriptors.size() == 0 && componentSetDescriptor.getDependencies().size() == 0 )
         {
-            getLogger().debug( "No components nor dependencies found, not writing components.xml" );
+            getLogger().debug( "No components or dependencies found, not writing components.xml" );
 
             return;
         }
