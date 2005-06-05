@@ -29,11 +29,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Collections;
+import java.util.ArrayList;
 
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Configurable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
@@ -116,7 +119,7 @@ public class PlexusDefaultComponentGleaner
             {
                 getLogger().warn( "Could not figure out a role for the component '" + fqn + "'. " +
                                   "Please specify a role with a parameter '" + PLEXUS_ROLE_PARAMETER + " " +
-                                  "on the @" + PLEXUS_COMPONENT_TAG + "tag." );
+                                  "on the @" + PLEXUS_COMPONENT_TAG + " tag." );
 
                 return null;
             }
@@ -192,7 +195,8 @@ public class PlexusDefaultComponentGleaner
     //
     // ----------------------------------------------------------------------
 
-    private final static List IGNORED_INTERFACES = Arrays.asList( new String[]{
+    private final static List IGNORED_INTERFACES = Collections.unmodifiableList( Arrays.asList( new String[]{
+        LogEnabled.class.getName(),
         Initializable.class.getName(),
         Configurable.class.getName(),
         Contextualizable.class.getName(),
@@ -200,7 +204,7 @@ public class PlexusDefaultComponentGleaner
         Startable.class.getName(),
         Suspendable.class.getName(),
         Serviceable.class.getName(),
-    } );
+    } ) );
 
     private String findRole( JavaClass javaClass )
     {
@@ -208,9 +212,17 @@ public class PlexusDefaultComponentGleaner
         // Remove any Plexus specific interfaces from the calculation
         // ----------------------------------------------------------------------
 
-        List interfaces = Arrays.asList( javaClass.getImplementedInterfaces() );
+        List interfaces = new ArrayList( Arrays.asList( javaClass.getImplementedInterfaces() ) );
 
-        interfaces.removeAll( IGNORED_INTERFACES );
+        for ( Iterator it = interfaces.iterator(); it.hasNext(); )
+        {
+            JavaClass ifc = (JavaClass) it.next();
+
+            if ( IGNORED_INTERFACES.contains( ifc.getFullyQualifiedName() ) )
+            {
+                it.remove();
+            }
+        }
 
         // ----------------------------------------------------------------------
         //
@@ -224,7 +236,18 @@ public class PlexusDefaultComponentGleaner
         {
             JavaClass ifc = (JavaClass) it.next();
 
-            if ( className.indexOf( ifc.getName() ) >= 0 )
+            String fqn = ifc.getName();
+
+            String pkg = ifc.getPackage();
+
+            if ( pkg == null )
+            {
+                pkg = fqn.substring( 0, fqn.lastIndexOf( '.' ) );
+            }
+
+            String name = fqn.substring( pkg.length() + 1 );
+
+            if ( className.endsWith( name ) )
             {
                 if ( role != null )
                 {
