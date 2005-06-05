@@ -23,7 +23,7 @@ public class DisplayValve
     private String display;
 
     public void invoke( RunData data )
-        throws IOException, SummitException
+        throws IOException, ValveInvocationException
     {
         try
         {
@@ -33,7 +33,7 @@ public class DisplayValve
         }
         catch ( Exception e )
         {
-            throw new SummitException( "Can't display!", e );
+            throw new ValveInvocationException( "Can't display!", e );
         }
     }
 }

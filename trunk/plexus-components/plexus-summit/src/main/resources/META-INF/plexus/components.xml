@@ -1,5 +1,11 @@
 <component-set>
   <components>
+
+    <!--
+     |
+     | Display
+     |
+     -->
     <component>
       <role>org.codehaus.plexus.summit.display.Display</role>
       <role-hint>classic</role-hint>
@@ -16,10 +22,22 @@
       <role-hint>new</role-hint>
       <implementation>org.codehaus.plexus.summit.display.NewBufferedDisplay</implementation>
     </component>
+
+    <!--
+     |
+     | ExceptionHandler
+     |
+     -->
     <component>
       <role>org.codehaus.plexus.summit.exception.ExceptionHandler</role>
       <implementation>org.codehaus.plexus.summit.exception.DefaultExceptionHandler</implementation>
     </component>
+
+    <!--
+     |
+     | Parameter Parser
+     |
+     -->
     <component>
       <role>org.codehaus.plexus.summit.parameters.RequestParameterParser</role>
       <implementation>org.codehaus.plexus.summit.parameters.SummitRequestParameterParser</implementation>
@@ -29,6 +47,32 @@
         <temp-directory>${basedir}/temp</temp-directory>
         <default-encoding>US-ASCII</default-encoding>
       </configuration>
+    </component>
+
+    <!--
+     |
+     | Valves
+     |
+     -->
+    <component>
+      <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
+      <role-hint>org.codehaus.plexus.summit.pipeline.valve.ActionValve</role-hint>
+      <implementation>org.codehaus.plexus.summit.pipeline.valve.ActionValve</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.action.ActionManager</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
+      <role-hint>org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve</role-hint>
+      <implementation>org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
+      <role-hint>org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve</role-hint>
+      <implementation>org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve</implementation>
     </component>
     <component>
       <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
@@ -62,16 +106,29 @@
       <role-hint>org.codehaus.plexus.summit.pull.PullToolValve</role-hint>
       <implementation>org.codehaus.plexus.summit.pull.PullToolValve</implementation>
     </component>
+
+    <!--
+     |
+     | Tools
+     |
+     -->
+
+    <!-- TODO: these should be using role hints -->
+
     <component>
       <role>linktool</role>
       <implementation>org.codehaus.plexus.summit.pull.tools.TemplateLink</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
     </component>
     <component>
+      <role>pagetool</role>
+      <implementation>org.codehaus.plexus.summit.pull.tools.TemplatePageAttributes</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+    </component>
+    <component>
       <role>org.codehaus.plexus.summit.pull.tools.TemplateRenderer</role>
       <implementation>org.codehaus.plexus.summit.pull.tools.TemplateRenderer</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
-      <lifecycle-handler>plexus</lifecycle-handler>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.summit.renderer.Renderer</role>
@@ -83,6 +140,12 @@
         <default-view>Index.vm</default-view>
       </configuration>
     </component>
+
+    <!--
+     |
+     | Renderers
+     |
+     -->
     <component>
       <role>org.codehaus.plexus.summit.renderer.Renderer</role>
       <role-hint>velocity</role-hint>
@@ -93,6 +156,12 @@
         </requirement>
       </requirements>
     </component>
+
+    <!--
+     |
+     | Resolvers
+     |
+     -->
     <component>
       <role>org.codehaus.plexus.summit.resolver.Resolver</role>
       <role-hint>classic</role-hint>
@@ -117,9 +186,17 @@
         <default-view>Index.vm</default-view>
       </configuration>
     </component>
+
+    <!--
+     |
+     | Rundata
+     |
+     -->
     <component>
       <role>org.codehaus.plexus.summit.rundata.RunData</role>
       <implementation>org.codehaus.plexus.summit.rundata.DefaultRunData</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
     </component>
+
   </components>
 </component-set>

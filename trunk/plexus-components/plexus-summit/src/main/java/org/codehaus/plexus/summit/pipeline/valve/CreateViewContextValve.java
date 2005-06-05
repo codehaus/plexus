@@ -15,7 +15,7 @@ public class CreateViewContextValve
     extends AbstractValve
 {
     public void invoke( RunData data )
-        throws IOException, SummitException
+        throws IOException, ValveInvocationException
     {
         ViewContext viewContext = (ViewContext) data.getMap().get( SummitConstants.VIEW_CONTEXT );
 
