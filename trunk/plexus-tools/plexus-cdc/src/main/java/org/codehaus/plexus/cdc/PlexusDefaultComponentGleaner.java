@@ -236,13 +236,18 @@ public class PlexusDefaultComponentGleaner
         {
             JavaClass ifc = (JavaClass) it.next();
 
-            String fqn = ifc.getName();
+            String fqn = ifc.getFullyQualifiedName();
 
             String pkg = ifc.getPackage();
 
             if ( pkg == null )
             {
                 pkg = fqn.substring( 0, fqn.lastIndexOf( '.' ) );
+            }
+
+            if ( fqn == null )
+            {
+                fqn = ifc.getName();
             }
 
             String name = fqn.substring( pkg.length() + 1 );
