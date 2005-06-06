@@ -3,7 +3,6 @@ package org.codehaus.plexus.summit.pull;
 import java.io.IOException;
 
 import org.codehaus.plexus.summit.SummitConstants;
-import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
 import org.codehaus.plexus.summit.pipeline.valve.ValveInvocationException;
 import org.codehaus.plexus.summit.rundata.RunData;
@@ -27,7 +26,7 @@ public class PullToolValve
         throws IOException, ValveInvocationException
 
     {
-        PullService pull = null;
+        PullService pull;
 
         try
         {

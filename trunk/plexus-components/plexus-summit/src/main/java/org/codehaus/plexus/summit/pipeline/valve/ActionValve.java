@@ -3,7 +3,6 @@ package org.codehaus.plexus.summit.pipeline.valve;
 import org.codehaus.plexus.action.Action;
 import org.codehaus.plexus.action.ActionManager;
 import org.codehaus.plexus.action.ActionNotFoundException;
-import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.rundata.RunData;
 
 import java.io.IOException;
@@ -32,7 +31,7 @@ public class ActionValve
 
         if ( !actionId.equals( "" ) )
         {
-            Action action = null;
+            Action action;
 
             try
             {
