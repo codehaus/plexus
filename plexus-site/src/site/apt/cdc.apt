@@ -24,6 +24,8 @@ Plexus Component Descriptor Creator
 *-----------------------*---*--------------------------------------------------------*
 | role                  | y | The role of the component.                             |
 *-----------------------*---*--------------------------------------------------------*
+| role-hint             | y | The role-hint of the component.                        |
+*-----------------------*---*--------------------------------------------------------*
 | version               | n | The component version.                                 |
 *-----------------------*---*--------------------------------------------------------*
 | lifecycle-handler     | n | The lifecycle handler of the component.                |
