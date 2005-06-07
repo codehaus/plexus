@@ -496,8 +496,6 @@ public class DefaultPlexusRuntimeBuilder
 
         FileOutputStream output = new FileOutputStream( outputFileName );
 
-        System.out.println( "filename: " + outputFileName + ", dos: " + dos );
-
         BufferedReader reader = new BufferedReader( new StringReader( buffer.toString() ) );
 
         String line;
