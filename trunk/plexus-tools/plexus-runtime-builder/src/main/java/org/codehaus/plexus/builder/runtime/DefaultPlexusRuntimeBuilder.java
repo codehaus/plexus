@@ -22,16 +22,15 @@ package org.codehaus.plexus.builder.runtime;
  * SOFTWARE.
  */
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.StringWriter;
-import java.io.BufferedReader;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -324,9 +323,9 @@ public class DefaultPlexusRuntimeBuilder
     private void createLauncherScripts( File binDir )
         throws PlexusRuntimeBuilderException, IOException, CommandLineException
     {
-        mergeTemplate( UNIX_LAUNCHER_TEMPLATE, new File( binDir, "plexus.sh" ), true );
+        mergeTemplate( UNIX_LAUNCHER_TEMPLATE, new File( binDir, "plexus.sh" ), false );
 
-        mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( binDir, "plexus.bat" ), false );
+        mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( binDir, "plexus.bat" ), true );
 
         executable( new File( binDir, "plexus.sh" ) );
     }
@@ -495,7 +494,9 @@ public class DefaultPlexusRuntimeBuilder
             throw new PlexusRuntimeBuilderException( "Exception merging the velocity template.", ex );
         }
 
-        FileWriter output = new FileWriter( outputFileName );
+        FileOutputStream output = new FileOutputStream( outputFileName );
+
+        System.out.println( "filename: " + outputFileName + ", dos: " + dos );
 
         BufferedReader reader = new BufferedReader( new StringReader( buffer.toString() ) );
 
@@ -503,14 +504,14 @@ public class DefaultPlexusRuntimeBuilder
 
         while( (line = reader.readLine() ) != null )
         {
-            output.write( line );
-
-            output.write( '\r' );
+            output.write( line.getBytes() );
 
             if ( dos )
             {
-                output.write( '\n' );
+                output.write( '\r' );
             }
+
+            output.write( '\n' );
         }
 
         output.close();
