@@ -41,6 +41,8 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
  *
  * @description Generates a complete runtime with the application and it's requires services.
  *
+ * @phase integration-test
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
