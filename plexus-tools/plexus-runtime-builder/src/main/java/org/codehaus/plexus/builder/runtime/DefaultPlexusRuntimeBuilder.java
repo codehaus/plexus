@@ -29,6 +29,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.BufferedReader;
+import java.io.StringReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -315,15 +318,15 @@ public class DefaultPlexusRuntimeBuilder
     private void createClassworldsConfiguration( File confDir )
         throws PlexusRuntimeBuilderException, IOException
     {
-        mergeTemplate( CLASSWORLDS_TEMPLATE, new File( confDir, "classworlds.conf" ) );
+        mergeTemplate( CLASSWORLDS_TEMPLATE, new File( confDir, "classworlds.conf" ), true );
     }
 
     private void createLauncherScripts( File binDir )
         throws PlexusRuntimeBuilderException, IOException, CommandLineException
     {
-        mergeTemplate( UNIX_LAUNCHER_TEMPLATE, new File( binDir, "plexus.sh" ) );
+        mergeTemplate( UNIX_LAUNCHER_TEMPLATE, new File( binDir, "plexus.sh" ), true );
 
-        mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( binDir, "plexus.bat" ) );
+        mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( binDir, "plexus.bat" ), false );
 
         executable( new File( binDir, "plexus.sh" ) );
     }
@@ -474,14 +477,14 @@ public class DefaultPlexusRuntimeBuilder
     // Velocity methods
     // ----------------------------------------------------------------------
 
-    protected void mergeTemplate( String templateName, File outputFileName )
+    protected void mergeTemplate( String templateName, File outputFileName, boolean dos )
         throws IOException, PlexusRuntimeBuilderException
     {
-        FileWriter output = new FileWriter( outputFileName );
+        StringWriter buffer = new StringWriter( 100 * FileUtils.ONE_KB);
 
         try
         {
-            velocity.getEngine().mergeTemplate( templateName, new VelocityContext(), output );
+            velocity.getEngine().mergeTemplate( templateName, new VelocityContext(), buffer );
         }
         catch ( ResourceNotFoundException ex )
         {
@@ -490,6 +493,24 @@ public class DefaultPlexusRuntimeBuilder
         catch ( Exception ex )
         {
             throw new PlexusRuntimeBuilderException( "Exception merging the velocity template.", ex );
+        }
+
+        FileWriter output = new FileWriter( outputFileName );
+
+        BufferedReader reader = new BufferedReader( new StringReader( buffer.toString() ) );
+
+        String line;
+
+        while( (line = reader.readLine() ) != null )
+        {
+            output.write( line );
+
+            output.write( '\r' );
+
+            if ( dos )
+            {
+                output.write( '\n' );
+            }
         }
 
         output.close();
