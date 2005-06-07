@@ -24,26 +24,24 @@ import java.net.URL;
 public class BshComponentFactory
     extends AbstractComponentFactory
 {
-    public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm classRealm,
+    public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm containerRealm,
                                PlexusContainer container )
         throws ComponentInstantiationException
     {
-        ClassRealm componentRealm = container.getComponentRealm( componentDescriptor.getComponentKey() );
-
         String impl = componentDescriptor.getImplementation();
         if ( !impl.startsWith( "/" ) )
         {
             impl = "/" + impl;
         }
 
-        URL scriptLocation = componentRealm.getResource( impl );
+        URL scriptLocation = containerRealm.getResource( impl );
 
         if ( scriptLocation == null )
         {
             StringBuffer buf = new StringBuffer( "Cannot find: " + impl + " in classpath:" );
-            for ( int i = 0; i < componentRealm.getConstituents().length; i++ )
+            for ( int i = 0; i < containerRealm.getConstituents().length; i++ )
             {
-                URL constituent = componentRealm.getConstituents()[i];
+                URL constituent = containerRealm.getConstituents()[i];
                 buf.append( "\n   [" + i + "]  " + constituent );
             }
             throw new ComponentInstantiationException( buf.toString() );
@@ -62,14 +60,17 @@ public class BshComponentFactory
         }
         catch ( EvalError evalError )
         {
-            componentRealm.display();
+            containerRealm.display();
+            
+            container.getLogger().info( "Error text: " + evalError.getErrorText() );
+            
             throw new ComponentInstantiationException( "Cannot build component for: " +
                                                        componentDescriptor.getComponentKey() +
                                                        "; unable to read BeanShell script", evalError );
         }
         catch ( FileNotFoundException e )
         {
-            componentRealm.display();
+            containerRealm.display();
             throw new ComponentInstantiationException( "Cannot build component for: " +
                                                        componentDescriptor.getComponentKey() +
                                                        "; unable to read BeanShell script", e );

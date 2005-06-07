@@ -2,6 +2,8 @@ package org.codehaus.plexus.component.factory.bsh;
 
 import bsh.EvalError;
 import bsh.Interpreter;
+
+import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.configurator.AbstractComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.converters.ConfigurationConverter;
@@ -16,12 +18,10 @@ public class BshComponentConfigurator
 {
 
     public void configureComponent( Object component, PlexusConfiguration configuration,
-                                    ExpressionEvaluator expressionEvaluator )
+                                    ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm )
         throws ComponentConfigurationException
     {
         Interpreter interpreter = ( (BshComponent) component ).getInterpreter();
-
-        ClassLoader classLoader = component.getClass().getClassLoader();
 
         int items = configuration.getChildCount();
 
@@ -39,7 +39,7 @@ public class BshComponentConfigurator
             {
                 try
                 {
-                    type = classLoader.loadClass( implementation );
+                    type = containerRealm.loadClass( implementation );
 
                 }
                 catch ( ClassNotFoundException e )
@@ -54,7 +54,7 @@ public class BshComponentConfigurator
             ConfigurationConverter converter = converterLookup.lookupConverterForType( type );
 
             Object value = converter.fromConfiguration( converterLookup, childConfiguration, type, component.getClass(),
-                                                        classLoader, expressionEvaluator );
+                                                        containerRealm.getClassLoader(), expressionEvaluator );
 
             if ( value != null )
             {
