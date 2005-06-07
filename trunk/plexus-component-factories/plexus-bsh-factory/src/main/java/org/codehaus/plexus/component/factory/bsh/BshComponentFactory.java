@@ -2,6 +2,7 @@ package org.codehaus.plexus.component.factory.bsh;
 
 import bsh.EvalError;
 import bsh.Interpreter;
+import bsh.UtilEvalError;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.factory.AbstractComponentFactory;
@@ -56,7 +57,13 @@ public class BshComponentFactory
 
             reader = new InputStreamReader( scriptLocation.openStream() );
 
+            // TODO
+            // BeanShell honours the context classloader, which something is setting (erroneously?)
+//            interp.setClassLoader( containerRealm.getClassLoader() );
+            ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
+            Thread.currentThread().setContextClassLoader( containerRealm.getClassLoader() );
             result = interp.eval( reader );
+            Thread.currentThread().setContextClassLoader( oldClassLoader );
         }
         catch ( EvalError evalError )
         {
