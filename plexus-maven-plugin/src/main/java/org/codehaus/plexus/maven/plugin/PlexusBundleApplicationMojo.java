@@ -38,6 +38,8 @@ import org.codehaus.plexus.builder.application.ApplicationBuilderException;
  *
  * @description Packages the Plexus application into a redistributable jar file.
  *
+ * @phase package
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */

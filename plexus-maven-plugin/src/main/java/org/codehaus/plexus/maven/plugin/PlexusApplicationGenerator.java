@@ -43,6 +43,8 @@ import org.codehaus.plexus.builder.application.ApplicationBuilderException;
  *
  * @description Assembles the Plexus application.
  *
+ * @phase package
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
