@@ -317,12 +317,26 @@ public class DefaultSiteRenderer
 
         try
         {
-            template = velocity.getEngine().getTemplate( templateName );
-        }
-        catch ( Exception e )
-        {
-            throw new RendererException( "Could not find the template '" + templateName + "' in "
-                                         + Thread.currentThread().getContextClassLoader() );
+            try
+            {
+                template = velocity.getEngine().getTemplate( templateName );
+            }
+            catch ( Exception e )
+            {
+                throw new RendererException( "Could not find the template '" + templateName + "' in "
+                                             + Thread.currentThread().getContextClassLoader() );
+            }
+    
+            try
+            {
+                template.merge( context, writer );
+    
+                writer.close();
+            }
+            catch ( Exception e )
+            {
+                throw new RendererException( "Error while generating code.", e );
+            }
         }
         finally
         {
@@ -330,17 +344,6 @@ public class DefaultSiteRenderer
             {
                 Thread.currentThread().setContextClassLoader( old );
             }
-        }
-
-        try
-        {
-            template.merge( context, writer );
-
-            writer.close();
-        }
-        catch ( Exception e )
-        {
-            throw new RendererException( "Error while generating code.", e );
         }
     }
 
