@@ -22,14 +22,21 @@
   </developers>
   <dependencies>
     <dependency>
-      <groupId>hsqldb</groupId>
-      <artifactId>hsqldb</artifactId>
-      <version>1.7.3.0</version>
+      <groupId>jdo</groupId>
+      <artifactId>jdo</artifactId>
+      <version>1.0.1</version>
     </dependency>
     <dependency>
       <groupId>jpox</groupId>
       <artifactId>jpox</artifactId>
       <version>1.0.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>1.7.3.0</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <organization>
