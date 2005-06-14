@@ -36,6 +36,8 @@ public class Add
 
     private String expression;
 
+    private String viewOnFailure;
+
     public String getTitleKey()
     {
         return titleKey;
@@ -54,5 +56,10 @@ public class Add
     public String getExpression()
     {
         return expression;
+    }
+
+    public String getViewOnFailure()
+    {
+        return viewOnFailure;
     }
 }
