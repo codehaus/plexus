@@ -24,8 +24,10 @@ package org.codehaus.plexus.notification;
  * SOFTWARE.
  */
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.Collections;
 
@@ -54,6 +56,36 @@ public class DefaultNotificationDispatcher
     public void sendNotification( String messageId, Map context )
         throws NotificationException
     {
+        sendNotification( messageId, Collections.EMPTY_MAP, context );
+    }
+
+    public void sendNotification( String messageId, Properties configuration, Map context )
+        throws NotificationException
+    {
+       Map conf = new HashMap();
+
+        for ( Iterator i = configuration.keySet().iterator(); i.hasNext(); )
+        {
+            String key = (String) i.next();
+
+            String value = configuration.getProperty( key );
+
+            conf.put( key, value );
+        }
+
+        if ( conf.isEmpty() )
+        {
+            sendNotification( messageId, context );
+        }
+        else
+        {
+            sendNotification( messageId, conf, context );
+        }
+    }
+
+    public void sendNotification( String messageId, Map configuration, Map context )
+        throws NotificationException
+    {
         Map notifiers = notifierManager.getNotifiers();
 
         for ( Iterator it = notifiers.entrySet().iterator(); it.hasNext(); )
@@ -77,7 +109,42 @@ public class DefaultNotificationDispatcher
 
             try
             {
-                notifier.sendNotification( messageId, recipients, context );
+                notifier.sendNotification( messageId, recipients, configuration, context );
+            }
+            catch ( NotificationException e )
+            {
+                getLogger().warn( "Error while sending notification.", e );
+            }
+        }
+    }
+
+    public void sendNotification( String messageId, Properties configuration )
+        throws NotificationException
+    {
+        Map notifiers = notifierManager.getNotifiers();
+
+        for ( Iterator it = notifiers.entrySet().iterator(); it.hasNext(); )
+        {
+            Map.Entry entry = (Map.Entry) it.next();
+
+            String notifierType = (String) entry.getKey();
+
+            Notifier notifier = (Notifier) entry.getValue();
+
+            Set recipients = recipientSource.getRecipients( notifierType, messageId, null );
+
+            if ( recipients == null )
+            {
+                getLogger().error( "RecipientSource.getRecipients() returned null. " +
+                                   "Message id: '" + messageId + "', " +
+                                   "notifier type: '" + notifierType + "'." );
+
+                continue;
+            }
+
+            try
+            {
+                notifier.sendNotification( messageId, recipients, configuration );
             }
             catch ( NotificationException e )
             {
