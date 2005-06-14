@@ -3,7 +3,7 @@ package org.codehaus.plexus.notification.notifier;
 /*
  * The MIT License
  *
- * Copyright (c) 2004, The Codehaus
+ * Copyright (c) 2004-2005, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,21 +24,11 @@ package org.codehaus.plexus.notification.notifier;
  * SOFTWARE.
  */
 
-import java.util.Set;
-import java.util.Map;
-
-import org.codehaus.plexus.notification.NotificationException;
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class MeenyNotifier
-    extends AbstractNotifier
+    extends AbstractAbstractNotifier
 {
-    public void sendNotification( String messageId, Set recipients, Map context )
-        throws NotificationException
-    {
-        messages.add( new Message( messageId, recipients, context ) );
-    }
 }

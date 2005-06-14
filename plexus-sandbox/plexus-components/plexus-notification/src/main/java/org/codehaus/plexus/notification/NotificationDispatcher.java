@@ -25,6 +25,7 @@ package org.codehaus.plexus.notification;
  */
 
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -35,5 +36,14 @@ public interface NotificationDispatcher
     String ROLE = NotificationDispatcher.class.getName();
 
     void sendNotification( String messageId, Map context )
+        throws NotificationException;
+
+    void sendNotification( String messageId, Map configuration, Map context )
+        throws NotificationException;
+
+    void sendNotification( String messageId, Properties configuration, Map context )
+        throws NotificationException;
+
+    void sendNotification( String message, Properties configuration )
         throws NotificationException;
 }

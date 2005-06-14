@@ -25,6 +25,7 @@ package org.codehaus.plexus.notification.notifier;
  */
 
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import org.codehaus.plexus.notification.NotificationException;
@@ -38,5 +39,14 @@ public interface Notifier
     String ROLE = Notifier.class.getName();
 
     void sendNotification( String messageId, Set recipients, Map context )
+        throws NotificationException;
+
+    void sendNotification( String messageId, Set recipients, Map configuration, Map context )
+        throws NotificationException;
+
+    void sendNotification( String messageId, Set recipients, Properties configuration, Map context )
+        throws NotificationException;
+
+    void sendNotification( String message, Set recipients, Properties configuration )
         throws NotificationException;
 }
