@@ -3,7 +3,7 @@ package org.codehaus.plexus.notification.notifier;
 /*
  * The MIT License
  *
- * Copyright (c) 2004, The Codehaus
+ * Copyright (c) 2004-2005, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -35,13 +35,16 @@ public class Message
 {
     private String messageId;
     private Set recipients;
+    private Map configuration;
     private Map context;
 
-    public Message( String messageId, Set recipients, Map context )
+    public Message( String messageId, Set recipients, Map configuration, Map context )
     {
         this.messageId = messageId;
 
         this.recipients = recipients;
+
+        this.configuration = configuration;
 
         this.context = context;
     }
@@ -54,6 +57,11 @@ public class Message
     public Set getRecipients()
     {
         return recipients;
+    }
+
+    public Map getConfiguration()
+    {
+        return configuration;
     }
 
     public Map getContext()
