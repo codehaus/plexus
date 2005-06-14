@@ -70,7 +70,7 @@ public abstract class AbstractEntityAction
 
     protected String getFailureTarget( Form form )
     {
-        return "Add.vm";
+        return form.getAdd().getViewOnFailure();        
     }
 
     public void execute( Map map )

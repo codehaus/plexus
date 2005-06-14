@@ -47,6 +47,6 @@ public class UpdateEntity
 
     protected String getFailureTarget( Form form )
     {
-        return "Edit.vm";
+        return form.getUpdate().getViewOnFailure();
     }
 }
