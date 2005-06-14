@@ -25,6 +25,7 @@ package org.codehaus.plexus.formica;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -78,6 +79,8 @@ public class Form
     // ----------------------------------------------------------------------
 
     private List transformations;
+
+    private Map attributes;
 
     // ----------------------------------------------------------------------
     //
@@ -332,5 +335,14 @@ public class Form
     public List getTransformations()
     {
         return transformations;
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    public Map getAttributes()
+    {
+        return attributes;
     }
 }
