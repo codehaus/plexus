@@ -3,7 +3,7 @@ package org.codehaus.plexus.notification;
 /*
  * The MIT License
  *
- * Copyright (c) 2004, The Codehaus
+ * Copyright (c) 2004-2005, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,6 +24,7 @@ package org.codehaus.plexus.notification;
  * SOFTWARE.
  */
 
+import java.util.Properties;
 import java.util.Set;
 import java.util.Map;
 
@@ -36,5 +37,11 @@ public interface RecipientSource
     String ROLE = RecipientSource.class.getName();
 
     Set getRecipients( String notifierType, String messageId, Map context )
+        throws NotificationException;
+
+    Set getRecipients( String notifierType, String messageId, Map configuration, Map context )
+        throws NotificationException;
+
+    Set getRecipients( String notifierType, String messageId, Properties configuration, Map context )
         throws NotificationException;
 }
