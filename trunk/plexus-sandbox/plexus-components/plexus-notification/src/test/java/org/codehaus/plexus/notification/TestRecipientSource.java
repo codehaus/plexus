@@ -33,9 +33,9 @@ import java.util.Map;
  * @version $Id$
  */
 public class TestRecipientSource
-    implements RecipientSource
+    extends AbstractRecipientSource
 {
-    public Set getRecipients( String notifierType, String messageId, Map context )
+    public Set getRecipients( String notifierType, String messageId, Map configuration, Map context )
         throws NotificationException
     {
         Set recipients = new TreeSet();
