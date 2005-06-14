@@ -44,7 +44,7 @@
       <configuration>
         <max-upload-size>1048576</max-upload-size>
         <max-memory-size>10240</max-memory-size>
-        <temp-directory>${basedir}/temp</temp-directory>
+        <temp-directory>${plexus.home}/temp</temp-directory>
         <default-encoding>US-ASCII</default-encoding>
       </configuration>
     </component>

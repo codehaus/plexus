@@ -20,8 +20,14 @@ import org.codehaus.plexus.action.Action;
 import org.codehaus.plexus.action.ActionManager;
 import org.codehaus.plexus.action.ActionNotFoundException;
 import org.codehaus.plexus.summit.rundata.RunData;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
+import org.apache.commons.fileupload.FileItem;
 
 import java.io.IOException;
+import java.io.File;
+import java.io.Writer;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -71,16 +77,45 @@ public class ActionValve
     }
 
     protected Map createContext( RunData data )
+        throws Exception
     {
+        // ----------------------------------------------------------------------
         // The parameter map in the request consists of an array of values for
         // the given key so this is why this is being done.
+        // ----------------------------------------------------------------------
+
         Map m = new HashMap();
 
         for ( Iterator i = data.getParameters().keys(); i.hasNext(); )
         {
             String key = (String) i.next();
 
-            m.put( key, data.getParameters().get( key ) );
+            String value = null;
+
+            FileItem fileItem = data.getParameters().getFileItem( key );
+
+            if ( fileItem != null )
+            {
+                if ( !fileItem.isFormField() )
+                {
+                    File uploadedFile = File.createTempFile( "summit-", ".tmp" );
+
+                    fileItem.write( uploadedFile );
+
+                    value = uploadedFile.toURL().toExternalForm();
+                }
+                else
+                {
+                    value = fileItem.getString();
+                }
+            }
+            else
+            {
+                value = data.getParameters().get( key );
+            }
+
+            m.put( key, value );
+
         }
         return m;
     }
