@@ -60,6 +60,7 @@ public class CreateViewContextValve
      * @param viewContext ViewContext that will be populated.
      */
     protected void populateViewContext( RunData data, ViewContext viewContext )
+        throws ValveInvocationException
     {
     }
 }
