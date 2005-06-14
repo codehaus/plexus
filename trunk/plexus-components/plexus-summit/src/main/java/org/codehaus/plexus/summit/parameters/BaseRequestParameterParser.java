@@ -176,6 +176,7 @@ public class BaseRequestParameterParser
             for ( Iterator i = items.iterator(); i.hasNext(); )
             {
                 FileItem item = (FileItem) i.next();
+
                 if ( item.isFormField() )
                 {
                     addParameter( parameterMap,
