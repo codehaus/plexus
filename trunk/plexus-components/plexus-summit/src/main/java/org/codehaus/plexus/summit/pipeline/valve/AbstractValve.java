@@ -16,7 +16,7 @@ package org.codehaus.plexus.summit.pipeline.valve;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.summit.AbstractSummitComponent;
 
 /**
  * Valve that can be used as the basis of Valve implementations.
@@ -25,7 +25,7 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
  * @version $Id$
  */
 public abstract class AbstractValve
-    extends AbstractLogEnabled
+    extends AbstractSummitComponent
     implements Valve
 {
 }
