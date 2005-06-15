@@ -95,6 +95,8 @@ public class ClassicBufferedDisplay
 
         View layoutView = data.getResolution().getView( ClassicResolver.LAYOUT_VIEW );
 
+        System.out.println( "renderer = " + renderer );
+
         renderer.render( data, layoutView.getName(), getWriter( data ) );
     }
 }

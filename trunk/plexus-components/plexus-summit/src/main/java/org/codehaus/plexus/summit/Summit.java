@@ -55,6 +55,8 @@ public class Summit
         }
         catch ( Throwable t )
         {
+            t.printStackTrace();
+
             try
             {
                 ExceptionHandler handler = (ExceptionHandler) lookup( ExceptionHandler.ROLE );
