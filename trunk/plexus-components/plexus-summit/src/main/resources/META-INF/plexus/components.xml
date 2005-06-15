@@ -17,11 +17,6 @@
         </requirement>
       </requirements>
     </component>
-    <component>
-      <role>org.codehaus.plexus.summit.display.Display</role>
-      <role-hint>new</role-hint>
-      <implementation>org.codehaus.plexus.summit.display.NewBufferedDisplay</implementation>
-    </component>
 
     <!--
      |
@@ -64,16 +59,21 @@
         </requirement>
       </requirements>
     </component>
+
     <component>
       <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
       <role-hint>org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve</role-hint>
       <implementation>org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve</implementation>
     </component>
+
     <component>
       <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
       <role-hint>org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve</role-hint>
       <implementation>org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve</implementation>
     </component>
+
+    <!-- Anything with a configuration cannot really work in the components.xml -->
+
     <component>
       <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
       <role-hint>org.codehaus.plexus.summit.pipeline.valve.DetermineTargetValve</role-hint>
@@ -81,26 +81,29 @@
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.summit.resolver.Resolver</role>
-          <role-hint>new</role-hint>
+          <role-hint>classic</role-hint>
         </requirement>
       </requirements>
     </component>
+
     <component>
       <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
       <role-hint>org.codehaus.plexus.summit.pipeline.valve.DisplayValve</role-hint>
       <implementation>org.codehaus.plexus.summit.pipeline.valve.DisplayValve</implementation>
       <configuration>
-        <display>new</display>
+        <display>classic</display>
       </configuration>
     </component>
+
     <component>
       <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
       <role-hint>org.codehaus.plexus.summit.pipeline.valve.ResolverValve</role-hint>
       <implementation>org.codehaus.plexus.summit.pipeline.valve.ResolverValve</implementation>
       <configuration>
-        <resolver>new</resolver>
+        <resolver>classic</resolver>
       </configuration>
     </component>
+
     <component>
       <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
       <role-hint>org.codehaus.plexus.summit.pull.PullToolValve</role-hint>
@@ -125,6 +128,7 @@
       <implementation>org.codehaus.plexus.summit.pull.tools.TemplatePageAttributes</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
     </component>
+
     <component>
       <role>org.codehaus.plexus.summit.pull.tools.TemplateRenderer</role>
       <implementation>org.codehaus.plexus.summit.pull.tools.TemplateRenderer</implementation>
@@ -155,36 +159,6 @@
           <role>org.codehaus.plexus.velocity.VelocityComponent</role>
         </requirement>
       </requirements>
-    </component>
-
-    <!--
-     |
-     | Resolvers
-     |
-     -->
-    <component>
-      <role>org.codehaus.plexus.summit.resolver.Resolver</role>
-      <role-hint>classic</role-hint>
-      <implementation>org.codehaus.plexus.summit.resolver.ClassicResolver</implementation>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.summit.renderer.Renderer</role>
-          <role-hint>velocity</role-hint>
-        </requirement>
-      </requirements>
-      <configuration>
-        <error-view>Error.vm</error-view>
-        <default-view>Index.vm</default-view>
-      </configuration>
-    </component>
-    <component>
-      <role>org.codehaus.plexus.summit.resolver.Resolver</role>
-      <role-hint>new</role-hint>
-      <implementation>org.codehaus.plexus.summit.resolver.NewResolver</implementation>
-      <configuration>
-        <error-view>Error.vm</error-view>
-        <default-view>Index.vm</default-view>
-      </configuration>
     </component>
 
     <!--

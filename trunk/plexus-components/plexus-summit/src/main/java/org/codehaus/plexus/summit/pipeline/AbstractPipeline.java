@@ -115,6 +115,8 @@ public abstract class AbstractPipeline
         }
         catch ( ComponentLookupException e )
         {
+            e.printStackTrace();
+
             throw new PlexusConfigurationException( "Couldn't create valve with role-hint = " + name, e );
         }
 
