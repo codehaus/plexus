@@ -14,12 +14,12 @@
     <dependency>
       <groupId>jivesoftware</groupId>
       <artifactId>smack</artifactId>
-      <version>1.5</version>
+      <version>1.5.0</version>
     </dependency>
     <dependency>
       <groupId>jivesoftware</groupId>
       <artifactId>smackx</artifactId>
-      <version>1.5</version>
+      <version>1.5.0</version>
     </dependency>
   </dependencies>
 </project>
