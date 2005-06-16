@@ -384,8 +384,8 @@ public class DefaultPlexusRuntimeBuilder
         // Windows
         // ----------------------------------------------------------------------
 
-        copyResource( "win32/wrapper.exe", "win32/Wrapper.exe", true, binDir );
-        copyResource( "win32/wrapper.dll", "win32/Wrapper.dll", false, binDir );
+        copyResource( "win32/wrapper.exe", "win32/wrapper.exe", true, binDir );
+        copyResource( "win32/wrapper.dll", "win32/wrapper.dll", false, binDir );
         copyResource( "win32/run.bat", "win32/run.bat", false, binDir );
         copyResource( "win32/InstallService.bat", "win32/InstallService.bat", false, binDir );
         copyResource( "win32/UninstallService.bat", "win32/UninstallService.bat", false, binDir );
