@@ -25,4 +25,22 @@ public interface JabberClient
 
     void sendMessageToGroup( String recipient, String message )
         throws JabberClientException;
+
+    String getHost();
+
+    void setHost( String host );
+
+    int getPort();
+
+    void setPort( int port );
+
+    boolean isSslConnection();
+
+    void setSslConnection( boolean isSslConnection );
+
+    String getUser();
+
+    void setUser( String user );
+
+    void setPassword( String password );
 }
