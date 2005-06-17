@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2005 Your Corporation. All Rights Reserved.
- */
 package org.codehaus.plexus.ircbot;
 
 /**
@@ -11,5 +8,29 @@ public interface IrcBot
 {
     String ROLE = IrcBot.class.getName();
 
-    public boolean ircsend( String message );
+    void connect( String serverHostname, int serverPort );
+
+    void disconnect();
+
+    boolean ircsend( String message );
+
+    void logoff();
+
+    void logon();
+
+    boolean sendMessageToChannel( String channel, String message );
+
+    boolean sendNotice( String username, String message );
+
+    boolean sendPrivateMessage( String username, String message );
+
+    void service();
+
+    String getLogin();
+
+    void setLogin( String login );
+
+    String getFullName();
+
+    void setFullName( String fullName );
 }
