@@ -14,7 +14,7 @@ public abstract class AbstractBotlet
 {
     protected void message( IrcBot bot, String channel, String message )
     {
-        bot.ircsend( "PRIVMSG " + channel + " :" + message );
+        bot.sendMessageToChannel( channel, message );
     }
 
     public void handleText( IrcBot bot, String channel, String user, String text )
