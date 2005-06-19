@@ -1,5 +1,6 @@
 <component-set>
   <components>
+    <!--
     <component>
       <role>org.codehaus.plexus.ircbot.IrcBot</role>
       <implementation>org.codehaus.plexus.ircbot.DefaultIrcBot</implementation>
@@ -15,7 +16,9 @@
         </requirement>
       </requirements>
     </component>
+    -->
 
+    <!-- THIS SHOULDN'T BE SPECIFIED HERE! -->
     <component>
       <role>org.codehaus.plexus.ircbot.IrcBot</role>
       <role-hint>client</role-hint>
