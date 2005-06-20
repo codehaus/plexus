@@ -24,20 +24,19 @@ package org.codehaus.plexus.builder.runtime;
  * SOFTWARE.
  */
 
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
+import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
+import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.util.FileUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DefaultArtifact;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
-import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
-
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -46,6 +45,16 @@ import org.codehaus.plexus.util.FileUtils;
 public class PlexusRuntimeBuilderTest
     extends PlexusTestCase
 {
+    private ArtifactFactory artifactFactory;
+
+    protected void setUp()
+        throws Exception
+    {
+        super.setUp();
+
+        artifactFactory = (ArtifactFactory) lookup( ArtifactFactory.ROLE );
+    }
+
     public void testRuntimeBuilder()
         throws Exception
     {
@@ -105,7 +114,9 @@ public class PlexusRuntimeBuilderTest
 
     private Artifact makeArtifact( String groupId, String artifactId, String version )
     {
-        Artifact artifact = new DefaultArtifact( groupId, artifactId, version, "jar" );
+        //Artifact artifact = new DefaultArtifact( groupId, artifactId, version, "jar" );
+
+        Artifact artifact = artifactFactory.createArtifact( groupId, artifactId, version, Artifact.SCOPE_RUNTIME, "jar" );
 
         artifact.setFile( getTestFile( "src/test/repository/" + groupId + "/jars/" + artifact + "-" + version + ".jar" ) );
 
