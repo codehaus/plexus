@@ -18,13 +18,6 @@
     </component>
     -->
 
-    <!-- THIS SHOULDN'T BE SPECIFIED HERE! -->
-    <component>
-      <role>org.codehaus.plexus.ircbot.IrcBot</role>
-      <role-hint>client</role-hint>
-      <implementation>org.codehaus.plexus.ircbot.DefaultIrcClient</implementation>
-    </component>
-
     <component>
       <role>org.codehaus.plexus.ircbot.botlet.manager.BotletManager</role>
       <implementation>org.codehaus.plexus.ircbot.botlet.manager.DefaultBotletManager</implementation>
