@@ -75,14 +75,14 @@ public class PlexusTestRuntimeGenerator
     private Set projectArtifacts;
 
     /**
-     * @parameter expression="${plexus.runtime.configuration}"
+     * @parameter expression="${runtimeConfiguration}"
      *
      * @required
      */
     private File testRuntimeConfiguration;
 
     /**
-     * @parameter expression="${plexus.runtime.configuration.roperties}"
+     * @parameter expression="${runtimeConfigurationProperties}"
      *
      * @required
      */
