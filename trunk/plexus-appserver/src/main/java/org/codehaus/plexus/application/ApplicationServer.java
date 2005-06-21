@@ -1,5 +1,7 @@
 package org.codehaus.plexus.application;
 
+import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
+
 /*
  * The MIT License
  *
@@ -31,4 +33,7 @@ package org.codehaus.plexus.application;
 public interface ApplicationServer
 {
     String ROLE = ApplicationServer.class.getName();
+
+    ApplicationRuntimeProfile getApplicationRuntimeProfile( String applicationId )
+        throws ApplicationServerException;
 }

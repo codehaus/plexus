@@ -31,6 +31,7 @@ import org.codehaus.plexus.application.service.ServiceDiscoverer;
 import org.codehaus.plexus.application.supervisor.Supervisor;
 import org.codehaus.plexus.application.supervisor.SupervisorListener;
 import org.codehaus.plexus.application.supervisor.SupervisorException;
+import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
@@ -50,6 +51,16 @@ public class DefaultApplicationServer
     private ServiceDiscoverer serviceDiscoverer;
 
     private Supervisor supervisor;
+
+    // ----------------------------------------------------------------------
+    // Application Facade
+    // ----------------------------------------------------------------------
+
+    public ApplicationRuntimeProfile getApplicationRuntimeProfile( String applicationId )
+        throws ApplicationServerException
+    {
+        return applicationDeployer.getApplicationRuntimeProfile( applicationId );
+    }
 
     // ----------------------------------------------------------------------
     // Component Lifecycle
