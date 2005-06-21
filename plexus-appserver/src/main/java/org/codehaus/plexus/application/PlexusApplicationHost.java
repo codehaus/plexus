@@ -27,6 +27,7 @@ import java.io.FileReader;
 
 import org.codehaus.classworlds.ClassWorld;
 import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
 
@@ -47,12 +48,26 @@ public class PlexusApplicationHost
 
     private boolean isStopped;
 
-    private static Object waitObj;
+    private static Object waitObj = new Object();
 
     private ApplicationServer applicationServer;
 
     // ----------------------------------------------------------------------
-    //  Implementation
+    //
+    // ----------------------------------------------------------------------
+
+    public PlexusContainer getContainer()
+    {
+        return container;
+    }
+
+    public ApplicationServer getApplicationServer()
+    {
+        return applicationServer;
+    }
+
+    // ----------------------------------------------------------------------
+    //
     // ----------------------------------------------------------------------
 
     public void start( ClassWorld classWorld, String configurationResource )
@@ -216,8 +231,6 @@ public class PlexusApplicationHost
 
         try
         {
-            waitObj = new Object();
-
             PlexusApplicationHost host = new PlexusApplicationHost();
 
             host.start( classWorld, args[0] );

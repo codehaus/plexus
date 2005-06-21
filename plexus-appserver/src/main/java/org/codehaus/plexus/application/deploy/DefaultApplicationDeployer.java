@@ -25,11 +25,12 @@ package org.codehaus.plexus.application.deploy;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URI;
 import java.net.URL;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,8 +41,10 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.classworlds.NoSuchRealmException;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.application.ApplicationServerException;
 import org.codehaus.plexus.application.PlexusApplicationConstants;
 import org.codehaus.plexus.application.event.ApplicationListener;
 import org.codehaus.plexus.application.event.DefaultDeployEvent;
@@ -62,6 +65,7 @@ import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
@@ -96,33 +100,53 @@ public class DefaultApplicationDeployer
     // ----------------------------------------------------------------------
 
     public void deploy( String name, String url )
-        throws Exception
+        throws ApplicationServerException
     {
-        URL location = new URL( url );
+        URL location;
+
+        try
+        {
+            location = new URL( url );
+        }
+        catch ( MalformedURLException e )
+        {
+            throw new ApplicationServerException( "Could not construct a URL from the string '" + url + "'.", e );
+        }
 
         deploy( name, location );
     }
 
     public void deploy( String name, URL url )
-        throws Exception
+        throws ApplicationServerException
     {
         if ( !url.getProtocol().equals( "file" ) )
         {
-            throw new RuntimeException( "Remote URLS not yet supported." );
+            throw new ApplicationServerException( "Remote URLS not yet supported." );
         }
 
         if ( !url.toString().endsWith( ".jar" ) )
         {
-            throw new Exception( "This deployer can only deploy *.jar files." );
+            throw new ApplicationServerException( "This deployer can only deploy *.jar files." );
         }
 
         File file = new File( url.getFile() );
 
-        deployJar( file, applicationsDirectory );
+        try
+        {
+            deployJar( file, applicationsDirectory );
+        }
+        catch ( IOException e )
+        {
+            throw new ApplicationServerException( "Could not deploy the JAR.", e );
+        }
+        catch ( XmlPullParserException e )
+        {
+            throw new ApplicationServerException( "Could not deploy the JAR.", e );
+        }
     }
 
     private void deployJar( File file, String directory )
-        throws Exception
+        throws IOException, ApplicationServerException, XmlPullParserException
     {
         // ----------------------------------------------------------------------
         // Extract the META-INF/plexus/application.xml file to read the metadata
@@ -134,7 +158,7 @@ public class DefaultApplicationDeployer
 
         if ( entry == null )
         {
-            throw new Exception( "The Plexus application jar is missing it's metadata file '" + PlexusApplicationConstants.METADATA_FILE + "'."  );
+            throw new ApplicationServerException( "The Plexus application jar is missing it's metadata file '" + PlexusApplicationConstants.METADATA_FILE + "'."  );
         }
 
         Reader reader = new InputStreamReader( jarFile.getInputStream( entry ) );
@@ -145,7 +169,7 @@ public class DefaultApplicationDeployer
 
         if ( StringUtils.isEmpty( appId ) )
         {
-            throw new Exception( "Missing 'name' element in the application metadata file." );
+            throw new ApplicationServerException( "Missing 'name' element in the application metadata file." );
         }
 
         // ----------------------------------------------------------------------
@@ -183,7 +207,14 @@ public class DefaultApplicationDeployer
             }
         }
 
-        deployApplicationDirectory( appId, dest );
+        try
+        {
+            deployApplicationDirectory( appId, dest );
+        }
+        catch ( Exception e )
+        {
+            throw new ApplicationServerException( "Could not deploy the JAR", e );
+        }
     }
 
     protected void deployApplicationDirectory( String name, File location )
@@ -193,7 +224,7 @@ public class DefaultApplicationDeployer
 
         if ( deployments.containsKey( name ) )
         {
-            throw new Exception( "A application with the specified name ('" + name + "') already exists." );
+            throw new ApplicationServerException( "A application with the specified name ('" + name + "') already exists." );
         }
 
         // ----------------------------------------------------------------------
@@ -209,16 +240,16 @@ public class DefaultApplicationDeployer
 
         if ( !applicationConfigurationFile.exists() )
         {
-            throw new Exception( "The application '" + name + "' does not have a valid configuration: " +
-                                 applicationConfigurationFile + " does not exist!" );
+            throw new ApplicationServerException( "The application '" + name + "' does not have a valid " +
+                                                  "configuration: " + applicationConfigurationFile + " does not exist!" );
         }
 
         File applicationLibrary = new File( location, PlexusApplicationConstants.LIB_DIRECTORY );
 
         if ( !applicationLibrary.exists() )
         {
-            throw new Exception( "The application '" + name + "' does not have a valid library: " +
-                               applicationLibrary + " does not exist!" );
+            throw new ApplicationServerException( "The application '" + name + "' does not have a valid library: " +
+                                                  applicationLibrary + " does not exist!" );
         }
 
         // ----------------------------------------------------------------------
@@ -360,7 +391,7 @@ public class DefaultApplicationDeployer
     // ----------------------------------------------------------------------
 
     public void redeploy( String name, String url )
-        throws Exception
+        throws ApplicationServerException
     {
         ApplicationRuntimeProfile profile = getApplicationRuntimeProfile( name );
 
@@ -383,7 +414,7 @@ public class DefaultApplicationDeployer
     // ----------------------------------------------------------------------
 
     public void undeploy( String name )
-        throws Exception
+        throws ApplicationServerException
     {
         getLogger().info( "Undeploying '" + name + "'." );
 
@@ -397,7 +428,14 @@ public class DefaultApplicationDeployer
 
         ClassRealm realm = app.getCoreRealm();
 
-        realm.getWorld().disposeRealm( realm.getId() );
+        try
+        {
+            realm.getWorld().disposeRealm( realm.getId() );
+        }
+        catch ( NoSuchRealmException e )
+        {
+            getLogger().warn( "Error while disposing application realm '" + realm.getId() + "'" );
+        }
 
         DefaultDeployEvent event = createDeployEvent( profile );
 
@@ -421,13 +459,13 @@ public class DefaultApplicationDeployer
     }
 
     public ApplicationRuntimeProfile getApplicationRuntimeProfile( String applicationName )
-        throws Exception
+        throws ApplicationServerException
     {
         ApplicationRuntimeProfile profile = (ApplicationRuntimeProfile) deployments.get( applicationName );
 
         if ( profile == null )
         {
-            throw new Exception( "No such application: '" + applicationName + "'.");
+            throw new ApplicationServerException( "No such application: '" + applicationName + "'.");
         }
 
         return profile;
