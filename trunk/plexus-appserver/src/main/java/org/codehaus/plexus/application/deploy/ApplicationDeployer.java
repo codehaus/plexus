@@ -24,6 +24,7 @@ package org.codehaus.plexus.application.deploy;
 
 import org.codehaus.plexus.application.event.ApplicationListener;
 import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.application.ApplicationServerException;
 
 /**
  * @author Peter Donald
@@ -37,13 +38,13 @@ public interface ApplicationDeployer
     // ----------------------------------------------------------------------
 
     void deploy( String name, String location )
-        throws Exception;
+        throws ApplicationServerException;
 
     void redeploy( String name, String location )
-        throws Exception;
+        throws ApplicationServerException;
 
     void undeploy( String name )
-        throws Exception;
+        throws ApplicationServerException;
 
     // ----------------------------------------------------------------------
     // Listeners
@@ -58,5 +59,5 @@ public interface ApplicationDeployer
     // ----------------------------------------------------------------------
 
     ApplicationRuntimeProfile getApplicationRuntimeProfile( String applicationName )
-        throws Exception;
+        throws ApplicationServerException;
 }
