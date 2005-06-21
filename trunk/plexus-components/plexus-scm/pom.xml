@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>plexus</groupId>
+    <artifactId>plexus-components</artifactId>
+    <version>1.1</version>
+  </parent>
+  <artifactId>plexus-scm</artifactId>
+  <name>Plexus SCM</name>
+  <version>1.0-alpha-1-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven.scm</groupId>
+      <artifactId>maven-scm-api</artifactId>
+      <version>1.0-alpha-2-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-4-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>
