@@ -15,6 +15,11 @@
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-3</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
       <artifactId>plexus-appserver</artifactId>
       <version>1.0-alpha-1</version>
     </dependency>
