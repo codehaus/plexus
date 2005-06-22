@@ -26,7 +26,6 @@ import java.io.File;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
@@ -45,11 +44,16 @@ public class PlexusBundleRuntimeMojo
     extends AbstractMojo
 {
     /**
-     * @parameter expression="${basedir}"
-     *
+     * @parameter expression="${project.build.directory}/plexus-runtime"
      * @required
      */
-    private String basedir;
+    private File runtimePath;
+
+    /**
+     * @parameter expression="${project.build.directory}"
+     * @required
+     */
+    private File target;
 
     /**
      * @parameter expression="${project.build.finalName}"
@@ -65,13 +69,6 @@ public class PlexusBundleRuntimeMojo
      */
     private PlexusRuntimeBuilder builder;
 
-    /**
-     * @parameter expression="${project}"
-     *
-     * @required
-     */
-    private MavenProject project;
-
     public void execute()
         throws MojoExecutionException
     {
@@ -79,26 +76,10 @@ public class PlexusBundleRuntimeMojo
         //
         // ----------------------------------------------------------------------
 
-        String projectBasedir = project.getFile().getParentFile().getAbsolutePath();
-
-        File workingBasedir = null;
-
-        if ( new File( basedir ).isAbsolute() )
-        {
-            workingBasedir = new File( basedir );
-        }
-        else
-        {
-            workingBasedir = new File( projectBasedir, basedir );
-        }
-
-        File runtimeDirectory = new File( workingBasedir, "plexus-runtime" );
-
-        File outputFile = new File( workingBasedir, finalName + "-runtime.jar" );
-
         try
         {
-            builder.bundle( outputFile, runtimeDirectory );
+            builder.bundle( new File( target, finalName + "-runtime.jar" ),
+                            runtimePath );
         }
         catch ( PlexusRuntimeBuilderException e )
         {
