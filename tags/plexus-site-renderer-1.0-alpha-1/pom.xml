@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>plexus</groupId>
+    <artifactId>plexus-components</artifactId>
+    <version>1.1</version>
+  </parent>
+  <artifactId>plexus-site-renderer</artifactId>
+  <version>1.0-alpha-1</version>
+  <name>Plexus Site Renderer Component</name>
+  <dependencies>
+    <dependency>
+      <groupId>doxia</groupId>
+      <artifactId>doxia-core</artifactId>
+      <version>1.0-alpha-3</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-velocity</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-i18n</artifactId>
+      <version>1.0-beta-5</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-plexus-plugin</artifactId>
+        <version>1.1-alpha-3-20050620.064306-5</version>
+        <goals>
+          <goal>
+            <id>descriptor</id>
+          </goal>
+        </goals>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+    </plugins>
+  </build>
+</project>
