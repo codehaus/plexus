@@ -7,7 +7,7 @@
   <defaults>
     <default>
       <key>package</key>
-      <value>org.codehaus.plexus.cling.appmodel</value>
+      <value>org.codehaus.plexus.cling.model</value>
     </default>
   </defaults>
   <classes>
@@ -20,6 +20,16 @@
           <name>description</name>
           <version>1.0.0</version>
           <type>String</type>
+        </field>
+        <field>
+          <name>repositoryCache</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <default>lib</default>
+          <description><![CDATA[
+            The local repository used for caching dependencies used in this application. This is 
+            a relative path, since it should be insulated from changes caused by other apps.
+          ]]></description>
         </field>
         <field>
           <name>main</name>
@@ -41,6 +51,24 @@
           <description>Valid usage option-sets.</description>
           <association>
             <type>Usage</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>classpath</name>
+          <version>1.0.0</version>
+          <description>The classpath elements for this application.</description>
+          <association>
+            <type>ClasspathEntry</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>repositories</name>
+          <version>1.0.0</version>
+          <description>The list of repositories for downloading this application's dependencies</description>
+          <association>
+            <type>Repository</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
@@ -87,6 +115,15 @@
       <description>A single CLI option's specification</description>
       <fields>
         <field>
+          <name>id</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <description><![CDATA[
+            This is the unique id for this option within this mode. The id will be used as the context key for
+            injecting this option's value into the application's configuration via an expression evaluator.
+          ]]></description>
+        </field>
+        <field>
           <name>short</name>
           <version>1.0.0</version>
           <type>char</type>
@@ -101,6 +138,13 @@
           <description>The long name for this option</description>
         </field>
         <field>
+          <name>type</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <default>String</default>
+          <description>The type of this option, for validation purposes.</description>
+        </field>
+        <field>
           <name>required</name>
           <version>1.0.0</version>
           <type>boolean</type>
@@ -113,7 +157,96 @@
           <type>String</type>
           <description>The purpose this option serves in configuring the application</description>
         </field>
-        
+      </fields>
+      <codeSegments>
+        <codeSegment>
+          <version>1.0.0</version>
+          <code><![CDATA[
+    public boolean hasShortOption()
+    {
+        return !"$".equals(getShortOption());
+    }
+          ]]></code>
+        </codeSegment>
+      </codeSegments>
+    </class>
+    <class>
+      <name>ClasspathEntry</name>
+      <version>1.0.0</version>
+      <description>An element in the application's classpath</description>
+    </class>
+    <class>
+      <name>Directory</name>
+      <superClass>ClasspathEntry</superClass>
+      <version>1.0.0</version>
+      <description>A local directory to be used as a classpath entry</description>
+      <fields>
+        <field>
+          <name>path</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <description><![CDATA[
+            The path of this local directory. This directory can only be relative to
+            ${app.home}.
+          ]]></description>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>Dependency</name>
+      <superClass>ClasspathEntry</superClass>
+      <version>1.0.0</version>
+      <description>An artifact from the maven repository which will be used by this application.</description>
+      <fields>
+        <field>
+          <name>groupId</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <required>true</required>
+          <description>The artifact's groupId</description>
+        </field>
+        <field>
+          <name>artifactId</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <required>true</required>
+          <description>The artifact's artifactId</description>
+        </field>
+        <field>
+          <name>version</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <required>true</required>
+          <description>The artifact's version</description>
+        </field>
+        <field>
+          <name>type</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <default>jar</default>
+          <description>The artifact's type</description>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>Repository</name>
+      <version>1.0.0</version>
+      <description>A repository specification</description>
+      <fields>
+        <field>
+          <name>id</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <required>true</required>
+          <description>The identifier for this repository, which can be used to map in authentication info</description>
+        </field>
+        <field>
+          <name>url</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <required>true</required>
+          <description>The URL used to access this repository</description>
+        </field>
       </fields>
     </class>
   </classes>

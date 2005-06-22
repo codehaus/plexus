@@ -166,7 +166,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
-          <tagBase>https://svn.codehaus.org/plexus/tags</tagBase>
+          <tagBase>https://svn.codehaus.org/home/projects/plexus/scm/tags</tagBase>
         </configuration>
       </plugin>
     </plugins>

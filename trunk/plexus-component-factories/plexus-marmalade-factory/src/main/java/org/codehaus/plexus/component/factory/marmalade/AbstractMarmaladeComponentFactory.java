@@ -2,6 +2,8 @@
 package org.codehaus.plexus.component.factory.marmalade;
 
 import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.marmalade.compat.ant.discovery.AntBasedDiscoveryStrategy;
+import org.codehaus.marmalade.compat.jelly.discovery.JellyCompatTaglibDefinitionStrategy;
 import org.codehaus.marmalade.launch.MarmaladeLaunchException;
 import org.codehaus.marmalade.launch.MarmaladeLauncher;
 import org.codehaus.marmalade.metamodel.MarmaladeTaglibResolver;
@@ -83,24 +85,23 @@ public abstract class AbstractMarmaladeComponentFactory
 
         try
         {
-            URL it0015Resource2 = realm.getResource( "META-INF/marmalade/it0015.def" );
-            marmaladeLog.log(CommonLogLevels.INFO, "it0015 taglib definition resource from component realm is: " + it0015Resource2);
-            
             MarmaladeLauncher launcher = new MarmaladeLauncher();
             
             launcher.withLog( marmaladeLog );
-            launcher.withInputURL(scriptLocation);
+            
+            launcher.withInputURL( scriptLocation );
+            
+            launcher.withAdditionalTaglibDefinitionStrategy( new AntBasedDiscoveryStrategy() );
+            
+            launcher.withAdditionalTaglibDefinitionStrategy( new JellyCompatTaglibDefinitionStrategy() );
             
             launcher.withAdditionalTaglibDefinitionStrategies( MarmaladeTaglibResolver.NO_PASSTHROUGH_STRATEGY_CHAIN );
             
-            marmaladeLog.log(CommonLogLevels.INFO, "Using classloader that delegates to realm: " + realm.getId());
             launcher.withClassLoader( new RealmDelegatingClassLoader( realm ) );
             
             MarmaladeScript script = launcher.buildScript();
 
             MarmaladeTag rootTag = script.getRoot();
-            
-            marmaladeLog.log(CommonLogLevels.INFO, "Root tag type: " + rootTag);
             
             PlexusComponentTag componentTag = (PlexusComponentTag) rootTag;
 
