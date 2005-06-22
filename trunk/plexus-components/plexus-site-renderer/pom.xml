@@ -8,7 +8,7 @@
     <version>1.1</version>
   </parent>
   <artifactId>plexus-site-renderer</artifactId>
-  <version>1.0-alpha-1-SNAPSHOT</version>
+  <version>1.0-alpha-1</version>
   <name>Plexus Site Renderer Component</name>
   <dependencies>
     <dependency>
@@ -37,6 +37,7 @@
             <id>descriptor</id>
           </goal>
         </goals>
+        <groupId>org.apache.maven.plugins</groupId>
       </plugin>
     </plugins>
   </build>
