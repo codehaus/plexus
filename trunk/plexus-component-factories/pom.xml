@@ -7,7 +7,7 @@
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-component-factories</artifactId>
-  <version>1.0-alpha-4-SNAPSHOT</version>
+  <version>1.0-alpha-4</version>
   <name>Plexus Component Factories</name>
   <inceptionYear>2001</inceptionYear>
   <packaging>pom</packaging>
@@ -15,7 +15,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-4-SNAPSHOT</version>
+      <version>1.0-alpha-4</version>
     </dependency>
   </dependencies>
   <modules>
