@@ -1,7 +1,9 @@
 package org.codehaus.plexus.maven.plugin;
 
 /*
- * Copyright (c) 2004, Codehaus.org
+ * The MIT License
+ *
+ * Copyright (c) 2004, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -27,74 +29,75 @@ import java.io.File;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
-import org.codehaus.plexus.builder.application.ApplicationBuilder;
-import org.codehaus.plexus.builder.application.ApplicationBuilderException;
+import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
 
 /**
- * @goal bundle-application
+ * @goal add-app
  *
  * @requiresDependencyResolution
  *
- * @description Packages the Plexus application into a redistributable jar file.
- *
- * @phase package
+ * @description Adds the Plexus application to the runtime
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class PlexusBundleApplicationMojo
+public class AddPlexusApplicationMojo
     extends AbstractMojo
 {
+    // ----------------------------------------------------------------------
+    // Configurable properties
+    // ----------------------------------------------------------------------
+
     /**
-     * @parameter expression="${basedir}"
-     *
+     * @parameter expression="${project.build.directory}/plexus-test-runtime"
      * @required
      */
-    private File basedir;
+    private File runtimePath;
 
     /**
      * @parameter expression="${project.build.directory}"
-     *
      * @required
      */
     private File target;
 
     /**
      * @parameter expression="${project.build.finalName}"
-     *
      * @required
      */
     private String finalName;
 
-    /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.application.ApplicationBuilder}"
-     *
-     * @required
-     */
-    private ApplicationBuilder builder;
+    // ----------------------------------------------------------------------
+    // Read-only
+    // ----------------------------------------------------------------------
 
     /**
-     * @parameter expression="${project.build.directory}/plexus-application"
-     *
+     * @parameter expression="${component.org.codehaus.plexus.builder.runtimePath.PlexusRuntimeBuilder}"
      * @required
+     * @readonly
      */
-    private File applicationAssemblyDirectory;
+    private PlexusRuntimeBuilder runtimeBuilder;
 
     public void execute()
         throws MojoExecutionException
     {
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
+        File applicationJarFile = new File( target, finalName + ".jar" );
+
+        if ( !applicationJarFile.canRead() )
+        {
+            throw new MojoExecutionException( "Can't read Plexus application artifact '" + applicationJarFile.getAbsolutePath() + "'." );
+        }
 
         try
         {
-            builder.bundle( new File( target, finalName + ".jar" ),
-                            applicationAssemblyDirectory );
+            // ----------------------------------------------------------------------
+            // Copy the application
+            // ----------------------------------------------------------------------
+
+            runtimeBuilder.addPlexusApplication( applicationJarFile, runtimePath );
         }
-        catch ( ApplicationBuilderException e )
+        catch ( Exception e )
         {
-            throw new MojoExecutionException( "Error while bundling application.", e );
+            throw new MojoExecutionException( "Error while building test runtimePath.", e );
         }
     }
 }

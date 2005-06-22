@@ -29,7 +29,6 @@ import java.util.Set;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
@@ -47,61 +46,65 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
 public class PlexusContainerGenerator
     extends AbstractMojo
 {
-    /**
-     * @parameter expression="${basedir}"
-     *
-     * @required
-     */
-    private String basedir;
+    // ----------------------------------------------------------------------
+    // Configurable properties
+    // ----------------------------------------------------------------------
 
     /**
-     * @parameter expression="${project.artifacts}"
-     *
+     * @parameter expression="${project.build.directory}/plexus-runtime"
      * @required
      */
-    private Set projectArtifacts;
+    private File runtimePath;
 
     /**
-     * @parameter expression="${plexus.runtime.configuration}"
-     *
+     * @parameter expression="${project.build.directory}"
      * @required
      */
-    private String plexusConfiguration;
+    private File target;
 
     /**
-     * @parameter expression="${plexus.runtime.configuration.propertiesfile}"
-     *
+     * @parameter expression="${runtimeConfiguration}"
      * @required
      */
-    private String configurationProperties;
+    private File runtimeConfiguration;
+
+    /**
+     * @parameter expression="${runtimeConfigurationProperties}"
+     * @required
+     */
+    private File runtimeConfigurationProperties;
+
+    // ----------------------------------------------------------------------
+    // Read-only
+    // ----------------------------------------------------------------------
 
     /**
      * @parameter expression="${component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder}"
-     *
      * @required
+     * @readonly
      */
     private PlexusRuntimeBuilder builder;
 
     /**
      * @parameter expression="${localRepository}"
-     *
      * @required
+     * @readonly
      */
     private ArtifactRepository localRepository;
 
     /**
-     * @parameter expression="${project.remoteArtifactRepositories}"
-     *
+     * @parameter expression="${project.artifacts}"
      * @required
+     * @readonly
      */
-    private List remoteRepositories;
+    private Set projectArtifacts;
 
     /**
-     * @parameter expression="${project}"
-     *
+     * @parameter expression="${project.remoteArtifactRepositories}"
      * @required
+     * @readonly
      */
-    private MavenProject project;
+    private List remoteRepositories;
 
     public void execute()
         throws MojoExecutionException
@@ -110,42 +113,14 @@ public class PlexusContainerGenerator
         //
         // ----------------------------------------------------------------------
 
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
-        String projectBasedir = project.getFile().getParentFile().getAbsolutePath();
-
-        File workingBasedir = null;
-
-        if ( new File( basedir ).isAbsolute() )
-        {
-            workingBasedir = new File( basedir );
-        }
-        else
-        {
-            workingBasedir = new File( projectBasedir, basedir );
-        }
-
-        File outputDirectory = new File( workingBasedir, "plexus-runtime" );
-
-        File plexusConfigurationFile = new File( projectBasedir, plexusConfiguration );
-
-        File configurationPropertiesFile = null;
-
-        if ( configurationProperties != null )
-        {
-            configurationPropertiesFile = new File( projectBasedir, configurationProperties );
-        }
-
         try
         {
-            builder.build( outputDirectory,
+            builder.build( runtimePath,
                            remoteRepositories,
                            localRepository,
                            projectArtifacts,
-                           plexusConfigurationFile,
-                           configurationPropertiesFile );
+                           runtimeConfiguration,
+                           runtimeConfigurationProperties );
         }
         catch ( PlexusRuntimeBuilderException e )
         {
