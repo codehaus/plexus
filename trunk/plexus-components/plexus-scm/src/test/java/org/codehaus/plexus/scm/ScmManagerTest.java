@@ -17,7 +17,6 @@ package org.codehaus.plexus.scm;
  */
 
 import org.apache.maven.scm.ScmFileSet;
-import org.apache.maven.scm.ScmTestCase;
 import org.apache.maven.scm.repository.ScmRepositoryException;
 import org.codehaus.plexus.PlexusTestCase;
 
