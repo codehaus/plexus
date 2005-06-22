@@ -39,9 +39,9 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
  *
  * @requiresDependencyResolution
  *
- * @description Generates a complete runtime with the application and it's requires services.
+ * @description Generates a complete runtimePath with the application and it's requires services.
  *
- * @executePhase package
+ * @execute phase="package"
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -54,74 +54,71 @@ public class PlexusTestRuntimeGenerator
     // ----------------------------------------------------------------------
 
     /**
+     * @parameter expression="${project.build.directory}/plexus-test-runtime"
+     * @required
+     */
+    private File runtimePath;
+
+    /**
      * @parameter expression="${project.build.directory}"
-     *
      * @required
      */
     private File target;
 
     /**
-     * @parameter expression="${project.build.finalName}"
-     *
-     * @required
-     */
-    private String finalName;
-
-    /**
-     * @parameter expression="${project.artifacts}"
-     *
-     * @required
-     */
-    private Set projectArtifacts;
-
-    /**
      * @parameter expression="${runtimeConfiguration}"
-     *
      * @required
      */
     private File testRuntimeConfiguration;
 
     /**
      * @parameter expression="${runtimeConfigurationProperties}"
-     *
      * @required
      */
     private File testRuntimeConfigurationProperties;
 
+    /**
+     * @parameter expression="${project.build.finalName}"
+     * @required
+     */
+    private String finalName;
+
     // ----------------------------------------------------------------------
-    // Components
+    // Read-only
     // ----------------------------------------------------------------------
 
     /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder}"
-     *
+     * @parameter expression="${project.artifacts}"
      * @required
+     * @readonly
+     */
+    private Set projectArtifacts;
+
+    /**
+     * @parameter expression="${component.org.codehaus.plexus.builder.runtimePath.PlexusRuntimeBuilder}"
+     * @required
+     * @readonly
      */
     private PlexusRuntimeBuilder runtimeBuilder;
 
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
     /**
      * @parameter expression="${localRepository}"
-     *
      * @required
+     * @readonly
      */
     private ArtifactRepository localRepository;
 
     /**
      * @parameter expression="${project.remoteArtifactRepositories}"
-     *
      * @required
+     * @readonly
      */
     private List remoteRepositories;
 
     public void execute()
         throws MojoExecutionException
     {
-        File applicationJarFile = PlexusBundleApplicationMojo.getApplicationJarFile( target,
-                                                                                     finalName );
+        File applicationJarFile = new File( target, finalName + ".jar" );
 
         if ( !applicationJarFile.canRead() )
         {
@@ -130,9 +127,7 @@ public class PlexusTestRuntimeGenerator
 
         try
         {
-            File runtimeRoot = new File( target, "plexus-test-runtime" );
-
-            runtimeBuilder.build( runtimeRoot,
+            runtimeBuilder.build( runtimePath,
                                   remoteRepositories,
                                   localRepository,
                                   projectArtifacts,
@@ -143,7 +138,7 @@ public class PlexusTestRuntimeGenerator
             // Copy the application
             // ----------------------------------------------------------------------
 
-            runtimeBuilder.addPlexusApplication( applicationJarFile, runtimeRoot );
+            runtimeBuilder.addPlexusApplication( applicationJarFile, runtimePath );
 
             // ----------------------------------------------------------------------
             // Copy any services
@@ -155,13 +150,13 @@ public class PlexusTestRuntimeGenerator
 
                 if ( artifact.getType().equals( "plexus-service" ) )
                 {
-                    runtimeBuilder.addPlexusService( artifact.getFile(), runtimeRoot );
+                    runtimeBuilder.addPlexusService( artifact.getFile(), runtimePath );
                 }
             }
         }
         catch ( Exception e )
         {
-            throw new MojoExecutionException( "Error while building test runtime.", e );
+            throw new MojoExecutionException( "Error while building test runtimePath.", e );
         }
     }
 }
