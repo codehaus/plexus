@@ -33,15 +33,15 @@ public class MarmaladeClasspathComponentFactoryTest extends TestCase {
             Embedder container = new Embedder();
             ClassWorld world = new ClassWorld();
             
+            Class.forName("org.codehaus.plexus.component.factory.marmalade.TestTaglib");
+            
+            ClassRealm realm = world.newRealm("plexus.core", getClass().getClassLoader());
+            realm.addConstituent(file.getAbsoluteFile().getParentFile().toURL());
+            
             String role="role";
             String hint = "hint";
             
-            String key = role + hint;
-            
             container.start(world);
-            
-            ClassRealm realm = container.getContainer().getComponentRealm(key);
-            realm.addConstituent(file.getAbsoluteFile().getParentFile().toURL());
             
             ComponentDescriptor descriptor = new ComponentDescriptor();
             descriptor.setRole(role);
