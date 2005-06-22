@@ -82,7 +82,8 @@ public class PlexusRuntimeBuilderTest
             artifactRepositoryFactory.createArtifactRepository( "local",
                                                                 "file://" + getTestFile( "src/test/repository" ).getAbsolutePath(),
                                                                 repositoryLayout,
-                                                                null );
+                                                                ArtifactRepository.SNAPSHOT_POLICY_ALWAYS,
+                                                                ArtifactRepository.CHECKSUM_POLICY_FAIL );
 
         Set projectArtifacts = new HashSet();
 

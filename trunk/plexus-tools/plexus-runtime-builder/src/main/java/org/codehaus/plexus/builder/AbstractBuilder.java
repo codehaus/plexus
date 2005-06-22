@@ -66,13 +66,13 @@ public abstract class AbstractBuilder
     // Components
     // ----------------------------------------------------------------------
 
-    /** @requirement */
+    /** @plexus.requirement */
     private ArtifactResolver artifactResolver;
 
-    /** @requirement */
+    /** @plexus.requirement */
     private ArtifactFactory artifactFactory;
 
-    /** @requirement */
+    /** @plexus.requirement */
     private MavenProjectBuilder projectBuilder;
 
     // ----------------------------------------------------------------------
@@ -237,37 +237,37 @@ public abstract class AbstractBuilder
     {
         ArtifactResolutionResult result;
 
-        MavenMetadataSource metadata = new MavenMetadataSource( artifactResolver, projectBuilder, artifactFactory );
+        MavenMetadataSource metadata = new MavenMetadataSource( artifactResolver,
+                                                                projectBuilder,
+                                                                artifactFactory );
 
-        Set artifacts;
+        Set resolvedArtifacts = new HashSet();
 
-        if ( resolveTransitively )
+        for ( Iterator it = sourceArtifacts.iterator(); it.hasNext(); )
         {
-            result = artifactResolver.resolveTransitively( sourceArtifacts,
-                                                           remoteRepositories,
-                                                           localRepository,
-                                                           metadata,
-                                                           artifactFilter );
+            Artifact artifact = (Artifact) it.next();
 
-            // TODO: Assert that there wasn't any conflicts.
-
-            artifacts = new HashSet( result.getArtifacts().values() );
-        }
-        else
-        {
-            artifacts = new HashSet();
-
-            for ( Iterator it = sourceArtifacts.iterator(); it.hasNext(); )
+            if ( resolveTransitively )
             {
-                Artifact artifact = (Artifact) it.next();
+                result = artifactResolver.resolveTransitively( resolvedArtifacts,
+                                                               artifact,
+                                                               localRepository,
+                                                               remoteRepositories,
+                                                               metadata,
+                                                               artifactFilter );
+                // TODO: Assert that there wasn't any conflicts.
 
+                resolvedArtifacts.addAll( result.getArtifacts() );
+            }
+            else
+            {
                 artifactResolver.resolve( artifact, remoteRepositories, localRepository );
 
-                artifacts.add( artifact );
+                resolvedArtifacts.add( artifact );
             }
         }
 
-        return artifacts;
+        return resolvedArtifacts;
     }
 
     protected String resolveVersion( String groupId,
