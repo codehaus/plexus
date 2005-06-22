@@ -9,7 +9,6 @@ import org.codehaus.marmalade.launch.MarmaladeLauncher;
 import org.codehaus.marmalade.metamodel.MarmaladeTaglibResolver;
 import org.codehaus.marmalade.model.MarmaladeScript;
 import org.codehaus.marmalade.model.MarmaladeTag;
-import org.codehaus.marmalade.monitor.log.CommonLogLevels;
 import org.codehaus.marmalade.monitor.log.DefaultLog;
 import org.codehaus.marmalade.monitor.log.MarmaladeLog;
 import org.codehaus.plexus.PlexusContainer;
@@ -48,19 +47,17 @@ public abstract class AbstractMarmaladeComponentFactory
     public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm classRealm, PlexusContainer container )
         throws ComponentInstantiationException
     {
-        ClassRealm componentRealm = container.getComponentRealm( componentDescriptor.getComponentKey() );
-
-        URL scriptLocation = getScriptLocation( componentDescriptor, componentRealm );
+        URL scriptLocation = getScriptLocation( componentDescriptor, container.getContainerRealm() );
 
         Object result = null;
 
         try
         {
-            result = parseComponent( scriptLocation, componentRealm );
+            result = parseComponent( scriptLocation, container.getContainerRealm() );
         }
         catch ( Exception e )
         {
-            componentRealm.display();
+            container.getContainerRealm().display();
 
             if ( e instanceof ComponentInstantiationException )
             {
@@ -91,11 +88,11 @@ public abstract class AbstractMarmaladeComponentFactory
             
             launcher.withInputURL( scriptLocation );
             
+            launcher.withAdditionalTaglibDefinitionStrategies( MarmaladeTaglibResolver.NO_PASSTHROUGH_STRATEGY_CHAIN );
+            
             launcher.withAdditionalTaglibDefinitionStrategy( new AntBasedDiscoveryStrategy() );
             
             launcher.withAdditionalTaglibDefinitionStrategy( new JellyCompatTaglibDefinitionStrategy() );
-            
-            launcher.withAdditionalTaglibDefinitionStrategies( MarmaladeTaglibResolver.NO_PASSTHROUGH_STRATEGY_CHAIN );
             
             launcher.withClassLoader( new RealmDelegatingClassLoader( realm ) );
             

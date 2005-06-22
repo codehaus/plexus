@@ -3,10 +3,10 @@
   <parent>
     <artifactId>plexus-component-factories</artifactId>
     <groupId>plexus</groupId>
-    <version>1.0-alpha-4</version>
+    <version>1.0-alpha-5-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-marmalade-factory</artifactId>
-  <version>1.0-alpha-4</version>
+  <version>1.0-alpha-5-SNAPSHOT</version>
   <name>Plexus Marmalade Factory</name>
   <dependencies>
     <dependency>

@@ -3,10 +3,10 @@
   <parent>
     <artifactId>plexus-component-factories</artifactId>
     <groupId>plexus</groupId>
-    <version>1.0-alpha-4</version>
+    <version>1.0-alpha-5-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-bsh-factory</artifactId>
-  <version>1.0-alpha-6</version>
+  <version>1.0-alpha-7-SNAPSHOT</version>
   <name>Plexus BSH Factory</name>
   <dependencies>
     <dependency>
