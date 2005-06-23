@@ -48,7 +48,7 @@ import org.codehaus.plexus.builder.application.ApplicationBuilderException;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class PlexusApplicationGenerator
+public class AssemblePlexusApplicationMojo
     extends AbstractMojo
 {
     // ----------------------------------------------------------------------
@@ -77,27 +77,22 @@ public class PlexusApplicationGenerator
      */
     private String applicationName;
 
-    // ----------------------------------------------------------------------
-    // Read Only Configuration
-    // ----------------------------------------------------------------------
-
-    /**
-     * @parameter expression="${project.build.directory}"
-     * @required
-     */
-    private File target;
-
-    /**
-     * @parameter expression="${project.artifacts}"
-     * @required
-     */
-    private Set applicationArtifacts;
-
     /**
      * @parameter expression="${project.build.directory}/plexus-application"
      * @required
      */
     private File applicationAssemblyDirectory;
+
+    // ----------------------------------------------------------------------
+    // Read Only Configuration
+    // ----------------------------------------------------------------------
+
+    /**
+     * @parameter expression="${project.artifacts}"
+     * @readonly
+     * @required
+     */
+    private Set applicationArtifacts;
 
     // ----------------------------------------------------------------------
     // Components

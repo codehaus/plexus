@@ -95,7 +95,7 @@ public class PlexusTestRuntimeGenerator
     private Set projectArtifacts;
 
     /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.runtimePath.PlexusRuntimeBuilder}"
+     * @parameter expression="${component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder}"
      * @required
      * @readonly
      */
