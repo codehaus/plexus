@@ -1,7 +1,9 @@
 package org.codehaus.plexus.maven.plugin;
 
 /*
- * Copyright (c) 2004, Codehaus.org
+ * The MIT License
+ *
+ * Copyright (c) 2004, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -40,7 +42,7 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class PlexusBundleRuntimeMojo
+public class BundlePlexusRuntimeMojo
     extends AbstractMojo
 {
     /**
