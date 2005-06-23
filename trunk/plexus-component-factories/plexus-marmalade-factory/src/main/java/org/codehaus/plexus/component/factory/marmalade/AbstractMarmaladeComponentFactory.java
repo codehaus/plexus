@@ -3,7 +3,6 @@ package org.codehaus.plexus.component.factory.marmalade;
 
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.marmalade.compat.ant.discovery.AntBasedDiscoveryStrategy;
-import org.codehaus.marmalade.compat.jelly.discovery.JellyCompatTaglibDefinitionStrategy;
 import org.codehaus.marmalade.launch.MarmaladeLaunchException;
 import org.codehaus.marmalade.launch.MarmaladeLauncher;
 import org.codehaus.marmalade.metamodel.MarmaladeTaglibResolver;
@@ -91,8 +90,6 @@ public abstract class AbstractMarmaladeComponentFactory
             launcher.withAdditionalTaglibDefinitionStrategies( MarmaladeTaglibResolver.NO_PASSTHROUGH_STRATEGY_CHAIN );
             
             launcher.withAdditionalTaglibDefinitionStrategy( new AntBasedDiscoveryStrategy() );
-            
-            launcher.withAdditionalTaglibDefinitionStrategy( new JellyCompatTaglibDefinitionStrategy() );
             
             launcher.withClassLoader( new RealmDelegatingClassLoader( realm ) );
             
