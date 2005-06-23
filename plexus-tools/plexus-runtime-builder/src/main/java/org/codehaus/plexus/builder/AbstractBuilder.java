@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
@@ -241,26 +242,30 @@ public abstract class AbstractBuilder
                                                                 projectBuilder,
                                                                 artifactFactory );
 
-        Set resolvedArtifacts = new HashSet();
+        Set resolvedArtifacts;
 
-        for ( Iterator it = sourceArtifacts.iterator(); it.hasNext(); )
+        Artifact originatingArtifact = artifactFactory.createArtifact( "dummy", "dummy", "dummy", "dummy", "dummy", "dummy" );
+
+        if ( resolveTransitively )
         {
-            Artifact artifact = (Artifact) it.next();
+            result = artifactResolver.resolveTransitively( sourceArtifacts,
+                                                           originatingArtifact,
+                                                           localRepository,
+                                                           remoteRepositories,
+                                                           metadata,
+                                                           artifactFilter );
+            // TODO: Assert that there wasn't any conflicts.
 
-            if ( resolveTransitively )
-            {
-                result = artifactResolver.resolveTransitively( resolvedArtifacts,
-                                                               artifact,
-                                                               localRepository,
-                                                               remoteRepositories,
-                                                               metadata,
-                                                               artifactFilter );
-                // TODO: Assert that there wasn't any conflicts.
+            resolvedArtifacts = result.getArtifacts();
+        }
+        else
+        {
+            resolvedArtifacts = new HashSet();;
 
-                resolvedArtifacts.addAll( result.getArtifacts() );
-            }
-            else
+            for ( Iterator it = sourceArtifacts.iterator(); it.hasNext(); )
             {
+                Artifact artifact = (Artifact) it.next();
+
                 artifactResolver.resolve( artifact, remoteRepositories, localRepository );
 
                 resolvedArtifacts.add( artifact );
