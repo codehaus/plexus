@@ -19,6 +19,7 @@ package org.codehaus.plexus.scm;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,7 @@ import org.apache.maven.scm.command.diff.DiffScmResult;
 import org.apache.maven.scm.command.status.StatusScmResult;
 import org.apache.maven.scm.command.tag.TagScmResult;
 import org.apache.maven.scm.command.update.UpdateScmResult;
+import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.provider.ScmProviderRepository;
 import org.apache.maven.scm.repository.ScmRepository;
@@ -54,6 +56,8 @@ public class DefaultScmManager
     implements ScmManager, Initializable
 {
     private Map scmProviders;
+
+    private List loggers = new ArrayList();
 
     private final static String ILLEGAL_SCM_URL = "The scm url must be on the form " +
                                                   "'scm:<scm provider><delimiter><provider specific part>' " +
@@ -285,6 +289,12 @@ public class DefaultScmManager
         return (AddScmResult) checkScmResult( AddScmResult.class, scmResult );
     }
 
+    public void addListener( ScmLogger logger )
+        throws NoSuchScmProviderException
+    {
+        loggers.add( logger );
+    }
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -294,6 +304,13 @@ public class DefaultScmManager
         throws ScmException
     {
         ScmProvider scmProvider = getScmProvider( repository.getProvider() );
+
+        for ( Iterator i = loggers.iterator(); i.hasNext(); )
+        {
+            ScmLogger logger = (ScmLogger) i.next();
+
+            scmProvider.addListener( logger );
+        }
 
         return scmProvider.execute( commandName, repository.getProviderRepository(), fileSet, parameters );
     }
