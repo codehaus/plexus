@@ -26,6 +26,7 @@ import org.apache.maven.scm.command.diff.DiffScmResult;
 import org.apache.maven.scm.command.status.StatusScmResult;
 import org.apache.maven.scm.command.tag.TagScmResult;
 import org.apache.maven.scm.command.update.UpdateScmResult;
+import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.apache.maven.scm.repository.ScmRepositoryException;
 
@@ -49,6 +50,9 @@ public interface ScmManager
     	throws ScmRepositoryException, NoSuchScmProviderException;
 
     List validateScmRepository( String scmUrl );
+
+    void addListener( ScmLogger logger )
+        throws NoSuchScmProviderException;
 
     // ----------------------------------------------------------------------
     // Scm Commands
