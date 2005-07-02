@@ -113,6 +113,10 @@ public class DefaultTaskQueue
     // TaskQueue Implementation
     // ----------------------------------------------------------------------
 
+    // ----------------------------------------------------------------------
+    // Queue operations
+    // ----------------------------------------------------------------------
+
     public boolean put( Task task )
         throws TaskQueueException
     {
@@ -190,6 +194,19 @@ public class DefaultTaskQueue
             {
                 return task;
             }
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // Queue Inspection
+    // ----------------------------------------------------------------------
+
+    public List getQueueSnapshot()
+        throws TaskQueueException
+    {
+        synchronized( queue )
+        {
+            return Collections.unmodifiableList( new ArrayList( queue ) );
         }
     }
 

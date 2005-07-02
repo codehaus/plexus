@@ -1,5 +1,7 @@
 package org.codehaus.plexus.taskqueue;
 
+import java.util.List;
+
 /*
  * The MIT License
  *
@@ -33,6 +35,10 @@ public interface TaskQueue
 {
     String ROLE = TaskQueue.class.getName();
 
+    // ----------------------------------------------------------------------
+    // Queue operations
+    // ----------------------------------------------------------------------
+
     /**
      * @param task The task to add to the queue.
      * @return Returns true if the task was accepted into the queue.
@@ -41,5 +47,12 @@ public interface TaskQueue
         throws TaskQueueException;
 
     Task take()
+        throws TaskQueueException;
+
+    // ----------------------------------------------------------------------
+    // Queue Inspection
+    // ----------------------------------------------------------------------
+
+    List getQueueSnapshot()
         throws TaskQueueException;
 }
