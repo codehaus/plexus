@@ -18,6 +18,7 @@ package org.codehaus.plexus.formica.action;
 
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.util.ExceptionUtils;
 import org.codehaus.plexus.action.AbstractAction;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
@@ -31,6 +32,8 @@ import org.codehaus.plexus.summit.rundata.RunData;
 import org.codehaus.plexus.summit.view.ViewContext;
 
 import java.util.Map;
+
+import ognl.OgnlException;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -52,6 +55,8 @@ public abstract class AbstractEntityAction
 
     public static final String ENTITY = "entity";
 
+    public static final String RUNDATA = "data";
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -70,7 +75,7 @@ public abstract class AbstractEntityAction
 
     protected String getFailureTarget( Form form )
     {
-        return form.getAdd().getViewOnFailure();        
+        return form.getAdd().getViewOnFailure();
     }
 
     public void execute( Map map )
@@ -91,13 +96,28 @@ public abstract class AbstractEntityAction
         // the user.
         // ----------------------------------------------------------------------
 
-        //TODO need a way to set views easily
-
-        RunData data = (RunData) map.get( "data" );
+        RunData data = (RunData) map.get( RUNDATA );
 
         if ( fvr.valid() )
         {
-            uponSuccessfulValidation( form, entityId, map );
+            try
+            {
+                uponSuccessfulValidation( form, entityId, map );
+            }
+            catch( Exception e )
+            {
+                // ----------------------------------------------------------------------
+                // If we have an OgnlException lets pull out the root reason and
+                // throw that to give the user more information.
+                // ----------------------------------------------------------------------
+
+                if ( e instanceof OgnlException )
+                {
+                    throw (Exception) ((OgnlException)e).getReason();
+                }
+
+                throw e;
+            }
 
             data.setTarget( getSuccessTarget( form ) );
         }
