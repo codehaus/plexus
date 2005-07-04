@@ -20,18 +20,6 @@ public class CallMethod
     protected void uponSuccessfulValidation( Form form, String entityId, Map parameters )
         throws Exception
     {
-        try
-        {
-            Ognl.getValue( validateExpression( form.getAdd().getExpression() ), parameters, getApplicationComponent( form ) );
-        }
-        catch ( MethodFailedException e )
-        {
-            Throwable t = e.getReason();
-
-            if ( t instanceof Exception )
-            {
-                throw (Exception) t;
-            }
-        }
+        Ognl.getValue( validateExpression( form.getAdd().getExpression() ), parameters, getApplicationComponent( form ) );
     }
 }
