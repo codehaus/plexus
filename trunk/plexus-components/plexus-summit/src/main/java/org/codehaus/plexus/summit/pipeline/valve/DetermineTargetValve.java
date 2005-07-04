@@ -21,6 +21,9 @@ import java.io.IOException;
 import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.resolver.Resolver;
 import org.codehaus.plexus.summit.rundata.RunData;
+import org.codehaus.plexus.summit.view.ViewContext;
+import org.codehaus.plexus.summit.SummitConstants;
+import org.codehaus.plexus.util.ExceptionUtils;
 
 /**
  * @plexus.component
@@ -38,7 +41,20 @@ public class DetermineTargetValve
     public void invoke( RunData data )
         throws IOException, ValveInvocationException
     {
-        if ( !data.hasTarget() )
+        if ( data.hasError() )
+        {
+            // ----------------------------------------------------------------------
+            // If an error has occurred then set the view to the default error view
+            // and push the stack trace into the context.
+            // ----------------------------------------------------------------------
+
+            data.setTarget( resolver.getErrorView() );
+
+            ViewContext viewContext = (ViewContext) data.getMap().get( SummitConstants.VIEW_CONTEXT );
+
+            viewContext.put( SummitConstants.STACK_TRACE, ExceptionUtils.getFullStackTrace( data.getError() ) );
+        }
+        else if ( !data.hasTarget() )
         {
             String target = data.getParameters().getString( "target" );
 
