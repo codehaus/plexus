@@ -153,4 +153,13 @@ public interface RunData
      * Get the servlet context for this turbine webapp.
      */
     public ServletContext getServletContext();
+
+    /** Determine whether an error has occured during request processing */
+    public boolean hasError();
+
+    /** Set the error that occurred during request processing */
+    public void setError( Throwable error );
+
+    /** Get the error that occurred during request processing */
+    public Throwable getError();
 }

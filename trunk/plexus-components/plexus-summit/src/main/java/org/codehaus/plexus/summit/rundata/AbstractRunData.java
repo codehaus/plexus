@@ -92,6 +92,8 @@ public abstract class AbstractRunData
      */
     private RequestParameterParser parameterParser;
 
+    private Throwable error;
+
     //TODO: use a requirement to create an instance of the parameter parser
     public void initialize()
         throws InitializationException
@@ -333,5 +335,20 @@ public abstract class AbstractRunData
     public ServletContext getServletContext()
     {
         return servletConfig.getServletContext();
+    }
+
+    public boolean hasError()
+    {
+        return ( error != null );
+    }
+
+    public Throwable getError()
+    {
+        return error;
+    }
+
+    public void setError( Throwable error )
+    {
+        this.error = error;
     }
 }
