@@ -1,6 +1,8 @@
 package org.codehaus.plexus.formica.action;
 
 import ognl.Ognl;
+import ognl.MethodFailedException;
+
 import org.codehaus.plexus.formica.Form;
 
 import java.util.Map;
@@ -18,6 +20,18 @@ public class CallMethod
     protected void uponSuccessfulValidation( Form form, String entityId, Map parameters )
         throws Exception
     {
-        Ognl.getValue( validateExpression( form.getAdd().getExpression() ), parameters, getApplicationComponent( form ) );
+        try
+        {
+            Ognl.getValue( validateExpression( form.getAdd().getExpression() ), parameters, getApplicationComponent( form ) );
+        }
+        catch ( MethodFailedException e )
+        {
+            Throwable t = e.getReason();
+
+            if ( t instanceof Exception )
+            {
+                throw (Exception) t;
+            }
+        }
     }
 }
