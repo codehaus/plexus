@@ -20,6 +20,7 @@ import org.codehaus.plexus.action.Action;
 import org.codehaus.plexus.action.ActionManager;
 import org.codehaus.plexus.action.ActionNotFoundException;
 import org.codehaus.plexus.summit.rundata.RunData;
+import org.codehaus.plexus.summit.SummitConstants;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.apache.commons.fileupload.FileItem;
@@ -41,6 +42,10 @@ import java.util.Map;
 public class ActionValve
     extends AbstractValve
 {
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
     /**
      * @plexus.requirement
      */
@@ -49,7 +54,7 @@ public class ActionValve
     public void invoke( RunData data )
         throws IOException, ValveInvocationException
     {
-        String actionId = data.getParameters().getString( "action", "" );
+        String actionId = data.getParameters().getString( SummitConstants.ACTION, "" );
 
         if ( !actionId.equals( "" ) )
         {
@@ -65,13 +70,9 @@ public class ActionValve
 
                 action.execute( m );
             }
-            catch ( ActionNotFoundException e )
-            {
-                throw new ValveInvocationException( "Action with id = " + actionId + " cannot be found.", e );
-            }
             catch ( Exception e )
             {
-                throw new ValveInvocationException( "Error executing the action with id = " + actionId, e );
+                data.setError( e );
             }
         }
     }
