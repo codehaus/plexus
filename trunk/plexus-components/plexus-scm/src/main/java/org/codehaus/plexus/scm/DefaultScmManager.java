@@ -16,13 +16,6 @@ package org.codehaus.plexus.scm;
  * limitations under the License.
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.maven.scm.CommandNameConstants;
 import org.apache.maven.scm.CommandParameter;
 import org.apache.maven.scm.CommandParameters;
@@ -42,13 +35,22 @@ import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.provider.ScmProviderRepository;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.apache.maven.scm.repository.ScmRepositoryException;
-
+import org.apache.maven.scm.repository.UnknownRepositoryStructure;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
+ * @author <a href="mailto:evenisse@apache.org">Emmanuel Venisse</a>
  * @version $Id$
  */
 public class DefaultScmManager
@@ -105,6 +107,21 @@ public class DefaultScmManager
         String scmSpecificUrl = scmUrl.substring( providerType.length() + 5 );
 
         ScmProviderRepository providerRepository = provider.makeProviderScmRepository( scmSpecificUrl, delimiter );
+
+        return new ScmRepository( providerType, providerRepository );
+    }
+
+    public ScmRepository makeProviderScmRepository( String providerType, File path )
+        throws ScmRepositoryException, UnknownRepositoryStructure, NoSuchScmProviderException
+    {
+        if ( providerType == null )
+        {
+            throw new NullPointerException( "The provider type cannot be null." );
+        }
+
+        ScmProvider provider = getScmProvider( providerType );
+
+        ScmProviderRepository providerRepository = provider.makeProviderScmRepository( path );
 
         return new ScmRepository( providerType, providerRepository );
     }
