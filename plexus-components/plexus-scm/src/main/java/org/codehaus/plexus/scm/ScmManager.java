@@ -29,7 +29,9 @@ import org.apache.maven.scm.command.update.UpdateScmResult;
 import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.apache.maven.scm.repository.ScmRepositoryException;
+import org.apache.maven.scm.repository.UnknownRepositoryStructure;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +50,9 @@ public interface ScmManager
 
     ScmRepository makeScmRepository( String scmUrl )
     	throws ScmRepositoryException, NoSuchScmProviderException;
+
+    ScmRepository makeProviderScmRepository( String providerType, File path )
+        throws ScmRepositoryException, UnknownRepositoryStructure, NoSuchScmProviderException;
 
     List validateScmRepository( String scmUrl );
 
