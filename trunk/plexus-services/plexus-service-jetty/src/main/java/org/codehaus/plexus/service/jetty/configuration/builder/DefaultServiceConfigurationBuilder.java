@@ -87,7 +87,7 @@ public class DefaultServiceConfigurationBuilder
             if ( StringUtils.isEmpty( extractionPath ) )
             {
                 getLogger().warn( "Error while deploying web application: " +
-                                  "For each 'extractionPath' element has to be specified." );
+                                  "For each 'extraction-path' element has to be specified." );
 
                 continue;
             }
