@@ -41,16 +41,27 @@ public interface ServletContainer
 
     boolean hasContext( String contextPath );
 
-    void addListener( String address, int port )
+    void addListener( String host,
+                      int port )
         throws ServletContainerException, UnknownHostException;
 
-    // TODO: addVirtualHost();
+    void addProxyListener( String host,
+                           int port,
+                           String proxyHost,
+                           int proxyPort )
+        throws ServletContainerException, UnknownHostException;
 
-    void deployWarFile( File war, boolean extractWar, File extractionLocation, DefaultPlexusContainer container, String context,
-                        String virtualHost, int port )
+    void deployWarFile( File war,
+                        boolean extractWar,
+                        File extractionLocation,
+                        DefaultPlexusContainer container,
+                        String context,
+                        String virtualHost )
         throws ServletContainerException;
 
-    void deployWarDirectory( File war, String context, String virtualHost, int port, DefaultPlexusContainer container )
+    void deployWarDirectory( File directory,
+                             DefaultPlexusContainer container, String context,
+                             String virtualHost )
         throws ServletContainerException;
 
     void startApplication( String contextPath )

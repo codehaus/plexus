@@ -135,12 +135,11 @@ public class JettyServletContainer
         return false;
     }
 
-    public void addListener( String address, int port )
+    public void addListener( String host,
+                             int port )
         throws ServletContainerException, UnknownHostException
     {
-        // TODO: validate the address
-
-        InetAddrPort addrPort = new InetAddrPort( address, port );
+        InetAddrPort addrPort = new InetAddrPort( host, port );
 
         HttpListener listener;
 
@@ -150,7 +149,7 @@ public class JettyServletContainer
         }
         catch( IOException e )
         {
-            throw new ServletContainerException( "Error while adding listener on address: '" + address + "', port: " + port + ".", e );
+            throw new ServletContainerException( "Error while adding listener on address: '" + host + "', port: " + port + ".", e );
         }
 
         try
@@ -159,7 +158,31 @@ public class JettyServletContainer
         }
         catch ( Exception e )
         {
-            throw new ServletContainerException( "Error while starting listener on address: '" + address + "', port: " + port + ".", e );
+            throw new ServletContainerException( "Error while starting listener on address: '" + host + "', port: " + port + ".", e );
+        }
+    }
+
+    public void addProxyListener( String host,
+                                  int port,
+                                  String proxyHost,
+                                  int proxyPort )
+        throws ServletContainerException, UnknownHostException
+    {
+        InetAddrPort addrPort = new InetAddrPort( host, port );
+
+        JettyProxyHttpListener listener = new JettyProxyHttpListener( addrPort );
+
+        listener.setForcedHost( proxyHost + ":" + proxyPort );
+
+        server.addListener( listener );
+
+        try
+        {
+            listener.start();
+        }
+        catch ( Exception e )
+        {
+            throw new ServletContainerException( "Error while starting listener on address: '" + host + "', port: " + port + ".", e );
         }
     }
 
@@ -168,21 +191,29 @@ public class JettyServletContainer
                                File extractionLocation,
                                DefaultPlexusContainer container,
                                String context,
-                               String virtualHost,
-                               int port )
+                               String virtualHost )
         throws ServletContainerException
     {
-        deployWAR( war, extractWar, extractionLocation, container, context, virtualHost );
+        deployWAR( war,
+                   extractWar,
+                   extractionLocation,
+                   container,
+                   context,
+                   virtualHost );
     }
 
-    public void deployWarDirectory( File war,
+    public void deployWarDirectory( File directory,
+                                    DefaultPlexusContainer container,
                                     String context,
-                                    String virtualHost,
-                                    int port,
-                                    DefaultPlexusContainer container )
+                                    String virtualHost )
         throws ServletContainerException
     {
-        deployWAR( war, false, null, container, context, virtualHost );
+        deployWAR( directory,
+                   false,
+                   null,
+                   container,
+                   context,
+                   virtualHost );
     }
 
     public void startApplication( String contextPath )
@@ -250,11 +281,14 @@ public class JettyServletContainer
         {
             if ( virtualHost != null )
             {
-                applicationContext = server.addWebApplication( virtualHost, context, war.getAbsolutePath() );
+                applicationContext = server.addWebApplication( virtualHost,
+                                                               context,
+                                                               war.getAbsolutePath() );
             }
             else
             {
-                applicationContext = server.addWebApplication( context, war.getAbsolutePath() );
+                applicationContext = server.addWebApplication( context,
+                                                               war.getAbsolutePath() );
             }
         }
         catch ( IOException e )
