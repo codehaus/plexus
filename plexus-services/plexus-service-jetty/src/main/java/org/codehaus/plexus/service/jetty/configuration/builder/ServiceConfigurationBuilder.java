@@ -1,7 +1,4 @@
-package org.codehaus.plexus.service.jetty.configuration;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.codehaus.plexus.service.jetty.configuration.builder;
 
 /*
  * The MIT License
@@ -27,70 +24,16 @@ import java.util.List;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
+
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class WebApplication
+public interface ServiceConfigurationBuilder
 {
-    private String file;
+    String ROLE = ServiceConfigurationBuilder.class.getName();
 
-    private String path;
-
-    private String extractionPath;
-
-    private String context;
-
-    private List listeners;
-
-    private String virtualHost;
-
-    public WebApplication( String file,
-                           String path,
-                           String extractionPath,
-                           String context,
-                           String virtualHost )
-    {
-        this.file = file;
-
-        this.path = path;
-
-        this.extractionPath = extractionPath;
-
-        this.context = context;
-
-        this.virtualHost = virtualHost;
-
-        this.listeners = new ArrayList();
-    }
-
-    public String getFile()
-    {
-        return file;
-    }
-
-    public String getPath()
-    {
-        return path;
-    }
-
-    public String getExtractionPath()
-    {
-        return extractionPath;
-    }
-
-    public String getContext()
-    {
-        return context;
-    }
-
-    public String getVirtualHost()
-    {
-        return virtualHost;
-    }
-
-    public List getListeners()
-    {
-        return listeners;
-    }
+    ServiceConfiguration buildConfiguration( PlexusConfiguration serviceConfiguration );
 }
