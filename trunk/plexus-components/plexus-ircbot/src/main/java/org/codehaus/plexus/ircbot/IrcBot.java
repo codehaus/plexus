@@ -9,6 +9,8 @@ public interface IrcBot
     String ROLE = IrcBot.class.getName();
 
     void connect( String serverHostname, int serverPort );
+    
+    void connect( String serverHostname, int serverPort, String botName );    
 
     void disconnect();
 
