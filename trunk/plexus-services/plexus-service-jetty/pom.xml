@@ -21,7 +21,7 @@
     <dependency>
       <groupId>jetty</groupId>
       <artifactId>org.mortbay.jetty</artifactId>
-      <version>4.2.22</version>
+      <version>4.2.24</version>
     </dependency>
     <dependency>
       <groupId>tomcat</groupId>

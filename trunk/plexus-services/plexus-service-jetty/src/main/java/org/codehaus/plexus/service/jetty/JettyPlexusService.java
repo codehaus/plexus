@@ -42,8 +42,10 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
-import org.codehaus.plexus.service.jetty.configuration.ServiceConfigurationBuilder;
+import org.codehaus.plexus.service.jetty.configuration.builder.ServiceConfigurationBuilder;
 import org.codehaus.plexus.service.jetty.configuration.WebApplication;
+import org.codehaus.plexus.service.jetty.configuration.HttpListener;
+import org.codehaus.plexus.service.jetty.configuration.ProxyHttpListener;
 import org.codehaus.plexus.util.IOUtil;
 
 /**
@@ -54,13 +56,13 @@ public class JettyPlexusService
     extends AbstractLogEnabled
     implements PlexusService, Initializable, Startable
 {
-    /** @requirement */
+    /** @plexus.requirement */
     private ServiceConfigurationBuilder configurationBuilder;
 
-    /** @requirement */
+    /** @plexus.requirement */
     private ApplicationDeployer deployer;
 
-    /** @requirement */
+    /** @plexus.requirement */
     private ServletContainer servletContainer;
 
     // ----------------------------------------------------------------------
@@ -116,7 +118,6 @@ public class JettyPlexusService
             deployDirectory( webAppDir,
                              application.getContext(),
                              application.getVirtualHost(),
-                             application.getPort(),
                              applicationRuntimeProfile );
         }
     }
@@ -136,22 +137,62 @@ public class JettyPlexusService
                 continue;
             }
 
-            if ( application.getVirtualHost() != null )
+            if ( application.getVirtualHost() == null )
             {
-                getLogger().info( "Deploying application '" + applicationRuntimeProfile.getName() + "' " +
-                                  "on virtual host '" + application.getVirtualHost() + "', " +
-                                  "port " + application.getPort() + ", " +
-                                  "under the context '" + application.getContext() + "'." );
-
-                servletContainer.addListener( application.getVirtualHost(), application.getPort() );
+                getLogger().info( "Deploying application '" + applicationRuntimeProfile.getName() + "'." );
             }
             else
             {
                 getLogger().info( "Deploying application '" + applicationRuntimeProfile.getName() + "' " +
-                                  "port " + application.getPort() + ", " +
-                                  "under the context '" + application.getContext() + "'." );
+                                  "on virtual host '" + application.getVirtualHost() + "'." );
+            }
 
-                servletContainer.addListener( null, application.getPort() );
+            System.err.println( application.getListeners() + " listeners" );
+
+            for ( Iterator it2 = application.getListeners().iterator(); it2.hasNext(); )
+            {
+                HttpListener httpListener = (HttpListener) it2.next();
+
+                String listener;
+
+                if ( httpListener.getHost() != null )
+                {
+                    listener = httpListener.getHost() + ":" + httpListener.getPort();
+                }
+                else
+                {
+                    listener = "*:" + httpListener.getPort();
+                }
+
+                if ( httpListener instanceof ProxyHttpListener )
+                {
+                    ProxyHttpListener proxyHttpListener = (ProxyHttpListener) httpListener;
+
+                    String proxyListener;
+
+                    if ( proxyHttpListener.getHost() != null )
+                    {
+                        proxyListener = proxyHttpListener.getHost() + ":" + proxyHttpListener.getPort();
+                    }
+                    else
+                    {
+                        proxyListener = "*:" + proxyHttpListener.getPort();
+                    }
+
+                    getLogger().info( "Adding HTTP proxy listener on " + listener + " for " + proxyListener );
+
+                    servletContainer.addProxyListener( proxyHttpListener.getHost(),
+                                                       proxyHttpListener.getPort(),
+                                                       proxyHttpListener.getProxyHost(),
+                                                       proxyHttpListener.getProxyPort() );
+                }
+                else
+                {
+                    getLogger().info( "Adding HTTP listener on " + listener );
+
+                    servletContainer.addListener( httpListener.getHost(),
+                                                  httpListener.getPort() );
+                }
             }
 
             servletContainer.startApplication( application.getContext() );
@@ -165,7 +206,6 @@ public class JettyPlexusService
     private void deployDirectory( File directory,
                                   String context,
                                   String virtualHost,
-                                  int port,
                                   ApplicationRuntimeProfile runtimeProfile )
         throws Exception
     {
@@ -176,7 +216,9 @@ public class JettyPlexusService
 
         try
         {
-            servletContainer.deployWarDirectory( directory, context, virtualHost, port, runtimeProfile.getContainer() );
+            servletContainer.deployWarDirectory( directory,
+                                                 runtimeProfile.getContainer(), context,
+                                                 virtualHost );
         }
         catch ( ServletContainerException e )
         {

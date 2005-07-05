@@ -12,7 +12,7 @@
           <role>org.codehaus.plexus.application.deploy.ApplicationDeployer</role>
         </requirement>
         <requirement>
-          <role>org.codehaus.plexus.service.jetty.configuration.ServiceConfigurationBuilder</role>
+          <role>org.codehaus.plexus.service.jetty.configuration.builder.ServiceConfigurationBuilder</role>
         </requirement>
       </requirements>
     </component>
@@ -23,8 +23,8 @@
     </component>
 
     <component>
-      <role>org.codehaus.plexus.service.jetty.configuration.ServiceConfigurationBuilder</role>
-      <implementation>org.codehaus.plexus.service.jetty.configuration.DefaultServiceConfigurationBuilder</implementation>
+      <role>org.codehaus.plexus.service.jetty.configuration.builder.ServiceConfigurationBuilder</role>
+      <implementation>org.codehaus.plexus.service.jetty.configuration.builder.DefaultServiceConfigurationBuilder</implementation>
     </component>
 
   </components>
