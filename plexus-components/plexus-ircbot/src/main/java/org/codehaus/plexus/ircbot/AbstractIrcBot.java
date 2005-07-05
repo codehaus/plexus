@@ -28,6 +28,13 @@ public abstract class AbstractIrcBot
 
     public void connect( String serverHostname, int serverPort )
     {
+        connect( serverHostname, serverPort, null );
+    }
+    
+    public void connect( String serverHostname, int serverPort, String botName )
+    {
+        this.botName = botName;
+        
         try
         {
             clientSocket = new Socket( serverHostname, serverPort );
@@ -38,7 +45,7 @@ public abstract class AbstractIrcBot
 
             e.printStackTrace();
 
-            System.exit( 0 );
+            //System.exit( 0 );
         }
 
         InputStream inputStream = null;
