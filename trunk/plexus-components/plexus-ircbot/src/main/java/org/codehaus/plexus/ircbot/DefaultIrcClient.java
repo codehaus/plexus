@@ -7,5 +7,4 @@ package org.codehaus.plexus.ircbot;
 public class DefaultIrcClient
     extends AbstractIrcBot
 {
-
 }
