@@ -147,8 +147,6 @@ public class JettyPlexusService
                                   "on virtual host '" + application.getVirtualHost() + "'." );
             }
 
-            System.err.println( application.getListeners() + " listeners" );
-
             for ( Iterator it2 = application.getListeners().iterator(); it2.hasNext(); )
             {
                 HttpListener httpListener = (HttpListener) it2.next();
