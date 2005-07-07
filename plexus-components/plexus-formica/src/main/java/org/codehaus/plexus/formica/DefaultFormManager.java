@@ -41,11 +41,9 @@ import java.util.Map;
 import java.util.LinkedList;
 
 /**
- * @plexus.component
- *   lifecycle-handler="plexus-configurable"
- *
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
+ * @plexus.component lifecycle-handler="plexus-configurable"
  */
 public class DefaultFormManager
     extends AbstractLogEnabled
@@ -122,10 +120,14 @@ public class DefaultFormManager
         FormValidationResult result = new FormValidationResult();
 
         if ( form.getElements() != null )
+        {
             validateElements( form.getElements(), data, result );
+        }
 
         if ( form.getElementGroups() != null )
+        {
             validateElementGroups( form, data, result );
+        }
 
         return result;
     }
@@ -163,35 +165,35 @@ public class DefaultFormManager
 
             List validators = element.getValidators();
 
-            for ( Iterator j = validators.iterator(); j.hasNext(); )
+            if ( validators != null )
             {
-                org.codehaus.plexus.formica.Validator v = (org.codehaus.plexus.formica.Validator) j.next();
-
-                Validator validator = getValidator( v.getId() );
-
-                String elementData = (String) data.get( element.getId() );
-
-                boolean valid = validator.validate( elementData );
-
-                if ( valid )
+                for ( Iterator j = validators.iterator(); j.hasNext(); )
                 {
-                    result.addElementValidationResult( element.getId(), valid, null );
+                    org.codehaus.plexus.formica.Validator v = (org.codehaus.plexus.formica.Validator) j.next();
+
+                    Validator validator = getValidator( v.getId() );
+
+                    String elementData = (String) data.get( element.getId() );
+
+                    boolean valid = validator.validate( elementData );
+
+                    if ( valid )
+                    {
+                        result.addElementValidationResult( element.getId(), valid, null );
+                    }
+                    else
+                    {
+                        // ----------------------------------------------------------------------
+                        // On the first sign of error fail fast and return the message to the
+                        // user so that they can correct the first makes and then an attempt
+                        // can be made to validate again.
+                        // ----------------------------------------------------------------------
+
+                        result.addElementValidationResult( element.getId(), valid, i18n.getString( v.getErrorMessageKey() ) );
+
+                        break;
+                    }
                 }
-                else
-                {
-                    // ----------------------------------------------------------------------
-                    // On the first sign of error fail fast and return the message to the
-                    // user so that they can correct the first makes and then an attempt
-                    // can be made to validate again.
-                    // ----------------------------------------------------------------------
-
-                    result.addElementValidationResult( element.getId(), valid, i18n.getString( v.getErrorMessageKey() ) );
-
-                    break;
-                }
-
-                // Do we just want to send back one error message at a time?
-
             }
         }
     }
