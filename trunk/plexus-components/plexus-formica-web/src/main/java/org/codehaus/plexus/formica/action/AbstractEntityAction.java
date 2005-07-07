@@ -49,7 +49,7 @@ public abstract class AbstractEntityAction
 
     public static final String ID = "id";
 
-    public static final String FORM_ID = "formId";
+    public static final String FORM_ID = "fid";
 
     public static final String MODE = "mode";
 
@@ -68,6 +68,10 @@ public abstract class AbstractEntityAction
     abstract void uponSuccessfulValidation( Form form, String entityId, Map map )
         throws Exception;
 
+    // ----------------------------------------------------------------------
+    // Direction
+    // ----------------------------------------------------------------------
+
     protected String getSuccessTarget( Form form )
     {
         return form.getAdd().getView();
@@ -78,9 +82,28 @@ public abstract class AbstractEntityAction
         return form.getAdd().getViewOnFailure();
     }
 
+    protected String getOnSuccessFid( Form form )
+    {
+        return form.getAdd().getFidOnSuccess();
+    }
+
+    protected String getOnFailureFid( Form form )
+    {
+        return form.getAdd().getFidOnFailure();
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
     public void execute( Map map )
         throws Exception
     {
+        // TODO: this stuff should be moved to the formica valve so these actions have
+        // no need to know the web layer.
+
+        RunData data = (RunData) map.get( RUNDATA );
+
         String entityId = (String) map.get( ID );
 
         String formId = (String) map.get( FORM_ID );
@@ -96,15 +119,27 @@ public abstract class AbstractEntityAction
         // the user.
         // ----------------------------------------------------------------------
 
-        RunData data = (RunData) map.get( RUNDATA );
+        FormInfo formInfo = new FormInfo();
 
         if ( fvr.valid() )
         {
             try
             {
+                // ----------------------------------------------------------------------
+                // Remove some web specific stuff here. This needs to be scrubbed.
+                // ----------------------------------------------------------------------
+
+                map.remove( "data" );
+
+                map.remove( "view" );
+
+                map.remove( "fid" );
+
+                map.remove( "action" );
+
                 uponSuccessfulValidation( form, entityId, map );
             }
-            catch( Exception e )
+            catch ( Exception e )
             {
                 // ----------------------------------------------------------------------
                 // If we have an OgnlException lets pull out the root reason and
@@ -113,11 +148,15 @@ public abstract class AbstractEntityAction
 
                 if ( e instanceof OgnlException )
                 {
-                    throw (Exception) ((OgnlException)e).getReason();
+                    throw (Exception) ( (OgnlException) e ).getReason();
                 }
 
                 throw e;
             }
+
+            formInfo.setView( getSuccessTarget( form ) );
+
+            formInfo.setFid( getOnSuccessFid( form ) );
 
             data.setTarget( getSuccessTarget( form ) );
         }
@@ -133,10 +172,19 @@ public abstract class AbstractEntityAction
 
             ViewContext vc = (ViewContext) data.getMap().get( SummitConstants.VIEW_CONTEXT );
 
-            vc.put( "fid", formId );
+            formInfo.setView( getFailureTarget( form ) );
+
+            formInfo.setFid( getOnFailureFid( form ) );
 
             vc.put( "fvr", fvr );
         }
+
+        // ----------------------------------------------------------------------
+        // Place this in rundata so the formica valve can create the proper
+        // direction.
+        // ----------------------------------------------------------------------
+
+        data.getMap().put( "formInfo", formInfo );
     }
 
     protected Object getApplicationComponent( Form form )

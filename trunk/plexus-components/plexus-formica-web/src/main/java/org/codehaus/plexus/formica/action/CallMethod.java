@@ -20,6 +20,13 @@ public class CallMethod
     protected void uponSuccessfulValidation( Form form, String entityId, Map parameters )
         throws Exception
     {
+        // ----------------------------------------------------------------------
+        // Place the parameters in the parameters so that the map can be used
+        // in an expression.
+        // ----------------------------------------------------------------------
+
+        parameters.put( "parameters", parameters );
+
         Ognl.getValue( validateExpression( form.getAdd().getExpression() ), parameters, getApplicationComponent( form ) );
     }
 }
