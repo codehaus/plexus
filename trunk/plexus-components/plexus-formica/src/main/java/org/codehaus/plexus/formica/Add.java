@@ -30,22 +30,31 @@ public class Add
 {
     private String titleKey;
 
-    private String view;
-
     private String action;
 
     private String expression;
 
+    // ----------------------------------------------------------------------
+    // Direction
+    // ----------------------------------------------------------------------
+
+    private String view;
+
     private String viewOnFailure;
+
+    /** form id on success */
+    private String fidOnSuccess;
+
+    /** form id on failure */
+    private String fidOnFailure;
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     public String getTitleKey()
     {
         return titleKey;
-    }
-
-    public String getView()
-    {
-        return view;
     }
 
     public String getAction()
@@ -58,8 +67,27 @@ public class Add
         return expression;
     }
 
+    // ----------------------------------------------------------------------
+    // Direction
+    // ----------------------------------------------------------------------
+
+    public String getView()
+    {
+        return view;
+    }
+
     public String getViewOnFailure()
     {
         return viewOnFailure;
+    }
+
+    public String getFidOnSuccess()
+    {
+        return fidOnSuccess;
+    }
+
+    public String getFidOnFailure()
+    {
+        return fidOnFailure;
     }
 }
