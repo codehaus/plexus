@@ -140,7 +140,7 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>svn://svn.codehaus.org/plexus/scm/trunk/</connection>
+    <connection>scm:svn:svn://svn.codehaus.org/plexus/scm/trunk/</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk</developerConnection>
   </scm>
   <organization>
