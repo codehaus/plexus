@@ -119,6 +119,14 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Kenney Westerhof</name>
+      <id>kenney</id>
+      <email>kenney@codehaus.org</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
   <!--
   <dependencyManagement>
