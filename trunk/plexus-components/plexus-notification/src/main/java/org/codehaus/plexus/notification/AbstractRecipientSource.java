@@ -35,7 +35,7 @@ import java.util.Set;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
- * @version $Id: RecipientSource.java 1506 2005-03-11 02:07:21Z trygvis $
+ * @version $Id$
  */
 public abstract class AbstractRecipientSource
     extends AbstractLogEnabled

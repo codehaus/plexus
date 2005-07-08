@@ -35,7 +35,7 @@ import java.util.Map;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @version $Id: ActionValve.java 2034 2005-05-29 09:31:54Z trygvis $
+ * @version $Id$
  * @plexus.component role="org.codehaus.plexus.summit.pipeline.valve.Valve"
  * role-hint="org.codehaus.plexus.action.web.ActionValve"
  */
