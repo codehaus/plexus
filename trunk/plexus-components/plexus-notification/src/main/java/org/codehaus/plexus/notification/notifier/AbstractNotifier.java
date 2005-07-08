@@ -36,7 +36,7 @@ import org.codehaus.plexus.notification.NotificationException;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
- * @version $Id: Notifier.java 1465 2005-02-09 18:02:34Z trygvis $
+ * @version $Id$
  */
 public abstract class AbstractNotifier
     extends AbstractLogEnabled

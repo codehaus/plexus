@@ -34,7 +34,7 @@ import java.util.Set;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id: AbstractNotifier.java 1465 2005-02-09 18:02:34Z trygvis $
+ * @version $Id$
  */
 public abstract class AbstractAbstractNotifier
     extends AbstractNotifier
