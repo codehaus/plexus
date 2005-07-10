@@ -23,6 +23,7 @@ package org.codehaus.plexus.action;
  */
 
 import java.util.Map;
+import java.util.List;
 
 /**
  * An <code>Action</code in Plexus is meant to model the UML notion of an Action as closely
@@ -40,7 +41,21 @@ import java.util.Map;
  */
 public interface Action
 {
+    /**
+     * Key for a result messages that must make its way to a user. This could be a validation
+     * result message that indicates something went wrong with processing inside an action.
+     */
+    public static final String RESULT_MESSAGES =  "action.resultMessages";
+
     static String ROLE = Action.class.getName();
+
+    public void setResultMessages( List resultMessages, Map parameters );
+
+    public void addResultMessage( String message, Map parameters );
+
+    public List getResultMessages( Map parameters );
+
+    public boolean hasResultMessages( Map parameters );
 
     void execute( Map context )
         throws Exception;
