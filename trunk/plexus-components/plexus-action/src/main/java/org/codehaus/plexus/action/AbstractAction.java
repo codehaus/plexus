@@ -30,6 +30,10 @@ import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * @author <a href="mailto:jason@codehaus.com">Jason van Zyl</a>
  * @version $Id$
@@ -39,6 +43,35 @@ public abstract class AbstractAction
     implements Contextualizable, Action
 {
     private PlexusContainer container;
+
+    public void setResultMessages( List resultMessages, Map parameters )
+    {
+        parameters.put( RESULT_MESSAGES, resultMessages );
+    }
+
+    public List getResultMessages( Map parameters )
+    {
+        return (List) parameters.get( RESULT_MESSAGES );
+    }
+
+    public void addResultMessage( String message, Map parameters )
+    {
+        List resultMessages = (List) parameters.get( RESULT_MESSAGES );
+
+        if ( resultMessages == null )
+        {
+            resultMessages = new ArrayList();
+
+            parameters.put( RESULT_MESSAGES, resultMessages );
+        }
+
+        resultMessages.add( message );
+    }
+
+    public boolean hasResultMessages( Map parameters )
+    {
+        return parameters.containsKey( RESULT_MESSAGES );
+    }
 
     public void contextualize( Context context )
         throws ContextException

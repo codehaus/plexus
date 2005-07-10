@@ -6,7 +6,7 @@ import java.util.Map;
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  */
 public class FooAction
-    implements Action
+    extends AbstractAction
 {
     public void execute(Map context)
         throws Exception
