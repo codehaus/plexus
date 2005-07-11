@@ -8,7 +8,7 @@
     <version>1.1</version>
   </parent>
   <artifactId>plexus-formica</artifactId>
-  <version>1.0-beta-4-SNAPSHOT</version>
+  <version>1.0-beta-4</version>
   <name>Plexus Formica Component</name>
   <dependencies>
     <dependency>
@@ -37,6 +37,7 @@
             <id>descriptor</id>
           </goal>
         </goals>
+        <groupId>org.apache.maven.plugins</groupId>
       </plugin>
     </plugins>
   </build>
