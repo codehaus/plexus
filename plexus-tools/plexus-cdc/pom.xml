@@ -13,18 +13,6 @@
   <name>Plexus Component Descriptor Creator</name>
   <version>1.0-alpha-2-SNAPSHOT</version>
   <dependencies>
-    <!--
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-core</artifactId>
-      <version>2.0-alpha-2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-model</artifactId>
-      <version>2.0-alpha-2</version>
-    </dependency>
-    -->
     <dependency>
       <groupId>qdox</groupId>
       <artifactId>qdox</artifactId>
@@ -33,7 +21,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>1.0-alpha-2</version>
+      <version>1.0.1</version>
     </dependency>
   </dependencies>
 </project>
