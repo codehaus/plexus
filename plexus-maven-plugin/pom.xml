@@ -13,8 +13,8 @@
   <packaging>maven-plugin</packaging>
   <name>Plexus Maven Plugin</name>
   <scm>
-    <connection>scm:cvs:pserver:anonymous@cvs.plexus.codehaus.org:/home/projects/plexus/scm:plexus/</connection>
-    <developerConnection>scm:cvs:ext:${maven.username}@cvs.plexus.codehaus.org:/home/projects/plexus/scm:plexus/plexus-maven-plugin</developerConnection>
+    <connection>scm:svn:svn://svn.codehaus.org/plexus/scm/trunk/maven-plexus-plugin</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/maven-plexus-plugin</developerConnection>
   </scm>
   <dependencies>
     <dependency>
