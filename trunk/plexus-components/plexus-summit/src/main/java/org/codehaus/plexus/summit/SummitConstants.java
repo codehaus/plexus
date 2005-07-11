@@ -65,6 +65,11 @@ public interface SummitConstants
     public final static String STACK_TRACE = "stackTrace";
 
     /**
+     * Tag for result messages.
+     */
+    public final static String RESULT_MESSAGES = "resultMessages";
+
+    /**
      * Tag for the default application view.
      */
     public final static String DEFAULT_APPLICATION_VIEW = "defaultApplicationView";
@@ -93,4 +98,7 @@ public interface SummitConstants
      * The target for a request.
      */
     public static final String TARGET = "target";
+
+    /** Rundata */
+    public static final String RUNDATA = "data";
 }

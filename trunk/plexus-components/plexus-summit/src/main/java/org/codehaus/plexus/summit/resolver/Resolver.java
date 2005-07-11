@@ -37,4 +37,6 @@ public interface Resolver
     String getDefaultView();
 
     String getErrorView();
+
+    String getResultMessagesView();
 }

@@ -54,6 +54,14 @@ public class DetermineTargetValve
 
             viewContext.put( SummitConstants.STACK_TRACE, ExceptionUtils.getFullStackTrace( data.getError() ) );
         }
+        else if ( data.hasResultMessages() )
+        {
+            data.setTarget( resolver.getResultMessagesView() );
+
+            ViewContext viewContext = (ViewContext) data.getMap().get( SummitConstants.VIEW_CONTEXT );
+
+            viewContext.put( SummitConstants.RESULT_MESSAGES, data.getResultMessages() );
+        }
         else if ( !data.hasTarget() )
         {
             String target = data.getParameters().getString( "target" );

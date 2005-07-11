@@ -18,6 +18,7 @@ package org.codehaus.plexus.summit.rundata;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -93,6 +94,8 @@ public abstract class AbstractRunData
     private RequestParameterParser parameterParser;
 
     private Throwable error;
+
+    private List resultMessages;
 
     //TODO: use a requirement to create an instance of the parameter parser
     public void initialize()
@@ -337,6 +340,10 @@ public abstract class AbstractRunData
         return servletConfig.getServletContext();
     }
 
+    // ----------------------------------------------------------------------
+    // Error
+    // ----------------------------------------------------------------------
+
     public boolean hasError()
     {
         return ( error != null );
@@ -350,5 +357,24 @@ public abstract class AbstractRunData
     public void setError( Throwable error )
     {
         this.error = error;
+    }
+
+    // ----------------------------------------------------------------------
+    // Result Messsages
+    // ----------------------------------------------------------------------
+
+    public boolean hasResultMessages()
+    {
+        return ( resultMessages != null );
+    }
+
+    public List getResultMessages()
+    {
+        return resultMessages;
+    }
+
+    public void setResultMessages( List resultMessages )
+    {
+        this.resultMessages = resultMessages;
     }
 }
