@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>plexus</groupId>
+    <artifactId>plexus-components</artifactId>
+    <version>1.1</version>
+  </parent>
+  <artifactId>plexus-action</artifactId>
+  <version>1.0-alpha-5</version>
+  <name>Plexus Action</name>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-plexus-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>1.1-alpha-5</version>
+        <goals>
+          <goal>
+            <id>descriptor</id>
+          </goal>
+        </goals>
+      </plugin>
+    </plugins>
+  </build>
+</project>
