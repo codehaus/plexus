@@ -1,0 +1,11 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.commandline.ExecutableResolver</role>
+      <implementation>org.codehaus.plexus.commandline.DefaultExecutableResolver</implementation>
+      <configuration>
+        <default-path></default-path>
+      </configuration>
+    </component>
+  </components>
+</component-set>
