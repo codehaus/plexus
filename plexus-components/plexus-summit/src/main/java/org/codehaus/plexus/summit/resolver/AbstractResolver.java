@@ -27,6 +27,12 @@ public abstract class AbstractResolver
 
     /**
      * @plexus.configuration
+     *  default-value="Error.vm"
+     */
+    private String resultMessagesView;
+
+    /**
+     * @plexus.configuration
      *  default-value="Index.vm"
      */
     private String defaultView;
@@ -36,6 +42,11 @@ public abstract class AbstractResolver
     public String getErrorView()
     {
         return errorView;
+    }
+
+    public String getResultMessagesView()
+    {
+        return resultMessagesView;
     }
 
     public String getDefaultView()

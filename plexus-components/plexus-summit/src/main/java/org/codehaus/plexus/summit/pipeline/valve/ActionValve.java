@@ -42,10 +42,6 @@ import java.util.Map;
 public class ActionValve
     extends AbstractValve
 {
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
     /**
      * @plexus.requirement
      */
@@ -66,9 +62,19 @@ public class ActionValve
 
                 Map m = createContext( data );
 
-                m.put( "data", data );
+                m.put( SummitConstants.RUNDATA, data );
 
                 action.execute( m );
+
+                // ----------------------------------------------------------------------
+                // Check to see if there are any result messages in the context that need
+                // to be displayed to the user.
+                // ----------------------------------------------------------------------
+
+                if ( action.hasResultMessages( m ) )
+                {
+                    data.setResultMessages( action.getResultMessages( m ) );
+                }
             }
             catch ( Exception e )
             {
