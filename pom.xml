@@ -9,8 +9,18 @@
     <notifiers>
       <notifier>
         <type>mail</type>
-        <address>dev@plexus.codehaus.org</address>
+        <configuration>
+          <address>dev@plexus.codehaus.org</address>
+        </configuration>
       </notifier>
+      <notifier>
+        <type>irc</type>
+        <configuration>
+          <host>irc.codehaus.org</host>
+          <port>6667</port>
+          <channel>#plexus</channel>
+        </configuration>
+      </notifier>      
     </notifiers>
   </ciManagement>
   <inceptionYear>2001</inceptionYear>
