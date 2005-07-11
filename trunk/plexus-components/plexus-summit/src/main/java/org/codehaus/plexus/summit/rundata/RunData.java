@@ -1,6 +1,7 @@
 package org.codehaus.plexus.summit.rundata;
 
 import java.util.Map;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -162,4 +163,10 @@ public interface RunData
 
     /** Get the error that occurred during request processing */
     public Throwable getError();
+
+    public boolean hasResultMessages();
+
+    public void setResultMessages( List resulttMessages );
+
+    public List getResultMessages();
 }
