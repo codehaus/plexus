@@ -8,7 +8,7 @@
     <version>1.1</version>
   </parent>
   <artifactId>plexus-formica-web</artifactId>
-  <version>1.0-alpha-2</version>
+  <version>1.0-alpha-3-SNAPSHOT</version>
   <name>Plexus Formica Web Component</name>
   <dependencies>
     <dependency>
