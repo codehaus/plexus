@@ -16,9 +16,9 @@ package org.codehaus.plexus.formica.action;
  * limitations under the License.
  */
 
+import ognl.OgnlException;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.util.ExceptionUtils;
 import org.codehaus.plexus.action.AbstractAction;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
@@ -32,8 +32,6 @@ import org.codehaus.plexus.summit.rundata.RunData;
 import org.codehaus.plexus.summit.view.ViewContext;
 
 import java.util.Map;
-
-import ognl.OgnlException;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -65,7 +63,7 @@ public abstract class AbstractEntityAction
 
     protected PlexusContainer container;
 
-    abstract void uponSuccessfulValidation( Form form, String entityId, Map map )
+    protected abstract void uponSuccessfulValidation( Form form, String entityId, Map map )
         throws Exception;
 
     // ----------------------------------------------------------------------
