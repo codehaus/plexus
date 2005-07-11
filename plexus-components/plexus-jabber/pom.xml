@@ -8,7 +8,7 @@
     <version>1.1</version>
   </parent>
   <artifactId>plexus-jabber</artifactId>
-  <version>1.0-alpha-1-SNAPSHOT</version>
+  <version>1.0-alpha-1</version>
   <name>Plexus Jabber Client Component</name>
   <dependencies>
     <dependency>
