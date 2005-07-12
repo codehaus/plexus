@@ -13,7 +13,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-logging-provider-test</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
+      <version>1.0-alpha-1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
