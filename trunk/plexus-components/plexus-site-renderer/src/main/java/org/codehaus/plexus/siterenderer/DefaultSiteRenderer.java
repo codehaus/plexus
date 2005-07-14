@@ -29,6 +29,7 @@ import org.codehaus.plexus.siterenderer.sink.SiteRendererSink;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.PathTool;
 import org.codehaus.plexus.util.StringInputStream;
+import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -287,6 +288,8 @@ public class DefaultSiteRenderer
         // ----------------------------------------------------------------------
 
         context.put( "PathTool", new PathTool() );
+
+        context.put( "StringUtils", new StringUtils() );
 
         context.put( "i18n", i18n );
 
