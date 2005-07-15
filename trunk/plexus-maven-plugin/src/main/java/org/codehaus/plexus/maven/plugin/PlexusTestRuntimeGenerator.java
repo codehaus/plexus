@@ -41,7 +41,7 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
  *
  * @description Generates a complete runtimePath with the application and it's requires services.
  *
- * @execute phase="package"
+ * @phase package
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -69,13 +69,13 @@ public class PlexusTestRuntimeGenerator
      * @parameter expression="${runtimeConfiguration}"
      * @required
      */
-    private File testRuntimeConfiguration;
+    private File runtimeConfiguration;
 
     /**
      * @parameter expression="${runtimeConfigurationProperties}"
      * @required
      */
-    private File testRuntimeConfigurationProperties;
+    private File runtimeConfigurationProperties;
 
     /**
      * @parameter expression="${project.build.finalName}"
@@ -131,8 +131,8 @@ public class PlexusTestRuntimeGenerator
                                   remoteRepositories,
                                   localRepository,
                                   projectArtifacts,
-                                  testRuntimeConfiguration,
-                                  testRuntimeConfigurationProperties );
+                                  runtimeConfiguration,
+                                  runtimeConfigurationProperties );
 
             // ----------------------------------------------------------------------
             // Copy the application
