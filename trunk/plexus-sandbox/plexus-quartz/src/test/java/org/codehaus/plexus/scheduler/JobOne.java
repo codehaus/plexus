@@ -60,46 +60,18 @@ import org.quartz.JobExecutionException;
 
 import java.util.Date;
 
-/**
- * <p>
- *
- * A dumb implementation of Job, for unittesting purposes.</p>
- *
- * @author James House
- */
 public class JobOne implements Job
 {
+    public JobOne()
+    {
+    }
 
-    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-   *
-   * Constructors.
-   *
-   * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    /**
-     * Constructor for the JobOne object
-     */
-    public JobOne() { }
-
-    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-   *
-   * Interface.
-   *
-   * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    /**
-     * <p>
-     *
-     * Called by the <code>{@link org.quartz.Scheduler}</code> when a <code>{@link org.quartz.Trigger}</code>
-     * fires that is associated with the <code>Job</code>.</p>
-     *
-     * @throws JobExecutionException if there is an exception while executing
-     *      the job.
-     */
-    public void execute(JobExecutionContext context)
+    public void execute( JobExecutionContext context )
         throws JobExecutionException
     {
 
-        System.out.println("    --- Testing Scheduler Component\n    --- "
-            + context.getJobDetail().getFullName() + " executed.[" + new Date() + "]");
+        System.out.println( "    --- Testing Scheduler Component\n    --- "
+                            + context.getJobDetail().getFullName() + " executed.[" + new Date() + "]" );
 
     }
 
