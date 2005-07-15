@@ -38,6 +38,8 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
  *
  * @requiresDependencyResolution
  *
+ * @phase package
+ *
  * @description Builds plexus containers.
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>

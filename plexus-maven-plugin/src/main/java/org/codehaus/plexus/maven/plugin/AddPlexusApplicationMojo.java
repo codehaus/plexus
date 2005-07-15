@@ -36,6 +36,8 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
  *
  * @requiresDependencyResolution
  *
+ * @phase package
+ *
  * @description Adds the Plexus application to the runtime
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>

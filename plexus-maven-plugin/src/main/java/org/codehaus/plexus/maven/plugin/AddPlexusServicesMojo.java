@@ -39,6 +39,8 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
  *
  * @requiresDependencyResolution
  *
+ * @phase package
+ *
  * @description Adds all Plexus services in the artifact list to the runtime
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
