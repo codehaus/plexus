@@ -289,6 +289,8 @@ public class DefaultSiteRenderer
 
         context.put( "PathTool", new PathTool() );
 
+        context.put( "FileUtils", new FileUtils() );
+
         context.put( "StringUtils", new StringUtils() );
 
         context.put( "i18n", i18n );
