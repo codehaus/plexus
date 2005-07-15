@@ -8,7 +8,7 @@
         <!-- START SNIPPET: plexus-application-lifecycle -->
         <phases>
           <generate-resources>plexus:app</generate-resources>
-          <package>plexus:runtime,plexus:bundle-application,plexus:add-services,plexus:add-app</package>
+          <package>plexus:bundle-application</package>
           <install>install:install</install>
           <deploy>deploy:deploy</deploy>
         </phases>
