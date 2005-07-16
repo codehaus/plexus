@@ -10,21 +10,13 @@ import org.quartz.JobDetail;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
+import org.quartz.JobListener;
+import org.quartz.TriggerListener;
 import org.quartz.impl.StdScheduler;
 import org.quartz.impl.StdSchedulerFactory;
 
 import java.util.Properties;
 
-/**
- * Default <code>Scheduler</code> implementation, backed by quartz.
- *
- * @author <a href="john@zenplex.com">John Thorhauer</a>
- * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
- * @version $Id$
- * @todo configuration needs to be easier
- * @todo logging needs to be reworked: logging per job
- */
 public class DefaultScheduler
     extends AbstractLogEnabled
     implements Scheduler, Initializable, Startable
@@ -37,6 +29,16 @@ public class DefaultScheduler
         throws SchedulerException
     {
         scheduler.scheduleJob( jobDetail, trigger );
+    }
+
+    public void addGlobalJobListener( JobListener listener )
+    {
+        scheduler.addGlobalJobListener( listener );
+    }
+
+    public void addGlobalTriggerListener( TriggerListener listener )
+    {
+        scheduler.addGlobalTriggerListener( listener );
     }
 
     public void initialize()
