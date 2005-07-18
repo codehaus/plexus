@@ -147,7 +147,14 @@ public class DefaultFormManager
 
             if ( !valid )
             {
-                errorMessage = i18n.getString( group.getErrorMessageKey() );
+                if ( group.getErrorMessageKey() == null )
+                {
+                    errorMessage = "There is no i18n key defined for this group element with id = " + group.getId();
+                }
+                else
+                {
+                    errorMessage = i18n.getString( group.getErrorMessageKey() );
+                }
             }
 
             result.addElementValidationResult( group.getId(), valid, errorMessage );
@@ -189,7 +196,18 @@ public class DefaultFormManager
                         // can be made to validate again.
                         // ----------------------------------------------------------------------
 
-                        result.addElementValidationResult( element.getId(), valid, i18n.getString( v.getErrorMessageKey() ) );
+                        String errorMessage = null;
+
+                        if ( v.getErrorMessageKey() == null )
+                        {
+                            errorMessage = "There is no i18n key defined for element with id = " + element.getId();
+                        }
+                        else
+                        {
+                            errorMessage = i18n.getString( v.getErrorMessageKey() );
+                        }
+
+                        result.addElementValidationResult( element.getId(), valid, errorMessage );
 
                         break;
                     }
