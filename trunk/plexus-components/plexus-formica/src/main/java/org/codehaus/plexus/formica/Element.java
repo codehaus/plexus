@@ -53,6 +53,8 @@ public class Element
 
     private Map attributes;
 
+    private String data;
+
     public Element()
     {
     }
@@ -120,5 +122,10 @@ public class Element
     public Map getAttributes()
     {
         return attributes;
+    }
+
+    public String getData()
+    {
+        return data;
     }
 }
