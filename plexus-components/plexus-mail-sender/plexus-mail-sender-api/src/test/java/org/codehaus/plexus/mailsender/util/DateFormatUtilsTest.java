@@ -1,4 +1,4 @@
-package org.codehaus.plexus.mailsender.simple;
+package org.codehaus.plexus.mailsender.util;
 
 /*
  * The MIT License

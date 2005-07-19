@@ -18,6 +18,7 @@
     </dependency>
   </dependencies>
   <modules>
+    <module>plexus-mail-sender-javamail</module>
     <module>plexus-mail-sender-simple</module>
     <module>plexus-mail-sender-test</module>
   </modules>
