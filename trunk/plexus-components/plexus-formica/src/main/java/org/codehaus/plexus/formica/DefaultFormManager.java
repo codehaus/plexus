@@ -170,6 +170,16 @@ public class DefaultFormManager
         {
             Element element = (Element) i.next();
 
+            // ----------------------------------------------------------------------
+            // Populate the default value if our data for the element is null and
+            // there is a default value available.
+            // ----------------------------------------------------------------------
+
+            if ( data.get( element.getId() ) == null && element.getDefaultValue() != null )
+            {
+                data.put( element.getId(), element.getDefaultValue() );
+            }
+
             List validators = element.getValidators();
 
             if ( validators != null )

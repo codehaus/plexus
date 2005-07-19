@@ -90,6 +90,31 @@ public class OgnlPopulator
 
             Object elementData = data.get( id );
 
+            // ----------------------------------------------------------------------
+            // Populate the default value if our data for the element is null and
+            // there is a default value available.
+            // ----------------------------------------------------------------------
+
+            if ( elementData == null && element.getDefaultValue() != null )
+            {
+                elementData = element.getDefaultValue();
+            }
+
+            // OGNL interprets the string literal "false" as true because it's non-null
+            if ( elementData instanceof String )
+            {
+                String s = (String) elementData;
+
+                if ( s.equals( "false" ) || s.equals( "off" ) || s.equals( "0" ) )
+                {
+                    elementData = Boolean.FALSE;
+                }
+                else if ( s.equals( "true" ) || s.equals( "on" ) || s.equals( "1" ) )
+                {
+                    elementData = Boolean.TRUE;
+                }
+            }
+
             if ( elementData != null )
             {
                 String expression = element.getExpression();
@@ -99,35 +124,14 @@ public class OgnlPopulator
                     throw new TargetPopulationException( "Expression for " + element.getId() + " in " + formId + " cannot be null." );
                 }
 
-                //if ( !expression.equals( PASSIVE_EXPRESSION ) )
-                //{
-                    // ----------------------------------------------------------------------
-                    // Check to see if the elementData needs to be transformed
-                    // ----------------------------------------------------------------------
-
-                    //if ( element.getTransformer() != null )
-                    //{
-                        //try
-                        //{
-                            //Transformer transformer = getTransformer( element.getTransformer() );
-
-                            //elementData = transformer.combine( data );
-                        //}
-                        //catch ( TransformerNotFoundException e )
-                        //{
-                            //throw new TargetPopulationException( e );
-                        //}
-                    //}
-
-                    try
-                    {
-                        Ognl.setValue( expression, data, target, elementData );
-                    }
-                    catch ( OgnlException e )
-                    {
-                        throw new TargetPopulationException( e );
-                    }
-                //}
+                try
+                {
+                    Ognl.setValue( expression, data, target, elementData );
+                }
+                catch ( OgnlException e )
+                {
+                    throw new TargetPopulationException( e );
+                }
             }
         }
     }
