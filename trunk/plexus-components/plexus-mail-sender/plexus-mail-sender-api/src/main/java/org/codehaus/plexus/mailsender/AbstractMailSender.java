@@ -55,6 +55,10 @@ public abstract class AbstractMailSender
 
     private String username;
 
+    private String password;
+
+    private boolean sslMode;
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -87,6 +91,26 @@ public abstract class AbstractMailSender
     public void setUsername( String username )
     {
         this.username = username;
+    }
+
+    public String getPassword()
+    {
+        return password;
+    }
+
+    public void setPassword( String password )
+    {
+        this.password = password;
+    }
+
+    public boolean isSslMode()
+    {
+        return sslMode;
+    }
+
+    public void setSslMode( boolean sslMode )
+    {
+        this.sslMode = sslMode;
     }
 
     public void send( String subject, String content, String toMailbox, String toName, String fromMailbox,

@@ -32,6 +32,7 @@ import java.util.Map;
 import org.codehaus.plexus.mailsender.AbstractMailSender;
 import org.codehaus.plexus.mailsender.MailMessage;
 import org.codehaus.plexus.mailsender.MailSenderException;
+import org.codehaus.plexus.mailsender.util.DateFormatUtils;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.StringUtils;
