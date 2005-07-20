@@ -237,8 +237,7 @@ public abstract class AbstractBuilder
     {
         ArtifactResolutionResult result;
 
-        MavenMetadataSource metadata = new MavenMetadataSource( artifactResolver,
-                                                                projectBuilder,
+        MavenMetadataSource metadata = new MavenMetadataSource( projectBuilder,
                                                                 artifactFactory );
 
         Set resolvedArtifacts;
