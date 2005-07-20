@@ -19,6 +19,7 @@ package org.codehaus.plexus.scm;
 import org.apache.maven.scm.CommandNameConstants;
 import org.apache.maven.scm.CommandParameter;
 import org.apache.maven.scm.CommandParameters;
+import org.apache.maven.scm.NoSuchCommandScmException;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFileSet;
 import org.apache.maven.scm.ScmResult;
@@ -320,6 +321,18 @@ public class DefaultScmManager
                                 CommandParameters parameters )
         throws ScmException
     {
+        if ( !CommandNameConstants.LOGIN.equals( commandName ) )
+        {
+            try
+            {
+                execute( CommandNameConstants.LOGIN, repository, fileSet, parameters );
+            }
+            catch ( NoSuchCommandScmException e )
+            {
+                // ignored : provider doesn't have a login command
+            }
+        }
+
         ScmProvider scmProvider = getScmProvider( repository.getProvider() );
 
         for ( Iterator i = loggers.iterator(); i.hasNext(); )
