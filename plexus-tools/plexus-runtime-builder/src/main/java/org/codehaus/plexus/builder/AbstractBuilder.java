@@ -43,7 +43,7 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
-import org.apache.maven.project.artifact.MavenMetadataSource;
+import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.project.MavenProjectBuilder;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -74,6 +74,9 @@ public abstract class AbstractBuilder
 
     /** @plexus.requirement */
     private MavenProjectBuilder projectBuilder;
+
+    /** @plexus.requirement */
+    private ArtifactMetadataSource metadata;
 
     // ----------------------------------------------------------------------
     // Utility methods
@@ -236,9 +239,6 @@ public abstract class AbstractBuilder
         throws ArtifactResolutionException
     {
         ArtifactResolutionResult result;
-
-        MavenMetadataSource metadata = new MavenMetadataSource( projectBuilder,
-                                                                artifactFactory );
 
         Set resolvedArtifacts;
 
