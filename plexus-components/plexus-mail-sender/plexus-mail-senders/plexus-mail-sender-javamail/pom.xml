@@ -18,8 +18,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>javamail</groupId>
-      <artifactId>javamail</artifactId>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
       <version>1.3.2</version>
     </dependency>
   </dependencies>
