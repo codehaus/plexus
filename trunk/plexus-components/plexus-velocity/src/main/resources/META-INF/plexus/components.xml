@@ -13,6 +13,14 @@
             <name>classpath.resource.loader.class</name>
             <value>org.codehaus.plexus.velocity.ContextClassLoaderResourceLoader</value>
           </property>
+          <property>
+            <name>velocimacro.messages.on</name>
+            <value>false</value>
+          </property>
+          <property>
+            <name>resource.manager.logwhenfound</name>
+            <value>false</value>
+          </property>
         </properties>
       </configuration>
     </component>
