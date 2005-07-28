@@ -229,7 +229,7 @@ public class UrlValidator
             return;
         }
 
-        if ( schemes == null && this.allowedSchemes().isEmpty() )
+        if ( schemes == null && this.allowedSchemes.isEmpty() )
         {
             schemes = this.defaultSchemes;
         }
