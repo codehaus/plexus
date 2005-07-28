@@ -81,9 +81,7 @@ public class PlexusRuntimeBuilderTest
         ArtifactRepository localRepository =
             artifactRepositoryFactory.createArtifactRepository( "local",
                                                                 "file://" + getTestFile( "src/test/repository" ).getAbsolutePath(),
-                                                                repositoryLayout,
-                                                                ArtifactRepository.SNAPSHOT_POLICY_ALWAYS,
-                                                                ArtifactRepository.CHECKSUM_POLICY_FAIL );
+                                                                repositoryLayout );
 
         Set projectArtifacts = new HashSet();
 
@@ -115,11 +113,9 @@ public class PlexusRuntimeBuilderTest
 
     private Artifact makeArtifact( String groupId, String artifactId, String version )
     {
-        //Artifact artifact = new DefaultArtifact( groupId, artifactId, version, "jar" );
+        Artifact artifact = artifactFactory.createBuildArtifact( groupId, artifactId, version, "jar" );
 
-        Artifact artifact = artifactFactory.createArtifact( groupId, artifactId, version, Artifact.SCOPE_RUNTIME, "jar" );
-
-        artifact.setFile( getTestFile( "src/test/repository/" + groupId + "/jars/" + artifact + "-" + version + ".jar" ) );
+        artifact.setFile( getTestFile( "src/test/repository/" + groupId + "/jars/" + artifactId + "-" + version + ".jar" ) );
 
         return artifact;
     }
