@@ -19,6 +19,8 @@ public class UrlValidatorTest
 
         assertNotNull( v );
 
+        assertTrue( v.validate( "http://www.apache.org/pom.xml" ) );
+
         assertFalse( v.validate( "anything://www.apache.org/pom.xml" ) );
     }
 
