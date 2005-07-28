@@ -242,7 +242,7 @@ public abstract class AbstractBuilder
 
         Set resolvedArtifacts;
 
-        Artifact originatingArtifact = artifactFactory.createArtifact( "dummy", "dummy", "dummy", "dummy", "dummy", "dummy" );
+        Artifact originatingArtifact = artifactFactory.createProjectArtifact( "dummy", "dummy", "dummy" );
 
         if ( resolveTransitively )
         {
@@ -293,11 +293,9 @@ public abstract class AbstractBuilder
             }
         }
 
-        Artifact artifact = artifactFactory.createArtifact( groupId, artifactId, "unknown", "", "jar" );
-
         if ( !ignoreIfMissing )
         {
-            throw new RuntimeException( "Could not version for artifact: " + artifact.getId() + "." );
+            throw new RuntimeException( "Could not version for artifact: " + artifactId + "." );
         }
 
         return null;
