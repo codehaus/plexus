@@ -10,6 +10,7 @@
   <artifactId>plexus-mail-sender</artifactId>
   <version>1.0</version>
   <name>Plexus Mail Sender</name>
+  <packaging>pom</packaging>
   <modules>
     <module>plexus-mail-sender-api</module>
     <module>plexus-mail-senders</module>
