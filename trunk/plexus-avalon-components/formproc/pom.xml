@@ -3,11 +3,11 @@
   <parent>
     <artifactId>plexus-components-avalon</artifactId>
     <groupId>plexus</groupId>
-    <version>1.0</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-formproc</artifactId>
-  <version>1.0-alpha-6</version>
+  <version>1.0-alpha-7-SNAPSHOT</version>
   <name>Plexus FormProc Component</name>
   <dependencies>
     <dependency>

@@ -2,14 +2,14 @@
   <parent>
     <artifactId>plexus-root</artifactId>
     <groupId>plexus</groupId>
-    <version>1.0</version>
+    <version>1.0.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-tools</artifactId>
   <packaging>pom</packaging>
   <name>Plexus Tools Parent Project</name>
-  <version>1.0</version>
+  <version>1.0.1</version>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>

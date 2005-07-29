@@ -4,7 +4,7 @@
   <artifactId>plexus-root</artifactId>
   <packaging>pom</packaging>
   <name>Plexus</name>
-  <version>1.0</version>
+  <version>1.0.1</version>
   <ciManagement>
     <notifiers>
       <notifier>
