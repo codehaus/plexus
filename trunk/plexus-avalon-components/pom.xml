@@ -3,11 +3,11 @@
   <parent>
     <artifactId>plexus-root</artifactId>
     <groupId>plexus</groupId>
-    <version>1.0</version>
+    <version>1.0.1</version>
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-components-avalon</artifactId>
-  <version>1.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>Plexus Avalon Components</name>
   <dependencies>
     <dependency>

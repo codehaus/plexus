@@ -3,10 +3,10 @@
   <parent>
     <artifactId>plexus-components-avalon</artifactId>
     <groupId>plexus</groupId>
-    <version>1.0</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-activity</artifactId>
-  <version>1.0-beta-1</version>
+  <version>1.0-beta-2-SNAPSHOT</version>
   <name>Plexus Activity Component</name>
   <description>Activity services that interact with templates.</description>
   <developers>
