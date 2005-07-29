@@ -72,9 +72,9 @@ public class SimpleMailSenderTest
 
         SmtpServer smtpServer = (SmtpServer) lookup( SmtpServer.ROLE );
 
-        Thread.sleep( 1000 );
-
         simpleMailSender.send( "mySubject", "myContent", "to@server.com", "to.name", "from@server.com", "from.name" );
+
+        Thread.sleep( 1000 );
 
         assertEquals( 1, smtpServer.getReceivedEmailSize() );
 
