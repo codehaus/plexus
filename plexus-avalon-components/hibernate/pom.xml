@@ -2,11 +2,11 @@
   <parent>
     <artifactId>plexus-components-avalon</artifactId>
     <groupId>plexus</groupId>
-    <version>1.0</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-jasf</artifactId>
   <packaging>jar</packaging>
-  <version>0.4</version>
+  <version>0.5-SNAPSHOT</version>
   <name>Java Application Security Framework</name>
   <description>This security framework seeks to establish a common ground for applications
     to integrate security.  By creating a flexible mechanism, one can use

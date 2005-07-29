@@ -5,10 +5,10 @@
   <parent>
     <groupId>plexus</groupId>
     <artifactId>plexus-components</artifactId>
-    <version>1.1</version>
+    <version>1.1.1-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-drools</artifactId>
-  <version>1.0-beta-1</version>
+  <version>1.0-beta-2-SNAPSHOT</version>
   <name>Plexus Drools Component</name>
   <dependencies>
     <dependency>
