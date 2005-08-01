@@ -45,6 +45,10 @@ public class DefaultJdoFactory
     /** @configuration */
     private Properties properties;
 
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
     private PersistenceManagerFactory persistenceManagerFactory;
 
     // ----------------------------------------------------------------------
