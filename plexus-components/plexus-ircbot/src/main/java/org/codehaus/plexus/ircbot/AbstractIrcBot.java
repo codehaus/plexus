@@ -64,7 +64,7 @@ public abstract class AbstractIrcBot
 
             e.printStackTrace();
 
-            System.exit( 0 );
+            //System.exit( 0 );
         }
 
         input = new BufferedReader( new InputStreamReader( inputStream ) );
