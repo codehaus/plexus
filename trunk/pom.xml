@@ -4,7 +4,7 @@
   <artifactId>plexus-root</artifactId>
   <packaging>pom</packaging>
   <name>Plexus</name>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <ciManagement>
     <notifiers>
       <notifier>
@@ -57,7 +57,7 @@
   </repositories>
   <pluginRepositories>
     <pluginRepository>
-      <id>snapshots</id>
+      <id>snapshots-plugins</id>
       <name>Maven Snapshot Plugins Development Repository</name>
       <url>http://snapshots.maven.codehaus.org/maven2/plugins</url>
       <releases>
