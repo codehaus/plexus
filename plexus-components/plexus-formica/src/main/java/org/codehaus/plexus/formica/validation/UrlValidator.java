@@ -417,7 +417,8 @@ public class UrlValidator
                 }
             }
             String topLevel = domainSegment[segmentCount - 1];
-            if ( topLevel.length() < 2 || topLevel.length() > 4 )
+            // don't check toplevel when we have only a server name like localhost
+            if ( segmentCount != 1 && (topLevel.length() < 2 || topLevel.length() > 4 ) )
             {
                 return false;
             }
@@ -425,12 +426,6 @@ public class UrlValidator
             // First letter of top level must be a alpha
             Perl5Util alphaMatcher = new Perl5Util();
             if ( !alphaMatcher.match( ALPHA_PATTERN, topLevel.substring( 0, 1 ) ) )
-            {
-                return false;
-            }
-
-            // Make sure there's a host name preceding the authority.
-            if ( segmentCount < 2 )
             {
                 return false;
             }
