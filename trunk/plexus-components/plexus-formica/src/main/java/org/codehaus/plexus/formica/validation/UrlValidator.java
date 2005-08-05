@@ -277,14 +277,19 @@ public class UrlValidator
             return false;
         }
 
-        if ( !isValidScheme( matchUrlPat.group( PARSE_URL_SCHEME ) ) )
+        String scheme = matchUrlPat.group( PARSE_URL_SCHEME );
+
+        if ( !isValidScheme( scheme ) )
         {
             return false;
         }
 
-        if ( !isValidAuthority( matchUrlPat.group( PARSE_URL_AUTHORITY ) ) )
+        if ( !"file".equals( scheme ) )
         {
-            return false;
+            if ( !isValidAuthority( matchUrlPat.group( PARSE_URL_AUTHORITY ) ) )
+            {
+                return false;
+            }
         }
 
         if ( !isValidPath( matchUrlPat.group( PARSE_URL_PATH ) ) )
