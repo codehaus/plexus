@@ -2,9 +2,6 @@ package org.codehaus.plexus.formica.validation;
 
 import org.codehaus.plexus.PlexusTestCase;
 
-import java.net.URL;
-import java.io.File;
-
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
@@ -20,6 +17,8 @@ public class UrlValidatorTest
         assertNotNull( v );
 
         assertTrue( v.validate( "http://www.apache.org/pom.xml" ) );
+
+        assertTrue( v.validate( "http://localhost/pom.xml" ) );
 
         assertFalse( v.validate( "anything://www.apache.org/pom.xml" ) );
     }
