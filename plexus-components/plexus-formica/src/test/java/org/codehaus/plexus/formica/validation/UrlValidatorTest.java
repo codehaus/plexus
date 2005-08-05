@@ -20,6 +20,10 @@ public class UrlValidatorTest
 
         assertTrue( v.validate( "http://localhost/pom.xml" ) );
 
+        assertFalse( v.validate( "file://myserver/pom.xml" ) );
+
+        assertFalse( v.validate( "file:///pom.xml" ) );
+
         assertFalse( v.validate( "anything://www.apache.org/pom.xml" ) );
     }
 
