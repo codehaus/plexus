@@ -53,8 +53,6 @@ public abstract class AbstractEntityAction
 
     public static final String ENTITY = "entity";
 
-    public static final String RUNDATA = "data";
-
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -100,7 +98,7 @@ public abstract class AbstractEntityAction
         // TODO: this stuff should be moved to the formica valve so these actions have
         // no need to know the web layer.
 
-        RunData data = (RunData) map.get( RUNDATA );
+        RunData data = (RunData) map.get( SummitConstants.RUNDATA );
 
         String entityId = (String) map.get( ID );
 
@@ -127,13 +125,13 @@ public abstract class AbstractEntityAction
                 // Remove some web specific stuff here. This needs to be scrubbed.
                 // ----------------------------------------------------------------------
 
-                map.remove( "data" );
+                map.remove( SummitConstants.RUNDATA );
 
                 map.remove( "view" );
 
-                map.remove( "fid" );
+                map.remove( FORM_ID );
 
-                map.remove( "action" );
+                map.remove( SummitConstants.ACTION );
 
                 uponSuccessfulValidation( form, entityId, map );
             }
@@ -157,6 +155,13 @@ public abstract class AbstractEntityAction
             formInfo.setFid( getOnSuccessFid( form ) );
 
             data.setTarget( getSuccessTarget( form ) );
+
+            if ( hasResultMessages( map ) )
+            {
+                ViewContext vc = (ViewContext) data.getMap().get( SummitConstants.VIEW_CONTEXT );
+
+                vc.put( "resultMessages", getResultMessages( map ) );
+            }
         }
         else
         {
