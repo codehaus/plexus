@@ -155,13 +155,6 @@ public abstract class AbstractEntityAction
             formInfo.setFid( getOnSuccessFid( form ) );
 
             data.setTarget( getSuccessTarget( form ) );
-
-            if ( hasResultMessages( map ) )
-            {
-                ViewContext vc = (ViewContext) data.getMap().get( SummitConstants.VIEW_CONTEXT );
-
-                vc.put( "resultMessages", getResultMessages( map ) );
-            }
         }
         else
         {
