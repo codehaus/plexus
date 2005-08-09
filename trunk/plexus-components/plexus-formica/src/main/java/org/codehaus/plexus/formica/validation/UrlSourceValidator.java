@@ -38,6 +38,8 @@ public class UrlSourceValidator
             // want to make sure the URL corresponds to an existing resource.
             // ----------------------------------------------------------------------
 
+            //TODO: we need to support authentication (CONTINUUM-258)
+
             URL url = new URL( urlString );
 
             InputStream is = url.openStream();
