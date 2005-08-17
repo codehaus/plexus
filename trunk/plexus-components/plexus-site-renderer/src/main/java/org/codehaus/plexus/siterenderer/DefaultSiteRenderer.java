@@ -37,11 +37,12 @@ import org.codehaus.plexus.velocity.VelocityComponent;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Date;
@@ -61,6 +62,8 @@ public class DefaultSiteRenderer
     extends AbstractLogEnabled
     implements Renderer
 {
+    private static final String DEFAULT_OUTPUT_ENCODING = "UTF-8";
+    
     // ----------------------------------------------------------------------
     // Requirements
     // ----------------------------------------------------------------------
@@ -167,6 +170,16 @@ public class DefaultSiteRenderer
                        Map templateProperties, Locale locale )
         throws RendererException, IOException
     {
+        render( siteDirectory, outputDirectory, siteDescriptor, templateName, templateProperties, defaultLocale, DEFAULT_OUTPUT_ENCODING );
+    }
+
+    /**
+     * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.InputStream, java.lang.String, java.util.Map, java.util.Locale, java.lang.String)
+     */
+    public void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
+                       Map templateProperties, Locale locale, String outputEncoding )
+        throws RendererException, IOException
+    {
         try
         {
             InputStreamReader xmlReader = new InputStreamReader( siteDescriptor );
@@ -214,7 +227,8 @@ public class DefaultSiteRenderer
                         outputFile.getParentFile().mkdirs();
                     }
 
-                    generateDocument( new FileWriter( outputFile ), templateName, templateProperties, sink, locale );
+                    
+                    generateDocument( new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding ), templateName, templateProperties, sink, locale );
                 }
                 catch ( Exception e )
                 {
@@ -230,7 +244,7 @@ public class DefaultSiteRenderer
             }
         }
     }
-
+    
     /**
      * @see org.codehaus.plexus.siterenderer.Renderer#generateDocument(java.io.Writer, java.lang.String, java.util.Map, org.codehaus.plexus.siterenderer.sink.SiteRendererSink)
      */

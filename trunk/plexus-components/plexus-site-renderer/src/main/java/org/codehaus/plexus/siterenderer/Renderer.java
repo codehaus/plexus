@@ -57,6 +57,10 @@ public interface Renderer
                  Map templateProperties, Locale locale )
          throws RendererException, IOException;
 
+     void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
+                 Map templateProperties, Locale locale, String outputEncoding )
+         throws RendererException, IOException;
+
     void generateDocument( Writer writer, String templateName, Map templateProperties, SiteRendererSink sink )
         throws RendererException;
 
