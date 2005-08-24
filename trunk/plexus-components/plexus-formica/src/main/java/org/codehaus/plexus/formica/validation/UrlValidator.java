@@ -24,6 +24,7 @@ package org.codehaus.plexus.formica.validation;
 
 import org.apache.oro.text.perl.Perl5Util;
 import org.codehaus.plexus.formica.validation.util.Flags;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -253,14 +254,14 @@ public class UrlValidator
      * <p>Checks if a field has a valid url address.</p>
      *
      * @param value The value validation is being performed on.  A <code>null</code>
-     * value is considered invalid.
+     * value is considered valid.
      * @return true if the url is valid.
      */
     public boolean isValid( String value )
     {
-        if ( value == null )
+        if ( StringUtils.isEmpty( value ) )
         {
-            return false;
+            return true;
         }
 
         Perl5Util matchUrlPat = new Perl5Util();
