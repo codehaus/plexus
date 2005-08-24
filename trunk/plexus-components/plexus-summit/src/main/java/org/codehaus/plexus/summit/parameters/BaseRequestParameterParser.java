@@ -85,7 +85,7 @@ public class BaseRequestParameterParser
     {
         fileUpload.setSizeMax( maxUploadSize );
 
-        fileUpload.setSizeMax( maxMemorySize );
+        fileUpload.setSizeThreshold( maxMemorySize );
 
         fileUpload.setRepositoryPath( tempDirectory );
     }
