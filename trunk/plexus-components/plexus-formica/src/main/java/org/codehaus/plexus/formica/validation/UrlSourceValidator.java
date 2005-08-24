@@ -9,6 +9,7 @@ import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.codehaus.plexus.formica.FormicaException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.net.URL;
 import java.net.MalformedURLException;
@@ -28,8 +29,20 @@ import java.io.InputStream;
 public class UrlSourceValidator
     extends AbstractValidator
 {
+    /**
+     * <p>Checks if a field has a valid url address.</p>
+     *
+     * @param value The value validation is being performed on.  A <code>null</code>
+     * value is considered valid.
+     * @return true if the url exists.
+     */
     public boolean validate( String urlString )
     {
+        if ( StringUtils.isEmpty( urlString ) )
+        {
+            return true;
+        }
+
         try
         {
             // ----------------------------------------------------------------------
