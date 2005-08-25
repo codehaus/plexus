@@ -287,7 +287,23 @@ public class UrlValidator
 
         if ( !"file".equals( scheme ) )
         {
-            if ( !isValidAuthority( matchUrlPat.group( PARSE_URL_AUTHORITY ) ) )
+            String authority = matchUrlPat.group( PARSE_URL_AUTHORITY );
+
+            if ( authority.contains( "@" ) )
+            {
+                String userPassword = authority.substring( 0, authority.indexOf( "@" ) );
+
+                authority = authority.substring( authority.indexOf( "@" ) + 1 );
+
+                if ( !userPassword.contains( ":" ) ||
+                     userPassword.indexOf( ":" ) == 0 ||
+                     userPassword.indexOf( ":" ) == userPassword.length() - 1 )
+                {
+                    return false;
+                }
+            }
+
+            if ( !isValidAuthority( authority ) )
             {
                 return false;
             }
@@ -297,7 +313,6 @@ public class UrlValidator
         {
             return false;
         }
-
         if ( !isValidQuery( matchUrlPat.group( PARSE_URL_QUERY ) ) )
         {
             return false;

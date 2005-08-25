@@ -18,6 +18,12 @@ public class UrlValidatorTest
 
         assertTrue( v.validate( "http://www.apache.org/pom.xml" ) );
 
+        assertTrue( v.validate( "http://username:password@www.apache.org/pom.xml" ) );
+
+        assertTrue( v.validate( "https://www.apache.org/pom.xml" ) );
+
+        assertTrue( v.validate( "https://username:password@www.apache.org/pom.xml" ) );
+
         assertTrue( v.validate( "http://localhost/pom.xml" ) );
 
         assertTrue( v.validate( "file://myserver/pom.xml" ) );
