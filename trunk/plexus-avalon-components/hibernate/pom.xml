@@ -1,4 +1,5 @@
 <project>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-components-avalon</artifactId>
     <groupId>plexus</groupId>
@@ -7,11 +8,7 @@
   <artifactId>plexus-jasf</artifactId>
   <packaging>jar</packaging>
   <version>0.5-SNAPSHOT</version>
-  <name>Java Application Security Framework</name>
-  <description>This security framework seeks to establish a common ground for applications
-    to integrate security.  By creating a flexible mechanism, one can use
-    different security frameworks, but the same Components from application
-    to application.</description>
+  <name>Avalon Hibernate component</name>
   <inceptionYear>2002</inceptionYear>
   <developers>
     <developer>
