@@ -114,9 +114,13 @@ public class DefaultI18N
 
                 field.setAccessible( true );
 
-                sun.misc.SoftCache cache = (sun.misc.SoftCache) field.get( null );
+//                SoftCache cache = (SoftCache) field.get( null );
+//
+//                cache.clear();
 
-                cache.clear();
+                Object cache = field.get( null );
+
+                cache.getClass().getDeclaredMethod( "clear", null ).invoke( cache, null );
 
                 field.setAccessible( false );
             }
@@ -132,7 +136,7 @@ public class DefaultI18N
         }
 
         // Find/retrieve/cache bundle.
-        ResourceBundle rb = null;
+        ResourceBundle rb;
 
         HashMap bundlesByLocale = (HashMap) bundles.get( bundleName );
 
@@ -191,7 +195,7 @@ public class DefaultI18N
      */
     public String getString( String bundleName, Locale locale, String key )
     {
-        String value = null;
+        String value;
 
         if ( locale == null )
         {
@@ -324,7 +328,7 @@ public class DefaultI18N
 
         initializeBundleNames();
 
-        if ( "true".equals( System.getProperty( "PLEXUS_DEV_MODE" ) ) ) 
+        if ( "true".equals( System.getProperty( "PLEXUS_DEV_MODE" ) ) )
         {
             devMode = true;
         }
@@ -429,7 +433,7 @@ public class DefaultI18N
         ResourceBundle rb = null;
 
         if ( !StringUtils.isNotEmpty( locale.getCountry() ) &&
-            defaultLanguage.equals( locale.getLanguage() ) )
+             defaultLanguage.equals( locale.getLanguage() ) )
         {
             /*
             category.debug("Requested language '" + locale.getLanguage() +
@@ -445,7 +449,7 @@ public class DefaultI18N
             }
         }
         else if ( !StringUtils.isNotEmpty( locale.getLanguage() ) &&
-            defaultCountry.equals( locale.getCountry() ) )
+                  defaultCountry.equals( locale.getCountry() ) )
         {
             Locale withDefaultLanguage = new Locale( defaultLanguage,
                                                      locale.getCountry() );
@@ -470,7 +474,7 @@ public class DefaultI18N
      * returning <code>null</code> instead of throwing
      * <code>MissingResourceException</code>.
      */
-    private final ResourceBundle getBundleIgnoreException( String bundleName, Locale locale )
+    private ResourceBundle getBundleIgnoreException( String bundleName, Locale locale )
     {
         try
         {
@@ -498,6 +502,7 @@ public class DefaultI18N
             }
             catch ( MissingResourceException ignored )
             {
+                // intentional
             }
         }
         return null;
