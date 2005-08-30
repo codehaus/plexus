@@ -289,13 +289,13 @@ public class UrlValidator
         {
             String authority = matchUrlPat.group( PARSE_URL_AUTHORITY );
 
-            if ( authority.contains( "@" ) )
+            if ( authority.indexOf( "@" ) != -1 )
             {
                 String userPassword = authority.substring( 0, authority.indexOf( "@" ) );
 
                 authority = authority.substring( authority.indexOf( "@" ) + 1 );
 
-                if ( !userPassword.contains( ":" ) ||
+                if ( userPassword.indexOf( ":" ) == -1 ||
                      userPassword.indexOf( ":" ) == 0 ||
                      userPassword.indexOf( ":" ) == userPassword.length() - 1 )
                 {
