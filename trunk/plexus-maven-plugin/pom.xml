@@ -13,7 +13,7 @@
   <packaging>maven-plugin</packaging>
   <name>Plexus Maven Plugin</name>
   <scm>
-    <connection>scm:svn:svn://svn.codehaus.org/plexus/scm/trunk/maven-plexus-plugin</connection>
+    <connection>scm:svn:svn://svn.codehaus.org/plexus/scm/trunk/plexus-maven-plugin</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/maven-plexus-plugin</developerConnection>
   </scm>
   <dependencies>
