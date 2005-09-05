@@ -105,6 +105,7 @@ public class OgnlPopulator
             {
                 String s = (String) elementData;
 
+                //TODO: we need to check element.type
                 if ( s.equals( "false" ) || s.equals( "off" ) || s.equals( "0" ) )
                 {
                     elementData = Boolean.FALSE;
@@ -114,6 +115,7 @@ public class OgnlPopulator
                     elementData = Boolean.TRUE;
                 }
             }
+
 
             if ( elementData != null )
             {
