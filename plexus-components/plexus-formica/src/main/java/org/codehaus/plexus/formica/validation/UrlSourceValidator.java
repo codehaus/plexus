@@ -54,7 +54,7 @@ public class UrlSourceValidator
 
             // if it is a https connection then we have a bit more work to do, currently 
             // only accepting the munged https url that is resolved in MungedHttpsURL
-            if ( urlString != null && urlString.startsWith( "https" ) )
+            if ( urlString != null && urlString.startsWith( "http" ) )
             {
                 return new MungedHttpsURL( urlString ).isValid();
             }

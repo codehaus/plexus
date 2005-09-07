@@ -17,8 +17,10 @@ package org.codehaus.plexus.formica.util;
  */
 
 import java.io.InputStream;
+import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -32,7 +34,7 @@ import javax.net.ssl.X509TrustManager;
  * https://[username:password@]host.com/
  * 
  * @author <a href="mailto:jesse.mcconnell@gmail.com">Jesse McConnell</a>
- * @version $Id:$
+ * @version $Id$
  */
 public class MungedHttpsURL
 {
@@ -41,9 +43,9 @@ public class MungedHttpsURL
     // ----------------------------------------------------------------------
 
     private String urlString;
-    
+
     private String username;
-    
+
     private String password;
 
     // ----------------------------------------------------------------------
@@ -58,7 +60,7 @@ public class MungedHttpsURL
        password = scrapePassword( mungedUrl );
 
        urlString = scrapeUrl( mungedUrl );
-       
+
        if ( urlString == null )
        {
            throw new MalformedURLException( "Unable to generate clean url from url string: " + mungedUrl );
@@ -66,7 +68,6 @@ public class MungedHttpsURL
        
     }
 
-    
     public MungedHttpsURL( String urlString, String username, String password )
         throws MalformedURLException
     {
@@ -75,7 +76,7 @@ public class MungedHttpsURL
        this.password = password;
 
        this.urlString = urlString;
-       
+
        if ( !isValid() )
        {
            throw new MalformedURLException( "Unable to validate URL" );
@@ -86,7 +87,6 @@ public class MungedHttpsURL
     // HttpsURL Implementation
     // ----------------------------------------------------------------------
 
-    
     /**
      * this bit attempts to ignore certificates that might need to be accepted and also tries to 
      * conform to the format https://[<username>:<password>@]host
@@ -116,33 +116,64 @@ public class MungedHttpsURL
     {
         try
         {
-            ignoreCertificates();
-
-            String authString = username + ":" + password;
-
-            URL url = new URL( urlString );
-
-            HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-
-            urlc.setDoInput( true );
-
-            urlc.setUseCaches( false );
-
-            urlc.setRequestProperty( "Content-Type", "application/octet-stream" );
-
-            if ( username != null && password != null )
+            if ( urlString.startsWith( "https" ) )
             {
-                urlc.setRequestProperty( "Authorization", "Basic " +
-                    new sun.misc.BASE64Encoder().encode( authString.getBytes() ) );
+                return getHttpsUrl();
             }
-
-            return url;
+            else
+            {
+                return getHttpUrl();
+            }
 
         }
         catch ( Exception e )
         {
             throw new MalformedURLException( "unable to create munged url" );
         }
+    }
+
+    private URL getHttpUrl() throws MalformedURLException
+    {
+        if ( username != null && password != null )
+        {
+            Authenticator.setDefault( new Authenticator()
+            {
+                protected PasswordAuthentication getPasswordAuthentication()
+                {
+                    PasswordAuthentication passwordAuthentication = new PasswordAuthentication( username, password.toCharArray() );
+
+                    return passwordAuthentication;
+                }
+            } );
+        }
+
+        return new URL( urlString );
+    }
+
+    private URL getHttpsUrl()
+            throws Exception
+    {
+        ignoreCertificates();
+
+        String authString = username + ":" + password;
+
+        URL url = new URL( urlString );
+
+        HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+
+        urlc.setDoInput( true );
+
+        urlc.setUseCaches( false );
+
+        urlc.setRequestProperty( "Content-Type", "application/octet-stream" );
+
+        if ( username != null && password != null )
+        {
+            urlc.setRequestProperty( "Authorization", "Basic " +
+                new sun.misc.BASE64Encoder().encode( authString.getBytes() ) );
+        }
+
+        return url;
     }
 
     public String getUsername()
@@ -152,7 +183,7 @@ public class MungedHttpsURL
 
     public String getPassword()
     {
-        return username;
+        return password;
     }
 
     public String getUrlString()
@@ -199,14 +230,13 @@ public class MungedHttpsURL
 
         HttpsURLConnection.setDefaultSSLSocketFactory( sslContext.getSocketFactory() );
     }
-    
-    
+
     /**
      * return the username from https://<name>:<password>@<url>
      */
     private String scrapeUsername( String url )
     {
-        String t = url.substring( 8, url.length() );
+        String t = url.substring( url.lastIndexOf('/')+1, url.length() );
 
         if ( t.indexOf( ":" ) < 0 && t.indexOf( "@" ) < 0 )
         {
@@ -221,7 +251,7 @@ public class MungedHttpsURL
      */
     private String scrapePassword( String url )
     {
-       String t = url.substring( 8, url.length() );
+        String t = url.substring( url.lastIndexOf('/')+1, url.length() );
 
         if ( t.indexOf( ":" ) < 0 && t.indexOf( "@" ) < 0 )
         {
@@ -231,18 +261,26 @@ public class MungedHttpsURL
        return t.substring( t.indexOf( ":" ) + 1, t.indexOf( "@" ) );
     }
 
-     /**
-      * return the url from https://<name>:<password>@<url>
-      */
-     private String scrapeUrl( String url )
-     {
-         if ( url.indexOf( "@" ) != -1 )
-         {
-             return "https://" + url.substring( url.indexOf( "@" ) + 1, url.length() );
-         }
-         else
-         {
-             return url;
-         }
-     }
+    /**
+     * return the url from https://<name>:<password>@<url>
+     */
+    private String scrapeUrl( String url )
+    {
+        if ( url.indexOf( "@" ) != -1 )
+        {
+            String s = url.substring( url.indexOf( "@" ) + 1, url.length() );
+            if ( url.startsWith( "http://" ) )
+            {
+                return "http://" + s;
+            }
+            else
+            {
+                return "https://" + s;
+            }
+        }
+        else
+        {
+            return url;
+        }
+    }
 }
