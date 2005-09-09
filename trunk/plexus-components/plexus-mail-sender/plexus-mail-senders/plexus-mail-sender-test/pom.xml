@@ -1,13 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <project>
-  <parent>
-    <artifactId>plexus-mail-senders</artifactId>
-    <groupId>plexus</groupId>
-    <version>1.0-alpha-3-SNAPSHOT</version>
-  </parent>
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>plexus</groupId>
+    <artifactId>plexus-mail-senders</artifactId>
+    <version>1.0-alpha-2-SNAPSHOT</version>
+  </parent>
   <artifactId>plexus-mail-sender-test</artifactId>
+  <version>1.0-alpha-2-SNAPSHOT</version>
   <name>Plexus Test Mail Sender</name>
-  <version>1.0-alpha-3-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>dumbster</groupId>
