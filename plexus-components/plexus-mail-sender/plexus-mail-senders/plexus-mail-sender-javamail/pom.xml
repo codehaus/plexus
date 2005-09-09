@@ -1,20 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <project>
-  <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>plexus</groupId>
     <artifactId>plexus-mail-senders</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <groupId>plexus</groupId>
+    <version>1.0.2</version>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-mail-sender-javamail</artifactId>
-  <version>1.0-alpha-2-SNAPSHOT</version>
   <name>Plexus Javamail Mail Sender</name>
+  <version>1.0-alpha-2</version>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-mail-sender-test</artifactId>
-      <version>1.0-alpha-2-SNAPSHOT</version>
+      <version>1.0-alpha-2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
