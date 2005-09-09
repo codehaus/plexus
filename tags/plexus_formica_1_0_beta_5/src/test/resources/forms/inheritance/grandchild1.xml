@@ -1,0 +1,34 @@
+<form>
+  <extend>child</extend>
+  <id>grandchild1</id>
+  <summary-collection-expression>grandchild1-summary-collection-expression</summary-collection-expression>
+  <elements>
+    <element>
+      <id>field-4</id>
+      <expression>field4</expression>
+      <validators>
+        <validator>
+          <id>url</id>
+          <error-message-key>field-4-error-message-key</error-message-key>
+        </validator>
+      </validators>
+      <label-key>field-4-label-key</label-key>
+      <message-key>field-4-message-key</message-key>
+      <type>text</type>
+    </element>
+    <element>
+      <id>field-1</id>
+      <expression>grandchild1-field1</expression>
+      <validators>
+        <validator>
+          <id>pattern-date</id>
+          <error-message-key>field-1-error-message-key</error-message-key>
+        </validator>
+      </validators>
+      <label-key>field-1-label-key</label-key>
+      <message-key>field-1-message-key</message-key>
+      <type>text</type>
+      <immutable>true</immutable>
+    </element>
+  </elements>
+</form>
