@@ -1,0 +1,16 @@
+<project>
+  <parent>
+    <artifactId>plexus-components</artifactId>
+    <groupId>plexus</groupId>
+    <version>1.1.1</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>plexus-mail-sender</artifactId>
+  <packaging>pom</packaging>
+  <name>Plexus Mail Sender</name>
+  <version>1.0-alpha-2</version>
+  <modules>
+    <module>plexus-mail-sender-api</module>
+    <module>plexus-mail-senders</module>
+  </modules>
+</project>
