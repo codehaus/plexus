@@ -26,6 +26,9 @@ import org.codehaus.plexus.summit.view.ViewContext;
 
 /**
  * @todo Use a Factory to create the particular flavour of the ViewContext
+ * @plexus.component
+ *    role="org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve"
+ *    role-hint="org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve"
  */
 public class CreateViewContextValve
     extends AbstractValve
