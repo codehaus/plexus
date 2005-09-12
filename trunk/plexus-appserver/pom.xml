@@ -7,7 +7,6 @@
     <groupId>plexus</groupId>
     <version>1.0.1</version>
   </parent>
-  <modelVersion>3</modelVersion>
   <groupId>plexus</groupId>
   <artifactId>plexus-appserver</artifactId>
   <packaging>jar</packaging>
