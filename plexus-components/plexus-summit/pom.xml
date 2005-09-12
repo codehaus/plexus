@@ -7,20 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-summit</artifactId>
   <name>Plexus Summit Framework</name>
-  <version>1.0-beta-7-SNAPSHOT</version>
-  <!-- build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-plexus-plugin</artifactId>
-        <version>1.1-alpha-5</version>
-        <goals>
-          <goal>
-            <id>descriptor</id>
-          </goal>
-        </goals>
-      </plugin>
-    </plugins>
-  </build -->
+  <version>1.0-beta-7</version>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
@@ -38,14 +25,14 @@
       <version>1.0.1</version>
     </dependency>
     <dependency>
-      <groupId>plexus</groupId>
-      <artifactId>plexus-action</artifactId>
-      <version>1.0-alpha-5</version>
-    </dependency>
-    <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
       <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-action</artifactId>
+      <version>1.0-alpha-5</version>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
@@ -53,9 +40,9 @@
       <version>1.0-beta-4</version>
     </dependency>
     <dependency>
-      <groupId>ognl</groupId>
-      <artifactId>ognl</artifactId>
-      <version>2.5.1</version>
+      <groupId>geronimo-spec</groupId>
+      <artifactId>geronimo-spec-servlet</artifactId>
+      <version>2.4-rc4</version>
     </dependency>
     <dependency>
       <groupId>velocity</groupId>
@@ -63,9 +50,9 @@
       <version>1.4</version>
     </dependency>
     <dependency>
-      <groupId>geronimo-spec</groupId>
-      <artifactId>geronimo-spec-servlet</artifactId>
-      <version>2.4-rc4</version>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>2.5.1</version>
     </dependency>
   </dependencies>
 </project>
