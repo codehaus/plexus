@@ -1,0 +1,10 @@
+o TODO: doc client configuration
+
+o Notes on client configuration:
+
+o We can make standard components available like valves and pull tools but how
+  the valves and pull tools are used in the client application is left up to
+  the client and must be done by the client.
+
+o Displays and resolvers should be configured by the user but we can leave some
+  defaults in here.
