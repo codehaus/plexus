@@ -66,12 +66,6 @@
       <implementation>org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve</implementation>
     </component>
 
-    <component>
-      <role>org.codehaus.plexus.summit.pipeline.valve.Valve</role>
-      <role-hint>org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve</role-hint>
-      <implementation>org.codehaus.plexus.summit.pipeline.valve.CreateViewContextValve</implementation>
-    </component>
-
     <!-- Anything with a configuration cannot really work in the components.xml -->
 
     <component>

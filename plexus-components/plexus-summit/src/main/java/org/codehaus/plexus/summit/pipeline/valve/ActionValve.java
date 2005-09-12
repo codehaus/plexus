@@ -36,8 +36,9 @@ import java.util.Map;
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
- * @plexus.component role="org.codehaus.plexus.summit.pipeline.valve.Valve"
- * role-hint="org.codehaus.plexus.action.web.ActionValve"
+ * @plexus.component
+ *    role="org.codehaus.plexus.summit.pipeline.valve.Valve"
+ *    role-hint="org.codehaus.plexus.summit.pipeline.valve.ActionValve"
  */
 public class ActionValve
     extends AbstractValve

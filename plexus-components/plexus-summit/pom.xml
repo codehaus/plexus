@@ -8,7 +8,7 @@
   <artifactId>plexus-summit</artifactId>
   <name>Plexus Summit Framework</name>
   <version>1.0-beta-7-SNAPSHOT</version>
-  <build>
+  <!-- build>
     <plugins>
       <plugin>
         <artifactId>maven-plexus-plugin</artifactId>
@@ -20,7 +20,7 @@
         </goals>
       </plugin>
     </plugins>
-  </build>
+  </build -->
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
