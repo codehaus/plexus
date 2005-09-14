@@ -28,6 +28,7 @@ import java.io.File;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.application.ApplicationBuilder;
 import org.codehaus.plexus.builder.application.ApplicationBuilderException;
@@ -53,6 +54,14 @@ public class BundlePlexusApplicationMojo
      * @required
      */
     private File basedir;
+
+    /**
+     * @parameter expression="${project}"
+     *
+     * @required
+     * @readonly
+     */
+    private MavenProject project;
 
     /**
      * @parameter expression="${project.build.directory}"
@@ -91,8 +100,11 @@ public class BundlePlexusApplicationMojo
 
         try
         {
-            builder.bundle( new File( target, finalName + ".jar" ),
-                            applicationAssemblyDirectory );
+            File outputFile = new File( target, finalName + ".jar" );
+            builder.bundle( outputFile, applicationAssemblyDirectory );
+
+            // TODO: m2 needs a better way to deal with this
+            project.getArtifact().setFile( outputFile );
         }
         catch ( ApplicationBuilderException e )
         {
