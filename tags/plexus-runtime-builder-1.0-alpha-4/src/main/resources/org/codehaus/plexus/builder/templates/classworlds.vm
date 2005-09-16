@@ -1,0 +1,4 @@
+main is org.codehaus.plexus.application.PlexusApplicationHost from plexus.core
+
+[plexus.core]
+load ${plexus.core}/*.jar
