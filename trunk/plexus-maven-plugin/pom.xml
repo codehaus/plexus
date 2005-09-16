@@ -5,22 +5,17 @@
   <parent>
     <artifactId>plexus-root</artifactId>
     <groupId>plexus</groupId>
-    <version>1.0.1</version>
+    <version>1.0.3</version>
   </parent>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-plexus-plugin</artifactId>
+  <artifactId>plexus-maven-plugin</artifactId>
   <version>1.1-alpha-6-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>Plexus Maven Plugin</name>
-  <scm>
-    <connection>scm:svn:svn://svn.codehaus.org/plexus/scm/trunk/plexus-maven-plugin</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/maven-plexus-plugin</developerConnection>
-  </scm>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <version>2.0-alpha-3</version>
+      <version>2.0-beta-1</version>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
@@ -30,7 +25,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-runtime-builder</artifactId>
-      <version>1.0-alpha-4-SNAPSHOT</version>
+      <version>1.0-alpha-4</version>
     </dependency>
     <dependency>
       <groupId>plexus</groupId>
@@ -38,16 +33,4 @@
       <version>1.0-alpha-2</version>
     </dependency>
   </dependencies>
-  <distributionManagement>
-    <repository>
-      <id>central-plugins</id>
-      <name>Maven Central Plugins Repository</name>
-      <url>scp://repo1.maven.org/home/projects/maven/repository-staging/to-ibiblio/maven2/plugins</url>
-    </repository>
-    <snapshotRepository>
-      <id>snapshots</id>
-      <name>Maven Central Development Repository</name>
-      <url>scp://repo1.maven.org/home/projects/maven/repository-staging/snapshots/maven2/plugins</url>
-    </snapshotRepository>
-  </distributionManagement>
 </project>
