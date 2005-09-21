@@ -236,9 +236,9 @@ public class MungedHttpsURL
      */
     private String scrapeUsername( String url )
     {
-        String t = url.substring( url.lastIndexOf('/')+1, url.length() );
+        String t = scrapeHost( url );
 
-        if ( t.indexOf( ":" ) < 0 && t.indexOf( "@" ) < 0 )
+        if ( t == null || ( t.indexOf( ":" ) < 0 && t.indexOf( "@" ) < 0 ) )
         {
             return null;
         }
@@ -251,14 +251,36 @@ public class MungedHttpsURL
      */
     private String scrapePassword( String url )
     {
-        String t = url.substring( url.lastIndexOf('/')+1, url.length() );
+        String t = scrapeHost( url );
 
-        if ( t.indexOf( ":" ) < 0 && t.indexOf( "@" ) < 0 )
+        if ( t == null || ( t.indexOf( ":" ) < 0 && t.indexOf( "@" ) < 0 ) )
         {
             return null;
         }
 
        return t.substring( t.indexOf( ":" ) + 1, t.indexOf( "@" ) );
+    }
+
+    /**
+     * return to host from https://<name>:<password>@<url>
+     */
+    private String scrapeHost( String url )
+    {
+        int hostStart = url.indexOf( "//" );
+        
+        if ( hostStart == -1 )
+        {
+            return null;
+        }
+
+        int hostEnd = url.indexOf( '/', hostStart + 2 );
+        
+        if ( hostEnd == -1 )
+        {
+            return url.substring( hostStart + 2 );
+        }
+
+        return url.substring( hostStart + 2, hostEnd );
     }
 
     /**
