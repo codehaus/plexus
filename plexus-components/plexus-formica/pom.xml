@@ -2,7 +2,7 @@
   <parent>
     <artifactId>plexus-components</artifactId>
     <groupId>plexus</groupId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-formica</artifactId>
@@ -11,22 +11,20 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-plexus-plugin</artifactId>
-        <version>1.1-alpha-5</version>
-        <goals>
-          <goal>
-            <id>descriptor</id>
-          </goal>
-        </goals>
+        <groupId>plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <version>1.1-alpha-6</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
   <dependencies>
-    <dependency>
-      <groupId>plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>1.0.1</version>
-    </dependency>
     <dependency>
       <groupId>oro</groupId>
       <artifactId>oro</artifactId>
