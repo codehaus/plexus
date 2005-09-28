@@ -55,7 +55,7 @@ public final class PlexusServletUtils {
         try {
             return getPlexusContainer( sc ).lookup( role );
         } catch (ComponentLookupException e) {
-            throw new ServletException("could not lookup service", e);
+            throw new ServletException("could not lookup service " + role, e);
         }
     }
 
@@ -65,7 +65,7 @@ public final class PlexusServletUtils {
         try {
             return getPlexusContainer( sc ).lookup( role, id );
         } catch (ComponentLookupException e) {
-            throw new ServletException("could not lookup service", e);
+            throw new ServletException("could not lookup service " + role, e);
         }
     }
 
