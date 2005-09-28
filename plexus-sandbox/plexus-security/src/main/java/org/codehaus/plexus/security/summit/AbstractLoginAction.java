@@ -8,15 +8,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.codehaus.plexus.action.Action;
+import org.codehaus.plexus.action.AbstractAction;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  */
-public class AbstractLoginAction
-    extends AbstractLogEnabled
-    implements Action
+public abstract class AbstractLoginAction
+    extends AbstractAction
 {
     public void execute(Map context)
         throws Exception
@@ -75,6 +74,10 @@ public class AbstractLoginAction
                 return;
             }
         }
+
+        login( context );
     }
 
+    protected abstract void login( Map context )
+        throws Exception;
 }

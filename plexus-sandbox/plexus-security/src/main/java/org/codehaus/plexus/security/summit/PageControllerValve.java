@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.security.ResourceController;
-import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
+import org.codehaus.plexus.summit.pipeline.valve.ValveInvocationException;
 import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
@@ -26,7 +26,7 @@ public class PageControllerValve
      * @see org.codehaus.plexus.summit.pipeline.valve.Valve#invoke(org.codehaus.plexus.summit.rundata.RunData, org.codehaus.plexus.summit.pipeline.valve.ValveContext)
      */
     public void invoke(RunData data)
-        throws IOException, SummitException
+        throws IOException, ValveInvocationException
     {
         SecureRunData secData = (SecureRunData) data;
 

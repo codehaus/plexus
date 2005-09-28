@@ -2,8 +2,8 @@ package org.codehaus.plexus.security.summit;
 
 import java.io.IOException;
 
-import org.codehaus.plexus.summit.exception.SummitException;
 import org.codehaus.plexus.summit.pipeline.valve.AbstractValve;
+import org.codehaus.plexus.summit.pipeline.valve.ValveInvocationException;
 import org.codehaus.plexus.summit.rundata.RunData;
 
 /**
@@ -18,23 +18,28 @@ import org.codehaus.plexus.summit.rundata.RunData;
  * 
  * @todo How do I cancel execution of an action?
  */
-public class SessionValidatorValve 
+public abstract class AbstractSessionValidatorValve 
     extends AbstractValve
 {
-    private String loginTarget = "Login.vm";
-    
     /**
      * @see org.codehaus.plexus.summit.pipeline.valve.AbstractValve#invoke(org.codehaus.plexus.summit.rundata.RunData, org.codehaus.plexus.summit.pipeline.valve.ValveContext)
      */
     public void invoke(RunData data)
-        throws IOException, SummitException
+        throws IOException, ValveInvocationException
     {
         SecureRunData secData = (SecureRunData) data;
 
-        if ( secData.getUser() == null ||
-             !secData.getUser().isLoggedIn() )
+        if ( ( secData.getUser() == null ||
+             !secData.getUser().isLoggedIn() ) && !isAllowedGuest() )
         {
-            data.setTarget( loginTarget );
+            data.setTarget( getLoginTarget() );
         }
     }
+
+    public String getLoginTarget()
+    {
+        return "Login.vm";
+    }
+
+    protected abstract boolean isAllowedGuest();
 }
