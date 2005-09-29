@@ -1,0 +1,37 @@
+<html>
+<head><title>OpenSymphony WebWork2 Form Example</title></head>
+<body>
+#if( $errorMessages )
+<p>
+<font color="red">
+<b>ERRORS:</b><br>
+<ul>
+#foreach( $message in $errorMessages )
+<li>$message</li>
+#end
+</ul>
+</font>
+</p>
+#end
+Status: $status<br><p>
+<b>Test Form with valid token</b><br>
+#bodytag( Form "name='myForm'" "action='formTest.action'" "method=POST" )
+#tag( Token "name='myToken'" )<br>
+<table>
+#tag( TextField "label='Foo'" "name='foo'" "value=foo" )<br>
+</table>
+<input type="submit" value="Test With Token"/>
+#end
+<b>Test Form without valid token</b><br>
+#bodytag( Form "name='myForm'" "action='formTest.action'" "method=POST" )
+<table>
+#*
+    @todo something weird happens on resin where if this textfield has the same label as the previous textfield,
+    the the label for this textfield comes up as empty.
+*#
+#tag( TextField "label='No Foo'" "name='foo'" "value=foo" )<br>
+</table>
+<input type="submit" value="Test Without Token"/>
+#end ## Form
+
+</body>

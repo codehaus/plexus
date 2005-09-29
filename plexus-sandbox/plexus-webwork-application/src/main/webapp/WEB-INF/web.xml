@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+
+  <display-name>Plexus and WebWork Test App</display-name>
+
+  <!--    <filter>-->
+  <!--        <filter-name>webwork</filter-name>-->
+  <!--        <filter-class>com.opensymphony.webwork.dispatcher.FilterDispatcher</filter-class>-->
+  <!--    </filter>-->
+<!-- removed - trygvis. Not really sure what this did
+  <filter>
+    <filter-name>container</filter-name>
+    <filter-class>com.opensymphony.webwork.lifecycle.RequestLifecycleFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>container</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+-->
+
+  <!--
+      <filter-mapping>
+          <filter-name>webwork</filter-name>
+          <url-pattern>/*</url-pattern>
+      </filter-mapping>
+  -->
+
+<!-- REMOVED - trygve
+  <listener>
+    <listener-class>com.opensymphony.webwork.lifecycle.ApplicationLifecycleListener</listener-class>
+  </listener>
+
+  <listener>
+    <listener-class>com.opensymphony.webwork.lifecycle.SessionLifecycleListener</listener-class>
+  </listener>
+-->
+  <listener>
+    <listener-class>org.codehaus.plexus.servlet.PlexusServletContextListener</listener-class>
+  </listener>
+
+  <listener>
+    <listener-class>org.codehaus.plexus.webwork.servlet.PlexusWebWorkApplicationLifecycleListener</listener-class>
+  </listener>
+
+  <listener>
+    <listener-class>org.codehaus.plexus.webwork.servlet.PlexusWebWorkSessionLifecycleListener</listener-class>
+  </listener>
+
+  <!-- Should we have a request thing too? -->
+
+  <servlet>
+    <servlet-name>webwork</servlet-name>
+    <servlet-class>com.opensymphony.webwork.dispatcher.ServletDispatcher</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>validation</servlet-name>
+    <servlet-class>com.opensymphony.webwork.validators.ValidationServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>freemarker</servlet-name>
+    <servlet-class>com.opensymphony.webwork.views.freemarker.FreemarkerServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet>
+    <servlet-name>velocity</servlet-name>
+    <servlet-class>com.opensymphony.webwork.views.velocity.WebWorkVelocityServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>freemarker</servlet-name>
+    <url-pattern>*.ftl</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>webwork</servlet-name>
+    <url-pattern>*.action</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>validation</servlet-name>
+    <url-pattern>/validation</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>velocity</servlet-name>
+    <url-pattern>*.vm</url-pattern>
+  </servlet-mapping>
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
+  <taglib>
+    <taglib-uri>webwork</taglib-uri>
+    <taglib-location>/WEB-INF/webwork.tld</taglib-location>
+  </taglib>
+
+  <taglib>
+    <taglib-uri>benchmark</taglib-uri>
+    <taglib-location>/WEB-INF/taglibs-benchmark.tld</taglib-location>
+  </taglib>
+
+  <taglib>
+    <taglib-uri>c</taglib-uri>
+    <taglib-location>/WEB-INF/c.tld</taglib-location>
+  </taglib>
+</web-app>
