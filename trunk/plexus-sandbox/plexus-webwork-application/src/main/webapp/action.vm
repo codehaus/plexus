@@ -1,0 +1,10 @@
+
+#bodytag( Action "name='VelocityCounter'" "id=vc" )
+#param( "name=foo" "value='BAR'" )
+#end
+
+#bodytag( Push "value=#vc" )
+ counter.count == $counter.count
+ foo is also: $foo
+#end
+

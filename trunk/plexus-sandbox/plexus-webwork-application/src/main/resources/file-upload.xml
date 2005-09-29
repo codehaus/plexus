@@ -1,0 +1,17 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+    <package name="fileUpload" extends="webwork-default" namespace="/fileUpload">
+        <interceptors>
+            <interceptor-stack name="fileUploadStack">
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="fileUploadStack"/>
+        <action name="fileUpload" class="com.opensymphony.webwork.example.fileUpload.FileUploadAction">
+            <result name="success">success.jsp</result>
+            <result name="input">input.jsp</result>
+        </action>
+    </package>
+</xwork>
