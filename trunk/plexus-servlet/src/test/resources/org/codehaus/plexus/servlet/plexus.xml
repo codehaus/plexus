@@ -1,4 +1,4 @@
-<configuration> 
+<configuration>
 
   <logging>
     <implementation>org.codehaus.plexus.logging.console.ConsoleLoggerManager</implementation>
