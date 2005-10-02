@@ -7,10 +7,10 @@
       <configuration>
         <!-- START SNIPPET: plexus-application-lifecycle -->
         <phases>
-          <generate-resources>plexus:app</generate-resources>
-          <package>plexus:bundle-application</package>
-          <install>install:install</install>
-          <deploy>deploy:deploy</deploy>
+          <generate-resources>org.codehaus.plexus:plexus-maven-plugin:app</generate-resources>
+          <package>org.codehaus.plexus:plexus-maven-plugin:bundle-application</package>
+          <install>org.apache.maven.plugins:maven-install-plugin:install</install>
+          <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
         </phases>
         <!-- END SNIPPET: plexus-application-lifecycle -->
       </configuration>
@@ -28,9 +28,9 @@
           <process-test-resources>resources:testResources</process-test-resources>
           <test-compile>compiler:testCompile</test-compile>
           <test>surefire:test</test>
-          <package>plexus:service</package>
-          <install>install:install</install>
-          <deploy>deploy:deploy</deploy>
+          <package>org.codehaus.plexus:plexus-maven-plugin:service</package>
+          <install>org.apache.maven.plugins:maven-install-plugin:install</install>
+          <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
         </phases>
         <!-- END SNIPPET: plexus-service-lifecycle -->
       </configuration>
