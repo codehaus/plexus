@@ -1,15 +1,15 @@
 <project>
-  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-root</artifactId>
     <groupId>plexus</groupId>
     <version>1.0.3</version>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>Plexus Maven Plugin</name>
-  <version>1.1-alpha-7-SNAPSHOT</version>
+  <version>1.1-alpha-7</version>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
