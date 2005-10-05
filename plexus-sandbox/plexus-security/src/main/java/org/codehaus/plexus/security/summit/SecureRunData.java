@@ -78,9 +78,16 @@ public class SecureRunData extends DefaultRunData
      */
     public void setUser(User user)
     {
+        if ( user != null )
+        {
+            getSession().setAttribute( USER_SESSION_KEY, new SessionBindingEventProxy( user ) );
+        }
+        else
+        {
+            removeUserFromSession();
+        }
+
         this.user = user;
-        getSession().setAttribute(
-            USER_SESSION_KEY, new SessionBindingEventProxy(user) );
     }
 
     /**
