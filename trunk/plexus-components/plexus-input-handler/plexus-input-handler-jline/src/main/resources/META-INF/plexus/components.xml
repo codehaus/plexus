@@ -2,7 +2,8 @@
   <components>
     <component>
       <role>org.codehaus.plexus.components.inputhandler.InputHandler</role>
-      <implementation>org.codehaus.plexus.components.inputhandler.DefaultInputHandler</implementation>
+      <role-hint>jline</role-hint>
+      <implementation>org.codehaus.plexus.components.inputhandler.jline.JLineInputHandler</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
     </component>
   </components>

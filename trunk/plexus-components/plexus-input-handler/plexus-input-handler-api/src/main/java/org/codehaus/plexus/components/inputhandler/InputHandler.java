@@ -38,7 +38,7 @@ import java.io.IOException;
  */
 public interface InputHandler
 {
-    static final String ROLE = InputHandler.class.getName();
+    String ROLE = InputHandler.class.getName();
 
     /**
      * Read a single line of input, swalling the newline at the end.

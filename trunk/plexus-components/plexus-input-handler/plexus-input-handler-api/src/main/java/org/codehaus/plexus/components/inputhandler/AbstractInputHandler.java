@@ -24,46 +24,32 @@ package org.codehaus.plexus.components.inputhandler;
  * SOFTWARE.
  */
 
-import jline.ConsoleReader;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.io.IOException;
 
 /**
- * Default input handler, that uses the console.
+ * Base input handler, implements a default <code>readMultipleLines</code>.
  *
  * @author Brett Porter
  * @version $Id$
  */
-public class DefaultInputHandler
-    extends AbstractInputHandler
-    implements Initializable
+public abstract class AbstractInputHandler
+    extends AbstractLogEnabled
+    implements InputHandler
 {
-    private ConsoleReader consoleReader;
-
-    public String readLine()
+    public List readMultipleLines()
         throws IOException
     {
-        return consoleReader.readLine();
-    }
-
-    public String readPassword()
-        throws IOException
-    {
-        return consoleReader.readLine( new Character('*'));
-    }
-
-    public void initialize()
-        throws InitializationException
-    {
-        try
+        List lines = new ArrayList();
+        String line = readLine();
+        while ( line != null && line.length() > 0 )
         {
-            consoleReader = new ConsoleReader();
+            lines.add( line );
+            line = readLine();
         }
-        catch ( IOException e )
-        {
-            throw new InitializationException( "Cannot create console reader: ", e );
-        }
+        return lines;
     }
 }
