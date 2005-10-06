@@ -1,6 +1,6 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>plexus</groupId>
+  <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-security</artifactId>
   <name>Plexus Security Framework</name>
   <version>1.0-alpha-1</version>
