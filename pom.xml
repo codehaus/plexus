@@ -1,10 +1,10 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>plexus</groupId>
-  <artifactId>plexus-root</artifactId>
+  <groupId>org.codehaus.plexus</groupId>
+  <artifactId>plexus</artifactId>
   <packaging>pom</packaging>
   <name>Plexus</name>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
   <ciManagement>
     <notifiers>
       <notifier>
@@ -59,7 +59,7 @@
     <pluginRepository>
       <id>snapshots-plugins</id>
       <name>Maven Snapshot Plugins Development Repository</name>
-      <url>http://snapshots.maven.codehaus.org/maven2/plugins</url>
+      <url>http://snapshots.maven.codehaus.org/maven2</url>
       <releases>
         <enabled>false</enabled>
       </releases>
@@ -163,17 +163,6 @@
       </roles>
     </developer>
   </developers>
-  <!--
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>plexus</groupId>
-        <artifactId>plexus-container-default</artifactId>
-        <version>1.0-alpha-4-SNAPSHOT</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-  -->
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
