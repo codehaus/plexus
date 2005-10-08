@@ -6,6 +6,7 @@ import bsh.Interpreter;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.configurator.AbstractComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.codehaus.plexus.component.configurator.ConfigurationListener;
 import org.codehaus.plexus.component.configurator.converters.ConfigurationConverter;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
@@ -18,7 +19,8 @@ public class BshComponentConfigurator
 {
 
     public void configureComponent( Object component, PlexusConfiguration configuration,
-                                    ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm )
+                                    ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm,
+                                    ConfigurationListener listener )
         throws ComponentConfigurationException
     {
         Interpreter interpreter = ( (BshComponent) component ).getInterpreter();
@@ -54,7 +56,7 @@ public class BshComponentConfigurator
             ConfigurationConverter converter = converterLookup.lookupConverterForType( type );
 
             Object value = converter.fromConfiguration( converterLookup, childConfiguration, type, component.getClass(),
-                                                        containerRealm.getClassLoader(), expressionEvaluator );
+                                                        containerRealm.getClassLoader(), expressionEvaluator, listener );
 
             if ( value != null )
             {
