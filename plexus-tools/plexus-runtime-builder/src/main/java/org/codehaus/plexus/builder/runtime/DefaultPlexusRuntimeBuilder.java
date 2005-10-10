@@ -32,6 +32,7 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -352,11 +353,15 @@ public class DefaultPlexusRuntimeBuilder
 
         File macosx = new File( binDir, "macosx" );
 
+        File solaris = new File( binDir, "solaris" );
+
         mkdirs( linux );
 
         mkdirs( win32 );
 
         mkdirs( macosx );
+
+        mkdirs( solaris );
 
         // ----------------------------------------------------------------------
         // Generic parts
@@ -364,10 +369,6 @@ public class DefaultPlexusRuntimeBuilder
 
         copyResourceToFile( JSW + "/wrapper.jar",
                             new File( coreDir, "boot/wrapper.jar" ) );
-
-        filterCopy( getResourceAsStream( JSW + "/wrapper.conf" ),
-                    new File( confDir, "wrapper.conf" ),
-                    configurationProperties );
 
         // ----------------------------------------------------------------------
         // Linux
@@ -379,6 +380,10 @@ public class DefaultPlexusRuntimeBuilder
 
         copyResource( "linux/wrapper", "linux/wrapper", true, binDir  );
         copyResource( "linux/libwrapper.so", "linux/libwrapper.so", false, binDir );
+        Properties linuxProps = new Properties();
+        linuxProps.setProperty( "library.path", "../../bin/linux" );
+        linuxProps.setProperty( "extra.path", "" );
+        copyWrapperConf( linux, configurationProperties, linuxProps );
 
         // ----------------------------------------------------------------------
         // Windows
@@ -390,6 +395,11 @@ public class DefaultPlexusRuntimeBuilder
         copyResource( "win32/InstallService.bat", "win32/InstallService.bat", false, binDir );
         copyResource( "win32/UninstallService.bat", "win32/UninstallService.bat", false, binDir );
 
+        Properties win32Props = new Properties();
+        win32Props.setProperty( "library.path", "../../bin/win32" );
+        win32Props.setProperty( "extra.path", ";" );
+        copyWrapperConf( win32, configurationProperties, win32Props );
+
         // ----------------------------------------------------------------------
         // OS X
         // ----------------------------------------------------------------------
@@ -399,6 +409,57 @@ public class DefaultPlexusRuntimeBuilder
         executable( runSh );
         copyResource( "macosx/wrapper", "macosx/wrapper", true, binDir );
         copyResource( "macosx/libwrapper.jnilib", "macosx/libwrapper.jnilib", false, binDir );
+
+        Properties osxProps = new Properties();
+        osxProps.setProperty( "library.path", "../../bin/macosx" );
+        osxProps.setProperty( "extra.path", "" );
+        copyWrapperConf( macosx, configurationProperties, osxProps );
+
+        // ----------------------------------------------------------------------
+        // Solaris
+        // ----------------------------------------------------------------------
+
+        runSh = new File( binDir, "solaris/run.sh" );
+        filterCopy( getResourceAsStream( JSW + "/run.sh" ), runSh, configurationProperties );
+        executable( runSh );
+
+        copyResource( "solaris/wrapper", "solaris/wrapper", true, binDir  );
+        copyResource( "solaris/libwrapper.so", "solaris/libwrapper.so", false, binDir );
+
+        Properties solarisProps = new Properties();
+        solarisProps.setProperty( "library.path", "../../bin/solaris" );
+        solarisProps.setProperty( "extra.path", "" );
+        copyWrapperConf( solaris, configurationProperties, solarisProps );
+    }
+
+    private void copyWrapperConf( File destDir, Properties configurationProperties, Properties additionalProperties )
+        throws IOException
+    {
+        Properties props = new Properties();
+
+        if ( configurationProperties != null )
+        {
+            for ( Iterator i = configurationProperties.keySet().iterator(); i.hasNext(); )
+            {
+                String key = (String) i.next();
+
+                props.setProperty( key, configurationProperties.getProperty( key ) );
+            }
+        }
+
+        if ( additionalProperties != null )
+        {
+            for ( Iterator i = additionalProperties.keySet().iterator(); i.hasNext(); )
+            {
+                String key = (String) i.next();
+
+                props.setProperty( key, additionalProperties.getProperty( key ) );
+            }
+        }
+
+        filterCopy( getResourceAsStream( JSW + "/wrapper.conf" ),
+                    new File( destDir, "wrapper.conf" ),
+                    props );
     }
 
     protected void copyResource( String filename,

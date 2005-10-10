@@ -2,7 +2,7 @@
 
 set _WRAPPER_CONF="%~f1"
 if not %_WRAPPER_CONF%=="" goto startup
-set _WRAPPER_CONF="..\..\conf\wrapper.conf"
+set _WRAPPER_CONF="wrapper.conf"
 
 :startup
 "Wrapper.exe" -i %_WRAPPER_CONF%
