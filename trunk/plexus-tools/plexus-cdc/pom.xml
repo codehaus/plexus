@@ -4,10 +4,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-tools</artifactId>
-    <groupId>plexus</groupId>
-    <version>1.0.1</version>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0.3-SNAPSHOT</version>
   </parent>
-  <groupId>plexus</groupId>
   <artifactId>plexus-cdc</artifactId>
   <packaging>jar</packaging>
   <name>Plexus Component Descriptor Creator</name>
@@ -21,7 +20,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.4-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
