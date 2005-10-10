@@ -1,4 +1,4 @@
-package org.codehaus.plexus.components.inputhandler;
+package org.codehaus.plexus.components.interactivity;
 
 /*
  * The MIT License
@@ -24,32 +24,43 @@ package org.codehaus.plexus.components.inputhandler;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-
 import java.util.List;
-import java.util.ArrayList;
 import java.io.IOException;
 
 /**
- * Base input handler, implements a default <code>readMultipleLines</code>.
+ * Manage user input from different sources.
  *
- * @author Brett Porter
+ * @todo should this also echo any prompts before the input?
+ * @todo should this validate the input, reprompt if required?
+ * @todo readBoolean, readInt, readSingleChar - readLine's that parse the input
+ * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  * @version $Id$
  */
-public abstract class AbstractInputHandler
-    extends AbstractLogEnabled
-    implements InputHandler
+public interface InputHandler
 {
-    public List readMultipleLines()
-        throws IOException
-    {
-        List lines = new ArrayList();
-        String line = readLine();
-        while ( line != null && line.length() > 0 )
-        {
-            lines.add( line );
-            line = readLine();
-        }
-        return lines;
-    }
+    String ROLE = InputHandler.class.getName();
+
+    /**
+     * Read a single line of input, swalling the newline at the end.
+     * If the input can be echoed, it will be.
+     * @return the line read
+     */
+    String readLine()
+        throws IOException;
+
+    /**
+     * Read a single line of input, swalling the newline at the end.
+     * This method guarantees input is not echoed.
+     * @return the line read
+     */
+    String readPassword()
+        throws IOException;
+
+    /**
+     * Read a set of lines. Equivalent to multiple calls to {@link #readLine()}.
+     * Ends when an empty line is encountered.
+     * @return a list of lines read
+     */
+    List readMultipleLines()
+        throws IOException;
 }

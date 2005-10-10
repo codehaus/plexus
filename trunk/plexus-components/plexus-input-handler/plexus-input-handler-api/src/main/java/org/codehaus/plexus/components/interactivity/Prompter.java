@@ -24,10 +24,7 @@ package org.codehaus.plexus.components.interactivity;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.components.inputhandler.InputHandler;
-
 import java.util.List;
-import java.io.IOException;
 
 /**
  * Prompt the user for input.
@@ -55,5 +52,5 @@ public interface Prompter
         throws PrompterException;
 
     void showMessage( String message )
-        throws PrompterException;    
+        throws PrompterException;
 }

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.components.inputhandler;
+package org.codehaus.plexus.components.interactivity;
 
 /*
  * The MIT License
@@ -27,6 +27,7 @@ package org.codehaus.plexus.components.inputhandler;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
+import org.codehaus.plexus.components.interactivity.AbstractInputHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,11 +1,11 @@
 <project>
   <parent>
-    <artifactId>plexus-input-handler</artifactId>
+    <artifactId>plexus-interactivity</artifactId>
     <groupId>org.codehaus.plexus</groupId>
     <version>1.0-alpha-4-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>plexus-input-handler-api</artifactId>
-  <name>Plexus Default Input Handler</name>
+  <artifactId>plexus-interactivity-api</artifactId>
+  <name>Plexus Default Interactivity Handler</name>
   <version>1.0-alpha-4-SNAPSHOT</version>
 </project>
