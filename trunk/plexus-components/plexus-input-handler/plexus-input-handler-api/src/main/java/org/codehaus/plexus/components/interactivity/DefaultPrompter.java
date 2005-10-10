@@ -24,7 +24,6 @@ package org.codehaus.plexus.components.interactivity;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.components.inputhandler.InputHandler;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.IOException;

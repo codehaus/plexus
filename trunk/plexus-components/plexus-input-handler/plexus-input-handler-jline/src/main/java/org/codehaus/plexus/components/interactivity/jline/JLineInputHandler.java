@@ -1,4 +1,4 @@
-package org.codehaus.plexus.components.inputhandler;
+package org.codehaus.plexus.components.interactivity.jline;
 
 /*
  * The MIT License
@@ -24,43 +24,47 @@ package org.codehaus.plexus.components.inputhandler;
  * SOFTWARE.
  */
 
-import java.util.List;
+import jline.ConsoleReader;
+import org.codehaus.plexus.components.interactivity.AbstractInputHandler;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+
 import java.io.IOException;
 
 /**
- * Manage user input from different sources.
+ * Default input handler, that uses the console.
  *
- * @todo should this also echo any prompts before the input?
- * @todo should this validate the input, reprompt if required?
- * @todo readBoolean, readInt, readSingleChar - readLine's that parse the input
- * @author <a href="mailto:brett@apache.org">Brett Porter</a>
+ * @author Brett Porter
  * @version $Id$
  */
-public interface InputHandler
+public class JLineInputHandler
+    extends AbstractInputHandler
+    implements Initializable
 {
-    String ROLE = InputHandler.class.getName();
+    private ConsoleReader consoleReader;
 
-    /**
-     * Read a single line of input, swalling the newline at the end.
-     * If the input can be echoed, it will be.
-     * @return the line read
-     */
-    String readLine()
-        throws IOException;
+    public String readLine()
+        throws IOException
+    {
+        return consoleReader.readLine();
+    }
 
-    /**
-     * Read a single line of input, swalling the newline at the end.
-     * This method guarantees input is not echoed.
-     * @return the line read
-     */
-    String readPassword()
-        throws IOException;
+    public String readPassword()
+        throws IOException
+    {
+        return consoleReader.readLine( new Character( '*' ) );
+    }
 
-    /**
-     * Read a set of lines. Equivalent to multiple calls to {@link #readLine()}.
-     * Ends when an empty line is encountered.
-     * @return a list of lines read
-     */
-    List readMultipleLines()
-        throws IOException;
+    public void initialize()
+        throws InitializationException
+    {
+        try
+        {
+            consoleReader = new ConsoleReader();
+        }
+        catch ( IOException e )
+        {
+            throw new InitializationException( "Cannot create console reader: ", e );
+        }
+    }
 }
