@@ -20,9 +20,7 @@ rem
 rem Find the wrapper.conf
 rem
 :conf
-set _WRAPPER_CONF="%~f1"
-if not %_WRAPPER_CONF%=="" goto startup
-set _WRAPPER_CONF="%_APP_HOME%..\..\conf\wrapper.conf"
+set _WRAPPER_CONF=%_APP_HOME%wrapper.conf
 
 
 rem

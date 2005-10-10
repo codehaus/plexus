@@ -18,7 +18,7 @@ APP_LONG_NAME="@app.long.name@"
 
 # Wrapper
 WRAPPER_CMD="./wrapper"
-WRAPPER_CONF="../../conf/wrapper.conf"
+WRAPPER_CONF="wrapper.conf"
 
 # Priority at which to run the wrapper.  See "man nice" for valid priorities.
 #  nice is only used if a priority is specified.
