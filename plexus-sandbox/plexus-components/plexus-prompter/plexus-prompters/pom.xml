@@ -2,12 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus</groupId>
-    <artifactId>plexus-prompter-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>plexus-prompter</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-prompters</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   
   <modules>
