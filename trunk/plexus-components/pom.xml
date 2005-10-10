@@ -43,7 +43,7 @@
     <module>plexus-formica</module>
     <module>plexus-hibernate</module>
     <module>plexus-i18n</module>            
-    <module>plexus-input-handler</module>        
+    <module>plexus-interactivity</module>        
     <module>plexus-ircbot</module>    
     <module>plexus-jdo</module>
     <module>plexus-jetty</module>
