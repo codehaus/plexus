@@ -10,7 +10,7 @@
   <name>Plexus Interactivity Handler Component</name>
   <version>1.0-alpha-4-SNAPSHOT</version>
   <modules>
-    <module>plexus-input-handler-api</module>
-    <module>plexus-input-handler-jline</module>
+    <module>plexus-interactivity-api</module>
+    <module>plexus-interactivity-jline</module>
   </modules>
 </project>
