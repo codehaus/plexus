@@ -201,8 +201,7 @@ public abstract class AbstractBuilder
         throws ArtifactResolutionException
     {
         Set artifacts = new HashSet();
-
-        resolveVersion( "plexus", "plexus-container-default", projectArtifacts, ignoreIfMissing, artifacts );
+        resolveVersion( "org.codehaus.plexus", "plexus-container-default", projectArtifacts, ignoreIfMissing, artifacts );
         resolveVersion( "plexus", "plexus-container-artifact", projectArtifacts, ignoreIfMissing, artifacts );
         resolveVersion( "plexus", "plexus-appserver", projectArtifacts, ignoreIfMissing, artifacts );
         resolveVersion( "plexus", "plexus-utils", projectArtifacts, ignoreIfMissing, artifacts );
@@ -295,7 +294,7 @@ public abstract class AbstractBuilder
 
         if ( !ignoreIfMissing )
         {
-            throw new RuntimeException( "Could not version for artifact: " + artifactId + "." );
+            throw new RuntimeException( "Could not version for artifact: " + groupId + ":" + artifactId + "." );
         }
 
         return null;
