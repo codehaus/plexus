@@ -1,27 +1,32 @@
 <project>
-  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-servers</artifactId>
     <groupId>org.codehaus.plexus</groupId>
     <version>1.0.2</version>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-ftpd</artifactId>
-  <version>1.0-alpha-1-SNAPSHOT</version>
   <name>Plexus FTP Server</name>
+  <version>1.0-alpha-1</version>
   <dependencies>
     <dependency>
-      <groupId>avalon</groupId>
-      <artifactId>avalon-framework</artifactId>
-      <version>4.1.4</version>
+      <groupId>excalibur-pool</groupId>
+      <artifactId>excalibur-pool-impl</artifactId>
+      <version>2.0</version>
     </dependency>
     <dependency>
-      <groupId>cornerstone-threads</groupId>
-      <artifactId>cornerstone-threads-api</artifactId>
-      <version>1.0</version>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.0</version>
     </dependency>
     <dependency>
-      <groupId>cornerstone-threads</groupId>
-      <artifactId>cornerstone-threads-impl</artifactId>
+      <groupId>excalibur-pool</groupId>
+      <artifactId>excalibur-pool-api</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>cornerstone-connection</groupId>
+      <artifactId>cornerstone-connection-impl</artifactId>
       <version>1.0</version>
     </dependency>
     <dependency>
@@ -30,24 +35,9 @@
       <version>1.1.1</version>
     </dependency>
     <dependency>
-      <groupId>excalibur-pool</groupId>
-      <artifactId>excalibur-pool-api</artifactId>
-      <version>2.0</version>
-    </dependency>
-    <dependency>
-      <groupId>excalibur-pool</groupId>
-      <artifactId>excalibur-pool-impl</artifactId>
-      <version>2.0</version>
-    </dependency>
-    <dependency>
-      <groupId>cornerstone-connection</groupId>
-      <artifactId>cornerstone-connection-api</artifactId>
-      <version>1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>cornerstone-connection</groupId>
-      <artifactId>cornerstone-connection-impl</artifactId>
-      <version>1.0</version>
+      <groupId>avalon</groupId>
+      <artifactId>avalon-framework</artifactId>
+      <version>4.1.4</version>
     </dependency>
     <dependency>
       <groupId>cornerstone-sockets</groupId>
@@ -55,8 +45,18 @@
       <version>1.0</version>
     </dependency>
     <dependency>
+      <groupId>cornerstone-threads</groupId>
+      <artifactId>cornerstone-threads-api</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
       <groupId>cornerstone-sockets</groupId>
       <artifactId>cornerstone-sockets-impl</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>cornerstone-connection</groupId>
+      <artifactId>cornerstone-connection-api</artifactId>
       <version>1.0</version>
     </dependency>
     <dependency>
@@ -70,9 +70,9 @@
       <version>0.13</version>
     </dependency>
     <dependency>
-      <groupId>commons-collections</groupId>
-      <artifactId>commons-collections</artifactId>
-      <version>3.0</version>
+      <groupId>cornerstone-threads</groupId>
+      <artifactId>cornerstone-threads-impl</artifactId>
+      <version>1.0</version>
     </dependency>
   </dependencies>
 </project>
