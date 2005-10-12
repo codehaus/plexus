@@ -6,7 +6,7 @@
     <version>1.0.4</version>
   </parent>
   <artifactId>plexus-component-factories</artifactId>
-  <version>1.0-alpha-5-SNAPSHOT</version>
+  <version>1.0-alpha-5</version>
   <name>Plexus Component Factories</name>
   <inceptionYear>2001</inceptionYear>
   <packaging>pom</packaging>
@@ -14,7 +14,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-8-SNAPSHOT</version>
+      <version>1.0-alpha-8</version>
     </dependency>
   </dependencies>
   <modules>
