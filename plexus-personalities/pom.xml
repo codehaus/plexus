@@ -3,11 +3,11 @@
   <parent>
     <artifactId>plexus-root</artifactId>
     <groupId>plexus</groupId>
-    <version>1.0.1</version>
+    <version>1.0.4</version>
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-personalities</artifactId>
-  <version>1.1</version>
+  <version>1.1.1</version>
   <packaging>pom</packaging>
   <name>Plexus Personalities Parent Project</name>
   <dependencies>
