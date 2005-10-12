@@ -8,7 +8,7 @@
   <artifactId>plexus-interactivity</artifactId>
   <packaging>pom</packaging>
   <name>Plexus Interactivity Handler Component</name>
-  <version>1.0-alpha-4-SNAPSHOT</version>
+  <version>1.0-alpha-4</version>
   <modules>
     <module>plexus-interactivity-api</module>
     <module>plexus-interactivity-jline</module>
