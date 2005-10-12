@@ -2,12 +2,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-servers</artifactId>
-    <groupId>plexus</groupId>
-    <version>1.0.1</version>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0.2</version>
   </parent>
-  <groupId>plexus</groupId>
   <artifactId>plexus-ftpd</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-alpha-1-SNAPSHOT</version>
   <name>Plexus FTP Server</name>
   <dependencies>
     <dependency>
@@ -68,7 +67,7 @@
     <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-avalon-personality</artifactId>
-      <version>0.13-SNAPSHOT</version>
+      <version>0.13</version>
     </dependency>
     <dependency>
       <groupId>commons-collections</groupId>
