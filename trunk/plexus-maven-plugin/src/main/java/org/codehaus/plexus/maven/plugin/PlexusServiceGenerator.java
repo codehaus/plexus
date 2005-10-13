@@ -29,6 +29,8 @@ import java.util.Set;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
 
 import org.codehaus.plexus.builder.service.ServiceBuilder;
 import org.codehaus.plexus.builder.service.ServiceBuilderException;
@@ -37,6 +39,7 @@ import org.codehaus.plexus.builder.service.ServiceBuilderException;
  * @goal service
  *
  * @requiresDependencyResolution
+ * @requiresProject
  *
  * @description Assembled and bundles a Plexus service.
  *
@@ -130,6 +133,20 @@ public class PlexusServiceGenerator
      */
     private ServiceBuilder builder;
 
+    /**
+     * The maven project.
+     *
+     * @parameter expression="${project}"
+     * @required
+     * @readonly
+     */
+    private MavenProject project;
+
+    /**
+     * @component
+     */
+    private MavenProjectHelper projectHelper;
+
     public void execute()
         throws MojoExecutionException
     {
@@ -165,5 +182,7 @@ public class PlexusServiceGenerator
         {
             throw new MojoExecutionException( "Error while making service.", e );
         }
+
+        project.getArtifact().setFile( outputFile );
     }
 }

@@ -23,11 +23,11 @@
       <configuration>
         <!-- START SNIPPET: plexus-service-lifecycle -->
         <phases>
-          <process-resources>resources:resources</process-resources>
-          <compile>compiler:compile</compile>
-          <process-test-resources>resources:testResources</process-test-resources>
-          <test-compile>compiler:testCompile</test-compile>
-          <test>surefire:test</test>
+          <process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
+          <compile>org.apache.maven.plugins:maven-compiler-plugin:compile</compile>
+          <process-test-resources>org.apache.maven.plugins:maven-resources-plugin:testResources</process-test-resources>
+          <test-compile>org.apache.maven.plugins:maven-compiler-plugin:testCompile</test-compile>
+          <test>org.apache.maven.plugins:maven-surefire-plugin:test</test>
           <package>org.codehaus.plexus:plexus-maven-plugin:service</package>
           <install>org.apache.maven.plugins:maven-install-plugin:install</install>
           <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
