@@ -2,7 +2,7 @@
   <parent>
     <artifactId>plexus-components</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-security</artifactId>
@@ -25,12 +25,12 @@
   </developers>
   <dependencies>
     <dependency>
-      <groupId>plexus</groupId>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-summit</artifactId>
-      <version>1.0-beta-7</version>
+      <version>1.0-beta-8-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>plexus</groupId>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-servlet</artifactId>
       <version>1.0-beta-3-SNAPSHOT</version>
     </dependency>
@@ -40,9 +40,9 @@
       <version>2.3</version>
     </dependency>
     <dependency>
-      <groupId>plexus</groupId>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-action</artifactId>
-      <version>1.0-alpha-5</version>
+      <version>1.0-alpha-6-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
