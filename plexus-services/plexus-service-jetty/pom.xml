@@ -7,7 +7,6 @@
     <artifactId>plexus-services</artifactId>
     <version>1.0.2</version>
   </parent>
-  <groupId>plexus</groupId>
   <artifactId>plexus-service-jetty</artifactId>
   <version>1.0-alpha-3-SNAPSHOT</version>
   <packaging>plexus-service</packaging>
