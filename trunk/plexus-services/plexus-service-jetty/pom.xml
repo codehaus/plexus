@@ -3,9 +3,9 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>plexus</groupId>
+    <groupId>org.codehaus.plexus</groupId>
     <artifactId>plexus-services</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
   </parent>
   <groupId>plexus</groupId>
   <artifactId>plexus-service-jetty</artifactId>
@@ -14,9 +14,9 @@
   <name>Plexus Jetty Service</name>
   <dependencies>
     <dependency>
-      <groupId>plexus</groupId>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-appserver</artifactId>
-      <version>1.0-alpha-1</version>
+      <version>1.0-alpha-5-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>jetty</groupId>
@@ -52,18 +52,14 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-plexus-plugin</artifactId>
-        <version>1.1-alpha-5</version>
-        <goals>
-          <goal>
-            <id>service</id>
-            <configuration>
-              <serviceName>jetty</serviceName>
-              <serviceConfiguration>src/conf/plexus.xml</serviceConfiguration>
-            </configuration>
-          </goal>
-        </goals>
-        <groupId>org.apache.maven.plugins</groupId>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <version>1.1-alpha-8-SNAPSHOT</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serviceName>jetty</serviceName>
+          <serviceConfiguration>src/conf/plexus.xml</serviceConfiguration>
+        </configuration>
       </plugin>
     </plugins>
   </build>

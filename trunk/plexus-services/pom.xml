@@ -1,25 +1,29 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>plexus-root</artifactId>
-    <groupId>plexus</groupId>
-    <version>1.0.1</version>
+    <artifactId>plexus</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0.4</version>
   </parent>
-  <groupId>plexus</groupId>
   <artifactId>plexus-services</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <packaging>pom</packaging>
   <name>Plexus Services</name>
   <dependencies>
     <dependency>
-      <groupId>plexus</groupId>
-      <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-5</version>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-appserver</artifactId>
+      <version>1.0-alpha-5-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>plexus</groupId>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-8</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.4</version>
     </dependency>
   </dependencies>
   <modules>
