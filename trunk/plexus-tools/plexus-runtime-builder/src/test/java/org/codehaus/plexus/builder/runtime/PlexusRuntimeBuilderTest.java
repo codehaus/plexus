@@ -88,8 +88,8 @@ public class PlexusRuntimeBuilderTest
         projectArtifacts.add( makeArtifact( "classworlds", "classworlds", "1.1-alpha-1" ) );
         projectArtifacts.add( makeArtifact( "org.codehaus.plexus", "plexus-container-default", "1.0-alpha-7" ) );
         projectArtifacts.add( makeArtifact( "plexus", "plexus-container-artifact", "1.0-alpha-2" ) );
-        projectArtifacts.add( makeArtifact( "plexus", "plexus-appserver", "1.0-alpha-1-SNAPSHOT" ) );
-        projectArtifacts.add( makeArtifact( "plexus", "plexus-utils", "1.0-alpha-2" ) );
+        projectArtifacts.add( makeArtifact( "org.codehaus.plexus", "plexus-appserver", "1.0-alpha-5-SNAPSHOT" ) );
+        projectArtifacts.add( makeArtifact( "org.codehaus.plexus", "plexus-utils", "1.0.4" ) );
 
         // ----------------------------------------------------------------------
         //

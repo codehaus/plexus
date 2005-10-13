@@ -203,8 +203,8 @@ public abstract class AbstractBuilder
         Set artifacts = new HashSet();
         resolveVersion( "org.codehaus.plexus", "plexus-container-default", projectArtifacts, ignoreIfMissing, artifacts );
         resolveVersion( "plexus", "plexus-container-artifact", projectArtifacts, ignoreIfMissing, artifacts );
-        resolveVersion( "plexus", "plexus-appserver", projectArtifacts, ignoreIfMissing, artifacts );
-        resolveVersion( "plexus", "plexus-utils", projectArtifacts, ignoreIfMissing, artifacts );
+        resolveVersion( "org.codehaus.plexus", "plexus-appserver", projectArtifacts, ignoreIfMissing, artifacts );
+        resolveVersion( "org.codehaus.plexus", "plexus-utils", projectArtifacts, ignoreIfMissing, artifacts );
 
         artifacts = findArtifacts( remoteRepositories, localRepository, artifacts, false, null );
 
