@@ -220,6 +220,9 @@ public abstract class AbstractBuilder
 
         resolveVersion( "plexus", "plexus", projectArtifacts, true, artifacts );
         resolveVersion( "plexus", "plexus-container-api", projectArtifacts, true, artifacts );
+        resolveVersion( "plexus", "plexus-container-default", projectArtifacts, true, artifacts );
+        resolveVersion( "plexus", "plexus-appserver", projectArtifacts, true, artifacts );
+        resolveVersion( "plexus", "plexus-utils", projectArtifacts, true, artifacts );
 
         artifacts = findArtifacts( remoteRepositories,
                                    localRepository,
