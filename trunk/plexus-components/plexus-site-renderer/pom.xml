@@ -1,13 +1,13 @@
 <project>
   <parent>
-    <groupId>org.codehaus.plexus</groupId>
     <artifactId>plexus-components</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
     <version>1.1.4</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-site-renderer</artifactId>
   <name>Plexus Site Renderer Component</name>
-  <version>1.0-alpha-3-SNAPSHOT</version>
+  <version>1.0-alpha-3</version>
   <build>
     <plugins>
       <plugin>
@@ -25,14 +25,14 @@
   </build>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-velocity</artifactId>
-      <version>1.1.2</version>
-    </dependency>
-    <dependency>
       <groupId>plexus</groupId>
       <artifactId>plexus-i18n</artifactId>
       <version>1.0-beta-5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-velocity</artifactId>
+      <version>1.1.2</version>
     </dependency>
     <dependency>
       <groupId>doxia</groupId>
