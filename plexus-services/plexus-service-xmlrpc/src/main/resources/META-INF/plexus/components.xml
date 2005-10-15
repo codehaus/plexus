@@ -10,12 +10,16 @@
         <requirement>
           <role>org.codehaus.plexus.xmlrpc.XmlRpcServer</role>
         </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.service.xmlrpc.configuration.builder.ServiceConfigurationBuilder</role>
+        </requirement>
       </requirements>
-      <configuration>
-        <port>8000</port>
-      </configuration>
     </component>
 
+    <component>
+      <role>org.codehaus.plexus.service.xmlrpc.configuration.builder.ServiceConfigurationBuilder</role>
+      <implementation>org.codehaus.plexus.service.xmlrpc.configuration.builder.DefaultServiceConfigurationBuilder</implementation>
+    </component>
   </components>
 
 </component-set>

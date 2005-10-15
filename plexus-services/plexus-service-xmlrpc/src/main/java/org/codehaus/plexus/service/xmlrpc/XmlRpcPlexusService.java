@@ -33,21 +33,29 @@ import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
+import org.codehaus.plexus.service.xmlrpc.configuration.ServiceConfiguration;
+import org.codehaus.plexus.service.xmlrpc.configuration.XmlRpcService;
+import org.codehaus.plexus.service.xmlrpc.configuration.builder.ServiceConfigurationBuilder;
 import org.codehaus.plexus.xmlrpc.XmlRpcServer;
+
+import java.util.Iterator;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author <a href="mailto:evenisse@codehaus.org">Emmanuel VEnisse</a>
  * @version $Id$
  */
 public class XmlRpcPlexusService
     extends AbstractLogEnabled
     implements PlexusService, Startable
 {
+    /** @plexus.requirement */
+    private ServiceConfigurationBuilder configurationBuilder;
+
     /** @requirement */
     private XmlRpcServer xmlRpcServer;
 
-    /** @configuration */
-    private int port;
+    int port = -1;
 
     // ----------------------------------------------------------------------
     // Component Lifecycle
@@ -56,20 +64,18 @@ public class XmlRpcPlexusService
     public void start()
         throws StartingException
     {
-        try
-        {
-            xmlRpcServer.addListener( null, port, false );
-
-            xmlRpcServer.startListener( null, port );
-        }
-        catch ( XmlRpcException e )
-        {
-            throw new StartingException( "Error while starting XML-RPC server.", e );
-        }
+        getLogger().info( "Starting XML-RPC service." );
     }
 
     public void stop()
     {
+        getLogger().info( "Stopping XML-RPC service." );
+
+        if ( port == -1 )
+        {
+            return;
+        }
+
         try
         {
             xmlRpcServer.removeListener( null, port );
@@ -88,12 +94,38 @@ public class XmlRpcPlexusService
                                         PlexusConfiguration serviceConfiguration )
         throws Exception
     {
+        ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration );
+
+        int i = 0;
+
+        for ( Iterator it = configuration.getXmlRpcServices().iterator(); it.hasNext(); )
+        {
+            XmlRpcService service = (XmlRpcService) it.next();
+
+            try
+            {
+                xmlRpcServer.addListener( null, service.getPort(), false );
+
+                xmlRpcServer.startListener( null, service.getPort() );
+
+                port = service.getPort();
+            }
+            catch ( XmlRpcException e )
+            {
+                throw new StartingException( "Error while starting XML-RPC server on port " + service.getPort() + ".", e );
+            }
+        }
     }
 
     public void afterApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
                                        PlexusConfiguration serviceConfiguration )
         throws Exception
     {
+        if ( port == -1 )
+        {
+            return;
+        }
+
         PlexusConfiguration[] handlers = serviceConfiguration.getChild( "handlers" ).getChildren( "handler" );
 
         for ( int i = 0; i < handlers.length; i++ )
@@ -129,7 +161,7 @@ public class XmlRpcPlexusService
 
             getLogger().info( "Adding XML-RPC handler for role '" + role + " to name '" + name + "'." );
 
-            xmlRpcServer.addHandler( name, component );
+            xmlRpcServer.addHandler( null, name, port, component );
         }
     }
 }
