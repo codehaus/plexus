@@ -37,7 +37,7 @@
     <dependency>
       <groupId>doxia</groupId>
       <artifactId>doxia-core</artifactId>
-      <version>1.0-alpha-5</version>
+      <version>1.0-alpha-6-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
