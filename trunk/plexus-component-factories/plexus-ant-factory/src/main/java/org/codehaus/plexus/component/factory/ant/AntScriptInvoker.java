@@ -191,7 +191,6 @@ public class AntScriptInvoker
 
                     project.addReference( "ant.projectHelper", helper );
 
-                    System.out.println( "Parsing script from: " + script );
                     helper.parse( project, script );
                 }
                 catch ( BuildException ex )
