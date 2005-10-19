@@ -13,14 +13,19 @@ import org.codehaus.plexus.component.configurator.ComponentConfigurationExceptio
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintStream;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 
 public class AntScriptInvoker
     extends AbstractLogEnabled
@@ -29,15 +34,19 @@ public class AntScriptInvoker
 
     public static final String BASEDIR_PARAMETER = "basedir";
 
-    public static final String MESSAGE_LEVEL_PARAMETER = "ant.messageLevel";
+    public static final String MESSAGE_LEVEL_PARAMETER = "messageLevel";
 
     private final ComponentDescriptor descriptor;
 
-    private final URL script;
+    private final File script;
+
+    private final String scriptResource;
 
     private String target;
 
     private Map references = new HashMap();
+
+    private Properties properties = new Properties();
 
     private Project project;
 
@@ -46,12 +55,13 @@ public class AntScriptInvoker
     private String messageLevel;
 
     public AntScriptInvoker( ComponentDescriptor descriptor, ClassLoader loader )
+        throws IOException
     {
         this.descriptor = descriptor;
 
         String impl = descriptor.getImplementation();
 
-        int colon = impl.indexOf( ':' );
+        int colon = impl.indexOf( ":" );
 
         String resourceName;
         if ( colon > -1 )
@@ -64,7 +74,27 @@ public class AntScriptInvoker
             resourceName = impl;
         }
 
-        script = loader.getResource( resourceName );
+        scriptResource = resourceName;
+
+        InputStream input = null;
+        OutputStream output = null;
+
+        try
+        {
+            input = loader.getResourceAsStream( resourceName );
+
+            script = File.createTempFile( "plexus-ant-component", ".build.xml" );
+            script.deleteOnExit();
+
+            output = new FileOutputStream( script );
+
+            IOUtil.copy( input, output );
+        }
+        finally
+        {
+            IOUtil.close( input );
+            IOUtil.close( output );
+        }
     }
 
     public static String[] getImplicitRequiredParameters()
@@ -92,14 +122,47 @@ public class AntScriptInvoker
     public void setComponentConfiguration( Map componentConfiguration )
         throws ComponentConfigurationException
     {
-        references.putAll( componentConfiguration );
+        for ( Iterator it = componentConfiguration.entrySet().iterator(); it.hasNext(); )
+        {
+            Map.Entry entry = (Map.Entry) it.next();
+            
+            Object key = entry.getKey();
+            Object val = entry.getValue();
+            
+            if ( ( key instanceof String ) && ( val instanceof String ) )
+            {
+                properties.setProperty( (String) key, (String) val );
+            }
+            else
+            {
+                references.put( key, val );
+            }
+        }
 
-        this.basedir = (File) componentConfiguration.get( BASEDIR_PARAMETER );
+        Object basedirInput = componentConfiguration.get( BASEDIR_PARAMETER );
 
-        this.messageLevel = (String) componentConfiguration.get( MESSAGE_LEVEL_PARAMETER );
+        if ( basedirInput instanceof File )
+        {
+            this.basedir = (File) basedirInput;
+        }
+        else if ( basedirInput != null )
+        {
+            this.basedir = new File( String.valueOf( basedirInput ) );
+        }
+        else
+        {
+            throw new ComponentConfigurationException( "\'" + BASEDIR_PARAMETER + "\' parameter is missing." );
+        }
+
+        Object messageLevelInput = componentConfiguration.get( MESSAGE_LEVEL_PARAMETER );
+
+        if ( messageLevelInput != null )
+        {
+            this.messageLevel = String.valueOf( messageLevelInput );
+        }
     }
 
-    public void execute()
+    public void invoke()
         throws AntComponentExecutionException
     {
         InputStream oldSysIn = System.in;
@@ -128,12 +191,13 @@ public class AntScriptInvoker
 
                     project.addReference( "ant.projectHelper", helper );
 
+                    System.out.println( "Parsing script from: " + script );
                     helper.parse( project, script );
                 }
                 catch ( BuildException ex )
                 {
                     error = ex;
-                    throw new AntComponentExecutionException( script, target, "Failed to parse.", ex );
+                    throw new AntComponentExecutionException( scriptResource, target, "Failed to parse.", ex );
                 }
 
                 for ( Iterator it = references.entrySet().iterator(); it.hasNext(); )
@@ -144,7 +208,16 @@ public class AntScriptInvoker
 
                     project.addReference( key, entry.getValue() );
                 }
-
+                
+                for ( Iterator it = properties.entrySet().iterator(); it.hasNext(); )
+                {
+                    Map.Entry entry = (Map.Entry) it.next();
+                    
+                    String key = (String) entry.getKey();
+                    
+                    project.setUserProperty( key, properties.getProperty( key ) );
+                }
+                
                 try
                 {
                     project.executeTarget( target );
@@ -152,7 +225,7 @@ public class AntScriptInvoker
                 catch ( BuildException e )
                 {
                     error = e;
-                    throw new AntComponentExecutionException( script, target, "Failed to execute.", e );
+                    throw new AntComponentExecutionException( scriptResource, target, "Failed to execute.", e );
                 }
             }
             finally
@@ -185,21 +258,25 @@ public class AntScriptInvoker
 
         int level = convertMsgLevel( messageLevel );
 
-        getLogger().debug( "Ant message level is set to: " + messageLevel + "(" + level + ")" );
+        Logger logger = getLogger();
+        if ( logger != null )
+        {
+            logger.debug( "Ant message level is set to: " + messageLevel + "(" + level + ")" );
+        }
 
         antLogger.setMessageOutputLevel( level );
 
         project.addBuildListener( antLogger );
-        
+
         project.setBaseDir( basedir );
     }
 
     protected int convertMsgLevel( String msgLevel )
     {
         int level = Project.MSG_ERR;
-        
+
         msgLevel = msgLevel.toLowerCase();
-        
+
         if ( msgLevel.equals( "error" ) )
         {
             level = Project.MSG_ERR;
@@ -222,10 +299,15 @@ public class AntScriptInvoker
         }
         else
         {
-            getLogger().info( "Unknown Ant Message Level (" + msgLevel + ") -- using \"error\" instead" );
+            Logger logger = getLogger();
+            if ( logger != null )
+            {
+                logger.info( "Unknown Ant Message Level (" + msgLevel + ") -- using \"error\" instead" );
+            }
+
             level = Project.MSG_ERR;
         }
-        
+
         return level;
     }
 

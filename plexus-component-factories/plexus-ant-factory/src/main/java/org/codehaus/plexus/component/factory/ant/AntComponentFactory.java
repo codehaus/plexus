@@ -5,7 +5,8 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.factory.AbstractComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
-import org.codehaus.plexus.util.RealmDelegatingClassLoader;
+
+import java.io.IOException;
 
 public class AntComponentFactory
     extends AbstractComponentFactory
@@ -14,7 +15,14 @@ public class AntComponentFactory
     public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm classRealm, PlexusContainer container )
         throws ComponentInstantiationException
     {
-        return new AntScriptInvoker( componentDescriptor, new RealmDelegatingClassLoader( classRealm ) );
+        try
+        {
+            return new AntScriptInvoker( componentDescriptor, new RealmDelegatingClassLoader( classRealm ) );
+        }
+        catch ( IOException e )
+        {
+            throw new ComponentInstantiationException( "Failed to extract Ant script for: " + componentDescriptor.getHumanReadableKey(), e );
+        }
     }
 
 }
