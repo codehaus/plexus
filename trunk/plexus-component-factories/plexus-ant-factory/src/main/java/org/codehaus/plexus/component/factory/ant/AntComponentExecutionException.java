@@ -1,30 +1,32 @@
 package org.codehaus.plexus.component.factory.ant;
 
-import java.net.URL;
-
 public class AntComponentExecutionException
     extends Exception
 {
-    
+
     static final long serialVersionUID = 1;
 
-    private final URL script;
+    private final String script;
+
     private final String target;
+
     private final String originalMessage;
 
-    public AntComponentExecutionException( URL script, String target, String message, Throwable cause )
+    public AntComponentExecutionException( String script, String target, String message, Throwable cause )
     {
-        super( "Executing Ant script: " + script + " [" + (( target == null ) ? ( "default-target" ) : ( target ) ) + "]: " + message, cause );
-        
+        super( "Executing Ant script: " + script + " [" + ( ( target == null ) ? ( "default-target" ) : ( target ) )
+            + "]: " + message, cause );
+
         this.script = script;
         this.target = target;
         this.originalMessage = message;
     }
 
-    public AntComponentExecutionException( URL script, String target, String message )
+    public AntComponentExecutionException( String script, String target, String message )
     {
-        super( "Executing Ant script: " + script + " [" + (( target == null ) ? ( "default-target" ) : ( target ) ) + "]: " + message );
-        
+        super( "Executing Ant script: " + script + " [" + ( ( target == null ) ? ( "default-target" ) : ( target ) )
+            + "]: " + message );
+
         this.script = script;
         this.target = target;
         this.originalMessage = message;
@@ -35,7 +37,7 @@ public class AntComponentExecutionException
         return originalMessage;
     }
 
-    public final URL getScript()
+    public final String getScript()
     {
         return script;
     }
