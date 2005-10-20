@@ -33,6 +33,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.IOException;
+import java.security.Provider;
 import java.security.Security;
 import java.util.Date;
 import java.util.Iterator;
@@ -93,7 +94,17 @@ public class JavamailMailSender
 
         if ( isSslMode() )
         {
-            Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+            try
+            {
+                Provider p = (Provider) Class.forName("com.sun.net.ssl.internal.ssl.Provider").newInstance();
+
+                Security.addProvider(p);
+            }
+            catch ( Exception e )
+            {
+                throw new InitializationException("could not instantiate ssl security provider, check that "
+                    + "you have JSSE in your classpath");
+            }
 
             props.put( "mail.smtp.socketFactory.port", String.valueOf( getSmtpPort() ) );
 
