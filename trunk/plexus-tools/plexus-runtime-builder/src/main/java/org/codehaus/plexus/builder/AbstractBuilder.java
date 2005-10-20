@@ -317,7 +317,7 @@ public abstract class AbstractBuilder
 
         public boolean include( Artifact artifact )
         {
-            if ( artifact.getScope().equals( scope ) )
+            if ( scope.equals( artifact.getScope() ) )
             {
                 return false;
             }
