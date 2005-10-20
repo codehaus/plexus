@@ -58,6 +58,8 @@ public class JavamailMailSender
     //
     // ----------------------------------------------------------------------
 
+    private String sslProvider;
+
     private Properties userProperties;
 
     private Properties props;
@@ -96,14 +98,14 @@ public class JavamailMailSender
         {
             try
             {
-                Provider p = (Provider) Class.forName("com.sun.net.ssl.internal.ssl.Provider").newInstance();
+                Provider p = (Provider) Class.forName( sslProvider ).newInstance();
 
                 Security.addProvider(p);
             }
             catch ( Exception e )
             {
-                throw new InitializationException("could not instantiate ssl security provider, check that "
-                    + "you have JSSE in your classpath");
+                throw new InitializationException( "could not instantiate ssl security provider, check that "
+                    + "you have JSSE in your classpath" );
             }
 
             props.put( "mail.smtp.socketFactory.port", String.valueOf( getSmtpPort() ) );
