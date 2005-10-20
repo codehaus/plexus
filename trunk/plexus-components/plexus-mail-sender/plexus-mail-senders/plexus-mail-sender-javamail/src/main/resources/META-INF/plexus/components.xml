@@ -6,6 +6,7 @@
       <configuration>
         <smtp-host>localhost</smtp-host>
         <smtp-port>25</smtp-port>
+        <sslProvider>com.sun.net.ssl.internal.ssl.Provider</sslProvider>
       </configuration>
     </component>
   </components>
