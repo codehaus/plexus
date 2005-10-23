@@ -172,6 +172,15 @@ public class DefaultSiteRenderer
     {
         render( siteDirectory, outputDirectory, siteDescriptor, templateName, templateProperties, defaultLocale, DEFAULT_OUTPUT_ENCODING );
     }
+    
+    //per module
+    public void render( File siteDirectory, File outputDirectory, String module, String moduleExtension, String moduleParserId, 
+                    String siteDescriptor, String templateName, Map templateProperties, Locale locale, String outputEncoding )
+         throws RendererException, IOException
+    {
+        render( siteDirectory, outputDirectory, module, moduleExtension, moduleParserId, new StringInputStream( siteDescriptor ),
+                templateName, templateProperties, locale, outputEncoding);
+    }
 
     /**
      * @see org.codehaus.plexus.siterenderer.Renderer#render(java.io.File, java.io.File, java.io.InputStream, java.lang.String, java.util.Map, java.util.Locale, java.lang.String)
@@ -244,6 +253,63 @@ public class DefaultSiteRenderer
             }
         }
     }
+    
+    // per module renderer
+    public void render( File siteDirectory, File outputDirectory, String module, String moduleExtension, String moduleParserId, 
+                        InputStream siteDescriptor, String templateName, Map templateProperties, Locale locale, String outputEncoding )
+        throws RendererException, IOException
+    {
+        try
+        {
+            InputStreamReader xmlReader = new InputStreamReader( siteDescriptor );
+
+            this.siteDescriptor = Xpp3DomBuilder.build( xmlReader );
+        }
+        catch ( XmlPullParserException e )
+        {
+            throw new RendererException( "Can't read site descriptor.", e );
+        }
+        File moduleBasedir = siteDirectory;
+
+        List docs = FileUtils.getFileNames( moduleBasedir, "**/*." + moduleExtension, null, false );
+
+        for ( Iterator j = docs.iterator(); j.hasNext(); )
+        {
+            String doc = (String) j.next();
+
+            String outputName = doc.substring( 0, doc.indexOf( "." ) + 1 ) + "html";
+
+            String fullPathDoc = new File( moduleBasedir, doc ).getPath();
+
+            SiteRendererSink sink = createSink( moduleBasedir, outputName );
+
+            try
+            {
+                FileReader reader = new FileReader( fullPathDoc );
+
+                doxia.parse( reader, moduleParserId, sink );
+
+                File outputFile = new File( outputDirectory, outputName );
+
+                if ( !outputFile.getParentFile().exists() )
+                {
+                    outputFile.getParentFile().mkdirs();
+                }
+                generateDocument( new OutputStreamWriter( new FileOutputStream( outputFile ), outputEncoding ), templateName, templateProperties, sink, locale );
+            }
+            catch ( Exception e )
+            {
+                e.printStackTrace();
+
+                getLogger().error( "Error rendering " + fullPathDoc + ": " + e.getMessage(), e );
+            }
+            finally
+            {
+                sink.flush();
+                sink.close();
+            }
+        }
+    }    
     
     /**
      * @see org.codehaus.plexus.siterenderer.Renderer#generateDocument(java.io.Writer, java.lang.String, java.util.Map, org.codehaus.plexus.siterenderer.sink.SiteRendererSink)

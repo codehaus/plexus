@@ -60,6 +60,14 @@ public interface Renderer
      void render( File siteDirectory, File outputDirectory, InputStream siteDescriptor, String templateName,
                  Map templateProperties, Locale locale, String outputEncoding )
          throws RendererException, IOException;
+     
+     void render( File siteDirectory, File outputDirectory, String module, String moduleExtension, String moduleParserId, 
+                    String siteDescriptor, String templateName, Map templateProperties, Locale locale, String outputEncoding )
+         throws RendererException, IOException;     
+     
+     void render( File siteDirectory, File outputDirectory, String module, String moduleExtension, String moduleParserId, 
+                    InputStream siteDescriptor, String templateName, Map templateProperties, Locale locale, String outputEncoding )
+         throws RendererException, IOException;
 
     void generateDocument( Writer writer, String templateName, Map templateProperties, SiteRendererSink sink )
         throws RendererException;
