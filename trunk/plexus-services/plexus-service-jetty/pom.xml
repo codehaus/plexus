@@ -8,7 +8,7 @@
   <artifactId>plexus-service-jetty</artifactId>
   <packaging>plexus-service</packaging>
   <name>Plexus Jetty Service</name>
-  <version>1.0-alpha-3</version>
+  <version>1.0-alpha-4-SNAPSHOT</version>
   <build>
     <plugins>
       <plugin>
