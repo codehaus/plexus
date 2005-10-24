@@ -8,7 +8,7 @@
   <artifactId>plexus-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>Plexus Maven Plugin</name>
-  <version>1.1-alpha-8-SNAPSHOT</version>
+  <version>1.1</version>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
@@ -22,13 +22,13 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-cdc</artifactId>
-      <version>1.0-alpha-3</version>
+      <artifactId>plexus-runtime-builder</artifactId>
+      <version>1.0-alpha-5</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-runtime-builder</artifactId>
-      <version>1.0-alpha-5</version>
+      <artifactId>plexus-cdc</artifactId>
+      <version>1.0-alpha-3</version>
     </dependency>
   </dependencies>
 </project>
