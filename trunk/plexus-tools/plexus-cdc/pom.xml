@@ -5,7 +5,7 @@
   <parent>
     <artifactId>plexus-tools</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
   </parent>
   <artifactId>plexus-cdc</artifactId>
   <packaging>jar</packaging>
@@ -20,7 +20,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>1.0.4-SNAPSHOT</version>
+      <version>1.0.4</version>
     </dependency>
   </dependencies>
 </project>
