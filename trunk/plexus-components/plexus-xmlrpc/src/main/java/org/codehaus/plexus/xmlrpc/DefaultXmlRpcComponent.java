@@ -157,6 +157,8 @@ public class DefaultXmlRpcComponent
     /** Message Listeners. */
     private List listeners = new ArrayList();
 
+    private boolean isInitialized = false;
+
     // ----------------------------------------------------------------------
     // Privates
     // ----------------------------------------------------------------------
@@ -253,6 +255,8 @@ public class DefaultXmlRpcComponent
                 getLogger().info( "Denying client -> " + clientIP );
             }
         }
+
+        isInitialized = true;
     }
 
     public void start()
@@ -439,7 +443,14 @@ public class DefaultXmlRpcComponent
      */
     public void setParanoid( boolean state )
     {
-        xmlRpcServer.setParanoid( null, port, state );
+        if ( isInitialized )
+        {
+            xmlRpcServer.setParanoid( null, port, state );
+        }
+        else
+        {
+            paranoid = state;
+        }
     }
 
     /**
