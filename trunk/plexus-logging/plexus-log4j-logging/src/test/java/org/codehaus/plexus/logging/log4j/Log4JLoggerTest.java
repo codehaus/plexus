@@ -27,7 +27,7 @@ public class Log4JLoggerTest
         }
         catch ( RuntimeException ex )
         {
-            assertEquals( "ex.getMessage()", "threshold", ex.getMessage() );
+            assertEquals( "ex.getMessage()", "Threshold -213123 is not valid", ex.getMessage() );
         }
     }
 

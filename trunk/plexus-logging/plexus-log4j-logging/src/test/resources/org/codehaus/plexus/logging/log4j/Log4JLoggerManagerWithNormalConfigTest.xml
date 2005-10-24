@@ -1,0 +1,20 @@
+<plexus>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.logging.LoggerManager</role>
+      <implementation>org.codehaus.plexus.logging.log4j.Log4JLoggerManager</implementation>
+      <lifecycle-handler>basic</lifecycle-handler>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+      <configuration>
+        <threshold>DEBUG</threshold>
+        <appenders>
+          <appender>
+            <id>console</id>
+            <type>org.apache.log4j.ConsoleAppender</type>
+            <conversion-pattern>%-4r [%t] %-5p %c %x - %m%n</conversion-pattern>
+          </appender>
+        </appenders>
+      </configuration>
+    </component>
+  </components>
+</plexus>
