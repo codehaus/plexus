@@ -14,7 +14,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-logging-provider-test</artifactId>
-      <version>1.0-alpha-2-SNAPSHOT</version>
+      <version>1.0-alpha-2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
