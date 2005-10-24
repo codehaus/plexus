@@ -1,13 +1,13 @@
 <project>
   <parent>
-    <groupId>org.codehaus.plexus</groupId>
     <artifactId>plexus-components</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
     <version>1.1.4</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-jdo2</artifactId>
   <name>Plexus JDO Component</name>
-  <version>1.0-alpha-3-SNAPSHOT</version>
+  <version>1.0-alpha-3</version>
   <inceptionYear>2005</inceptionYear>
   <developers>
     <developer>
