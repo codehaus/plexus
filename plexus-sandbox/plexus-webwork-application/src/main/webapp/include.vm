@@ -1,3 +1,0 @@
-#bean ("com.opensymphony.webwork.example.counter.Counter" $counter)
-
-#tag( Include "value='SimpleCounter.action'" )
