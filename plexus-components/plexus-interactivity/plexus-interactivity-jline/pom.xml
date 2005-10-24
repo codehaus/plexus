@@ -2,12 +2,12 @@
   <parent>
     <artifactId>plexus-interactivity</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0-alpha-5-SNAPSHOT</version>
+    <version>1.0-alpha-5</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-interactivity-jline</artifactId>
   <name>Plexus JLine Interactivity Handler</name>
-  <version>1.0-alpha-5-SNAPSHOT</version>
+  <version>1.0-alpha-5</version>
   <dependencies>
     <dependency>
       <groupId>jline</groupId>
@@ -17,7 +17,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-interactivity-api</artifactId>
-      <version>1.0-alpha-5-SNAPSHOT</version>
+      <version>1.0-alpha-5</version>
     </dependency>
   </dependencies>
 </project>
