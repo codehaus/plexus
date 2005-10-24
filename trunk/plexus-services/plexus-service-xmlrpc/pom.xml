@@ -1,28 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <project>
-  <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.plexus</groupId>
     <artifactId>plexus-services</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
     <version>1.0.2</version>
   </parent>
+  <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-service-xmlrpc</artifactId>
-  <version>1.0-alpha-3-SNAPSHOT</version>
   <packaging>plexus-service</packaging>
   <name>Plexus XMLRPC Service</name>
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-xmlrpc</artifactId>
-      <version>1.0-beta-4</version>
-    </dependency>
-    <dependency>
-      <groupId>xmlrpc</groupId>
-      <artifactId>xmlrpc</artifactId>
-      <version>1.2</version>
-    </dependency>
-  </dependencies>
+  <version>1.0-alpha-3</version>
   <build>
     <plugins>
       <plugin>
@@ -37,4 +23,16 @@
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>xmlrpc</groupId>
+      <artifactId>xmlrpc</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-xmlrpc</artifactId>
+      <version>1.0-beta-4</version>
+    </dependency>
+  </dependencies>
 </project>
