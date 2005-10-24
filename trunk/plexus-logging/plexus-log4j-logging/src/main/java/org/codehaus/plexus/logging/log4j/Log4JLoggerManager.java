@@ -3,6 +3,8 @@ package org.codehaus.plexus.logging.log4j;
 import org.apache.log4j.PropertyConfigurator;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
 
 import java.io.File;
 import java.util.Enumeration;
@@ -133,7 +135,7 @@ public class Log4JLoggerManager
     // Lifecycle
     // ----------------------------------------------------------------------
 
-    public void initialize() throws Exception
+    public void initialize()
     {
         super.initialize();
 
@@ -145,7 +147,7 @@ public class Log4JLoggerManager
         {
             if ( defaultAppender != null )
             {
-                throw new PlexusConfigurationException( "A default appender cant be specified without any appenders configured." );
+                throw new IllegalArgumentException( "A default appender cant be specified without any appenders configured." );
             }
 
             defaultAppender = "anonymous";
@@ -168,12 +170,12 @@ public class Log4JLoggerManager
 
                 if ( configuredAppenders.containsKey( id ) )
                 {
-                    throw new PlexusConfigurationException( "There already exists a appender with the id '" + id + "'." );
+                    throw new IllegalArgumentException( "There already exists a appender with the id '" + id + "'." );
                 }
 
                 if ( id == null )
                 {
-                    throw new PlexusConfigurationException( "The appender must have a id." );
+                    throw new IllegalArgumentException( "The appender must have a id." );
                 }
 
                 if ( appender.getThreshold() == null )
@@ -183,12 +185,12 @@ public class Log4JLoggerManager
 
                 if ( appender.getConversionPattern() == null )
                 {
-                    throw new PlexusConfigurationException( "The appender must have a conversion pattern." );
+                    throw new IllegalArgumentException( "The appender must have a conversion pattern." );
                 }
 
                 if ( appender.getType() == null )
                 {
-                    throw new PlexusConfigurationException( "The appender must have a type." );
+                    throw new IllegalArgumentException( "The appender must have a type." );
                 }
 
                 try
@@ -197,11 +199,11 @@ public class Log4JLoggerManager
                 }
                 catch ( ClassNotFoundException ex )
                 {
-                    throw new PlexusConfigurationException( "Could not find the appender class: " + appender.getType(), ex );
+                    throw new IllegalArgumentException( "Could not find the appender class: " + appender.getType(), ex );
                 }
                 catch ( LinkageError ex )
                 {
-                    throw new PlexusConfigurationException( "Could load the appender class: " + appender.getType(), ex );
+                    throw new IllegalArgumentException( "Could load the appender class: " + appender.getType(), ex );
                 }
 
                 String base = "log4j.appender." + id;
@@ -245,7 +247,7 @@ public class Log4JLoggerManager
                 }
                 else
                 {
-                    throw new PlexusConfigurationException( "A default appender must be specified when having several appenders." );
+                    throw new IllegalArgumentException( "A default appender must be specified when having several appenders." );
                 }
             }
             else
@@ -258,7 +260,7 @@ public class Log4JLoggerManager
 
                     if ( !configuredAppenders.containsKey( appender ) )
                     {
-                        throw new PlexusConfigurationException( "Could not find the default appender: '" + defaultAppender + "'." );
+                        throw new IllegalArgumentException( "Could not find the default appender: '" + defaultAppender + "'." );
                     }
                 }
             }
@@ -276,11 +278,11 @@ public class Log4JLoggerManager
 
         if ( getThresholdAsString() == null )
         {
-            throw new PlexusConfigurationException( "INTERNAL ERROR: The threshold must be set." );
+            throw new IllegalArgumentException( "INTERNAL ERROR: The threshold must be set." );
         }
         if ( defaultAppender == null )
         {
-            throw new PlexusConfigurationException( "INTERNAL ERROR: The default appender must be set." );
+            throw new IllegalArgumentException( "INTERNAL ERROR: The default appender must be set." );
         }
 
         log4JProperties.setProperty( "log4j.rootLogger", getThresholdAsString() + "," + defaultAppender );
@@ -288,13 +290,13 @@ public class Log4JLoggerManager
     }
 
     public void start()
-        throws Exception
+        throws StartingException
     {
         PropertyConfigurator.configure( log4JProperties );
     }
 
     public void stop()
-        throws Exception
+        throws StoppingException
     {
     }
 

@@ -5,25 +5,19 @@ import java.util.Properties;
 import org.codehaus.plexus.logging.AbstractLoggerManagerTest;
 import org.codehaus.plexus.logging.LoggerManager;
 
-public class Log4JLoggerManagerTest
+public class Log4JLoggerManagerWithFullConfigTest
     extends AbstractLoggerManagerTest
 {
     protected LoggerManager createLoggerManager()
         throws Exception
     {
-        return (LoggerManager)lookup(LoggerManager.ROLE, "normal-config");
-    }
-
-    protected LoggerManager createLoggerManager(String hint)
-        throws Exception
-    {
-        return (LoggerManager)lookup(LoggerManager.ROLE, hint);
+        return (LoggerManager)lookup( LoggerManager.ROLE );
     }
 
     public void testLog4JLoggerManagerWithFullConfig()
         throws Exception
     {
-        Log4JLoggerManager loggerManager = (Log4JLoggerManager)lookup(LoggerManager.ROLE, "full-config");
+        Log4JLoggerManager loggerManager = (Log4JLoggerManager)createLoggerManager();
 
         Properties p = loggerManager.getLog4JProperties();
 
@@ -53,33 +47,5 @@ public class Log4JLoggerManagerTest
 		assertEquals( "10", p.getProperty( "log4j.appender.rolling.maxBackupIndex" ) );
 		assertEquals( "20", p.getProperty( "log4j.appender.rolling.maxFileSize" ) );
 		assertEquals( "DEBUG", p.getProperty( "log4j.appender.rolling.threshold" ) );
-    }
-
-    public void testLog4JMissingAppenders()
-        throws Exception
-    {
-        Log4JLoggerManager loggerManager = (Log4JLoggerManager)lookup( LoggerManager.ROLE, "missing-appenders" );
-
-        Properties p = loggerManager.getLog4JProperties();
-
-        assertEquals( "org.apache.log4j.ConsoleAppender", p.getProperty( "log4j.appender.anonymous" ) );
-        assertEquals( "FATAL", p.getProperty( "log4j.appender.anonymous.threshold" ) );
-        assertEquals( "org.apache.log4j.PatternLayout", p.getProperty( "log4j.appender.anonymous.layout" ) );
-        assertEquals( "%-4r [%t] %-5p %c %x - %m%n", p.getProperty( "log4j.appender.anonymous.layout.conversionPattern" ) );
-        assertEquals( "FATAL,anonymous", p.getProperty( "log4j.rootLogger" ) );
-    }
-
-    public void testLog4JMissingConfiguration()
-        throws Exception
-    {
-        Log4JLoggerManager loggerManager = (Log4JLoggerManager)lookup( LoggerManager.ROLE, "missing-configuration" );
-
-        Properties p = loggerManager.getLog4JProperties();
-
-        assertEquals( "org.apache.log4j.ConsoleAppender", p.getProperty( "log4j.appender.anonymous" ) );
-        assertEquals( "INFO", p.getProperty( "log4j.appender.anonymous.threshold" ) );
-        assertEquals( "org.apache.log4j.PatternLayout", p.getProperty( "log4j.appender.anonymous.layout" ) );
-        assertEquals( "%-4r [%t] %-5p %c %x - %m%n", p.getProperty( "log4j.appender.anonymous.layout.conversionPattern" ) );
-        assertEquals( "INFO,anonymous", p.getProperty( "log4j.rootLogger" ) );
     }
 }
