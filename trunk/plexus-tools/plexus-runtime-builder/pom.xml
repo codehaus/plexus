@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-runtime-builder</artifactId>
   <name>Plexus Runtime Builder</name>
-  <version>1.0-alpha-6-SNAPSHOT</version>
+  <version>1.0-alpha-6</version>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
