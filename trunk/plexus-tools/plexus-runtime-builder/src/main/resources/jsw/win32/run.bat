@@ -20,7 +20,7 @@ rem
 rem Find the wrapper.conf
 rem
 :conf
-set _WRAPPER_CONF=%_APP_HOME%wrapper.conf
+set _WRAPPER_CONF=wrapper.conf
 
 
 rem
@@ -28,7 +28,7 @@ rem Run the application.
 rem At runtime, the current directory will be that of Wrapper.exe
 rem
 :startup
-"%_APP_HOME%wrapper.exe" -c "%_WRAPPER_CONF%"
+"%_APP_HOME%wrapper.exe" -c %_WRAPPER_CONF%
 if not errorlevel 1 goto end
 pause
 
