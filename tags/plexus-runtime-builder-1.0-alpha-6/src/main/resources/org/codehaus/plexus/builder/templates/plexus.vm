@@ -1,0 +1,123 @@
+#! /bin/sh
+
+PLEXUS_OPTS="-Xmx128m"
+
+# OS specific support.  $var _must_ be set to either true or false.
+cygwin=false
+darwin=false;
+case "`uname`" in
+CYGWIN*) cygwin=true;;
+Darwin*) darwin=true ;;
+esac
+
+# resolve links - $0 may be a softlink
+THIS_PROG="$0"
+
+while [ -h "$THIS_PROG" ]; do
+  ls=`ls -ld "$THIS_PROG"`
+  link=`expr "$ls" : '.*-> \(.*\)$'`
+  if expr "$link" : '.*/.*' > /dev/null; then
+    THIS_PROG="$link"
+  else
+    THIS_PROG=`dirname "$THIS_PROG"`/"$link"
+  fi
+done
+
+# Get standard environment variables
+PRGDIR=`dirname "$THIS_PROG"`
+PLEXUS_HOME=`cd "$PRGDIR/.." ; pwd`
+PLEXUS_CONF=`cd "$PLEXUS_HOME/conf" ; pwd`
+unset THIS_PROG
+
+
+# Checking for JAVA_HOME is required on *nix due
+# to some distributions stupidly including kaffe in /usr/bin
+if [ "$JAVA_HOME" = "" ] ; then
+  echo "ERROR: JAVA_HOME not found in your environment."
+  echo
+  echo "Please, set the JAVA_HOME variable in your environment to match the"
+  echo "location of the Java Virtual Machine you want to use."
+  exit 1
+fi
+
+# For Cygwin, ensure paths are in UNIX format before anything is touched
+if $cygwin ; then
+  [ -n "$PLEXUS_HOME" ] &&
+    PLEXUS_HOME=`cygpath --unix "$PLEXUS_HOME"`
+  [ -n "$JAVA_HOME" ] &&
+    JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
+  [ -n "$CLASSPATH" ] &&
+    CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
+fi
+
+if [ -z "$PLEXUS_TMPDIR" ] ; then
+  PLEXUS_TMPDIR="$PLEXUS_HOME"/temp
+  mkdir -p "$PLEXUS_TMPDIR"
+fi
+
+if [ -z "$JAVACMD" ] ; then
+  if [ -n "$JAVA_HOME"  ] ; then
+    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
+      # IBM's JDK on AIX uses strange locations for the executables
+      JAVACMD="$JAVA_HOME/jre/sh/java"
+    else
+      JAVACMD="$JAVA_HOME/bin/java"
+    fi
+  else
+    JAVACMD=java
+  fi
+fi
+
+if [ ! -x "$JAVACMD" ] ; then
+  echo "Error: JAVA_HOME is not defined correctly."
+  echo "  We cannot execute $JAVACMD"
+  exit
+fi
+
+if [ -z "$JAVA_HOME" ] ; then
+  echo "Warning: JAVA_HOME environment variable is not set."
+  echo "  If build fails because sun.* classes could not be found"
+  echo "  you will need to set the JAVA_HOME environment variable"
+  echo "  to the installation directory of java."
+fi
+
+# For Cygwin, switch paths to Windows format before running java
+if $cygwin; then
+  PLEXUS_HOME=`cygpath --path --windows "$PLEXUS_HOME"`
+  PLEXUS_CONF=`cygpath --path --windows "$PLEXUS_CONF"`
+  PLEXUS_TMPDIR=`cygpath --path --windows "$PLEXUS_TMPDIR"`
+  JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
+fi
+
+# For Darwin, use classes.jar for TOOLS_JAR
+TOOLS_JAR="${JAVA_HOME}/lib/tools.jar"
+if $darwin; then
+  TOOLS_JAR="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Classes/classes.jar"
+fi
+
+# ----- Execute The Requested Command -----------------------------------------
+
+echo "Using PLEXUS_HOME:   $PLEXUS_HOME"
+echo "Using PLEXUS_CONF:   $PLEXUS_CONF"
+echo "Using PLEXUS_TMPDIR: $PLEXUS_TMPDIR"
+echo "Using JAVA_HOME:     $JAVA_HOME"
+
+if [ "$1" = "" ]
+then
+  CONF="${PLEXUS_CONF}/plexus.xml"
+else
+  CONF="$1"
+fi
+
+MAIN_CLASS=org.codehaus.classworlds.Launcher
+
+"$JAVACMD" \
+  $PLEXUS_OPTS \
+  -classpath "${PLEXUS_HOME}"/core/boot/classworlds-*.jar \
+  -Dclassworlds.conf="${PLEXUS_HOME}/conf/classworlds.conf"  \
+  -Dplexus.core="${PLEXUS_HOME}/core" \
+  -Dplexus.system.path="${PATH}" \
+  -Djava.io.tmpdir="${PLEXUS_TMPDIR}" \
+  -Dtools.jar="$TOOLS_JAR" \
+  -Dplexus.home="${PLEXUS_HOME}" \
+  $MAIN_CLASS ${CONF}
