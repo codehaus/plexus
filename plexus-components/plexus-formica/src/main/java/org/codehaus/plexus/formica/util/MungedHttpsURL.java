@@ -16,6 +16,8 @@ package org.codehaus.plexus.formica.util;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.logging.Logger;
+
 import java.io.InputStream;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
@@ -47,6 +49,8 @@ public class MungedHttpsURL
     private String username;
 
     private String password;
+
+    private Logger logger;
 
     // ----------------------------------------------------------------------
     // Constructor
@@ -82,6 +86,11 @@ public class MungedHttpsURL
            throw new MalformedURLException( "Unable to validate URL" );
        }
     }
+
+    public void setLogger( Logger logger )
+    {
+        this.logger = logger;
+    }
     
     // ----------------------------------------------------------------------
     // HttpsURL Implementation
@@ -105,7 +114,12 @@ public class MungedHttpsURL
         }
         catch ( Exception e )
         {
-           return false;
+            if ( logger != null )
+            {
+                logger.debug( "An error is occurred.", e );
+            }
+
+            return false;
         }
 
         return true;

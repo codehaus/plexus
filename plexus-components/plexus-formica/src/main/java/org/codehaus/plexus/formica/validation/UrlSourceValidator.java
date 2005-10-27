@@ -56,7 +56,11 @@ public class UrlSourceValidator
             // only accepting the munged https url that is resolved in MungedHttpsURL
             if ( urlString != null && urlString.startsWith( "http" ) )
             {
-                return new MungedHttpsURL( urlString ).isValid();
+                MungedHttpsURL url = new MungedHttpsURL( urlString );
+
+                url.setLogger( getLogger() );
+
+                return url.isValid();
             }
             else
             {
@@ -69,6 +73,8 @@ public class UrlSourceValidator
         }
         catch ( Exception e )
         {
+            getLogger().debug( "An exception is occurred.", e );
+
             return false;
         }
 
