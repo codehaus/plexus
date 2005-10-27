@@ -22,6 +22,8 @@ package org.codehaus.plexus.formica.validation;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+
 /**
  * Base class for all validators.  Validators must implement the
  * <code>validate()</code> method to provide validation logic.
@@ -35,6 +37,7 @@ package org.codehaus.plexus.formica.validation;
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  */
 public abstract class AbstractValidator
+    extends AbstractLogEnabled
     implements Validator
 {
     protected String message;
