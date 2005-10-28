@@ -44,8 +44,6 @@ public abstract class AbstractIrcBot
             System.err.println( "error connecting to IRC server" );
 
             e.printStackTrace();
-
-            //System.exit( 0 );
         }
 
         InputStream inputStream = null;
@@ -63,8 +61,6 @@ public abstract class AbstractIrcBot
             System.err.println( "error opening streams to IRC server" );
 
             e.printStackTrace();
-
-            //System.exit( 0 );
         }
 
         input = new BufferedReader( new InputStreamReader( inputStream ) );
@@ -130,7 +126,7 @@ public abstract class AbstractIrcBot
         {
             System.out.println( "logoff error: " + e );
 
-            System.exit( 0 );
+            e.printStackTrace();
         }
     }
 
@@ -154,7 +150,7 @@ public abstract class AbstractIrcBot
         {
             System.out.println( "logon error: " + e );
 
-            System.exit( 0 );
+            e.printStackTrace();
         }
 
         return;
@@ -304,7 +300,7 @@ public abstract class AbstractIrcBot
         {
             System.out.println( "error: " + e );
 
-            System.exit( 0 );
+            e.printStackTrace();
         }
     }
 
