@@ -1,0 +1,32 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.bacon</groupId>
+  <artifactId>bacon-root</artifactId>
+  <version>1.0-alpha-1-SNAPSHOT</version>
+  
+  <name>BaCon Root POM</name>
+
+  <modules>
+    <module>bacon-utils</module>
+    <module>bacon-api</module>
+    <module>bacon-base-container</module>
+    <module>bacon-basic-component-info</module>
+    <module>bacon-component-factories</module>
+    <module>bacon-language-support</module>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>${groupId}</groupId>
+        <artifactId>bacon-api</artifactId>
+        <version>${version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${groupId}</groupId>
+        <artifactId>bacon-utils</artifactId>
+        <version>${version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>
