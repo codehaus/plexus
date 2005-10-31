@@ -1,5 +1,7 @@
 package org.codehaus.plexus.ircbot;
 
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -14,6 +16,7 @@ import java.net.Socket;
  * @version $Id$
  */
 public abstract class AbstractIrcBot
+    extends AbstractLogEnabled
     implements IrcBot
 {
     private BufferedReader input;
@@ -41,9 +44,9 @@ public abstract class AbstractIrcBot
         }
         catch ( Exception e )
         {
-            System.err.println( "error connecting to IRC server" );
+            getLogger().error( "error connecting to IRC server", e );
 
-            e.printStackTrace();
+            return;
         }
 
         InputStream inputStream = null;
@@ -58,9 +61,9 @@ public abstract class AbstractIrcBot
         }
         catch ( Exception e )
         {
-            System.err.println( "error opening streams to IRC server" );
+            getLogger().error( "error opening streams to IRC server", e );
 
-            e.printStackTrace();
+            return;
         }
 
         input = new BufferedReader( new InputStreamReader( inputStream ) );
@@ -74,21 +77,30 @@ public abstract class AbstractIrcBot
     {
         try
         {
-            input.close();
+            if ( input != null )
+            {
+                input.close();
+            }
 
-            output.close();
+            if ( output != null )
+            {
+                output.close();
+            }
         }
         catch ( IOException e )
         {
-            System.err.println( "Error disconnecting from IRC server" );
-
-            e.printStackTrace();
+            getLogger().error( "Error disconnecting from IRC server", e );
         }
     }
 
     public boolean ircsend( String message )
     {
-        System.out.println( "irc: '" + message + "'" );
+        if ( output == null )
+        {
+            return false;
+        }
+
+        getLogger().info( "irc: '" + message + "'" );
 
         try
         {
@@ -109,6 +121,11 @@ public abstract class AbstractIrcBot
 
     public void logoff()
     {
+        if ( output  == null )
+        {
+            return;
+        }
+
         BufferedWriter bw = output;
 
         try
@@ -124,14 +141,17 @@ public abstract class AbstractIrcBot
         }
         catch ( Exception e )
         {
-            System.out.println( "logoff error: " + e );
-
-            e.printStackTrace();
+            getLogger().error( "logoff error: ", e );
         }
     }
 
     public void logon()
     {
+        if ( output  == null )
+        {
+            return;
+        }
+
         BufferedWriter bw = output;
 
         try
@@ -148,9 +168,7 @@ public abstract class AbstractIrcBot
         }
         catch ( Exception e )
         {
-            System.out.println( "logon error: " + e );
-
-            e.printStackTrace();
+            getLogger().error( "logon error: ", e );
         }
 
         return;
@@ -164,7 +182,7 @@ public abstract class AbstractIrcBot
          or
          <my nick> <message>
          */
-        System.out.println( "parse_privmsg passed '" + params + "' from '" + username + "'" );
+        getLogger().debug( "parse_privmsg passed '" + params + "' from '" + username + "'" );
 
         String message;
 
@@ -208,7 +226,7 @@ public abstract class AbstractIrcBot
 
             output.flush();
 
-            System.out.println( "ping pong" );
+            getLogger().debug( "ping pong" );
 
             return true;
         }
@@ -265,7 +283,7 @@ public abstract class AbstractIrcBot
                     // get the parameters (the rest of the message)
                     params = msg.substring( msg.indexOf( ' ' ) + 1 );
 
-                    System.out.println( "prefix: '" + prefix + "' command: '" + command + "' params: '" + params + "'" );
+                    getLogger().debug( "prefix: '" + prefix + "' command: '" + command + "' params: '" + params + "'" );
 
                     // deal with privmsgs
                     if ( command.equalsIgnoreCase( "privmsg" ) )
@@ -298,9 +316,7 @@ public abstract class AbstractIrcBot
         }
         catch ( IOException e )
         {
-            System.out.println( "error: " + e );
-
-            e.printStackTrace();
+            getLogger().error( "error: " + e, e );
         }
     }
 
