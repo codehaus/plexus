@@ -23,6 +23,8 @@ public class DefaultJabberClient
 
     private String password;
 
+    private String imDomainName;
+
     private boolean isSslConnection;
 
     private XMPPConnection conn;
@@ -37,11 +39,11 @@ public class DefaultJabberClient
         {
             if ( !isSslConnection )
             {
-                conn = new XMPPConnection( getHost(), getPort() );
+                conn = new XMPPConnection( getHost(), getPort(), getImDomainName() );
             }
             else
             {
-                conn = new SSLXMPPConnection( getHost(), getPort() );
+                conn = new SSLXMPPConnection( getHost(), getPort(), getImDomainName() );
             }
         }
         catch ( XMPPException e )
@@ -235,6 +237,29 @@ public class DefaultJabberClient
     public void setSslConnection( boolean isSslConnection )
     {
         this.isSslConnection = isSslConnection;
+    }
+
+    /**
+     * @return Returns the IM domain name.
+     */
+    public String getImDomainName()
+    {
+        if ( imDomainName == null )
+        {
+            return getHost();
+        }
+        else
+        {
+            return imDomainName;
+        }
+    }
+
+    /**
+     * @param host The IM domain name to set.
+     */
+    public void setImDomainName( String imDomainName )
+    {
+        this.imDomainName = imDomainName;
     }
 
     /**
