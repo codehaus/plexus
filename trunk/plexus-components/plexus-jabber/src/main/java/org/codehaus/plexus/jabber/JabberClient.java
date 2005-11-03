@@ -43,4 +43,8 @@ public interface JabberClient
     void setUser( String user );
 
     void setPassword( String password );
+
+    String getImDomainName();
+
+    void setImDomainName( String imDomainName );
 }
