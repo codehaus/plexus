@@ -29,6 +29,8 @@ public abstract class AbstractIrcBot
 
     private String botDescription;
 
+    private String botPassword;
+
     public void connect( String serverHostname, int serverPort )
     {
         connect( serverHostname, serverPort, null );
@@ -165,6 +167,16 @@ public abstract class AbstractIrcBot
             bw.newLine();
 
             bw.flush();
+
+            if ( botPassword != null )
+            {
+                bw.write( "msg NickServ IDENTIFY " + botPassword );
+
+                bw.newLine();
+
+                bw.flush();
+
+            }
         }
         catch ( Exception e )
         {
@@ -338,6 +350,11 @@ public abstract class AbstractIrcBot
     public void setFullName( String fullName )
     {
         this.botDescription = fullName;
+    }
+
+    public void setPassword( String password )
+    {
+        this.botPassword = password;
     }
 
     protected void processPrivateMessage( String user, String text )
