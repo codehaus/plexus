@@ -35,4 +35,6 @@ public interface IrcBot
     String getFullName();
 
     void setFullName( String fullName );
+
+    void setPassword( String password );
 }
