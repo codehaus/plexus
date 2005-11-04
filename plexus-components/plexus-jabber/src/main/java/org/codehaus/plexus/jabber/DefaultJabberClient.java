@@ -201,7 +201,7 @@ public class DefaultJabberClient
      */
     public int getPort()
     {
-        if ( port != -1 )
+        if ( port <= 0 )
         {
             return port;
         }
