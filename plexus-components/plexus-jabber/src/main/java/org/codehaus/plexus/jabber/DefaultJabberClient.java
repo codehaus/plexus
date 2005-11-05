@@ -160,6 +160,15 @@ public class DefaultJabberClient
         {
             throw new JabberClientException( "Can't send a message to " + recipientUser + " user", e );
         }
+
+        // little sleep to be sure that message was sent
+        try
+        {
+            Thread.sleep( 1000 );
+        }
+        catch( InterruptedException e )
+        {
+        }
     }
 
     /**
@@ -177,6 +186,15 @@ public class DefaultJabberClient
         catch ( XMPPException e )
         {
             throw new JabberClientException( "Can't send a message to " + recipientGroup + " group", e );
+        }
+
+        // little sleep to be sure that message was sent
+        try
+        {
+            Thread.sleep( 1000 );
+        }
+        catch( InterruptedException e )
+        {
         }
     }
 
