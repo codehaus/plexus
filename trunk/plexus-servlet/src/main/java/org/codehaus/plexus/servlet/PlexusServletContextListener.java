@@ -50,9 +50,6 @@ public class PlexusServletContextListener
 {
     private Embedder embedder = null;
 
-    /**
-     * @see javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
-     */
     public void contextInitialized( ServletContextEvent sce )
     {
         ServletContext context = sce.getServletContext();
@@ -76,9 +73,6 @@ public class PlexusServletContextListener
         context.log( "Plexus container initialized." );
     }
 
-    /**
-     * @see javax.servlet.ServletContextListener#contextDestroyed(javax.servlet.ServletContextEvent)
-     */
     public void contextDestroyed( ServletContextEvent sce )
     {
         ServletContext context = sce.getServletContext();
