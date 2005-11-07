@@ -1,4 +1,5 @@
 <plexus>
+  <!-- This should probably be a part of plexus-xwork-integration -->
   <components>
     <component>
       <role>com.opensymphony.xwork.ObjectFactory</role>
