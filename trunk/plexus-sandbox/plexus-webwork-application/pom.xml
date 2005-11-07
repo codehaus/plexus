@@ -22,7 +22,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0-alpha-1-SNAPSHOT</version>
         <executions>
           <execution>
             <id>run-war</id>
