@@ -10,6 +10,8 @@ import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.logging.LogEnabled;
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
@@ -18,13 +20,25 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
  */
 public class PlexusObjectFactory
     extends ObjectFactory
-    implements Initializable, Contextualizable
+    implements Initializable, Contextualizable, LogEnabled
 {
+    // ----------------------------------------------------------------------
+    // Configuration
+    // ----------------------------------------------------------------------
+
+    private boolean debugMode;
+
+    // ----------------------------------------------------------------------
+    // Privates
+    // ----------------------------------------------------------------------
+
     private PlexusContainer container;
 
     private boolean chainObjectFactory = true;
 
     private ObjectFactory objectFactory;
+
+    private Logger logger;
 
     // ----------------------------------------------------------------------
     // ObjectFactory overrides
@@ -49,7 +63,16 @@ public class PlexusObjectFactory
         {
             if ( chainObjectFactory && objectFactory != null )
             {
+                if ( debugMode )
+                {
+                    logger.info( "Could not look up component '" + roleHint + "', chaining to " + objectFactory );
+                }
+
                 return objectFactory.buildAction( config );
+            }
+            else if ( debugMode )
+            {
+                logger.info( "Could not look up component '" + roleHint + "', not chaining." );
             }
 
             throw e;
@@ -64,5 +87,10 @@ public class PlexusObjectFactory
         throws ContextException
     {
         container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+    }
+
+    public void enableLogging( Logger logger )
+    {
+        this.logger = logger;
     }
 }
