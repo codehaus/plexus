@@ -1,7 +1,7 @@
 package org.codehaus.bacon.component;
 
 public interface ComponentAttribute
-    extends CompositionSource
+    extends InjectionDescriptor
 {
     String getExpression();
     
