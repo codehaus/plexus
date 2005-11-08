@@ -13,6 +13,6 @@ public interface ContainerConfiguration
     
     List getClasspathElements();
     
-    Map getInstanceFactoriesByLanguage();
+    Map getLanguagePacksByKey();
 
 }
