@@ -15,13 +15,14 @@ import org.codehaus.bacon.Container;
 import org.codehaus.bacon.ContainerConfiguration;
 import org.codehaus.bacon.ContainerException;
 import org.codehaus.bacon.LookupException;
+import org.codehaus.bacon.base.component.BasicInstanceManager;
 import org.codehaus.bacon.base.session.BasicContainerSession;
 import org.codehaus.bacon.component.ComponentDescriptor;
 import org.codehaus.bacon.component.ComponentSelector;
 import org.codehaus.bacon.component.ComponentUtilities;
 import org.codehaus.bacon.component.DuplicateComponentDescriptorException;
-import org.codehaus.bacon.component.factory.InstanceFactory;
 import org.codehaus.bacon.component.factory.InstantiationException;
+import org.codehaus.bacon.component.manager.InstanceManager;
 import org.codehaus.bacon.session.ContainerSession;
 import org.codehaus.bacon.session.ContainerSessionManager;
 import org.codehaus.bacon.session.DuplicateContainerSessionException;
@@ -43,8 +44,8 @@ public class BasicContainer
     private final Set componentSelectors;
 
     private final URLClassLoader containerLoader;
-
-    private final Map instanceFactoriesByLanguage;
+    
+    private final InstanceManager instanceManager;
 
     private Map componentSelectorsByInterface;
 
@@ -66,7 +67,8 @@ public class BasicContainer
 
         this.componentDescriptors = Collections.unmodifiableSet( configuration.getComponentDescriptors() );
         this.componentSelectors = Collections.unmodifiableSet( configuration.getComponentSelectors() );
-        this.instanceFactoriesByLanguage = Collections.unmodifiableMap( configuration.getInstanceFactoriesByLanguage() );
+        
+        this.instanceManager = new BasicInstanceManager( configuration.getLanguagePacksByKey(), this, containerLoader );
 
         createComponentDescriptorMap();
 
@@ -89,7 +91,8 @@ public class BasicContainer
 
         this.componentDescriptors = configuration.getComponentDescriptors();
         this.componentSelectors = configuration.getComponentSelectors();
-        this.instanceFactoriesByLanguage = Collections.unmodifiableMap( configuration.getInstanceFactoriesByLanguage() );
+        
+        this.instanceManager = new BasicInstanceManager( configuration.getLanguagePacksByKey(), this, containerLoader );
 
         createComponentDescriptorMap();
 
@@ -105,6 +108,7 @@ public class BasicContainer
 
         ContainerSession session = getContainerSession( sessionKey );
 
+        boolean nativeToContainer = true;
         if ( descriptor == null )
         {
             String inst = instance;
@@ -117,13 +121,14 @@ public class BasicContainer
             ComponentSelector selector = new AdHocComponentSelector( ifc, inst );
 
             descriptor = session.getComponentDescriptor( ifc, selector );
+            nativeToContainer = false;
         }
 
         Object result = null;
 
         if ( descriptor != null )
         {
-            result = getComponentInstance( descriptor, sessionKey );
+            result = getComponentInstance( descriptor, sessionKey, context, nativeToContainer );
         }
         else if ( parent != null )
         {
@@ -168,16 +173,19 @@ public class BasicContainer
             }
         }
 
+        boolean nativeToContainer = true;
+        
         if ( descriptor == null )
         {
             descriptor = session.getComponentDescriptor( ifc, selector );
+            nativeToContainer = false;
         }
 
         Object result = null;
 
         if ( descriptor != null )
         {
-            result = getComponentInstance( descriptor, sessionKey );
+            result = getComponentInstance( descriptor, sessionKey, context, nativeToContainer );
         }
         else if ( parent != null )
         {
@@ -187,11 +195,10 @@ public class BasicContainer
         return result;
     }
 
-    private Object getComponentInstance( ComponentDescriptor descriptor, SessionKey sessionKey )
+    private Object getComponentInstance( ComponentDescriptor descriptor, SessionKey sessionKey, Map context, boolean nativeToContainer )
         throws InstantiationException
     {
-        // TODO Implement!
-        return null;
+        return instanceManager.getInstance( descriptor, sessionKey, context, nativeToContainer );
     }
 
     private ContainerSession getContainerSession( SessionKey sessionKey )
