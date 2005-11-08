@@ -23,11 +23,13 @@ import org.codehaus.bacon.component.factory.InstanceFactory;
 import org.codehaus.bacon.component.factory.InstantiationException;
 import org.codehaus.bacon.component.injection.ComponentInjectionException;
 import org.codehaus.bacon.component.language.LanguagePack;
+import org.codehaus.bacon.component.manager.InstanceManager;
 import org.codehaus.bacon.session.ContainerSession;
 import org.codehaus.bacon.session.ContainerSessionManager;
 import org.codehaus.bacon.session.SessionKey;
 
 public class BasicInstanceManager
+    implements InstanceManager
 {
     private static final String DEFAULT_IMPLEMENTATION_LANGUAGE = "java";
 
@@ -46,14 +48,14 @@ public class BasicInstanceManager
         this.containerLoader = containerLoader;
     }
 
-    public Object getInstance( ComponentDescriptor descriptor, SessionKey sessionKey, Map context )
+    public Object getInstance( ComponentDescriptor descriptor, SessionKey sessionKey, Map context, boolean nativeToContainer )
         throws InstantiationException
     {
         Object instance = null;
 
         try
         {
-            instance = resolveCached( descriptor, sessionKey );
+            instance = resolveCached( descriptor, sessionKey, nativeToContainer );
         }
         catch ( ContainerException e )
         {
@@ -75,7 +77,7 @@ public class BasicInstanceManager
 
             try
             {
-                cacheIfAppropriate( instance, descriptor, sessionKey );
+                cacheIfAppropriate( instance, descriptor, sessionKey, nativeToContainer );
             }
             catch ( DuplicateComponentInstanceException e )
             {
@@ -181,10 +183,10 @@ public class BasicInstanceManager
         }
     }
 
-    private void cacheIfAppropriate( Object instance, ComponentDescriptor descriptor, SessionKey sessionKey )
+    private void cacheIfAppropriate( Object instance, ComponentDescriptor descriptor, SessionKey sessionKey, boolean nativeToContainer )
         throws DuplicateComponentInstanceException
     {
-        if ( ComponentDescriptor.SESSION_SINGLETON_INSTANTIATION_STRATEGY
+        if ( !nativeToContainer || ComponentDescriptor.SESSION_SINGLETON_INSTANTIATION_STRATEGY
             .equals( descriptor.getInstantiationStrategy() ) )
         {
             ContainerSession session = ContainerSessionManager.instance().get( sessionKey, container.getContainerId() );
@@ -200,12 +202,12 @@ public class BasicInstanceManager
         }
     }
 
-    private Object resolveCached( ComponentDescriptor descriptor, SessionKey sessionKey )
+    private Object resolveCached( ComponentDescriptor descriptor, SessionKey sessionKey, boolean nativeToContainer )
         throws ContainerException
     {
         Object instance = null;
 
-        if ( ComponentDescriptor.SESSION_SINGLETON_INSTANTIATION_STRATEGY
+        if ( !nativeToContainer || ComponentDescriptor.SESSION_SINGLETON_INSTANTIATION_STRATEGY
             .equals( descriptor.getInstantiationStrategy() ) )
         {
             ContainerSession session = ContainerSessionManager.instance().get( sessionKey, container.getContainerId() );
