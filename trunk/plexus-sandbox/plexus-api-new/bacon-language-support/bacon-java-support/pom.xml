@@ -14,6 +14,10 @@
       <groupId>org.codehaus.bacon</groupId>
       <artifactId>bacon-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+    </dependency>
   </dependencies>
 
 </project>

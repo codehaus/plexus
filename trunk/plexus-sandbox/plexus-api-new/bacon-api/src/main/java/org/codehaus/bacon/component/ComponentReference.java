@@ -1,7 +1,7 @@
 package org.codehaus.bacon.component;
 
 public interface ComponentReference
-    extends CompositionSource
+    extends InjectionDescriptor
 {
     String CARDINALITY_1_1 = "1:1";
     
