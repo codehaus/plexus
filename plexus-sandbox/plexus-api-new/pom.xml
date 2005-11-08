@@ -3,6 +3,7 @@
   <groupId>org.codehaus.bacon</groupId>
   <artifactId>bacon-root</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
+  <packaging>pom</packaging>
   
   <name>BaCon Root POM</name>
 
@@ -15,6 +16,20 @@
     <module>bacon-language-support</module>
   </modules>
 
+  <distributionManagement>
+    <repository>
+      <id>commonjava-deploy</id>
+      <url>scp://maven.commonjava.org/opt/web/sites/maven.commonjava.org</url>
+    </repository>
+  </distributionManagement>
+
+  <repositories>
+    <repository>
+      <id>commonjava</id>
+      <url>http://maven.commonjava.org</url>
+    </repository>
+  </repositories>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -26,6 +41,11 @@
         <groupId>${groupId}</groupId>
         <artifactId>bacon-utils</artifactId>
         <version>${version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ognl</groupId>
+        <artifactId>ognl</artifactId>
+        <version>2.6.7</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

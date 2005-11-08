@@ -1,9 +1,9 @@
 package org.codehaus.bacon.component.basic;
 
-import org.codehaus.bacon.component.CompositionSource;
+import org.codehaus.bacon.component.InjectionDescriptor;
 
 public abstract class BasicCompositionSource
-    implements CompositionSource
+    implements InjectionDescriptor
 {
 
     private boolean required = false;
