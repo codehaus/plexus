@@ -1,0 +1,23 @@
+<project>
+  <parent>
+    <artifactId>plexus-components</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.1.4</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>plexus-jabber</artifactId>
+  <name>Plexus Jabber Client Component</name>
+  <version>1.0-alpha-3</version>
+  <dependencies>
+    <dependency>
+      <groupId>jivesoftware</groupId>
+      <artifactId>smackx</artifactId>
+      <version>2.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>jivesoftware</groupId>
+      <artifactId>smack</artifactId>
+      <version>2.0.0</version>
+    </dependency>
+  </dependencies>
+</project>
