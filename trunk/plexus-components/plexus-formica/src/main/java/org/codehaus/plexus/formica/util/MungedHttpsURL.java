@@ -116,7 +116,7 @@ public class MungedHttpsURL
         {
             if ( logger != null )
             {
-                logger.debug( "An error is occurred.", e );
+                logger.info( "An error is occurred.", e );
             }
 
             return false;
