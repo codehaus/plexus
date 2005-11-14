@@ -1,6 +1,6 @@
 #! /bin/sh
 
-PLEXUS_OPTS="-Xmx128m"
+PLEXUS_OPTS="$PLEXUS_OPTS -Xmx128m" 
 
 # OS specific support.  $var _must_ be set to either true or false.
 cygwin=false
@@ -111,7 +111,7 @@ fi
 
 MAIN_CLASS=org.codehaus.classworlds.Launcher
 
-"$JAVACMD" \
+exec "$JAVACMD" \
   $PLEXUS_OPTS \
   -classpath "${PLEXUS_HOME}"/core/boot/classworlds-*.jar \
   -Dclassworlds.conf="${PLEXUS_HOME}/conf/classworlds.conf"  \
