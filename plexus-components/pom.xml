@@ -56,7 +56,6 @@
     -->
     <module>plexus-resource</module>
     <module>plexus-security</module>
-    <module>plexus-site-renderer</module>    
     <module>plexus-summit</module>
     <module>plexus-taskqueue</module>    
     <module>plexus-velocity</module>
