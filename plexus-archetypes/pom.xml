@@ -2,10 +2,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-root</artifactId>
-    <groupId>plexus</groupId>
-    <version>1.0.1</version>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0.4</version>
   </parent>
-  <groupId>plexus</groupId>
   <artifactId>plexus-archetypes</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
   <modules>
