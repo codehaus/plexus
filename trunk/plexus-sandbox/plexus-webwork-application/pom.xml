@@ -1,12 +1,12 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>plexus</groupId>
+  <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-webwork-application</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
   <packaging>war</packaging>
   <dependencies>
     <dependency>
-      <groupId>plexus</groupId>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-xwork-integration</artifactId>
       <version>1.0-alpha-1-SNAPSHOT</version>
     </dependency>
