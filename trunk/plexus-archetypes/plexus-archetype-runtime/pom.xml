@@ -1,12 +1,11 @@
-<model>
+<project>
   <parent>
     <artifactId>plexus-archetypes</artifactId>
-    <groupId>plexus</groupId>
+    <groupId>org.codehaus.plexus</groupId>
     <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>plexus</groupId>
   <artifactId>plexus-archetype-runtime</artifactId>
   <packaging>jar</packaging>
   <version>1.0-alpha-1-SNAPSHOT</version>
-</model>
+</project>
