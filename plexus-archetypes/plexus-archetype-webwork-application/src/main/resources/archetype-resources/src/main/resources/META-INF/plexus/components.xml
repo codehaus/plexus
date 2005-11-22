@@ -1,0 +1,25 @@
+<component-set>
+  <components>
+    <!--
+     | Actions
+     |-->
+    <component>
+      <role>com.opensymphony.xwork.Action</role>
+      <role-hint>${package}.DefaultHelloWorld</role-hint>
+      <implementation>${package}.DefaultHelloWorld</implementation>
+      <requirements>
+        <requirement>
+          <role>${package}.Person</role>
+        </requirement>
+      </requirements>
+    </component>
+
+    <!--
+    | Services
+    -->
+    <component>
+      <role>${package}.Person</role>
+      <implementation>${package}.Person</implementation>
+    </component>
+  </components>
+</component-set>
