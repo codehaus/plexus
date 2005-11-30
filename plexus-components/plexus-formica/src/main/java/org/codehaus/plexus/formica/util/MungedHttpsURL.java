@@ -252,7 +252,7 @@ public class MungedHttpsURL
     {
         String t = scrapeHost( url );
 
-        if ( t == null || ( t.indexOf( ":" ) < 0 && t.indexOf( "@" ) < 0 ) )
+        if ( t == null || t.indexOf( "@" ) < 0 || ( t.indexOf( ":" ) < 0 && t.indexOf( "@" ) < 0 ) )
         {
             return null;
         }
@@ -267,7 +267,7 @@ public class MungedHttpsURL
     {
         String t = scrapeHost( url );
 
-        if ( t == null || ( t.indexOf( ":" ) < 0 && t.indexOf( "@" ) < 0 ) )
+        if ( t == null || t.indexOf( "@" ) < 0 || ( t.indexOf( ":" ) < 0 && t.indexOf( "@" ) < 0 ) )
         {
             return null;
         }
