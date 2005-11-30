@@ -95,6 +95,16 @@ public class MungedHttpsURLTest
         assertEquals( null, mungedHttpsURL.getPassword() );
 
         mungedHttpsURL.getURL();
+
+        mungedHttpsURL = new MungedHttpsURL( "http://host:1234" );
+
+        assertEquals( "http://host:1234", mungedHttpsURL.getUrlString() );
+
+        assertEquals( null, mungedHttpsURL.getUsername() );
+
+        assertEquals( null, mungedHttpsURL.getPassword() );
+
+        mungedHttpsURL.getURL();
     }
 
     public void testHttpURLPath()
@@ -103,6 +113,16 @@ public class MungedHttpsURLTest
         MungedHttpsURL mungedHttpsURL = new MungedHttpsURL( "http://host/path" );
 
         assertEquals( "http://host/path", mungedHttpsURL.getUrlString() );
+
+        assertEquals( null, mungedHttpsURL.getUsername() );
+
+        assertEquals( null, mungedHttpsURL.getPassword() );
+
+        mungedHttpsURL.getURL();
+
+        mungedHttpsURL = new MungedHttpsURL( "http://host:1234/path" );
+
+        assertEquals( "http://host:1234/path", mungedHttpsURL.getUrlString() );
 
         assertEquals( null, mungedHttpsURL.getUsername() );
 
@@ -123,6 +143,16 @@ public class MungedHttpsURLTest
         assertEquals( "password", mungedHttpsURL.getPassword() );
 
         mungedHttpsURL.getURL();
+
+        mungedHttpsURL = new MungedHttpsURL( "http://user:password@host:1234" );
+
+        assertEquals( "http://host:1234", mungedHttpsURL.getUrlString() );
+
+        assertEquals( "user", mungedHttpsURL.getUsername() );
+
+        assertEquals( "password", mungedHttpsURL.getPassword() );
+
+        mungedHttpsURL.getURL();
     }
 
     public void testHttpURLAuthenticationPath()
@@ -131,6 +161,16 @@ public class MungedHttpsURLTest
         MungedHttpsURL mungedHttpsURL = new MungedHttpsURL( "http://user:password@host/path" );
 
         assertEquals( "http://host/path", mungedHttpsURL.getUrlString() );
+
+        assertEquals( "user", mungedHttpsURL.getUsername() );
+
+        assertEquals( "password", mungedHttpsURL.getPassword() );
+
+        mungedHttpsURL.getURL();
+
+        mungedHttpsURL = new MungedHttpsURL( "http://user:password@host:1234/path" );
+
+        assertEquals( "http://host:1234/path", mungedHttpsURL.getUrlString() );
 
         assertEquals( "user", mungedHttpsURL.getUsername() );
 
