@@ -1,0 +1,54 @@
+Groovy compiler support for maven
+
+ This is a maven 2 extension that add groovy support to <<<maven-compiler-plugin>>>.
+
+* Installation
+
+ I don't know enough maven for now, and the only way i found to activate this extension is to add a depency
+ by hand in <<<$M2_REPO/org/apache/maven/plugins/maven-compiler-plugin/2.0/maven-compiler-plugin-2.0.pom>>>.
+ 
++---
+<dependency>
+  <groupId>org.codehaus.plexus</groupId>
+  <artifactId>plexus-compiler-groovyc</artifactId>
+  <version>1.5.1</version>
+  <scope>runtime</scope>
+</dependency>
++---
+
+ Do it only after the installation of the extension.
+ 
+* Usage
+
+ Add this to your groovy project's <<<pom.xml>>>
+ 
++---
+<build>
+	<plugins>
+	...
+		<plugin>
+		    <artifactId>maven-compiler-plugin</artifactId>
+		    <configuration>
+		        <compilerId>groovyc</compilerId>
+		    </configuration>
+		    <dependencies>
+		        <dependency>
+		            <groupId>org.codehaus.plexus</groupId>
+		            <artifactId>plexus-compiler-groovyc</artifactId>
+		            <version>1.5.1</version>
+		        </dependency>
+		    </dependencies>
+		    <extensions>true</extensions>
+		</plugin>
+	</plugins>
+</build>
++---
+
+ Your groovy files should now be correctly compiled during build cycles.
+ 
+* Notes
+
+ If you want to compile your .groovy separatly from the normal build cycle, you should look at the
+ <<<maven-groovyc-plugin>>> which provide a <<<groovyc:compile>>> goal. It is available on
+ the same repo.
+ 
