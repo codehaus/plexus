@@ -199,11 +199,15 @@ public class Log4JLoggerManager
                 }
                 catch ( ClassNotFoundException ex )
                 {
-                    throw new IllegalArgumentException( "Could not find the appender class: " + appender.getType(), ex );
+                    IllegalArgumentException e = new IllegalArgumentException( "Could not find the appender class: " + appender.getType() );
+                    e.initCause( ex );
+                    throw e;
                 }
                 catch ( LinkageError ex )
                 {
-                    throw new IllegalArgumentException( "Could load the appender class: " + appender.getType(), ex );
+                    IllegalArgumentException e = new IllegalArgumentException( "Could load the appender class: " + appender.getType(), ex );
+                    e.initCause( ex );
+                    throw e;
                 }
 
                 String base = "log4j.appender." + id;
