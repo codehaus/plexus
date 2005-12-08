@@ -18,7 +18,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-runtime-builder</artifactId>
-      <version>1.0-alpha-8-SNAPSHOT</version>
+      <version>1.0-alpha-8</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
