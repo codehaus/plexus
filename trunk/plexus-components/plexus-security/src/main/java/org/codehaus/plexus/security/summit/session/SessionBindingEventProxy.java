@@ -63,12 +63,12 @@ import javax.servlet.http.HttpSessionBindingListener;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
-public class SessionBindingEventProxy 
+public class SessionBindingEventProxy
     implements HttpSessionBindingListener, java.io.Serializable
 {
     private SessionBindingListener listener = null;
 
-    public SessionBindingEventProxy(SessionBindingListener listener)
+    public SessionBindingEventProxy( SessionBindingListener listener )
     {
         this.listener = listener;
     }
@@ -78,13 +78,13 @@ public class SessionBindingEventProxy
         return listener;
     }
 
-    public void valueBound(HttpSessionBindingEvent event)
+    public void valueBound( HttpSessionBindingEvent event )
     {
-        listener.valueBound(new DefaultSessionBindingEvent(event));
+        listener.valueBound( new DefaultSessionBindingEvent( event ) );
     }
 
-    public void valueUnbound(HttpSessionBindingEvent event)
+    public void valueUnbound( HttpSessionBindingEvent event )
     {
-        listener.valueUnbound(new DefaultSessionBindingEvent(event));
+        listener.valueUnbound( new DefaultSessionBindingEvent( event ) );
     }
 }

@@ -17,8 +17,6 @@ public class AllAccessResourceController implements ResourceController
     /** 
      * A pseudo implementation that returns true for every instance, granting
      * <code>Entity</code>s all access.
-     * 
-     * @see org.apache.fulcrum.jasf.ResourceAccessController#isAuthorized(Object, Object)
      */
     public boolean isAuthorized( Object entity, Object resource )
     {
