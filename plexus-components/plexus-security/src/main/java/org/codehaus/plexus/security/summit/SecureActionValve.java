@@ -21,19 +21,21 @@ public class SecureActionValve
     extends AbstractValve
 {
     private String notAuthorizedPage = "NotAuthroized.vm";
+
     private ResourceController controller;
+
     private ActionManager actionManager;
-    
+
     public void invoke( RunData data )
         throws IOException, ValveInvocationException
     {
         SecureRunData sdata = (SecureRunData) data;
         String actionId = data.getParameters().getString( "action", "" ).trim();
-    
-        if ( !actionId.equals("") )
+
+        if ( !actionId.equals( "" ) )
         {
-            Action action = null;
-    
+            Action action;
+
             try
             {
                 action = actionManager.lookup( actionId );
@@ -43,15 +45,15 @@ public class SecureActionValve
                 getLogger().error( "Cannot find action with the id of " + actionId, e );
                 return;
             }
-    
-            if (controller.isAuthorized(sdata.getUser(), actionId))
+
+            if ( controller.isAuthorized( sdata.getUser(), actionId ) )
             {
                 try
                 {
-                    Map m = createContext(data);
-        
+                    Map m = createContext( data );
+
                     m.put( "data", data );
-        
+
                     action.execute( m );
                 }
                 catch ( Exception e )
@@ -61,16 +63,12 @@ public class SecureActionValve
             }
             else
             {
-                data.setTarget(notAuthorizedPage);
+                data.setTarget( notAuthorizedPage );
             }
-            
+
         }
     }
 
-    /**
-     * @param data
-     * @return
-     */
     protected Map createContext( RunData data )
     {
         // The parameter map in the request consists of an array of values for

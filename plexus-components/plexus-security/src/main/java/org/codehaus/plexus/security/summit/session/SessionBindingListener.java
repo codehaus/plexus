@@ -69,7 +69,7 @@ public interface SessionBindingListener
      *
      * @param event A SessionBindingEvent object.
      */
-    void valueBound(SessionBindingEvent event);
+    void valueBound( SessionBindingEvent event );
 
     /**
      * Notifies the object that it is being unbound from a session and
@@ -77,5 +77,5 @@ public interface SessionBindingListener
      *
      * @param event A SessionBindingEvent object.
      */
-    void valueUnbound(SessionBindingEvent event);
+    void valueUnbound( SessionBindingEvent event );
 }

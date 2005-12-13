@@ -57,20 +57,19 @@ package org.codehaus.plexus.security.summit.session;
 import javax.servlet.http.HttpSessionBindingEvent;
 
 /**
- * Default implementation of the
- * {@link org.apache.fulcrum.security.session.SessionBindingEvent} interface.
- *
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
-public class DefaultSessionBindingEvent implements SessionBindingEvent
+public class DefaultSessionBindingEvent
+    implements SessionBindingEvent
 {
     private Session session;
+
     private String name;
 
-    public DefaultSessionBindingEvent(HttpSessionBindingEvent event)
+    public DefaultSessionBindingEvent( HttpSessionBindingEvent event )
     {
-        session = new DefaultSession(event.getSession());
+        session = new DefaultSession( event.getSession() );
         name = event.getName();
     }
 

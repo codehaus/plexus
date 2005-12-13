@@ -63,11 +63,12 @@ import javax.servlet.http.HttpSession;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
-public class DefaultSession implements Session
+public class DefaultSession
+    implements Session
 {
     private HttpSession session;
 
-    public DefaultSession(HttpSession session)
+    public DefaultSession( HttpSession session )
     {
         this.session = session;
     }
