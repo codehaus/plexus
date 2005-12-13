@@ -1,15 +1,13 @@
 package org.codehaus.plexus.security.summit;
 
+import org.codehaus.plexus.action.AbstractAction;
+
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
-import org.codehaus.plexus.action.AbstractAction;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>

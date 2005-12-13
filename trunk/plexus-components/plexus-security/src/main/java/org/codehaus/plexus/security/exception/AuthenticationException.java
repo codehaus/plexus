@@ -2,37 +2,38 @@ package org.codehaus.plexus.security.exception;
 
 /**
  * EntityAuthenticationException.java
- * 
+ *
  * @author Dan Diephouse
- * @since Nov 24, 2002 
+ * @since Nov 24, 2002
  */
-public class AuthenticationException extends Exception
+public class AuthenticationException
+    extends Exception
 {
     /**
      * Constructor EntityAuthenticationException.
      */
     public AuthenticationException()
     {
-        super();
-    }
-    
-    /**
-     * Constructor EntityAuthenticationException.
-     * @param string
-     */
-    public AuthenticationException(String message)
-    {
-        super(message);
     }
 
     /**
      * Constructor EntityAuthenticationException.
-     * @param string
+     *
+     * @param message
      */
-    public AuthenticationException(String message, Exception e)
+    public AuthenticationException( String message )
     {
-        super(message, e);
+        super( message );
     }
 
-
+    /**
+     * Constructor EntityAuthenticationException.
+     *
+     * @param message
+     * @param cause
+     */
+    public AuthenticationException( String message, Exception cause )
+    {
+        super( message, cause );
+    }
 }

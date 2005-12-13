@@ -2,11 +2,11 @@ package org.codehaus.plexus.security.exception;
 
 /**
  * Exception thrown when the Entity specified does not exist.
- * 
+ *
  * @author Dan Diephouse
- * @since Nov 23, 2002 
+ * @since Nov 23, 2002
  */
-public class UnknownEntityException extends Exception
+public class UnknownEntityException
+    extends Exception
 {
-
 }
