@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright 2005 The Apache Software Foundation.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE workflow PUBLIC
+    "-//OpenSymphony Group//DTD OSWorkflow 2.7//EN"
+    "http://www.opensymphony.com/osworkflow/workflow_2_7.dtd">
+
+<workflow>
+  <registers>
+    <register type="class" variable-name="log">
+      <arg name="class.name">com.opensymphony.workflow.util.LogRegister</arg>
+      <arg name="addInstanceId">true</arg>
+    </register>
+  </registers>
+  <initial-actions>
+    <action id="1" name="Start Workflow">
+      <results>
+        <unconditional-result old-status="Finished" status="Created" step="1"/>
+      </results>
+    </action>
+  </initial-actions>
+  <steps>
+    <step id="1" name="Wait For Signal">
+      <actions>
+        <action id="1" name="Start">
+          <pre-functions>
+            <function type="beanshell">
+              <arg name="script">
+                propertySet.setObject( "number-of-objects", transientVars.get( "number-of-objects" ) );
+              </arg>
+            </function>
+          </pre-functions>
+          <results>
+            <unconditional-result old-status="Created" status="Queued" step="2"/>
+          </results>
+        </action>
+      </actions>
+    </step>
+    <step id="2" name="Create Objects">
+      <actions>
+        <action id="2" name="Create Objects" auto="true">
+          <pre-functions>
+            <function type="class">
+              <arg name="class.name">org.codehaus.plexus.osworkflow.PlexusActionFunctionProvider</arg>
+              <arg name="action.name">create-objects</arg>
+            </function>
+          </pre-functions>
+          <results>
+            <unconditional-result old-status="Queued" status="Storing" step="3"/>
+          </results>
+          <post-functions>
+            <function type="beanshell">
+              <arg name="script">Thread.sleep( 1000 );</arg>
+            </function>
+          </post-functions>
+        </action>
+      </actions>
+    </step>
+    <step id="3" name="Storing objects">
+      <actions>
+        <action id="3" name="Store Object" auto="true">
+          <pre-functions>
+            <function type="beanshell">
+              <arg name="script">propertySet.setObject( "test-object", propertySet.getObject( "test-objects" ).remove( 0 ) )</arg>
+            </function>
+            <function type="class">
+              <arg name="class.name">org.codehaus.plexus.osworkflow.PlexusActionFunctionProvider</arg>
+              <arg name="action.name">store-object</arg>
+            </function>
+          </pre-functions>
+          <results>
+            <!-- If there are more objects left in the objects list, store them -->
+            <result old-status="Storing" status="Storing" step="3">
+              <conditions>
+                <condition type="beanshell">
+                  <arg name="script">
+                    return propertySet.getObject( "test-objects" ).size() > 0;
+                  </arg>
+                </condition>
+              </conditions>
+            </result>
+            <unconditional-result old-status="Storing" status="Finished" step="4"/>
+          </results>
+          <post-functions>
+            <function type="beanshell">
+              <arg name="script">
+                System.out.println( "Transient vars:" );
+                System.out.println( transientVars );
+                System.out.println( "Property set" );
+                System.out.println( propertySet );
+              </arg>
+            </function>
+          </post-functions>
+        </action>
+      </actions>
+    </step>
+    <step id="4" name="Finished"/>
+  </steps>
+</workflow>
