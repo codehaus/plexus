@@ -29,6 +29,12 @@ PLEXUS_HOME=`cd "$PRGDIR/.." ; pwd`
 PLEXUS_CONF=`cd "$PLEXUS_HOME/conf" ; pwd`
 unset THIS_PROG
 
+if [ -z "$JAVA_HOME" ] ; then
+  if [ -e /etc/gentoo-release ] ; then
+    JAVA_HOME=`java-config --jre-home`
+  fi
+fi
+
 
 # Checking for JAVA_HOME is required on *nix due
 # to some distributions stupidly including kaffe in /usr/bin
