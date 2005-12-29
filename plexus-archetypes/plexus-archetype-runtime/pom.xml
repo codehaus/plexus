@@ -8,4 +8,5 @@
   <artifactId>plexus-archetype-runtime</artifactId>
   <packaging>jar</packaging>
   <version>1.0-alpha-1-SNAPSHOT</version>
+  <name>Plexus Archetype Runtime</name>
 </project>

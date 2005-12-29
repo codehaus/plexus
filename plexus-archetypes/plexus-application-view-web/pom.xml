@@ -7,4 +7,5 @@
   </parent>
   <artifactId>plexus-application-view-web</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
+  <name>Plexus Archetype View Web</name>
 </project>

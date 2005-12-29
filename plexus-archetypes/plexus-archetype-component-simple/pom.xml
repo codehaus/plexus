@@ -7,4 +7,5 @@
   </parent>
   <artifactId>plexus-archetype-component-simple</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
+  <name>Plexus Archetype Component Simple</name>
 </project>
