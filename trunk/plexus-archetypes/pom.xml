@@ -8,6 +8,7 @@
   <packaging>pom</packaging>
   <artifactId>plexus-archetypes</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
+  <name>Plexus Archetype</name>
   <modules>
     <module>plexus-application-view-web</module>
     <module>plexus-archetype-application</module>
