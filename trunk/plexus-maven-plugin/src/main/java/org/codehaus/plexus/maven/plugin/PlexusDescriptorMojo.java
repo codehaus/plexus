@@ -21,14 +21,15 @@ package org.codehaus.plexus.maven.plugin;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import java.io.File;
-import java.util.List;
-import java.util.Iterator;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-
 import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
+import org.codehaus.plexus.cdc.ComponentDescriptorCreatorException;
+
+import java.io.File;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @goal descriptor
@@ -55,7 +56,6 @@ public class PlexusDescriptorMojo
 
     /**
      * @parameter expression="${project.build.outputDirectory}"
-     *
      * @required
      */
     private File output;
@@ -66,14 +66,21 @@ public class PlexusDescriptorMojo
 
     /**
      * @parameter expression="${component.org.codehaus.plexus.cdc.ComponentDescriptorCreator}"
-     *
      * @required
      */
     private ComponentDescriptorCreator cdc;
 
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
     public void execute()
         throws MojoExecutionException
     {
+        // ----------------------------------------------------------------------
+        // Create the component set descriptor from the source files
+        // ----------------------------------------------------------------------
+
         File[] sources = new File[ sourceDirectories.size() ];
 
         Iterator it = sourceDirectories.iterator();
@@ -89,7 +96,7 @@ public class PlexusDescriptorMojo
         {
             cdc.processSources( sources, outputDirectory );
         }
-        catch ( Exception e )
+        catch ( ComponentDescriptorCreatorException e )
         {
             throw new MojoExecutionException( "Error while executing component descritor creator.", e );
         }
