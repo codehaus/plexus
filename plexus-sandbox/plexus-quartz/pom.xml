@@ -19,10 +19,5 @@
       <artifactId>commons-logging</artifactId>
       <version>1.0.2</version>
     </dependency>
-    <dependency>
-      <groupId>avalon</groupId>
-      <artifactId>avalon-framework</artifactId>
-      <version>4.1.4</version>
-    </dependency>
   </dependencies>
 </project>
