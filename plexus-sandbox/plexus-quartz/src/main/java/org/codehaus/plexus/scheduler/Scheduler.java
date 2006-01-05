@@ -16,4 +16,10 @@ public interface Scheduler
     void addGlobalJobListener( JobListener listener );
 
     void addGlobalTriggerListener( TriggerListener listener );  
+
+    void unscheduleJob( String jobName, String groupName )
+        throws SchedulerException;
+
+    boolean interruptSchedule( String jobName, String groupName )
+        throws SchedulerException;
 }

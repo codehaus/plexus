@@ -7,10 +7,6 @@ import org.quartz.SimpleTrigger;
 import org.quartz.TriggerListener;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobListener;
-
-import java.io.File;
-import java.util.Date;
 
 public class SchedulerTest
     extends PlexusTestCase

@@ -2,12 +2,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-components</artifactId>
-    <groupId>plexus</groupId>
-    <version>1.0</version>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.1.4</version>
   </parent>
-  <groupId>plexus</groupId>
   <artifactId>plexus-quartz</artifactId>
-  <version>1.0-alpha-1</version>
+  <version>1.0-alpha-2-SNAPSHOT</version>
   <name>Plexus Quartz Component</name>
   <dependencies>
     <dependency>
@@ -19,6 +18,11 @@
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>avalon</groupId>
+      <artifactId>avalon-framework</artifactId>
+      <version>4.1.4</version>
     </dependency>
   </dependencies>
 </project>
