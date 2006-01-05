@@ -77,6 +77,11 @@ public abstract class AbstractJob
     public abstract void execute(JobExecutionContext context)
         throws JobExecutionException;
 
+    public boolean isInterrupted()
+    {
+        return interrupted;
+    }
+
     public void interrupt()
         throws UnableToInterruptJobException
     {
