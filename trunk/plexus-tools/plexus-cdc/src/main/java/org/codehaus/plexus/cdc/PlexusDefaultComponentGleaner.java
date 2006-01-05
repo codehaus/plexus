@@ -184,7 +184,7 @@ public class PlexusDefaultComponentGleaner
 
         XmlPlexusConfiguration configuration = new XmlPlexusConfiguration( "configuration" );
 
-        findConfiguration( classCache, configuration, javaClass );
+        findConfiguration( configuration, javaClass );
 
         componentDescriptor.setConfiguration( configuration );
 
@@ -352,13 +352,10 @@ public class PlexusDefaultComponentGleaner
 
                 JavaClass roleClass = classCache.getClassByName( role );
 
-                if ( !StringUtils.isEmpty( roleClass.getPackage() ) )
+                if ( role.indexOf( '.' ) == -1 &&
+                     StringUtils.isEmpty( roleClass.getPackage() ) )
                 {
-                    role = roleClass.getFullyQualifiedName();
-                }
-                else
-                {
-                    role = javaClass.getPackage() + roleClass.getName();
+                    role = javaClass.getPackage() + "." + roleClass.getName();
                 }
 
                 cr.setRole( role );
@@ -374,8 +371,7 @@ public class PlexusDefaultComponentGleaner
         }
     }
 
-    private void findConfiguration( JavaClassCache classCache,
-                                    XmlPlexusConfiguration configuration,
+    private void findConfiguration( XmlPlexusConfiguration configuration,
                                     JavaClass javaClass )
         throws ComponentDescriptorCreatorException
     {
@@ -387,7 +383,7 @@ public class PlexusDefaultComponentGleaner
 
         if ( javaClass.getSuperJavaClass() != null )
         {
-            findConfiguration( classCache, configuration, javaClass.getSuperJavaClass() );
+            findConfiguration( configuration, javaClass.getSuperJavaClass() );
         }
 
         // ----------------------------------------------------------------------
