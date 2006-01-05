@@ -102,6 +102,10 @@ public class DefaultJobListener
         }
     }
 
+    public void jobExecutionVetoed( JobExecutionContext jobExecutionContext )
+    {
+    }
+
     /**
      * <p>
      *

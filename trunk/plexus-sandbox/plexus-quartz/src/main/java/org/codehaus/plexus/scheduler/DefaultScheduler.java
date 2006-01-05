@@ -28,7 +28,26 @@ public class DefaultScheduler
     public void scheduleJob( JobDetail jobDetail, Trigger trigger )
         throws SchedulerException
     {
-        scheduler.scheduleJob( jobDetail, trigger );
+        if ( jobExists( jobDetail.getName(), jobDetail.getGroup() ) )
+        {
+            getLogger().warn( "Will not schedule this job as a job {" + jobDetail.getName() + ":" +
+                jobDetail.getGroup() + "} already exists." );
+
+            return;
+        }
+
+        try
+        {
+            scheduler.scheduleJob( jobDetail, trigger );
+        }
+        catch ( SchedulerException e )
+        {
+            throw new SchedulerException( "Error scheduling job.", e );
+        }
+        catch ( Exception e )
+        {
+            throw new SchedulerException( "Error scheduling job (Verify your cron expression).", e );
+        }
     }
 
     public void addGlobalJobListener( JobListener listener )
@@ -74,4 +93,61 @@ public class DefaultScheduler
     {
         scheduler.shutdown();
     }
+
+    public void unscheduleJob( String jobName, String groupName )
+        throws SchedulerException
+    {
+        try
+        {
+            if ( jobExists( jobName, groupName ) )
+            {
+                scheduler.deleteJob( jobName, groupName );
+            }
+        }
+        catch ( SchedulerException e )
+        {
+            throw new SchedulerException( "Error unscheduling job.", e );
+        }
+    }
+
+    public boolean interruptSchedule( String jobName, String groupName )
+        throws SchedulerException
+    {
+        try
+        {
+            return scheduler.interrupt( jobName, groupName );
+        }
+        catch ( Exception e )
+        {
+            throw new SchedulerException( "Can't interrup job \"" + jobName + "\".", e );
+        }
+    }
+
+    private boolean jobExists( String jobName, String jobGroup )
+        throws SchedulerException
+    {
+        String[] jobNames;
+
+        try
+        {
+            jobNames = scheduler.getJobNames( jobGroup );
+        }
+        catch ( SchedulerException e )
+        {
+            throw new SchedulerException( "Error getting job.", e );
+        }
+
+        for ( int i = 0; i < jobNames.length; i++ )
+        {
+            String name = jobNames[i];
+
+            if ( jobName.equals( name ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
