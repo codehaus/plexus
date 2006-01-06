@@ -1,14 +1,13 @@
 <project>
   <parent>
-    <artifactId>plexus-components</artifactId>
+    <artifactId>plexus-security</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.1.4</version>
+    <version>1.0-alpha-3-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>plexus-security</artifactId>
-  <name>Plexus Security Framework</name>
+  <artifactId>plexus-security-api</artifactId>
+  <name>Plexus Security Framework API</name>
   <version>1.0-alpha-3-SNAPSHOT</version>
-  <packaging>pom</packaging>
   <description></description>
   <developers>
     <developer>
@@ -24,8 +23,4 @@
       <organization>Codehaus</organization>
     </developer>
   </developers>
-  <modules>
-    <module>plexus-security-api</module>
-    <module>plexus-security-summit</module>
-  </modules>
 </project>
