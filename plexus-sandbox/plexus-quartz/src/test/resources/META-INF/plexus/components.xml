@@ -28,5 +28,9 @@
         </properties>
       </configuration>
     </component>
+    <component>
+      <role>org.codehaus.plexus.scheduler.CronExpressionValidator</role>
+      <implementation>org.codehaus.plexus.scheduler.CronExpressionValidator</implementation>
+    </component>
   </components>
 </component-set>
