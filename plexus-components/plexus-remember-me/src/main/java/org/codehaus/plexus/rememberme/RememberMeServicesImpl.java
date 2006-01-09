@@ -284,7 +284,7 @@ public abstract class RememberMeServicesImpl
         }
         if ( StringUtils.isEmpty( password ) )
         {
-            throw new IllegalArgumentException( "password can't be null or empty." );
+            password = "unknown";
         }
 
         long expiryTime = System.currentTimeMillis() + ( tokenValiditySeconds * 1000 );
