@@ -52,7 +52,7 @@ public abstract class OSUserAuthenticator
             }
             else
             {
-                throw new AuthenticationException( "Invalid password." );
+                throw new AuthenticationException( "Invalid login/password." );
             }
         }
         catch ( Exception e )
