@@ -2,6 +2,8 @@ package org.codehaus.plexus.security.osuser;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.Authenticator;
+import org.codehaus.plexus.security.DefaultUser;
+import org.codehaus.plexus.security.User;
 import org.codehaus.plexus.security.exception.AuthenticationException;
 import org.codehaus.plexus.security.exception.UnauthorizedException;
 import org.codehaus.plexus.security.exception.UnknownEntityException;
@@ -22,7 +24,7 @@ public abstract class OSUserAuthenticator
 {
     private UserManager userManager;
 
-    public Object authenticate( Map tokens )
+    public User authenticate( Map tokens )
         throws UnknownEntityException, AuthenticationException, UnauthorizedException
     {
         String username = (String) tokens.get( "username" );
@@ -35,7 +37,7 @@ public abstract class OSUserAuthenticator
         {
             if ( userManager.getAuthenticator().login( username, password, request ) )
             {
-                return userManager.getUser( username );
+                return getUser( userManager.getUser( username ) );
             }
             else
             {
@@ -48,11 +50,11 @@ public abstract class OSUserAuthenticator
         }
     }
 
-    public Object getAnonymousEntity()
+    public User getAnonymousEntity()
     {
         try
         {
-            return userManager.getUser( getAnonymousUsername() );
+            return getUser( userManager.getUser( getAnonymousUsername() ) );
         }
         catch ( EntityNotFoundException e )
         {
@@ -63,6 +65,18 @@ public abstract class OSUserAuthenticator
     public String getAnonymousUsername()
     {
         return "guest";
+    }
+
+    public User getUser( com.opensymphony.user.User osuser )
+    {
+        DefaultUser user = new DefaultUser();
+        user.setUsername( osuser.getName() );
+        user.setDetails( osuser );
+        user.setEnabled( true );
+        user.setAccountNonExpired( true );
+        user.setAccountNonLocked( true );
+        user.setPasswordNonExpired( true );
+        return user;
     }
 
     protected UserManager getUserManager()

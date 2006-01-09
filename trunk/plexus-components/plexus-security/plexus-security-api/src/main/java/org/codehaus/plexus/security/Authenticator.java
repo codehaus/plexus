@@ -23,7 +23,7 @@ public interface Authenticator
      *
      * @return Entity
      */
-    Object authenticate( Map tokens )
+    User authenticate( Map tokens )
         throws UnknownEntityException, AuthenticationException, UnauthorizedException;
 
     /**
@@ -32,5 +32,5 @@ public interface Authenticator
      *
      * @return Entity
      */
-    Object getAnonymousEntity();
+    User getAnonymousEntity();
 }
