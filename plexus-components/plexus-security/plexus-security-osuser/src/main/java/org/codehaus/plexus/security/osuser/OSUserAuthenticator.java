@@ -35,7 +35,18 @@ public abstract class OSUserAuthenticator
 
         try
         {
-            if ( userManager.getAuthenticator().login( username, password, request ) )
+            boolean authenticated;
+
+            if ( request == null )
+            {
+                authenticated = userManager.getAuthenticator().login( username, password );
+            }
+            else
+            {
+                authenticated = userManager.getAuthenticator().login( username, password, request );
+            }
+
+            if ( authenticated )
             {
                 return getUser( userManager.getUser( username ) );
             }
