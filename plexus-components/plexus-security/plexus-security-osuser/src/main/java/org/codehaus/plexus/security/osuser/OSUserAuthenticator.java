@@ -1,7 +1,9 @@
 package org.codehaus.plexus.security.osuser;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.security.Authentication;
 import org.codehaus.plexus.security.Authenticator;
+import org.codehaus.plexus.security.DefaultAuthentication;
 import org.codehaus.plexus.security.DefaultUser;
 import org.codehaus.plexus.security.User;
 import org.codehaus.plexus.security.exception.AuthenticationException;
@@ -24,7 +26,7 @@ public abstract class OSUserAuthenticator
 {
     private UserManager userManager;
 
-    public User authenticate( Map tokens )
+    public Authentication authenticate( Map tokens )
         throws UnknownEntityException, AuthenticationException, UnauthorizedException
     {
         String username = (String) tokens.get( "username" );
@@ -48,7 +50,13 @@ public abstract class OSUserAuthenticator
 
             if ( authenticated )
             {
-                return getUser( userManager.getUser( username ) );
+                Authentication auth = new DefaultAuthentication();
+
+                auth .setAuthenticated( true );
+
+                auth.setUser( getUser( userManager.getUser( username ) ) );
+
+                return auth;
             }
             else
             {
@@ -61,11 +69,17 @@ public abstract class OSUserAuthenticator
         }
     }
 
-    public User getAnonymousEntity()
+    public Authentication getAnonymousEntity()
     {
         try
         {
-            return getUser( userManager.getUser( getAnonymousUsername() ) );
+            Authentication auth = new DefaultAuthentication();
+
+            auth .setAuthenticated( false );
+
+            auth.setUser( getUser( userManager.getUser( getAnonymousUsername() ) ) );
+
+            return auth;
         }
         catch ( EntityNotFoundException e )
         {
