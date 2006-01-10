@@ -19,6 +19,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.Authentication;
+import org.codehaus.plexus.security.DefaultAuthentication;
 import org.codehaus.plexus.security.User;
 import org.codehaus.plexus.util.Base64;
 import org.codehaus.plexus.util.StringUtils;
@@ -226,7 +227,10 @@ public abstract class AbstractRememberMeServices
                             getLogger().debug( "Remember-me cookie accepted" );
                         }
 
-                        return new RememberMeAuthentication( user, true );
+                        Authentication auth = new DefaultAuthentication();
+                        auth.setAuthenticated( true );
+                        auth.setUser( user );
+                        return auth;
                     }
                     else
                     {
