@@ -87,7 +87,7 @@ public class OSUserAuthenticator
         {
             Authentication auth = new DefaultAuthentication();
 
-            auth .setAuthenticated( false );
+            auth.setAuthenticated( false );
 
             auth.setUser( getUser( userManager.getUser( getAnonymousUsername() ) ) );
 
