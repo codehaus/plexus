@@ -108,6 +108,8 @@ public class OSUserAuthenticator
     {
         DefaultUser user = new DefaultUser();
         user.setUsername( osuser.getName() );
+        user.setFullName( osuser.getFullName() );
+        user.setEmail( osuser.getEmail() );
         user.setDetails( osuser );
         user.setEnabled( true );
         user.setAccountNonExpired( true );
