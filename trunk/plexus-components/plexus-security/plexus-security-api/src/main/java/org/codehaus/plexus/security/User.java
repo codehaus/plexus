@@ -10,6 +10,10 @@ public interface User
 
     String getPassword();
 
+    String getFullName();
+
+    String getEmail();
+
     boolean isEnabled();
 
     boolean isAccountNonExpired();
