@@ -84,7 +84,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * From acegisecurity with modifications
  */
-public abstract class RememberMeServicesImpl
+public abstract class AbstractRememberMeServices
     extends AbstractLogEnabled
     implements RememberMeServices
 {
