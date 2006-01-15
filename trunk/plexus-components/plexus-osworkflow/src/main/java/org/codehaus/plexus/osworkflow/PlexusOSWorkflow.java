@@ -1,7 +1,5 @@
 package org.codehaus.plexus.osworkflow;
 
-import java.util.Map;
-
 /*
  * Copyright 2005 The Apache Software Foundation.
  *
@@ -19,6 +17,12 @@ import java.util.Map;
  *
  */
 
+import com.opensymphony.module.propertyset.PropertySet;
+import com.opensymphony.workflow.WorkflowException;
+
+import java.util.Map;
+import java.util.List;
+
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -27,12 +31,18 @@ public interface PlexusOSWorkflow
 {
     String ROLE = PlexusOSWorkflow.class.getName();
 
-    long startWorkflow( String workflowName, String workflowInstanceName, String username, Map context )
-        throws PlexusOSWorkflowException;
+    long startWorkflow( String workflowName, String username, Map context )
+        throws WorkflowException;
+
+    PropertySet getContext( long workflowId )
+        throws WorkflowException;
 
     boolean isWorkflowDone( long workflowId )
-        throws PlexusOSWorkflowException;
+        throws WorkflowException;
 
     void doAction( long workflowId, int actionId, Map actionContext )
-        throws PlexusOSWorkflowException;
+        throws WorkflowException;
+
+    List getCurrentSteps( long workflowId )
+        throws WorkflowException;
 }

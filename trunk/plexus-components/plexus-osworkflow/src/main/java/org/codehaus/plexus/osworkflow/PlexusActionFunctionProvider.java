@@ -85,7 +85,9 @@ public class PlexusActionFunctionProvider
                 context = new PropertySetMap( ps );
             }
 
-            action.execute( context );
+            ActionMap actionMap = new ActionMap( context, transientVars );
+
+            action.execute( actionMap );
         }
         catch ( Exception e )
         {
