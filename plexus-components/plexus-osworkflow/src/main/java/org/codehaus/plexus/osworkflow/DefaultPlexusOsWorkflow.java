@@ -18,25 +18,27 @@ package org.codehaus.plexus.osworkflow;
  */
 
 import com.opensymphony.workflow.FactoryException;
+import com.opensymphony.workflow.StoreException;
 import com.opensymphony.workflow.Workflow;
 import com.opensymphony.workflow.WorkflowException;
-import com.opensymphony.workflow.StoreException;
-import com.opensymphony.workflow.InvalidInputException;
 import com.opensymphony.workflow.basic.BasicWorkflow;
 import com.opensymphony.workflow.config.Configuration;
 import com.opensymphony.workflow.config.DefaultConfiguration;
-import com.opensymphony.workflow.spi.WorkflowStore;
 import com.opensymphony.workflow.spi.WorkflowEntry;
+import com.opensymphony.workflow.spi.WorkflowStore;
+import com.opensymphony.module.propertyset.PropertySet;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.HashMap;
+import java.util.List;
 
 /**
  * @plexus.component
+ *   role="org.codehaus.plexus.osworkflow.PlexusOSWorkflow"
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -50,7 +52,7 @@ public class DefaultPlexusOsWorkflow
     // ----------------------------------------------------------------------
 
     /**
-     * @plexus.requirement role-hint="org.codehaus.plexus.action.Action"
+     * @plexus.requirement role="org.codehaus.plexus.action.Action"
      */
     private Map actions;
 
@@ -121,70 +123,57 @@ public class DefaultPlexusOsWorkflow
     // PlexusOSWorkflow Implementation
     // ----------------------------------------------------------------------
 
-    public long startWorkflow( String workflowName, String workflowInstanceName, String username, Map context )
-        throws PlexusOSWorkflowException
+    public long startWorkflow( String workflowName, String username, Map context )
+        throws WorkflowException
     {
         Workflow workflow = new BasicWorkflow( username );
 
         workflow.setConfiguration( configuration );
 
-        long workflowId;
+        getLogger().info( "Starting workflow '" + workflowName + "'." );
 
-        getLogger().info( "Initializing osworkflow '" + workflowName + "'." );
-
-        try
-        {
-            workflowId = workflow.initialize( workflowName, 1, context );
-        }
-        catch ( WorkflowException e )
-        {
-            throw new PlexusOSWorkflowException( "Error while initializing the osworkflow.", e );
-        }
+        long workflowId = workflow.initialize( workflowName, 1, context );
 
         workflowInstances.put( Long.toString( workflowId ), workflow );
 
         return workflowId;
     }
 
-    public boolean isWorkflowDone( long workflowId )
-        throws PlexusOSWorkflowException
+    public PropertySet getContext( long workflowId )
+        throws WorkflowException
     {
-        try
-        {
-            WorkflowEntry entry = store.findEntry( workflowId );
+        return store.getPropertySet( workflowId );
+    }
 
-            int state = entry.getState();
-            getLogger().info( "entry.getState() = " + state );
+    public boolean isWorkflowDone( long workflowId )
+        throws WorkflowException
+    {
+        WorkflowEntry entry = store.findEntry( workflowId );
 
-            return state == WorkflowEntry.COMPLETED ||
-                   state == WorkflowEntry.KILLED;
-        }
-        catch ( WorkflowException e )
-        {
-            throw new PlexusOSWorkflowException( "Error while querying for osworkflow state.", e );
-        }
+        int state = entry.getState();
+
+        return state == WorkflowEntry.COMPLETED ||
+               state == WorkflowEntry.KILLED;
     }
 
     public void doAction( long workflowId, int actionId, Map actionContext )
-        throws PlexusOSWorkflowException
+        throws WorkflowException
+    {
+        getWorkflow( workflowId ).doAction( workflowId,
+                                            actionId,
+                                            actionContext );
+    }
+
+    public List getCurrentSteps( long workflowId )
+        throws WorkflowException
     {
         try
         {
-            getWorkflow( workflowId ).doAction( workflowId,
-                                                actionId,
-                                                actionContext );
+            return store.findCurrentSteps( workflowId );
         }
         catch ( StoreException e )
         {
-            throw new PlexusOSWorkflowException( "Error while execution action.", e );
-        }
-        catch ( InvalidInputException e )
-        {
-            throw new PlexusOSWorkflowException( "Error while execution action.", e );
-        }
-        catch ( WorkflowException e )
-        {
-            throw new PlexusOSWorkflowException( "Error while execution action.", e );
+            throw new WorkflowException( "Error while accessing the store.", e );
         }
     }
 
@@ -193,16 +182,16 @@ public class DefaultPlexusOsWorkflow
     // ----------------------------------------------------------------------
 
     private Workflow getWorkflow( long workflowId )
-        throws PlexusOSWorkflowException
+        throws WorkflowException
     {
         Workflow workflow = (Workflow) workflowInstances.get( Long.toString( workflowId ) );
 
         if ( workflow == null )
         {
-            throw new PlexusOSWorkflowException( "No such osworkflow '" + workflowId + "'.");
+            throw new WorkflowException( "No such osworkflow '" + workflowId + "'.");
         }
 
-        // TODO: if the osworkflow is finished, remove it.
+        // TODO: if the workflow is finished, remove it.
 
         return workflow;
 //        try

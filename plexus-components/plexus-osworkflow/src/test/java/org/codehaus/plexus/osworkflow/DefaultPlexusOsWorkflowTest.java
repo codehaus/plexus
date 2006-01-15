@@ -18,11 +18,11 @@ package org.codehaus.plexus.osworkflow;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.osworkflow.PlexusOSWorkflow;
-import org.codehaus.plexus.osworkflow.PlexusOSWorkflowException;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.opensymphony.workflow.WorkflowException;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -33,7 +33,7 @@ public class DefaultPlexusOsWorkflowTest
 {
     private PlexusOSWorkflow workflowEngine;
 
-    private String workflowId;
+    private long workflowId;
 
     private boolean stop;
 
@@ -48,16 +48,13 @@ public class DefaultPlexusOsWorkflowTest
 
         synchronized ( thread )
         {
-            System.err.println( "Starting" );
             thread.start();
-            System.err.println( "waiting 1" );
             thread.wait();
-            System.err.println( "waited 1" );
         }
 
         String workflowName = "add-objects";
 
-        workflowId = workflowEngine.startWorkflow( workflowName, "myworkflow", "trygvis", context );
+        workflowId = workflowEngine.startWorkflow( workflowName, "trygvis", context );
 
         System.out.println( "workflowId = " + workflowId );
 
@@ -67,14 +64,12 @@ public class DefaultPlexusOsWorkflowTest
 
         actionContext.put( "number-of-objects", new Integer( 10 ) );
 
-        workflowEngine.doAction( workflowId, "1", actionContext );
+        workflowEngine.doAction( workflowId, 1, actionContext );
 
         synchronized( thread )
         {
-            System.err.println( "stopping" );
             stop = true;
             thread.interrupt();
-            System.err.println( "waiting 2" );
             thread.wait();
         }
     }
@@ -83,16 +78,14 @@ public class DefaultPlexusOsWorkflowTest
     {
         try
         {
-            if ( workflowEngine == null || workflowId == null )
+            if ( workflowEngine == null || workflowId == 0 )
             {
                 return false;
             }
 
-            System.err.println( "pinging!" );
-
             return workflowEngine.isWorkflowDone( workflowId );
         }
-        catch ( PlexusOSWorkflowException e )
+        catch ( WorkflowException e )
         {
             e.printStackTrace();
 
