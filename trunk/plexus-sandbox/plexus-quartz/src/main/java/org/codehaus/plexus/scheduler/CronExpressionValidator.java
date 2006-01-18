@@ -29,6 +29,7 @@ public class CronExpressionValidator
         try
         {
             String[] cronParams = StringUtils.split( cronExpression );
+
             if ( cronParams.length < 6 || cronParams.length > 7 )
             {
                 return false;
@@ -38,6 +39,37 @@ public class CronExpressionValidator
 
             cronTrigger.setCronExpression( cronExpression );
 
+            //Check year param
+            if ( cronParams.length == 7 )
+            {
+                String yearField = cronParams[6];
+
+                boolean yearIsOk;
+
+                if ( yearField.indexOf( "-" ) > -1 )
+                {
+                    yearIsOk = checkYear( yearField.substring( 0, yearField.indexOf( "-" ) ) ) &&
+                               checkYear( yearField.substring( yearField.indexOf( "-" ) + 1 ) );
+                }
+                else if ( yearField.indexOf( "/" ) > -1 )
+                {
+                    yearIsOk = checkYear( yearField.substring( 0, yearField.indexOf( "/" ) ) );
+                }
+                else if ( yearField.indexOf( "*" ) != -1 )
+                {
+                    yearIsOk = true;
+                }
+                else
+                {
+                    yearIsOk = checkYear( yearField );
+                }
+
+                if ( !yearIsOk )
+                {
+                    return false;
+                }
+            }
+
             if ( cronParams[3].equals( "?" ) || cronParams[5].equals( "?" ) )
             {
                 return true;
@@ -46,6 +78,27 @@ public class CronExpressionValidator
             return false;
         }
         catch ( ParseException e )
+        {
+            return false;
+        }
+    }
+
+    private boolean checkYear( String yearField )
+    {
+        try
+        {
+            int year = Integer.parseInt( yearField );
+
+            if ( year < 1970 || year > 2099 )
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        catch( NumberFormatException e )
         {
             return false;
         }
