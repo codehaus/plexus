@@ -42,6 +42,22 @@ public class CronExpressionValidatorTest
 
         assertTrue( validator.validate( "0 15 10 * * ? 2005" ) );
 
+        assertFalse( validator.validate( "0 15 10 * * ? 2100" ) );
+
+        assertFalse( validator.validate( "0 15 10 * * ? 1969" ) );
+
+        assertTrue( validator.validate( "0 15 10 * * ? 2005-2007" ) );
+
+        assertFalse( validator.validate( "0 15 10 * * ? 2005-2100" ) );
+
+        assertFalse( validator.validate( "0 15 10 * * ? 1960-2010" ) );
+
+        assertTrue( validator.validate( "0 15 10 * * ? 2005/2" ) );
+
+        assertFalse( validator.validate( "0 15 10 * * ? 2100/3" ) );
+
+        assertFalse( validator.validate( "0 15 10 * * ? 1960/10" ) );
+
         assertTrue( validator.validate( "0 * 14 * * ?" ) );
 
         assertTrue( validator.validate( "0 0/5 14 * * ?" ) );
