@@ -161,6 +161,7 @@ public class DefaultJabberClient
             throw new JabberClientException( "Can't send a message to " + recipientUser + " user", e );
         }
 
+        // TODO: replace with test from smack API to see if message was delivered
         // little sleep to be sure that message was sent
         try
         {
@@ -188,6 +189,7 @@ public class DefaultJabberClient
             throw new JabberClientException( "Can't send a message to " + recipientGroup + " group", e );
         }
 
+        // TODO: replace with test from smack API to see if message was delivered
         // little sleep to be sure that message was sent
         try
         {
