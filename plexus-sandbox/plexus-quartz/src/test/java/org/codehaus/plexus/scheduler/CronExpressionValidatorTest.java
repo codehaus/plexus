@@ -30,7 +30,13 @@ public class CronExpressionValidatorTest
 
         assertTrue( validator.validate( "0 0 * ? * *" ) );
 
+        assertFalse( validator.validate( "0 0 4-1 * * ?" ) );
+
+        assertTrue( validator.validate( "0 0 1-4 * * ?" ) );
+
         assertTrue( validator.validate( "0 0,15,30,45 * * * ?" ) );
+
+        assertFalse( validator.validate( "0 0,45,15,30 * * * ?" ) );
 
         assertTrue( validator.validate( "0 0 12 * * ?" ) );
 
