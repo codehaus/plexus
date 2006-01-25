@@ -80,13 +80,29 @@ public class CronExpressionValidatorTest
 
         assertTrue( validator.validate( "0 15 10 L * ?" ) );
 
+        assertFalse( validator.validate( "0 15 10 6#3 * ?" ) );
+
+        assertTrue( validator.validate( "0 15 10 15W * ?" ) );
+
+        assertFalse( validator.validate( "0 15 10 15W1 * ?" ) );
+
         assertTrue( validator.validate( "0 15 10 ? * 6L" ) );
 
         assertTrue( validator.validate( "0 15 10 ? * 6L" ) );
 
         assertTrue( validator.validate( "0 15 10 ? * 6L 2002-2005" ) );
 
+        assertFalse( validator.validate( "0 15 10 ? * 6L3 2002-2005" ) );
+
         assertTrue( validator.validate( "0 15 10 ? * 6#3" ) );
+
+        assertFalse( validator.validate( "0 15 10 ? * 6#" ) );
+
+        assertFalse( validator.validate( "0 15 10 ? * #3" ) );
+
+        assertFalse( validator.validate( "0 15 10 ? * 8#3" ) );
+
+        assertFalse( validator.validate( "0 15 10 ? * 6#6" ) );
 
         assertFalse( validator.validate( "0 0" ) );
 
