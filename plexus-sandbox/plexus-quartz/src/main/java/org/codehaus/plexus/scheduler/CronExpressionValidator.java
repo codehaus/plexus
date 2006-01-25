@@ -138,15 +138,15 @@ public class CronExpressionValidator
 
         if ( dayOfMonthField.indexOf( "L" ) >= 0 )
         {
-            return checkFieldWithLetter( dayOfMonthField, "L" );
+            return checkFieldWithLetter( dayOfMonthField, "L", 1, 7, -1, -1 );
         }
         else if ( dayOfMonthField.indexOf( "W" ) >= 0 )
         {
-            return checkFieldWithLetter( dayOfMonthField, "W" );
+            return checkFieldWithLetter( dayOfMonthField, "W", 1, 31, -1, -1 );
         }
         else if ( dayOfMonthField.indexOf( "C" ) >= 0 )
         {
-            return checkFieldWithLetter( dayOfMonthField, "C" );
+            return checkFieldWithLetter( dayOfMonthField, "C", 1, 31, -1, -1 );
         }
         else
         {
@@ -189,15 +189,15 @@ public class CronExpressionValidator
 
         if ( dayOfWeekField.indexOf( "L" ) >= 0 )
         {
-            return checkFieldWithLetter( dayOfWeekField, "L" );
+            return checkFieldWithLetter( dayOfWeekField, "L", 1, 7, -1, -1 );
         }
         else if ( dayOfWeekField.indexOf( "C" ) >= 0 )
         {
-            return checkFieldWithLetter( dayOfWeekField, "C" );
+            return checkFieldWithLetter( dayOfWeekField, "C", 1, 7, -1, -1 );
         }
         else if ( dayOfWeekField.indexOf( "#" ) >= 0 )
         {
-            return checkFieldWithLetter( dayOfWeekField, "#" );
+            return checkFieldWithLetter( dayOfWeekField, "#", 1, 7, 1, 5 );
         }
         else
         {
@@ -256,7 +256,7 @@ public class CronExpressionValidator
         }
     }
 
-    private boolean checkFieldWithLetter( String value, String letter )
+    private boolean checkFieldWithLetter( String value, String letter, int minimalBefore, int maximalBefore, int minimalAfter, int maximalAfter )
     {
         boolean canBeAlone = false;
         boolean canHaveIntBefore = false;
@@ -318,17 +318,19 @@ public class CronExpressionValidator
 
             if ( canHaveIntBefore )
             {
-                if ( !mustHaveIntBefore && beforeLetter.length() == 0 )
+                if ( mustHaveIntBefore && beforeLetter.length() == 0 )
                 {
                     return false;
                 }
 
-                try
+                if (!checkIntValue( beforeLetter, minimalBefore, maximalBefore, true))
                 {
-                    Integer.parseInt( beforeLetter );
-                    return true;
+                    return false;
                 }
-                catch ( NumberFormatException e )
+            }
+            else
+            {
+                if ( beforeLetter.length() > 0 )
                 {
                     return false;
                 }
@@ -336,17 +338,19 @@ public class CronExpressionValidator
 
             if ( canHaveIntAfter )
             {
-                if ( !mustHaveIntAfter && afterLetter.length() == 0 )
+                if ( mustHaveIntAfter && afterLetter.length() == 0 )
                 {
                     return false;
                 }
 
-                try
+                if (!checkIntValue( afterLetter, minimalAfter, maximalAfter, true))
                 {
-                    Integer.parseInt( afterLetter );
-                    return true;
+                    return false;
                 }
-                catch ( NumberFormatException e )
+            }
+            else
+            {
+                if ( afterLetter.length() > 0 )
                 {
                     return false;
                 }
