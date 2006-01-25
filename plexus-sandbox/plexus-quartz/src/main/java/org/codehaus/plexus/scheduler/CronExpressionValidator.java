@@ -29,7 +29,7 @@ import java.util.StringTokenizer;
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id$
  */
-public class CronExpressionValidator
+public final class CronExpressionValidator
 {
     public static final String ROLE = CronExpressionValidator.class.getName();
 
@@ -226,12 +226,8 @@ public class CronExpressionValidator
                 int startVal = Integer.parseInt( startValue );
                 int endVal = Integer.parseInt( endValue );
 
-                if ( endVal <= startVal )
-                {
-                    return false;
-                }
+                return endVal > startVal;
 
-                return true;
             }
             catch ( NumberFormatException e )
             {
@@ -256,7 +252,8 @@ public class CronExpressionValidator
         }
     }
 
-    private boolean checkFieldWithLetter( String value, String letter, int minimalBefore, int maximalBefore, int minimalAfter, int maximalAfter )
+    private boolean checkFieldWithLetter( String value, String letter, int minimalBefore, int maximalBefore,
+                                          int minimalAfter, int maximalAfter )
     {
         boolean canBeAlone = false;
         boolean canHaveIntBefore = false;
@@ -306,14 +303,7 @@ public class CronExpressionValidator
         {
             if ( letter.equals( value ) )
             {
-                if ( canBeAlone )
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return canBeAlone;
             }
 
             if ( canHaveIntBefore )
@@ -323,7 +313,7 @@ public class CronExpressionValidator
                     return false;
                 }
 
-                if (!checkIntValue( beforeLetter, minimalBefore, maximalBefore, true))
+                if ( !checkIntValue( beforeLetter, minimalBefore, maximalBefore, true ) )
                 {
                     return false;
                 }
@@ -343,7 +333,7 @@ public class CronExpressionValidator
                     return false;
                 }
 
-                if (!checkIntValue( afterLetter, minimalAfter, maximalAfter, true))
+                if ( !checkIntValue( afterLetter, minimalAfter, maximalAfter, true ) )
                 {
                     return false;
                 }
@@ -425,7 +415,7 @@ public class CronExpressionValidator
         return checkIntValue( value, minimal, maximal, true );
     }
 
-    private boolean checkIntValue( String value, int minimal, int maximal, boolean checkExtremity )
+    private static boolean checkIntValue( String value, int minimal, int maximal, boolean checkExtremity )
     {
         try
         {
