@@ -13,9 +13,6 @@ public class ContextClassLoaderResourceLoader
 {
     public void init( ExtendedProperties configuration)
     {
-        rsvc.info("ClasspathResourceLoader : initialization starting.");
-
-        rsvc.info("ClasspathResourceLoader : initialization complete.");
     }
 
     public synchronized InputStream getResourceStream( String name )
