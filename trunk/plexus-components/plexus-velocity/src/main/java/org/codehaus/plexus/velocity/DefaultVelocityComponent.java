@@ -55,6 +55,9 @@ public class DefaultVelocityComponent
     {
         engine = new VelocityEngine();
 
+        // avoid "unable to find resource 'VM_global_library.vm' in any resource loader."
+        engine.setProperty( "velocimacro.library", "" );
+
         engine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, this );
 
         if ( properties != null )
@@ -108,7 +111,8 @@ public class DefaultVelocityComponent
                 getLogger().warn( message );
                 break;
             case LogSystem.INFO_ID:
-                getLogger().info( message );
+                // velocity info messages are too verbose, just consider them as debug messages...
+                getLogger().debug( message );
                 break;
             case LogSystem.DEBUG_ID:
                 getLogger().debug( message );
@@ -117,7 +121,7 @@ public class DefaultVelocityComponent
                 getLogger().error( message );
                 break;
             default:
-                getLogger().info( message );
+                getLogger().debug( message );
                 break;
         }
     }
