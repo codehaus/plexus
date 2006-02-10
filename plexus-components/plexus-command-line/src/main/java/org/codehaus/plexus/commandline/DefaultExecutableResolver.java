@@ -116,6 +116,8 @@ public class DefaultExecutableResolver
             return null;
         }
 
+        // TODO: Need to resolve it with defaults extension of system
+        // ie. if executable is 'mvn', we must search 'mvn.bat'
         for ( Iterator it = path.iterator(); it.hasNext(); )
         {
             String s = (String) it.next();
