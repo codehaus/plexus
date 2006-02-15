@@ -20,14 +20,14 @@
   </developers>
   <dependencies>
     <dependency>
-      <groupId>jdo</groupId>
-      <artifactId>jdo</artifactId>
-      <version>2.0-snapshot4</version>
+      <groupId>javax.jdo</groupId>
+      <artifactId>jdo2-api</artifactId>
+      <version>2.0-beta</version>
     </dependency>
     <dependency>
       <groupId>jpox</groupId>
-      <artifactId>jpox</artifactId>
-      <version>1.1.0-beta-4</version>
+      <artifactId>jpox-core</artifactId>
+      <version>1.1.0-beta-6</version>
       <scope>test</scope>
     </dependency>
     <dependency>
