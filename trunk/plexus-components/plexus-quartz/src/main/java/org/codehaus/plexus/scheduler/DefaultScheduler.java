@@ -31,7 +31,7 @@ public class DefaultScheduler
         if ( jobExists( jobDetail.getName(), jobDetail.getGroup() ) )
         {
             getLogger().warn( "Will not schedule this job as a job {" + jobDetail.getName() + ":" +
-                jobDetail.getGroup() + "} already exists." );
+                              jobDetail.getGroup() + "} already exists." );
 
             return;
         }
@@ -150,4 +150,18 @@ public class DefaultScheduler
         return false;
     }
 
+    public StdScheduler getScheduler()
+    {
+        return scheduler;
+    }
+
+    public void setProperties( Properties properties )
+    {
+        this.properties = properties;
+    }
+
+    public Properties getProperties()
+    {
+        return properties;
+    }
 }
