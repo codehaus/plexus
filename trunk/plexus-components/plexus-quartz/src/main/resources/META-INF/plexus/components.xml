@@ -7,7 +7,7 @@
         <properties>
           <property>
             <name>org.quartz.scheduler.instanceName</name>
-            <value>repositoryScheduler</value>
+            <value>defaultScheduler</value>
           </property>
           <property>
             <name>org.quartz.threadPool.class</name>
