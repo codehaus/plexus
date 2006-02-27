@@ -3,6 +3,7 @@
     <component>
       <role>org.codehaus.plexus.scheduler.Scheduler</role>
       <implementation>org.codehaus.plexus.scheduler.DefaultScheduler</implementation>
+      <instantiation-strategy>keep-alive</instantiation-strategy>
       <configuration>
         <properties>
           <property>
