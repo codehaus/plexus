@@ -100,7 +100,7 @@ public class DefaultJabberClient
             }
             catch ( XMPPException e )
             {
-                if ( e.getXMPPError().getCode() == 401 )
+                if ( e.getXMPPError() != null && e.getXMPPError().getCode() == 401 )
                 {
                     getLogger().info( "User " + user + " doesn't exist. Trying to create it." );
 
