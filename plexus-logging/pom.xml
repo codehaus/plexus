@@ -3,10 +3,10 @@
   <parent>
     <artifactId>plexus</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
   </parent>
   <artifactId>plexus-logging</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <packaging>pom</packaging>
   <name>Plexus Logging Parent</name>
   <modules>

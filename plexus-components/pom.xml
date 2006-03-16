@@ -14,12 +14,12 @@
   <parent>
     <artifactId>plexus</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
   </parent>
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-components</artifactId>
   <packaging>pom</packaging>
-  <version>1.1.4</version>
+  <version>1.1.5</version>
   <name>Plexus Components Parent Project</name>
   <!-- 
     TODO: should this be pushed down to all the dependencies?
