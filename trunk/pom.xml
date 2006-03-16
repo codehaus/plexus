@@ -5,7 +5,7 @@
   <artifactId>plexus</artifactId>
   <packaging>pom</packaging>
   <name>Plexus</name>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
   <ciManagement>
     <notifiers>
       <notifier>
@@ -173,7 +173,7 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:svn://svn.codehaus.org/plexus/scm/trunk/</connection>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/trunk/</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk</developerConnection>
   </scm>
   <organization>
