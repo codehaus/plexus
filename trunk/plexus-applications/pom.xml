@@ -1,11 +1,10 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>plexus-root</artifactId>
-    <groupId>plexus</groupId>
-    <version>1.0.1</version>
+    <artifactId>plexus</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0.5</version>
   </parent>
-  <groupId>plexus</groupId>
   <artifactId>plexus-applications</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 </project>
