@@ -7,4 +7,5 @@
   </parent>
   <artifactId>plexus-applications</artifactId>
   <version>1.0.2</version>
+  <packaging>pom</packaging>
 </project>
