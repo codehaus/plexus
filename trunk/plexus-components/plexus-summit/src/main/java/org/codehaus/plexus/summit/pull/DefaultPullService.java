@@ -1,7 +1,7 @@
 package org.codehaus.plexus.summit.pull;
 
 /*
- * Copyright 2004-2005 The Apache Software Foundation.
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,6 @@ package org.codehaus.plexus.summit.pull;
  * limitations under the License.
  */
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
@@ -35,6 +28,14 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.summit.rundata.RunData;
 import org.codehaus.plexus.summit.view.ViewContext;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * This is a default implementation of the pull service.  It takes avalon
@@ -278,6 +279,17 @@ public class DefaultPullService
         throws Exception
     {
         Iterator itr = globalTools.keySet().iterator();
+
+        List listToRemove = new ArrayList();
+
+        while ( itr.hasNext() )
+        {
+            String key = (String) itr.next();
+
+            listToRemove.add( key );
+        }
+
+        itr = listToRemove.iterator();
 
         while ( itr.hasNext() )
         {
