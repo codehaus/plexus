@@ -106,9 +106,9 @@ public class MungedHttpsURL
     {
         try
         {
-            URL url = getURL();
+            HttpURLConnection urlc = getURLConnection();
 
-            InputStream is = url.openStream();
+            InputStream is = urlc.getInputStream();
 
             is.close();
         }
@@ -123,6 +123,26 @@ public class MungedHttpsURL
         }
 
         return true;
+    }
+    
+    public HttpURLConnection getURLConnection()
+        throws MalformedURLException
+    {
+        try
+        {
+            if ( urlString.startsWith( "https") )
+            {
+                return getHttpsUrlConnection();
+            }
+            else
+            {
+                return (HttpURLConnection) getHttpUrl().openConnection();
+            }
+        }
+        catch ( Exception e )
+        {
+            throw new MalformedURLException( "unable to create munged http url connection" );
+        }
     }
 
     public URL getURL()
@@ -164,6 +184,32 @@ public class MungedHttpsURL
         return new URL( urlString );
     }
 
+    private HttpURLConnection getHttpsUrlConnection()
+        throws Exception 
+    {
+        ignoreCertificates();
+    
+        String authString = username + ":" + password;
+    
+        URL url = new URL( urlString );
+    
+        HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+    
+        urlc.setDoInput( true );
+    
+        urlc.setUseCaches( false );
+    
+        urlc.setRequestProperty( "Content-Type", "application/octet-stream" );
+    
+        if ( username != null && password != null )
+        {
+            urlc.setRequestProperty( "Authorization", "Basic " +
+                    new sun.misc.BASE64Encoder().encode( authString.getBytes() ) );
+        }
+    
+        return urlc;
+    }
+    
     private URL getHttpsUrl()
             throws Exception
     {
