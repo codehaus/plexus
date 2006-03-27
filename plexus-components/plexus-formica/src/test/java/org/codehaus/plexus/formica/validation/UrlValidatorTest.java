@@ -47,6 +47,8 @@ public class UrlValidatorTest
         assertTrue( v.validate( "https://www.apache.org/pom.xml" ) );
 
         assertTrue( v.validate( "https://username:password@www.apache.org/pom.xml" ) );
+        
+        assertTrue( v.validate( "https://svn.example.com:8443/trunk/extranet/pom.xml" ) );
 
         assertTrue( v.validate( "http://localhost/pom.xml" ) );
 
