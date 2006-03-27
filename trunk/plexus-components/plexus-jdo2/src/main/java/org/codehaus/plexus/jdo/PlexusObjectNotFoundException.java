@@ -5,9 +5,9 @@ package org.codehaus.plexus.jdo;
  * @version $Id$
  */
 public class PlexusObjectNotFoundException
-    extends ContinuumStoreException
+    extends PlexusStoreException
 {
-    public ContinuumObjectNotFoundException( String type, String id )
+    public PlexusObjectNotFoundException( String type, String id )
     {
         super( "Could not find object. Type '" + type + "'. Id: '" + id + "'." );
     }
