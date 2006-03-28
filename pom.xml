@@ -1,15 +1,18 @@
-<project>
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>plexus-components</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.1.5</version>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>org.codehaus.plexus</groupId>
-  <artifactId>plexus</artifactId>
+  <artifactId>plexus-compiler</artifactId>
   <packaging>pom</packaging>
-  <name>Plexus</name>
-  <version>1.0.5</version>
+  <name>Plexus Compiler Parent</name>
+  <version>1.5.2</version>
   <ciManagement>
     <notifiers>
       <notifier>
-        <type>mail</type>
         <configuration>
           <address>dev@plexus.codehaus.org</address>
         </configuration>
@@ -17,11 +20,11 @@
       <notifier>
         <type>irc</type>
         <configuration>
-          <host>irc.codehaus.org</host>
           <port>6667</port>
           <channel>#plexus</channel>
+          <host>irc.codehaus.org</host>
         </configuration>
-      </notifier>      
+      </notifier>
     </notifiers>
   </ciManagement>
   <inceptionYear>2001</inceptionYear>
@@ -33,40 +36,6 @@
       <archive>http://lists.codehaus.org/pipermail/plexus-dev/</archive>
     </mailingList>
   </mailingLists>
-
-  <distributionManagement>
-    <repository>
-      <id>repo1</id>
-      <name>Maven Central Repository</name>
-      <url>scp://repo1.maven.org/home/projects/maven/repository-staging/to-ibiblio/maven2</url>
-    </repository>
-    <snapshotRepository>
-      <id>snapshots</id>
-      <name>Maven Central Development Repository</name>
-      <url>scp://repo1.maven.org/home/projects/maven/repository-staging/snapshots/maven2</url>
-    </snapshotRepository>
-  </distributionManagement>
-  <repositories>
-    <repository>
-      <id>snapshots</id>
-      <name>Maven Snapshot Development Repository</name>
-      <url>http://snapshots.maven.codehaus.org/maven2</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>snapshots-plugins</id>
-      <name>Maven Snapshot Plugins Development Repository</name>
-      <url>http://snapshots.maven.codehaus.org/maven2</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-
   <developers>
     <developer>
       <id>jvanzyl</id>
@@ -148,54 +117,56 @@
       </roles>
     </developer>
     <developer>
-      <name>Trygve Laugst&oslash;l</name>
       <id>trygvis</id>
+      <name>Trygve Laugstøl</name>
       <email>trygvis@codehaus.org</email>
       <roles>
         <role>Developer</role>
       </roles>
     </developer>
     <developer>
-      <name>Kenney Westerhof</name>
       <id>kenney</id>
+      <name>Kenney Westerhof</name>
       <email>kenney@codehaus.org</email>
       <roles>
         <role>Developer</role>
       </roles>
     </developer>
   </developers>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk</developerConnection>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-compiler-1.5.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-compiler-1.5.2</developerConnection>
   </scm>
   <organization>
     <name>Codehaus</name>
     <url>http://www.codehaus.org/</url>
   </organization>
-  <modules>
-    <module>plexus-appserver</module>
-    <module>plexus-archetypes</module>
-    <module>plexus-components</module>
-    <module>plexus-component-factories</module>
-    <module>plexus-containers</module>
-    <module>plexus-logging</module>
-    <module>plexus-maven-plugin</module>
-    <module>plexus-services</module>
-    <module>plexus-tools</module>
-    <module>plexus-utils</module>
-  </modules>
   <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <scriptSourceDirectory>src/main/scripts</scriptSourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <outputDirectory>target/classes</outputDirectory>
+    <testOutputDirectory>target/test-classes</testOutputDirectory>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
+    </testResources>
+    <directory>target</directory>
+    <finalName>${artifactId}-${version}</finalName>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <tagBase>https://svn.codehaus.org/plexus/tags</tagBase>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <tagBase>https://svn.codehaus.org/plexus/tags</tagBase>
@@ -203,4 +174,77 @@
       </plugin>
     </plugins>
   </build>
+  <modules>
+    <module>plexus-compiler-api</module>
+    <module>plexus-compiler-test</module>
+    <module>plexus-compiler-manager</module>
+    <module>plexus-compilers</module>
+  </modules>
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <id>snapshots</id>
+      <name>Maven Snapshot Development Repository</name>
+      <url>http://snapshots.maven.codehaus.org/maven2</url>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Maven Repository Switchboard</name>
+      <url>http://repo1.maven.org/maven2</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <id>snapshots-plugins</id>
+      <name>Maven Snapshot Plugins Development Repository</name>
+      <url>http://snapshots.maven.codehaus.org/maven2</url>
+    </pluginRepository>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Maven Plugin Repository</name>
+      <url>http://repo1.maven.org/maven2</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-8</version>
+    </dependency>
+  </dependencies>
+  <reporting>
+    <outputDirectory>target/site</outputDirectory>
+  </reporting>
+  <distributionManagement>
+    <repository>
+      <id>repo1</id>
+      <name>Maven Central Repository</name>
+      <url>scp://repo1.maven.org/home/projects/maven/repository-staging/to-ibiblio/maven2</url>
+    </repository>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <name>Maven Central Development Repository</name>
+      <url>scp://repo1.maven.org/home/projects/maven/repository-staging/snapshots/maven2</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>
