@@ -28,8 +28,10 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 import javax.naming.InvalidNameException;
-import javax.naming.ldap.Rdn;
 import javax.naming.ldap.LdapName;
+import javax.naming.ldap.Rdn;
+import javax.naming.spi.ObjectFactory;
+import javax.naming.spi.StateFactory;
 import java.util.Properties;
 
 /**
@@ -44,13 +46,15 @@ public class ConfigurableLdapConnectionFactory
 
     private int port;
 
-    private String baseDN;
+    private String baseDn;
 
     private String contextFactory;
 
-    private String bindDN;
+    private String bindDn;
 
     private String password;
+
+    private String authenticationMethod;
 
     private Properties extraProperties;
 
@@ -65,10 +69,15 @@ public class ConfigurableLdapConnectionFactory
     {
         try
         {
-            configuration = new LdapConnectionConfiguration( hostname, port,
-                                                             baseDN, contextFactory,
-                                                             bindDN, password,
-                                                             extraProperties );
+            configuration = new LdapConnectionConfiguration();
+            configuration.setHostname( hostname );
+            configuration.setPort( port );
+            configuration.setBaseDn( baseDn );
+            configuration.setContextFactory( contextFactory );
+            configuration.setBindDn( bindDn );
+            configuration.setPassword( password );
+            configuration.setAuthenticationMethod( authenticationMethod );
+            configuration.setExtraProperties( extraProperties );
         }
         catch ( InvalidNameException e )
         {
@@ -97,11 +106,30 @@ public class ConfigurableLdapConnectionFactory
     {
         try
         {
-            return new LdapName( baseDN );
+            return new LdapName( baseDn );
         }
         catch ( InvalidNameException e )
         {
             throw new LdapException( "The base DN is not a valid name.", e );
         }
+    }
+
+    public void addObjectFactory( Class<? extends ObjectFactory> objectFactoryClass )
+    {
+        configuration.getObjectFactories().add( objectFactoryClass );
+    }
+
+    public void addStateFactory( Class<? extends StateFactory> stateFactoryClass )
+    {
+        configuration.getStateFactories().add( stateFactoryClass );
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    public String toString()
+    {
+        return "{ConfigurableLdapConnectionFactory: configuration: " + configuration + "}";
     }
 }

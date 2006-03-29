@@ -23,8 +23,10 @@ package org.codehaus.plexus.ldap.helper;
  * SOFTWARE.
  */
 
-import javax.naming.ldap.Rdn;
 import javax.naming.ldap.LdapName;
+import javax.naming.ldap.Rdn;
+import javax.naming.spi.ObjectFactory;
+import javax.naming.spi.StateFactory;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -42,4 +44,8 @@ public interface LdapConnectionFactory
 
     LdapName getBaseDnLdapName()
         throws LdapException;
+
+    void addObjectFactory( Class<? extends ObjectFactory> objectFactoryClass );
+
+    void addStateFactory( Class<? extends StateFactory> objectFactoryClass );
 }

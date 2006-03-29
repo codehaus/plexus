@@ -54,21 +54,37 @@ public class LdapConnection
     {
         this.config = config;
 
-        LdapName baseDn = new LdapName( config.getBaseDN().getRdns() );
+        LdapName baseDn = new LdapName( config.getBaseDn().getRdns() );
+
         if ( subRdn != null )
         {
             baseDn.add( subRdn );
         }
+
         baseDnRdns = Collections.unmodifiableList( baseDn.getRdns() );
 
-        connect();
+        if ( context != null )
+        {
+            throw new LdapException( "Already connected." );
+        }
+
+        Hashtable<Object, Object> e = getEnvironment();
+
+        try
+        {
+            context = new InitialDirContext( e );
+        }
+        catch ( NamingException ex )
+        {
+            throw new LdapException( "Could not connect to the server.", ex );
+        }
     }
 
     // ----------------------------------------------------------------------
     // Connection Managment
     // ----------------------------------------------------------------------
 
-    public void connect()
+    public Hashtable<Object, Object> getEnvironment()
         throws LdapException
     {
         Properties env = new Properties();
@@ -82,38 +98,80 @@ public class LdapConnection
 
         env.put( Context.INITIAL_CONTEXT_FACTORY, config.getContextFactory() );
 
-        if ( config.getPort() != 0 )
+        if ( config.getHostname() != null )
         {
-            env.put( Context.PROVIDER_URL, "ldap://" + config.getHostname() + ":" + config.getPort() + "/" );
-        }
-        else
-        {
-            env.put( Context.PROVIDER_URL, "ldap://" + config.getHostname() + "/" );
+            if ( config.getPort() != 0 )
+            {
+                env.put( Context.PROVIDER_URL, "ldap://" + config.getHostname() + ":" + config.getPort() + "/" );
+            }
+            else
+            {
+                env.put( Context.PROVIDER_URL, "ldap://" + config.getHostname() + "/" );
+            }
         }
 
-        env.put( Context.SECURITY_AUTHENTICATION, "simple" );
-        if ( config.getBindDN() != null )
+        if ( config.getAuthenticationMethod() != null )
         {
-            env.put( Context.SECURITY_PRINCIPAL, config.getBindDN().toString() );
+            env.put( Context.SECURITY_AUTHENTICATION, config.getAuthenticationMethod() );
         }
+
+        if ( config.getBindDn() != null )
+        {
+            env.put( Context.SECURITY_PRINCIPAL, config.getBindDn().toString() );
+        }
+
         if ( config.getPassword() != null )
         {
             env.put( Context.SECURITY_CREDENTIALS, config.getPassword() );
         }
 
-        try
+        // ----------------------------------------------------------------------
+        // Object Factories
+        // ----------------------------------------------------------------------
+
+        String objectFactories = null;
+
+        for ( Class objectFactoryClass : config.getObjectFactories() )
         {
-            Hashtable<Object, Object> e = new Hashtable<Object, Object>();
-            for ( Map.Entry<Object, Object> entry : env.entrySet() )
+            if ( objectFactories == null )
             {
-                e.put( entry.getKey(), entry.getValue() );
+                objectFactories = objectFactoryClass.getName();
             }
-            context = new InitialDirContext( e );
+            else
+            {
+                objectFactories += ":" + objectFactoryClass.getName();
+            }
         }
-        catch ( NamingException ex )
+
+        if ( objectFactories != null )
         {
-            throw new LdapException( "Could not connect to the server.", ex );
+            env.setProperty( Context.OBJECT_FACTORIES, objectFactories );
         }
+
+        // ----------------------------------------------------------------------
+        // State Factories
+        // ----------------------------------------------------------------------
+
+        String stateFactories = null;
+
+        for ( Class stateFactoryClass : config.getStateFactories() )
+        {
+            if ( stateFactories == null )
+            {
+                stateFactories = stateFactoryClass.getName();
+            }
+            else
+            {
+                stateFactories += ":" + stateFactoryClass.getName();
+            }
+        }
+
+        if ( stateFactories != null )
+        {
+            env.setProperty( Context.STATE_FACTORIES, stateFactories );
+        }
+
+        return env;
     }
 
     public void close()

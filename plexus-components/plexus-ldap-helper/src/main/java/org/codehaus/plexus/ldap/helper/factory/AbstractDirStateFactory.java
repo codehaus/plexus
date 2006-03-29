@@ -1,4 +1,4 @@
-package org.codehaus.plexus.ldap.helper;
+package org.codehaus.plexus.ldap.helper.factory;
 
 import org.codehaus.plexus.util.StringUtils;
 
@@ -36,6 +36,11 @@ public abstract class AbstractDirStateFactory
     protected void setRequiredAttribute( Attributes attributes, String key, Object value )
         throws SchemaViolationException
     {
+        if ( attributes.get( key ) != null && attributes.get( key ).size() > 0 )
+        {
+            return;
+        }
+
         if ( value == null )
         {
             throw new SchemaViolationException( "Missing value for key '" + key + "'." );
