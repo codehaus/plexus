@@ -39,15 +39,16 @@
     <module>plexus-command</module>
     <module>plexus-compiler</module>
     <module>plexus-drools</module>        
-    <module>plexus-formica-web</module>
     <module>plexus-formica</module>
+    <module>plexus-formica-web</module>
     <module>plexus-hibernate</module>
     <module>plexus-i18n</module>            
     <module>plexus-interactivity</module>        
     <module>plexus-ircbot</module>    
     <module>plexus-jdo</module>
-    <module>plexus-jetty</module>
     <module>plexus-jetty-httpd</module>    
+    <module>plexus-jetty</module>
+    <module>plexus-ldap-helper</module>
     <module>plexus-mail-sender</module>
     <module>plexus-mimetyper</module>    
     <module>plexus-notification</module>
