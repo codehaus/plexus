@@ -1,17 +1,18 @@
-package org.codehaus.plexus.ldap.helper;
+package org.codehaus.plexus.ldap.helper.factory;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import javax.naming.Context;
 import javax.naming.Name;
-import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.spi.DirObjectFactory;
-import javax.naming.directory.Attribute;
+import javax.naming.NamingEnumeration;
 import javax.naming.directory.Attributes;
+import javax.naming.directory.Attribute;
+import javax.naming.spi.DirObjectFactory;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.File;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -25,7 +26,7 @@ public abstract class AbstractDirObjectFactory
     // ObjectFactory Implementation
     // ----------------------------------------------------------------------
 
-    public Object getObjectInstance( Object obj, Name name, Context nameCtx, Hashtable<?, ?> environment )
+    public Object getObjectInstance( Object object, Name name, Context nameCtx, Hashtable<?, ?> environment )
         throws Exception
     {
         return null;
@@ -129,6 +130,19 @@ public abstract class AbstractDirObjectFactory
         return value;
     }
 
+    protected File getFileAttribute( Attributes attributes, String attributeName )
+        throws NamingException
+    {
+        String value = getOptionalStringAttribute( attributes, attributeName );
+
+        if ( value == null )
+        {
+            throw new NamingException( "Missing required attribute '" + attributeName + "'." );
+        }
+
+        return new File( value );
+    }
+
     protected Object getAttribute( Attributes attributes, String attributeName )
         throws NamingException
     {
@@ -145,15 +159,18 @@ public abstract class AbstractDirObjectFactory
     protected Object getOptionalAttribute( Attributes attributes, String attributeName )
         throws NamingException
     {
-        Attribute attribute = attributes.get( attributeName );
+        NamingEnumeration<? extends Attribute> it = attributes.getAll();
 
-        if ( attribute == null )
+        while( it.hasMore() )
         {
-            return null;
+            Attribute attribute = it.nextElement();
+
+            if ( attribute.getID().equalsIgnoreCase( attributeName ) )
+            {
+                return attribute.get();
+            }
         }
 
-        Object value = attribute.get();
-
-        return value;
+        return null;
     }
 }

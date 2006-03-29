@@ -22,9 +22,14 @@ package org.codehaus.plexus.ldap.helper;
  * SOFTWARE.
  */
 
-import javax.naming.ldap.LdapName;
+import org.codehaus.plexus.util.StringUtils;
+
 import javax.naming.InvalidNameException;
+import javax.naming.ldap.LdapName;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+import java.util.TreeMap;
 
 /**
  * This class contains the configuration for a ldap connection.
@@ -49,53 +54,111 @@ public class LdapConnectionConfiguration
 
     private int port;
 
-    private LdapName baseDN;
+    private LdapName baseDn;
 
     private String contextFactory;
 
-    private LdapName bindDN;
+    private LdapName bindDn;
 
     private String password;
 
+    private String authenticationMethod;
+
+    private List<Class> objectFactories;
+
+    private List<Class> stateFactories;
+
     private Properties extraProperties;
 
-    public LdapConnectionConfiguration( String hostname, int port, LdapName baseDN, String contextFactory,
-                                        LdapName bindDN, String password, Properties extraProperties )
+    public LdapConnectionConfiguration()
+    {
+    }
+
+    public LdapConnectionConfiguration( String hostname, int port, LdapName baseDn, String contextFactory,
+                                        LdapName bindDn, String password, String authenticationMethod,
+                                        Properties extraProperties )
+        throws LdapException
+    {
+        this.hostname = hostname;
+
+        this.port = port;
+
+        if ( baseDn != null )
+        {
+            this.baseDn = new LdapName( baseDn.getRdns() );
+        }
+
+        this.contextFactory = contextFactory;
+
+        if ( bindDn != null )
+        {
+            this.bindDn = new LdapName( bindDn.getRdns() );
+        }
+
+        this.password = password;
+
+        this.authenticationMethod = authenticationMethod;
+
+        this.extraProperties = extraProperties;
+
+        check();
+    }
+
+    public LdapConnectionConfiguration( String hostname, int port, String baseDn, String contextFactory,
+                                        String bindDn, String password, String authenticationMethod,
+                                        Properties extraProperties )
+        throws InvalidNameException, LdapException
     {
         this.hostname = hostname;
         this.port = port;
-        this.baseDN = new LdapName( baseDN.getRdns() );
+
+        if ( baseDn != null )
+        {
+            this.baseDn = new LdapName( baseDn );
+        }
+
+        if ( bindDn != null )
+        {
+            this.bindDn = new LdapName( bindDn );
+        }
+
         this.contextFactory = contextFactory;
-        this.bindDN = new LdapName( bindDN.getRdns() );
+
         this.password = password;
+
+        this.authenticationMethod = authenticationMethod;
+
         this.extraProperties = extraProperties;
+
+        check();
     }
 
-    public LdapConnectionConfiguration( String hostname, int port, String baseDN, String contextFactory,
-                                        String bindDN, String password, Properties extraProperties )
-        throws InvalidNameException
+    public LdapConnectionConfiguration( String hostname, int port, LdapName baseDn, String contextFactory )
+        throws LdapException
     {
-        this( hostname, port, new LdapName( baseDN ), contextFactory, new LdapName( bindDN ), password, extraProperties );
+        this.hostname = hostname;
+
+        this.port = port;
+
+        this.baseDn = baseDn;
+
+        this.contextFactory = contextFactory;
+
+        check();
     }
 
-    public LdapConnectionConfiguration( String hostname, int port, LdapName baseDN, String contextFactory )
-    {
-        this( hostname, port, baseDN, contextFactory, null, null, new Properties( ) );
-    }
-
-    public LdapName getBaseDN()
-    {
-        return baseDN;
-    }
-
-    public String getContextFactory()
-    {
-        return contextFactory;
-    }
+    // ----------------------------------------------------------------------
+    // Accessors
+    // ----------------------------------------------------------------------
 
     public String getHostname()
     {
         return hostname;
+    }
+
+    public void setHostname( String hostname )
+    {
+        this.hostname = hostname;
     }
 
     public int getPort()
@@ -103,14 +166,107 @@ public class LdapConnectionConfiguration
         return port;
     }
 
-    public LdapName getBindDN()
+    public void setPort( int port )
     {
-        return bindDN;
+        this.port = port;
+    }
+
+    public LdapName getBaseDn()
+    {
+        return baseDn;
+    }
+
+    public void setBaseDn( LdapName baseDn )
+    {
+        this.baseDn = baseDn;
+    }
+
+    public void setBaseDn( String baseDn )
+        throws InvalidNameException
+    {
+        if ( baseDn != null )
+        {
+            this.baseDn = new LdapName( baseDn );
+        }
+    }
+
+    public String getContextFactory()
+    {
+        return contextFactory;
+    }
+
+    public void setContextFactory( String contextFactory )
+    {
+        this.contextFactory = contextFactory;
+    }
+
+    public LdapName getBindDn()
+    {
+        return bindDn;
+    }
+
+    public void setBindDn( LdapName bindDn )
+    {
+        this.bindDn = bindDn;
+    }
+
+    public void setBindDn( String bindDn )
+        throws InvalidNameException
+    {
+        if ( bindDn != null )
+        {
+            this.bindDn = new LdapName( bindDn );
+        }
     }
 
     public String getPassword()
     {
         return password;
+    }
+
+    public void setPassword( String password )
+    {
+        this.password = password;
+    }
+
+    public String getAuthenticationMethod()
+    {
+        return authenticationMethod;
+    }
+
+    public void setAuthenticationMethod( String authenticationMethod )
+    {
+        this.authenticationMethod = authenticationMethod;
+    }
+
+    public List<Class> getObjectFactories()
+    {
+        if ( objectFactories == null )
+        {
+            objectFactories = new ArrayList<Class>();
+        }
+
+        return objectFactories;
+    }
+
+    public void setObjectFactories( List<Class> objectFactories )
+    {
+        this.objectFactories = objectFactories;
+    }
+
+    public List<Class> getStateFactories()
+    {
+        if ( stateFactories == null )
+        {
+            stateFactories = new ArrayList<Class>();
+        }
+
+        return stateFactories;
+    }
+
+    public void setStateFactories( List<Class> stateFactories )
+    {
+        this.stateFactories = stateFactories;
     }
 
     public Properties getExtraProperties()
@@ -123,33 +279,57 @@ public class LdapConnectionConfiguration
         return extraProperties;
     }
 
-    /**
-     * This method will check to se if the configuration is 'sane'.
-     *
-     * @throws LdapException
-     */
+    public void setExtraProperties( Properties extraProperties )
+    {
+        this.extraProperties = extraProperties;
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
     public void check()
         throws LdapException
     {
-        if ( hostname == null )
-        {
-            hostname = "localhost";
-        }
         if ( port < 0 || port > 65535 )
         {
-            throw new LdapException( "The port must be between  and 65535." );
+            throw new LdapException( "The port must be between 1 and 65535." );
         }
-        if ( baseDN == null )
+        if ( baseDn == null )
         {
             throw new LdapException( "The base DN must be set." );
         }
-        if ( contextFactory == null )
+        if ( StringUtils.isEmpty( contextFactory ) )
         {
             throw new LdapException( "The context factory must be set." );
         }
-        if ( password != null && bindDN == null )
+        if ( password != null && bindDn == null )
         {
             throw new LdapException( "The password cant be set unless the bind dn is." );
         }
+
+        if ( extraProperties == null )
+        {
+            extraProperties = new Properties();
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    public String toString()
+    {
+        return "{LdapConnectionConfiguration: " +
+               "hostname: " + getHostname() + ", " +
+               "port: " + getPort() + ", " +
+               "baseDn: " + getBaseDn() + ", " +
+               "contextFactory: " + getContextFactory() + ", " +
+               "bindDn: " + getBindDn() + ", " +
+               "password: " + getPassword() + ", " +
+               "authenticationMethod: " + getAuthenticationMethod() + ", " +
+               "objectFactories: " + getObjectFactories() + ", " +
+               "stateFactories: " + getStateFactories() + ", " +
+               "extraProperties: " + new TreeMap<Object, Object>( extraProperties ).toString() + "}";
     }
 }
