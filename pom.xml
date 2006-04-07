@@ -1,4 +1,7 @@
-<project>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.codehaus.plexus</groupId>
@@ -159,6 +162,14 @@
       <name>Kenney Westerhof</name>
       <id>kenney</id>
       <email>kenney@codehaus.org</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Carlos Sanchez</name>
+      <id>carlos</id>
+      <email>carlos@codehaus.org</email>
       <roles>
         <role>Developer</role>
       </roles>
