@@ -48,8 +48,10 @@
     <module>plexus-jdo</module>
     <module>plexus-jetty-httpd</module>    
     <module>plexus-jetty</module>
+    <!--
     <module>plexus-ldap-helper</module>
     <module>plexus-mail-sender</module>
+    -->    
     <module>plexus-mimetyper</module>    
     <module>plexus-notification</module>
     <!--
