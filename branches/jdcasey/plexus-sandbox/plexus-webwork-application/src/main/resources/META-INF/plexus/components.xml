@@ -1,0 +1,25 @@
+<component-set>
+  <components>
+    <!--
+     | Actions
+     |-->
+    <component>
+      <role>com.opensymphony.xwork.Action</role>
+      <role-hint>com.opensymphony.webwork.example.counter.SimpleCounter</role-hint>
+      <implementation>com.opensymphony.webwork.example.counter.SimpleCounter</implementation>
+      <requirements>
+        <requirement>
+          <role>com.opensymphony.webwork.example.counter.Counter</role>
+        </requirement>
+      </requirements>
+    </component>
+
+    <!--
+    | Services
+    -->
+    <component>
+      <role>com.opensymphony.webwork.example.counter.Counter</role>
+      <implementation>com.opensymphony.webwork.example.counter.Counter</implementation>
+    </component>
+  </components>
+</component-set>

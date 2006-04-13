@@ -1,0 +1,69 @@
+<application xmlns="marmalade:cling-app">
+    
+    <applicationDescription>Test Application</applicationDescription>
+    
+    <main>
+        <mainClass>org.codehaus.plexus.cling.integrationTest.IntegrationTestMain</mainClass>
+        <mainMethod>execute</mainMethod>
+    </main>
+    
+    <environment>
+        test=value
+        test2=value2
+    </environment>
+    
+    <legalUsage>
+        
+        <optionSet>
+            <option>
+                <optionShortName>i</optionShortName>
+                <optionLongName>input</optionLongName>
+                <optionRequired/>
+                <optionDescription>Input mode flag</optionDescription>
+                <optionProperty>input</optionProperty>
+            </option>
+            <option>
+                <optionShortName>f</optionShortName>
+                <optionLongName>file</optionLongName>
+                <optionType>File</optionType>
+                <optionRequired/>
+                <optionDescription>File option</optionDescription>
+                <optionProperty>file</optionProperty>
+            </option>
+            <option>
+                <optionShortName>b</optionShortName>
+                <optionLongName>bool</optionLongName>
+                <optionDescription>Boolean flag</optionDescription>
+                <optionProperty>bool</optionProperty>
+            </option>
+        </optionSet>
+        
+        <optionSet>
+            <option>
+                <optionShortName>o</optionShortName>
+                <optionLongName>output</optionLongName>
+                <optionRequired/>
+                <optionDescription>Output mode flag</optionDescription>
+                <optionProperty>output</optionProperty>
+            </option>
+            <option>
+                <optionShortName>f</optionShortName>
+                <optionLongName>file</optionLongName>
+                <optionType>String</optionType>
+                <optionDescription>File path option</optionDescription>
+                <optionProperty>file</optionProperty>
+            </option>
+        </optionSet>
+        
+    </legalUsage>
+    
+    <classpath>
+        <local>conf</local>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+    </classpath>
+    
+</application>

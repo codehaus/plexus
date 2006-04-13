@@ -1,0 +1,18 @@
+<form>
+  <id>addProjectScm</id>
+  <elements>
+    <element>
+      <id>addProject.scm</id>
+      <validator>default</validator>
+      <message-key>addProject.scm.message</message-key>
+      <label-key>addProject.scm.label</label-key>
+      <error-message-key>addProject.scm.error</error-message-key>
+      <type>text</type>
+    </element>
+  </elements>
+  <add>
+    <title-key>addProjectScm.title</title-key>
+    <action>addProjectScm</action>
+    <view>projectOverview.vm</view>
+  </add>
+</form>

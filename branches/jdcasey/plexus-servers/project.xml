@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<project>
+  <pomVersion>3</pomVersion>
+  <id>plexus-server</id>
+  <artifactId>plexus-server</artifactId>
+  <groupId>plexus</groupId>
+  <name>Plexus Servers</name>
+  <currentVersion>1.0</currentVersion>
+  <organization>
+    <name>Codehaus</name>
+    <url>http://www.codehaus.org/</url>
+    <logo>/images/codehaus-small.gif</logo>
+  </organization>
+  <inceptionYear>2001</inceptionYear>
+  <!-- untill the smtpd server is moved to org.codehaus.plexus.smtpd
+  <package>org.codehaus.plexus.${pom.artifactId.substring(7)}</package>
+  -->
+  <package>org.codehaus.plexus</package>
+  <logo>/../components/images/plexus-servers-logo.gif</logo>
+  
+  <!-- Gump integration -->
+  <gumpRepositoryId>jakarta</gumpRepositoryId>
+
+  <url>http://plexus.codehaus.org/servers/${pom.artifactId.substring(7)}</url>
+  <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10080</issueTrackingUrl>
+ 
+  <siteAddress>plexus.codehaus.org</siteAddress>
+  <siteDirectory>/www/plexus.codehaus.org/servers/${pom.artifactId.substring(7)}</siteDirectory>
+  
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/scm/cvspublic:/plexus/plexus-servers/${pom.artifactId.substring(7)}</connection>
+    <url>http://cvs.plexus.codehaus.org/plexus-servers/${pom.artifactId.substring(7)}/</url>
+  </repository>
+
+  <mailingLists>
+    <mailingList>
+      <name>Plexus Developer List</name>
+      <subscribe>plexus-dev-request@lists.codehaus.org?subject=subscribe</subscribe>
+      <unsubscribe>plexus-dev-request@lists.codehaus.org?subject=unsubscribe</unsubscribe>
+      <archive>http://lists.codehaus.org/pipermail/plexus-dev/</archive>
+    </mailingList>
+
+    <mailingList>
+      <name>Plexus User List</name>
+      <subscribe>plexus-user-request@lists.codehaus.org?subject=subscribe</subscribe>
+      <unsubscribe>plexus-user-request@lists.codehaus.org?subject=unsubscribe</unsubscribe>
+      <archive>http://lists.codehaus.org/pipermail/plexus-user</archive>
+    </mailingList>
+
+    <mailingList>
+      <name>Plexus Scm List</name>
+      <subscribe>plexus-scm-request@lists.codehaus.org?subject=subscribe</subscribe>
+      <unsubscribe>plexus-scm-request@lists.codehaus.org?subject=unsubscribe</unsubscribe>
+      <archive>http://lists.codehaus.org/pipermail/plexus-scm</archive>
+    </mailingList>
+  </mailingLists>
+
+  <dependencies>
+    
+    <!--
+     |
+     | Common compile-time dependencies for all the components.
+     |
+     -->
+
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus</artifactId>
+      <version>0.14-SNAPSHOT</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>avalon</groupId>
+      <artifactId>avalon-framework</artifactId>
+      <version>4.1.4</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-synapse</artifactId>
+      <version>0.1</version>
+    </dependency>
+
+    <!--
+     |
+     | Common test-time dependencies for all the components.
+     |
+     -->
+
+    <dependency>
+      <groupId>classworlds</groupId>
+      <artifactId>classworlds</artifactId>
+      <version>1.1-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>xpp3</groupId>
+      <artifactId>xpp3</artifactId>
+      <version>1.1.3.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.0-beta-1</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+
+    <nagEmailAddress>plexus-dev@lists.codehaus.org</nagEmailAddress>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+      <excludes>
+        <exlude>**/Abstract*.java</exlude>
+      </excludes>
+    
+      <resources>
+        <resource>
+          <directory>src/test</directory>
+          <includes>
+            <include>**/*.xml</include>
+            <include>**/*.xsd</include>
+            <include>**/*.vm</include>
+            <include>**/*.properties</include>
+          </includes>
+        </resource>
+      </resources>
+    </unitTest>
+
+    <resources>
+      <resource>
+       <directory>src/main</directory>
+        <includes>
+          <include>**/*.properties</include>
+          <include>**/*.vsl</include>
+          <include>**/*.css</include>
+          <include>**/*.gif</include>
+        </includes>
+      </resource>
+    </resources>
+
+  </build>
+  
+  <reports>
+    <report>maven-changelog-plugin</report>
+    <report>maven-changes-plugin</report>
+    <report>maven-developer-activity-plugin</report>
+    <report>maven-file-activity-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-jdepend-plugin</report>
+    <report>maven-jcoverage-plugin</report>
+    <report>maven-junit-report-plugin</report>
+    <report>maven-jxr-plugin</report>
+    <report>maven-checkstyle-plugin</report>
+    <report>maven-license-plugin</report>
+    <!--
+    <report>maven-linkcheck-plugin</report>
+    <report>maven-tasklist-plugin</report>
+    -->
+  </reports>
+
+</project>

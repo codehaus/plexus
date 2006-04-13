@@ -1,0 +1,5 @@
+#if ($stack.findValue("#extraCol"))
+    </td><td>
+#else
+    </td></tr>
+#end

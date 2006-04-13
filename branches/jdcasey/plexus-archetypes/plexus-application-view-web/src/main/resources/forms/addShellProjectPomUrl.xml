@@ -1,0 +1,18 @@
+<form>
+  <id>addShellProjectPomUrl</id>
+  <elements>
+    <element>
+      <id>addProject.pomUrl</id>
+      <validator>default</validator>
+      <message-key>addProject.pomUrl.message</message-key>
+      <label-key>addProject.pomUrl.label</label-key>
+      <error-message-key>addProject.pomUrl.error</error-message-key>
+      <type>text</type>
+    </element>
+  </elements>
+  <add>
+    <title-key>addProjectPomUrl.title</title-key>
+    <action>addShellBuilderProject</action>
+    <view>projectOverview.vm</view>
+  </add>
+</form>

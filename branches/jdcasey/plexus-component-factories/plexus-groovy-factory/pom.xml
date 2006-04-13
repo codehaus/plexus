@@ -1,0 +1,18 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>plexus-component-factories</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0-alpha-6</version>
+  </parent>
+  <artifactId>plexus-groovy-factory</artifactId>
+  <version>1.0-alpha-6-SNAPSHOT</version>
+  <name>Plexus Groovy Factory</name>
+  <dependencies>
+    <dependency>
+      <groupId>groovy</groupId>
+      <artifactId>groovy</artifactId>
+      <version>1.0-beta-4</version>
+    </dependency>
+  </dependencies>
+</project>

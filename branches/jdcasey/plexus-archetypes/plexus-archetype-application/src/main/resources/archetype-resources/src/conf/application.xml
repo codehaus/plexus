@@ -1,0 +1,36 @@
+<application>
+
+  <load-on-start>
+    <component>
+      <role>${package}.TestApp</role>
+    </component>
+  </load-on-start>
+
+  <resources>
+    <jar-repository>${plexus.home}/lib</jar-repository>
+  </resources>
+
+  <services>
+<!--
+    <service>
+      <id>servlet-container</id>
+      <configuration>
+        <webapps>${plexus.home}/webapps</webapps>
+      </configuration>
+    </service>
+
+    <service>
+      <id>xml-rpc</id>
+      <configuration>
+        <handlers>
+          <handler>
+            <name>test-app</name>
+            <role>${package}.TestApp</role>
+          </handler>
+        </handlers>
+      </configuration>
+    </service>
+-->
+  </services>
+
+</application>
