@@ -1,0 +1,26 @@
+<model>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>$groupId</groupId>
+  <artifactId>$artifactId</artifactId>
+  <version>$version</version>
+  <dependencies>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-2-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-plexus-plugin</artifactId>
+        <configuration>
+          <configurationDirectory>src/conf</configurationDirectory>
+          <applicationName>foo</applicationName>
+          <plexusConfiguration>src/conf/plexus.conf</plexusConfiguration>
+          <basedir>target</basedir>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</model>

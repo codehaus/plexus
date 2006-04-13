@@ -1,0 +1,79 @@
+ -----
+ Plexus
+ -----
+ -----
+
+One Minute Tutorial
+
+ You can easily create and manage components with the Plexus Embedder.
+
+ [[1]] You must create your first component interface.
+
++---
+public interface CheeseComponent
+{
+    final String ROLE = CheeseComponent.class.getName();
+
+    String cheese();
+}
++---
+
+ [[1]] You must create your component implementation.
+
++---+
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+
+public class DefaultCheeseComponent
+    implements Initializable, CheeseComponent
+{
+    private String cheese;
+
+    public void initialize() throws Exception
+    {
+        cheese = "cheese!";
+    }
+
+    public String cheese()
+    {
+        return cheese;
+    }
+}
++---+
+
+ Notice that we implement <<<Intializable>>>. This is part of the
+ {{{plexus-lifecycle.html}Component Lifecycle}}. When plexus automatically
+ instantiates your component it will automatically <<<intiailize()>>> it as
+ well.
+
+ [[1]] Create your component configuration.
+
++---+
+{noformat}
+<plexus>
+  <components>
+    <component>
+      <role>CheeseComponent</role>
+      <implementation>DefaultCheeseComponent</implementation>
+    </component>
+  </components>
+</plexus>
++---+
+
+ [[1]] Create the container
+
+ Plexus was meant to be easily embedded as well as scale to large systems.  The
+ embedder tool makes it really easy to embed plexus:
+
++---+
+Embedder embed = new Embedder();
+embed.setConfiguration( new File("EmbedderTest.xml").toURL() );
+embed.addContextValue( "foo", "bar" );
++---+
+
+ [[1]] Access your components.
+
++---+
+CheeseComponent cheese = (CheeseComponent) embed.lookup( CheeseComponent.ROLE )
++---+
+
+ And that's it! See the five minute tutorial for some more advanced usage.

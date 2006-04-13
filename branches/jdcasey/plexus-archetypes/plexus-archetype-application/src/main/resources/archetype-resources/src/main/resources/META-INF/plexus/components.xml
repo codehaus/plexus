@@ -1,0 +1,10 @@
+<configuration>
+  <components>
+    <component>
+      <role>${package}.TestApp</role>
+      <implementation>${package}.DefaultTestApp</implementation>
+      <configuration>
+      </configuration>
+    </component>
+  </components>
+</configuration>

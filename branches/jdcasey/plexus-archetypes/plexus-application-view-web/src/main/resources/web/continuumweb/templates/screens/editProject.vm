@@ -1,0 +1,31 @@
+<div class="app">
+  <h3>Edit Project $project.name</h3>
+  <form action="$link.setPage('projectDetails.vm')" method="post">
+    <input type="hidden" name="action" value="updateProject"/>
+    <input type="hidden" name="id" value="$project.id"/>
+      <p>
+        <table border="1" cellspacing="2" cellpadding="3" width="100%">
+          <tr class="a">
+            <td>Project Name</td>
+            <td><input type="text" name="name" value="$project.name"/></td>
+          </tr>
+          <tr class="a">
+            <td>Scm url</td>
+            <td><input type="text" name="scmConnection" value="$project.scmConnection"/></td>
+          </tr>
+          <tr class="a">
+            <td>Nag email address</td>
+            <td><input type="text" name="nagEmailAddress" value="$project.nagEmailAddress"/></td>
+          </tr>
+          <tr class="a">
+            <td>Version</td>
+            <td><input type="text" name="version" value="$project.version"/></td>
+          </tr>
+        </table>
+      </p>
+    <div class="functnbar3">
+      <input type="submit" name="button" value="Update"/>
+      <input type="submit" name="button" value="Abort"/>
+    </div>
+  </form>
+</div>

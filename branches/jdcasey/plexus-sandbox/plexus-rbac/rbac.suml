@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Classdiagram>
+  <settings>
+    <option name="layoutOnChanges" value="false" />
+    <option name="paintDepends" value="false" />
+    <option name="paintExtends" value="true" />
+    <option name="paintInner" value="true" />
+    <option name="paintUses" value="false" />
+    <option name="paintImplements" value="true" />
+  </settings>
+  <classes>
+    <class name="org.codehaus.plexus.security.rbac.role.DefaultRole" x="582" y="338">
+      <option name="fieldsExpanded" value="false" />
+      <option name="methodsExpanded" value="false" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="false" />
+    </class>
+    <class name="org.codehaus.plexus.security.rbac.session.AbstractRbacSession" x="120" y="198">
+      <option name="fieldsExpanded" value="false" />
+      <option name="methodsExpanded" value="false" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="false" />
+    </class>
+    <class name="org.codehaus.plexus.security.rbac.user.AbstractRbacUser" x="97" y="743">
+      <option name="fieldsExpanded" value="false" />
+      <option name="methodsExpanded" value="false" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="false" />
+    </class>
+    <class name="org.codehaus.plexus.security.rbac.user.RbacUser" x="83" y="550">
+      <option name="fieldsExpanded" value="true" />
+      <option name="methodsExpanded" value="true" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="false" />
+    </class>
+    <class name="org.codehaus.plexus.security.rbac.session.DefaultRbacSession" x="50" y="338">
+      <option name="fieldsExpanded" value="true" />
+      <option name="methodsExpanded" value="true" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="true" />
+    </class>
+    <class name="org.codehaus.plexus.security.rbac.permission.AbstractPermissionEntry" x="1061" y="198">
+      <option name="fieldsExpanded" value="false" />
+      <option name="methodsExpanded" value="false" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="false" />
+    </class>
+    <class name="org.codehaus.plexus.security.rbac.session.RbacSession" x="146" y="100">
+      <option name="fieldsExpanded" value="false" />
+      <option name="methodsExpanded" value="false" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="false" />
+    </class>
+    <class name="org.codehaus.plexus.security.rbac.permission.DefaultPermission" x="1578" y="338">
+      <option name="fieldsExpanded" value="false" />
+      <option name="methodsExpanded" value="false" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="false" />
+    </class>
+    <class name="org.codehaus.plexus.security.rbac.RbacSecurityViolation" x="50" y="888">
+      <option name="fieldsExpanded" value="false" />
+      <option name="methodsExpanded" value="false" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="false" />
+    </class>
+    <class name="org.codehaus.plexus.security.rbac.role.Role" x="652" y="100">
+      <option name="fieldsExpanded" value="false" />
+      <option name="methodsExpanded" value="false" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="false" />
+    </class>
+    <class name="org.codehaus.plexus.security.rbac.permission.PermissionEntry" x="1087" y="100">
+      <option name="fieldsExpanded" value="false" />
+      <option name="methodsExpanded" value="false" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="false" />
+    </class>
+    <class name="org.codehaus.plexus.security.rbac.role.AbstractRole" x="610" y="198">
+      <option name="fieldsExpanded" value="false" />
+      <option name="methodsExpanded" value="false" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="false" />
+    </class>
+    <class name="org.codehaus.plexus.security.rbac.permission.Permission" x="1670" y="100">
+      <option name="fieldsExpanded" value="false" />
+      <option name="methodsExpanded" value="false" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="false" />
+    </class>
+    <class name="org.codehaus.plexus.security.rbac.permission.AbstractPermission" x="1642" y="198">
+      <option name="fieldsExpanded" value="false" />
+      <option name="methodsExpanded" value="false" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="false" />
+    </class>
+    <class name="org.codehaus.plexus.security.rbac.permission.DefaultPermissionEntry" x="982" y="338">
+      <option name="fieldsExpanded" value="false" />
+      <option name="methodsExpanded" value="false" />
+      <option name="pinned" value="false" />
+      <option name="constructorsExpanded" value="false" />
+    </class>
+  </classes>
+  <stickycomponents />
+  <textcomponents />
+  <connectors>
+    <connector from="org.codehaus.plexus.security.rbac.session.AbstractRbacSession" to="org.codehaus.plexus.security.rbac.session.RbacSession">
+      <anchor constraint="1" type="2" x="194" y="198" />
+      <anchor constraint="1" type="2" x="194" y="148" />
+      <decorator type="1" description="" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.role.DefaultRole" to="org.codehaus.plexus.security.rbac.role.AbstractRole">
+      <anchor constraint="1" type="2" x="682" y="338" />
+      <anchor constraint="1" type="2" x="682" y="288" />
+      <decorator type="2" description="" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.user.RbacUser" to="org.codehaus.plexus.security.rbac.user.RbacUser">
+      <anchor constraint="1" type="2" x="212" y="682" />
+      <anchor constraint="1" type="1" x="212" y="707" />
+      <anchor constraint="1" type="1" x="266" y="707" />
+      <anchor constraint="1" type="1" x="266" y="638" />
+      <anchor constraint="1" type="2" x="256" y="638" />
+      <decorator type="4" description="+ final  ZERO_USER" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.user.RbacUser" to="org.codehaus.plexus.security.rbac.user.RbacUser">
+      <anchor constraint="1" type="2" x="168" y="682" />
+      <anchor constraint="1" type="1" x="168" y="717" />
+      <anchor constraint="1" type="1" x="276" y="717" />
+      <anchor constraint="1" type="1" x="276" y="594" />
+      <anchor constraint="1" type="2" x="256" y="594" />
+      <decorator type="4" description="+ final  NO_USER" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.permission.DefaultPermission" to="org.codehaus.plexus.security.rbac.permission.AbstractPermission">
+      <anchor constraint="1" type="2" x="1714" y="338" />
+      <anchor constraint="1" type="2" x="1714" y="288" />
+      <decorator type="2" description="" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.role.Role" to="org.codehaus.plexus.security.rbac.role.Role">
+      <anchor constraint="1" type="2" x="700" y="148" />
+      <anchor constraint="1" type="1" x="700" y="173" />
+      <anchor constraint="1" type="1" x="722" y="173" />
+      <anchor constraint="1" type="1" x="722" y="136" />
+      <anchor constraint="1" type="2" x="712" y="136" />
+      <decorator type="4" description="+ final  SUPER_USER" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.role.Role" to="org.codehaus.plexus.security.rbac.role.Role">
+      <anchor constraint="1" type="2" x="688" y="148" />
+      <anchor constraint="1" type="1" x="688" y="183" />
+      <anchor constraint="1" type="1" x="732" y="183" />
+      <anchor constraint="1" type="1" x="732" y="124" />
+      <anchor constraint="1" type="2" x="712" y="124" />
+      <decorator type="4" description="+ final  EMPTY_ROLE" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.role.Role" to="org.codehaus.plexus.security.rbac.role.Role">
+      <anchor constraint="1" type="2" x="676" y="148" />
+      <anchor constraint="1" type="1" x="676" y="193" />
+      <anchor constraint="1" type="1" x="742" y="193" />
+      <anchor constraint="1" type="1" x="742" y="112" />
+      <anchor constraint="1" type="2" x="712" y="112" />
+      <decorator type="4" description="+ final  ZERO_ROLE" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.session.DefaultRbacSession" to="org.codehaus.plexus.security.rbac.user.RbacUser">
+      <anchor constraint="1" type="2" x="183" y="498" />
+      <anchor constraint="1" type="2" x="177" y="550" />
+      <decorator type="4" description="#  user" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.permission.PermissionEntry" to="org.codehaus.plexus.security.rbac.permission.PermissionEntry">
+      <anchor constraint="1" type="2" x="1184" y="148" />
+      <anchor constraint="1" type="1" x="1184" y="173" />
+      <anchor constraint="1" type="1" x="1218" y="173" />
+      <anchor constraint="1" type="1" x="1218" y="124" />
+      <anchor constraint="1" type="2" x="1208" y="124" />
+      <decorator type="4" description="+ final  ZERO_PERMISSION_ENTRY" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.session.DefaultRbacSession" to="org.codehaus.plexus.security.rbac.session.AbstractRbacSession">
+      <anchor constraint="1" type="2" x="194" y="338" />
+      <anchor constraint="1" type="2" x="194" y="288" />
+      <decorator type="2" description="" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.permission.AbstractPermission" to="org.codehaus.plexus.security.rbac.permission.Permission">
+      <anchor constraint="1" type="2" x="1714" y="198" />
+      <anchor constraint="1" type="2" x="1714" y="148" />
+      <decorator type="1" description="" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.permission.DefaultPermission" to="org.codehaus.plexus.security.rbac.permission.PermissionEntry">
+      <anchor constraint="1" type="2" x="1641" y="338" />
+      <anchor constraint="1" type="2" x="1201" y="148" />
+      <decorator type="4" description="- final  entries" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.role.AbstractRole" to="org.codehaus.plexus.security.rbac.role.Role">
+      <anchor constraint="1" type="2" x="682" y="198" />
+      <anchor constraint="1" type="2" x="682" y="148" />
+      <decorator type="1" description="" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.user.AbstractRbacUser" to="org.codehaus.plexus.security.rbac.user.RbacUser">
+      <anchor constraint="1" type="2" x="169" y="743" />
+      <anchor constraint="1" type="2" x="169" y="682" />
+      <decorator type="1" description="" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.permission.AbstractPermissionEntry" to="org.codehaus.plexus.security.rbac.permission.PermissionEntry">
+      <anchor constraint="1" type="2" x="1147" y="198" />
+      <anchor constraint="1" type="2" x="1147" y="148" />
+      <decorator type="1" description="" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.permission.DefaultPermissionEntry" to="org.codehaus.plexus.security.rbac.permission.AbstractPermissionEntry">
+      <anchor constraint="1" type="2" x="1147" y="338" />
+      <anchor constraint="1" type="2" x="1147" y="288" />
+      <decorator type="2" description="" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.permission.Permission" to="org.codehaus.plexus.security.rbac.permission.Permission">
+      <anchor constraint="1" type="2" x="1747" y="148" />
+      <anchor constraint="1" type="1" x="1747" y="173" />
+      <anchor constraint="1" type="1" x="1769" y="173" />
+      <anchor constraint="1" type="1" x="1769" y="136" />
+      <anchor constraint="1" type="2" x="1759" y="136" />
+      <decorator type="4" description="+ final  ALL_PERMISSION" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.permission.Permission" to="org.codehaus.plexus.security.rbac.permission.Permission">
+      <anchor constraint="1" type="2" x="1735" y="148" />
+      <anchor constraint="1" type="1" x="1735" y="183" />
+      <anchor constraint="1" type="1" x="1779" y="183" />
+      <anchor constraint="1" type="1" x="1779" y="124" />
+      <anchor constraint="1" type="2" x="1759" y="124" />
+      <decorator type="4" description="+ final  NO_PERMISSION" />
+    </connector>
+    <connector from="org.codehaus.plexus.security.rbac.permission.Permission" to="org.codehaus.plexus.security.rbac.permission.Permission">
+      <anchor constraint="1" type="2" x="1723" y="148" />
+      <anchor constraint="1" type="1" x="1723" y="193" />
+      <anchor constraint="1" type="1" x="1789" y="193" />
+      <anchor constraint="1" type="1" x="1789" y="112" />
+      <anchor constraint="1" type="2" x="1759" y="112" />
+      <decorator type="4" description="+ final  ZERO_PERMISSION" />
+    </connector>
+  </connectors>
+</Classdiagram>
+

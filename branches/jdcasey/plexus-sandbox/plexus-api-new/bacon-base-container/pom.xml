@@ -1,0 +1,23 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.bacon</groupId>
+    <artifactId>bacon-root</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
+  </parent>
+  <artifactId>bacon-base-container</artifactId>
+  
+  <name>BaCon Base Container Implementation</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.bacon</groupId>
+      <artifactId>bacon-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>

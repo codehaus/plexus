@@ -1,0 +1,14 @@
+<project default="plexus-jdo-dist" xmlns:m="jelly:maven">
+    <goal name="plexus-jdo-dist">
+        <attainGoal name="jpox:enhance"/>
+        <attainGoal name="test:test"/>
+        <attainGoal name="jar:install"/>
+    </goal>
+    <preGoal name="java:compile">
+        <path id="maven.compile.src.set">
+            <pathelement location="src/java/"/>
+            <pathelement location="src/test/org/codehaus/plexus/jdo"/>
+        </path>
+    </preGoal>
+</project>
+    

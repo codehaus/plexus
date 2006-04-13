@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<rdf>
+
+  <channel>
+    <title>Feed listing</title>
+    <link></link>
+    <description>RSS feed listing</description>
+  </channel>
+
+  <item>
+    <title>Geek news</title>
+    <link>http://geeknews.net/backend.php</link>
+  </item>
+  <item>
+    <title>Linux central</title>
+    <link>http://linuxcentral.com/backend/lcnew.rdf</link>
+  </item>
+  <item>
+    <title>Wired news</title>
+    <link>http://www.wired.com/news_drop/netcenter/netcenter.rdf</link>
+  </item>
+  <item>
+    <title>Feed listing</title>
+    <link>examples/rss/feeds.rdf</link>
+  </item>
+</rdf>
+

@@ -1,0 +1,39 @@
+<div class="app">
+  <h3>Project Summary</h3>
+#if ( $error )
+  <p>
+    <font color="red">$error</font>
+#if ( $exception )
+    <pre>
+    $exception
+    </pre>
+#end
+  </p>
+#end
+  <p>
+    #set ( $class = "a" )
+    <table border="1" cellspacing="2" cellpadding="3" width="100%">
+      <tr>
+        <th>Project Name</th>
+        <th>State</th>
+        <th>Details</th>
+      </tr>
+      #foreach ( $project in $projects )
+      #if ( $project.state == "failed" )
+      #set ( $class = "warning" )
+      #end
+      <tr class="$class">
+        <td>$project.name</td>
+        <td>$project.state $project.id</td>
+
+        <td><a href="$link.addQueryData( "action", "showProject" ).addQueryData( "id", "$project.Id" ).setPage('projectDetails.vm')">Details</a></td>
+      </tr>
+      #if ( $class == "a" )
+        #set ( $class = "b" )
+      #else
+        #set ( $class = "a" )
+      #end
+      #end
+    </table>
+  </p>
+</div>

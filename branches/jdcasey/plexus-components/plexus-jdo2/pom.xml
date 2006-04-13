@@ -1,0 +1,50 @@
+<project>
+  <parent>
+    <artifactId>plexus-components</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.1.5</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>plexus-jdo2</artifactId>
+  <name>Plexus JDO Component</name>
+  <version>1.0-alpha-4-SNAPSHOT</version>
+  <inceptionYear>2005</inceptionYear>
+  <developers>
+    <developer>
+      <id>3</id>
+      <name>David Wynter</name>
+      <email>david (at) dwynter.plus.com</email>
+      <organization>STPenable Ltd.</organization>
+      <timezone>UTC+0</timezone>
+    </developer>
+  </developers>
+  <dependencies>
+    <dependency>
+      <groupId>javax.jdo</groupId>
+      <artifactId>jdo2-api</artifactId>
+      <version>2.0-rc1</version>
+    </dependency>
+    <dependency>
+      <groupId>jpox</groupId>
+      <artifactId>jpox</artifactId>
+      <version>1.1.0-rc-1</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.sql</groupId>
+          <artifactId>jdbc-stdext</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.security</groupId>
+          <artifactId>jaas</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>1.7.3.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

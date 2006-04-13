@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<project default="jar:install">
+
+    <!--
+    <postGoal name="java:compile">
+        <attainGoal name="generateMetaData"/>
+    </postGoal>
+
+    <goal name="generateMetaData" prereqs="dna:metagenerate"/>
+    -->
+
+</project>

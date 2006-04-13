@@ -1,0 +1,13 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.cling.Launcher</role>
+      <implementation>org.codehaus.plexus.cling.Launcher</implementation>
+      <requirements>
+        <requirement>
+            <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+</component-set>

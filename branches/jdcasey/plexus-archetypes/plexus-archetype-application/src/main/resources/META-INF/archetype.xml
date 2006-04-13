@@ -1,0 +1,15 @@
+<archetype>
+  <id>plexus-archetype-component-simple</id>
+  <sources>
+    <source>src/main/java/TestApp.java</source>
+    <source>src/main/java/DefaultTestApp.java</source>
+  </sources>
+  <resources>
+    <resource>src/conf/application.xml</resource>
+    <resource>src/plexus.properties</resource>
+    <resource>src/main/resources/META-INF/plexus/components.xml</resource>
+  </resources>
+  <testSources>
+    <source>src/test/java/TestAppTest.java</source>
+  </testSources>
+</archetype>

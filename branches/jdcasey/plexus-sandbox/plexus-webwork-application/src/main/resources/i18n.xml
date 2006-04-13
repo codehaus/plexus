@@ -1,0 +1,109 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+    <package name="i18n-default" abstract="true" extends="webwork-default">
+        <default-interceptor-ref name="defaultStack"/>
+        <action name="i18n.LanguageList" class="com.opensymphony.webwork.example.i18n.LanguageList">
+        </action>
+    </package>
+    <package name="i18n-velocity" namespace="/i18n/velocity" extends="i18n-default">
+        <action name="i18n.Shop" class="com.opensymphony.webwork.example.i18n.Shop">
+            <result name="success" type="velocity">
+                <param name="location">shop.vm</param>
+            </result>
+        </action>
+        <action name="i18n.Add" class="com.opensymphony.webwork.example.i18n.Add">
+            <result name="success" type="velocity">
+                <param name="location">shop.vm</param>
+            </result>
+        </action>
+        <action name="i18n.Delete" class="com.opensymphony.webwork.example.i18n.Delete">
+            <result name="success" type="velocity">
+                <param name="location">shop.vm</param>
+            </result>
+        </action>
+        <action name="i18n.Checkout" class="com.opensymphony.webwork.example.i18n.Checkout">
+            <result name="success" type="velocity">
+                <param name="location">checkout.vm</param>
+            </result>
+        </action>
+        <action name="i18n.Language" class="com.opensymphony.webwork.example.i18n.Language">
+            <result name="success" type="velocity">
+                <param name="location">shop.vm</param>
+            </result>
+            <result name="error" type="velocity">
+                <param name="location">language.vm</param>
+            </result>
+        </action>
+        <action name="i18n.Restart" class="com.opensymphony.webwork.example.i18n.Restart">
+            <result name="success" type="velocity">
+                <param name="location">shop.vm</param>
+            </result>
+        </action>
+        <!--        <action name="i18n.Cart" class="com.opensymphony.webwork.example.i18n.Cart">-->
+        <!--            <result name="success" type="velocity">-->
+        <!--                <param name="location">cart.vm</param>-->
+        <!--            </result>-->
+        <!--        </action>-->
+        <action name="i18n.CDList" class="com.opensymphony.webwork.example.i18n.CDList">
+            <result name="success" type="velocity">
+                <param name="location">cdlist.vm</param>
+            </result>
+        </action>
+        <action name="i18n.ComputePrice" class="com.opensymphony.webwork.example.i18n.ComputePrice">
+            <result name="success" type="velocity">
+                <param name="location">shop.vm</param>
+            </result>
+        </action>
+    </package>
+    <package name="i18n-jsp" namespace="/i18n/jsp" extends="i18n-default">
+        <action name="i18n.Shop" class="com.opensymphony.webwork.example.i18n.Shop">
+            <result name="success" type="dispatcher">
+                <param name="location">shop.jsp</param>
+            </result>
+        </action>
+        <action name="i18n.Add" class="com.opensymphony.webwork.example.i18n.Add">
+            <result name="success" type="dispatcher">
+                <param name="location">shop.jsp</param>
+            </result>
+        </action>
+        <action name="i18n.Delete" class="com.opensymphony.webwork.example.i18n.Delete">
+            <result name="success" type="dispatcher">
+                <param name="location">shop.jsp</param>
+            </result>
+        </action>
+        <action name="i18n.Checkout" class="com.opensymphony.webwork.example.i18n.Checkout">
+            <result name="success" type="dispatcher">
+                <param name="location">checkout.jsp</param>
+            </result>
+        </action>
+        <action name="i18n.Language" class="com.opensymphony.webwork.example.i18n.Language">
+            <result name="success" type="dispatcher">
+                <param name="location">shop.jsp</param>
+            </result>
+            <result name="error" type="dispatcher">
+                <param name="location">language.jsp</param>
+            </result>
+        </action>
+        <action name="i18n.Restart" class="com.opensymphony.webwork.example.i18n.Restart">
+            <result name="success" type="dispatcher">
+                <param name="location">shop.jsp</param>
+            </result>
+        </action>
+        <!--        <action name="i18n.Cart" class="com.opensymphony.webwork.example.i18n.Cart">-->
+        <!--            <result name="success" type="dispatcher">-->
+        <!--                <param name="location">cart.jsp</param>-->
+        <!--            </result>-->
+        <!--        </action>-->
+        <action name="i18n.CDList" class="com.opensymphony.webwork.example.i18n.CDList">
+            <result name="success" type="dispatcher">
+                <param name="location">cdlist.jsp</param>
+            </result>
+        </action>
+        <action name="i18n.ComputePrice" class="com.opensymphony.webwork.example.i18n.ComputePrice">
+            <result name="success" type="dispatcher">
+                <param name="location">shop.jsp</param>
+            </result>
+        </action>
+    </package>
+</xwork>

@@ -1,0 +1,93 @@
+ -----
+ Using Jetty with Apache
+ -----
+ Jason van Zyl
+ -----
+
+Using Jetty with Apache
+
+  This is a small guide showing how to setup a Plexus web application behind 
+  Apache efficiently using mod_rewrite and mod_proxy.
+
+Settting up Apache
+
+ Whether you are building Apache yourself or getting a binary you must make
+ sure that the mod_rewrite and mod_proxy modules are enabled. If you are 
+ building Apache yourself then you want to make sure you enable the
+ mod_proxy and mod_rewrite modules by using the <<<configure>>> command
+ like the following:
+ 
++-----+
+./configure \
+"--with-layout=Apache" \
+"--prefix=/home/jvanzyl/apache/server" \
+"--enable-module=auth_digest" \
+"--enable-module=proxy" \
+"--enable-module=vhost_alias" \
+"--enable-module=headers" \
+"--enable-module=rewrite" \
+"--enable-module=so" \
+"--enable-module=digest" \
+"$@"
++-----+
+
+* Apache mod_rewrite rules
+
+ If your application is called ${application} then your mod_rewrite rules
+ generally look like the following:
+ 
++-----+
+RewriteEngine on
+RewriteRule ^/${application} http://localhost:8081/${application}/servlet/${application} [p]
+RewriteRule ^/${application}/(.*)$ http://localhost:8081/${application}/$1 [p]
++-----+
+
+ The first rule just makes it convenient for your users to get to the main
+ page of the web application i.e. http://www.codehaus.org/continuum and the
+ second rule catches all URLs used by your web application i.e CSS or
+ image resources.
+
+ A concrete example of what the configuration looks like this:
+
++-----+
+RewriteEngine on
+RewriteRule ^/continuum http://localhost:8081/continuum/servlet/continuum [p]
+RewriteRule ^/continuum/(.*)$ http://localhost:8081/continuum/$1 [p]
++-----+
+
+Setting up the Plexus Jetty component
+ 
+ In order for the pages being served from Jetty to play nice with Apache you must
+ setup a <<<proxy-listener>>> which will take the request being proxied from
+ Apache and return all resources with proxied port. The proxied port is 
+ simply the port that Apache is running on. An example configuration is
+ something like the following:
+
++-----+
+    <component>
+      <role>org.codehaus.plexus.jetty.ServletContainer</role>
+      <implementation>org.codehaus.plexus.jetty.JettyServletContainer</implementation>
+      <configuration>
+        <socket-listeners>
+          <socket-listener>
+            <host>*</host>
+            <port>8080</port>
+          </socket-listener>
+        </socket-listeners>
+        <proxy-listeners>
+          <proxy-listener>
+            <host>localhost</host>
+            <port>8081</port>
+            <proxy-port>9000</proxy-port>
+          </proxy-listener>
+        </proxy-listeners>
+        <webapps-directory>${plexus.home}/apps/continuum/web</webapps-directory>
+        <extract-wars>true</extract-wars>
+      </configuration>
+    </component>
++-----+
+
+ As you can see you can setup any number of listeners that you want. So you can
+ access your web application directly via Jetty or proxied via Apache. Note that
+ you must set the host for the proxy listener explicity i.e. don't use the
+ the wildcard asterix value.
