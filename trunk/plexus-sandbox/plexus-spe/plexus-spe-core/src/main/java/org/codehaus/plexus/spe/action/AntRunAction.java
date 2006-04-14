@@ -5,7 +5,6 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Target;
 import org.codehaus.plexus.action.AbstractAction;
 
-import java.io.Serializable;
 import java.util.Map;
 
 /**

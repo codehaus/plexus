@@ -1,8 +1,7 @@
 package org.codehaus.plexus.spe.execution;
 
-import org.codehaus.plexus.spe.model.StepInstance;
-import org.codehaus.plexus.spe.model.StepDescriptor;
 import org.codehaus.plexus.spe.ProcessException;
+import org.codehaus.plexus.spe.model.StepDescriptor;
 
 import java.io.Serializable;
 import java.util.Map;

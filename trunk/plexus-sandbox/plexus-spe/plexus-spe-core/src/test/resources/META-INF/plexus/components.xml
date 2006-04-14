@@ -1,6 +1,11 @@
 <plexus>
   <components>
     <component>
+      <role>org.codehaus.plexus.action.Action</role>
+      <implementation>org.codehaus.plexus.spe.action.ThrowExceptionAction</implementation>
+      <role-hint>throw-exception</role-hint>
+    </component>
+    <component>
       <role>org.codehaus.plexus.jdo.JdoFactory</role>
       <implementation>org.codehaus.plexus.jdo.DefaultJdoFactory</implementation>
       <configuration>
