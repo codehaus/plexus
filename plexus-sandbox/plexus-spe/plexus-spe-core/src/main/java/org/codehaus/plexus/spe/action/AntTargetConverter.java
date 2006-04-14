@@ -1,19 +1,19 @@
 package org.codehaus.plexus.spe.action;
 
+import org.apache.tools.ant.ComponentHelper;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.ProjectHelper;
+import org.apache.tools.ant.RuntimeConfigurable;
+import org.apache.tools.ant.Target;
+import org.apache.tools.ant.UnknownElement;
+import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.codehaus.plexus.component.configurator.ConfigurationListener;
 import org.codehaus.plexus.component.configurator.converters.AbstractConfigurationConverter;
 import org.codehaus.plexus.component.configurator.converters.ConfigurationConverter;
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
-import org.codehaus.plexus.component.configurator.ConfigurationListener;
-import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
-import org.apache.tools.ant.Target;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.RuntimeConfigurable;
-import org.apache.tools.ant.UnknownElement;
-import org.apache.tools.ant.ProjectHelper;
-import org.apache.tools.ant.ComponentHelper;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>

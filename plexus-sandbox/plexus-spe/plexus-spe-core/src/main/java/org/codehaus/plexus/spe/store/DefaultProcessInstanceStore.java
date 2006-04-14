@@ -1,29 +1,29 @@
 package org.codehaus.plexus.spe.store;
 
-import org.codehaus.plexus.spe.ProcessException;
-import org.codehaus.plexus.spe.model.ProcessInstanceLifecycleListener;
-import org.codehaus.plexus.spe.model.ProcessDescriptor;
-import org.codehaus.plexus.spe.model.StepDescriptor;
-import org.codehaus.plexus.spe.model.ProcessInstance;
-import org.codehaus.plexus.spe.model.StepInstance;
 import org.codehaus.plexus.jdo.JdoFactory;
 import org.codehaus.plexus.jdo.PlexusJdoUtils;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.spe.ProcessException;
+import org.codehaus.plexus.spe.model.ProcessDescriptor;
+import org.codehaus.plexus.spe.model.ProcessInstance;
+import org.codehaus.plexus.spe.model.ProcessInstanceLifecycleListener;
+import org.codehaus.plexus.spe.model.StepDescriptor;
+import org.codehaus.plexus.spe.model.StepInstance;
 
 import javax.jdo.Extent;
+import javax.jdo.JDOException;
+import javax.jdo.JDOHelper;
+import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
-import javax.jdo.JDOHelper;
-import javax.jdo.JDOObjectNotFoundException;
-import javax.jdo.JDOException;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -54,26 +54,26 @@ public class DefaultProcessInstanceStore
 
         Transaction transaction = pm.currentTransaction();
 
-        ProcessInstance state = new ProcessInstance();
-        state.setProcessId( ProcessDescriptor.getId() );
-        state.setContext( context );
-        state.setCreatedTime( System.currentTimeMillis() );
+        ProcessInstance instance = new ProcessInstance();
+        instance.setProcessId( ProcessDescriptor.getId() );
+        instance.setContext( context );
+        instance.setCreatedTime( System.currentTimeMillis() );
 
         for ( StepDescriptor action : (List<StepDescriptor>)ProcessDescriptor.getSteps() )
         {
             StepInstance step = new StepInstance();
             step.setExecutorId( action.getExecutorId() );
-            state.getSteps().add( step );
+            instance.getSteps().add( step );
         }
 
         try
         {
             transaction.begin();
 
-            pm.makePersistent( state );
+            pm.makePersistent( instance );
 
             pm.getFetchPlan().addGroup( "StepInstance_detail" );
-            ProcessInstance processInstance = (ProcessInstance) pm.detachCopy( state );
+            ProcessInstance processInstance = (ProcessInstance) pm.detachCopy( instance );
 
             transaction.commit();
 

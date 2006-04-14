@@ -1,11 +1,5 @@
 package org.codehaus.plexus.spe.execution;
 
-import org.codehaus.plexus.spe.ProcessException;
-import org.codehaus.plexus.spe.model.ProcessDescriptor;
-import org.codehaus.plexus.spe.model.ProcessInstance;
-import org.codehaus.plexus.spe.model.StepDescriptor;
-import org.codehaus.plexus.spe.model.StepInstance;
-import org.codehaus.plexus.spe.store.ProcessInstanceStore;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
@@ -14,6 +8,14 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
+import org.codehaus.plexus.spe.ProcessException;
+import org.codehaus.plexus.spe.model.ProcessDescriptor;
+import org.codehaus.plexus.spe.model.ProcessInstance;
+import org.codehaus.plexus.spe.model.StepDescriptor;
+import org.codehaus.plexus.spe.model.StepInstance;
+import org.codehaus.plexus.spe.store.ProcessInstanceStore;
+import org.codehaus.plexus.spe.utils.DurationFormatUtils;
+import org.codehaus.plexus.util.ExceptionUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -122,15 +124,26 @@ public class DefaultProcessExecutor
         }
     }
 
-    private void onSuccess( StepExecutorRunner stepExecutorRunner,
-                            ProcessRuntimeDescriptor runtimeDescriptor )
+    private void onCompletion( StepExecutorRunner stepExecutorRunner,
+                               ProcessRuntimeDescriptor runtimeDescriptor )
         throws ProcessException
     {
         long timestamp = System.currentTimeMillis();
 
-        getLogger().info( "Process step #" + runtimeDescriptor.getCurrentStep() + " " +
-            "in process " + runtimeDescriptor.getProcessDescriptor().getId() + ", instance #" + runtimeDescriptor.getProcessId() +
-            " completed successfully." );
+        String message = "Process step #" + runtimeDescriptor.getCurrentStep() + " " +
+                         "in process " + runtimeDescriptor.getProcessDescriptor().getId() + ", " +
+                         "instance #" + runtimeDescriptor.getProcessId();
+
+        Throwable throwable = stepExecutorRunner.getThrowable();
+
+        if ( throwable == null )
+        {
+            getLogger().info( message + " completed successfully." );
+        }
+        else
+        {
+            getLogger().info( message + " completed non-successfully." );
+        }
 
         // ----------------------------------------------------------------------
         // Load the process
@@ -149,16 +162,44 @@ public class DefaultProcessExecutor
         processInstance.setContext( stepExecutorRunner.getContext() );
 
         // ----------------------------------------------------------------------
+        // Check if the step failed. If so stop the processing for now and let
+        // the system handle the restart of the process at a later point in time.
+        // ----------------------------------------------------------------------
+
+        if ( throwable != null )
+        {
+            String duration = DurationFormatUtils.formatDuration( step.getEndTime() - processInstance.getCreatedTime(), "H:mm:ss.SSS", false );
+
+            getLogger().info( "Process failed, stopping processing. Time elapsed so far: " + duration );
+
+            String stackTrace = ExceptionUtils.getFullStackTrace( throwable );
+
+            if ( stackTrace.length() > 8000 )
+            {
+                stackTrace = stackTrace.substring( 0, 8000 );
+            }
+
+            processInstance.setErrorMessage( stackTrace );
+
+            store.saveInstance( processInstance );
+
+            return;
+        }
+
+        // ----------------------------------------------------------------------
         // Check if this is the last step in the process
         // ----------------------------------------------------------------------
 
         if ( runtimeDescriptor.getProcessDescriptor().getSteps().size() == runtimeDescriptor.getCurrentStep() + 1 )
         {
-            getLogger().info( "Process completed." );
-
+            processInstance.setCompleted( true );
             processInstance.setEndTime( timestamp );
 
             store.saveInstance( processInstance );
+
+            String duration = DurationFormatUtils.formatDuration( processInstance.getEndTime() - processInstance.getCreatedTime(), "H:mm:ss.SSS", false );
+
+            getLogger().info( "Process completed. Time elapsed: " + duration );
 
             return;
         }
@@ -177,10 +218,6 @@ public class DefaultProcessExecutor
         store.saveInstance( processInstance );
 
         scheduleStep( runtimeDescriptor );
-    }
-
-    private void onFailure( ProcessRuntimeDescriptor processRuntimeDescriptor, Throwable throwable )
-    {
     }
 
     // ----------------------------------------------------------------------
@@ -271,14 +308,7 @@ public class DefaultProcessExecutor
 
                 ProcessRuntimeDescriptor processRuntimeDescriptor = runningProcesses.get( stepExecutorRunner );
 
-                if ( throwable != null )
-                {
-                    onFailure( processRuntimeDescriptor, throwable );
-                }
-                else
-                {
-                    onSuccess( stepExecutorRunner, processRuntimeDescriptor );
-                }
+                onCompletion( stepExecutorRunner, processRuntimeDescriptor );
             }
             catch ( ProcessException e )
             {
