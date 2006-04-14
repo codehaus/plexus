@@ -3,12 +3,8 @@ package org.codehaus.plexus.spe.model;
 import javax.jdo.JDODetachedFieldAccessException;
 import javax.jdo.JDOHelper;
 import javax.jdo.listener.AttachLifecycleListener;
-import javax.jdo.listener.ClearLifecycleListener;
-import javax.jdo.listener.CreateLifecycleListener;
 import javax.jdo.listener.DetachLifecycleListener;
-import javax.jdo.listener.DirtyLifecycleListener;
 import javax.jdo.listener.InstanceLifecycleEvent;
-import javax.jdo.listener.LoadLifecycleListener;
 import javax.jdo.listener.StoreLifecycleListener;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,6 +17,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
+ * TODO: Figure out if there is a way to figure out if a field is detahced to prevent the silly try/catch
+ * clauses all over the place.
+ * 
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */

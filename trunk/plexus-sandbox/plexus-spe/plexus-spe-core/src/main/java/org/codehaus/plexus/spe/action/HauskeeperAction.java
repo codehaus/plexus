@@ -1,7 +1,7 @@
 package org.codehaus.hauskeeper.action;
 
-import java.util.Map;
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>

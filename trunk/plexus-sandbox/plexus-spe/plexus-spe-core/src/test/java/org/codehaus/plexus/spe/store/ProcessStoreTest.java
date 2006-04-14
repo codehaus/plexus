@@ -1,16 +1,16 @@
 package org.codehaus.plexus.spe.store;
 
-import org.codehaus.plexus.spe.model.ProcessDescriptor;
-import org.codehaus.plexus.spe.model.StepDescriptor;
-import org.codehaus.plexus.spe.model.ProcessInstance;
-import org.codehaus.plexus.spe.model.StepInstance;
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.spe.model.ProcessDescriptor;
+import org.codehaus.plexus.spe.model.ProcessInstance;
+import org.codehaus.plexus.spe.model.StepDescriptor;
+import org.codehaus.plexus.spe.model.StepInstance;
 
 import javax.jdo.JDODetachedFieldAccessException;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Collection;
-import java.io.Serializable;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -94,7 +94,7 @@ public class ProcessStoreTest
         actualProcess = store.getInstance( instance.getInstanceId(), true );
 
         assertNotNull( actualProcess );
-        System.out.println( "actualProcess.getContext() = " + actualProcess.getContext() );
+        System.out.println( "actualProcess.getProcessInstance() = " + actualProcess.getContext() );
         assertEquals( instance.getInstanceId(), actualProcess.getInstanceId() );
         assertEquals( instance.getProcessId(), actualProcess.getProcessId() );
         assertEquals( 2, actualProcess.getContext().size() );

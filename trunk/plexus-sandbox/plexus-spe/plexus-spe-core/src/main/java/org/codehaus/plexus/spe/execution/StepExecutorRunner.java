@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
+ * Contains the thread-local state of the currently running state.
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
@@ -17,6 +19,8 @@ public class StepExecutorRunner
     private StepDescriptor stepDescriptor;
 
     private Map<String, Serializable> context;
+
+    private Throwable throwable;
 
     public StepExecutorRunner( StepExecutor executor, StepDescriptor stepDescriptor )
     {
@@ -44,6 +48,11 @@ public class StepExecutorRunner
         this.context = context;
     }
 
+    public Throwable getThrowable()
+    {
+        return throwable;
+    }
+
     // ----------------------------------------------------------------------
     // Runnable Implementation
     // ----------------------------------------------------------------------
@@ -54,9 +63,9 @@ public class StepExecutorRunner
         {
             executor.execute( stepDescriptor, context );
         }
-        catch ( Exception e )
+        catch ( Throwable e )
         {
-            throw new RuntimeException( e );
+            this.throwable = e;
         }
     }
 }

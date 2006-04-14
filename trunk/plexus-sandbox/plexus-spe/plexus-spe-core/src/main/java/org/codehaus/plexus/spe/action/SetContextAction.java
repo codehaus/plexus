@@ -2,7 +2,6 @@ package org.codehaus.plexus.spe.action;
 
 import org.codehaus.plexus.action.AbstractAction;
 
-import java.io.Serializable;
 import java.util.Map;
 
 /**

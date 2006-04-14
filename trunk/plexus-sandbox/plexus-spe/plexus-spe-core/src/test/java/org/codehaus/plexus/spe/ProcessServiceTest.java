@@ -2,6 +2,7 @@ package org.codehaus.plexus.spe;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.spe.action.EchoAction;
+import org.codehaus.plexus.spe.model.ProcessInstance;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -30,11 +31,11 @@ public class ProcessServiceTest
 
         Map<String, Serializable> context = new HashMap<String, Serializable>();
         context.put( "message", "Context Hello World!" );
-        int processId = processService.executeProcess( "hello-world", context );
+        int instanceId = processService.executeProcess( "hello-world", context );
 
         Thread.sleep( 1000 );
 
-        assertTrue( processService.hasCompleted( processId ));
+        assertTrue( processService.hasCompleted( instanceId ));
 
         assertEquals( 2, EchoAction.messages.size() );
         assertEquals( "Configuration Hello World!", EchoAction.messages.get( 0 ) );
@@ -50,12 +51,49 @@ public class ProcessServiceTest
 
         Map<String, Serializable> context = new HashMap<String, Serializable>();
         context.put( "message", "Hello World!" );
-        int processId = processService.executeProcess( "context-modifying-process", context );
+        int instanceId = processService.executeProcess( "context-modifying-process", context );
 
-        waitForCompletion( 3000, processService, processId );
+        waitForCompletion( 3000, processService, instanceId );
         assertEquals( 2, EchoAction.messages.size() );
         assertEquals( "Hello World!", EchoAction.messages.get( 0 ) );
         assertEquals( "Modified Hello World!", EchoAction.messages.get( 1 ) );
+    }
+
+    public void testExceptionHandling()
+        throws Exception
+    {
+        ProcessService processService = (ProcessService) lookup( ProcessService.ROLE );
+
+        processService.loadProcess( getTestFile( "src/test/resources/process/exception-throwing-process.xml").toURL() );
+        processService.loadProcess( getTestFile( "src/test/resources/process/runtime-exception-throwing-process.xml").toURL() );
+
+        // ----------------------------------------------------------------------
+        // Test handling of runtime exceptions.
+        // ----------------------------------------------------------------------
+
+        Map<String, Serializable> context = new HashMap<String, Serializable>();
+        context.put( "message", "Runtime Exception Message" );
+        int instanceId = processService.executeProcess( "runtime-exception-throwing-process", context );
+
+        waitForCompletion( 3000, processService, instanceId, false );
+
+        ProcessInstance processInstance = processService.getProcessInstance( instanceId );
+
+        assertTrue( processInstance.getErrorMessage().contains( "Runtime Exception Message" ) );
+
+        // ----------------------------------------------------------------------
+        // Test handling of "normal" exceptions
+        // ----------------------------------------------------------------------
+
+        context = new HashMap<String, Serializable>();
+        context.put( "message", "Non-Runtime Exception Message" );
+        instanceId = processService.executeProcess( "exception-throwing-process", context );
+
+        waitForCompletion( 3000, processService, instanceId, false );
+
+        processInstance = processService.getProcessInstance( instanceId );
+
+        assertTrue( processInstance.getErrorMessage().contains( "Non-Runtime Exception Message" ) );
     }
 
     public void testAntBasedTest()
@@ -65,9 +103,9 @@ public class ProcessServiceTest
 
         processService.loadProcess( getTestFile( "src/test/resources/process/process-3.xml").toURL() );
 
-        int processId = processService.executeProcess( "ant-based-process", new HashMap<String, Serializable>() );
+        int instanceId = processService.executeProcess( "ant-based-process", new HashMap<String, Serializable>() );
 
-        waitForCompletion( 3000, processService, processId );
+        waitForCompletion( 3000, processService, instanceId );
 
         // TODO: Asserts
     }
@@ -76,15 +114,32 @@ public class ProcessServiceTest
     //
     // ----------------------------------------------------------------------
 
-    private void waitForCompletion( long time, ProcessService processService, int processId )
+    private void waitForCompletion( long time, ProcessService processService, int instanceId )
+        throws InterruptedException, ProcessException
+    {
+        waitForCompletion( time, processService, instanceId, true);
+    }
+
+    private void waitForCompletion( long time, ProcessService processService, int instanceId, boolean expectsSuccess )
         throws InterruptedException, ProcessException
     {
         int sleepTime = 100;
 
         while ( time > 0 )
         {
-            if ( processService.hasCompleted( processId ) )
+            if ( processService.hasCompleted( instanceId ) )
             {
+                ProcessInstance processInstance = processService.getProcessInstance( instanceId );
+
+                if ( expectsSuccess )
+                {
+                    assertNull( processInstance.getErrorMessage() );
+                }
+                else
+                {
+                    assertNotNull( processInstance.getErrorMessage() );
+                }
+
                 break;
             }
 
