@@ -111,7 +111,7 @@ public class DefaultProcessInstanceStore
 
     public void saveInstance( ProcessInstance processInstance )
     {
-        getLogger().info( "Storing process instance " + processInstance.getInstanceId() + ", process: " + processInstance.getProcessId() + "." );
+        getLogger().debug( "Storing process instance " + processInstance.getInstanceId() + ", process: " + processInstance.getProcessId() + "." );
 
         updateObject( getPm(), processInstance );
     }
@@ -161,7 +161,6 @@ public class DefaultProcessInstanceStore
     public void deleteInstance( int id )
         throws ProcessException
     {
-        getLogger().info( "Getting process instance" );
         PersistenceManager pm = getPm();
 
         Transaction tx = pm.currentTransaction();

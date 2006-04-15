@@ -133,7 +133,15 @@ public class ProcessServiceTest
 
                 if ( expectsSuccess )
                 {
-                    assertNull( processInstance.getErrorMessage() );
+                    if ( processInstance.getErrorMessage() != null )
+                    {
+                        System.out.println( "----------------------" );
+                        System.out.println( "Process throwable:" );
+                        System.out.println( processInstance.getErrorMessage() );
+                        System.out.println( "----------------------" );
+
+                        fail( "The process completed non-successfully" );
+                    }
                 }
                 else
                 {
