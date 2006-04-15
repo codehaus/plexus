@@ -5,6 +5,13 @@
       <implementation>org.codehaus.plexus.spe.action.ThrowExceptionAction</implementation>
       <role-hint>throw-exception</role-hint>
     </component>
+
+    <component>
+      <role>org.codehaus.plexus.action.Action</role>
+      <implementation>org.codehaus.plexus.spe.action.SaveUserAction</implementation>
+      <role-hint>save-user</role-hint>
+    </component>
+
     <component>
       <role>org.codehaus.plexus.jdo.JdoFactory</role>
       <implementation>org.codehaus.plexus.jdo.DefaultJdoFactory</implementation>
@@ -20,7 +27,7 @@
           </property>
           <property>
             <name>javax.jdo.option.ConnectionURL</name>
-            <value>jdbc:hsqldb:.</value>
+            <value>jdbc:hsqldb:,</value>
           </property>
           <property>
             <name>javax.jdo.option.ConnectionUserName</name>
