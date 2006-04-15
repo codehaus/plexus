@@ -19,11 +19,23 @@ public interface ProcessService
 {
     String ROLE = ProcessService.class.getName();
 
+    // ----------------------------------------------------------------------
+    // System Control
+    // ----------------------------------------------------------------------
+
     ProcessDescriptor loadProcess( URL url )
         throws ProcessException;
 
     Collection<ProcessDescriptor> loadProcessDirectory( File directory )
         throws ProcessException;
+
+    void addProcessListener( ProcessListener processListener );
+
+    void removeProcessListener( ProcessListener processListener );
+
+    // ----------------------------------------------------------------------
+    // Process
+    // ----------------------------------------------------------------------
 
     int executeProcess( String processId, Map<String, Serializable> context )
         throws ProcessException;

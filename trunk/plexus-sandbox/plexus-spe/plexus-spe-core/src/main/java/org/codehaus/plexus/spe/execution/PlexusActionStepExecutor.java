@@ -59,12 +59,23 @@ public class PlexusActionStepExecutor
         try
         {
             action = (Action) container.lookup( Action.ROLE, actionId );
-
-            configurator = (ComponentConfigurator) container.lookup( ComponentConfigurator.ROLE, configuratorId );
         }
         catch ( ComponentLookupException e )
         {
             throw new ProcessException( "Could not look up Hauskeeper action '" + actionId + "'.", e );
+        }
+
+        try
+        {
+            configurator = (ComponentConfigurator) container.lookup( ComponentConfigurator.ROLE, configuratorId );
+        }
+        catch ( ComponentLookupException e )
+        {
+            throw new ProcessException( "Could not look up component configurator '" + configuratorId + "'.", e );
+        }
+        finally
+        {
+            rel
         }
 
         // ----------------------------------------------------------------------
@@ -153,5 +164,17 @@ public class PlexusActionStepExecutor
         }
 
         return configuration.getChild( key ).getValue();
+    }
+
+    private void release( Object component )
+    {
+        try
+        {
+            container.release( component );
+        }
+        catch ( ComponentLifecycleException e )
+        {
+            getLogger().error( "Error while releasing ", e );
+        }
     }
 }

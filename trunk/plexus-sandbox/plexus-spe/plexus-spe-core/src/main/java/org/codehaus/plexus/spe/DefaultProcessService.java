@@ -6,6 +6,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
+import org.codehaus.plexus.spe.core.ProcessEventManager;
 import org.codehaus.plexus.spe.execution.ProcessExecutor;
 import org.codehaus.plexus.spe.model.ProcessDescriptor;
 import org.codehaus.plexus.spe.model.ProcessInstance;
@@ -45,10 +46,19 @@ public class DefaultProcessService
      */
     private ProcessExecutor executor;
 
+    /**
+     * @plexus.requirement
+     */
+    private ProcessEventManager eventManager;
+
     private Map<String, ProcessDescriptor> processes = new HashMap<String, ProcessDescriptor>( );
 
     // ----------------------------------------------------------------------
     // ProcessService Implementation
+    // ----------------------------------------------------------------------
+
+    // ----------------------------------------------------------------------
+    // System Control
     // ----------------------------------------------------------------------
 
     public ProcessDescriptor loadProcess( URL url )
@@ -102,6 +112,20 @@ public class DefaultProcessService
 
         return descriptors.values();
     }
+
+    public void addProcessListener( ProcessListener processListener )
+    {
+        eventManager.addProcessListener( processListener );
+    }
+
+    public void removeProcessListener( ProcessListener processListener )
+    {
+        eventManager.removeProcessListener( processListener );
+    }
+
+    // ----------------------------------------------------------------------
+    // Process Control
+    // ----------------------------------------------------------------------
 
     public int executeProcess( String processId, Map<String, Serializable> context )
         throws ProcessException
