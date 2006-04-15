@@ -4,6 +4,7 @@ import org.codehaus.plexus.spe.event.StartingProcessEvent;
 import org.codehaus.plexus.spe.event.StartingStepEvent;
 import org.codehaus.plexus.spe.event.StepCompletedEvent;
 import org.codehaus.plexus.spe.utils.DurationFormatUtils;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -42,6 +43,14 @@ public class SystemOutProcessListener
     {
         long interval = event.getStepInstance().getEndTime() - event.getProcessInstance().getCreatedTime();
         String duration = DurationFormatUtils.formatDuration( interval, "H:mm:ss.SSS", false );
-        System.out.println( "Step failed, stopping processing. Time elapsed so far: " + duration );
+
+        if ( event.getThrowable() == null )
+        {
+            System.out.println( "Step completed successully. Time elapsed so far: " + duration );
+        }
+        else
+        {
+            System.out.println( "Step failed. Time elapsed so far: " + duration );
+        }
     }
 }

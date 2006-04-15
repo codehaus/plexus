@@ -151,7 +151,7 @@ public class DefaultProcessExecutor
         Throwable throwable = stepExecutorRunner.getThrowable();
 
 //        String message = "Process step #" + runtimeDescriptor.getCurrentStep() + " " +
-//                         "in process " + runtimeDescriptor.getProcessDescriptor().getId() + ", " +
+//                         "in process " + runtimeDescriptor.getProcessDescriptor().getUsername() + ", " +
 //                         "instance #" + runtimeDescriptor.getInstanceId();
 //
 //
