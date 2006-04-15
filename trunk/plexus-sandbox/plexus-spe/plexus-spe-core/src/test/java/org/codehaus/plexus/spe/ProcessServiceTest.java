@@ -106,6 +106,28 @@ public class ProcessServiceTest
         int instanceId = processService.executeProcess( "ant-based-process", new HashMap<String, Serializable>() );
 
         waitForCompletion( 3000, processService, instanceId );
+    }
+
+    public void testProcessWithObjectsInTheContext()
+        throws Exception
+    {
+        ProcessService processService = (ProcessService) lookup( ProcessService.ROLE );
+
+        processService.loadProcess( getTestFile( "src/test/resources/process/process-4.xml").toURL() );
+
+        HashMap<String, Serializable> context = new HashMap<String, Serializable>();
+
+        User user = new User();
+        user.setUsername( "trygvis" );
+        user.setFirstName( "Trygve" );
+        user.setLastName( "Laugstol" );
+
+        context.put( "user", user );
+        context.put( "username", "foo" );
+
+        int instanceId = processService.executeProcess( "process-4", context );
+
+        waitForCompletion( 3000, processService, instanceId );
 
         // TODO: Asserts
     }
