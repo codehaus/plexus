@@ -1,4 +1,4 @@
-<project>
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>plexus-components</artifactId>
     <groupId>org.codehaus.plexus</groupId>
@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-jdo2</artifactId>
   <name>Plexus JDO Component</name>
-  <version>1.0-alpha-4-SNAPSHOT</version>
+  <version>1.0-alpha-4</version>
   <inceptionYear>2005</inceptionYear>
   <developers>
     <developer>
@@ -31,12 +31,12 @@
       <scope>test</scope>
       <exclusions>
         <exclusion>
-          <groupId>javax.sql</groupId>
           <artifactId>jdbc-stdext</artifactId>
+          <groupId>javax.sql</groupId>
         </exclusion>
         <exclusion>
-          <groupId>javax.security</groupId>
           <artifactId>jaas</artifactId>
+          <groupId>javax.security</groupId>
         </exclusion>
       </exclusions>
     </dependency>
