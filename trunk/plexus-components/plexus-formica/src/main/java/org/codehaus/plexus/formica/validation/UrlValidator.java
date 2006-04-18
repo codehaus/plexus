@@ -439,7 +439,7 @@ public class UrlValidator
             }
             String topLevel = domainSegment[segmentCount - 1];
             // don't check toplevel when we have only a server name like localhost
-            if ( segmentCount != 1 && (topLevel.length() < 2 || topLevel.length() > 4 ) )
+            if ( segmentCount != 1 && (topLevel.length() < 2 ) )
             {
                 return false;
             }

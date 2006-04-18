@@ -40,6 +40,12 @@ public class UrlValidatorTest
 
         assertTrue( v.validate( "http://www.apache.org/pom.xml" ) );
 
+        assertTrue( v.validate( "http://www.blah.museum/pom.xml" ) );
+
+        assertTrue( v.validate( "http://www.blah.my-internal-local-toplevel-domain/pom.xml" ) );
+
+        assertTrue( v.validate( "http://www.0123456789.fr/pom.xml" ) );
+
         assertTrue( v.validate( "http://127.0.0.1/pom.xml" ) );
 
         assertTrue( v.validate( "http://username:password@www.apache.org/pom.xml" ) );
