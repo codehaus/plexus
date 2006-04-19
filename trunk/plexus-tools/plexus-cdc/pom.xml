@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-cdc</artifactId>
   <name>Plexus Component Descriptor Creator</name>
-  <version>1.0-alpha-4</version>
+  <version>1.0-alpha-5-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>qdox</groupId>
