@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-quartz</artifactId>
   <name>Plexus Quartz Component</name>
-  <version>1.0-alpha-2-SNAPSHOT</version>
+  <version>1.0-alpha-2</version>
   <dependencies>
     <dependency>
       <groupId>quartz</groupId>
