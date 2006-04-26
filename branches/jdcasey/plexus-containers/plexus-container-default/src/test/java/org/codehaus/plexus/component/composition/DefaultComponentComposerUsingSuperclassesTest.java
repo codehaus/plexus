@@ -24,9 +24,9 @@ package org.codehaus.plexus.component.composition;
  * SOFTWARE.
  */
 
-import junit.framework.TestCase;
-
 import java.lang.reflect.Field;
+
+import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

@@ -1,11 +1,12 @@
 package org.codehaus.plexus.configuration.processor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import junit.framework.TestCase;
+
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
-
-import java.util.Map;
-import java.util.HashMap;
 
 /*
  * The MIT License

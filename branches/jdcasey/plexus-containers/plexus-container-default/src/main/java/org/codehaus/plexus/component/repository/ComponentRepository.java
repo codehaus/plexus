@@ -1,12 +1,11 @@
 package org.codehaus.plexus.component.repository;
 
-import org.codehaus.classworlds.ClassRealm;
+import java.util.List;
+import java.util.Map;
+
 import org.codehaus.plexus.component.repository.exception.ComponentImplementationNotFoundException;
 import org.codehaus.plexus.component.repository.exception.ComponentRepositoryException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Like the avalon component manager. Central point to get the components from.
@@ -41,5 +40,5 @@ public interface ComponentRepository
     void validateComponentDescriptor( ComponentDescriptor componentDescriptor )
         throws ComponentImplementationNotFoundException;
 
-    void setClassRealm( ClassRealm classRealm );
+    void setClassLoader( ClassLoader classLoader );
 }

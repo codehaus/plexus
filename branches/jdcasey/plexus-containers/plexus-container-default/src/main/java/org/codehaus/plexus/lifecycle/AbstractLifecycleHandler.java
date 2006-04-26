@@ -1,12 +1,12 @@
 package org.codehaus.plexus.lifecycle;
 
-import org.codehaus.plexus.component.manager.ComponentManager;
-import org.codehaus.plexus.lifecycle.phase.Phase;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.PhaseExecutionException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.codehaus.plexus.component.manager.ComponentManager;
+import org.codehaus.plexus.lifecycle.phase.Phase;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.PhaseExecutionException;
 
 public abstract class AbstractLifecycleHandler
     implements LifecycleHandler

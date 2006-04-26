@@ -25,6 +25,7 @@ package org.codehaus.plexus.component.repository;
  */
 
 import junit.framework.TestCase;
+
 import org.codehaus.plexus.component.factory.ComponentFactory;
 import org.codehaus.plexus.component.factory.java.JavaComponentFactory;
 import org.codehaus.plexus.component.manager.ClassicSingletonComponentManager;

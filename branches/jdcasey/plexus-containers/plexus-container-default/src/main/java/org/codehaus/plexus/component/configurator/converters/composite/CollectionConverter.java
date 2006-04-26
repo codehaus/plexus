@@ -24,16 +24,6 @@ package org.codehaus.plexus.component.configurator.converters.composite;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
-import org.codehaus.plexus.component.configurator.ConfigurationListener;
-import org.codehaus.plexus.component.configurator.converters.AbstractConfigurationConverter;
-import org.codehaus.plexus.component.configurator.converters.ConfigurationConverter;
-import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
-import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.StringUtils;
-
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,6 +31,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.codehaus.plexus.component.configurator.ConfigurationListener;
+import org.codehaus.plexus.component.configurator.converters.AbstractConfigurationConverter;
+import org.codehaus.plexus.component.configurator.converters.ConfigurationConverter;
+import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
+import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.util.StringUtils;
 
 
 /**

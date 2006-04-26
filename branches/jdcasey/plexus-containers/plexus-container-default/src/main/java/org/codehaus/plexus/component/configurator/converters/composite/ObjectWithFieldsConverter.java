@@ -24,6 +24,10 @@ package org.codehaus.plexus.component.configurator.converters.composite;
  * SOFTWARE.
  */
 
+import java.util.Collection;
+import java.util.Dictionary;
+import java.util.Map;
+
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
 import org.codehaus.plexus.component.configurator.converters.AbstractConfigurationConverter;
@@ -31,13 +35,6 @@ import org.codehaus.plexus.component.configurator.converters.ComponentValueSette
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.ReflectionUtils;
-
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.Dictionary;
-import java.util.Map;
 
 /**
  * @author <a href="mailto:michal@codehaus.org">Michal Maczka</a>

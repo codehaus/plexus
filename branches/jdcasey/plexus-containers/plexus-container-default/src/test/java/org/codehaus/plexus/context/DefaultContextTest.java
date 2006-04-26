@@ -24,11 +24,11 @@ package org.codehaus.plexus.context;
  * SOFTWARE.
  */
 
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import junit.framework.AssertionFailedError;
+import junit.framework.TestCase;
 
 /**
  * TestCase for Context.

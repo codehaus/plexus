@@ -24,6 +24,8 @@ package org.codehaus.plexus.component.factory;
  * SOFTWARE.
  */
 
+import java.util.List;
+
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.factory.java.JavaComponentFactory;
@@ -32,8 +34,6 @@ import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.util.List;
 
 /**
  *

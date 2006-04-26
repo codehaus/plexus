@@ -24,13 +24,13 @@ package org.codehaus.plexus.component.composition;
  * SOFTWARE.
  */
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.util.dag.CycleDetectedException;
 import org.codehaus.plexus.util.dag.DAG;
-
-import java.util.Iterator;
-import java.util.List;
 
 
 /**

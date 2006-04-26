@@ -24,9 +24,7 @@ package org.codehaus.plexus.component.configurator;
  * SOFTWARE.
  */
 
-import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.configurator.converters.composite.ObjectWithFieldsConverter;
-import org.codehaus.plexus.component.configurator.converters.special.ClassRealmConverter;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
@@ -40,7 +38,7 @@ public class BasicComponentConfigurator
     extends AbstractComponentConfigurator
 {
     public void configureComponent( Object component, PlexusConfiguration configuration,
-                                    ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm,
+                                    ExpressionEvaluator expressionEvaluator, ClassLoader classLoader,
                                     ConfigurationListener listener )
         throws ComponentConfigurationException
     {
@@ -49,11 +47,12 @@ public class BasicComponentConfigurator
         // came from in order to load the correct classes.
         // ----------------------------------------------------------------------
 
-        converterLookup.registerConverter( new ClassRealmConverter( containerRealm ) );
+        // FIXME: What do we replace this with?
+//        converterLookup.registerConverter( new ClassRealmConverter( classLoader ) );
 
         ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
 
-        converter.processConfiguration( converterLookup, component, containerRealm.getClassLoader(), configuration,
+        converter.processConfiguration( converterLookup, component, classLoader, configuration,
                                         expressionEvaluator, listener );
     }
 

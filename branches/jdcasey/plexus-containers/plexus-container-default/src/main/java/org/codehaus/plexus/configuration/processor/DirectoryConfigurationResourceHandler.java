@@ -24,17 +24,17 @@ package org.codehaus.plexus.configuration.processor;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.component.repository.io.PlexusTools;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.configuration.PlexusConfigurationException;
-import org.codehaus.plexus.util.FileUtils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import org.codehaus.plexus.component.repository.io.PlexusTools;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

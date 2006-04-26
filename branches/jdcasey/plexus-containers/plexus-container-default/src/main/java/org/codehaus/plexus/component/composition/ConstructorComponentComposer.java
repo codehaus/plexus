@@ -1,10 +1,10 @@
 package org.codehaus.plexus.component.composition;
 
+import java.util.Map;
+
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
-import org.codehaus.plexus.PlexusContainer;
-
-import java.util.Map;
 
 /**
  * note:jvz This really indicates there is a flaw in the design of the component composer as constructors will not work. If the

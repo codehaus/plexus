@@ -1,12 +1,11 @@
 package org.codehaus.plexus.component.configurator;
 
-import org.codehaus.classworlds.ClassRealm;
+import java.util.Map;
+
 import org.codehaus.plexus.component.MapOrientedComponent;
 import org.codehaus.plexus.component.configurator.converters.composite.MapConverter;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-
-import java.util.Map;
 
 /*
  * Copyright 2001-2005 The Apache Software Foundation.
@@ -29,7 +28,7 @@ public class MapOrientedComponentConfigurator
 {
 
     public void configureComponent( Object component, PlexusConfiguration configuration,
-                                    ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm,
+                                    ExpressionEvaluator expressionEvaluator, ClassLoader classLoader,
                                     ConfigurationListener listener )
         throws ComponentConfigurationException
     {
@@ -42,7 +41,7 @@ public class MapOrientedComponentConfigurator
         MapConverter converter = new MapConverter();
 
         Map context = (Map) converter.fromConfiguration( converterLookup, configuration, null, null,
-                                                         containerRealm.getClassLoader(), expressionEvaluator,
+                                                         classLoader, expressionEvaluator,
                                                          listener );
 
         ( (MapOrientedComponent) component ).setComponentConfiguration( context );

@@ -24,11 +24,11 @@ package org.codehaus.plexus.component.composition;
  * SOFTWARE.
  */
 
+import java.util.Map;
+
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
-import org.codehaus.plexus.PlexusContainer;
-
-import java.util.Map;
 
 /**
  * No Op component composer. It's meant to be used with component

@@ -3,16 +3,16 @@
  */
 package org.codehaus.plexus.component.configurator.converters;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.ReflectionUtils;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 
 /**

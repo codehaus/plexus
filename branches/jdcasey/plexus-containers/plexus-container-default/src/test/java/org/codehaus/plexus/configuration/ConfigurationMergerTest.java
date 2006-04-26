@@ -27,10 +27,10 @@ package org.codehaus.plexus.configuration;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import junit.framework.TestCase;
+
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.component.repository.io.PlexusTools;
-
-import junit.framework.TestCase;
 
 /**
  *
