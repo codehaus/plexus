@@ -1,9 +1,9 @@
 package org.codehaus.plexus.logging;
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 
 /**
  * Base class for all LoggerManagers which use cache of Loggers.

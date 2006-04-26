@@ -1,5 +1,10 @@
 package org.codehaus.plexus.component.composition;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.MapOrientedComponent;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
@@ -7,11 +12,6 @@ import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 /*
  * Copyright 2001-2005 The Apache Software Foundation.

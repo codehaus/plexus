@@ -1,10 +1,10 @@
 package org.codehaus.plexus.personality.plexus.lifecycle.phase;
 
-import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-
 import java.util.List;
 import java.util.Map;
+
+import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
  * Provides services to components by means of a lookup.

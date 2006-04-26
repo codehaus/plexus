@@ -24,9 +24,9 @@ package org.codehaus.plexus.embed;
  * SOFTWARE.
  */
 
-import junit.framework.TestCase;
-
 import java.util.Properties;
+
+import junit.framework.TestCase;
 
 /**
  * @author Ben Walding

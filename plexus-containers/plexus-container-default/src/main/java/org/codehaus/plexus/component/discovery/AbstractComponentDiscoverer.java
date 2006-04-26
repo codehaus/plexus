@@ -1,13 +1,5 @@
 package org.codehaus.plexus.component.discovery;
 
-import org.codehaus.classworlds.ClassRealm;
-import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
-import org.codehaus.plexus.configuration.PlexusConfigurationException;
-import org.codehaus.plexus.context.Context;
-import org.codehaus.plexus.context.ContextMapAdapter;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.InterpolationFilterReader;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -16,6 +8,13 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+
+import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextMapAdapter;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.InterpolationFilterReader;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -45,7 +44,7 @@ public abstract class AbstractComponentDiscoverer
         this.manager = manager;
     }
 
-    public List findComponents( Context context, ClassRealm classRealm )
+    public List findComponents( Context context, ClassLoader classLoader )
         throws PlexusConfigurationException
     {
         List componentSetDescriptors = new ArrayList();
@@ -53,17 +52,18 @@ public abstract class AbstractComponentDiscoverer
         Enumeration resources;
         try
         {
-            resources = classRealm.findResources( getComponentDescriptorLocation() );
+            resources = classLoader.getResources( getComponentDescriptorLocation() );
         }
         catch ( IOException e )
         {
             throw new PlexusConfigurationException( "Unable to retrieve resources for: " +
-                getComponentDescriptorLocation() + " in class realm: " + classRealm.getId() );
+                getComponentDescriptorLocation() + " in class realm: " + classLoader );
         }
+
         for ( Enumeration e = resources; e.hasMoreElements(); )
         {
             URL url = (URL) e.nextElement();
-
+            
             InputStreamReader reader = null;
             try
             {

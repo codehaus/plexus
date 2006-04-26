@@ -24,8 +24,11 @@ package org.codehaus.plexus.component.factory.java;
  * SOFTWARE.
  */
 
+import java.net.URL;
+import java.net.URLClassLoader;
+
 import junit.framework.TestCase;
-import org.codehaus.classworlds.ClassWorld;
+
 import org.codehaus.plexus.component.factory.Component;
 import org.codehaus.plexus.component.factory.ComponentImplA;
 import org.codehaus.plexus.component.factory.ComponentImplB;
@@ -53,14 +56,12 @@ public class JavaComponentFactoryTest
 
         componentDescriptor.setImplementation( ComponentImplA.class.getName() );
 
-        ClassWorld classWorld = new ClassWorld();
+        URLClassLoader cl = new URLClassLoader( new URL[0], Thread.currentThread().getContextClassLoader() );
 
-        classWorld.newRealm( "core", Thread.currentThread().getContextClassLoader() );
-        
         Embedder embedder = new Embedder();
-        embedder.start( classWorld );
+        embedder.start( cl );
         
-        Object component = factory.newInstance( componentDescriptor, classWorld.getRealm( "core" ), embedder.getContainer() );
+        Object component = factory.newInstance( componentDescriptor, cl, embedder.getContainer() );
 
         assertNotNull( component );
     }
@@ -76,14 +77,12 @@ public class JavaComponentFactoryTest
 
         componentDescriptor.setImplementation( ComponentImplB.class.getName() );
 
-        ClassWorld classWorld = new ClassWorld();
-
-        classWorld.newRealm( "core", Thread.currentThread().getContextClassLoader() );
+        URLClassLoader cl = new URLClassLoader( new URL[0], Thread.currentThread().getContextClassLoader() );
 
         Embedder embedder = new Embedder();
-        embedder.start( classWorld );
+        embedder.start( cl );
         
-        factory.newInstance( componentDescriptor, classWorld.getRealm( "core" ), embedder.getContainer() );
+        factory.newInstance( componentDescriptor, cl, embedder.getContainer() );
     }
 
     public void testInstanciationOfAAbstractComponent()
@@ -97,19 +96,17 @@ public class JavaComponentFactoryTest
 
         componentDescriptor.setImplementation( ComponentImplC.class.getName() );
 
-        ClassWorld classWorld = new ClassWorld();
-
-        classWorld.newRealm( "core", Thread.currentThread().getContextClassLoader() );
+        URLClassLoader cl = new URLClassLoader( new URL[0], Thread.currentThread().getContextClassLoader() );
 
         Embedder embedder = new Embedder();
         
-        embedder.start( classWorld );
+        embedder.start( cl );
 
 //        container.
 
         try
         {
-            factory.newInstance( componentDescriptor, classWorld.getRealm( "core" ), embedder.getContainer() );
+            factory.newInstance( componentDescriptor, cl, embedder.getContainer() );
 
             fail( "Expected ComponentInstantiationException when instanciating a abstract class." );
         }

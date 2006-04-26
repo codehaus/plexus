@@ -24,10 +24,6 @@ package org.codehaus.plexus.component.composition;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
-import org.codehaus.plexus.component.repository.ComponentRequirement;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -35,9 +31,13 @@ import java.beans.PropertyDescriptor;
 import java.beans.Statement;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
+
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentRequirement;
 
 /**
  * @author <a href="mmaczka@interia.pl">Michal Maczka</a>

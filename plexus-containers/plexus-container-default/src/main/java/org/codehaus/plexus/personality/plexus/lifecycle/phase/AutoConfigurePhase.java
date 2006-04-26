@@ -36,7 +36,7 @@ public class AutoConfigurePhase
 
             if ( manager.getComponentDescriptor().hasConfiguration() )
             {
-                componentConfigurator.configureComponent( object, manager.getComponentDescriptor().getConfiguration(), manager.getContainer().getContainerRealm() );
+                componentConfigurator.configureComponent( object, manager.getComponentDescriptor().getConfiguration(), manager.getContainer().getClassLoader() );
             }
         }
         catch ( ComponentLookupException e )

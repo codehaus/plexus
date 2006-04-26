@@ -24,9 +24,9 @@ package org.codehaus.plexus.component.composition;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.PlexusTestCase;
-
 import java.io.InputStream;
+
+import org.codehaus.plexus.PlexusTestCase;
 
 /**
  * @author <a href="mailto:mma@imtf.ch">Michal Maczka</a>

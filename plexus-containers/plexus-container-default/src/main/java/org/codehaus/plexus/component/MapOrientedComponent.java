@@ -1,9 +1,9 @@
 package org.codehaus.plexus.component;
 
+import java.util.Map;
+
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
-
-import java.util.Map;
 
 /*
  * Copyright 2001-2005 The Apache Software Foundation.

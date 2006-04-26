@@ -24,10 +24,11 @@ package org.codehaus.plexus.configuration;
  * SOFTWARE.
  */
 
-import junit.framework.TestCase;
-import org.codehaus.plexus.component.repository.io.PlexusTools;
-
 import java.io.StringReader;
+
+import junit.framework.TestCase;
+
+import org.codehaus.plexus.component.repository.io.PlexusTools;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

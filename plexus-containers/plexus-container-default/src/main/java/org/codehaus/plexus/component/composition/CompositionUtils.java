@@ -1,15 +1,15 @@
 package org.codehaus.plexus.component.composition;
 
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
-import org.codehaus.plexus.component.repository.ComponentRequirement;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentRequirement;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
  * @author Jason van Zyl

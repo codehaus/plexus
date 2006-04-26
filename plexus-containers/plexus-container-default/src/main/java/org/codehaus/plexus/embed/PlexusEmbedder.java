@@ -1,19 +1,18 @@
 /* Created on Oct 7, 2004 */
 package org.codehaus.plexus.embed;
 
-import org.codehaus.classworlds.ClassWorld;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.PlexusContainerException;
-import org.codehaus.plexus.logging.LoggerManager;
-import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
 import java.util.Properties;
+
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
+import org.codehaus.plexus.logging.LoggerManager;
 
 /**
  * @author jdcasey
@@ -34,7 +33,7 @@ public interface PlexusEmbedder
     void release( Object service )
         throws ComponentLifecycleException;
 
-    void setClassWorld( ClassWorld classWorld );
+    void setClassLoader( ClassLoader classLoader );
 
     void setConfiguration( URL configuration ) throws IOException;
 
@@ -46,7 +45,7 @@ public interface PlexusEmbedder
 
     void setProperties( File file );
 
-    void start( ClassWorld classWorld )
+    void start( ClassLoader classLoader )
         throws PlexusContainerException, PlexusConfigurationResourceException;
 
     void start()

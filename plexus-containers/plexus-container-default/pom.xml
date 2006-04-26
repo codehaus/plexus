@@ -6,8 +6,8 @@
     <version>1.0.4</version>
   </parent>
   <artifactId>plexus-container-default</artifactId>
-  <name>Default Plexus Container</name>
-  <version>1.0-alpha-10-SNAPSHOT</version>
+  <name>Default Plexus Container sans ClassWorlds</name>
+  <version>1.0-alpha-10-noCW-SNAPSHOT</version>
   <build>
     <plugins>
       <plugin>

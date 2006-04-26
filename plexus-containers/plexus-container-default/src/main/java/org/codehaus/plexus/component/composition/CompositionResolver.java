@@ -1,8 +1,8 @@
 package org.codehaus.plexus.component.composition;
 
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
-
 import java.util.List;
+
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 /**
  * @author Jason van Zyl

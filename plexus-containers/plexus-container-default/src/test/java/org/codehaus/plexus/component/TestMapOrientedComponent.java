@@ -1,9 +1,9 @@
 package org.codehaus.plexus.component;
 
-import org.codehaus.plexus.component.repository.ComponentRequirement;
-
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.codehaus.plexus.component.repository.ComponentRequirement;
 
 /*
  * Copyright 2001-2005 The Apache Software Foundation.

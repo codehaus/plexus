@@ -24,7 +24,6 @@ package org.codehaus.plexus.component.configurator;
  * SOFTWARE.
  */
 
-import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.converters.lookup.DefaultConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.DefaultExpressionEvaluator;
@@ -41,26 +40,26 @@ public abstract class AbstractComponentConfigurator
     // TODO: configured as a component
     protected ConverterLookup converterLookup = new DefaultConverterLookup();
 
-    public void configureComponent( Object component, PlexusConfiguration configuration, ClassRealm containerRealm )
+    public void configureComponent( Object component, PlexusConfiguration configuration, ClassLoader classLoader )
         throws ComponentConfigurationException
     {
-        configureComponent( component, configuration, new DefaultExpressionEvaluator(), containerRealm );
+        configureComponent( component, configuration, new DefaultExpressionEvaluator(), classLoader );
     }
 
     public void configureComponent( Object component, PlexusConfiguration configuration,
-                                    ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm )
+                                    ExpressionEvaluator expressionEvaluator, ClassLoader classLoader )
         throws ComponentConfigurationException
     {
-        configureComponent( component, configuration, expressionEvaluator, containerRealm, null );
+        configureComponent( component, configuration, expressionEvaluator, classLoader, null );
     }
 
     public void configureComponent( Object component, PlexusConfiguration configuration,
-                                    ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm,
+                                    ExpressionEvaluator expressionEvaluator, ClassLoader classLoader,
                                     ConfigurationListener listener )
         throws ComponentConfigurationException
     {
         // TODO: here so extended classes without the method continue to work. should be removed
         // this won't hit the method above going into a loop - instead, it will hit the overridden one
-        configureComponent( component, configuration, expressionEvaluator, containerRealm );
+        configureComponent( component, configuration, expressionEvaluator, classLoader );
     }
 }

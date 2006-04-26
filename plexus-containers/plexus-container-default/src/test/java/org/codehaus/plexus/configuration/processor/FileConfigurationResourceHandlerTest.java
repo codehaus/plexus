@@ -24,12 +24,13 @@ package org.codehaus.plexus.configuration.processor;
  * SOFTWARE.
  */
 
-import junit.framework.TestCase;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
+import junit.framework.TestCase;
+
+import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

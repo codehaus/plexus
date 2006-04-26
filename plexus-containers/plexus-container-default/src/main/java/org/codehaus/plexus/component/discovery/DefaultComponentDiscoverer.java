@@ -24,15 +24,15 @@ package org.codehaus.plexus.component.discovery;
  * SOFTWARE.
  */
 
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
-
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

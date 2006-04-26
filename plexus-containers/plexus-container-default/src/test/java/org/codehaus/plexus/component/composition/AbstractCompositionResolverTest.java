@@ -24,11 +24,12 @@ package org.codehaus.plexus.component.composition;
  * SOFTWARE.
  */
 
+import java.util.List;
+
 import junit.framework.TestCase;
+
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.io.PlexusTools;
-
-import java.util.List;
 
 /**
  *
