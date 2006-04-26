@@ -24,16 +24,6 @@ package org.codehaus.plexus.embed;
  * SOFTWARE.
  */
 
-import org.codehaus.classworlds.ClassWorld;
-import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.PlexusContainerException;
-import org.codehaus.plexus.logging.LoggerManager;
-import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
-import org.codehaus.plexus.util.PropertyUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -42,6 +32,15 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
+
+import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
+import org.codehaus.plexus.logging.LoggerManager;
+import org.codehaus.plexus.util.PropertyUtils;
 
 public class Embedder implements PlexusEmbedder
 {
@@ -100,14 +99,9 @@ public class Embedder implements PlexusEmbedder
         getContainer().release( service );
     }
 
-    //public synchronized void setClassLoader( ClassLoader classLoader )
-    //{
-    //    container.setClassLoader( classLoader );
-    //}
-
-    public synchronized void setClassWorld( ClassWorld classWorld )
+    public synchronized void setClassLoader( ClassLoader classLoader )
     {
-        container.setClassWorld( classWorld );
+        container.setClassLoader( classLoader );
     }
 
     public synchronized void setConfiguration( URL configuration ) throws IOException {
@@ -175,10 +169,10 @@ public class Embedder implements PlexusEmbedder
         }
     }
 
-    public synchronized void start( ClassWorld classWorld )
+    public synchronized void start( ClassLoader classLoader )
         throws PlexusContainerException
     {
-        container.setClassWorld( classWorld );
+        container.setClassLoader( classLoader );
 
         start();
     }

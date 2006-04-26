@@ -1,11 +1,11 @@
 package org.codehaus.plexus.component.manager;
 
+import java.util.Map;
+
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.lifecycle.LifecycleHandlerManager;
 import org.codehaus.plexus.lifecycle.UndefinedLifecycleHandlerException;
-
-import java.util.Map;
 
 /**
  *

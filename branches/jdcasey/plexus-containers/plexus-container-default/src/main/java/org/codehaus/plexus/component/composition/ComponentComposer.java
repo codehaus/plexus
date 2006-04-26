@@ -1,11 +1,11 @@
 package org.codehaus.plexus.component.composition;
 
+import java.util.List;
+import java.util.Map;
+
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Jason van Zyl

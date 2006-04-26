@@ -24,10 +24,26 @@ package org.codehaus.plexus;
  * SOFTWARE.
  */
 
-import org.codehaus.classworlds.ClassRealm;
-import org.codehaus.classworlds.ClassWorld;
-import org.codehaus.classworlds.DuplicateRealmException;
-import org.codehaus.classworlds.NoSuchRealmException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
+
+import org.codehaus.plexus.classloading.PlexusURLClassLoader;
 import org.codehaus.plexus.component.composition.ComponentComposerManager;
 import org.codehaus.plexus.component.composition.CompositionException;
 import org.codehaus.plexus.component.composition.SetterComponentComposer;
@@ -78,24 +94,6 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
-
 /**
  * @todo clarify configuration handling vis-a-vis user vs default values
  * @todo use classworlds whole hog, plexus' concern is applications.
@@ -108,6 +106,8 @@ public class DefaultPlexusContainer
     implements PlexusContainer
 {
     private PlexusContainer parentContainer;
+    
+    private PlexusURLClassLoader classLoader;
 
     private LoggerManager loggerManager;
 
@@ -116,12 +116,6 @@ public class DefaultPlexusContainer
     protected PlexusConfiguration configuration;
 
     private Reader configurationReader;
-
-    private ClassWorld classWorld;
-
-    private ClassRealm coreRealm;
-
-    private ClassRealm plexusRealm;
 
     private String name;
 
@@ -156,6 +150,7 @@ public class DefaultPlexusContainer
     public DefaultPlexusContainer()
     {
         context = new DefaultContext();
+        this.classLoader = new PlexusURLClassLoader( Thread.currentThread().getContextClassLoader() );
     }
 
     // ----------------------------------------------------------------------
@@ -206,34 +201,10 @@ public class DefaultPlexusContainer
 
         DefaultPlexusContainer child = new DefaultPlexusContainer();
 
-        child.classWorld = classWorld;
-
-        ClassRealm childRealm = null;
-
-        String childRealmId = getName() + ".child-container[" + name + "]";
-        try
-        {
-            childRealm = classWorld.getRealm( childRealmId );
-        }
-        catch ( NoSuchRealmException e )
-        {
-            try
-            {
-                childRealm = classWorld.newRealm( childRealmId );
-            }
-            catch ( DuplicateRealmException impossibleError )
-            {
-                getLogger().error( "An impossible error has occurred. After getRealm() failed, newRealm() " +
-                    "produced duplication error on same id!", impossibleError );
-            }
-        }
-
-        childRealm.setParent( plexusRealm );
-
-        child.coreRealm = childRealm;
-
-        child.plexusRealm = childRealm;
-
+        PlexusURLClassLoader childLoader = new PlexusURLClassLoader( classLoader );
+        
+        child.setClassLoader( childLoader );
+        
         child.setName( name );
 
         child.setParentPlexusContainer( this );
@@ -617,14 +588,6 @@ public class DefaultPlexusContainer
     // Lifecylce Management
     // ----------------------------------------------------------------------
 
-    /**
-     * @deprecated Use getContainerRealm() instead.
-     */
-    public ClassRealm getComponentRealm( String id )
-    {
-        return plexusRealm;
-    }
-
     public boolean isInitialized()
     {
         return initialized;
@@ -635,8 +598,6 @@ public class DefaultPlexusContainer
     {
         try
         {
-            initializeClassWorlds();
-
             initializeConfiguration();
 
             initializeResources();
@@ -650,10 +611,6 @@ public class DefaultPlexusContainer
             initializeSystemProperties();
 
             this.initialized = true;
-        }
-        catch ( DuplicateRealmException e )
-        {
-            throw new PlexusContainerException( "Error initializing classworlds", e );
         }
         catch ( ConfigurationProcessingException e )
         {
@@ -709,7 +666,7 @@ public class DefaultPlexusContainer
      * TODO: Enhance the ComponentRepository so that it can take entire
      * ComponentSetDescriptors instead of just ComponentDescriptors.
      */
-    public List discoverComponents( ClassRealm classRealm )
+    public List discoverComponents( ClassLoader classLoader )
         throws PlexusConfigurationException, ComponentRepositoryException
     {
         List discoveredComponentDescriptors = new ArrayList();
@@ -718,7 +675,7 @@ public class DefaultPlexusContainer
         {
             ComponentDiscoverer componentDiscoverer = (ComponentDiscoverer) i.next();
 
-            List componentSetDescriptors = componentDiscoverer.findComponents( getContext(), classRealm );
+            List componentSetDescriptors = componentDiscoverer.findComponents( getContext(), classLoader );
 
             for ( Iterator j = componentSetDescriptors.iterator(); j.hasNext(); )
             {
@@ -780,7 +737,7 @@ public class DefaultPlexusContainer
         {
             registerComponentDiscoveryListeners();
 
-            discoverComponents( plexusRealm );
+            discoverComponents( classLoader );
 
             loadComponentsOnStart();
 
@@ -812,16 +769,6 @@ public class DefaultPlexusContainer
             parentContainer = null;
         }
         
-        try
-        {
-            plexusRealm.setParent( null );
-            classWorld.disposeRealm( plexusRealm.getId() );
-        }
-        catch ( NoSuchRealmException e )
-        {
-            getLogger().debug( "Failed to dispose realm for exiting container: " + getName(), e );
-        }
-
         this.started = false;
         this.initialized = true;
     }
@@ -926,88 +873,9 @@ public class DefaultPlexusContainer
         this.name = name;
     }
 
-    public ClassWorld getClassWorld()
-    {
-        return classWorld;
-    }
-
-    public void setClassWorld( ClassWorld classWorld )
-    {
-        this.classWorld = classWorld;
-    }
-
-    public ClassRealm getCoreRealm()
-    {
-        return coreRealm;
-    }
-
-    public void setCoreRealm( ClassRealm coreRealm )
-    {
-        this.coreRealm = coreRealm;
-    }
-
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
-
-    private void initializeClassWorlds()
-        throws DuplicateRealmException
-    {
-        if ( classWorld == null )
-        {
-            classWorld = new ClassWorld();
-        }
-
-        // Create a name for our application if one doesn't exist.
-        initializeName();
-
-        if ( coreRealm == null )
-        {
-            try
-            {
-                coreRealm = classWorld.getRealm( "plexus.core" );
-            }
-            catch ( NoSuchRealmException e )
-            {
-                /* We are being loaded with someone who hasn't
-                 * given us any classworlds realms.  In this case,
-                 * we want to use the classes already in the
-                 * ClassLoader for our realm.
-                 */
-                coreRealm = classWorld.newRealm( "plexus.core", Thread.currentThread().getContextClassLoader() );
-            }
-        }
-
-        // We are in a non-embedded situation
-        if ( plexusRealm == null )
-        {
-            try
-            {
-                plexusRealm = coreRealm.getWorld().getRealm( "plexus.core.maven" );
-            }
-            catch ( NoSuchRealmException e )
-            {
-                //plexusRealm = coreRealm.getWorld().newRealm( "plexus.core.maven" );
-
-                // If no app realm can be found then we will make the plexusRealm
-                // the same as the app realm.
-
-                plexusRealm = coreRealm;
-            }
-
-            //plexusRealm.importFrom( coreRealm.getId(), "" );
-
-            addContextValue( "common.classloader", plexusRealm.getClassLoader() );
-
-            Thread.currentThread().setContextClassLoader( plexusRealm.getClassLoader() );
-        }
-
-    }
-
-    public ClassRealm getContainerRealm()
-    {
-        return plexusRealm;
-    }
 
     /**
      * Create a name for our application if one doesn't exist.
@@ -1016,21 +884,8 @@ public class DefaultPlexusContainer
     {
         if ( name == null )
         {
-            int i = 0;
-
-            while ( true )
-            {
-                try
-                {
-                    classWorld.getRealm( "plexus.app" + i );
-                    i++;
-                }
-                catch ( NoSuchRealmException e )
-                {
-                    setName( "app" + i );
-                    return;
-                }
-            }
+            // TODO: Be smarter about this.
+            setName( "App@" + hashCode() );
         }
     }
 
@@ -1046,8 +901,6 @@ public class DefaultPlexusContainer
     private void initializeContext()
     {
         addContextValue( PlexusConstants.PLEXUS_KEY, this );
-
-        addContextValue( PlexusConstants.PLEXUS_CORE_REALM, plexusRealm );
     }
 
     // ----------------------------------------------------------------------
@@ -1059,7 +912,7 @@ public class DefaultPlexusContainer
     {
         // System userConfiguration
 
-        InputStream is = coreRealm.getResourceAsStream( BOOTSTRAP_CONFIGURATION );
+        InputStream is = classLoader.getResourceAsStream( BOOTSTRAP_CONFIGURATION );
 
         if ( is == null )
         {
@@ -1088,7 +941,7 @@ public class DefaultPlexusContainer
         configuration = systemConfiguration;
 
         PlexusXmlComponentDiscoverer discoverer = new PlexusXmlComponentDiscoverer();
-        PlexusConfiguration plexusConfiguration = discoverer.discoverConfiguration( getContext(), plexusRealm );
+        PlexusConfiguration plexusConfiguration = discoverer.discoverConfiguration( getContext(), classLoader );
 
         if ( plexusConfiguration != null )
         {
@@ -1227,7 +1080,7 @@ public class DefaultPlexusContainer
 
         componentRepository.configure( configuration );
 
-        componentRepository.setClassRealm( plexusRealm );
+        componentRepository.setClassLoader( classLoader );
 
         componentRepository.initialize();
 
@@ -1306,7 +1159,7 @@ public class DefaultPlexusContainer
 
         try
         {
-            configurator.configureComponent( this, configuration, plexusRealm );
+            configurator.configureComponent( this, configuration, classLoader );
         }
         catch ( ComponentConfigurationException e )
         {
@@ -1369,7 +1222,7 @@ public class DefaultPlexusContainer
 
                     if ( directory.exists() && directory.isDirectory() )
                     {
-                        plexusRealm.addConstituent( directory.toURL() );
+                        classLoader.addURL( directory.toURL() );
                     }
                 }
                 else
@@ -1403,11 +1256,11 @@ public class DefaultPlexusContainer
     {
         try
         {
-            plexusRealm.addConstituent( jar.toURL() );
+            classLoader.addURL( jar.toURL() );
 
             if ( isStarted() )
             {
-                discoverComponents( plexusRealm );
+                discoverComponents( classLoader );
             }
         }
         catch ( MalformedURLException e )
@@ -1484,7 +1337,7 @@ public class DefaultPlexusContainer
                 componentFactory = componentFactoryManager.getDefaultComponentFactory();
             }
 
-            component = componentFactory.newInstance( componentDescriptor, plexusRealm, this );
+            component = componentFactory.newInstance( componentDescriptor, classLoader, this );
         }
         catch ( UndefinedComponentFactoryException e )
         {
@@ -1536,6 +1389,11 @@ public class DefaultPlexusContainer
     {
         return loggerManager;
     }
+    
+    public PlexusURLClassLoader getClassLoader()
+    {
+        return classLoader;
+    }
 
     // ----------------------------------------------------------------------
     // Autowire Support
@@ -1559,7 +1417,7 @@ public class DefaultPlexusContainer
     public Object createAndAutowire( String clazz )
         throws CompositionException, ClassNotFoundException, InstantiationException, IllegalAccessException
     {
-        Object component = plexusRealm.loadClass( clazz ).newInstance();
+        Object component = classLoader.loadClass( clazz ).newInstance();
 
         SetterComponentComposer composer = new SetterComponentComposer();
 
@@ -1580,5 +1438,17 @@ public class DefaultPlexusContainer
     public boolean isReloadingEnabled()
     {
         return reloadingEnabled;
+    }
+
+    public void setClassLoader( ClassLoader classLoader )
+    {
+        if ( classLoader instanceof PlexusURLClassLoader )
+        {
+            this.classLoader = (PlexusURLClassLoader) classLoader;
+        }
+        else
+        {
+            this.classLoader = new PlexusURLClassLoader( new URL[0], classLoader );
+        }
     }
 }

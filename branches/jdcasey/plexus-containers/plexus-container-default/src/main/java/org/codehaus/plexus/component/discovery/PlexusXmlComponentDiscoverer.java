@@ -16,7 +16,14 @@ package org.codehaus.plexus.component.discovery;
  * limitations under the License.
  */
 
-import org.codehaus.classworlds.ClassRealm;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
+import org.codehaus.plexus.classloading.ClassLoaderUtils;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 import org.codehaus.plexus.component.repository.io.PlexusTools;
@@ -27,14 +34,6 @@ import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextMapAdapter;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.List;
 
 public class PlexusXmlComponentDiscoverer
     implements ComponentDiscoverer
@@ -49,14 +48,14 @@ public class PlexusXmlComponentDiscoverer
         this.manager = manager;
     }
 
-    public List findComponents( Context context, ClassRealm classRealm )
+    public List findComponents( Context context, ClassLoader classLoader )
         throws PlexusConfigurationException
     {
-        PlexusConfiguration configuration = discoverConfiguration( context, classRealm );
+        PlexusConfiguration configuration = discoverConfiguration( context, classLoader );
 
         List componentSetDescriptors = new ArrayList();
 
-        ComponentSetDescriptor componentSetDescriptor = createComponentDescriptors( configuration, classRealm );
+        ComponentSetDescriptor componentSetDescriptor = createComponentDescriptors( configuration, classLoader );
 
         componentSetDescriptors.add( componentSetDescriptor );
 
@@ -68,7 +67,7 @@ public class PlexusXmlComponentDiscoverer
         return componentSetDescriptors;
     }
 
-    public PlexusConfiguration discoverConfiguration( Context context, ClassRealm classRealm )
+    public PlexusConfiguration discoverConfiguration( Context context, ClassLoader classLoader )
         throws PlexusConfigurationException
     {
         PlexusConfiguration configuration = null;
@@ -76,11 +75,11 @@ public class PlexusXmlComponentDiscoverer
         Enumeration resources = null;
         try
         {
-            resources = classRealm.findResources( PLEXUS_XML_RESOURCE );
+            resources = classLoader.getResources( PLEXUS_XML_RESOURCE );
         }
         catch ( IOException e )
         {
-            throw new PlexusConfigurationException( "Error retrieving configuration resources: " + PLEXUS_XML_RESOURCE + " from class realm: " + classRealm.getId(), e );
+            throw new PlexusConfigurationException( "Error retrieving configuration resources: " + PLEXUS_XML_RESOURCE + " from class loader: " + classLoader, e );
         }
 
         for ( Enumeration e = resources; e.hasMoreElements(); )
@@ -122,7 +121,7 @@ public class PlexusXmlComponentDiscoverer
     }
 
     private ComponentSetDescriptor createComponentDescriptors( PlexusConfiguration configuration,
-                                                               ClassRealm classRealm )
+                                                               ClassLoader classLoader )
         throws PlexusConfigurationException
     {
         ComponentSetDescriptor componentSetDescriptor = new ComponentSetDescriptor();
@@ -147,7 +146,7 @@ public class PlexusXmlComponentDiscoverer
                 catch ( PlexusConfigurationException e )
                 {
                     throw new PlexusConfigurationException( "Cannot build component descriptor from resource found in:\n" +
-                                         Arrays.asList( classRealm.getConstituents() ), e );
+                                         ClassLoaderUtils.getClassLoaderInfo( classLoader ), e );
                 }
 
                 componentDescriptor.setComponentType( "plexus" );

@@ -24,22 +24,20 @@ package org.codehaus.plexus.test;
  * SOFTWARE.
  */
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Map;
+
 import junit.framework.TestCase;
+
 import org.codehaus.plexus.DefaultPlexusContainer;
-//import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.configurator.ComponentConfigurator;
 import org.codehaus.plexus.component.discovery.DiscoveredComponent;
 import org.codehaus.plexus.test.list.Pipeline;
 import org.codehaus.plexus.test.list.Valve;
 import org.codehaus.plexus.test.map.Activity;
 import org.codehaus.plexus.test.map.ActivityManager;
-//import org.codehaus.plexus.util.AbstractTestThread;
-//import org.codehaus.plexus.util.TestThreadManager;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Map;
 
 public class PlexusContainerTest
     extends TestCase

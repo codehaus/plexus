@@ -24,7 +24,10 @@ package org.codehaus.plexus.component.repository;
  * SOFTWARE.
  */
 
-import org.codehaus.classworlds.ClassRealm;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.codehaus.plexus.component.composition.CompositionException;
 import org.codehaus.plexus.component.composition.CompositionResolver;
 import org.codehaus.plexus.component.repository.exception.ComponentImplementationNotFoundException;
@@ -33,10 +36,6 @@ import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @todo We need to process component descriptors from a specified configuration file in addition
@@ -59,8 +58,6 @@ public class DefaultComponentRepository
     private Map componentDescriptors;
 
     private CompositionResolver compositionResolver;
-
-    private ClassRealm classRealm;
 
     public DefaultComponentRepository()
     {
@@ -98,9 +95,9 @@ public class DefaultComponentRepository
         return (ComponentDescriptor) componentDescriptors.get( key );
     }
 
-    public void setClassRealm( ClassRealm classRealm )
+    public void setClassLoader( ClassLoader classLoader )
     {
-        this.classRealm = classRealm;
+        // do nothing...
     }
 
     // ----------------------------------------------------------------------

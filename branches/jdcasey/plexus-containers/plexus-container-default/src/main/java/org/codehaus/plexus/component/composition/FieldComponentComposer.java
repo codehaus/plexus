@@ -24,18 +24,16 @@ package org.codehaus.plexus.component.composition;
  * SOFTWARE.
  */
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.util.ReflectionUtils;
-
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Jason van Zyl
@@ -112,7 +110,7 @@ public class FieldComponentComposer
                 if ( container != null )
                 {
                     fieldClass =
-                        container.getContainerRealm().loadClass( requirement.getRole() );
+                        container.getClassLoader().loadClass( requirement.getRole() );
                 }
                 else
                 {

@@ -24,12 +24,13 @@ package org.codehaus.plexus;
  * SOFTWARE.
  */
 
-import org.codehaus.classworlds.ClassWorld;
-import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+
+import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.classworlds.ClassWorld;
+import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
 
 /**
  * A <code>ContainerHost</code>.
@@ -66,12 +67,12 @@ public class PlexusContainerHost
     //  Implementation
     // ----------------------------------------------------------------------
 
-    public PlexusContainer start( ClassWorld classWorld, String configurationResource )
+    public PlexusContainer start( ClassLoader classLoader, String configurationResource )
         throws FileNotFoundException, PlexusConfigurationResourceException, PlexusContainerException
     {
         container = getPlexusContainer();
 
-        container.setClassWorld( classWorld );
+        container.setClassLoader( classLoader );
         container.setConfigurationResource( new FileReader( configurationResource ) );
 
         customizeContainer( container );
@@ -235,7 +236,20 @@ public class PlexusContainerHost
         {
             PlexusContainerHost host = new PlexusContainerHost();
 
-            host.start( classWorld, args[0] );
+            ClassLoader cloader;
+
+            // assume this is the root realm.
+            ClassRealm realm = classWorld.getRealm( "plexus.core" );
+            if ( realm != null )
+            {
+                cloader = realm.getClassLoader();
+            }
+            else
+            {
+                cloader = Thread.currentThread().getContextClassLoader();
+            }
+
+            host.start( cloader, args[0] );
 
             host.waitForContainerShutdown();
         }

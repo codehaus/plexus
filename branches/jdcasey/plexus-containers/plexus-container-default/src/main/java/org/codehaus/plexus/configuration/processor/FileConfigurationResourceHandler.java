@@ -1,14 +1,14 @@
 package org.codehaus.plexus.configuration.processor;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Map;
+
 import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.util.IOUtil;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileNotFoundException;
-import java.util.Map;
 
 /*
  * The MIT License

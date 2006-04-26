@@ -24,12 +24,13 @@ package org.codehaus.plexus;
  * SOFTWARE.
  */
 
-import junit.framework.TestCase;
-import org.codehaus.plexus.context.Context;
-
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import junit.framework.TestCase;
+
+import org.codehaus.plexus.context.Context;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

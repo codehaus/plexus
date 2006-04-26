@@ -1,11 +1,11 @@
 package org.codehaus.plexus.personality.plexus.lifecycle.phase;
 
+import java.util.List;
+import java.util.Map;
+
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * A ServiceLocator for PlexusContainer.

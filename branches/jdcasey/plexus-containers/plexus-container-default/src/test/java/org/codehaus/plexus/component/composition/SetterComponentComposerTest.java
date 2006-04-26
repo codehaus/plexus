@@ -24,12 +24,12 @@ package org.codehaus.plexus.component.composition;
  * SOFTWARE.
  */
 
-import junit.framework.TestCase;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+
+import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

@@ -1,6 +1,12 @@
 package org.codehaus.plexus;
 
-import org.codehaus.classworlds.ClassRealm;
+import java.io.File;
+import java.io.Reader;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.codehaus.plexus.classloading.PlexusURLClassLoader;
 import org.codehaus.plexus.component.composition.CompositionException;
 import org.codehaus.plexus.component.composition.UndefinedComponentComposerException;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryListener;
@@ -13,12 +19,6 @@ import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
-
-import java.io.File;
-import java.io.Reader;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 public interface PlexusContainer
 {
@@ -163,11 +163,6 @@ public interface PlexusContainer
     
     void addJarResource( File resource ) throws PlexusContainerException;
 
-    ClassRealm getContainerRealm();
-
-    /** @deprecated Use getContainerRealm() instead. */
-    ClassRealm getComponentRealm( String componentKey );
-
     // ----------------------------------------------------------------------
     // Start of new programmatic API to fully control the container
     // ----------------------------------------------------------------------
@@ -193,4 +188,8 @@ public interface PlexusContainer
     void setReloadingEnabled( boolean reloadingEnabled );
 
     boolean isReloadingEnabled();
+
+    PlexusURLClassLoader getClassLoader();
+
+    void setClassLoader( ClassLoader classLoader );
 }

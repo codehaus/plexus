@@ -24,12 +24,12 @@ package org.codehaus.plexus.configuration.processor;
  * SOFTWARE.
  */
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Take a normal PlexusConfiguration and look for directives within it

@@ -24,24 +24,24 @@ package org.codehaus.plexus.component.configurator;
  * SOFTWARE.
  */
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-import org.codehaus.classworlds.ClassRealm;
-import org.codehaus.classworlds.ClassWorld;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
-import org.codehaus.plexus.component.repository.io.PlexusTools;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.configuration.PlexusConfigurationException;
-
 import java.io.File;
 import java.io.StringReader;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
+
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.io.PlexusTools;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
 
 /**
  * @author <a href="mailto:michal@codehaus.org">Michal Maczka</a>
@@ -77,12 +77,10 @@ public abstract class AbstractComponentConfiguratorTest
         descriptor.setRole( "role" );
 
         descriptor.setImplementation( component.getClass().getName() );
+        
+        URLClassLoader cl = new URLClassLoader( new URL[0], getClass().getClassLoader() );
 
-        ClassWorld classWorld = new ClassWorld();
-
-        ClassRealm realm = classWorld.newRealm( "test", getClass().getClassLoader() );
-
-        cc.configureComponent( component, configuration, realm );
+        cc.configureComponent( component, configuration, cl );
 
         assertEquals( "check integer value", 0, component.getIntValue() );
 
@@ -130,11 +128,9 @@ public abstract class AbstractComponentConfiguratorTest
 
         descriptor.setImplementation( component.getClass().getName() );
 
-        ClassWorld classWorld = new ClassWorld();
+        URLClassLoader cl = new URLClassLoader( new URL[0], getClass().getClassLoader() );
 
-        ClassRealm realm = classWorld.newRealm( "test", getClass().getClassLoader() );
-
-        cc.configureComponent( component, configuration, realm );
+        cc.configureComponent( component, configuration, cl );
 
         assertEquals( "check integer value", 0, component.getIntValue() );
 
@@ -192,11 +188,9 @@ public abstract class AbstractComponentConfiguratorTest
 
         descriptor.setImplementation( component.getClass().getName() );
 
-        ClassWorld classWorld = new ClassWorld();
+        URLClassLoader cl = new URLClassLoader( new URL[0], getClass().getClassLoader() );
 
-        ClassRealm realm = classWorld.newRealm( "test", getClass().getClassLoader() );
-
-        cc.configureComponent( component, configuration, realm );
+        cc.configureComponent( component, configuration, cl );
 
         assertEquals( "jason", component.getName() );
 
@@ -231,11 +225,9 @@ public abstract class AbstractComponentConfiguratorTest
 
         descriptor.setImplementation( component.getClass().getName() );
 
-        ClassWorld classWorld = new ClassWorld();
+        URLClassLoader cl = new URLClassLoader( new URL[0], getClass().getClassLoader() );
 
-        ClassRealm realm = classWorld.newRealm( "test", getClass().getClassLoader() );
-
-        cc.configureComponent( component, configuration, realm );
+        cc.configureComponent( component, configuration, cl );
 
         Vector vector = component.getVector();
 
@@ -297,11 +289,9 @@ public abstract class AbstractComponentConfiguratorTest
 
         descriptor.setImplementation( component.getClass().getName() );
 
-        ClassWorld classWorld = new ClassWorld();
+        URLClassLoader cl = new URLClassLoader( new URL[0], getClass().getClassLoader() );
 
-        ClassRealm realm = classWorld.newRealm( "test", getClass().getClassLoader() );
-
-        cc.configureComponent( component, configuration, realm );
+        cc.configureComponent( component, configuration, cl );
 
         String [] stringArray = component.getStringArray();
 
@@ -376,11 +366,9 @@ public abstract class AbstractComponentConfiguratorTest
 
         descriptor.setImplementation( component.getClass().getName() );
 
-        ClassWorld classWorld = new ClassWorld();
+        URLClassLoader cl = new URLClassLoader( new URL[0], getClass().getClassLoader() );
 
-        ClassRealm realm = classWorld.newRealm( "test", getClass().getClassLoader() );
-
-        cc.configureComponent( component, configuration, realm );
+        cc.configureComponent( component, configuration, cl );
 
         assertNotNull( component.getThing() );
 
@@ -396,8 +384,7 @@ public abstract class AbstractComponentConfiguratorTest
 
         try
         {
-            PlexusConfiguration configuration = PlexusTools.buildConfiguration( "<Test-Invalid>",
-                                                                                new StringReader( xml ) );
+            PlexusTools.buildConfiguration( "<Test-Invalid>", new StringReader( xml ) );
 
             fail( "Should have caused an error because of the invalid XML." );
         }
@@ -436,11 +423,9 @@ public abstract class AbstractComponentConfiguratorTest
 
         descriptor.setImplementation( component.getClass().getName() );
 
-        ClassWorld classWorld = new ClassWorld();
+        URLClassLoader cl = new URLClassLoader( new URL[0], getClass().getClassLoader() );
 
-        ClassRealm realm = classWorld.newRealm( "test", getClass().getClassLoader() );
-
-        cc.configureComponent( component, configuration, realm );
+        cc.configureComponent( component, configuration, cl );
 
         Properties properties = component.getSomeProperties();
 
@@ -470,11 +455,9 @@ public abstract class AbstractComponentConfiguratorTest
 
         descriptor.setImplementation( component.getClass().getName() );
 
-        ClassWorld classWorld = new ClassWorld();
+        URLClassLoader cl = new URLClassLoader( new URL[0], getClass().getClassLoader() );
 
-        ClassRealm realm = classWorld.newRealm( "test", getClass().getClassLoader() );
-
-        cc.configureComponent( component, configuration, realm );
+        cc.configureComponent( component, configuration, cl );
 
         Map map = component.getMap();
 

@@ -24,7 +24,6 @@ package org.codehaus.plexus.component.configurator;
  * SOFTWARE.
  */
 
-import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
@@ -36,15 +35,15 @@ public interface ComponentConfigurator
 {
     String ROLE = ComponentConfigurator.class.getName();
 
-    void configureComponent( Object component, PlexusConfiguration configuration, ClassRealm containerRealm )
+    void configureComponent( Object component, PlexusConfiguration configuration, ClassLoader classLoader )
         throws ComponentConfigurationException;
 
     void configureComponent( Object component, PlexusConfiguration configuration,
-                             ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm )
+                             ExpressionEvaluator expressionEvaluator, ClassLoader classLoader )
         throws ComponentConfigurationException;
 
     void configureComponent( Object component, PlexusConfiguration configuration,
-                             ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm,
+                             ExpressionEvaluator expressionEvaluator, ClassLoader classLoader,
                              ConfigurationListener listener )
         throws ComponentConfigurationException;
 }

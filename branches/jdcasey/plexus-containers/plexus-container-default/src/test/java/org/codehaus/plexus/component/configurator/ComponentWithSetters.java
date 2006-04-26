@@ -25,9 +25,9 @@ package org.codehaus.plexus.component.configurator;
  */
 
 
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-
 import java.util.List;
+
+import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 /**
  *

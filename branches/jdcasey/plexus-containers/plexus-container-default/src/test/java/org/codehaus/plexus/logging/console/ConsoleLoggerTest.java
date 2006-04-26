@@ -24,10 +24,10 @@ package org.codehaus.plexus.logging.console;
  * SOFTWARE.
  */
 
-import junit.framework.TestCase;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
+import junit.framework.TestCase;
 
 import org.codehaus.plexus.util.StringUtils;
 
