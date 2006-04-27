@@ -26,7 +26,7 @@ package org.codehaus.plexus.service.xmlrpc;
 
 import org.apache.xmlrpc.XmlRpcException;
 
-import org.codehaus.plexus.application.service.PlexusService;
+import org.codehaus.plexus.application.lifecycle.phase.deploy.service.PlexusService;
 import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.StringUtils;
