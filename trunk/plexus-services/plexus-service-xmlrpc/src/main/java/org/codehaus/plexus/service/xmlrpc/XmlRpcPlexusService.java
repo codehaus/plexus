@@ -150,14 +150,14 @@ public class XmlRpcPlexusService
                 break;
             }
 
-            if ( !applicationRuntimeProfile.getContainer().hasComponent( role ) )
+            if ( !applicationRuntimeProfile.getApplicationServerContainer().hasComponent( role ) )
             {
                 getLogger().error( "No component with the role '" + role + "' available." );
 
                 break;
             }
 
-            Object component = applicationRuntimeProfile.getContainer().lookup( role );
+            Object component = applicationRuntimeProfile.getApplicationServerContainer().lookup( role );
 
             getLogger().info( "Adding XML-RPC handler for role '" + role + " to name '" + name + "'." );
 
