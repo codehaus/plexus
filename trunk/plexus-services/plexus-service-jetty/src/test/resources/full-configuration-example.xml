@@ -3,6 +3,7 @@
     <webapp>
       <file>${plexus.home}/lib/continuum-web-1.0-alpha-3-SNAPSHOT.jar</file>
       <context>/continuum</context>
+      <standardWebappClassloader>true</standardWebappClassloader>
       <extraction-path>${plexus.home}/webapp</extraction-path>
       <virtual-host>www.foo.com</virtual-host>
       <listeners>

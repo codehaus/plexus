@@ -78,6 +78,20 @@ public class DefaultServiceConfigurationBuilder
                 continue;
             }
 
+            boolean standardWebappClassloader = false;
+
+            String s = webapps[ i ].getChild( "standardWebappClassloader" ).getValue( null );
+
+            if ( !StringUtils.isEmpty( s ) )
+            {
+                if ( s.equals( "true" ) )
+                {
+                    standardWebappClassloader = true;
+                }
+            }
+
+            System.out.println( "standardWebappClassloader = " + standardWebappClassloader );
+
             // ----------------------------------------------------------------------
             // Extraction Path
             // ----------------------------------------------------------------------
@@ -122,7 +136,8 @@ public class DefaultServiceConfigurationBuilder
                                                      path,
                                                      extractionPath,
                                                      context,
-                                                     virtualHost );
+                                                     virtualHost,
+                                                     standardWebappClassloader );
 
             for ( int j = 0; j < listeners.length; j++ )
             {

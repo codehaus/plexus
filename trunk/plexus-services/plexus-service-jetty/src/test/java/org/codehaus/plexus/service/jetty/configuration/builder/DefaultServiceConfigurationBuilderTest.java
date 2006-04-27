@@ -77,6 +77,8 @@ public class DefaultServiceConfigurationBuilderTest
 
         assertEquals( "www.foo.com", webApplication.getVirtualHost() );
 
+        assertTrue( webApplication.isStandardWebappClassloader() );
+        
         // ----------------------------------------------------------------------
         // Assert the listeners
         // ----------------------------------------------------------------------
