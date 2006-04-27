@@ -31,10 +31,13 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
 
+// Container host plexus container is configured and initialized
+// The appserver component is looked up
+
 /**
  * A <code>ContainerHost</code>.
  *
- * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
+ * @author Jason van Zyl
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -48,9 +51,13 @@ public class PlexusApplicationHost
 
     private boolean isStopped;
 
-    private static Object waitObj = new Object();
+    private static final Object waitObj = new Object();
 
     private ApplicationServer applicationServer;
+
+    private ClassWorld classWorld;
+
+    private String configurationResource;
 
     // ----------------------------------------------------------------------
     //
@@ -73,6 +80,10 @@ public class PlexusApplicationHost
     public void start( ClassWorld classWorld, String configurationResource )
         throws Exception
     {
+        this.classWorld = classWorld;
+
+        this.configurationResource = configurationResource;
+
         container = new DefaultPlexusContainer();
 
         container.setClassWorld( classWorld );
@@ -87,7 +98,7 @@ public class PlexusApplicationHost
 
         File plexusLogs = new File( System.getProperty( "plexus.home" ) + "/logs" );
 
-        if ( plexusLogs.exists() == false )
+        if ( !plexusLogs.exists() )
         {
             plexusLogs.mkdirs();
         }
@@ -167,6 +178,14 @@ public class PlexusApplicationHost
         }
     }
 
+    public void restart()
+        throws Exception
+    {
+        shutdown();
+
+        start( classWorld, configurationResource );
+    }
+
     // ----------------------------------------------------------------------
     //  Startup
     // ----------------------------------------------------------------------
@@ -191,7 +210,7 @@ public class PlexusApplicationHost
         }
 
         synchronized ( this )
-        {
+        {    
             while ( !isStopped )
             {
                 try

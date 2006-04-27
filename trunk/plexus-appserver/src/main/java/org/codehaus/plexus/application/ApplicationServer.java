@@ -28,6 +28,7 @@ import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Jason van Zyl
  * @version $Id$
  */
 public interface ApplicationServer
@@ -36,4 +37,13 @@ public interface ApplicationServer
 
     ApplicationRuntimeProfile getApplicationRuntimeProfile( String applicationId )
         throws ApplicationServerException;
+
+    void deploy( String name, String location )
+        throws ApplicationServerException;
+
+    void redeploy( String name, String location )
+        throws ApplicationServerException;
+
+    void undeploy( String name )
+        throws ApplicationServerException;    
 }
