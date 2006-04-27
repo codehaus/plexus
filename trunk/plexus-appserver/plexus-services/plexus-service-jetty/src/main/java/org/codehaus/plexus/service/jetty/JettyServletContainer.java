@@ -307,6 +307,8 @@ public class JettyServletContainer
 
         if ( standardWebappClassloader )
         {
+            getLogger().info( "Using standard webapp classloader for webapp." );
+
             try
             {
 
@@ -349,7 +351,9 @@ public class JettyServletContainer
         }
         else
         {
-            applicationContext.setClassLoader( appserverContainer.getContainerRealm().getClassLoader() );
+            // Dirty hack, need better methods for classloaders because i can set the core realm but not get it,
+            // or get the container realm but not set it. blah!
+            applicationContext.setClassLoader( ((DefaultPlexusContainer)applicationContainer).getCoreRealm().getClassLoader() );
         }
 
         applicationContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY, applicationContainer );
