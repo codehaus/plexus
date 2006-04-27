@@ -1,7 +1,9 @@
-package org.codehaus.plexus.application.event;
+package org.codehaus.plexus.service.jetty.configuration.builder;
 
 /*
- * Copyright (c) 2004, Codehaus.org
+ * The MIT License
+ *
+ * Copyright (c) 2004-2005, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,15 +24,16 @@ package org.codehaus.plexus.application.event;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
 
 /**
- * Signals an (un/re)deployment event;
- *
- * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
- * @since Jul 17, 2004
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
  */
-public interface DeployEvent
+public interface ServiceConfigurationBuilder
 {
-    ApplicationRuntimeProfile getRuntimeProfile();
+    String ROLE = ServiceConfigurationBuilder.class.getName();
+
+    ServiceConfiguration buildConfiguration( PlexusConfiguration serviceConfiguration );
 }

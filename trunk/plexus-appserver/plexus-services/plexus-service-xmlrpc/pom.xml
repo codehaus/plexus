@@ -1,0 +1,38 @@
+<project>
+  <parent>
+    <artifactId>plexus-services</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0.3</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>plexus-service-xmlrpc</artifactId>
+  <packaging>plexus-service</packaging>
+  <name>Plexus XMLRPC Service</name>
+  <version>1.0-alpha-4-SNAPSHOT</version>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <version>1.1</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serviceName>jetty</serviceName>
+          <serviceConfiguration>src/conf/plexus.xml</serviceConfiguration>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>xmlrpc</groupId>
+      <artifactId>xmlrpc</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-xmlrpc</artifactId>
+      <version>1.0-beta-4</version>
+    </dependency>
+  </dependencies>
+</project>

@@ -47,6 +47,8 @@ public class PlexusObjectFactory
     public void initialize()
         throws InitializationException
     {
+        System.out.println( "Object Factory is online!!!!!!!!!!!!!!!!!!!" );
+
         objectFactory = ObjectFactory.getObjectFactory();
     }
 
@@ -65,14 +67,14 @@ public class PlexusObjectFactory
             {
                 if ( debugMode )
                 {
-                    logger.info( "Could not look up component '" + roleHint + "', chaining to " + objectFactory );
+                    logger.info( "Could not look up component '" + roleHint + "', chaining to " + objectFactory, e );
                 }
 
                 return objectFactory.buildAction( config );
             }
             else if ( debugMode )
             {
-                logger.info( "Could not look up component '" + roleHint + "', not chaining." );
+                logger.info( "Could not look up component '" + roleHint + "', not chaining.", e );
             }
 
             throw e;

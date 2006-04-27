@@ -1,4 +1,4 @@
-package org.codehaus.plexus.application.service;
+package org.codehaus.plexus.application.lifecycle.phase.deploy.service;
 
 /*
  * Copyright (c) 2004, Codehaus.org
@@ -45,9 +45,9 @@ import org.codehaus.plexus.util.FileUtils;
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  * @since Jul 17, 2004
  */
-public class DefaultServiceDiscoverer
+public class DefaultServiceDeployer
     extends AbstractLogEnabled
-    implements ServiceDiscoverer, Initializable, Contextualizable
+    implements ServiceDeployer, Initializable, Contextualizable
 {
     private String serviceDirectory;
 
@@ -72,7 +72,7 @@ public class DefaultServiceDiscoverer
     }
 
     // ----------------------------------------------------------------------
-    // ServiceDiscoverer Implementation
+    // ServiceDeployer Implementation
     // ----------------------------------------------------------------------
 
     public void deploy( String name, String location )

@@ -2,16 +2,16 @@
   <components>
 
     <component>
-      <role>org.codehaus.plexus.application.deploy.ApplicationDeployer</role>
-      <implementation>org.codehaus.plexus.application.deploy.DefaultApplicationDeployer</implementation>
+      <role>org.codehaus.plexus.application.lifecycle.phase.deploy.application.ApplicationDeployer</role>
+      <implementation>org.codehaus.plexus.application.lifecycle.phase.deploy.application.DefaultApplicationDeployer</implementation>
       <configuration>
         <applicationsDirectory>${plexus.home}/apps</applicationsDirectory>
       </configuration>
     </component>
 
     <component>
-      <role>org.codehaus.plexus.application.service.ServiceDiscoverer</role>
-      <implementation>org.codehaus.plexus.application.service.DefaultServiceDiscoverer</implementation>
+      <role>org.codehaus.plexus.application.lifecycle.phase.deploy.service.ServiceDeployer</role>
+      <implementation>org.codehaus.plexus.application.lifecycle.phase.deploy.service.DefaultServiceDeployer</implementation>
       <configuration>
         <serviceDirectory>${plexus.home}/services</serviceDirectory>
       </configuration>
@@ -27,15 +27,20 @@
       <implementation>org.codehaus.plexus.application.DefaultApplicationServer</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.application.service.ServiceDiscoverer</role>
+          <role>org.codehaus.plexus.application.lifecycle.phase.deploy.service.ServiceDeployer</role>
         </requirement>
         <requirement>
-          <role>org.codehaus.plexus.application.deploy.ApplicationDeployer</role>
+          <role>org.codehaus.plexus.application.lifecycle.phase.deploy.application.ApplicationDeployer</role>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.application.supervisor.Supervisor</role>
         </requirement>
       </requirements>
+      <configuration>
+        <phases>
+          <phase></phase>
+        </phases>
+      </configuration>
     </component>
 
   </components>

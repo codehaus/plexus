@@ -1,7 +1,9 @@
-package org.codehaus.plexus.application.deploy;
+package org.codehaus.plexus.service.jetty;
 
 /*
- * Copyright (c) 2004, Codehaus.org
+ * The MIT License
+ *
+ * Copyright (c) 2004, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,42 +24,75 @@ package org.codehaus.plexus.application.deploy;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.application.event.ApplicationListener;
-import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
-import org.codehaus.plexus.application.ApplicationServerException;
+import org.codehaus.plexus.logging.Logger;
+
+import org.mortbay.util.LogSink;
+import org.mortbay.util.Frame;
 
 /**
- * @author Peter Donald
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
  */
-public interface ApplicationDeployer
+public class PlexusJettyLogSink
+    implements LogSink
 {
-    String ROLE = ApplicationDeployer.class.getName();
+    private Logger logger;
 
-    // ----------------------------------------------------------------------
-    // Deployment
-    // ----------------------------------------------------------------------
-
-    void deploy( String name, String location )
-        throws ApplicationServerException;
-
-    void redeploy( String name, String location )
-        throws ApplicationServerException;
-
-    void undeploy( String name )
-        throws ApplicationServerException;
-
-    // ----------------------------------------------------------------------
-    // Listeners
-    // ----------------------------------------------------------------------
-
-    void addApplicationListener( ApplicationListener listener );
-
-    void removeApplicationListener( ApplicationListener listener );
+    private boolean started;
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
-    ApplicationRuntimeProfile getApplicationRuntimeProfile( String applicationName )
-        throws ApplicationServerException;
+    public PlexusJettyLogSink( Logger logger )
+    {
+        this.logger = logger;
+    }
+
+    // ----------------------------------------------------------------------
+    // LogSink Implementation
+    // ----------------------------------------------------------------------
+
+    public void setOptions( String s )
+    {
+        // No options to set
+    }
+
+    public String getOptions()
+    {
+        return "";
+    }
+
+    public void log( String tag, Object message, Frame frame, long time )
+    {
+//        System.err.println( "tag: " + tag );
+//        System.err.println( "message:" + message );
+//        System.err.println( "frame: " + frame );
+    }
+
+    public void log( String formattedLog )
+    {
+//        logger.info( formattedLog );
+    }
+
+    // ----------------------------------------------------------------------
+    // LifeCycle Implementation
+    // ----------------------------------------------------------------------
+
+    public void start()
+        throws Exception
+    {
+        started = true;
+    }
+
+    public void stop()
+        throws InterruptedException
+    {
+        started = false;
+    }
+
+    public boolean isStarted()
+    {
+        return started;
+    }
 }
