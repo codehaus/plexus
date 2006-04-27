@@ -6,7 +6,9 @@
     <source>src/main/java/Person.java</source>
   </sources>
   <resources>
+    <!-- 
     <resource>src/main/resources/log4j.properties</resource>
+    -->
     <resource>src/main/resources/xwork.xml</resource>
     <resource>src/main/resources/META-INF/plexus/components.xml</resource>
     <resource>src/main/webapp/index.jsp</resource>
