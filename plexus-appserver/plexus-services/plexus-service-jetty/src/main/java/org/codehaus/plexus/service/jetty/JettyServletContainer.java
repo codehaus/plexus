@@ -311,14 +311,23 @@ public class JettyServletContainer
 
             try
             {
+                // We need to start the context to trigger the unpacking so that we can
+                // create a realm. We need to create a realm so that we can discover all
+                // the components in the webapp.
 
-                ClassRealm realm = applicationContainer.getContainerRealm();
+                ClassRealm realm = ((DefaultPlexusContainer)applicationContainer).getCoreRealm();
 
                 List jars = FileUtils.getFiles( war, "**/*.jar", null );
+
+                // The webapp directory needs to be unpacked before we can pick up the files
 
                 for ( Iterator i = jars.iterator(); i.hasNext(); )
                 {
                     File file = (File) i.next();
+
+                    System.out.println("file = " + file);
+
+                    System.out.println("realm = " + realm);
 
                     realm.addConstituent( file.toURL() );
                 }
@@ -331,18 +340,7 @@ public class JettyServletContainer
 
                 realm.addConstituent( classes.toURL() );
 
-                // ClassWorlds will not combine all the URLs from all the realms. The problem here
-                // is that jasper will create a compile classpath from the contents of the URLs
-                // that are in the classloader. The paths will only be taken from the container
-                // realm and not any parent realms.
-
                 applicationContext.setClassLoader( realm.getClassLoader() );
-
-                // ----------------------------------------------------------------------------
-                // Now we need to find all the components that might be included in the webapp.
-                // ----------------------------------------------------------------------------
-
-                ((DefaultPlexusContainer)applicationContainer).discoverComponents( applicationContainer.getContainerRealm() );
             }
             catch ( Exception e )
             {

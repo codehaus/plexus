@@ -24,6 +24,8 @@ package org.codehaus.plexus.service.jetty;
  * SOFTWARE.
  */
 
+import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 import org.codehaus.plexus.application.lifecycle.phase.deploy.service.PlexusService;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
@@ -171,6 +173,19 @@ public class JettyPlexusService
                     servletContainer.addListener( httpListener.getHost(), httpListener.getPort() );
                 }
             }
+
+            // ----------------------------------------------------------------------------
+            // Now we need to find all the components that might be included in the webapp.
+            // We have to do this here because now the container is initialized which
+            // means discoverying
+            // ----------------------------------------------------------------------------
+
+            DefaultPlexusContainer c = (DefaultPlexusContainer) applicationRuntimeProfile.getApplicationContainer();
+
+            ClassRealm realm = c.getContainerRealm();
+
+            c.discoverComponents( realm );
+
 
             servletContainer.startApplication( application.getContext() );
         }
