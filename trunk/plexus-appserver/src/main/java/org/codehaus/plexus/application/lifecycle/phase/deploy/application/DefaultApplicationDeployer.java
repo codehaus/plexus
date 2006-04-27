@@ -329,25 +329,6 @@ public class DefaultApplicationDeployer
 
         PlexusConfiguration applicationConfiguration = new XmlPlexusConfiguration( dom );
 
-
-        // ----------------------------------------------------------------------
-        // Start the application
-        // ----------------------------------------------------------------------
-
-        try
-        {
-            applicationContainer.initialize();
-
-            applicationContainer.start();
-        }
-        catch ( Exception e )
-        {
-            throw new Exception( "Error starting Plexus.", e );
-        }
-
-        // I changed it so that the application and its container are started up before the instance of
-        // the service is looked up to do the work on behalf of the application. jvz.
-
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
@@ -400,6 +381,27 @@ public class DefaultApplicationDeployer
         }
 
         deployments.put( name, profile );
+
+        // ----------------------------------------------------------------------
+        // Start the application
+        // ----------------------------------------------------------------------
+
+        // This is here in the case of the jetty service where the application.xml specifies resources
+        // that are in the path of an extracted WAR file. The Jetty service does the unpacking and then
+        // the application can start up correctly. Otherwise during the initialization of the application
+        // container we will get a failure. Chop this up into phases so it's clear.
+
+        try
+        {
+            applicationContainer.initialize();
+
+            applicationContainer.start();
+        }
+        catch ( Exception e )
+        {
+            throw new Exception( "Error starting Plexus.", e );
+        }
+
 
         // ----------------------------------------------------------------------
         //
