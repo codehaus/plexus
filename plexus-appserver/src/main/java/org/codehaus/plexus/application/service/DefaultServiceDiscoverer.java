@@ -67,6 +67,8 @@ public class DefaultServiceDiscoverer
         throws ContextException
     {
         container = (DefaultPlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+
+        System.out.println( "!!!! container in service discoverer= " + container );
     }
 
     // ----------------------------------------------------------------------
@@ -81,40 +83,6 @@ public class DefaultServiceDiscoverer
         deploy( name, jar, new File( serviceDirectory ), new File( serviceDirectory ) );
     }
 
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-/*
-    private void deployServices( String directory )
-        throws Exception
-    {
-        getLogger().info( "Extracting services in " + directory + "." );
-
-        File serviceDir = new File( directory );
-
-        if ( serviceDir.isDirectory() )
-        {
-            File[] apps = serviceDir.listFiles();
-
-            for ( int i = 0; i < apps.length; i++ )
-            {
-                String fileName = apps[i].getName();
-                if ( fileName.endsWith( ".jar" ) )
-                {
-                    String name = fileName.substring( 0, fileName.indexOf( ".jar" ) );
-                    deploy( name,
-                            new File( apps[i].getAbsolutePath() ),
-                            new File( serviceDirectory ),
-                            serviceDir );
-                }
-            }
-        }
-        else
-        {
-            getLogger().warn( "The services directory '" + directory + "' is not a directory!" );
-        }
-    }
-*/
     private void deploy( String name, File jar, File services, File configurations )
         throws Exception
     {
@@ -128,8 +96,11 @@ public class DefaultServiceDiscoverer
         }
 
         Expand ex = new Expand();
+
         ex.setDest( serviceDir );
+
         ex.setOverwrite( false );
+
         ex.setSrc( jar );
 
         try
@@ -207,7 +178,8 @@ public class DefaultServiceDiscoverer
         startComponents( serviceConfig );
     }
 
-    private void startComponents( PlexusConfiguration serviceConfig ) throws PlexusConfigurationException, ComponentLookupException
+    private void startComponents( PlexusConfiguration serviceConfig )
+        throws PlexusConfigurationException, ComponentLookupException
     {
         PlexusConfiguration[] loadOnStartComponents = serviceConfig.getChild( "load-on-start" ).getChildren( "component" );
 

@@ -25,12 +25,11 @@ package org.codehaus.plexus.application.profile;
  */
 
 import java.io.File;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 /**
@@ -45,7 +44,9 @@ public class ApplicationRuntimeProfile
 
     private File lib;
 
-    private DefaultPlexusContainer container;
+    private DefaultPlexusContainer applicationContainer;
+
+    private PlexusContainer applicationServerContainer;
 
     private PlexusConfiguration applicationConfiguration;
 
@@ -57,7 +58,11 @@ public class ApplicationRuntimeProfile
     //
     // ----------------------------------------------------------------------
 
-    public ApplicationRuntimeProfile( String name, File home, File lib, DefaultPlexusContainer container,
+    public ApplicationRuntimeProfile( String name,
+                                      File home,
+                                      File lib,
+                                      DefaultPlexusContainer applicationContainer,
+                                      PlexusContainer applicationServerContainer,
                                       PlexusConfiguration applicationConfiguration )
     {
         this.name = name;
@@ -66,7 +71,9 @@ public class ApplicationRuntimeProfile
 
         this.lib = lib;
 
-        this.container = container;
+        this.applicationContainer = applicationContainer;
+
+        this.applicationServerContainer = applicationServerContainer;
 
         this.applicationConfiguration = applicationConfiguration;
 
@@ -90,9 +97,14 @@ public class ApplicationRuntimeProfile
         return lib;
     }
 
-    public DefaultPlexusContainer getContainer()
+    public DefaultPlexusContainer getApplicationContainer()
     {
-        return container;
+        return applicationContainer;
+    }
+
+    public PlexusContainer getApplicationServerContainer()
+    {
+        return applicationServerContainer;
     }
 
     public PlexusConfiguration getApplicationConfiguration()

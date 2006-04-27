@@ -1,7 +1,7 @@
 package org.codehaus.plexus.application.deploy;
 
 /*
- * Copyright (c) 2004, Codehaus.org
+ * Copyright (c) 2004, Codehausv.org
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -31,17 +31,21 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Enumeration;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.classworlds.NoSuchRealmException;
+import org.codehaus.classworlds.ClassWorld;
+import org.codehaus.classworlds.DuplicateRealmException;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.application.ApplicationServerException;
@@ -73,7 +77,10 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  */
 public class DefaultApplicationDeployer
     extends AbstractLogEnabled
-    implements ApplicationDeployer, Contextualizable, Initializable, Disposable
+    implements ApplicationDeployer,
+    Contextualizable,
+    Initializable,
+    Disposable
 {
     // ----------------------------------------------------------------------
     //
@@ -83,7 +90,7 @@ public class DefaultApplicationDeployer
 
     // This needs to be changed to PlexusContainer and expand the PlexusContainer
     // interface so that it can be used here. jvz.
-    private DefaultPlexusContainer parentPlexus;
+    private DefaultPlexusContainer applicationServerContainer;
 
     private List applicationListeners;
 
@@ -99,7 +106,8 @@ public class DefaultApplicationDeployer
     // Deployment
     // ----------------------------------------------------------------------
 
-    public void deploy( String name, String url )
+    public void deploy( String name,
+                        String url )
         throws ApplicationServerException
     {
         URL location;
@@ -116,7 +124,8 @@ public class DefaultApplicationDeployer
         deploy( name, location );
     }
 
-    public void deploy( String name, URL url )
+    public void deploy( String name,
+                        URL url )
         throws ApplicationServerException
     {
         if ( !url.getProtocol().equals( "file" ) )
@@ -145,7 +154,8 @@ public class DefaultApplicationDeployer
         }
     }
 
-    private void deployJar( File file, String directory )
+    private void deployJar( File file,
+                            String directory )
         throws IOException, ApplicationServerException, XmlPullParserException
     {
         // ----------------------------------------------------------------------
@@ -158,7 +168,8 @@ public class DefaultApplicationDeployer
 
         if ( entry == null )
         {
-            throw new ApplicationServerException( "The Plexus application jar is missing it's metadata file '" + PlexusApplicationConstants.METADATA_FILE + "'."  );
+            throw new ApplicationServerException( "The Plexus application jar is missing it's metadata file '" +
+                PlexusApplicationConstants.METADATA_FILE + "'." );
         }
 
         Reader reader = new InputStreamReader( jarFile.getInputStream( entry ) );
@@ -217,14 +228,16 @@ public class DefaultApplicationDeployer
         }
     }
 
-    protected void deployApplicationDirectory( String name, File location )
+    protected void deployApplicationDirectory( String name,
+                                               File location )
         throws Exception
     {
         getLogger().info( "Deploying application '" + name + "' at '" + location.getAbsolutePath() + "'." );
 
         if ( deployments.containsKey( name ) )
         {
-            throw new ApplicationServerException( "A application with the specified name ('" + name + "') already exists." );
+            throw new ApplicationServerException(
+                "A application with the specified name ('" + name + "') already exists." );
         }
 
         // ----------------------------------------------------------------------
@@ -236,12 +249,13 @@ public class DefaultApplicationDeployer
         // -> ${app}/lib
         // ----------------------------------------------------------------------
 
-        File applicationConfigurationFile = new File( new File( location, PlexusApplicationConstants.CONF_DIRECTORY ), PlexusApplicationConstants.CONFIGURATION_FILE );
+        File applicationConfigurationFile = new File( new File( location, PlexusApplicationConstants.CONF_DIRECTORY ),
+                                                      PlexusApplicationConstants.CONFIGURATION_FILE );
 
         if ( !applicationConfigurationFile.exists() )
         {
             throw new ApplicationServerException( "The application '" + name + "' does not have a valid " +
-                                                  "configuration: " + applicationConfigurationFile + " does not exist!" );
+                "configuration: " + applicationConfigurationFile + " does not exist!" );
         }
 
         File applicationLibrary = new File( location, PlexusApplicationConstants.LIB_DIRECTORY );
@@ -249,7 +263,7 @@ public class DefaultApplicationDeployer
         if ( !applicationLibrary.exists() )
         {
             throw new ApplicationServerException( "The application '" + name + "' does not have a valid library: " +
-                                                  applicationLibrary + " does not exist!" );
+                applicationLibrary + " does not exist!" );
         }
 
         // ----------------------------------------------------------------------
@@ -282,15 +296,26 @@ public class DefaultApplicationDeployer
 
         applicationContainer.addContextValue( "plexus.home", location.getAbsolutePath() );
 
-        applicationContainer.setParentPlexusContainer( parentPlexus );
+        Object appserver = applicationServerContainer.getContext().get( "plexus.appserver" );
 
-        applicationContainer.setClassWorld( parentPlexus.getClassWorld() );
+        applicationContainer.addContextValue( "plexus.appserver", appserver );
+
+        applicationContainer.setParentPlexusContainer( applicationServerContainer );
+
+        applicationContainer.setClassWorld( applicationServerContainer.getClassWorld() );
 
         // ----------------------------------------------------------------------
         // Create the realm for the application
         // ----------------------------------------------------------------------
 
-        ClassRealm realm = parentPlexus.getCoreRealm().createChildRealm( "plexus.application." + name );
+        // When this is not done things appear to work but everything is put in the core realm of the
+        // container
+
+        //ClassRealm realm = applicationServerContainer.getCoreRealm().createChildRealm( "plexus.application." + name );
+
+        ClassRealm realm = new SimpleClassRealm( "plexus.application." + name, new SimpleClassLoader( applicationServerContainer.getContainerRealm().getClassLoader() ), applicationServerContainer.getClassWorld() );
+
+        //realm.setParent( applicationServerContainer.getCoreRealm() );
 
         applicationContainer.setCoreRealm( realm );
 
@@ -300,60 +325,13 @@ public class DefaultApplicationDeployer
 
         Map context = new ContextMapAdapter( applicationContainer.getContext() );
 
-        Reader configurationReader = new InterpolationFilterReader( new FileReader( applicationConfigurationFile ),
-                                                                    context );
+        Reader configurationReader =
+            new InterpolationFilterReader( new FileReader( applicationConfigurationFile ), context );
 
         Xpp3Dom dom = Xpp3DomBuilder.build( configurationReader );
 
         PlexusConfiguration applicationConfiguration = new XmlPlexusConfiguration( dom );
 
-        ApplicationRuntimeProfile profile = new ApplicationRuntimeProfile( name, location, applicationLibrary, applicationContainer, applicationConfiguration );
-
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
-        PlexusConfiguration[] services = applicationConfiguration.getChild( "services" ).getChildren( "service" );
-
-        for ( int i = 0; i < services.length; i++ )
-        {
-            PlexusConfiguration serviceConfiguration = services[ i ];
-
-            String id = serviceConfiguration.getChild( "id" ).getValue();
-
-            if ( StringUtils.isEmpty( id ) )
-            {
-                throw new Exception( "Missing child element 'id' in 'service'." );
-            }
-
-            if ( !parentPlexus.hasComponent( PlexusService.ROLE, id ) )
-            {
-                getLogger().error( "Error while loading plexus service with id '" + id + "'. " +
-                                   "The service doesn't exists." );
-
-                continue;
-            }
-
-            Object serviceObject = parentPlexus.lookup( PlexusService.ROLE, id );
-
-            if ( !( serviceObject instanceof PlexusService ) )
-            {
-                getLogger().error( "Error while loading plexus service with id '" + id + "'. " +
-                                   "The component has to implement the PlexusService interface." );
-
-                continue;
-            }
-
-            PlexusService service = (PlexusService) serviceObject;
-
-            profile.getServices().add( service );
-
-            PlexusConfiguration conf = serviceConfiguration.getChild( "configuration" );
-
-            profile.getServiceConfigurations().add( conf );
-
-            service.beforeApplicationStart( profile, conf );
-        }
 
         // ----------------------------------------------------------------------
         // Start the application
@@ -368,6 +346,60 @@ public class DefaultApplicationDeployer
         catch ( Exception e )
         {
             throw new Exception( "Error starting Plexus.", e );
+        }
+
+        // I changed it so that the application and its container are started up before the instance of
+        // the service is looked up to do the work on behalf of the application. jvz.
+
+        // ----------------------------------------------------------------------
+        //
+        // ----------------------------------------------------------------------
+
+        ApplicationRuntimeProfile profile = new ApplicationRuntimeProfile( name, location, applicationLibrary,
+                                                                           applicationContainer,
+                                                                           applicationServerContainer,
+                                                                           applicationConfiguration );
+
+        PlexusConfiguration[] services = applicationConfiguration.getChild( "services" ).getChildren( "service" );
+
+        for ( int i = 0; i < services.length; i++ )
+        {
+            PlexusConfiguration serviceConfiguration = services[i];
+
+            String id = serviceConfiguration.getChild( "id" ).getValue();
+
+            if ( StringUtils.isEmpty( id ) )
+            {
+                throw new Exception( "Missing child element 'id' in 'service'." );
+            }
+
+            if ( !applicationServerContainer.hasComponent( PlexusService.ROLE, id ) )
+            {
+                getLogger().error(
+                    "Error while loading plexus service with id '" + id + "'. " + "The service doesn't exists." );
+
+                continue;
+            }
+
+            Object serviceObject = applicationServerContainer.lookup( PlexusService.ROLE, id );
+
+            if ( !( serviceObject instanceof PlexusService ) )
+            {
+                getLogger().error( "Error while loading plexus service with id '" + id + "'. " +
+                    "The component has to implement the PlexusService interface." );
+
+                continue;
+            }
+
+            PlexusService service = (PlexusService) serviceObject;
+
+            profile.getServices().add( service );
+
+            PlexusConfiguration conf = serviceConfiguration.getChild( "configuration" );
+
+            profile.getServiceConfigurations().add( conf );
+
+            service.beforeApplicationStart( profile, conf );
         }
 
         deployments.put( name, profile );
@@ -390,7 +422,8 @@ public class DefaultApplicationDeployer
     // Redeploy
     // ----------------------------------------------------------------------
 
-    public void redeploy( String name, String url )
+    public void redeploy( String name,
+                          String url )
         throws ApplicationServerException
     {
         ApplicationRuntimeProfile profile = getApplicationRuntimeProfile( name );
@@ -422,7 +455,7 @@ public class DefaultApplicationDeployer
 
         deployments.remove( name );
 
-        DefaultPlexusContainer app = (DefaultPlexusContainer) profile.getContainer();
+        DefaultPlexusContainer app = profile.getApplicationContainer();
 
         app.dispose();
 
@@ -453,9 +486,7 @@ public class DefaultApplicationDeployer
 
     private DefaultDeployEvent createDeployEvent( ApplicationRuntimeProfile runtimeProfile )
     {
-        DefaultDeployEvent event = new DefaultDeployEvent( runtimeProfile );
-
-        return event;
+        return new DefaultDeployEvent( runtimeProfile );
     }
 
     public ApplicationRuntimeProfile getApplicationRuntimeProfile( String applicationName )
@@ -465,7 +496,7 @@ public class DefaultApplicationDeployer
 
         if ( profile == null )
         {
-            throw new ApplicationServerException( "No such application: '" + applicationName + "'.");
+            throw new ApplicationServerException( "No such application: '" + applicationName + "'." );
         }
 
         return profile;
@@ -488,7 +519,7 @@ public class DefaultApplicationDeployer
     public void contextualize( Context context )
         throws ContextException
     {
-        parentPlexus = (DefaultPlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+        applicationServerContainer = (DefaultPlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
     }
 
     public void initialize()
@@ -513,10 +544,124 @@ public class DefaultApplicationDeployer
             {
                 undeploy( name );
             }
-            catch( Exception e )
+            catch ( Exception e )
             {
                 getLogger().warn( "Error while undeploying application '" + name + "'.", e );
             }
+        }
+    }
+
+    class SimpleClassLoader
+        extends URLClassLoader
+    {
+        public SimpleClassLoader( ClassLoader classLoader )
+        {
+            super( new URL[0], classLoader );
+        }
+
+        public void addURL( URL url )
+        {
+            super.addURL( url );
+        }
+    }
+
+    class SimpleClassRealm
+        implements ClassRealm
+    {
+        private String id;
+
+        private ClassWorld world;
+
+        SimpleClassLoader classLoader;
+
+        public SimpleClassRealm( String id,
+                                 SimpleClassLoader classLoader, ClassWorld world )
+        {
+            this.id = id;
+            this.classLoader = classLoader;
+            this.world = world;
+        }
+
+        public String getId()
+        {
+            return id;
+        }
+
+        public void addConstituent( URL url )
+        {
+            classLoader.addURL( url );
+        }
+
+        public ClassRealm locateSourceRealm( String a )
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        public ClassLoader getClassLoader()
+        {
+            return classLoader;
+        }
+
+        public URL[] getConstituents()
+        {
+            return classLoader.getURLs();
+        }
+
+        public Class loadClass( String name )
+            throws ClassNotFoundException
+        {
+            return classLoader.loadClass( name );
+        }
+
+        public URL getResource( String name )
+        {
+            return classLoader.getResource( name );
+        }
+
+        public Enumeration findResources( String name )
+            throws IOException
+        {
+            return classLoader.findResources( name );
+        }
+
+        // ----------------------------------------------------------------------------
+        // Things we don't care about, we'll use normal classloader semantics.
+        // ----------------------------------------------------------------------------
+
+        public ClassWorld getWorld()
+        {
+            return world;
+        }
+
+        public void importFrom( String a, String b )
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        public void setParent( ClassRealm c )
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        public InputStream getResourceAsStream( String name )
+        {
+            return classLoader.getResourceAsStream( name );
+        }
+
+
+        public ClassRealm getParent()
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        public ClassRealm createChildRealm( String id )
+            throws DuplicateRealmException
+        {
+            throw new UnsupportedOperationException();
+        }
+
+        public void display()
+        {
         }
     }
 }

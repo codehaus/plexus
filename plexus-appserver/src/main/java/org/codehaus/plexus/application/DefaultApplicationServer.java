@@ -35,6 +35,11 @@ import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusConstants;
 
 /**
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
@@ -42,9 +47,20 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
+
+//- the containers aren't quite right. the application container is in the service which might not be correct
+//- the container is not initialized
+
+
+// create a small test app
+// test reloading the whole app server
+// reload individual apps
+// need a console to test app reloading (maybe xmlrpc or simple socket listener)
+// would need a web console to reconfigure on the fly
+
 public class DefaultApplicationServer
     extends AbstractLogEnabled
-    implements ApplicationServer, Startable
+    implements ApplicationServer, Contextualizable, Startable
 {
     private ApplicationDeployer applicationDeployer;
 
@@ -60,6 +76,28 @@ public class DefaultApplicationServer
         throws ApplicationServerException
     {
         return applicationDeployer.getApplicationRuntimeProfile( applicationId );
+    }
+
+    // ----------------------------------------------------------------------------
+    // Delegation to the application deployer
+    // ----------------------------------------------------------------------------
+
+    public void deploy( String name, String location )
+        throws ApplicationServerException
+    {
+        applicationDeployer.deploy( name, location );
+    }
+
+    public void redeploy( String name, String location )
+        throws ApplicationServerException
+    {
+        applicationDeployer.deploy( name, location );
+    }
+
+    public void undeploy( String name )
+        throws ApplicationServerException
+    {
+        applicationDeployer.undeploy( name );
     }
 
     // ----------------------------------------------------------------------
@@ -90,11 +128,7 @@ public class DefaultApplicationServer
                     }
                     catch ( Exception e )
                     {
-                        // TDOO: remove the user of  stderr
-                        // TODO; use a more specific exception
-                        System.err.println( "Error while deploying service '" + name + "'." );
-
-                        e.printStackTrace();
+                        getLogger().error( "Error while deploying service " + name + ".", e );
                     }
                 }
             } );
@@ -118,15 +152,10 @@ public class DefaultApplicationServer
                     }
                     catch ( Exception e )
                     {
-                        // TDOO: remove the user of  stderr
-                        // TODO; use a more specific exception
-                        System.err.println( "Error while deploying application '" + name + "'." );
-
-                        e.printStackTrace();
+                        getLogger().error( "Error while deploying application " + name + ".", e );
                     }
                 }
             } );
-
         }
         catch ( SupervisorException e )
         {
@@ -154,5 +183,13 @@ public class DefaultApplicationServer
 
     public void stop()
     {
+    }
+
+    public void contextualize( Context context )
+        throws ContextException
+    {
+        PlexusContainer container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+
+        container.addContextValue( "plexus.appserver", this );
     }
 }
