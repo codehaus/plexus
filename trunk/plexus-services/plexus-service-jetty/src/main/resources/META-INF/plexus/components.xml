@@ -1,7 +1,7 @@
 <component-set>
   <components>
     <component>
-      <role>org.codehaus.plexus.application.service.PlexusService</role>
+      <role>org.codehaus.plexus.application.lifecycle.phase.deploy.service.PlexusService</role>
       <role-hint>jetty</role-hint>
       <implementation>org.codehaus.plexus.service.jetty.JettyPlexusService</implementation>
       <requirements>
