@@ -1,4 +1,4 @@
-package org.codehaus.plexus.application.event;
+package org.codehaus.plexus.application.lifecycle.phase.deploy.service;
 
 /*
  * Copyright (c) 2004, Codehaus.org
@@ -22,15 +22,15 @@ package org.codehaus.plexus.application.event;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
-
 /**
- * Signals an (un/re)deployment event;
- *
+ * A bean which builds services.
+ * 
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  * @since Jul 17, 2004
  */
-public interface DeployEvent
+public class ServiceBuilder
 {
-    ApplicationRuntimeProfile getRuntimeProfile();
+    private String userConfig;
+    private String targetDirectory;
+    private String targetJar;
 }

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.application.service;
+package org.codehaus.plexus.application.lifecycle.phase.deploy.service;
 
 /*
  * Copyright (c) 2004, Codehaus.org
@@ -23,14 +23,13 @@ package org.codehaus.plexus.application.service;
  */
 
 /**
- * A bean which builds services.
- * 
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  * @since Jul 17, 2004
  */
-public class ServiceBuilder
+public interface ServiceDeployer
 {
-    private String userConfig;
-    private String targetDirectory;
-    private String targetJar;
+    final String ROLE = ServiceDeployer.class.getName();
+
+    void deploy( String name, String jar )
+        throws Exception;
 }

@@ -43,12 +43,14 @@ public class DefaultSupervisor
     // Supervisor Implementation
     // ----------------------------------------------------------------------
 
-    public void addDirectory( File directory, SupervisorListener listener )
+    public void addDirectory( File directory,
+                              SupervisorListener listener )
         throws SupervisorException
     {
         if ( !directory.isDirectory() )
         {
-            throw new SupervisorException( "The specified directory doesn't exists or isn't a directory: '" + directory.getAbsolutePath() + "'." );
+            throw new SupervisorException(
+                "The specified directory doesn't exists or isn't a directory: '" + directory.getAbsolutePath() + "'." );
         }
 
         directories.add( new SupervisedDirectory( directory, listener ) );
@@ -61,9 +63,9 @@ public class DefaultSupervisor
         {
             SupervisedDirectory directory = (SupervisedDirectory) it.next();
 
-            File dir = (File) directory.getDirectory();
+            File dir = directory.getDirectory();
 
-            SupervisorListener listener = (SupervisorListener) directory.getListener();
+            SupervisorListener listener = directory.getListener();
 
             scanDirectory( dir, listener );
         }
@@ -73,18 +75,20 @@ public class DefaultSupervisor
     //
     // ----------------------------------------------------------------------
 
-    private void scanDirectory( File dir, SupervisorListener listener )
+    private void scanDirectory( File dir,
+                                SupervisorListener listener )
     {
-        File[] files = dir.listFiles( new FileFilter() {
+        File[] files = dir.listFiles( new FileFilter()
+        {
             public boolean accept( File file )
             {
                 return file.isFile() && file.getName().endsWith( ".jar" );
             }
-        });
+        } );
 
         for ( int i = 0; i < files.length; i++ )
         {
-            File file = files[ i ];
+            File file = files[i];
 
             listener.onJarDiscovered( file );
         }

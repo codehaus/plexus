@@ -1,9 +1,9 @@
-package org.codehaus.plexus.application.service;
+package org.codehaus.plexus.service.xmlrpc.configuration.builder;
 
 /*
  * The MIT License
  *
- * Copyright (c) 2004, The Codehaus
+ * Copyright (c) 2004-2005, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -25,22 +25,15 @@ package org.codehaus.plexus.application.service;
  */
 
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
-import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.service.xmlrpc.configuration.ServiceConfiguration;
 
 /**
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author <a href="mailto:evenisse@codehaus.org">Emmanuel VEnisse</a>
  * @version $Id$
  */
-public interface PlexusService
+public interface ServiceConfigurationBuilder
 {
-    String ROLE = PlexusService.class.getName();
+    String ROLE = ServiceConfigurationBuilder.class.getName();
 
-    void beforeApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
-                                 PlexusConfiguration serviceConfiguration )
-        throws Exception;
-
-    void afterApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
-                                PlexusConfiguration serviceConfiguration )
-        throws Exception;
+    ServiceConfiguration buildConfiguration( PlexusConfiguration serviceConfiguration );
 }

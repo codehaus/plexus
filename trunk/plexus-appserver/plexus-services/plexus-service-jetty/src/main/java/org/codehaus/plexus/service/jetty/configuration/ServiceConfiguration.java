@@ -1,7 +1,9 @@
-package org.codehaus.plexus.application.event;
+package org.codehaus.plexus.service.jetty.configuration;
 
 /*
- * Copyright (c) 2004, Codehaus.org
+ * The MIT License
+ *
+ * Copyright (c) 2004-2005, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,15 +24,26 @@ package org.codehaus.plexus.application.event;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
+import java.util.List;
+import java.util.ArrayList;
+
+import org.codehaus.plexus.service.jetty.configuration.WebApplication;
 
 /**
- * Signals an (un/re)deployment event;
- *
- * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
- * @since Jul 17, 2004
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
  */
-public interface DeployEvent
+public class ServiceConfiguration
 {
-    ApplicationRuntimeProfile getRuntimeProfile();
+    private List webapps = new ArrayList();
+
+    public void addWebApplication( WebApplication webApplication )
+    {
+        webapps.add( webApplication );
+    }
+
+    public List getWebapps()
+    {
+        return webapps;
+    }
 }
