@@ -17,8 +17,8 @@
       </requirements>
       <configuration>
         <phases>
-          <phase>deploy-apps</phase>
           <phase>deploy-services</phase>
+          <phase>deploy-apps</phase>
         </phases>
       </configuration>
     </component>
@@ -27,8 +27,7 @@
     <component>
       <role>org.codehaus.plexus.application.lifecycle.phase.AppServerPhase</role>
       <role-hint>deploy-apps</role-hint>
-      <implementation>
-        org.codehaus.plexus.application.lifecycle.phase.deploy.application.ApplicationDeploymentPhase</implementation>
+      <implementation>org.codehaus.plexus.application.lifecycle.phase.deploy.application.ApplicationDeploymentPhase</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.application.lifecycle.phase.deploy.application.ApplicationDeployer</role>
