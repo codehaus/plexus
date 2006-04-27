@@ -25,11 +25,9 @@ package org.codehaus.plexus.service.jetty;
  */
 
 import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
-import org.codehaus.plexus.application.service.PlexusService;
+import org.codehaus.plexus.application.lifecycle.phase.deploy.service.PlexusService;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.service.jetty.configuration.HttpListener;
 import org.codehaus.plexus.service.jetty.configuration.ProxyHttpListener;
 import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
