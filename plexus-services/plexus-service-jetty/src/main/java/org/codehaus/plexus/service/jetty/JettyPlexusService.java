@@ -24,6 +24,19 @@ package org.codehaus.plexus.service.jetty;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.application.service.PlexusService;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.service.jetty.configuration.HttpListener;
+import org.codehaus.plexus.service.jetty.configuration.ProxyHttpListener;
+import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
+import org.codehaus.plexus.service.jetty.configuration.WebApplication;
+import org.codehaus.plexus.service.jetty.configuration.builder.ServiceConfigurationBuilder;
+import org.codehaus.plexus.util.IOUtil;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -34,55 +47,26 @@ import java.util.Iterator;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.codehaus.plexus.application.deploy.ApplicationDeployer;
-import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
-import org.codehaus.plexus.application.service.PlexusService;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
-import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
-import org.codehaus.plexus.service.jetty.configuration.builder.ServiceConfigurationBuilder;
-import org.codehaus.plexus.service.jetty.configuration.WebApplication;
-import org.codehaus.plexus.service.jetty.configuration.HttpListener;
-import org.codehaus.plexus.service.jetty.configuration.ProxyHttpListener;
-import org.codehaus.plexus.util.IOUtil;
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Jason van Zyl
  * @version $Id$
+ * @todo how to make the servlet container here be the standard plexus-jetty, we shouldn't need to copy
+ * the component here to make it work as a service.
  */
 public class JettyPlexusService
     extends AbstractLogEnabled
-    implements PlexusService, Initializable, Startable
+    implements PlexusService
 {
-    /** @plexus.requirement */
+    /**
+     * @plexus.requirement
+     */
     private ServiceConfigurationBuilder configurationBuilder;
 
-    /** @plexus.requirement */
-    private ApplicationDeployer deployer;
-
-    /** @plexus.requirement */
+    /**
+     * @plexus.requirement
+     */
     private ServletContainer servletContainer;
-
-    // ----------------------------------------------------------------------
-    // Component Lifecycle
-    // ----------------------------------------------------------------------
-
-    public void initialize()
-    {
-        getLogger().info( "Initializing servlet container service." );
-    }
-
-    public void start()
-    {
-        getLogger().info( "Starting servlet container service." );
-    }
-
-    public void stop()
-    {
-        getLogger().info( "Stopping servlet container service." );
-    }
 
     // ----------------------------------------------------------------------
     // PlexusService Implementation
@@ -100,12 +84,13 @@ public class JettyPlexusService
 
             File webAppDir;
 
-            if ( application.getPath() == null)
+            if ( application.getPath() == null )
             {
                 // ----------------------------------------------------------------------
                 // Extract the jar
                 // ----------------------------------------------------------------------
 
+                // todo: use the Expand code in plexus utils.
                 extractJarFile( new File( application.getFile() ), application.getExtractionPath() );
 
                 webAppDir = new File( application.getExtractionPath() );
@@ -115,10 +100,8 @@ public class JettyPlexusService
                 webAppDir = new File( application.getPath() );
             }
 
-            deployDirectory( webAppDir,
-                             application.getContext(),
-                             application.getVirtualHost(),
-                             applicationRuntimeProfile );
+            deployDirectory( webAppDir, application.getContext(), application.getVirtualHost(),
+                             applicationRuntimeProfile, application.isStandardWebappClassloader() );
         }
     }
 
@@ -144,7 +127,7 @@ public class JettyPlexusService
             else
             {
                 getLogger().info( "Deploying application '" + applicationRuntimeProfile.getName() + "' " +
-                                  "on virtual host '" + application.getVirtualHost() + "'." );
+                    "on virtual host '" + application.getVirtualHost() + "'." );
             }
 
             for ( Iterator it2 = application.getListeners().iterator(); it2.hasNext(); )
@@ -179,8 +162,7 @@ public class JettyPlexusService
 
                     getLogger().info( "Adding HTTP proxy listener on " + listener + " for " + proxyListener );
 
-                    servletContainer.addProxyListener( proxyHttpListener.getHost(),
-                                                       proxyHttpListener.getPort(),
+                    servletContainer.addProxyListener( proxyHttpListener.getHost(), proxyHttpListener.getPort(),
                                                        proxyHttpListener.getProxyHost(),
                                                        proxyHttpListener.getProxyPort() );
                 }
@@ -188,8 +170,7 @@ public class JettyPlexusService
                 {
                     getLogger().info( "Adding HTTP listener on " + listener );
 
-                    servletContainer.addListener( httpListener.getHost(),
-                                                  httpListener.getPort() );
+                    servletContainer.addListener( httpListener.getHost(), httpListener.getPort() );
                 }
             }
 
@@ -204,7 +185,8 @@ public class JettyPlexusService
     private void deployDirectory( File directory,
                                   String context,
                                   String virtualHost,
-                                  ApplicationRuntimeProfile runtimeProfile )
+                                  ApplicationRuntimeProfile runtimeProfile,
+                                  boolean isStandardWebappClassloader )
         throws Exception
     {
         if ( !directory.isDirectory() )
@@ -214,9 +196,18 @@ public class JettyPlexusService
 
         try
         {
-            servletContainer.deployWarDirectory( directory,
-                                                 runtimeProfile.getContainer(), context,
-                                                 virtualHost );
+            //todo: This uses the container from the application ... this means that we have no access to
+            // the libs that are provided by the service in the case of jetty.
+
+            /*
+            servletContainer.deployWarDirectory( directory, runtimeProfile.getContainer(), context, virtualHost,
+                                                 isStandardWebappClassloader );
+                                                 */
+
+            servletContainer.deployWarDirectory( directory, runtimeProfile, context, virtualHost,
+                                                 isStandardWebappClassloader );
+
+
         }
         catch ( ServletContainerException e )
         {
@@ -228,7 +219,8 @@ public class JettyPlexusService
     //
     // ----------------------------------------------------------------------
 
-    private void extractJarFile( File file, String extractionPath )
+    private void extractJarFile( File file,
+                                 String extractionPath )
         throws Exception
     {
         if ( !file.exists() )
@@ -254,8 +246,8 @@ public class JettyPlexusService
                 {
                     if ( !outputFile.exists() && !outputFile.mkdirs() )
                     {
-                        throw new Exception( "Error while deploying web application: " +
-                                             "Could not make directory: '" + outputFile.getAbsolutePath() + "'." );
+                        throw new Exception( "Error while deploying web application: " + "Could not make directory: '" +
+                            outputFile.getAbsolutePath() + "'." );
                     }
                 }
                 else
@@ -264,8 +256,8 @@ public class JettyPlexusService
 
                     if ( !parent.exists() && !parent.mkdirs() )
                     {
-                        throw new Exception( "Error while deploying web application: " +
-                                             "Could not make directory: '" + parent.getAbsolutePath() + "'." );
+                        throw new Exception( "Error while deploying web application: " + "Could not make directory: '" +
+                            parent.getAbsolutePath() + "'." );
                     }
 
                     OutputStream os = new FileOutputStream( outputFile );

@@ -24,6 +24,12 @@
     </plugins>
   </build>
   <dependencies>
+    <!-- Compiling JSPs -->
+    <dependency>
+      <groupId>ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.6.2</version>
+    </dependency>  
     <dependency>
       <groupId>jetty</groupId>
       <artifactId>org.mortbay.jetty</artifactId>
@@ -48,11 +54,6 @@
       <groupId>tomcat</groupId>
       <artifactId>jasper-runtime</artifactId>
       <version>4.1.30</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-appserver</artifactId>
-      <version>1.0-alpha-5</version>
     </dependency>
     <dependency>
       <groupId>geronimo-spec</groupId>

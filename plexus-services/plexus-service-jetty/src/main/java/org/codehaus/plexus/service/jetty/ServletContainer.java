@@ -28,6 +28,8 @@ import java.io.File;
 import java.net.UnknownHostException;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 
 import org.mortbay.http.HttpContext;
 
@@ -54,14 +56,17 @@ public interface ServletContainer
     void deployWarFile( File war,
                         boolean extractWar,
                         File extractionLocation,
-                        DefaultPlexusContainer container,
+                        ApplicationRuntimeProfile applicationProfile,
                         String context,
-                        String virtualHost )
+                        String virtualHost,
+                        boolean standardWebappClassloader )
         throws ServletContainerException;
 
     void deployWarDirectory( File directory,
-                             DefaultPlexusContainer container, String context,
-                             String virtualHost )
+                             ApplicationRuntimeProfile applicationProfile,
+                             String context,
+                             String virtualHost,
+                             boolean standardWebappClassloader )
         throws ServletContainerException;
 
     void startApplication( String contextPath )

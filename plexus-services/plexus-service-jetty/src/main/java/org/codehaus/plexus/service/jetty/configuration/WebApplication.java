@@ -45,11 +45,14 @@ public class WebApplication
 
     private String virtualHost;
 
+    private boolean standardWebappClassloader;
+
     public WebApplication( String file,
                            String path,
                            String extractionPath,
                            String context,
-                           String virtualHost )
+                           String virtualHost,
+                           boolean standardWebappClassloading )
     {
         this.file = file;
 
@@ -62,6 +65,8 @@ public class WebApplication
         this.virtualHost = virtualHost;
 
         this.listeners = new ArrayList();
+
+        this.standardWebappClassloader = standardWebappClassloading;
     }
 
     public String getFile()
@@ -92,5 +97,10 @@ public class WebApplication
     public List getListeners()
     {
         return listeners;
+    }
+
+    public boolean isStandardWebappClassloader()
+    {
+        return standardWebappClassloader;
     }
 }
