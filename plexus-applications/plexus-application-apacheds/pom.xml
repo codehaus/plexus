@@ -3,6 +3,7 @@
   <groupId>plexus</groupId>
   <artifactId>plexus-application-apacheds</artifactId>
   <version>0.9-SNAPSHOT</version>
+  <packaging>plexus-application</packaging>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>

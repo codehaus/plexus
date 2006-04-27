@@ -1,9 +1,12 @@
-package org.codehaus.plexus.application.service;
+package org.codehaus.plexus.service.xmlrpc.configuration;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
- * Copyright (c) 2004, Codehaus.org
+ * The MIT License
+ *
+ * Copyright (c) 2004-2005, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -25,13 +28,20 @@ import java.io.File;
  */
 
 /**
- * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
- * @since Jul 17, 2004
+ * @author <a href="mailto:evenisse@codehaus.org">Emmanuel VEnisse</a>
+ * @version $Id$
  */
-public interface ServiceDiscoverer
+public class XmlRpcService
 {
-    final String ROLE = ServiceDiscoverer.class.getName();
+    private int port;
 
-    void deploy( String name, String jar )
-        throws Exception;
+    public XmlRpcService( int port )
+    {
+        this.port = port;
+    }
+
+    public int getPort()
+    {
+        return port;
+    }
 }

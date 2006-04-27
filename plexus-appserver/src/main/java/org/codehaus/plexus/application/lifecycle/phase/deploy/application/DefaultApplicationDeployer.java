@@ -1,4 +1,4 @@
-package org.codehaus.plexus.application.deploy;
+package org.codehaus.plexus.application.lifecycle.phase.deploy.application;
 
 /*
  * Copyright (c) 2004, Codehausv.org
@@ -53,7 +53,8 @@ import org.codehaus.plexus.application.PlexusApplicationConstants;
 import org.codehaus.plexus.application.event.ApplicationListener;
 import org.codehaus.plexus.application.event.DefaultDeployEvent;
 import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
-import org.codehaus.plexus.application.service.PlexusService;
+import org.codehaus.plexus.application.lifecycle.phase.deploy.service.PlexusService;
+import org.codehaus.plexus.application.lifecycle.phase.deploy.application.ApplicationDeployer;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.context.Context;

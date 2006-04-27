@@ -35,6 +35,7 @@ import javax.servlet.ServletContext;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.classworlds.ClassRealm;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -45,19 +46,9 @@ public class PlexusWebWorkApplicationLifecycleListener
 {
     public void contextInitialized( ServletContextEvent servletContextEvent )
     {
-        // Do init
-
         ServletContext context = servletContextEvent.getServletContext();
 
         PlexusContainer container = (PlexusContainer) context.getAttribute( PlexusConstants.PLEXUS_KEY );
-
-        if ( container == null )
-        {
-            // The container initializer will already have thrown an exception
-            // so no need to bitch&whine here
-
-            return;
-        }
 
         ObjectFactory objectFactory;
 

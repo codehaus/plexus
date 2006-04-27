@@ -25,9 +25,13 @@ package org.codehaus.plexus.application;
  */
 
 import java.io.File;
+import java.util.List;
+import java.util.Iterator;
 
-import org.codehaus.plexus.application.deploy.ApplicationDeployer;
-import org.codehaus.plexus.application.service.ServiceDiscoverer;
+import org.codehaus.plexus.application.lifecycle.phase.deploy.application.ApplicationDeployer;
+import org.codehaus.plexus.application.lifecycle.phase.deploy.service.ServiceDeployer;
+import org.codehaus.plexus.application.lifecycle.phase.AppServerPhase;
+import org.codehaus.plexus.application.lifecycle.AppServerContext;
 import org.codehaus.plexus.application.supervisor.Supervisor;
 import org.codehaus.plexus.application.supervisor.SupervisorListener;
 import org.codehaus.plexus.application.supervisor.SupervisorException;
@@ -51,22 +55,17 @@ import org.codehaus.plexus.PlexusConstants;
 //- the containers aren't quite right. the application container is in the service which might not be correct
 //- the container is not initialized
 
-
-// create a small test app
-// test reloading the whole app server
-// reload individual apps
-// need a console to test app reloading (maybe xmlrpc or simple socket listener)
-// would need a web console to reconfigure on the fly
-
 public class DefaultApplicationServer
     extends AbstractLogEnabled
     implements ApplicationServer, Contextualizable, Startable
 {
     private ApplicationDeployer applicationDeployer;
 
-    private ServiceDiscoverer serviceDiscoverer;
+    private ServiceDeployer serviceDeployer;
 
     private Supervisor supervisor;
+
+    private List lifecyclePhases;
 
     // ----------------------------------------------------------------------
     // Application Facade
@@ -112,54 +111,15 @@ public class DefaultApplicationServer
         // and services will be deployed.
         // ----------------------------------------------------------------------
 
-        File home = new File( System.getProperty( "plexus.home" ) );
+        File appServerHome = new File( System.getProperty( "plexus.home" ) );
 
-        try
-        {
-            supervisor.addDirectory( new File( home, "services" ), new SupervisorListener()
-            {
-                public void onJarDiscovered( File jar )
-                {
-                    String name = jar.getName();
+        AppServerContext appServerContext = new AppServerContext( this, appServerHome );
 
-                    try
-                    {
-                        serviceDiscoverer.deploy( name.substring( 0, name.length() - 4 ), jar.getAbsolutePath() );
-                    }
-                    catch ( Exception e )
-                    {
-                        getLogger().error( "Error while deploying service " + name + ".", e );
-                    }
-                }
-            } );
-        }
-        catch ( SupervisorException e )
+        for ( Iterator i = lifecyclePhases.iterator(); i.hasNext(); )
         {
-            throw new StartingException( "Error deploying services in the app server.", e );
-        }
+            AppServerPhase appServerPhase = (AppServerPhase) i.next();
 
-        try
-        {
-            supervisor.addDirectory( new File( home, "apps" ), new SupervisorListener()
-            {
-                public void onJarDiscovered( File jar )
-                {
-                    String name = jar.getName();
-
-                    try
-                    {
-                        applicationDeployer.deploy( name.substring( 0, name.length() - 4 ), jar.toURL().toExternalForm() );
-                    }
-                    catch ( Exception e )
-                    {
-                        getLogger().error( "Error while deploying application " + name + ".", e );
-                    }
-                }
-            } );
-        }
-        catch ( SupervisorException e )
-        {
-            throw new StartingException( "Error deploying applications in the app server.", e );
+            appServerPhase.equals( appServerContext );
         }
 
         getLogger().info( "The application server has been initialized." );
@@ -183,6 +143,8 @@ public class DefaultApplicationServer
 
     public void stop()
     {
+        // 1. should shut down all the apps and services properly
+        // 2. serialize any configurations
     }
 
     public void contextualize( Context context )
