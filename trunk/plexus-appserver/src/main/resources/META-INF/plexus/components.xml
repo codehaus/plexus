@@ -2,8 +2,64 @@
   <components>
 
     <component>
+      <role>org.codehaus.plexus.application.ApplicationServer</role>
+      <implementation>org.codehaus.plexus.application.DefaultApplicationServer</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.application.lifecycle.phase.deploy.service.ServiceDeployer</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.application.lifecycle.phase.deploy.application.ApplicationDeployer</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.application.supervisor.Supervisor</role>
+        </requirement>
+      </requirements>
+      <configuration>
+        <phases>
+          <phase>deploy-apps</phase>
+          <phase>deploy-services</phase>
+        </phases>
+      </configuration>
+    </component>
+
+    <!-- Appserver lifecycle phases -->
+    <component>
+      <role>org.codehaus.plexus.application.lifecycle.phase.AppServerPhase</role>
+      <role-hint>deploy-apps</role-hint>
+      <implementation>
+        org.codehaus.plexus.application.lifecycle.phase.deploy.application.ApplicationDeploymentPhase</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.application.lifecycle.phase.deploy.application.ApplicationDeployer</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.application.supervisor.Supervisor</role>
+        </requirement>
+      </requirements>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.application.lifecycle.phase.AppServerPhase</role>
+      <role-hint>deploy-services</role-hint>
+      <implementation>
+        org.codehaus.plexus.application.lifecycle.phase.deploy.service.ServiceDeploymentPhase</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.application.lifecycle.phase.deploy.service.ServiceDeployer</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.application.supervisor.Supervisor</role>
+        </requirement>
+      </requirements>
+    </component>
+
+    <!-- -->
+
+    <component>
       <role>org.codehaus.plexus.application.lifecycle.phase.deploy.application.ApplicationDeployer</role>
-      <implementation>org.codehaus.plexus.application.lifecycle.phase.deploy.application.DefaultApplicationDeployer</implementation>
+      <implementation>
+        org.codehaus.plexus.application.lifecycle.phase.deploy.application.DefaultApplicationDeployer</implementation>
       <configuration>
         <applicationsDirectory>${plexus.home}/apps</applicationsDirectory>
       </configuration>
@@ -22,26 +78,6 @@
       <implementation>org.codehaus.plexus.application.supervisor.DefaultSupervisor</implementation>
     </component>
 
-    <component>
-      <role>org.codehaus.plexus.application.ApplicationServer</role>
-      <implementation>org.codehaus.plexus.application.DefaultApplicationServer</implementation>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.application.lifecycle.phase.deploy.service.ServiceDeployer</role>
-        </requirement>
-        <requirement>
-          <role>org.codehaus.plexus.application.lifecycle.phase.deploy.application.ApplicationDeployer</role>
-        </requirement>
-        <requirement>
-          <role>org.codehaus.plexus.application.supervisor.Supervisor</role>
-        </requirement>
-      </requirements>
-      <configuration>
-        <phases>
-          <phase></phase>
-        </phases>
-      </configuration>
-    </component>
 
   </components>
 </component-set>
