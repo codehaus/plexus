@@ -67,8 +67,6 @@ public class DefaultServiceDeployer
         throws ContextException
     {
         container = (DefaultPlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
-
-        System.out.println( "!!!! container in service discoverer= " + container );
     }
 
     // ----------------------------------------------------------------------
@@ -144,6 +142,7 @@ public class DefaultServiceDeployer
 
         // Copy over the user configuration if there is one.
         File serviceConfig = new File( configurations, name + ".xml" );
+
         if ( !serviceConfig.exists() )
         {
             File config = new File( new File( serviceDir, PlexusServiceConstants.CONF_DIRECTORY ),

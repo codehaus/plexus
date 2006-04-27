@@ -312,11 +312,7 @@ public class DefaultApplicationDeployer
         // When this is not done things appear to work but everything is put in the core realm of the
         // container
 
-        //ClassRealm realm = applicationServerContainer.getCoreRealm().createChildRealm( "plexus.application." + name );
-
         ClassRealm realm = new SimpleClassRealm( "plexus.application." + name, new SimpleClassLoader( applicationServerContainer.getContainerRealm().getClassLoader() ), applicationServerContainer.getClassWorld() );
-
-        //realm.setParent( applicationServerContainer.getCoreRealm() );
 
         applicationContainer.setCoreRealm( realm );
 
