@@ -32,7 +32,9 @@ public class ServiceDeploymentPhase
 
                     try
                     {
-                        serviceDeployer.deploy( name.substring( 0, name.length() - 4 ), jar.getAbsolutePath() );
+                        String serviceName = name.substring( 0, name.length() - 4 );
+
+                        serviceDeployer.deploy( serviceName, jar.getAbsolutePath() );
                     }
                     catch ( Exception e )
                     {
@@ -40,6 +42,8 @@ public class ServiceDeploymentPhase
                     }
                 }
             } );
+
+            supervisor.scan();
         }
         catch ( SupervisorException e )
         {

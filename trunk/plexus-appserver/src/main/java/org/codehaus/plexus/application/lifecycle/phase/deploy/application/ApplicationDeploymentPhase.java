@@ -32,7 +32,11 @@ public class ApplicationDeploymentPhase
 
                     try
                     {
-                        applicationDeployer.deploy( name.substring( 0, name.length() - 4 ), jar.toURL().toExternalForm() );
+                        String appName = name.substring( 0, name.length() - 4 );
+
+                        getLogger().info( "Deploying " + appName + "." );
+
+                        applicationDeployer.deploy( appName, jar.toURL().toExternalForm() );
                     }
                     catch ( Exception e )
                     {
@@ -40,6 +44,8 @@ public class ApplicationDeploymentPhase
                     }
                 }
             } );
+
+            supervisor.scan();
         }
         catch ( SupervisorException e )
         {

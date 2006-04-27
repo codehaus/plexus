@@ -145,22 +145,6 @@ public class DefaultApplicationServer
         }
 
         getLogger().info( "The application server has been initialized." );
-
-        // ----------------------------------------------------------------------
-        // Do the initial scan to deploy all services and applications
-        // ----------------------------------------------------------------------
-
-        // TODO: Start a thread that will use the supervisor to continuously scan
-
-        try
-        {
-            supervisor.scan();
-        }
-        catch ( SupervisorException e )
-        {
-            // TODO; use a more specific exception
-            throw new StartingException( "Error while scanning for new services and applications.", e );
-        }
     }
 
     public void stop()
