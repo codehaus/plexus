@@ -309,10 +309,9 @@ public class DefaultApplicationDeployer
         // Create the realm for the application
         // ----------------------------------------------------------------------
 
-        // When this is not done things appear to work but everything is put in the core realm of the
-        // container
-
         ClassRealm realm = new SimpleClassRealm( "plexus.application." + name, new SimpleClassLoader( applicationServerContainer.getContainerRealm().getClassLoader() ), applicationServerContainer.getClassWorld() );
+
+        // When the core realm is set then the container realm will also be the core realm.
 
         applicationContainer.setCoreRealm( realm );
 
@@ -550,6 +549,13 @@ public class DefaultApplicationDeployer
         }
     }
 
+    // ----------------------------------------------------------------------------
+    // These were specifically made so that a WAR file deploy with Jetty in a
+    // standard way would work properly. The relationship that ClassWorlds sets
+    // up among classloaders doesn't appear to work in standard situations
+    // which is bad.
+    // ----------------------------------------------------------------------------
+
     class SimpleClassLoader
         extends URLClassLoader
     {
@@ -647,7 +653,6 @@ public class DefaultApplicationDeployer
             return classLoader.getResourceAsStream( name );
         }
 
-
         public ClassRealm getParent()
         {
             throw new UnsupportedOperationException();
@@ -661,6 +666,12 @@ public class DefaultApplicationDeployer
 
         public void display()
         {
+            URL[] urls = classLoader.getURLs();
+
+            for ( int i = 0; i < urls.length; i++ )
+            {
+                System.out.println( "url = " + urls[i] );
+            }
         }
     }
 }
