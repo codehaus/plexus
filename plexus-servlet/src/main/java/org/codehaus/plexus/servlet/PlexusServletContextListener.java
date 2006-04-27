@@ -25,6 +25,7 @@ package org.codehaus.plexus.servlet;
  */
 
 import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.embed.Embedder;
 
 import javax.servlet.ServletContext;
@@ -53,6 +54,14 @@ public class PlexusServletContextListener
     public void contextInitialized( ServletContextEvent sce )
     {
         ServletContext context = sce.getServletContext();
+
+        if ( context.getAttribute( PlexusConstants.PLEXUS_KEY ) != null )
+        {
+            context.log( "Plexus container already in context." );
+
+            return;
+        }
+
         String configName = context.getInitParameter( ServletContextUtils.PLEXUS_CONFIG_PARAM );
 
         context.log( "Initializing Plexus container..." );
@@ -76,7 +85,9 @@ public class PlexusServletContextListener
     public void contextDestroyed( ServletContextEvent sce )
     {
         ServletContext context = sce.getServletContext();
+
         context.log( "Disposing of Plexus container." );
+
         ServletContextUtils.destroyContainer( embedder, context );
     }
 }
