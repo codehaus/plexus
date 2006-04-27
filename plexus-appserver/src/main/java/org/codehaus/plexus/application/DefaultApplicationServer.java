@@ -32,6 +32,7 @@ import org.codehaus.plexus.application.lifecycle.phase.deploy.application.Applic
 import org.codehaus.plexus.application.lifecycle.phase.deploy.service.ServiceDeployer;
 import org.codehaus.plexus.application.lifecycle.phase.AppServerPhase;
 import org.codehaus.plexus.application.lifecycle.AppServerContext;
+import org.codehaus.plexus.application.lifecycle.AppServerLifecycleException;
 import org.codehaus.plexus.application.supervisor.Supervisor;
 import org.codehaus.plexus.application.supervisor.SupervisorListener;
 import org.codehaus.plexus.application.supervisor.SupervisorException;
@@ -44,6 +45,7 @@ import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
@@ -57,15 +59,20 @@ import org.codehaus.plexus.PlexusConstants;
 
 public class DefaultApplicationServer
     extends AbstractLogEnabled
-    implements ApplicationServer, Contextualizable, Startable
+    implements ApplicationServer,
+    Contextualizable,
+    Startable
 {
+    private PlexusContainer container;
+
     private ApplicationDeployer applicationDeployer;
 
     private ServiceDeployer serviceDeployer;
 
     private Supervisor supervisor;
 
-    private List lifecyclePhases;
+    //todo: cdc doing configurations
+    private List phases;
 
     // ----------------------------------------------------------------------
     // Application Facade
@@ -81,13 +88,15 @@ public class DefaultApplicationServer
     // Delegation to the application deployer
     // ----------------------------------------------------------------------------
 
-    public void deploy( String name, String location )
+    public void deploy( String name,
+                        String location )
         throws ApplicationServerException
     {
         applicationDeployer.deploy( name, location );
     }
 
-    public void redeploy( String name, String location )
+    public void redeploy( String name,
+                          String location )
         throws ApplicationServerException
     {
         applicationDeployer.deploy( name, location );
@@ -115,11 +124,24 @@ public class DefaultApplicationServer
 
         AppServerContext appServerContext = new AppServerContext( this, appServerHome );
 
-        for ( Iterator i = lifecyclePhases.iterator(); i.hasNext(); )
+        for ( Iterator i = phases.iterator(); i.hasNext(); )
         {
-            AppServerPhase appServerPhase = (AppServerPhase) i.next();
+            String appServerPhaseId = (String) i.next();
 
-            appServerPhase.equals( appServerContext );
+            try
+            {
+                AppServerPhase appServerPhase = (AppServerPhase) container.lookup( AppServerPhase.ROLE, appServerPhaseId );
+
+                appServerPhase.execute( appServerContext );
+            }
+            catch ( ComponentLookupException e )
+            {
+                throw new StartingException( "The requested app server lifecycle phase cannot be found: " + appServerPhaseId, e );
+            }
+            catch ( AppServerLifecycleException e )
+            {
+                throw new StartingException( "Error in the app server lifecycle " + appServerPhaseId + " phase.", e );
+            }
         }
 
         getLogger().info( "The application server has been initialized." );
@@ -150,7 +172,7 @@ public class DefaultApplicationServer
     public void contextualize( Context context )
         throws ContextException
     {
-        PlexusContainer container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
 
         container.addContextValue( "plexus.appserver", this );
     }
