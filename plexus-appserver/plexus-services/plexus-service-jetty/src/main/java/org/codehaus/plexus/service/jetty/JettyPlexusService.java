@@ -177,7 +177,7 @@ public class JettyPlexusService
             // ----------------------------------------------------------------------------
             // Now we need to find all the components that might be included in the webapp.
             // We have to do this here because now the container is initialized which
-            // means discoverying
+            // means discovery can occur.
             // ----------------------------------------------------------------------------
 
             DefaultPlexusContainer c = (DefaultPlexusContainer) applicationRuntimeProfile.getApplicationContainer();
