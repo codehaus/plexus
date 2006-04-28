@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-servers</artifactId>
-    <groupId>plexus</groupId>
+    <groupId>org.codehaus.plexus</groupId>
     <version>1.0.3</version>
   </parent>
   <groupId>plexus</groupId>
