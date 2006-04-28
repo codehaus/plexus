@@ -1,11 +1,11 @@
 <project>
   <parent>
-    <artifactId>plexus-services</artifactId>
+    <artifactId>plexus-appserver-services</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0.3</version>
+    <version>2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>plexus-service-jetty</artifactId>
+  <artifactId>plexus-appserver-service-jetty</artifactId>
   <packaging>plexus-service</packaging>
   <name>Plexus Jetty Service</name>
   <version>1.0-alpha-4-SNAPSHOT</version>

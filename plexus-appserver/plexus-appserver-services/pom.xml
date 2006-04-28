@@ -11,22 +11,12 @@
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-appserver</artifactId>
+      <artifactId>plexus-appserver-host</artifactId>
       <version>1.0-alpha-6-SNAPSHOT</version>
     </dependency>  
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-8</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>1.0.4</version>
-    </dependency>
   </dependencies>
   <modules>
-    <module>plexus-service-jetty</module>
-    <module>plexus-service-xmlrpc</module>
+    <module>plexus-appserver-service-jetty</module>
+    <module>plexus-appserver-service-xmlrpc</module>
   </modules>
 </project>
