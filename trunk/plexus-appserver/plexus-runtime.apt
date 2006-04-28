@@ -1,0 +1,43 @@
+ -----
+ Plexus Runtime Builder
+ -----
+ Jason van Zyl
+ -----
+ 24 April 2006
+
+Plexus Runtime Builder
+
+-----
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <goals>
+              <goal>runtime</goal>
+              <goal>add-app</goal>
+              <goal>add-services</goal>
+            </goals>
+          </execution>
+        </executions>
+       <configuration>
+          The app and runtime should really be configured separately!
+
+          <applicationConfiguration>src/conf/application.xml</applicationConfiguration>
+          <configurationsDirectory>src/conf</configurationsDirectory>
+          <configurationProperties>src/plexus.properties</configurationProperties>
+          <applicationName>testapp</applicationName>
+
+          <runtimeConfiguration>src/conf/plexus.xml</runtimeConfiguration>
+          <runtimeConfigurationProperties>src/plexus.properties</runtimeConfigurationProperties>
+          <runtimePath>target/plexus-test-runtime</runtimePath>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+-----
