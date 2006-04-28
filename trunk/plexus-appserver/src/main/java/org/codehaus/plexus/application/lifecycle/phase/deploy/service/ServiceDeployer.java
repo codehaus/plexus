@@ -1,5 +1,7 @@
 package org.codehaus.plexus.application.lifecycle.phase.deploy.service;
 
+import org.codehaus.plexus.application.lifecycle.phase.deploy.Deployer;
+
 /*
  * Copyright (c) 2004, Codehaus.org
  *
@@ -24,12 +26,11 @@ package org.codehaus.plexus.application.lifecycle.phase.deploy.service;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
+ * @author Jason van Zyl
  * @since Jul 17, 2004
  */
 public interface ServiceDeployer
+    extends Deployer
 {
-    final String ROLE = ServiceDeployer.class.getName();
-
-    void deploy( String name, String jar )
-        throws Exception;
+    String ROLE = ServiceDeployer.class.getName();
 }

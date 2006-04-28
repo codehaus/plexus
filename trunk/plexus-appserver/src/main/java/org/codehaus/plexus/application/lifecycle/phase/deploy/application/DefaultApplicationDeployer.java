@@ -22,45 +22,25 @@ package org.codehaus.plexus.application.lifecycle.phase.deploy.application;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Enumeration;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
-
 import org.codehaus.classworlds.ClassRealm;
-import org.codehaus.classworlds.NoSuchRealmException;
 import org.codehaus.classworlds.ClassWorld;
 import org.codehaus.classworlds.DuplicateRealmException;
+import org.codehaus.classworlds.NoSuchRealmException;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.application.ApplicationServerException;
 import org.codehaus.plexus.application.PlexusApplicationConstants;
 import org.codehaus.plexus.application.event.ApplicationListener;
 import org.codehaus.plexus.application.event.DefaultDeployEvent;
-import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.application.lifecycle.phase.deploy.AbstractDeployer;
+import org.codehaus.plexus.application.lifecycle.phase.deploy.DeploymentException;
 import org.codehaus.plexus.application.lifecycle.phase.deploy.service.PlexusService;
-import org.codehaus.plexus.application.lifecycle.phase.deploy.application.ApplicationDeployer;
+import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.context.ContextMapAdapter;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
@@ -72,12 +52,32 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  * @since Mar 19, 2004
  */
 public class DefaultApplicationDeployer
-    extends AbstractLogEnabled
+    extends AbstractDeployer
     implements ApplicationDeployer,
     Contextualizable,
     Initializable,
@@ -199,23 +199,13 @@ public class DefaultApplicationDeployer
         {
             getLogger().info( "Extracting " + file + " to '" + dest.getAbsolutePath() + "'." );
 
-            Expand expander = new Expand();
-
-            expander.setDest( dest );
-
-            expander.setOverwrite( false );
-
-            expander.setSrc( file );
-
             try
             {
-                expander.execute();
+                expand( file, dest, false );
             }
-            catch ( Exception e )
+            catch ( DeploymentException e )
             {
-                getLogger().error( "Could not extract '" + file + "'.", e );
-
-                return;
+                throw new ApplicationServerException( "Could not deploy the JAR", e );
             }
         }
 
