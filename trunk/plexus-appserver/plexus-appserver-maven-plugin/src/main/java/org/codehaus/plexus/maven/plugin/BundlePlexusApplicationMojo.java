@@ -34,11 +34,11 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
 import org.codehaus.plexus.builder.application.ApplicationBuilderException;
 
 /**
- * @goal bundle-application
+ * @goal bundle-appserver
  *
  * @requiresDependencyResolution
  *
- * @description Packages the Plexus application into a redistributable jar file.
+ * @description Packages the Plexus appserver into a redistributable jar file.
  *
  * @phase package
  *
@@ -78,14 +78,14 @@ public class BundlePlexusApplicationMojo
     private String finalName;
 
     /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.application.ApplicationBuilder}"
+     * @parameter expression="${component.org.codehaus.plexus.builder.appserver.ApplicationBuilder}"
      *
      * @required
      */
     private ApplicationBuilder builder;
 
     /**
-     * @parameter expression="${project.build.directory}/plexus-application"
+     * @parameter expression="${project.build.directory}/plexus-appserver"
      *
      * @required
      */
@@ -108,7 +108,7 @@ public class BundlePlexusApplicationMojo
         }
         catch ( ApplicationBuilderException e )
         {
-            throw new MojoExecutionException( "Error while bundling application.", e );
+            throw new MojoExecutionException( "Error while bundling appserver.", e );
         }
     }
 }

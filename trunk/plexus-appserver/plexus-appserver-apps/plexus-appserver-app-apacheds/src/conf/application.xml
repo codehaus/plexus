@@ -2,7 +2,7 @@
 
   <load-on-start>
     <component>
-      <role>org.codehaus.plexus.application.apacheds.ApacheDSApplication</role>
+      <role>org.codehaus.plexus.appserver.apacheds.ApacheDSApplication</role>
     </component>
   </load-on-start>
 

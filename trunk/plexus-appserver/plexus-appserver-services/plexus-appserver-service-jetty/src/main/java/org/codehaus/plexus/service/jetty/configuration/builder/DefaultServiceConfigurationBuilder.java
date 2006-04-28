@@ -72,7 +72,7 @@ public class DefaultServiceConfigurationBuilder
 
             if ( path == null && file == null )
             {
-                getLogger().warn( "Error while deploying web application: " +
+                getLogger().warn( "Error while deploying web appserver: " +
                                   "For each 'webapp' a 'path' or 'file' element has to be specified." );
 
                 continue;
@@ -100,7 +100,7 @@ public class DefaultServiceConfigurationBuilder
 
             if ( StringUtils.isEmpty( extractionPath ) )
             {
-                getLogger().warn( "Error while deploying web application: " +
+                getLogger().warn( "Error while deploying web appserver: " +
                                   "For each 'extraction-path' element has to be specified." );
 
                 continue;
@@ -114,7 +114,7 @@ public class DefaultServiceConfigurationBuilder
 
             if ( StringUtils.isEmpty( context ) )
             {
-                getLogger().warn( "Error while deploying web application: 'context' is missing or empty." );
+                getLogger().warn( "Error while deploying web appserver: 'context' is missing or empty." );
 
                 continue;
             }
@@ -197,7 +197,7 @@ public class DefaultServiceConfigurationBuilder
 
             if ( app.getListeners().size() == 0 )
             {
-                getLogger().warn( "At least one listener has to be configured before adding the web application." );
+                getLogger().warn( "At least one listener has to be configured before adding the web appserver." );
 
                 continue;
             }
@@ -226,7 +226,7 @@ public class DefaultServiceConfigurationBuilder
 
         if ( StringUtils.isEmpty( portString ) )
         {
-            getLogger().warn( "Error while deploying web application: 'port' has to be a integer." );
+            getLogger().warn( "Error while deploying web appserver: 'port' has to be a integer." );
 
             return -1;
         }
@@ -237,7 +237,7 @@ public class DefaultServiceConfigurationBuilder
         }
         catch ( NumberFormatException e )
         {
-            getLogger().warn( "Error while deploying web application: 'port' has to be a integer." );
+            getLogger().warn( "Error while deploying web appserver: 'port' has to be a integer." );
 
             return -1;
         }
@@ -260,7 +260,7 @@ public class DefaultServiceConfigurationBuilder
 
         if ( StringUtils.isEmpty( proxyPortString ) )
         {
-            getLogger().warn( "Error while deploying web application: 'proxy-port' has to be a integer." );
+            getLogger().warn( "Error while deploying web appserver: 'proxy-port' has to be a integer." );
 
             return -1;
         }
@@ -271,7 +271,7 @@ public class DefaultServiceConfigurationBuilder
         }
         catch ( NumberFormatException e )
         {
-            getLogger().warn( "Error while deploying web application: 'proxy-port' has to be a integer." );
+            getLogger().warn( "Error while deploying web appserver: 'proxy-port' has to be a integer." );
 
             return -1;
         }
