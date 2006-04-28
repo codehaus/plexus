@@ -55,7 +55,7 @@ import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.Commandline;
 
 /**
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @author Jason van Zyl
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
@@ -201,9 +201,11 @@ public abstract class AbstractBuilder
         throws ArtifactResolutionException
     {
         Set artifacts = new HashSet();
+
         resolveVersion( "org.codehaus.plexus", "plexus-container-default", projectArtifacts, ignoreIfMissing, artifacts );
-        //resolveVersion( "plexus", "plexus-container-artifact", projectArtifacts, ignoreIfMissing, artifacts );
-        resolveVersion( "org.codehaus.plexus", "plexus-appserver", projectArtifacts, ignoreIfMissing, artifacts );
+
+        resolveVersion( "org.codehaus.plexus", "plexus-appserver-host", projectArtifacts, ignoreIfMissing, artifacts );
+
         resolveVersion( "org.codehaus.plexus", "plexus-utils", projectArtifacts, ignoreIfMissing, artifacts );
 
         artifacts = findArtifacts( remoteRepositories, localRepository, artifacts, false, null );
@@ -219,9 +221,8 @@ public abstract class AbstractBuilder
         Set artifacts = new HashSet();
 
         resolveVersion( "plexus", "plexus", projectArtifacts, true, artifacts );
-        resolveVersion( "plexus", "plexus-container-api", projectArtifacts, true, artifacts );
         resolveVersion( "plexus", "plexus-container-default", projectArtifacts, true, artifacts );
-        resolveVersion( "plexus", "plexus-appserver", projectArtifacts, true, artifacts );
+        resolveVersion( "plexus", "plexus-appserver-host", projectArtifacts, true, artifacts );
         resolveVersion( "plexus", "plexus-utils", projectArtifacts, true, artifacts );
 
         artifacts = findArtifacts( remoteRepositories,
