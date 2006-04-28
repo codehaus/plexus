@@ -28,6 +28,7 @@ import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 import org.codehaus.plexus.application.lifecycle.phase.deploy.service.PlexusService;
+import org.codehaus.plexus.application.lifecycle.phase.deploy.service.AbstractPlexusService;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.service.jetty.configuration.HttpListener;
@@ -55,8 +56,7 @@ import java.util.jar.JarFile;
  * the component here to make it work as a service.
  */
 public class JettyPlexusService
-    extends AbstractLogEnabled
-    implements PlexusService
+    extends AbstractPlexusService
 {
     /**
      * @plexus.requirement
@@ -90,8 +90,7 @@ public class JettyPlexusService
                 // Extract the jar
                 // ----------------------------------------------------------------------
 
-                // todo: use the Expand code in plexus utils.
-                extractJarFile( new File( application.getFile() ), application.getExtractionPath() );
+                expand( new File( application.getFile() ), new File( application.getExtractionPath() ), false );
 
                 webAppDir = new File( application.getExtractionPath() );
             }
@@ -199,63 +198,6 @@ public class JettyPlexusService
             c.discoverComponents( realm );
 
             servletContainer.startApplication( application.getContext() );
-        }
-    }
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    private void extractJarFile( File file,
-                                 String extractionPath )
-        throws Exception
-    {
-        if ( !file.exists() )
-        {
-            throw new FileNotFoundException( file.getAbsolutePath() );
-        }
-
-        JarFile jarFile = new JarFile( file );
-
-        try
-        {
-            Enumeration e = jarFile.entries();
-
-            while ( e.hasMoreElements() )
-            {
-                JarEntry entry = (JarEntry) e.nextElement();
-
-                InputStream is = jarFile.getInputStream( entry );
-
-                File outputFile = new File( extractionPath, entry.getName() );
-
-                if ( entry.getName().endsWith( "/" ) )
-                {
-                    if ( !outputFile.exists() && !outputFile.mkdirs() )
-                    {
-                        throw new Exception( "Error while deploying web application: " + "Could not make directory: '" +
-                            outputFile.getAbsolutePath() + "'." );
-                    }
-                }
-                else
-                {
-                    File parent = outputFile.getParentFile();
-
-                    if ( !parent.exists() && !parent.mkdirs() )
-                    {
-                        throw new Exception( "Error while deploying web application: " + "Could not make directory: '" +
-                            parent.getAbsolutePath() + "'." );
-                    }
-
-                    OutputStream os = new FileOutputStream( outputFile );
-
-                    IOUtil.copy( is, os );
-                }
-            }
-        }
-        finally
-        {
-            jarFile.close();
         }
     }
 }
