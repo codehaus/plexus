@@ -1,0 +1,29 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>plexus</artifactId>  
+    <groupId>org.codehaus.plexus</groupId>  
+    <version>1.0.5</version>
+  </parent>
+  <artifactId>plexus-appserver</artifactId>
+  <version>2</version>
+  <packaging>pom</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-8</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.0.4</version>
+    </dependency>
+  </dependencies>
+  <modules>
+    <module>plexus-appserver-apps</module>
+    <module>plexus-appserver-host</module>        
+    <module>plexus-appserver-services</module>
+    <module>plexus-appserver-tools</module>
+  </modules>
+</project>
