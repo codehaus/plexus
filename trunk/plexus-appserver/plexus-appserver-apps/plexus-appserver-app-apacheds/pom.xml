@@ -14,7 +14,8 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-plexus-plugin</artifactId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <extensions>true</extensions>
         <configuration>
           <configurationDirectory>src/conf</configurationDirectory>
           <applicationName>foo</applicationName>
