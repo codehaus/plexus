@@ -22,7 +22,8 @@
   </dependencies>
   <modules>
     <module>plexus-appserver-apps</module>
-    <module>plexus-appserver-host</module>        
+    <module>plexus-appserver-host</module>
+    <module>plexus-appserver-maven-plugin</module>
     <module>plexus-appserver-services</module>
     <module>plexus-appserver-tools</module>
   </modules>
