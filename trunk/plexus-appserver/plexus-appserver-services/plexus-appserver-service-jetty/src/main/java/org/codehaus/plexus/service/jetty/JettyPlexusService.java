@@ -72,7 +72,7 @@ public class JettyPlexusService
     // PlexusService Implementation
     // ----------------------------------------------------------------------
 
-    public void beforeApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
+    public void beforeApplicationStart( ApplicationRuntimeProfile runtimeProfile,
                                         PlexusConfiguration serviceConfiguration )
         throws Exception
     {
@@ -100,18 +100,20 @@ public class JettyPlexusService
                 webAppDir = new File( application.getPath() );
             }
 
-        if ( !directory.isDirectory() )
-        {
-            throw new Exception( "The webapp isn't a directory: '" + directory.getAbsolutePath() + "'." );
-        }
+            if ( !webAppDir.isDirectory() )
+            {
+                throw new Exception( "The webapp isn't a directory: '" + webAppDir.getAbsolutePath() + "'." );
+            }
 
-        try
-        {
-            servletContainer.deployWarDirectory( directory, runtimeProfile, context, virtualHost, isStandardWebappClassloader );
-        }
-        catch ( ServletContainerException e )
-        {
-            getLogger().error( "Error while deploying WAR '" + directory.getAbsolutePath() + "'.", e );
+            try
+            {
+                servletContainer.deployWarDirectory( webAppDir, runtimeProfile, application.getContext(),
+                                                     application.getVirtualHost(), application.isStandardWebappClassloader() );
+            }
+            catch ( ServletContainerException e )
+            {
+                getLogger().error( "Error while deploying WAR '" + webAppDir.getAbsolutePath() + "'.", e );
+            }
         }
     }
 
@@ -196,22 +198,8 @@ public class JettyPlexusService
 
             c.discoverComponents( realm );
 
-
             servletContainer.startApplication( application.getContext() );
         }
-    }
-
-    // ----------------------------------------------------------------------
-    // Deployment
-    // ----------------------------------------------------------------------
-
-    private void deployDirectory( File directory,
-                                  String context,
-                                  String virtualHost,
-                                  ApplicationRuntimeProfile runtimeProfile,
-                                  boolean isStandardWebappClassloader )
-        throws Exception
-    {
     }
 
     // ----------------------------------------------------------------------
