@@ -20,4 +20,7 @@
       <version>1.0-alpha-8</version>
     </dependency>
   </dependencies>
+  <modules>
+    <module>plexus-services</module>
+  </modules>
 </project>

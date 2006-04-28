@@ -25,38 +25,20 @@ package org.codehaus.plexus.application.lifecycle.phase.deploy.application;
 import org.codehaus.plexus.application.event.ApplicationListener;
 import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
 import org.codehaus.plexus.application.ApplicationServerException;
+import org.codehaus.plexus.application.lifecycle.phase.deploy.Deployer;
 
 /**
  * @author Peter Donald
+ * @author Jason van Zyl
  */
 public interface ApplicationDeployer
+    extends Deployer
 {
     String ROLE = ApplicationDeployer.class.getName();
-
-    // ----------------------------------------------------------------------
-    // Deployment
-    // ----------------------------------------------------------------------
-
-    void deploy( String name, String location )
-        throws ApplicationServerException;
-
-    void redeploy( String name, String location )
-        throws ApplicationServerException;
-
-    void undeploy( String name )
-        throws ApplicationServerException;
-
-    // ----------------------------------------------------------------------
-    // Listeners
-    // ----------------------------------------------------------------------
 
     void addApplicationListener( ApplicationListener listener );
 
     void removeApplicationListener( ApplicationListener listener );
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
 
     ApplicationRuntimeProfile getApplicationRuntimeProfile( String applicationName )
         throws ApplicationServerException;
