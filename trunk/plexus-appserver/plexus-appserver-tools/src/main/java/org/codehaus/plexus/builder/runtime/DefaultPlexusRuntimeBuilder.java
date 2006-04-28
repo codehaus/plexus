@@ -42,7 +42,7 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
-import org.codehaus.plexus.application.PlexusRuntimeConstants;
+import org.codehaus.plexus.appserver.PlexusRuntimeConstants;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
@@ -202,7 +202,7 @@ public class DefaultPlexusRuntimeBuilder
 
             // ----------------------------------------------------------------------
             // We need to separate between the container configuration that you want
-            // shared amongst the apps and the application configuration.
+            // shared amongst the apps and the appserver configuration.
             // ----------------------------------------------------------------------
 
             processMainConfiguration( containerConfiguration, configurationProperties, confDir );
@@ -255,7 +255,7 @@ public class DefaultPlexusRuntimeBuilder
         }
         catch ( IOException e )
         {
-            throw new PlexusRuntimeBuilderException( "Error while copying the application into the runtime.", e );
+            throw new PlexusRuntimeBuilderException( "Error while copying the appserver into the runtime.", e );
         }
     }
 
@@ -279,7 +279,7 @@ public class DefaultPlexusRuntimeBuilder
         }
         catch ( IOException e )
         {
-            throw new PlexusRuntimeBuilderException( "Error while copying the application into the runtime.", e );
+            throw new PlexusRuntimeBuilderException( "Error while copying the appserver into the runtime.", e );
         }
     }
 

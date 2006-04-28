@@ -28,7 +28,7 @@ import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.appserver.application.profile.ApplicationRuntimeProfile;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
@@ -212,7 +212,7 @@ public class JettyServletContainer
         }
         catch ( Exception e )
         {
-            throw new ServletContainerException( "Error while starting the web application.", e );
+            throw new ServletContainerException( "Error while starting the web appserver.", e );
         }
     }
 
@@ -260,7 +260,7 @@ public class JettyServletContainer
         }
 
         // ----------------------------------------------------------------------
-        // Create the web application
+        // Create the web appserver
         // ----------------------------------------------------------------------
 
         WebApplicationContext applicationContext;
@@ -282,7 +282,7 @@ public class JettyServletContainer
         }
 
         // ----------------------------------------------------------------------
-        // Configure the application context
+        // Configure the appserver context
         // ----------------------------------------------------------------------
 
         applicationContext.setExtractWAR( extractWar );

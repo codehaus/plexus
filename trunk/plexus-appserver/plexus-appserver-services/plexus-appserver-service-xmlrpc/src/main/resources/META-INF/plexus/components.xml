@@ -3,7 +3,7 @@
   <components>
 
     <component>
-      <role>org.codehaus.plexus.application.lifecycle.phase.deploy.service.PlexusService</role>
+      <role>org.codehaus.plexus.appserver.service.PlexusService</role>
       <role-hint>xml-rpc</role-hint>
       <implementation>org.codehaus.plexus.service.xmlrpc.XmlRpcPlexusService</implementation>
       <requirements>

@@ -38,7 +38,7 @@ import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
  *
  * @phase package
  *
- * @description Adds the Plexus application to the runtime
+ * @description Adds the Plexus appserver to the runtime
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -86,13 +86,13 @@ public class AddPlexusApplicationMojo
 
         if ( !applicationJarFile.canRead() )
         {
-            throw new MojoExecutionException( "Can't read Plexus application artifact '" + applicationJarFile.getAbsolutePath() + "'." );
+            throw new MojoExecutionException( "Can't read Plexus appserver artifact '" + applicationJarFile.getAbsolutePath() + "'." );
         }
 
         try
         {
             // ----------------------------------------------------------------------
-            // Copy the application
+            // Copy the appserver
             // ----------------------------------------------------------------------
 
             runtimeBuilder.addPlexusApplication( applicationJarFile, runtimePath );

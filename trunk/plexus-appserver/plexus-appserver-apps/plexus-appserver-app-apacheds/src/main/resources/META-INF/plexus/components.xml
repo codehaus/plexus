@@ -1,8 +1,8 @@
 <configuration>
   <components>
     <component>
-      <role>org.codehaus.plexus.application.apacheds.ApacheDSApplication</role>
-      <implementation>org.codehaus.plexus.application.apacheds.DefaultApacheDSApplication</implementation>
+      <role>org.codehaus.plexus.appserver.apacheds.ApacheDSApplication</role>
+      <implementation>org.codehaus.plexus.appserver.apacheds.DefaultApacheDSApplication</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.server.apacheds.ApacheDS</role>

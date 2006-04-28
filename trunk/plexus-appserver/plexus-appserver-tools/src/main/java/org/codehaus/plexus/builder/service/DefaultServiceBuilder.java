@@ -38,7 +38,7 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 
-import org.codehaus.plexus.application.PlexusServiceConstants;
+import org.codehaus.plexus.appserver.PlexusServiceConstants;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
@@ -206,7 +206,7 @@ public class DefaultServiceBuilder
 
         if ( !plexusConfigurationFile.exists() )
         {
-            throw new ServiceBuilderException( "The application configuration file doesn't exist: '" + plexusConfigurationFile.getAbsolutePath() + "'." );
+            throw new ServiceBuilderException( "The appserver configuration file doesn't exist: '" + plexusConfigurationFile.getAbsolutePath() + "'." );
         }
 
         FileUtils.copyFile( plexusConfigurationFile, new File( confDir, PlexusServiceConstants.CONFIGURATION_FILE ) );
