@@ -37,7 +37,7 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 
-import org.codehaus.plexus.application.PlexusApplicationConstants;
+import org.codehaus.plexus.appserver.PlexusApplicationConstants;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
@@ -75,7 +75,7 @@ public class DefaultApplicationBuilder
 
         if ( applicationName == null || applicationName.trim().length() == 0 )
         {
-            throw new ApplicationBuilderException( "The application name must be set." );
+            throw new ApplicationBuilderException( "The appserver name must be set." );
         }
 
         if ( configurationPropertiesFile != null && !configurationPropertiesFile.isFile() )
@@ -90,7 +90,7 @@ public class DefaultApplicationBuilder
 
         if ( !applicationConfiguration.exists() )
         {
-            throw new ApplicationBuilderException( "The application configuration file doesn't exist: '" + applicationConfiguration.getAbsolutePath() + "'." );
+            throw new ApplicationBuilderException( "The appserver configuration file doesn't exist: '" + applicationConfiguration.getAbsolutePath() + "'." );
         }
 
         File libDir;
@@ -183,7 +183,7 @@ public class DefaultApplicationBuilder
 
             writer.write( System.getProperty( "line.separator" ) );
 
-            xmlWriter.startElement( "plexus-application" );
+            xmlWriter.startElement( "plexus-appserver" );
 
             xmlWriter.startElement( "name" );
 
@@ -193,7 +193,7 @@ public class DefaultApplicationBuilder
 
             // TODO: Add a list of all artifacts
 
-            xmlWriter.endElement(); // plexus-application
+            xmlWriter.endElement(); // plexus-appserver
 
             writer.write( System.getProperty( "line.separator" ) );
 
@@ -201,7 +201,7 @@ public class DefaultApplicationBuilder
         }
         catch ( IOException e )
         {
-            throw new ApplicationBuilderException( "Error while writing the application descriptor.", e );
+            throw new ApplicationBuilderException( "Error while writing the appserver descriptor.", e );
         }
     }
 
@@ -220,7 +220,7 @@ public class DefaultApplicationBuilder
         }
         catch ( Exception e )
         {
-            throw new ApplicationBuilderException( "Error while creating the application archive.", e );
+            throw new ApplicationBuilderException( "Error while creating the appserver archive.", e );
         }
     }
 
@@ -294,7 +294,7 @@ public class DefaultApplicationBuilder
         }
 
         // ----------------------------------------------------------------------
-        // Copy the main application.xml
+        // Copy the main appserver.xml
         // ----------------------------------------------------------------------
 
         filterCopy( applicationConfiguration,

@@ -27,11 +27,7 @@ package org.codehaus.plexus.service.jetty;
 import java.io.File;
 import java.net.UnknownHostException;
 
-import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
-
-import org.mortbay.http.HttpContext;
+import org.codehaus.plexus.appserver.application.profile.ApplicationRuntimeProfile;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>

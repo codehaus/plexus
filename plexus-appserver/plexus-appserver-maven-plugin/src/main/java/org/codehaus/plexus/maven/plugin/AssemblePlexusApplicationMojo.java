@@ -41,7 +41,7 @@ import org.codehaus.plexus.builder.application.ApplicationBuilderException;
  *
  * @requiresDependencyResolution
  *
- * @description Assembles the Plexus application.
+ * @description Assembles the Plexus appserver.
  *
  * @phase package
  *
@@ -78,7 +78,7 @@ public class AssemblePlexusApplicationMojo
     private String applicationName;
 
     /**
-     * @parameter expression="${project.build.directory}/plexus-application"
+     * @parameter expression="${project.build.directory}/plexus-appserver"
      * @required
      */
     private File applicationAssemblyDirectory;
@@ -99,7 +99,7 @@ public class AssemblePlexusApplicationMojo
     // ----------------------------------------------------------------------
 
     /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.application.ApplicationBuilder}"
+     * @parameter expression="${component.org.codehaus.plexus.builder.appserver.ApplicationBuilder}"
      * @required
      */
     private ApplicationBuilder builder;
@@ -140,10 +140,10 @@ public class AssemblePlexusApplicationMojo
         }
 
         // ----------------------------------------------------------------------
-        // Build the application
+        // Build the appserver
         // ----------------------------------------------------------------------
 
-        getLog().debug( "Building the application '" + applicationName + "' into '" + applicationAssemblyDirectory.getAbsolutePath() + "'." );
+        getLog().debug( "Building the appserver '" + applicationName + "' into '" + applicationAssemblyDirectory.getAbsolutePath() + "'." );
 
         try
         {
@@ -159,7 +159,7 @@ public class AssemblePlexusApplicationMojo
         }
         catch ( ApplicationBuilderException e )
         {
-            throw new MojoExecutionException( "Error while assembling the application.", e );
+            throw new MojoExecutionException( "Error while assembling the appserver.", e );
         }
     }
 }

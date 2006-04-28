@@ -26,27 +26,17 @@ package org.codehaus.plexus.service.jetty;
 
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.application.profile.ApplicationRuntimeProfile;
-import org.codehaus.plexus.application.lifecycle.phase.deploy.service.PlexusService;
-import org.codehaus.plexus.application.lifecycle.phase.deploy.service.AbstractPlexusService;
+import org.codehaus.plexus.appserver.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.appserver.service.AbstractPlexusService;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.service.jetty.configuration.HttpListener;
 import org.codehaus.plexus.service.jetty.configuration.ProxyHttpListener;
 import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
 import org.codehaus.plexus.service.jetty.configuration.WebApplication;
 import org.codehaus.plexus.service.jetty.configuration.builder.ServiceConfigurationBuilder;
-import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -133,11 +123,11 @@ public class JettyPlexusService
 
             if ( application.getVirtualHost() == null )
             {
-                getLogger().info( "Deploying application '" + applicationRuntimeProfile.getName() + "'." );
+                getLogger().info( "Deploying appserver '" + applicationRuntimeProfile.getName() + "'." );
             }
             else
             {
-                getLogger().info( "Deploying application '" + applicationRuntimeProfile.getName() + "' " +
+                getLogger().info( "Deploying appserver '" + applicationRuntimeProfile.getName() + "' " +
                     "on virtual host '" + application.getVirtualHost() + "'." );
             }
 

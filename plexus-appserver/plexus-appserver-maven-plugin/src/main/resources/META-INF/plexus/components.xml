@@ -5,14 +5,14 @@
       <role-hint>plexus-application</role-hint>
       <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
       <configuration>
-        <!-- START SNIPPET: plexus-application-lifecycle -->
+        <!-- START SNIPPET: plexus-appserver-lifecycle -->
         <phases>
           <generate-resources>org.codehaus.plexus:plexus-appserver-maven-plugin:app</generate-resources>
           <package>org.codehaus.plexus:plexus-appserver-maven-plugin:bundle-application</package>
           <install>org.apache.maven.plugins:maven-install-plugin:install</install>
           <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
         </phases>
-        <!-- END SNIPPET: plexus-application-lifecycle -->
+        <!-- END SNIPPET: plexus-appserver-lifecycle -->
       </configuration>
     </component>
 
