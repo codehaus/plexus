@@ -22,31 +22,33 @@ package org.codehaus.plexus.application.lifecycle.phase.deploy.service;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.io.FileReader;
-
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.application.ApplicationServerException;
 import org.codehaus.plexus.application.PlexusServiceConstants;
+import org.codehaus.plexus.application.lifecycle.phase.deploy.AbstractDeployer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.Expand;
 import org.codehaus.plexus.util.FileUtils;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  * @since Jul 17, 2004
  */
 public class DefaultServiceDeployer
-    extends AbstractLogEnabled
+    extends AbstractDeployer
     implements ServiceDeployer, Initializable, Contextualizable
 {
     private String serviceDirectory;
@@ -74,11 +76,18 @@ public class DefaultServiceDeployer
     // ----------------------------------------------------------------------
 
     public void deploy( String name, String location )
-        throws Exception
+        throws ApplicationServerException
     {
         File jar = new File( location );
 
-        deploy( name, jar, new File( serviceDirectory ), new File( serviceDirectory ) );
+        try
+        {
+            deploy( name, jar, new File( serviceDirectory ), new File( serviceDirectory ) );
+        }
+        catch ( Exception e )
+        {
+            throw new ApplicationServerException( "Cannot deploy service " + name, e );
+        }
     }
 
     private void deploy( String name, File jar, File services, File configurations )
@@ -90,27 +99,17 @@ public class DefaultServiceDeployer
         {
             getLogger().info( "Removing old service." );
 
-            FileUtils.deleteDirectory( serviceDir );
+            try
+            {
+                FileUtils.deleteDirectory( serviceDir );
+            }
+            catch ( IOException e )
+            {
+                throw new Exception( "Cannot delete old service deployment in " + serviceDir, e );
+            }
         }
 
-        Expand ex = new Expand();
-
-        ex.setDest( serviceDir );
-
-        ex.setOverwrite( false );
-
-        ex.setSrc( jar );
-
-        try
-        {
-            getLogger().info( "Extracting service jar '" + jar + "' to '" + serviceDir + "'." );
-
-            ex.execute();
-        }
-        catch ( Exception e )
-        {
-            getLogger().error( "Could not extract " + serviceDir + ".", e );
-        }
+        expand( jar, serviceDir, false );
 
         // ----------------------------------------------------------------------
         // Set up the classpath for the service
@@ -216,7 +215,7 @@ public class DefaultServiceDeployer
     }
 
     private void addJars( File jarDir )
-        throws Exception
+        //throws Exception
     {
         container.addJarRepository( jarDir );
     }
@@ -225,5 +224,15 @@ public class DefaultServiceDeployer
         throws Exception
     {
         container.addJarResource( classes );
+    }
+
+    public void redeploy( String name, String location )
+        throws ApplicationServerException
+    {
+    }
+
+    public void undeploy( String name )
+        throws ApplicationServerException
+    {
     }
 }

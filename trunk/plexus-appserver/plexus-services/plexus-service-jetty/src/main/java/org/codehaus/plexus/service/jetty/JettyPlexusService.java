@@ -100,8 +100,18 @@ public class JettyPlexusService
                 webAppDir = new File( application.getPath() );
             }
 
-            deployDirectory( webAppDir, application.getContext(), application.getVirtualHost(),
-                             applicationRuntimeProfile, application.isStandardWebappClassloader() );
+        if ( !directory.isDirectory() )
+        {
+            throw new Exception( "The webapp isn't a directory: '" + directory.getAbsolutePath() + "'." );
+        }
+
+        try
+        {
+            servletContainer.deployWarDirectory( directory, runtimeProfile, context, virtualHost, isStandardWebappClassloader );
+        }
+        catch ( ServletContainerException e )
+        {
+            getLogger().error( "Error while deploying WAR '" + directory.getAbsolutePath() + "'.", e );
         }
     }
 
@@ -202,30 +212,6 @@ public class JettyPlexusService
                                   boolean isStandardWebappClassloader )
         throws Exception
     {
-        if ( !directory.isDirectory() )
-        {
-            throw new Exception( "The webapp isn't a directory: '" + directory.getAbsolutePath() + "'." );
-        }
-
-        try
-        {
-            //todo: This uses the container from the application ... this means that we have no access to
-            // the libs that are provided by the service in the case of jetty.
-
-            /*
-            servletContainer.deployWarDirectory( directory, runtimeProfile.getContainer(), context, virtualHost,
-                                                 isStandardWebappClassloader );
-                                                 */
-
-            servletContainer.deployWarDirectory( directory, runtimeProfile, context, virtualHost,
-                                                 isStandardWebappClassloader );
-
-
-        }
-        catch ( ServletContainerException e )
-        {
-            getLogger().error( "Error while deploying WAR '" + directory.getAbsolutePath() + "'.", e );
-        }
     }
 
     // ----------------------------------------------------------------------
