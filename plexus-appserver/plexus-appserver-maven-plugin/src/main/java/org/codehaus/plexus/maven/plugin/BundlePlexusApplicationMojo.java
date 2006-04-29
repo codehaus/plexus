@@ -34,7 +34,7 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
 import org.codehaus.plexus.builder.application.ApplicationBuilderException;
 
 /**
- * @goal bundle-app
+ * @goal bundle-application
  *
  * @requiresDependencyResolution
  *
@@ -78,7 +78,7 @@ public class BundlePlexusApplicationMojo
     private String finalName;
 
     /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.appserver.ApplicationBuilder}"
+     * @parameter expression="${component.org.codehaus.plexus.builder.application.ApplicationBuilder}"
      *
      * @required
      */

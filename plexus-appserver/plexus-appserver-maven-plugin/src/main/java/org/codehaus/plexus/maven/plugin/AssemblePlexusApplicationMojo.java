@@ -99,7 +99,7 @@ public class AssemblePlexusApplicationMojo
     // ----------------------------------------------------------------------
 
     /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.appserver.ApplicationBuilder}"
+     * @parameter expression="${component.org.codehaus.plexus.builder.application.ApplicationBuilder}"
      * @required
      */
     private ApplicationBuilder builder;
