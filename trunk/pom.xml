@@ -199,7 +199,6 @@
     <module>plexus-containers</module>
     <module>plexus-logging</module>
     <module>plexus-maven-plugin</module>
-    <module>plexus-services</module>
     <module>plexus-tools</module>
     <module>plexus-utils</module>
   </modules>
