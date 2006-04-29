@@ -24,26 +24,29 @@ public class ValidateAppPhase
         // -> ${app}/lib
         // ----------------------------------------------------------------------
 
-        File location = context.getApplicationsDirectory();
+        File appDir = context.getAppDir();
 
         String appId = context.getApplicationId();
 
-        File applicationConfigurationFile = new File( new File( location, PlexusApplicationConstants.CONF_DIRECTORY ),
+        File applicationConfigurationFile =
+            new File( new File( appDir, PlexusApplicationConstants.CONF_DIRECTORY ),
                                                       PlexusApplicationConstants.CONFIGURATION_FILE );
 
         if ( !applicationConfigurationFile.exists() )
         {
-            throw new AppDeploymentException( "The appserver '" + appId + "' does not have a valid " +
+            throw new AppDeploymentException( "The application '" + appId + "' does not have a valid " +
                 "configuration: " + applicationConfigurationFile + " does not exist!" );
         }
 
         context.setAppConfigurationFile( applicationConfigurationFile );
 
-        File applicationLibrary = new File( location, PlexusApplicationConstants.LIB_DIRECTORY );
+        getLogger().info( "Using application configuration file " + applicationConfigurationFile + "." );
+
+        File applicationLibrary = new File( appDir, PlexusApplicationConstants.LIB_DIRECTORY );
 
         if ( !applicationLibrary.exists() )
         {
-            throw new AppDeploymentException( "The appserver '" + appId + "' does not have a valid library: " +
+            throw new AppDeploymentException( "The appication '" + appId + "' does not have a valid library: " +
                 applicationLibrary + " does not exist!" );
         }
 

@@ -11,6 +11,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.File;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
@@ -67,6 +68,10 @@ public class ProcessAppMetadataPhase
         {
             throw new AppDeploymentException( "Missing 'name' element in the application metadata file." );
         }
+
+        File appDir = new File( context.getApplicationsDirectory(), appId );
+        
+        context.setAppDir( appDir );
 
         // Put the found application id into the context.
         context.setApplicationId( appId );
