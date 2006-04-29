@@ -47,9 +47,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * 1
- *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Jason van Zyl
  * @version $Id$
  */
 public class JettyServletContainer
@@ -112,7 +111,7 @@ public class JettyServletContainer
     {
         HttpContext[] contexts = server.getContexts();
 
-        HttpContext context = null;
+        HttpContext context;
 
         for ( int i = 0; i < contexts.length; i++ )
         {
@@ -184,23 +183,23 @@ public class JettyServletContainer
     public void deployWarFile( File war,
                                boolean extractWar,
                                File extractionLocation,
-                               AppRuntimeProfile appProfile,
+                               DefaultPlexusContainer container,
                                String context,
                                String virtualHost,
                                boolean standardWebappClassloading )
         throws ServletContainerException
     {
-        deployWAR( war, extractWar, extractionLocation, appProfile, context, virtualHost, false );
+        deployWAR( war, extractWar, extractionLocation, container, context, virtualHost, false );
     }
 
     public void deployWarDirectory( File directory,
-                                    AppRuntimeProfile appProfile,
+                                    DefaultPlexusContainer container,
                                     String context,
                                     String virtualHost,
                                     boolean standardWebappClassLoader )
         throws ServletContainerException
     {
-        deployWAR( directory, false, null, appProfile, context, virtualHost, standardWebappClassLoader );
+        deployWAR( directory, false, null, container, context, virtualHost, standardWebappClassLoader );
     }
 
     public void startApplication( String contextPath )
@@ -225,7 +224,7 @@ public class JettyServletContainer
     {
         HttpContext[] contexts = server.getContexts();
 
-        HttpContext context = null;
+        HttpContext context;
 
         for ( int i = 0; i < contexts.length; i++ )
         {
@@ -243,7 +242,7 @@ public class JettyServletContainer
     private void deployWAR( File war,
                             boolean extractWar,
                             File extractionLocation,
-                            AppRuntimeProfile appProfile,
+                            DefaultPlexusContainer container,
                             String context,
                             String virtualHost,
                             boolean standardWebappClassloader )
@@ -292,10 +291,6 @@ public class JettyServletContainer
             applicationContext.setTempDirectory( extractionLocation );
         }
 
-        PlexusContainer applicationContainer = appProfile.getApplicationContainer();
-
-        DefaultPlexusContainer appserverContainer = (DefaultPlexusContainer) appProfile.getApplicationServerContainer();
-
         // If it is a standard WAR file then use the standard classloading semantics. We don't want
         // to use the plexus container classloader for deploying third-party WARs.
 
@@ -315,7 +310,7 @@ public class JettyServletContainer
                 // create a realm. We need to create a realm so that we can discover all
                 // the components in the webapp.
 
-                ClassRealm realm = ((DefaultPlexusContainer)applicationContainer).getCoreRealm();
+                ClassRealm realm = container.getCoreRealm();
 
                 List jars = FileUtils.getFiles( war, "**/*.jar", null );
 
@@ -351,9 +346,9 @@ public class JettyServletContainer
         {
             // Dirty hack, need better methods for classloaders because i can set the core realm but not get it,
             // or get the container realm but not set it. blah!
-            applicationContext.setClassLoader( ((DefaultPlexusContainer)applicationContainer).getCoreRealm().getClassLoader() );
+            applicationContext.setClassLoader( container.getCoreRealm().getClassLoader() );
         }
 
-        applicationContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY, applicationContainer );
+        applicationContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY, container );
     }
 }

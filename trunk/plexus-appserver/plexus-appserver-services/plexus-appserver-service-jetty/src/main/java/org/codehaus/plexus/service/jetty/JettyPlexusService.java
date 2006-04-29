@@ -96,8 +96,9 @@ public class JettyPlexusService
 
             try
             {
-                servletContainer.deployWarDirectory( webAppDir, runtimeProfile, application.getContext(),
-                                                     application.getVirtualHost(), application.isStandardWebappClassloader() );
+                servletContainer.deployWarDirectory( webAppDir, runtimeProfile.getApplicationContainer(),
+                                                     application.getContext(), application.getVirtualHost(),
+                                                     application.isStandardWebappClassloader() );
             }
             catch ( ServletContainerException e )
             {
@@ -127,13 +128,13 @@ public class JettyPlexusService
             }
             else
             {
-                getLogger().info( "Deploying appserver '" + appRuntimeProfile.getName() + "' " +
-                    "on virtual host '" + application.getVirtualHost() + "'." );
+                getLogger().info( "Deploying appserver '" + appRuntimeProfile.getName() + "' " + "on virtual host '" +
+                    application.getVirtualHost() + "'." );
             }
 
-            for ( Iterator it2 = application.getListeners().iterator(); it2.hasNext(); )
+            for ( Iterator j = application.getListeners().iterator(); j.hasNext(); )
             {
-                HttpListener httpListener = (HttpListener) it2.next();
+                HttpListener httpListener = (HttpListener) j.next();
 
                 String listener;
 
@@ -181,7 +182,7 @@ public class JettyPlexusService
             // means discovery can occur.
             // ----------------------------------------------------------------------------
 
-            DefaultPlexusContainer c = (DefaultPlexusContainer) appRuntimeProfile.getApplicationContainer();
+            DefaultPlexusContainer c = appRuntimeProfile.getApplicationContainer();
 
             ClassRealm realm = c.getContainerRealm();
 
