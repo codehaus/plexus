@@ -64,6 +64,7 @@
           <phase>expand-app</phase>
           <phase>validate-app</phase>
           <phase>create-app-container</phase>
+          <phase>create-app-runtime-profile</phase>
           <phase>pre-app-container-init-service-call</phase>
           <phase>app-init</phase>
           <phase>post-app-container-init-service-call</phase>
@@ -93,20 +94,32 @@
 
     <component>
       <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
-      <role-hint></role-hint>
-      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.Phase</implementation>
+      <role-hint>create-app-container</role-hint>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.CreateAppContainerPhase</implementation>
     </component>
 
     <component>
       <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
-      <role-hint></role-hint>
-      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.Phase</implementation>
+      <role-hint>create-app-runtime-profile</role-hint>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.CreateAppRuntimeProfilePhase</implementation>
     </component>
 
     <component>
       <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
-      <role-hint></role-hint>
-      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.Phase</implementation>
+      <role-hint>pre-app-container-init-service-call</role-hint>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.PreAppInitializationServiceCallPhase</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
+      <role-hint>app-init</role-hint>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppInitializationPhase</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
+      <role-hint>post-app-container-init-service-call</role-hint>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.PostAppInitializationServiceCallPhase</implementation>
     </component>
 
     <!-- Service Deployer -->

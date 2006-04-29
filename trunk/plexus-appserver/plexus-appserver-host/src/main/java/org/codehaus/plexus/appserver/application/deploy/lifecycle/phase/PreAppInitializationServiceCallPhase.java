@@ -29,19 +29,11 @@ public class PreAppInitializationServiceCallPhase
                 throw new AppDeploymentException( "Missing child element 'id' in 'service'." );
             }
 
-            if ( !context.getApplicationContainer().hasComponent( PlexusService.ROLE, id ) )
-            {
-                getLogger().error(
-                    "Error while loading plexus service with id '" + id + "'. " + "The service doesn't exists." );
-
-                continue;
-            }
-
             PlexusService service;
 
             try
             {
-                service = (PlexusService) context.getApplicationContainer().lookup( PlexusService.ROLE, id );
+                service = (PlexusService) context.getAppServerContainer().lookup( PlexusService.ROLE, id );
             }
             catch ( ComponentLookupException e )
             {
