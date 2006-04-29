@@ -1,4 +1,4 @@
-package org.codehaus.plexus.appserver.lifecycle.phase.deploy;
+package org.codehaus.plexus.appserver.deploy;
 
 import org.codehaus.plexus.appserver.AppServerObject;
 

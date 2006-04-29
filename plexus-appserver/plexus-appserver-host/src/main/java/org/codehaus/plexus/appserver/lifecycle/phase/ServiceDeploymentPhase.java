@@ -6,7 +6,7 @@ import org.codehaus.plexus.appserver.lifecycle.AppServerLifecycleException;
 import org.codehaus.plexus.appserver.supervisor.SupervisorListener;
 import org.codehaus.plexus.appserver.supervisor.SupervisorException;
 import org.codehaus.plexus.appserver.supervisor.Supervisor;
-import org.codehaus.plexus.appserver.service.deployer.ServiceDeployer;
+import org.codehaus.plexus.appserver.service.deploy.ServiceDeployer;
 
 import java.io.File;
 
@@ -35,7 +35,7 @@ public class ServiceDeploymentPhase
                     {
                         String serviceName = name.substring( 0, name.length() - 4 );
 
-                        serviceDeployer.deploy( serviceName, jar.getAbsolutePath() );
+                        serviceDeployer.deploy( serviceName, jar );
                     }
                     catch ( Exception e )
                     {

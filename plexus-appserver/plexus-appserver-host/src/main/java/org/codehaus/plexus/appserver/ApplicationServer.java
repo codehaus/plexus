@@ -1,6 +1,8 @@
 package org.codehaus.plexus.appserver;
 
-import org.codehaus.plexus.appserver.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
+
+import java.io.File;
 
 /*
  * The MIT License
@@ -35,13 +37,13 @@ public interface ApplicationServer
 {
     String ROLE = ApplicationServer.class.getName();
 
-    ApplicationRuntimeProfile getApplicationRuntimeProfile( String applicationId )
+    AppRuntimeProfile getApplicationRuntimeProfile( String applicationId )
         throws ApplicationServerException;
 
-    void deploy( String name, String location )
+    void deploy( String name, File location )
         throws ApplicationServerException;
 
-    void redeploy( String name, String location )
+    void redeploy( String name, File location )
         throws ApplicationServerException;
 
     void undeploy( String name )

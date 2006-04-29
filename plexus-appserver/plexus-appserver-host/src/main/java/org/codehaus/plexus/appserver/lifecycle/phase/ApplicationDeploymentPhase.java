@@ -6,7 +6,7 @@ import org.codehaus.plexus.appserver.lifecycle.phase.AbstractAppServerPhase;
 import org.codehaus.plexus.appserver.supervisor.Supervisor;
 import org.codehaus.plexus.appserver.supervisor.SupervisorException;
 import org.codehaus.plexus.appserver.supervisor.SupervisorListener;
-import org.codehaus.plexus.appserver.application.deployer.ApplicationDeployer;
+import org.codehaus.plexus.appserver.application.deploy.ApplicationDeployer;
 
 import java.io.File;
 
@@ -37,7 +37,7 @@ public class ApplicationDeploymentPhase
 
                         getLogger().info( "Deploying " + appName + "." );
 
-                        applicationDeployer.deploy( appName, jar.toURL().toExternalForm() );
+                        applicationDeployer.deploy( appName, jar );
                     }
                     catch ( Exception e )
                     {

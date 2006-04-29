@@ -22,7 +22,7 @@ package org.codehaus.plexus.appserver.application.event;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.appserver.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 
 /**
  * Signals an (un/re)deployment event;
@@ -33,18 +33,18 @@ import org.codehaus.plexus.appserver.application.profile.ApplicationRuntimeProfi
 public class DefaultDeployEvent
     implements DeployEvent
 {
-    private ApplicationRuntimeProfile runtimeProfile;
+    private AppRuntimeProfile runtimeProfile;
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
-    public DefaultDeployEvent( ApplicationRuntimeProfile runtimeProfile )
+    public DefaultDeployEvent( AppRuntimeProfile runtimeProfile )
     {
         this.runtimeProfile = runtimeProfile;
     }
 
-    public ApplicationRuntimeProfile getRuntimeProfile()
+    public AppRuntimeProfile getRuntimeProfile()
     {
         return runtimeProfile;
     }

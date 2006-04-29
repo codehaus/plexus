@@ -6,10 +6,10 @@
       <implementation>org.codehaus.plexus.appserver.DefaultApplicationServer</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.appserver.service.deployer.ServiceDeployer</role>
+          <role>org.codehaus.plexus.appserver.service.deploy.ServiceDeployer</role>
         </requirement>
         <requirement>
-          <role>org.codehaus.plexus.appserver.application.deployer.ApplicationDeployer</role>
+          <role>org.codehaus.plexus.appserver.application.deploy.ApplicationDeployer</role>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.appserver.supervisor.Supervisor</role>
@@ -30,7 +30,7 @@
       <implementation>org.codehaus.plexus.appserver.lifecycle.phase.ApplicationDeploymentPhase</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.appserver.application.deployer.ApplicationDeployer</role>
+          <role>org.codehaus.plexus.appserver.application.deploy.ApplicationDeployer</role>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.appserver.supervisor.Supervisor</role>
@@ -41,11 +41,10 @@
     <component>
       <role>org.codehaus.plexus.appserver.lifecycle.phase.AppServerPhase</role>
       <role-hint>deploy-services</role-hint>
-      <implementation>
-        org.codehaus.plexus.appserver.lifecycle.phase.ServiceDeploymentPhase</implementation>
+      <implementation>org.codehaus.plexus.appserver.lifecycle.phase.ServiceDeploymentPhase</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.appserver.service.deployer.ServiceDeployer</role>
+          <role>org.codehaus.plexus.appserver.service.deploy.ServiceDeployer</role>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.appserver.supervisor.Supervisor</role>
@@ -53,20 +52,68 @@
       </requirements>
     </component>
 
-    <!-- -->
+    <!-- Application Deployer -->
 
     <component>
-      <role>org.codehaus.plexus.appserver.application.deployer.ApplicationDeployer</role>
-      <implementation>
-        org.codehaus.plexus.appserver.application.deployer.DefaultApplicationDeployer</implementation>
+      <role>org.codehaus.plexus.appserver.application.deploy.ApplicationDeployer</role>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.DefaultApplicationDeployer</implementation>
       <configuration>
         <applicationsDirectory>${plexus.home}/apps</applicationsDirectory>
+        <phases>
+          <phase>process-app-metadata</phase>
+          <phase>expand-app</phase>
+          <phase>validate-app</phase>
+          <phase>create-app-container</phase>
+          <phase>pre-app-container-init-service-call</phase>
+          <phase>app-init</phase>
+          <phase>post-app-container-init-service-call</phase>
+        </phases>
       </configuration>
     </component>
 
+    <!-- Application Deployment Phases -->
+
     <component>
-      <role>org.codehaus.plexus.appserver.service.deployer.ServiceDeployer</role>
-      <implementation>org.codehaus.plexus.appserver.service.deployer.DefaultServiceDeployer</implementation>
+      <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
+      <role-hint>process-app-metadata</role-hint>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.ProcessAppMetadataPhase</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
+      <role-hint>expand-app</role-hint>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.ExpandAppPhase</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
+      <role-hint>validate-app</role-hint>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.ValidateAppPhase</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
+      <role-hint></role-hint>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.Phase</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
+      <role-hint></role-hint>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.Phase</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
+      <role-hint></role-hint>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.Phase</implementation>
+    </component>
+
+    <!-- Service Deployer -->
+
+    <component>
+      <role>org.codehaus.plexus.appserver.service.deploy.ServiceDeployer</role>
+      <implementation>org.codehaus.plexus.appserver.service.deploy.DefaultServiceDeployer</implementation>
       <configuration>
         <serviceDirectory>${plexus.home}/services</serviceDirectory>
       </configuration>
