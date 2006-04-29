@@ -71,9 +71,15 @@ public class CreateAppContainerPhase
 
         DefaultPlexusContainer appServerContainer = context.getAppServerContainer();
 
-        applicationContainer.addContextValue( "plexus.home", context.getApplicationsDirectory() );
+        getLogger().info( "Using appDir = " + context.getAppDir() );
+
+        // This needs to be a String!!
+        applicationContainer.addContextValue( "plexus.home", context.getAppDir().getAbsolutePath() );
+
+        System.out.println( "applicationContainer.getContext() = " + applicationContainer.getContext() );
 
         Object appserver = null;
+
         try
         {
             appserver = appServerContainer.getContext().get( "plexus.appserver" );
@@ -93,7 +99,7 @@ public class CreateAppContainerPhase
         // Create the realm for the appserver
         // ----------------------------------------------------------------------
 
-        ClassRealm realm = new SimpleClassRealm( "plexus.appserver." + context.getApplicationId(),
+        ClassRealm realm = new SimpleClassRealm( "plexus.application." + context.getApplicationId(),
                                                  new SimpleClassLoader(
                                                      appServerContainer.getContainerRealm().getClassLoader() ),
                                                  appServerContainer.getClassWorld() );
@@ -108,6 +114,8 @@ public class CreateAppContainerPhase
 
         Map ctx = new ContextMapAdapter( applicationContainer.getContext() );
 
+        System.out.println( "ctx = " + ctx.get( "plexus.home" ) );
+
         Xpp3Dom dom;
 
         try
@@ -116,6 +124,8 @@ public class CreateAppContainerPhase
                 new InterpolationFilterReader( new FileReader( context.getAppConfigurationFile() ), ctx );
 
             dom = Xpp3DomBuilder.build( configurationReader );
+
+            System.out.println( "dom.toString() = " + dom.toString() );
         }
         catch ( Exception e )
         {
@@ -125,6 +135,8 @@ public class CreateAppContainerPhase
         PlexusConfiguration applicationConfiguration = new XmlPlexusConfiguration( dom );
 
         context.setAppConfiguration( applicationConfiguration );
+
+        context.setApplicationContainer( applicationContainer );
     }
 
     // ----------------------------------------------------------------------------

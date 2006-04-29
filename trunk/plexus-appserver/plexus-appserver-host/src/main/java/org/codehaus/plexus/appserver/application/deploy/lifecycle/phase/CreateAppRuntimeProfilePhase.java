@@ -13,8 +13,6 @@ public class CreateAppRuntimeProfilePhase
     public void execute( AppDeploymentContext context )
         throws AppDeploymentException
     {
-        //TODO: this is little redundant can probably use the context ... jvz.
-
         AppRuntimeProfile profile = new AppRuntimeProfile( context.getApplicationId(),
                                                            context.getApplicationsDirectory(),
                                                            context.getPar(),

@@ -81,8 +81,6 @@ public class DefaultApplicationDeployer
 
     private String applicationsDirectory;
 
-    private Properties contextValues;
-
     private List phases;
 
     // ----------------------------------------------------------------------
@@ -100,7 +98,7 @@ public class DefaultApplicationDeployer
         throws ApplicationServerException
     {
         AppDeploymentContext context =
-            new AppDeploymentContext( file, new File( applicationsDirectory ), deployments, appServerContainer, contextValues );
+            new AppDeploymentContext( file, new File( applicationsDirectory ), deployments, appServerContainer );
 
         for ( Iterator i = phases.iterator(); i.hasNext(); )
         {

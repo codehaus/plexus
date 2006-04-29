@@ -36,20 +36,20 @@ public class AppDeploymentContext
 
     private File appConfigurationFile;
 
+    private File appDir;
+
     // app.home/lib used for populating the class realm.
     private File appLibDirectory;
 
     public AppDeploymentContext( File par,
                                  File applicationsDirectory,
                                  Map deployments,
-                                 DefaultPlexusContainer appServerContainer,
-                                 Properties context )
+                                 DefaultPlexusContainer appServerContainer )
     {
         this.par = par;
         this.applicationsDirectory = applicationsDirectory;
         this.deployments = deployments;
         this.appServerContainer = appServerContainer;
-        this.context = context;
     }
 
     // Read-only
@@ -74,12 +74,18 @@ public class AppDeploymentContext
         return appServerContainer;
     }
 
+
+    // Properties
+
     public Properties getContext()
     {
         return context;
     }
 
-    // Properties
+    public void setContext( Properties context )
+    {
+        this.context = context;
+    }
 
     public String getApplicationId()
     {
@@ -139,6 +145,16 @@ public class AppDeploymentContext
     public void setAppLibDirectory( File appLibDirectory )
     {
         this.appLibDirectory = appLibDirectory;
+    }
+
+    public File getAppDir()
+    {
+        return appDir;
+    }
+
+    public void setAppDir( File appDir )
+    {
+        this.appDir = appDir;
     }
 }
 
