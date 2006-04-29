@@ -34,7 +34,7 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
 import org.codehaus.plexus.builder.application.ApplicationBuilderException;
 
 /**
- * @goal bundle-appserver
+ * @goal bundle-app
  *
  * @requiresDependencyResolution
  *
