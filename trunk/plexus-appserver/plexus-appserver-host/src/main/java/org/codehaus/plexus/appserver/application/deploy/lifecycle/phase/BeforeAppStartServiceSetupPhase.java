@@ -10,7 +10,7 @@ import org.codehaus.plexus.util.StringUtils;
 /**
  * @author Jason van Zyl
  */
-public class PreAppInitializationServiceCallPhase
+public class BeforeAppStartServiceSetupPhase
     extends AbstractAppDeploymentPhase
 {
     public void execute( AppDeploymentContext context )

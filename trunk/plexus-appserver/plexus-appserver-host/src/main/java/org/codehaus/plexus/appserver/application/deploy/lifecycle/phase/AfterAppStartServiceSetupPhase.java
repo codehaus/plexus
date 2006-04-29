@@ -9,7 +9,7 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
 /**
  * @author Jason van Zyl
  */
-public class PostAppInitializationServiceCallPhase
+public class AfterAppStartServiceSetupPhase
     extends AbstractAppDeploymentPhase
 {
     public void execute( AppDeploymentContext context )

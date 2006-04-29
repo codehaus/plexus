@@ -107,7 +107,7 @@
     <component>
       <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
       <role-hint>pre-app-container-init-service-call</role-hint>
-      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.PreAppInitializationServiceCallPhase</implementation>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.BeforeAppStartServiceSetupPhase</implementation>
     </component>
 
     <component>
@@ -119,7 +119,7 @@
     <component>
       <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
       <role-hint>post-app-container-init-service-call</role-hint>
-      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.PostAppInitializationServiceCallPhase</implementation>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AfterAppStartServiceSetupPhase</implementation>
     </component>
 
     <!-- Service Deployer -->
