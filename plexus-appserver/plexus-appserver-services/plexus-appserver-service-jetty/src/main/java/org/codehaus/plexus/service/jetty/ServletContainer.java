@@ -28,6 +28,7 @@ import java.io.File;
 import java.net.UnknownHostException;
 
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
+import org.codehaus.plexus.DefaultPlexusContainer;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -52,14 +53,14 @@ public interface ServletContainer
     void deployWarFile( File war,
                         boolean extractWar,
                         File extractionLocation,
-                        AppRuntimeProfile appProfile,
+                        DefaultPlexusContainer container,
                         String context,
                         String virtualHost,
                         boolean standardWebappClassloader )
         throws ServletContainerException;
 
     void deployWarDirectory( File directory,
-                             AppRuntimeProfile appProfile,
+                             DefaultPlexusContainer container,
                              String context,
                              String virtualHost,
                              boolean standardWebappClassloader )
