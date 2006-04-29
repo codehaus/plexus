@@ -1,4 +1,4 @@
-package org.codehaus.plexus.appserver.service.deployer;
+package org.codehaus.plexus.appserver.service.deploy;
 
 /*
  * Copyright (c) 2004, Codehaus.org
@@ -26,7 +26,7 @@ import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.appserver.ApplicationServerException;
 import org.codehaus.plexus.appserver.PlexusServiceConstants;
-import org.codehaus.plexus.appserver.lifecycle.phase.deploy.AbstractDeployer;
+import org.codehaus.plexus.appserver.deploy.AbstractDeployer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
@@ -74,14 +74,12 @@ public class DefaultServiceDeployer
     // ServiceDeployer Implementation
     // ----------------------------------------------------------------------
 
-    public void deploy( String name, String location )
+    public void deploy( String name, File location )
         throws ApplicationServerException
     {
-        File jar = new File( location );
-
         try
         {
-            deploy( name, jar, new File( serviceDirectory ), new File( serviceDirectory ) );
+            deploy( name, location, new File( serviceDirectory ), new File( serviceDirectory ) );
         }
         catch ( Exception e )
         {
@@ -225,7 +223,7 @@ public class DefaultServiceDeployer
         container.addJarResource( classes );
     }
 
-    public void redeploy( String name, String location )
+    public void redeploy( String name, File location )
         throws ApplicationServerException
     {
     }

@@ -1,6 +1,6 @@
-package org.codehaus.plexus.appserver.service.deployer;
+package org.codehaus.plexus.appserver.service.deploy;
 
-import org.codehaus.plexus.appserver.lifecycle.phase.deploy.Deployer;
+import org.codehaus.plexus.appserver.deploy.Deployer;
 
 /*
  * Copyright (c) 2004, Codehaus.org

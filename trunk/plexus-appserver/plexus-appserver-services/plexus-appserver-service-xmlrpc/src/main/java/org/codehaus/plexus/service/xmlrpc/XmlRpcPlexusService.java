@@ -27,7 +27,7 @@ package org.codehaus.plexus.service.xmlrpc;
 import org.apache.xmlrpc.XmlRpcException;
 
 import org.codehaus.plexus.appserver.service.PlexusService;
-import org.codehaus.plexus.appserver.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -90,7 +90,7 @@ public class XmlRpcPlexusService
     // PlexusService Implementation
     // ----------------------------------------------------------------------
 
-    public void beforeApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
+    public void beforeApplicationStart( AppRuntimeProfile appRuntimeProfile,
                                         PlexusConfiguration serviceConfiguration )
         throws Exception
     {
@@ -117,7 +117,7 @@ public class XmlRpcPlexusService
         }
     }
 
-    public void afterApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
+    public void afterApplicationStart( AppRuntimeProfile appRuntimeProfile,
                                        PlexusConfiguration serviceConfiguration )
         throws Exception
     {
@@ -150,14 +150,14 @@ public class XmlRpcPlexusService
                 break;
             }
 
-            if ( !applicationRuntimeProfile.getApplicationServerContainer().hasComponent( role ) )
+            if ( !appRuntimeProfile.getApplicationServerContainer().hasComponent( role ) )
             {
                 getLogger().error( "No component with the role '" + role + "' available." );
 
                 break;
             }
 
-            Object component = applicationRuntimeProfile.getApplicationServerContainer().lookup( role );
+            Object component = appRuntimeProfile.getApplicationServerContainer().lookup( role );
 
             getLogger().info( "Adding XML-RPC handler for role '" + role + " to name '" + name + "'." );
 
