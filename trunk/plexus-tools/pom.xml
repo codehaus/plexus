@@ -18,6 +18,5 @@
   </dependencies>
   <modules>
     <module>plexus-cdc</module>
-    <module>plexus-runtime-builder</module>
   </modules>
 </project>
