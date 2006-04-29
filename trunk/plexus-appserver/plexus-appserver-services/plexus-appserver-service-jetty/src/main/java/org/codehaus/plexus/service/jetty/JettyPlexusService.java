@@ -26,7 +26,7 @@ package org.codehaus.plexus.service.jetty;
 
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.appserver.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.appserver.service.AbstractPlexusService;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.service.jetty.configuration.HttpListener;
@@ -62,7 +62,7 @@ public class JettyPlexusService
     // PlexusService Implementation
     // ----------------------------------------------------------------------
 
-    public void beforeApplicationStart( ApplicationRuntimeProfile runtimeProfile,
+    public void beforeApplicationStart( AppRuntimeProfile runtimeProfile,
                                         PlexusConfiguration serviceConfiguration )
         throws Exception
     {
@@ -106,7 +106,7 @@ public class JettyPlexusService
         }
     }
 
-    public void afterApplicationStart( ApplicationRuntimeProfile applicationRuntimeProfile,
+    public void afterApplicationStart( AppRuntimeProfile appRuntimeProfile,
                                        PlexusConfiguration serviceConfiguration )
         throws Exception
     {
@@ -123,11 +123,11 @@ public class JettyPlexusService
 
             if ( application.getVirtualHost() == null )
             {
-                getLogger().info( "Deploying appserver '" + applicationRuntimeProfile.getName() + "'." );
+                getLogger().info( "Deploying appserver '" + appRuntimeProfile.getName() + "'." );
             }
             else
             {
-                getLogger().info( "Deploying appserver '" + applicationRuntimeProfile.getName() + "' " +
+                getLogger().info( "Deploying appserver '" + appRuntimeProfile.getName() + "' " +
                     "on virtual host '" + application.getVirtualHost() + "'." );
             }
 
@@ -181,7 +181,7 @@ public class JettyPlexusService
             // means discovery can occur.
             // ----------------------------------------------------------------------------
 
-            DefaultPlexusContainer c = (DefaultPlexusContainer) applicationRuntimeProfile.getApplicationContainer();
+            DefaultPlexusContainer c = (DefaultPlexusContainer) appRuntimeProfile.getApplicationContainer();
 
             ClassRealm realm = c.getContainerRealm();
 

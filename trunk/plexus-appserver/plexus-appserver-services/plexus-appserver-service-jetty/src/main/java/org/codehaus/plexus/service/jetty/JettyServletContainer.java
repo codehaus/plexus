@@ -28,7 +28,7 @@ import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.appserver.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
@@ -184,23 +184,23 @@ public class JettyServletContainer
     public void deployWarFile( File war,
                                boolean extractWar,
                                File extractionLocation,
-                               ApplicationRuntimeProfile applicationProfile,
+                               AppRuntimeProfile appProfile,
                                String context,
                                String virtualHost,
                                boolean standardWebappClassloading )
         throws ServletContainerException
     {
-        deployWAR( war, extractWar, extractionLocation, applicationProfile, context, virtualHost, false );
+        deployWAR( war, extractWar, extractionLocation, appProfile, context, virtualHost, false );
     }
 
     public void deployWarDirectory( File directory,
-                                    ApplicationRuntimeProfile applicationProfile,
+                                    AppRuntimeProfile appProfile,
                                     String context,
                                     String virtualHost,
                                     boolean standardWebappClassLoader )
         throws ServletContainerException
     {
-        deployWAR( directory, false, null, applicationProfile, context, virtualHost, standardWebappClassLoader );
+        deployWAR( directory, false, null, appProfile, context, virtualHost, standardWebappClassLoader );
     }
 
     public void startApplication( String contextPath )
@@ -243,7 +243,7 @@ public class JettyServletContainer
     private void deployWAR( File war,
                             boolean extractWar,
                             File extractionLocation,
-                            ApplicationRuntimeProfile applicationProfile,
+                            AppRuntimeProfile appProfile,
                             String context,
                             String virtualHost,
                             boolean standardWebappClassloader )
@@ -292,9 +292,9 @@ public class JettyServletContainer
             applicationContext.setTempDirectory( extractionLocation );
         }
 
-        PlexusContainer applicationContainer = applicationProfile.getApplicationContainer();
+        PlexusContainer applicationContainer = appProfile.getApplicationContainer();
 
-        DefaultPlexusContainer appserverContainer = (DefaultPlexusContainer) applicationProfile.getApplicationServerContainer();
+        DefaultPlexusContainer appserverContainer = (DefaultPlexusContainer) appProfile.getApplicationServerContainer();
 
         // If it is a standard WAR file then use the standard classloading semantics. We don't want
         // to use the plexus container classloader for deploying third-party WARs.

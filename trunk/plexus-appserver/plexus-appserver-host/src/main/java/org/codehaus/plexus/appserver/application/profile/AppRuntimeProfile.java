@@ -36,7 +36,7 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class ApplicationRuntimeProfile
+public class AppRuntimeProfile
 {
     private String name;
 
@@ -58,12 +58,12 @@ public class ApplicationRuntimeProfile
     //
     // ----------------------------------------------------------------------
 
-    public ApplicationRuntimeProfile( String name,
-                                      File home,
-                                      File lib,
-                                      DefaultPlexusContainer applicationContainer,
-                                      PlexusContainer applicationServerContainer,
-                                      PlexusConfiguration applicationConfiguration )
+    public AppRuntimeProfile( String name,
+                              File home,
+                              File lib,
+                              DefaultPlexusContainer applicationContainer,
+                              PlexusContainer applicationServerContainer,
+                              PlexusConfiguration applicationConfiguration )
     {
         this.name = name;
 

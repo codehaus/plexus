@@ -1,4 +1,4 @@
-package org.codehaus.plexus.appserver.application.deployer;
+package org.codehaus.plexus.appserver.application.deploy;
 
 /*
  * Copyright (c) 2004, Codehaus.org
@@ -23,9 +23,9 @@ package org.codehaus.plexus.appserver.application.deployer;
  */
 
 import org.codehaus.plexus.appserver.application.event.ApplicationListener;
-import org.codehaus.plexus.appserver.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.appserver.ApplicationServerException;
-import org.codehaus.plexus.appserver.lifecycle.phase.deploy.Deployer;
+import org.codehaus.plexus.appserver.deploy.Deployer;
 
 /**
  * @author Peter Donald
@@ -40,6 +40,6 @@ public interface ApplicationDeployer
 
     void removeApplicationListener( ApplicationListener listener );
 
-    ApplicationRuntimeProfile getApplicationRuntimeProfile( String applicationName )
+    AppRuntimeProfile getApplicationRuntimeProfile( String applicationName )
         throws ApplicationServerException;
 }

@@ -28,13 +28,13 @@ import java.io.File;
 import java.util.List;
 import java.util.Iterator;
 
-import org.codehaus.plexus.appserver.application.deployer.ApplicationDeployer;
-import org.codehaus.plexus.appserver.service.deployer.ServiceDeployer;
+import org.codehaus.plexus.appserver.application.deploy.ApplicationDeployer;
+import org.codehaus.plexus.appserver.service.deploy.ServiceDeployer;
 import org.codehaus.plexus.appserver.lifecycle.phase.AppServerPhase;
 import org.codehaus.plexus.appserver.lifecycle.AppServerContext;
 import org.codehaus.plexus.appserver.lifecycle.AppServerLifecycleException;
 import org.codehaus.plexus.appserver.supervisor.Supervisor;
-import org.codehaus.plexus.appserver.application.profile.ApplicationRuntimeProfile;
+import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
@@ -76,25 +76,25 @@ public class DefaultApplicationServer
     // Application Facade
     // ----------------------------------------------------------------------
 
-    public ApplicationRuntimeProfile getApplicationRuntimeProfile( String applicationId )
+    public AppRuntimeProfile getApplicationRuntimeProfile( String applicationId )
         throws ApplicationServerException
     {
         return applicationDeployer.getApplicationRuntimeProfile( applicationId );
     }
 
     // ----------------------------------------------------------------------------
-    // Delegation to the appserver deployer
+    // Delegation to the appserver deploy
     // ----------------------------------------------------------------------------
 
     public void deploy( String name,
-                        String location )
+                        File location )
         throws ApplicationServerException
     {
         applicationDeployer.deploy( name, location );
     }
 
     public void redeploy( String name,
-                          String location )
+                          File location )
         throws ApplicationServerException
     {
         applicationDeployer.deploy( name, location );
