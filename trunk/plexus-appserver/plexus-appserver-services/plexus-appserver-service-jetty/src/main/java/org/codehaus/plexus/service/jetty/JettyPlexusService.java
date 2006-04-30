@@ -37,6 +37,8 @@ import org.codehaus.plexus.service.jetty.configuration.builder.ServiceConfigurat
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -58,9 +60,18 @@ public class JettyPlexusService
      */
     private ServletContainer servletContainer;
 
+    /**
+     * Set of ports to be activated. The port can only be used once.
+     */
+    private Set activePorts = new HashSet();
+
     // ----------------------------------------------------------------------
     // PlexusService Implementation
     // ----------------------------------------------------------------------
+
+    //TODO all the webapplications need to be examined to see
+    // - what needs to be loaded for a webapp (context, virtualhost)
+    // - what is shared for all webapps
 
     public void beforeApplicationStart( AppRuntimeProfile runtimeProfile,
                                         PlexusConfiguration serviceConfiguration )
@@ -80,7 +91,7 @@ public class JettyPlexusService
                 // Extract the jar
                 // ----------------------------------------------------------------------
 
-                expand( new File( application.getFile() ), new File( application.getExtractionPath() ), false );
+                expand( new File( application.getWebappFile() ), new File( application.getExtractionPath() ), false );
 
                 webAppDir = new File( application.getExtractionPath() );
             }
@@ -135,6 +146,15 @@ public class JettyPlexusService
             for ( Iterator j = application.getListeners().iterator(); j.hasNext(); )
             {
                 HttpListener httpListener = (HttpListener) j.next();
+
+                String port = Integer.toString( httpListener.getPort() );
+
+                if ( activePorts.contains( port ) )
+                {
+                    continue;
+                }
+
+                activePorts.add( port );
 
                 String listener;
 

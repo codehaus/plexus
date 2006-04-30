@@ -27,8 +27,6 @@ package org.codehaus.plexus.service.jetty;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
@@ -320,10 +318,6 @@ public class JettyServletContainer
                 {
                     File file = (File) i.next();
 
-                    System.out.println("file = " + file);
-
-                    System.out.println("realm = " + realm);
-
                     realm.addConstituent( file.toURL() );
                 }
 
@@ -339,7 +333,7 @@ public class JettyServletContainer
             }
             catch ( Exception e )
             {
-                e.printStackTrace();
+                throw new ServletContainerException( "Error creating webapp classloader.", e );
             }
         }
         else
