@@ -32,7 +32,8 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.service.jetty.configuration.HttpListener;
 import org.codehaus.plexus.service.jetty.configuration.ProxyHttpListener;
 import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
-import org.codehaus.plexus.service.jetty.configuration.WebApplication;
+import org.codehaus.plexus.service.jetty.configuration.Webapp;
+import org.codehaus.plexus.service.jetty.configuration.WebContext;
 import org.codehaus.plexus.service.jetty.configuration.builder.ServiceConfigurationBuilder;
 
 import java.io.File;
@@ -77,11 +78,11 @@ public class JettyPlexusService
                                         PlexusConfiguration serviceConfiguration )
         throws Exception
     {
-        ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration );
-
+        ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration,
+                                                                                      runtimeProfile.getApplicationServerContainer().getContainerRealm() );        
         for ( Iterator it = configuration.getWebapps().iterator(); it.hasNext(); )
         {
-            WebApplication application = (WebApplication) it.next();
+            Webapp application = (Webapp) it.next();
 
             File webAppDir;
 
@@ -91,7 +92,7 @@ public class JettyPlexusService
                 // Extract the jar
                 // ----------------------------------------------------------------------
 
-                expand( new File( application.getWebappFile() ), new File( application.getExtractionPath() ), false );
+                expand( new File( application.getFile() ), new File( application.getExtractionPath() ), false );
 
                 webAppDir = new File( application.getExtractionPath() );
             }
@@ -116,85 +117,32 @@ public class JettyPlexusService
                 getLogger().error( "Error while deploying WAR '" + webAppDir.getAbsolutePath() + "'.", e );
             }
         }
+
+        // ----------------------------------------------------------------------------
+        // Web contexts
+        // ----------------------------------------------------------------------------
+
+        for ( Iterator i = configuration.getWebContexts().iterator(); i.hasNext(); )
+        {
+            WebContext webContext = (WebContext) i.next();
+
+            servletContainer.deployContext( webContext.getContext(), webContext.getPath() );
+        }
+
     }
 
     public void afterApplicationStart( AppRuntimeProfile appRuntimeProfile,
                                        PlexusConfiguration serviceConfiguration )
         throws Exception
     {
-        ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration );
+        ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration,
+                                                                                      appRuntimeProfile.getApplicationServerContainer().getContainerRealm() );
 
         for ( Iterator it = configuration.getWebapps().iterator(); it.hasNext(); )
         {
-            WebApplication application = (WebApplication) it.next();
+            Webapp application = (Webapp) it.next();
 
-            if ( !servletContainer.hasContext( application.getContext() ) )
-            {
-                continue;
-            }
-
-            if ( application.getVirtualHost() == null )
-            {
-                getLogger().info( "Deploying appserver '" + appRuntimeProfile.getName() + "'." );
-            }
-            else
-            {
-                getLogger().info( "Deploying appserver '" + appRuntimeProfile.getName() + "' " + "on virtual host '" +
-                    application.getVirtualHost() + "'." );
-            }
-
-            for ( Iterator j = application.getListeners().iterator(); j.hasNext(); )
-            {
-                HttpListener httpListener = (HttpListener) j.next();
-
-                String port = Integer.toString( httpListener.getPort() );
-
-                if ( activePorts.contains( port ) )
-                {
-                    continue;
-                }
-
-                activePorts.add( port );
-
-                String listener;
-
-                if ( httpListener.getHost() != null )
-                {
-                    listener = httpListener.getHost() + ":" + httpListener.getPort();
-                }
-                else
-                {
-                    listener = "*:" + httpListener.getPort();
-                }
-
-                if ( httpListener instanceof ProxyHttpListener )
-                {
-                    ProxyHttpListener proxyHttpListener = (ProxyHttpListener) httpListener;
-
-                    String proxyListener;
-
-                    if ( proxyHttpListener.getHost() != null )
-                    {
-                        proxyListener = proxyHttpListener.getHost() + ":" + proxyHttpListener.getPort();
-                    }
-                    else
-                    {
-                        proxyListener = "*:" + proxyHttpListener.getPort();
-                    }
-
-                    getLogger().info( "Adding HTTP proxy listener on " + listener + " for " + proxyListener );
-
-                    servletContainer.addProxyListener( proxyHttpListener.getHost(), proxyHttpListener.getPort(),
-                                                       proxyHttpListener.getProxyHost(),
-                                                       proxyHttpListener.getProxyPort() );
-                }
-                else
-                {
-                    getLogger().info( "Adding HTTP listener on " + listener );
-
-                    servletContainer.addListener( httpListener.getHost(), httpListener.getPort() );
-                }
-            }
+            processWebContextConfiguration( application, appRuntimeProfile );
 
             // ----------------------------------------------------------------------------
             // Now we need to find all the components that might be included in the webapp.
@@ -209,6 +157,82 @@ public class JettyPlexusService
             c.discoverComponents( realm );
 
             servletContainer.startApplication( application.getContext() );
+        }
+
+        for ( Iterator i = configuration.getWebContexts().iterator(); i.hasNext(); )
+        {
+            WebContext webContext = (WebContext) i.next();
+
+            processWebContextConfiguration( webContext, appRuntimeProfile );
+
+            servletContainer.startApplication( webContext.getContext() );
+        }
+    }
+
+    private void processWebContextConfiguration( WebContext context, AppRuntimeProfile profile )
+        throws Exception
+    {
+        if ( context.getVirtualHost() == null )
+        {
+            getLogger().info( "Deploying appserver '" + profile.getName() + "'." );
+        }
+        else
+        {
+            getLogger().info( "Deploying appserver '" + profile.getName() + "' " + "on virtual host '" +
+                context.getVirtualHost() + "'." );
+        }
+
+        for ( Iterator j = context.getListeners().iterator(); j.hasNext(); )
+        {
+            HttpListener httpListener = (HttpListener) j.next();
+
+            String port = Integer.toString( httpListener.getPort() );
+
+            if ( activePorts.contains( port ) )
+            {
+                continue;
+            }
+
+            activePorts.add( port );
+
+            String listener;
+
+            if ( httpListener.getHost() != null )
+            {
+                listener = httpListener.getHost() + ":" + httpListener.getPort();
+            }
+            else
+            {
+                listener = "*:" + httpListener.getPort();
+            }
+
+            if ( httpListener instanceof ProxyHttpListener )
+            {
+                ProxyHttpListener proxyHttpListener = (ProxyHttpListener) httpListener;
+
+                String proxyListener;
+
+                if ( proxyHttpListener.getHost() != null )
+                {
+                    proxyListener = proxyHttpListener.getHost() + ":" + proxyHttpListener.getPort();
+                }
+                else
+                {
+                    proxyListener = "*:" + proxyHttpListener.getPort();
+                }
+
+                getLogger().info( "Adding HTTP proxy listener on " + listener + " for " + proxyListener );
+
+                servletContainer.addProxyListener( proxyHttpListener.getHost(), proxyHttpListener.getPort(),
+                                                   proxyHttpListener.getProxyHost(),
+                                                   proxyHttpListener.getProxyPort() );
+            }
+            else
+            {
+                getLogger().info( "Adding HTTP listener on " + listener );
+
+                servletContainer.addListener( httpListener.getHost(), httpListener.getPort() );
+            }
         }
     }
 }

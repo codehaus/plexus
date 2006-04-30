@@ -20,6 +20,12 @@
     <component>
       <role>org.codehaus.plexus.service.jetty.configuration.builder.ServiceConfigurationBuilder</role>
       <implementation>org.codehaus.plexus.service.jetty.configuration.builder.DefaultServiceConfigurationBuilder</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.component.configurator.ComponentConfigurator</role>
+          <role-hint>basic</role-hint>
+        </requirement>
+      </requirements>
     </component>
   </components>
 </component-set>

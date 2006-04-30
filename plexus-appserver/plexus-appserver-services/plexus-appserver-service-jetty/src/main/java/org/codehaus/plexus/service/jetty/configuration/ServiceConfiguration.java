@@ -27,8 +27,6 @@ package org.codehaus.plexus.service.jetty.configuration;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.codehaus.plexus.service.jetty.configuration.WebApplication;
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -37,13 +35,15 @@ public class ServiceConfiguration
 {
     private List webapps = new ArrayList();
 
-    public void addWebApplication( WebApplication webApplication )
-    {
-        webapps.add( webApplication );
-    }
+    private List webContexts = new ArrayList();
 
     public List getWebapps()
     {
         return webapps;
+    }
+
+    public List getWebContexts()
+    {
+        return webContexts;
     }
 }

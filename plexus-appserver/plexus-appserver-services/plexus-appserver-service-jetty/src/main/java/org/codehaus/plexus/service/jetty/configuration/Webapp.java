@@ -1,8 +1,5 @@
 package org.codehaus.plexus.service.jetty.configuration;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /*
  * The MIT License
  *
@@ -32,72 +29,23 @@ import java.util.List;
  * @author Jason van Zyl
  * @version $Id$
  */
-public class WebApplication
+public class Webapp
+    extends WebContext
 {
-    private String webappFile;
-
-    private String path;
+    private String file;
 
     private String extractionPath;
 
-    private String context;
-
-    private List listeners;
-
-    private String virtualHost;
-
     private boolean standardWebappClassloader;
 
-    public WebApplication( String file,
-                           String path,
-                           String extractionPath,
-                           String context,
-                           String virtualHost,
-                           boolean standardWebappClassloading )
+    public String getFile()
     {
-        this.webappFile = file;
-
-        this.path = path;
-
-        this.extractionPath = extractionPath;
-
-        this.context = context;
-
-        this.virtualHost = virtualHost;
-
-        this.listeners = new ArrayList();
-
-        this.standardWebappClassloader = standardWebappClassloading;
-    }
-
-    public String getWebappFile()
-    {
-        return webappFile;
-    }
-
-    public String getPath()
-    {
-        return path;
+        return file;
     }
 
     public String getExtractionPath()
     {
         return extractionPath;
-    }
-
-    public String getContext()
-    {
-        return context;
-    }
-
-    public String getVirtualHost()
-    {
-        return virtualHost;
-    }
-
-    public List getListeners()
-    {
-        return listeners;
     }
 
     public boolean isStandardWebappClassloader()

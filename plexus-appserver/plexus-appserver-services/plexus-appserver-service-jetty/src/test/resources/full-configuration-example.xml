@@ -19,4 +19,22 @@
       </listeners>
     </webapp>
   </webapps>
+  <webContexts>
+    <webContext>
+      <context>/repository</context>
+      <path>/path/to/repository</path>
+      <virtual-host>www.foo.com</virtual-host>
+      <listeners>
+        <http-listener>
+          <host></host>
+          <port>123</port>
+        </http-listener>
+        <proxy-http-listener>
+          <port>8090</port>
+          <proxy-host>localhost</proxy-host>
+          <proxy-port>80</proxy-port>
+        </proxy-http-listener>
+      </listeners>
+    </webContext>
+  </webContexts>
 </configuration>
