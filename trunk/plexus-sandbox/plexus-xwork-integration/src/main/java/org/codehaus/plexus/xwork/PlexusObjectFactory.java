@@ -47,8 +47,6 @@ public class PlexusObjectFactory
     public void initialize()
         throws InitializationException
     {
-        System.out.println( "Object Factory is online!!!!!!!!!!!!!!!!!!!" );
-
         objectFactory = ObjectFactory.getObjectFactory();
     }
 
