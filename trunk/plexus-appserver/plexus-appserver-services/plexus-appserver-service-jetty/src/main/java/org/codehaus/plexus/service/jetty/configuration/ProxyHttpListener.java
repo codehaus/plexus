@@ -27,18 +27,6 @@ public class ProxyHttpListener
 
     private int proxyPort;
 
-    public ProxyHttpListener( String virtualHost,
-                              int port,
-                              String proxyHost,
-                              int proxyPort )
-    {
-        super( virtualHost, port );
-
-        this.proxyHost = proxyHost;
-
-        this.proxyPort = proxyPort;
-    }
-
     public String getProxyHost()
     {
         return proxyHost;

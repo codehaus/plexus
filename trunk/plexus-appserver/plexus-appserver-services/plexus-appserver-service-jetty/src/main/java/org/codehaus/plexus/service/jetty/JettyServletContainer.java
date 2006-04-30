@@ -33,10 +33,13 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.util.FileUtils;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.HttpListener;
+import org.mortbay.http.handler.ResourceHandler;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.WebApplicationContext;
 import org.mortbay.util.InetAddrPort;
 import org.mortbay.util.MultiException;
+import org.mortbay.util.Resource;
+import org.mortbay.util.URLResource;
 
 import java.io.File;
 import java.io.IOException;
@@ -167,6 +170,8 @@ public class JettyServletContainer
 
         server.addListener( listener );
 
+
+
         try
         {
             listener.start();
@@ -211,6 +216,23 @@ public class JettyServletContainer
         {
             throw new ServletContainerException( "Error while starting the web appserver.", e );
         }
+    }
+
+    public void deployContext( String contextPath,
+                               String path )
+        throws ServletContainerException
+    {
+        HttpContext context = new HttpContext();
+
+        context.setContextPath( contextPath );
+
+        context.setResourceBase( path );
+
+        // This will setup a standard resource handler for document retrieval. If you want more
+        // functionality like POST, or WebDAV type stuff that will need to be configurable.
+        context.addHandler( new ResourceHandler() );
+
+        server.addContext( context );
     }
 
     // ----------------------------------------------------------------------
@@ -260,17 +282,17 @@ public class JettyServletContainer
         // Create the web appserver
         // ----------------------------------------------------------------------
 
-        WebApplicationContext applicationContext;
+        WebApplicationContext webappContext;
 
         try
         {
             if ( virtualHost != null )
             {
-                applicationContext = server.addWebApplication( virtualHost, context, war.getAbsolutePath() );
+                webappContext = server.addWebApplication( virtualHost, context, war.getAbsolutePath() );
             }
             else
             {
-                applicationContext = server.addWebApplication( context, war.getAbsolutePath() );
+                webappContext = server.addWebApplication( context, war.getAbsolutePath() );
             }
         }
         catch ( IOException e )
@@ -282,11 +304,11 @@ public class JettyServletContainer
         // Configure the appserver context
         // ----------------------------------------------------------------------
 
-        applicationContext.setExtractWAR( extractWar );
+        webappContext.setExtractWAR( extractWar );
 
         if ( extractionLocation != null )
         {
-            applicationContext.setTempDirectory( extractionLocation );
+            webappContext.setTempDirectory( extractionLocation );
         }
 
         // If it is a standard WAR file then use the standard classloading semantics. We don't want
@@ -329,7 +351,7 @@ public class JettyServletContainer
 
                 realm.addConstituent( classes.toURL() );
 
-                applicationContext.setClassLoader( realm.getClassLoader() );
+                webappContext.setClassLoader( realm.getClassLoader() );
             }
             catch ( Exception e )
             {
@@ -340,9 +362,11 @@ public class JettyServletContainer
         {
             // Dirty hack, need better methods for classloaders because i can set the core realm but not get it,
             // or get the container realm but not set it. blah!
-            applicationContext.setClassLoader( container.getCoreRealm().getClassLoader() );
+            webappContext.setClassLoader( container.getCoreRealm().getClassLoader() );
         }
 
-        applicationContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY, container );
+        webappContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY, container );
     }
+
+
 }
