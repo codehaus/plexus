@@ -90,8 +90,6 @@ public class DefaultServiceConfigurationBuilder
                 }
             }
 
-            System.out.println( "standardWebappClassloader = " + standardWebappClassloader );
-
             // ----------------------------------------------------------------------
             // Extraction Path
             // ----------------------------------------------------------------------
