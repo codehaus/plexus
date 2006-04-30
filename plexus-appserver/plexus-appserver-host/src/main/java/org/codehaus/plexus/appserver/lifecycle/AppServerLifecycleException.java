@@ -2,7 +2,7 @@ package org.codehaus.plexus.appserver.lifecycle;
 
 /**
  * @author Jason van Zyl
- */
+ */            
 public class AppServerLifecycleException
     extends Exception
 {

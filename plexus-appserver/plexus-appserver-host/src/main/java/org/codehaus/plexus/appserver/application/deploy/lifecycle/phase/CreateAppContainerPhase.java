@@ -76,8 +76,6 @@ public class CreateAppContainerPhase
         // This needs to be a String!!
         applicationContainer.addContextValue( "plexus.home", context.getAppDir().getAbsolutePath() );
 
-        System.out.println( "applicationContainer.getContext() = " + applicationContainer.getContext() );
-
         Object appserver = null;
 
         try
@@ -114,8 +112,6 @@ public class CreateAppContainerPhase
 
         Map ctx = new ContextMapAdapter( applicationContainer.getContext() );
 
-        System.out.println( "ctx = " + ctx.get( "plexus.home" ) );
-
         Xpp3Dom dom;
 
         try
@@ -124,8 +120,6 @@ public class CreateAppContainerPhase
                 new InterpolationFilterReader( new FileReader( context.getAppConfigurationFile() ), ctx );
 
             dom = Xpp3DomBuilder.build( configurationReader );
-
-            System.out.println( "dom.toString() = " + dom.toString() );
         }
         catch ( Exception e )
         {

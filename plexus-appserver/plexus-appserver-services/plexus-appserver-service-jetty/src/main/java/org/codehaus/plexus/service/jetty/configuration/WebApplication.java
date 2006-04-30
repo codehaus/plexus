@@ -29,11 +29,12 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Jason van Zyl
  * @version $Id$
  */
 public class WebApplication
 {
-    private String file;
+    private String webappFile;
 
     private String path;
 
@@ -54,7 +55,7 @@ public class WebApplication
                            String virtualHost,
                            boolean standardWebappClassloading )
     {
-        this.file = file;
+        this.webappFile = file;
 
         this.path = path;
 
@@ -69,9 +70,9 @@ public class WebApplication
         this.standardWebappClassloader = standardWebappClassloading;
     }
 
-    public String getFile()
+    public String getWebappFile()
     {
-        return file;
+        return webappFile;
     }
 
     public String getPath()
