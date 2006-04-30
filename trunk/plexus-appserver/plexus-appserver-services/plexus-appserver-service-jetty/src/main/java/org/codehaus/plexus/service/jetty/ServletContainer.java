@@ -68,4 +68,11 @@ public interface ServletContainer
 
     void startApplication( String contextPath )
         throws ServletContainerException;
+
+    // ----------------------------------------------------------------------------
+    // For simple document serving
+    // ----------------------------------------------------------------------------
+
+    void deployContext( String contextPath, String path )
+        throws ServletContainerException;
 }

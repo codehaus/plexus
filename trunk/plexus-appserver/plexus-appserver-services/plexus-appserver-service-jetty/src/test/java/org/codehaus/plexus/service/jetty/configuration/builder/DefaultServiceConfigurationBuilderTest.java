@@ -29,9 +29,10 @@ import java.util.List;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
-import org.codehaus.plexus.service.jetty.configuration.WebApplication;
+import org.codehaus.plexus.service.jetty.configuration.Webapp;
 import org.codehaus.plexus.service.jetty.configuration.HttpListener;
 import org.codehaus.plexus.service.jetty.configuration.ProxyHttpListener;
+import org.codehaus.plexus.service.jetty.configuration.WebContext;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
@@ -53,7 +54,7 @@ public class DefaultServiceConfigurationBuilderTest
 
         PlexusConfiguration plexusConfiguration = new XmlPlexusConfiguration( dom );
 
-        ServiceConfiguration configuration = configurationBuilder.buildConfiguration( plexusConfiguration );
+        ServiceConfiguration configuration = configurationBuilder.buildConfiguration( plexusConfiguration, getContainer().getContainerRealm() );
 
         assertNotNull( configuration );
 
@@ -62,28 +63,28 @@ public class DefaultServiceConfigurationBuilderTest
         assertEquals( 1, configuration.getWebapps().size() );
 
         // ----------------------------------------------------------------------
-        // Assert the WebApplication
+        // Assert the Webapp
         // ----------------------------------------------------------------------
 
-        WebApplication webApplication = (WebApplication) configuration.getWebapps().get( 0 );
+        Webapp webapp = (Webapp) configuration.getWebapps().get( 0 );
 
-        assertEquals( "/continuum", webApplication.getContext() );
+        assertEquals( "/continuum", webapp.getContext() );
 
-        assertEquals( "${plexus.home}/webapp", webApplication.getExtractionPath() );
+        assertEquals( "${plexus.home}/webapp", webapp.getExtractionPath() );
 
-        assertEquals( "${plexus.home}/lib/continuum-web-1.0-alpha-3-SNAPSHOT.jar", webApplication.getWebappFile() );
+        assertEquals( "${plexus.home}/lib/continuum-web-1.0-alpha-3-SNAPSHOT.jar", webapp.getFile() );
 
-        assertNull( webApplication.getPath() );
+        assertNull( webapp.getPath() );
 
-        assertEquals( "www.foo.com", webApplication.getVirtualHost() );
+        assertEquals( "www.foo.com", webapp.getVirtualHost() );
 
-        assertTrue( webApplication.isStandardWebappClassloader() );
+        assertTrue( webapp.isStandardWebappClassloader() );
         
         // ----------------------------------------------------------------------
         // Assert the listeners
         // ----------------------------------------------------------------------
 
-        List listeners = webApplication.getListeners();
+        List listeners = webapp.getListeners();
 
         assertNotNull( listeners );
 
@@ -100,6 +101,56 @@ public class DefaultServiceConfigurationBuilderTest
         assertEquals( ProxyHttpListener.class, listeners.get( 1 ).getClass() );
 
         ProxyHttpListener proxyHttpListener = (ProxyHttpListener) listeners.get( 1 );
+
+        assertNull( proxyHttpListener.getHost() );
+
+        assertEquals( 8090, proxyHttpListener.getPort() );
+
+        assertEquals( "localhost", proxyHttpListener.getProxyHost() );
+
+        assertEquals( 80, proxyHttpListener.getProxyPort() );
+
+        // ----------------------------------------------------------------------------
+        // Test the web contexts
+        // ----------------------------------------------------------------------------
+
+        assertNotNull( configuration.getWebContexts() );
+
+        assertEquals( 1, configuration.getWebContexts().size() );
+
+        // ----------------------------------------------------------------------
+        // Assert the Webapp
+        // ----------------------------------------------------------------------
+
+        WebContext webContext = (WebContext) configuration.getWebContexts().get( 0 );
+
+        assertEquals( "/repository", webContext.getContext() );
+
+        assertEquals( "/path/to/repository", webContext.getPath() );
+
+        assertEquals( "www.foo.com", webContext.getVirtualHost() );
+
+        // ----------------------------------------------------------------------
+        // Assert the listeners
+        // ----------------------------------------------------------------------
+
+        listeners = webContext.getListeners();
+
+        assertNotNull( listeners );
+
+        assertEquals( 2, listeners.size() );
+
+        assertEquals( HttpListener.class, listeners.get( 0 ).getClass() );
+
+        httpListener = (HttpListener) listeners.get( 0 );
+
+        assertNull( httpListener.getHost() );
+
+        assertEquals( 123, httpListener.getPort() );
+
+        assertEquals( ProxyHttpListener.class, listeners.get( 1 ).getClass() );
+
+        proxyHttpListener = (ProxyHttpListener) listeners.get( 1 );
 
         assertNull( proxyHttpListener.getHost() );
 

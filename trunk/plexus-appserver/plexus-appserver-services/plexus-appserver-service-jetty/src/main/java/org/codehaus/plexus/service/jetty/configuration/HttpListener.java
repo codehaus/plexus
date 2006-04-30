@@ -26,13 +26,6 @@ public class HttpListener
 
     private int port;
 
-    public HttpListener( String host, int port )
-    {
-        this.host = host;
-
-        this.port = port;
-    }
-
     public String getHost()
     {
         return host;

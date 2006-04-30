@@ -24,13 +24,12 @@ package org.codehaus.plexus.service.jetty.configuration.builder;
  * SOFTWARE.
  */
 
+import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.codehaus.plexus.component.configurator.ComponentConfigurator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
-import org.codehaus.plexus.service.jetty.configuration.WebApplication;
-import org.codehaus.plexus.service.jetty.configuration.HttpListener;
-import org.codehaus.plexus.service.jetty.configuration.ProxyHttpListener;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -40,238 +39,16 @@ public class DefaultServiceConfigurationBuilder
     extends AbstractLogEnabled
     implements ServiceConfigurationBuilder
 {
-    public ServiceConfiguration buildConfiguration( PlexusConfiguration serviceConfiguration )
+    private ComponentConfigurator configurator;
+
+    public ServiceConfiguration buildConfiguration( PlexusConfiguration serviceConfiguration,
+                                                    ClassRealm realm )
+        throws ComponentConfigurationException
     {
         ServiceConfiguration configuration = new ServiceConfiguration();
 
-        PlexusConfiguration[] webapps = serviceConfiguration.getChild( "webapps" ).getChildren( "webapp" );
-
-        for ( int i = 0; i < webapps.length; i++ )
-        {
-            // ----------------------------------------------------------------------
-            // Path
-            // ----------------------------------------------------------------------
-
-            String path = webapps[ i ].getChild( "path" ).getValue( null );
-
-            if ( StringUtils.isEmpty( path ) )
-            {
-                path = null;
-            }
-
-            // ----------------------------------------------------------------------
-            // File
-            // ----------------------------------------------------------------------
-
-            String file = webapps[ i ].getChild( "file" ).getValue( null );
-
-            if ( StringUtils.isEmpty( file ) )
-            {
-                file = null;
-            }
-
-            if ( path == null && file == null )
-            {
-                getLogger().warn( "Error while deploying web appserver: " +
-                                  "For each 'webapp' a 'path' or 'file' element has to be specified." );
-
-                continue;
-            }
-
-            boolean standardWebappClassloader = false;
-
-            String s = webapps[ i ].getChild( "standardWebappClassloader" ).getValue( null );
-
-            if ( !StringUtils.isEmpty( s ) )
-            {
-                if ( s.equals( "true" ) )
-                {
-                    standardWebappClassloader = true;
-                }
-            }
-
-            // ----------------------------------------------------------------------
-            // Extraction Path
-            // ----------------------------------------------------------------------
-
-            String extractionPath = webapps[ i ].getChild( "extraction-path" ).getValue( null );
-
-            if ( StringUtils.isEmpty( extractionPath ) )
-            {
-                getLogger().warn( "Error while deploying web appserver: " +
-                                  "For each 'extraction-path' element has to be specified." );
-
-                continue;
-            }
-
-            // ----------------------------------------------------------------------
-            // Context
-            // ----------------------------------------------------------------------
-
-            String context = webapps[ i ].getChild( "context" ).getValue( null );
-
-            if ( StringUtils.isEmpty( context ) )
-            {
-                getLogger().warn( "Error while deploying web appserver: 'context' is missing or empty." );
-
-                continue;
-            }
-
-            // ----------------------------------------------------------------------
-            // Virtual host
-            // ----------------------------------------------------------------------
-
-            String virtualHost = webapps[ i ].getChild( "virtual-host" ).getValue( null );
-
-            if ( StringUtils.isEmpty( virtualHost ) )
-            {
-                virtualHost = null;
-            }
-
-            PlexusConfiguration[] listeners = webapps[ i ].getChild( "listeners" ).getChildren();
-
-            WebApplication app = new WebApplication( file,
-                                                     path,
-                                                     extractionPath,
-                                                     context,
-                                                     virtualHost,
-                                                     standardWebappClassloader );
-
-            for ( int j = 0; j < listeners.length; j++ )
-            {
-                PlexusConfiguration listener = listeners[ j ];
-
-
-                String proxyPortString = listener.getChild( "proxy-port" ).getValue( null );
-
-                HttpListener httpListener;
-
-                if ( listener.getName().equals( "http-listener" ) )
-                {
-                    int port = getPort( listener );
-
-                    if ( port == -1 )
-                    {
-                        continue;
-                    }
-
-                    httpListener = new HttpListener( getHost( listener ),
-                                                     port );
-                }
-                else if ( listener.getName().equals( "proxy-http-listener" ) )
-                {
-                    String proxyHost = getProxyHost( listener );
-
-                    if ( StringUtils.isEmpty( proxyHost ) || StringUtils.isEmpty( proxyPortString ) )
-                    {
-                        getLogger().warn( "Both proxyHost and proxyPort has to be specified." );
-
-                        continue;
-                    }
-
-                    int port = getPort( listener );
-
-                    int proxyPort = getProxyPort( listener );
-
-                    if ( port == -1 || proxyPort == -1 )
-                    {
-                        continue;
-                    }
-
-                    httpListener = new ProxyHttpListener( getHost( listener ),
-                                                          port,
-                                                          proxyHost,
-                                                          proxyPort );
-                }
-                else
-                {
-                    getLogger().warn( "Unknown listener type '" + listener.getName() + "'." );
-
-                    continue;
-                }
-
-                app.getListeners().add( httpListener );
-            }
-
-            if ( app.getListeners().size() == 0 )
-            {
-                getLogger().warn( "At least one listener has to be configured before adding the web appserver." );
-
-                continue;
-            }
-
-            configuration.addWebApplication( app );
-        }
+        configurator.configureComponent( configuration, serviceConfiguration, realm );
 
         return configuration;
-    }
-
-    private String getHost( PlexusConfiguration listener )
-    {
-        String host = listener.getChild( "host" ).getValue( null );
-
-        if ( StringUtils.isEmpty( host ) )
-        {
-            return null;
-        }
-
-        return host;
-    }
-
-    private int getPort( PlexusConfiguration listener )
-    {
-        String portString = listener.getChild( "port" ).getValue( null );
-
-        if ( StringUtils.isEmpty( portString ) )
-        {
-            getLogger().warn( "Error while deploying web appserver: 'port' has to be a integer." );
-
-            return -1;
-        }
-
-        try
-        {
-            return Integer.parseInt( portString );
-        }
-        catch ( NumberFormatException e )
-        {
-            getLogger().warn( "Error while deploying web appserver: 'port' has to be a integer." );
-
-            return -1;
-        }
-    }
-    private String getProxyHost( PlexusConfiguration listener )
-    {
-        String proxyHost = listener.getChild( "proxy-host" ).getValue( null );
-
-        if ( StringUtils.isEmpty( proxyHost ) )
-        {
-            proxyHost = null;
-        }
-
-        return proxyHost;
-    }
-
-    private int getProxyPort( PlexusConfiguration listener )
-    {
-        String proxyPortString = listener.getChild( "proxy-port" ).getValue( null );
-
-        if ( StringUtils.isEmpty( proxyPortString ) )
-        {
-            getLogger().warn( "Error while deploying web appserver: 'proxy-port' has to be a integer." );
-
-            return -1;
-        }
-
-        try
-        {
-            return Integer.parseInt( proxyPortString );
-        }
-        catch ( NumberFormatException e )
-        {
-            getLogger().warn( "Error while deploying web appserver: 'proxy-port' has to be a integer." );
-
-            return -1;
-        }
     }
 }

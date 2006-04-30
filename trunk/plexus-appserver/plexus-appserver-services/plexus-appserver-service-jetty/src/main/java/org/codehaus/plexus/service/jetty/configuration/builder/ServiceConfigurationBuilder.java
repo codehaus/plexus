@@ -26,6 +26,8 @@ package org.codehaus.plexus.service.jetty.configuration.builder;
 
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
+import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.codehaus.classworlds.ClassRealm;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -35,5 +37,6 @@ public interface ServiceConfigurationBuilder
 {
     String ROLE = ServiceConfigurationBuilder.class.getName();
 
-    ServiceConfiguration buildConfiguration( PlexusConfiguration serviceConfiguration );
+    ServiceConfiguration buildConfiguration( PlexusConfiguration serviceConfiguration, ClassRealm realm )
+        throws ComponentConfigurationException;
 }
