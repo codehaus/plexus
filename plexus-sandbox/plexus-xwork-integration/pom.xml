@@ -8,6 +8,7 @@
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-xwork-integration</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
+  <name>Plexus XWork Integration</name>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
