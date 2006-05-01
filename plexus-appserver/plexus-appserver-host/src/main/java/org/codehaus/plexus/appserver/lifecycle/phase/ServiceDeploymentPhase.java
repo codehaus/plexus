@@ -18,14 +18,14 @@ public class ServiceDeploymentPhase
 {
     private ServiceDeployer serviceDeployer;
 
-    private Supervisor supervisor;
+    private Supervisor serviceSupervisor;
 
     public void execute( AppServerContext context )
         throws AppServerLifecycleException
     {
         try
         {
-            supervisor.addDirectory( new File( context.getAppServerHome(), "services" ), new SupervisorListener()
+            serviceSupervisor.addDirectory( new File( context.getAppServerHome(), "services" ), new SupervisorListener()
             {
                 public void onJarDiscovered( File jar )
                 {
@@ -34,6 +34,8 @@ public class ServiceDeploymentPhase
                     try
                     {
                         String serviceName = name.substring( 0, name.length() - 4 );
+
+                        getLogger().info( serviceSupervisor.getName() + " is deploying " + serviceName + "." );
 
                         serviceDeployer.deploy( serviceName, jar );
                     }
@@ -44,7 +46,7 @@ public class ServiceDeploymentPhase
                 }
             } );
 
-            supervisor.scan();
+            serviceSupervisor.scan();
         }
         catch ( SupervisorException e )
         {

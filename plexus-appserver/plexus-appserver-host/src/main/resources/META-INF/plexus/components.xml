@@ -11,9 +11,6 @@
         <requirement>
           <role>org.codehaus.plexus.appserver.application.deploy.ApplicationDeployer</role>
         </requirement>
-        <requirement>
-          <role>org.codehaus.plexus.appserver.supervisor.Supervisor</role>
-        </requirement>
       </requirements>
       <configuration>
         <phases>
@@ -34,6 +31,7 @@
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.appserver.supervisor.Supervisor</role>
+          <role-hint>application-supervisor</role-hint>
         </requirement>
       </requirements>
     </component>
@@ -48,6 +46,7 @@
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.appserver.supervisor.Supervisor</role>
+          <role-hint>service-supervisor</role-hint>
         </requirement>
       </requirements>
     </component>
@@ -132,11 +131,25 @@
       </configuration>
     </component>
 
+    <!-- Supervisors -->
+
     <component>
       <role>org.codehaus.plexus.appserver.supervisor.Supervisor</role>
+      <role-hint>application-supervisor</role-hint>
       <implementation>org.codehaus.plexus.appserver.supervisor.DefaultSupervisor</implementation>
+      <configuration>
+        <name>Application Supervisor</name>
+      </configuration>
     </component>
 
+    <component>
+      <role>org.codehaus.plexus.appserver.supervisor.Supervisor</role>
+      <role-hint>service-supervisor</role-hint>
+      <implementation>org.codehaus.plexus.appserver.supervisor.DefaultSupervisor</implementation>
+      <configuration>
+        <name>Service Supervisor</name>
+      </configuration>
+    </component>
 
   </components>
 </component-set>
