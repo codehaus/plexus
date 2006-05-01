@@ -78,7 +78,7 @@ public class PlexusServiceGenerator
     private File configurationProperties;
 
     // ----------------------------------------------------------------------
-    // Read only configuration
+    // Read only configurator
     // ----------------------------------------------------------------------
 
     /**

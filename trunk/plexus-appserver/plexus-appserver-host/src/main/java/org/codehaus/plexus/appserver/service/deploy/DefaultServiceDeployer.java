@@ -136,7 +136,7 @@ public class DefaultServiceDeployer
 
         container.discoverComponents( container.getCoreRealm() );
 
-        // Copy over the user configuration if there is one.
+        // Copy over the user configurator if there is one.
         File serviceConfig = new File( configurations, name + ".xml" );
 
         if ( !serviceConfig.exists() )
@@ -158,8 +158,8 @@ public class DefaultServiceDeployer
     }
 
     /**
-     * The first time the configuration runs, we don't care
-     * what the user configuration is, so only use the components.xml
+     * The first time the configurator runs, we don't care
+     * what the user configurator is, so only use the components.xml
      * files.  However, we still need to load on start components.
      *
      * @throws Exception

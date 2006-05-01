@@ -138,14 +138,14 @@ public class XmlRpcPlexusService
 
             if ( StringUtils.isEmpty( role ) )
             {
-                getLogger().error( "Error in configuration: Missing 'role' child element of 'handler' element." );
+                getLogger().error( "Error in configurator: Missing 'role' child element of 'handler' element." );
 
                 break;
             }
 
             if ( StringUtils.isEmpty( name ) )
             {
-                getLogger().error( "Error in configuration: Missing 'name' child element of 'handler' element." );
+                getLogger().error( "Error in configurator: Missing 'name' child element of 'handler' element." );
 
                 break;
             }
