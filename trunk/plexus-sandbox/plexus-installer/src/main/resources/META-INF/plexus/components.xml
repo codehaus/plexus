@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+/*
+ * Copyright 2001-2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ -->
+
+<component-set>
+  <components>
+    <!-- Installer -->
+    <component>
+      <role>org.codehaus.plexus.installer.Installer</role>
+      <role-hint>nsi</role-hint>
+      <implementation>org.codehaus.plexus.installer.nsis.NSISInstaller</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.velocity.VelocityComponent</role>
+        </requirement>
+      </requirements>
+      <configuration>
+        <template>org/codehaus/plexus/installer/nsis/template.vm</template>
+        <compiler>C:/Program Files/NSIS/makensis.exe</compiler>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.installer.Installer</role>
+      <role-hint>iis</role-hint>
+      <implementation>org.codehaus.plexus.installer.iis.IISInstaller</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.velocity.VelocityComponent</role>
+        </requirement>
+      </requirements>
+      <configuration>
+        <template>org/codehaus/plexus/installer/iis/template.vm</template>
+        <compiler>C:/Program Files/Inno Setup 5/ISCC.exe</compiler>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.installer.Installer</role>
+      <role-hint>generic</role-hint>
+      <implementation>org.codehaus.plexus.installer.generic.GenericInstaller</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.velocity.VelocityComponent</role>
+        </requirement>
+      </requirements>
+    </component>
+
+    <!-- InstallerManager -->
+    <component>
+      <role>org.codehaus.plexus.installer.InstallerManager</role>
+      <implementation>org.codehaus.plexus.installer.DefaultInstallerManager</implementation>
+      
+      <!-- using live lookup for now, until container-backed collections are available.
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.installer.Installer</role>
+          <field-name>installers</field-name>
+        </requirement>
+      </requirements>
+      -->
+    </component>
+  </components>
+</component-set>
