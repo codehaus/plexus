@@ -97,7 +97,7 @@ public class PlexusRuntimeBuilderTest
 
         File plexusConfiguration = getTestFile( "src/test/resources/conf/plexus.xml" );
 
-        File configurationPropertiesFile = getTestFile( "src/test/resources/configurator.properties" );
+        File configurationPropertiesFile = getTestFile( "src/test/resources/configuration.properties" );
 
         runtimeBuilder.build( workingDirectory,
                               remoteRepositories,
