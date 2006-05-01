@@ -55,11 +55,11 @@ public class ProcessAppMetadataPhase
         }
         catch ( XmlPullParserException e )
         {
-            throw new AppDeploymentException( "Error parsing application configuration file.", e );
+            throw new AppDeploymentException( "Error parsing application configurator file.", e );
         }
         catch ( IOException e )
         {
-            throw new AppDeploymentException( "Error reading application configuration file.", e );
+            throw new AppDeploymentException( "Error reading application configurator file.", e );
         }
 
         String appId = dom.getChild( "name" ).getValue();

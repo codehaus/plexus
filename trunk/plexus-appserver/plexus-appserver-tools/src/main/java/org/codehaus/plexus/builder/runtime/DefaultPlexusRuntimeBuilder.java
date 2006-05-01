@@ -69,7 +69,7 @@ public class DefaultPlexusRuntimeBuilder
     private final static String WINDOWS_LAUNCHER_TEMPLATE = "org/codehaus/plexus/builder/templates/plexus-bat.vm";
 
     // ----------------------------------------------------------------------
-    // Properties in the configuration properties file
+    // Properties in the configurator properties file
     // ----------------------------------------------------------------------
 
     private static final String PROPERTY_APP_NAME = "app.name";
@@ -117,12 +117,12 @@ public class DefaultPlexusRuntimeBuilder
 
             if ( containerConfiguration == null )
             {
-                throw new PlexusRuntimeBuilderException( "The plexus configuration file must be set." );
+                throw new PlexusRuntimeBuilderException( "The plexus configurator file must be set." );
             }
 
             if ( !containerConfiguration.exists() )
             {
-                throw new PlexusRuntimeBuilderException( "The specified plexus configuration file " +
+                throw new PlexusRuntimeBuilderException( "The specified plexus configurator file " +
                                                          "'" + containerConfiguration.getAbsolutePath() + "'" +
                                                          " doesn't exist." );
             }
@@ -201,8 +201,8 @@ public class DefaultPlexusRuntimeBuilder
             copyArtifacts( workingDirectory, coreDir, coreArtifacts );
 
             // ----------------------------------------------------------------------
-            // We need to separate between the container configuration that you want
-            // shared amongst the apps and the appserver configuration.
+            // We need to separate between the container configurator that you want
+            // shared amongst the apps and the appserver configurator.
             // ----------------------------------------------------------------------
 
             processMainConfiguration( containerConfiguration, configurationProperties, confDir );
@@ -506,7 +506,7 @@ public class DefaultPlexusRuntimeBuilder
 
         if ( configurationPropertiesFile == null )
         {
-            throw new PlexusRuntimeBuilderException( "The runtime builder requires a configuration properties file." );
+            throw new PlexusRuntimeBuilderException( "The runtime builder requires a configurator properties file." );
         }
 
         properties.load( new FileInputStream( configurationPropertiesFile ) );
@@ -529,7 +529,7 @@ public class DefaultPlexusRuntimeBuilder
     {
         if ( StringUtils.isEmpty( properties.getProperty( key ) ) )
         {
-            throw new PlexusRuntimeBuilderException( "Missing configuration property '" + key + "'." );
+            throw new PlexusRuntimeBuilderException( "Missing configurator property '" + key + "'." );
         }
     }
 

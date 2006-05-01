@@ -80,7 +80,7 @@ public class DefaultApplicationBuilder
 
         if ( configurationPropertiesFile != null && !configurationPropertiesFile.isFile() )
         {
-            throw new ApplicationBuilderException( "The configuration properties file isn't a file: '" + configurationPropertiesFile.getAbsolutePath() + "'." );
+            throw new ApplicationBuilderException( "The configurator properties file isn't a file: '" + configurationPropertiesFile.getAbsolutePath() + "'." );
         }
 
         if ( configurationsDirectory != null && !configurationsDirectory.isDirectory() )
@@ -90,7 +90,7 @@ public class DefaultApplicationBuilder
 
         if ( !applicationConfiguration.exists() )
         {
-            throw new ApplicationBuilderException( "The appserver configuration file doesn't exist: '" + applicationConfiguration.getAbsolutePath() + "'." );
+            throw new ApplicationBuilderException( "The appserver configurator file doesn't exist: '" + applicationConfiguration.getAbsolutePath() + "'." );
         }
 
         File libDir;
@@ -235,7 +235,7 @@ public class DefaultApplicationBuilder
         throws IOException, ApplicationBuilderException
     {
         // ----------------------------------------------------------------------
-        // Load the configuration properties.
+        // Load the configurator properties.
         // ----------------------------------------------------------------------
 
         Properties configurationProperties = new Properties();
