@@ -50,7 +50,7 @@ public class DefaultServiceConfigurationBuilderTest
     {
         ServiceConfigurationBuilder configurationBuilder = (ServiceConfigurationBuilder) lookup( ServiceConfigurationBuilder.ROLE );
 
-        Xpp3Dom dom = Xpp3DomBuilder.build( new FileReader( getTestFile( "src/test/resources/full-configuration-example.xml" ) )  );
+        Xpp3Dom dom = Xpp3DomBuilder.build( new FileReader( getTestFile( "src/test/resources/full-configurator-example.xml" ) )  );
 
         PlexusConfiguration plexusConfiguration = new XmlPlexusConfiguration( dom );
 

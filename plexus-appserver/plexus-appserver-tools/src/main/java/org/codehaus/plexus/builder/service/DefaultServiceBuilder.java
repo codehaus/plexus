@@ -81,7 +81,7 @@ public class DefaultServiceBuilder
 
         if ( configurationProperties != null && !configurationProperties.isFile() )
         {
-            throw new ServiceBuilderException( "The configuration properties file isn't a file: '" + configurationProperties.getAbsolutePath() + "'." );
+            throw new ServiceBuilderException( "The configurator properties file isn't a file: '" + configurationProperties.getAbsolutePath() + "'." );
         }
 
         if ( configurationsDirectory != null && !configurationsDirectory.isDirectory() )
@@ -206,7 +206,7 @@ public class DefaultServiceBuilder
 
         if ( !plexusConfigurationFile.exists() )
         {
-            throw new ServiceBuilderException( "The appserver configuration file doesn't exist: '" + plexusConfigurationFile.getAbsolutePath() + "'." );
+            throw new ServiceBuilderException( "The appserver configurator file doesn't exist: '" + plexusConfigurationFile.getAbsolutePath() + "'." );
         }
 
         FileUtils.copyFile( plexusConfigurationFile, new File( confDir, PlexusServiceConstants.CONFIGURATION_FILE ) );

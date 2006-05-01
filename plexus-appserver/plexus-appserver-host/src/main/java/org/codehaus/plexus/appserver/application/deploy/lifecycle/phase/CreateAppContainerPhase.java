@@ -48,7 +48,7 @@ public class CreateAppContainerPhase
         }
         catch ( Exception e )
         {
-            throw new AppDeploymentException( "Error processing application configuration.", e );
+            throw new AppDeploymentException( "Error processing application configurator.", e );
         }
 
         Properties contextValues = context.getContext();
@@ -123,7 +123,7 @@ public class CreateAppContainerPhase
         }
         catch ( Exception e )
         {
-            throw new AppDeploymentException( "Error processing application configuration.", e );
+            throw new AppDeploymentException( "Error processing application configurator.", e );
         }
 
         PlexusConfiguration applicationConfiguration = new XmlPlexusConfiguration( dom );

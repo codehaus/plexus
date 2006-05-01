@@ -35,12 +35,12 @@ public class ValidateAppPhase
         if ( !applicationConfigurationFile.exists() )
         {
             throw new AppDeploymentException( "The application '" + appId + "' does not have a valid " +
-                "configuration: " + applicationConfigurationFile + " does not exist!" );
+                "configurator: " + applicationConfigurationFile + " does not exist!" );
         }
 
         context.setAppConfigurationFile( applicationConfigurationFile );
 
-        getLogger().info( "Using application configuration file " + applicationConfigurationFile + "." );
+        getLogger().info( "Using application configurator file " + applicationConfigurationFile + "." );
 
         File applicationLibrary = new File( appDir, PlexusApplicationConstants.LIB_DIRECTORY );
 

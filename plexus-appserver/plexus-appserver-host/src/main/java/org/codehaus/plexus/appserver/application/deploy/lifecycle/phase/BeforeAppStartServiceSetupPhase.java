@@ -42,7 +42,7 @@ public class BeforeAppStartServiceSetupPhase
 
             context.getAppRuntimeProfile().getServices().add( service );
 
-            PlexusConfiguration conf = serviceConfiguration.getChild( "configuration" );
+            PlexusConfiguration conf = serviceConfiguration.getChild( "configurator" );
 
             context.getAppRuntimeProfile().getServiceConfigurations().add( conf );
 
