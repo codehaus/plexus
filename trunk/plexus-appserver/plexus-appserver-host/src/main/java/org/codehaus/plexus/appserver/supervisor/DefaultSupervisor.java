@@ -39,6 +39,8 @@ public class DefaultSupervisor
 {
     private List directories = new ArrayList();
 
+    private String name;
+
     // ----------------------------------------------------------------------
     // Supervisor Implementation
     // ----------------------------------------------------------------------
@@ -69,6 +71,11 @@ public class DefaultSupervisor
 
             scanDirectory( dir, listener );
         }
+    }
+
+    public String getName()
+    {
+        return name;
     }
 
     // ----------------------------------------------------------------------

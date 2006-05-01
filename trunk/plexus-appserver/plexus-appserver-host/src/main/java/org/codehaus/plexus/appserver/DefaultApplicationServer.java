@@ -67,8 +67,6 @@ public class DefaultApplicationServer
 
     private ServiceDeployer serviceDeployer;
 
-    private Supervisor supervisor;
-
     //todo: cdc doing configurations
     private List phases;
 

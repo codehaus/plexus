@@ -39,4 +39,6 @@ public interface Supervisor
 
     void scan()
         throws SupervisorException;
+
+    String getName();
 }
