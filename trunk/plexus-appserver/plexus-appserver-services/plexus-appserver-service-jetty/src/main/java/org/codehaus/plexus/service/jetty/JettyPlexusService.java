@@ -70,16 +70,12 @@ public class JettyPlexusService
     // PlexusService Implementation
     // ----------------------------------------------------------------------
 
-    //TODO all the webapplications need to be examined to see
-    // - what needs to be loaded for a webapp (context, virtualhost)
-    // - what is shared for all webapps
-
     public void beforeApplicationStart( AppRuntimeProfile runtimeProfile,
                                         PlexusConfiguration serviceConfiguration )
         throws Exception
     {
         ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration,
-                                                                                      runtimeProfile.getApplicationServerContainer().getContainerRealm() );        
+                                                                                      runtimeProfile.getApplicationServerContainer().getContainerRealm() );
         for ( Iterator it = configuration.getWebapps().iterator(); it.hasNext(); )
         {
             Webapp application = (Webapp) it.next();
@@ -108,6 +104,8 @@ public class JettyPlexusService
 
             try
             {
+                getLogger().info( "Deploying " + webAppDir + " with context path of " + application.getContext() );
+
                 servletContainer.deployWarDirectory( webAppDir, runtimeProfile.getApplicationContainer(),
                                                      application.getContext(), application.getVirtualHost(),
                                                      application.isStandardWebappClassloader() );
@@ -125,6 +123,8 @@ public class JettyPlexusService
         for ( Iterator i = configuration.getWebContexts().iterator(); i.hasNext(); )
         {
             WebContext webContext = (WebContext) i.next();
+
+            getLogger().info( "Deploying " + webContext.getPath() + " with context path of " + webContext.getContext() );
 
             servletContainer.deployContext( webContext.getContext(), webContext.getPath() );
         }

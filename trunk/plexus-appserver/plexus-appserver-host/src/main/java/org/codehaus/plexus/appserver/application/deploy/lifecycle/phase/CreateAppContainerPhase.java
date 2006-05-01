@@ -231,7 +231,6 @@ public class CreateAppContainerPhase
 
         public void setParent( ClassRealm c )
         {
-            throw new UnsupportedOperationException();
         }
 
         public InputStream getResourceAsStream( String name )
