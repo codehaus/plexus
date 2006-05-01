@@ -6,6 +6,7 @@
     <version>2</version>
   </parent>
   <artifactId>plexus-appserver-apps</artifactId>
+  <name>Plexus Application Server Application Parent</name>
   <packaging>pom</packaging>
   <modules>
     <!-- This doesn't build because all sorts of deps are missing 
