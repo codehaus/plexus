@@ -268,13 +268,6 @@ public class DefaultPlexusRuntimeBuilder
 
             String name = plexusService.getName();
 
-            if ( !name.endsWith( ".jar" ) )
-            {
-                name = name.substring( 0, name.lastIndexOf( "." ) );
-
-                name += ".jar";
-            }
-
             FileUtils.copyFile( plexusService, new File( dir, name ) );
         }
         catch ( IOException e )

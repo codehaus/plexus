@@ -139,6 +139,7 @@
       <implementation>org.codehaus.plexus.appserver.supervisor.DefaultSupervisor</implementation>
       <configuration>
         <name>Application Supervisor</name>
+        <extension>jar</extension>
       </configuration>
     </component>
 
@@ -148,6 +149,7 @@
       <implementation>org.codehaus.plexus.appserver.supervisor.DefaultSupervisor</implementation>
       <configuration>
         <name>Service Supervisor</name>
+        <extension>sar</extension>
       </configuration>
     </component>
 

@@ -61,7 +61,7 @@ public class DefaultServiceBuilder
 
     public void build( String serviceName,
                        File outputDirectory,
-                       File classes,
+                       File serviceJar,
                        List remoteRepositories,
                        ArtifactRepository localRepository,
                        Set serviceArtifacts,
@@ -91,8 +91,6 @@ public class DefaultServiceBuilder
 
         File libDir;
 
-        File classesDir;
-
         try
         {
             // ----------------------------------------------------------------------
@@ -103,8 +101,6 @@ public class DefaultServiceBuilder
 
             libDir = mkdirs( new File( outputDirectory, PlexusServiceConstants.LIB_DIRECTORY ) );
 
-            classesDir = mkdirs( new File( outputDirectory, PlexusServiceConstants.CLASSES_DIRECTORY ) );
-
             // ----------------------------------------------------------------------
             //
             // ----------------------------------------------------------------------
@@ -114,6 +110,19 @@ public class DefaultServiceBuilder
         catch ( IOException e )
         {
             throw new ServiceBuilderException( "Error while processing the configurations." );
+        }
+
+        // ----------------------------------------------------------------------------
+        // Copy in service JAR
+        // ----------------------------------------------------------------------------
+
+        try
+        {
+            FileUtils.copyFileToDirectory( serviceJar, libDir );
+        }
+        catch ( IOException e )
+        {
+            throw new ServiceBuilderException( "Error while copying service JAR into working directory.", e );
         }
 
         // ----------------------------------------------------------------------
@@ -139,19 +148,6 @@ public class DefaultServiceBuilder
         catch ( ArtifactResolutionException e )
         {
             throw new ServiceBuilderException( "Error while finding dependencies.", e );
-        }
-
-        // ----------------------------------------------------------------------
-        // Copy the classes
-        // ----------------------------------------------------------------------
-
-        try
-        {
-            FileUtils.copyDirectoryStructure( classes, classesDir );
-        }
-        catch ( IOException e )
-        {
-            throw new ServiceBuilderException( "Error while copying the classes.", e );
         }
 
         // ----------------------------------------------------------------------
