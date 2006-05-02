@@ -41,6 +41,8 @@ public class DefaultSupervisor
 
     private String name;
 
+    private String extension;
+
     // ----------------------------------------------------------------------
     // Supervisor Implementation
     // ----------------------------------------------------------------------
@@ -89,7 +91,7 @@ public class DefaultSupervisor
         {
             public boolean accept( File file )
             {
-                return file.isFile() && file.getName().endsWith( ".jar" );
+                return file.isFile() && file.getName().endsWith( extension );
             }
         } );
 

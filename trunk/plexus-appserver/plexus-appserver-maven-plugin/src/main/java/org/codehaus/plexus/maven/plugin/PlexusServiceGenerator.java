@@ -82,12 +82,6 @@ public class PlexusServiceGenerator
     // ----------------------------------------------------------------------
 
     /**
-     * @parameter expression="${project.build.outputDirectory}"
-     * @required
-     */
-    private File classes;
-
-    /**
      * @parameter expression="${project.build.finalName}"
      * @required
      */
@@ -154,7 +148,9 @@ public class PlexusServiceGenerator
         //
         // ----------------------------------------------------------------------
 
-        File outputFile = new File( target, finalName + ".jar" );
+        File outputFile = new File( target, finalName + ".sar" );
+
+        File serviceJar = new File( target, finalName + ".jar" );
 
         // ----------------------------------------------------------------------
         // Build the service
@@ -164,7 +160,7 @@ public class PlexusServiceGenerator
         {
             builder.build( serviceName,
                            serviceAssemblyDirectory,
-                           classes,
+                           serviceJar,
                            remoteRepositories,
                            localRepository,
                            serviceArtifacts,
