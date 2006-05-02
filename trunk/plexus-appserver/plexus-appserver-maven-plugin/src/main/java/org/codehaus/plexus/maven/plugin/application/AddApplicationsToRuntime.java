@@ -54,7 +54,7 @@ public class AddApplicationsToRuntime
     private Set projectArtifacts;
 
     /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.runtime.AssembleRuntime}"
+     * @parameter expression="${component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder}"
      * @required
      * @readonly
      */
