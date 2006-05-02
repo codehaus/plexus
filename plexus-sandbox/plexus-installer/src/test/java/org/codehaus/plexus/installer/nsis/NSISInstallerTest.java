@@ -39,7 +39,7 @@ public class NSISInstallerTest
     {
         NSISInstaller installer = (NSISInstaller) lookup( Installer.ROLE, "nsi" );
 
-        installer.setInstallerName( "myInstaller" );
+        installer.setInstallerName( "myInstallerNsi" );
         installer.setProductName( "myProduct" );
         installer.setProductVersion( "1.0" );
         installer.setProductCompany( "ASF" );
