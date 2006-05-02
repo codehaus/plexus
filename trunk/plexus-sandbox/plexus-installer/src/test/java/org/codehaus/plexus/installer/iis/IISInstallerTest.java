@@ -39,7 +39,7 @@ public class IISInstallerTest
     {
         IISInstaller installer = (IISInstaller) lookup( Installer.ROLE, "iis" );
 
-        installer.setInstallerName( "myInstaller" );
+        installer.setInstallerName( "myInstallerIis" );
         installer.setProductName( "myProduct" );
         installer.setProductVersion( "1.0" );
         installer.setProductCompany( "ASF" );
