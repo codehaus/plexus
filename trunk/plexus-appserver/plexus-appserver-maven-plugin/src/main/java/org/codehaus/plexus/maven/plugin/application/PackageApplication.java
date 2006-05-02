@@ -1,4 +1,4 @@
-package org.codehaus.plexus.maven.plugin;
+package org.codehaus.plexus.maven.plugin.application;
 
 /*
  * The MIT License
@@ -34,18 +34,18 @@ import org.codehaus.plexus.builder.application.ApplicationBuilder;
 import org.codehaus.plexus.builder.application.ApplicationBuilderException;
 
 /**
- * @goal bundle-application
+ * @goal package-app
  *
  * @requiresDependencyResolution
  *
- * @description Packages the Plexus appserver into a redistributable jar file.
+ * @description Packages a Plexus application into a Plexus application archive.
  *
  * @phase package
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class BundlePlexusApplicationMojo
+public class PackageApplication
     extends AbstractMojo
 {
     /**
@@ -101,6 +101,7 @@ public class BundlePlexusApplicationMojo
         try
         {
             File outputFile = new File( target, finalName + ".jar" );
+
             builder.bundle( outputFile, applicationAssemblyDirectory );
 
             // TODO: m2 needs a better way to deal with this

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.maven.plugin;
+package org.codehaus.plexus.maven.plugin.service;
 
 /*
  * The MIT License
@@ -77,7 +77,7 @@ public class AddPlexusServicesMojo
     private Set projectArtifacts;
 
     /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder}"
+     * @parameter expression="${component.org.codehaus.plexus.builder.runtime.AssembleRuntime}"
      * @required
      * @readonly
      */
