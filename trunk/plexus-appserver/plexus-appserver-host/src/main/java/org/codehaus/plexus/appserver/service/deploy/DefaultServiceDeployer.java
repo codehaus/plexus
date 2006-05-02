@@ -121,15 +121,6 @@ public class DefaultServiceDeployer
 
         addJars( libDir );
 
-        File classesDir = new File( serviceDir, "classes" );
-
-        if ( !classesDir.exists() )
-        {
-            throw new Exception( "The service must have a /classesDir directory." );
-        }
-
-        addClasses( classesDir );
-
         // ----------------------------------------------------------------------
         // Discover any components in the service
         // ----------------------------------------------------------------------
@@ -212,15 +203,8 @@ public class DefaultServiceDeployer
     }
 
     private void addJars( File jarDir )
-        //throws Exception
     {
         container.addJarRepository( jarDir );
-    }
-
-    private void addClasses( File classes )
-        throws Exception
-    {
-        container.addJarResource( classes );
     }
 
     public void redeploy( String name, File location )
