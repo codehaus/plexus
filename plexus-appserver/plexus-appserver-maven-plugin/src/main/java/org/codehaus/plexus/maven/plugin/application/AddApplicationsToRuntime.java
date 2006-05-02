@@ -1,4 +1,4 @@
-package org.codehaus.plexus.maven.plugin;
+package org.codehaus.plexus.maven.plugin.application;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -16,13 +16,14 @@ import java.util.Iterator;
  *
  * @phase package
  *
- * @description Adds all Plexus services in the artifact list to the runtime
+ * @description Adds all Plexus applications in the dependencies to the Plexus runtime. This is used when
+ *              you are generating a Plexus runtime which houses several Plexus applications.
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author Jason van Zyl
  * @version $Id$
  */
-public class AddPlexusApplicationsMojo
+public class AddApplicationsToRuntime
     extends AbstractMojo
 {
     // ----------------------------------------------------------------------
@@ -53,7 +54,7 @@ public class AddPlexusApplicationsMojo
     private Set projectArtifacts;
 
     /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder}"
+     * @parameter expression="${component.org.codehaus.plexus.builder.runtime.AssembleRuntime}"
      * @required
      * @readonly
      */

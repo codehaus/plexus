@@ -1,4 +1,4 @@
-package org.codehaus.plexus.maven.plugin;
+package org.codehaus.plexus.maven.plugin.service;
 
 /*
  * Copyright (c) 2004, Codehaus.org
@@ -23,32 +23,32 @@ package org.codehaus.plexus.maven.plugin;
  */
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
 
-import org.codehaus.plexus.builder.application.ApplicationBuilder;
-import org.codehaus.plexus.builder.application.ApplicationBuilderException;
+import org.codehaus.plexus.builder.service.ServiceBuilder;
+import org.codehaus.plexus.builder.service.ServiceBuilderException;
 
 /**
- * @goal app
+ * @goal assemble-service
  *
  * @requiresDependencyResolution
+ * @requiresProject
  *
- * @description Assembles the Plexus appserver.
+ * @description Assembled and bundles a Plexus service.
  *
  * @phase package
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class AssemblePlexusApplicationMojo
+public class AssembleService
     extends AbstractMojo
 {
     // ----------------------------------------------------------------------
@@ -56,10 +56,16 @@ public class AssemblePlexusApplicationMojo
     // ----------------------------------------------------------------------
 
     /**
-     * @parameter expression="${applicationConfiguration}"
+     * @parameter expression="${serviceName}"
      * @required
      */
-    private File applicationConfiguration;
+    private String serviceName;
+
+    /**
+     * @parameter expression="${serviceConfiguration}"
+     * @required
+     */
+    private File serviceConfiguration;
 
     /**
      * @parameter expression="${configurationsDirectory}"
@@ -71,38 +77,37 @@ public class AssemblePlexusApplicationMojo
      */
     private File configurationProperties;
 
-    /**
-     * @parameter expression="${applicationName}"
-     * @required
-     */
-    private String applicationName;
+    // ----------------------------------------------------------------------
+    // Read only configurator
+    // ----------------------------------------------------------------------
 
     /**
-     * @parameter expression="${project.build.directory}/plexus-appserver"
+     * @parameter expression="${project.build.finalName}"
      * @required
      */
-    private File applicationAssemblyDirectory;
+    private String finalName;
 
-    // ----------------------------------------------------------------------
-    // Read Only Configuration
-    // ----------------------------------------------------------------------
+    /**
+     * @parameter expression="${project.build.directory}"
+     * @required
+     */
+    private File target;
 
     /**
      * @parameter expression="${project.artifacts}"
-     * @readonly
      * @required
      */
-    private Set applicationArtifacts;
+    private Set serviceArtifacts;
+
+    /**
+     * @parameter expression="${project.build.directory}/plexus-service"
+     * @required
+     */
+    private File serviceAssemblyDirectory;
 
     // ----------------------------------------------------------------------
     // Components
     // ----------------------------------------------------------------------
-
-    /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.application.ApplicationBuilder}"
-     * @required
-     */
-    private ApplicationBuilder builder;
 
     /**
      * @parameter expression="${localRepository}"
@@ -116,50 +121,64 @@ public class AssemblePlexusApplicationMojo
      */
     private List remoteRepositories;
 
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
+    /**
+     * @parameter expression="${component.org.codehaus.plexus.builder.service.ServiceBuilder}"
+     * @required
+     */
+    private ServiceBuilder builder;
+
+    /**
+     * The maven project.
+     *
+     * @parameter expression="${project}"
+     * @required
+     * @readonly
+     */
+    private MavenProject project;
+
+    /**
+     * @component
+     */
+    private MavenProjectHelper projectHelper;
 
     public void execute()
         throws MojoExecutionException
     {
         // ----------------------------------------------------------------------
-        // Find all services
+        //
         // ----------------------------------------------------------------------
 
-        Set services = new HashSet();
+        File outputFile = new File( target, finalName + ".sar" );
 
-        for ( Iterator it = applicationArtifacts.iterator(); it.hasNext(); )
-        {
-            Artifact artifact = (Artifact) it.next();
-
-            if ( artifact.getType().equals( "plexus-service" ) )
-            {
-                services.add( artifact );
-            }
-        }
+        File serviceJar = new File( target, finalName + ".jar" );
 
         // ----------------------------------------------------------------------
-        // Build the appserver
+        // Build the service
         // ----------------------------------------------------------------------
-
-        getLog().debug( "Building the appserver '" + applicationName + "' into '" + applicationAssemblyDirectory.getAbsolutePath() + "'." );
 
         try
         {
-            builder.assemble( applicationName,
-                              applicationAssemblyDirectory,
-                              remoteRepositories,
-                              localRepository,
-                              applicationArtifacts,
-                              services,
-                              applicationConfiguration,
-                              configurationsDirectory,
-                              configurationProperties );
+            builder.build( serviceName,
+                           serviceAssemblyDirectory,
+                           serviceJar,
+                           remoteRepositories,
+                           localRepository,
+                           serviceArtifacts,
+                           serviceConfiguration,
+                           configurationsDirectory,
+                           configurationProperties );
+
+            // ----------------------------------------------------------------------
+            // Bundle the service
+            // ----------------------------------------------------------------------
+
+            builder.bundle( outputFile, serviceAssemblyDirectory );
         }
-        catch ( ApplicationBuilderException e )
+        catch ( ServiceBuilderException e )
         {
-            throw new MojoExecutionException( "Error while assembling the appserver.", e );
+            throw new MojoExecutionException( "Error while making service.", e );
         }
+
+        project.getArtifact().setFile( outputFile );
     }
 }
