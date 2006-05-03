@@ -5,7 +5,7 @@
     <version>2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>plexus-appserver-tools</artifactId>
+  <artifactId>plexus-appserver-runtime-builder</artifactId>
   <name>Plexus App Server Tools</name>
   <description>Plexus App Server Tools for creating application bundles, services bundles and server runtimes.</description>
   <version>1.0-alpha-10-SNAPSHOT</version>
