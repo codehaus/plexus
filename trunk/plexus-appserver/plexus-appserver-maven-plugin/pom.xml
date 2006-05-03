@@ -17,7 +17,7 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-appserver-tools</artifactId>
+      <artifactId>plexus-appserver-runtime-builder</artifactId>
       <version>1.0-alpha-10-SNAPSHOT</version>
     </dependency>
   </dependencies>
