@@ -26,6 +26,6 @@
     <module>plexus-appserver-host</module>
     <module>plexus-appserver-maven-plugin</module>
     <module>plexus-appserver-services</module>
-    <module>plexus-appserver-tools</module>
+    <module>plexus-appserver-runtime-builder</module>
   </modules>
 </project>
