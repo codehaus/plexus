@@ -76,6 +76,8 @@ public class CreateAppContainerPhase
         // This needs to be a String!!
         applicationContainer.addContextValue( "plexus.home", context.getAppDir().getAbsolutePath() );
 
+        applicationContainer.addContextValue( "user.home", System.getProperty( "user.home" ) );
+
         Object appserver = null;
 
         try
