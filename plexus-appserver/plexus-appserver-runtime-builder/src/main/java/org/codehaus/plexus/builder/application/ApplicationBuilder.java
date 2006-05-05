@@ -29,7 +29,7 @@ import java.util.Set;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 
 /**
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @author Jason van Zyl
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
@@ -42,6 +42,7 @@ public interface ApplicationBuilder
                    List remoteRepositories,
                    ArtifactRepository localRespository,
                    Set projectArtifacts,
+                   Set additionalCoreArtifacts,
                    Set serviceArtifacts,
                    File applicationConfiguration,
                    File configurationsDirectory,

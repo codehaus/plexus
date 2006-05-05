@@ -40,7 +40,8 @@ public interface PlexusRuntimeBuilder
     void build( File workingDirectory,
                 List remoteRepositories,
                 ArtifactRepository localRepository,
-                Set extraArtifacts,
+                Set projectArtifacts,
+                Set additionalCoreArtifacts,
                 File containerConfiguration,
                 File configurationPropertiesFile )
         throws PlexusRuntimeBuilderException;

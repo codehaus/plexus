@@ -63,6 +63,7 @@ public class DefaultApplicationBuilder
                           List remoteRepositories,
                           ArtifactRepository localRepository,
                           Set projectArtifacts,
+                          Set additionalCoreArtifacts,
                           Set serviceArtifacts,
                           File applicationConfiguration,
                           File configurationsDirectory,
@@ -80,17 +81,20 @@ public class DefaultApplicationBuilder
 
         if ( configurationPropertiesFile != null && !configurationPropertiesFile.isFile() )
         {
-            throw new ApplicationBuilderException( "The configurator properties file isn't a file: '" + configurationPropertiesFile.getAbsolutePath() + "'." );
+            throw new ApplicationBuilderException( "The configurator properties file isn't a file: '" +
+                configurationPropertiesFile.getAbsolutePath() + "'." );
         }
 
         if ( configurationsDirectory != null && !configurationsDirectory.isDirectory() )
         {
-            throw new ApplicationBuilderException( "The configurations directory isn't a directory: '" + configurationsDirectory.getAbsolutePath() + "." );
+            throw new ApplicationBuilderException(
+                "The configurations directory isn't a directory: '" + configurationsDirectory.getAbsolutePath() + "." );
         }
 
         if ( !applicationConfiguration.exists() )
         {
-            throw new ApplicationBuilderException( "The appserver configurator file doesn't exist: '" + applicationConfiguration.getAbsolutePath() + "'." );
+            throw new ApplicationBuilderException( "The appserver configurator file doesn't exist: '" +
+                applicationConfiguration.getAbsolutePath() + "'." );
         }
 
         File libDir;
@@ -115,9 +119,7 @@ public class DefaultApplicationBuilder
 
             new FileWriter( new File( logsDir, "foo" ) ).close();
 
-            processConfigurations( confDir,
-                                   applicationConfiguration,
-                                   configurationPropertiesFile,
+            processConfigurations( confDir, applicationConfiguration, configurationPropertiesFile,
                                    configurationsDirectory );
         }
         catch ( IOException e )
@@ -137,7 +139,8 @@ public class DefaultApplicationBuilder
 
             excludedArtifacts.addAll( getBootArtifacts( projectArtifacts, remoteRepositories, localRepository, true ) );
 
-            excludedArtifacts.addAll( getCoreArtifacts( projectArtifacts, remoteRepositories, localRepository, true ) );
+            excludedArtifacts.addAll( getCoreArtifacts( projectArtifacts, additionalCoreArtifacts, remoteRepositories,
+                                                        localRepository, true ) );
 
             serviceArtifacts = findArtifacts( remoteRepositories, localRepository, serviceArtifacts, true, null );
 
@@ -145,9 +148,8 @@ public class DefaultApplicationBuilder
 
             excludedArtifacts.addAll( getExcludedArtifacts( projectArtifacts, remoteRepositories, localRepository ) );
 
-            ArtifactFilter filter = new AndArtifactFilter(
-                new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
-                new GroupArtifactTypeArtifactFilter( excludedArtifacts ) );
+            ArtifactFilter filter = new AndArtifactFilter( new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
+                                                           new GroupArtifactTypeArtifactFilter( excludedArtifacts ) );
 
             artifacts = findArtifacts( remoteRepositories, localRepository, projectArtifacts, true, filter );
         }
@@ -205,7 +207,8 @@ public class DefaultApplicationBuilder
         }
     }
 
-    public void bundle( File outputFile, File workingDirectory )
+    public void bundle( File outputFile,
+                        File workingDirectory )
         throws ApplicationBuilderException
     {
         Archiver archiver = new JarArchiver();
@@ -285,8 +288,8 @@ public class DefaultApplicationBuilder
 
                 if ( !parent.isDirectory() && !parent.mkdirs() )
                 {
-                    throw new ApplicationBuilderException( "Could not make parent directories for " +
-                                                           "'" + out.getAbsolutePath() + "'." );
+                    throw new ApplicationBuilderException(
+                        "Could not make parent directories for " + "'" + out.getAbsolutePath() + "'." );
                 }
 
                 filterCopy( in, out, configurationProperties );
@@ -297,8 +300,7 @@ public class DefaultApplicationBuilder
         // Copy the main appserver.xml
         // ----------------------------------------------------------------------
 
-        filterCopy( applicationConfiguration,
-                    new File( confDir, PlexusApplicationConstants.CONFIGURATION_FILE ),
+        filterCopy( applicationConfiguration, new File( confDir, PlexusApplicationConstants.CONFIGURATION_FILE ),
                     configurationProperties );
     }
 }

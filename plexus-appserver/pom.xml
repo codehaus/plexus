@@ -21,6 +21,7 @@
       <version>1.0.4</version>
     </dependency>
   </dependencies>
+  <!--
   <distributionManagement>
     <repository>
       <id>repo1</id>
@@ -33,6 +34,7 @@
       <url>scpexe://repo1.maven.org/home/projects/maven/repository-staging/snapshots/maven2</url>
     </snapshotRepository>
   </distributionManagement>
+  -->
   <modules>
     <module>plexus-appserver-apps</module>
     <module>plexus-appserver-host</module>
