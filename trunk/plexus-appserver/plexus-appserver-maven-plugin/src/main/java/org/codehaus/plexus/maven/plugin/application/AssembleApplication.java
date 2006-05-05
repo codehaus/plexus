@@ -116,6 +116,11 @@ public class AssembleApplication
      */
     private List remoteRepositories;
 
+    /**
+     * @parameter expression="${additionalCoreArtifacts}"
+     */
+    private HashSet additionalCoreArtifacts;
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -152,6 +157,7 @@ public class AssembleApplication
                               remoteRepositories,
                               localRepository,
                               applicationArtifacts,
+                              additionalCoreArtifacts,
                               services,
                               applicationConfiguration,
                               configurationsDirectory,

@@ -25,6 +25,7 @@ package org.codehaus.plexus.maven.plugin.runtime;
 import java.io.File;
 import java.util.List;
 import java.util.Set;
+import java.util.HashSet;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
@@ -108,6 +109,11 @@ public class AssembleRuntime
      */
     private List remoteRepositories;
 
+    /**
+     * @parameter expression="${additionalCoreArtifacts}"
+     */
+    private HashSet additionalCoreArtifacts;
+
     public void execute()
         throws MojoExecutionException
     {
@@ -121,6 +127,7 @@ public class AssembleRuntime
                            remoteRepositories,
                            localRepository,
                            projectArtifacts,
+                           additionalCoreArtifacts,
                            runtimeConfiguration,
                            runtimeConfigurationProperties );
         }
