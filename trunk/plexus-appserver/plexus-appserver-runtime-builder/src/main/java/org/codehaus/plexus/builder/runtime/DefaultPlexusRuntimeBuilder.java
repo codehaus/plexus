@@ -95,6 +95,7 @@ public class DefaultPlexusRuntimeBuilder
                        List remoteRepositories,
                        ArtifactRepository localRepository,
                        Set projectArtifacts,
+                       Set additionalCoreArtifacts,
                        File containerConfiguration,
                        File configurationPropertiesFile )
         throws PlexusRuntimeBuilderException
@@ -145,7 +146,7 @@ public class DefaultPlexusRuntimeBuilder
             {
                 bootArtifacts = getBootArtifacts( projectArtifacts, remoteRepositories, localRepository, false );
 
-                coreArtifacts = getCoreArtifacts( projectArtifacts, remoteRepositories, localRepository, false );
+                coreArtifacts = getCoreArtifacts( projectArtifacts, additionalCoreArtifacts, remoteRepositories, localRepository, false );
             }
             catch ( ArtifactResolutionException e )
             {

@@ -51,6 +51,7 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.codehaus.plexus.util.Os;
+import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.Commandline;
 
@@ -66,16 +67,24 @@ public abstract class AbstractBuilder
     // Components
     // ----------------------------------------------------------------------
 
-    /** @plexus.requirement */
+    /**
+     * @plexus.requirement
+     */
     private ArtifactResolver artifactResolver;
 
-    /** @plexus.requirement */
+    /**
+     * @plexus.requirement
+     */
     private ArtifactFactory artifactFactory;
 
-    /** @plexus.requirement */
+    /**
+     * @plexus.requirement
+     */
     private MavenProjectBuilder projectBuilder;
 
-    /** @plexus.requirement */
+    /**
+     * @plexus.requirement
+     */
     private ArtifactMetadataSource metadata;
 
     // ----------------------------------------------------------------------
@@ -130,19 +139,25 @@ public abstract class AbstractBuilder
     //
     // ----------------------------------------------------------------------
 
-    protected void filterCopy( File in, File out, Map map )
+    protected void filterCopy( File in,
+                               File out,
+                               Map map )
         throws IOException
     {
         filterCopy( new FileReader( in ), out, map );
     }
 
-    protected void filterCopy( InputStream in, File out, Map map )
+    protected void filterCopy( InputStream in,
+                               File out,
+                               Map map )
         throws IOException
     {
         filterCopy( new InputStreamReader( in ), out, map );
     }
 
-    protected void filterCopy( Reader in, File out, Map map )
+    protected void filterCopy( Reader in,
+                               File out,
+                               Map map )
         throws IOException
     {
         InterpolationFilterReader reader = new InterpolationFilterReader( in, map, "@", "@" );
@@ -158,7 +173,9 @@ public abstract class AbstractBuilder
     // Artifact methods
     // ----------------------------------------------------------------------
 
-    protected void copyArtifact( Artifact artifact, File outputDir, File destination )
+    protected void copyArtifact( Artifact artifact,
+                                 File outputDir,
+                                 File destination )
         throws IOException
     {
         String dest = destination.getAbsolutePath().substring( outputDir.getAbsolutePath().length() + 1 );
@@ -168,7 +185,9 @@ public abstract class AbstractBuilder
         FileUtils.copyFileToDirectory( artifact.getFile(), destination );
     }
 
-    protected void copyArtifacts( File outputDir, File dir, Set artifacts )
+    protected void copyArtifacts( File outputDir,
+                                  File dir,
+                                  Set artifacts )
         throws IOException
     {
         for ( Iterator it = artifacts.iterator(); it.hasNext(); )
@@ -195,6 +214,7 @@ public abstract class AbstractBuilder
     }
 
     protected Set getCoreArtifacts( Set projectArtifacts,
+                                    Set additionalCoreArtifacts,
                                     List remoteRepositories,
                                     ArtifactRepository localRepository,
                                     boolean ignoreIfMissing )
@@ -202,11 +222,21 @@ public abstract class AbstractBuilder
     {
         Set artifacts = new HashSet();
 
-        resolveVersion( "org.codehaus.plexus", "plexus-container-default", projectArtifacts, ignoreIfMissing, artifacts );
+        resolveVersion( "org.codehaus.plexus", "plexus-container-default", projectArtifacts, ignoreIfMissing,
+                        artifacts );
 
         resolveVersion( "org.codehaus.plexus", "plexus-appserver-host", projectArtifacts, ignoreIfMissing, artifacts );
 
         resolveVersion( "org.codehaus.plexus", "plexus-utils", projectArtifacts, ignoreIfMissing, artifacts );
+
+        for ( Iterator i = additionalCoreArtifacts.iterator(); i.hasNext(); )
+        {
+            String additionalArtifact = (String) i.next();
+
+            String[] s = StringUtils.split( additionalArtifact, ":" );
+
+            resolveVersion( s[0], s[1], projectArtifacts, ignoreIfMissing, artifacts );
+        }
 
         artifacts = findArtifacts( remoteRepositories, localRepository, artifacts, false, null );
 
@@ -225,11 +255,7 @@ public abstract class AbstractBuilder
         resolveVersion( "plexus", "plexus-appserver-host", projectArtifacts, true, artifacts );
         resolveVersion( "plexus", "plexus-utils", projectArtifacts, true, artifacts );
 
-        artifacts = findArtifacts( remoteRepositories,
-                                   localRepository,
-                                   artifacts,
-                                   true,
-                                   null );
+        artifacts = findArtifacts( remoteRepositories, localRepository, artifacts, true, null );
 
         return artifacts;
     }
@@ -249,12 +275,8 @@ public abstract class AbstractBuilder
 
         if ( resolveTransitively )
         {
-            result = artifactResolver.resolveTransitively( sourceArtifacts,
-                                                           originatingArtifact,
-                                                           localRepository,
-                                                           remoteRepositories,
-                                                           metadata,
-                                                           artifactFilter );
+            result = artifactResolver.resolveTransitively( sourceArtifacts, originatingArtifact, localRepository,
+                                                           remoteRepositories, metadata, artifactFilter );
             // TODO: Assert that there wasn't any conflicts.
 
             resolvedArtifacts = result.getArtifacts();
@@ -286,9 +308,8 @@ public abstract class AbstractBuilder
         {
             Artifact artifact = (Artifact) it.next();
 
-            if ( artifact.getGroupId().equals( groupId ) &&
-                 artifact.getArtifactId().equals( artifactId ) &&
-                 artifact.getType().equals( "jar" ) )
+            if ( artifact.getGroupId().equals( groupId ) && artifact.getArtifactId().equals( artifactId ) &&
+                artifact.getType().equals( "jar" ) )
             {
                 resolvedArtifacts.add( artifact );
 
@@ -344,8 +365,8 @@ public abstract class AbstractBuilder
                 Artifact artifact = (Artifact) it.next();
 
                 if ( candiateArtifact.getGroupId().equals( artifact.getGroupId() ) &&
-                     candiateArtifact.getArtifactId().equals( artifact.getArtifactId() ) &&
-                     candiateArtifact.getType().equals( artifact.getType() ) )
+                    candiateArtifact.getArtifactId().equals( artifact.getArtifactId() ) &&
+                    candiateArtifact.getType().equals( artifact.getType() ) )
                 {
                     return false;
                 }
@@ -362,7 +383,8 @@ public abstract class AbstractBuilder
 
         private ArtifactFilter filterB;
 
-        public AndArtifactFilter( ArtifactFilter filterA, ArtifactFilter filterB )
+        public AndArtifactFilter( ArtifactFilter filterA,
+                                  ArtifactFilter filterB )
         {
             this.filterA = filterA;
 

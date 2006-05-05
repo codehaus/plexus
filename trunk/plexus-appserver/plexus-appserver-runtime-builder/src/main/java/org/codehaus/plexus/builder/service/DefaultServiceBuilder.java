@@ -32,6 +32,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -137,7 +138,7 @@ public class DefaultServiceBuilder
 
             excludedArtifacts.addAll( getBootArtifacts( serviceArtifacts, remoteRepositories, localRepository, true ) );
 
-            excludedArtifacts.addAll( getCoreArtifacts( serviceArtifacts, remoteRepositories, localRepository, true ) );
+            excludedArtifacts.addAll( getCoreArtifacts( serviceArtifacts, Collections.EMPTY_SET, remoteRepositories, localRepository, true ) );
 
             ArtifactFilter filter = new AndArtifactFilter(
                 new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
