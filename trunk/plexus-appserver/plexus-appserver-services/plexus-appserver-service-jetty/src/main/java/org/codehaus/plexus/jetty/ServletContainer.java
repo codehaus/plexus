@@ -1,4 +1,4 @@
-package org.codehaus.plexus.service.jetty;
+package org.codehaus.plexus.jetty;
 
 /*
  * The MIT License
@@ -27,13 +27,14 @@ package org.codehaus.plexus.service.jetty;
 import java.io.File;
 import java.net.UnknownHostException;
 
-import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.service.jetty.configuration.Webapp;
-import org.codehaus.plexus.service.jetty.configuration.ServletContext;
+import org.codehaus.plexus.jetty.configuration.Webapp;
+import org.codehaus.plexus.jetty.configuration.ServletContext;
+import org.codehaus.plexus.jetty.configuration.WebContext;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Jason van Zyl
  * @version $Id$
  */
 public interface ServletContainer
@@ -52,11 +53,6 @@ public interface ServletContainer
                            int proxyPort )
         throws ServletContainerException, UnknownHostException;
 
-    void deployWarDirectory( File directory,
-                             DefaultPlexusContainer container,
-                             Webapp webapp )
-        throws ServletContainerException;
-
     void startApplication( String contextPath )
         throws ServletContainerException;
 
@@ -64,9 +60,14 @@ public interface ServletContainer
     // For simple document serving
     // ----------------------------------------------------------------------------
 
+    void deployWarDirectory( File directory,
+                             DefaultPlexusContainer container,
+                             Webapp webapp )
+        throws ServletContainerException;
+
     public void deployServletContext( ServletContext servletContext )
         throws ServletContainerException;
 
-    void deployContext( String contextPath, String path )
+    void deployContext( WebContext webContext )
         throws ServletContainerException;
 }

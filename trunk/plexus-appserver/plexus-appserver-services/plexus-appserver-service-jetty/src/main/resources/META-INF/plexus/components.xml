@@ -6,20 +6,20 @@
       <implementation>org.codehaus.plexus.service.jetty.JettyPlexusService</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.service.jetty.ServletContainer</role>
+          <role>org.codehaus.plexus.jetty.ServletContainer</role>
         </requirement>
         <requirement>
-          <role>org.codehaus.plexus.service.jetty.configuration.builder.ServiceConfigurationBuilder</role>
+          <role>org.codehaus.plexus.jetty.configuration.builder.ServiceConfigurationBuilder</role>
         </requirement>
       </requirements>
     </component>
     <component>
-      <role>org.codehaus.plexus.service.jetty.ServletContainer</role>
-      <implementation>org.codehaus.plexus.service.jetty.JettyServletContainer</implementation>
+      <role>org.codehaus.plexus.jetty.ServletContainer</role>
+      <implementation>org.codehaus.plexus.jetty.JettyServletContainer</implementation>
     </component>
     <component>
-      <role>org.codehaus.plexus.service.jetty.configuration.builder.ServiceConfigurationBuilder</role>
-      <implementation>org.codehaus.plexus.service.jetty.configuration.builder.DefaultServiceConfigurationBuilder</implementation>
+      <role>org.codehaus.plexus.jetty.configuration.builder.ServiceConfigurationBuilder</role>
+      <implementation>org.codehaus.plexus.jetty.configuration.builder.DefaultServiceConfigurationBuilder</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.component.configurator.ComponentConfigurator</role>

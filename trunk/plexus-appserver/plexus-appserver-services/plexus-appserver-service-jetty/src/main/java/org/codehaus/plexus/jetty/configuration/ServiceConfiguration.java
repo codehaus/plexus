@@ -1,6 +1,4 @@
-package org.codehaus.plexus.service.jetty.configuration;
-
-import java.util.List;
+package org.codehaus.plexus.jetty.configuration;
 
 /*
  * The MIT License
@@ -26,32 +24,33 @@ import java.util.List;
  * SOFTWARE.
  */
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @author Jason van Zyl
  * @version $Id$
  */
-public class Webapp
-    extends WebContext
+public class ServiceConfiguration
 {
-    private String file;
+    private List webapps = new ArrayList();
 
-    private String extractionPath;
+    private List webContexts = new ArrayList();
 
-    private boolean standardWebappClassloader;
+    private List servletContexts = new ArrayList();
 
-    public String getFile()
+    public List getWebapps()
     {
-        return file;
+        return webapps;
     }
 
-    public String getExtractionPath()
+    public List getWebContexts()
     {
-        return extractionPath;
+        return webContexts;
     }
 
-    public boolean isStandardWebappClassloader()
+    public List getServletContexts()
     {
-        return standardWebappClassloader;
+        return servletContexts;
     }
 }

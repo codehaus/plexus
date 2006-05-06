@@ -1,4 +1,4 @@
-package org.codehaus.plexus.service.jetty;
+package org.codehaus.plexus.jetty;
 
 /*
  * The MIT License
