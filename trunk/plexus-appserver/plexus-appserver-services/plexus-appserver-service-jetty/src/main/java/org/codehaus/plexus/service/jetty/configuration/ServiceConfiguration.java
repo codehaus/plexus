@@ -37,6 +37,8 @@ public class ServiceConfiguration
 
     private List webContexts = new ArrayList();
 
+    private List servletContexts = new ArrayList();
+
     public List getWebapps()
     {
         return webapps;
@@ -45,5 +47,10 @@ public class ServiceConfiguration
     public List getWebContexts()
     {
         return webContexts;
+    }
+
+    public List getServletContexts()
+    {
+        return servletContexts;
     }
 }
