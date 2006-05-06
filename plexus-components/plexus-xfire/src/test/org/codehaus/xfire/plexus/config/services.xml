@@ -1,0 +1,61 @@
+<xfire>
+  
+  <services>
+    <service>
+      <name>EchoIntf</name>
+      <namespace>urn:Echo</namespace>
+      <soapVersion>1.1</soapVersion>
+      <encoding>wrapped</encoding>
+      <use>literal</use>
+      <serviceClass>org.codehaus.xfire.plexus.config.EchoIntf</serviceClass>
+      <implementationClass>org.codehaus.xfire.plexus.config.Echo</implementationClass>
+    </service>
+
+
+    <service>
+      <name>Echo</name>
+      <namespace>urn:Echo</namespace>
+      <soapVersion>1.1</soapVersion>
+      <encoding>wrapped</encoding>
+      <use>literal</use>
+      <serviceClass>org.codehaus.xfire.plexus.config.Echo</serviceClass>
+      
+      <inHandlers>
+        <handler>test</handler>
+        <handler>org.codehaus.xfire.plexus.config.TestHandler</handler>
+      </inHandlers>
+      
+      <outHandlers>
+        <handler>test</handler>
+      </outHandlers>
+    </service>
+
+    <service>
+      <name>EchoXMLBeans</name>
+      <namespace>urn:EchoXMLBeans</namespace>
+      <soapVersion>1.1</soapVersion>
+      <encoding>wrapped</encoding>
+      <use>literal</use>
+      <serviceClass>org.codehaus.xfire.plexus.config.Echo</serviceClass>
+      <serviceBuilder>org.codehaus.xfire.xmlbeans.XMLBeansServiceBuilder</serviceBuilder>
+    </service>
+    
+    <!-- service>
+      <serviceClass>org.codehaus.xfire.plexus.config.EchoIntf</serviceClass>
+      <implementationClass>org.codehaus.xfire.plexus.config.Echo</implementationClass>
+      <wsdl>./src/test/org/codehaus/xfire/plexus/config/Echo.wsdl</wsdl>
+      <types>
+        <type type="org.codehaus.xfire.type.basic.StringType"
+              namespace="urn:Echo"
+              name="echoRequest"
+              class="java.lang.String"/>
+        <type type="org.codehaus.xfire.type.basic.StringType"
+              namespace="urn:Echo"
+              name="echoResponse"
+              class="java.lang.String"/>
+      </types>
+    </service -->
+    
+  </services>
+  
+</xfire>

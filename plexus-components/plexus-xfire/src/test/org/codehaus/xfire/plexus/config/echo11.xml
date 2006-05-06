@@ -1,0 +1,7 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+ <env:Body>
+  <m:echo xmlns:m="urn:Echo">
+   <m:in0>Yo Yo</m:in0>
+  </m:echo>
+ </env:Body>
+</env:Envelope>
