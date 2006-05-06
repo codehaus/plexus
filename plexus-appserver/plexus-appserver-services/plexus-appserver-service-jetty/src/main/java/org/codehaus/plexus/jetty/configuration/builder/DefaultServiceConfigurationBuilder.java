@@ -1,9 +1,9 @@
-package org.codehaus.plexus.service.jetty;
+package org.codehaus.plexus.jetty.configuration.builder;
 
 /*
  * The MIT License
  *
- * Copyright (c) 2004, The Codehaus
+ * Copyright (c) 2004-2005, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,20 +24,31 @@ package org.codehaus.plexus.service.jetty;
  * SOFTWARE.
  */
 
+import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.codehaus.plexus.component.configurator.ComponentConfigurator;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.jetty.configuration.ServiceConfiguration;
+
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class ServletContainerException
-    extends Exception
+public class DefaultServiceConfigurationBuilder
+    extends AbstractLogEnabled
+    implements ServiceConfigurationBuilder
 {
-    public ServletContainerException( String message )
-    {
-        super( message );
-    }
+    private ComponentConfigurator configurator;
 
-    public ServletContainerException( String message, Throwable cause )
+    public ServiceConfiguration buildConfiguration( PlexusConfiguration serviceConfiguration,
+                                                    ClassRealm realm )
+        throws ComponentConfigurationException
     {
-        super( message, cause );
+        ServiceConfiguration configuration = new ServiceConfiguration();
+
+        configurator.configureComponent( configuration, serviceConfiguration, realm );
+
+        return configuration;
     }
 }
