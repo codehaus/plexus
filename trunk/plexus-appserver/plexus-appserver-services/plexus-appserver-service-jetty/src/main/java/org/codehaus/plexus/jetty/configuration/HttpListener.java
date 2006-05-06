@@ -1,4 +1,4 @@
-package org.codehaus.plexus.service.jetty.configuration;
+package org.codehaus.plexus.jetty.configuration;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.
@@ -20,20 +20,19 @@ package org.codehaus.plexus.service.jetty.configuration;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class ProxyHttpListener
-    extends HttpListener
+public class HttpListener
 {
-    private String proxyHost;
+    private String host;
 
-    private int proxyPort;
+    private int port;
 
-    public String getProxyHost()
+    public String getHost()
     {
-        return proxyHost;
+        return host;
     }
 
-    public int getProxyPort()
+    public int getPort()
     {
-        return proxyPort;
+        return port;
     }
 }

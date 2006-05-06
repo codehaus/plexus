@@ -1,4 +1,4 @@
-package org.codehaus.plexus.service.jetty.configuration.builder;
+package org.codehaus.plexus.jetty.configuration;
 
 /*
  * The MIT License
@@ -24,31 +24,32 @@ package org.codehaus.plexus.service.jetty.configuration.builder;
  * SOFTWARE.
  */
 
-import org.codehaus.classworlds.ClassRealm;
-import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
-import org.codehaus.plexus.component.configurator.ComponentConfigurator;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Jason van Zyl
  * @version $Id$
  */
-public class DefaultServiceConfigurationBuilder
-    extends AbstractLogEnabled
-    implements ServiceConfigurationBuilder
+public class Webapp
+    extends WebContext
 {
-    private ComponentConfigurator configurator;
+    private String file;
 
-    public ServiceConfiguration buildConfiguration( PlexusConfiguration serviceConfiguration,
-                                                    ClassRealm realm )
-        throws ComponentConfigurationException
+    private String extractionPath;
+
+    private boolean standardWebappClassloader;
+
+    public String getFile()
     {
-        ServiceConfiguration configuration = new ServiceConfiguration();
+        return file;
+    }
 
-        configurator.configureComponent( configuration, serviceConfiguration, realm );
+    public String getExtractionPath()
+    {
+        return extractionPath;
+    }
 
-        return configuration;
+    public boolean isStandardWebappClassloader()
+    {
+        return standardWebappClassloader;
     }
 }

@@ -26,16 +26,18 @@ package org.codehaus.plexus.service.jetty;
 
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.jetty.ServletContainer;
+import org.codehaus.plexus.jetty.ServletContainerException;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.appserver.service.AbstractPlexusService;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.service.jetty.configuration.HttpListener;
-import org.codehaus.plexus.service.jetty.configuration.ProxyHttpListener;
-import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
-import org.codehaus.plexus.service.jetty.configuration.Webapp;
-import org.codehaus.plexus.service.jetty.configuration.WebContext;
-import org.codehaus.plexus.service.jetty.configuration.ServletContext;
-import org.codehaus.plexus.service.jetty.configuration.builder.ServiceConfigurationBuilder;
+import org.codehaus.plexus.jetty.configuration.HttpListener;
+import org.codehaus.plexus.jetty.configuration.ProxyHttpListener;
+import org.codehaus.plexus.jetty.configuration.ServiceConfiguration;
+import org.codehaus.plexus.jetty.configuration.Webapp;
+import org.codehaus.plexus.jetty.configuration.WebContext;
+import org.codehaus.plexus.jetty.configuration.ServletContext;
+import org.codehaus.plexus.jetty.configuration.builder.ServiceConfigurationBuilder;
 
 import java.io.File;
 import java.util.Iterator;
@@ -125,7 +127,7 @@ public class JettyPlexusService
 
             getLogger().info( "Deploying " + webContext.getPath() + " with context path of " + webContext.getContext() );
 
-            servletContainer.deployContext( webContext.getContext(), webContext.getPath() );
+            servletContainer.deployContext( webContext );
         }
 
         // ----------------------------------------------------------------------------

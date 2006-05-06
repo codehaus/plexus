@@ -1,4 +1,4 @@
-package org.codehaus.plexus.service.jetty;
+package org.codehaus.plexus.jetty;
 
 /*
  * Copyright 2004-2005 The Apache Software Foundation.

@@ -1,9 +1,9 @@
-package org.codehaus.plexus.service.jetty.configuration;
+package org.codehaus.plexus.jetty;
 
 /*
  * The MIT License
  *
- * Copyright (c) 2004-2005, The Codehaus
+ * Copyright (c) 2004, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,33 +24,20 @@ package org.codehaus.plexus.service.jetty.configuration;
  * SOFTWARE.
  */
 
-import java.util.List;
-import java.util.ArrayList;
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class ServiceConfiguration
+public class ServletContainerException
+    extends Exception
 {
-    private List webapps = new ArrayList();
-
-    private List webContexts = new ArrayList();
-
-    private List servletContexts = new ArrayList();
-
-    public List getWebapps()
+    public ServletContainerException( String message )
     {
-        return webapps;
+        super( message );
     }
 
-    public List getWebContexts()
+    public ServletContainerException( String message, Throwable cause )
     {
-        return webContexts;
-    }
-
-    public List getServletContexts()
-    {
-        return servletContexts;
+        super( message, cause );
     }
 }

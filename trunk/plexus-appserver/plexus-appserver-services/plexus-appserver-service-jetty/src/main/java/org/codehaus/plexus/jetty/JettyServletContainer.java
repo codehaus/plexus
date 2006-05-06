@@ -1,4 +1,4 @@
-package org.codehaus.plexus.service.jetty;
+package org.codehaus.plexus.jetty;
 
 /*
  * The MIT License
@@ -27,20 +27,21 @@ package org.codehaus.plexus.service.jetty;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.service.jetty.configuration.Webapp;
-import org.codehaus.plexus.service.jetty.configuration.InitParameter;
-import org.codehaus.plexus.service.jetty.configuration.ServletContext;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
+import org.codehaus.plexus.jetty.configuration.InitParameter;
+import org.codehaus.plexus.jetty.configuration.ServletContext;
+import org.codehaus.plexus.jetty.configuration.WebContext;
+import org.codehaus.plexus.jetty.configuration.Webapp;
 import org.codehaus.plexus.util.FileUtils;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.HttpListener;
 import org.mortbay.http.handler.ResourceHandler;
 import org.mortbay.jetty.Server;
-import org.mortbay.jetty.servlet.WebApplicationContext;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.mortbay.jetty.servlet.ServletHttpContext;
+import org.mortbay.jetty.servlet.WebApplicationContext;
 import org.mortbay.util.InetAddrPort;
 import org.mortbay.util.MultiException;
 
@@ -208,15 +209,14 @@ public class JettyServletContainer
         }
     }
 
-    public void deployContext( String contextPath,
-                               String path )
+    public void deployContext( WebContext webContext )
         throws ServletContainerException
     {
         HttpContext context = new HttpContext();
 
-        context.setContextPath( contextPath );
+        context.setContextPath( webContext.getContext() );
 
-        context.setResourceBase( path );
+        context.setResourceBase( webContext.getPath() );
 
         // This will setup a standard resource handler for document retrieval. If you want more
         // functionality like POST, or WebDAV type stuff that will need to be configurable.
@@ -234,8 +234,8 @@ public class JettyServletContainer
 
         try
         {
-            ServletHolder servletHolder = context.addServlet( servletContext.getName(), servletContext.getPath(),
-                                                              servletContext.getServlet() );
+            ServletHolder servletHolder =
+                context.addServlet( servletContext.getName(), servletContext.getPath(), servletContext.getServlet() );
 
             // ----------------------------------------------------------------------------
             // Setup any init parameters
@@ -267,7 +267,8 @@ public class JettyServletContainer
         }
         catch ( IllegalAccessException e )
         {
-            throw new ServletContainerException( "Illegal access trying to use the servlet " + servletContext.getServlet(), e );
+            throw new ServletContainerException(
+                "Illegal access trying to use the servlet " + servletContext.getServlet(), e );
         }
 
         server.addContext( context );

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.service.jetty.configuration;
+package org.codehaus.plexus.jetty.configuration;
 
 /**
  * @author Jason van Zyl
