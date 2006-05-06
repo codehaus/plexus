@@ -73,9 +73,28 @@ public class CreateAppContainerPhase
 
         getLogger().info( "Using appDir = " + context.getAppDir() );
 
-        // This needs to be a String!!
+
+        try
+        {
+            String plexusHome = (String) context.getAppServerContainer().getContext().get( "plexus.home" );
+
+            applicationContainer.addContextValue( "appserver.home", plexusHome );
+        }
+        catch ( ContextException e )
+        {
+            // Won't happen
+        }
+
+        // ----------------------------------------------------------------------------
+        // Make the application's home directory available in the context
+        // ----------------------------------------------------------------------------
         applicationContainer.addContextValue( "plexus.home", context.getAppDir().getAbsolutePath() );
 
+        applicationContainer.addContextValue( "app.home", context.getAppDir().getAbsolutePath() );
+
+        // ----------------------------------------------------------------------------
+        // Make the user's home directory available in the context
+        // ----------------------------------------------------------------------------
         applicationContainer.addContextValue( "user.home", System.getProperty( "user.home" ) );
 
         Object appserver = null;

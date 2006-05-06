@@ -27,6 +27,9 @@ package org.codehaus.plexus.service.jetty;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.service.jetty.configuration.Webapp;
+import org.codehaus.plexus.service.jetty.configuration.InitParameter;
+import org.codehaus.plexus.service.jetty.configuration.ServletContext;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
@@ -36,10 +39,10 @@ import org.mortbay.http.HttpListener;
 import org.mortbay.http.handler.ResourceHandler;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.WebApplicationContext;
+import org.mortbay.jetty.servlet.ServletHolder;
+import org.mortbay.jetty.servlet.ServletHttpContext;
 import org.mortbay.util.InetAddrPort;
 import org.mortbay.util.MultiException;
-import org.mortbay.util.Resource;
-import org.mortbay.util.URLResource;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,6 +54,8 @@ import java.util.List;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author Jason van Zyl
  * @version $Id$
+ * @todo need to be able to deploy individual servlets
+ * @todo could we filter web.xml files via jetty somehow?
  */
 public class JettyServletContainer
     extends AbstractLogEnabled
@@ -171,7 +176,6 @@ public class JettyServletContainer
         server.addListener( listener );
 
 
-
         try
         {
             listener.start();
@@ -183,26 +187,12 @@ public class JettyServletContainer
         }
     }
 
-    public void deployWarFile( File war,
-                               boolean extractWar,
-                               File extractionLocation,
-                               DefaultPlexusContainer container,
-                               String context,
-                               String virtualHost,
-                               boolean standardWebappClassloading )
-        throws ServletContainerException
-    {
-        deployWAR( war, extractWar, extractionLocation, container, context, virtualHost, false );
-    }
-
     public void deployWarDirectory( File directory,
                                     DefaultPlexusContainer container,
-                                    String context,
-                                    String virtualHost,
-                                    boolean standardWebappClassLoader )
+                                    Webapp webapp )
         throws ServletContainerException
     {
-        deployWAR( directory, false, null, container, context, virtualHost, standardWebappClassLoader );
+        deployWAR( directory, false, null, container, webapp );
     }
 
     public void startApplication( String contextPath )
@@ -235,6 +225,54 @@ public class JettyServletContainer
         server.addContext( context );
     }
 
+    public void deployServletContext( ServletContext servletContext )
+        throws ServletContainerException
+    {
+        ServletHttpContext context = new ServletHttpContext();
+
+        context.setContextPath( servletContext.getContext() );
+
+        try
+        {
+            ServletHolder servletHolder = context.addServlet( servletContext.getName(), servletContext.getPath(),
+                                                              servletContext.getServlet() );
+
+            // ----------------------------------------------------------------------------
+            // Setup any init parameters
+            // ----------------------------------------------------------------------------
+
+            if ( servletContext.getInitParameters() != null )
+            {
+                for ( Iterator i = servletContext.getInitParameters().iterator(); i.hasNext(); )
+                {
+                    InitParameter param = (InitParameter) i.next();
+
+                    String name = param.getName();
+
+                    String value = param.getValue();
+
+                    getLogger().info( "Setting init-param [" + name + " = " + value + "]" );
+
+                    servletHolder.setInitParameter( name, value );
+                }
+            }
+        }
+        catch ( ClassNotFoundException e )
+        {
+            throw new ServletContainerException( "Cannot find the servlet " + servletContext.getServlet(), e );
+        }
+        catch ( InstantiationException e )
+        {
+            throw new ServletContainerException( "Cannot instantiate the servlet " + servletContext.getServlet(), e );
+        }
+        catch ( IllegalAccessException e )
+        {
+            throw new ServletContainerException( "Illegal access trying to use the servlet " + servletContext.getServlet(), e );
+        }
+
+        server.addContext( context );
+    }
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -263,11 +301,15 @@ public class JettyServletContainer
                             boolean extractWar,
                             File extractionLocation,
                             DefaultPlexusContainer container,
-                            String context,
-                            String virtualHost,
-                            boolean standardWebappClassloader )
+                            Webapp webapp )
         throws ServletContainerException
     {
+        String context = webapp.getContext();
+
+        String virtualHost = webapp.getVirtualHost();
+
+        boolean standardWebappClassloader = webapp.isStandardWebappClassloader();
+
         if ( war == null )
         {
             throw new ServletContainerException( "Invalid parameter: 'war' cannot be null." );
@@ -367,6 +409,4 @@ public class JettyServletContainer
 
         webappContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY, container );
     }
-
-
 }
