@@ -1,5 +1,7 @@
 package org.codehaus.plexus.service.jetty.configuration;
 
+import java.util.List;
+
 /*
  * The MIT License
  *

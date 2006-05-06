@@ -34,6 +34,7 @@ import org.codehaus.plexus.service.jetty.configuration.ProxyHttpListener;
 import org.codehaus.plexus.service.jetty.configuration.ServiceConfiguration;
 import org.codehaus.plexus.service.jetty.configuration.Webapp;
 import org.codehaus.plexus.service.jetty.configuration.WebContext;
+import org.codehaus.plexus.service.jetty.configuration.ServletContext;
 import org.codehaus.plexus.service.jetty.configuration.builder.ServiceConfigurationBuilder;
 
 import java.io.File;
@@ -78,23 +79,23 @@ public class JettyPlexusService
                                                                                       runtimeProfile.getApplicationServerContainer().getContainerRealm() );
         for ( Iterator it = configuration.getWebapps().iterator(); it.hasNext(); )
         {
-            Webapp application = (Webapp) it.next();
+            Webapp webapp = (Webapp) it.next();
 
             File webAppDir;
 
-            if ( application.getPath() == null )
+            if ( webapp.getPath() == null )
             {
                 // ----------------------------------------------------------------------
                 // Extract the jar
                 // ----------------------------------------------------------------------
 
-                expand( new File( application.getFile() ), new File( application.getExtractionPath() ), false );
+                expand( new File( webapp.getFile() ), new File( webapp.getExtractionPath() ), false );
 
-                webAppDir = new File( application.getExtractionPath() );
+                webAppDir = new File( webapp.getExtractionPath() );
             }
             else
             {
-                webAppDir = new File( application.getPath() );
+                webAppDir = new File( webapp.getPath() );
             }
 
             if ( !webAppDir.isDirectory() )
@@ -104,11 +105,9 @@ public class JettyPlexusService
 
             try
             {
-                getLogger().info( "Deploying " + webAppDir + " with context path of " + application.getContext() );
+                getLogger().info( "Deploying " + webAppDir + " with context path of " + webapp.getContext() );
 
-                servletContainer.deployWarDirectory( webAppDir, runtimeProfile.getApplicationContainer(),
-                                                     application.getContext(), application.getVirtualHost(),
-                                                     application.isStandardWebappClassloader() );
+                servletContainer.deployWarDirectory( webAppDir, runtimeProfile.getApplicationContainer(), webapp );
             }
             catch ( ServletContainerException e )
             {
@@ -129,6 +128,18 @@ public class JettyPlexusService
             servletContainer.deployContext( webContext.getContext(), webContext.getPath() );
         }
 
+        // ----------------------------------------------------------------------------
+        // Servlet contexts
+        // ----------------------------------------------------------------------------
+
+        for ( Iterator i = configuration.getServletContexts().iterator(); i.hasNext(); )
+        {
+            ServletContext servletContext = (ServletContext) i.next();
+
+            getLogger().info( "Deploying servlet " + servletContext.getName() + " with context path of " + servletContext.getContext() );
+
+            servletContainer.deployServletContext( servletContext );
+        }
     }
 
     public void afterApplicationStart( AppRuntimeProfile appRuntimeProfile,
@@ -166,6 +177,15 @@ public class JettyPlexusService
             processWebContextConfiguration( webContext, appRuntimeProfile );
 
             servletContainer.startApplication( webContext.getContext() );
+        }
+
+        for ( Iterator i = configuration.getServletContexts().iterator(); i.hasNext(); )
+        {
+            ServletContext servletContext = (ServletContext) i.next();
+
+            processWebContextConfiguration( servletContext, appRuntimeProfile );
+
+            servletContainer.startApplication( servletContext.getContext() );
         }
     }
 

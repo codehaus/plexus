@@ -29,6 +29,8 @@ import java.net.UnknownHostException;
 
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.service.jetty.configuration.Webapp;
+import org.codehaus.plexus.service.jetty.configuration.ServletContext;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -50,20 +52,9 @@ public interface ServletContainer
                            int proxyPort )
         throws ServletContainerException, UnknownHostException;
 
-    void deployWarFile( File war,
-                        boolean extractWar,
-                        File extractionLocation,
-                        DefaultPlexusContainer container,
-                        String context,
-                        String virtualHost,
-                        boolean standardWebappClassloader )
-        throws ServletContainerException;
-
     void deployWarDirectory( File directory,
                              DefaultPlexusContainer container,
-                             String context,
-                             String virtualHost,
-                             boolean standardWebappClassloader )
+                             Webapp webapp )
         throws ServletContainerException;
 
     void startApplication( String contextPath )
@@ -72,6 +63,9 @@ public interface ServletContainer
     // ----------------------------------------------------------------------------
     // For simple document serving
     // ----------------------------------------------------------------------------
+
+    public void deployServletContext( ServletContext servletContext )
+        throws ServletContainerException;
 
     void deployContext( String contextPath, String path )
         throws ServletContainerException;

@@ -17,6 +17,8 @@ public class WebContext
 
     private String virtualHost;
 
+    private List initParameters;
+
     public String getPath()
     {
         return path;
