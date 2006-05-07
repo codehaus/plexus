@@ -68,7 +68,7 @@ public class DefaultServiceBuilder
                        Set serviceArtifacts,
                        File serviceConfiguration,
                        File configurationsDirectory,
-                       File configurationProperties )
+                       Properties configurationProperties )
         throws ServiceBuilderException
     {
         // ----------------------------------------------------------------------
@@ -78,11 +78,6 @@ public class DefaultServiceBuilder
         if ( StringUtils.isEmpty( serviceName ) )
         {
             throw new ServiceBuilderException( "The service name must be set." );
-        }
-
-        if ( configurationProperties != null && !configurationProperties.isFile() )
-        {
-            throw new ServiceBuilderException( "The configurator properties file isn't a file: '" + configurationProperties.getAbsolutePath() + "'." );
         }
 
         if ( configurationsDirectory != null && !configurationsDirectory.isDirectory() )
@@ -193,7 +188,7 @@ public class DefaultServiceBuilder
 
     private void processConfigurations( File confDir,
                                         File plexusConfigurationFile,
-                                        File configurationPropertiesFile,
+                                        Properties configurationProperties,
                                         File configurationsDirectory )
         throws ServiceBuilderException, IOException
     {
@@ -217,13 +212,6 @@ public class DefaultServiceBuilder
             return;
         }
 
-        Properties configurationProperties = new Properties();
-
-        if ( configurationPropertiesFile != null )
-        {
-            configurationProperties.load( new FileInputStream( configurationPropertiesFile ) );
-        }
-
         DirectoryScanner scanner = new DirectoryScanner();
 
         scanner.setBasedir( configurationsDirectory );
@@ -231,11 +219,6 @@ public class DefaultServiceBuilder
         List excludes = new ArrayList();
 
         excludes.add( "**/CVS/**" );
-
-        if ( configurationPropertiesFile != null )
-        {
-            excludes.add( configurationPropertiesFile.getAbsolutePath() );
-        }
 
         scanner.setExcludes( (String[]) excludes.toArray( new String[ excludes.size() ] ) );
 

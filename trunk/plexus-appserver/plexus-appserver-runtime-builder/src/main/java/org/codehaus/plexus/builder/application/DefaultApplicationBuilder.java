@@ -67,7 +67,7 @@ public class DefaultApplicationBuilder
                           Set serviceArtifacts,
                           File applicationConfiguration,
                           File configurationsDirectory,
-                          File configurationPropertiesFile )
+                          Properties configurationProperties )
         throws ApplicationBuilderException
     {
         // ----------------------------------------------------------------------
@@ -77,12 +77,6 @@ public class DefaultApplicationBuilder
         if ( applicationName == null || applicationName.trim().length() == 0 )
         {
             throw new ApplicationBuilderException( "The appserver name must be set." );
-        }
-
-        if ( configurationPropertiesFile != null && !configurationPropertiesFile.isFile() )
-        {
-            throw new ApplicationBuilderException( "The configurator properties file isn't a file: '" +
-                configurationPropertiesFile.getAbsolutePath() + "'." );
         }
 
         if ( configurationsDirectory != null && !configurationsDirectory.isDirectory() )
@@ -119,7 +113,7 @@ public class DefaultApplicationBuilder
 
             new FileWriter( new File( logsDir, "foo" ) ).close();
 
-            processConfigurations( confDir, applicationConfiguration, configurationPropertiesFile,
+            processConfigurations( confDir, applicationConfiguration, configurationProperties,
                                    configurationsDirectory );
         }
         catch ( IOException e )
@@ -233,20 +227,11 @@ public class DefaultApplicationBuilder
 
     private void processConfigurations( File confDir,
                                         File applicationConfiguration,
-                                        File configurationPropertiesFile,
+                                        Properties configurationProperties,
                                         File configurationsDirectory )
         throws IOException, ApplicationBuilderException
     {
-        // ----------------------------------------------------------------------
-        // Load the configurator properties.
-        // ----------------------------------------------------------------------
-
-        Properties configurationProperties = new Properties();
-
-        if ( configurationPropertiesFile != null )
-        {
-            configurationProperties.load( new FileInputStream( configurationPropertiesFile ) );
-        }
+        System.out.println( "configurationProperties = " + configurationProperties );
 
         // ----------------------------------------------------------------------
         // Process the configurations
@@ -265,10 +250,12 @@ public class DefaultApplicationBuilder
 
             excludes.add( "**/.svn/**" );
 
-            if ( configurationPropertiesFile != null )
+            /*
+            if ( configurationProperties != null )
             {
-                excludes.add( configurationPropertiesFile.getAbsolutePath() );
+                excludes.add( configurationProperties.getAbsolutePath() );
             }
+            */
 
             scanner.setExcludes( (String[]) excludes.toArray( new String[ excludes.size() ] ) );
 

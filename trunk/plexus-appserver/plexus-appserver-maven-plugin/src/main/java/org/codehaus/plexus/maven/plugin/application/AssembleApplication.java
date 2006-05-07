@@ -160,13 +160,13 @@ public class AssembleApplication
 
         getLog().debug( "Building the appserver '" + applicationName + "' into '" + applicationAssemblyDirectory.getAbsolutePath() + "'." );
 
-        Properties applicationConfigurationProperties = new Properties();
+        Properties interpolationProperties = new Properties();
 
         if ( configurationProperties != null )
         {
             try
             {
-                applicationConfigurationProperties.load( new FileInputStream( configurationProperties ) );
+                interpolationProperties.load( new FileInputStream( configurationProperties ) );
             }
             catch ( IOException e )
             {
@@ -174,9 +174,7 @@ public class AssembleApplication
             }
         }
 
-        System.out.println( "pomProperties = " + project.getProperties() );
-
-        applicationConfigurationProperties.putAll( project.getProperties() );
+        interpolationProperties.putAll( project.getProperties() );
 
         try
         {
@@ -189,7 +187,7 @@ public class AssembleApplication
                               services,
                               applicationConfiguration,
                               configurationsDirectory,
-                              applicationConfigurationProperties );
+                              interpolationProperties );
         }
         catch ( ApplicationBuilderException e )
         {

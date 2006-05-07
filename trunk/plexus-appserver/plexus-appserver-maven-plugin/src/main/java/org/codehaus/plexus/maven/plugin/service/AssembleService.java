@@ -23,8 +23,11 @@ package org.codehaus.plexus.maven.plugin.service;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.Properties;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
@@ -156,6 +159,20 @@ public class AssembleService
         // Build the service
         // ----------------------------------------------------------------------
 
+        Properties interpolationProperties = new Properties();
+
+        if ( configurationProperties != null )
+        {
+            try
+            {
+                interpolationProperties.load( new FileInputStream( configurationProperties ) );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "Cannot load configuration properties file.", e );
+            }
+        }
+
         try
         {
             builder.build( serviceName,
@@ -166,7 +183,7 @@ public class AssembleService
                            serviceArtifacts,
                            serviceConfiguration,
                            configurationsDirectory,
-                           configurationProperties );
+                           interpolationProperties );
 
             // ----------------------------------------------------------------------
             // Bundle the service
