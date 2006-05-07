@@ -9,6 +9,8 @@ public class InitParameter
 
     private String value;
 
+    private String directive;
+
     public String getName()
     {
         return name;
@@ -17,5 +19,10 @@ public class InitParameter
     public String getValue()
     {
         return value;
+    }
+
+    public String getDirective()
+    {
+        return directive;
     }
 }

@@ -253,6 +253,16 @@ public class JettyServletContainer
 
                     getLogger().info( "Setting init-param [" + name + " = " + value + "]" );
 
+                    String directive = param.getDirective();
+
+                    if ( directive != null )
+                    {
+                        if ( directive.equals( "create-directory" ) )
+                        {
+                            FileUtils.mkdir( value );
+                        }
+                    }
+
                     servletHolder.setInitParameter( name, value );
                 }
             }
