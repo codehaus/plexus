@@ -66,8 +66,6 @@ public class DefaultApplicationDeployer
 
     private DefaultPlexusContainer appServerContainer;
 
-    private ApplicationServer appServer;
-
     private List applicationListeners;
 
     // ----------------------------------------------------------------------
@@ -94,17 +92,8 @@ public class DefaultApplicationDeployer
                             boolean expandPar )
         throws ApplicationServerException
     {
-        try
-        {
-            appServer = (ApplicationServer) appServerContainer.getContext().get( "plexus.appserver" );
-        }
-        catch ( ContextException e )
-        {
-            throw new ApplicationServerException( "Cannot retrieve app server from context.", e );
-        }
-
         AppDeploymentContext context = new AppDeploymentContext( file, new File( applicationsDirectory ), deployments,
-                                                                 appServerContainer, appServer, expandPar );
+                                                                 appServerContainer, getAppServer(), expandPar );
 
         for ( Iterator i = phases.iterator(); i.hasNext(); )
         {
@@ -140,7 +129,7 @@ public class DefaultApplicationDeployer
 
         undeploy( id );
 
-        File file = appServer.getAppDescriptor( id ).getPar();
+        File file = getAppServer().getAppDescriptor( id ).getPar();
 
         deployJar( id, file, false );
 
@@ -260,6 +249,19 @@ public class DefaultApplicationDeployer
             {
                 getLogger().warn( "Error while undeploying appserver '" + name + "'.", e );
             }
+        }
+    }
+
+    private ApplicationServer getAppServer()
+        throws ApplicationServerException
+    {
+        try
+        {
+            return (ApplicationServer) appServerContainer.getContext().get( "plexus.appserver" );
+        }
+        catch ( ContextException e )
+        {
+            throw new ApplicationServerException( "Cannot retrieve app server from context.", e );
         }
     }
 }
