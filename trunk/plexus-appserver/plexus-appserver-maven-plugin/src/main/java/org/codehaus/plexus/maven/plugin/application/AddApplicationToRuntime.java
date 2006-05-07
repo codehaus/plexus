@@ -90,7 +90,7 @@ public class AddApplicationToRuntime
 
         if ( !applicationJarFile.canRead() )
         {
-            throw new MojoExecutionException( "Can't read Plexus appserver artifact '" + applicationJarFile.getAbsolutePath() + "'." );
+            throw new MojoExecutionException( "Can't read Plexus application artifact '" + applicationJarFile.getAbsolutePath() + "'." );
         }
 
         try
