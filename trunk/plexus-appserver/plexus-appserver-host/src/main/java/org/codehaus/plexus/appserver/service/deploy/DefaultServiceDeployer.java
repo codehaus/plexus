@@ -44,6 +44,7 @@ import java.io.IOException;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
+ * @author Jason van Zyl
  * @since Jul 17, 2004
  */
 public class DefaultServiceDeployer
