@@ -89,11 +89,22 @@ public class DefaultApplicationDeployer
         deployJar( appId, par, true );
     }
 
-    private void deployJar( String appId, File file, boolean expandPar )
+    private void deployJar( String appId,
+                            File file,
+                            boolean expandPar )
         throws ApplicationServerException
     {
-        AppDeploymentContext context =
-            new AppDeploymentContext( file, new File( applicationsDirectory ), deployments, appServerContainer, appServer, expandPar );
+        try
+        {
+            appServer = (ApplicationServer) appServerContainer.getContext().get( "plexus.appserver" );
+        }
+        catch ( ContextException e )
+        {
+            throw new ApplicationServerException( "Cannot retrieve app server from context.", e );
+        }
+
+        AppDeploymentContext context = new AppDeploymentContext( file, new File( applicationsDirectory ), deployments,
+                                                                 appServerContainer, appServer, expandPar );
 
         for ( Iterator i = phases.iterator(); i.hasNext(); )
         {
@@ -101,13 +112,15 @@ public class DefaultApplicationDeployer
 
             try
             {
-                AppDeploymentPhase phase =  (AppDeploymentPhase) appServerContainer.lookup( AppDeploymentPhase.ROLE, id );
+                AppDeploymentPhase phase =
+                    (AppDeploymentPhase) appServerContainer.lookup( AppDeploymentPhase.ROLE, id );
 
                 phase.execute( context );
             }
             catch ( ComponentLookupException e )
             {
-                throw new ApplicationServerException( "The requested app server lifecycle phase cannot be found: " + id, e );
+                throw new ApplicationServerException( "The requested app server lifecycle phase cannot be found: " + id,
+                                                      e );
             }
             catch ( AppDeploymentException e )
             {
@@ -219,8 +232,6 @@ public class DefaultApplicationDeployer
         throws ContextException
     {
         appServerContainer = (DefaultPlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
-
-        appServer = ( ApplicationServer )context.get( "plexus.appserver" );
     }
 
     public void initialize()
