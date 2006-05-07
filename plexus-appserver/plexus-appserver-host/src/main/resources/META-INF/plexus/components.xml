@@ -67,6 +67,7 @@
           <phase>pre-app-container-init-service-call</phase>
           <phase>app-init</phase>
           <phase>post-app-container-init-service-call</phase>
+          <phase>create-app-descriptor</phase>
         </phases>
       </configuration>
     </component>
@@ -119,6 +120,12 @@
       <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
       <role-hint>post-app-container-init-service-call</role-hint>
       <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AfterAppStartServiceSetupPhase</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
+      <role-hint>create-app-descriptor</role-hint>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.CreateApplicationDescriptorPhase</implementation>
     </component>
 
     <!-- Service Deployer -->
