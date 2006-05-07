@@ -27,6 +27,7 @@ package org.codehaus.plexus.builder.service;
 import java.io.File;
 import java.util.Set;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 
@@ -47,7 +48,7 @@ public interface ServiceBuilder
                 Set serviceArtifacts,
                 File plexusConfiguration,
                 File configurationsDirectory,
-                File configurationProperties )
+                Properties configurationProperties )
         throws ServiceBuilderException;
 
     void bundle( File outputFile, File workingDirectory )

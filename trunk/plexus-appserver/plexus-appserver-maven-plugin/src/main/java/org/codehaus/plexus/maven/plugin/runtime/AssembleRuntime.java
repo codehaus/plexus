@@ -23,13 +23,17 @@ package org.codehaus.plexus.maven.plugin.runtime;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Properties;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
@@ -114,12 +118,35 @@ public class AssembleRuntime
      */
     private HashSet additionalCoreArtifacts;
 
+    /**
+     * @parameter expression="${project}"
+     * @required
+     * @readonly
+     */
+    private MavenProject project;
+
     public void execute()
         throws MojoExecutionException
     {
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
+
+        Properties interpolationProperties = new Properties();
+
+        if ( runtimeConfigurationProperties != null )
+        {
+            try
+            {
+                interpolationProperties.load( new FileInputStream( runtimeConfigurationProperties ) );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "Cannot load configuration properties file.", e );
+            }
+        }
+
+        interpolationProperties.putAll( project.getProperties() );
 
         try
         {
@@ -129,7 +156,7 @@ public class AssembleRuntime
                            projectArtifacts,
                            additionalCoreArtifacts,
                            runtimeConfiguration,
-                           runtimeConfigurationProperties );
+                           interpolationProperties );
         }
         catch ( PlexusRuntimeBuilderException e )
         {

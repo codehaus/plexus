@@ -97,7 +97,7 @@ public class DefaultPlexusRuntimeBuilder
                        Set projectArtifacts,
                        Set additionalCoreArtifacts,
                        File containerConfiguration,
-                       File configurationPropertiesFile )
+                       Properties configurationProperties )
         throws PlexusRuntimeBuilderException
     {
         try
@@ -127,12 +127,6 @@ public class DefaultPlexusRuntimeBuilder
                                                          "'" + containerConfiguration.getAbsolutePath() + "'" +
                                                          " doesn't exist." );
             }
-
-            // ----------------------------------------------------------------------
-            //
-            // ----------------------------------------------------------------------
-
-            Properties configurationProperties = loadConfigurationProperties( configurationPropertiesFile );
 
             // ----------------------------------------------------------------------
             // Find the artifact lists.
