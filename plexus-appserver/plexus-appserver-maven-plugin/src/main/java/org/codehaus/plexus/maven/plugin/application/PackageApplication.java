@@ -85,7 +85,7 @@ public class PackageApplication
     private ApplicationBuilder builder;
 
     /**
-     * @parameter expression="${project.build.directory}/plexus-appserver"
+     * @parameter expression="${project.build.directory}/plexus-application"
      *
      * @required
      */
