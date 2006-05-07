@@ -25,6 +25,7 @@ package org.codehaus.plexus.builder.runtime;
 import java.io.File;
 import java.util.List;
 import java.util.Set;
+import java.util.Properties;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 
@@ -43,7 +44,7 @@ public interface PlexusRuntimeBuilder
                 Set projectArtifacts,
                 Set additionalCoreArtifacts,
                 File containerConfiguration,
-                File configurationPropertiesFile )
+                Properties configurationProperties )
         throws PlexusRuntimeBuilderException;
 
     void bundle( File outputFile, File workingDirectory )

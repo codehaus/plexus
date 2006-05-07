@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
@@ -78,9 +79,9 @@ public class CreateAppContainerPhase
         {
             String plexusHome = (String) context.getAppServerContainer().getContext().get( "plexus.home" );
 
-            applicationContainer.addContextValue( "appserver.home", plexusHome );
+            applicationContainer.addContextValue( "appserver.home", new File( plexusHome ).getCanonicalPath() );
         }
-        catch ( ContextException e )
+        catch ( Exception e )
         {
             // Won't happen
         }

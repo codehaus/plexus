@@ -31,6 +31,7 @@ import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.PropertyUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Properties;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -100,13 +102,15 @@ public class PlexusRuntimeBuilderTest
 
         File configurationPropertiesFile = getTestFile( "src/test/resources/configuration.properties" );
 
+        Properties configurationProperties = PropertyUtils.loadProperties( configurationPropertiesFile );
+
         runtimeBuilder.build( workingDirectory,
                               remoteRepositories,
                               localRepository,
                               projectArtifacts,
                               Collections.EMPTY_SET,
                               plexusConfiguration,
-                              configurationPropertiesFile );
+                              configurationProperties );
     }
 
     // ----------------------------------------------------------------------
