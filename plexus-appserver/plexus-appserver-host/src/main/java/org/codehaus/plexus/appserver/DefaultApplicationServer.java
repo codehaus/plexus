@@ -27,18 +27,22 @@ package org.codehaus.plexus.appserver;
 import java.io.File;
 import java.util.List;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.Collection;
 
 import org.codehaus.plexus.appserver.application.deploy.ApplicationDeployer;
 import org.codehaus.plexus.appserver.service.deploy.ServiceDeployer;
 import org.codehaus.plexus.appserver.lifecycle.phase.AppServerPhase;
 import org.codehaus.plexus.appserver.lifecycle.AppServerContext;
 import org.codehaus.plexus.appserver.lifecycle.AppServerLifecycleException;
-import org.codehaus.plexus.appserver.supervisor.Supervisor;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.PlexusContainer;
@@ -58,6 +62,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 public class DefaultApplicationServer
     extends AbstractLogEnabled
     implements ApplicationServer,
+    Initializable,
     Contextualizable,
     Startable
 {
@@ -69,6 +74,8 @@ public class DefaultApplicationServer
 
     //todo: cdc doing configurations
     private List phases;
+
+    private Map appDescriptors;
 
     // ----------------------------------------------------------------------
     // Application Facade
@@ -84,29 +91,57 @@ public class DefaultApplicationServer
     // Delegation to the appserver deploy
     // ----------------------------------------------------------------------------
 
-    public void deploy( String name,
+    public void deploy( String id,
                         File location )
         throws ApplicationServerException
     {
-        applicationDeployer.deploy( name, location );
+        applicationDeployer.deploy( id, location );
     }
 
-    public void redeploy( String name,
-                          File location )
+    public void redeploy( String id )
         throws ApplicationServerException
     {
-        applicationDeployer.deploy( name, location );
+        applicationDeployer.redeploy( id );
     }
 
-    public void undeploy( String name )
+    public void undeploy( String id )
         throws ApplicationServerException
     {
-        applicationDeployer.undeploy( name );
+        applicationDeployer.undeploy( id );
+    }
+
+    public void addAppDescriptor( AppDescriptor appDescriptor )
+    {
+        appDescriptors.put( appDescriptor.getId(), appDescriptor );
+    }
+
+    public AppDescriptor getAppDescriptor( String appId )
+    {
+        return (AppDescriptor) appDescriptors.get( appId );
+    }
+
+    public Collection getAppDescriptors()
+    {
+        return appDescriptors.values();
     }
 
     // ----------------------------------------------------------------------
     // Component Lifecycle
     // ----------------------------------------------------------------------
+
+    public void contextualize( Context context )
+        throws ContextException
+    {
+        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+
+        container.addContextValue( "plexus.appserver", this );
+    }
+
+    public void initialize()
+        throws InitializationException
+    {
+        appDescriptors = new LinkedHashMap();
+    }
 
     public void start()
         throws StartingException
@@ -126,13 +161,15 @@ public class DefaultApplicationServer
 
             try
             {
-                AppServerPhase appServerPhase = (AppServerPhase) container.lookup( AppServerPhase.ROLE, appServerPhaseId );
+                AppServerPhase appServerPhase =
+                    (AppServerPhase) container.lookup( AppServerPhase.ROLE, appServerPhaseId );
 
                 appServerPhase.execute( appServerContext );
             }
             catch ( ComponentLookupException e )
             {
-                throw new StartingException( "The requested app server lifecycle phase cannot be found: " + appServerPhaseId, e );
+                throw new StartingException(
+                    "The requested app server lifecycle phase cannot be found: " + appServerPhaseId, e );
             }
             catch ( AppServerLifecycleException e )
             {
@@ -147,13 +184,5 @@ public class DefaultApplicationServer
     {
         // 1. should shut down all the apps and services properly
         // 2. serialize any configurations
-    }
-
-    public void contextualize( Context context )
-        throws ContextException
-    {
-        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
-
-        container.addContextValue( "plexus.appserver", this );
     }
 }

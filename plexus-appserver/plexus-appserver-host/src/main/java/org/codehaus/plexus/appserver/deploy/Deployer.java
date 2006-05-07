@@ -11,13 +11,13 @@ public interface Deployer
 {
     String ROLE = Deployer.class.getName();
 
-    void deploy( String name, File location )
+    void deploy( String id, File location )
         throws ApplicationServerException;
 
-    void redeploy( String name, File location )
+    void redeploy( String id )
         throws ApplicationServerException;
 
-    void undeploy( String name )
+    void undeploy( String id )
         throws ApplicationServerException;
 
 }

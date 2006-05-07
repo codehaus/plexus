@@ -23,12 +23,11 @@ package org.codehaus.plexus.appserver.application.deploy;
  */
 
 import org.codehaus.classworlds.ClassRealm;
-import org.codehaus.classworlds.ClassWorld;
-import org.codehaus.classworlds.DuplicateRealmException;
 import org.codehaus.classworlds.NoSuchRealmException;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.appserver.ApplicationServerException;
+import org.codehaus.plexus.appserver.ApplicationServer;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase;
@@ -45,17 +44,11 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
@@ -73,6 +66,8 @@ public class DefaultApplicationDeployer
 
     private DefaultPlexusContainer appServerContainer;
 
+    private ApplicationServer appServer;
+
     private List applicationListeners;
 
     // ----------------------------------------------------------------------
@@ -87,18 +82,18 @@ public class DefaultApplicationDeployer
     // Deployment
     // ----------------------------------------------------------------------
 
-    public void deploy( String name,
-                        File location )
+    public void deploy( String appId,
+                        File par )
         throws ApplicationServerException
     {
-        deployJar( location );
+        deployJar( appId, par, true );
     }
 
-    private void deployJar( File file )
+    private void deployJar( String appId, File file, boolean expandPar )
         throws ApplicationServerException
     {
         AppDeploymentContext context =
-            new AppDeploymentContext( file, new File( applicationsDirectory ), deployments, appServerContainer );
+            new AppDeploymentContext( file, new File( applicationsDirectory ), deployments, appServerContainer, appServer, expandPar );
 
         for ( Iterator i = phases.iterator(); i.hasNext(); )
         {
@@ -125,15 +120,16 @@ public class DefaultApplicationDeployer
     // Redeploy
     // ----------------------------------------------------------------------
 
-    public void redeploy( String name,
-                          File url )
+    public void redeploy( String id )
         throws ApplicationServerException
     {
-        AppRuntimeProfile profile = getApplicationRuntimeProfile( name );
+        AppRuntimeProfile profile = getApplicationRuntimeProfile( id );
 
-        undeploy( name );
+        undeploy( id );
 
-        deploy( name, url );
+        File file = appServer.getAppDescriptor( id ).getPar();
+
+        deployJar( id, file, false );
 
         DefaultDeployEvent event = createDeployEvent( profile );
 
@@ -223,6 +219,8 @@ public class DefaultApplicationDeployer
         throws ContextException
     {
         appServerContainer = (DefaultPlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+
+        appServer = ( ApplicationServer )context.get( "plexus.appserver" );
     }
 
     public void initialize()
