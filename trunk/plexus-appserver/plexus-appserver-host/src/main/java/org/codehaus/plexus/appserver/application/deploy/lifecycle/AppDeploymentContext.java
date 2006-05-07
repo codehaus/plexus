@@ -4,6 +4,7 @@ import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
+import org.codehaus.plexus.appserver.ApplicationServer;
 
 import java.io.File;
 import java.util.Map;
@@ -41,15 +42,23 @@ public class AppDeploymentContext
     // app.home/lib used for populating the class realm.
     private File appLibDirectory;
 
+    private ApplicationServer appServer;
+
+    private boolean expandPar;
+
     public AppDeploymentContext( File par,
                                  File applicationsDirectory,
                                  Map deployments,
-                                 DefaultPlexusContainer appServerContainer )
+                                 DefaultPlexusContainer appServerContainer,
+                                 ApplicationServer appServer,
+                                 boolean expandPar )
     {
         this.par = par;
         this.applicationsDirectory = applicationsDirectory;
         this.deployments = deployments;
         this.appServerContainer = appServerContainer;
+        this.appServer = appServer;
+        this.expandPar = expandPar;
     }
 
     // Read-only
@@ -155,6 +164,16 @@ public class AppDeploymentContext
     public void setAppDir( File appDir )
     {
         this.appDir = appDir;
+    }
+
+    public ApplicationServer getAppServer()
+    {
+        return appServer;
+    }
+
+    public boolean isExpandPar()
+    {
+        return expandPar;
     }
 }
 

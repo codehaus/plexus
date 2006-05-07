@@ -207,12 +207,12 @@ public class DefaultServiceDeployer
         container.addJarRepository( jarDir );
     }
 
-    public void redeploy( String name, File location )
+    public void redeploy( String id )
         throws ApplicationServerException
     {
     }
 
-    public void undeploy( String name )
+    public void undeploy( String id )
         throws ApplicationServerException
     {
     }

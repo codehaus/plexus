@@ -40,12 +40,16 @@ public interface ApplicationServer
     AppRuntimeProfile getApplicationRuntimeProfile( String applicationId )
         throws ApplicationServerException;
 
-    void deploy( String name, File location )
+    void deploy( String id, File location )
         throws ApplicationServerException;
 
-    void redeploy( String name, File location )
+    void redeploy( String id )
         throws ApplicationServerException;
 
-    void undeploy( String name )
-        throws ApplicationServerException;    
+    void undeploy( String id )
+        throws ApplicationServerException;
+
+    void addAppDescriptor( AppDescriptor appDescriptor );
+
+    AppDescriptor getAppDescriptor( String appName );
 }
