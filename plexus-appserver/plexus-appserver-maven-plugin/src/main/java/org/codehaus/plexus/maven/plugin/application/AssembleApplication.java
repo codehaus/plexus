@@ -23,15 +23,19 @@ package org.codehaus.plexus.maven.plugin.application;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Properties;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.application.ApplicationBuilder;
 import org.codehaus.plexus.builder.application.ApplicationBuilderException;
@@ -46,6 +50,7 @@ import org.codehaus.plexus.builder.application.ApplicationBuilderException;
  * @phase package
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Jason van Zyl
  * @version $Id$
  */
 public class AssembleApplication
@@ -78,7 +83,7 @@ public class AssembleApplication
     private String applicationName;
 
     /**
-     * @parameter expression="${project.build.directory}/plexus-appserver"
+     * @parameter expression="${project.build.directory}/plexus-application"
      * @required
      */
     private File applicationAssemblyDirectory;
@@ -121,6 +126,11 @@ public class AssembleApplication
      */
     private HashSet additionalCoreArtifacts;
 
+    /**
+     * @parameter expression="${project}"
+     */
+    private MavenProject project;
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -150,6 +160,24 @@ public class AssembleApplication
 
         getLog().debug( "Building the appserver '" + applicationName + "' into '" + applicationAssemblyDirectory.getAbsolutePath() + "'." );
 
+        Properties applicationConfigurationProperties = new Properties();
+
+        if ( configurationProperties != null )
+        {
+            try
+            {
+                applicationConfigurationProperties.load( new FileInputStream( configurationProperties ) );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "Cannot load configuration properties file.", e );
+            }
+        }
+
+        System.out.println( "pomProperties = " + project.getProperties() );
+
+        applicationConfigurationProperties.putAll( project.getProperties() );
+
         try
         {
             builder.assemble( applicationName,
@@ -161,7 +189,7 @@ public class AssembleApplication
                               services,
                               applicationConfiguration,
                               configurationsDirectory,
-                              configurationProperties );
+                              applicationConfigurationProperties );
         }
         catch ( ApplicationBuilderException e )
         {
