@@ -19,7 +19,7 @@ public abstract class AbstractAppServerApplicationMojo
     protected File applicationAssemblyDirectory;
 
     /**
-     * @parameter expression="${component.org.codehaus.plexus.applicationBuilder.application.ApplicationBuilder}"
+     * @parameter expression="${component.org.codehaus.plexus.application.application.ApplicationBuilder}"
      * @required
      */
     protected ApplicationBuilder applicationBuilder;
