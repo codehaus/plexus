@@ -24,23 +24,22 @@ package org.codehaus.plexus.appserver.service.deploy;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.appserver.ApplicationServerException;
-import org.codehaus.plexus.appserver.PlexusServiceConstants;
-import org.codehaus.plexus.appserver.deploy.AbstractDeployer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.component.repository.io.PlexusTools;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.configuration.PlexusConfigurationException;
+import org.codehaus.plexus.appserver.ApplicationServerException;
+import org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase;
+import org.codehaus.plexus.appserver.service.deploy.lifecycle.ServiceDeploymentContext;
+import org.codehaus.plexus.appserver.service.deploy.lifecycle.ServiceDeploymentException;
+import org.codehaus.plexus.appserver.service.deploy.lifecycle.phase.ServiceDeploymentPhase;
+import org.codehaus.plexus.appserver.deploy.AbstractDeployer;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.util.List;
+import java.util.Iterator;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
@@ -49,163 +48,54 @@ import java.io.IOException;
  */
 public class DefaultServiceDeployer
     extends AbstractDeployer
-    implements ServiceDeployer, Initializable, Contextualizable
+    implements ServiceDeployer,
+    Initializable,
+    Contextualizable
 {
-    private String serviceDirectory;
+    private File servicesDirectory;
 
     private DefaultPlexusContainer container;
 
-    // ----------------------------------------------------------------------
-    // Component Lifecycle
-    // ----------------------------------------------------------------------
-
-    public void initialize()
-        throws InitializationException
-    {
-        getLogger().info( "Services will be deployed in: '" + serviceDirectory + "'." );
-    }
-
-    public void contextualize( Context context )
-        throws ContextException
-    {
-        container = (DefaultPlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
-    }
+    private List phases;
 
     // ----------------------------------------------------------------------
     // ServiceDeployer Implementation
     // ----------------------------------------------------------------------
 
-    public void deploy( String name, File location )
+    public void deploy( String serviceId,
+                        File location )
         throws ApplicationServerException
     {
-        try
-        {
-            deploy( name, location, new File( serviceDirectory ), new File( serviceDirectory ) );
-        }
-        catch ( Exception e )
-        {
-            throw new ApplicationServerException( "Cannot deploy service " + name, e );
-        }
+        deploy( serviceId, location, true );
     }
 
-    private void deploy( String name, File jar, File services, File configurations )
-        throws Exception
+    private void deploy( String id,
+                         File sar,
+                         boolean expandSar )
+        throws ApplicationServerException
     {
-        File serviceDir = new File( services, name );
+        ServiceDeploymentContext context = new ServiceDeploymentContext( id, sar, servicesDirectory, container );
 
-        if ( serviceDir.exists() )
+        for ( Iterator i = phases.iterator(); i.hasNext(); )
         {
-            getLogger().info( "Removing old service." );
+            String phaseId = (String) i.next();
 
             try
             {
-                FileUtils.deleteDirectory( serviceDir );
+                ServiceDeploymentPhase phase =
+                    (ServiceDeploymentPhase) container.lookup( ServiceDeploymentPhase.ROLE, phaseId );
+
+                phase.execute( context );
             }
-            catch ( IOException e )
+            catch ( ComponentLookupException e )
             {
-                throw new Exception( "Cannot delete old service deployment in " + serviceDir, e );
+                throw new ApplicationServerException( "The requested app server lifecycle phase cannot be found: " + phaseId, e );
+            }
+            catch ( ServiceDeploymentException e )
+            {
+                throw new ApplicationServerException( "Error executing service deployment id.", e );
             }
         }
-
-        expand( jar, serviceDir, false );
-
-        // ----------------------------------------------------------------------
-        // Set up the classpath for the service
-        // ----------------------------------------------------------------------
-
-        File libDir = new File( serviceDir, "lib" );
-
-        if ( !libDir.exists() )
-        {
-            throw new Exception( "The service must have a /lib directory." );
-        }
-
-        addJars( libDir );
-
-        // ----------------------------------------------------------------------
-        // Discover any components in the service
-        // ----------------------------------------------------------------------
-
-        container.discoverComponents( container.getCoreRealm() );
-
-        // Copy over the user configurator if there is one.
-        File serviceConfig = new File( configurations, name + ".xml" );
-
-        if ( !serviceConfig.exists() )
-        {
-            File config = new File( new File( serviceDir, PlexusServiceConstants.CONF_DIRECTORY ),
-                                    PlexusServiceConstants.CONFIGURATION_FILE );
-
-            if ( config.exists() )
-            {
-                config.renameTo( serviceConfig );
-
-                addConfiguration( serviceConfig );
-            }
-        }
-        else
-        {
-            addConfiguration( serviceConfig );
-        }
-    }
-
-    /**
-     * The first time the configurator runs, we don't care
-     * what the user configurator is, so only use the components.xml
-     * files.  However, we still need to load on start components.
-     *
-     * @throws Exception
-     */
-    private void addConfiguration( File config )
-        throws Exception
-    {
-        PlexusConfiguration serviceConfig =
-            PlexusTools.buildConfiguration( config.getPath(), new FileReader( config ) );
-
-        startComponents( serviceConfig );
-    }
-
-    private void startComponents( PlexusConfiguration serviceConfig )
-        throws PlexusConfigurationException, ComponentLookupException
-    {
-        PlexusConfiguration[] loadOnStartComponents = serviceConfig.getChild( "load-on-start" ).getChildren( "component" );
-
-        getLogger().debug( "Found " + loadOnStartComponents.length + " components to load on start" );
-
-        for ( int i = 0; i < loadOnStartComponents.length; i++ )
-        {
-            String role = loadOnStartComponents[i].getChild( "role" ).getValue( null );
-
-            String roleHint = loadOnStartComponents[i].getChild( "role-hint" ).getValue();
-
-            if ( role == null )
-            {
-                throw new PlexusConfigurationException( "Missing 'role' element from load-on-start." );
-            }
-
-            if ( roleHint == null )
-            {
-                getLogger().info( "Loading on start [role]: " + "[" + role + "]" );
-            }
-            else
-            {
-                getLogger().info( "Loading on start [role,roleHint]: " + "[" + role + "," + roleHint + "]" );
-            }
-
-            if ( roleHint == null )
-            {
-                container.lookup( role );
-            }
-            else
-            {
-                container.lookup( role, roleHint );
-            }
-        }
-    }
-
-    private void addJars( File jarDir )
-    {
-        container.addJarRepository( jarDir );
     }
 
     public void redeploy( String id )
@@ -216,5 +106,21 @@ public class DefaultServiceDeployer
     public void undeploy( String id )
         throws ApplicationServerException
     {
+    }
+
+    // ----------------------------------------------------------------------
+    // Component Lifecycle
+    // ----------------------------------------------------------------------
+
+    public void initialize()
+        throws InitializationException
+    {
+        getLogger().info( "Services will be deployed in: '" + servicesDirectory + "'." );
+    }
+
+    public void contextualize( Context context )
+        throws ContextException
+    {
+        container = (DefaultPlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
     }
 }

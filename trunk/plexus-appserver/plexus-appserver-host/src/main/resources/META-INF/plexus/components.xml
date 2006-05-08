@@ -134,8 +134,38 @@
       <role>org.codehaus.plexus.appserver.service.deploy.ServiceDeployer</role>
       <implementation>org.codehaus.plexus.appserver.service.deploy.DefaultServiceDeployer</implementation>
       <configuration>
-        <serviceDirectory>${plexus.home}/services</serviceDirectory>
+        <servicesDirectory>${plexus.home}/services</servicesDirectory>
+        <phases>
+          <phase>expand-service</phase>
+          <phase>add-service-libraries</phase>
+          <phase>discover-service-components</phase>
+          <phase>process-service-configuration</phase>
+        </phases>
       </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.appserver.service.deploy.lifecycle.phase.ServiceDeploymentPhase</role>
+      <role-hint>expand-service</role-hint>
+      <implementation>org.codehaus.plexus.appserver.service.deploy.lifecycle.phase.ExpandServicePhase</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.appserver.service.deploy.lifecycle.phase.ServiceDeploymentPhase</role>
+      <role-hint>add-service-libraries</role-hint>
+      <implementation>org.codehaus.plexus.appserver.service.deploy.lifecycle.phase.AddServiceLibrariesPhase</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.appserver.service.deploy.lifecycle.phase.ServiceDeploymentPhase</role>
+      <role-hint>discover-service-components</role-hint>
+      <implementation>org.codehaus.plexus.appserver.service.deploy.lifecycle.phase.DiscoverServiceComponentsPhase</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.appserver.service.deploy.lifecycle.phase.ServiceDeploymentPhase</role>
+      <role-hint>process-service-configuration</role-hint>
+      <implementation>org.codehaus.plexus.appserver.service.deploy.lifecycle.phase.ProcessServiceConfigurationPhase</implementation>
     </component>
 
     <!-- Supervisors -->
