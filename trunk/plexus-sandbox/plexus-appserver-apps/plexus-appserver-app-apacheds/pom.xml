@@ -1,0 +1,29 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.plexus</groupId>
+  <artifactId>plexus-appserver-app-apacheds</artifactId>
+  <version>0.9-SNAPSHOT</version>
+  <packaging>plexus-application</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>plexus</groupId>
+      <artifactId>plexus-server-apacheds</artifactId>
+      <version>0.9-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <configurationDirectory>src/conf</configurationDirectory>
+          <applicationName>foo</applicationName>
+          <plexusConfigurationPropertiesFile>src/plexus.properties</plexusConfigurationPropertiesFile>
+          <plexusConfiguration>src/conf/application.xml</plexusConfiguration>
+          <basedir>target</basedir>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
