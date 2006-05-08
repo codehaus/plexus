@@ -39,6 +39,8 @@ import org.codehaus.plexus.service.xmlrpc.configuration.builder.ServiceConfigura
 import org.codehaus.plexus.xmlrpc.XmlRpcServer;
 
 import java.util.Iterator;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -55,7 +57,13 @@ public class XmlRpcPlexusService
     /** @requirement */
     private XmlRpcServer xmlRpcServer;
 
+    /** port activity flag */
     int port = -1;
+
+    /**
+     * Set of ports to be activated. The port can only be used once.
+     */
+    private Set activePorts = new HashSet();
 
     // ----------------------------------------------------------------------
     // Component Lifecycle
@@ -96,14 +104,21 @@ public class XmlRpcPlexusService
     {
         ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration );
 
-        int i = 0;
-
         for ( Iterator it = configuration.getXmlRpcServices().iterator(); it.hasNext(); )
         {
             XmlRpcService service = (XmlRpcService) it.next();
 
             try
             {
+                String activePort = Integer.toString( service.getPort() );
+
+                if ( activePorts.contains( activePort ) )
+                {
+                    continue;
+                }
+
+                activePorts.add( activePort );
+
                 xmlRpcServer.addListener( null, service.getPort(), false );
 
                 xmlRpcServer.startListener( null, service.getPort() );
