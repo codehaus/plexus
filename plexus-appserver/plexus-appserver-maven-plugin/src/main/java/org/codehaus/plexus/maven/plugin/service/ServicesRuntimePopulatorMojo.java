@@ -24,65 +24,25 @@ package org.codehaus.plexus.maven.plugin.service;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
 
+import java.io.File;
+import java.util.Iterator;
+
 /**
- * @goal add-services
- *
- * @requiresDependencyResolution
- *
- * @phase package
- *
- * @description Adds all Plexus services in the artifact list to the runtime
- *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Jason van Zyl
  * @version $Id$
+ * @goal add-services
+ * @requiresDependencyResolution
+ * @phase package
+ * @description Adds all Plexus services in the artifact list to the runtime
  */
-public class AddPlexusServicesMojo
-    extends AbstractMojo
+public class ServicesRuntimePopulatorMojo
+    extends AbstractAppServerServiceMojo
 {
-    // ----------------------------------------------------------------------
-    // Configurable properties
-    // ----------------------------------------------------------------------
-
-    /**
-     * @parameter expression="${project.build.directory}/plexus-test-runtime"
-     * @required
-     */
-    private File runtimePath;
-
-    /**
-     * @parameter expression="${project.build.directory}"
-     * @required
-     */
-    private File target;
-
-    // ----------------------------------------------------------------------
-    // Read-only
-    // ----------------------------------------------------------------------
-
-    /**
-     * @parameter expression="${project.artifacts}"
-     * @required
-     * @readonly
-     */
-    private Set projectArtifacts;
-
-    /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder}"
-     * @required
-     * @readonly
-     */
-    private PlexusRuntimeBuilder runtimeBuilder;
-
     public void execute()
         throws MojoExecutionException
     {

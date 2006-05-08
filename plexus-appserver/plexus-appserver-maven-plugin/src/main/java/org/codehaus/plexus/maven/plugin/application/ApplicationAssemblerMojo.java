@@ -27,39 +27,28 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.Properties;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.application.ApplicationBuilder;
 import org.codehaus.plexus.builder.application.ApplicationBuilderException;
+import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
 
 /**
- * @goal assemble-app
- *
- * @requiresDependencyResolution
- *
- * @description Assemble a Plexus application.
- *
- * @phase package
- *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author Jason van Zyl
  * @version $Id$
+ * @goal assemble-app
+ * @requiresDependencyResolution
+ * @description Assemble a Plexus application.
+ * @phase package
  */
-public class AssembleApplication
-    extends AbstractMojo
+public class ApplicationAssemblerMojo
+    extends AbstractAppServerApplicationMojo
 {
-    // ----------------------------------------------------------------------
-    // Configuration
-    // ----------------------------------------------------------------------
-
     /**
      * @parameter expression="${applicationConfiguration}"
      * @required
@@ -83,53 +72,9 @@ public class AssembleApplication
     private String applicationName;
 
     /**
-     * @parameter expression="${project.build.directory}/plexus-application"
-     * @required
-     */
-    private File applicationAssemblyDirectory;
-
-    // ----------------------------------------------------------------------
-    // Read Only Configuration
-    // ----------------------------------------------------------------------
-
-    /**
-     * @parameter expression="${project.artifacts}"
-     * @readonly
-     * @required
-     */
-    private Set applicationArtifacts;
-
-    // ----------------------------------------------------------------------
-    // Components
-    // ----------------------------------------------------------------------
-
-    /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.application.ApplicationBuilder}"
-     * @required
-     */
-    private ApplicationBuilder builder;
-
-    /**
-     * @parameter expression="${localRepository}"
-     * @required
-     */
-    private ArtifactRepository localRepository;
-
-    /**
-     * @parameter expression="${project.remoteArtifactRepositories}"
-     * @required
-     */
-    private List remoteRepositories;
-
-    /**
      * @parameter expression="${additionalCoreArtifacts}"
      */
     private HashSet additionalCoreArtifacts;
-
-    /**
-     * @parameter expression="${project}"
-     */
-    private MavenProject project;
 
     // ----------------------------------------------------------------------
     //
@@ -144,7 +89,7 @@ public class AssembleApplication
 
         Set services = new HashSet();
 
-        for ( Iterator it = applicationArtifacts.iterator(); it.hasNext(); )
+        for ( Iterator it = projectArtifacts.iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
 
@@ -158,7 +103,8 @@ public class AssembleApplication
         // Build the appserver
         // ----------------------------------------------------------------------
 
-        getLog().debug( "Building the appserver '" + applicationName + "' into '" + applicationAssemblyDirectory.getAbsolutePath() + "'." );
+        getLog().debug( "Building the appserver '" + applicationName + "' into '" +
+            applicationAssemblyDirectory.getAbsolutePath() + "'." );
 
         Properties interpolationProperties = new Properties();
 
@@ -178,16 +124,9 @@ public class AssembleApplication
 
         try
         {
-            builder.assemble( applicationName,
-                              applicationAssemblyDirectory,
-                              remoteRepositories,
-                              localRepository,
-                              applicationArtifacts,
-                              additionalCoreArtifacts,
-                              services,
-                              applicationConfiguration,
-                              configurationsDirectory,
-                              interpolationProperties );
+            applicationBuilder.assemble( applicationName, applicationAssemblyDirectory, remoteRepositories, localRepository,
+                              projectArtifacts, additionalCoreArtifacts, services, applicationConfiguration,
+                              configurationsDirectory, interpolationProperties );
         }
         catch ( ApplicationBuilderException e )
         {

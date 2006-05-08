@@ -22,42 +22,28 @@ package org.codehaus.plexus.maven.plugin.service;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.List;
-import java.util.Set;
-import java.util.Properties;
-
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectHelper;
-
 import org.codehaus.plexus.builder.service.ServiceBuilder;
 import org.codehaus.plexus.builder.service.ServiceBuilderException;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 /**
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Jason van Zyl
+ * @version $Id$
  * @goal assemble-service
- *
  * @requiresDependencyResolution
  * @requiresProject
- *
  * @description Assembled and bundles a Plexus service.
- *
  * @phase package
- *
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  */
-public class AssembleService
-    extends AbstractMojo
+public class ServiceAssemblerMojo
+    extends AbstractAppServerServiceMojo
 {
-    // ----------------------------------------------------------------------
-    // Configuration
-    // ----------------------------------------------------------------------
-
     /**
      * @parameter expression="${serviceName}"
      * @required
@@ -79,70 +65,6 @@ public class AssembleService
      * @parameter expression="${configurationProperties}"
      */
     private File configurationProperties;
-
-    // ----------------------------------------------------------------------
-    // Read only configurator
-    // ----------------------------------------------------------------------
-
-    /**
-     * @parameter expression="${project.build.finalName}"
-     * @required
-     */
-    private String finalName;
-
-    /**
-     * @parameter expression="${project.build.directory}"
-     * @required
-     */
-    private File target;
-
-    /**
-     * @parameter expression="${project.artifacts}"
-     * @required
-     */
-    private Set serviceArtifacts;
-
-    /**
-     * @parameter expression="${project.build.directory}/plexus-service"
-     * @required
-     */
-    private File serviceAssemblyDirectory;
-
-    // ----------------------------------------------------------------------
-    // Components
-    // ----------------------------------------------------------------------
-
-    /**
-     * @parameter expression="${localRepository}"
-     * @required
-     */
-    private ArtifactRepository localRepository;
-
-    /**
-     * @parameter expression="${project.remoteArtifactRepositories}"
-     * @required
-     */
-    private List remoteRepositories;
-
-    /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.service.ServiceBuilder}"
-     * @required
-     */
-    private ServiceBuilder builder;
-
-    /**
-     * The maven project.
-     *
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
-    private MavenProject project;
-
-    /**
-     * @component
-     */
-    private MavenProjectHelper projectHelper;
 
     public void execute()
         throws MojoExecutionException
@@ -175,15 +97,8 @@ public class AssembleService
 
         try
         {
-            builder.build( serviceName,
-                           serviceAssemblyDirectory,
-                           serviceJar,
-                           remoteRepositories,
-                           localRepository,
-                           serviceArtifacts,
-                           serviceConfiguration,
-                           configurationsDirectory,
-                           interpolationProperties );
+            builder.build( serviceName, serviceAssemblyDirectory, serviceJar, remoteRepositories, localRepository,
+                           projectArtifacts, serviceConfiguration, configurationsDirectory, interpolationProperties );
 
             // ----------------------------------------------------------------------
             // Bundle the service
