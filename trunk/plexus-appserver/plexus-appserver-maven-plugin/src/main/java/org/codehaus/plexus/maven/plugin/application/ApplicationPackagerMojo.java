@@ -24,85 +24,33 @@ package org.codehaus.plexus.maven.plugin.application;
  * SOFTWARE.
  */
 
-import java.io.File;
-
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
-
 import org.codehaus.plexus.builder.application.ApplicationBuilder;
 import org.codehaus.plexus.builder.application.ApplicationBuilderException;
+import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
+
+import java.io.File;
 
 /**
- * @goal package-app
- *
- * @requiresDependencyResolution
- *
- * @description Packages a Plexus application into a Plexus application archive.
- *
- * @phase package
- *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Jason van Zyl
  * @version $Id$
+ * @goal package-app
+ * @requiresDependencyResolution
+ * @description Packages a Plexus application into a Plexus application archive.
+ * @phase package
  */
-public class PackageApplication
-    extends AbstractMojo
+public class ApplicationPackagerMojo
+    extends AbstractAppServerApplicationMojo
 {
-    /**
-     * @parameter expression="${basedir}"
-     *
-     * @required
-     */
-    private File basedir;
-
-    /**
-     * @parameter expression="${project}"
-     *
-     * @required
-     * @readonly
-     */
-    private MavenProject project;
-
-    /**
-     * @parameter expression="${project.build.directory}"
-     *
-     * @required
-     */
-    private File target;
-
-    /**
-     * @parameter expression="${project.build.finalName}"
-     *
-     * @required
-     */
-    private String finalName;
-
-    /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.application.ApplicationBuilder}"
-     *
-     * @required
-     */
-    private ApplicationBuilder builder;
-
-    /**
-     * @parameter expression="${project.build.directory}/plexus-application"
-     *
-     * @required
-     */
-    private File applicationAssemblyDirectory;
-
     public void execute()
         throws MojoExecutionException
     {
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
         try
         {
             File outputFile = new File( target, finalName + ".jar" );
 
-            builder.bundle( outputFile, applicationAssemblyDirectory );
+            applicationBuilder.bundle( outputFile, applicationAssemblyDirectory );
 
             // TODO: m2 needs a better way to deal with this
             project.getArtifact().setFile( outputFile );

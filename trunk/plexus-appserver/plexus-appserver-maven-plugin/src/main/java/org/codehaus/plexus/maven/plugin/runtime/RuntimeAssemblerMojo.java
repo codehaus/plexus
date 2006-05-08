@@ -25,50 +25,27 @@ package org.codehaus.plexus.maven.plugin.runtime;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.Set;
 import java.util.HashSet;
 import java.util.Properties;
 
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
+import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
 
 /**
- * @goal assemble-runtime
- *
- * @requiresDependencyResolution
- *
- * @phase package
- *
- * @description Builds plexus containers.
- *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Jason van Zyl
  * @version $Id$
+ * @goal assemble-runtime
+ * @requiresDependencyResolution
+ * @phase package
+ * @description Builds plexus containers.
  */
-public class AssembleRuntime
-    extends AbstractMojo
+public class RuntimeAssemblerMojo
+    extends AbstractAppServerMojo
 {
-    // ----------------------------------------------------------------------
-    // Configurable properties
-    // ----------------------------------------------------------------------
-
-    /**
-     * @parameter expression="${project.build.directory}/plexus-runtime"
-     * @required
-     */
-    private File runtimePath;
-
-    /**
-     * @parameter expression="${project.build.directory}"
-     * @required
-     */
-    private File target;
-
     /**
      * @parameter expression="${runtimeConfiguration}"
      * @required
@@ -81,49 +58,10 @@ public class AssembleRuntime
      */
     private File runtimeConfigurationProperties;
 
-    // ----------------------------------------------------------------------
-    // Read-only
-    // ----------------------------------------------------------------------
-
-    /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder}"
-     * @required
-     * @readonly
-     */
-    private PlexusRuntimeBuilder builder;
-
-    /**
-     * @parameter expression="${localRepository}"
-     * @required
-     * @readonly
-     */
-    private ArtifactRepository localRepository;
-
-    /**
-     * @parameter expression="${project.artifacts}"
-     * @required
-     * @readonly
-     */
-    private Set projectArtifacts;
-
-    /**
-     * @parameter expression="${project.remoteArtifactRepositories}"
-     * @required
-     * @readonly
-     */
-    private List remoteRepositories;
-
     /**
      * @parameter expression="${additionalCoreArtifacts}"
      */
     private HashSet additionalCoreArtifacts;
-
-    /**
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
-    private MavenProject project;
 
     public void execute()
         throws MojoExecutionException
@@ -150,13 +88,8 @@ public class AssembleRuntime
 
         try
         {
-            builder.build( runtimePath,
-                           remoteRepositories,
-                           localRepository,
-                           projectArtifacts,
-                           additionalCoreArtifacts,
-                           runtimeConfiguration,
-                           interpolationProperties );
+            runtimeBuilder.build( runtimePath, remoteRepositories, localRepository, projectArtifacts,
+                                  additionalCoreArtifacts, runtimeConfiguration, interpolationProperties );
         }
         catch ( PlexusRuntimeBuilderException e )
         {

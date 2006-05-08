@@ -26,63 +26,27 @@ package org.codehaus.plexus.maven.plugin.application;
 
 import java.io.File;
 
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
+import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
 
 /**
- * @goal add-app
- *
- * @requiresDependencyResolution
- *
- * @phase package
- *
- * @description Adds the Plexus appliction created from this build to a Plexus runtime. This is used
- *              when your Plexus runtime is housing the Plexus application created from this build. You
- *              typically create the Plexus runtime and the Plexus application in this build. If you are
- *              creating a Plexus runtime that houses many applications then you will want to use the add-apps
- *              goal.
- *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Jason van Zyl
  * @version $Id$
+ * @goal add-app
+ * @requiresDependencyResolution
+ * @phase package
+ * @description Adds the Plexus appliction created from this build to a Plexus runtime. This is used
+ * when your Plexus runtime is housing the Plexus application created from this build. You
+ * typically create the Plexus runtime and the Plexus application in this build. If you are
+ * creating a Plexus runtime that houses many applications then you will want to use the add-apps
+ * goal.
  */
-public class AddApplicationToRuntime
-    extends AbstractMojo
+public class ApplicationRuntimePopulatorMojo
+    extends AbstractAppServerMojo
 {
-    // ----------------------------------------------------------------------
-    // Configurable properties
-    // ----------------------------------------------------------------------
-
-    /**
-     * @parameter expression="${project.build.directory}/plexus-test-runtime"
-     * @required
-     */
-    private File runtimePath;
-
-    /**
-     * @parameter expression="${project.build.directory}"
-     * @required
-     */
-    private File target;
-
-    /**
-     * @parameter expression="${project.build.finalName}"
-     * @required
-     */
-    private String finalName;
-
-    // ----------------------------------------------------------------------
-    // Read-only
-    // ----------------------------------------------------------------------
-
-    /**
-     * @parameter expression="${component.org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder}"
-     * @required
-     * @readonly
-     */
-    private PlexusRuntimeBuilder runtimeBuilder;
-
     public void execute()
         throws MojoExecutionException
     {
@@ -90,15 +54,12 @@ public class AddApplicationToRuntime
 
         if ( !applicationJarFile.canRead() )
         {
-            throw new MojoExecutionException( "Can't read Plexus application artifact '" + applicationJarFile.getAbsolutePath() + "'." );
+            throw new MojoExecutionException(
+                "Can't read Plexus application artifact '" + applicationJarFile.getAbsolutePath() + "'." );
         }
 
         try
         {
-            // ----------------------------------------------------------------------
-            // Copy the appserver
-            // ----------------------------------------------------------------------
-
             runtimeBuilder.addPlexusApplication( applicationJarFile, runtimePath );
         }
         catch ( Exception e )
