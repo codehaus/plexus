@@ -72,7 +72,7 @@ public class DefaultApplicationDeployer
     // Configuration
     // ----------------------------------------------------------------------
 
-    private String applicationsDirectory;
+    private File applicationsDirectory;
 
     private List phases;
 
@@ -92,7 +92,7 @@ public class DefaultApplicationDeployer
                             boolean expandPar )
         throws ApplicationServerException
     {
-        AppDeploymentContext context = new AppDeploymentContext( file, new File( applicationsDirectory ), deployments,
+        AppDeploymentContext context = new AppDeploymentContext( file, applicationsDirectory, deployments,
                                                                  appServerContainer, getAppServer(), expandPar );
 
         for ( Iterator i = phases.iterator(); i.hasNext(); )
