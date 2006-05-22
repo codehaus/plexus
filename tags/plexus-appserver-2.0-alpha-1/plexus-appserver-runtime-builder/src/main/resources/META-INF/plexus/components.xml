@@ -1,0 +1,74 @@
+<component-set>
+  <components>
+
+    <!--
+     | The Runtime Builder
+     |-->
+    <component>
+      <role>org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder</role>
+      <implementation>org.codehaus.plexus.builder.runtime.DefaultPlexusRuntimeBuilder</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.velocity.VelocityComponent</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.project.MavenProjectBuilder</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.metadata.ArtifactMetadataSource</role>
+        </requirement>
+      </requirements>
+    </component>
+
+    <!--
+    | The Application Builder
+    |-->
+    <component>
+      <role>org.codehaus.plexus.builder.application.ApplicationBuilder</role>
+      <implementation>org.codehaus.plexus.builder.application.DefaultApplicationBuilder</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.project.MavenProjectBuilder</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.metadata.ArtifactMetadataSource</role>
+        </requirement>
+      </requirements>
+    </component>
+
+    <!--
+    | The Service Builder
+    |-->
+
+    <component>
+      <role>org.codehaus.plexus.builder.service.ServiceBuilder</role>
+      <implementation>org.codehaus.plexus.builder.service.DefaultServiceBuilder</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.project.MavenProjectBuilder</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.metadata.ArtifactMetadataSource</role>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+</component-set>
