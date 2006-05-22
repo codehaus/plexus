@@ -1,9 +1,0 @@
-order,Mr Testy Tester,Level 12 Test Tower,1 Test Street,Test,NSW,2000
-line,Big Blue Widget,5,57.16
-line,Small Red Widget,11,23.14
-line,New Shiny Widget,1,109.12
-order,Mr Tested Tester, ,2 Test Street,Test Creek,NSW,2601
-line,Big Blue Widget,1,57.16
-line,Small Red Widget,53,23.14
-order,Mr Testier Tester, ,57/3 Test Street,Test Springs,NSW,2865
-line,New Shiny Widget,13,109.12

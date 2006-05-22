@@ -1,9 +1,0 @@
-<components>
-
-    <component>
-        <scope>session</scope>
-        <class>com.opensymphony.webwork.example.counter.Counter</class>
-        <enabler>com.opensymphony.webwork.example.counter.CounterAware</enabler>
-    </component>
-
-</components>
