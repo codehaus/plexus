@@ -147,6 +147,16 @@ public abstract class AbstractBuilder
         filterCopy( new FileReader( in ), out, map );
     }
 
+    protected void filterCopy( File in,
+                               File out,
+                               Map map,
+                               String beginToken,
+                               String endToken )
+        throws IOException
+    {
+        filterCopy( new FileReader( in ), out, map, beginToken, endToken );
+    }
+
     protected void filterCopy( InputStream in,
                                File out,
                                Map map )
@@ -155,12 +165,32 @@ public abstract class AbstractBuilder
         filterCopy( new InputStreamReader( in ), out, map );
     }
 
+    protected void filterCopy( InputStream in,
+                               File out,
+                               Map map,
+                               String beginToken,
+                               String endToken )
+        throws IOException
+    {
+        filterCopy( new InputStreamReader( in ), out, map, beginToken, endToken );
+    }
+
     protected void filterCopy( Reader in,
                                File out,
                                Map map )
         throws IOException
     {
-        InterpolationFilterReader reader = new InterpolationFilterReader( in, map, "@", "@" );
+        filterCopy( in, out, map, "@", "@" );
+    }
+
+    protected void filterCopy( Reader in,
+                               File out,
+                               Map map,
+                               String beginToken,
+                               String endToken )
+        throws IOException
+    {
+        InterpolationFilterReader reader = new InterpolationFilterReader( in, map, beginToken, endToken );
 
         Writer writer = new FileWriter( out );
 

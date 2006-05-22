@@ -31,6 +31,8 @@ import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.jetty.configuration.Webapp;
 import org.codehaus.plexus.jetty.configuration.ServletContext;
 import org.codehaus.plexus.jetty.configuration.WebContext;
+import org.codehaus.plexus.jetty.configuration.HttpListener;
+import org.codehaus.plexus.jetty.configuration.ProxyHttpListener;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -43,17 +45,16 @@ public interface ServletContainer
 
     boolean hasContext( String contextPath );
 
-    void addListener( String host,
-                      int port )
-        throws ServletContainerException, UnknownHostException;
+    void addListener( HttpListener listener )
+                      throws ServletContainerException, UnknownHostException;
 
-    void addProxyListener( String host,
-                           int port,
-                           String proxyHost,
-                           int proxyPort )
+    void addProxyListener( ProxyHttpListener listener )
         throws ServletContainerException, UnknownHostException;
 
     void startApplication( String contextPath )
+        throws ServletContainerException;
+
+    void stopApplication( String contextPath )
         throws ServletContainerException;
 
     // ----------------------------------------------------------------------------
@@ -70,4 +71,6 @@ public interface ServletContainer
 
     void deployContext( WebContext webContext )
         throws ServletContainerException;
+
+    void clearContexts();
 }

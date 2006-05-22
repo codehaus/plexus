@@ -202,7 +202,7 @@ public class DefaultPlexusRuntimeBuilder
 
             processMainConfiguration( containerConfiguration, configurationProperties, confDir );
 
-            createSystemScripts( binDir, confDir );
+            createSystemScripts( binDir, confDir, configurationProperties );
 
             //processConfigurations();
 
@@ -289,32 +289,32 @@ public class DefaultPlexusRuntimeBuilder
     //
     // ----------------------------------------------------------------------
 
-    private void createSystemScripts( File binDir, File confDir )
+    private void createSystemScripts( File binDir, File confDir, Properties configurationProperties )
         throws PlexusRuntimeBuilderException, IOException, CommandLineException
     {
         ClassLoader old = Thread.currentThread().getContextClassLoader();
 
         Thread.currentThread().setContextClassLoader( this.getClass().getClassLoader() );
 
-        createClassworldsConfiguration( confDir );
+        createClassworldsConfiguration( confDir, configurationProperties );
 
-        createLauncherScripts( binDir );
+        createLauncherScripts( binDir, configurationProperties );
 
         Thread.currentThread().setContextClassLoader( old );
     }
 
-    private void createClassworldsConfiguration( File confDir )
+    private void createClassworldsConfiguration( File confDir, Properties configurationProperties )
         throws PlexusRuntimeBuilderException, IOException
     {
-        mergeTemplate( CLASSWORLDS_TEMPLATE, new File( confDir, "classworlds.conf" ), true );
+        mergeTemplate( CLASSWORLDS_TEMPLATE, new File( confDir, "classworlds.conf" ), true, configurationProperties );
     }
 
-    private void createLauncherScripts( File binDir )
+    private void createLauncherScripts( File binDir, Properties configurationProperties )
         throws PlexusRuntimeBuilderException, IOException, CommandLineException
     {
-        mergeTemplate( UNIX_LAUNCHER_TEMPLATE, new File( binDir, "plexus.sh" ), false );
+        mergeTemplate( UNIX_LAUNCHER_TEMPLATE, new File( binDir, "plexus.sh" ), false, configurationProperties );
 
-        mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( binDir, "plexus.bat" ), true );
+        mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( binDir, "plexus.bat" ), true, configurationProperties );
 
         executable( new File( binDir, "plexus.sh" ) );
     }
@@ -525,10 +525,12 @@ public class DefaultPlexusRuntimeBuilder
     // Velocity methods
     // ----------------------------------------------------------------------
 
-    protected void mergeTemplate( String templateName, File outputFileName, boolean dos )
+    protected void mergeTemplate( String templateName, File outputFileName, boolean dos, Properties configurationProperties )
         throws IOException, PlexusRuntimeBuilderException
     {
         StringWriter buffer = new StringWriter( 100 * FileUtils.ONE_KB);
+        
+        File tmpFile = File.createTempFile( outputFileName.getName(), null );
 
         try
         {
@@ -543,7 +545,7 @@ public class DefaultPlexusRuntimeBuilder
             throw new PlexusRuntimeBuilderException( "Exception merging the velocity template.", ex );
         }
 
-        FileOutputStream output = new FileOutputStream( outputFileName );
+        FileOutputStream output = new FileOutputStream( tmpFile );
 
         BufferedReader reader = new BufferedReader( new StringReader( buffer.toString() ) );
 
@@ -562,5 +564,7 @@ public class DefaultPlexusRuntimeBuilder
         }
 
         output.close();
+
+        filterCopy( tmpFile, outputFileName, configurationProperties, "@{", "}@" );
     }
 }
