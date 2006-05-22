@@ -25,6 +25,7 @@ package org.codehaus.plexus.jdo;
  */
 
 import java.util.Properties;
+import java.sql.DriverManager;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;
@@ -32,6 +33,7 @@ import javax.jdo.PersistenceManagerFactory;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 
 /**
  * @author David Wynter
@@ -40,16 +42,21 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
  */
 public class DefaultJdoFactory
     extends AbstractLogEnabled
-    implements JdoFactory, Initializable
+    implements JdoFactory,
+    Initializable,
+    Disposable
 {
-    /** @configuration */
+    /**
+     * @configuration
+     */
     private Properties properties;
 
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
     private PersistenceManagerFactory persistenceManagerFactory;
+
+    public PersistenceManagerFactory getPersistenceManagerFactory()
+    {
+        return persistenceManagerFactory;
+    }
 
     // ----------------------------------------------------------------------
     // Component Lifecycle
@@ -75,45 +82,37 @@ public class DefaultJdoFactory
         {
             throw new InitializationException( "Cannot find driver class: " + driverClass, e );
         }
-
-        // TODO: Move this to a special DBCP version of the JdoFactory
-/*
-        if ( properties.get( "usePool" ).equals( "true" ) )
-        {
-            // Create the actual pool of connections
-            ObjectPool connectionPool = new GenericObjectPool( null );
-
-            // Create the factory to be used by the pool to create the connections
-            ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(
-                (String) properties.get( "javax.jdo.option.ConnectionURL" ),
-                (String) properties.get( "javax.jdo.option.ConnectionUserName" ),
-                (String) properties.get( "javax.jdo.option.ConnectionPassword" ) );
-
-            // Wrap the connections with pooled variants.
-            PoolableConnectionFactory pcf = new PoolableConnectionFactory( connectionFactory, connectionPool, null,
-                                                                           null, false, true );
-
-            // Create the datasource
-            DataSource ds = new PoolingDataSource( connectionPool );
-
-            // Create our PMF for using JPOX.
-            persistenceManagerFactory.setConnectionDriverName( (String) properties.get( "javax.jdo.option.ConnectionDriverName" ) );
-            persistenceManagerFactory.setConnectionURL( (String) properties.get( "javax.jdo.option.ConnectionURL" ) );
-            persistenceManagerFactory.setConnectionFactory( ds );
-        }
-        else
-        {
-            PersistenceManagerFactory persistenceManagerFactory = JDOHelper.getPersistenceManagerFactory( properties );
-        }
-*/
     }
 
-    // ----------------------------------------------------------------------
-    // JdoFactory Implementation
-    // ----------------------------------------------------------------------
-
-    public PersistenceManagerFactory getPersistenceManagerFactory()
+    public void shutdown()
+        throws Exception
     {
-        return persistenceManagerFactory;
+        dispose();
+    }
+
+    public void dispose()
+    {
+        if ( properties != null )
+        {
+            String databaseUrl = properties.getProperty( "javax.jdo.option.ConnectionURL" );
+
+            if ( databaseUrl != null )
+            {
+
+                if ( databaseUrl.indexOf( "derby" ) > 0 )
+                {
+                    try
+                    {
+                        DriverManager.getConnection( "jdbc:derby:" + databaseUrl + ";shutdown=true" );
+                    }
+                    catch ( Exception e )
+                    {
+                        // Shouldn't happen.
+                    }
+
+                    System.gc();
+                }
+            }
+        }
     }
 }

@@ -34,4 +34,7 @@ public interface JdoFactory
     String ROLE = JdoFactory.class.getName();
 
     PersistenceManagerFactory getPersistenceManagerFactory();
+
+    void shutdown()
+        throws Exception;
 }
