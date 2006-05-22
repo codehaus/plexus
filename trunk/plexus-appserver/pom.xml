@@ -6,7 +6,7 @@
     <version>1.0.5</version>
   </parent>
   <artifactId>plexus-appserver</artifactId>
-  <version>2.0-alpha-1</version>
+  <version>2.0-alpha-2-SNAPSHOT</version>
   <name>Plexus Application Server</name>
   <packaging>pom</packaging>
   <dependencies>
@@ -27,9 +27,4 @@
     <module>plexus-appserver-services</module>
     <module>plexus-appserver-runtime-builder</module>
   </modules>
-
-  <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-appserver-2.0-alpha-1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-appserver-2.0-alpha-1</developerConnection>
-  </scm>
 </project>
