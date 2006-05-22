@@ -77,11 +77,21 @@ public class JettyPlexusService
                                         PlexusConfiguration serviceConfiguration )
         throws Exception
     {
+        // We probably need to stop running contexts here ...
+
+
         ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration,
                                                                                       runtimeProfile.getApplicationServerContainer().getContainerRealm() );
         for ( Iterator it = configuration.getWebapps().iterator(); it.hasNext(); )
         {
             Webapp webapp = (Webapp) it.next();
+
+            // Stop the webapp context if it is running.
+
+            if ( servletContainer.hasContext( webapp.getContext() ) )
+            {
+                servletContainer.stopApplication( webapp.getContext() );
+            }
 
             File webAppDir;
 
@@ -125,7 +135,8 @@ public class JettyPlexusService
         {
             WebContext webContext = (WebContext) i.next();
 
-            getLogger().info( "Deploying " + webContext.getPath() + " with context path of " + webContext.getContext() );
+            getLogger().info(
+                "Deploying " + webContext.getPath() + " with context path of " + webContext.getContext() );
 
             servletContainer.deployContext( webContext );
         }
@@ -138,7 +149,8 @@ public class JettyPlexusService
         {
             ServletContext servletContext = (ServletContext) i.next();
 
-            getLogger().info( "Deploying servlet " + servletContext.getName() + " with context path of " + servletContext.getContext() );
+            getLogger().info( "Deploying servlet " + servletContext.getName() + " with context path of " +
+                servletContext.getContext() );
 
             servletContainer.deployServletContext( servletContext );
         }
@@ -157,17 +169,20 @@ public class JettyPlexusService
 
             processWebContextConfiguration( application, appRuntimeProfile );
 
-            // ----------------------------------------------------------------------------
-            // Now we need to find all the components that might be included in the webapp.
-            // We have to do this here because now the container is initialized which
-            // means discovery can occur.
-            // ----------------------------------------------------------------------------
+            if ( !servletContainer.hasContext( application.getContext() ) )
+            {
+                // ----------------------------------------------------------------------------
+                // Now we need to find all the components that might be included in the webapp.
+                // We have to do this here because now the container is initialized which
+                // means discovery can occur.
+                // ----------------------------------------------------------------------------
 
-            DefaultPlexusContainer c = appRuntimeProfile.getApplicationContainer();
+                DefaultPlexusContainer c = appRuntimeProfile.getApplicationContainer();
 
-            ClassRealm realm = c.getContainerRealm();
+                ClassRealm realm = c.getContainerRealm();
 
-            c.discoverComponents( realm );
+                c.discoverComponents( realm );
+            }
 
             servletContainer.startApplication( application.getContext() );
         }
@@ -191,7 +206,12 @@ public class JettyPlexusService
         }
     }
 
-    private void processWebContextConfiguration( WebContext context, AppRuntimeProfile profile )
+    // ----------------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------------
+
+    private void processWebContextConfiguration( WebContext context,
+                                                 AppRuntimeProfile profile )
         throws Exception
     {
         if ( context.getVirtualHost() == null )
@@ -245,15 +265,13 @@ public class JettyPlexusService
 
                 getLogger().info( "Adding HTTP proxy listener on " + listener + " for " + proxyListener );
 
-                servletContainer.addProxyListener( proxyHttpListener.getHost(), proxyHttpListener.getPort(),
-                                                   proxyHttpListener.getProxyHost(),
-                                                   proxyHttpListener.getProxyPort() );
+                servletContainer.addProxyListener( proxyHttpListener );
             }
             else
             {
                 getLogger().info( "Adding HTTP listener on " + listener );
 
-                servletContainer.addListener( httpListener.getHost(), httpListener.getPort() );
+                servletContainer.addListener( httpListener );
             }
         }
     }

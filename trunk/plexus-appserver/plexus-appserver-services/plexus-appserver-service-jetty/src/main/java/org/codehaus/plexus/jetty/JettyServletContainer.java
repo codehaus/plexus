@@ -34,6 +34,7 @@ import org.codehaus.plexus.jetty.configuration.InitParameter;
 import org.codehaus.plexus.jetty.configuration.ServletContext;
 import org.codehaus.plexus.jetty.configuration.WebContext;
 import org.codehaus.plexus.jetty.configuration.Webapp;
+import org.codehaus.plexus.jetty.configuration.ProxyHttpListener;
 import org.codehaus.plexus.util.FileUtils;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.HttpListener;
@@ -50,6 +51,8 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -65,50 +68,7 @@ public class JettyServletContainer
 {
     private Server server;
 
-    // ----------------------------------------------------------------------
-    // Lifecycle
-    // ----------------------------------------------------------------------
-
-    public void start()
-        throws StartingException
-    {
-        // ----------------------------------------------------------------------
-        // Start the server
-        // ----------------------------------------------------------------------
-
-        server = new Server();
-
-        try
-        {
-            server.start();
-        }
-        catch ( MultiException e )
-        {
-            throw new StartingException( "Error while starting Jetty", e );
-        }
-    }
-
-    public void stop()
-    {
-        if ( server.isStarted() )
-        {
-            while ( true )
-            {
-                try
-                {
-                    server.stop( true );
-
-                    break;
-                }
-                catch ( InterruptedException e )
-                {
-                    continue;
-                }
-            }
-
-            server.destroy();
-        }
-    }
+    private Map classLoaders = new HashMap();
 
     // ----------------------------------------------------------------------
     // ServletContainer Implementation
@@ -133,58 +93,55 @@ public class JettyServletContainer
         return false;
     }
 
-    public void addListener( String host,
-                             int port )
+    public void addListener( org.codehaus.plexus.jetty.configuration.HttpListener listener )
         throws ServletContainerException, UnknownHostException
     {
-        InetAddrPort addrPort = new InetAddrPort( host, port );
+        InetAddrPort addrPort = new InetAddrPort( listener.getHost(), listener.getPort() );
 
-        HttpListener listener;
+        HttpListener httpListener;
 
         try
         {
-            listener = server.addListener( addrPort );
+            httpListener = server.addListener( addrPort );
+
+            httpListener.start();
+
         }
         catch ( IOException e )
         {
-            throw new ServletContainerException(
-                "Error while adding listener on address: '" + host + "', port: " + port + ".", e );
-        }
-
-        try
-        {
-            listener.start();
+            throw new ServletContainerException( "Error while adding httpListener on address: '" + listener.getHost() +
+                "', port: " + listener.getPort() + ".", e );
         }
         catch ( Exception e )
         {
-            throw new ServletContainerException(
-                "Error while starting listener on address: '" + host + "', port: " + port + ".", e );
+            throw new ServletContainerException( "Error while starting httpListener on address: '" +
+                listener.getHost() + "', port: " + listener.getPort() + ".", e );
         }
     }
 
-    public void addProxyListener( String host,
-                                  int port,
-                                  String proxyHost,
-                                  int proxyPort )
+    public void removeListener()
+    {
+    }
+
+    public void addProxyListener( ProxyHttpListener listener )
         throws ServletContainerException, UnknownHostException
     {
-        InetAddrPort addrPort = new InetAddrPort( host, port );
+        InetAddrPort addrPort = new InetAddrPort( listener.getHost(), listener.getPort() );
 
-        JettyProxyHttpListener listener = new JettyProxyHttpListener( addrPort );
+        JettyProxyHttpListener proxyListener = new JettyProxyHttpListener( addrPort );
 
-        listener.setForcedHost( proxyHost + ":" + proxyPort );
+        proxyListener.setForcedHost( listener.getProxyHost() + ":" + listener.getProxyPort() );
 
-        server.addListener( listener );
-
+        server.addListener( proxyListener );
 
         try
         {
-            listener.start();
+            proxyListener.start();
         }
         catch ( Exception e )
         {
-            throw new ServletContainerException(
-                "Error while starting listener on address: '" + host + "', port: " + port + ".", e );
+            throw new ServletContainerException( "Error while starting proxyListener on address: '" +
+                listener.getHost() + "', port: " + listener.getPort() + ".", e );
         }
     }
 
@@ -201,17 +158,43 @@ public class JettyServletContainer
     {
         try
         {
-            getContext( contextPath ).start();
+            HttpContext context = getContext( contextPath );
+
+            getLogger().info( "Starting Jetty Context " + contextPath );
+
+            context.start();
         }
         catch ( Exception e )
         {
-            throw new ServletContainerException( "Error while starting the web appserver.", e );
+            throw new ServletContainerException( "Error while starting the context " + contextPath, e );
+        }
+    }
+
+    public void stopApplication( String contextPath )
+        throws ServletContainerException
+    {
+        try
+        {
+            HttpContext context = getContext( contextPath );
+
+            getLogger().info( "Starting Jetty Context " + contextPath );
+
+            context.stop( true );
+        }
+        catch ( Exception e )
+        {
+            throw new ServletContainerException( "Error while stopping the context " + contextPath, e );
         }
     }
 
     public void deployContext( WebContext webContext )
         throws ServletContainerException
     {
+        if ( hasContext( webContext.getContext() ) )
+        {
+            return;
+        }
+
         HttpContext context = new HttpContext();
 
         context.setContextPath( webContext.getContext() );
@@ -222,12 +205,17 @@ public class JettyServletContainer
         // functionality like POST, or WebDAV type stuff that will need to be configurable.
         context.addHandler( new ResourceHandler() );
 
-        server.addContext( context );
+        addContext( context );
     }
 
     public void deployServletContext( ServletContext servletContext )
         throws ServletContainerException
     {
+        if ( hasContext( servletContext.getContext() ) )
+        {
+            return;
+        }
+
         ServletHttpContext context = new ServletHttpContext();
 
         context.setContextPath( servletContext.getContext() );
@@ -281,7 +269,7 @@ public class JettyServletContainer
                 "Illegal access trying to use the servlet " + servletContext.getServlet(), e );
         }
 
-        server.addContext( context );
+        addContext( context );
     }
 
     // ----------------------------------------------------------------------
@@ -337,87 +325,157 @@ public class JettyServletContainer
 
         WebApplicationContext webappContext;
 
-        try
+        if ( !hasContext( context ) )
         {
-            if ( virtualHost != null )
+            try
             {
-                webappContext = server.addWebApplication( virtualHost, context, war.getAbsolutePath() );
+                if ( virtualHost != null )
+                {
+                    webappContext = server.addWebApplication( virtualHost, context, war.getAbsolutePath() );
+                }
+                else
+                {
+                    webappContext = server.addWebApplication( context, war.getAbsolutePath() );
+                }
+            }
+            catch ( IOException e )
+            {
+                throw new ServletContainerException( "Error while deploying WAR.", e );
+            }
+
+            // ----------------------------------------------------------------------
+            // Configure the appserver context
+            // ----------------------------------------------------------------------
+
+            webappContext.setExtractWAR( extractWar );
+
+            if ( extractionLocation != null )
+            {
+                webappContext.setTempDirectory( extractionLocation );
+            }
+
+            if ( standardWebappClassloader )
+            {
+                getLogger().info( "Using standard webapp classloader for webapp." );
+
+                try
+                {
+                    // We need to start the context to trigger the unpacking so that we can
+                    // create a realm. We need to create a realm so that we can discover all
+                    // the components in the webapp.
+
+                    ClassRealm realm = container.getCoreRealm();
+
+                    List jars = FileUtils.getFiles( war, "**/*.jar", null );
+
+                    // The webapp directory needs to be unpacked before we can pick up the files
+
+                    for ( Iterator i = jars.iterator(); i.hasNext(); )
+                    {
+                        File file = (File) i.next();
+
+                        realm.addConstituent( file.toURL() );
+                    }
+
+                    File webInf = new File( war, "WEB-INF" );
+
+                    realm.addConstituent( webInf.toURL() );
+
+                    File classes = new File( war, "WEB-INF/classes" );
+
+                    realm.addConstituent( classes.toURL() );
+
+                    webappContext.setClassLoader( realm.getClassLoader() );
+                }
+                catch ( Exception e )
+                {
+                    throw new ServletContainerException( "Error creating webapp classloader.", e );
+                }
             }
             else
             {
-                webappContext = server.addWebApplication( context, war.getAbsolutePath() );
+                // Dirty hack, need better methods for classloaders because i can set the core realm but not get it,
+                // or get the container realm but not set it. blah!
+                webappContext.setClassLoader( container.getCoreRealm().getClassLoader() );
             }
-        }
-        catch ( IOException e )
-        {
-            throw new ServletContainerException( "Error while deploying WAR.", e );
-        }
 
-        // ----------------------------------------------------------------------
-        // Configure the appserver context
-        // ----------------------------------------------------------------------
-
-        webappContext.setExtractWAR( extractWar );
-
-        if ( extractionLocation != null )
-        {
-            webappContext.setTempDirectory( extractionLocation );
-        }
-
-        // If it is a standard WAR file then use the standard classloading semantics. We don't want
-        // to use the plexus container classloader for deploying third-party WARs.
-
-        // webapp
-        // app
-        // core
-
-        // align the webapp classload and what plexus uses
-
-        if ( standardWebappClassloader )
-        {
-            getLogger().info( "Using standard webapp classloader for webapp." );
-
-            try
-            {
-                // We need to start the context to trigger the unpacking so that we can
-                // create a realm. We need to create a realm so that we can discover all
-                // the components in the webapp.
-
-                ClassRealm realm = container.getCoreRealm();
-
-                List jars = FileUtils.getFiles( war, "**/*.jar", null );
-
-                // The webapp directory needs to be unpacked before we can pick up the files
-
-                for ( Iterator i = jars.iterator(); i.hasNext(); )
-                {
-                    File file = (File) i.next();
-
-                    realm.addConstituent( file.toURL() );
-                }
-
-                File webInf = new File( war, "WEB-INF" );
-
-                realm.addConstituent( webInf.toURL() );
-
-                File classes = new File( war, "WEB-INF/classes" );
-
-                realm.addConstituent( classes.toURL() );
-
-                webappContext.setClassLoader( realm.getClassLoader() );
-            }
-            catch ( Exception e )
-            {
-                throw new ServletContainerException( "Error creating webapp classloader.", e );
-            }
+            // Save the classloader for reloads
+            classLoaders.put( webapp.getContext(), webappContext.getClassLoader() );
         }
         else
         {
-            // Dirty hack, need better methods for classloaders because i can set the core realm but not get it,
-            // or get the container realm but not set it. blah!
-            webappContext.setClassLoader( container.getCoreRealm().getClassLoader() );
+            webappContext = (WebApplicationContext) getContext( webapp.getContext() );
+
+            // We only need to reset the classloader if we're doing standard webapp loading. The stopping
+            // of the Jetty context seems to whack the classloader so we need to reset it. If we are
+            // using Plexus classloading then the classloader appears to resist the whacking. Not sure
+            // what's happening here but classworlds is going to take a bath shortly anyway.
+            if ( standardWebappClassloader )
+            {
+                webappContext.setClassLoader( (ClassLoader) classLoaders.get( webapp.getContext() ) );
+            }
         }
 
         webappContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY, container );
+    }
+
+    protected HttpContext addContext( HttpContext context )
+    {
+        return server.addContext( context );
+    }
+
+    public void clearContexts()
+    {
+        HttpContext[] contexts = server.getContexts();
+
+        for ( int i = 0; i < contexts.length; i++ )
+        {
+            HttpContext context = contexts[i];
+
+            getLogger().info( "Removing context " + context.getContextPath() );
+
+            server.removeContext( context );
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // Lifecycle
+    // ----------------------------------------------------------------------
+
+    public void start()
+        throws StartingException
+    {
+        server = new Server();
+
+        try
+        {
+            server.start();
+        }
+        catch ( MultiException e )
+        {
+            throw new StartingException( "Error while starting Jetty", e );
+        }
+    }
+
+    public void stop()
+    {
+        if ( server.isStarted() )
+        {
+            while ( true )
+            {
+                try
+                {
+                    server.stop( true );
+
+                    break;
+                }
+                catch ( InterruptedException e )
+                {
+                    continue;
+                }
+            }
+
+            server.destroy();
+        }
     }
 }
