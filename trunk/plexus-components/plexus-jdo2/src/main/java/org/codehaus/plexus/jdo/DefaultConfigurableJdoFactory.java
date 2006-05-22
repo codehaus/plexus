@@ -31,7 +31,7 @@ import javax.jdo.JDOHelper;
  * @version $Id$
  */
 public class DefaultConfigurableJdoFactory
-    extends AbstractLogEnabled
+    extends DefaultJdoFactory
     implements ConfigurableJdoFactory, Initializable
 {
     // ----------------------------------------------------------------------
