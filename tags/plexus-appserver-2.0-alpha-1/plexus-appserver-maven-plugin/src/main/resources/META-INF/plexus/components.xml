@@ -1,0 +1,67 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+      <role-hint>plexus-application</role-hint>
+      <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
+      <configuration>
+        <!-- START SNIPPET: plexus-appserver-lifecycle -->
+        <phases>
+          <package>
+            org.codehaus.plexus:plexus-appserver-maven-plugin:assemble-app,
+            org.codehaus.plexus:plexus-appserver-maven-plugin:package-app</package>
+          <install>org.apache.maven.plugins:maven-install-plugin:install</install>
+          <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
+        </phases>
+        <!-- END SNIPPET: plexus-appserver-lifecycle -->
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+      <role-hint>plexus-service</role-hint>
+      <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
+      <configuration>
+        <!-- START SNIPPET: plexus-service-lifecycle -->
+        <phases>
+          <process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
+          <compile>org.apache.maven.plugins:maven-compiler-plugin:compile</compile>
+          <process-test-resources>org.apache.maven.plugins:maven-resources-plugin:testResources</process-test-resources>
+          <test-compile>org.apache.maven.plugins:maven-compiler-plugin:testCompile</test-compile>
+          <test>org.apache.maven.plugins:maven-surefire-plugin:test</test>
+          <package>
+            org.apache.maven.plugins:maven-jar-plugin:jar,
+            org.codehaus.plexus:plexus-appserver-maven-plugin:assemble-service,
+            org.codehaus.plexus:plexus-appserver-maven-plugin:package-service,
+          </package>
+          <install>org.apache.maven.plugins:maven-install-plugin:install</install>
+          <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
+        </phases>
+        <!-- END SNIPPET: plexus-service-lifecycle -->
+      </configuration>
+    </component>
+
+    <!-- Artifact Handlers -->
+    <component>
+      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+      <role-hint>plexus-service</role-hint>
+      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+      <configuration>
+        <type>plexus-service</type>
+        <extension>sar</extension>
+        <packaging>plexus-service</packaging>
+      </configuration>
+    </component>
+    
+    <component>
+      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+      <role-hint>plexus-application</role-hint>
+      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+      <configuration>
+        <type>plexus-application</type>
+        <extension>jar</extension>
+        <packaging>plexus-application</packaging>
+      </configuration>
+    </component>
+  </components>
+</component-set>
