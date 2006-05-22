@@ -22,9 +22,16 @@ package org.codehaus.plexus.jetty.configuration;
  */
 public class HttpListener
 {
+    private String id;
+
     private String host;
 
     private int port;
+
+    public String getId()
+    {
+        return id;
+    }
 
     public String getHost()
     {
