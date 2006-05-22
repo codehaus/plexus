@@ -99,11 +99,18 @@ public class DefaultJdoFactory
             if ( databaseUrl != null )
             {
 
-                if ( databaseUrl.indexOf( "derby" ) > 0 )
+                if ( databaseUrl.indexOf( "jdbc:derby:" ) == 0 )
                 {
+                    String databasePath = databaseUrl.substring( "jdbc:derby:".length() );
+
+                    if ( databasePath.indexOf( ";" ) > 0 )
+                    {
+                        databasePath = databasePath.substring( 0, databasePath.indexOf( ";" ) );
+                    }
+
                     try
                     {
-                        DriverManager.getConnection( "jdbc:derby:" + databaseUrl + ";shutdown=true" );
+                        DriverManager.getConnection( "jdbc:derby:" + databasePath + ";shutdown=true" );
                     }
                     catch ( Exception e )
                     {
