@@ -6,8 +6,8 @@
     <version>2.0-alpha-1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>plexus-appserver-runtime-booter-jsw</artifactId>
-  <name>Plexus App Server JSW Booter</name>
+  <artifactId>plexus-appserver-runtime-booter-shellscript</artifactId>
+  <name>Plexus App Server Shell Script Runtime Booter</name>
   <description>Plexus App Server Tools for creating application bundles, services bundles and server runtimes.</description>
   <dependencies>
     <dependency>
