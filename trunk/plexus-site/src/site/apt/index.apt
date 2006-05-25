@@ -4,18 +4,6 @@
  Michal Maczka
  -----
 
- * [Plexus Container|Plexus Container]
-
- * [Plexus Application Server]
-
- * [Plexus Components]
-
- * [Plexus Servlet]
-
- * [Plexus Tools]
-
- * [Brainstorming area - Propositions of changes|Propositions]
-
  The Plexus project seeks to create end-to-end developer tools for writing
  applications.  At the core is the container, which can be embedded or for a
  full scale application server.  There are many reusable components for

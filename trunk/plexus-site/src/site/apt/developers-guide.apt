@@ -4,6 +4,8 @@ Developer's Guide
  Michal Maczka
  -----
 
+ * [Getting Started]
+
  * [Developing Components]
 
   * [Introduction To Components]
@@ -45,3 +47,6 @@ Developer's Guide
  * [Advanced Topics]
 
   * [Plexus Class Loading]
+
+ * [Developing a website monitor]
+ 
