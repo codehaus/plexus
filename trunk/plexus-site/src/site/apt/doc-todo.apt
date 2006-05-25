@@ -1,0 +1,18 @@
+ -----
+ Docs to do
+ -----
+ Brett Porter
+ -----
+
+- components.xml
+- CDC
+- plexus embedder
+- appserver
+- roles, role hints
+- requirements (including map, list)
+- different instantiation strategies
+- component configuration
+- implementing new configuration converters
+- component factories
+
+

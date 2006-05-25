@@ -62,3 +62,23 @@ How to work with Plexus applications on a day-to-day basis
  [<<<plexus:deploy-dev-application>>>] has prerequisite on <<<plexus:package-app>>> and will
  deploy the application JAR to the <<<apps>>> directory in the runtime. It will also copy over
  all the dependencies into the <<<repository>>> directory.
+
+-------
+
+This is a suggestion for layout for how the application server and the application layouts, both in source and jar forms
+
+h2. The Application Server Directory Layout
+
+||Directory||Description||
+|{{bin}}|Same as always, contains startup scripts|
+|{{conf}}|Contains {{plexus.xml}} which is the configuration for the application server and {{classworlds.conf}} which will be used for bootstrapping the application server.|
+|{{core}}|Contains the plexus-container-default and plexus-appserver and their dependencies.|
+|{{lib}}|This directory would initially be empty. It can contain artifacts thats configured as services {{conf/plexus.xml}} |
+|{{apps}}|All jar files in this directory will be exploded and started as plexus applications.|
+|{{services}}|Services such as a Jetty service, or TX service. Not sure how these should be packaged. They could be a contained jar, or more likely follow the Application Directory Layout outlined below. The later case would be good so the configuration files could be edited.|
+
+h2. The Application Directory Layout
+
+||Directory||Description||
+|{{conf}}|Contains {{plexus.xml}} that is a normal plexus configuration file. It contains application specific components.|
+|{{lib}}|Contains all jar files in the application|
