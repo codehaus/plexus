@@ -1,3 +1,5 @@
+<<This is an old piece of documentation, yet to be integrated into the new site and removed>>
+
 h3. Overview
 For each component plexus creates a component profile.   The profiles keeps track of the following things for each component:
 * [Component Factory]
