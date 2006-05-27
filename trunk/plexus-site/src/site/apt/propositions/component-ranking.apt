@@ -4,6 +4,8 @@
  Michal Maczka
  -----
 
+<<This is an old piece of documentation, yet to be integrated into the new site and removed>>
+
 h3. Component Ranking
 
 When registering a component, a component descriptor may optionally contain a *ranking* number as one of the component descriptor's properties.

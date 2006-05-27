@@ -4,6 +4,8 @@
  Brian Topping
  -----
 
+<<This is an old piece of documentation, yet to be integrated into the new site and removed>>
+
 Maybe these will help someone.  I'm on windoze, making this process a little more challenging.  A UN*X environment should be a lot easier, these notes may have some relevance there.  Also, check the last update of these notes.  They may not be up to date by the time you read them.
 
 # M2 has some issues with spaces in the path or file name.  Save yourself trouble by putting the repo someplace that doeesn't have this problem.

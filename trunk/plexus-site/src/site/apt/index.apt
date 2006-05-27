@@ -1,15 +1,74 @@
  -----
  Plexus
  -----
- Michal Maczka
+ Brett Porter
+ -----
+ 25 May 2006
  -----
 
- The Plexus project seeks to create end-to-end developer tools for writing
- applications.  At the core is the container, which can be embedded or for a
- full scale application server.  There are many reusable components for
- hibernate, form processing, jndi, i18n, velocity, etc.  Plexus also includes
- an [application server|Plexus Application Server] which is like a J2EE
- application server, without all the baggage.
+Overview
 
- To start developing plexus applications read see the [One Minute Tutorial] or
- the [Five Minute Tutorial].
+  The Plexus project provides a full software stack for creating and executing software projects. Founded on the
+  Plexus container, applications can utilise component-oriented programming to build modular, reusable components
+  that can easily be assembled and reused.
+
+  While Plexus is similar to other <inversion-of-control> (IoC) or <dependency injection> frameworks such as the
+  Spring Framework, it's fully-fledged container supports many more features such as component lifecycles and
+  instantiation strategies, nested containers, component configuration, auto-wiring, component dependencies,
+  and various dependency injection techniques including constructor injection, setter injection, and private field
+  injection. See the {{{documentation/feature-comparison.html} Feature Comparison}} page for more information on
+  the differences between Plexus and other products.
+
+  The Plexus project provides a number of pre-built components for common tasks and toolkits
+  such as Jetty, Velocity, Hibernate, i18n, and {{{ref/components/index.html} many more}}. However,
+  Plexus is also able to reuse your existing components written for other IoC frameworks such as
+  Spring, Avalon and Pico Container unmodified, as well as allowing you to reuse your existing code
+  inside the Plexus Container.
+
+  Plexus comes with an application server that can run your applications, making it trivial to
+  build a standalone executable distribution with common features such as service execution if needed.
+  However, Plexus applications can be run in any environment by embedding the container in an existing
+  application, including Java EE applications or web applications.
+
+  Components in Plexus need not be written in Java, with component factories existing for
+  Jython, JRuby, Beanshell, and Groovy.
+
+  The Plexus container is currently used in a number of applications and frameworks, most notably Maven 2.0 and
+  Webwork 2.2 (Struts Action Framework 2.0).
+
+  For answers to common questions about Plexus, see the {{{faq.html} FAQ}}.
+
+* Trails
+
+  The Plexus documentation is organised into trails, depending on how you intend to use it.
+
+** Component Trail
+
+  This trail is for those wishing to create Plexus components for applications already using the Plexus Container
+
+  [[1]] To learn the basics about Plexus components and the Plexus container, try the
+  {{{tutorials/getting-started.html} Five Minute Tutorial}}.
+
+  [[2]] To learn more about writing components, take the {{{tutorials/components.html} Component Tutorial}}.
+
+  ~~TODO: finish
+
+** Container Trail
+
+  This trail is for those wishing to create an application that uses the Plexus container.
+
+  [[1]] To get started using the Plexus container, try the {{{tutorials/getting-started.html} Five Minute Tutorial}}.
+
+  ~~TODO: finish
+
+** Component-oriented Programming Trail
+
+  This trail is for those that are new to component-oriented programming and would like to know more about it,
+  independant of Plexus.
+
+  [[1]] {{{tutorials/why-use-components.html} Why Use Components?}}
+
+  ~~TODO: finish
+
+
+
