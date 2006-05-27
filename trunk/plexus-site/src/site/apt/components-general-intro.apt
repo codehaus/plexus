@@ -1,6 +1,8 @@
 Introduction To Components
 
 
+<<This is an old piece of documentation, yet to be integrated into the new site and removed>>
+
 What are components?  Well, that is highly debated.
 [Szyperski|http://www.amazon.com/exec/obidos/ASIN/0201745720/qid%3D1090125966/sr%3D11-1/ref%3Dsr%5F11%5F1/104-8989869-2491134] list several characteristics of components: composition, units of deployment and resuability. However some of these people may have other definitions:
 * [PicoContainer|http://picocontainer.codehaus.org/Components]

@@ -2,27 +2,34 @@
 <project name="Plexus">
   <bannerLeft>
     <name>Plexus</name>
-    <href>http://plexus.codehaus.org</href>
+    <href>http://plexus.codehaus.org/</href>
+    <src>/images/plexus-logo.png</src>
   </bannerLeft>
   <bannerRight>
-    <name>http://codehaus.org/codehaus-small.png</name>
+    <name>The Codehaus</name>
     <href>http://www.codehaus.org</href>
+    <src>http://www.codehaus.org/codehaus-small.png</src>
   </bannerRight>
   <body>
     <links>
       <item name="Plexus" href="http://plexus.codehaus.org"/>
       <item name="The Codehaus" href="http://www.codehaus.org"/>
     </links>
-    <menu name="Quick Links">
-      <item name="Lifecycle" href="/lifecycle.html"/>    
-      <item name="Inheritance" href="/inheritance.html"/>          
-      <item name="Configuration management" href="/configuration-management.html"/>
-      <item name="Install" href="/install.html"/>
+    <menu name="Plexus">
+      <item name="Overview" href="/index.html" />
+      <item name="FAQ" href="/faq.html"/>
     </menu>
-    <menu name="Plugins">
-      <item name="Plugins" href="/plugins.html"/>
-      <item name="Plugin descriptors" href="/plugin-descriptors.html"/>
-      <item name="Mojos" href="/mojos.html"/>
+    <menu name="Tutorials">
+      <item name="Five Minute Tutorial" href="/tutorials/getting-started.html" />
+      <item name="Components Tutorial" href="/tutorials/components.html" />
+      <item name="Why Use Components?" href="/tutorials/why-use-components.html" />
     </menu>
+    <menu name="Documentation">
+      <item name="Component Descriptor Creator" href="/documnetation/component-descriptor-creator.html" />
+    </menu>
+    <menu name="Reference">
+      <item name="Components" href="/ref/components.html" />
+    </menu>
+    <menu ref="reports" />
   </body>
 </project>
