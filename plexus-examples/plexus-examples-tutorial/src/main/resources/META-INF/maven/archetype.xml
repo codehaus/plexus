@@ -1,0 +1,11 @@
+<archetype>
+  <id>plexus-examples-tutorial</id>
+  <sources>
+    <source>src/main/java/org/codehaus/plexus/examples/tutorial/App.java</source>
+    <source>src/main/java/org/codehaus/plexus/examples/tutorial/Cheese.java</source>
+    <source>src/main/java/org/codehaus/plexus/examples/tutorial/ParmesanCheese.java</source>
+  </sources>
+  <resources>
+    <resource>src/main/resources/META-INF/plexus/components.xml</resource>
+  </resources>
+</archetype>
