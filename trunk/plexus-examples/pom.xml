@@ -1,0 +1,19 @@
+<?xml version="1.0"?><project>
+  <parent>
+    <artifactId>plexus</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0.5</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.plexus.examples</groupId>
+  <artifactId>plexus-examples</artifactId>
+  <version>1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Plexus Examples</name>
+  <modules>
+    <module>plexus-example-tutorial</module>
+    <!-- old example
+      <module>simple</module>
+    -->
+  </modules>
+</project>
