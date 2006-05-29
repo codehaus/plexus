@@ -11,7 +11,7 @@
   <packaging>pom</packaging>
   <name>Plexus Examples</name>
   <modules>
-    <module>plexus-example-tutorial</module>
+    <module>plexus-examples-tutorial</module>
     <!-- old example
       <module>simple</module>
     -->
