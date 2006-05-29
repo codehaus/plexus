@@ -1,12 +1,12 @@
-<component-set>
+<plexus>
   <components>
     <!--
      | Actions
      |-->
     <component>
       <role>com.opensymphony.xwork.Action</role>
-      <role-hint>hello</role-hint>
+      <role-hint>helloAction</role-hint>
       <implementation>${package}.DefaultHelloWorld</implementation>
     </component>
   </components>
-</component-set>
+</plexus>

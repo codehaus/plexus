@@ -19,7 +19,7 @@
 
     <package name="examples" extends="default">
 
-        <action name="Hello" class="hello">
+        <action name="Hello" class="helloAction">
             <result name="success" type="dispatcher">
                 <param name="location">/success.jsp</param>
             </result>
