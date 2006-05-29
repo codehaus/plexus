@@ -74,8 +74,7 @@
     <developer>
       <id>jvanzyl</id>
       <name>Jason van Zyl</name>
-      <email>jason@zenplex.com</email>
-      <organization>Zenplex</organization>
+      <email>jason@maven.org</email>
       <roles>
         <role>Developer</role>
         <role>Release Manager</role>
@@ -174,6 +173,22 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Brett Porter</name>
+      <id>brett</id>
+      <email>brett@codehaus.org</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>John Casey</name>
+      <id>jdcasey</id>
+      <email>jdcasey@codehaus.org</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
   <dependencies>
     <dependency>
@@ -194,6 +209,7 @@
   <modules>
     <module>plexus-appserver</module>
     <module>plexus-archetypes</module>
+    <module>plexus-examples</module>
     <module>plexus-components</module>
     <module>plexus-component-factories</module>
     <module>plexus-containers</module>
