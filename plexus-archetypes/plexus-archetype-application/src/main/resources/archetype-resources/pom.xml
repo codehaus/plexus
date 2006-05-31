@@ -3,6 +3,7 @@
   <groupId>$groupId</groupId>
   <artifactId>$artifactId</artifactId>
   <version>$version</version>
+  <packaging>plexus-application</packaging>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -13,12 +14,14 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>plexus-maven-plugin</artifactId>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-appserver-maven-plugin</artifactId>
+        <extensions>true</extensions>
         <configuration>
           <configurationDirectory>src/conf</configurationDirectory>
           <applicationName>foo</applicationName>
-          <plexusConfiguration>src/conf/application.xml</plexusConfiguration>
-          <basedir>target</basedir>
+          <applicationConfiguration>src/conf/application.xml</applicationConfiguration>
+          <configurationProperties>src/plexus.properties</configurationProperties>
         </configuration>
       </plugin>
     </plugins>

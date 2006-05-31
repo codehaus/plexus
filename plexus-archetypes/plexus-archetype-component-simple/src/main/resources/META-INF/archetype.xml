@@ -10,7 +10,4 @@
   <testSources>
     <source>src/test/java/HelloWorldTest.java</source>
   </testSources>
-  <testResources>
-    <resource>src/test/resources/HelloWorldTest.xml</resource>
-  </testResources>
 </archetype>
