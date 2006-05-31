@@ -23,12 +23,12 @@ public class DefaultHelloWorld
 
     public void start()
     {
-        getLogger().info( "Starting." );
+        getLogger().info( "Starting Hello component." );
     }
 
     public void stop()
     {
-        getLogger().info( "Stopping." );
+        getLogger().info( "Stopping Hello component." );
     }
 
     // ----------------------------------------------------------------------

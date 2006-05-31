@@ -1,10 +1,12 @@
 <application>
 
+<!--
   <load-on-start>
     <component>
-      <role>${package}.TestApp</role>
+      <role>${package}.HelloWorld</role>
     </component>
   </load-on-start>
+-->
 
   <resources>
     <jar-repository>${plexus.home}/lib</jar-repository>

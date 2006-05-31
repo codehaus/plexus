@@ -9,16 +9,36 @@
       <artifactId>plexus-container-default</artifactId>
       <version>1.0-alpha-9</version>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-appserver-host</artifactId>
+      <version>2.0-alpha-1</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-plexus-plugin</artifactId>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-appserver-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <goals>
+              <goal>assemble-runtime</goal>
+              <goal>add-services</goal>
+              <goal>add-apps</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
-          <configurationDirectory>src/conf</configurationDirectory>
-          <applicationName>foo</applicationName>
-          <plexusConfiguration>src/conf/plexus.conf</plexusConfiguration>
-          <basedir>target</basedir>
+          <runtimeConfiguration>src/conf/plexus.xml</runtimeConfiguration>
+          <runtimeConfigurationProperties>src/plexus.properties</runtimeConfigurationProperties>
+          <runtimePath>target/plexus-app-runtime</runtimePath>
         </configuration>
       </plugin>
     </plugins>
