@@ -23,6 +23,7 @@
       <item name="Five Minute Tutorial" href="/tutorials/getting-started.html" />
       <item name="Components Tutorial" href="/tutorials/components.html" />
       <item name="Why Use Components?" href="/tutorials/why-use-components.html" />
+      <item name="Plexus Applications and Runtimes" href="building-plexus-application.html" />
     </menu>
     <menu name="Documentation">
       <item name="Component Descriptor Creator" href="/documnetation/component-descriptor-creator.html" />
