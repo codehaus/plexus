@@ -15,6 +15,6 @@ public class HelloWorldTest
         HelloWorld component = (HelloWorld) lookup( HelloWorld.ROLE );
 
         assertEquals( "The hello message wasn't as expected.",
-                      "Hello Earth!", component.sayHello() );
+                      "Hello World!", component.sayHello() );
     }
 }
