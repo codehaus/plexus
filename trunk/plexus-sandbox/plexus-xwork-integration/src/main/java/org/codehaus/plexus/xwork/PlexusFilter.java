@@ -4,7 +4,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.plexus.PlexusContainer;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -12,56 +18,91 @@ import java.util.Collections;
 
 /**
  * @author Patrick Lightbody (plightbo at gmail dot com)
+ * @author Emmanuel Venisse (evenisse at apache dot org)
  */
-public class PlexusFilter implements Filter {
-    private static final Log log = LogFactory.getLog(PlexusObjectFactory.class);
+public class PlexusFilter
+    implements Filter
+{
+    private static final Log log = LogFactory.getLog( PlexusObjectFactory.class );
+    private static final String CHILD_CONTAINER_NAME = "request";
 
     public static boolean loaded = false;
 
     private ServletContext ctx;
 
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init( FilterConfig filterConfig )
+        throws ServletException
+    {
         ctx = filterConfig.getServletContext();
         loaded = true;
     }
 
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+    public void doFilter( ServletRequest req, ServletResponse res, FilterChain chain )
+        throws IOException, ServletException
+    {
         PlexusContainer child = null;
-        try{
-        try {
-            HttpServletRequest request = (HttpServletRequest) req;
-            HttpSession session = request.getSession(false);
-            PlexusContainer parent;
-            if (session != null) {
-                parent = (PlexusContainer) session.getAttribute(PlexusLifecycleListener.KEY);
-            } else {
-                parent = (PlexusContainer) ctx.getAttribute(PlexusLifecycleListener.KEY);
+
+        try
+        {
+            try
+            {
+                HttpServletRequest request = (HttpServletRequest) req;
+                HttpSession session = request.getSession( false );
+                PlexusContainer parent;
+
+                if ( session != null )
+                {
+                    parent = (PlexusContainer) session.getAttribute( PlexusLifecycleListener.KEY );
+                }
+                else
+                {
+                    parent = (PlexusContainer) ctx.getAttribute( PlexusLifecycleListener.KEY );
+                }
+
+                if ( parent.hasChildContainer( CHILD_CONTAINER_NAME ) )
+                {
+                    log.warn( "Plexus container (scope: request) alredy exist." );
+                    child = parent.getChildContainer( CHILD_CONTAINER_NAME );
+                }
+                else
+                {
+                    child = parent.createChildContainer( CHILD_CONTAINER_NAME, Collections.EMPTY_LIST, Collections.EMPTY_MAP );
+                    PlexusUtils.configure( child, "plexus-request.xml" );
+                    child.initialize();
+                    child.start();
+                }
+                PlexusThreadLocal.setPlexusContainer( child );
+            }
+            catch ( Exception e )
+            {
+                log.error( "Error initializing plexus container (scope: request)", e );
             }
 
-            child = parent.createChildContainer("request", Collections.EMPTY_LIST, Collections.EMPTY_MAP);
-            PlexusUtils.configure(child, "plexus-request.xml");
-            child.initialize();
-            child.start();
-            PlexusThreadLocal.setPlexusContainer(child);
-        } catch (Exception e) {
-            log.error("Error initializing plexus container (scope: request)", e);
+            chain.doFilter( req, res );
         }
+        catch ( Exception e )
+        {
+            log.error( "ERROR (scope: request)", e );
+        }
+        finally
+        {
+            try
+            {
+                if ( child != null )
+                {
+                    child.dispose();
+                }
 
-        chain.doFilter(req, res);
-
-        try {
-            if (child != null) {
-                child.dispose();
+                PlexusThreadLocal.setPlexusContainer( null );
             }
-            PlexusThreadLocal.setPlexusContainer(null);
-        } catch (Exception e) {
-            log.error("Error disposing plexus container (scope: request)", e);
-        }
-        } catch (Exception e) {
-            log.error("ERROR (scope: request)", e);
+            catch ( Exception e )
+            {
+                log.error( "Error disposing plexus container (scope: request)", e );
+            }
         }
     }
 
-    public void destroy() {
+    public void destroy()
+    {
     }
 }

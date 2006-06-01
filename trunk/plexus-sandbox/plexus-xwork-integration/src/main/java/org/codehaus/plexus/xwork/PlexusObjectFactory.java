@@ -1,8 +1,8 @@
 package org.codehaus.plexus.xwork;
 
 import com.opensymphony.webwork.util.ObjectFactoryInitializable;
-import com.opensymphony.xwork.ObjectFactory;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ObjectFactory;
 import com.opensymphony.xwork.Result;
 import com.opensymphony.xwork.config.ConfigurationException;
 import com.opensymphony.xwork.config.entities.ActionConfig;
@@ -25,10 +25,10 @@ import java.util.Map;
  * @version $Id$
  */
 public class PlexusObjectFactory
-     extends ObjectFactory
-     implements ObjectFactoryInitializable
+    extends ObjectFactory
+    implements ObjectFactoryInitializable
 {
-    private static final Log log = LogFactory.getLog(PlexusObjectFactory.class);
+    private static final Log log = LogFactory.getLog( PlexusObjectFactory.class );
 
     private static final String PLEXUS_COMPONENT_TYPE = "plexus.component.type";
 
@@ -42,37 +42,28 @@ public class PlexusObjectFactory
     // ObjectFactory overrides
     // ----------------------------------------------------------------------
 
-    public void init(ServletContext servletContext) {
-        if (!PlexusLifecycleListener.loaded || !PlexusFilter.loaded) {
+    public void init( ServletContext servletContext )
+    {
+        if ( !PlexusLifecycleListener.loaded || !PlexusFilter.loaded )
+        {
             // uh oh! looks like the lifecycle listener wasn't installed. Let's inform the user
             String message = "********** FATAL ERROR STARTING UP PLEXUS-WEBWORK INTEGRATION **********\n" +
-                    "Looks like the Plexus listener was not configured for your web app! \n" +
-                    "You need to add the following to web.xml: \n" +
-                    "\n" +
-                    "    <!-- this should be before the webwork filter -->\n" +
-                    "    <filter>\n" +
-                    "        <filter-name>plexus</filter-name>\n" +
-                    "        <filter-class>com.opensymphony.webwork.plexus.PlexusFilter</filter-class>\n" +
-                    "    </filter>\n" +
-                    "\n" +
-                    "...\n" +
-                    "\n" +
-                    "    <!-- this should be before the webwork filter -->\n" +
-                    "    <filter-mapping>\n" +
-                    "        <filter-name>plexus</filter-name>\n" +
-                    "        <url-pattern>/*</url-pattern>\n" +
-                    "    </filter-mapping>\n" +
-                    "\n" +
-                    "...\n" +
-                    "\n" +
-                    "    <listener>\n" +
-                    "        <listener-class>com.opensymphony.webwork.plexus.PlexusLifecycleListener</listener-class>\n" +
-                    "    </listener>";
-            log.fatal(message);
+                "Looks like the Plexus listener was not configured for your web app! \n" +
+                "You need to add the following to web.xml: \n" + "\n" +
+                "    <!-- this should be before the webwork filter -->\n" + "    <filter>\n" +
+                "        <filter-name>plexus</filter-name>\n" +
+                "        <filter-class>org.codehaus.plexus.xwork.PlexusFilter</filter-class>\n" + "    </filter>\n" +
+                "\n" + "...\n" + "\n" + "    <!-- this should be before the webwork filter -->\n" +
+                "    <filter-mapping>\n" + "        <filter-name>plexus</filter-name>\n" +
+                "        <url-pattern>/*</url-pattern>\n" + "    </filter-mapping>\n" + "\n" + "...\n" + "\n" +
+                "    <listener>\n" +
+                "        <listener-class>org.codehaus.plexus.xwork.PlexusLifecycleListener</listener-class>\n" +
+                "    </listener>";
+            log.fatal( message );
             return;
         }
 
-        base = (PlexusContainer) servletContext.getAttribute(PlexusLifecycleListener.KEY);
+        base = (PlexusContainer) servletContext.getAttribute( PlexusLifecycleListener.KEY );
     }
 
     public Object buildAction( String actionName, String namespace, ActionConfig config, Map extraContext )
@@ -117,12 +108,14 @@ public class PlexusObjectFactory
         catch ( IllegalAccessException e )
         {
             cause = e;
-            message = "IllegalAccessException while attempting to instantiate an instance of Interceptor class [" + interceptorClassName + "].";
+            message = "IllegalAccessException while attempting to instantiate an instance of Interceptor class [" +
+                interceptorClassName + "].";
         }
         catch ( ClassCastException e )
         {
             cause = e;
-            message = "Class [" + interceptorClassName + "] does not implement com.opensymphony.xwork.interceptor.Interceptor";
+            message = "Class [" + interceptorClassName +
+                "] does not implement com.opensymphony.xwork.interceptor.Interceptor";
         }
         catch ( Exception e )
         {
@@ -132,10 +125,11 @@ public class PlexusObjectFactory
         catch ( NoClassDefFoundError e )
         {
             cause = e;
-            message = "Could not load class " + interceptorClassName + ". Perhaps it exists but certain dependencies are not available?";
+            message = "Could not load class " + interceptorClassName +
+                ". Perhaps it exists but certain dependencies are not available?";
         }
 
-        throw new ConfigurationException(message, cause);
+        throw new ConfigurationException( message, cause );
     }
 
     public Result buildResult( ResultConfig resultConfig, Map extraContext )
@@ -174,7 +168,7 @@ public class PlexusObjectFactory
             if ( extraContext != null )
             {
                 String type = (String) extraContext.get( PLEXUS_COMPONENT_TYPE );
-                
+
                 if ( type != null )
                 {
                     return lookup( type, clazz.getName(), extraContext );
@@ -232,7 +226,7 @@ public class PlexusObjectFactory
             }
         }
     }
-    
+
     private Object lookup( String role )
         throws Exception
     {
@@ -267,7 +261,7 @@ public class PlexusObjectFactory
         }
         catch ( Exception e )
         {
-            log.debug( "Can't load component with plexus, try now with webwork.", e );
+            log.debug( "Can't load component (" + role + "/" + roleHint + ") with plexus, try now with webwork.", e );
             Object o = super.buildBean( super.getClassInstance( role ), extraContext );
             pc.autowire( o );
             return o;
