@@ -80,10 +80,6 @@ public class PlexusFilter
 
             chain.doFilter( req, res );
         }
-        catch ( Exception e )
-        {
-            log.error( "ERROR (scope: request)", e );
-        }
         finally
         {
             try
