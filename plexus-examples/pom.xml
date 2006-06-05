@@ -13,5 +13,6 @@
   <modules>
     <module>plexus-examples-tutorial</module>
     <module>plexus-example-hello-world</module>
+    <module>plexus-example-website-monitor</module>
   </modules>
 </project>
