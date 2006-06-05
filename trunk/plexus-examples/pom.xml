@@ -12,8 +12,6 @@
   <name>Plexus Examples</name>
   <modules>
     <module>plexus-examples-tutorial</module>
-    <!-- old example
-      <module>simple</module>
-    -->
+    <module>plexus-example-hello-world</module>
   </modules>
 </project>

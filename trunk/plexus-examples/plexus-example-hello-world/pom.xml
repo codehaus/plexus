@@ -6,7 +6,7 @@
     <artifactId>plexus-examples</artifactId>
     <version>1-SNAPSHOT</version>
   </parent>
-  <groupId>plexus-examples</groupId>
+  <groupId>org.codehaus.plexus.examples</groupId>
   <artifactId>plexus-example-hello-world</artifactId>
   <version>1.0</version>
   <name>Plexus Hello World Component</name>
