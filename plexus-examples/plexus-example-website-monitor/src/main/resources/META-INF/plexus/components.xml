@@ -1,0 +1,13 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.tutorial.WebsiteMonitor</role>
+      <implementation>
+        org.codehaus.plexus.tutorial.DefaultWebsiteMonitor
+      </implementation>
+      <configuration>
+        <website>http://www.google.co.nz/</website>
+      </configuration>
+    </component>
+  </components>
+</component-set>
