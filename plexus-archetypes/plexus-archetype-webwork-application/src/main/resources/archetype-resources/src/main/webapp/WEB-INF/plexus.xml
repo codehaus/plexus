@@ -1,8 +1,4 @@
 <plexus>
   <components>
-    <component>
-      <role>com.opensymphony.xwork.ObjectFactory</role>
-      <implementation>org.codehaus.plexus.xwork.PlexusObjectFactory</implementation>
-    </component>
   </components>
 </plexus>
