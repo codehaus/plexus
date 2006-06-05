@@ -1,5 +1,8 @@
 package org.codehaus.plexus.examples.simple;
 
+import java.io.FileReader;
+import java.io.Reader;
+
 import org.codehaus.plexus.embed.Embedder;
 
 /** 
@@ -18,21 +21,23 @@ public class Main
      * @exception Exception If there is a problem starting the Plexus
      * container or looking up a service.
      */
-    public static void main(String[] args) throws Exception
+    public static void main( String[] args )
+        throws Exception
     {
         // Setup, configure, and start Plexus
         Embedder embedder = new Embedder();
-        embedder.setConfiguration("/plexus.xml");
+        Reader reader = new FileReader( "src/test/resources/plexus.xml" );
+        embedder.setConfiguration( reader );
         embedder.start();
 
         // Use Plexus to lookup components
-        HelloWorld component = (HelloWorld) embedder.lookup(HelloWorld.ROLE);
+        HelloWorld component = (HelloWorld) embedder.lookup( HelloWorld.ROLE );
 
         // Use components obtained via Plexus
-        System.out.println(component.sayHello());
+        System.out.println( component.sayHello() );
 
         // Clean things up by releasing the component
-        embedder.release(component);
+        embedder.release( component );
 
         // Finally, tell the Plexus container to shutdown
         embedder.stop();
