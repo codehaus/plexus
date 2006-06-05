@@ -10,7 +10,7 @@ import org.codehaus.plexus.logging.Logger;
  * @author Pete Kazmier
  * @version $Revision$
  */
-public class DefaultHelloWorld 
+public class DefaultHelloWorld
     implements HelloWorld, LogEnabled
 {
     /** The logger supplied by the Plexus container. */
@@ -19,7 +19,7 @@ public class DefaultHelloWorld
     /** The greeting that was specified in the configuration. */
     private String greeting;
 
-    public void enableLogging(Logger logger)
+    public void enableLogging( Logger logger )
     {
         this.logger = logger;
     }
