@@ -1,0 +1,43 @@
+ -----
+Plexus Sample Application Trail
+ -----
+Rahul Thakur
+ ----
+08th June 2006 
+ ------
+
+About this trail
+
+ This trail shows how to get started with Plexus Component and Application development. It starts off with a simple Plexus component and gradually evolves it to depict different ways a component can be used.
+
+ Please note that this is a work-in-progress, but all comments and suggestions are welcome!
+  
+ * Concepts 
+ 
+ * Prepping project: Website Monitor component
+ 
+ * Diving in
+ 
+ * Joys of TDD (Test Driven Development)
+ 
+ * More bells & whistles
+ 
+ * Configuring to get it right!
+ 
+ * Voila! We have a Component
+ 
+ * Component Usage Scenarios
+ 
+    * From a Maven Mojo
+    
+    * From a Plexus application
+    
+    * From a Web application
+    
+    * From a SOAP Web Service
+    
+    * From an XMLRPC Service
+    
+ * Packaging
+
+
