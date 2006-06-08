@@ -16,7 +16,9 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.plexus.PlexusContainer;
 
 import javax.servlet.ServletContext;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,6 +39,10 @@ public class PlexusObjectFactory
     // ----------------------------------------------------------------------
 
     private PlexusContainer base;
+
+    private List plexusComponents = new ArrayList();
+
+    private List otherComponents = new ArrayList();
 
     // ----------------------------------------------------------------------
     // ObjectFactory overrides
@@ -156,27 +162,36 @@ public class PlexusObjectFactory
         return validator;
     }
 
+    public Object buildBean( String className, Map extraContext )
+        throws Exception
+    {
+        if ( extraContext != null )
+        {
+            String type = (String) extraContext.get( PLEXUS_COMPONENT_TYPE );
+
+            if ( type != null )
+            {
+                return lookup( type, className, extraContext );
+            }
+        }
+        
+        return super.buildBean( className, extraContext );
+    }
+
     public Object buildBean( Class clazz, Map extraContext )
         throws Exception
     {
-        try
+        if ( extraContext != null )
         {
-            return lookup( clazz.getName(), extraContext );
-        }
-        catch ( Exception e )
-        {
-            if ( extraContext != null )
+            String type = (String) extraContext.get( PLEXUS_COMPONENT_TYPE );
+
+            if ( type != null )
             {
-                String type = (String) extraContext.get( PLEXUS_COMPONENT_TYPE );
-
-                if ( type != null )
-                {
-                    return lookup( type, clazz.getName(), extraContext );
-                }
+                return lookup( type, clazz.getName(), extraContext );
             }
-
-            throw e;
         }
+
+        return lookup( clazz.getName(), extraContext );
     }
 
     public Class getClassInstance( String className )
@@ -248,6 +263,7 @@ public class PlexusObjectFactory
     private Object lookup( String role, String roleHint, Map extraContext )
         throws Exception
     {
+        String id = role + ":" + roleHint;
         PlexusContainer pc = PlexusThreadLocal.getPlexusContainer();
 
         if ( pc == null )
@@ -255,16 +271,49 @@ public class PlexusObjectFactory
             pc = base;
         }
 
+        if ( plexusComponents.contains( id ) )
+        {
+            return loadComponentWithPlexus( pc, role, roleHint );
+        }
+
+        if ( otherComponents.contains( id ) )
+        {
+            return loadComponentWithXWork( pc, role, roleHint, extraContext );
+        }
+
         try
         {
-            return pc.lookup( role, roleHint );
+            Object o = loadComponentWithPlexus( pc, role, roleHint );
+            plexusComponents.add( id );
+            return o;
         }
         catch ( Exception e )
         {
             log.debug( "Can't load component (" + role + "/" + roleHint + ") with plexus, try now with webwork.", e );
-            Object o = super.buildBean( super.getClassInstance( role ), extraContext );
-            pc.autowire( o );
+            Object o = loadComponentWithXWork( pc, role, roleHint, extraContext );
+            otherComponents.add( id );
             return o;
         }
+    }
+
+    private Object loadComponentWithPlexus( PlexusContainer pc, String role, String roleHint )
+        throws Exception
+    {
+        return pc.lookup( role, roleHint );
+    }
+
+    private Object loadComponentWithXWork( PlexusContainer pc, String role, String roleHint, Map extraContext )
+        throws Exception
+    {
+        String className = role;
+
+        if ( Action.class.getName().equals( role ) || Interceptor.class.getName().equals( role ) || Result.class.getName().equals( role ) || Validator.class.getName().equals( role ) )
+        {
+            className = roleHint;
+        }
+
+        Object o = super.buildBean( super.getClassInstance( className ), extraContext );
+        pc.autowire( o );
+        return o;
     }
 }
