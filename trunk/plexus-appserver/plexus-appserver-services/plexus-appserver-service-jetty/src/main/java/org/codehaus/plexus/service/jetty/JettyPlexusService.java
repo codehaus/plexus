@@ -169,8 +169,8 @@ public class JettyPlexusService
 
             processWebContextConfiguration( application, appRuntimeProfile );
 
-            if ( !servletContainer.hasContext( application.getContext() ) )
-            {
+            //if ( !servletContainer.hasContext( application.getContext() ) )
+            //{
                 // ----------------------------------------------------------------------------
                 // Now we need to find all the components that might be included in the webapp.
                 // We have to do this here because now the container is initialized which
@@ -182,7 +182,7 @@ public class JettyPlexusService
                 ClassRealm realm = c.getContainerRealm();
 
                 c.discoverComponents( realm );
-            }
+            //}
 
             servletContainer.startApplication( application.getContext() );
         }
