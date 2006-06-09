@@ -69,6 +69,7 @@ public class JettyServletContainer
     private Server server;
 
     private Map classLoaders = new HashMap();
+    private Map classRealms = new HashMap();
 
     // ----------------------------------------------------------------------
     // ServletContainer Implementation
@@ -386,6 +387,8 @@ public class JettyServletContainer
                     realm.addConstituent( classes.toURL() );
 
                     webappContext.setClassLoader( realm.getClassLoader() );
+
+                    classRealms.put( webapp.getContext(), realm );
                 }
                 catch ( Exception e )
                 {
@@ -412,7 +415,11 @@ public class JettyServletContainer
             // what's happening here but classworlds is going to take a bath shortly anyway.
             if ( standardWebappClassloader )
             {
+
                 webappContext.setClassLoader( (ClassLoader) classLoaders.get( webapp.getContext() ) );
+                ClassRealm cr = (ClassRealm) classRealms.get( webapp.getContext() );
+
+                ((DefaultPlexusContainer)container).setCoreRealm( cr );
             }
         }
 
