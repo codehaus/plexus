@@ -1,4 +1,4 @@
-package org.codehaus.plexus.xfire.type;
+package org.codehaus.plexus.xfire;
 
 import javax.xml.namespace.QName;
 
