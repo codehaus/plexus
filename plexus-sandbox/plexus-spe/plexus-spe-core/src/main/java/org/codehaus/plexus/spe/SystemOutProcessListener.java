@@ -50,6 +50,8 @@ public class SystemOutProcessListener
         }
         else
         {
+            event.getThrowable().printStackTrace( System.out );
+
             System.out.println( "Step failed. Time elapsed so far: " + duration );
         }
     }
