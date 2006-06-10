@@ -1,8 +1,8 @@
-package org.codehaus.plexus.xfire.type;
+package org.codehaus.plexus.xfire;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.aegis.type.TypeMapping;
-import org.codehaus.plexus.xfire.type.TypeMappingRegistry;
+import org.codehaus.plexus.xfire.TypeMappingRegistry;
 import org.codehaus.plexus.soap.SoapConstants;
 
 /**

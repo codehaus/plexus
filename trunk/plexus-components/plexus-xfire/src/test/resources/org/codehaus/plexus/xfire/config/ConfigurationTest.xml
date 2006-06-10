@@ -9,7 +9,7 @@
     <component>
       <role>org.codehaus.plexus.handler.Handler</role>
       <role-hint>test</role-hint>
-      <implementation>org.codehaus.plexus.xfire.config.TestHandler</implementation>
+      <implementation>org.codehaus.plexus.xfire.TestHandler</implementation>
     </component> 
     
   </components>

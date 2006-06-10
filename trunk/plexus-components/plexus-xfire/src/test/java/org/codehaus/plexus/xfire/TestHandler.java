@@ -1,4 +1,4 @@
-package org.codehaus.plexus.xfire.config;
+package org.codehaus.plexus.xfire;
 
 import org.codehaus.plexus.MessageContext;
 import org.codehaus.plexus.handler.AbstractHandler;
