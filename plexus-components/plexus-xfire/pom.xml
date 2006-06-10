@@ -10,12 +10,12 @@
   <version>1.1-SNAPSHOT</version>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.xfire</groupId>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>xfire-xmpp</artifactId>
       <version>1.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.xfire</groupId>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>xfire-aegis</artifactId>
       <version>1.1-SNAPSHOT</version>      
     </dependency>
@@ -25,12 +25,12 @@
       <version>1.0-beta-4-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.xfire</groupId>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>xfire-annotations</artifactId>
       <version>1.1-SNAPSHOT</version>      
     </dependency>
     <dependency>
-      <groupId>org.codehaus.xfire</groupId>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>xfire-core</artifactId>
       <version>1.1-SNAPSHOT</version>      
     </dependency>
