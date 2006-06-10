@@ -12,44 +12,10 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-jdo2</artifactId>
-      <version>1.0-alpha-4-SNAPSHOT</version>
-      <exclusions>
-        <exclusion>
-          <groupId>xerces</groupId>
-          <artifactId>xmlParserAPIs</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>xerces</groupId>
-          <artifactId>xercesImpl</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
-      <groupId>jpox</groupId>
+        <groupId>org.apache.maven.continuum.jpox</groupId>
       <artifactId>jpox</artifactId>
-      <version>1.1.0-rc-1</version>
-      <exclusions>
-        <exclusion>
-          <groupId>ant</groupId>
-          <artifactId>ant</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>javax.sql</groupId>
-          <artifactId>jdbc-stdext</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>javax.resource</groupId>
-          <artifactId>connector</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>javax.security</groupId>
-          <artifactId>jaas</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>ojdbc</groupId>
-          <artifactId>ojdbc</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
   <build>

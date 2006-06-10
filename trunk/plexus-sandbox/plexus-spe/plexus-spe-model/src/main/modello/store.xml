@@ -34,6 +34,16 @@
           <type>long</type>
           <version>1.0.0+</version>
         </field>
+        <field stash.maxSize="8192">
+          <name>errorMessage</name>
+          <type>String</type>
+          <version>1.0.0+</version>
+        </field>
+        <field>
+          <name>completed</name>
+          <type>boolean</type>
+          <version>1.0.0+</version>
+        </field>
         <field>
           <name>steps</name>
           <type>List</type>

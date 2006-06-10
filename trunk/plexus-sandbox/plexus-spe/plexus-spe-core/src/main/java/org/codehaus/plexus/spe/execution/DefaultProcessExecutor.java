@@ -150,20 +150,6 @@ public class DefaultProcessExecutor
 
         Throwable throwable = stepExecutorRunner.getThrowable();
 
-//        String message = "Process step #" + runtimeDescriptor.getCurrentStep() + " " +
-//                         "in process " + runtimeDescriptor.getProcessDescriptor().getUsername() + ", " +
-//                         "instance #" + runtimeDescriptor.getInstanceId();
-//
-//
-//        if ( throwable == null )
-//        {
-//            getLogger().info( message + " completed successfully." );
-//        }
-//        else
-//        {
-//            getLogger().info( message + " completed non-successfully." );
-//        }
-
         // ----------------------------------------------------------------------
         // Load the process
         // ----------------------------------------------------------------------
@@ -179,6 +165,10 @@ public class DefaultProcessExecutor
         step.setEndTime( timestamp );
 
         processInstance.setContext( stepExecutorRunner.getContext() );
+
+        StepCompletedEvent event = new StepCompletedEvent();
+        event.setProcessInstance( processInstance );
+        event.setStepInstance( step );
 
         // ----------------------------------------------------------------------
         // Check if the step failed. If so stop the processing for now and let
@@ -196,9 +186,6 @@ public class DefaultProcessExecutor
 
             store.saveInstance( processInstance );
 
-            StepCompletedEvent event = new StepCompletedEvent();
-            event.setProcessInstance( processInstance );
-            event.setStepInstance( step );
             event.setThrowable( throwable );
             eventManager.sendEvent( event );
 
@@ -216,10 +203,9 @@ public class DefaultProcessExecutor
 
             store.saveInstance( processInstance );
 
-            StepCompletedEvent event = new StepCompletedEvent();
-            event.setProcessInstance( processInstance );
-            event.setStepInstance( step );
             eventManager.sendEvent( event );
+
+            // TODO: Send process completed event
 
             return;
         }
@@ -230,16 +216,11 @@ public class DefaultProcessExecutor
 
         runtimeDescriptor.setCurrentStep( runtimeDescriptor.getCurrentStep() + 1 );
 
-//        getLogger().info( "Step completed, next step: " + runtimeDescriptor.getCurrentStep() );
-
-        step = (StepInstance) processInstance.getSteps().get( runtimeDescriptor.getCurrentStep() );
-        step.setStartTime( timestamp );
+        StepInstance nextStep = (StepInstance) processInstance.getSteps().get( runtimeDescriptor.getCurrentStep() );
+        nextStep.setStartTime( timestamp );
 
         store.saveInstance( processInstance );
 
-        StepCompletedEvent event = new StepCompletedEvent();
-        event.setProcessInstance( processInstance );
-        event.setStepInstance( step );
         eventManager.sendEvent( event );
 
         scheduleStep( runtimeDescriptor );
