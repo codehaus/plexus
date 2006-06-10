@@ -1,4 +1,4 @@
-package org.codehaus.xfire.plexus.config;
+package org.codehaus.plexus.xfire;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -10,28 +10,29 @@ import javax.xml.namespace.QName;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
-import org.codehaus.xfire.XFire;
-import org.codehaus.xfire.aegis.AegisBindingProvider;
-import org.codehaus.xfire.aegis.type.Type;
-import org.codehaus.xfire.aegis.type.TypeMapping;
-import org.codehaus.xfire.aegis.type.TypeMappingRegistry;
-import org.codehaus.xfire.handler.Handler;
-import org.codehaus.xfire.plexus.PlexusXFireComponent;
-import org.codehaus.xfire.plexus.ServiceLocatorFactory;
-import org.codehaus.xfire.service.Service;
-import org.codehaus.xfire.service.ServiceRegistry;
-import org.codehaus.xfire.service.binding.BindingProvider;
-import org.codehaus.xfire.service.binding.ObjectServiceFactory;
-import org.codehaus.xfire.service.invoker.FactoryInvoker;
-import org.codehaus.xfire.service.invoker.Invoker;
-import org.codehaus.xfire.service.invoker.ObjectInvoker;
-import org.codehaus.xfire.service.invoker.ScopePolicy;
-import org.codehaus.xfire.service.invoker.ScopePolicyEditor;
-import org.codehaus.xfire.soap.Soap11;
-import org.codehaus.xfire.soap.Soap12;
-import org.codehaus.xfire.soap.SoapVersion;
-import org.codehaus.xfire.transport.TransportManager;
-import org.codehaus.xfire.util.ClassLoaderUtils;
+import org.codehaus.plexus.XFire;
+import org.codehaus.plexus.aegis.AegisBindingProvider;
+import org.codehaus.plexus.aegis.type.Type;
+import org.codehaus.plexus.aegis.type.TypeMapping;
+import org.codehaus.plexus.aegis.type.TypeMappingRegistry;
+import org.codehaus.plexus.handler.Handler;
+import org.codehaus.plexus.xfire.PlexusXFireComponent;
+import org.codehaus.plexus.xfire.ServiceLocatorFactory;
+import org.codehaus.plexus.xfire.Configurator;
+import org.codehaus.plexus.service.Service;
+import org.codehaus.plexus.service.ServiceRegistry;
+import org.codehaus.plexus.service.binding.BindingProvider;
+import org.codehaus.plexus.service.binding.ObjectServiceFactory;
+import org.codehaus.plexus.service.invoker.FactoryInvoker;
+import org.codehaus.plexus.service.invoker.Invoker;
+import org.codehaus.plexus.service.invoker.ObjectInvoker;
+import org.codehaus.plexus.service.invoker.ScopePolicy;
+import org.codehaus.plexus.service.invoker.ScopePolicyEditor;
+import org.codehaus.plexus.soap.Soap11;
+import org.codehaus.plexus.soap.Soap12;
+import org.codehaus.plexus.soap.SoapVersion;
+import org.codehaus.plexus.transport.TransportManager;
+import org.codehaus.plexus.util.ClassLoaderUtils;
 
 /**
  * Creates and configures services.

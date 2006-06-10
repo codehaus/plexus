@@ -1,4 +1,4 @@
-package org.codehaus.xfire.plexus.config;
+package org.codehaus.plexus.xfire;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,8 +14,10 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Configurable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
-import org.codehaus.xfire.plexus.PlexusXFireComponent;
-import org.codehaus.xfire.service.Service;
+import org.codehaus.plexus.xfire.PlexusXFireComponent;
+import org.codehaus.plexus.xfire.ConfigurationService;
+import org.codehaus.plexus.xfire.Configurator;
+import org.codehaus.plexus.service.Service;
 
 /**
  * Loads in XFire components from the XFire configuration file.
@@ -103,7 +105,7 @@ public class DefaultConfigurationService
                                  " on classpath. Looking for META-INF/xfire/xfire.xml " +
                                  "on the classpath");
             
-                is = getClass().getResourceAsStream("META-INF/xfire/xfire.xml");
+                is = getClass().getResourceAsStream("META-INF/plexus/xfire.xml");
                 
                 if ( is == null )
                 {

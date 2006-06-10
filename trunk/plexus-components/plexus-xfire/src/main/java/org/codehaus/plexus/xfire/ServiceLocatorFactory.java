@@ -1,13 +1,13 @@
-package org.codehaus.xfire.plexus;
+package org.codehaus.plexus.xfire;
 
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.ServiceLocator;
-import org.codehaus.xfire.fault.XFireFault;
-import org.codehaus.xfire.util.factory.Factory;
+import org.codehaus.plexus.fault.XFireFault;
+import org.codehaus.plexus.util.factory.Factory;
 
 
 /**
- * This is a simple adapter from plexus service locator to {@link Factory}
+ * This is a simple adapter from xfire service locator to {@link Factory}
  * 
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  * @author <a href="mailto:ajoo.email@gmail.com">Ben Yu</a>
@@ -15,9 +15,8 @@ import org.codehaus.xfire.util.factory.Factory;
  */
 public class ServiceLocatorFactory implements Factory
 {
-    //private static Log logger = LogFactory.getLog(ServiceInvoker.class.getName());
-    
     private ServiceLocator locator;
+
     private String role;
     
     public ServiceLocatorFactory(String role, ServiceLocator locator){

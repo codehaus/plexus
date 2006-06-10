@@ -1,4 +1,4 @@
-package org.codehaus.xfire.plexus.config;
+package org.codehaus.plexus.xfire;
 
 /**
  * Loads up an XML document describing the services and then

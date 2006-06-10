@@ -1,10 +1,10 @@
-package org.codehaus.xfire.plexus.config;
+package org.codehaus.plexus.xfire;
 
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.xfire.service.Service;
+import org.codehaus.plexus.service.Service;
 
 /**
- * Builds a service of a specified type from a plexus
+ * Builds a service of a specified type from a xfire
  * configuration.
  * 
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
