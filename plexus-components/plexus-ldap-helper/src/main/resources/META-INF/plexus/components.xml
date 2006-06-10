@@ -171,8 +171,12 @@
             <name>title</name>
           </attributeType>
           <attributeType>
+            <name>uid</name>
+            <aliases>userid</aliases>
+<!-- This is really annoying, but OpenLDAP won't allow this variant.
             <name>userid</name>
             <aliases>uid</aliases>
+-->
           </attributeType>
           <attributeType>
             <name>userCertificate</name>
