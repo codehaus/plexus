@@ -1,4 +1,4 @@
-package org.codehaus.plexus.xfire.config;
+package org.codehaus.plexus.xfire;
 
 import org.codehaus.plexus.xfire.PlexusXFireTest;
 import org.codehaus.plexus.xfire.ConfigurationService;
@@ -15,7 +15,7 @@ public class ConfigurationTest
     public void setUp()
         throws Exception
     {
-        System.setProperty("xfire.config", "/org/codehaus/xfire/xfire/config/services.xml");
+        System.setProperty("xfire.config", "/org/codehaus/plexusplexuse/config/services.xml" );
         super.setUp();
 
         lookup( ConfigurationService.ROLE);
@@ -45,12 +45,12 @@ public class ConfigurationTest
     public void testInvoke()
         throws Exception
     {
-        Document response = invokeService("Echo", "/org/codehaus/xfire/xfire/config/echo11.xml");
+        Document response = invokeService("Echo", "/org/codehaus/plexusplexuse/config/echo11.xml" );
 
         addNamespace("e", "urn:Echo");
         assertValid("//e:out[text()='Yo Yo']", response);
 
-        response = invokeService("EchoIntf", "/org/codehaus/xfire/xfire/config/echo11.xml");
+        response = invokeService("EchoIntf", "/org/codehaus/plexusplexuse/config/echo11.xml" );
 
         addNamespace("e", "urn:Echo");
         assertValid("//e:out[text()='Yo Yo']", response);

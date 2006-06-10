@@ -14,7 +14,7 @@
     
     <component>
       <role>org.codehaus.plexus.transport.TransportManager</role>
-      <implementation>org.codehaus.plexus.xfire.transport.PlexusTransportManager</implementation>
+      <implementation>org.codehaus.plexus.xfire.PlexusTransportManager</implementation>
       <lifecycle-handler>plexus-configurable</lifecycle-handler>
     </component>
                     
@@ -57,7 +57,7 @@
 
     <component>
       <role>org.codehaus.plexus.aegis.type.TypeMappingRegistry</role>
-      <implementation>org.codehaus.plexus.xfire.type.TypeMappingRegistry</implementation>
+      <implementation>org.codehaus.plexus.xfire.TypeMappingRegistry</implementation>
       <lifecycle-handler>plexus-configurable</lifecycle-handler>
       <configuration>
       </configuration>
