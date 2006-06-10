@@ -1,4 +1,4 @@
-package org.codehaus.plexus.xfire.transport;
+package org.codehaus.plexus.xfire;
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.transport.DefaultTransportManager;
