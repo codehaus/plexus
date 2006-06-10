@@ -23,8 +23,11 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
-import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttributes;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.BasicAttribute;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -99,7 +102,7 @@ public class DefaultApacheDs
         return new InitialDirContext( environment );
     }
 
-    public void addPartition( String name, String root, Set indexedAttributes, BasicAttributes partitionAttributes )
+    public void addPartition( String name, String root, Set indexedAttributes, Attributes partitionAttributes )
         throws NamingException
     {
         MutableDirectoryPartitionConfiguration directoryPartitionConfiguration = new MutableDirectoryPartitionConfiguration();
@@ -119,6 +122,46 @@ public class DefaultApacheDs
         directoryPartitionConfiguration.setIndexedAttributes( partition.getIndexedAttributes() );
         directoryPartitionConfiguration.setContextEntry( partition.getContextAttributes() );
         contextPartitionConfigurations.add( directoryPartitionConfiguration );
+    }
+
+    public Partition addSimplePartition( String ... domainComponents )
+        throws NamingException
+    {
+        if ( domainComponents.length == 0 )
+        {
+            throw new NamingException( "Illegal argument, there has to be at least one domain component." );
+        }
+
+        String suffix = "";
+
+        for ( int i = 0; i < domainComponents.length; i++ )
+        {
+            String dc = domainComponents[i];
+
+            suffix += "dc=" + dc;
+
+            if ( i != domainComponents.length - 1 )
+            {
+                suffix += ",";
+            }
+        }
+
+        Partition partition = new Partition();
+        partition.setName( "Partition for " + suffix );
+        partition.setSuffix( suffix );
+        Attributes attributes = new BasicAttributes();
+        attributes.put( "dc", domainComponents[0] );
+        attributes.put( "objectClass", "top" );
+        Attribute objectClass = new BasicAttribute( "objectClass" );
+        objectClass.add( "top" );
+        objectClass.add( "domain" );
+        objectClass.add( "extensibleObject" );
+        attributes.put( objectClass );
+        partition.setContextAttributes( attributes );
+
+        addPartition( partition );
+
+        return partition;
     }
 
     public void startServer()
