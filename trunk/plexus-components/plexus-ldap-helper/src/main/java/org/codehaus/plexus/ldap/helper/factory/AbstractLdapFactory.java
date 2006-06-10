@@ -19,7 +19,7 @@ import java.util.List;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public abstract class AbstractLdapFactory
+public abstract class AbstractLdapFactory<T>
     implements DirObjectFactory, DirStateFactory
 {
     private static LdapFactoryHelper helper;
@@ -57,10 +57,10 @@ public abstract class AbstractLdapFactory
     // Abstract Methods
     // ----------------------------------------------------------------------
 
-    protected abstract Object createObject()
+    protected abstract T createObject()
         throws NamingException;
 
-    protected abstract void createAttributes( Object object )
+    protected abstract void createAttributes( T object )
         throws NamingException;
 
     // ----------------------------------------------------------------------
@@ -91,7 +91,7 @@ public abstract class AbstractLdapFactory
     // DirObjectFactory and DirStateFactory Implementations
     // ----------------------------------------------------------------------
 
-    public Object getObjectInstance( Object object, Name name, Context nameCtx, Hashtable<?, ?> environment,
+    public T getObjectInstance( Object object, Name name, Context nameCtx, Hashtable<?, ?> environment,
                                      Attributes attributes )
         throws Exception
     {
@@ -148,7 +148,7 @@ public abstract class AbstractLdapFactory
         this.environment = environment;
         this.attributes = attributes;
 
-        createAttributes( object );
+        createAttributes( (T) object );
 
         // ----------------------------------------------------------------------
         // Set the object class attribute
@@ -297,15 +297,15 @@ public abstract class AbstractLdapFactory
 
         return strings;
     }
-/*
-    protected int getIntAttribute( Attributes attributes, String attributeName )
+
+    protected int getIntAttribute( String attributeName )
         throws NamingException
     {
-        String value = getStringAttribute( attributes, attributeName );
+        String value = getStringAttribute( attributeName );
 
         return Integer.parseInt( value );
     }
-
+/*
     protected String getOptionalStringAttribute( Attributes attributes, String attributeName )
         throws NamingException
     {
@@ -363,6 +363,12 @@ public abstract class AbstractLdapFactory
         }
 
         setAttribute( attributeName, (Object) value );
+    }
+
+    protected void setAttribute( String attributeName, int value )
+        throws NamingException
+    {
+        setAttribute( attributeName, Integer.toString( value ) );
     }
 
     protected void setAttribute( String attributeName, List<String> strings )
