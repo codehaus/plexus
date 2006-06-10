@@ -1,4 +1,4 @@
-package org.codehaus.xfire.plexus.config;
+package org.codehaus.plexus.xfire.config;
 
 public class Echo
     implements EchoIntf

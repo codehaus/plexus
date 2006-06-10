@@ -1,7 +1,7 @@
-package org.codehaus.xfire.plexus.config;
+package org.codehaus.plexus.xfire.config;
 
-import org.codehaus.xfire.MessageContext;
-import org.codehaus.xfire.handler.AbstractHandler;
+import org.codehaus.plexus.MessageContext;
+import org.codehaus.plexus.handler.AbstractHandler;
 
 public class TestHandler
     extends AbstractHandler

@@ -1,7 +1,7 @@
-package org.codehaus.xfire.plexus.transport;
+package org.codehaus.plexus.xfire.transport;
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.xfire.transport.DefaultTransportManager;
+import org.codehaus.plexus.transport.DefaultTransportManager;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>

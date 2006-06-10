@@ -1,4 +1,4 @@
-package org.codehaus.xfire.plexus.type;
+package org.codehaus.plexus.xfire.type;
 
 import javax.xml.namespace.QName;
 
@@ -8,9 +8,9 @@ import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Configurable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.xfire.aegis.type.Type;
-import org.codehaus.xfire.aegis.type.TypeMapping;
-import org.codehaus.xfire.util.ClassLoaderUtils;
+import org.codehaus.plexus.aegis.type.Type;
+import org.codehaus.plexus.aegis.type.TypeMapping;
+import org.codehaus.plexus.util.ClassLoaderUtils;
 
 /**
  * Extends and configures the TypeMappingRegistry.
@@ -19,7 +19,7 @@ import org.codehaus.xfire.util.ClassLoaderUtils;
  * @since Oct 31, 2004
  */
 public class TypeMappingRegistry
-    extends org.codehaus.xfire.aegis.type.DefaultTypeMappingRegistry
+    extends org.codehaus.plexus.aegis.type.DefaultTypeMappingRegistry
     implements LogEnabled, Configurable, Initializable
 {
     private Logger logger;

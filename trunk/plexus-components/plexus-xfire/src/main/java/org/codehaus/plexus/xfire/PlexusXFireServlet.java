@@ -1,10 +1,10 @@
-package org.codehaus.xfire.plexus;
+package org.codehaus.plexus.xfire;
 
 import javax.servlet.ServletException;
 
 import org.codehaus.plexus.servlet.PlexusServletUtils;
-import org.codehaus.xfire.XFire;
-import org.codehaus.xfire.transport.http.XFireServlet;
+import org.codehaus.plexus.XFire;
+import org.codehaus.plexus.transport.http.XFireServlet;
 
 /**
  * An XFire servlet which obtains its XFire instance from Plexus. This
