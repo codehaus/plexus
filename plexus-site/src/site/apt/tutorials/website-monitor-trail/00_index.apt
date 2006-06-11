@@ -12,32 +12,32 @@ About this trail
 
  Please note that this is a work-in-progress, but all comments and suggestions are welcome!
   
- * Concepts 
+ * {{{#}Concepts}}
  
- * Prepping project: Website Monitor component
+ * {{{01_preparing_for_project.html}Prepping project: Website Monitor component}}
  
- * Diving in
+ * {{{02_diving_in.html}Diving in}}
  
- * Joys of TDD (Test Driven Development)
+ * {{{03_joys_of_tdd.html}Joys of TDD}} (Test Driven Development)
  
- * More bells & whistles
+ * {{{04_more_bells_n_whistles.html}More bells & whistles}}
  
- * Configuring to get it right!
+ * {{{05_configuring_to_get_it_right.html}Configuring to get it right!}}
  
- * Voila! We have a Component
+ * {{{06_we_have_a_component.html}Voila! We have a Component}}
  
  * Component Usage Scenarios
  
-    * From a Maven Mojo
+    * {{{#}From a Maven Mojo}}
     
-    * From a Plexus application
+    * {{{#}From a Plexus application}}
     
-    * From a Web application
+    * {{{#}From a Web application}}
     
-    * From a SOAP Web Service
+    * {{{#}From a SOAP Web Service}}
     
-    * From an XMLRPC Service
+    * {{{#}From an XMLRPC Service}}
     
- * Packaging
+ * {{{08_packaging_up.html}Packaging}}
 
 
