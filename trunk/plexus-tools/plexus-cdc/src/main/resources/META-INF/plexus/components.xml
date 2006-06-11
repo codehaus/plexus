@@ -13,5 +13,9 @@
       <role>org.codehaus.plexus.cdc.ComponentGleaner</role>
       <implementation>org.codehaus.plexus.cdc.PlexusDefaultComponentGleaner</implementation>
     </component>
+    <component>
+      <role>org.codehaus.plexus.cdc.merge.Merger</role>
+      <implementation>org.codehaus.plexus.cdc.merge.ComponentsXmlMerger</implementation>
+    </component>
   </components>
 </component-set>
