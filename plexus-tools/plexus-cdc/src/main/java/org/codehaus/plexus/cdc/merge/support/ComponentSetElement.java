@@ -7,6 +7,7 @@ import org.jdom.Element;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
+ * @version $Id:$
  */
 public class ComponentSetElement
     extends AbstractMergeableElement
@@ -19,9 +20,7 @@ public class ComponentSetElement
         super( element );
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see org.codehaus.plexus.cdc.merge.model.AbstractMergeableElement#getAllowedTags()
      */
     protected ComponentsXmlTag[] getAllowedTags()
@@ -29,9 +28,7 @@ public class ComponentSetElement
         return this.allowedTags;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /** 
      * @see org.codehaus.plexus.cdc.merge.model.AbstractMergeableElement#isExpectedElementType(org.codehaus.plexus.cdc.merge.model.Mergeable)
      */
     protected boolean isExpectedElementType( Mergeable me )
