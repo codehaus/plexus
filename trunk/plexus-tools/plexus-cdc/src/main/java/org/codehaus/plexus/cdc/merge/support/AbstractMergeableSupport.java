@@ -18,6 +18,7 @@ import org.jdom.filter.Filter;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
+ * @version $Id:$
  */
 public abstract class AbstractMergeableSupport
     implements Mergeable
@@ -34,10 +35,8 @@ public abstract class AbstractMergeableSupport
         this.element = element;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.codehaus.plexus.cdc.merge.model.Mergeable#merge(org.codehaus.plexus.cdc.merge.model.Mergeable)
+    /**
+     * @see  Mergeable#merge(Mergeable)
      */
     public abstract void merge( Mergeable me )
         throws MergeException;
@@ -60,6 +59,10 @@ public abstract class AbstractMergeableSupport
      * @return the allowedTags
      */
     protected abstract ComponentsXmlTag[] getAllowedTags();
+
+    // 
+    // Methods delegated on wrapped JDOM element.
+    // 
 
     /**
      * @param collection

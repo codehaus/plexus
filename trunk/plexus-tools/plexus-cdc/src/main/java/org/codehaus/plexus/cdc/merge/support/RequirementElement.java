@@ -8,6 +8,7 @@ import org.jdom.Element;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
+ * @version $Id:$
  */
 public class RequirementElement
     extends AbstractMergeableElement
@@ -23,9 +24,7 @@ public class RequirementElement
         super( element );
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see org.codehaus.plexus.cdc.merge.model.AbstractMergeableElement#getAllowedTags()
      */
     protected ComponentsXmlTag[] getAllowedTags()
@@ -33,9 +32,7 @@ public class RequirementElement
         return allowedTags;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see org.codehaus.plexus.cdc.merge.model.AbstractMergeableElement#merge(org.codehaus.plexus.cdc.merge.model.Mergeable)
      */
     public void merge( Mergeable me )
@@ -44,9 +41,7 @@ public class RequirementElement
         super.merge( me );
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see org.codehaus.plexus.cdc.merge.model.AbstractMergeableElement#isExpectedElementType(org.codehaus.plexus.cdc.merge.model.Mergeable)
      */
     protected boolean isExpectedElementType( Mergeable me )

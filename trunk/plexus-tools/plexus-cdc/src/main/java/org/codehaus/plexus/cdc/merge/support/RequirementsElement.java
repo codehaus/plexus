@@ -10,6 +10,7 @@ import org.jdom.Element;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
+ * @version $Id:$
  */
 public class RequirementsElement
     extends AbstractMergeableElementList
@@ -22,9 +23,7 @@ public class RequirementsElement
         super( element );
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see org.codehaus.plexus.cdc.merge.model.AbstractMergeableElement#isExpectedElementType(org.codehaus.plexus.cdc.merge.model.Mergeable)
      */
     protected boolean isExpectedElementType( Mergeable me )
@@ -32,9 +31,7 @@ public class RequirementsElement
         return ( me instanceof RequirementsElement );
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see org.codehaus.plexus.cdc.merge.model.AbstractMergeableElement#getAllowedTags()
      */
     protected ComponentsXmlTag[] getAllowedTags()
@@ -44,9 +41,7 @@ public class RequirementsElement
         return allowedTags;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see org.codehaus.plexus.cdc.merge.model.AbstractMergeableSupport#getElementNamesForConflictResolution(java.util.List)
      */
     protected List getElementNamesForConflictResolution( List defaultList )
@@ -59,9 +54,7 @@ public class RequirementsElement
         return l;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see org.codehaus.plexus.cdc.merge.model.AbstractMergeableElementList#getTagNameForRecurringMergeable()
      */
     protected String getTagNameForRecurringMergeable()

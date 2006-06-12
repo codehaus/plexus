@@ -9,6 +9,7 @@ import org.jdom.Element;
  * TODO Implement merge for this.
  * 
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
+ * @version $Id:$
  */
 public class ConfigurationElement
     extends AbstractMergeableElement
@@ -19,9 +20,7 @@ public class ConfigurationElement
         super( element );
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see org.codehaus.plexus.cdc.merge.model.AbstractMergeableElement#isExpectedElementType(org.codehaus.plexus.cdc.merge.model.Mergeable)
      */
     protected boolean isExpectedElementType( Mergeable me )
@@ -29,14 +28,12 @@ public class ConfigurationElement
         return ( me instanceof ConfigurationElement );
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see org.codehaus.plexus.cdc.merge.model.AbstractMergeableElement#getAllowedTags()
      */
     protected ComponentsXmlTag[] getAllowedTags()
     {
-        // TODO Auto-generated method stub
+        // TODO Implement!
         return new ComponentsXmlTag[0];
     }
 
