@@ -5,6 +5,7 @@ import org.jdom.Document;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
+ * @version $Id:$
  */
 public abstract class AbstractComponentsXmlMerger
     extends AbstractLogEnabled
@@ -21,13 +22,18 @@ public abstract class AbstractComponentsXmlMerger
         super();
     }
 
+    /**
+     * Sets the <b>dominant</b> document for merging.
+     * @param document the dominant document.
+     */
     public void setDominantDocument( Document document )
     {
         this.dDocument = document;
     }
 
     /**
-     * @return the dDocument
+     * Returns the <b>dominant</b> document instance to be used for merging.
+     * @return the dominant document instance.
      */
     public Document getDominantDocument()
     {

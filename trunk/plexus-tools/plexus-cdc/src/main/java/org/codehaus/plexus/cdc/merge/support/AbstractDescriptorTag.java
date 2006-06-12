@@ -29,12 +29,14 @@ import org.jdom.Element;
 /**
  * Represents the various top-level tags in a deployment descriptor as a
  * typesafe enumeration.
+ * 
+ * @version $Id:$
  */
 public class AbstractDescriptorTag
 {
 
     /**
-     * The tag name,
+     * The tag name.
      */
     private String tagName;
 
@@ -70,8 +72,8 @@ public class AbstractDescriptorTag
      *            The tag name of the element
      * @param isMultipleAllowed
      *            Whether the element may occur multiple times in the descriptor
-     * @param mergeableClass
-     *            TODO
+     * @param mergeableClass Concrete implementation of {@link Mergeable} that is bound this tag.
+     *            
      */
     public AbstractDescriptorTag( String tagName, boolean isMultipleAllowed, Class mergeableClass )
     {
@@ -81,8 +83,6 @@ public class AbstractDescriptorTag
     }
 
     /**
-     * {@inheritDoc}
-     * 
      * @see Object#toString()
      */
     public boolean equals( Object other )
@@ -100,8 +100,6 @@ public class AbstractDescriptorTag
     }
 
     /**
-     * {@inheritDoc}
-     * 
      * @see Object#hashCode()
      */
     public int hashCode()
@@ -144,8 +142,6 @@ public class AbstractDescriptorTag
     }
 
     /**
-     * {@inheritDoc}
-     * 
      * @see java.lang.Object#toString
      */
     public String toString()
@@ -172,8 +168,9 @@ public class AbstractDescriptorTag
             return (AbstractMergeableElement) cons.newInstance( new Object[] { element } );
         else
         {
-            System.err
-                .println( "Could not create Mergeable instance for specified class '" + this.mergeableClass + "'" );
+            // TODO set up Logger
+            // if (getLogger ().isErrorEnabled ())
+            //     getLogger.error ( "Could not create Mergeable instance for specified class '" + this.mergeableClass + "'" );
             throw new Exception( "Could not create Mergeable instance for specified class '" + this.mergeableClass
                 + "'" );
         }

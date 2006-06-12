@@ -11,6 +11,7 @@ package org.codehaus.plexus.cdc.merge.support;
  * TODO Might be an idea factor and set up the list of allowed tags here itself.
  * 
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
+ * @version $Id:$
  */
 public class ComponentsXmlTag
     extends AbstractDescriptorTag
@@ -59,7 +60,7 @@ public class ComponentsXmlTag
     /**
      * @deprecated Use {@link #ComponentsXmlTag(String,boolean,Class)} instead
      */
-    public ComponentsXmlTag( String tagName, boolean isMultipleAllowed )
+    private ComponentsXmlTag( String tagName, boolean isMultipleAllowed )
     {
         this( tagName, isMultipleAllowed, null );
     }
@@ -71,7 +72,7 @@ public class ComponentsXmlTag
      *            Class that wraps this tag (as JDom element) and provides for
      *            merging same tags.
      */
-    public ComponentsXmlTag( String tagName, boolean isMultipleAllowed, Class mergeableClass )
+    private ComponentsXmlTag( String tagName, boolean isMultipleAllowed, Class mergeableClass )
     {
         super( tagName, isMultipleAllowed, mergeableClass );
     }
@@ -81,7 +82,7 @@ public class ComponentsXmlTag
      * 
      * @param tagName
      */
-    public ComponentsXmlTag( String tagName )
+    private ComponentsXmlTag( String tagName )
     {
         super( tagName, false, null );
     }

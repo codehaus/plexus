@@ -20,6 +20,7 @@ import org.jdom.Element;
  * this actually is, but with added bits for merging child element lists.</em>
  * 
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
+ * @version $Id:$
  */
 public abstract class AbstractMergeableElementList
     extends AbstractMergeableSupport
@@ -31,14 +32,14 @@ public abstract class AbstractMergeableElementList
     }
 
     /**
-     * Parses &gt;component&lt; elements and builds a map key by
-     * <code>role</code> + <code>role-hint</code>.
+     * Parses &lt;component&gt; elements and builds a map keyed basd on the list of composite keys specified.
      * 
      * @param tagName
-     *            Name of the tag that appears multiple times *
+     *            Name of the tag that appears multiple times 
+     * @param compositeKeyList List of element/tag names to be used as composite keys to register recurring {@link Mergeable} instances.            
      * @return Map of {@link Mergeable} instances keyed on the composite key
      *         obtained from {@link #getElementNamesForConflictResolution(List)}
-     * @throws Exception
+     * @throws Exception if there was an error parsing and registering {@link Mergeable} instances
      */
     protected Map parseRecurringMergeables( String tagName, List compositeKeyList )
         throws Exception
@@ -68,8 +69,7 @@ public abstract class AbstractMergeableElementList
     }
 
     /**
-     * Merge the passed in {@link Mergeable} instance with the current
-     * {@link Mergeable} (which is also the dominant one).
+     * @see super#merge(Mergeable)
      */
     public void merge( Mergeable me )
         throws MergeException
@@ -149,9 +149,10 @@ public abstract class AbstractMergeableElementList
     }
 
     /**
-     * @param dKeySet
-     * @param rKeySet
-     * @return
+     * Determines if a merge operation is required for the two sets (dominant and recessive) specified.
+     * @param dKeySet the dominant set of elements.
+     * @param rKeySet the recessive set of elements.
+     * @return <code>true</code> if a merge operation was required.
      */
     private boolean isMergeRequired( Set dKeySet, Set rKeySet )
     {
@@ -170,13 +171,11 @@ public abstract class AbstractMergeableElementList
      * itself.</li>
      * </ul>
      * 
-     * @return
+     * @return tag name of the {@link Mergeable} element that occurs multiple times.
      */
     protected abstract String getTagNameForRecurringMergeable();
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see org.codehaus.plexus.cdc.merge.model.AbstractMergeableSupport#getElementNamesForConflictResolution(java.util.List)
      */
     protected abstract List getElementNamesForConflictResolution( List defaultList );

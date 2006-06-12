@@ -12,6 +12,7 @@ import org.jdom.Element;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
+ * @version $Id:$
  */
 public abstract class AbstractMergeableElement
     extends AbstractMergeableSupport
@@ -21,10 +22,6 @@ public abstract class AbstractMergeableElement
     {
         super( element );
     }
-
-    // 
-    // Methods delegated on wrapped JDOM element.
-    // 
 
     /**
      * Detects if there was a conflict, that is the specified element was
@@ -100,8 +97,7 @@ public abstract class AbstractMergeableElement
     }
 
     /**
-     * Merges the passed in recessive {@link Mergeable} instance with the
-     * current one (which is treated as Dominant).
+     * @see org.codehaus.plexus.cdc.merge.support.AbstractMergeableSupport#merge(Mergeable)
      */
     public void merge( Mergeable me )
         throws MergeException
