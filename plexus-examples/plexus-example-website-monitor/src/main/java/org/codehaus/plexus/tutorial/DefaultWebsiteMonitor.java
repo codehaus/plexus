@@ -20,6 +20,8 @@
 package org.codehaus.plexus.tutorial;
 
 import java.net.UnknownHostException;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
@@ -42,38 +44,51 @@ public class DefaultWebsiteMonitor
      * 
      * @plexus.configuration
      */
-    private String website;
+    private List websites;
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see org.codehaus.plexus.tutorial.WebsiteMonitor#monitor(java.lang.String)
      */
     public void monitor()
         throws Exception
     {
         HttpClient client = new HttpClient();
-        HttpMethod getMethod = new GetMethod( website );
-        getMethod.setFollowRedirects( false );
 
-        try
+        for ( Iterator it = websites.iterator(); it.hasNext(); )
         {
-            int statusCode = client.executeMethod( getMethod );
+            String website = (String) it.next();
+            HttpMethod getMethod = new GetMethod( website );
+            getMethod.setFollowRedirects( false );
 
-            if ( statusCode < HttpStatus.SC_OK || statusCode >= HttpStatus.SC_MULTIPLE_CHOICES )
+            try
+            {
+                int statusCode = client.executeMethod( getMethod );
+
+                if ( statusCode < HttpStatus.SC_OK || statusCode >= HttpStatus.SC_MULTIPLE_CHOICES )
+                {
+                    if ( getLogger().isErrorEnabled() )
+                        getLogger().error(
+                                           "HTTP request returned HTTP status code: " + statusCode + " for website: "
+                                               + website );
+                    throw new Exception( "HTTP request returned HTTP status code: " + statusCode + " for website: "
+                        + website );
+                }
+                if ( getLogger().isInfoEnabled() )
+                    getLogger().info(
+                                      "HTTP request returned HTTP status code: " + statusCode + " for website: "
+                                          + website );
+            }
+            catch ( UnknownHostException e )
             {
                 if ( getLogger().isErrorEnabled() )
-                    getLogger().error( "HTTP request returned HTTP status code: " + statusCode );
-                throw new Exception( "HTTP request returned HTTP status code: " + statusCode );
+                    getLogger().error( "Specified host '" + website + "' could not be resolved." );
+                throw e;
             }
-            if ( getLogger().isInfoEnabled() )
-                getLogger().info( "HTTP request returned HTTP status code: " + statusCode );
-        }
-        catch ( UnknownHostException e )
-        {
-            if ( getLogger().isErrorEnabled() )
-                getLogger().error( "Specified host '" + website + "' could not be resolved." );
-            throw e;
+            finally
+            {
+                if ( null != getMethod )
+                    getMethod.releaseConnection();
+            }
         }
     }
 

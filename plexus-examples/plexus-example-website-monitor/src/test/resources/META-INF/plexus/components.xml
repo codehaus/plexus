@@ -7,7 +7,9 @@
       </implementation>
       <configuration>
         <websites>
-          <website>http://plexus.codehaus.org/</website>
+          <website>http://www.google.co.nz/</website>
+          <website>http://www.nonexistent.yadayada.org/</website>
+          <website>http://maven.apache.org/</website>
         </websites>
       </configuration>
     </component>
