@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSessionListener;
 import java.util.Collections;
 
 public class PlexusLifecycleListener implements ServletContextListener, HttpSessionListener {
-    private static final Log log = LogFactory.getLog(PlexusObjectFactory.class);
+    private static final Log log = LogFactory.getLog(PlexusLifecycleListener.class);
 
     public static boolean loaded = false;
     public static final String KEY = "webwork.plexus.container";

@@ -23,7 +23,7 @@ import java.util.Collections;
 public class PlexusFilter
     implements Filter
 {
-    private static final Log log = LogFactory.getLog( PlexusObjectFactory.class );
+    private static final Log log = LogFactory.getLog( PlexusFilter.class );
     private static final String CHILD_CONTAINER_NAME = "request";
 
     public static boolean loaded = false;
