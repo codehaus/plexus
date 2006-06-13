@@ -13,7 +13,7 @@ import java.io.ByteArrayInputStream;
  * @author Patrick Lightbody (plightbo at gmail dot com)
  */
 public class PlexusUtils {
-    private static final Log log = LogFactory.getLog(PlexusObjectFactory.class);
+    private static final Log log = LogFactory.getLog(PlexusUtils.class);
 
     public static void configure(PlexusContainer pc, String file) throws PlexusConfigurationResourceException {
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
