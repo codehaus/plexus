@@ -70,9 +70,9 @@
   </repositories>
   <pluginRepositories>
     <pluginRepository>
-      <id>snapshots-plugins</id>
-      <name>Maven Snapshot Plugins Development Repository</name>
-      <url>http://snapshots.maven.codehaus.org/maven2</url>
+      <id>codehaus-snapshots</id>
+      <name>Codehaus Snapshot Development Repository</name>
+      <url>http://snapshots.repository.codehaus.org/</url>
       <releases>
         <enabled>false</enabled>
       </releases>
