@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.codehaus.plexus.cdc.merge.MergeException;
+import org.codehaus.plexus.cdc.merge.MergeStrategy;
 import org.jdom.Attribute;
 import org.jdom.Content;
 import org.jdom.Document;
@@ -18,7 +19,7 @@ import org.jdom.filter.Filter;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
- * @version $Id:$
+ * @version $Id$
  */
 public abstract class AbstractMergeableSupport
     implements Mergeable
@@ -28,6 +29,11 @@ public abstract class AbstractMergeableSupport
      * Wrapped JDOM element.
      */
     protected Element element;
+
+    /**
+     * The default merging strategy used.
+     */
+    private static final MergeStrategy DEFAULT_MERGE_STRATEGY = MergeStrategies.DEEP;
 
     public AbstractMergeableSupport( Element element )
     {
@@ -845,6 +851,15 @@ public abstract class AbstractMergeableSupport
     protected List getElementNamesForConflictResolution( List defaultList )
     {
         return defaultList;
+    }
+
+    /**
+     * Returns the default {@link MergeStrategy} instance.
+     * @return default {@link MergeStrategy} to be used.
+     */
+    protected MergeStrategy getDefaultMergeStrategy()
+    {
+        return DEFAULT_MERGE_STRATEGY;
     }
 
 }

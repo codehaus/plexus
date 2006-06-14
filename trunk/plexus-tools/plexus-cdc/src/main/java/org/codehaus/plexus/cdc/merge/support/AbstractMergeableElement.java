@@ -8,11 +8,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.codehaus.plexus.cdc.merge.MergeException;
+import org.codehaus.plexus.cdc.merge.MergeStrategy;
 import org.jdom.Element;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
- * @version $Id:$
+ * @version $Id$
  */
 public abstract class AbstractMergeableElement
     extends AbstractMergeableSupport
@@ -97,6 +98,17 @@ public abstract class AbstractMergeableElement
     }
 
     /**
+     * Simply delegate to 
+     * @see org.codehaus.plexus.cdc.merge.support.Mergeable#merge(org.codehaus.plexus.cdc.merge.support.Mergeable, org.codehaus.plexus.cdc.merge.MergeStrategy)
+     */
+    public void merge( Mergeable me, MergeStrategy strategy )
+        throws MergeException
+    {
+        // TODO set up a unit test for this!        
+        strategy.apply( this, me );
+    }
+
+    /**
      * @see org.codehaus.plexus.cdc.merge.support.AbstractMergeableSupport#merge(Mergeable)
      */
     public void merge( Mergeable me )
@@ -130,7 +142,8 @@ public abstract class AbstractMergeableElement
                 try
                 {
                     getAllowedTags()[i].createMergeable( this.getChild( tagName ) )
-                        .merge( getAllowedTags()[i].createMergeable( rce.getChild( tagName ) ) );
+                        .merge( getAllowedTags()[i].createMergeable( rce.getChild( tagName ) ),
+                                getDefaultMergeStrategy() );
                 }
                 catch ( Exception e )
                 {

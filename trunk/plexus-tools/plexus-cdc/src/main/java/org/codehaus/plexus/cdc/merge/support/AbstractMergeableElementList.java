@@ -20,10 +20,10 @@ import org.jdom.Element;
  * this actually is, but with added bits for merging child element lists.</em>
  * 
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
- * @version $Id:$
+ * @version $Id$
  */
 public abstract class AbstractMergeableElementList
-    extends AbstractMergeableSupport
+    extends AbstractMergeableElement
 {
 
     public AbstractMergeableElementList( Element element )
