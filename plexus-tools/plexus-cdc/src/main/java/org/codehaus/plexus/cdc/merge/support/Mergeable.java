@@ -1,6 +1,7 @@
 package org.codehaus.plexus.cdc.merge.support;
 
 import org.codehaus.plexus.cdc.merge.MergeException;
+import org.codehaus.plexus.cdc.merge.MergeStrategy;
 import org.jdom.Element;
 
 /**
@@ -9,7 +10,7 @@ import org.jdom.Element;
  * It should be implemented by elements/tags that need to have a certain control on how elements of the same type are merged with them.
  *  
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
- * @version $Id:$
+ * @version $Id$
  */
 public interface Mergeable
 {
@@ -22,6 +23,16 @@ public interface Mergeable
      * @throws MergeException if there was an error merging the mergeables.
      */
     public abstract void merge( Mergeable me )
+        throws MergeException;
+
+    /**
+     * Applies the passed in {@link MergeStrategy} to merge two {@link Mergeable} instance.<p>
+     * 
+     * @param me Recessive {@link Mergeable} instance.
+     * @param strategy {@link MergeStrategy} to apply for merging.
+     * @throws MergeException if there was an error while merging.
+     */
+    public abstract void merge( Mergeable me, MergeStrategy strategy )
         throws MergeException;
 
     /**
