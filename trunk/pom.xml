@@ -8,7 +8,7 @@
   <artifactId>plexus</artifactId>
   <packaging>pom</packaging>
   <name>Plexus</name>
-  <version>1.0.5</version>
+  <version>1.0.6</version>
   <ciManagement>
     <notifiers>
       <notifier>
@@ -39,21 +39,30 @@
 
   <distributionManagement>
     <repository>
-      <id>repo1</id>
-      <name>Maven Central Repository</name>
-      <url>scp://repo1.maven.org/home/projects/maven/repository-staging/to-ibiblio/maven2</url>
+      <id>plexus</id>
+      <name>Plexus Central Repository</name>
+      <url>dav:https://dav.codehaus.org/repository/plexus/</url>
     </repository>
     <snapshotRepository>
-      <id>snapshots</id>
-      <name>Maven Central Development Repository</name>
-      <url>scp://repo1.maven.org/home/projects/maven/repository-staging/snapshots/maven2</url>
+      <id>plexus-snapshots</id>
+      <name>Plexus Central Development Repository</name>
+      <url>dav:https://dav.codehaus.org/snapshots.repository/plexus/</url>
     </snapshotRepository>
+    <site>
+      <id>plexus-site</id>
+      <url>dav:https://dav.codehaus.org/plexus/</url>
+    </site>
   </distributionManagement>
   <repositories>
     <repository>
-      <id>snapshots</id>
-      <name>Maven Snapshot Development Repository</name>
-      <url>http://snapshots.maven.codehaus.org/maven2</url>
+      <id>apache-snapshots</id>
+      <name>Snapshot repository</name>
+      <url>http://people.apache.org/maven-snapshot-repository/</url>
+    </repository>
+    <repository>
+      <id>codehaus-snapshots</id>
+      <name>Codehaus Snapshot Development Repository</name>
+      <url>http://snapshots.repository.codehaus.org/</url>
       <releases>
         <enabled>false</enabled>
       </releases>
@@ -219,6 +228,13 @@
     <module>plexus-utils</module>
   </modules>
   <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-webdav</artifactId>
+        <version>1.0-beta-1-SNAPSHOT</version>
+        </extension>
+      </extensions>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
