@@ -58,6 +58,9 @@
       <id>apache-snapshots</id>
       <name>Snapshot repository</name>
       <url>http://people.apache.org/maven-snapshot-repository/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
     </repository>
     <repository>
       <id>codehaus-snapshots</id>
