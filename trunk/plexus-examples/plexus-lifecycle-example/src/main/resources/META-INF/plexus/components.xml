@@ -1,0 +1,19 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.Application</role>
+      <implementation>org.codehaus.plexus.DefaultApplication</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.Populator</role>
+        </requirement>
+      </requirements>
+      <lifecycle-handler>example</lifecycle-handler>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.Populator</role>
+      <implementation>org.codehaus.plexus.DefaultPopulator</implementation>
+      <lifecycle-handler>example</lifecycle-handler>
+    </component>
+  </components>
+</component-set>

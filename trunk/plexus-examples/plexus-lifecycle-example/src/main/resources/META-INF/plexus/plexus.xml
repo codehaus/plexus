@@ -1,0 +1,17 @@
+<plexus>
+  <lifecycle-handler-manager implementation="org.codehaus.plexus.lifecycle.DefaultLifecycleHandlerManager">
+    <lifecycle-handlers>
+      <lifecycle-handler implementation="org.codehaus.plexus.lifecycle.ExampleLifecycleHandler">
+        <id>example</id>
+        <name>Example Lifecycle Handler</name>
+        <begin-segment>
+          <phase implementation="org.codehaus.plexus.personality.plexus.lifecycle.phase.CompositionPhase"/>
+          <phase implementation="org.codehaus.plexus.lifecycle.phase.ConfigurePhase"/>
+          <phase implementation="org.codehaus.plexus.lifecycle.phase.MonitorPhase"/>
+          <phase implementation="org.codehaus.plexus.lifecycle.phase.ExecutePhase"/>
+        </begin-segment>
+        <end-segment/>
+      </lifecycle-handler>
+    </lifecycle-handlers>
+  </lifecycle-handler-manager>
+</plexus>
