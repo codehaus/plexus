@@ -13,7 +13,8 @@ Configuring a Plexus Component via descriptor
  We change the Component Role interface to look like this:
 
 +------------------------------------------+
-public interface WebsiteMonitor {
+public interface WebsiteMonitor 
+{
 
     /**
      * Role used to register component implementations with the container.
@@ -35,31 +36,74 @@ public interface WebsiteMonitor {
  and, factor our component provider implementation to look like this:
  
 +------------------------------------------+
-public class DefaultWebsiteMonitor extends AbstractLogEnabled implements WebsiteMonitor {
+public class DefaultWebsiteMonitor
+    extends AbstractLogEnabled
+    implements WebsiteMonitor
+{
 
     /**
      * Website to monitor.
-     *
+     * 
      * @plexus.configuration
      */
-    private String website;
+    private List websites;
 
-
-    /*
-     * (non-Javadoc)
-     *
+    /**
      * @see org.codehaus.plexus.tutorial.WebsiteMonitor#monitor(java.lang.String)
      */
-    public void monitor() throws Exception {
-        // snipped (same implementation as before)
+    public void monitor()
+        throws Exception
+    {
+        HttpClient client = new HttpClient();
+
+        for ( Iterator it = websites.iterator(); it.hasNext(); )
+        {
+            String website = (String) it.next();
+            HttpMethod getMethod = new GetMethod( website );
+            getMethod.setFollowRedirects( false );
+
+            try
+            {
+                int statusCode = client.executeMethod( getMethod );
+
+                if ( statusCode < HttpStatus.SC_OK || statusCode >= HttpStatus.SC_MULTIPLE_CHOICES )
+                {
+                    if ( getLogger().isErrorEnabled() )
+                        getLogger().error(
+                                           "HTTP request returned HTTP status code: " + statusCode + " for website: "
+                                               + website );
+                    throw new Exception( "HTTP request returned HTTP status code: " + statusCode + " for website: "
+                        + website );
+                }
+                if ( getLogger().isInfoEnabled() )
+                    getLogger().info(
+                                      "HTTP request returned HTTP status code: " + statusCode + " for website: "
+                                          + website );
+            }
+            catch ( UnknownHostException e )
+            {
+                if ( getLogger().isErrorEnabled() )
+                    getLogger().error( "Specified host '" + website + "' could not be resolved." );
+                throw e;
+            }
+            finally
+            {
+                if ( null != getMethod )
+                    getMethod.releaseConnection();
+            }
+        }
     }
+
 }
+
 +------------------------------------------+
 
 
- Note how 'website' is now a property rather than a argument to the method. Also notice the annotation @plexus.configuration that indicates that this property is a plexus configuration element. This annotation is processed by Plexus' Component Descriptor Creator (or CDC). The CDC can parse and generate a components.xml from Java sources.
+ Note how 'websites' is now a java.util.List property rather than a argument to the method. Also notice the annotation @plexus.configuration that indicates that this property is a plexus configuration element. This annotation is processed by Plexus' Component Descriptor Creator (or CDC). The CDC can parse and generate a components.xml from Java sources.
 
- Now that we made 'website' to be a configuration property, we need to update the Component's descriptor and specify the value for website via it. Plexus container ensures that a components fields are mapped and initialized and mapped from a component's configuration file.
+ Now that we made 'websites' to be a configuration property, we need to update the component's descriptor and specify values for websites. We ad a list of websites as shown the the snippet below. Plexus container ensures that a component's fields are mapped and initialized and mapped from a component's configuration file. It can intellingently discover and map configuration items of different types like String, Lists (in this case). You can also specify you own configuration implementation class by specifying an 'implementation' attribute on <configuration> element. Plexus will then attempt to inject rhe values from the XML configuration into the Configuration implementation's properties. Each of the nested element maps to a configuration property in the implementation class.
+  
+  ~~TODO: Provide a link to page that discusses configuration mapping.
 
  This mandates a change in the descriptor, which now looks something like this:
 
@@ -70,14 +114,16 @@ public class DefaultWebsiteMonitor extends AbstractLogEnabled implements Website
         org.codehaus.plexus.tutorial.DefaultWebsiteMonitor
       </implementation>
       <configuration>
-        <website>http://www.google.co.nz/</website>
+        <websites>
+          <website>http://plexus.codehaus.org/</website>
+          <website>http://nonexistent.yadayada.org/</website>
+        </websites>
       </configuration>
     </component>
 +------------------------------------------+
 
 
- TODO: May be add a time-interval configuration property such that the monitor can ping the specified site at regular intervals
+ ~~TODO: May be add a time-interval configuration property such that the monitor can ping the specified site at regular intervals
 
- TODO: Evolve the example and change the 'website' property to be of type List rather than a String.
-
+ ~~TODO: add a MonitorResult to communicate the results of a Monitoring run back to the client.
 
