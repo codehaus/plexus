@@ -37,5 +37,16 @@
         </p>
       </answer>
     </faq>
+    <faq id="difference">
+      <question>What is the difference between components.xml and plexus.xml?</question>
+      <answer>
+        <p>
+        Both components.xml and plexus.xml are components descriptors. But they differ in following respects:<br/>      
+          - plexus.xml is a superset of components.xml<br/>
+          - components.xml only declares components while plexus.xml can be used to configure the plexus container and runtime in addition to declaring components.<br/>
+          -  Many JARs in an application can have components.xml but there can be only ONE plexus.xml defined for an application.<br/>
+        </p>
+      </answer>
+    </faq>
   </part>
 </faqs>
