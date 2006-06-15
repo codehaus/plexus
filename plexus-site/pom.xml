@@ -8,10 +8,27 @@
   <artifactId>plexus-site</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
   <name>Plexus Site</name>
+  <build>
+    <extensions>
+      <extension>
+	      <groupId>org.apache.maven.wagon</groupId>
+      	<artifactId>wagon-webdav</artifactId>
+      	<version>1.0-beta-1-SNAPSHOT</version>
+      </extension>
+    </extensions>
+  </build>
+
   <distributionManagement>
+    <!--
     <site>
       <id>plexus.website</id>
       <url>scp://beaver.codehaus.org/home/projects/plexus/public_html/</url>
+    </site>
+    -->
+   <site>
+      <id>plexus-site</id>
+      <name>Plexus Website</name>
+      <url>dav:https://dav.codehaus.org/plexus/</url>
     </site>
   </distributionManagement>
 </project>
