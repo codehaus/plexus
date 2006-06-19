@@ -1,0 +1,37 @@
+ -----
+ Plexus
+ -----
+ -----
+
+<<This is an old piece of documentation, yet to be integrated into the new site and removed>>
+
+...
+
+ [[1]] You must create your component implementation.
+
++---+
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+
+public class DefaultCheeseComponent
+    implements Initializable, CheeseComponent
+{
+    private String cheese;
+
+    public void initialize() throws Exception
+    {
+        cheese = "cheese!";
+    }
+
+    public String cheese()
+    {
+        return cheese;
+    }
+}
++---+
+
+ Notice that we implement <<<Intializable>>>. This is part of the
+ {{{plexus-lifecycle.html}Component Lifecycle}}. When plexus automatically
+ instantiates your component it will automatically <<<intiailize()>>> it as
+ well.
+
+ 
