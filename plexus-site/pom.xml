@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.codehaus.plexus</groupId>
     <artifactId>plexus</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.7</version>
   </parent>
   <artifactId>plexus-site</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
@@ -16,13 +16,6 @@
         <version>2.0-beta-5</version>
       </plugin>
     </plugins>  
-    <extensions>
-      <extension>
-	      <groupId>org.apache.maven.wagon</groupId>
-      	<artifactId>wagon-webdav</artifactId>
-      	<version>1.0-beta-1-SNAPSHOT</version>
-      </extension>
-    </extensions>
   </build>
 
   <distributionManagement>
