@@ -15,33 +15,53 @@
     <artifactId>maven-stylus-skin</artifactId>
   </skin>
   <body>
+    
     <links>
-      <item name="Plexus" href="http://plexus.codehaus.org"/>
-      <item name="The Codehaus" href="http://www.codehaus.org"/>
+      <item name="Plexus" href="http://plexus.codehaus.org" />
+      <item name="The Codehaus" href="http://www.codehaus.org" />
     </links>
+    
     <menu name="Plexus">
-      <item name="Overview" href="/index.html" />
+      <item name="Overview" href="/index.html" />   
     </menu>
+    
     <menu name="Downloads">
       <!-- .tgz files for latest release and snapshots -->
-      <item name="Sources" href="/download-sources.html" />
-      <item name="Binaries" href="/download-binaries.html" />
+      <item name="Sources" href="source-repository.html" />
+      <item name="Binaries" href="/xfactored/download-binaries.html" />
     </menu>
+    
+    <menu name="Guides">
+      <!-- 5 minute tutorial -->
+      <item name="Quick Start" href="/xfactored/guides/quick-start/getting-started.html" />
+      <item name="Trails" href="/xfactored/guides/trails/index.html" >        
+        <!-- Guide to writing components, touches upon basic plexus concepts to get started -->
+        <item name="Writing Plexus Components" href="/xfactored/guides/trails/writing-components/index.html" />
+        <!-- Guide to writing applications that use Plexus container -->
+        <item name="Writing Plexus Applications" href="/xfactored/guides/trails/plexus-applications/index.html" />        
+      </item>
+    </menu>
+
     <menu name="Reference">
-      <!-- User Guide -->
-      <item name="Documentation" href="/tutorials/index.html" />
-      <item name="Five Minute Tutorial" href="/tutorials/getting-started.html" />
-      <item name="Code Samples" href="/tutorials/getting-started.html" />
-      <item name="Why Use Components?" href="/tutorials/why-use-components.html" />
-      <item name="Technical Articles" href="/technical-articles.html" />
-      <item name="Available Components" href="/ref/components.html" />
-      <item name="FAQs" href="/faq.html"/>
+      <!-- Detailed Plexus manual -->
+      <item name="Developer Guide" href="/xfactored/ref/developer-guide/index.html" />      
+      <!-- A background on Component oriented programming -->
+      <item name="Why Use Components?" href="/xfactored/ref/why-use-components.html" />
+      <!-- Discuss elements for plexus.xml and components.xml and differences -->
+      <item name="Plexus Descriptor" href="/xfactored/ref/plexus-descriptor.html" />
+      <item name="Component Descriptor" href="/xfactored/ref/component-descriptor.html" />      
+      <item name="Technical Articles" href="/xfactored/ref/technical-articles.html" />
+      <item name="Available Components" href="/xfactored/ref/available-components.html" />
+      <item name="FAQs" href="/faq.html" />
     </menu>
+    
     <menu name="Community">
-      <item name="Mailing Lists" href="/mailing-lists.html"/>
-      <item name="IRC" href="/irc.html" />
-      <item name="Get Involved" href="/get-involved.html" />
+      <item name="Mailing Lists" href="mail-lists.html" />
+      <item name="IRC" href="/xfactored/irc.html" />
+      <item name="Get Involved" href="/xfactored/get-involved.html" />
     </menu>
+    
     <menu ref="reports" />
+
   </body>
 </project>
