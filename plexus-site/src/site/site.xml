@@ -38,7 +38,7 @@
         <!-- Guide to writing components, touches upon basic plexus concepts to get started -->
         <item name="Writing Plexus Components" href="/xfactored/guides/trails/writing-components/index.html" />
         <!-- Guide to writing applications that use Plexus container -->
-        <item name="Writing Plexus Applications" href="/xfactored/guides/trails/plexus-applications/index.html" />        
+        <item name="Writing Plexus Applications" href="/xfactored/ref/developer-guide/building-applications/index.html" />        
       </item>
     </menu>
 
