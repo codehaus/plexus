@@ -13,14 +13,29 @@ Overview
   that can easily be assembled and reused.
 
   While Plexus is similar to other <inversion-of-control> (IoC) or <dependency injection> frameworks such as the
-  Spring Framework, it's fully-fledged container supports many more features such as component lifecycles and
-  instantiation strategies, nested containers, component configuration, auto-wiring, component dependencies,
-  and various dependency injection techniques including constructor injection, setter injection, and private field
-  injection. See the {{{documentation/feature-comparison.html} Feature Comparison}} page for more information on
+  Spring Framework, it's fully-fledged container supports many more features such as:
+  
+    * Component lifecycles 
+
+    * Component instantiation strategies
+    
+    * Nested containers  
+    
+    * Component configuration
+    
+    * Auto-wiring
+    
+    * Component dependencies, and 
+
+    * Various dependency injection techniques including constructor injection, setter injection, and private field
+  injection. 
+  
+  
+  See the {{{xfactored/ref/feature-comparison.html} Feature Comparison}} page for more information on
   the differences between Plexus and other products.
 
   The Plexus project provides a number of pre-built components for common tasks and toolkits
-  such as Jetty, Velocity, Hibernate, i18n, and {{{ref/components/index.html} many more}}. However,
+  such as Jetty, Velocity, Hibernate, i18n, and {{{xfactored/ref/available-components.html} many more}}. However,
   Plexus is also able to reuse your existing components written for other IoC frameworks such as
   Spring, Avalon and Pico Container unmodified, as well as allowing you to reuse your existing code
   inside the Plexus Container.
@@ -37,38 +52,5 @@ Overview
   Webwork 2.2 (Struts Action Framework 2.0).
 
   For answers to common questions about Plexus, see the {{{faq.html} FAQ}}.
-
-* Trails
-
-  The Plexus documentation is organised into trails, depending on how you intend to use it.
-
-** Component Trail
-
-  This trail is for those wishing to create Plexus components for applications already using the Plexus Container
-
-  [[1]] To learn the basics about Plexus components and the Plexus container, try the
-  {{{tutorials/getting-started.html} Five Minute Tutorial}}.
-
-  [[2]] To learn more about writing components, take the {{{tutorials/components.html} Component Tutorial}}.
-
-  ~~TODO: finish
-
-** Container Trail
-
-  This trail is for those wishing to create an application that uses the Plexus container.
-
-  [[1]] To get started using the Plexus container, try the {{{tutorials/getting-started.html} Five Minute Tutorial}}.
-
-  ~~TODO: finish
-
-** Component-oriented Programming Trail
-
-  This trail is for those that are new to component-oriented programming and would like to know more about it,
-  independant of Plexus.
-
-  [[1]] {{{tutorials/why-use-components.html} Why Use Components?}}
-
-  ~~TODO: finish
-
 
 
