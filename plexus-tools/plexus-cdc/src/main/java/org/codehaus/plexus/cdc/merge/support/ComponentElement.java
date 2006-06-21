@@ -7,7 +7,7 @@ import org.jdom.Element;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
- * @version $Id:$
+ * @version $Id$
  */
 public class ComponentElement
     extends AbstractMergeableElement
@@ -15,6 +15,8 @@ public class ComponentElement
 
     /**
      * Allowed elements/tags that we can expect under this element.
+     * @deprecated <em>Not being used at the moment. 
+     * TODO Review after MergeStrategies are in place.</em>
      */
     private final ComponentsXmlTag[] allowedTags = {
         ComponentsXmlTag.ROLE,
@@ -42,7 +44,8 @@ public class ComponentElement
      */
     protected ComponentsXmlTag[] getAllowedTags()
     {
-        return allowedTags;
+        // return allowedTags;
+        return new ComponentsXmlTag[0];
     }
 
 }
