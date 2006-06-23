@@ -1,7 +1,7 @@
-package org.codehaus.plexus.maven.plugin;
-
 /*
- * Copyright (c) 2004-2005, Codehaus.org
+ * The MIT License
+ *
+ * Copyright (c) 2006, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,26 +22,32 @@ package org.codehaus.plexus.maven.plugin;
  * SOFTWARE.
  */
 
+package org.codehaus.plexus.maven.plugin;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.model.Resource;
 import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
 import org.codehaus.plexus.cdc.ComponentDescriptorCreatorException;
+import org.codehaus.plexus.util.FileUtils;
 
-import java.io.File;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 
 /**
- * @goal descriptor
+ * @goal merge
  *
- * @phase process-sources
+ * @phase process-resources
  *
- * @description Builds a Plexus descriptor.
+ * @description Merges all Plexus descriptors.
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
+ * @version $Id: PlexusDescriptorMojo.java 2977 2006-01-05 21:05:18Z trygvis $
  */
-public class PlexusDescriptorMojo
+public class PlexusMergeMojo
     extends AbstractMojo
 {
     // ----------------------------------------------------------------------
@@ -49,13 +55,13 @@ public class PlexusDescriptorMojo
     // ----------------------------------------------------------------------
 
     /**
-     * @parameter expression="${project.compileSourceRoots}"
+     * @parameter expression="${project.resources}"
      * @required
      */
-    private List sourceDirectories;
+    private List resources;
 
     /**
-     * @parameter expression="${project.build.outputDirectory}"
+     * @parameter expression="${project.build.outputDirectory}/META-INF/plexus/components.xml"
      * @required
      */
     private File output;
@@ -78,23 +84,71 @@ public class PlexusDescriptorMojo
         throws MojoExecutionException
     {
         // ----------------------------------------------------------------------
-        // Create the component set descriptor from the source files
+        // Locate files
         // ----------------------------------------------------------------------
 
-        File[] sources = new File[ sourceDirectories.size() ];
+        List files = new ArrayList();
 
-        Iterator it = sourceDirectories.iterator();
-
-        for ( int i = 0; i < sources.length; i++ )
+        for ( Iterator it = resources.iterator(); it.hasNext(); )
         {
-            sources[ i ] = new File( (String) it.next() );
+            Resource resource = (Resource) it.next();
+
+            String includes = "META-INF/plexus/components.xml";
+
+            String excludes = "";
+
+            for ( Iterator j = resource.getExcludes().iterator(); j.hasNext(); )
+            {
+                String exclude = (String) j.next();
+                excludes += exclude + ",";
+            }
+
+            try
+            {
+                File basedir = new File( resource.getDirectory() );
+
+                getLog().debug( "Searching for component.xml files. Basedir: " + basedir.getAbsolutePath() + ", includes: " + includes + ", excludes=" + excludes );
+
+                if ( !basedir.isDirectory() )
+                {
+                    getLog().debug( "Skipping, not a directory." );
+
+                    continue;
+                }
+
+                List list = FileUtils.getFiles( basedir, includes, excludes );
+
+                files.addAll( list );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "Error while scanning for component.xml files.", e );
+            }
         }
 
-        File outputDirectory = new File( output, "/META-INF/plexus" );
+        // ----------------------------------------------------------------------
+        // Merge the component set descriptors
+        // ----------------------------------------------------------------------
+
+        if ( files.size() > 0 )
+        {
+            getLog().debug( "Didn't find any files to merge." );
+
+            return;
+        }
+
+        getLog().debug( "Found " + files.size() + " files to merge:" );
+
+        for ( Iterator it = files.iterator(); it.hasNext(); )
+        {
+            File file = (File) it.next();
+
+            getLog().debug( file.getAbsolutePath() );
+        }
 
         try
         {
-            cdc.processSources( sources, outputDirectory );
+            cdc.mergeDescriptors( output, files );
         }
         catch ( ComponentDescriptorCreatorException e )
         {
