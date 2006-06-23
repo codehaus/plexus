@@ -1,7 +1,31 @@
-/**
- * 
- */
 package org.codehaus.plexus.cdc.merge.support;
+
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2006, The Codehaus
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+import org.codehaus.plexus.cdc.merge.MergeException;
+import org.jdom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,22 +34,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.codehaus.plexus.cdc.merge.MergeException;
-import org.jdom.Element;
-
 /**
  * Base class that allows for handling merging two element lists.
- * <p>
+ * <p/>
  * <em>TODO Refactor and make this extend {@link AbstractMergeableElement} which is what
  * this actually is, but with added bits for merging child element lists.</em>
- * 
+ *
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
  */
 public abstract class AbstractMergeableElementList
     extends AbstractMergeableElement
 {
-
     public AbstractMergeableElementList( Element element )
     {
         super( element );
@@ -33,12 +53,12 @@ public abstract class AbstractMergeableElementList
 
     /**
      * Parses &lt;component&gt; elements and builds a map keyed basd on the list of composite keys specified.
-     * 
-     * @param tagName
-     *            Name of the tag that appears multiple times 
-     * @param compositeKeyList List of element/tag names to be used as composite keys to register recurring {@link Mergeable} instances.            
-     * @return Map of {@link Mergeable} instances keyed on the composite key
-     *         obtained from {@link #getElementNamesForConflictResolution(List)}
+     *
+     * @param tagName          Name of the tag that appears multiple times
+     * @param compositeKeyList List of element/tag names to be used as composite keys to register recurring
+     *                         {@link Mergeable} instances.
+     * @return Map of {@link Mergeable} instances keyed on the composite key obtained from
+     *         {@link #getElementNamesForConflictResolution(List)}
      * @throws Exception if there was an error parsing and registering {@link Mergeable} instances
      */
     protected Map parseRecurringMergeables( String tagName, List compositeKeyList )
@@ -56,7 +76,9 @@ public abstract class AbstractMergeableElementList
             {
                 String key = (String) itr.next();
                 if ( null != ce.getChildText( key ) )
+                {
                     compositeKey = compositeKey + ce.getChildText( key );
+                }
             }
 
             // create a Mergeable instance and store it in the map.
@@ -68,9 +90,6 @@ public abstract class AbstractMergeableElementList
         return mergeables;
     }
 
-    /**
-     * @see super#merge(Mergeable)
-     */
     public void merge( Mergeable me )
         throws MergeException
     {
@@ -95,19 +114,14 @@ public abstract class AbstractMergeableElementList
     /**
      * Identifies the conflicting elements in the dominant and recessive
      * {@link Map} instance and merges as required.
-     * 
-     * @param parent
-     *            {@link Element} that is parent for the children in the
-     *            dominant Map instance. Merged content is added to this
-     *            element.
-     * @param dMap
-     *            Dominant Map keyed by the composite key obtained from
-     *            {@link #getElementNamesForConflictResolution(List)}
-     * @param rMap
-     *            Recessive Map keyed by the composite key obtained from
-     *            {@link #getElementNamesForConflictResolution(List)}
-     * @throws Exception
-     *             if there was an error merging both the maps.
+     *
+     * @param parent {@link Element} that is parent for the children in the dominant Map instance. Merged content is
+     *               added to this element.
+     * @param dMap   Dominant Map keyed by the composite key obtained from
+     *               {@link #getElementNamesForConflictResolution(List)}
+     * @param rMap   Recessive Map keyed by the composite key obtained from
+     *               {@link #getElementNamesForConflictResolution(List)}
+     * @throws Exception if there was an error merging both the maps.
      */
     protected void merge( Element parent, Map dMap, Map rMap )
         throws Exception
@@ -116,7 +130,9 @@ public abstract class AbstractMergeableElementList
         Set rKeySet = rMap.keySet();
         // check if there are any entities to merge
         if ( !isMergeRequired( dKeySet, rKeySet ) )
+        {
             return;
+        }
 
         // iterate over components and process them
         for ( Iterator it = dKeySet.iterator(); it.hasNext(); )
@@ -150,6 +166,7 @@ public abstract class AbstractMergeableElementList
 
     /**
      * Determines if a merge operation is required for the two sets (dominant and recessive) specified.
+     *
      * @param dKeySet the dominant set of elements.
      * @param rKeySet the recessive set of elements.
      * @return <code>true</code> if a merge operation was required.
@@ -162,7 +179,7 @@ public abstract class AbstractMergeableElementList
     /**
      * Allows the sub classes to provided a tag name that they expect to recurr
      * within them.
-     * <p>
+     * <p/>
      * For instance: <br>
      * <ul>
      * <li>&lt;components&gt; expects &lt;component&gt; to recurr within
@@ -170,14 +187,10 @@ public abstract class AbstractMergeableElementList
      * <li>&lt;requirements&gt; expects &lt;requirement&gt; to recurr within
      * itself.</li>
      * </ul>
-     * 
+     *
      * @return tag name of the {@link Mergeable} element that occurs multiple times.
      */
     protected abstract String getTagNameForRecurringMergeable();
 
-    /**
-     * @see org.codehaus.plexus.cdc.merge.model.AbstractMergeableSupport#getElementNamesForConflictResolution(java.util.List)
-     */
     protected abstract List getElementNamesForConflictResolution( List defaultList );
-
 }
