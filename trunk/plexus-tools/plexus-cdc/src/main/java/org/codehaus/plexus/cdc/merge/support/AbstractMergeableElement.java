@@ -1,15 +1,36 @@
-/**
- * 
- */
 package org.codehaus.plexus.cdc.merge.support;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2006, The Codehaus
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
 import org.codehaus.plexus.cdc.merge.MergeException;
 import org.codehaus.plexus.cdc.merge.MergeStrategy;
 import org.jdom.Element;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
@@ -18,7 +39,6 @@ import org.jdom.Element;
 public abstract class AbstractMergeableElement
     extends AbstractMergeableSupport
 {
-
     public AbstractMergeableElement( Element element )
     {
         super( element );
@@ -27,16 +47,14 @@ public abstract class AbstractMergeableElement
     /**
      * Detects if there was a conflict, that is the specified element was
      * present in both dominant and recessive element-sets.
-     * <p>
+     * <p/>
      * This delegates to
-     * {@link #isRecessiveElementInConflict(AbstractMergeableElement, List)}.
-     * 
-     * @param re
-     *            Recessive element.
-     * @param eltName
-     *            Element name to test for.
+     * {@link #isRecessiveElementInConflict(AbstractMergeableElement,List)}.
+     *
+     * @param re      Recessive element.
+     * @param eltName Element name to test for.
      * @return <code>true</code> if there was a conflict of element.
-     * @deprecated <em>use {@link #isRecessiveElementInConflict(AbstractMergeableElement, List)} instead.</em>
+     * @deprecated <em>use {@link #isRecessiveElementInConflict(AbstractMergeableElement,List)} instead.</em>
      */
     protected boolean isRecessiveElementInConflict( AbstractMergeableElement re, String eltName )
     {
@@ -49,16 +67,14 @@ public abstract class AbstractMergeableElement
     /**
      * Detects if there was a conflict, that is the specified element was
      * present in both dominant and recessive element-sets.
-     * <p>
+     * <p/>
      * Use this to determine conflicts when the Dominant and Recessive element
      * sets are keyed with Composite keys.<br>
      * For instance: <code>&lt;component&gt;</code> is keyed on
      * <code>&lt;role&gt;</code> and <code>&lt;role-hint&gt;</code>.
-     * 
+     *
      * @param re
-     * @param eltNameList
-     *            List of elements that will be checked for values in both
-     *            dominant and recessive sets.
+     * @param eltNameList List of elements that will be checked for values in both dominant and recessive sets.
      * @return
      */
     protected boolean isRecessiveElementInConflict( AbstractMergeableElement re, List eltNameList )
@@ -68,7 +84,9 @@ public abstract class AbstractMergeableElement
         eltNameList = getElementNamesForConflictResolution( eltNameList );
 
         if ( null == eltNameList || eltNameList.size() == 0 )
+        {
             return false;
+        }
 
         // assuming the elements will conflict.
         for ( Iterator it = eltNameList.iterator(); it.hasNext(); )
@@ -77,7 +95,9 @@ public abstract class AbstractMergeableElement
             String dEltValue = getChildTextTrim( eltName );
             String rEltValue = re.getChildTextTrim( eltName );
             if ( null == dEltValue || null == rEltValue || !dEltValue.equals( rEltValue ) )
+            {
                 return false;
+            }
         }
         return true;
     }
@@ -85,11 +105,9 @@ public abstract class AbstractMergeableElement
     /**
      * Determines if the Element to be merged is to be sourced from Recessive
      * Element set.
-     * 
-     * @param re
-     *            Recessive element.
-     * @param eltName
-     *            Element name to test for.
+     *
+     * @param re      Recessive element.
+     * @param eltName Element name to test for.
      * @return
      */
     protected boolean mergeableElementComesFromRecessive( AbstractMergeableElement re, String eltName )
@@ -98,8 +116,9 @@ public abstract class AbstractMergeableElement
     }
 
     /**
-     * Simply delegate to 
-     * @see org.codehaus.plexus.cdc.merge.support.Mergeable#merge(org.codehaus.plexus.cdc.merge.support.Mergeable, org.codehaus.plexus.cdc.merge.MergeStrategy)
+     * Simply delegate to
+     *
+     * @see Mergeable#merge(Mergeable,org.codehaus.plexus.cdc.merge.MergeStrategy)
      */
     public void merge( Mergeable me, MergeStrategy strategy )
         throws MergeException
@@ -108,9 +127,6 @@ public abstract class AbstractMergeableElement
         strategy.apply( this, me );
     }
 
-    /**
-     * @see org.codehaus.plexus.cdc.merge.support.AbstractMergeableSupport#merge(Mergeable)
-     */
     public void merge( Mergeable me )
         throws MergeException
     {
@@ -118,8 +134,8 @@ public abstract class AbstractMergeableElement
         {
             // if (getLogger().isErrorEnabled)
             //     getLogger().error ("Cannot Merge dissimilar elements. (Expected : '" + getClass ().getName () + "', found '" + me.getClass ().getName () + "')");
-            throw new MergeException( "Cannot Merge dissimilar elements. (Expected : '" + getClass().getName()
-                + "', found '" + me.getClass().getName() + "')" );
+            throw new MergeException( "Cannot Merge dissimilar elements. " + "(Expected : '" + getClass().getName() +
+                "', found '" + me.getClass().getName() + "')" );
         }
         // recessive Component Element.
         AbstractMergeableElement rce = (AbstractMergeableElement) me;
@@ -130,13 +146,14 @@ public abstract class AbstractMergeableElement
             List defaultConflictChecklist = new ArrayList();
             defaultConflictChecklist.add( tagName );
 
-            if ( !isRecessiveElementInConflict( rce, defaultConflictChecklist )
-                && mergeableElementComesFromRecessive( rce, tagName ) )
+            if ( !isRecessiveElementInConflict( rce, defaultConflictChecklist ) &&
+                mergeableElementComesFromRecessive( rce, tagName ) )
             {
                 this.addContent( (Element) rce.getChild( tagName ).clone() );
                 // else dominant wins in anycase!
             }
-            else if ( getAllowedTags()[i].isMergeable() && isRecessiveElementInConflict( rce, defaultConflictChecklist ) )
+            else
+            if ( getAllowedTags()[i].isMergeable() && isRecessiveElementInConflict( rce, defaultConflictChecklist ) )
             {
                 // this allows for merging multiple/list of elements.
                 try
@@ -148,8 +165,8 @@ public abstract class AbstractMergeableElement
                 catch ( Exception e )
                 {
                     // TODO log to error
-                    throw new MergeException( "Unable to create Mergeable instance for tag '" + getAllowedTags()[i]
-                        + "'.", e );
+                    throw new MergeException(
+                        "Unable to create Mergeable instance for tag " + "'" + getAllowedTags()[i] + "'.", e );
                 }
             }
         }

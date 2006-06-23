@@ -1,3 +1,5 @@
+package org.codehaus.plexus.cdc.merge.support;
+
 /* 
  * ========================================================================
  * 
@@ -20,21 +22,18 @@
  * 
  * ========================================================================
  */
-package org.codehaus.plexus.cdc.merge.support;
-
-import java.lang.reflect.Constructor;
 
 import org.jdom.Element;
 
+import java.lang.reflect.Constructor;
+
 /**
- * Represents the various top-level tags in a deployment descriptor as a
- * typesafe enumeration.
- * 
- * @version $Id:$
+ * Represents the various top-level tags in a deployment descriptor as a typesafe enumeration.
+ *
+ * @version $Id$
  */
 public class AbstractDescriptorTag
 {
-
     /**
      * The tag name.
      */
@@ -52,13 +51,10 @@ public class AbstractDescriptorTag
 
     /**
      * Constructor.
-     * 
-     * @param tagName
-     *            The tag name of the element
-     * @param isMultipleAllowed
-     *            Whether the element may occur multiple times in the descriptor
-     * @deprecated Use {@link #AbstractDescriptorTag(String,boolean,Class)}
-     *             instead
+     *
+     * @param tagName           The tag name of the element
+     * @param isMultipleAllowed Whether the element may occur multiple times in the descriptor
+     * @deprecated Use {@link #AbstractDescriptorTag(String,boolean,Class)} instead
      */
     public AbstractDescriptorTag( String tagName, boolean isMultipleAllowed )
     {
@@ -67,13 +63,10 @@ public class AbstractDescriptorTag
 
     /**
      * Constructor.
-     * 
-     * @param tagName
-     *            The tag name of the element
-     * @param isMultipleAllowed
-     *            Whether the element may occur multiple times in the descriptor
-     * @param mergeableClass Concrete implementation of {@link Mergeable} that is bound this tag.
-     *            
+     *
+     * @param tagName           The tag name of the element
+     * @param isMultipleAllowed Whether the element may occur multiple times in the descriptor
+     * @param mergeableClass    Concrete implementation of {@link Mergeable} that is bound this tag.
      */
     public AbstractDescriptorTag( String tagName, boolean isMultipleAllowed, Class mergeableClass )
     {
@@ -82,9 +75,6 @@ public class AbstractDescriptorTag
         this.mergeableClass = mergeableClass;
     }
 
-    /**
-     * @see Object#toString()
-     */
     public boolean equals( Object other )
     {
         boolean eq = false;
@@ -99,19 +89,11 @@ public class AbstractDescriptorTag
         return eq;
     }
 
-    /**
-     * @see Object#hashCode()
-     */
     public int hashCode()
     {
         return this.getTagName().hashCode();
     }
 
-    /**
-     * Returns the tag name.
-     * 
-     * @return The tag name
-     */
     public String getTagName()
     {
         return this.tagName;
@@ -119,7 +101,7 @@ public class AbstractDescriptorTag
 
     /**
      * Returns whether the tag may occur multiple times in the descriptor.
-     * 
+     *
      * @return Whether multiple occurrences are allowed
      */
     public boolean isMultipleAllowed()
@@ -129,21 +111,17 @@ public class AbstractDescriptorTag
 
     /**
      * Determines if a particular Tag is mergeable or not.
-     * <p>
-     * Basically means if we have a {@link Mergeable} class registered for a tag
-     * instance.
-     * 
+     * <p/>
+     * Basically means if we have a {@link Mergeable} class registered for a tag instance.
+     *
      * @return <code>true</code> if this tag is mergeable.
      * @deprecated <em>experimental</em>
      */
     public boolean isMergeable()
     {
-        return ( null != this.mergeableClass );
+        return null != this.mergeableClass;
     }
 
-    /**
-     * @see java.lang.Object#toString
-     */
     public String toString()
     {
         return getTagName();
@@ -152,27 +130,30 @@ public class AbstractDescriptorTag
     /**
      * Creates an {@link Mergeable} instance from the registered class for this
      * tag instance.
-     * 
+     *
      * @return instance of {@link Mergeable}.
-     * @throws Exception
-     *             if there was an error creating an instance.
+     * @throws Exception if there was an error creating an instance.
      */
     public Mergeable createMergeable( Element element )
         throws Exception
     {
-        Constructor cons = this.mergeableClass.getConstructor( new Class[] { Element.class } );
+        Constructor cons = this.mergeableClass.getConstructor( new Class[]{Element.class} );
         // XXX Is there a better way to determine this?
         if ( this.mergeableClass.getSuperclass().equals( AbstractMergeableElementList.class ) )
-            return (AbstractMergeableElementList) cons.newInstance( new Object[] { element } );
+        {
+            return (AbstractMergeableElementList) cons.newInstance( new Object[]{element} );
+        }
         else if ( this.mergeableClass.getSuperclass().equals( AbstractMergeableElement.class ) )
-            return (AbstractMergeableElement) cons.newInstance( new Object[] { element } );
+        {
+            return (AbstractMergeableElement) cons.newInstance( new Object[]{element} );
+        }
         else
         {
             // TODO set up Logger
             // if (getLogger ().isErrorEnabled ())
             //     getLogger.error ( "Could not create Mergeable instance for specified class '" + this.mergeableClass + "'" );
-            throw new Exception( "Could not create Mergeable instance for specified class '" + this.mergeableClass
-                + "'" );
+            throw new Exception(
+                "Could not create Mergeable instance for specified class " + "'" + this.mergeableClass + "'" );
         }
     }
 }

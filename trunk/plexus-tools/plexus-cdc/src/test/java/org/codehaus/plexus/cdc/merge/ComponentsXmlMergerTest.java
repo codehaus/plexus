@@ -1,7 +1,5 @@
 package org.codehaus.plexus.cdc.merge;
 
-import java.io.File;
-
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.cdc.merge.support.AbstractMergeableElement;
 import org.codehaus.plexus.cdc.merge.support.AbstractMergeableElementList;
@@ -13,19 +11,20 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
+import java.io.File;
+
 /**
  * Tests for {@link ComponentsXmlMerger}.
- * 
+ *
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
  */
 public class ComponentsXmlMergerTest
     extends PlexusTestCase
 {
+    private File dominantXml = new File( "src/test/merge/dominant.xml" );
 
-    private File dominant_xml = new File( "src/test/merge/dominant.xml" );
-
-    private File recessive_xml = new File( "src/test/merge/recessive.xml" );
+    private File recessiveXml = new File( "src/test/merge/recessive.xml" );
 
     public void testBasic()
         throws Exception
@@ -37,8 +36,8 @@ public class ComponentsXmlMergerTest
     public void testComponentsXmlFileMerge()
         throws Exception
     {
-        Document dDoc = new SAXBuilder().build( dominant_xml );
-        Document rDoc = new SAXBuilder().build( recessive_xml );
+        Document dDoc = new SAXBuilder().build( dominantXml );
+        Document rDoc = new SAXBuilder().build( recessiveXml );
 
         // ComponentsXmlMerger merger = new ComponentsXmlMerger (dDoc);
         ComponentsXmlMerger merger = (ComponentsXmlMerger) lookup( Merger.ROLE );
@@ -48,7 +47,9 @@ public class ComponentsXmlMergerTest
 
         File merged_xml = new File( "target/merged.xml" );
         if ( merged_xml.exists() )
+        {
             FileUtils.forceDelete( merged_xml );
+        }
         merger.writeMergedDescriptor( merged_xml );
         assertTrue( merged_xml.exists() );
     }
@@ -78,7 +79,7 @@ public class ComponentsXmlMergerTest
 
     /**
      * Tests if &lt;component&gt; elements from two sets are being merged properly.
-     * 
+     *
      * @throws Exception if there was an unexpected error.
      */
     public void testComponentsMerge()
@@ -135,18 +136,18 @@ public class ComponentsXmlMergerTest
         // attempt to merge
         dParent.merge( rParent );
         assertEquals( 1, dParent.getChildren( "component" ).size() );
-        assertEquals( "org.codehaus.plexus.DominantImplementation", dParent.getChild( "component" )
-            .getChildText( "implementation" ) );
-        assertEquals( 1, dParent.getChild( "component" )
-                      .getChild( "requirements" ).getChildren("requirement").size());
+        assertEquals( "org.codehaus.plexus.DominantImplementation",
+                      dParent.getChild( "component" ).getChildText( "implementation" ) );
+        assertEquals( 1,
+                      dParent.getChild( "component" ).getChild( "requirements" ).getChildren( "requirement" ).size() );
     }
 
     /**
-     * <em>This is deprecated as we dont' want to drill to merging 
+     * <em>This is deprecated as we dont' want to drill to merging
      * nested elements within a component.</em><p>
      * <em>Keeping this around for testing MergeStrategy implmentation.</em>
-     * 
-     * @throws Exception  
+     *
+     * @throws Exception
      */
     public void testDeepComponentsMerge()
         throws Exception
@@ -156,12 +157,13 @@ public class ComponentsXmlMergerTest
         {
             return;
         }
+
         // dominant Component Element
         AbstractMergeableElement dCE = new ComponentElement( new Element( "component" ) );
         Element roleElt = new Element( "role" );
         roleElt.setText( "org.codehaus.plexus.ISampleRole" );
         dCE.addContent( roleElt );
-        Element roleHintElt = null;
+        Element roleHintElt;
         // roleHintElt = new Element ("role-hint");
         // roleHintElt.setText ("sample-hint");
         // dCE.addContent (roleHintElt);
@@ -213,7 +215,7 @@ public class ComponentsXmlMergerTest
         assertEquals( "plexus-configurable", dCE.getChildText( "lifecycle-handler" ) );
         assertTrue( null != dCE.getChild( "requirements" ) );
         assertEquals( 1, dCE.getChild( "requirements" ).getChildren( "requirement" ).size() );
-        assertEquals( "recessive-required-role-hint", ( (Element) dCE.getChild( "requirements" )
-            .getChildren( "requirement" ).get( 0 ) ).getChildText( "role-hint" ) );
+        assertEquals( "recessive-required-role-hint",
+                      ( (Element) dCE.getChild( "requirements" ).getChildren( "requirement" ).get( 0 ) ).getChildText( "role-hint" ) );
     }
 }

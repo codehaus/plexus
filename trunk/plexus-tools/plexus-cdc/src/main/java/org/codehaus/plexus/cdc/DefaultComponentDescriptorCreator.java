@@ -24,14 +24,9 @@ package org.codehaus.plexus.cdc;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
+import com.thoughtworks.qdox.JavaDocBuilder;
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaSource;
 import org.codehaus.plexus.component.repository.ComponentDependency;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
@@ -43,9 +38,13 @@ import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 import org.codehaus.plexus.util.xml.XMLWriter;
 
-import com.thoughtworks.qdox.JavaDocBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaSource;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * So, in this case it is easy enough to determine the role and the implementation.
@@ -104,7 +103,7 @@ public class DefaultComponentDescriptorCreator
 
         for ( int it = 0; it < sourceDirectories.length; it++ )
         {
-            File sourceDirectory = sourceDirectories[ it ];
+            File sourceDirectory = sourceDirectories[it];
 
             if ( !sourceDirectory.isDirectory() )
             {
@@ -127,7 +126,7 @@ public class DefaultComponentDescriptorCreator
 
         for ( int i = 0; i < javaSources.length; i++ )
         {
-            JavaClass javaClass = getJavaClass( javaSources[ i ] );
+            JavaClass javaClass = getJavaClass( javaSources[i] );
 
             ComponentDescriptor componentDescriptor = gleaner.glean( builder, javaClass );
 
@@ -199,6 +198,15 @@ public class DefaultComponentDescriptorCreator
                                                            "'" + outputFile.getAbsolutePath() + "'.", e );
         }
     }
+
+    public void mergeDescriptors( File outputDescriptor, List descriptors )
+        throws ComponentDescriptorCreatorException
+    {
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
 
     private void validateConfiguration( ComponentSetDescriptor componentSetDescriptor )
         throws ComponentDescriptorCreatorException
@@ -363,9 +371,7 @@ public class DefaultComponentDescriptorCreator
     private void writePlexusConfiguration( XMLWriter xmlWriter, PlexusConfiguration c )
         throws PlexusConfigurationException
     {
-        if ( c.getAttributeNames().length == 0 &&
-             c.getChildCount() == 0 &&
-             StringUtils.isEmpty( c.getValue() ) )
+        if ( c.getAttributeNames().length == 0 && c.getChildCount() == 0 && StringUtils.isEmpty( c.getValue() ) )
         {
             return;
         }
@@ -380,7 +386,7 @@ public class DefaultComponentDescriptorCreator
 
         for ( int i = 0; i < attributeNames.length; i++ )
         {
-            String attributeName = attributeNames[ i ];
+            String attributeName = attributeNames[i];
 
             xmlWriter.addAttribute( attributeName, c.getAttribute( attributeName ) );
         }
@@ -395,7 +401,7 @@ public class DefaultComponentDescriptorCreator
         {
             for ( int i = 0; i < children.length; i++ )
             {
-                writePlexusConfiguration( xmlWriter, children[ i ] );
+                writePlexusConfiguration( xmlWriter, children[i] );
             }
         }
         else
@@ -449,6 +455,6 @@ public class DefaultComponentDescriptorCreator
 
     private JavaClass getJavaClass( JavaSource javaSource )
     {
-        return javaSource.getClasses()[ 0 ];
+        return javaSource.getClasses()[0];
     }
 }

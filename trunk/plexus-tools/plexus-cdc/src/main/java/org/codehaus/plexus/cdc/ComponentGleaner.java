@@ -24,10 +24,9 @@ package org.codehaus.plexus.cdc;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
-
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaClassCache;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
