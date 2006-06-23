@@ -25,16 +25,20 @@ package org.codehaus.plexus.cdc;
  */
 
 import java.io.File;
+import java.util.List;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
- public interface ComponentDescriptorCreator
+public interface ComponentDescriptorCreator
 {
     String ROLE = ComponentDescriptorCreator.class.getName();
 
     void processSources( File[] sourceDirectories, File outputDirectory )
+        throws ComponentDescriptorCreatorException;
+
+    void mergeDescriptors( File outputDescriptor, List descriptors )
         throws ComponentDescriptorCreatorException;
 }

@@ -24,10 +24,10 @@ package org.codehaus.plexus.cdc;
  * SOFTWARE.
  */
 
-import java.io.File;
-
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
+
+import java.io.File;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -45,13 +45,11 @@ public class ComponentDescriptorCreatorTest
         // Generate
         // ----------------------------------------------------------------------
 
-        File[] sourceDirectories = new File[] {
-            getTestFile( "src/test-project" ),
-        };
+        File[] sourceDirectories = new File[]{getTestFile( "src/test-project" ),};
 
         File outputDirectory = getTestFile( "target/cdc-output" );
 
-        if( outputDirectory.exists() )
+        if ( outputDirectory.exists() )
         {
             FileUtils.deleteDirectory( outputDirectory );
         }

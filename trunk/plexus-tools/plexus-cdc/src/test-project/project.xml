@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
 <project>
-<!--
-  <extend>parent.xml</extend>
--->
+  <!--
+    <extend>parent.xml</extend>
+  -->
   <groupId>plexus</groupId>
   <artifactId>plexus</artifactId>
   <name>plexus</name>
