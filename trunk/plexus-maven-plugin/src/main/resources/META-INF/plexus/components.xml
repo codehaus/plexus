@@ -1,60 +1,9 @@
 <component-set>
   <components>
     <component>
-      <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
-      <role-hint>plexus-application</role-hint>
-      <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
-      <configuration>
-        <!-- START SNIPPET: plexus-application-lifecycle -->
-        <phases>
-          <generate-resources>org.codehaus.plexus:plexus-maven-plugin:app</generate-resources>
-          <package>org.codehaus.plexus:plexus-maven-plugin:bundle-application</package>
-          <install>org.apache.maven.plugins:maven-install-plugin:install</install>
-          <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
-        </phases>
-        <!-- END SNIPPET: plexus-application-lifecycle -->
-      </configuration>
-    </component>
-
-    <component>
-      <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
-      <role-hint>plexus-service</role-hint>
-      <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
-      <configuration>
-        <!-- START SNIPPET: plexus-service-lifecycle -->
-        <phases>
-          <process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
-          <compile>org.apache.maven.plugins:maven-compiler-plugin:compile</compile>
-          <process-test-resources>org.apache.maven.plugins:maven-resources-plugin:testResources</process-test-resources>
-          <test-compile>org.apache.maven.plugins:maven-compiler-plugin:testCompile</test-compile>
-          <test>org.apache.maven.plugins:maven-surefire-plugin:test</test>
-          <package>org.codehaus.plexus:plexus-maven-plugin:service</package>
-          <install>org.apache.maven.plugins:maven-install-plugin:install</install>
-          <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
-        </phases>
-        <!-- END SNIPPET: plexus-service-lifecycle -->
-      </configuration>
-    </component>
-    <component>
-      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
-      <role-hint>plexus-service</role-hint>
-      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
-      <configuration>
-        <type>plexus-service</type>
-        <extension>jar</extension>
-        <packaging>plexus-service</packaging>
-      </configuration>
-    </component>
-    
-    <component>
-      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
-      <role-hint>plexus-application</role-hint>
-      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
-      <configuration>
-        <type>plexus-application</type>
-        <extension>jar</extension>
-        <packaging>plexus-application</packaging>
-      </configuration>
+      <role>org.apache.maven.reporting.MavenReport</role>
+      <role-hint>plexus-components</role-hint>
+      <implementation>org.codehaus.plexus.maven.plugin.PlexusComponentsReport</implementation>
     </component>
   </components>
 </component-set>
