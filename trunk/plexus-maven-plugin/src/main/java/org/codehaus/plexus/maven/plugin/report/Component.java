@@ -28,6 +28,9 @@ import org.jdom.Element;
 import org.codehaus.doxia.sink.Sink;
 import org.codehaus.plexus.util.StringUtils;
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -38,12 +41,31 @@ public class Component
     private String role;
     private String roleHint;
     private String implementation;
+    private String instantiationStrategy;
+    private Requirements requirements;
+    private Configuration configuration;
 
     public Component( Element component )
     {
         role = component.getChildText( "role" );
         roleHint = component.getChildText( "role-hint" );
         implementation = component.getChildText( "implementation" );
+        instantiationStrategy = component.getChildTextTrim( "instantiation-strategy" );
+
+        List list = component.getChildren( "requirements" );
+        for ( Iterator it = list.iterator(); it.hasNext(); )
+        {
+            Element element = (Element) it.next();
+
+            requirements = new Requirements( element );
+        }
+
+        list = component.getChildren( "configuration" );
+        for ( Iterator it = list.iterator(); it.hasNext(); )
+        {
+            Element element = (Element) it.next();
+            configuration = new Configuration( element );
+        }
     }
 
     public String getRole()
@@ -68,15 +90,101 @@ public class Component
 
     public void print( Sink sink )
     {
+        // ----------------------------------------------------------------------
+        //
+        // ----------------------------------------------------------------------
+
+        String title;
         if ( !hasRoleHint() )
         {
-            sink.text( "Role: " + role ); sink.lineBreak();
+            title = role;
         }
         else
         {
-            sink.text( "Role hint: " + roleHint ); sink.lineBreak();
+            title = roleHint;
         }
-        sink.text( "Implementation: " + implementation ); sink.lineBreak();
+
+        // ----------------------------------------------------------------------
+        //
+        // ----------------------------------------------------------------------
+
+        sink.section3();
+        sink.sectionTitle3();
+        sink.text( "Component: " + title );
+        sink.sectionTitle3_();
+        sink.section3_();
+
+        sink.table();
+
+        sink.tableRow();
+        sink.tableCell();
+        sink.text( "Role" );
+        sink.tableCell_();
+        sink.tableCell();
+        sink.monospaced();
+        sink.text( role );
+        sink.monospaced_();
+        sink.tableCell_();
+        sink.tableRow_();
+
+        if ( StringUtils.isNotEmpty( roleHint ) )
+        {
+            sink.tableRow();
+            sink.tableCell();
+            sink.text( "Role hint" );
+            sink.tableCell_();
+            sink.tableCell();
+            sink.monospaced();
+            sink.text( roleHint );
+            sink.monospaced_();
+            sink.tableCell_();
+            sink.tableRow_();
+        }
+
+        sink.tableRow();
+        sink.tableCell();
+        sink.text( "Implementation" );
+        sink.tableCell_();
+        sink.tableCell();
+        sink.monospaced();
+        sink.text( implementation );
+        sink.monospaced_();
+        sink.text( " " );
+        sink.link( "../javadoc/" + implementation.replace( '.', '/' ) + ".html" );
+        sink.text( "javadoc" );
+        sink.link_();
+        sink.link( "../xref/" + implementation.replace( '.', '/' ) + ".html" );
+        sink.text( " " );
+        sink.text( "xref" );
+        sink.link_();
+        sink.tableCell_();
+        sink.tableRow_();
+
+        if( StringUtils.isNotEmpty( instantiationStrategy ) )
+        {
+            sink.tableRow();
+            sink.tableCell();
+            sink.text( "Instantiation strategy" );
+            sink.tableCell_();
+            sink.tableCell();
+            sink.monospaced();
+            sink.text( instantiationStrategy );
+            sink.monospaced_();
+            sink.tableCell_();
+            sink.tableRow_();
+        }
+
+        sink.table_();
+
+        if ( requirements != null )
+        {
+            requirements.print( sink );
+        }
+
+        if ( configuration != null )
+        {
+            configuration.print( sink );
+        }
     }
 
     public int compareTo( Object o )
