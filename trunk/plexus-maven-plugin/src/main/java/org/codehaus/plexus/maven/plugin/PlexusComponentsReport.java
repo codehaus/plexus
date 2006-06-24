@@ -27,19 +27,16 @@ package org.codehaus.plexus.maven.plugin;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
-import org.codehaus.doxia.site.renderer.SiteRenderer;
 import org.codehaus.doxia.sink.Sink;
-import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.doxia.site.renderer.SiteRenderer;
 import org.codehaus.plexus.maven.plugin.report.ComponentSet;
 import org.jdom.Document;
 import org.jdom.JDOMException;
-import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
-import java.util.Iterator;
 
 /**
  * @goal components-report
