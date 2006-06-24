@@ -29,9 +29,17 @@ import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
 import org.codehaus.doxia.site.renderer.SiteRenderer;
 import org.codehaus.doxia.sink.Sink;
+import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.maven.plugin.report.ComponentSet;
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Locale;
+import java.util.Iterator;
 
 /**
  * @goal components-report
@@ -44,7 +52,7 @@ public class PlexusComponentsReport
     extends AbstractMavenReport
 {
     /**
-     * @parameter exporession="${project.build.outputDirectory}/META-INF/plexus/components.xml"
+     * @parameter default-value="${project.build.outputDirectory}/META-INF/plexus/components.xml"
      * @required
      */
     private File componentsXml;
@@ -129,10 +137,27 @@ public class PlexusComponentsReport
         sink.text( title );
         sink.sectionTitle1_();
 
-        sink.paragraph();
-        sink.text( "Hey yo!" );
-        sink.paragraph_();
+        Document document;
 
+        try
+        {
+            document = new SAXBuilder().build( componentsXml );
+        }
+        catch ( JDOMException e )
+        {
+            throw new MavenReportException( "Error while building document of " + componentsXml.getAbsolutePath() + ".", e);
+        }
+        catch ( IOException e )
+        {
+            throw new MavenReportException( "Error while building document of " + componentsXml.getAbsolutePath() + ".", e);
+        }
+
+        if ( document.getRootElement().getName().equals( "component-set" ) )
+        {
+            ComponentSet componentSet = new ComponentSet( document.getRootElement() );
+
+            componentSet.print( sink );
+        }
 
         sink.body_();
         sink.flush();
