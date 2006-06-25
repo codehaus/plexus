@@ -36,28 +36,35 @@ import java.io.FileWriter;
  * @version $Id$
  */
 public class ComponentsXmlMerger
-    extends AbstractComponentsXmlMerger
+    implements Merger
 {
-    public void merge( Document rDocument )
+
+    /**
+     * @see Merger#merge(Document, Document)
+     */
+    public Document merge( Document dDocument, Document rDocument )
         throws MergeException
     {
-        // refactored merge.
-        ComponentSetElement dCSE = new ComponentSetElement( getDominantDocument().getRootElement() );
+        // TODO: Ideally we don't want to manipulate the original 
+        // dominant document but use its copy for merge.        
+        //Document mDoc = (Document) dDocument.clone();        // doesn't merge properly
+        Document mDoc = dDocument;
+        ComponentSetElement dCSE = new ComponentSetElement( mDoc.getRootElement() );
         ComponentSetElement rCSE = new ComponentSetElement( rDocument.getRootElement() );
         dCSE.merge( rCSE );
+        // the contents are merged into the dominant document DOM.
+        return mDoc;
     }
 
     /**
-     * Writes out the merged Components descriptor to the specified file.
-     *
-     * @param f File to write the merged contents to.
-     * @throws Exception if there was an error while writing merged contents to the specified file.
+     * @see Merger#writeMergedDocument(Document, File)
      */
-    public void writeMergedDescriptor( File f )
+    public void writeMergedDocument( Document mergedDocument, File file )
         throws Exception
     {
         XMLOutputter out = new XMLOutputter();
-        FileWriter fw = new FileWriter( f );
-        out.output( getDominantDocument(), fw );
+        FileWriter fw = new FileWriter( file );
+        out.output( mergedDocument, fw );
+        fw.close();
     }
 }
