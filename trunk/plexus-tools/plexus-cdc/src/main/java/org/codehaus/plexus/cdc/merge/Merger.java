@@ -26,6 +26,8 @@ package org.codehaus.plexus.cdc.merge;
 
 import org.jdom.Document;
 
+import java.io.File;
+
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
@@ -36,10 +38,23 @@ public interface Merger
 
     /**
      * Merge with the recessive document.
-     *
+     * 
+     * @param dDocument the dominant document.
      * @param rDocument the recessive document.
+     * @return the merged {@link Document} instance.
+     *
      * @throws MergeException if there was an error in merge.
      */
-    void merge( Document rDocument )
+    Document merge( Document dDocument, Document rDocument )
         throws MergeException;
+
+    /**
+     * Allows writing out a merged JDom Document to the specified file.
+     * 
+     * @param mergedDocument the merged {@link Document} instance.
+     * @param file File to write the merged contents to.
+     * @throws Exception if there was an error while writing merged contents to the specified file.
+     */
+    public void writeMergedDocument( Document mergedDocument, File file )
+        throws Exception;
 }
