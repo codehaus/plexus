@@ -115,7 +115,6 @@ public class AbstractDescriptorTag
      * Basically means if we have a {@link Mergeable} class registered for a tag instance.
      *
      * @return <code>true</code> if this tag is mergeable.
-     * @deprecated <em>experimental</em>
      */
     public boolean isMergeable()
     {
@@ -137,23 +136,23 @@ public class AbstractDescriptorTag
     public Mergeable createMergeable( Element element )
         throws Exception
     {
-        Constructor cons = this.mergeableClass.getConstructor( new Class[]{Element.class} );
+        Constructor cons = this.mergeableClass.getConstructor( new Class[] { Element.class } );
         // XXX Is there a better way to determine this?
         if ( this.mergeableClass.getSuperclass().equals( AbstractMergeableElementList.class ) )
         {
-            return (AbstractMergeableElementList) cons.newInstance( new Object[]{element} );
+            return (AbstractMergeableElementList) cons.newInstance( new Object[] { element } );
         }
         else if ( this.mergeableClass.getSuperclass().equals( AbstractMergeableElement.class ) )
         {
-            return (AbstractMergeableElement) cons.newInstance( new Object[]{element} );
+            return (AbstractMergeableElement) cons.newInstance( new Object[] { element } );
         }
         else
         {
             // TODO set up Logger
             // if (getLogger ().isErrorEnabled ())
             //     getLogger.error ( "Could not create Mergeable instance for specified class '" + this.mergeableClass + "'" );
-            throw new Exception(
-                "Could not create Mergeable instance for specified class " + "'" + this.mergeableClass + "'" );
+            throw new Exception( "Could not create Mergeable instance for specified class " + "'" + this.mergeableClass
+                + "'" );
         }
     }
 }

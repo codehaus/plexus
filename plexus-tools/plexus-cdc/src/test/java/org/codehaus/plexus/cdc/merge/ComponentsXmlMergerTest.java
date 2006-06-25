@@ -1,5 +1,29 @@
 package org.codehaus.plexus.cdc.merge;
 
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2006, The Codehaus
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.cdc.merge.support.AbstractMergeableElement;
 import org.codehaus.plexus.cdc.merge.support.AbstractMergeableElementList;
@@ -12,6 +36,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Tests for {@link ComponentsXmlMerger}.
@@ -38,20 +63,32 @@ public class ComponentsXmlMergerTest
     {
         Document dDoc = new SAXBuilder().build( dominantXml );
         Document rDoc = new SAXBuilder().build( recessiveXml );
-
         // ComponentsXmlMerger merger = new ComponentsXmlMerger (dDoc);
-        ComponentsXmlMerger merger = (ComponentsXmlMerger) lookup( Merger.ROLE );
+        Merger merger = (Merger) lookup( Merger.ROLE );
         assertNotNull( merger );
-        merger.setDominantDocument( dDoc );
-        merger.merge( rDoc );
+        merger.merge( dDoc, rDoc );
 
         File merged_xml = new File( "target/merged.xml" );
         if ( merged_xml.exists() )
         {
             FileUtils.forceDelete( merged_xml );
         }
-        merger.writeMergedDescriptor( merged_xml );
+        merger.writeMergedDocument( dDoc, merged_xml );
         assertTrue( merged_xml.exists() );
+        // read merged xml and verify it was merged as expected 
+        Document mDoc = new SAXBuilder().build( merged_xml );
+        Element mRootElt = mDoc.getRootElement();
+        assertTrue( mRootElt.getName().equals( "component-set" ) );
+        assertEquals( 1, mRootElt.getChildren( "components" ).size() );
+        List componentEltList = mRootElt.getChild( "components" ).getChildren( "component" );
+        assertEquals( 2, componentEltList.size() );
+        Element cElt = (Element) componentEltList.get( 0 );
+        assertEquals( "org.codehaus.plexus.cdc.component.IComponent", cElt.getChildTextTrim( "role" ) );
+        assertEquals( "org.codehaus.plexus.cdc.component.DominantComponent", cElt.getChildTextTrim( "implementation" ) );
+        // now for the second component
+        cElt = (Element) componentEltList.get( 1 );
+        assertEquals( "org.codehaus.plexus.cdc.component.INonConflictingComponent", cElt.getChildTextTrim( "role" ) );
+        assertEquals( "org.codehaus.plexus.cdc.component.RecessiveComponent", cElt.getChildTextTrim( "implementation" ) );
     }
 
     public void testInvalidMergeableElements()
@@ -64,17 +101,16 @@ public class ComponentsXmlMergerTest
         dCE.addContent( roleElt );
 
         AbstractMergeableElementList reqElt = new RequirementsElement( new Element( "requirement" ) );
-        Exception e1 = null;
         // attempt and invalid merge
         try
         {
             dCE.merge( reqElt );
+            fail( "Expected MergeException!" );
         }
-        catch ( Exception e )
+        catch ( MergeException e )
         {
-            e1 = e;
+            // do nothing.
         }
-        assertNotNull( e1 );
     }
 
     /**
@@ -136,10 +172,9 @@ public class ComponentsXmlMergerTest
         // attempt to merge
         dParent.merge( rParent );
         assertEquals( 1, dParent.getChildren( "component" ).size() );
-        assertEquals( "org.codehaus.plexus.DominantImplementation",
-                      dParent.getChild( "component" ).getChildText( "implementation" ) );
-        assertEquals( 1,
-                      dParent.getChild( "component" ).getChild( "requirements" ).getChildren( "requirement" ).size() );
+        assertEquals( "org.codehaus.plexus.DominantImplementation", dParent.getChild( "component" )
+            .getChildText( "implementation" ) );
+        assertEquals( 1, dParent.getChild( "component" ).getChild( "requirements" ).getChildren( "requirement" ).size() );
     }
 
     /**
@@ -215,7 +250,7 @@ public class ComponentsXmlMergerTest
         assertEquals( "plexus-configurable", dCE.getChildText( "lifecycle-handler" ) );
         assertTrue( null != dCE.getChild( "requirements" ) );
         assertEquals( 1, dCE.getChild( "requirements" ).getChildren( "requirement" ).size() );
-        assertEquals( "recessive-required-role-hint",
-                      ( (Element) dCE.getChild( "requirements" ).getChildren( "requirement" ).get( 0 ) ).getChildText( "role-hint" ) );
+        assertEquals( "recessive-required-role-hint", ( (Element) dCE.getChild( "requirements" )
+            .getChildren( "requirement" ).get( 0 ) ).getChildText( "role-hint" ) );
     }
 }
