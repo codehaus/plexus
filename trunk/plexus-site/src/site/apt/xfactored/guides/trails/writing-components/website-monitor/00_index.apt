@@ -26,7 +26,7 @@ About this trail
  
  * Component Usage Scenarios
  
-    * {{{#}From a Maven Mojo}}
+    * {{{07_01_from_a_maven_mojo.html}From a Maven Mojo}}
     
     * {{{#}From a Plexus application}}
     
