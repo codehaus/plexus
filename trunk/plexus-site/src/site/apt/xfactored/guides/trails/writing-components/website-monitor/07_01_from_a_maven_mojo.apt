@@ -44,7 +44,6 @@ APSHOT -DgroupId=org.codehaus.plexus -DartifactId=plexus-website-monitor-plugin
     The pom.xml should look like this now:
 
 +------------------------------------------+
-
 <?xml version="1.0"?>
 <project>
   <modelVersion>4.0.0</modelVersion>
@@ -73,7 +72,6 @@ APSHOT -DgroupId=org.codehaus.plexus -DartifactId=plexus-website-monitor-plugin
     </dependency>
   </dependencies>
 </project>
-
 +------------------------------------------+
 
 
@@ -85,9 +83,7 @@ APSHOT -DgroupId=org.codehaus.plexus -DartifactId=plexus-website-monitor-plugin
   [[1]] Run the following command to generate Eclipse project and set up library path to dependencies.
 
 +------------------------------------------+
-
  mvn eclipse:eclipse
-
 +------------------------------------------+
 
   [[1]] From the Eclipse workbench, use 'File > Import > Existing projects into workspace' 
