@@ -29,7 +29,6 @@ Adding Configuration for the Monitor Mojo
   To do this, we add the following to our pom.xml under the <<<<project>>>> element.
 
 +---------------------------+
-
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
   .
@@ -66,17 +65,14 @@ Adding Configuration for the Monitor Mojo
     <pluginGroup>org.codehaus.plexus</pluginGroup>
   </pluginGroups>
 </settings>
-
 +---------------------------+
 
   This should allow our Mojo to be invoked from the command prompt without have
   the need to type fully qualified reference to MonitorMojo 
   (org.codehaus.plexus:plexus-website-monitor-plugin:monitor), and by simply typing:
 
-+---------------------------+
- 
++---------------------------+ 
  mvn website:monitor
-
 +---------------------------+
 
 
@@ -84,7 +80,10 @@ Adding Configuration for the Monitor Mojo
 
 * Configuring list of websites
 
-  Now we see how to set up a configuration for the MonitorMojo and use it to 
-  convey to the website monitor component the list of websites to monitor.
+  ~~Now we see how to set up a configuration for the MonitorMojo and use it to 
+  ~~convey to the website monitor component the list of websites to monitor.
 
+  We will come back to configuring the MonitorMojo but before we do that we'll
+  look at setting up unit tests for it.
 
+ {{{07_01_setting_up_mojo_unit_tests.html}Next: Setting up Mojo unit tests}}
