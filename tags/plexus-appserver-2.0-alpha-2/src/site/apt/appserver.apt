@@ -1,0 +1,14 @@
+ -----
+ Plexus Appserver
+ -----
+ Jason van Zyl
+ -----
+ 26 April 2006
+ -----
+
+Plexus Appserver
+
+* Lifecycle
+
+ services are processed
+ applications are deployed
