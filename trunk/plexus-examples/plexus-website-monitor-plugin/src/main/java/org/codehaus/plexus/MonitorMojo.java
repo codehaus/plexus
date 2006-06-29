@@ -11,7 +11,7 @@ import org.codehaus.plexus.tutorial.WebsiteMonitor;
 /**
  * A Mojo that monitors a given list of websites.
  * 
- * @version $Id:$
+ * @version $Id$
  * @goal monitor
  */
 public class MonitorMojo
@@ -21,7 +21,7 @@ public class MonitorMojo
     /**
      * The website monitor component instance that will be injected 
      * by the Plexus runtime.
-     * @component role-hint="ftp"
+     * @component 
      */
     private WebsiteMonitor monitor;
 
