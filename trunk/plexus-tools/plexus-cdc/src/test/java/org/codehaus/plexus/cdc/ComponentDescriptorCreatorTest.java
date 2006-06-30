@@ -56,13 +56,13 @@ public class ComponentDescriptorCreatorTest
 
         assertTrue( outputDirectory.mkdirs() );
 
-        cdc.processSources( sourceDirectories, outputDirectory );
+        File outputFile = new File( outputDirectory, "components.xml" );
+
+        cdc.processSources( sourceDirectories, outputFile );
 
         // ----------------------------------------------------------------------
         // Assert
         // ----------------------------------------------------------------------
-
-        File outputFile = new File( outputDirectory, "components.xml" );
 
         assertTrue( "Output file is missing: " + outputFile.getAbsolutePath(), outputFile.exists() );
 

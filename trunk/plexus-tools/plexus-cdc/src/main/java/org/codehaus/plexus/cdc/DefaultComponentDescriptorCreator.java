@@ -75,22 +75,9 @@ public class DefaultComponentDescriptorCreator
     // ComponentDescriptorCreator Implementation
     // ----------------------------------------------------------------------
 
-    public void processSources( File[] sourceDirectories, File outputDirectory )
+    public void processSources( File[] sourceDirectories, File outputFile )
         throws ComponentDescriptorCreatorException
     {
-        // ----------------------------------------------------------------------
-        // Make sure the output directory exist
-        // ----------------------------------------------------------------------
-
-        if ( !outputDirectory.exists() )
-        {
-            if ( !outputDirectory.mkdirs() )
-            {
-                throw new ComponentDescriptorCreatorException(
-                    "Could not make output directory: '" + outputDirectory.getAbsolutePath() + "'." );
-            }
-        }
-
         // ----------------------------------------------------------------------
         // Check and register all directories to scan
         // ----------------------------------------------------------------------
@@ -168,7 +155,14 @@ public class DefaultComponentDescriptorCreator
             return;
         }
 
-        File outputFile = new File( outputDirectory, "components.xml" );
+        File parentFile = outputFile.getParentFile();
+        if ( !parentFile.exists() )
+        {
+            if ( !parentFile.mkdirs() )
+            {
+                throw new ComponentDescriptorCreatorException( "Could not make parent directory: '" + parentFile.getAbsolutePath() + "'.");
+            }
+        }
 
         try
         {
