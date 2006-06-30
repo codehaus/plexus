@@ -25,8 +25,10 @@ import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
@@ -188,25 +190,25 @@ public class MungedHttpsURL
         throws Exception 
     {
         ignoreCertificates();
-    
+
         String authString = username + ":" + password;
-    
+
         URL url = new URL( urlString );
-    
+
         HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-    
+
         urlc.setDoInput( true );
-    
+
         urlc.setUseCaches( false );
-    
+
         urlc.setRequestProperty( "Content-Type", "application/octet-stream" );
-    
+
         if ( username != null && password != null )
         {
             urlc.setRequestProperty( "Authorization", "Basic " +
                     new sun.misc.BASE64Encoder().encode( authString.getBytes() ) );
         }
-    
+
         return urlc;
     }
     
@@ -282,6 +284,15 @@ public class MungedHttpsURL
             }
         };
 
+        HostnameVerifier hostnameVerifier = new HostnameVerifier()
+        {
+            public boolean verify( String urlHostName, SSLSession session )
+            {
+                System.out.println( "Warning: URL Host: " + urlHostName + " vs." + session.getPeerHost() );
+                return true;
+            }
+        };
+
         // Install the all-trusting trust manager
 
         SSLContext sslContext = SSLContext.getInstance( "SSL" );
@@ -289,6 +300,8 @@ public class MungedHttpsURL
         sslContext.init( null, trustAllCerts, new java.security.SecureRandom() );
 
         HttpsURLConnection.setDefaultSSLSocketFactory( sslContext.getSocketFactory() );
+
+        HttpsURLConnection.setDefaultHostnameVerifier( hostnameVerifier );
     }
 
     /**
