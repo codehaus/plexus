@@ -24,12 +24,15 @@ package org.codehaus.plexus.maven.plugin;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProjectHelper;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
 import org.codehaus.plexus.cdc.ComponentDescriptorCreatorException;
 
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * @goal descriptor
@@ -55,20 +58,36 @@ public class PlexusDescriptorMojo
     private List sourceDirectories;
 
     /**
-     * @parameter expression="${project.build.outputDirectory}"
+     * @parameter expression="${project.build.outputDirectory}/generated-resources/plexus/"
      * @required
      */
-    private File output;
+    private File outputDirectory;
+
+    /**
+     * @parameter expression="META-INF/plexus/components.xml"
+     * @required
+     */
+    private String fileName;
+
+    /**
+     * @parameter expression="${project}"
+     * @required
+     */
+    private MavenProject mavenProject;
 
     // ----------------------------------------------------------------------
     // Components
     // ----------------------------------------------------------------------
 
     /**
-     * @parameter expression="${component.org.codehaus.plexus.cdc.ComponentDescriptorCreator}"
-     * @required
+     * @component
      */
     private ComponentDescriptorCreator cdc;
+
+    /**
+     * @component
+     */
+    private MavenProjectHelper mavenProjectHelper;
 
     // ----------------------------------------------------------------------
     //
@@ -90,15 +109,15 @@ public class PlexusDescriptorMojo
             sources[ i ] = new File( (String) it.next() );
         }
 
-        File outputDirectory = new File( output, "/META-INF/plexus" );
-
         try
         {
-            cdc.processSources( sources, outputDirectory );
+            cdc.processSources( sources, new File( outputDirectory, fileName ) );
         }
         catch ( ComponentDescriptorCreatorException e )
         {
             throw new MojoExecutionException( "Error while executing component descritor creator.", e );
         }
+
+        mavenProjectHelper.addResource( mavenProject, outputDirectory.getAbsolutePath(), Collections.EMPTY_LIST, Collections.EMPTY_LIST );
     }
 }
