@@ -28,12 +28,6 @@
       <groupId>xmlrpc</groupId>
       <artifactId>xmlrpc</artifactId>
       <version>1.2</version>
-      <exclusions>
-        <exclusion>
-          <groupId>servletapi</groupId>
-          <artifactId>servletapi</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>servletapi</groupId>
