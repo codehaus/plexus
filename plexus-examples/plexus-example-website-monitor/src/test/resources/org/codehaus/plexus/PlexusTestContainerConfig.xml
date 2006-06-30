@@ -1,6 +1,0 @@
-<!-- Override the configuration that is used by the PlexusTestCase to create a Container instance -->
-<plexus>
-  <components>
-    <!-- Declare components here for the Plexus Container for testing -->
-  </components>
-</plexus>

@@ -1,8 +1,0 @@
-Using Plexus in your applications
-
-<<This is an old piece of documentation, yet to be integrated into the new site and removed>>
-
-If you want to use plexus as a part of the larger application then you should read about [Plexus Embedder].
-* If you want to embed plexus in web container then you might want to use goodies provided by [Plexus servlet] project
-* If you want to use plexus for running your application then use [plexus runtime builder]
-

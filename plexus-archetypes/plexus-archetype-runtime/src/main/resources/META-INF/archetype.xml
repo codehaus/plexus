@@ -1,7 +1,0 @@
-<archetype>
-  <id>plexus-archetype-runtime</id>
-  <resources>
-    <resource>src/conf/plexus.xml</resource>
-    <resource>src/plexus.properties</resource>
-  </resources>
-</archetype>
