@@ -38,8 +38,11 @@ import java.util.List;
 public class Component
     implements Comparable
 {
+    private String description;
     private String role;
     private String roleHint;
+    private String alias;
+    private String version;
     private String implementation;
     private String instantiationStrategy;
     private Requirements requirements;
@@ -47,8 +50,11 @@ public class Component
 
     public Component( Element component )
     {
+        description = component.getChildText( "description" );
         role = component.getChildText( "role" );
         roleHint = component.getChildText( "role-hint" );
+        alias = component.getChildText( "alias" );
+        version = component.getChildText( "version" );
         implementation = component.getChildText( "implementation" );
         instantiationStrategy = component.getChildTextTrim( "instantiation-strategy" );
 
@@ -116,30 +122,9 @@ public class Component
 
         sink.table();
 
-        sink.tableRow();
-        sink.tableCell();
-        sink.text( "Role" );
-        sink.tableCell_();
-        sink.tableCell();
-        sink.monospaced();
-        sink.text( role );
-        sink.monospaced_();
-        sink.tableCell_();
-        sink.tableRow_();
+        writeField( sink, "Role", role );
 
-        if ( StringUtils.isNotEmpty( roleHint ) )
-        {
-            sink.tableRow();
-            sink.tableCell();
-            sink.text( "Role hint" );
-            sink.tableCell_();
-            sink.tableCell();
-            sink.monospaced();
-            sink.text( roleHint );
-            sink.monospaced_();
-            sink.tableCell_();
-            sink.tableRow_();
-        }
+        writeField( sink, "Role hint", roleHint );
 
         sink.tableRow();
         sink.tableCell();
@@ -160,19 +145,13 @@ public class Component
         sink.tableCell_();
         sink.tableRow_();
 
-        if( StringUtils.isNotEmpty( instantiationStrategy ) )
-        {
-            sink.tableRow();
-            sink.tableCell();
-            sink.text( "Instantiation strategy" );
-            sink.tableCell_();
-            sink.tableCell();
-            sink.monospaced();
-            sink.text( instantiationStrategy );
-            sink.monospaced_();
-            sink.tableCell_();
-            sink.tableRow_();
-        }
+        writeField( sink, "Description", description );
+
+        writeField( sink, "Alias", alias );
+
+        writeField( sink, "Version", version );
+
+        writeField( sink, "Instantiation strategy", instantiationStrategy );
 
         sink.table_();
 
@@ -184,6 +163,23 @@ public class Component
         if ( configuration != null )
         {
             configuration.print( sink );
+        }
+    }
+
+    private void writeField( Sink sink, String name, String value )
+    {
+        if ( StringUtils.isNotEmpty( value ) )
+        {
+            sink.tableRow();
+            sink.tableCell();
+            sink.text( name );
+            sink.tableCell_();
+            sink.tableCell();
+            sink.monospaced();
+            sink.text( value );
+            sink.monospaced_();
+            sink.tableCell_();
+            sink.tableRow_();
         }
     }
 
