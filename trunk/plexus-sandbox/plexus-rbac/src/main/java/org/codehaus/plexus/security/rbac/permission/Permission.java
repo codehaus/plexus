@@ -29,7 +29,7 @@ public interface Permission
      * Permits all operations on all objects.
      */
     public static final Permission ALL_PERMISSION =
-        new DefaultPermission( PermissionEntry.ALL_OPERATION, PermissionEntry.ALL_OBJECT );
+        new DefaultPermission( Operation.ALL_OPERATION, Operation.ALL_OBJECT );
     /**
      * Permits no operations on any object.
      */

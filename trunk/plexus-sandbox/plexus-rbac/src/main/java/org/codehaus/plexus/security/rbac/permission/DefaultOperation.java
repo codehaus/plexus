@@ -1,8 +1,5 @@
 package org.codehaus.plexus.security.rbac.permission;
 
-import java.util.Set;
-import java.util.HashSet;
-
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
  *
@@ -21,36 +18,46 @@ import java.util.HashSet;
 
 
 /**
- * Permission entry which represents a single operation on a target object.
+ * A default implementation of the IPermissionEntry interface.
  */
-public interface PermissionEntry
+public class DefaultOperation extends AbstractOperation
 {
     /**
-     * A null set of permission entries.
+     * The target object.
      */
-    public static final Set ZERO_PERMISSION_ENTRY = new HashSet();
+    public final Object obj;
     /**
-     * Matches all operations.
+     * The operation that can be performed on the target object.
      */
-    public static final String ALL_OPERATION = "*";
+    public final String op;
+
     /**
-     * Matches all target objects.
+     * Constructs with the given target object and operation.
      */
-    public static final String ALL_OBJECT = "*";
+    public DefaultOperation( Object obj, String op )
+    {
+        this.obj = obj;
+        this.op = op;
+    }
 
     /**
      * Returns the operation of this permission entry.
      */
-    public String getOperation();
+    public String getOperation()
+    {
+        return op;
+    }
 
     /**
      * Returns the target object of this permission entry.
      */
-    public Object getObject();
+    public Object getObject()
+    {
+        return obj;
+    }
 
-    /**
-     * Returns true iff this permission entry is greater than or equal to
-     * the given permission entry in terms of access privileges.
-     */
-    public boolean ge( PermissionEntry pe );
+    public String toString()
+    {
+        return "\n{obj:" + obj + ", op:" + op + "}";
+    }
 }
