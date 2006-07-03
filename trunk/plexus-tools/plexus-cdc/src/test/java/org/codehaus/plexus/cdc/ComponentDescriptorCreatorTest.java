@@ -25,9 +25,13 @@ package org.codehaus.plexus.cdc;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.component.discovery.DefaultComponentDiscoverer;
+import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
+import java.io.FileReader;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -47,7 +51,7 @@ public class ComponentDescriptorCreatorTest
 
         File[] sourceDirectories = new File[]{getTestFile( "src/test-project" ),};
 
-        File outputDirectory = getTestFile( "target/cdc-output" );
+        File outputDirectory = getTestFile( "target/cdc-output/META-INF/plexus" );
 
         if ( outputDirectory.exists() )
         {
@@ -61,11 +65,29 @@ public class ComponentDescriptorCreatorTest
         cdc.processSources( sourceDirectories, outputFile );
 
         // ----------------------------------------------------------------------
-        // Assert
+        // Check the generated components.xml
         // ----------------------------------------------------------------------
 
         assertTrue( "Output file is missing: " + outputFile.getAbsolutePath(), outputFile.exists() );
 
-        System.err.println( FileUtils.fileRead( outputFile ) );
+//        System.err.println( FileUtils.fileRead( outputFile ) );
+
+        DefaultComponentDiscoverer discoverer = new DefaultComponentDiscoverer();
+
+        FileReader reader = new FileReader( outputFile );
+
+        ComponentSetDescriptor csd = discoverer.createComponentDescriptors( reader, outputFile.getAbsolutePath() );
+
+        assertEquals( 1, csd.getComponents().size() );
+
+        ComponentDescriptor cd = (ComponentDescriptor) csd.getComponents().get( 0 );
+
+        assertEquals( "My super component.", cd.getDescription() );
+
+        assertEquals( "foo", cd.getAlias() );
+
+        assertEquals( "bar", cd.getRoleHint() );
+
+        assertEquals( "1.2", cd.getVersion() );
     }
 }

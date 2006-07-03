@@ -70,6 +70,8 @@ public class PlexusDefaultComponentGleaner
 
     public static final String PLEXUS_ROLE_HINT_PARAMETER = "role-hint";
 
+    public static final String PLEXUS_ALIAS_PARAMETER = "alias";
+
     private static final String PLEXUS_DEFAULT_VALUE_PARAMETER = "default-value";
 
     private static final String PLEXUS_LIFECYCLE_HANDLER_PARAMETER = "lifecycle-handler";
@@ -166,6 +168,12 @@ public class PlexusDefaultComponentGleaner
         componentDescriptor.setInstantiationStrategy( instatiationStrategy );
 
         // ----------------------------------------------------------------------
+        // Alias
+        // ----------------------------------------------------------------------
+
+        componentDescriptor.setAlias( getParameter( parameters, PLEXUS_ALIAS_PARAMETER ) );
+
+        // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
 
@@ -176,6 +184,24 @@ public class PlexusDefaultComponentGleaner
         // ----------------------------------------------------------------------
 
         findRequirements( classCache, componentDescriptor, javaClass );
+
+        // ----------------------------------------------------------------------
+        // Description
+        // ----------------------------------------------------------------------
+
+        String comment = javaClass.getComment();
+
+        if ( comment != null )
+        {
+            int i = comment.indexOf( '.' );
+
+            if ( i > 0 )
+            {
+                comment = comment.substring( 0, i + 1 ); // include the dot
+            }
+        }
+
+        componentDescriptor.setDescription( comment );
 
         // ----------------------------------------------------------------------
         // Configuration
