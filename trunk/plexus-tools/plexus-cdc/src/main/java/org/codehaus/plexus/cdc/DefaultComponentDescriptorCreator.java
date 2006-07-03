@@ -249,15 +249,21 @@ public class DefaultComponentDescriptorCreator
 
             ComponentDescriptor cd = (ComponentDescriptor) i.next();
 
+            element( w, "alias", cd.getAlias() );
+
             element( w, "role", cd.getRole() );
 
             element( w, "role-hint", cd.getRoleHint() );
 
             element( w, "implementation", cd.getImplementation() );
 
+            element( w, "version", cd.getVersion() );
+
             element( w, "instantiation-strategy", cd.getInstantiationStrategy() );
 
             element( w, "lifecycle-handler", cd.getLifecycleHandler() );
+
+            element( w, "description", cd.getDescription() );
 
             writeRequirements( w, cd.getRequirements() );
 
