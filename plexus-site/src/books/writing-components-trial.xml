@@ -1,8 +1,11 @@
 <book>
   <id>writing-components-trial</id>
+  <title>Writing Components in Plexus</title>
+  <author>Rhaul Thakur</author>
   <chapters>
     <chapter>
       <id>intro</id>
+      <title>Introduction</title>
       <sections>
         <section>
           <id>00_index</id>
@@ -11,6 +14,7 @@
     </chapter>
     <chapter>
       <id>preparing</id>
+      <title>Preparing</title>
       <sections>
         <section>
           <id>01_preparing_for_project</id>
@@ -18,7 +22,8 @@
       </sections>
     </chapter>
     <chapter>
-      <id>intro</id>
+      <id>diving-in</id>
+      <title>Diving In</title>
       <sections>
         <section>
           <id>02_diving_in</id>
@@ -26,7 +31,8 @@
       </sections>
     </chapter>
     <chapter>
-      <id>intro</id>
+      <id>tdd</id>
+      <title>TDD With Plexus</title>
       <sections>
         <section>
           <id>03_joys_of_tdd</id>
@@ -34,7 +40,8 @@
       </sections>
     </chapter>
     <chapter>
-      <id>intro</id>
+      <id>more_bells_n_whistles</id>
+      <title>More Bells'n'Whistles</title>
       <sections>
         <section>
           <id>04_more_bells_n_whistles</id>
@@ -42,7 +49,8 @@
       </sections>
     </chapter>
     <chapter>
-      <id>intro</id>
+      <id>configurations</id>
+      <title>Configurations</title>
       <sections>
         <section>
           <id>05_configuring_to_get_it_right</id>
@@ -53,7 +61,8 @@
       </sections>
     </chapter>
     <chapter>
-      <id>intro</id>
+      <id>components</id>
+      <title>Components</title>
       <sections>
         <section>
           <id>06_we_have_a_component</id>
@@ -61,7 +70,8 @@
       </sections>
     </chapter>
     <chapter>
-      <id>intro</id>
+      <id>background</id>
+      <title>Background</title>
       <sections>
         <section>
           <id>07_component_usage_scenarios</id>
@@ -93,7 +103,8 @@
       </sections>
     </chapter>
     <chapter>
-      <id>intro</id>
+      <id>packaging</id>
+      <title>Packaging</title>
       <sections>
         <section>
           <id>08_packaging_up</id>

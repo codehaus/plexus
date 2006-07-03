@@ -33,6 +33,7 @@
               <descriptor>src/books/writing-components-trial.xml</descriptor>
               <formats>
                 <format>itext</format>
+                <format>latex</format>
               </formats>
             </book>
           </books>
