@@ -20,6 +20,8 @@ import org.codehaus.plexus.security.rbac.RbacSecurityViolation;
 import org.codehaus.plexus.security.rbac.permission.Permission;
 import org.codehaus.plexus.security.rbac.role.Role;
 
+import java.util.Set;
+
 /**
  * User which acquires permissions by being members of roles.
  */
@@ -42,7 +44,8 @@ public interface RbacUser
      * @throws RbacSecurityViolation if the limit of the number of users
      *                               that can be assigned to the given role is exceeded.
      */
-    public boolean addRole( Role role ) throws RbacSecurityViolation;
+    public boolean addRole( Role role )
+        throws RbacSecurityViolation;
 
     /**
      * Removes the given role from this user.
@@ -53,10 +56,10 @@ public interface RbacUser
      * Returns the current set of roles that have been assigned to this user.
      * (A core RBAC feature.)
      */
-    public Role[] getRoles();
+    public Set getRoles();
 
     /**
      * Returns the set of permissions a this user gets thru his assgined roles.
      */
-    public Permission[] getPermissions();
+    public Set getPermissions();
 }

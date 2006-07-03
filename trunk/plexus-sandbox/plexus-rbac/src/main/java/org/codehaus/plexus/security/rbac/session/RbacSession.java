@@ -20,6 +20,8 @@ import org.codehaus.plexus.security.rbac.permission.Permission;
 import org.codehaus.plexus.security.rbac.role.Role;
 import org.codehaus.plexus.security.rbac.user.RbacUser;
 
+import java.util.Set;
+
 /**
  * RBAC session is an active process representing a user.
  */
@@ -58,7 +60,7 @@ public interface RbacSession
     /**
      * Returns the current active role set.
      */
-    public Role[] getActiveRoles();
+    public Set getActiveRoles();
 
     /**
      * Returns true iff the active role set contains the specified role.
@@ -69,7 +71,7 @@ public interface RbacSession
      * Returns the set of permissions available in this session (ie. union of all
      * permissions assigned to the active role set.
      */
-    public Permission[] getPermissions();
+    public Set getPermissions();
     /**
      * Returns true iff the active role set contains an active role
      * with access privileges greater than or equal to that of the given role.

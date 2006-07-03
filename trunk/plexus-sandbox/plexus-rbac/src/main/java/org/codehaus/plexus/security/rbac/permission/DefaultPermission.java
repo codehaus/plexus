@@ -22,19 +22,20 @@ import java.util.Set;
 /**
  * A default implementation of the IPermission interface.
  */
-public class DefaultPermission extends AbstractPermission
+public class DefaultPermission
+    extends AbstractPermission
 {
     /**
      * The current set of permission entries.
      */
-    private final PermissionEntry[] entries;
+    private final Set entries;
 
     /**
      * Constructs with a set of permission entries.
      * Note that client is responsible for ensuring there is no duplicate entries
      * in the specified permission entry list.
      */
-    public DefaultPermission( PermissionEntry[] entries )
+    public DefaultPermission( Set entries )
     {
         this.entries = entries;
     }
@@ -47,7 +48,9 @@ public class DefaultPermission extends AbstractPermission
      */
     public DefaultPermission( Object obj, String op )
     {
-        this.entries = new PermissionEntry[]{new DefaultPermissionEntry( obj, op )};
+        entries = new HashSet();
+
+        entries.add( new DefaultPermissionEntry( obj, op ) );
     }
 
     /**
@@ -56,21 +59,24 @@ public class DefaultPermission extends AbstractPermission
     public DefaultPermission( Permission[] p )
     {
         Set set = new HashSet();
+
         for ( int i = 0; i < p.length; i++ )
         {
-            PermissionEntry[] e = p[i].getPermissionEntries();
+            Set e = p[i].getPermissionEntries();
+
             for ( int j = 0; j < e.length; j++ )
             {
                 set.add( e[j] );
             }
         }
-        this.entries = (PermissionEntry[]) set.toArray( PermissionEntry.ZERO_PERMISSION_ENTRY );
+
+        entries = PermissionEntry.ZERO_PERMISSION_ENTRY;
     }
 
     /**
      * Returns the permission entry set of this permission.
      */
-    public PermissionEntry[] getPermissionEntries()
+    public Set getPermissionEntries()
     {
         return entries;
     }

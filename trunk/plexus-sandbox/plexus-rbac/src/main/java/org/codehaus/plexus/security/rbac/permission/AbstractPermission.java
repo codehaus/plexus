@@ -19,16 +19,19 @@ package org.codehaus.plexus.security.rbac.permission;
 import org.codehaus.plexus.security.rbac.role.Role;
 
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * A permission base class that provides generic implemenation with no internal data set.
  */
-public class AbstractPermission implements Permission, Serializable
+public class AbstractPermission
+    implements Permission,
+    Serializable
 {
     /**
      * Returns a null set of permission entry.
      */
-    public PermissionEntry[] getPermissionEntries()
+    public Set getPermissionEntries()
     {
         return PermissionEntry.ZERO_PERMISSION_ENTRY;
     }
@@ -36,7 +39,7 @@ public class AbstractPermission implements Permission, Serializable
     /**
      * Returns a null set of role.
      */
-    public Role[] getAssignedRoles()
+    public Set getAssignedRoles()
     {
         return Role.ZERO_ROLE;
     }
@@ -51,31 +54,39 @@ public class AbstractPermission implements Permission, Serializable
         {
             return true;
         }
+
         if ( p == this )
         {
             return true;
         }
-        PermissionEntry[] to_pe = p.getPermissionEntries();
 
-        if ( to_pe == null || to_pe.length == 0 )
+        Set toPermissionEntries = p.getPermissionEntries();
+
+        if ( toPermissionEntries == null || toPermissionEntries.length == 0 )
         {
             return true;
         }
-        PermissionEntry[] pe = getPermissionEntries();
+
+        Set permissionEntries = getPermissionEntries();
+
         outter:
-          for ( int i = 0; i < to_pe.length; i++ )
-          {
-              PermissionEntry pi = to_pe[i];
-              for ( int j = 0; j < pe.length; j++ )
-              {
-                  PermissionEntry pj = pe[j];
-                  if ( pj.ge( pi ) )
-                  {
-                      continue outter;
-                  }
-              }
-              return false;
-          }
+        for ( int i = 0; i < toPermissionEntries.length; i++ )
+        {
+            PermissionEntry pi = toPermissionEntries[i];
+
+            for ( int j = 0; j < permissionEntries.length; j++ )
+            {
+                PermissionEntry pj = permissionEntries[j];
+
+                if ( pj.ge( pi ) )
+                {
+                    continue outter;
+                }
+            }
+
+            return false;
+        }
+
         return true;
     }
 
@@ -109,26 +120,28 @@ public class AbstractPermission implements Permission, Serializable
             return false;
         }
         outter:
-          for ( int i = 0; i < pe.length; i++ )
-          {
-              PermissionEntry pi = pe[i];
-              for ( int j = 0; j < to_pe.length; j++ )
-              {
-                  PermissionEntry pj = to_pe[j];
-                  if ( pi.equals( pj ) )
-                  {
-                      continue outter;
-                  }
-              }
-              return false;
-          }
+        for ( int i = 0; i < pe.length; i++ )
+        {
+            PermissionEntry pi = pe[i];
+            for ( int j = 0; j < to_pe.length; j++ )
+            {
+                PermissionEntry pj = to_pe[j];
+                if ( pi.equals( pj ) )
+                {
+                    continue outter;
+                }
+            }
+            return false;
+        }
         return true;
     }
 
     public int hashCode()
     {
-        PermissionEntry[] pe = getPermissionEntries();
+        Set pe = getPermissionEntries();
+
         int hashCode = 0;
+
         if ( pe != null )
         {
             for ( int i = 0; i < pe.length; i++ )
@@ -142,12 +155,16 @@ public class AbstractPermission implements Permission, Serializable
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
-        PermissionEntry[] p = getPermissionEntries();
+
+        Set p = getPermissionEntries();
+
         for ( int i = 0; i < p.length; i++ )
         {
             sb.append( "\n" );
+
             sb.append( p[i].toString() );
         }
+
         return sb.toString();
     }
 }

@@ -1,5 +1,8 @@
 package org.codehaus.plexus.security.rbac.permission;
 
+import java.util.Set;
+import java.util.HashSet;
+
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
  *
@@ -25,7 +28,7 @@ public interface PermissionEntry
     /**
      * A null set of permission entries.
      */
-    public static final PermissionEntry[] ZERO_PERMISSION_ENTRY = new PermissionEntry[0];
+    public static final Set ZERO_PERMISSION_ENTRY = new HashSet();
     /**
      * Matches all operations.
      */

@@ -26,20 +26,21 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A role base class that provides generic implemenation with no internal data set.
  */
-public class AbstractRole implements Role, Serializable
+public class AbstractRole
+    implements Role,
+    Serializable
 {
     /**
      * Returns true iff this role is authorized with the specified permission.
      */
     public boolean isAuthorized( Permission perm )
     {
-        if ( perm == null
-            || perm == Permission.NO_PERMISSION
-            || perm.equals( Permission.NO_PERMISSION ) )
+        if ( perm == null || perm == Permission.NO_PERMISSION || perm.equals( Permission.NO_PERMISSION ) )
         {
             return true;
         }
@@ -49,7 +50,7 @@ public class AbstractRole implements Role, Serializable
     /**
      * Returns true iff this role is authorized with the specified permissions.
      */
-    public boolean isAuthorized( Permission[] perm )
+    public boolean isAuthorized( Set perm )
     {
         if ( perm == null )
         {
@@ -77,7 +78,7 @@ public class AbstractRole implements Role, Serializable
     /**
      * Always returns a null set of permission.
      */
-    public Permission[] getPermissions()
+    public Set getPermissions()
     {
         return Permission.ZERO_PERMISSION;
     }
@@ -103,38 +104,54 @@ public class AbstractRole implements Role, Serializable
         {
             return true;
         }
+
         Role r = (Role) o;
+
         Map attr = getRoleAttributes();
-        Permission[] p = getPermissions();
+
+        Set permissions = getPermissions();
+
         Map to_attr = r.getRoleAttributes();
-        Permission[] to_p = r.getPermissions();
+
+        Set toPermissions = r.getPermissions();
+
         if ( !attr.equals( to_attr ) )
+        {
             return false;
-        if ( p.length != to_p.length )
+        }
+
+        if ( permissions.length != toPermissions.length )
+        {
             return false;
+        }
+
         outter:
-          for ( int i = 0; i < p.length; i++ )
-          {
-              Permission pi = p[i];
 
-              for ( int j = 0; j < to_p.length; j++ )
-              {
-                  Permission pj = to_p[j];
+        for ( int i = 0; i < permissions.length; i++ )
+        {
+            Permission pi = permissions[i];
 
-                  if ( pi.equals( pj ) )
-                  {
-                      continue outter;
-                  }
-              }
-              return false;
-          }
+            for ( int j = 0; j < toPermissions.length; j++ )
+            {
+                Permission pj = toPermissions[j];
+
+                if ( pi.equals( pj ) )
+                {
+                    continue outter;
+                }
+            }
+            return false;
+        }
+
         return true;
     }
 
     public int hashCode()
     {
         int hash = getRoleAttributes().hashCode();
-        Permission[] p = getPermissions();
+
+        Set p = getPermissions();
+
         if ( p != null )
         {
             for ( int i = 0; i < p.length; i++ )
@@ -155,30 +172,35 @@ public class AbstractRole implements Role, Serializable
         {
             return true;
         }
-        Permission[] p = getPermissions();
-        Permission[] to_p = r.getPermissions();
+
+        Set permissions = getPermissions();
+
+        Set toPermissions = r.getPermissions();
+
         outter:
-          for ( int i = 0; i < to_p.length; i++ )
-          {
-              Permission pi = to_p[i];
 
-              for ( int j = 0; j < p.length; j++ )
-              {
-                  Permission pj = p[j];
+        for ( int i = 0; i < toPermissions.length; i++ )
+        {
+            Permission pi = toPermissions[i];
 
-                  if ( pj.ge( pi ) )
-                  {
-                      continue outter;
-                  }
-              }
-              return false;
-          }
+            for ( int j = 0; j < permissions.length; j++ )
+            {
+                Permission pj = permissions[j];
+
+                if ( pj.ge( pi ) )
+                {
+                    continue outter;
+                }
+            }
+            return false;
+        }
         return true;
     }
 
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
+
         Map map = getRoleAttributes();
 
         for ( Iterator itr = map.entrySet().iterator(); itr.hasNext(); )
@@ -189,11 +211,14 @@ public class AbstractRole implements Role, Serializable
             sb.append( "=" );
             sb.append( entry.getValue().toString() );
         }
-        Permission[] p = getPermissions();
-        for ( int i = 0; i < p.length; i++ )
+
+        Set permissions = getPermissions();
+
+        for ( int i = 0; i < permissions.length; i++ )
         {
             sb.append( "\n" );
-            sb.append( p[i].toString() );
+
+            sb.append( permissions[i].toString() );
         }
         return sb.toString();
     }
@@ -201,7 +226,8 @@ public class AbstractRole implements Role, Serializable
     /**
      * Always returns false.
      */
-    public boolean roleAdded( RbacUser user ) throws RbacSecurityViolation
+    public boolean roleAdded( RbacUser user )
+        throws RbacSecurityViolation
     {
         return false;
     }

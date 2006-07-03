@@ -21,7 +21,8 @@ import java.io.Serializable;
 /**
  * A permission entry base class that provides generic implemenation with no internal data set.
  */
-public abstract class AbstractPermissionEntry implements PermissionEntry, Serializable
+public abstract class AbstractPermissionEntry 
+    implements PermissionEntry, Serializable
 {
     /**
      * Returns an empty string.
