@@ -20,6 +20,7 @@ import org.codehaus.plexus.security.rbac.role.Role;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.Iterator;
 
 /**
  * A permission base class that provides generic implemenation with no internal data set.
@@ -33,7 +34,7 @@ public class AbstractPermission
      */
     public Set getPermissionEntries()
     {
-        return PermissionEntry.ZERO_PERMISSION_ENTRY;
+        return Operation.ZERO_PERMISSION_ENTRY;
     }
 
     /**
@@ -60,28 +61,30 @@ public class AbstractPermission
             return true;
         }
 
-        Set toPermissionEntries = p.getPermissionEntries();
+        Set toOperations = p.getPermissionEntries();
 
-        if ( toPermissionEntries == null || toPermissionEntries.length == 0 )
+        if ( toOperations == null || toOperations.size() == 0 )
         {
             return true;
         }
 
-        Set permissionEntries = getPermissionEntries();
+        Set operations = getPermissionEntries();
 
         outter:
-        for ( int i = 0; i < toPermissionEntries.length; i++ )
+
+        for ( Iterator i = toOperations.iterator(); i.hasNext(); )
         {
-            PermissionEntry pi = toPermissionEntries[i];
+            Operation toOperation = (Operation) i.next();
 
-            for ( int j = 0; j < permissionEntries.length; j++ )
+            for ( Iterator j = operations.iterator(); j.hasNext(); )
             {
-                PermissionEntry pj = permissionEntries[j];
+                Operation operation = (Operation) j.next();
 
-                if ( pj.ge( pi ) )
+                if ( operation.ge( toOperation ) )
                 {
                     continue outter;
                 }
+
             }
 
             return false;
@@ -103,29 +106,36 @@ public class AbstractPermission
         {
             return true;
         }
-        Permission p = (Permission) o;
-        PermissionEntry[] pe = getPermissionEntries();
-        PermissionEntry[] to_pe = p.getPermissionEntries();
 
-        if ( pe == null && to_pe == null )
+        Permission p = (Permission) o;
+
+        Set operations = getPermissionEntries();
+
+        Set toOperations = p.getPermissionEntries();
+
+        if ( operations == null && toOperations == null )
         {
             return true;
         }
-        if ( pe == null || to_pe == null )
+        if ( operations == null || toOperations == null )
         {
             return false;
         }
-        if ( pe.length != to_pe.length )
+        if ( operations.size() != toOperations.size() )
         {
             return false;
         }
+
         outter:
-        for ( int i = 0; i < pe.length; i++ )
+
+        for ( int i = 0; i < operations.length; i++ )
         {
-            PermissionEntry pi = pe[i];
-            for ( int j = 0; j < to_pe.length; j++ )
+            Operation pi = operations[i];
+
+            for ( int j = 0; j < toOperations.length; j++ )
             {
-                PermissionEntry pj = to_pe[j];
+                Operation pj = toOperations[j];
+
                 if ( pi.equals( pj ) )
                 {
                     continue outter;

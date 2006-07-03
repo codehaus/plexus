@@ -21,8 +21,8 @@ import java.io.Serializable;
 /**
  * A permission entry base class that provides generic implemenation with no internal data set.
  */
-public abstract class AbstractPermissionEntry 
-    implements PermissionEntry, Serializable
+public abstract class AbstractOperation 
+    implements Operation, Serializable
 {
     /**
      * Returns an empty string.
@@ -44,7 +44,7 @@ public abstract class AbstractPermissionEntry
      * Returns true iff this permission entry is greater than or equal to
      * the given permission entry in terms of access privileges.
      */
-    public boolean ge( PermissionEntry pe )
+    public boolean ge( Operation pe )
     {
         if ( pe == null )
         {
@@ -68,7 +68,7 @@ public abstract class AbstractPermissionEntry
      */
     public boolean equals( Object o )
     {
-        if ( o == null || !( o instanceof PermissionEntry ) )
+        if ( o == null || !( o instanceof Operation ) )
         {
             return false;
         }
@@ -76,7 +76,7 @@ public abstract class AbstractPermissionEntry
         {
             return true;
         }
-        PermissionEntry p = (PermissionEntry) o;
+        Operation p = (Operation) o;
         return getOperation().equals( p.getOperation() ) && getObject().equals( p.getObject() );
     }
 

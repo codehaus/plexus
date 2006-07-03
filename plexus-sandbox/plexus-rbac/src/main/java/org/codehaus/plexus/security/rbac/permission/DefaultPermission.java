@@ -50,7 +50,7 @@ public class DefaultPermission
     {
         entries = new HashSet();
 
-        entries.add( new DefaultPermissionEntry( obj, op ) );
+        entries.add( new DefaultOperation( obj, op ) );
     }
 
     /**
@@ -70,7 +70,7 @@ public class DefaultPermission
             }
         }
 
-        entries = PermissionEntry.ZERO_PERMISSION_ENTRY;
+        entries = Operation.ZERO_PERMISSION_ENTRY;
     }
 
     /**
