@@ -3,7 +3,12 @@ package org.codehaus.plexus.cdc.component;
 import java.util.Map;
 
 /**
+ * My super component.
+ *
  * @plexus.component
+ *  alias="foo"
+ *  role-hint="bar"
+ *  version="1.2"
  */
 public class DefaultComponent
   implements Component
