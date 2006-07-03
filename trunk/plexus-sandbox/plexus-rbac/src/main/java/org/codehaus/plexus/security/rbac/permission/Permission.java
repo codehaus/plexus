@@ -16,7 +16,8 @@ package org.codehaus.plexus.security.rbac.permission;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.rbac.role.Role;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Permission which represents a set of operations
@@ -36,12 +37,12 @@ public interface Permission
     /**
      * A null permission set.
      */
-    public static final Permission[] ZERO_PERMISSION = new Permission[0];
+    public static final Set ZERO_PERMISSION = new HashSet();
 
     /**
      * Returns the permission entry set of this permission.
      */
-    public PermissionEntry[] getPermissionEntries();
+    public Set getPermissionEntries();
 
     /**
      * Returns true iff this permission is greater than or equal to
@@ -53,5 +54,5 @@ public interface Permission
      * Returns the set of roles assigned to this permission.
      * For advanced permission-role review.
      */
-    public Role[] getAssignedRoles();
+    public Set getAssignedRoles();
 }

@@ -24,32 +24,17 @@ import org.codehaus.plexus.security.rbac.user.RbacUser;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Iterator;
 
 /**
  * A RBAC session base class that provides generic implemenation with no internal data set.
  */
-public class AbstractRbacSession implements RbacSession, Serializable
+public class AbstractRbacSession
+    implements RbacSession, Serializable
 {
     /**
      * Returns true iff this session is authorized with the specified permission.
      */
-/*
-  public boolean isAuthorized(IPermission perm) {
-    if (perm == null
-    ||  perm == IPermission.NO_PERMISSION
-    ||  perm.equals(IPermission.NO_PERMISSION))
-    {
-      return true;
-    }
-    IRole[] role = getActiveRoles();
-    for (int i=0; i < role.length; i++) {
-      if (role[i].isAuthorized(perm)) {
-        return true;
-      }
-    }
-    return false;
-  }
-*/
     public boolean isAuthorized( Permission perm )
     {
         if ( perm == null
@@ -58,26 +43,36 @@ public class AbstractRbacSession implements RbacSession, Serializable
         {
             return true;
         }
+
         Set set = new HashSet();
-        Role[] r = getActiveRoles();
-        for ( int i = 0; i < r.length; i++ )
+
+        Set r = getActiveRoles();
+
+        for ( Iterator i = r.iterator(); i.hasNext(); )
         {
-            set.add( new DefaultPermission( r[i].getPermissions() ) );
+            Role role = (Role) i.next();
+
+            //set.add( new DefaultPermission( role.getPermissions() ) );
+
+            set.add( role.getPermissions() );
         }
+
         Permission p = new DefaultPermission( (Permission[]) set.toArray( Permission.ZERO_PERMISSION ) );
+
         return p.ge( perm );
     }
 
     /**
      * Returns true iff this session is authorized with the specified permissions.
      */
-    public boolean isAuthorized( Permission[] perm )
+    public boolean isAuthorized( Set permissions )
     {
-        if ( perm == null )
+        if ( permissions == null )
         {
             return true;
         }
-        return isAuthorized( new DefaultPermission( perm ) );
+
+        return isAuthorized( permissions );
     }
 
     /**
@@ -89,6 +84,7 @@ public class AbstractRbacSession implements RbacSession, Serializable
         {
             return true;
         }
+
         return isAuthorized( role.getPermissions() );
     }
 
@@ -119,7 +115,7 @@ public class AbstractRbacSession implements RbacSession, Serializable
     /**
      * Always returns a null role set.
      */
-    public Role[] getActiveRoles()
+    public Set getActiveRoles()
     {
         return Role.ZERO_ROLE;
     }
@@ -127,12 +123,12 @@ public class AbstractRbacSession implements RbacSession, Serializable
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
-        Role[] role = getActiveRoles();
-//    p("role.length="+role.length);
+
+        Set role = getActiveRoles();
+
         for ( int i = 0; i < role.length; i++ )
         {
             sb.append( role[i].toString() );
-//      p(role[i].toString());
         }
         return sb.toString();
     }
@@ -146,57 +142,45 @@ public class AbstractRbacSession implements RbacSession, Serializable
         {
             return false;
         }
-        Role[] r = getActiveRoles();
-        if ( r == null || r.length == 0 )
+
+        Set activeRoles = getActiveRoles();
+
+        if ( activeRoles == null || activeRoles.size() == 0 )
         {
             return false;
         }
-        for ( int i = 0; i < r.length; i++ )
+
+        for ( Iterator i = activeRoles.iterator(); i.hasNext(); )
         {
-            if ( r[i].equals( role ) )
+            Role activeRole = (Role) i.next();
+
+            if ( activeRole.equals( role ) )
             {
                 return true;
             }
         }
+                
         return false;
     }
 
-    public Permission[] getPermissions()
+    public Set getPermissions()
     {
-        Set set = new HashSet();
-        Role[] roles = getActiveRoles();
-        for ( int i = 0; i < roles.length; i++ )
+        Set permissions = new HashSet();
+
+        Set roles = getActiveRoles();
+
+        for ( Iterator i = roles.iterator(); i.hasNext(); )
         {
-            Permission[] perm = roles[i].getPermissions();
+            Role role = (Role) i.next();
+
+            Set perm = role.getPermissions();
+
             for ( int j = 0; j < perm.length; j++ )
             {
-                set.add( perm[j] );
+                permissions.add( perm[j] );
             }
         }
-        return (Permission[]) set.toArray( Permission.ZERO_PERMISSION );
+
+        return permissions;
     }
-    /**
-     * Returns true iff the active role set contains an active role
-     * with access privileges greater than or equal to that of the given role.
-     */
-/*
-  public boolean hasRoleGE(IRole role) {
-    if (role == null) {
-      return true;
-    }
-    IRole[] r = getActiveRoles();
-    if (r == null || r.length == 0) {
-      return false;
-    }
-    for (int i=0; i < r.length; i++) {
-      if (r[i].ge(role)) {
-        return true;
-      }
-    }
-    return false;
-  }
-  private void p(String s) {
-    System.out.println("AbstractRbacSession>>"+s);
-  }
-*/
 }
