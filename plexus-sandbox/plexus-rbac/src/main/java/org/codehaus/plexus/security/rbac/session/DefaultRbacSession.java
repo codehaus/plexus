@@ -25,7 +25,8 @@ import java.util.Set;
 /**
  * A default implementation of the IRbacSession interface.
  */
-public class DefaultRbacSession extends AbstractRbacSession
+public class DefaultRbacSession
+    extends AbstractRbacSession
 {
     /**
      * The user of this session.
@@ -77,11 +78,11 @@ public class DefaultRbacSession extends AbstractRbacSession
     /**
      * Returns the current active role set.
      */
-    public Role[] getActiveRoles()
+    public Set getActiveRoles()
     {
         synchronized ( roleSet )
         {
-            return (Role[]) roleSet.toArray( Role.ZERO_ROLE );
+            return roleSet;
         }
     }
 }

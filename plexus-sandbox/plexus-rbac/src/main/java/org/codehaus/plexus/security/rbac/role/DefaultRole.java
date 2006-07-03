@@ -88,45 +88,16 @@ public class DefaultRole
         this.permissionSet = ps;
         this.attributes = Collections.unmodifiableMap( attr == null ? new HashMap() : attr );
     }
-    /** Returns true iff this role is authorized with the specified permission. */
-/*
-  public boolean isAuthorized(IPermission perm) {
-    if (perm == null
-        || perm == IPermission.NO_PERMISSION
-        || perm.equals(IPermission.NO_PERMISSION)) {
-        return true;
-    }
-    if (permissionSet.contains(IPermission.ALL_PERMISSION)) {
-      return true;
-    }
-    IPermissionEntry[] pe = perm.getPermissionEntries();
 
-  outter:
-    for (int i=0; i < pe.length; i++) {
-      for (Iterator itr=permissionSet.iterator(); itr.hasNext();) {
-        IPermission p = (IPermission)itr.next();
-        IPermissionEntry[] pe1 = p.getPermissionEntries();
-        for (int j=0; j < pe1.length; j++) {
-          if (pe1[j].ge(pe[i])) {
-            continue outter;
-          }
-        }
-      }
-      return false;
-    }
-    return true;
-//    return permissionSet.contains(perm);
-  }
-*/
     /**
      * Returns the current set of permissions that have been assigned to this role.
      * For advanced permission-role review.
      */
-    public Permission[] getPermissions()
+    public Set getPermissions()
     {
         synchronized ( permissionSet )
         {
-            return (Permission[]) permissionSet.toArray( Permission.ZERO_PERMISSION );
+            return permissionSet;
         }
     }
 
@@ -153,18 +124,7 @@ public class DefaultRole
     {
         return maxMembers;
     }
-    //////////// Convenient methods. ///////////
-/*
-  public String getDesc() {
-    return (String)attributes.get("desc");
-  }
-  public Object getAttr(String key) {
-    return attributes.get(key);
-  }
-  private void p(String s) {
-    System.out.println("Role>>"+s);
-  }
-*/
+        
     /**
      * Informs this role that it has just been added to the given user.
      *

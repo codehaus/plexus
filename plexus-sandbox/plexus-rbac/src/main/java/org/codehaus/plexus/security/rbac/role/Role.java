@@ -20,7 +20,9 @@ import org.codehaus.plexus.security.rbac.RbacSecurityViolation;
 import org.codehaus.plexus.security.rbac.permission.Permission;
 import org.codehaus.plexus.security.rbac.user.RbacUser;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Role to which users and permissions can be assigned.
@@ -38,7 +40,7 @@ public interface Role
     /**
      * A null role set.
      */
-    public static final Role[] ZERO_ROLE = new Role[0];
+    public static final Set ZERO_ROLE = new HashSet();
 
     /**
      * Returns true iff this role is authorized with the specified permission.
@@ -48,13 +50,13 @@ public interface Role
     /**
      * Returns true iff this role is authorized with the specified permissions.
      */
-    public boolean isAuthorized( Permission[] perm );
+    public boolean isAuthorized( Set permissions );
 
     /**
      * Returns the current set of permissions that have been assigned to this role.
      * For advanced permission-role review.
      */
-    public Permission[] getPermissions();
+    public Set getPermissions();
 
     /**
      * Returns the attributes of this role.
@@ -87,7 +89,8 @@ public interface Role
      * @throws org.codehaus.plexus.security.rbac.RbacSecurityViolation if the maximum number of user that
      *                               can be assigned to this role is exceeded.
      */
-    public boolean roleAdded( RbacUser user ) throws RbacSecurityViolation;
+    public boolean roleAdded( RbacUser user )
+        throws RbacSecurityViolation;
 
     /**
      * Informs this role that it has just been removed from the given user.

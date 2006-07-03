@@ -21,11 +21,13 @@ import org.codehaus.plexus.security.rbac.permission.Permission;
 import org.codehaus.plexus.security.rbac.role.Role;
 
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * A RBAC user base class that provides generic implemenation with no internal data set.
  */
-public class AbstractRbacUser implements RbacUser, Serializable
+public class AbstractRbacUser
+    implements RbacUser, Serializable
 {
     /**
      * Adds the given role to this user.
@@ -35,12 +37,14 @@ public class AbstractRbacUser implements RbacUser, Serializable
      * @throws org.codehaus.plexus.security.rbac.RbacSecurityViolation if the limit of the number of users
      *                               that can be assigned to the given role is exceeded.
      */
-    public boolean addRole( Role role ) throws RbacSecurityViolation
+    public boolean addRole( Role role )
+        throws RbacSecurityViolation
     {
         if ( role == null )
         {
             return false;
         }
+
         return role.roleAdded( this );
     }
 
@@ -59,12 +63,12 @@ public class AbstractRbacUser implements RbacUser, Serializable
     /**
      * Always returns a null set of role.
      */
-    public Role[] getRoles()
+    public Set getRoles()
     {
         return Role.ZERO_ROLE;
     }
 
-    public Permission[] getPermissions()
+    public Set getPermissions()
     {
         return Permission.ZERO_PERMISSION;
     }
