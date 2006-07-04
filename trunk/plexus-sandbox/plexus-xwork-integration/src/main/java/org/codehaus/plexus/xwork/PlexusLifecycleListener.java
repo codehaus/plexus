@@ -39,7 +39,10 @@ public class PlexusLifecycleListener implements ServletContextListener, HttpSess
         try {
             ServletContext ctx = servletContextEvent.getServletContext();
             PlexusContainer pc = (PlexusContainer) ctx.getAttribute(KEY);
-            pc.dispose();
+            if ( pc != null )
+            {
+                pc.dispose();
+            }
         } catch (Exception e) {
             log.error("Error disposing plexus container (scope: application)", e);
         }
@@ -64,7 +67,10 @@ public class PlexusLifecycleListener implements ServletContextListener, HttpSess
         try {
             HttpSession session = httpSessionEvent.getSession();
             PlexusContainer child = (PlexusContainer) session.getAttribute(KEY);
-            child.dispose();
+            if ( child != null )
+            {
+                child.dispose();
+            }
         } catch (Exception e) {
             log.error("Error initializing plexus container (scope: session)", e);
         }
