@@ -19,15 +19,15 @@
  */
 package org.codehaus.plexus.tutorial;
 
-import java.net.UnknownHostException;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+
+import java.net.UnknownHostException;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Provider for Plexus Component role {@link WebsiteMonitor}.
@@ -90,6 +90,25 @@ public class DefaultWebsiteMonitor
                     getMethod.releaseConnection();
             }
         }
+    }
+
+    /**
+     * @see Initializable#initialize(List)
+     */
+    public void initialize( List websites )
+    {
+        this.websites = websites;
+    }
+
+    /**
+     * Determines if the website component is properly initialized. <p>
+     * This implies it was configured with a valid list of websites for monitoring.
+     *  
+     * @see Initializable#isInitialized()
+     */
+    public boolean isInitialized()
+    {
+        return ( null != websites && this.websites.size() > 0 );
     }
 
 }
