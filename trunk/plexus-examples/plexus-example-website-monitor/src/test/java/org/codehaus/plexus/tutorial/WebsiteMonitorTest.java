@@ -19,10 +19,12 @@
  */
 package org.codehaus.plexus.tutorial;
 
+import org.codehaus.plexus.PlexusTestCase;
+
 import java.io.InputStream;
 import java.net.UnknownHostException;
-
-import org.codehaus.plexus.PlexusTestCase;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
@@ -65,17 +67,19 @@ public class WebsiteMonitorTest
     {
         WebsiteMonitor component = (WebsiteMonitor) lookup( WebsiteMonitor.ROLE );
         assertNotNull( component );
-        Exception e = null;
+        // the component should have been initialized with list of websites 
+        // from our test components.xml
+        assertTrue( component.isInitialized() );
         try
         {
             component.monitor();
+            fail( "Expected UnknownHostException" );
         }
-        catch ( Exception e1 )
+        catch ( UnknownHostException e )
         {
-            e = e1;
+            // do nothing
         }
-        assertNotNull( e );
-        assertEquals( true, ( e instanceof UnknownHostException ) );
+
     }
 
     /**
@@ -88,16 +92,19 @@ public class WebsiteMonitorTest
     {
         WebsiteMonitor component = (WebsiteMonitor) lookup( WebsiteMonitor.ROLE );
         assertNotNull( component );
-        Exception e = null;
+        List websites = new ArrayList();
+        websites.add( "http://maven.apache.org/non-existent.html" );
+        component.initialize( websites );
+        assertTrue( component.isInitialized() );
         try
         {
             component.monitor();
+            fail( "Excepted Exception!" );
         }
-        catch ( Exception e1 )
+        catch ( Exception e )
         {
-            e = e1;
+            // do nothing.
         }
-        assertNotNull( e );
     }
 
     protected InputStream getCustomConfiguration()

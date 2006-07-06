@@ -19,13 +19,14 @@
  */
 package org.codehaus.plexus.tutorial;
 
+
 /**
  * Plexus Component role that is expected to be implemented by all provider that
  * can monitor websites.
  * 
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  */
-public interface WebsiteMonitor
+public interface WebsiteMonitor extends Initializable
 {
 
     /**
