@@ -52,11 +52,27 @@ public class PlexusFilter
 
                 if ( session != null )
                 {
+                    if ( log.isDebugEnabled() )
+                    {
+                        log.debug( "Loading parent Plexus container from Session" );
+                    }
                     parent = (PlexusContainer) session.getAttribute( PlexusLifecycleListener.KEY );
+                    if ( parent == null )
+                    {
+                        throw new ServletException( "Parent Plexus container is not defined in Session" );
+                    }
                 }
                 else
                 {
+                    if ( log.isDebugEnabled() )
+                    {
+                        log.debug( "Loading parent Plexus container from Servlet Context" );
+                    }
                     parent = (PlexusContainer) ctx.getAttribute( PlexusLifecycleListener.KEY );
+                    if ( parent == null )
+                    {
+                        throw new ServletException( "Parent Plexus container is not defined in Servlet Context" );
+                    }
                 }
 
                 if ( parent.hasChildContainer( CHILD_CONTAINER_NAME ) )
