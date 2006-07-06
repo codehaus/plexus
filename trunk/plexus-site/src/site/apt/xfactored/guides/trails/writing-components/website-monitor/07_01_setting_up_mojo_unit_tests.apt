@@ -15,7 +15,8 @@ Setting up unit tests for Monitor Mojo
 
  Maven provides a <<Plugin Test Harness>> to enable testing of Mojos. 
 
- Some relatively comprehensive notes on the Maven Plugin Harness are available {{{http://docs.codehaus.org/display/MAVEN/Maven+Plugin+Harness}here}}.
+ Some relatively comprehensive notes on the Maven Plugin Harness are available
+ {{{http://docs.codehaus.org/display/MAVEN/Maven+Plugin+Harness}here}}.
 
 * Adding test sources directory to the project 
 
@@ -24,6 +25,9 @@ Setting up unit tests for Monitor Mojo
 
   [[1]] To the project root add a directory <<<src/test/java>>>. We will create
   our unit tests under this location. 
+
+  [[1]] To the project root add a director <<<src/test/resources>>>. This 
+  directory will hold resources that we use for Mojo testing.  
 
 
 * Adding plugin test harness dependency
@@ -65,8 +69,28 @@ Setting up unit tests for Monitor Mojo
   [[1]] Create a new package <<<org.codehaus.plexus>>> to create our test in.
   Note that we create the package with the same name that our Mojo 
   implementation resides in. This is a convenience to test out methods on Mojo
-  which can have access specifiers to allow access from within same package.
+  which may have access specifiers that allow access only from within same 
+  package.
   
+  [[1]] We write a Mojo lookup test to ensure that our Mojo instance is being
+  retrieved as expected.
+
+  Our test source looks as follows: 
+
++----------------------------+
+public class MonitorMojoTest
+    extends AbstractMojoTestCase
+{
+
+    public void testMojoLookup()
+        throws Exception
+    {
+        File pluginXml = new File( getBasedir(), "src/test/resources/unit/plugin-config.xml" );
+        MonitorMojo mojo = (MonitorMojo) lookupMojo( "monitor", pluginXml );
+        assertNotNull( mojo );
+    }
+}
++----------------------------+
 
 
   
