@@ -250,6 +250,7 @@ public class AntScriptInvoker
 
         project.init();
         project.setUserProperty( "ant.version", Main.getAntVersion() );
+        project.setProperty( "ant.file", script.toString() );
 
         DefaultLogger antLogger = new DefaultLogger();
         antLogger.setOutputPrintStream( System.out );
