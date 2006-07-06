@@ -47,10 +47,6 @@ import java.util.List;
 public class ComponentsXmlMergerTest
     extends PlexusTestCase
 {
-    private File dominantXml = new File( "src/test/merge/dominant.xml" );
-
-    private File recessiveXml = new File( "src/test/merge/recessive.xml" );
-
     public void testBasic()
         throws Exception
     {
@@ -61,6 +57,8 @@ public class ComponentsXmlMergerTest
     public void testComponentsXmlFileMerge()
         throws Exception
     {
+        File dominantXml = getTestFile( "src/test/merge/dominant.xml" );
+        File recessiveXml = getTestFile( "src/test/merge/recessive.xml" );
         Document dDoc = new SAXBuilder().build( dominantXml );
         Document rDoc = new SAXBuilder().build( recessiveXml );
         // ComponentsXmlMerger merger = new ComponentsXmlMerger (dDoc);
@@ -68,7 +66,7 @@ public class ComponentsXmlMergerTest
         assertNotNull( merger );
         merger.merge( dDoc, rDoc );
 
-        File merged_xml = new File( "target/merged.xml" );
+        File merged_xml = getTestFile( "target/merged.xml" );
         if ( merged_xml.exists() )
         {
             FileUtils.forceDelete( merged_xml );
