@@ -58,7 +58,7 @@ public class PlexusDescriptorMojo
     private List sourceDirectories;
 
     /**
-     * @parameter expression="${project.build.outputDirectory}/generated-resources/plexus/"
+     * @parameter expression="${project.build.directory}/generated-resources/plexus/"
      * @required
      */
     private File outputDirectory;
