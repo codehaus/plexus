@@ -78,6 +78,12 @@ public class DefaultComponentDescriptorCreator
     public void processSources( File[] sourceDirectories, File outputFile )
         throws ComponentDescriptorCreatorException
     {
+        processSources( sourceDirectories, outputFile, false );
+    }
+
+    public void processSources( File[] sourceDirectories, File outputFile, boolean containerDescriptor )
+        throws ComponentDescriptorCreatorException
+    {
         // ----------------------------------------------------------------------
         // Check and register all directories to scan
         // ----------------------------------------------------------------------
@@ -170,7 +176,7 @@ public class DefaultComponentDescriptorCreator
 
             XMLWriter w = new PrettyPrintXMLWriter( writer );
 
-            w.startElement( "component-set" );
+            w.startElement( containerDescriptor ? "plexus" : "component-set" );
 
             writeComponents( w, componentDescriptors );
 

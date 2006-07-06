@@ -39,6 +39,9 @@ public interface ComponentDescriptorCreator
     void processSources( File[] sourceDirectories, File outputDirectory )
         throws ComponentDescriptorCreatorException;
 
+    void processSources( File[] sourceDirectories, File outputDirectory, boolean containerDescriptor )
+        throws ComponentDescriptorCreatorException;
+
     void mergeDescriptors( File outputDescriptor, List descriptors )
         throws ComponentDescriptorCreatorException;
 }
