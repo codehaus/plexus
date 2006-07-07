@@ -36,6 +36,9 @@ public class PlexusLifecycleListener implements ServletContextListener, HttpSess
             // during construction of the container
             PlexusContainer pc = new DefaultPlexusContainer( "default", new ClassLoader( getClass().getClassLoader() )
             {
+                // Note! This method is final in JDK 1.4, so this will only run under JDK 5+
+                // Normally it shouldn't need to be overridden, but ClassWorlds will use it as part of it's findResource
+                // implementation
                 public Enumeration getResources( String name )
                     throws IOException
                 {

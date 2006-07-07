@@ -204,6 +204,8 @@ public class PlexusObjectFactory
             pc = base;
         }
 
+        // TODO: these chain of exceptions can potentially hide useful errors. Perhaps Plexus could differentiate a
+        // component lookup exception from a component not found exception.
         try
         {
             return pc.lookup( className ).getClass();
