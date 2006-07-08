@@ -1,0 +1,31 @@
+<component>
+  <configuration-descriptor>
+    <fields>
+      <field>
+        <name>name-1</name>
+        <type>type-1</type>
+        <injection-method>private</injection-method>
+        <description>description-1</description>
+        <expression>expression-1</expression>
+        <required>required</required>
+      </field>
+      <field>
+        <name>name-2</name>
+        <type>type-2</type>
+        <injection-method>setter</injection-method>
+        <description>description-2</description>
+        <expression>expression-2</expression>
+        <required>true</required>
+        <since>1.2</since>
+      </field>
+      <field>
+        <name>name-3</name>
+        <type>type-3</type>
+        <description>description-3</description>
+        <expression>expression-3</expression>
+        <required>false</required>
+        <since>1.2</since>
+      </field>
+    </fields>
+  </configuration-descriptor>
+</component>
