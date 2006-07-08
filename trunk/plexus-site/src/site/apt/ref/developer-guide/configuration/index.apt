@@ -48,7 +48,7 @@ Configuration files
  That's why it is profitable to put such information into jar files and reuse it.
  
  
- <<plexus.properties>> file is used for seeding {{{#}plexus context}} which is then used for interpolation of variables in xml configuration files
+ <<plexus.properties>> file is used for seeding {{{/404.html}plexus context}} which is then used for interpolation of variables in xml configuration files
  (see the explanation below)
  
  
@@ -56,8 +56,8 @@ Configuration files
 
  When starting up Plexus will start discovering components. The default configuration uses the {{{http://svn.plexus.codehaus.org/plexus/trunk/plexus-container/src/java/org/codehaus/plexus/component/discovery/DefaultComponentDiscoverer.java?rev=HEAD&view=auto}DefaultComponentDiscoverer}} to discover components.
  
- The {{{#}DefaultComponentDiscoverer}} will look for <<</META-INF/plexus/components.xml>>>
- files using {{{http://java.sun.com/j2se/1.4.2/docs/api/java/lang/ClassLoader.html#getResources(java.lang.String)}ClassLoader.getResources()}}. For getting your components picked up by plexus all you need is to have the {{{#}components.xml}} file in your jar.
+ The {{{/404.html}DefaultComponentDiscoverer}} will look for <<</META-INF/plexus/components.xml>>>
+ files using {{{http://java.sun.com/j2se/1.4.2/docs/api/java/lang/ClassLoader.html#getResources(java.lang.String)}ClassLoader.getResources()}}. For getting your components picked up by plexus all you need is to have the {{{/404.html}components.xml}} file in your jar.
  
  
 * Interpolation of configuration files
