@@ -12,7 +12,7 @@ About this trail
 
  Please note that this is a work-in-progress, but all comments and suggestions are welcome!
   
- * {{{#}Concepts}}
+ * {{{/404.html}Concepts}}
  
  * {{{01_preparing_for_project.html}Prepping project: Website Monitor component}}
  
@@ -28,15 +28,15 @@ About this trail
  
  * Component Usage Scenarios
  
-    * {{{#}From a Maven Mojo}}
+    * {{{/404.html}From a Maven Mojo}}
     
-    * {{{#}From a Plexus application}}
+    * {{{/404.html}From a Plexus application}}
     
-    * {{{#}From a Web application}}
+    * {{{/404.html}From a Web application}}
     
-    * {{{#}From a SOAP Web Service}}
+    * {{{/404.html}From a SOAP Web Service}}
     
-    * {{{#}From an XMLRPC Service}}
+    * {{{/404.html}From an XMLRPC Service}}
     
  * {{{08_packaging_up.html}Packaging}}
 
