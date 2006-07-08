@@ -26,7 +26,7 @@ The 'Pico' Personality
  is superior to anything else and that container can function (almost) without
  any metadata.
 
- We don't subscribe to this point of view. Plexus' native API promotes {{{#}Field
+ We don't subscribe to this point of view. Plexus' native API promotes {{{/404.html}Field
  Dependency Injection}} and we are recommending using it as it clearly separates
  two concerns: component instantiation and resolution of component's
  dependencies.  This type of dependency injection makes the encapsulation even

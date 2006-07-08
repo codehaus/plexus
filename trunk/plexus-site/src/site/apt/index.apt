@@ -31,11 +31,11 @@ Overview
   injection. 
   
   
-  See the {{{xfactored/ref/feature-comparison.html} Feature Comparison}} page for more information on
+  See the {{{ref/feature-comparison.html} Feature Comparison}} page for more information on
   the differences between Plexus and other products.
 
   The Plexus project provides a number of pre-built components for common tasks and toolkits
-  such as Jetty, Velocity, Hibernate, i18n, and {{{xfactored/ref/available-components.html} many more}}. However,
+  such as Jetty, Velocity, Hibernate, i18n, and {{{ref/available-components.html} many more}}. However,
   Plexus is also able to reuse your existing components written for other IoC frameworks such as
   Spring, Avalon and Pico Container unmodified, as well as allowing you to reuse your existing code
   inside the Plexus Container.
