@@ -9,9 +9,21 @@ import java.util.ArrayList;
  */
 public class ComponentConfigurationDescriptor
 {
+    private boolean synthetic;
+
     // packages to search for when looking up beans
 
     List fields;
+
+    public boolean isSynthetic()
+    {
+        return synthetic;
+    }
+
+    public void setSynthetic( boolean synthetic )
+    {
+        this.synthetic = synthetic;
+    }
 
     public List getFields()
     {

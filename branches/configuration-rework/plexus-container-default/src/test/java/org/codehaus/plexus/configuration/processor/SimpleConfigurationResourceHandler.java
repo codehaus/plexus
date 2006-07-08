@@ -1,10 +1,5 @@
 package org.codehaus.plexus.configuration.processor;
 
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
-
-import java.util.Map;
-
 /*
  * The MIT License
  *
@@ -28,6 +23,11 @@ import java.util.Map;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+
+import java.util.Map;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

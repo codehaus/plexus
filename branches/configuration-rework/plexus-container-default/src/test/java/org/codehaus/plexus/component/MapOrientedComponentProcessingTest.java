@@ -47,10 +47,10 @@ public class MapOrientedComponentProcessingTest
 
         descriptor.addRequirement( requirement );
 
-        XmlPlexusConfiguration param = new XmlPlexusConfiguration( "testParameter" );
+        XmlPlexusConfiguration param = new XmlPlexusConfiguration( "testParameter", null );
         param.setValue( "testValue" );
 
-        PlexusConfiguration configuration = new XmlPlexusConfiguration( "configuration" );
+        PlexusConfiguration configuration = new XmlPlexusConfiguration( "configuration", null );
         configuration.addChild( param );
 
         descriptor.setConfiguration( configuration );

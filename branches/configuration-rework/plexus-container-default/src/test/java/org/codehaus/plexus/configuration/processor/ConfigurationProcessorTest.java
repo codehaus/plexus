@@ -6,6 +6,7 @@ import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.io.File;
 
 /*
  * The MIT License
@@ -44,7 +45,14 @@ public class ConfigurationProcessorTest
     {
         variables = new HashMap();
 
-        variables.put( "basedir", System.getProperty( "basedir" ) );
+        String basedir = System.getProperty( "basedir" );
+
+        if ( basedir == null )
+        {
+            basedir = new File( "" ).getAbsolutePath();
+        }
+
+        variables.put( "basedir", basedir );
 
         variables.put( "occupation", "slacker" );
     }
@@ -152,6 +160,5 @@ public class ConfigurationProcessorTest
         // ----------------------------------------------------------------------
 
         assertEquals( "slacker", processed.getChild( "occupation" ).getValue() );
-
     }
 }

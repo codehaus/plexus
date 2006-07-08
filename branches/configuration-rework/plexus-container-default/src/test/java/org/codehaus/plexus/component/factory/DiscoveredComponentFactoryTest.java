@@ -1,8 +1,5 @@
 package org.codehaus.plexus.component.factory;
 
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
-
 /*
  * Copyright 2001-2005 The Apache Software Foundation.
  *
@@ -19,10 +16,13 @@ import org.codehaus.plexus.component.repository.ComponentDescriptor;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentConfigurationDescriptor;
+
 public class DiscoveredComponentFactoryTest
     extends PlexusTestCase
 {
-
     public void testShouldFindComponentFactoriesDefinedInBothPlexusXmlAndComponentsXml()
         throws Exception
     {
@@ -54,6 +54,7 @@ public class DiscoveredComponentFactoryTest
         descriptor.setRole( "role" );
         descriptor.setRoleHint( "hint" );
         descriptor.setImplementation( "something interesting" );
+        descriptor.setConfigurationDescriptor( new ComponentConfigurationDescriptor() );
 
         getContainer().addComponentDescriptor( descriptor );
 
@@ -62,5 +63,4 @@ public class DiscoveredComponentFactoryTest
         assertTrue( component instanceof TestFactoryResultComponent );
         assertEquals( factoryId, ( (TestFactoryResultComponent) component ).getFactoryId() );
     }
-
 }

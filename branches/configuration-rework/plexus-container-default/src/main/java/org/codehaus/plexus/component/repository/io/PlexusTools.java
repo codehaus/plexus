@@ -54,7 +54,7 @@ public class PlexusTools
     {
         try
         {
-            return new XmlPlexusConfiguration( Xpp3DomBuilder.build( configuration ) );
+            return new XmlPlexusConfiguration( Xpp3DomBuilder.build( configuration ), resourceName );
         }
         catch ( XmlPullParserException e )
         {
@@ -171,6 +171,8 @@ public class PlexusTools
         {
             ComponentConfigurationDescriptor ccd = new ComponentConfigurationDescriptor();
 
+            ccd.setSynthetic( false );
+
             PlexusConfiguration[] fields = configurationDescriptor.getChild( "fields" ).getChildren( "field" );
 
             for ( int i = 0; i < fields.length; i++ )
@@ -198,6 +200,8 @@ public class PlexusTools
 
             cd.setConfigurationDescriptor( ccd );
         }
+
+        cd.setSource( configuration.getSource() );
 
         return cd;
     }
