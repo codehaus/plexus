@@ -64,7 +64,7 @@ Setting up unit tests for Monitor Mojo
   You will see that the plugin testing harness dependency and the test 
   directory that we added in the previous step are now updated. 
 
-* Writing our first Mojo unit test
+* Writing our Mojo unit tests
   
   [[1]] Create a new package <<<org.codehaus.plexus>>> to create our test in.
   Note that we create the package with the same name that our Mojo 
@@ -72,8 +72,9 @@ Setting up unit tests for Monitor Mojo
   which may have access specifiers that allow access only from within same 
   package.
   
-  [[1]] We write a Mojo lookup test to ensure that our Mojo instance is being
-  retrieved as expected.
+  [[1]] We write a couple of tests to ensure that our Mojo instance is being 
+  retrieved as expected, and to test that it executes without errors for a 
+  valid list of websites.
 
   Our test source looks as follows: 
 
@@ -89,10 +90,151 @@ public class MonitorMojoTest
         MonitorMojo mojo = (MonitorMojo) lookupMojo( "monitor", pluginXml );
         assertNotNull( mojo );
     }
+
+    public void testMojoExecution()
+        throws Exception
+    {
+        File pluginXml = new File( getBasedir(), "src/test/resources/unit/plugin-config.xml" );
+        MonitorMojo mojo = (MonitorMojo) lookupMojo( "monitor", pluginXml );
+        assertNotNull( mojo.getWebsites() );
+        assertEquals( 1, mojo.getWebsites().size() );
+        assertNotNull( mojo.getMonitor() );
+        try
+        {
+            mojo.execute();
+        }
+        catch ( Exception e )
+        {
+            fail( "Unexpected exception with test data." );
+        }
+    }
 }
 +----------------------------+
 
+  [[1]] We set up a test configuration for the Mojo under <<<src/test/resources/unit/plugin-config.xml>>> 
+  (yes, that's the file that we refer to in the test above!).
 
++----------------------------+
+<project>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-website-monitor-plugin</artifactId>
+        <configuration>
+          <websites>
+            <website>http://plexus.codehaus.org/</website>
+          </websites>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++----------------------------+  
+
+  [[1]] Also our Mojo implementation is now updated to be as below:
+
++----------------------------+  
+public class MonitorMojo
+    extends AbstractMojo
+{
+
+    /**
+     * List of websites to monitor.
+     * @parameter 
+     */
+    private List websites;
+
+    /**
+     * The website monitor component instance that will be injected 
+     * by the Plexus runtime.
+     * @component 
+     */
+    private WebsiteMonitor monitor;
+
+    public void execute()
+        throws MojoExecutionException, MojoFailureException
+    {
+        if ( !hasWebsites() )
+        {
+            if ( getLog().isWarnEnabled() )
+                getLog().warn( "No websites specified to be monitored." );
+            return;
+        }
+
+        if ( getLog().isDebugEnabled() )
+            showMonitoredWebsites();
+
+        monitor.addWebsites( websites );
+        try
+        {
+            monitor.monitor();
+        }
+        catch ( Exception e )
+        {
+            if ( getLog().isErrorEnabled() )
+                getLog().error( "Error monitoring websites.", e );
+        }
+    }
+
+    private void showMonitoredWebsites()
+    {
+        getLog().debug( "Monitoring following websites:" );
+        for ( Iterator it = websites.iterator(); it.hasNext(); )
+        {
+            String website = (String) it.next();
+            getLog().debug( "\t" + website );
+        }
+    }
+
+    /**
+     * Determines if websites were specified to the Mojo.
+     * 
+     * @return <code>true</code> if there were websites specified.
+     */
+    private boolean hasWebsites()
+    {
+        return ( null != websites && websites.size() > 0 );
+    }
+
+    /**
+     * Returns the list of websites.<p>
+     * <em>Not public API. For unit tests only.</em>
+     * 
+     * @return List of websites specified via Mojo configuration.
+     */
+    protected List getWebsites()
+    {
+        return this.websites;
+    }
+
+    /**
+     * Returns the {@link WebsiteMonitor} component instance.<p>
+     * <em>Not public API. For unit tests only.</em>
+     * 
+     * @return the {@link WebsiteMonitor} instance.
+     */
+    protected WebsiteMonitor getMonitor()
+    {
+        return monitor;
+    }
+
+}
++----------------------------+    
   
+  [[1]] Let's run the test and see what happens. You can run the test from 
+  within your favourite IDE, or from command prompt by typing
 
-
++----------------------------+  
+ mvn clean test 
++----------------------------+    
+  
+  At this point, the Mojo test should run without any failures. 
+  
+  
+    Great! You have just hooked your Plexus component successfully to a Maven 
+    plugin.
+    
+  For more information on developing and using Maven plugins, please refer to 
+  {{{http://maven.apache.org/guides/plugin/guide-java-plugin-development.html}Guide to Developing Java Plugins}}
+    

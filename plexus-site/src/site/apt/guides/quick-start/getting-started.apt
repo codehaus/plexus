@@ -157,10 +157,10 @@ public class App
     System.out.println( "Parmesan is " + cheese.getAroma() );
 ----
 
-  For answers to this question and more, see {{{/xfactored/ref/why-use-components.html} Why Use Components?}}
+  For answers to this question and more, see {{{/ref/why-use-components.html} Why Use Components?}}
 
 * Learning More
 
-  To learn more about writing components, take the {{{/xfactored/trails/writing-components/index.html} Component Tutorial}}.
+  To learn more about writing components, take the {{{/trails/writing-components/index.html} Component Tutorial}}.
 
 
