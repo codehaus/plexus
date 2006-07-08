@@ -73,7 +73,7 @@ public class PlexusXmlComponentDiscoverer
     {
         PlexusConfiguration configuration = null;
 
-        Enumeration resources = null;
+        Enumeration resources;
         try
         {
             resources = classRealm.findResources( PLEXUS_XML_RESOURCE );

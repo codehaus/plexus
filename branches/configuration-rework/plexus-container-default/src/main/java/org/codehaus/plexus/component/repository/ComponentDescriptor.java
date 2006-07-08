@@ -1,7 +1,6 @@
 package org.codehaus.plexus.component.repository;
 
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.classworlds.ClassRealm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +46,8 @@ public class ComponentDescriptor
     private String componentConfigurator;
 
     private String description;
+
+    private String source;
 
     // ----------------------------------------------------------------------
     // These two fields allow for the specification of an isolated class realm
@@ -95,6 +96,11 @@ public class ComponentDescriptor
         if ( alias != null )
         {
             key.append( ", alias: '" ).append( alias ).append( "'" );
+        }
+
+        if ( source != null )
+        {
+            key.append( ", source: '" ).append( source ).append( "'." );
         }
 
         return key.toString();
@@ -257,6 +263,16 @@ public class ComponentDescriptor
     public void setDescription( String description )
     {
         this.description = description;
+    }
+
+    public String getSource()
+    {
+        return source;
+    }
+
+    public void setSource( String source )
+    {
+        this.source = source;
     }
 
     public void setInstantiationStrategy( String instantiationStrategy )

@@ -1,9 +1,5 @@
 package org.codehaus.plexus.component.factory;
 
-import org.codehaus.classworlds.ClassRealm;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
-
 /*
  * Copyright 2001-2005 The Apache Software Foundation.
  *
@@ -20,19 +16,22 @@ import org.codehaus.plexus.component.repository.ComponentDescriptor;
  * limitations under the License.
  */
 
+import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+
 public class TestComponentFactory2
     implements ComponentFactory
 {
-
     public String getId()
     {
         return "testFactory2";
     }
 
-    public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm classRealm, PlexusContainer container )
+    public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm classRealm,
+                               PlexusContainer container )
         throws ComponentInstantiationException
     {
-        return new TestFactoryResultComponent(getId());
+        return new TestFactoryResultComponent( getId() );
     }
-
 }

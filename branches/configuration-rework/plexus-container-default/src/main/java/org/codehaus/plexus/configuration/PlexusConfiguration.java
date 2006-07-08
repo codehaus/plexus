@@ -100,4 +100,10 @@ public interface PlexusConfiguration
     void addChild( PlexusConfiguration configuration );
 
     int getChildCount();
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    String getSource();
 }

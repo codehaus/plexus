@@ -1,9 +1,5 @@
 package org.codehaus.plexus.configuration.processor;
 
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-
-import java.util.Map;
-
 /*
  * The MIT License
  *
@@ -28,6 +24,10 @@ import java.util.Map;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+
+import java.util.Map;
+
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
@@ -45,7 +45,7 @@ public interface ConfigurationResourceHandler
      *
      * </pre>
      */
-    static final String SOURCE = "source";
+    String SOURCE = "source";
 
     String getId();
 
