@@ -2,6 +2,8 @@ package org.codehaus.plexus.xwork;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -25,7 +27,6 @@ public class PlexusLifecycleListener implements ServletContextListener, HttpSess
     public static final String KEY = "webwork.plexus.container";
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        loaded = true;
 
         try {
             // TODO: we should sort something out in Plexus so that this isn't necessary.
@@ -76,22 +77,23 @@ public class PlexusLifecycleListener implements ServletContextListener, HttpSess
 
             pc.initialize();
             pc.start();
-        } catch (Exception e) {
-            log.error("Error initializing plexus container (scope: application)", e);
+        } catch (PlexusContainerException e) {
+            log.error("Error initializing plexus container (scope: application)");
+            throw new RuntimeException(e);
+        } catch (PlexusConfigurationResourceException e) {
+            log.error("Error initializing plexus container (scope: application)");
+            throw new RuntimeException(e);
         }
+        loaded = true;
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        try {
-            ServletContext ctx = servletContextEvent.getServletContext();
-            PlexusContainer pc = (PlexusContainer) ctx.getAttribute(KEY);
-            if ( pc != null )
-            {
-                pc.dispose();
-            }
-        } catch (Exception e) {
-            log.error("Error disposing plexus container (scope: application)", e);
+        ServletContext ctx = servletContextEvent.getServletContext();
+        PlexusContainer pc = (PlexusContainer) ctx.getAttribute(KEY);
+        if (pc != null) {
+            pc.dispose();
         }
+        loaded = false;
     }
 
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
@@ -104,21 +106,20 @@ public class PlexusLifecycleListener implements ServletContextListener, HttpSess
             PlexusUtils.configure(child, "plexus-session.xml");
             child.initialize();
             child.start();
-        } catch (Exception e) {
-            log.error("Error initializing plexus container (scope: session)", e);
+        } catch (PlexusContainerException e) {
+            log.error("Error initializing plexus container (scope: session)");
+            throw new RuntimeException(e);
+        } catch (PlexusConfigurationResourceException e) {
+            log.error("Error initializing plexus container (scope: session)");
+            throw new RuntimeException(e);
         }
     }
 
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-        try {
-            HttpSession session = httpSessionEvent.getSession();
-            PlexusContainer child = (PlexusContainer) session.getAttribute(KEY);
-            if ( child != null )
-            {
-                child.dispose();
-            }
-        } catch (Exception e) {
-            log.error("Error initializing plexus container (scope: session)", e);
+        HttpSession session = httpSessionEvent.getSession();
+        PlexusContainer child = (PlexusContainer) session.getAttribute(KEY);
+        if ( child != null ) {
+            child.dispose();
         }
     }
 }
