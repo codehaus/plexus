@@ -56,7 +56,7 @@ public class PlexusConfigurationMerger
 
     public static PlexusConfiguration merge( PlexusConfiguration user, PlexusConfiguration system )
     {
-        XmlPlexusConfiguration mergedConfiguration = new XmlPlexusConfiguration( "plexus" );
+        XmlPlexusConfiguration mergedConfiguration = new XmlPlexusConfiguration( "plexus", user.getSource() );
 
         // ----------------------------------------------------------------------
         // Load on start

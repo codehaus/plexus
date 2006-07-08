@@ -62,7 +62,7 @@ public class DefaultComponentDiscoverer
         {
             PlexusConfiguration componentConfiguration = componentConfigurations[i];
 
-            ComponentDescriptor componentDescriptor = null;
+            ComponentDescriptor componentDescriptor;
 
             try
             {
@@ -75,10 +75,14 @@ public class DefaultComponentDiscoverer
 
             componentDescriptor.setComponentType( "plexus" );
 
+            componentDescriptor.setSource( source );
+
             componentDescriptors.add( componentDescriptor );
         }
 
         componentSetDescriptor.setComponents( componentDescriptors );
+
+        componentSetDescriptor.setUrl( source );
 
         // TODO: read and store the dependencies
 

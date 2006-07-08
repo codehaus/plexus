@@ -9,6 +9,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentRepositoryExc
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.ReflectionUtils;
+import org.codehaus.plexus.DefaultPlexusContainer;
 
 import java.util.List;
 import java.util.Iterator;
@@ -37,6 +38,8 @@ public class DefaultComponentConfigurationDescriptorSynthesizer
         classRealm.display();
 
         ComponentConfigurationDescriptor descriptor = new ComponentConfigurationDescriptor();
+
+        descriptor.setSynthetic( true );
 
         descriptor.setFields( new ArrayList() );
 

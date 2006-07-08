@@ -41,31 +41,18 @@ import java.util.Map;
 public class PlexusContainerTest
     extends TestCase
 {
-    private String basedir;
-
-    private InputStream configurationStream;
-
-    private ClassLoader classLoader;
-
     private DefaultPlexusContainer container;
-
-    public PlexusContainerTest( String name )
-    {
-        super( name );
-    }
 
     public void setUp()
         throws Exception
     {
-        basedir = System.getProperty( "basedir" );
+        String basedir = System.getProperty( "basedir" );
 
-        classLoader = getClass().getClassLoader();
-
-        configurationStream = PlexusContainerTest.class.getResourceAsStream( "PlexusContainerTest.xml" );
+        InputStream configurationStream = PlexusContainerTest.class.getResourceAsStream( "PlexusContainerTest.xml" );
 
         assertNotNull( configurationStream );
 
-        assertNotNull( classLoader );
+        assertNotNull( getClass().getClassLoader() );
 
         container = new DefaultPlexusContainer();
 

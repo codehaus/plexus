@@ -53,12 +53,12 @@
   </lifecycle-handler-manager>
 
   <components>
-
+<!--
     <component>
       <role>org.codehaus.plexus.test.discovery.PluginManager</role>
       <implementation>org.codehaus.plexus.test.discovery.MockMavenPluginManager</implementation>
     </component>
-
+-->
     <!-- start: Component from original DefaultPlexusContainerTest -->
 
     <component>
@@ -116,7 +116,7 @@
 
     <component>
       <role>org.codehaus.plexus.test.logging.LoggerManager</role>
-      <implementation>org.codehaus.plexus.test.logging.console.ConsoleLoggerManager</implementation>
+      <implementation>org.codehaus.plexus.logging.console.ConsoleLoggerManager</implementation>
       <lifecycle-handler>basic</lifecycle-handler>
       <configuration>
         <threshold>fatal</threshold>

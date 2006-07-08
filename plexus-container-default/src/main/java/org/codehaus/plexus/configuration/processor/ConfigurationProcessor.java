@@ -62,7 +62,7 @@ public class ConfigurationProcessor
     public PlexusConfiguration process( PlexusConfiguration configuration, Map variables )
         throws ConfigurationResourceNotFoundException, ConfigurationProcessingException
     {
-        XmlPlexusConfiguration processed = new XmlPlexusConfiguration( "configuration" );
+        XmlPlexusConfiguration processed = new XmlPlexusConfiguration( "configuration", configuration.getSource() );
 
         walk( configuration, processed, variables );
 
@@ -101,7 +101,7 @@ public class ConfigurationProcessor
                 //
                 // ----------------------------------------------------------------------
 
-                XmlPlexusConfiguration processedChild = new XmlPlexusConfiguration( child.getName() );
+                XmlPlexusConfiguration processedChild = new XmlPlexusConfiguration( child.getName(), child.getSource() );
 
                 copyAttributes( child, processedChild );
 

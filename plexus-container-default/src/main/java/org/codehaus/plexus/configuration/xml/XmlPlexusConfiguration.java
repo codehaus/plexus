@@ -35,14 +35,33 @@ public class XmlPlexusConfiguration
 {
     private Xpp3Dom dom;
 
+    private String source;
+
+    /**
+     * @deprecated use XmlPlexusConfiguration( String name, String source )
+     */
     public XmlPlexusConfiguration( String name )
     {
-        this.dom = new Xpp3Dom( name );
+        this( new Xpp3Dom( name ), null );
     }
 
+    public XmlPlexusConfiguration( String name, String source )
+    {
+        this( new Xpp3Dom( name ), source );
+    }
+
+    /**
+     * @deprecated use XmlPlexusConfiguration( Xpp3Dom dom, String source )
+     */
     public XmlPlexusConfiguration( Xpp3Dom dom )
     {
+        this( dom, null );
+    }
+
+    public XmlPlexusConfiguration( Xpp3Dom dom, String source )
+    {
         this.dom = dom;
+        this.source = source;
     }
 
     public Xpp3Dom getXpp3Dom()
@@ -130,7 +149,7 @@ public class XmlPlexusConfiguration
 
     public PlexusConfiguration getChild( int i )
     {
-        return new XmlPlexusConfiguration( dom.getChild( i ) );
+        return new XmlPlexusConfiguration( dom.getChild( i ), source );
     }
 
     public PlexusConfiguration getChild( String name, boolean createChild )
@@ -151,7 +170,7 @@ public class XmlPlexusConfiguration
             }
         }
 
-        return new XmlPlexusConfiguration( child );
+        return new XmlPlexusConfiguration( child, source );
     }
 
     public PlexusConfiguration[] getChildren()
@@ -162,7 +181,7 @@ public class XmlPlexusConfiguration
 
         for ( int i = 0; i < children.length; i++ )
         {
-            children[i] = new XmlPlexusConfiguration( doms[i] );
+            children[i] = new XmlPlexusConfiguration( doms[i], source );
         }
 
         return children;
@@ -176,7 +195,7 @@ public class XmlPlexusConfiguration
 
         for ( int i = 0; i < children.length; i++ )
         {
-            children[i] = new XmlPlexusConfiguration( doms[i] );
+            children[i] = new XmlPlexusConfiguration( doms[i], source );
         }
 
         return children;
@@ -200,6 +219,11 @@ public class XmlPlexusConfiguration
     public int getChildCount()
     {
         return dom.getChildCount();
+    }
+
+    public String getSource()
+    {
+        return source;
     }
 
     // ----------------------------------------------------------------------
@@ -283,6 +307,10 @@ public class XmlPlexusConfiguration
             append( '>' ).
             append( '\n' );
     }
+
+    // ----------------------------------------------------------------------
+    // Private
+    // ----------------------------------------------------------------------
 
     private void attributes( PlexusConfiguration c, StringBuffer sb )
     {
