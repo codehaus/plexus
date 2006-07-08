@@ -12,26 +12,10 @@ Configuring a Plexus Component via descriptor
 
  ~~TODO: Start by changing the interface and factoring 'website' out and moving it to be a property in the component injectable by the Container based on configuration.
 
- We add another interface for our component to allow it to be configured from Maven Mojo. 
+ We change the Component Role interface to look like this:
 
 +------------------------------------------+
-/**
- * Adds contract for this component to be initialized with requisite configuration.<p>
- * This allows us to conveniently configure our component from say a Maven Plugin Mojo. 
- */
-public interface Initializable
-{
-
-    void initialize( List websites );
-
-    boolean isInitialized();
-}
-+------------------------------------------+
-
- and, we change the Component Role interface to look like this:
-
-+------------------------------------------+
-public interface WebsiteMonitor extends Initializable
+public interface WebsiteMonitor
 {
 
     /**
@@ -47,8 +31,21 @@ public interface WebsiteMonitor extends Initializable
      */
     public void monitor()
         throws Exception;
-}
 
+    /**
+     * Specify a list of websites that can be monitored by this component.
+     * 
+     * @param websites List of websites
+     */
+    void addWebsites( List websites );
+
+    /**
+     * Determines if the website monitor component was properly initialized.
+     *  
+     * @return <code>true</code> if initiailized, else <code>false</code>.
+     */
+    boolean isInitialized();
+}
 +------------------------------------------+
 
 
@@ -61,7 +58,7 @@ public class DefaultWebsiteMonitor
 {
 
     /**
-     * Website to monitor.
+     * Websites to monitor.
      * 
      * @plexus.configuration
      */
@@ -113,20 +110,11 @@ public class DefaultWebsiteMonitor
         }
     }
 
-    /**
-     * @see Initializable#initialize(List)
-     */
-    public void initialize( List websites )
+    public void addWebsites( List websites )
     {
         this.websites = websites;
     }
 
-    /**
-     * Determines if the website component is properly initialized. <p>
-     * This implies it was configured with a valid list of websites for monitoring.
-     *  
-     * @see Initializable#isInitialized()
-     */
     public boolean isInitialized()
     {
         return ( null != websites && this.websites.size() > 0 );
@@ -145,6 +133,8 @@ public class DefaultWebsiteMonitor
  This mandates a change in the descriptor, which now looks something like this:
 
 +------------------------------------------+
+<component-set>
+  <components>
     <component>
       <role>org.codehaus.plexus.tutorial.WebsiteMonitor</role>
       <implementation>
@@ -152,11 +142,14 @@ public class DefaultWebsiteMonitor
       </implementation>
       <configuration>
         <websites>
-          <website>http://plexus.codehaus.org/</website>
-          <website>http://nonexistent.yadayada.org/</website>
+          <website>http://www.google.co.nz/</website>
+          <website>http://www.nonexistent.yadayada3249834739547.org/</website>
+          <website>http://maven.apache.org/</website>
         </websites>
       </configuration>
     </component>
+  </components>
+</component-set>
 +------------------------------------------+
 
 

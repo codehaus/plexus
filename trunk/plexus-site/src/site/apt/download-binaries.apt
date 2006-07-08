@@ -11,9 +11,19 @@ Getting Plexus Binaries
 
 * Releases
 
-  TODO Include a download link 
+  Release binaries for Plexus container and different components are published here:
+
+  {{{http://repository.codehaus.org/org/codehaus/plexus/}http://repository.codehaus.org/org/codehaus/plexus/}}
   
 
 * Snapshots
 
-  TODO Include download link or instructions for getting snapshots.
+  Snapshots for Plexus container and different components are published here:
+  
+  {{{http://snapshots.repository.codehaus.org/org/codehaus/plexus/}http://snapshots.repository.codehaus.org/org/codehaus/plexus/}}
+
+  
+  Alternatively, you check out Plexus sources and build the binaries yourself.
+  
+  See instructions on {{{source-repository.html}Getting Sources}}.
+  
