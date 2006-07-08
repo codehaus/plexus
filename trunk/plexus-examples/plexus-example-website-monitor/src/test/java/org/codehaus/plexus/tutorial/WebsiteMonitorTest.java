@@ -94,7 +94,7 @@ public class WebsiteMonitorTest
         assertNotNull( component );
         List websites = new ArrayList();
         websites.add( "http://maven.apache.org/non-existent.html" );
-        component.initialize( websites );
+        component.addWebsites( websites );
         assertTrue( component.isInitialized() );
         try
         {

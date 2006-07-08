@@ -40,7 +40,7 @@ public class DefaultWebsiteMonitor
 {
 
     /**
-     * Website to monitor.
+     * Websites to monitor.
      * 
      * @plexus.configuration
      */
@@ -92,20 +92,11 @@ public class DefaultWebsiteMonitor
         }
     }
 
-    /**
-     * @see Initializable#initialize(List)
-     */
-    public void initialize( List websites )
+    public void addWebsites( List websites )
     {
         this.websites = websites;
     }
 
-    /**
-     * Determines if the website component is properly initialized. <p>
-     * This implies it was configured with a valid list of websites for monitoring.
-     *  
-     * @see Initializable#isInitialized()
-     */
     public boolean isInitialized()
     {
         return ( null != websites && this.websites.size() > 0 );
