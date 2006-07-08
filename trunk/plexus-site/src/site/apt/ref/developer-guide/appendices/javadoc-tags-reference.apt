@@ -1,0 +1,25 @@
+ ------
+ Developer Guide - Appendix I: Plexus Javadoc Tags Reference
+ ------
+ Rahul Thakur
+ ------
+ 08th July, 2006
+ ------
+
+ <<<The contents of this document are a work in progress>>>
+
+Javadoc Tags used by Plexus tools
+
+ Here is a reference of the Javadoc annotations that can be used to 'decorate' 
+ the Java sources to allow Plexus tools like Component Descriptor Creator (CDC)
+ to generate Component Descriptors.
+
+*-----+------+------+------+-------+
+| Tag/Annotation | Available on| Descriptor Element | Required | Description |  
+*-----*------*------*-----*------*
+|  @plexus.configuration | Field | Corresponding element of same name as the field under <<<<configuration>>>> element | No | Indicate to Plexus CDC that the field is configuration property. 
+*-----*------*------*-----*------*
+| @plexus.component | Class | ? | ? | ? |
+*-----*------*------*-----*------*
+| @plexus.requirement | Field | ? | ? | ? |
+*-----*------*------*-----*------*
