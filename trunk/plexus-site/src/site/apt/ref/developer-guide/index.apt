@@ -11,52 +11,57 @@
 
 Table of Contents 
 
- * {{{introduction.html}Introduction to Plexus}}
+  * {{{introduction.html}Introduction to Plexus}}
 
- * {{{developing-components.html}Developing Components}}
+  * {{{developing-components.html}Developing Components}}
 
-  * {{{introduction-to-components.html}Introduction To Components}}
+    * {{{introduction-to-components.html}Introduction To Components}}
 
-  * {{{lifecycle.html}Lifecycle}}
+    * {{{lifecycle.html}Lifecycle}}
 
-  * {{{personalities/index.html}Personalities}}
+    * {{{personalities/index.html}Personalities}}
 
-   * {{{personalities/plexus-personality.html}Plexus Personality}}
+      * {{{personalities/plexus-personality.html}Plexus Personality}}
 
-   * {{{personalities/avalon-personality.html}Avalon Personality}}
+      * {{{personalities/avalon-personality.html}Avalon Personality}}
 
-   * {{{personalities/pico-personality.html}Pico Personality}}
+      * {{{personalities/pico-personality.html}Pico Personality}}
 
-   * {{{personalities/spring-personality.html}Spring Personality}}
+      * {{{personalities/spring-personality.html}Spring Personality}}
 
-  * {{{configuration/index.html}Configuration files}}
+    * {{{configuration/index.html}Configuration files}}
 
-    * {{{configuration/component-descriptor.html}Component Descriptor}}
+      * {{{configuration/component-descriptor.html}Component Descriptor}}
 
-  * {{{building-components/index.html}Building Components}}
+      * {{{configuration/plexus-auto-configuration.html}Component auto-configuration}}
 
-   * {{{/404.html}One Minute Tutorial}}
+    * {{{building-components/index.html}Building Components}}
 
-   * {{{building-components/component-identity.html}Component Identity}}
+      * {{{building-components/component-identity.html}Component Identity}}
 
-   * {{{building-components/component-testing.html}Component Testing}}
+      * {{{building-components/component-testing.html}Component Testing}}
 
- * {{{building-applications/index.html}Developing Applications}}
+  * {{{building-applications/index.html}Developing Applications}}
 
-  * {{{building-applications/runtime-builder.html}Runtime Builder}}
+    * {{{building-applications/runtime-builder.html}Runtime Builder}}
 
-  * {{{building-applications/cdc.html}CDC}}
+    * {{{building-applications/cdc.html}CDC}}
 
- * {{{plexus-application-server.html}Plexus Application Server}}
+  * {{{plexus-application-server.html}Plexus Application Server}}
 
-  * {{{building-pars.html}Building PARs}}
+    * {{{building-pars.html}Building PARs}}
 
-  * {{{deploying-pars.html}Deploying PARs}}
+    * {{{deploying-pars.html}Deploying PARs}}
 
-  * {{{services.html}Services}}
+    * {{{services.html}Services}}
 
- * {{{advanced-topics/index.html}Advanced Topics}}
+  * {{{advanced-topics/index.html}Advanced Topics}}
 
-  * {{{advanced-topics/plexus-class-loading.html}Plexus Class Loading}}
+    * {{{advanced-topics/plexus-class-loading.html}Plexus Class Loading}}
 
-  * {{{advanced-topics/programmatic-container-configuration.html}Programmatic Configuration of Container}}
+    * {{{advanced-topics/programmatic-container-configuration.html}Programmatic Configuration of Container}}
+
+  * Appendices 
+ 
+    * {{{appendices/javadoc-tags-reference.html}Appendix I: Javadoc tags reference}}
+
