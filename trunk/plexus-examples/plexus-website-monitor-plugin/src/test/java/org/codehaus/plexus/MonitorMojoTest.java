@@ -28,6 +28,16 @@ public class MonitorMojoTest
     {
         File pluginXml = new File( getBasedir(), "src/test/resources/unit/plugin-config.xml" );
         MonitorMojo mojo = (MonitorMojo) lookupMojo( "monitor", pluginXml );
-        mojo.execute();
+        assertNotNull( mojo.getWebsites() );
+        assertEquals( 1, mojo.getWebsites().size() );
+        assertNotNull( mojo.getMonitor() );
+        try
+        {
+            mojo.execute();
+        }
+        catch ( Exception e )
+        {
+            fail( "Unexpected exception with test data." );
+        }
     }
 }
