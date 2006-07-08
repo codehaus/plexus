@@ -28,37 +28,37 @@
     <menu name="Downloads">
       <!-- .tgz files for latest release and snapshots -->
       <item name="Sources" href="source-repository.html" />
-      <item name="Binaries" href="/xfactored/download-binaries.html" />
+      <item name="Binaries" href="/download-binaries.html" />
     </menu>
     
     <menu name="Guides">
       <!-- 5 minute tutorial -->
-      <item name="Quick Start" href="/xfactored/guides/quick-start/getting-started.html" />
-      <item name="Trails" href="/xfactored/guides/trails/index.html" >        
+      <item name="Quick Start" href="/guides/quick-start/getting-started.html" />
+      <item name="Trails" href="/guides/trails/index.html" >        
         <!-- Guide to writing components, touches upon basic plexus concepts to get started -->
-        <item name="Writing Plexus Components" href="/xfactored/guides/trails/writing-components/index.html" />
+        <item name="Writing Plexus Components" href="/guides/trails/writing-components/index.html" />
         <!-- Guide to writing applications that use Plexus container -->
-        <item name="Writing Plexus Applications" href="/xfactored/ref/developer-guide/building-applications/index.html" />        
+        <item name="Writing Plexus Applications" href="/ref/developer-guide/building-applications/index.html" />        
       </item>
     </menu>
 
     <menu name="Reference">
       <!-- Detailed Plexus manual -->
-      <item name="Developer Guide" href="/xfactored/ref/developer-guide/index.html" />      
+      <item name="Developer Guide" href="/ref/developer-guide/index.html" />      
       <!-- A background on Component oriented programming -->
-      <item name="Why Use Components?" href="/xfactored/ref/why-use-components.html" />
+      <item name="Why Use Components?" href="/ref/why-use-components.html" />
       <!-- Discuss elements for plexus.xml and components.xml and differences -->
-      <item name="Plexus Descriptor" href="/xfactored/ref/plexus-descriptor.html" />
-      <item name="Component Descriptor" href="/xfactored/ref/component-descriptor.html" />      
-      <item name="Technical Articles" href="/xfactored/ref/technical-articles.html" />
-      <item name="Available Components" href="/xfactored/ref/available-components.html" />
+      <item name="Plexus Descriptor" href="/ref/plexus-descriptor.html" />
+      <item name="Component Descriptor" href="/ref/component-descriptor.html" />      
+      <item name="Technical Articles" href="/ref/technical-articles.html" />
+      <item name="Available Components" href="/ref/available-components.html" />
       <item name="FAQs" href="/faq.html" />
     </menu>
     
     <menu name="Community">
       <item name="Mailing Lists" href="mail-lists.html" />
-      <item name="IRC" href="/xfactored/irc.html" />
-      <item name="Get Involved" href="/xfactored/get-involved.html" />
+      <item name="IRC" href="/irc.html" />
+      <item name="Get Involved" href="/get-involved.html" />
     </menu>
     
     <menu ref="reports" />
