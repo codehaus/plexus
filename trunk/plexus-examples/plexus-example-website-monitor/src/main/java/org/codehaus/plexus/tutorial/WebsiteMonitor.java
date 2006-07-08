@@ -19,6 +19,7 @@
  */
 package org.codehaus.plexus.tutorial;
 
+import java.util.List;
 
 /**
  * Plexus Component role that is expected to be implemented by all provider that
@@ -26,7 +27,7 @@ package org.codehaus.plexus.tutorial;
  * 
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  */
-public interface WebsiteMonitor extends Initializable
+public interface WebsiteMonitor
 {
 
     /**
@@ -42,4 +43,18 @@ public interface WebsiteMonitor extends Initializable
      */
     public void monitor()
         throws Exception;
+
+    /**
+     * Specify a list of websites that can be monitored by this component.
+     * 
+     * @param websites List of websites
+     */
+    void addWebsites( List websites );
+
+    /**
+     * Determines if the website monitor component was properly initialized.
+     *  
+     * @return <code>true</code> if initiailized, else <code>false</code>.
+     */
+    boolean isInitialized();
 }
