@@ -24,9 +24,9 @@ package org.codehaus.plexus.component.configurator.converters.basic;
  * SOFTWARE.
  */
 
-public class DoubleConverter extends AbstractBasicConverter
+public class DoubleConverter
+    extends AbstractBasicConverter
 {
-
     public boolean canConvert( Class type )
     {
         return type.equals( double.class ) || type.equals( Double.class );
@@ -36,5 +36,4 @@ public class DoubleConverter extends AbstractBasicConverter
     {
         return Double.valueOf( str );
     }
-
 }

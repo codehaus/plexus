@@ -114,8 +114,8 @@ public class ObjectWithFieldsConverter
      * TODO: This method should not be public - trygve
      */
     public void processConfiguration( ConverterLookup converterLookup, Object object, ClassLoader classLoader,
-                                       PlexusConfiguration configuration, ExpressionEvaluator expressionEvaluator,
-                                       ConfigurationListener listener )
+                                      PlexusConfiguration configuration, ExpressionEvaluator expressionEvaluator,
+                                      ConfigurationListener listener )
         throws ComponentConfigurationException
     {
         int items = configuration.getChildCount();
@@ -126,8 +126,8 @@ public class ObjectWithFieldsConverter
 
             String elementName = childConfiguration.getName();
 
-            ComponentValueSetter valueSetter = new ComponentValueSetter( fromXML( elementName ), object,
-                                                                         converterLookup, listener );
+            ComponentValueSetter valueSetter =
+                new ComponentValueSetter( fromXML( elementName ), object, converterLookup, listener );
 
             valueSetter.configure( childConfiguration, classLoader, expressionEvaluator );
         }
