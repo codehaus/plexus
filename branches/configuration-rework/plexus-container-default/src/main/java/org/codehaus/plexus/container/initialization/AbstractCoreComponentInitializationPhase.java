@@ -13,8 +13,6 @@ import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 public abstract class AbstractCoreComponentInitializationPhase
     extends AbstractContainerInitializationPhase
 {
-    BasicComponentConfigurator configurator = new BasicComponentConfigurator();
-
     public void execute( ContainerInitializationContext context )
         throws ContainerInitializationException
     {
@@ -24,12 +22,13 @@ public abstract class AbstractCoreComponentInitializationPhase
     protected abstract void initializeCoreComponent( ContainerInitializationContext context )
         throws ContainerInitializationException;
 
-    protected void setupCoreComponent( String role,
-                                       BasicComponentConfigurator configurator,
-                                       PlexusConfiguration c,
-                                       PlexusContainer container )
+    protected void setupCoreComponent( String role, ContainerInitializationContext context )
         throws ContainerInitializationException
     {
+        PlexusConfiguration c = context.getContainerConfiguration().getChild( role );
+
+        PlexusContainer container = context.getContainer();
+
         String implementation = c.getAttribute( "implementation", null );
 
         if ( implementation == null )
@@ -54,7 +53,7 @@ public abstract class AbstractCoreComponentInitializationPhase
 
         try
         {
-            configurator.configureComponent( container, configuration, container.getContainerRealm() );
+            context.getComponentConfigurator().configureComponent( container, configuration, container.getContainerRealm() );
         }
         catch ( ComponentConfigurationException e )
         {

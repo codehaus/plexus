@@ -33,7 +33,6 @@ import org.codehaus.plexus.component.composition.CompositionException;
 import org.codehaus.plexus.component.composition.SetterComponentComposer;
 import org.codehaus.plexus.component.configurator.BasicComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
-import org.codehaus.plexus.component.configurator.ComponentConfigurator;
 import org.codehaus.plexus.component.discovery.ComponentDiscovererManager;
 import org.codehaus.plexus.component.discovery.ComponentDiscoveryListener;
 import org.codehaus.plexus.component.discovery.PlexusXmlComponentDiscoverer;
@@ -551,10 +550,10 @@ public class DefaultPlexusContainer
     {
         PlexusConfiguration initializationConfiguration = configuration.getChild( "container-initialization" );
 
-        ContainerInitializationContext initializationContext =
-            new ContainerInitializationContext( this, classWorld, containerRealm, configuration );
+        BasicComponentConfigurator c = new BasicComponentConfigurator();
 
-        ComponentConfigurator c = new BasicComponentConfigurator();
+        ContainerInitializationContext initializationContext =
+            new ContainerInitializationContext( this, classWorld, containerRealm, configuration, c );
 
         try
         {

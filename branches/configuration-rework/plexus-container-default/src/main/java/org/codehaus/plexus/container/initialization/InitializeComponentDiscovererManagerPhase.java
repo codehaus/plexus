@@ -11,11 +11,7 @@ public class InitializeComponentDiscovererManagerPhase
     public void initializeCoreComponent( ContainerInitializationContext context )
         throws ContainerInitializationException
     {
-        PlexusConfiguration configuration = context.getContainerConfiguration();
-
-        PlexusConfiguration c = configuration.getChild( "component-discoverer-manager" );
-
-        setupCoreComponent( "component-discoverer-manager", configurator, c, context.getContainer() );
+        setupCoreComponent( "component-discoverer-manager", context );
 
         context.getContainer().getComponentDiscovererManager().initialize();
     }

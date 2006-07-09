@@ -12,13 +12,9 @@ public class InitializeComponentRepositoryPhase
     public void initializeCoreComponent( ContainerInitializationContext context )
         throws ContainerInitializationException
     {
-        PlexusConfiguration configuration = context.getContainerConfiguration();
+        setupCoreComponent( "component-repository", context );
 
-        PlexusConfiguration c = configuration.getChild( "component-repository" );
-
-        setupCoreComponent( "component-repository", configurator, c, context.getContainer() );
-
-        context.getContainer().getComponentRepository().configure( configuration );
+        context.getContainer().getComponentRepository().configure( context.getContainerConfiguration() );
 
         context.getContainer().getComponentRepository().setClassRealm( context.getContainer().getContainerRealm() );
 
