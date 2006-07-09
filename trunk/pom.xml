@@ -8,7 +8,7 @@
   <artifactId>plexus</artifactId>
   <packaging>pom</packaging>
   <name>Plexus</name>
-  <version>1.0.7</version>
+  <version>1.0.8-SNAPSHOT</version>
   <ciManagement>
     <notifiers>
       <notifier>
@@ -39,17 +39,17 @@
 
   <distributionManagement>
     <repository>
-      <id>plexus</id>
+      <id>codehaus.org</id>
       <name>Plexus Central Repository</name>
       <url>dav:https://dav.codehaus.org/repository/plexus/</url>
     </repository>
     <snapshotRepository>
-      <id>plexus-snapshots</id>
+      <id>codehaus.org</id>
       <name>Plexus Central Development Repository</name>
       <url>dav:https://dav.codehaus.org/snapshots.repository/plexus/</url>
     </snapshotRepository>
     <site>
-      <id>plexus-site</id>
+      <id>codehaus.org</id>
       <url>dav:https://dav.codehaus.org/plexus/</url>
     </site>
   </distributionManagement>
