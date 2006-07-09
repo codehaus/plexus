@@ -1,7 +1,5 @@
 package org.codehaus.plexus.component.configurator.converters.basic;
 
-import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
-
 /*
  * The MIT License
  *
@@ -26,9 +24,11 @@ import org.codehaus.plexus.component.configurator.ComponentConfigurationExceptio
  * SOFTWARE.
  */
 
-public class IntConverter extends AbstractBasicConverter
-{
+import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 
+public class IntConverter
+    extends AbstractBasicConverter
+{
     public boolean canConvert( Class type )
     {
         return type.equals( int.class ) || type.equals( Integer.class );
@@ -43,10 +43,7 @@ public class IntConverter extends AbstractBasicConverter
         }
         catch ( NumberFormatException e )
         {
-            throw new ComponentConfigurationException(
-                "Not a number: '" + str + "'", e
-            );
+            throw new ComponentConfigurationException( "Not a number: '" + str + "'", e );
         }
     }
-
 }

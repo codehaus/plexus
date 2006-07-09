@@ -24,7 +24,8 @@ package org.codehaus.plexus.component.configurator.converters.basic;
  * SOFTWARE.
  */
 
-public class StringBufferConverter extends AbstractBasicConverter
+public class StringBufferConverter
+    extends AbstractBasicConverter
 {
     public boolean canConvert( Class type )
     {

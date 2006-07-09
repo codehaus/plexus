@@ -24,9 +24,9 @@ package org.codehaus.plexus.component.configurator.converters.basic;
  * SOFTWARE.
  */
 
-public class CharConverter extends AbstractBasicConverter
+public class CharConverter
+    extends AbstractBasicConverter
 {
-
     public boolean canConvert( Class type )
     {
         return type.equals( char.class ) || type.equals( Character.class );
@@ -36,5 +36,4 @@ public class CharConverter extends AbstractBasicConverter
     {
         return new Character( str.charAt( 0 ) );
     }
-
 }

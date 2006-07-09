@@ -29,15 +29,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateConverter extends AbstractBasicConverter
+public class DateConverter
+    extends AbstractBasicConverter
 {
-    /***
+    /**
      * @todo DateFormat is not thread safe!
      */
-    private static final DateFormat[] formats = {
-        new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.S a" ),
-        new SimpleDateFormat( "yyyy-MM-dd HH:mm:ssa" )
-    };
+    private static final DateFormat[] formats =
+        {new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.S a" ), new SimpleDateFormat( "yyyy-MM-dd HH:mm:ssa" )};
 
     public boolean canConvert( Class type )
     {
@@ -63,8 +62,6 @@ public class DateConverter extends AbstractBasicConverter
 
     public String toString( Object obj )
     {
-        Date date = (Date) obj;
-        return formats[0].format( date );
+        return formats[0].format( (Date) obj );
     }
-
 }

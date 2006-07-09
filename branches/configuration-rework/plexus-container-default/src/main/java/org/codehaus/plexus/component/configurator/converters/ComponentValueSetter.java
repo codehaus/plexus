@@ -66,7 +66,8 @@ public class ComponentValueSetter
         this( fieldName, object, lookup, null );
     }
 
-    public ComponentValueSetter( String fieldName, Object object, ConverterLookup lookup, ConfigurationListener listener )
+    public ComponentValueSetter( String fieldName, Object object, ConverterLookup lookup,
+                                 ConfigurationListener listener )
         throws ComponentConfigurationException
     {
         this.fieldName = fieldName;
@@ -226,8 +227,8 @@ public class ComponentValueSetter
     private void setValueUsingField( Object value )
         throws ComponentConfigurationException
     {
-        String exceptionInfo = object.getClass().getName() + "." + field.getName() + "; type: " +
-            value.getClass().getName();
+        String exceptionInfo =
+            object.getClass().getName() + "." + field.getName() + "; type: " + value.getClass().getName();
 
         try
         {
@@ -269,8 +270,8 @@ public class ComponentValueSetter
             throw new ComponentConfigurationException( "No autowire found" );
         }
 
-        String exceptionInfo = object.getClass().getName() + "." + setter.getName() + "( " +
-            setterType.getClass().getName() + " )";
+        String exceptionInfo =
+            object.getClass().getName() + "." + setter.getName() + "( " + setterType.getClass().getName() + " )";
 
         if ( listener != null )
         {

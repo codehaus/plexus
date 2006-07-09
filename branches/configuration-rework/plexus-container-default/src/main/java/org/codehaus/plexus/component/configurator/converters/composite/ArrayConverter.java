@@ -40,7 +40,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 /**
  * @author <a href="mailto:kenney@codehaus.org">Kenney Westerhof</a>
  * @version $Id$
@@ -137,7 +136,7 @@ public class ArrayConverter
             values.add( object );
         }
 
-        return values.toArray( (Object []) Array.newInstance( type.getComponentType(), 0 ) );
+        return values.toArray( (Object[]) Array.newInstance( type.getComponentType(), 0 ) );
     }
 
     protected Collection getDefaultCollection( Class collectionType )
@@ -155,5 +154,4 @@ public class ArrayConverter
 
         return retValue;
     }
-
 }
