@@ -2,8 +2,9 @@
  Developer Guide - Appendix I: Plexus Javadoc Tags Reference
  ------
  Rahul Thakur
- ------
- 08th July, 2006
+ Emmanuel Venisse
+------
+ 9th July, 2006
  ------
 
  <<<The contents of this document are a work in progress>>>
@@ -19,7 +20,7 @@ Javadoc Tags used by Plexus tools
 *-----*------*------*-----*------*
 |  @plexus.configuration | Field | Corresponding element of same name as the field under <<<<configuration>>>> element | No | Indicate to Plexus CDC that the field is configuration property. 
 *-----*------*------*-----*------*
-| @plexus.component | Class | ? | ? | ? |
+| @plexus.component | Class | Adding current class to the component.xml | yes | Indicate to Plexus CDC that the class is a component |
 *-----*------*------*-----*------*
-| @plexus.requirement | Field | ? | ? | ? |
+| @plexus.requirement | Field | Corresponding element will be added under <<<<requirements>>>> | no | Indicate to Plexus CDC that the filed is required by the component |
 *-----*------*------*-----*------*
