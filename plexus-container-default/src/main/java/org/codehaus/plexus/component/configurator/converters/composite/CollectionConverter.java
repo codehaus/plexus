@@ -31,7 +31,6 @@ import org.codehaus.plexus.component.configurator.converters.ConfigurationConver
 import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.util.StringUtils;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -40,7 +39,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 
 /**
  * @author <a href="mailto:michal@codehaus.org">Michal Maczka</a>
@@ -60,6 +58,7 @@ public class CollectionConverter
         throws ComponentConfigurationException
     {
         Object retValue = fromExpression( configuration, expressionEvaluator, type );
+
         if ( retValue != null )
         {
             return retValue;
@@ -140,5 +139,4 @@ public class CollectionConverter
 
         return retValue;
     }
-
 }

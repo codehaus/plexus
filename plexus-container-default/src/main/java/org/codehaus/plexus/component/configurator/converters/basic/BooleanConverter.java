@@ -24,7 +24,8 @@ package org.codehaus.plexus.component.configurator.converters.basic;
  * SOFTWARE.
  */
 
-public class BooleanConverter extends AbstractBasicConverter
+public class BooleanConverter
+    extends AbstractBasicConverter
 {
 
     public boolean canConvert( Class type )
@@ -36,5 +37,4 @@ public class BooleanConverter extends AbstractBasicConverter
     {
         return str.equals( "true" ) ? Boolean.TRUE : Boolean.FALSE;
     }
-
 }

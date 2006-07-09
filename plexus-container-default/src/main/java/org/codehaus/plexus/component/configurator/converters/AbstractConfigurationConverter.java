@@ -88,7 +88,8 @@ public abstract class AbstractConfigurationConverter
         return retValue;
     }
 
-    protected Class getImplementationClass( Class type, Class baseType, PlexusConfiguration configuration, ClassLoader classLoader )
+    protected Class getImplementationClass( Class type, Class baseType, PlexusConfiguration configuration,
+                                            ClassLoader classLoader )
         throws ComponentConfigurationException
     {
         // if there's an implementation hint, try that.
@@ -167,7 +168,6 @@ public abstract class AbstractConfigurationConverter
      * Constructs a classname from a class and a fieldname.
      * For example, baseType is 'package.Component',
      * field is 'someThing', then it constructs 'package.SomeThing'.
-     *
      */
     private String constructClassName( Class baseType, String name )
     {
