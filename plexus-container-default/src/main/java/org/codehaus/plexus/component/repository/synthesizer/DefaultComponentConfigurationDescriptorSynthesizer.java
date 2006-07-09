@@ -35,7 +35,7 @@ public class DefaultComponentConfigurationDescriptorSynthesizer
                                                                   ComponentDescriptor componentDescriptor )
         throws ComponentRepositoryException, ComponentImplementationNotFoundException
     {
-        classRealm.display();
+//        classRealm.display();
 
         ComponentConfigurationDescriptor descriptor = new ComponentConfigurationDescriptor();
 

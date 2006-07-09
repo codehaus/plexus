@@ -17,7 +17,7 @@ public class InitializeLoggerManagerPhase
 
         // ----------------------------------------------------------------------
         // The logger manager may have been set programmatically so we need
-        // to check. If it hasn't
+        // to check.
         // ----------------------------------------------------------------------
 
         if ( loggerManager == null )
@@ -37,5 +37,4 @@ public class InitializeLoggerManagerPhase
         //TODO: the container should allow this logger manager change, don't use the DefaultPlexusContainer 
         context.getContainer().enableLogging( loggerManager.getLoggerForComponent( PlexusContainer.class.getName() ) );
     }
-
 }

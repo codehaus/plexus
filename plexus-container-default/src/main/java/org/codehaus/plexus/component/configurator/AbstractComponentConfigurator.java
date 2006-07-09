@@ -29,6 +29,7 @@ import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLoo
 import org.codehaus.plexus.component.configurator.converters.lookup.DefaultConverterLookup;
 import org.codehaus.plexus.component.configurator.expression.DefaultExpressionEvaluator;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
+import org.codehaus.plexus.component.repository.ComponentConfigurationFieldDescriptor;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 /**
@@ -59,6 +60,20 @@ public abstract class AbstractComponentConfigurator
                                     ConfigurationListener listener )
         throws ComponentConfigurationException
     {
+        configureComponent( component, configuration, expressionEvaluator, containerRealm, listener, null);
+    }
+
+    public void configureComponent( Object component, PlexusConfiguration configuration,
+                                    ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm,
+                                    ConfigurationListener listener,
+                                    ComponentConfigurationFieldDescriptor fieldDescriptor )
+        throws ComponentConfigurationException
+    {
+        if ( fieldDescriptor == null )
+        {
+            throw new ComponentConfigurationException( "Missing required component field descriptor" );
+        }
+
         // TODO: here so extended classes without the method continue to work. should be removed
         // this won't hit the method above going into a loop - instead, it will hit the overridden one
         configureComponent( component, configuration, expressionEvaluator, containerRealm );

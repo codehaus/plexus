@@ -30,7 +30,8 @@ import org.codehaus.plexus.component.configurator.converters.ConfigurationConver
 /**
  * @version $Id$
  */
-public interface ConverterLookup{
+public interface ConverterLookup
+{
     void registerConverter( ConfigurationConverter converter );
 
     ConfigurationConverter lookupConverterForType( Class type )

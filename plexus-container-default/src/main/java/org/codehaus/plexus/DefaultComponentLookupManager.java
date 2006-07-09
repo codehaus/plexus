@@ -42,7 +42,7 @@ public class DefaultComponentLookupManager
     public Object lookup( String componentKey )
         throws ComponentLookupException
     {
-        Object component = null;
+        Object component;
 
         ComponentManager componentManager = container.getComponentManagerManager().findComponentManagerByComponentKey( componentKey );
 
