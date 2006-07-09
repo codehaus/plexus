@@ -22,14 +22,13 @@ public class DefaultComponent
      * @plexus.requirement
      *   role-hint="foo"
      */
-    private Component foo;
+    private Component fooComponent;
 
     /**
      * @plexus.requirement
      *   role="Component"
-     *   role-hint="foo"
      */
-    private Map foo;
+    private Map fooMap;
 
     /**
      * @plexus.requirement
