@@ -2,8 +2,9 @@
  Developer Guide - The Component Descriptor Creator
  ------
  Trygve Laugst\xF8l
+ Emmanuel Venisse
  ------
- 17th June, 2006
+ 9th July, 2006
  ------
 
  <<<The contents of this document are a work in progress>>>
@@ -26,7 +27,7 @@ Plexus Component Descriptor Creator
 *-----------------------*---*--------------------------------------------------------*
 | role                  | y | The role of the component.                             |
 *-----------------------*---*--------------------------------------------------------*
-| role-hint             | y | The role-hint of the component.                        |
+| role-hint             | n | The role-hint of the component.                        |
 *-----------------------*---*--------------------------------------------------------*
 | version               | n | The component version.                                 |
 *-----------------------*---*--------------------------------------------------------*
@@ -41,8 +42,11 @@ Plexus Component Descriptor Creator
 ~~ [plexus-component-tags] Plexus Component Tag Parameters
 
 +---+
+package org.foo;
+
 /**
  * @plexus.component
+ *   role="com.foo.ActionManager"
  *   lifecycle-handler="plexus-configurable"
  */
 public class DefaultActionManager
@@ -52,18 +56,28 @@ public class DefaultActionManager
 +---+
 ~~ [example-class-tags] Example Component Tag
 
+ This will be generated in component.xml:
+
++---+
+<component>
+  <role>org.foo.ActionManager</role>
+  <implementation>org.foo.DefaultActionManager</implementation>
+  <lifecycle-handler>plexus-configurable</lifecycle-handler>
+</component>
++---+
+
 * Requirement Tag Parameters
 
  These tags are used on fields to state requirements. TODO: it should be
  possible to override the role for a normal field.
 
-*-----------------------*----------------*-------------------------------------------*
-| <<Tag>>               | <<Required>> | <<Description>>                             |
-*-----------------------*-----*------------------------------------------------------*
-| role                  | y/n | Only required if the field is a List or Map          |
-*-----------------------*-----*------------------------------------------------------*
-| role-hint             | n   |                                                      |
-*-----------------------*-----*------------------------------------------------------*
+*-----------------------*----------------*----------------------------------------------------------------------*
+| <<Tag>>               | <<Required>> | <<Description>>                                                        |
+*-----------------------*-----*---------------------------------------------------------------------------------*
+| role                  | y/n | The role of the component. Only required if the field is a List or Map          |
+*-----------------------*-----*---------------------------------------------------------------------------------*
+| role-hint             | n   | The role-hint of the component.                                                 |
+*-----------------------*-----*---------------------------------------------------------------------------------*
 
 +---+
 /**
@@ -73,6 +87,22 @@ public class DefaultActionManager
 private ActionManager actionManager;
 +---+
 ~~ [example-requirement-tags] Example Requirement Tag
+
+ This will be generated in component.xml:
+
++---+
+<component>
+  <role>org.foo.MyComponent</role>
+  <implementation>org.foo.MyComponentImplementation</implementation>
+  <requirements>
+    <requirement>
+      <role>org.foo.ActionManager</role>
+      <role-hint>foo</role-hint>
+      <field-name>actionManager</field-name>
+    </requirement>
+  </requirements>
+</component>
++---+
 
 * Configuration Tag Parameters
 
@@ -93,3 +123,15 @@ private ActionManager actionManager;
 private String name;
 +---+
 ~~ [example-requirement-tags] Example Configuration Tag
+
+ This will be generated in component.xml:
+
++---+
+<component>
+  <role>org.foo.MyComponent</role>
+  <implementation>org.foo.MyComponentImplementation</implementation>
+  <configuration>
+    <name>Trygve</name>
+  </configuration>
+</component>
++---+

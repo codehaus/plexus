@@ -45,7 +45,7 @@ Table of Contents
 
     * {{{building-applications/runtime-builder.html}Runtime Builder}}
 
-    * {{{building-applications/cdc.html}CDC}}
+    * {{{building-applications/cdc.html}Component Descriptor Creator (CDC)}}
 
   * {{{plexus-application-server.html}Plexus Application Server}}
 
@@ -63,5 +63,5 @@ Table of Contents
 
   * Appendices 
  
-    * {{{appendices/javadoc-tags-reference.html}Appendix I: Javadoc tags reference}}
+    * {{{appendices/javadoc-tags-reference.html}Appendix I: Javadoc tags reference for CDC}}
 
