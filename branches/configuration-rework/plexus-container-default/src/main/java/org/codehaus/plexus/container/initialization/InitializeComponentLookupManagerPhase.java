@@ -11,11 +11,7 @@ public class InitializeComponentLookupManagerPhase
     public void initializeCoreComponent( ContainerInitializationContext context )
         throws ContainerInitializationException
     {
-        PlexusConfiguration configuration = context.getContainerConfiguration();
-
-        PlexusConfiguration c = configuration.getChild( "component-lookup-manager" );
-
-        setupCoreComponent( "component-lookup-manager", configurator, c, context.getContainer() );
+        setupCoreComponent( "component-lookup-manager", context );
 
         context.getContainer().getComponentLookupManager().setContainer( context.getContainer() );
     }

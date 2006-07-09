@@ -26,6 +26,7 @@ package org.codehaus.plexus.component.configurator;
 
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
+import org.codehaus.plexus.component.repository.ComponentConfigurationFieldDescriptor;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 /**
@@ -46,5 +47,10 @@ public interface ComponentConfigurator
     void configureComponent( Object component, PlexusConfiguration configuration,
                              ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm,
                              ConfigurationListener listener )
+        throws ComponentConfigurationException;
+
+    void configureComponent( Object component, PlexusConfiguration configuration,
+                             ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm,
+                             ConfigurationListener listener, ComponentConfigurationFieldDescriptor fieldDescriptor )
         throws ComponentConfigurationException;
 }

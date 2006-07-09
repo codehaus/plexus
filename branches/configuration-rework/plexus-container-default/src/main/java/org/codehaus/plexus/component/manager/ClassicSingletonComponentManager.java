@@ -40,7 +40,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLifecycleExce
 public class ClassicSingletonComponentManager
     extends AbstractComponentManager
 {
-    private Object lock = new Object();
+    private final Object lock = new Object();
 
     private Object singleton;
 

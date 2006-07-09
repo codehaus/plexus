@@ -15,7 +15,6 @@ import java.util.Set;
  * @author Jason van Zyl
  * @version $Id$
  */
-
 public class CompositionUtils
 {
     public static Requirement findRequirement( Object component,

@@ -14,11 +14,7 @@ public class InitializeComponentFactoryManagerPhase
     public void initializeCoreComponent( ContainerInitializationContext context )
         throws ContainerInitializationException
     {
-        PlexusConfiguration configuration = context.getContainerConfiguration();
-
-        PlexusConfiguration c = configuration.getChild( "component-factory-manager" );
-
-        setupCoreComponent( "component-factory-manager", configurator, c, context.getContainer() );
+        setupCoreComponent( "component-factory-manager", context );
 
         if ( context.getContainer().getComponentFactoryManager() instanceof Contextualizable )
         {

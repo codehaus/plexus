@@ -10,33 +10,34 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * @todo (michal) should this phase be called only for components which
- *  does not implement Configurable interface?
+ * does not implement Configurable interface?
  */
 public class AutoConfigurePhase
     extends AbstractPhase
 {
     public static final String DEFAULT_CONFIGURATOR_ID = "basic";
-    
+
     public void execute( Object object, ComponentManager manager )
         throws PhaseExecutionException
     {
         try
         {
             ComponentDescriptor descriptor = manager.getComponentDescriptor();
-            
+
             String configuratorId = descriptor.getComponentConfigurator();
-            
-            if(StringUtils.isEmpty(configuratorId))
+
+            if ( StringUtils.isEmpty( configuratorId ) )
             {
                 configuratorId = DEFAULT_CONFIGURATOR_ID;
             }
-            
+
             ComponentConfigurator componentConfigurator =
                 (ComponentConfigurator) manager.getContainer().lookup( ComponentConfigurator.ROLE, configuratorId );
 
             if ( manager.getComponentDescriptor().hasConfiguration() )
             {
-                componentConfigurator.configureComponent( object, manager.getComponentDescriptor().getConfiguration(), manager.getContainer().getContainerRealm() );
+                componentConfigurator.configureComponent( object, manager.getComponentDescriptor().getConfiguration(),
+                                                          manager.getContainer().getContainerRealm() );
             }
         }
         catch ( ComponentLookupException e )

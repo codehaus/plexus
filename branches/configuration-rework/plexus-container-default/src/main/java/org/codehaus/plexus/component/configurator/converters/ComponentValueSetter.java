@@ -48,7 +48,7 @@ public class ComponentValueSetter
 
     private Method setter;
 
-    private Class setterParamType;
+    private Class setterType;
 
     private ConfigurationConverter setterTypeConverter;
 
@@ -91,8 +91,25 @@ public class ComponentValueSetter
 
         if ( setterTypeConverter == null && fieldTypeConverter == null )
         {
-            throw new ComponentConfigurationException( "Cannot find converter for " + setterParamType.getName() +
-                ( fieldType != null && ! fieldType.equals( setterParamType ) ? " or " + fieldType.getName() : "" ) );
+
+            String message = "Cannot find converter for ";
+
+            if ( setterType != null )
+            {
+                message += setterType.getName();
+            }
+
+            if ( fieldType != null && !fieldType.equals( setterType ) )
+            {
+                if ( setterType != null )
+                {
+                    message += " or ";
+                }
+
+                message += fieldType.getName();
+            }
+
+            throw new ComponentConfigurationException( message );
         }
     }
 
@@ -107,7 +124,7 @@ public class ComponentValueSetter
         {
             try
             {
-                value = setterTypeConverter.fromConfiguration( lookup, config, setterParamType, object.getClass(), cl,
+                value = setterTypeConverter.fromConfiguration( lookup, config, setterType, object.getClass(), cl,
                                                                evaluator, listener );
 
                 if ( value != null )
@@ -173,11 +190,11 @@ public class ComponentValueSetter
             return;
         }
 
-        setterParamType = setter.getParameterTypes()[0];
+        setterType = setter.getParameterTypes()[0];
 
         try
         {
-            setterTypeConverter = lookup.lookupConverterForType( setterParamType );
+            setterTypeConverter = lookup.lookupConverterForType( setterType );
         }
         catch ( ComponentConfigurationException e )
         {
@@ -247,13 +264,13 @@ public class ComponentValueSetter
     private void setValueUsingSetter( Object value )
         throws ComponentConfigurationException
     {
-        if ( setterParamType == null || setter == null )
+        if ( setterType == null || setter == null )
         {
             throw new ComponentConfigurationException( "No autowire found" );
         }
 
         String exceptionInfo = object.getClass().getName() + "." + setter.getName() + "( " +
-            setterParamType.getClass().getName() + " )";
+            setterType.getClass().getName() + " )";
 
         if ( listener != null )
         {

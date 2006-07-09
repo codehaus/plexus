@@ -109,21 +109,6 @@ public class ObjectWithFieldsConverter
 
         return retValue;
     }
-/*
-    private void processConfiguration( ConverterLookup converterLookup, Object object, ClassLoader classLoader,
-                                       PlexusConfiguration configuration )
-        throws ComponentConfigurationException
-    {
-        processConfiguration( converterLookup, object, classLoader, configuration, null, null );
-    }
-
-    private void processConfiguration( ConverterLookup converterLookup, Object object, ClassLoader classLoader,
-                                       PlexusConfiguration configuration, ExpressionEvaluator expressionEvaluator )
-        throws ComponentConfigurationException
-    {
-        processConfiguration( converterLookup, object, classLoader, configuration, expressionEvaluator, null );
-    }
-*/
 
     /**
      * TODO: This method should not be public - trygve
