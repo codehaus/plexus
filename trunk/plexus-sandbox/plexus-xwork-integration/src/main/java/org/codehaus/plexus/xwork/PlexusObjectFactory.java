@@ -70,6 +70,9 @@ public class PlexusObjectFactory
         }
 
         base = (PlexusContainer) servletContext.getAttribute( PlexusLifecycleListener.KEY );
+
+        // used by the servlet configuration phase
+        base.getContext().put( ServletContext.class.getName(), servletContext );
     }
 
     public Object buildAction( String actionName, String namespace, ActionConfig config, Map extraContext )
@@ -174,7 +177,7 @@ public class PlexusObjectFactory
                 return lookup( type, className, extraContext );
             }
         }
-        
+
         return super.buildBean( className, extraContext );
     }
 
@@ -309,7 +312,8 @@ public class PlexusObjectFactory
     {
         String className = role;
 
-        if ( Action.class.getName().equals( role ) || Interceptor.class.getName().equals( role ) || Result.class.getName().equals( role ) || Validator.class.getName().equals( role ) )
+        if ( Action.class.getName().equals( role ) || Interceptor.class.getName().equals( role ) ||
+            Result.class.getName().equals( role ) || Validator.class.getName().equals( role ) )
         {
             className = roleHint;
         }
