@@ -1,0 +1,78 @@
+ -----
+ Chapter 1 : Setting up a Web application project
+ -----
+ Rahul Thakur
+ -----
+ 10th July 2006 
+ -----
+
+Overview
+
+ The chapter explains how to set up a Plexus web application project.
+
+* Pre-requisites
+
+ The tutorial assumes you have Maven 2.0.x+ setup and have an internet 
+ connection and are able to download required Maven artifacts from online 
+ repositories.
+
+ 
+* Set up a Web application project from an Archetype
+
+ We use Maven's Web application archetype to create a skeleton web application 
+ project to get us started. 
+
+ From the command prompt, change directory to the location where you wish to 
+ set up the new Plexus Component project.  Run the following command from the
+ command line to setup an initial project structure
+
++------------------------------------------+
+ mvn archetype:create -DarchetypeGroupId=org.apache.maven.archetype -DarchetypeArtifactId=maven-archetype-webapp -DarchetypeVersion=1.0-
+SNAPSHOT -DgroupId=org.codehaus.plexus.examples -DartifactId=plexus-example-webapp  -DpackageName=org.codehaus.plexus.tutorial -Dpackaging=war
++------------------------------------------+ 
+
+ This should create a blank web application project.
+
+** Archetype creation options explained
+
+ More info on archetype creation and usage can be found here?
+
+ The following table explains the options that we used above.
+
+*----------+--------------+----------------:
+| Commandline Option 	| Description 	| Required |
+*----------+--------------+----------------:
+| -DarchetypeGroupId 	| "groupId" for the archetype we want to use 	| Yes |
+*----------+--------------+----------------:
+| -DarchetypeArtifact 	| "artifactId" for the archetype we want to use |	Yes |
+*----------+--------------+----------------:
+| -DarchetypeVersion 	| "version" for the archetype we want to use 	| Yes| 
+*----------+--------------+----------------:
+| -DgroupId 	| "groupId" for the project to be generated 	| Yes |
+*----------+--------------+----------------:
+| -DartifactId | "artifactId" for the project to be generated |	Yes |
+*----------+--------------+----------------:
+| -DpackageName |	Base package name to be use for any Java sources being copied over 	| No|
+*----------+--------------+----------------:
+ 
+* Generate a Project for your IDE.
+
+** For Eclipse.
+ 
+   [[1]] Change directory to the newly created directory 'plexus-example-webapp'
+   
+   [[1]] Open up pom.xml and review the handful of dependencies setup there for version changes.
+
+   [[1]] Run the following command from command prompt to generate Eclipse project setting files.
+
++------------------------------------------+
+ mvn eclipse:eclipse
++------------------------------------------+
+
+ Eclipse project files should get generated succesfully at this point. If there were any unsatisfied dependencies (due to 2-1-3), update <version> for dependencies in pom.xml to an available release version.
+ 
+   [[1]] Fire up Eclipse and import the generated project into an Eclipse Workspace.
+ 
+
+
+
