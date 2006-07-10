@@ -36,6 +36,8 @@ Documentation Trails
   This trail is for those wishing to create an application that uses the Plexus container.
 
   [[1]] To get started using the Plexus container, try the {{{../quick-start/getting-started.html} Five Minute Tutorial}}.
+  
+  [[1]] To learn how to use Plexus for web application development, follow the {{{plexus-web-applications/index.html}Plexus in Web applications}} trail.
 
   ~~TODO: finish
 
