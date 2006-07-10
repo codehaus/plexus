@@ -73,6 +73,76 @@ SNAPSHOT -DgroupId=org.codehaus.plexus.examples -DartifactId=plexus-example-weba
  
    [[1]] Fire up Eclipse and import the generated project into an Eclipse Workspace.
  
+** Add sources/resources directories
+
+  Create the following directories under the project root for our application resources:
+
+  [[1]] <<<src/main/java>>>
+
+  [[1]] <<<src/main/resources>>>
+
+  [[1]] <<<src/test/java>>>
+
+  [[1]] <<<src/test/resources>>>
 
 
+* Adding project dependencies
+
+  We add project dependencies to the <<<pom.xml>>> located under project root. 
+  The <<<pom.xml>>> looks like below:
+
++-------------+
+<?xml version="1.0"?><project>
+  <parent>
+    <artifactId>plexus-examples</artifactId>
+    <groupId>org.codehaus.plexus.examples</groupId>
+    <version>1-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.plexus.examples</groupId>
+  <artifactId>plexus-example-webapp</artifactId>
+  <packaging>war</packaging>
+  <name>Plexus Web Application Example</name>
+  <version>1.0-SNAPSHOT</version>
+  <url>http://maven.apache.org</url>
+  <build>
+    <finalName>plexus-example-webapp</finalName>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Added for plexus webapp example -->
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-servlet</artifactId>
+      <version>1.0-beta-5-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-10-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>
++-------------+
+
+ Update Eclipse project dependencies for new library that we added above, to do this:  
+
+  [[1]] Open up a command prompt window
+  
+  [[2]] Change directory to the Website Monitor project's folder, and
+  
+  [[3]] Run the following command to update the Eclipse project dependencies.       
+   
++------------------------------------------+
+mvn  eclipse:clean  eclipse:eclipse
++------------------------------------------+
+
+
+ Refresh the Eclipse project in the workspace to reflect the updated dependencies.
+ 
 
