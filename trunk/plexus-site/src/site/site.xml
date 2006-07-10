@@ -11,8 +11,9 @@
     <src>http://media.codehaus.org/images/unity-codehaus-logo.png</src>
   </bannerRight -->
   <skin>
-    <groupId>org.apache.maven.skins</groupId>
-    <artifactId>maven-stylus-skin</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <artifactId>plexus-stylus-skin</artifactId>
+    <version>1.0-SNAPSHOT</version>
   </skin>
   <body>
     
@@ -59,6 +60,7 @@
       <item name="Mailing Lists" href="mail-lists.html" />
       <item name="IRC" href="/irc.html" />
       <item name="Get Involved" href="/get-involved.html" />
+      <item name="Issue Tracking" href="/issue-tracking.html" />
     </menu>
     
     <menu ref="reports" />

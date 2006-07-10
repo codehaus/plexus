@@ -188,9 +188,9 @@ component.propertiesA = properties;
 
 *** Advanced mapping
 
-    michal: Doesn't this belong in the Collection's section?
+    ~~michal: Doesn't this belong in the Collection's section?
 
-    TODO: Flesh out...
+    ~~TODO: Flesh out...
 
 +-----------------------------------------------------------------------------+
 <foos elements="java.lang.String"/>
