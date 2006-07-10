@@ -36,6 +36,10 @@
       <archive>http://lists.codehaus.org/pipermail/plexus-dev/</archive>
     </mailingList>
   </mailingLists>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/PLX</url>
+  </issueManagement>
 
   <distributionManagement>
     <repository>
