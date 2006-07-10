@@ -3,6 +3,8 @@ package org.codehaus.plexus.xwork;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,6 +19,8 @@ import java.io.IOException;
 import java.util.Collections;
 
 /**
+ * Filter that initializes a request scoped Plexus container.
+ * 
  * @author Patrick Lightbody (plightbo at gmail dot com)
  * @author Emmanuel Venisse (evenisse at apache dot org)
  */
@@ -24,6 +28,7 @@ public class PlexusFilter
     implements Filter
 {
     private static final Log log = LogFactory.getLog( PlexusFilter.class );
+
     private static final String CHILD_CONTAINER_NAME = "request";
 
     public static boolean loaded = false;
@@ -44,73 +49,75 @@ public class PlexusFilter
 
         try
         {
-            try
+            HttpServletRequest request = (HttpServletRequest) req;
+            HttpSession session = request.getSession( false );
+            PlexusContainer parent;
+
+            if ( session != null )
             {
-                HttpServletRequest request = (HttpServletRequest) req;
-                HttpSession session = request.getSession( false );
-                PlexusContainer parent;
+                if ( log.isDebugEnabled() )
+                {
+                    log.debug( "Loading parent Plexus container from Session" );
+                }
+                parent = (PlexusContainer) session.getAttribute( PlexusLifecycleListener.KEY );
+                if ( parent == null )
+                {
+                    throw new ServletException( "Error initializing plexus container (scope: request): "
+                        + "Parent Plexus container is not defined in Session" );
+                }
+            }
+            else
+            {
+                if ( log.isDebugEnabled() )
+                {
+                    log.debug( "Loading parent Plexus container from Servlet Context" );
+                }
+                parent = (PlexusContainer) ctx.getAttribute( PlexusLifecycleListener.KEY );
+                if ( parent == null )
+                {
+                    throw new ServletException( "Error initializing plexus container (scope: request): "
+                        + "Parent Plexus container is not defined in Servlet Context" );
+                }
+            }
 
-                if ( session != null )
+            if ( parent.hasChildContainer( CHILD_CONTAINER_NAME ) )
+            {
+                log.warn( "Plexus container (scope: request) alredy exist." );
+                child = parent.getChildContainer( CHILD_CONTAINER_NAME );
+            }
+            else
+            {
+                try
                 {
-                    if ( log.isDebugEnabled() )
-                    {
-                        log.debug( "Loading parent Plexus container from Session" );
-                    }
-                    parent = (PlexusContainer) session.getAttribute( PlexusLifecycleListener.KEY );
-                    if ( parent == null )
-                    {
-                        throw new ServletException( "Parent Plexus container is not defined in Session" );
-                    }
-                }
-                else
-                {
-                    if ( log.isDebugEnabled() )
-                    {
-                        log.debug( "Loading parent Plexus container from Servlet Context" );
-                    }
-                    parent = (PlexusContainer) ctx.getAttribute( PlexusLifecycleListener.KEY );
-                    if ( parent == null )
-                    {
-                        throw new ServletException( "Parent Plexus container is not defined in Servlet Context" );
-                    }
-                }
-
-                if ( parent.hasChildContainer( CHILD_CONTAINER_NAME ) )
-                {
-                    log.warn( "Plexus container (scope: request) alredy exist." );
-                    child = parent.getChildContainer( CHILD_CONTAINER_NAME );
-                }
-                else
-                {
-                    child = parent.createChildContainer( CHILD_CONTAINER_NAME, Collections.EMPTY_LIST, Collections.EMPTY_MAP );
+                    child = parent.createChildContainer( CHILD_CONTAINER_NAME, Collections.EMPTY_LIST,
+                                                         Collections.EMPTY_MAP );
                     PlexusUtils.configure( child, "plexus-request.xml" );
                     child.initialize();
                     child.start();
                 }
-                PlexusThreadLocal.setPlexusContainer( child );
+                catch ( PlexusContainerException e )
+                {
+                    log.error( "Unable to create child Plexus container (scope: request)" );
+                    throw new RuntimeException( e );
+                }
+                catch ( PlexusConfigurationResourceException e )
+                {
+                    log.error( "Unable to create child Plexus container (scope: request)" );
+                    throw new RuntimeException( e );
+                }
             }
-            catch ( Exception e )
-            {
-                log.error( "Error initializing plexus container (scope: request)", e );
-            }
+            PlexusThreadLocal.setPlexusContainer( child );
 
             chain.doFilter( req, res );
         }
         finally
         {
-            try
+            if ( child != null )
             {
-                if ( child != null )
-                {
-                    child.dispose();
-                }
+                child.dispose();
+            }
 
-                PlexusThreadLocal.setPlexusContainer( null );
-            }
-            catch ( Exception e )
-            {
-                log.error( "Error disposing plexus container (scope: request)", e );
-            }
+            PlexusThreadLocal.setPlexusContainer( null );
         }
     }
 
