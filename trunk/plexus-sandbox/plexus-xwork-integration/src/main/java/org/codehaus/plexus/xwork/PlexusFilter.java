@@ -51,7 +51,7 @@ public class PlexusFilter
         {
             HttpServletRequest request = (HttpServletRequest) req;
             HttpSession session = request.getSession( false );
-            PlexusContainer parent;
+            PlexusContainer parent = null;
 
             if ( session != null )
             {
@@ -60,13 +60,13 @@ public class PlexusFilter
                     log.debug( "Loading parent Plexus container from Session" );
                 }
                 parent = (PlexusContainer) session.getAttribute( PlexusLifecycleListener.KEY );
-                if ( parent == null )
+                if ( ( parent == null ) && ( log.isInfoEnabled() ) )
                 {
-                    throw new ServletException( "Error initializing plexus container (scope: request): "
-                        + "Parent Plexus container is not defined in Session" );
+                    log.info( "Unable to load parent Plexus container from Session" );
                 }
             }
-            else
+
+            if ( parent == null )
             {
                 if ( log.isDebugEnabled() )
                 {
