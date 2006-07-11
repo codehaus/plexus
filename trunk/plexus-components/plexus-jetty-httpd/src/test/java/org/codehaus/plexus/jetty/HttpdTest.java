@@ -9,11 +9,6 @@ import org.codehaus.plexus.PlexusTestCase;
 public class HttpdTest
     extends PlexusTestCase
 {
-    public HttpdTest( String name )
-    {
-        super( name );
-    }
-
     public void testServer()
         throws Exception
     {
