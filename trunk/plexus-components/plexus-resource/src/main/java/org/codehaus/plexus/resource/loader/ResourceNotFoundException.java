@@ -33,11 +33,11 @@ public class ResourceNotFoundException
 {
     public ResourceNotFoundException( String name )
     {
-        super( "Could not find resource " + name + "'." );
+        super( "Could not find resource '" + name + "'." );
     }
 
     public ResourceNotFoundException( String name, Throwable cause )
     {
-        super( "Could not find resource " + name + "'.", cause );
+        super( "Could not find resource '" + name + "'.", cause );
     }
 }
