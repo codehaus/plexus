@@ -24,13 +24,8 @@ package org.codehaus.plexus.resource.loader.classpath;
  * SOFTWARE.
  */
 
-import java.io.InputStream;
-
 import org.codehaus.plexus.resource.loader.AbstractResourceLoaderTest;
 import org.codehaus.plexus.resource.loader.ResourceLoader;
-import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
-import org.codehaus.plexus.resource.loader.AbstractResourceLoaderTest;
-import org.codehaus.plexus.util.IOUtil;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>

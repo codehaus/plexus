@@ -25,6 +25,8 @@ package org.codehaus.plexus.resource.loader.classpath;
  */
 
 import java.io.InputStream;
+import java.net.URLClassLoader;
+import java.net.URL;
 
 import org.codehaus.plexus.resource.loader.AbstractResourceLoader;
 import org.codehaus.plexus.resource.loader.ResourceNotFoundException;

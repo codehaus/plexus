@@ -37,7 +37,6 @@ public class ResourceManagerTest
     public void testFoo()
         throws Exception
     {
-        ResourceManager resourceManager = (ResourceManager) lookup( ResourceManager.ROLE );
-
+        lookup( ResourceManager.ROLE );
     }
 }
