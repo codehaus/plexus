@@ -41,18 +41,48 @@
       </plugin>
     </plugins>
   </build>
-
+  <reporting>
+    <excludeDefaults>true</excludeDefaults>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>cim</report>
+              <report>issue-tracking</report>
+              <report>mailing-list</report>
+              <report>license</report>
+              <report>project-team</report>
+              <report>scm</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>  
+  <!-- repeated here so that plexus-site is not appended -->
+  <scm>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk</developerConnection>
+    <url>http://svn.codehaus.org/plexus/trunk/</url>
+  </scm>
   <distributionManagement>
-    <!--
-    <site>
-      <id>plexus.website</id>
-      <url>scp://beaver.codehaus.org/home/projects/plexus/public_html/</url>
-    </site>
-    -->
    <site>
       <id>plexus-site</id>
       <name>Plexus Website</name>
       <url>dav:https://dav.codehaus.org/plexus/</url>
     </site>
   </distributionManagement>
+ 
+  <mailingLists>   
+    <mailingList>
+      <name>Plexus Lists</name>
+      <subscribe>https://xircles.codehaus.org/projects/plexus/lists</subscribe>
+      <unsubscribe>https://xircles.codehaus.org/projects/plexus/lists</unsubscribe>  
+      <archive>http://www.nabble.com/Plexus-f2779.html</archive>   
+    </mailingList>   
+  </mailingLists>
+
 </project>
