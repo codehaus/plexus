@@ -28,6 +28,7 @@ import org.apache.maven.project.MavenProjectHelper;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
 import org.codehaus.plexus.cdc.ComponentDescriptorCreatorException;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 import java.io.File;
 import java.util.Iterator;
@@ -82,6 +83,11 @@ public class PlexusDescriptorMojo
      */
     private MavenProject mavenProject;
 
+    /**
+     * @parameter
+     */
+    private ComponentDescriptor[] roleDefaults;
+
     // ----------------------------------------------------------------------
     // Components
     // ----------------------------------------------------------------------
@@ -118,7 +124,7 @@ public class PlexusDescriptorMojo
 
         try
         {
-            cdc.processSources( sources, new File( outputDirectory, fileName ), containerDescriptor );
+            cdc.processSources( sources, new File( outputDirectory, fileName ), containerDescriptor, roleDefaults );
         }
         catch ( ComponentDescriptorCreatorException e )
         {

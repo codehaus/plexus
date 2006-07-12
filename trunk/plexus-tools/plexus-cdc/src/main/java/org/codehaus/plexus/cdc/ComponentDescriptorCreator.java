@@ -24,6 +24,8 @@ package org.codehaus.plexus.cdc;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+
 import java.io.File;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public interface ComponentDescriptorCreator
     void processSources( File[] sourceDirectories, File outputDirectory )
         throws ComponentDescriptorCreatorException;
 
-    void processSources( File[] sourceDirectories, File outputDirectory, boolean containerDescriptor )
+    void processSources( File[] sourceDirectories, File outputDirectory, boolean containerDescriptor, ComponentDescriptor[] roleDefaults )
         throws ComponentDescriptorCreatorException;
 
     void mergeDescriptors( File outputDescriptor, List descriptors )
