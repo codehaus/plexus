@@ -25,11 +25,13 @@ package org.codehaus.plexus.cdc.merge;
  */
 
 import org.codehaus.plexus.cdc.merge.support.ComponentSetElement;
+import org.codehaus.plexus.util.IOUtil;
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
@@ -60,11 +62,18 @@ public class ComponentsXmlMerger
      * @see Merger#writeMergedDocument(Document, File)
      */
     public void writeMergedDocument( Document mergedDocument, File file )
-        throws Exception
+        throws IOException
     {
         XMLOutputter out = new XMLOutputter();
-        FileWriter fw = new FileWriter( file );
-        out.output( mergedDocument, fw );
-        fw.close();
+        FileWriter fw = null;
+        try
+        {
+            fw = new FileWriter( file );
+            out.output( mergedDocument, fw );
+        }
+        finally
+        {
+            IOUtil.close( fw );
+        }
     }
 }
