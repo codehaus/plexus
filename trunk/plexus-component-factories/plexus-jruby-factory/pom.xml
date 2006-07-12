@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>plexus-component-factories</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0-alpha-6</version>
+  </parent>
+  <artifactId>plexus-jruby-factory</artifactId>
+  <version>1.0-alpha-1-SNAPSHOT</version>
+  <name>Plexus JRuby Factory</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.jruby</groupId>
+      <artifactId>jruby</artifactId>
+      <version>0.8.3</version>
+    </dependency>
+  </dependencies>
+</project>
