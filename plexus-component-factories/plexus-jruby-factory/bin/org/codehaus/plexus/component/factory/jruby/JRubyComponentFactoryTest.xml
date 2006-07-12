@@ -1,0 +1,9 @@
+<plexus>
+  <components>
+    <component>
+      <role>hello</role>
+      <implementation>/hello.rb</implementation>
+      <component-factory>jruby</component-factory>
+    </component>
+  </components>
+</plexus>
