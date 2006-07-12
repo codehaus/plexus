@@ -27,6 +27,7 @@ package org.codehaus.plexus.cdc.merge;
 import org.jdom.Document;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
@@ -53,8 +54,8 @@ public interface Merger
      * 
      * @param mergedDocument the merged {@link Document} instance.
      * @param file File to write the merged contents to.
-     * @throws Exception if there was an error while writing merged contents to the specified file.
+     * @throws IOException if there was an error while writing merged contents to the specified file.
      */
-    public void writeMergedDocument( Document mergedDocument, File file )
-        throws Exception;
+    void writeMergedDocument( Document mergedDocument, File file )
+        throws IOException;
 }

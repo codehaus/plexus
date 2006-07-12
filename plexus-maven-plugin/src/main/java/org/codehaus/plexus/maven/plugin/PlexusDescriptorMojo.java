@@ -70,6 +70,11 @@ public class PlexusDescriptorMojo
     private String fileName;
 
     /**
+     * @parameter
+     */
+    private File[] additionalDescriptors;
+
+    /**
      * Whether to generate a Plexus Container descriptor instead of a component descriptor.
      * @parameter default-value="false"
      * @required
@@ -118,7 +123,7 @@ public class PlexusDescriptorMojo
 
         try
         {
-            cdc.processSources( sources, new File( outputDirectory, fileName ), containerDescriptor );
+            cdc.processSources( sources, new File( outputDirectory, fileName ), containerDescriptor, additionalDescriptors );
         }
         catch ( ComponentDescriptorCreatorException e )
         {
