@@ -48,8 +48,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * So, in this case it is easy enough to determine the role and the implementation.
@@ -85,10 +87,10 @@ public class DefaultComponentDescriptorCreator
     public void processSources( File[] sourceDirectories, File outputFile )
         throws ComponentDescriptorCreatorException
     {
-        processSources( sourceDirectories, outputFile, false );
+        processSources( sourceDirectories, outputFile, false, new ComponentDescriptor[0] );
     }
 
-    public void processSources( File[] sourceDirectories, File outputFile, boolean containerDescriptor )
+    public void processSources( File[] sourceDirectories, File outputFile, boolean containerDescriptor, ComponentDescriptor[] roleDefaults )
         throws ComponentDescriptorCreatorException
     {
         // ----------------------------------------------------------------------
@@ -122,6 +124,13 @@ public class DefaultComponentDescriptorCreator
 
         javaSources = builder.getSources();
 
+        Map defaultsByRole = new HashMap();
+        for ( int i = 0; i < roleDefaults.length; i++ )
+        {
+            // TODO: fail if role is null
+            defaultsByRole.put( roleDefaults[i].getRole(), roleDefaults[i] );
+        }
+
         List componentDescriptors = new ArrayList();
 
         for ( int i = 0; i < javaSources.length; i++ )
@@ -132,6 +141,16 @@ public class DefaultComponentDescriptorCreator
 
             if ( componentDescriptor != null && !javaClass.isAbstract() )
             {
+                // TODO: better merge, perhaps pass it into glean as the starting point instead
+                if ( defaultsByRole.containsKey( componentDescriptor.getRole() ) )
+                {
+                    ComponentDescriptor desc = (ComponentDescriptor) defaultsByRole.get( componentDescriptor.getRole() );
+                    
+                    if ( componentDescriptor.getInstantiationStrategy() == null )
+                    {
+                        componentDescriptor.setInstantiationStrategy( desc.getInstantiationStrategy() );
+		    }
+                }
                 componentDescriptors.add( componentDescriptor );
             }
         }
