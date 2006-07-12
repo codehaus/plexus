@@ -58,10 +58,10 @@ public abstract class AbstractMergeableElementList
      * @param compositeKeyList List of element/tag names to be used as composite keys to register recurring
      *                         {@link Mergeable} instances.
      * @return Map of {@link Mergeable} instances keyed on the composite key obtained from
-     *         {@link #getElementNamesForConflictResolution(List)}
+     *         {@link #getElementNamesForConflictResolution(java.util.List)}
      * @throws Exception if there was an error parsing and registering {@link Mergeable} instances
      */
-    protected Map parseRecurringMergeables( String tagName, List compositeKeyList )
+    protected Map parseRecurringMergeables( String tagName, List compositeKeyList, Mergeable parentElement )
         throws Exception
     {
         Map mergeables = new LinkedHashMap();
@@ -82,12 +82,35 @@ public abstract class AbstractMergeableElementList
             }
 
             // create a Mergeable instance and store it in the map.
-            ComponentsXmlTag tag = ComponentsXmlTag.lookupTagInstanceByName( tagName );
+            DescriptorTag tag = lookupTagInstanceByName( tagName, parentElement.getAllowedTags() );
             Mergeable mergeable = tag.createMergeable( ce );
             // register the Mergeable instance based on composite key
             mergeables.put( compositeKey, mergeable );
         }
         return mergeables;
+    }
+
+    /**
+     * Looks up and returns an {@link DescriptorTag} instance for the
+     * specified tag name.
+     *
+     * @param name key to look up the {@link DescriptorTag} instance on.
+     * @return {@link DescriptorTag} instance whose name matches the name specified.
+     *         Returns <code>null</code> if no match is found.
+     */
+    private DescriptorTag lookupTagInstanceByName( String name, DescriptorTag[] values )
+    {
+        DescriptorTag value = null;
+
+        for ( int i = 0; i < values.length && value == null; i++ )
+        {
+            if ( values[i].getTagName().equals( name ) )
+            {
+                value = values[i];
+            }
+        }
+        // not found!
+        return value;
     }
 
     public void merge( Mergeable me )
@@ -96,10 +119,10 @@ public abstract class AbstractMergeableElementList
         try
         {
             Map dRequirementsMap = parseRecurringMergeables( getTagNameForRecurringMergeable(),
-                                                             getElementNamesForConflictResolution( new ArrayList() ) );
+                                                             getElementNamesForConflictResolution( new ArrayList() ), me );
             Map rRequirementsMap = ( (AbstractMergeableElementList) me )
                 .parseRecurringMergeables( getTagNameForRecurringMergeable(),
-                                           getElementNamesForConflictResolution( new ArrayList() ) );
+                                           getElementNamesForConflictResolution( new ArrayList() ), me );
             merge( getElement(), dRequirementsMap, rRequirementsMap );
         }
         catch ( Exception e )

@@ -44,7 +44,7 @@ public interface Mergeable
      * @param me Another entity that is mergeable.
      * @throws MergeException if there was an error merging the mergeables.
      */
-    public abstract void merge( Mergeable me )
+    void merge( Mergeable me )
         throws MergeException;
 
     /**
@@ -54,7 +54,7 @@ public interface Mergeable
      * @param strategy {@link MergeStrategy} to apply for merging.
      * @throws MergeException if there was an error while merging.
      */
-    public abstract void merge( Mergeable me, MergeStrategy strategy )
+    void merge( Mergeable me, MergeStrategy strategy )
         throws MergeException;
 
     /**
@@ -62,5 +62,13 @@ public interface Mergeable
      *
      * @return the wrapped up JDom {@link Element} instance.
      */
-    public Element getElement();
+    Element getElement();
+
+    /**
+     * Returns an array of tags/elements that are allowed under the current
+     * element.
+     *
+     * @return the allowedTags
+     */
+    DescriptorTag[] getAllowedTags();
 }

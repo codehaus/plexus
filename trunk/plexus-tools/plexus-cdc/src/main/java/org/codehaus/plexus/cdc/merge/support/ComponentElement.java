@@ -33,10 +33,23 @@ import org.jdom.Element;
 public class ComponentElement
     extends AbstractMergeableElement
 {
-    /** Allowed elements/tags that we can expect under this element. */
-    private final ComponentsXmlTag[] allowedTags = {ComponentsXmlTag.ROLE, ComponentsXmlTag.ROLE_HINT,
-        ComponentsXmlTag.IMPLEMENTATION, ComponentsXmlTag.FIELD_NAME, ComponentsXmlTag.LIFECYCLE_HANDLER,
-        ComponentsXmlTag.REQUIREMENTS};
+    /**
+     * Allowed elements/tags that we can expect under this element.
+     */
+    private final DescriptorTag[] allowedTags =
+        {ROLE, ROLE_HINT, IMPLEMENTATION, FIELD_NAME, LIFECYCLE_HANDLER, RequirementsElement.TAG};
+
+    static final DescriptorTag TAG = new DescriptorTag( "component", true, ComponentElement.class );
+
+    static final DescriptorTag ROLE = new DescriptorTag( "role" );
+
+    static final DescriptorTag ROLE_HINT = new DescriptorTag( "role-hint" );
+
+    static final DescriptorTag FIELD_NAME = new DescriptorTag( "field-name" );
+
+    private static final DescriptorTag IMPLEMENTATION = new DescriptorTag( "implementation" );
+
+    private static final DescriptorTag LIFECYCLE_HANDLER = new DescriptorTag( "lifecycle-handler", false, null );
 
     public ComponentElement( Element element )
     {
@@ -48,9 +61,8 @@ public class ComponentElement
         return me instanceof ComponentElement;
     }
 
-    protected ComponentsXmlTag[] getAllowedTags()
+    public DescriptorTag[] getAllowedTags()
     {
-        // return allowedTags;
-        return new ComponentsXmlTag[0];
+        return allowedTags;
     }
 }

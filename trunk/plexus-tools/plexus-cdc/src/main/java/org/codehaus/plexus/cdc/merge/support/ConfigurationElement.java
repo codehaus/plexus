@@ -45,9 +45,9 @@ public class ConfigurationElement
         return me instanceof ConfigurationElement;
     }
 
-    protected ComponentsXmlTag[] getAllowedTags()
+    public DescriptorTag[] getAllowedTags()
     {
         // TODO Implement!
-        return new ComponentsXmlTag[0];
+        return new DescriptorTag[0];
     }
 }

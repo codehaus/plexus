@@ -30,21 +30,22 @@ import org.jdom.Element;
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
  */
-public class ComponentSetElement
+public class PlexusRootElement
     extends AbstractMergeableElement
 {
-    public ComponentSetElement( Element element )
+    public PlexusRootElement( Element element )
     {
         super( element );
     }
 
     public DescriptorTag[] getAllowedTags()
     {
+        // TODO: add the managers, etc
         return new DescriptorTag[]{ComponentsElement.TAG};
     }
 
     protected boolean isExpectedElementType( Mergeable me )
     {
-        return me instanceof ComponentSetElement;
+        return me instanceof PlexusRootElement;
     }
 }

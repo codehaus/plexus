@@ -34,14 +34,16 @@ import org.jdom.Element;
 public class RequirementElement
     extends AbstractMergeableElement
 {
+    static final DescriptorTag TAG = new DescriptorTag( "requirement", true, RequirementElement.class );
+
     public RequirementElement( Element element )
     {
         super( element );
     }
 
-    protected ComponentsXmlTag[] getAllowedTags()
+    public DescriptorTag[] getAllowedTags()
     {
-        return new ComponentsXmlTag[] {ComponentsXmlTag.ROLE, ComponentsXmlTag.ROLE_HINT,  ComponentsXmlTag.FIELD_NAME};
+        return new DescriptorTag[]{ComponentElement.ROLE, ComponentElement.ROLE_HINT, ComponentElement.FIELD_NAME};
     }
 
     public void merge( Mergeable me )

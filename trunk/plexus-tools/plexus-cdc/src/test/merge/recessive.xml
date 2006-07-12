@@ -29,4 +29,20 @@
       </requirements>
     </component>
   </components>
+
+  <lifecycle-handler-manager implementation="org.codehaus.plexus.lifecycle.DefaultLifecycleHandlerManager">
+    <default-lifecycle-handler-id>webapp</default-lifecycle-handler-id>
+    <lifecycle-handlers>
+      <lifecycle-handler implementation="org.codehaus.plexus.personality.plexus.PlexusLifecycleHandler">
+        <id>webapp</id>
+        <name>Webapp</name>
+        <begin-segment>
+          <phase implementation="" />
+        </begin-segment>
+        <end-segment>
+          <phase implementation="" />
+        </end-segment>
+      </lifecycle-handler>
+    </lifecycle-handlers>
+  </lifecycle-handler-manager>
 </component-set>
