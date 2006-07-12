@@ -31,11 +31,9 @@ import org.codehaus.plexus.component.repository.ComponentDependency;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
-import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 import org.codehaus.plexus.util.xml.XMLWriter;
@@ -44,7 +42,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -74,8 +71,6 @@ public class DefaultComponentDescriptorCreator
     // TODO: Make a list
     private ComponentGleaner gleaner;
 
-    private static final File[] EMPTY_FILE_ARRAY = new File[0];
-
     // ----------------------------------------------------------------------
     // ComponentDescriptorCreator Implementation
     // ----------------------------------------------------------------------
@@ -83,16 +78,17 @@ public class DefaultComponentDescriptorCreator
     public void processSources( File[] sourceDirectories, File outputFile )
         throws ComponentDescriptorCreatorException
     {
-        processSources( sourceDirectories, outputFile, false, EMPTY_FILE_ARRAY );
+        processSources( sourceDirectories, outputFile, false );
     }
 
-    public void processSources( File[] sourceDirectories, File outputFile, boolean containerDescriptor,
-                                File[] additionalDescriptors )
+    public void processSources( File[] sourceDirectories, File outputFile, boolean containerDescriptor )
         throws ComponentDescriptorCreatorException
     {
         // ----------------------------------------------------------------------
         // Check and register all directories to scan
         // ----------------------------------------------------------------------
+
+        JavaSource[] javaSources;
 
         JavaDocBuilder builder = new JavaDocBuilder();
 
@@ -104,8 +100,8 @@ public class DefaultComponentDescriptorCreator
 
             if ( !sourceDirectory.isDirectory() )
             {
-                getLogger().warn(
-                    "Specified source directory isn't a directory: " + "'" + sourceDirectory.getAbsolutePath() + "'." );
+                getLogger().warn( "Specified source directory isn't a directory: " +
+                                  "'" + sourceDirectory.getAbsolutePath() + "'." );
             }
 
             getLogger().debug( " - " + sourceDirectory.getAbsolutePath() );
@@ -117,7 +113,7 @@ public class DefaultComponentDescriptorCreator
         // Scan the sources
         // ----------------------------------------------------------------------
 
-        JavaSource[] javaSources = builder.getSources();
+        javaSources = builder.getSources();
 
         List componentDescriptors = new ArrayList();
 
@@ -170,43 +166,7 @@ public class DefaultComponentDescriptorCreator
         {
             if ( !parentFile.mkdirs() )
             {
-                throw new ComponentDescriptorCreatorException(
-                    "Could not make parent directory: '" + parentFile.getAbsolutePath() + "'." );
-            }
-        }
-
-        // Merge additional descriptors
-        // TODO: replace with the JDOM merger (see ComponentsXmlMerger) to preserve comments, etc.
-        for ( Iterator i = Arrays.asList( additionalDescriptors ).iterator(); i.hasNext(); )
-        {
-            File f = (File) i.next();
-
-            try
-            {
-                PlexusConfiguration config = PlexusTools.buildConfiguration( FileUtils.fileRead( f ) );
-
-                ComponentSetDescriptor additionalComponentSetDescriptor = PlexusTools.buildComponentSet( config );
-
-                componentDescriptors.addAll( additionalComponentSetDescriptor.getComponents() );
-
-                List dependencies = new ArrayList();
-                if ( additionalComponentSetDescriptor.getDependencies() != null )
-                {
-                    dependencies.addAll( additionalComponentSetDescriptor.getDependencies() );
-                }
-                if ( componentSetDescriptor.getDependencies() != null )
-                {
-                    dependencies.addAll( componentSetDescriptor.getDependencies() );
-                }
-                componentSetDescriptor.setDependencies( dependencies );
-            }
-            catch ( PlexusConfigurationException e )
-            {
-                throw new ComponentDescriptorCreatorException( "Unable to read additional descriptor: " + f, e );
-            }
-            catch ( IOException e )
-            {
-                throw new ComponentDescriptorCreatorException( "Unable to read additional descriptor: " + f, e );
+                throw new ComponentDescriptorCreatorException( "Could not make parent directory: '" + parentFile.getAbsolutePath() + "'.");
             }
         }
 
@@ -234,8 +194,8 @@ public class DefaultComponentDescriptorCreator
         }
         catch ( IOException e )
         {
-            throw new ComponentDescriptorCreatorException(
-                "Error while writing the component descriptor to: " + "'" + outputFile.getAbsolutePath() + "'.", e );
+            throw new ComponentDescriptorCreatorException( "Error while writing the component descriptor to: " +
+                                                           "'" + outputFile.getAbsolutePath() + "'.", e );
         }
     }
 
@@ -358,8 +318,8 @@ public class DefaultComponentDescriptorCreator
 
         if ( !configuration.getName().equals( "configuration" ) )
         {
-            throw new ComponentDescriptorCreatorException(
-                "The root node of the configuration must be " + "'configuration'." );
+            throw new ComponentDescriptorCreatorException( "The root node of the configuration must be " +
+                                                           "'configuration'." );
         }
 
         writePlexusConfiguration( w, configuration );
