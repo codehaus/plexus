@@ -36,11 +36,10 @@ public interface ComponentDescriptorCreator
 {
     String ROLE = ComponentDescriptorCreator.class.getName();
 
-    void processSources( File[] sourceDirectories, File outputFile )
+    void processSources( File[] sourceDirectories, File outputDirectory )
         throws ComponentDescriptorCreatorException;
 
-    void processSources( File[] sourceDirectories, File outputFile, boolean containerDescriptor,
-                         File[] additionalDescriptors )
+    void processSources( File[] sourceDirectories, File outputDirectory, boolean containerDescriptor )
         throws ComponentDescriptorCreatorException;
 
     void mergeDescriptors( File outputDescriptor, List descriptors )
