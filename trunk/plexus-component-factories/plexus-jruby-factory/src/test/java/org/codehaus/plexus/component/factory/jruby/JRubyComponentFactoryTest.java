@@ -12,14 +12,14 @@ import org.jruby.runtime.builtin.IRubyObject;
  * @author eredmond
  */
 public class JRubyComponentFactoryTest
-	extends PlexusTestCase
+    extends PlexusTestCase
 {
     public void testComponent()
         throws Exception
     {
-    	JRubyInvoker invoker = (JRubyInvoker)lookup( "hello" );
+        JRubyInvoker invoker = (JRubyInvoker) lookup( "hello" );
 
-    	assertNotNull( invoker );
+        assertNotNull( invoker );
 
         StringOutputStream stdout = new StringOutputStream();
         StringOutputStream stderr = new StringOutputStream();
@@ -29,7 +29,7 @@ public class JRubyComponentFactoryTest
         // invoke the script
         IRubyObject result = invoker.invoke( stdout, stderr );
         // call a method on a returned object (potentially unsafe? rework invoker)
-        ((IRubyObject)result).callMethod( "execute" );
+        ( (IRubyObject) result ).callMethod( "execute" );
 
         logOutput( stdout, false );
         logOutput( stderr, true );
@@ -40,17 +40,17 @@ public class JRubyComponentFactoryTest
         String output = out.toString();
         if ( output != null && output.length() > 0 )
         {
-        	for (StringTokenizer tokens = new StringTokenizer( output, "\n" ); tokens.hasMoreTokens();)
-        	{
-        		if ( error )
-        		{
-        			getContainer().getLogger().error( tokens.nextToken() );
-        		}
-        		else
-        		{
-        			getContainer().getLogger().info( tokens.nextToken() );
-        		}
-			}
+            for ( StringTokenizer tokens = new StringTokenizer( output, "\n" ); tokens.hasMoreTokens(); )
+            {
+                if ( error )
+                {
+                    getContainer().getLogger().error( tokens.nextToken() );
+                }
+                else
+                {
+                    getContainer().getLogger().info( tokens.nextToken() );
+                }
+            }
         }
     }
 }

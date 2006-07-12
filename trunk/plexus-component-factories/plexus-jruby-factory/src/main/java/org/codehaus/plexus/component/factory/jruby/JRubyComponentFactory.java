@@ -12,11 +12,12 @@ import org.codehaus.plexus.component.repository.ComponentDescriptor;
  * @author eredmond
  */
 public class JRubyComponentFactory
-	extends AbstractComponentFactory
+    extends AbstractComponentFactory
 {
-    public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm containerRealm, PlexusContainer container )
-    	throws ComponentInstantiationException
-	{
-    	return new JRubyInvoker( componentDescriptor, containerRealm );
-	}
+    public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm containerRealm,
+                              PlexusContainer container )
+        throws ComponentInstantiationException
+    {
+        return new JRubyInvoker( componentDescriptor, containerRealm );
+    }
 }
