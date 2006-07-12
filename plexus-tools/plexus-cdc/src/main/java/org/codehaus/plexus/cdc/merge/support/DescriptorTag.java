@@ -32,7 +32,7 @@ import java.lang.reflect.Constructor;
  *
  * @version $Id$
  */
-public class AbstractDescriptorTag
+public class DescriptorTag
 {
     /**
      * The tag name.
@@ -53,10 +53,20 @@ public class AbstractDescriptorTag
      * Constructor.
      *
      * @param tagName           The tag name of the element
-     * @param isMultipleAllowed Whether the element may occur multiple times in the descriptor
-     * @deprecated Use {@link #AbstractDescriptorTag(String,boolean,Class)} instead
      */
-    public AbstractDescriptorTag( String tagName, boolean isMultipleAllowed )
+    public DescriptorTag( String tagName )
+    {
+        this( tagName, false, null );
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param tagName           The tag name of the element
+     * @param isMultipleAllowed Whether the element may occur multiple times in the descriptor
+     * @deprecated Use {@link #DescriptorTag(String,boolean,Class)} instead
+     */
+    public DescriptorTag( String tagName, boolean isMultipleAllowed )
     {
         this( tagName, isMultipleAllowed, null );
     }
@@ -68,7 +78,7 @@ public class AbstractDescriptorTag
      * @param isMultipleAllowed Whether the element may occur multiple times in the descriptor
      * @param mergeableClass    Concrete implementation of {@link Mergeable} that is bound this tag.
      */
-    public AbstractDescriptorTag( String tagName, boolean isMultipleAllowed, Class mergeableClass )
+    public DescriptorTag( String tagName, boolean isMultipleAllowed, Class mergeableClass )
     {
         this.tagName = tagName;
         this.multipleAllowed = isMultipleAllowed;
@@ -78,9 +88,9 @@ public class AbstractDescriptorTag
     public boolean equals( Object other )
     {
         boolean eq = false;
-        if ( other instanceof AbstractDescriptorTag )
+        if ( other instanceof DescriptorTag )
         {
-            AbstractDescriptorTag tag = (AbstractDescriptorTag) other;
+            DescriptorTag tag = (DescriptorTag) other;
             if ( tag.getTagName().equals( this.tagName ) )
             {
                 eq = true;

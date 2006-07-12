@@ -36,6 +36,8 @@ import java.util.List;
 public class RequirementsElement
     extends AbstractMergeableElementList
 {
+    public static final DescriptorTag TAG = new DescriptorTag( "requirements", true, RequirementsElement.class );
+
     public RequirementsElement( Element element )
     {
         super( element );
@@ -46,9 +48,9 @@ public class RequirementsElement
         return me instanceof RequirementsElement;
     }
 
-    protected ComponentsXmlTag[] getAllowedTags()
+    public DescriptorTag[] getAllowedTags()
     {
-        return new ComponentsXmlTag[]{ComponentsXmlTag.REQUIREMENT};
+        return new DescriptorTag[]{RequirementElement.TAG};
     }
 
     protected List getElementNamesForConflictResolution( List defaultList )
@@ -56,13 +58,14 @@ public class RequirementsElement
         // we return the keys that we know we want to lookup to identify and
         // resolve conflicts.
         List l = new ArrayList();
-        l.add( ComponentsXmlTag.ROLE.getTagName() );
-        // l.add (ComponentsXmlTag.ROLE_HINT.getTagName ());
+        l.add( ComponentElement.ROLE.getTagName() );
+        // TODO: add this back, but a test will fail (based on a role with no hint, which shouldn't be legal)
+//        l.add( ComponentElement.ROLE_HINT.getTagName() );
         return l;
     }
 
     protected String getTagNameForRecurringMergeable()
     {
-        return ComponentsXmlTag.REQUIREMENT.getTagName();
+        return RequirementElement.TAG.getTagName();
     }
 }

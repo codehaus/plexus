@@ -27,10 +27,15 @@ package org.codehaus.plexus.cdc.merge.support;
 import org.codehaus.plexus.cdc.merge.MergeException;
 import org.codehaus.plexus.cdc.merge.MergeStrategy;
 import org.jdom.Element;
+import org.jdom.Content;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Collections;
+import java.util.Set;
+import java.util.Arrays;
+import java.util.HashSet;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
@@ -139,9 +144,14 @@ public abstract class AbstractMergeableElement
         }
         // recessive Component Element.
         AbstractMergeableElement rce = (AbstractMergeableElement) me;
+
+        Set allowedTags = new HashSet();
+
         for ( int i = 0; i < getAllowedTags().length; i++ )
         {
             String tagName = getAllowedTags()[i].getTagName();
+
+            allowedTags.add( tagName );
 
             List defaultConflictChecklist = new ArrayList();
             defaultConflictChecklist.add( tagName );
@@ -170,6 +180,18 @@ public abstract class AbstractMergeableElement
                 }
             }
         }
+
+        for ( Iterator i = me.getElement().getChildren().iterator(); i.hasNext(); )
+        {
+            Element child = (Element) i.next();
+
+            if ( !allowedTags.contains( child.getName() ) )
+            {
+                // not yet merged, copy over
+                element.addContent( (Content) child.clone() );
+            }
+        }
+
     }
 
 }
