@@ -31,14 +31,15 @@ import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
 import org.codehaus.plexus.cdc.ComponentDescriptorCreatorException;
 import org.codehaus.plexus.util.FileUtils;
 
-import java.util.List;
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.io.File;
 import java.io.IOException;
 
 /**
- * @goal merge
+ * @goal merge-descriptors
  *
  * @phase process-resources
  *
@@ -61,6 +62,11 @@ public class PlexusMergeMojo
     private List resources;
 
     /**
+     * @parameter
+     */
+    private File[] descriptors;
+
+    /**
      * @parameter expression="${project.build.outputDirectory}/META-INF/plexus/components.xml"
      * @required
      */
@@ -71,8 +77,7 @@ public class PlexusMergeMojo
     // ----------------------------------------------------------------------
 
     /**
-     * @parameter expression="${component.org.codehaus.plexus.cdc.ComponentDescriptorCreator}"
-     * @required
+     * @component
      */
     private ComponentDescriptorCreator cdc;
 
@@ -126,11 +131,16 @@ public class PlexusMergeMojo
             }
         }
 
+        if ( descriptors != null )
+        {
+            files.addAll( Arrays.asList( descriptors ) );
+        }
+
         // ----------------------------------------------------------------------
         // Merge the component set descriptors
         // ----------------------------------------------------------------------
 
-        if ( files.size() > 0 )
+        if ( files.isEmpty() )
         {
             getLog().debug( "Didn't find any files to merge." );
 

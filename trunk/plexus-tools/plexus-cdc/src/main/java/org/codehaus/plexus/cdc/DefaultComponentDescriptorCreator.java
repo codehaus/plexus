@@ -27,6 +27,8 @@ package org.codehaus.plexus.cdc;
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaSource;
+import org.codehaus.plexus.cdc.merge.Merger;
+import org.codehaus.plexus.cdc.merge.MergeException;
 import org.codehaus.plexus.component.repository.ComponentDependency;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
@@ -37,6 +39,9 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 import org.codehaus.plexus.util.xml.XMLWriter;
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -71,6 +76,8 @@ public class DefaultComponentDescriptorCreator
     // TODO: Make a list
     private ComponentGleaner gleaner;
 
+    private Merger merger;
+
     // ----------------------------------------------------------------------
     // ComponentDescriptorCreator Implementation
     // ----------------------------------------------------------------------
@@ -100,8 +107,8 @@ public class DefaultComponentDescriptorCreator
 
             if ( !sourceDirectory.isDirectory() )
             {
-                getLogger().warn( "Specified source directory isn't a directory: " +
-                                  "'" + sourceDirectory.getAbsolutePath() + "'." );
+                getLogger().warn(
+                    "Specified source directory isn't a directory: " + "'" + sourceDirectory.getAbsolutePath() + "'." );
             }
 
             getLogger().debug( " - " + sourceDirectory.getAbsolutePath() );
@@ -166,7 +173,8 @@ public class DefaultComponentDescriptorCreator
         {
             if ( !parentFile.mkdirs() )
             {
-                throw new ComponentDescriptorCreatorException( "Could not make parent directory: '" + parentFile.getAbsolutePath() + "'.");
+                throw new ComponentDescriptorCreatorException(
+                    "Could not make parent directory: '" + parentFile.getAbsolutePath() + "'." );
             }
         }
 
@@ -194,14 +202,61 @@ public class DefaultComponentDescriptorCreator
         }
         catch ( IOException e )
         {
-            throw new ComponentDescriptorCreatorException( "Error while writing the component descriptor to: " +
-                                                           "'" + outputFile.getAbsolutePath() + "'.", e );
+            throw new ComponentDescriptorCreatorException(
+                "Error while writing the component descriptor to: " + "'" + outputFile.getAbsolutePath() + "'.", e );
         }
     }
 
     public void mergeDescriptors( File outputDescriptor, List descriptors )
         throws ComponentDescriptorCreatorException
     {
+        SAXBuilder builder = new SAXBuilder();
+
+        Document finalDoc = null;
+
+        for ( Iterator i = descriptors.iterator(); i.hasNext(); )
+        {
+            File f = (File) i.next();
+            try
+            {
+                Document doc = builder.build( f );
+
+                if ( finalDoc != null )
+                {
+                    // Last specified has dominance
+                    finalDoc = merger.merge( doc, finalDoc );
+                }
+                else
+                {
+                    finalDoc = doc;
+                }
+            }
+            catch ( JDOMException e )
+            {
+                throw new ComponentDescriptorCreatorException( "Invalid input descriptor for merge: " + f, e );
+            }
+            catch ( IOException e )
+            {
+                throw new ComponentDescriptorCreatorException( "Error reading input descriptor for merge: " + f, e );
+            }
+            catch ( MergeException e )
+            {
+                throw new ComponentDescriptorCreatorException( "Error merging descriptor: " + f, e );
+            }
+        }
+
+        if ( finalDoc != null )
+        {
+            try
+            {
+                merger.writeMergedDocument( finalDoc, outputDescriptor );
+            }
+            catch ( IOException e )
+            {
+                throw new ComponentDescriptorCreatorException( "Error writing merged descriptor: " + outputDescriptor,
+                                                               e );
+            }
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -318,8 +373,8 @@ public class DefaultComponentDescriptorCreator
 
         if ( !configuration.getName().equals( "configuration" ) )
         {
-            throw new ComponentDescriptorCreatorException( "The root node of the configuration must be " +
-                                                           "'configuration'." );
+            throw new ComponentDescriptorCreatorException(
+                "The root node of the configuration must be " + "'configuration'." );
         }
 
         writePlexusConfiguration( w, configuration );

@@ -36,21 +36,21 @@ import java.util.List;
 public class ComponentsElement
     extends AbstractMergeableElementList
 {
-    private List conflictVerificationkeys = new ArrayList();
+    static final DescriptorTag TAG = new DescriptorTag( "components", true, ComponentsElement.class );
 
-    {
-        conflictVerificationkeys.add( ComponentsXmlTag.ROLE.getTagName() );
-        conflictVerificationkeys.add( ComponentsXmlTag.ROLE_HINT.getTagName() );
-    }
+    private List conflictVerificationkeys = new ArrayList();
 
     public ComponentsElement( Element element )
     {
         super( element );
+
+        conflictVerificationkeys.add( ComponentElement.ROLE.getTagName() );
+        conflictVerificationkeys.add( ComponentElement.ROLE_HINT.getTagName() );
     }
 
-    protected ComponentsXmlTag[] getAllowedTags()
+    public DescriptorTag[] getAllowedTags()
     {
-        return new ComponentsXmlTag[]{ComponentsXmlTag.COMPONENT};
+        return new DescriptorTag[]{ComponentElement.TAG};
     }
 
     protected boolean isExpectedElementType( Mergeable me )
@@ -66,14 +66,15 @@ public class ComponentsElement
 
     protected String getTagNameForRecurringMergeable()
     {
-        return ComponentsXmlTag.COMPONENT.getTagName();
+        return ComponentElement.TAG.getTagName();
     }
 
     protected List getElementNamesForConflictResolution( List defaultList )
     {
+        // TODO: how is this different from getElementNamesForConflictChecks?
         List l = new ArrayList();
-        l.add( ComponentsXmlTag.ROLE.getTagName() );
-        l.add( ComponentsXmlTag.ROLE_HINT.getTagName() );
+        l.add( ComponentElement.ROLE.getTagName() );
+        l.add( ComponentElement.ROLE_HINT.getTagName() );
         return l;
     }
 }

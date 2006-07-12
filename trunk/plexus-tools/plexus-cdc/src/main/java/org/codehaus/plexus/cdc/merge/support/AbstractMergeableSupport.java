@@ -73,14 +73,6 @@ public abstract class AbstractMergeableSupport
      */
     protected abstract boolean isExpectedElementType( Mergeable me );
 
-    /**
-     * Returns an array of tags/elements that are allowed under the current
-     * element.
-     *
-     * @return the allowedTags
-     */
-    protected abstract ComponentsXmlTag[] getAllowedTags();
-
     // ----------------------------------------------------------------------
     // Methods delegated on wrapped JDOM element.
     // ----------------------------------------------------------------------

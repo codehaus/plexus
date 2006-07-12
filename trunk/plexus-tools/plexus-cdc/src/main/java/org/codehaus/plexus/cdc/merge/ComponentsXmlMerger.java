@@ -38,7 +38,7 @@ import java.io.IOException;
  * @version $Id$
  */
 public class ComponentsXmlMerger
-    implements Merger
+    extends AbstractMerger
 {
 
     /**
@@ -58,22 +58,4 @@ public class ComponentsXmlMerger
         return mDoc;
     }
 
-    /**
-     * @see Merger#writeMergedDocument(Document, File)
-     */
-    public void writeMergedDocument( Document mergedDocument, File file )
-        throws IOException
-    {
-        XMLOutputter out = new XMLOutputter();
-        FileWriter fw = null;
-        try
-        {
-            fw = new FileWriter( file );
-            out.output( mergedDocument, fw );
-        }
-        finally
-        {
-            IOUtil.close( fw );
-        }
-    }
 }
