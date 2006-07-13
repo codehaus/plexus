@@ -125,10 +125,13 @@ public class DefaultComponentDescriptorCreator
         javaSources = builder.getSources();
 
         Map defaultsByRole = new HashMap();
-        for ( int i = 0; i < roleDefaults.length; i++ )
+        if ( roleDefaults != null )
         {
-            // TODO: fail if role is null
-            defaultsByRole.put( roleDefaults[i].getRole(), roleDefaults[i] );
+            for ( int i = 0; i < roleDefaults.length; i++ )
+            {
+                // TODO: fail if role is null
+                defaultsByRole.put( roleDefaults[i].getRole(), roleDefaults[i] );
+            }
         }
 
         List componentDescriptors = new ArrayList();
