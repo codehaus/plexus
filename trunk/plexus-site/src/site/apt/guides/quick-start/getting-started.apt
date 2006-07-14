@@ -123,14 +123,18 @@ public class ParmesanCheese
   Creating the embedded container is very simple:
 
 ----
-import org.codehaus.plexus.Embedder;
+import org.codehaus.plexus.embed.Embedder;
 
 public class App
 {
-    Embedder embedder = new Embedder();
-    embedder.start();
 
-    ...
+    public static void main(String args[]) throws Exception
+    {
+        Embedder embedder = new Embedder();
+        embedder.start();
+
+        ...
+    }
 }
 ----
 
