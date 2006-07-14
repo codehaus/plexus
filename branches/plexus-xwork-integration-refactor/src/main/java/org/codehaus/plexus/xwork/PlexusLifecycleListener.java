@@ -10,10 +10,12 @@ import org.apache.commons.logging.LogFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.Enumeration;
 
 public class PlexusLifecycleListener implements ServletContextListener, HttpSessionListener {
+    // TODO: do we need logging in here?
     private static final Log log = LogFactory.getLog(PlexusLifecycleListener.class);
 
     public static boolean loaded = false;
@@ -71,21 +74,32 @@ public class PlexusLifecycleListener implements ServletContextListener, HttpSess
                 }
             } );
 
-            PlexusUtils.configure(pc, "plexus-application.xml");
+            setConfigurationStream( pc );
             ServletContext ctx = servletContextEvent.getServletContext();
             ctx.setAttribute(KEY, pc);
+
+            // used by the servlet configuration phase
+            pc.getContext().put( ServletContext.class.getName(), ctx );
 
             pc.initialize();
             pc.start();
         } catch (PlexusContainerException e) {
-            log.error("Error initializing Plexus container (scope: application)");
             throw new RuntimeException(e);
         } catch (PlexusConfigurationResourceException e) {
-            log.error("Error initializing Plexus container (scope: application)");
             throw new RuntimeException(e);
         }
         loaded = true;
-        log.info("Started Plexus container (scope: application)");
+    }
+
+    private void setConfigurationStream( PlexusContainer pc )
+        throws PlexusConfigurationResourceException
+    {
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/plexus/plexus.xml" );
+        if (is == null) {
+            log.info("Could not find " + "META-INF/plexus/plexus.xml" + ", skipping");
+            is = new ByteArrayInputStream("<plexus><components></components></plexus>".getBytes());
+        }
+        pc.setConfigurationResource(new InputStreamReader(is));
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
@@ -95,38 +109,11 @@ public class PlexusLifecycleListener implements ServletContextListener, HttpSess
             pc.dispose();
         }
         loaded = false;
-        log.info("Disposed Plexus container (scope: application)");
     }
 
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
-        try {
-
-            HttpSession session = httpSessionEvent.getSession();
-            ServletContext ctx = session.getServletContext();
-            PlexusContainer parent = (PlexusContainer) ctx.getAttribute(KEY);
-            PlexusContainer child = parent.createChildContainer("session", Collections.EMPTY_LIST, Collections.EMPTY_MAP);
-            session.setAttribute(KEY, child);
-            PlexusUtils.configure(child, "plexus-session.xml");
-            child.initialize();
-            child.start();
-
-            log.debug("Started Plexus container (scope: session)");
-
-        } catch (PlexusContainerException e) {
-            log.error("Error initializing Plexus container (scope: session)");
-            throw new RuntimeException(e);
-        } catch (PlexusConfigurationResourceException e) {
-            log.error("Error initializing Plexus container (scope: session)");
-            throw new RuntimeException(e);
-        }
     }
 
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-        HttpSession session = httpSessionEvent.getSession();
-        PlexusContainer child = (PlexusContainer) session.getAttribute(KEY);
-        if ( child != null ) {
-            child.dispose();
-        }
-        log.debug("Disposed Plexus container (scope: session)");
     }
 }
