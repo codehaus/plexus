@@ -25,7 +25,7 @@ Documentation Trails
   This trail is for those wishing to create Plexus components for applications already using the Plexus Container
 
   [[1]] To learn the basics about Plexus components and the Plexus container, try the
-  {{{guides/quick-start/getting-started.html} Five Minute Tutorial}}.
+  {{{../quick-start/getting-started.html} Five Minute Tutorial}}.
 
   [[2]] To learn more about writing components, take the {{{writing-components/index.html} Component Tutorial}}.
 
