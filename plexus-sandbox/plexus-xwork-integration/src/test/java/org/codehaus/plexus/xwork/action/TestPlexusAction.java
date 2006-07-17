@@ -17,14 +17,13 @@ package org.codehaus.plexus.xwork.action;
  */
 
 /**
- * TestAction:
+ * TestPlexusAction:
  *
- * @author: jesse
- * @date: Jul 13, 2006
- * @version: $ID$
+ * @author Jesse McConnell <jesse@codehaus.org>
+ * @version $ID$
  */
-public class TestAction
-    extends AbstractAction
+public class TestPlexusAction
+    extends PlexusActionSupport
 {
     private String testString;
 
