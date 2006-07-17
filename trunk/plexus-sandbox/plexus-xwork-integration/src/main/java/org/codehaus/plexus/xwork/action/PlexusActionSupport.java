@@ -20,13 +20,12 @@ import org.codehaus.plexus.logging.Logger;
 import com.opensymphony.xwork.ActionSupport;
 
 /**
- * AbstractAction
+ * PlexusActionSupport
  *
- * @author: jesse
- * @date: Jul 13, 2006
- * @version: $ID$
+ * @author Jesse McConnell <jesse@codehaus.org>
+ * @version $ID$
  */
-public abstract class AbstractAction
+public abstract class PlexusActionSupport
     extends ActionSupport
     implements LogEnabled
 {

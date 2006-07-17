@@ -3,7 +3,7 @@
     <component>
       <role>com.opensymphony.xwork.Action</role>
       <role-hint>testAction</role-hint>
-      <implementation>org.codehaus.plexus.xwork.action.TestAction</implementation>
+      <implementation>org.codehaus.plexus.xwork.action.TestPlexusAction</implementation>
     </component>
   </components>
 </component-set>
