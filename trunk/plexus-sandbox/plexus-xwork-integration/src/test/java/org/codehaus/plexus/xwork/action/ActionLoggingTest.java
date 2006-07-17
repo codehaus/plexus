@@ -28,9 +28,8 @@ import java.io.IOException;
 /**
  * ActionLoggingTest:
  *
- * @author: jesse
- * @date: Jul 16, 2006
- * @version: $ID:$
+ * @author Jesse McConnell <jesse@codehaus.org>
+ * @version $ID:$
  */
 public class ActionLoggingTest
     extends PlexusTestCase
@@ -59,7 +58,7 @@ public class ActionLoggingTest
     {
         try
         {
-            TestAction testAction = (TestAction) lookup( "com.opensymphony.xwork.Action", "testAction" );
+            TestPlexusAction testAction = (TestPlexusAction) lookup( "com.opensymphony.xwork.Action", "testAction" );
             String testString = "action test string";
             testAction.setTestString( testString );
 
