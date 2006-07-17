@@ -29,7 +29,7 @@ import java.io.IOException;
  * ActionLoggingTest:
  *
  * @author Jesse McConnell <jesse@codehaus.org>
- * @version $ID:$
+ * @version $Id$
  */
 public class ActionLoggingTest
     extends PlexusTestCase

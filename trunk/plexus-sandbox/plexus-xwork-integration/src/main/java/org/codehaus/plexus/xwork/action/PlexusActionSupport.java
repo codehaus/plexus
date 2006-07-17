@@ -23,7 +23,7 @@ import com.opensymphony.xwork.ActionSupport;
  * PlexusActionSupport
  *
  * @author Jesse McConnell <jesse@codehaus.org>
- * @version $ID$
+ * @version $Id$
  */
 public abstract class PlexusActionSupport
     extends ActionSupport
