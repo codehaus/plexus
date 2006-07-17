@@ -20,7 +20,7 @@ package org.codehaus.plexus.xwork.action;
  * TestPlexusAction:
  *
  * @author Jesse McConnell <jesse@codehaus.org>
- * @version $ID$
+ * @version $Id$
  */
 public class TestPlexusAction
     extends PlexusActionSupport
