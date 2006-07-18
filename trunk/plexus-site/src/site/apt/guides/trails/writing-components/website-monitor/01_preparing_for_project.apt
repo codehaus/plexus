@@ -30,7 +30,7 @@ Run the following command from the command line to setup an initial project stru
 
 +------------------------------------------+
 
- mvn archetype:create -DarchetypeGroupId=org.codehaus.plexus -DarchetypeArtifactId=plexus-archetype-component-simple -DarchetypeVersion=1.0-alpha-1-SNAPSHOT -DgroupId=org.codehaus.plexus -DartifactId=plexus-website-monitor-component  -DpackageName=org.codehaus.plexus.tutorial -Dpackaging=jar
+ mvn archetype:create -DarchetypeGroupId=org.codehaus.plexus -DarchetypeArtifactId=plexus-archetype-component-simple -DarchetypeVersion=1.0-alpha-1-SNAPSHOT -DgroupId=org.codehaus.plexus -DartifactId=plexus-website-monitor-component  -DpackageName=org.codehaus.plexus.tutorial -Dpackaging=jar -DremoteRepositories=http://snapshots.repository.codehaus.org/
 
 +------------------------------------------+
 
@@ -56,6 +56,10 @@ Run the following command from the command line to setup an initial project stru
 | -DartifactId | "artifactId" for the project to be generated |	Yes |
 *----------+--------------+----------------:
 | -DpackageName |	Base package name to be use for any Java sources being copied over 	| No|
+*----------+--------------+----------------:
+| -Dpackaging |	Packaging to be used for the created project | No|
+*----------+--------------+----------------:
+| -DremoteRepositories | Comma-separated list of repositories to lookup to retrieve archetype | No|
 *----------+--------------+----------------:
  
 *Generate a Project for your IDE.
