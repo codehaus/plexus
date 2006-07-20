@@ -57,10 +57,18 @@ public class AbstractRbacSession
             set.add( role.getPermissions() );
         }
 
-        Permission p = new DefaultPermission( (Permission[]) set.toArray( Permission.ZERO_PERMISSION ) );
+        Permission p = new DefaultPermission( Permission.ZERO_PERMISSION );
 
         return p.ge( perm );
     }
+
+    /**
+     * Returns true iff this session is authorized with the specified permissions.
+     */
+    //public boolean isAuthorized( Permission[] perm )
+    //{
+    //    return false;
+    //}
 
     /**
      * Returns true iff this session is authorized with the specified permissions.
@@ -126,9 +134,9 @@ public class AbstractRbacSession
 
         Set role = getActiveRoles();
 
-        for ( int i = 0; i < role.length; i++ )
+        for ( Iterator i = role.iterator(); i.hasNext(); )
         {
-            sb.append( role[i].toString() );
+            sb.append( i.next().toString() );
         }
         return sb.toString();
     }
@@ -175,10 +183,7 @@ public class AbstractRbacSession
 
             Set perm = role.getPermissions();
 
-            for ( int j = 0; j < perm.length; j++ )
-            {
-                permissions.add( perm[j] );
-            }
+            permissions.addAll( perm );
         }
 
         return permissions;
