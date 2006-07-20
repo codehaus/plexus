@@ -35,7 +35,7 @@ public interface RbacSession
     /**
      * Returns true iff this session is authorized with the specified permissions.
      */
-    public boolean isAuthorized( Permission[] perm );
+    //public boolean isAuthorized( Permission[] perm );
 
     /**
      * Returns true iff this session is authorized with the permissions of the specified role.
