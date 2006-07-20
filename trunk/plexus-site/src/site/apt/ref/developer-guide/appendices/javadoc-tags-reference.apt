@@ -34,26 +34,26 @@ but remember the <<<role>>> is required.
   The text in the javadoc tag describing this class is copied into the
 component's <<<<description>>>> tag.
 
-*-----+------+------+------+
+*-----+------+------+
 | Parameter | Required | Description |
-*-----*------*------*------*
+*-----*------*------*
 | role | Yes | The role that this class provides an implementation for (usually the class name of an implemented Interface |
-*-----*------*------*------*
+*-----*------*------*
 | role-hint | No | The hints are used to differentiate multiple implementations of the same role |
-*-----*------*------*------*
+*-----*------*------*
 | version | No | Set the version of the component |
-*-----*------*------*------*
+*-----*------*------*
 
 {@plexus.configuration}
 
   The <<<@plexus.configuration>>> tags are used to mark fields in a class for
 configuration through the <<<components.xml>>>.
 
-*-----+------+------+------+
+*-----+------+------+
 | Parameter | Required | Description |
-*-----*------*------*------*
+*-----*------*------*
 | default-value | Currently | The default values are currently required for the <<<<configuration>>>> tag to be written to <<<components.xml>>>.
-*-----*------*------*------*
+*-----*------*------*
 
 {@plexus.requirement}
 
@@ -67,11 +67,11 @@ whereas a field of type <<<java.lang.Map>>> will have a mapping in the form of
 <<<role-hint -> component>>>. The <<<role>>> parameter is required if using a
 <<<List>>> or <<<Map>>> whereas a role-hint is not allowed.
 
-*-----+------+------+------+
+*-----+------+------+
 | Parameter | Required | Description |
-*-----*------*------*------*
+*-----*------*------*
 | role | No. Yes if the field is a <<<List>>> or a <<<Map>>> | The role parameter is used to tell plexus what Component role you are interested in. For singleton fields their type is used as a default.
-*-----*------*------*------*
+*-----*------*------*
 | role-hint | No. Not allowed if the field is a <<<List>>> or a <<<Map>>> | Links to the role-hint defined by a component when looking up a component. Not allowed with <<<List>>> or <<<Map>>> fields, as they return all <<<role-hint>>>s.
-*-----*------*------*------*
+*-----*------*------*
 
