@@ -18,6 +18,7 @@ package org.codehaus.plexus.security.rbac.permission;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Iterator;
 
 /**
  * A default implementation of the IPermission interface.
@@ -64,9 +65,9 @@ public class DefaultPermission
         {
             Set e = p[i].getPermissionEntries();
 
-            for ( int j = 0; j < e.length; j++ )
+            for ( Iterator j = e.iterator(); j.hasNext(); )
             {
-                set.add( e[j] );
+                set.add( j.next() );
             }
         }
 

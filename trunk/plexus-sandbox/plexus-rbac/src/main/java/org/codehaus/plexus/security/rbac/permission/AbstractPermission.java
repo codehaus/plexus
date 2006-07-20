@@ -70,27 +70,9 @@ public class AbstractPermission
 
         Set operations = getPermissionEntries();
 
-        outter:
+        operations.removeAll( toOperations );
 
-        for ( Iterator i = toOperations.iterator(); i.hasNext(); )
-        {
-            Operation toOperation = (Operation) i.next();
-
-            for ( Iterator j = operations.iterator(); j.hasNext(); )
-            {
-                Operation operation = (Operation) j.next();
-
-                if ( operation.ge( toOperation ) )
-                {
-                    continue outter;
-                }
-
-            }
-
-            return false;
-        }
-
-        return true;
+        return operations.size() == 0;
     }
 
     /**
@@ -126,24 +108,9 @@ public class AbstractPermission
             return false;
         }
 
-        outter:
+        operations.removeAll( toOperations );
 
-        for ( int i = 0; i < operations.length; i++ )
-        {
-            Operation pi = operations[i];
-
-            for ( int j = 0; j < toOperations.length; j++ )
-            {
-                Operation pj = toOperations[j];
-
-                if ( pi.equals( pj ) )
-                {
-                    continue outter;
-                }
-            }
-            return false;
-        }
-        return true;
+        return operations.size() == 0;
     }
 
     public int hashCode()
@@ -154,9 +121,9 @@ public class AbstractPermission
 
         if ( pe != null )
         {
-            for ( int i = 0; i < pe.length; i++ )
+            for ( Iterator i = pe.iterator(); i.hasNext();)
             {
-                hashCode ^= pe[i].hashCode();
+                hashCode ^= i.next().hashCode();
             }
         }
         return hashCode;
@@ -168,11 +135,11 @@ public class AbstractPermission
 
         Set p = getPermissionEntries();
 
-        for ( int i = 0; i < p.length; i++ )
+        for ( Iterator i = p.iterator(); i.hasNext(); )
         {
             sb.append( "\n" );
 
-            sb.append( p[i].toString() );
+            sb.append( i.next().toString() );
         }
 
         return sb.toString();

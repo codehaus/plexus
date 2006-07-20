@@ -120,30 +120,10 @@ public class AbstractRole
             return false;
         }
 
-        if ( permissions.length != toPermissions.length )
-        {
-            return false;
-        }
+        permissions.removeAll( toPermissions );
 
-        outter:
+        return permissions.size() == 0;
 
-        for ( int i = 0; i < permissions.length; i++ )
-        {
-            Permission pi = permissions[i];
-
-            for ( int j = 0; j < toPermissions.length; j++ )
-            {
-                Permission pj = toPermissions[j];
-
-                if ( pi.equals( pj ) )
-                {
-                    continue outter;
-                }
-            }
-            return false;
-        }
-
-        return true;
     }
 
     public int hashCode()
@@ -154,9 +134,9 @@ public class AbstractRole
 
         if ( p != null )
         {
-            for ( int i = 0; i < p.length; i++ )
+            for ( Iterator i = p.iterator(); i.hasNext(); )
             {
-                hash ^= p[i].hashCode();
+                hash ^= i.next().hashCode();
             }
         }
         return hash;
@@ -177,24 +157,9 @@ public class AbstractRole
 
         Set toPermissions = r.getPermissions();
 
-        outter:
+        permissions.removeAll( toPermissions );
 
-        for ( int i = 0; i < toPermissions.length; i++ )
-        {
-            Permission pi = toPermissions[i];
-
-            for ( int j = 0; j < permissions.length; j++ )
-            {
-                Permission pj = permissions[j];
-
-                if ( pj.ge( pi ) )
-                {
-                    continue outter;
-                }
-            }
-            return false;
-        }
-        return true;
+        return permissions.size() == 0;
     }
 
     public String toString()
@@ -214,11 +179,11 @@ public class AbstractRole
 
         Set permissions = getPermissions();
 
-        for ( int i = 0; i < permissions.length; i++ )
+        for ( Iterator i = permissions.iterator(); i.hasNext(); )
         {
             sb.append( "\n" );
 
-            sb.append( permissions[i].toString() );
+            sb.append( i.toString() );
         }
         return sb.toString();
     }
