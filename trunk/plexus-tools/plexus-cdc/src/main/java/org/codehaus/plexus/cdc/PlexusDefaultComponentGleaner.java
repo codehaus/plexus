@@ -367,7 +367,7 @@ public class PlexusDefaultComponentGleaner
 
                 if ( role == null )
                 {
-                    getLogger().warn( "Field: '" + field.getName() + "': A java.util.Map or java.utils.List " +
+                    getLogger().warn( "Field: '" + field.getName() + "': A java.util.Map or java.util.List " +
                                       "requirement has to specify a '" + PLEXUS_ROLE_PARAMETER + "' parameter on " +
                                       "the @" + PLEXUS_REQUIREMENT_TAG + " tag so Plexus can know which components to " +
                                       "put in the map or list." );
