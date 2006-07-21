@@ -34,7 +34,7 @@ Just to remind - at the moment  component descriptor it looks like:
 
 
 
-There are some "bad" things happaing here:
+There are some "bad" things happening here:
 
 * Requirments are not precisly defined. We don't know many things about requirments (e.g. their cardinality)
 * Two distinct things are collapsed into single one: definition of requirements and specification of the way in which components are wired.
@@ -145,16 +145,16 @@ class Multiplexer implements Foo
       Foo foo1;
       Foo foo2;
 
-       public void doStuff()
+      public void doStuff()
       {
              if ( xxx )
              {
                    foo1.doStuff();
              }
-              else
+             else
              {
-                  foo2.doStuff();
-              }
+                   foo2.doStuff();
+             }
       }
 
 }
