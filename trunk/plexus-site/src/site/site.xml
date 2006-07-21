@@ -35,6 +35,10 @@
       <item name="Sources" href="source-repository.html" />
       <item name="Binaries" href="/download-binaries.html" />
     </menu>
+
+    <menu name="Books">
+      <item name="Writing Components" href="/writing-components-trial" />
+    </menu>
     
     <menu name="Guides">
       <!-- 5 minute tutorial -->
