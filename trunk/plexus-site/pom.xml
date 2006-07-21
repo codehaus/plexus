@@ -9,7 +9,7 @@
   <version>1.0-alpha-1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Plexus Site</name>
-  <build>  
+  <build>
     <plugins>
       <plugin>
         <artifactId>maven-site-plugin</artifactId>
@@ -32,12 +32,19 @@
               <directory>src/site</directory>
               <descriptor>src/books/writing-components-trial.xml</descriptor>
               <formats>
-                <format>itext</format>
-                <format>latex</format>
+                <format>
+                  <id>itext</id>
+                </format>
+                <format>
+                  <id>latex</id>
+                </format>
+                <format>
+                  <id>xdoc</id>
+                </format>
               </formats>
             </book>
           </books>
-        </configuration>        
+        </configuration>
       </plugin>
     </plugins>
   </build>
