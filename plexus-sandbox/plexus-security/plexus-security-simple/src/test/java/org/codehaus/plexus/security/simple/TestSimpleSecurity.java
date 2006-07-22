@@ -60,7 +60,7 @@ public class TestSimpleSecurity
 
         assertTrue( psr.getAuthenticator().isAuthentic( authenticationCreds ) );
 
-        assertTrue( psr.getAuthorizer().isAuthorized( authenticationCreds ) );
+        assertTrue( psr.getAuthorizer().isAuthorized( a, authenticationCreds ) );
     }
 
 }
