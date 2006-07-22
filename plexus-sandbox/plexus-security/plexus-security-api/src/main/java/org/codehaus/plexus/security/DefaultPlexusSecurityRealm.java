@@ -1,6 +1,11 @@
 package org.codehaus.plexus.security;
 
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.security.exception.PlexusSecurityRealmException;
 
@@ -32,7 +37,8 @@ import java.util.Map;
  *   role-hint="default"
  */
 public class DefaultPlexusSecurityRealm
-    implements PlexusSecurityRealm
+    extends AbstractLogEnabled
+    implements PlexusSecurityRealm, Contextualizable
 {
     /**
      * @plexus.requirement
@@ -44,9 +50,6 @@ public class DefaultPlexusSecurityRealm
      */
     private Authorizer authorizer;
 
-    /**
-     * @plexus.requirement
-     */
     PlexusContainer container;
 
     private Map securityRealms;
@@ -117,4 +120,13 @@ public class DefaultPlexusSecurityRealm
         this.authorizer = authorizer;
     }
 
+    // ----------------------------------------------------------------------------
+    // Lifecycle
+    // ----------------------------------------------------------------------------
+
+    public void contextualize( Context context )
+        throws ContextException
+    {
+        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+    }
 }
