@@ -27,7 +27,7 @@ import org.codehaus.plexus.security.User;
 public class SimplePlexusSecuritySession
     implements PlexusSecuritySession
 {
-    private boolean isAuthentic = false;
+    private boolean isAuthentic;
 
     private User user;
 
@@ -48,6 +48,6 @@ public class SimplePlexusSecuritySession
 
     public void setUser( User user )
     {
-        user = user;
+        this.user = user;
     }
 }
