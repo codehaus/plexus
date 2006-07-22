@@ -2,6 +2,9 @@ package org.codehaus.plexus.security.simple;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.security.PlexusSecurityRealm;
+
+import java.util.Map;
+import java.util.HashMap;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -48,6 +51,16 @@ public class TestSimpleSecurity
         PlexusSecurityRealm psr = (PlexusSecurityRealm) lookup( PlexusSecurityRealm.ROLE );
 
         assertTrue( psr != null );
+
+        Map authenticationCreds = new HashMap();
+
+        authenticationCreds.put("username", "test");
+
+        authenticationCreds.put("password", "password");
+
+        assertTrue( psr.getAuthenticator().isAuthentic( authenticationCreds ) );
+
+        assertTrue( psr.getAuthorizer().isAuthorized( authenticationCreds ) );
     }
 
 }
