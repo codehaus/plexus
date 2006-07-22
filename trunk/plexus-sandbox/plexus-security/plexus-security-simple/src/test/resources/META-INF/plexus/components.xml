@@ -40,10 +40,12 @@
           <role>org.codehaus.plexus.security.Authorizer</role>
           <field-name>authorizer</field-name>
         </requirement>
+        <!--
         <requirement>
           <role>org.codehaus.plexus.PlexusContainer</role>
           <field-name>container</field-name>
         </requirement>
+        -->
       </requirements>
     </component>
   </components>
