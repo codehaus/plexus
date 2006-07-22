@@ -10,6 +10,13 @@
   <version>1.0-SNAPSHOT</version>
   <name>Plexus Security Parent</name>
   <packaging>pom</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-9</version>    
+    </dependency>
+  </dependencies>
   <modules>
     <module>plexus-security-api</module>
 <!--
