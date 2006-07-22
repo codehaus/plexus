@@ -29,10 +29,10 @@ public interface AuthorizationStore
 {
     public static String ROLE = AuthorizationStore.class.getName();
 
-    public boolean isAuthorized( Map tokens )
+    public boolean isAuthorized( PlexusSecuritySession session, Map tokens )
         throws AuthorizationException;
 
-    public Authorization authorize( Map tokens )
+    public Authorization authorize( PlexusSecuritySession session, Map tokens )
         throws AuthorizationException;
 
 }

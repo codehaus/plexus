@@ -1,6 +1,6 @@
 package org.codehaus.plexus.security.simple;
 
-import org.codehaus.plexus.security.Authentication;
+import org.codehaus.plexus.security.PlexusSecuritySession;
 import org.codehaus.plexus.security.User;
 /*
  * Copyright 2005 The Codehaus.
@@ -19,13 +19,13 @@ import org.codehaus.plexus.security.User;
  */
 
 /**
- * SimpleAuthentication:
+ * SimplePlexusSecuritySession:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  */
-public class SimpleAuthentication
-    implements Authentication
+public class SimplePlexusSecuritySession
+    implements PlexusSecuritySession
 {
     private boolean isAuthentic = false;
 

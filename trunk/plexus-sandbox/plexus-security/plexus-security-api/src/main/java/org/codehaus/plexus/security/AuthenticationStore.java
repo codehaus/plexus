@@ -25,7 +25,7 @@ import java.util.Map;
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- * 
+ *
  */
 public interface AuthenticationStore
 {
@@ -49,6 +49,6 @@ public interface AuthenticationStore
      * @return
      * @throws AuthenticationException
      */
-    public Authentication authenticate( Map tokens ) throws NotAuthenticatedException, AuthenticationException;
+    public PlexusSecuritySession authenticate( Map tokens ) throws NotAuthenticatedException, AuthenticationException;
 
 }

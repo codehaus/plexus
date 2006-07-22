@@ -2,6 +2,7 @@ package org.codehaus.plexus.security.simple;
 
 import org.codehaus.plexus.security.AuthorizationStore;
 import org.codehaus.plexus.security.Authorization;
+import org.codehaus.plexus.security.PlexusSecuritySession;
 import org.codehaus.plexus.security.exception.AuthorizationException;
 
 import java.util.Map;
@@ -34,14 +35,21 @@ import java.util.Map;
 public class SimpleAuthorizationStore
     implements AuthorizationStore
 {
-    
-    public boolean isAuthorized( Map tokens )
+
+    public boolean isAuthorized( PlexusSecuritySession session, Map tokens )
         throws AuthorizationException
     {
-        return false;
+        if (session.isAuthenticated())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }        
     }
 
-    public Authorization authorize( Map tokens )
+    public Authorization authorize( PlexusSecuritySession session, Map tokens )
         throws AuthorizationException
     {
         return null;

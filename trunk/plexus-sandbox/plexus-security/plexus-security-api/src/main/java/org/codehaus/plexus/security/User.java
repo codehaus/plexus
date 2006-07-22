@@ -22,17 +22,12 @@ package org.codehaus.plexus.security;
 public interface User
 {
     void setUsername( String username );
+
     void setPassword( String password );
-    void setFullName( String fullName );
-    void setEmail( String email );
 
     String getUsername();
 
     String getPassword();
-
-    String getFullName();
-
-    String getEmail();
 
     boolean isEnabled();
 
