@@ -40,16 +40,16 @@ public class DefaultAuthorizer
     private AuthorizationStore store;
 
 
-    public boolean isAuthorized( Map tokens )
+    public boolean isAuthorized( PlexusSecuritySession session, Map tokens )
         throws AuthorizationException
     {
-       return store.isAuthorized( tokens );
+       return store.isAuthorized( session, tokens );
     }
 
-    public Authorization authorize( Map tokens )
+    public Authorization authorize( PlexusSecuritySession session, Map tokens )
         throws NotAuthorizedException, AuthorizationException
     {
-        return store.authorize( tokens );
+        return store.authorize( session, tokens );
     }
 }
 

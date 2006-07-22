@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 /**
  * @author <a hrel="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
- * @version $Id: Authentication.java 2990 2006-01-09 16:33:52Z evenisse $
+ * @version $Id: PlexusSecuritySession.java 2990 2006-01-09 16:33:52Z evenisse $
  */
-public interface Authentication
+public interface PlexusSecuritySession
     extends Serializable
 {
 

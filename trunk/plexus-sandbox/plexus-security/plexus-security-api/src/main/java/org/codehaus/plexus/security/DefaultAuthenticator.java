@@ -46,7 +46,7 @@ public class DefaultAuthenticator
         return authStore.isAuthentic( tokens );
     }
 
-    public Authentication authenticate( Map tokens )
+    public PlexusSecuritySession authenticate( Map tokens )
         throws NotAuthenticatedException, AuthenticationException
     {
         return authStore.authenticate( tokens );

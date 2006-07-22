@@ -31,10 +31,10 @@ public interface Authorizer
     public static String ROLE = Authorizer.class.getName();
 
 
-    public boolean isAuthorized( Map tokens )
+    public boolean isAuthorized( PlexusSecuritySession session, Map tokens )
         throws AuthorizationException;
 
 
-    public Authorization authorize( Map tokens )
+    public Authorization authorize( PlexusSecuritySession session, Map tokens )
         throws NotAuthorizedException, AuthorizationException;
 }

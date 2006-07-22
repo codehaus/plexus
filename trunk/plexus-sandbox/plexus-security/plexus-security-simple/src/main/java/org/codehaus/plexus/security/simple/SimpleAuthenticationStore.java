@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.simple;
 
 import org.codehaus.plexus.security.AuthenticationStore;
-import org.codehaus.plexus.security.Authentication;
+import org.codehaus.plexus.security.PlexusSecuritySession;
 import org.codehaus.plexus.security.User;
 import org.codehaus.plexus.security.exception.AuthenticationException;
 import org.codehaus.plexus.security.exception.NotAuthenticatedException;
@@ -51,7 +51,7 @@ public class SimpleAuthenticationStore
         }
     }
 
-    public Authentication authenticate( Map tokens )
+    public PlexusSecuritySession authenticate( Map tokens )
         throws NotAuthenticatedException, AuthenticationException
     {
         User user = new SimpleUser();
@@ -59,7 +59,7 @@ public class SimpleAuthenticationStore
         user.setUsername( (String)tokens.get( "username" ) );
         user.setPassword( (String)tokens.get( "password" ) );
 
-        Authentication credentials = new SimpleAuthentication( );
+        PlexusSecuritySession credentials = new SimplePlexusSecuritySession( );
 
         credentials.setUser( user );
 
