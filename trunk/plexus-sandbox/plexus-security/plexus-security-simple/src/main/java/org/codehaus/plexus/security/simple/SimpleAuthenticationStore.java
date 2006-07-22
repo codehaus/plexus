@@ -54,16 +54,24 @@ public class SimpleAuthenticationStore
     public PlexusSecuritySession authenticate( Map tokens )
         throws NotAuthenticatedException, AuthenticationException
     {
-        User user = new SimpleUser();
+        if ( !isAuthentic( tokens ) )
+        {
+            throw new NotAuthenticatedException( "invalid credentials, can not authenticate" );
+        }
+        else
+        {
+            User user = new SimpleUser();
 
-        user.setUsername( (String)tokens.get( "username" ) );
-        user.setPassword( (String)tokens.get( "password" ) );
+            user.setUsername( (String) tokens.get( "username" ) );
+            user.setPassword( (String) tokens.get( "password" ) );
 
-        PlexusSecuritySession credentials = new SimplePlexusSecuritySession( );
+            PlexusSecuritySession session = new SimplePlexusSecuritySession();
 
-        credentials.setUser( user );
+            session.setAuthenticated( true );
+            session.setUser( user );
 
-        return credentials;
+            return session;
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package org.codehaus.plexus.security.simple;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.security.PlexusSecurityRealm;
+import org.codehaus.plexus.security.PlexusSecuritySession;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -60,7 +61,11 @@ public class TestSimpleSecurity
 
         assertTrue( psr.getAuthenticator().isAuthentic( authenticationCreds ) );
 
-        assertTrue( psr.getAuthorizer().isAuthorized( a, authenticationCreds ) );
+        PlexusSecuritySession session = psr.getAuthenticator().authenticate( authenticationCreds );
+
+        assertTrue( session.isAuthenticated() );
+
+        assertTrue( psr.getAuthorizer().isAuthorized( session , authenticationCreds ) );
     }
 
 }
