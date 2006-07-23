@@ -1,12 +1,15 @@
 package org.codehaus.plexus.security;
 
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
+import org.codehaus.plexus.security.exception.AuthenticationException;
+import org.codehaus.plexus.security.exception.AuthorizationException;
+import org.codehaus.plexus.security.exception.NotAuthenticatedException;
 import org.codehaus.plexus.security.exception.PlexusSecurityRealmException;
 
 import java.util.Map;
@@ -54,19 +57,6 @@ public class DefaultPlexusSecurityRealm
 
     private Map securityRealms;
 
-
-    public Authenticator getAuthenticator()
-    {
-        return authenticator;
-    }
-
-
-    public Authorizer getAuthorizer()
-    {
-        return authorizer;
-    }
-
-
     public PlexusSecurityRealm createSecurityRealm( String id, String authenticator, String authorizer )
         throws PlexusSecurityRealmException
     {
@@ -108,6 +98,46 @@ public class DefaultPlexusSecurityRealm
         {
             throw new PlexusSecurityRealmException( "security realm does not exist: " + id );
         }
+    }
+
+    public boolean isAuthentic( Map tokens )
+        throws AuthenticationException
+    {
+        return authenticator.isAuthentic( tokens );
+    }
+
+    public boolean isAuthorized( PlexusSecuritySession session, Map tokens )
+        throws AuthorizationException
+    {
+        return authorizer.isAuthorized( session, tokens );
+    }
+
+    /**
+     * attempts to authenticate based on the tokens passed in, if authentication fails then a NotAuthenticatedException
+     * is thrown so that unauthenticated sessions are never created
+     *
+     * TODO: do we pass back unauthenticated sessions and their AuthenticationResults?
+     *
+     * @param tokens
+     * @return
+     * @throws NotAuthenticatedException
+     * @throws AuthenticationException
+     */
+    public PlexusSecuritySession authenticate( Map tokens )
+        throws NotAuthenticatedException, AuthenticationException
+    {
+        AuthenticationResult authenticationResult = authenticator.authenticate( tokens );
+
+        PlexusSecuritySession session = new DefaultPlexusSecuritySession();
+
+        if ( authenticationResult.isAuthenticated() )
+        {
+            session.setAuthentic( true );
+        }
+        
+        session.setAuthenticationResult( authenticationResult );
+
+        return session;
     }
 
     public void setAuthenticator( Authenticator authenticator )

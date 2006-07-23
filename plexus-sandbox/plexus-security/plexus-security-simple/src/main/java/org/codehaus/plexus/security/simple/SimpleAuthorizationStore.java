@@ -1,7 +1,8 @@
 package org.codehaus.plexus.security.simple;
 
 import org.codehaus.plexus.security.AuthorizationStore;
-import org.codehaus.plexus.security.Authorization;
+import org.codehaus.plexus.security.AuthorizationResult;
+import org.codehaus.plexus.security.AuthenticationResult;
 import org.codehaus.plexus.security.PlexusSecuritySession;
 import org.codehaus.plexus.security.exception.AuthorizationException;
 
@@ -39,17 +40,17 @@ public class SimpleAuthorizationStore
     public boolean isAuthorized( PlexusSecuritySession session, Map tokens )
         throws AuthorizationException
     {
-        if (session.isAuthenticated())
+        if (session.isAuthentic())
         {
             return true;
         }
         else
         {
             return false;
-        }        
+        }
     }
 
-    public Authorization authorize( PlexusSecuritySession session, Map tokens )
+    public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
         throws AuthorizationException
     {
         return null;

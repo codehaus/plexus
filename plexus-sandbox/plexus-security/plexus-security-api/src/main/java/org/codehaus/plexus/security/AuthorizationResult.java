@@ -1,7 +1,4 @@
-package org.codehaus.plexus.security.simple;
-
-import org.codehaus.plexus.security.PlexusSecuritySession;
-import org.codehaus.plexus.security.User;
+package org.codehaus.plexus.security;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -19,35 +16,11 @@ import org.codehaus.plexus.security.User;
  */
 
 /**
- * SimplePlexusSecuritySession:
+ * AuthorizationResult:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  */
-public class SimplePlexusSecuritySession
-    implements PlexusSecuritySession
+public interface AuthorizationResult
 {
-    private boolean isAuthentic;
-
-    private User user;
-
-    public void setAuthenticated( boolean isAuthenticated )
-    {
-        isAuthentic = isAuthenticated;
-    }
-
-    public boolean isAuthenticated()
-    {
-        return isAuthentic;
-    }
-
-    public User getUser()
-    {
-        return user;
-    }
-
-    public void setUser( User user )
-    {
-        this.user = user;
-    }
 }

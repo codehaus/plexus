@@ -18,7 +18,7 @@ public interface Authenticator
     public boolean isAuthentic( Map tokens )
         throws AuthenticationException;
 
-    public PlexusSecuritySession authenticate( Map tokens )
+    public AuthenticationResult authenticate( Map tokens )
         throws NotAuthenticatedException, AuthenticationException;
 
 }
