@@ -4,8 +4,8 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.security.PlexusSecurityRealm;
 import org.codehaus.plexus.security.PlexusSecuritySession;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -59,13 +59,13 @@ public class TestSimpleSecurity
 
         authenticationCreds.put("password", "password");
 
-        assertTrue( psr.getAuthenticator().isAuthentic( authenticationCreds ) );
+        assertTrue( psr.isAuthentic( authenticationCreds ) );
 
-        PlexusSecuritySession session = psr.getAuthenticator().authenticate( authenticationCreds );
+        PlexusSecuritySession session = psr.authenticate( authenticationCreds );
 
-        assertTrue( session.isAuthenticated() );
+        assertTrue( session.isAuthentic() );
 
-        assertTrue( psr.getAuthorizer().isAuthorized( session , authenticationCreds ) );
+        assertTrue( psr.isAuthorized( session , authenticationCreds ) );
     }
 
 }

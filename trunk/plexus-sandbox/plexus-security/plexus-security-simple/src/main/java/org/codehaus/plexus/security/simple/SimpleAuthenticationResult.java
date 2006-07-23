@@ -1,8 +1,7 @@
-package org.codehaus.plexus.security;
+package org.codehaus.plexus.security.simple;
 
-import org.codehaus.plexus.security.exception.AuthorizationException;
-
-import java.util.Map;
+import org.codehaus.plexus.security.AuthenticationResult;
+import org.codehaus.plexus.security.User;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -20,19 +19,35 @@ import java.util.Map;
  */
 
 /**
- * AuthorizationStore:
+ * SimpleAuthenticationResult:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  */
-public interface AuthorizationStore
+public class SimpleAuthenticationResult
+    implements AuthenticationResult
 {
-    public static String ROLE = AuthorizationStore.class.getName();
+    private boolean isAuthentic;
 
-    public boolean isAuthorized( PlexusSecuritySession session, Map tokens )
-        throws AuthorizationException;
+    private User user;
 
-    public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
-        throws AuthorizationException;
+    public void setAuthenticated( boolean isAuthenticated )
+    {
+        isAuthentic = isAuthenticated;
+    }
 
+    public boolean isAuthenticated()
+    {
+        return isAuthentic;
+    }
+
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser( User user )
+    {
+        this.user = user;
+    }
 }
