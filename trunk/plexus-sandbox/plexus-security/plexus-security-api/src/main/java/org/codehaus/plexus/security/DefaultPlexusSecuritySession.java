@@ -16,11 +16,36 @@ package org.codehaus.plexus.security;
  */
 
 /**
- * Authorization:
+ * DefaultPlexusSecuritySession:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  */
-public interface Authorization
+public class DefaultPlexusSecuritySession
+    implements PlexusSecuritySession
 {
+
+    private boolean authentic = false;
+
+    private AuthenticationResult authenticationResult;
+
+    public boolean isAuthentic()
+    {
+        return authentic;
+    }
+
+    public void setAuthentic( boolean authentic )
+    {
+        this.authentic = authentic;
+    }
+
+    public void setAuthenticationResult( AuthenticationResult authenticationResult )
+    {
+        this.authenticationResult = authenticationResult;
+    }
+
+    public AuthenticationResult getAuthenticationResult()
+    {
+        return authenticationResult;
+    }
 }

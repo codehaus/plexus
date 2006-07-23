@@ -1,6 +1,12 @@
 package org.codehaus.plexus.security;
 
 import org.codehaus.plexus.security.exception.PlexusSecurityRealmException;
+import org.codehaus.plexus.security.exception.AuthenticationException;
+import org.codehaus.plexus.security.exception.AuthorizationException;
+import org.codehaus.plexus.security.exception.NotAuthenticatedException;
+
+import java.util.Map;
+
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -29,22 +35,20 @@ public interface PlexusSecurityRealm
     public static String ROLE = PlexusSecurityRealm.class.getName();
 
 
-    public Authenticator getAuthenticator( );
-
-
-    public Authorizer getAuthorizer( );
-
-
-    public void setAuthenticator( Authenticator authenticator );
-
-
-    public void setAuthorizer( Authorizer authorizer );
-
-
     public PlexusSecurityRealm createSecurityRealm( String id, String authenticator, String authorizer )
         throws PlexusSecurityRealmException;
 
-
     public PlexusSecurityRealm getSecurityRealm( String id )
         throws PlexusSecurityRealmException;
+
+    public boolean isAuthentic( Map tokens ) throws AuthenticationException;
+
+    public boolean isAuthorized( PlexusSecuritySession session,  Map tokens ) throws AuthorizationException;
+
+    public PlexusSecuritySession authenticate( Map tokens ) throws NotAuthenticatedException, AuthenticationException;
+
+    public void setAuthenticator( Authenticator authenticator );
+
+    public void setAuthorizer( Authorizer authorizer );
+
 }

@@ -49,6 +49,6 @@ public interface AuthenticationStore
      * @return
      * @throws AuthenticationException
      */
-    public PlexusSecuritySession authenticate( Map tokens ) throws NotAuthenticatedException, AuthenticationException;
+    public AuthenticationResult authenticate( Map tokens ) throws NotAuthenticatedException, AuthenticationException;
 
 }

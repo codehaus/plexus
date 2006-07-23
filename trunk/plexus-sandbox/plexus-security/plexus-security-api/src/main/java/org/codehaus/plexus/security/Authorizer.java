@@ -35,6 +35,6 @@ public interface Authorizer
         throws AuthorizationException;
 
 
-    public Authorization authorize( PlexusSecuritySession session, Map tokens )
+    public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
         throws NotAuthorizedException, AuthorizationException;
 }

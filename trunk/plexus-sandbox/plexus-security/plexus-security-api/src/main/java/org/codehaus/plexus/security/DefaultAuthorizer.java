@@ -46,7 +46,7 @@ public class DefaultAuthorizer
        return store.isAuthorized( session, tokens );
     }
 
-    public Authorization authorize( PlexusSecuritySession session, Map tokens )
+    public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
         throws NotAuthorizedException, AuthorizationException
     {
         return store.authorize( session, tokens );
