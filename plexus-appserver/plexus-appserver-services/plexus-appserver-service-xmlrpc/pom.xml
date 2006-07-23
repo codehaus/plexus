@@ -17,7 +17,7 @@
         <version>2.0-alpha-1</version>
         <extensions>true</extensions>
         <configuration>
-          <serviceName>jetty</serviceName>
+          <serviceName>xmlrpc</serviceName>
           <serviceConfiguration>src/conf/plexus.xml</serviceConfiguration>
         </configuration>
       </plugin>
