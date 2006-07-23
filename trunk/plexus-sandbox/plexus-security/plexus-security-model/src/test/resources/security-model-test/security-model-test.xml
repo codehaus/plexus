@@ -1,0 +1,14 @@
+<rbacModel>
+  <roles>
+    <role>
+      <id>roleA</id>
+      <name>Role A</name>
+      <permissions>
+        <permission>
+          <id>permA</id>
+          <name>Permission A</name>
+        </permission>
+      </permissions>
+    </role>
+  </roles>
+</rbacModel>
