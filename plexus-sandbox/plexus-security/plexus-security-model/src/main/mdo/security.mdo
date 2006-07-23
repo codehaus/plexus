@@ -1,0 +1,203 @@
+<model>
+  <id>plexus-security-model</id>
+  <name>PlexusSecurityModel</name>
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>org.codehaus.plexus.security.model</value>
+    </default>
+  </defaults>
+  <classes>
+    <class rootElement="true">
+      <name>Security</name>
+      <version>1.0.0</version>
+      <fields>
+        <field>
+          <name>roles</name>
+          <version>1.0.0</version>
+          <description></description>
+          <required>true</required>
+          <association>
+            <type>Role</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>Role</name>
+      <version>1.0.0</version>
+      <fields>
+        <field>
+          <name>id</name>
+          <version>1.0.0</version>
+          <required>true</required>
+          <description></description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>name</name>
+          <version>1.0.0</version>
+          <required>true</required>
+          <description></description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>description</name>
+          <version>1.0.0</version>
+          <description></description>
+          <type>String</type>
+        </field>
+        <field xml.tagName="roles">
+          <name>childRoles</name>
+          <version>1.0.0</version>
+          <required>false</required>
+          <description></description>
+          <association>
+            <type>Role</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field xml.tagName="permissions">
+          <name>permissionSet</name>
+          <version>1.0.0</version>
+          <required>false</required>
+          <description></description>
+          <association>
+            <type>Permission</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+      <codeSegments>
+        <codeSegment>
+          <version>1.0.0+</version>
+          <code><![CDATA[
+
+          public boolean hasChildRoles()
+          {
+            if ( childRoles == null || childRoles.size() != 0 )
+            {
+              return false;
+            }
+            else
+            {
+              return true;
+            }
+          }
+
+          public java.util.List getRoles()
+          {
+            java.util.List roleList = new java.util.ArrayList();
+
+            gatherRoles( roleList );
+
+            return roleList;
+          }
+
+          protected void gatherRoles( java.util.List roleList )
+          {
+            if ( childRoles != null )
+            {
+              for ( java.util.Iterator i = childRoles.iterator(); i.hasNext(); )
+              {
+                Role role = (Role)i.next();
+
+                roleList.add(role);
+
+                if ( role.hasChildRoles() )
+                {
+                  role.gatherRoles( roleList );
+                }
+              }
+            }
+          }
+
+          public java.util.Set getPermissions()
+          {
+            java.util.Set permissions = new java.util.HashSet();
+
+            gatherPermissions( permissions );
+
+            return permissions;
+          }
+
+          protected void gatherPermissions( java.util.Set permissions )
+          {
+             // add all of this roles permissions
+             permissions.addAll( new java.util.HashSet(permissionSet) );
+
+             if ( childRoles != null )
+             {
+              for ( java.util.Iterator i = childRoles.iterator(); i.hasNext(); )
+              {
+                Role role = (Role)i.next();
+
+                if ( role.hasChildRoles() )
+                {
+                  role.gatherPermissions( permissions );
+                }
+              }
+            }
+          }
+          ]]></code>
+        </codeSegment>
+      </codeSegments>
+    </class>
+    <class>
+      <name>Permission</name>
+      <version>1.0.0</version>
+      <fields>
+        <field>
+          <name>id</name>
+          <version>1.0.0</version>
+          <required>true</required>
+          <description></description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>name</name>
+          <version>1.0.0</version>
+          <required>true</required>
+          <description></description>
+          <type>String</type>
+        </field>
+      </fields>
+      <codeSegments>
+        <codeSegment>
+          <version>1.0.0+</version>
+
+          <code><![CDATA[
+
+
+    public boolean equals( Object o )
+    {
+        if ( o == null || !( o instanceof Permission ) )
+        {
+            return false;
+        }
+
+        if ( o == this )
+        {
+            return true;
+        }
+
+        Permission pe = (Permission)o;
+
+        if ( name.equals( pe.getName() ) )
+        {
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+    }
+
+          ]]></code>
+
+        </codeSegment>
+      </codeSegments>
+    </class>
+  </classes>
+</model>

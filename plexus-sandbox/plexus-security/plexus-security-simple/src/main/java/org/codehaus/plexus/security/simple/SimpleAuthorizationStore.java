@@ -1,8 +1,7 @@
 package org.codehaus.plexus.security.simple;
 
-import org.codehaus.plexus.security.AuthorizationStore;
 import org.codehaus.plexus.security.AuthorizationResult;
-import org.codehaus.plexus.security.AuthenticationResult;
+import org.codehaus.plexus.security.AuthorizationStore;
 import org.codehaus.plexus.security.PlexusSecuritySession;
 import org.codehaus.plexus.security.exception.AuthorizationException;
 
