@@ -21,8 +21,8 @@
     <module>plexus-security-api</module>
     <module>plexus-security-model</module>
     <module>plexus-security-simple</module>
-    <module>plexus-security-rbac</module>
 <!--
+    <module>plexus-security-rbac</module>
     <module>plexus-security-acegi</module>
 -->
   </modules>
