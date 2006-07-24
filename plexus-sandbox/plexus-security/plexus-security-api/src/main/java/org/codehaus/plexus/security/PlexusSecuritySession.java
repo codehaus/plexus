@@ -16,14 +16,13 @@ package org.codehaus.plexus.security;
  */
 
 /**
- * PlexusSecuritySession:
+ * PlexusSecuritySession: 
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  */
 public class PlexusSecuritySession
 {
-
     private boolean authentic = false;
 
     private String principal;
