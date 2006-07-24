@@ -15,7 +15,7 @@ public interface Authenticator
 {
     String ROLE = Authenticator.class.getName();
 
-    public boolean isAuthentic( Map tokens )
+    public boolean isAuthenticated( Map tokens )
         throws AuthenticationException;
 
     public AuthenticationResult authenticate( Map tokens )

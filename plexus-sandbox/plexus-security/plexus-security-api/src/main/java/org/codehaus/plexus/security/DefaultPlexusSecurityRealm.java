@@ -100,10 +100,10 @@ public class DefaultPlexusSecurityRealm
         }
     }
 
-    public boolean isAuthentic( Map tokens )
+    public boolean isAuthenticated( Map tokens )
         throws AuthenticationException
     {
-        return authenticator.isAuthentic( tokens );
+        return authenticator.isAuthenticated( tokens );
     }
 
     public boolean isAuthorized( PlexusSecuritySession session, Map tokens )
@@ -128,13 +128,13 @@ public class DefaultPlexusSecurityRealm
     {
         AuthenticationResult authenticationResult = authenticator.authenticate( tokens );
 
-        PlexusSecuritySession session = new DefaultPlexusSecuritySession();
+        PlexusSecuritySession session = new PlexusSecuritySession();
 
         if ( authenticationResult.isAuthenticated() )
         {
             session.setAuthentic( true );
         }
-        
+
         session.setAuthenticationResult( authenticationResult );
 
         return session;

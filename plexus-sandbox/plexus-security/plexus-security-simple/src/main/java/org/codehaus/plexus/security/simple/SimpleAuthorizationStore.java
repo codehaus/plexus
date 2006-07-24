@@ -4,6 +4,7 @@ import org.codehaus.plexus.security.AuthorizationResult;
 import org.codehaus.plexus.security.AuthorizationStore;
 import org.codehaus.plexus.security.PlexusSecuritySession;
 import org.codehaus.plexus.security.exception.AuthorizationException;
+import org.codehaus.plexus.security.exception.NotAuthorizedException;
 
 import java.util.Map;
 /*
@@ -50,8 +51,19 @@ public class SimpleAuthorizationStore
     }
 
     public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
-        throws AuthorizationException
+        throws NotAuthorizedException, AuthorizationException
     {
-        return null;
+        if ( session.isAuthentic() )
+        {
+            AuthorizationResult authResult = new AuthorizationResult();
+            authResult.setAuthorized( true );
+            authResult.setPrincipal( session.getPrincipal() );
+
+            return authResult;
+        }
+        else
+        {
+            throw new NotAuthorizedException( "not authorized" );
+        }
     }
 }

@@ -1,6 +1,7 @@
 package org.codehaus.plexus.security;
 
 import org.codehaus.plexus.security.exception.AuthorizationException;
+import org.codehaus.plexus.security.exception.NotAuthorizedException;
 
 import java.util.Map;
 /*
@@ -33,6 +34,6 @@ public interface AuthorizationStore
         throws AuthorizationException;
 
     public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
-        throws AuthorizationException;
+        throws NotAuthorizedException, AuthorizationException;
 
 }

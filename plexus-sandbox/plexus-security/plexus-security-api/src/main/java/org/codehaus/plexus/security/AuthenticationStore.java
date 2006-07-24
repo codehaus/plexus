@@ -39,7 +39,7 @@ public interface AuthenticationStore
      * @return
      * @throws AuthenticationException
      */
-    public boolean isAuthentic( Map tokens ) throws AuthenticationException;
+    public boolean isAuthenticated( Map tokens ) throws AuthenticationException;
 
     /**
      * authenticate the map of tokens and return an authentication object or throw an
