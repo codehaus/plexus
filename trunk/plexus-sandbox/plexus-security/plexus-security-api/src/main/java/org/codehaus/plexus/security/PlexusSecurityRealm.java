@@ -41,11 +41,13 @@ public interface PlexusSecurityRealm
     public PlexusSecurityRealm getSecurityRealm( String id )
         throws PlexusSecurityRealmException;
 
-    public boolean isAuthentic( Map tokens ) throws AuthenticationException;
+    public boolean isAuthenticated( Map tokens ) throws AuthenticationException;
 
     public boolean isAuthorized( PlexusSecuritySession session,  Map tokens ) throws AuthorizationException;
 
     public PlexusSecuritySession authenticate( Map tokens ) throws NotAuthenticatedException, AuthenticationException;
+
+    
 
     public void setAuthenticator( Authenticator authenticator );
 

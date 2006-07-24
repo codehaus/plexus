@@ -59,7 +59,7 @@ public class TestSimpleSecurity
 
         authenticationCreds.put("password", "password");
 
-        assertTrue( psr.isAuthentic( authenticationCreds ) );
+        assertTrue( psr.isAuthenticated( authenticationCreds ) );
 
         PlexusSecuritySession session = psr.authenticate( authenticationCreds );
 
