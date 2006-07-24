@@ -18,18 +18,32 @@ package org.codehaus.plexus.security;
 import java.io.Serializable;
 
 /**
+ * AuthenticationResult: wrapper object for information that comes back from the authentication system
+ *
  * @author Jesse McConnell <jesse@codehaus.org>
  * @version $ID:$
  */
 public class AuthenticationResult
     implements Serializable
 {
+    /**
+     * boolean representing authentication status
+     */
     private boolean isAuthenticated = false;
 
+    /**
+     * the main actor or principal agent in the system, most commonly the username corresponding to the authentication request
+     */
     private String principal;
 
+    /**
+     * optional message the authentication store can set
+     */
     private String message;
 
+    /**
+     * optional exception the authentication store can set
+     */
     private Exception exception;
 
     public void setAuthenticated( boolean isAuthenticated )

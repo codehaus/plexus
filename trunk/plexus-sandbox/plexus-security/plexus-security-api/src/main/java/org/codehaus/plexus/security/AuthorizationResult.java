@@ -16,19 +16,31 @@ package org.codehaus.plexus.security;
  */
 
 /**
- * AuthorizationResult:
+ * AuthorizationResult: wrapper object for results from the authorization system
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  */
 public class AuthorizationResult
 {
+    /**
+     * boolean for authorized or not behavior
+     */
     private boolean isAuthorized = false;
 
+    /**
+     * the principal actor on the system, most commonly the username, but some systems may use this as a different value
+     */
     private String principal;
 
+    /**
+     * optional informational message from the authorization system
+     */
     private String message;
 
+    /**
+     * optional exception that might be thrown from the authorization system
+     */
     private Exception exception;
 
     public boolean isAuthorized()
