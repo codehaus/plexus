@@ -21,7 +21,11 @@ import java.util.Map;
  */
 
 /**
- * AuthorizationStore:
+ * AuthorizationStore: interface that the implementation of an authorization system must provide so it can be wired
+ * into the PlexusSecurityRealm
+ *
+ * TODO: add a method for returning an AuthorizationResult instead of throwing the NotAuthorizedException, possibly not even returning the AuthenticationException
+ *
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
@@ -30,9 +34,31 @@ public interface AuthorizationStore
 {
     public static String ROLE = AuthorizationStore.class.getName();
 
+    /**
+     * Check if the session and the map of tokens contain the necessary information to determine if the usage would
+     * be authorized or not.  If not enough information is present then the method should throw an AuthenticationException
+     *
+     * @param session
+     * @param tokens
+     * @return
+     * @throws AuthorizationException
+     */
     public boolean isAuthorized( PlexusSecuritySession session, Map tokens )
         throws AuthorizationException;
 
+    /**
+     * Check if the session and the map of tokens contain the necessary information to determine if the usage would
+     * be authorized or not.  If the usage would result in an unauthorized activity then throw the NotAuthorizedException
+     * If not enough information is present then the method should throw an AuthenticationException.  If the activity is
+     * authorized then create an AuthorizationResult and return it, this method should only return successful authorization
+     * or throw an exception.
+     *
+     * @param session
+     * @param tokens
+     * @return
+     * @throws NotAuthorizedException
+     * @throws AuthorizationException
+     */
     public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
         throws NotAuthorizedException, AuthorizationException;
 

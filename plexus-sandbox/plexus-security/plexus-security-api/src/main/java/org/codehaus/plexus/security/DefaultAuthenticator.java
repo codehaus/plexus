@@ -21,7 +21,10 @@ import java.util.Map;
  */
 
 /**
- * DefaultAuthenticator:
+ * DefaultAuthenticator: a plain authenticator that just redirects the request straight to its authentication store.
+ * This implementation should work for most self contained authentication systems but is provided as an interface
+ * in case of paricular implementions having special requirements like multiple authentication stores that can't be
+ * addressed by other means.
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
@@ -39,7 +42,7 @@ public class DefaultAuthenticator
      */
     private AuthenticationStore authStore;
 
-
+    
     public boolean isAuthenticated( Map tokens )
         throws AuthenticationException
     {
