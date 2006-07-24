@@ -21,6 +21,53 @@ package org.codehaus.plexus.security;
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  */
-public interface AuthorizationResult
+public class AuthorizationResult
 {
+    private boolean isAuthorized = false;
+
+    private String principal;
+
+    private String message;
+
+    private Exception exception;
+
+    public boolean isAuthorized()
+    {
+        return isAuthorized;
+    }
+
+    public void setAuthorized( boolean authorized )
+    {
+        isAuthorized = authorized;
+    }
+
+    public String getPrincipal()
+    {
+        return principal;
+    }
+
+    public void setPrincipal( String principal )
+    {
+        this.principal = principal;
+    }
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
+
+    public Exception getException()
+    {
+        return exception;
+    }
+
+    public void setException( Exception exception )
+    {
+        this.exception = exception;
+    }
 }

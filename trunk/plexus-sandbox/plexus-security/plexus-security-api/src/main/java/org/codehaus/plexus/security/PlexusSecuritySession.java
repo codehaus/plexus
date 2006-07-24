@@ -21,14 +21,43 @@ package org.codehaus.plexus.security;
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  */
-public interface PlexusSecuritySession
+public class PlexusSecuritySession
 {
 
-    public boolean isAuthentic();
+    private boolean authentic = false;
 
-    public void setAuthentic( boolean status );
+    private String principal;
 
-    public AuthenticationResult getAuthenticationResult();
+    private AuthenticationResult authenticationResult;
 
-    public void setAuthenticationResult( AuthenticationResult authenticationResult );
+    public boolean isAuthentic()
+    {
+        return authentic;
+    }
+
+    public void setAuthentic( boolean authentic )
+    {
+        this.authentic = authentic;
+    }
+
+    public String getPrincipal()
+    {
+        return principal;
+    }
+
+    public void setPrincipal( String principal )
+    {
+        this.principal = principal;
+    }
+
+
+    public void setAuthenticationResult( AuthenticationResult authenticationResult )
+    {
+        this.authenticationResult = authenticationResult;
+    }
+
+    public AuthenticationResult getAuthenticationResult()
+    {
+        return authenticationResult;
+    }
 }

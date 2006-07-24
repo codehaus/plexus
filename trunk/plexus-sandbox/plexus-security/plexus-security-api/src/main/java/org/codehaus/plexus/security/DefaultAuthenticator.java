@@ -40,10 +40,10 @@ public class DefaultAuthenticator
     private AuthenticationStore authStore;
 
 
-    public boolean isAuthentic( Map tokens )
+    public boolean isAuthenticated( Map tokens )
         throws AuthenticationException
     {
-        return authStore.isAuthentic( tokens );
+        return authStore.isAuthenticated( tokens );
     }
 
     public AuthenticationResult authenticate( Map tokens )
