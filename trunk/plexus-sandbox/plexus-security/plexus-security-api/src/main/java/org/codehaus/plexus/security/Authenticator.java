@@ -23,7 +23,7 @@ import java.util.Map;
 
 
 /**
- * Authenticator
+ * Authenticator:
  *
  * @author Jesse McConnell
  * @version $ID:$

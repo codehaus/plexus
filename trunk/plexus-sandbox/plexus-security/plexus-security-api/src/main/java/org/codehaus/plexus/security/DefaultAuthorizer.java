@@ -21,7 +21,9 @@ import java.util.Map;
  */
 
 /**
- * DefaultAuthorizer:
+ * DefaultAuthorizer: a plain authorizer that just redirects the request straight to its authorization store.
+ * This implementation should work for most self contained authorization systems but is provided as an interface
+ * in case of paricular implementions having special requirements.
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
