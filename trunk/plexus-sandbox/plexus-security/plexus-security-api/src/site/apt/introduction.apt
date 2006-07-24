@@ -1,0 +1,27 @@
+------
+Plexus Security Realms
+------
+Jesse McConnell <jesse@codehaus.org>
+------
+ July 24, 2006
+------
+
+General Concept
+
+ A PlexusSecurityRealm is a wrapper around Authentication and Authorization 
+activities. Applications generally have two needs, they need to authenticate users and then they optionally need to authorize those users to do different things in the application.  There is also the optional requirement that the application be able to do this with different partitions of authorization, an in each of those partitions maintain either a separate Authentication ability, Authorization ability or both.
+
+ Fundamentally this would be similar to the way the classloader hierarchies with ClassWorlds work, there would be a top level security realm that may or may not contain all of the authentication and authorization credentials the applications needs.  If the application needs more then they are defined in the subsequent security realms.  The noteable difference between the classworlds concept and the security realms idea would be that the security realms would have the ability to decide not to be a part of the hierarchy and not ask up the chain if a user or activity is authentic or authorized.  Basically, is the security partition solid or can the realm delegate.
+
+
+Implementation
+
+ A PlexusSecurityRealm can be configured with an Authenticater and an Authorizer which basically answer the questions isAuthenticated() and isAuthorized() by in turn asking their Authentication and Authorization stores.  An implementation of one of these stores just needs to implement two methods, one that answers the boolean isX() question and the other which returns a XResult object which would contain exceptions and messages from the relevant service.
+ 
+ 
+ 
+ Simple Implementation Example
+ 
+The plexus-security-simple project implements a SimpleAuthenticationStore and a SimpleAuthorizationStore.  The SimpleAuthenticationStore class simply checks that the map of tokens contains a 'username' token and a 'password' token and returns true if that is the case.  The SimpleAuthorizationStore is even easier and returns true if the session that is passed in is in fact authenticated.  
+
+These are pretty trivial examples, but it does show in the test case how the api would be used and how to wire up the security realm in the tests components.xml file.
