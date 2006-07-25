@@ -24,6 +24,10 @@ import java.util.Map;
 /**
  * DefaultAuthenticationTokenFactory:
  *
+ * The authTokenType variable can be configured through the configuration section in the components.xml file or
+ * barring that can be placed in the tokenMap that is passed in.  If neither of these are used the factory will throw
+ * an AuthenticationException.
+ *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  *
@@ -33,12 +37,23 @@ import java.util.Map;
 public class DefaultAuthenticationTokenFactory
     implements AuthenticationTokenFactory
 {
+
+    private String authTokenType;
+
     public Authentication getAuthenticationToken( Map tokenMap )
         throws AuthenticationException
     {
 
-        String tokenType = (String)tokenMap.get( "authTokenType" );
+        // try the configured parameter
+        String tokenType = authTokenType;
 
+        // if not configured, the check the tokenMap
+        if ( tokenType == null )
+        {
+            tokenType = (String)tokenMap.get( "authTokenType" );
+        }
+
+        // if tokenType is still null then throw exception
         if ( tokenType != null )
         {
             if ( UsernamePasswordAuthenticationToken.class.getName().equals( tokenType ) )
