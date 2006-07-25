@@ -215,7 +215,7 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/trunk/</connection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk</developerConnection>
   </scm>
   <organization>
