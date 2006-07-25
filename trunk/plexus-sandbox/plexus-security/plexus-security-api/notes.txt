@@ -1,0 +1,4 @@
+* consider switching the principle from the String it currently is to simply and Object that calling
+the toString() method on will return the principle identifier like acegi does it
+
+* add methods to let the authencators and authorizers return negative results without throwing exceptions
