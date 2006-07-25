@@ -36,22 +36,27 @@ public class DefaultAuthorizer
     implements Authorizer
 {
 
-    /**
-     * @plexus.requirement
-     */
-    private AuthorizationStore store;
-
-
     public boolean isAuthorized( PlexusSecuritySession session, Map tokens )
         throws AuthorizationException
     {
-       return store.isAuthorized( session, tokens );
+       return session.isAuthentic();
     }
 
     public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
         throws NotAuthorizedException, AuthorizationException
     {
-        return store.authorize( session, tokens );
+        if ( session.isAuthentic() )
+        {
+            AuthorizationResult authResult = new AuthorizationResult();
+
+            authResult.setAuthorized( true );
+
+            return authResult;
+        }
+        else
+        {
+            throw new NotAuthorizedException( "session not authentic" );
+        }            
     }
 }
 
