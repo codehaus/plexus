@@ -49,6 +49,7 @@ public class AcegiAuthenticationStore
      */
     private AuthenticationTokenFactory tokenFactory;
 
+
     /**
      *
      * @param tokens
