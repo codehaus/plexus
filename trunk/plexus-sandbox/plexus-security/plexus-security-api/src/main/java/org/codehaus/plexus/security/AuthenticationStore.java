@@ -1,7 +1,6 @@
 package org.codehaus.plexus.security;
 
 import org.codehaus.plexus.security.exception.AuthenticationException;
-import org.codehaus.plexus.security.exception.NotAuthenticatedException;
 
 import java.util.Map;
 /*
@@ -24,7 +23,6 @@ import java.util.Map;
  * AuthenticationStore: interface that the implementation of an authentication system must provide so it can be wired
  * into the PlexusSecurityRealm
  *
- * TODO: add a method for returning an AuthenticationResult instead of throwing the NotAuthenticatedException, possibly not even returning the AuthenticationException
  *
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
@@ -35,26 +33,14 @@ public interface AuthenticationStore
 {
     public static String ROLE = AuthenticationStore.class.getName();
 
-
-    /**
-     * A check to see if the map of tokens will authenticate or not
-     *
-     * @param tokens
-     * @return
-     * @throws AuthenticationException
-     */
-    public boolean isAuthenticated( Map tokens ) throws AuthenticationException;
-
     /**
      * Authenticate the map of tokens and return an authentication object or throw an
-     * AuthenticationException.  If the tokens would not result in an AuthenticationResult then the implementation
-     * should throw a NotAuthenticatedException.
+     * AuthenticationException.  
      *
      * @param tokens
      * @return
      * @throws AuthenticationException
-     * @throws NotAuthenticatedException
      */
-    public AuthenticationResult authenticate( Map tokens ) throws NotAuthenticatedException, AuthenticationException ;
+    public AuthenticationResult authenticate( Map tokens ) throws AuthenticationException;
 
 }

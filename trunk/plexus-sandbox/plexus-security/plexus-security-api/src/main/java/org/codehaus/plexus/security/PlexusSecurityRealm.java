@@ -34,7 +34,6 @@ public interface PlexusSecurityRealm
 {
     public static String ROLE = PlexusSecurityRealm.class.getName();
 
-
     public PlexusSecurityRealm createSecurityRealm( String id, String authenticator, String authorizer )
         throws PlexusSecurityRealmException;
 
@@ -47,7 +46,6 @@ public interface PlexusSecurityRealm
 
     public PlexusSecuritySession authenticate( Map tokens ) throws NotAuthenticatedException, AuthenticationException;
 
-    
 
     public void setAuthenticator( Authenticator authenticator );
 

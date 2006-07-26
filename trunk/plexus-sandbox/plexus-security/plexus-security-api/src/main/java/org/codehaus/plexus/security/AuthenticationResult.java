@@ -27,14 +27,22 @@ public class AuthenticationResult
     implements Serializable
 {
     /**
+     * the name of the authentication store that generated this AuthenticationResult
+     */
+    private String authenticationStore;
+
+    /**
      * boolean representing authentication status
      */
     private boolean isAuthenticated = false;
 
     /**
-     * the main actor or principal agent in the system, most commonly the username corresponding to the authentication request
+     * the main actor or principal agent in the system, most commonly the username corresponding to the authentication
+     * request
+     *
+     * Note: the toString() of the principle Object should always represent the unique agent
      */
-    private String principal;
+    private Object principal;
 
     /**
      * optional message the authentication store can set
@@ -46,6 +54,18 @@ public class AuthenticationResult
      */
     private Exception exception;
 
+    /**
+     * optional authentication payload object
+     */
+    private Object payload;
+
+    private AuthenticationResult(){}    
+
+    public AuthenticationResult( String authenticationStore )
+    {
+        this.authenticationStore = authenticationStore;
+    }
+
     public void setAuthenticated( boolean isAuthenticated )
     {
         this.isAuthenticated = isAuthenticated;
@@ -56,12 +76,12 @@ public class AuthenticationResult
         return isAuthenticated;
     }
 
-    public String getPrincipal()
+    public Object getPrincipal()
     {
         return principal;
     }
 
-    public void setPrincipal( String principal )
+    public void setPrincipal( Object principal )
     {
         this.principal = principal;
     }
@@ -84,5 +104,25 @@ public class AuthenticationResult
     public void setException( Exception exception )
     {
         this.exception = exception;
+    }
+
+    public Object getPayload()
+    {
+        return payload;
+    }
+
+    public void setPayload( Object payload )
+    {
+        this.payload = payload;
+    }
+
+    public String getAuthenticationStore()
+    {
+        return authenticationStore;
+    }
+
+    public void setAuthenticationStore( String authenticationStore )
+    {
+        this.authenticationStore = authenticationStore;
     }
 }
