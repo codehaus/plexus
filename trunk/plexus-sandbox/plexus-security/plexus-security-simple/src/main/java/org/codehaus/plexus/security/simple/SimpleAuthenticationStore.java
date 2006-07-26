@@ -3,7 +3,6 @@ package org.codehaus.plexus.security.simple;
 import org.codehaus.plexus.security.AuthenticationResult;
 import org.codehaus.plexus.security.AuthenticationStore;
 import org.codehaus.plexus.security.exception.AuthenticationException;
-import org.codehaus.plexus.security.exception.NotAuthenticatedException;
 
 import java.util.Map;
 /*
@@ -35,37 +34,22 @@ import java.util.Map;
 public class SimpleAuthenticationStore
     implements AuthenticationStore
 {
-
-
-    public boolean isAuthenticated( Map tokens )
+    public AuthenticationResult authenticate( Map tokens )
         throws AuthenticationException
     {
-        if ( tokens.containsKey ("username") && tokens.containsKey( "password") )
-        {
-            return true;
-        }
-        else
-        {
-            throw new AuthenticationException( "missing username or password" );
-        }
-    }
+        AuthenticationResult authResult = new AuthenticationResult( SimpleAuthenticationStore.class.getName() );
 
-    public AuthenticationResult authenticate( Map tokens )
-        throws NotAuthenticatedException, AuthenticationException
-    {
-        if ( !isAuthenticated( tokens ) )
+        if ( tokens.containsKey( "username" ))
         {
-            throw new NotAuthenticatedException( "invalid credentials, can not authenticate" );
-        }
-        else
-        {
-            AuthenticationResult authResult = new AuthenticationResult();
-
             authResult.setAuthenticated( true );
-            authResult.setPrincipal( (String)tokens.get( "username" )  );
-
-            return authResult;
+            authResult.setPrincipal( (String) tokens.get( "username" ) );
         }
+        else
+        {
+            authResult.setAuthenticated( false );
+        }
+
+        return authResult;
     }
 
 }

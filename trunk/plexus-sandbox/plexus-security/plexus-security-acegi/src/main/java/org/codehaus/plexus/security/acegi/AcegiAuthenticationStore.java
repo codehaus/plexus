@@ -29,10 +29,8 @@ import java.util.Map;
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- *
- * @plexus.component
- *   role="org.codehaus.plexus.security.AuthenticationStore"
- *   role-hint="acegi"
+ * @plexus.component role="org.codehaus.plexus.security.AuthenticationStore"
+ * role-hint="acegi"
  */
 public class AcegiAuthenticationStore
     implements AuthenticationStore
@@ -44,63 +42,25 @@ public class AcegiAuthenticationStore
 
     /**
      * @plexus.requirement
-     *
-     * TODO: think of a better way to determine the type of token needed, perhaps configured in components.xml?
      */
     private AuthenticationTokenFactory tokenFactory;
 
-
-    /**
-     *
-     * @param tokens
-     * @return
-     * @throws org.codehaus.plexus.security.exception.AuthenticationException
-     */
-
-    public boolean isAuthenticated( Map tokens )
+    public AuthenticationResult authenticate( Map tokens )
         throws org.codehaus.plexus.security.exception.AuthenticationException
     {
-
         Authentication authenticationToken = tokenFactory.getAuthenticationToken( tokens );
 
         try
         {
             Authentication response = manager.doAuthentication( authenticationToken );
 
-            return response.isAuthenticated();
+            AuthenticationResult authResult = new AuthenticationResult( AcegiAuthenticationStore.class.getName() );
 
-        }
-        catch ( AuthenticationException e )
-        {
-            throw new org.codehaus.plexus.security.exception.AuthenticationException("Authentication Exception", e );
-        }
+            authResult.setAuthenticated( true );
 
+            authResult.setPrincipal( response.getPrincipal().toString() );
 
-    }
-
-
-    public AuthenticationResult authenticate( Map tokens )
-        throws NotAuthenticatedException, org.codehaus.plexus.security.exception.AuthenticationException
-    {
-        Authentication authenticationToken = tokenFactory.getAuthenticationToken( tokens );
-
-        try
-        {
-            Authentication response = manager.doAuthentication( authenticationToken );
-
-            if ( response.isAuthenticated() )
-            {
-                AuthenticationResult authResult = new AuthenticationResult();
-
-                authResult.setAuthenticated( true );
-
-                authResult.setPrincipal( response.getPrincipal().toString() );
-            }
-            else
-            {
-                throw new NotAuthenticatedException( "not authenticated" );
-            }
-
+            return authResult;
         }
         catch ( AuthenticationException e )
         {

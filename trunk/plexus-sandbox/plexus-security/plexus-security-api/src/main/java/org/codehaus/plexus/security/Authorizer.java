@@ -1,7 +1,6 @@
 package org.codehaus.plexus.security;
 
 import org.codehaus.plexus.security.exception.AuthorizationException;
-import org.codehaus.plexus.security.exception.NotAuthorizedException;
 
 import java.util.Map;
 /*
@@ -30,11 +29,7 @@ public interface Authorizer
 {
     public static String ROLE = Authorizer.class.getName();
 
-
-    public boolean isAuthorized( PlexusSecuritySession session, Map tokens )
+    public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
         throws AuthorizationException;
 
-
-    public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
-        throws NotAuthorizedException, AuthorizationException;
 }

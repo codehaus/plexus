@@ -24,6 +24,11 @@ package org.codehaus.plexus.security;
 public class AuthorizationResult
 {
     /**
+     * the name of the authorization store that generated this result
+     */
+    private String authorizationStore;
+
+    /**
      * boolean for authorized or not behavior
      */
     private boolean isAuthorized = false;
@@ -31,7 +36,7 @@ public class AuthorizationResult
     /**
      * the principal actor on the system, most commonly the username, but some systems may use this as a different value
      */
-    private String principal;
+    private Object principal;
 
     /**
      * optional informational message from the authorization system
@@ -43,6 +48,18 @@ public class AuthorizationResult
      */
     private Exception exception;
 
+    /**
+     * optional payload object containing implementation specific information
+     */
+    private Object payload;
+    
+    private AuthorizationResult() {}
+
+    public AuthorizationResult( String authorizationStore )
+    {
+        this.authorizationStore = authorizationStore;
+    }
+
     public boolean isAuthorized()
     {
         return isAuthorized;
@@ -53,12 +70,12 @@ public class AuthorizationResult
         isAuthorized = authorized;
     }
 
-    public String getPrincipal()
+    public Object getPrincipal()
     {
         return principal;
     }
 
-    public void setPrincipal( String principal )
+    public void setPrincipal( Object principal )
     {
         this.principal = principal;
     }
@@ -81,5 +98,25 @@ public class AuthorizationResult
     public void setException( Exception exception )
     {
         this.exception = exception;
+    }
+
+    public Object getPayload()
+    {
+        return payload;
+    }
+
+    public void setPayload( Object payload )
+    {
+        this.payload = payload;
+    }
+
+    public String getAuthorizationStore()
+    {
+        return authorizationStore;
+    }
+
+    public void setAuthorizationStore( String authorizationStore )
+    {
+        this.authorizationStore = authorizationStore;
     }
 }
