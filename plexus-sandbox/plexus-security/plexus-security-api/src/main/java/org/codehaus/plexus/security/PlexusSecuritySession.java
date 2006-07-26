@@ -16,7 +16,7 @@ package org.codehaus.plexus.security;
  */
 
 /**
- * PlexusSecuritySession: 
+ * PlexusSecuritySession:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
@@ -25,7 +25,7 @@ public class PlexusSecuritySession
 {
     private boolean authentic = false;
 
-    private String principal;
+    private Object principal;
 
     private AuthenticationResult authenticationResult;
 
@@ -39,16 +39,15 @@ public class PlexusSecuritySession
         this.authentic = authentic;
     }
 
-    public String getPrincipal()
+    public Object getPrincipal()
     {
         return principal;
     }
 
-    public void setPrincipal( String principal )
+    public void setPrincipal( Object principal )
     {
         this.principal = principal;
     }
-
 
     public void setAuthenticationResult( AuthenticationResult authenticationResult )
     {

@@ -1,7 +1,6 @@
 package org.codehaus.plexus.security;
 
 import org.codehaus.plexus.security.exception.AuthorizationException;
-import org.codehaus.plexus.security.exception.NotAuthorizedException;
 
 import java.util.Map;
 /*
@@ -21,42 +20,39 @@ import java.util.Map;
  */
 
 /**
- * DefaultAuthorizer: a plain authorizer that just redirects the request straight to its authorization store.
- * This implementation should work for most self contained authorization systems but is provided as an interface
- * in case of paricular implementions having special requirements.
+ * DefaultAuthorizer: the default authorizer optionally uses the store
+ * <p/>
+ * While the store is a requirement in the DefaultAuthenticator, it is optional in the Authorizer, if it is setup
+ * then it will be used, otherwise it defaults to whether or not the session is authenticated.
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- *
- * @plexus.component
- *   role="org.codehaus.plexus.security.Authorizer"
- *   role-hint="default"
+ * @plexus.component role="org.codehaus.plexus.security.Authorizer"
+ * role-hint="default"
  */
 public class DefaultAuthorizer
     implements Authorizer
 {
-
-    public boolean isAuthorized( PlexusSecuritySession session, Map tokens )
-        throws AuthorizationException
-    {
-       return session.isAuthentic();
-    }
+    /**
+     *
+     */
+    private AuthorizationStore store;
 
     public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
-        throws NotAuthorizedException, AuthorizationException
+        throws AuthorizationException
     {
-        if ( session.isAuthentic() )
+        if ( store == null )
         {
-            AuthorizationResult authResult = new AuthorizationResult();
-
-            authResult.setAuthorized( true );
+            AuthorizationResult authResult = new AuthorizationResult( DefaultAuthorizer.class.getName() );
+            
+            authResult.setAuthorized( session.isAuthentic() );
 
             return authResult;
         }
         else
         {
-            throw new NotAuthorizedException( "session not authentic" );
-        }            
+            return store.authorize( session, tokens );
+        }
     }
 }
 

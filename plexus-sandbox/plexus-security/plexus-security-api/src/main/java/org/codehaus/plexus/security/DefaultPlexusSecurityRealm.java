@@ -86,7 +86,6 @@ public class DefaultPlexusSecurityRealm
 
     }
 
-
     public PlexusSecurityRealm getSecurityRealm( String id )
         throws PlexusSecurityRealmException
     {
@@ -103,20 +102,20 @@ public class DefaultPlexusSecurityRealm
     public boolean isAuthenticated( Map tokens )
         throws AuthenticationException
     {
-        return authenticator.isAuthenticated( tokens );
+        AuthenticationResult authResult = authenticator.authenticate( tokens );
+        return authResult.isAuthenticated();
     }
 
     public boolean isAuthorized( PlexusSecuritySession session, Map tokens )
         throws AuthorizationException
     {
-        return authorizer.isAuthorized( session, tokens );
+        AuthorizationResult authResult = authorizer.authorize( session, tokens );
+        return authResult.isAuthorized();
     }
 
     /**
      * attempts to authenticate based on the tokens passed in, if authentication fails then a NotAuthenticatedException
      * is thrown so that unauthenticated sessions are never created
-     *
-     * TODO: do we pass back unauthenticated sessions and their AuthenticationResults?
      *
      * @param tokens
      * @return
