@@ -1,0 +1,17 @@
+<book>
+  <id>Plexus_developer_reference</id>
+  <title>Plexus - Developer Reference</title>
+  <author>Rahul Thakur</author>
+  <chapters>
+    <chapter>
+      <id>00_introduction</id>
+      <title>Introduction</title>
+      <sections>
+        <section>
+          <id>00_index</id>
+        </section>
+      </sections>
+    </chapter>   
+  </chapters>
+</book>
+

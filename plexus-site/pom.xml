@@ -33,7 +33,23 @@
               <descriptor>src/books/writing-components-trial.xml</descriptor>
               <formats>
                 <format>
-                  <id>itext</id>
+                  <id>pdf</id>
+                </format>
+                <format>
+                  <id>latex</id>
+                </format>
+                <format>
+                  <id>xdoc</id>
+                </format>
+              </formats>
+            </book>
+            <!-- Plexus Developer reference -->
+            <book>
+              <directory>src/site</directory>
+              <descriptor>src/books/developer-reference.xml</descriptor>
+              <formats>
+                <format>
+                  <id>pdf</id>
                 </format>
                 <format>
                   <id>latex</id>
