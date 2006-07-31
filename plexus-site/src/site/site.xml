@@ -38,6 +38,7 @@
 
     <menu name="Books">
       <item name="Writing Components" href="/writing-components-trial" />
+      <item name="Developer Guide" href="/Plexus_developer_reference" />
     </menu>
     
     <menu name="Guides">
