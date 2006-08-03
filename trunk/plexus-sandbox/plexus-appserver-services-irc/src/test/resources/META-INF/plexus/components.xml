@@ -1,0 +1,14 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.service.irc.IRCCommand</role>
+      <implementation>org.codehaus.plexus.service.irc.CommandStub</implementation>
+      <role-hint>stub</role-hint>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.service.irc.IRCServiceManager</role>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+</component-set>
