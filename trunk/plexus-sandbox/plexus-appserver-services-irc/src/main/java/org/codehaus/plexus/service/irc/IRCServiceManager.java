@@ -18,10 +18,6 @@ public interface IRCServiceManager {
                          String username, String realname)
       throws IOException;
 
-  public boolean connect(String host, int portMin, int portMax, String nick,
-                         String pass, String username, String realname)
-      throws IOException;
-
   public void disconnect() throws IOException;
 
   public void disconnect(String reason) throws IOException;
