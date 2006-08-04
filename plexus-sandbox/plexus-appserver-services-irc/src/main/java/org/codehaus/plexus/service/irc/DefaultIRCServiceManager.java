@@ -51,16 +51,11 @@ public class DefaultIRCServiceManager extends AbstractLogEnabled
   }
 
   public boolean connect(String host, String nick, String pass,
-                         String username, String realname)
-      throws IOException {
-    return connect(host, 6667, 6669, nick, pass, username, realname);
-  }
-
-  public boolean connect(String host, int portMin, int portMax, String nick,
-                         String pass, String username, String realname)
-      throws IOException {
+                         String username, String realname) throws IOException {
     if (conn != null && conn.isConnected())
       return false;
+    int portMin = 6667;
+    int portMax = 6669;
 
     getLogger().debug("connecting");
     conn = new IRCConnection(host, portMin, portMax, pass, nick, username,
