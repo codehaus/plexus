@@ -18,7 +18,7 @@ public class IRCUserTest extends TestCase {
   public IRCUserTest(String name) {
     super(name);
 
-    user = new IRCUser("nick", "login", "host");
+    user = new DefaultIRCUser("nick", "login", "host");
   }
 
   public void testGetNick() throws Exception {
