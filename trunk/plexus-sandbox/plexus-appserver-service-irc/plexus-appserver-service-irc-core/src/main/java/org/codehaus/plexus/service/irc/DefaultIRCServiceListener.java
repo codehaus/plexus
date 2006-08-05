@@ -175,6 +175,15 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
         new DefaultIRCUser(user);
 
+    if (message.startsWith("/me ")) {
+      String theMessage = message.substring(4).trim();
+      Iterator listenerIter = listeners.iterator();
+      while (listenerIter.hasNext()) {
+        IRCListener next = (IRCListener) listenerIter.next();
+        next.onAction(target, ircUser, theMessage);
+      }
+    }
+
     /* addressed through a shortcut */
     if (isIntroChar(message.charAt(0))) {
       doCommand(target, ircUser, message.substring(1).trim());
