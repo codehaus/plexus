@@ -40,6 +40,8 @@ public interface IRCListener {
 
   public void onPrivateMessage(IRCUser user, String message);
 
+  public void onAction(String target, IRCUser user, String action);
+
   public void onQuit(IRCUser user, String message);
 
   public void onReply(int num, String value, String message);
