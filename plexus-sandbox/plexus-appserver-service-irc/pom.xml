@@ -12,5 +12,6 @@
   <modules>
     <module>plexus-appserver-service-irc-api</module>
     <module>plexus-appserver-service-irc-core</module>
+    <module>plexus-appserver-service-irc-service</module>
   </modules>
 </project>
