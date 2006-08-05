@@ -17,14 +17,6 @@ public class IRCUser {
     this.host = host;
   }
 
-  public IRCUser(org.schwering.irc.lib.IRCUser user) {
-    if (user == null)
-      return;
-    this.nick = user.getNick();
-    this.login = user.getUsername();
-    this.host = user.getHost();
-  }
-
   public String getNick() {
     return nick;
   }

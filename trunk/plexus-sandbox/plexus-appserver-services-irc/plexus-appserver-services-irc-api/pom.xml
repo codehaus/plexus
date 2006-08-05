@@ -7,6 +7,6 @@
   </parent>
   <artifactId>plexus-appserver-service-irc-api</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>plexus-service</packaging>
+  <packaging>jar</packaging>
   <name>Plexus Appserver IRC Service API</name>
 </project>
