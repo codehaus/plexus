@@ -41,6 +41,8 @@ public abstract class AbstractIRCListener implements IRCListener {
     onMessage(user.getNick(), user, message);
   }
 
+  public void onAction(String target, IRCUser user, String action) { }
+
   public void onQuit(IRCUser user, String message) { }
 
   public void onReply(int num, String value, String message) { }
