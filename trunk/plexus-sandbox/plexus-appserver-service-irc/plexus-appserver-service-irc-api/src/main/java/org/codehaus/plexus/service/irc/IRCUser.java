@@ -7,25 +7,11 @@ package org.codehaus.plexus.service.irc;
  * Time: 19:13:59
  * To change this template use File | Settings | File Templates.
  */
-public class IRCUser {
+public interface IRCUser {
 
-  private String nick, login, host;
+  public String getNick();
 
-  public IRCUser(String nick, String login, String host) {
-    this.nick = nick;
-    this.login = login;
-    this.host = host;
-  }
+  public String getLogin();
 
-  public String getNick() {
-    return nick;
-  }
-
-  public String getLogin() {
-    return login;
-  }
-
-  public String getHost() {
-    return host;
-  }
+  public String getHost();
 }

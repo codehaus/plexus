@@ -60,7 +60,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
 
   public void onInvite(String channel, IRCUser user, String invitee) {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
-        new org.codehaus.plexus.service.irc.IRCUser(user);
+        new DefaultIRCUser(user);
 
     Iterator listenerIter = listeners.iterator();
     while (listenerIter.hasNext()) {
@@ -71,7 +71,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
 
   public void onJoin(String channel, IRCUser user) {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
-        new org.codehaus.plexus.service.irc.IRCUser(user);
+        new DefaultIRCUser(user);
 
     Iterator listenerIter = listeners.iterator();
     while (listenerIter.hasNext()) {
@@ -82,7 +82,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
 
   public void onKick(String channel, IRCUser user, String kickee, String message) {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
-        new org.codehaus.plexus.service.irc.IRCUser(user);
+        new DefaultIRCUser(user);
 
     Iterator listenerIter = listeners.iterator();
     while (listenerIter.hasNext()) {
@@ -106,7 +106,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
 
   public void onMode(IRCUser user, String string, String mode) {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
-        new org.codehaus.plexus.service.irc.IRCUser(user);
+        new DefaultIRCUser(user);
 
     Iterator listenerIter = listeners.iterator();
     while (listenerIter.hasNext()) {
@@ -117,7 +117,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
 
   public void onNick(IRCUser user, String newNick) {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
-        new org.codehaus.plexus.service.irc.IRCUser(user);
+        new DefaultIRCUser(user);
 
     Iterator listenerIter = listeners.iterator();
     while (listenerIter.hasNext()) {
@@ -128,7 +128,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
 
   public void onNotice(String target, IRCUser user, String message) {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
-        new org.codehaus.plexus.service.irc.IRCUser(user);
+        new DefaultIRCUser(user);
 
     Iterator listenerIter = listeners.iterator();
     while (listenerIter.hasNext()) {
@@ -139,7 +139,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
 
   public void onPart(String channel, IRCUser user, String message) {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
-        new org.codehaus.plexus.service.irc.IRCUser(user);
+        new DefaultIRCUser(user);
 
     Iterator listenerIter = listeners.iterator();
     while (listenerIter.hasNext()) {
@@ -173,7 +173,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
 
   public void onPrivmsg(String target, IRCUser user, String message) {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
-        new org.codehaus.plexus.service.irc.IRCUser(user);
+        new DefaultIRCUser(user);
 
     /* addressed through a shortcut */
     if (isIntroChar(message.charAt(0))) {
@@ -210,7 +210,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
 
   public void onQuit(IRCUser user, String message) {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
-        new org.codehaus.plexus.service.irc.IRCUser(user);
+        new DefaultIRCUser(user);
 
     Iterator listenerIter = listeners.iterator();
     while (listenerIter.hasNext()) {
@@ -229,7 +229,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
 
   public void onTopic(String channel, IRCUser user, String topic) {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
-        new org.codehaus.plexus.service.irc.IRCUser(user);
+        new DefaultIRCUser(user);
 
     Iterator listenerIter = listeners.iterator();
     while (listenerIter.hasNext()) {
