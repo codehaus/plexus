@@ -14,6 +14,7 @@ import com.opensymphony.xwork.validator.Validator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 import javax.servlet.ServletContext;
 import java.util.ArrayList;
@@ -56,12 +57,6 @@ public class PlexusObjectFactory
             String message = "********** FATAL ERROR STARTING UP PLEXUS-WEBWORK INTEGRATION **********\n" +
                 "Looks like the Plexus listener was not configured for your web app! \n" +
                 "You need to add the following to web.xml: \n" + "\n" +
-                "    <!-- this should be before the webwork filter -->\n" + "    <filter>\n" +
-                "        <filter-name>plexus</filter-name>\n" +
-                "        <filter-class>org.codehaus.plexus.xwork.PlexusFilter</filter-class>\n" + "    </filter>\n" +
-                "\n" + "...\n" + "\n" + "    <!-- this should be before the webwork filter -->\n" +
-                "    <filter-mapping>\n" + "        <filter-name>plexus</filter-name>\n" +
-                "        <url-pattern>/*</url-pattern>\n" + "    </filter-mapping>\n" + "\n" + "...\n" + "\n" +
                 "    <listener>\n" +
                 "        <listener-class>org.codehaus.plexus.xwork.PlexusLifecycleListener</listener-class>\n" +
                 "    </listener>";
@@ -70,9 +65,6 @@ public class PlexusObjectFactory
         }
 
         base = (PlexusContainer) servletContext.getAttribute( PlexusLifecycleListener.KEY );
-
-        // used by the servlet configuration phase
-        base.getContext().put( ServletContext.class.getName(), servletContext );
     }
 
     public Object buildAction( String actionName, String namespace, ActionConfig config, Map extraContext )
@@ -93,7 +85,7 @@ public class PlexusObjectFactory
     {
         String interceptorClassName = interceptorConfig.getClassName();
         Map thisInterceptorClassParams = interceptorConfig.getParams();
-        Map params = ( thisInterceptorClassParams == null ) ? new HashMap() : new HashMap( thisInterceptorClassParams );
+        Map params = thisInterceptorClassParams == null ? new HashMap() : new HashMap( thisInterceptorClassParams );
         params.putAll( interceptorRefParams );
 
         String message;
@@ -200,44 +192,37 @@ public class PlexusObjectFactory
     public Class getClassInstance( String className )
         throws ClassNotFoundException
     {
-        PlexusContainer pc = PlexusThreadLocal.getPlexusContainer();
-
-        if ( pc == null )
-        {
-            pc = base;
-        }
-
         // TODO: these chain of exceptions can potentially hide useful errors. Perhaps Plexus could differentiate a
         // component lookup exception from a component not found exception.
         try
         {
-            return pc.lookup( className ).getClass();
+            return base.lookup( className ).getClass();
         }
-        catch ( Exception e1 )
+        catch ( ComponentLookupException e1 )
         {
             try
             {
-                return pc.lookup( Action.class.getName(), className ).getClass();
+                return base.lookup( Action.class.getName(), className ).getClass();
             }
-            catch ( Exception e2 )
+            catch ( ComponentLookupException e2 )
             {
                 try
                 {
-                    return pc.lookup( Interceptor.class.getName(), className ).getClass();
+                    return base.lookup( Interceptor.class.getName(), className ).getClass();
                 }
-                catch ( Exception e3 )
+                catch ( ComponentLookupException e3 )
                 {
                     try
                     {
-                        return pc.lookup( Validator.class.getName(), className ).getClass();
+                        return base.lookup( Validator.class.getName(), className ).getClass();
                     }
-                    catch ( Exception e4 )
+                    catch ( ComponentLookupException e4 )
                     {
                         try
                         {
-                            return pc.lookup( Result.class.getName(), className ).getClass();
+                            return base.lookup( Result.class.getName(), className ).getClass();
                         }
-                        catch ( Exception e5 )
+                        catch ( ComponentLookupException e5 )
                         {
                             return super.getClassInstance( className );
                         }
@@ -247,62 +232,45 @@ public class PlexusObjectFactory
         }
     }
 
-    private Object lookup( String role )
-        throws Exception
-    {
-        return lookup( role, null, null );
-    }
-
     private Object lookup( String role, Map extraContext )
         throws Exception
     {
         return lookup( role, null, extraContext );
     }
 
-    private Object lookup( String role, String roleHint )
-        throws Exception
-    {
-        return lookup( role, roleHint, null );
-    }
-
     private Object lookup( String role, String roleHint, Map extraContext )
         throws Exception
     {
         String id = role + ":" + roleHint;
-        PlexusContainer pc = PlexusThreadLocal.getPlexusContainer();
-
-        if ( pc == null )
-        {
-            pc = base;
-        }
 
         if ( plexusComponents.contains( id ) )
         {
-            return loadComponentWithPlexus( pc, role, roleHint );
+            return loadComponentWithPlexus( base, role, roleHint );
         }
 
         if ( otherComponents.contains( id ) )
         {
-            return loadComponentWithXWork( pc, role, roleHint, extraContext );
+            return loadComponentWithXWork( base, role, roleHint, extraContext );
         }
 
         try
         {
-            Object o = loadComponentWithPlexus( pc, role, roleHint );
+            Object o = loadComponentWithPlexus( base, role, roleHint );
             plexusComponents.add( id );
             return o;
         }
-        catch ( Exception e )
+        catch ( ComponentLookupException e )
         {
+            // TODO: why is this necessary?
             log.debug( "Can't load component (" + role + "/" + roleHint + ") with plexus, try now with webwork.", e );
-            Object o = loadComponentWithXWork( pc, role, roleHint, extraContext );
+            Object o = loadComponentWithXWork( base, role, roleHint, extraContext );
             otherComponents.add( id );
             return o;
         }
     }
 
     private Object loadComponentWithPlexus( PlexusContainer pc, String role, String roleHint )
-        throws Exception
+        throws ComponentLookupException
     {
         return pc.lookup( role, roleHint );
     }
