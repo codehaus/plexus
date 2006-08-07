@@ -19,15 +19,13 @@ public class DefaultIRCServiceListener implements IRCEventListener {
   private static String INTRO_CHARS = "!~'";
 
   private IRCServiceManager manager;
-  private List listeners;
 
-  public DefaultIRCServiceListener(IRCServiceManager manager, List listeners) {
+  public DefaultIRCServiceListener(IRCServiceManager manager) {
     this.manager = manager;
-    this.listeners = listeners;
   }
 
   public void onRegistered() {
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onRegistered();
@@ -35,7 +33,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
   }
 
   public void onDisconnected() {
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onDisconnected();
@@ -43,7 +41,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
   }
 
   public void onError(String message) {
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onError(message);
@@ -51,7 +49,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
   }
 
   public void onError(int num, String message) {
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onError(num, message);
@@ -62,7 +60,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
         new DefaultIRCUser(user);
 
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onInvite(channel, ircUser, invitee);
@@ -73,7 +71,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
         new DefaultIRCUser(user);
 
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onJoin(channel, ircUser);
@@ -84,7 +82,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
         new DefaultIRCUser(user);
 
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onKick(channel, ircUser, kickee, message);
@@ -96,7 +94,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
         new org.codehaus.plexus.service.irc.IRCUser(user);
 
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onMode(channel, ircUser, modeParser);
@@ -108,7 +106,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
         new DefaultIRCUser(user);
 
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onMode(ircUser, string, mode);
@@ -119,7 +117,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
         new DefaultIRCUser(user);
 
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onNick(ircUser, newNick);
@@ -130,7 +128,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
         new DefaultIRCUser(user);
 
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onNotice(target, ircUser, message);
@@ -141,7 +139,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
         new DefaultIRCUser(user);
 
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onPart(channel, ircUser, message);
@@ -149,7 +147,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
   }
 
   public void onPing(String ping) {
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onPing(ping);
@@ -175,9 +173,9 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
         new DefaultIRCUser(user);
 
-    if (message.startsWith("/me ")) {
-      String theMessage = message.substring(4).trim();
-      Iterator listenerIter = listeners.iterator();
+    if (message.startsWith("ACTION ")) {
+      String theMessage = message.substring(8).trim();
+      Iterator listenerIter = manager.getListeners().iterator();
       while (listenerIter.hasNext()) {
         IRCListener next = (IRCListener) listenerIter.next();
         next.onAction(target, ircUser, theMessage);
@@ -203,13 +201,13 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     }
 
     if (target.equals(ircUser.getNick())) {
-      Iterator listenerIter = listeners.iterator();
+      Iterator listenerIter = manager.getListeners().iterator();
       while (listenerIter.hasNext()) {
         IRCListener next = (IRCListener) listenerIter.next();
         next.onPrivateMessage(ircUser, message);
       }
     } else {
-      Iterator listenerIter = listeners.iterator();
+      Iterator listenerIter = manager.getListeners().iterator();
       while (listenerIter.hasNext()) {
         IRCListener next = (IRCListener) listenerIter.next();
         next.onMessage(target, ircUser, message);
@@ -221,7 +219,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
         new DefaultIRCUser(user);
 
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onQuit(ircUser, message);
@@ -229,7 +227,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
   }
 
   public void onReply(int num, String value, String message) {
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onReply(num, value, message);
@@ -240,7 +238,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     org.codehaus.plexus.service.irc.IRCUser ircUser =
         new DefaultIRCUser(user);
 
-    Iterator listenerIter = listeners.iterator();
+    Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onTopic(channel, ircUser, topic);
