@@ -4,11 +4,13 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.*;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.schwering.irc.lib.IRCConnection;
+import org.schwering.irc.lib.IRCUtil;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * An IRCServiceManager
@@ -21,12 +23,6 @@ import java.util.HashMap;
  */
 public class DefaultIRCServiceManager extends AbstractLogEnabled
     implements IRCServiceManager, Startable, Serviceable {
-
-  /**
-   * @plexus.requirement
-   *   role="org.codehaus.plexus.service.irc.IRCListener"
-   */
-  private List listeners;
 
   private IRCConnection conn = null;
 
@@ -62,7 +58,7 @@ public class DefaultIRCServiceManager extends AbstractLogEnabled
         realname);
     conn.setPong(true);
 
-    conn.addIRCEventListener(new DefaultIRCServiceListener(this, listeners));
+    conn.addIRCEventListener(new DefaultIRCServiceListener(this));
 
     conn.connect();
     return true;
@@ -85,7 +81,7 @@ public class DefaultIRCServiceManager extends AbstractLogEnabled
 
   public void sendAction(String to, String action) {
     if (conn != null)
-      conn.doPrivmsg(to, "/me " + action);
+      conn.doPrivmsg(to, IRCUtil.actionIndicator + "ACTION " + action);
   }
 
   public void join(String channel) {
@@ -107,8 +103,17 @@ public class DefaultIRCServiceManager extends AbstractLogEnabled
     try {
       return locator.lookupMap("org.codehaus.plexus.service.irc.IRCCommand");
     } catch (ComponentLookupException e) {
-      getLogger().info("No IRCCommands found");
+      getLogger().info("No IRCCommands found", e);
       return new HashMap();
+    }
+  }
+
+  public List getListeners() {
+    try {
+      return locator.lookupList("org.codehaus.plexus.service.irc.IRCListener");
+    } catch (ComponentLookupException e) {
+      getLogger().info("No IRCListeners found", e);
+      return new LinkedList();
     }
   }
 

@@ -2,6 +2,7 @@ package org.codehaus.plexus.service.irc;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.List;
 
 /**
  * An IRCServiceManager definition
@@ -33,6 +34,8 @@ public interface IRCServiceManager {
   public void part(String channel, String reason);
 
   public Map getCommands();
+
+  public List getListeners();
 
   public String getHost();
 
