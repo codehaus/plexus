@@ -2,7 +2,7 @@
   <components>
     <component>
       <role>org.codehaus.plexus.XFire</role>
-      <implementation>org.codehaus.plexus.xfire.PlexusXFire</implementation>
+      <implementation>org.codehaus.plexus.xfire.old.PlexusXFire</implementation>
     </component>
         
     <component>
@@ -14,7 +14,7 @@
     
     <component>
       <role>org.codehaus.plexus.transport.TransportManager</role>
-      <implementation>org.codehaus.plexus.xfire.PlexusTransportManager</implementation>
+      <implementation>org.codehaus.plexus.xfire.old.PlexusTransportManager</implementation>
       <lifecycle-handler>plexus-configurable</lifecycle-handler>
     </component>
                     
@@ -35,29 +35,29 @@
     </component>
         
     <component>
-      <role>org.codehaus.plexus.xfire.ConfigurationService</role>
-      <implementation>org.codehaus.plexus.xfire.DefaultConfigurationService</implementation>
+      <role>org.codehaus.plexus.xfire.old.ConfigurationService</role>
+      <implementation>org.codehaus.plexus.xfire.old.DefaultConfigurationService</implementation>
       <lifecycle-handler>plexus-configurable</lifecycle-handler>
       <configuration/>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.xfire.Configurator</role>
+          <role>org.codehaus.plexus.xfire.old.Configurator</role>
           <role-hint>org.codehaus.plexus.service.object.ObjectService</role-hint>
         </requirement>
       </requirements>
     </component>
             
     <component>
-      <role>org.codehaus.plexus.xfire.Configurator</role>
+      <role>org.codehaus.plexus.xfire.old.Configurator</role>
       <role-hint>org.codehaus.plexus.service.object.ObjectService</role-hint>
-      <implementation>org.codehaus.plexus.xfire.ObjectServiceConfigurator</implementation>
+      <implementation>org.codehaus.plexus.xfire.old.ObjectServiceConfigurator</implementation>
       <lifecycle-handler>plexus-configurable</lifecycle-handler>
       <configuration/>
     </component>
 
     <component>
       <role>org.codehaus.plexus.aegis.type.TypeMappingRegistry</role>
-      <implementation>org.codehaus.plexus.xfire.TypeMappingRegistry</implementation>
+      <implementation>org.codehaus.plexus.xfire.old.TypeMappingRegistry</implementation>
       <lifecycle-handler>plexus-configurable</lifecycle-handler>
       <configuration>
       </configuration>

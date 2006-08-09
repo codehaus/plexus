@@ -1,12 +1,12 @@
-package org.codehaus.plexus.xfire;
+package org.codehaus.plexus.xfire.old;
 
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.ServiceLocator;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
-import org.codehaus.plexus.DefaultXFire;
-import org.codehaus.plexus.XFireRuntimeException;
-import org.codehaus.plexus.service.ServiceRegistry;
-import org.codehaus.plexus.transport.TransportManager;
+import org.codehaus.xfire.transport.TransportManager;
+import org.codehaus.xfire.XFireRuntimeException;
+import org.codehaus.xfire.DefaultXFire;
+import org.codehaus.xfire.service.ServiceRegistry;
 
 /**
  * An instance of XFire that is managed by Plexus.
@@ -28,7 +28,7 @@ public class PlexusXFire
     {
         super();
     }
-    
+
     public ServiceRegistry getServiceRegistry()
     {
         try
