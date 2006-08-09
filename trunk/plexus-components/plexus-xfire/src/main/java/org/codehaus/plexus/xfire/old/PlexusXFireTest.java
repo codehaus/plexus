@@ -1,5 +1,30 @@
-package org.codehaus.plexus.xfire;
+package org.codehaus.plexus.xfire.old;
 
+import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.xfire.MessageContext;
+import org.codehaus.xfire.XFire;
+import org.codehaus.xfire.exchange.InMessage;
+import org.codehaus.xfire.service.Service;
+import org.codehaus.xfire.service.ServiceFactory;
+import org.codehaus.xfire.service.ServiceRegistry;
+import org.codehaus.xfire.service.binding.MessageBindingProvider;
+import org.codehaus.xfire.service.binding.ObjectServiceFactory;
+import org.codehaus.xfire.soap.Soap11;
+import org.codehaus.xfire.soap.Soap12;
+import org.codehaus.xfire.soap.SoapConstants;
+import org.codehaus.xfire.test.XPathAssert;
+import org.codehaus.xfire.transport.Channel;
+import org.codehaus.xfire.transport.Transport;
+import org.codehaus.xfire.transport.local.LocalTransport;
+import org.codehaus.xfire.util.STAXUtils;
+import org.codehaus.xfire.util.jdom.StaxBuilder;
+import org.codehaus.xfire.wsdl.WSDLWriter;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,32 +33,6 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.MessageContext;
-import org.codehaus.plexus.XFire;
-import org.codehaus.plexus.exchange.InMessage;
-import org.codehaus.plexus.service.Service;
-import org.codehaus.plexus.service.ServiceFactory;
-import org.codehaus.plexus.service.ServiceRegistry;
-import org.codehaus.plexus.service.binding.MessageBindingProvider;
-import org.codehaus.plexus.service.binding.ObjectServiceFactory;
-import org.codehaus.plexus.soap.Soap11;
-import org.codehaus.plexus.soap.Soap12;
-import org.codehaus.plexus.soap.SoapConstants;
-import org.codehaus.plexus.test.XPathAssert;
-import org.codehaus.plexus.transport.Channel;
-import org.codehaus.plexus.transport.Transport;
-import org.codehaus.plexus.transport.local.LocalTransport;
-import org.codehaus.plexus.util.STAXUtils;
-import org.codehaus.plexus.util.jdom.StaxBuilder;
-import org.codehaus.plexus.wsdl.WSDLWriter;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.output.XMLOutputter;
 
 /**
  * Contains helpful methods to test SOAP services.
@@ -86,9 +85,9 @@ public class PlexusXFireTest
             context.setService(getServiceRegistry().getService(service));
         
         InputStream stream = getResourceAsStream(document); 
-        InMessage msg = new InMessage(STAXUtils.createXMLStreamReader(stream, "UTF-8",null));
+        InMessage msg = new InMessage( STAXUtils.createXMLStreamReader(stream, "UTF-8",null));
 
-        Transport t = getXFire().getTransportManager().getTransport(LocalTransport.BINDING_ID);
+        Transport t = getXFire().getTransportManager().getTransport( LocalTransport.BINDING_ID);
         Channel c = t.createChannel();
         
         c.receive(context, msg);
@@ -216,9 +215,9 @@ public class PlexusXFireTest
         {
             ObjectServiceFactory ofactory = 
                 new ObjectServiceFactory(getXFire().getTransportManager(),
-                                         new MessageBindingProvider());
+                                                                            new MessageBindingProvider());
             
-            ofactory.setStyle(SoapConstants.STYLE_MESSAGE);
+            ofactory.setStyle( SoapConstants.STYLE_MESSAGE);
             
             factory = ofactory;
         }
