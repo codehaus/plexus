@@ -47,4 +47,6 @@ public interface IRCListener {
   public void onReply(int num, String value, String message);
 
   public void onTopic(String channel, IRCUser user, String topic);
+
+  public void onVersion(String target, IRCUser user);
 }
