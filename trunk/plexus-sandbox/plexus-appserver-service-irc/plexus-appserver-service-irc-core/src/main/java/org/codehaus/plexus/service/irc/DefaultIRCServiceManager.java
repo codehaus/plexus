@@ -84,6 +84,11 @@ public class DefaultIRCServiceManager extends AbstractLogEnabled
       conn.doPrivmsg(to, IRCUtil.actionIndicator + "ACTION " + action);
   }
 
+  public void sendNotice(String to, String notice) {
+    if (conn != null)
+      conn.doNotice(to, notice);
+  }
+
   public void join(String channel) {
     if (conn != null)
       conn.doJoin(channel);

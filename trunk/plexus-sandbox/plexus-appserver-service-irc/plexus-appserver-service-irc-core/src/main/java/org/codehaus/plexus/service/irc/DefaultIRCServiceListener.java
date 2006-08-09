@@ -3,7 +3,6 @@ package org.codehaus.plexus.service.irc;
 import org.schwering.irc.lib.*;
 import org.schwering.irc.lib.IRCUser;
 
-import java.util.List;
 import java.util.Iterator;
 
 /**
@@ -162,7 +161,7 @@ public class DefaultIRCServiceListener implements IRCEventListener {
       return;
     String rest = message.substring(command.length()).trim();
 
-    if (target.equals(user.getNick())) {
+    if (target.equals(manager.getNick())) {
       match.onPrivateCommand(user, rest);
     } else {
       match.onCommand(target, user, rest);
@@ -174,16 +173,17 @@ public class DefaultIRCServiceListener implements IRCEventListener {
         new DefaultIRCUser(user);
 
     if (message.startsWith("ACTION ")) {
-      String theMessage = message.substring(8).trim();
-      Iterator listenerIter = manager.getListeners().iterator();
-      while (listenerIter.hasNext()) {
-        IRCListener next = (IRCListener) listenerIter.next();
-        next.onAction(target, ircUser, theMessage);
-      }
+      String theMessage = message.substring(7).trim();
+      onAction(target, user, theMessage);
+      return;
+    } else if (message.equals("VERSION")) {
+      onVersion(target, user);
+      return;
     }
 
+
     /* addressed through a shortcut */
-    if (isIntroChar(message.charAt(0))) {
+    if (message.length() > 0 && isIntroChar(message.charAt(0))) {
       doCommand(target, ircUser, message.substring(1).trim());
       return;
     } else {
@@ -200,7 +200,10 @@ public class DefaultIRCServiceListener implements IRCEventListener {
       }
     }
 
-    if (target.equals(ircUser.getNick())) {
+    if (target.equals(manager.getNick())) {
+      /* private commands */
+      doCommand(target, ircUser, message);
+
       Iterator listenerIter = manager.getListeners().iterator();
       while (listenerIter.hasNext()) {
         IRCListener next = (IRCListener) listenerIter.next();
@@ -242,6 +245,30 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
       next.onTopic(channel, ircUser, topic);
+    }
+  }
+
+  public void onAction(String target, IRCUser user, String action) {
+    org.codehaus.plexus.service.irc.IRCUser ircUser =
+        new DefaultIRCUser(user);
+
+    Iterator listenerIter = manager.getListeners().iterator();
+    while (listenerIter.hasNext()) {
+      IRCListener next = (IRCListener) listenerIter.next();
+      next.onAction(target, ircUser, action);
+    }
+  }
+
+  public void onVersion(String target, IRCUser user) {
+    manager.sendNotice(user.getNick(), IRCUtil.actionIndicator +
+        "VERSION Plexus IRC Service 1.0-SNAPSHOT - plexus.codehaus.org");
+    org.codehaus.plexus.service.irc.IRCUser ircUser =
+        new DefaultIRCUser(user);
+
+    Iterator listenerIter = manager.getListeners().iterator();
+    while (listenerIter.hasNext()) {
+      IRCListener next = (IRCListener) listenerIter.next();
+      next.onVersion(target, ircUser);
     }
   }
 

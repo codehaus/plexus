@@ -27,6 +27,8 @@ public interface IRCServiceManager {
 
   public void sendAction(String to, String action);
 
+  public void sendNotice(String to, String message);
+
   public void join(String channel);
 
   public void part(String channel);

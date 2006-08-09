@@ -32,7 +32,7 @@ public abstract class AbstractIRCListener implements IRCListener {
   public void onPart(String channel, IRCUser user, String message) { }
 
   public void onPing(String ping) {
-    /* This is handled internally in the IRCLib implementation */
+    /* The correct response is handled internally by IRCLib */
   }
 
   public void onMessage(String channel, IRCUser user, String message) { }
@@ -48,4 +48,8 @@ public abstract class AbstractIRCListener implements IRCListener {
   public void onReply(int num, String value, String message) { }
 
   public void onTopic(String channel, IRCUser user, String topic) { }
+
+  public void onVersion(String target, IRCUser user) {
+    /* The correct response is now handled internally */
+  }
 }
