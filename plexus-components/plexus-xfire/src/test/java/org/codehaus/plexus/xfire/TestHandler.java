@@ -1,12 +1,12 @@
 package org.codehaus.plexus.xfire;
 
-import org.codehaus.plexus.MessageContext;
-import org.codehaus.plexus.handler.AbstractHandler;
+import org.codehaus.xfire.MessageContext;
+import org.codehaus.xfire.handler.AbstractHandler;
 
 public class TestHandler
     extends AbstractHandler
 {
-    public void invoke(MessageContext context)
+    public void invoke( MessageContext context)
         throws Exception
     {
     }
