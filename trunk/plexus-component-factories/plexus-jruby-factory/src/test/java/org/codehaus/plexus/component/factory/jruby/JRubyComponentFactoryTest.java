@@ -1,5 +1,6 @@
 package org.codehaus.plexus.component.factory.jruby;
 
+import java.util.Random;
 import java.util.StringTokenizer;
 
 import org.codehaus.plexus.PlexusTestCase;
@@ -24,7 +25,8 @@ public class JRubyComponentFactoryTest
         StringOutputStream stdout = new StringOutputStream();
         StringOutputStream stderr = new StringOutputStream();
 
-        invoker.inputValue( "from_class", JRubyComponentFactoryTest.class.getName() );
+        invoker.inputValue( "from_class", JRubyComponentFactoryTest.class );
+        invoker.inputValue( "random", new Random() );
 
         // invoke the script
         IRubyObject result = invoker.invoke( stdout, stderr );

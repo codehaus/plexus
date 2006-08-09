@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.Writer;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,6 +25,7 @@ import org.jruby.Ruby;
 import org.jruby.RubyException;
 import org.jruby.RubyFixnum;
 import org.jruby.RubyGlobal;
+import org.jruby.RubyHash;
 import org.jruby.RubyIO;
 import org.jruby.RubyKernel;
 import org.jruby.RubyNil;
@@ -280,10 +279,8 @@ public class JRubyInvoker
 
             bos = new StringOutputStream();
 
-            injectInputs( new OutputStreamWriter( bos ) );
-
             int read = -1;
-            // append the required output streams to the head of temp file.
+            // append the required output streams to the head the script.
             for ( Iterator iter = reqLibs.iterator(); iter.hasNext(); )
             {
                 String reqLibPath = (String) iter.next();
@@ -333,35 +330,6 @@ public class JRubyInvoker
             IOUtil.close( reader );
         }
         return result;
-    }
-
-    /**
-     * TODO: Change from String injection to constructing and attaching a script node?
-     * 
-     * Anything to give inputs TYPES.
-     * 
-     * Should these be inserted via ARGV instead? 
-     * 
-     * @param w
-     * @throws IOException
-     */
-    private void injectInputs( Writer w )
-        throws IOException
-    {
-        w.write( "$INPUTS = Hash.new;\n" );
-        if ( !inputs.isEmpty() )
-        {
-            for ( Iterator iter = inputs.entrySet().iterator(); iter.hasNext(); )
-            {
-                Map.Entry entry = (Map.Entry) iter.next();
-                w.write( "$INPUTS[\'" );
-                w.write( (String) entry.getKey() );
-                w.write( "\'] = \'" );
-                w.write( (String) entry.getValue() ); // TODO: replace with escape chars? (including newlines)
-                w.write( "\';\n" );
-            }
-            w.flush();
-        }
     }
 
     private String buildLibs()
@@ -488,7 +456,6 @@ public class JRubyInvoker
     }
 
     // Build script args
-
     private void initializeRuntime( final IRuby runtime, final OutputStream out, final OutputStream err )
     {
         // new String[]{} are script args... can we pass in script args?
@@ -538,13 +505,17 @@ public class JRubyInvoker
         defineGlobal( runtime, "$-l", processLineEnds );
         runtime.getGlobalVariables().defineReadonly( "$*", new ValueAccessor( argumentArray ) );
 
-        // TODO this is a fake cause we have no real process number in Java
-        runtime.getGlobalVariables()
-            .defineReadonly( "$$", new ValueAccessor( runtime.newFixnum( runtime.hashCode() ) ) );
-        runtime.defineVariable( new RubyGlobal.StringGlobalVariable( runtime, "$0", runtime.newString( "<script>" ) ) ); //filename)));
-        runtime.getLoadService().init( libPaths );
-        Iterator iter = reqLibs.iterator();
+        // Inject inputs as a global named "$INPUTS"
+        RubyHash globalInputs = new RubyHash( runtime );
+        globalInputs.putAll( inputs );
+        runtime.getGlobalVariables().set( "$INPUTS", globalInputs );
 
+        // TODO this is a fake cause we have no real process number in Java
+        runtime.getGlobalVariables().defineReadonly( "$$", new ValueAccessor( runtime.newFixnum( runtime.hashCode() ) ) );
+        runtime.defineVariable( new RubyGlobal.StringGlobalVariable( runtime, "$0", runtime.newString( "<script>" ) ) );
+        runtime.getLoadService().init( libPaths );
+
+        Iterator iter = reqLibs.iterator();
         while ( iter.hasNext() )
         {
             String scriptName = (String) iter.next();
@@ -554,8 +525,7 @@ public class JRubyInvoker
 
     private void defineGlobal( IRuby runtime, String name, boolean value )
     {
-        runtime.getGlobalVariables().defineReadonly( name,
-                                                     new ValueAccessor( value ? runtime.getTrue() : runtime.getNil() ) );
+        runtime.getGlobalVariables().defineReadonly( name, new ValueAccessor( value ? runtime.getTrue() : runtime.getNil() ) );
     }
 
     private static class OutputGlobalVariable
