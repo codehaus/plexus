@@ -13,6 +13,11 @@
   </properties>
   <dependencies>
     <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-11-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>org.codehaus.xfire</groupId>
       <artifactId>xfire-xmpp</artifactId>
       <version>${xfireVersion}</version>
@@ -37,11 +42,6 @@
       <artifactId>plexus-servlet</artifactId>
       <version>1.0-beta-4</version>
     </dependency>    
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-11-SNAPSHOT</version>
-    </dependency>
     <dependency>
       <groupId>servletapi</groupId>
       <artifactId>servletapi</artifactId>

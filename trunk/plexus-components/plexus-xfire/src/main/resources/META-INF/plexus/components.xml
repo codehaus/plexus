@@ -1,67 +1,59 @@
 <plexus>
   <components>
+
     <component>
-      <role>org.codehaus.plexus.XFire</role>
-      <implementation>org.codehaus.plexus.xfire.old.PlexusXFire</implementation>
-    </component>
-        
-    <component>
-      <role>org.codehaus.plexus.service.ServiceRegistry</role>
-      <implementation>org.codehaus.plexus.service.DefaultServiceRegistry</implementation>
-      <lifecycle-handler>plexus-configurable</lifecycle-handler>
-      <configuration/>
-    </component>
-    
-    <component>
-      <role>org.codehaus.plexus.transport.TransportManager</role>
-      <implementation>org.codehaus.plexus.xfire.old.PlexusTransportManager</implementation>
-      <lifecycle-handler>plexus-configurable</lifecycle-handler>
-    </component>
-                    
-    <component>
-      <role>org.codehaus.plexus.fault.FaultHandler</role>
-      <role-hint>1.2</role-hint>
-      <implementation>org.codehaus.plexus.fault.SOAP12FaultHandler</implementation>
-      <lifecycle-handler>plexus-configurable</lifecycle-handler>
-      <configuration/>
-    </component>
-    
-    <component>
-      <role>org.codehaus.plexus.fault.FaultHandler</role>
-      <role-hint>1.1</role-hint>
-      <implementation>org.codehaus.plexus.fault.SOAP11FaultHandler</implementation>
-      <lifecycle-handler>plexus-configurable</lifecycle-handler>
-      <configuration/>
-    </component>
-        
-    <component>
-      <role>org.codehaus.plexus.xfire.old.ConfigurationService</role>
-      <implementation>org.codehaus.plexus.xfire.old.DefaultConfigurationService</implementation>
-      <lifecycle-handler>plexus-configurable</lifecycle-handler>
-      <configuration/>
+      <role>org.codehaus.plexus.xfire.ServiceCreator</role>
+      <implementation>org.codehaus.plexus.xfire.DefaultServiceCreator</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.xfire.old.Configurator</role>
-          <role-hint>org.codehaus.plexus.service.object.ObjectService</role-hint>
+          <role>org.codehaus.xfire.XFire</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.xfire.service.ServiceFactory</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.xfire.PlexusServiceConfiguration</role>
         </requirement>
       </requirements>
     </component>
-            
+
     <component>
-      <role>org.codehaus.plexus.xfire.old.Configurator</role>
-      <role-hint>org.codehaus.plexus.service.object.ObjectService</role-hint>
-      <implementation>org.codehaus.plexus.xfire.old.ObjectServiceConfigurator</implementation>
-      <lifecycle-handler>plexus-configurable</lifecycle-handler>
-      <configuration/>
+      <role>org.codehaus.xfire.XFire</role>
+      <implementation>org.codehaus.xfire.DefaultXFire</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.xfire.service.ServiceRegistry</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.xfire.transport.TransportManager</role>
+        </requirement>
+      </requirements>
     </component>
 
     <component>
-      <role>org.codehaus.plexus.aegis.type.TypeMappingRegistry</role>
-      <implementation>org.codehaus.plexus.xfire.old.TypeMappingRegistry</implementation>
-      <lifecycle-handler>plexus-configurable</lifecycle-handler>
-      <configuration>
-      </configuration>
+      <role>org.codehaus.xfire.service.ServiceRegistry</role>
+      <implementation>org.codehaus.xfire.service.DefaultServiceRegistry</implementation>
     </component>
+    
+    <component>
+      <role>org.codehaus.xfire.transport.TransportManager</role>
+      <implementation>org.codehaus.xfire.transport.DefaultTransportManager</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.xfire.service.ServiceFactory</role>
+      <implementation>org.codehaus.plexus.xfire.PlexusServiceFactory</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.xfire.transport.TransportManager</role>
+        </requirement>
+      </requirements>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.xfire.PlexusServiceConfiguration</role>
+      <implementation>org.codehaus.plexus.xfire.DefaultPlexusServiceConfiguration</implementation>
+    </component>
+
   </components>
-  
 </plexus>
