@@ -2,8 +2,8 @@
   <components>
 
     <component>
-      <role>org.codehaus.plexus.xfire.ServiceCreator</role>
-      <implementation>org.codehaus.plexus.xfire.DefaultServiceCreator</implementation>
+      <role>org.codehaus.plexus.xfire.soap.SoapServiceCreator</role>
+      <implementation>org.codehaus.plexus.xfire.soap.DefaultSoapServiceCreator</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.xfire.XFire</role>
@@ -12,7 +12,7 @@
           <role>org.codehaus.xfire.service.ServiceFactory</role>
         </requirement>
         <requirement>
-          <role>org.codehaus.plexus.xfire.PlexusServiceConfiguration</role>
+          <role>org.codehaus.plexus.xfire.soap.PlexusServiceWsdlConfigurator</role>
         </requirement>
       </requirements>
     </component>
@@ -42,7 +42,7 @@
 
     <component>
       <role>org.codehaus.xfire.service.ServiceFactory</role>
-      <implementation>org.codehaus.plexus.xfire.PlexusServiceFactory</implementation>
+      <implementation>org.codehaus.plexus.xfire.soap.PlexusServiceFactory</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.xfire.transport.TransportManager</role>
@@ -51,8 +51,8 @@
     </component>
 
     <component>
-      <role>org.codehaus.plexus.xfire.PlexusServiceConfiguration</role>
-      <implementation>org.codehaus.plexus.xfire.DefaultPlexusServiceConfiguration</implementation>
+      <role>org.codehaus.plexus.xfire.soap.PlexusServiceWsdlConfigurator</role>
+      <implementation>org.codehaus.plexus.xfire.soap.DefaultPlexusServiceConfiguration</implementation>
     </component>
 
   </components>

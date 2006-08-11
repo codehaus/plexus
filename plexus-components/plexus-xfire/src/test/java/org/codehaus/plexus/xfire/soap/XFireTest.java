@@ -1,4 +1,4 @@
-package org.codehaus.plexus.xfire;
+package org.codehaus.plexus.xfire.soap;
 
 import org.codehaus.plexus.PlexusTestCase;
 
@@ -11,6 +11,6 @@ public class XFireTest
     public void testConstruction()
         throws Exception
     {
-        ServiceCreator sc = (ServiceCreator) lookup( ServiceCreator.ROLE );
+        SoapServiceCreator sc = (SoapServiceCreator) lookup( SoapServiceCreator.ROLE );
     }
 }
