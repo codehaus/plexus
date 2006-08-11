@@ -94,9 +94,9 @@ public class PlexusLifecycleListener implements ServletContextListener, HttpSess
     private void setConfigurationStream( PlexusContainer pc )
         throws PlexusConfigurationResourceException
     {
-        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/plexus/plexus.xml" );
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/plexus/application.xml" );
         if (is == null) {
-            log.info("Could not find " + "META-INF/plexus/plexus.xml" + ", skipping");
+            log.info("Could not find " + "META-INF/plexus/application.xml" + ", skipping");
             is = new ByteArrayInputStream("<plexus><components></components></plexus>".getBytes());
         }
         pc.setConfigurationResource(new InputStreamReader(is));
