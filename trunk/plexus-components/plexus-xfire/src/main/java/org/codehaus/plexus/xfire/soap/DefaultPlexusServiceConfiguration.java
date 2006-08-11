@@ -1,4 +1,4 @@
-package org.codehaus.plexus.xfire;
+package org.codehaus.plexus.xfire.soap;
 
 import org.codehaus.xfire.service.binding.DefaultServiceConfiguration;
 
@@ -7,6 +7,6 @@ import org.codehaus.xfire.service.binding.DefaultServiceConfiguration;
  */
 public class DefaultPlexusServiceConfiguration
     extends DefaultServiceConfiguration
-    implements PlexusServiceConfiguration
+    implements PlexusServiceWsdlConfigurator
 {
 }
