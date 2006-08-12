@@ -5,6 +5,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.*;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.schwering.irc.lib.IRCConnection;
 import org.schwering.irc.lib.IRCUtil;
+import org.schwering.irc.lib.IRCEventAdapter;
 
 import java.io.IOException;
 import java.util.Map;
@@ -155,4 +156,14 @@ public class DefaultIRCServiceManager extends AbstractLogEnabled
       return conn.getRealname();
     return null;
   }
+
+  public String getTopic(String channel) {
+    return (new ReplyMonitor(conn, IRCUtil.RPL_TOPIC, channel)).getReply();
+  }
+
+  public void setTopic(String channel, String topic) {
+    if (conn != null)
+      conn.doTopic(channel, topic);
+  }
 }
+
