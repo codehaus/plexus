@@ -14,10 +14,12 @@ public class IRCServiceManagerTest extends PlexusTestCase {
     IRCServiceManager ircManager = (IRCServiceManager)
         lookup(IRCServiceManager.class.getName());
     assertNotNull(ircManager);
+    ircManager.connect("irc.codehaus.org", "nick", "user", "real");
 
-//    ircManager.join("#plexus");
-//    ircManager.sendMessage("#plexus", "Hello, I am the new plexus IRC framework");
-//    Thread.sleep(2000);
-//    ircManager.part("#plexus", "bye bye for now");
+    ircManager.join("#test");
+    Thread.sleep(2000); // this seems to help establish the connection
+    assertNotNull(ircManager.getTopic("#test"));
+
+    ircManager.disconnect("test ending");
   }
 }
