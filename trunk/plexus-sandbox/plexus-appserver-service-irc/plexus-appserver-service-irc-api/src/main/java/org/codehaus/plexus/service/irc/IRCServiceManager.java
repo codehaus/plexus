@@ -48,4 +48,8 @@ public interface IRCServiceManager {
   public String getUsername();
 
   public String getRealname();
+
+  public String getTopic(String channel);
+
+  public void setTopic(String channel, String topic);
 }
