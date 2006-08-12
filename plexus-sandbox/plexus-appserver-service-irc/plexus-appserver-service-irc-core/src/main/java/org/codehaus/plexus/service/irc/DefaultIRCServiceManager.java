@@ -139,9 +139,8 @@ public class DefaultIRCServiceManager extends AbstractLogEnabled
   }
 
   public void setNick(String nick) {
-    /* WTF - if this line is enabled our componenent cannot be found
     if (conn != null)
-      conn.doNick(nick); */
+      conn.doNick(nick);
   }
 
   public String getUsername() {
