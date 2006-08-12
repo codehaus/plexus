@@ -5,7 +5,6 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.*;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.schwering.irc.lib.IRCConnection;
 import org.schwering.irc.lib.IRCUtil;
-import org.schwering.irc.lib.IRCEventAdapter;
 
 import java.io.IOException;
 import java.util.Map;
