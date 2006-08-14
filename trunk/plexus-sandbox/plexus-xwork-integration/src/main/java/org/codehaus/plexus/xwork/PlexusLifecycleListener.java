@@ -4,6 +4,7 @@ import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
+import org.codehaus.plexus.util.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -12,6 +13,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
@@ -19,10 +21,19 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
 public class PlexusLifecycleListener implements ServletContextListener, HttpSessionListener {
+    private static final String PLEXUS_HOME = "plexus.home";
+
+    private static final String PLEXUS_PROPERTIES_PARAM = "plexus-properties";
+
+    private static final String DEFAULT_PLEXUS_PROPERTIES = "/WEB-INF/plexus.properties";
+
     // TODO: do we need logging in here?
     private static final Log log = LogFactory.getLog(PlexusLifecycleListener.class);
 
@@ -74,12 +85,11 @@ public class PlexusLifecycleListener implements ServletContextListener, HttpSess
                 }
             } );
 
-            setConfigurationStream( pc );
             ServletContext ctx = servletContextEvent.getServletContext();
+            setConfigurationStream( pc, ctx );
             ctx.setAttribute(KEY, pc);
 
-            // used by the servlet configuration phase
-            pc.getContext().put( ServletContext.class.getName(), ctx );
+            initializeContext( ctx, pc, resolveContextProperties( ctx ) );
 
             pc.initialize();
             pc.start();
@@ -91,7 +101,86 @@ public class PlexusLifecycleListener implements ServletContextListener, HttpSess
         loaded = true;
     }
 
-    private void setConfigurationStream( PlexusContainer pc )
+    private void initializeContext( ServletContext ctx, PlexusContainer pc, Properties properties )
+ 	{
+        // used by the servlet configuration phase
+        pc.addContextValue( ServletContext.class.getName(), ctx );
+
+ 	    Set keys = properties.keySet();
+
+ 	    for ( Iterator iter = keys.iterator(); iter.hasNext(); )
+     	{
+ 	        String key = ( String ) iter.next();
+
+     	    String value = properties.getProperty( key );
+
+ 	        pc.addContextValue( key, value );
+ 	    }
+ 	}
+
+ 	private static Properties resolveContextProperties( ServletContext context )
+    {
+
+        Properties properties = new Properties();
+
+        String filename = context.getInitParameter( PLEXUS_PROPERTIES_PARAM );
+
+        if ( filename == null )
+        {
+            filename = DEFAULT_PLEXUS_PROPERTIES;
+        }
+
+        context.log( "Loading plexus context properties from: '" + filename + "'" );
+
+        try
+        {
+            URL url = context.getResource( filename );
+            // bwalding: I think we'd be better off not using this exception swallower!
+            properties = PropertyUtils.loadProperties( url );
+        }
+        catch ( Exception e )
+        {
+            // michal: I don't think it is that good idea to ignore this error.
+            // bwalding: it's actually pretty difficult to get here as the PropertyUtils.loadProperties absorbs all Exceptions
+            context.log( "Could not load plexus context properties from: '" + filename + "'" );
+        }
+
+
+        if ( properties == null )
+        {
+            context.log( "Could not load plexus context properties from: '" + filename + "'" );
+            properties = new Properties();
+        }
+
+        if ( !properties.containsKey( PLEXUS_HOME ) )
+        {
+            setPlexusHome( context, properties );
+        }
+
+        return properties;
+    }
+
+    /**
+     * Set plexus.home context variable
+     */
+    private static void setPlexusHome( ServletContext context, Properties contexProperties )
+    {
+        String realPath = context.getRealPath( "/WEB-INF" );
+
+        if ( realPath != null )
+        {
+            File f = new File( realPath );
+
+            contexProperties.setProperty( PLEXUS_HOME, f.getAbsolutePath() );
+
+        }
+        else
+        {
+            context.log( "Not setting 'plexus.home' as plexus is running inside webapp with no 'real path'." );
+        }
+    }
+
+    private void setConfigurationStream( PlexusContainer pc, ServletContext ctx )
         throws PlexusConfigurationResourceException
     {
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/plexus/application.xml" );
