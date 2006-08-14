@@ -16,8 +16,8 @@ package org.codehaus.plexus.xwork.interceptor;
  * limitations under the License.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.codehaus.plexus.logging.LogEnabled;
+import org.codehaus.plexus.logging.Logger;
 
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.interceptor.ExceptionHolder;
@@ -31,17 +31,22 @@ import com.opensymphony.xwork.interceptor.ExceptionMappingInterceptor;
  */
 public class ExceptionLoggingInterceptor
     extends ExceptionMappingInterceptor
+    implements LogEnabled
 {
+    private Logger logger;
 
     private static final long serialVersionUID = -1776743136472264546L;
-
-    private static final Log log = LogFactory.getLog( ExceptionLoggingInterceptor.class );
 
     protected void publishException( ActionInvocation invocation, ExceptionHolder exceptionHolder )
     {
         Throwable e = exceptionHolder.getException();
-        log.info( "Error ocurred during execution", e );
+        logger.info( "Error ocurred during execution", e );
 
         super.publishException( invocation, exceptionHolder );
+    }
+
+    public void enableLogging( Logger logger )
+    {
+        this.logger = logger;
     }
 }
