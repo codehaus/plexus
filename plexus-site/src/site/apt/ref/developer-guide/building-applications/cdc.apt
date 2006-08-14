@@ -22,21 +22,21 @@ Plexus Component Descriptor Creator
 
 * Component Tag Parameters
 
-*-----------------------*--------------*---------------------------------------------*
-| <<Tag>>               | <<Required>> | <<Description>>                             |
-*-----------------------*---*--------------------------------------------------------*
-| role                  | y | The role of the component.                             |
-*-----------------------*---*--------------------------------------------------------*
-| role-hint             | n | The role-hint of the component.                        |
-*-----------------------*---*--------------------------------------------------------*
-| version               | n | The component version.                                 |
-*-----------------------*---*--------------------------------------------------------*
-| lifecycle-handler     | n | The lifecycle handler of the component.                |
-|                       |   | <TODO: link to the different lifecycle handlers>       |
-*-----------------------*---*--------------------------------------------------------*
-| instatiation-strategy | n | The instantiation strategy of the component.           |
-|                       |   | <TODO: link to the different instantiation strategies> |
-*-----------------------*---*--------------------------------------------------------*
+*------------------------*--------------*---------------------------------------------*
+| <<Tag>>                | <<Required>> | <<Description>>                             |
+*------------------------*---*--------------------------------------------------------*
+| role                   | y | The role of the component.                             |
+*------------------------*---*--------------------------------------------------------*
+| role-hint              | n | The role-hint of the component.                        |
+*------------------------*---*--------------------------------------------------------*
+| version                | n | The component version.                                 |
+*------------------------*---*--------------------------------------------------------*
+| lifecycle-handler      | n | The lifecycle handler of the component.                |
+|                        |   | <TODO: link to the different lifecycle handlers>       |
+*------------------------*---*--------------------------------------------------------*
+| instantiation-strategy | n | The instantiation strategy of the component.           |
+|                        |   | <TODO: link to the different instantiation strategies> |
+*------------------------*---*--------------------------------------------------------*
 ~~ TODO: This line will be incorrectly render the *name* of the table as well
 ~~       as the caption
 ~~ [plexus-component-tags] Plexus Component Tag Parameters
