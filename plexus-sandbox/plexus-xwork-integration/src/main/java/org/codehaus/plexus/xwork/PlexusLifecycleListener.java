@@ -5,8 +5,6 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
 import org.codehaus.plexus.util.PropertyUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -34,11 +32,9 @@ public class PlexusLifecycleListener implements ServletContextListener, HttpSess
 
     private static final String DEFAULT_PLEXUS_PROPERTIES = "/WEB-INF/plexus.properties";
 
-    // TODO: do we need logging in here?
-    private static final Log log = LogFactory.getLog(PlexusLifecycleListener.class);
+    public static final String KEY = "webwork.plexus.container";
 
     public static boolean loaded = false;
-    public static final String KEY = "webwork.plexus.container";
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
 
@@ -185,7 +181,7 @@ public class PlexusLifecycleListener implements ServletContextListener, HttpSess
     {
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/plexus/application.xml" );
         if (is == null) {
-            log.info("Could not find " + "META-INF/plexus/application.xml" + ", skipping");
+            ctx.log("Could not find " + "META-INF/plexus/application.xml" + ", skipping");
             is = new ByteArrayInputStream("<plexus><components></components></plexus>".getBytes());
         }
         pc.setConfigurationResource(new InputStreamReader(is));
