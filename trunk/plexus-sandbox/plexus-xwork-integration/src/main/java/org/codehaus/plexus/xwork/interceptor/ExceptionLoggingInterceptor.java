@@ -28,6 +28,7 @@ import com.opensymphony.xwork.interceptor.ExceptionMappingInterceptor;
  * 
  * @author <a href="mailto:nramirez@exist.com">Napoleon Esmundo C. Ramirez</a>
  * @version $Id$
+ * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor" role-hint="exceptionLogging"
  */
 public class ExceptionLoggingInterceptor
     extends ExceptionMappingInterceptor
