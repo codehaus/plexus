@@ -11,8 +11,6 @@ import com.opensymphony.xwork.config.entities.ResultConfig;
 import com.opensymphony.xwork.interceptor.Interceptor;
 import com.opensymphony.xwork.util.OgnlUtil;
 import com.opensymphony.xwork.validator.Validator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
@@ -31,8 +29,6 @@ public class PlexusObjectFactory
     extends ObjectFactory
     implements ObjectFactoryInitializable
 {
-    private static final Log log = LogFactory.getLog( PlexusObjectFactory.class );
-
     private static final String PLEXUS_COMPONENT_TYPE = "plexus.component.type";
 
     // ----------------------------------------------------------------------
@@ -60,7 +56,7 @@ public class PlexusObjectFactory
                 "    <listener>\n" +
                 "        <listener-class>org.codehaus.plexus.xwork.PlexusLifecycleListener</listener-class>\n" +
                 "    </listener>";
-            log.fatal( message );
+            servletContext.log( message );
             return;
         }
 
@@ -261,8 +257,6 @@ public class PlexusObjectFactory
         }
         catch ( ComponentLookupException e )
         {
-            // TODO: why is this necessary?
-            log.debug( "Can't load component (" + role + "/" + roleHint + ") with plexus, try now with webwork.", e );
             Object o = loadComponentWithXWork( base, role, roleHint, extraContext );
             otherComponents.add( id );
             return o;
