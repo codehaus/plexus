@@ -119,8 +119,8 @@ public class PlexusDefaultComponentGleaner
             if ( role == null )
             {
                 getLogger().warn( "Could not figure out a role for the component '" + fqn + "'. " +
-                                  "Please specify a role with a parameter '" + PLEXUS_ROLE_PARAMETER + " " +
-                                  "on the @" + PLEXUS_COMPONENT_TAG + " tag." );
+                    "Please specify a role with a parameter '" + PLEXUS_ROLE_PARAMETER + " " + "on the @" +
+                    PLEXUS_COMPONENT_TAG + " tag." );
 
                 return null;
             }
@@ -221,15 +221,9 @@ public class PlexusDefaultComponentGleaner
     // ----------------------------------------------------------------------
 
     private final static List IGNORED_INTERFACES = Collections.unmodifiableList( Arrays.asList( new String[]{
-        LogEnabled.class.getName(),
-        Initializable.class.getName(),
-        Configurable.class.getName(),
-        Contextualizable.class.getName(),
-        Disposable.class.getName(),
-        Startable.class.getName(),
-        Suspendable.class.getName(),
-        Serviceable.class.getName(),
-    } ) );
+        LogEnabled.class.getName(), Initializable.class.getName(), Configurable.class.getName(),
+        Contextualizable.class.getName(), Disposable.class.getName(), Startable.class.getName(),
+        Suspendable.class.getName(), Serviceable.class.getName(),} ) );
 
     private String findRole( JavaClass javaClass )
     {
@@ -281,9 +275,9 @@ public class PlexusDefaultComponentGleaner
             {
                 if ( role != null )
                 {
-                    getLogger().warn( "Found several possible roles for component " +
-                                      "'" + javaClass.getFullyQualifiedName() + "', " +
-                                      "will use '" + role + "', found: " + ifc.getName() + "." );
+                    getLogger().warn( "Found several possible roles for component " + "'" +
+                        javaClass.getFullyQualifiedName() + "', " + "will use '" + role + "', found: " + ifc.getName() +
+                        "." );
                 }
 
                 role = ifc.getFullyQualifiedName();
@@ -303,8 +297,7 @@ public class PlexusDefaultComponentGleaner
         return role;
     }
 
-    private void findRequirements( JavaClassCache classCache,
-                                   ComponentDescriptor componentDescriptor,
+    private void findRequirements( JavaClassCache classCache, ComponentDescriptor componentDescriptor,
                                    JavaClass javaClass )
     {
         JavaField[] fields = javaClass.getFields();
@@ -343,8 +336,17 @@ public class PlexusDefaultComponentGleaner
 
             ComponentRequirement cr = new ComponentRequirement();
 
-            cr.setRole( requirementClass );
+            String role = getParameter( parameters, PLEXUS_ROLE_PARAMETER );
 
+            if ( role == null )
+            {
+                cr.setRole( requirementClass );
+            }
+            else
+            {
+                cr.setRole( role );
+            }
+            
             cr.setRoleHint( getParameter( parameters, PLEXUS_ROLE_HINT_PARAMETER ) );
 
             cr.setFieldName( field.getName() );
@@ -358,19 +360,17 @@ public class PlexusDefaultComponentGleaner
                 if ( cr.getRoleHint() != null )
                 {
                     getLogger().warn( "Field: '" + field.getName() + "': A role hint cannot be specified if the " +
-                                      "field is a java.util.Map or a java.util.List" );
+                        "field is a java.util.Map or a java.util.List" );
 
                     continue;
                 }
 
-                String role = getParameter( parameters, PLEXUS_ROLE_PARAMETER );
-
                 if ( role == null )
                 {
                     getLogger().warn( "Field: '" + field.getName() + "': A java.util.Map or java.util.List " +
-                                      "requirement has to specify a '" + PLEXUS_ROLE_PARAMETER + "' parameter on " +
-                                      "the @" + PLEXUS_REQUIREMENT_TAG + " tag so Plexus can know which components to " +
-                                      "put in the map or list." );
+                        "requirement has to specify a '" + PLEXUS_ROLE_PARAMETER + "' parameter on " + "the @" +
+                        PLEXUS_REQUIREMENT_TAG + " tag so Plexus can know which components to " +
+                        "put in the map or list." );
 
                     continue;
                 }
@@ -431,8 +431,8 @@ public class PlexusDefaultComponentGleaner
             if ( defaultValue == null )
             {
                 getLogger().warn( "Component: " + javaClass.getName() + ", field name: '" + field.getName() + "': " +
-                                  "Currently configurable fields will not be written to the descriptor " +
-                                  "without a default value." );
+                    "Currently configurable fields will not be written to the descriptor " +
+                    "without a default value." );
 
                 continue;
             }
