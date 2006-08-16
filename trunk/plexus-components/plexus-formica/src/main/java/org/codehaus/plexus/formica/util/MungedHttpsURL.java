@@ -18,6 +18,7 @@ package org.codehaus.plexus.formica.util;
 
 import org.codehaus.plexus.logging.Logger;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
@@ -114,11 +115,11 @@ public class MungedHttpsURL
 
             is.close();
         }
-        catch ( Exception e )
+        catch ( IOException e )
         {
             if ( logger != null )
             {
-                logger.info( "An error is occurred.", e );
+                logger.info( "URL is not valid: " + urlString, e );
             }
 
             return false;
