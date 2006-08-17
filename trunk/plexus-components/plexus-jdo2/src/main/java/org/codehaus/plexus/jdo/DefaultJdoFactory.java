@@ -75,7 +75,7 @@ public class DefaultJdoFactory
         {
             driverClass = (String) properties.get( "javax.jdo.option.ConnectionDriverName" );
 
-            //TDDO: Class.forName is evil
+            //TODO: Class.forName is evil
             Class.forName( driverClass );
         }
         catch ( ClassNotFoundException e )
