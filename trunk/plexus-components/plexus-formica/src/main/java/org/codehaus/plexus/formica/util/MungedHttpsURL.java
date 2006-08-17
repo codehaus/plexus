@@ -19,12 +19,13 @@ package org.codehaus.plexus.formica.util;
 import org.codehaus.plexus.logging.Logger;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -111,9 +112,7 @@ public class MungedHttpsURL
         {
             HttpURLConnection urlc = getURLConnection();
 
-            InputStream is = urlc.getInputStream();
-
-            is.close();
+            urlc.getResponseCode();
         }
         catch ( IOException e )
         {
@@ -142,7 +141,7 @@ public class MungedHttpsURL
                 return (HttpURLConnection) getHttpUrl().openConnection();
             }
         }
-        catch ( Exception e )
+        catch ( IOException e )
         {
             throw new MalformedURLException( "unable to create munged http url connection" );
         }
@@ -188,7 +187,7 @@ public class MungedHttpsURL
     }
 
     private HttpURLConnection getHttpsUrlConnection()
-        throws Exception 
+        throws IOException 
     {
         ignoreCertificates();
 
@@ -262,7 +261,7 @@ public class MungedHttpsURL
      * setup the environment to ignore all certificates for the connection
      */
     private void ignoreCertificates()
-        throws Exception
+        throws IOException
     {
         // Create a trust manager that does not validate certificate
         // chains
@@ -296,13 +295,24 @@ public class MungedHttpsURL
 
         // Install the all-trusting trust manager
 
-        SSLContext sslContext = SSLContext.getInstance( "SSL" );
+        try
+        {
+            SSLContext sslContext = SSLContext.getInstance( "SSL" );
 
-        sslContext.init( null, trustAllCerts, new java.security.SecureRandom() );
+            sslContext.init( null, trustAllCerts, new java.security.SecureRandom() );
 
-        HttpsURLConnection.setDefaultSSLSocketFactory( sslContext.getSocketFactory() );
+            HttpsURLConnection.setDefaultSSLSocketFactory( sslContext.getSocketFactory() );
 
-        HttpsURLConnection.setDefaultHostnameVerifier( hostnameVerifier );
+            HttpsURLConnection.setDefaultHostnameVerifier( hostnameVerifier );
+        }
+        catch ( KeyManagementException e )
+        {
+            throw new RuntimeException( e );
+        }
+        catch ( NoSuchAlgorithmException e )
+        {
+            throw new RuntimeException( e );
+        }
     }
 
     /**
