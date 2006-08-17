@@ -1,7 +1,7 @@
 package org.codehaus.plexus.formica.util;
 
 /*
- * Copyright 2004-2005 The Apache Software Foundation.
+ * Copyright 2004-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.codehaus.plexus.formica.util;
  */
 
 import java.net.MalformedURLException;
+import java.net.URL;
 
 import junit.framework.TestCase;
 
@@ -166,7 +167,9 @@ public class MungedHttpsURLTest
 
         assertEquals( "password", mungedHttpsURL.getPassword() );
 
-        mungedHttpsURL.getURL();
+        URL url = mungedHttpsURL.getURL();
+        
+        assertNotNull( url );
 
         mungedHttpsURL = new MungedHttpsURL( "http://user:password@host:1234/path" );
 
@@ -176,6 +179,16 @@ public class MungedHttpsURLTest
 
         assertEquals( "password", mungedHttpsURL.getPassword() );
 
-        mungedHttpsURL.getURL();
+        url = mungedHttpsURL.getURL();
+
+        assertNotNull( url );
+    }
+    
+    public void testIsValid()
+        throws MalformedURLException
+    {
+        MungedHttpsURL mungedHttpsURL = new MungedHttpsURL( "http://www.google.com/foo" );
+
+        assertTrue( "URL is not valid", mungedHttpsURL.isValid() );
     }
 }
