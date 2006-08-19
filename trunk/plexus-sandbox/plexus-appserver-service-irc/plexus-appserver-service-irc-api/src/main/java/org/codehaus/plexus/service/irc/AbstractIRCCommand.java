@@ -12,4 +12,8 @@ public abstract class AbstractIRCCommand implements IRCCommand {
   public void onPrivateCommand(IRCUser user, String message) {
     onCommand(user.getNick(), user, message);
   }
+
+  public String getHelp(String parameters) {
+    return "No help avaialble for this command";
+  }
 }
