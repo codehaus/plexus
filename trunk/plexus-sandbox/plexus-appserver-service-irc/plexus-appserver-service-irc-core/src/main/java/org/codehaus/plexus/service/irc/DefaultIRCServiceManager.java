@@ -75,8 +75,14 @@ public class DefaultIRCServiceManager extends AbstractLogEnabled
   }
 
   public void sendMessage(String to, String message) {
-    if (conn != null)
-      conn.doPrivmsg(to, message);
+    if (to == null || message == null)
+      return;
+    if (conn != null) {
+      String[] lines = message.split("\n");
+      for (int i = 0; i < lines.length; i++) {
+        conn.doPrivmsg(to, lines[i]);
+      }
+    }
   }
 
   public void sendAction(String to, String action) {
