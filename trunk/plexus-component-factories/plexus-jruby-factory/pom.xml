@@ -6,13 +6,18 @@
     <version>1.0-alpha-6</version>
   </parent>
   <artifactId>plexus-jruby-factory</artifactId>
-  <version>1.0-alpha-1-SNAPSHOT</version>
+  <version>1.0-alpha-2-SNAPSHOT</version>
   <name>Plexus JRuby Factory</name>
   <dependencies>
     <dependency>
       <groupId>org.jruby</groupId>
       <artifactId>jruby</artifactId>
       <version>0.8.3</version>
+    </dependency>
+    <dependency>
+      <groupId>bsf</groupId>
+      <artifactId>bsf</artifactId>
+      <version>2.3.0</version>
     </dependency>
   </dependencies>
 </project>

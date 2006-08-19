@@ -15,6 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.bsf.BSFException;
+import org.apache.bsf.BSFManager;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
@@ -34,6 +36,7 @@ import org.jruby.exceptions.JumpException;
 import org.jruby.exceptions.RaiseException;
 import org.jruby.internal.runtime.ValueAccessor;
 import org.jruby.javasupport.JavaUtil;
+import org.jruby.javasupport.bsf.JRubyEngine;
 import org.jruby.parser.ParserSupport;
 import org.jruby.runtime.GlobalVariable;
 import org.jruby.runtime.IAccessor;
@@ -191,7 +194,7 @@ public class JRubyInvoker
     /**
      * Appends an input value with the given key to the Ruby
      * script by prepending the following code to the Ruby script:
-     * 	$INPUT['key'] = value;
+     *  $INPUT['key'] = value;
      * 
      * @param key
      * @param value
@@ -303,7 +306,39 @@ public class JRubyInvoker
                 System.out.println( bos.toString() );
             }
 
-            result = runInterpreter( runtime, bos.toString(), stdout, stderr );
+            IRubyObject out = new RubyIO( runtime, stdout );
+            IRubyObject err = new RubyIO( runtime, stderr );
+
+            BSFManager manager = new BSFManager();
+
+            try
+            {
+                for (Iterator iter = inputs.entrySet().iterator(); iter.hasNext(); )
+                {
+                    Map.Entry entry = (Map.Entry)iter.next();
+
+                    String key = (String)entry.getKey();
+                    Object value = entry.getValue();
+                    if ( key != null && value != null )
+                    {
+                        manager.declareBean(key , value, value.getClass() );
+                    }
+                }
+
+                BSFManager.registerScriptingEngine("ruby", JRubyEngine.class.getName(), new String[] { "rb" });
+
+                manager.declareBean("stdout", out, RubyIO.class);
+                manager.declareBean("defout", out, RubyIO.class);
+                manager.declareBean(">", out, RubyIO.class);
+                manager.declareBean("stderr", err, RubyIO.class);
+                manager.declareBean("deferr", err, RubyIO.class);
+
+                result = (IRubyObject)manager.eval( "ruby", "<script>", 1, 1, bos.toString() );
+            }
+            catch( BSFException e )
+            {
+                e.printStackTrace();
+            }
         }
         finally
         {

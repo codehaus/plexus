@@ -22,16 +22,14 @@ public class JRubyComponentFactoryTest
 
         assertNotNull( invoker );
 
-        StringOutputStream stdout = new StringOutputStream();
-        StringOutputStream stderr = new StringOutputStream();
-
         invoker.inputValue( "from_class", JRubyComponentFactoryTest.class );
         invoker.inputValue( "random", new Random() );
 
-        // invoke the script
+        StringOutputStream stdout = new StringOutputStream();
+        StringOutputStream stderr = new StringOutputStream();
+
         IRubyObject result = invoker.invoke( stdout, stderr );
-        // call a method on a returned object (potentially unsafe? rework invoker)
-        ( (IRubyObject) result ).callMethod( "execute" );
+        ((IRubyObject)result).callMethod( "execute" );
 
         logOutput( stdout, false );
         logOutput( stderr, true );
