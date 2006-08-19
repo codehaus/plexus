@@ -12,4 +12,6 @@ public interface IRCCommand {
   public void onCommand(String channel, IRCUser user, String message);
 
   public void onPrivateCommand(IRCUser user, String message);
+
+  public String getHelp(String parameters);
 }

@@ -3,8 +3,10 @@ package org.codehaus.plexus.service.irc.commands;
 import org.codehaus.plexus.service.irc.AbstractIRCCommand;
 import org.codehaus.plexus.service.irc.IRCUser;
 import org.codehaus.plexus.service.irc.IRCServiceManager;
+import org.codehaus.plexus.service.irc.IRCCommand;
 
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,15 +25,37 @@ public class Help extends AbstractIRCCommand {
   private IRCServiceManager manager;
 
   public void onCommand(String channel, IRCUser user, String message) {
-    manager.sendMessage(channel, "Plexus IRC Framework - the following commands are registered");
-    Iterator commands = manager.getCommands().keySet().iterator();
-    StringBuffer list = new StringBuffer("  ");
-    while (commands.hasNext()) {
-      String command = (String) commands.next();
-      list.append(command);
-      list.append(" ");
+    Map commands = manager.getCommands();
+
+    if (message == null || message.equals("")) {
+      manager.sendMessage(channel, "Plexus IRC Framework - the following commands are registered");
+      Iterator commandIter = commands.keySet().iterator();
+      StringBuffer list = new StringBuffer("  ");
+      while (commandIter.hasNext()) {
+        String command = (String) commandIter.next();
+        list.append(command);
+        list.append(" ");
+      }
+
+      manager.sendMessage(channel, list.toString());
+    } else {
+      String command, parameters;
+      int space;
+      if ((space = message.indexOf(' ')) == -1) {
+        command = message;
+        parameters = "";
+      } else {
+        command = message.substring(0, space);
+        parameters = message.substring(space + 1).trim();
+      }
+
+      IRCCommand ircCommand = (IRCCommand) commands.get(command);
+      if (ircCommand == null) {
+        manager.sendMessage(channel, "Command \"" + command + "\" not found");
+      } else {
+        manager.sendMessage(channel, ircCommand.getHelp(parameters));
+      }
     }
 
-    manager.sendMessage(channel, list.toString());
   }
 }
