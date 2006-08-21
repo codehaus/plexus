@@ -1,0 +1,24 @@
+ -----
+ Building on Windows
+ -----
+ Brian Topping
+ -----
+
+<<This is an old piece of documentation, yet to be integrated into the new site and removed>>
+
+Maybe these will help someone.  I'm on windoze, making this process a little more challenging.  A UN*X environment should be a lot easier, these notes may have some relevance there.  Also, check the last update of these notes.  They may not be up to date by the time you read them.
+
+# M2 has some issues with spaces in the path or file name.  Save yourself trouble by putting the repo someplace that doeesn't have this problem.
+# But at the same time, Maven sometimes insists on looking in the default location ('%HOME%\.m2\repository') when it can't find the repo.  So in the commands below, replace '...' with '-Dmaven.repo.local=<full pathname>' and whatever other parameters you need (shouldn't be any).
+# Be sure to throw away all your old sources and check out again, at least until you get a working build.  That stuff you have from "last week" is probably from last month, and a lot changes.
+# You need to build M2 first.  :pserver:anoncvs@cvs.apache.org:/home/cvspublic, project 'maven-components'.  Set your M2_HOME to where you want maven to be installed to, not your current Maven installation.  Then use 'm2-bootstrap-all.bat ...' to build.
+# Get a fresh copy of Plexus.  :pserver:anonymous@cvs.plexus.codehaus.org:/home/projects/plexus/scm, project 'plexus'.
+# The list of external plugins is at [http://cvs.mojo.codehaus.org/mojo/], just the word in the middle there.  (Someone please update where to find the built-in plugins..)
+# Start with a 'm2 -r install ...'.
+# You'll find several POMs that are not in the repo.  They will show as the reactor tries to make sure the dependencies are there.  Using the error message provided, iteratively change directory and issue a 'm2 pom:install ...', then try the build cpmmand in the last step.
+# When you get as far as you can go, it will be because you get an NPE.  You should be pretty close to the full set of POMs you need, but you may find a few more in the next step, so keep that command you've been using handy.
+# Now, build the container.  To build the container, you need to issue 'm2 jar:install ...' after changing to these directories:
+** plexus\plexus-utils
+** plexus\plexus-containers
+** plexus\plexus-containers\plexus-container-default
+# Finally, build whatever components you want using the same method as in the previous step.

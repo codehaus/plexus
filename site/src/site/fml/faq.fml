@@ -1,0 +1,57 @@
+<faqs title="Frequently Asked Questions">
+  <part id="general">
+    <faq id="maturity">
+      <question>How mature is Plexus?</question>
+      <answer>
+        <p>
+          Plexus has been in development for around 5 years, and the container API has been stable for over a year.
+          Due to its heavy use in the production level application Maven 2, it is very well tested.
+        </p>
+        <p>
+          In addition, Plexus was originally based on the Apache Avalon Framework, which was used in a large number
+          of production applications and frameworks and has existed for much longer, showing that the techniques used
+          are sound.
+        </p>
+      </answer>
+    </faq>
+    <faq id="popularity">
+      <question>Why isn't Plexus more popular?</question>
+      <answer>
+        <p>
+          While Plexus has been around for a number of years, it has never been widely promoted as a standalone
+          product. The focus for its development have been to provide a container that could facilitate the needs of
+          advanced application architectures such as Maven 2.0's plugin model.
+        </p>
+        <p>
+          With the stable release of Maven 2.0, Plexus as a standalone product has received more attention, as it is
+          used to write Maven 2.0 plugins, and the benefits that it can provide to general application development can
+          be seen.
+        </p>
+        <p>
+          In addition, Plexus has become attractive to those that need an application container, but for which the more
+          popular frameworks such as Spring do not have the necessary capabilities.
+        </p>
+        <p>
+          With the upcoming Plexus 1.0 release, and its advanced features and integration with other frameworks,
+          we hope that Plexus will become a more popular choice for all application developers in the future.
+        </p>
+      </answer>
+    </faq>
+    <faq id="difference">
+      <question>What is the difference between components.xml and plexus.xml?</question>
+      <answer>
+        <p>
+        Both components.xml and plexus.xml are components descriptors. But they differ in following respects:</p>      
+        <p>
+        &nbsp;&nbsp;- plexus.xml is a superset of components.xml
+        </p>
+        <p>
+        &nbsp;&nbsp;- components.xml only declares components while plexus.xml can be used to configure the plexus container and runtime in addition to declaring components.
+        </p>
+        <p>
+        &nbsp;&nbsp;-  Many JARs in an application can have components.xml but there can be only ONE plexus.xml defined for an application.
+        </p>        
+      </answer>
+    </faq>
+  </part>
+</faqs>

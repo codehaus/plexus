@@ -1,0 +1,27 @@
+ -----
+ 1.0 to do
+ -----
+ Brett Porter
+ -----
+
+- Documentation
+- More documentation
+- constructor injection
+- spring personality
+- mapped components (dynamic proxy/active collections)
+- programmatic configuration of container
+- baked in plexus-utils
+- remove xml parser if possible and use available StAX (Java 6), SAX (Java 5/1.4)
+- compulsory role hint
+- component descriptor model & xsd
+- restructure build
+  * separate components, archetypes and (container + examples + docs).
+  * put old components back into sandbox
+  * separate plexus-utils
+
+Random stuff:
+- still need to do another error handling / api clean up
+- separate lifecycle interfaces so components need not depend on the container
+- separate logging (is AbstractLogEnabled really a good idea?)
+
+

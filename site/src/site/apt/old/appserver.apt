@@ -1,0 +1,86 @@
+ -----
+Developing Plexus Applications
+ -----
+Trygve Laugstol
+ -----
+
+<<This is an old piece of documentation, yet to be integrated into the new site and removed>>
+
+Developing Plexus Application
+
+ This document documents how we recomend you organize your source code and artifacts while
+ developing Plexus applications.
+
+The example application
+
+ This document uses Continuum as a example application. Continuum has a core, a set of
+ builders and a set of views. Each builder is support for a specific build system
+ (Maven, Ant, etc) and each view is a external interface to the core (web, xml-rpc, etc).
+
+ The layout looks like this:
+
++----------------------------------------+
+/continuum-core
+/continuum-builders
+                   /continuum-builder-maven-2
+                   /continuum-builder-ant
+/continuum-views
+                /continuum-view-web
+                /continuum-view-xml-rpc
+/continuum-plexus-application
++----------------------------------------+
+
+ All of the Continuum artifacts exept the <<<continuum-plexus-application>>> is not related to
+ the Plexus application at all and makes Continuum perfectly embedable in any other way (like
+ just using the Embedder in a custom enviroment).
+
+ The <<<continuum-plexus-application>>> artifact will in addition to any classes in
+ <<<src/main/java>>> contain the Plexus configuration files and application descriptor files
+
+How to work with Plexus applications on a day-to-day basis
+
+ Plexus applications is run in Plexus runtimes. A application is deployed to a runtime by
+ copying the JAR into the <<<apps>>> directory of the runtime. The runtime will automatically
+ deploy any applications in <<<apps>>>. In the Plexus Maven plugin there are some useful goals
+ while developing applications:
+
+ [<<<plexus:runtime>>>] generates a Plexus runtime into <<<target/plexus-runtime>>>. The
+ generated runtime will be ready to use instantly.
+
+ [<<<plexus:application>>>] assembles the application in <<<target/plexus-application>>>. The
+ application is not packaged yet so if it's wanted to do some post processing before
+ packaging the application is can be done as a post goal to <<<plexus:app>>>
+
+ [<<<plexus:package-application>>>] makes a JAR file containing the Plexus configuration
+ files, the application descriptor and classes from <<<continuum-plexus-application>>> only.
+ It does not contain all the dependencies of the application.
+
+ [<<<plexus:package-app-with-dependencies>>>] has a prerequisite on <<<plexus:package-app>>>
+ and will take the application JAR and all of it's dependencies and package it in a new
+ artifact called <<<continuum-plexus-application-alldeps-<version>.jar>>>. The JAR that this
+ goal generates will be completly standalone in the way that it can be taken and deployed in
+ any Plexus runtime without worrying about missing dependencies.
+
+ [<<<plexus:deploy-dev-application>>>] has prerequisite on <<<plexus:package-app>>> and will
+ deploy the application JAR to the <<<apps>>> directory in the runtime. It will also copy over
+ all the dependencies into the <<<repository>>> directory.
+
+-------
+
+This is a suggestion for layout for how the application server and the application layouts, both in source and jar forms
+
+h2. The Application Server Directory Layout
+
+||Directory||Description||
+|{{bin}}|Same as always, contains startup scripts|
+|{{conf}}|Contains {{plexus.xml}} which is the configuration for the application server and {{classworlds.conf}} which will be used for bootstrapping the application server.|
+|{{core}}|Contains the plexus-container-default and plexus-appserver and their dependencies.|
+|{{lib}}|This directory would initially be empty. It can contain artifacts thats configured as services {{conf/plexus.xml}} |
+|{{apps}}|All jar files in this directory will be exploded and started as plexus applications.|
+|{{services}}|Services such as a Jetty service, or TX service. Not sure how these should be packaged. They could be a contained jar, or more likely follow the Application Directory Layout outlined below. The later case would be good so the configuration files could be edited.|
+
+h2. The Application Directory Layout
+
+||Directory||Description||
+|{{conf}}|Contains {{plexus.xml}} that is a normal plexus configuration file. It contains application specific components.|
+|{{lib}}|Contains all jar files in the application|
