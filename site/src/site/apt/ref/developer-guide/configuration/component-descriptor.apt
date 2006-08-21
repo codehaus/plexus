@@ -1,0 +1,343 @@
+ ------
+ Developer Guide - Plexus Component Descriptor
+ ------
+ Rahul Thakur
+ ------
+ 17th June, 2006
+ ------
+
+ <<<The contents of this document are a work in progress>>>
+
+Plexus Component Descriptor
+
+ We are discussing the component descriptors for components which are
+ compatible  with {{{../personalities/plexus-personality.html}Plexus Personality}}. We show a
+ limited picture of what can be done with components and component descriptors
+ in Plexus.
+
+ Nevertheless what you learn here should be sufficient to write even a large
+ Plexus application!
+
+ A component descriptor describes the properties of a component required by the
+ container in order to manage the lifecycle of that component. Let's take a
+ look at the simplest example of a component descriptor:
+
++------------------------------------------+
+<component-sets>
+  <components>
+    <component>
+      <role>foo.Foo</role>
+      <implementation>foo.DefaultFoo</implementation>
+    </component>
+  </components>
+</component-sets>
++------------------------------------------+
+
+ It starts off with a <<<component>>> tag, then values for the <<<role>>> and
+ <<<implementation>>> tags are defined.  The <<<role>>> tag defines the
+ interface provided by this component. It is usually the name of the Java
+ interface.  Names of the classes (including abstract) are also allowed. You are
+ not allowed to use arbitrary strings.  The <<<implementation>>> tag tells
+ Plexus what you want to use to implement the specified <<<role>>>. In a normal case
+ you will have to specify the name of the java class (<<<foo.DefaultFoo>>> in
+ the example above), which implements the given interface (role).
+
+ If there is more than one component which provides an implementation of a given role
+ you can differentiate them with the help of the <<<role-hint>>> attribute:
+
++------------------------------------------+
+...
+<component>
+  <role>foo.SomeComponent</role>
+  <role-hint>componentA</role-hint>
+  <implementation>foo.FooA</implementation>
+<component>
+
+<component>
+  <role>foo.SomeComponent</role>
+  <role-hint>componentB</role-hint>
+  <implementation>foo.FooB</implementation>
+<component>
+...
++------------------------------------------+
+
+ The <<<role>>> and the <<<role-hint>>> are what defines 
+ {{{../building-components/component-identity.html}component identity}} and what you use to look up your
+ component from Plexus.  The <<<role-hint>>> tag is optional.  It serves
+ as an extra id qualifier that allows you to differentiate components of the same type
+ (role).  You can use any arbitrary string you like as the value of the <<<role-hint>>>
+ attribute. Note that you can deploy the same implementation of the component
+ two or more times with different <<<role-hint>>>s e.g.:
+
++------------------------------------------+
+...
+<component>
+  <role>foo.SomeComponent</role>
+  <role-hint>instance-one</role-hint>
+  <implementation>foo.FooA</implementation>
+<component>
+
+<component>
+  <role>foo.SomeComponent</role>
+  <role-hint>instance-two</role-hint>
+  <implementation>foo.FooA</implementation>
+<component>
+...
++------------------------------------------+
+
+* Requirements
+
+ Components aren't very useful as isolated entities nor are they always ready
+ to use standalone.  They become useful when we connect them together with
+ other components and provide configuration settings to them.  There are
+ several different ways to compose your system from components.
+
+ The default, and the simplest of them, is a part of
+  {{{../personalities/plexus-personality.html}Plexus Personality}} This uses a strategy called
+ 'field injection' for wiring components. This means that Plexus takes selected
+ objects and assigns them to fields of component objects.
+
+ How does Plexus know into which fields requirements should be injected and
+ what those requirements are?  There is a <<<requirements>>> section in the
+ component descriptor where you declare what components you depend on:
+
++------------------------------------------+
+...
+<component>
+  ...
+  <requirements>
+    <requirement>
+      ...
+    </requirement>
+    <requirement>
+      ...
+    </requirement>
+  </requirements>
+</component>
+...
++------------------------------------------+
+
+ In a simple case the declaration of a dependency looks like this:
+
++------------------------------------------+
+  ...
+  <requirement>
+    <role>org.codehaus.plexus.ComponentA</role>
+  </requirement>
+  ...
++------------------------------------------+
+
+ In the case when you want to declare a dependecy on a component which has
+ specified both <<<role>>> and <<<role-hint>>> attributes you use:
+
++------------------------------------------+
+  ...
+  <requirement>
+    <role>org.codehaus.plexus.ComponentB</role>
+    <role-hint>foo</role-hint>
+  </requirement>
+  ...
++------------------------------------------+
+
+ In any case Component Composer will try to find a matching field and property
+ for the given requirements.  In the standard case the component composer will try
+ to find a field in the component class (this is usually a private field),
+ which has a type which matches the requirement's <<<role>>>.
+
+ For example in the case of this Java class:
+
++------------------------------------------+
+package foo;
+public class SomeComponentImpl
+{
+     // this is a "requirement" of this component
+     org.codehaus.plexus.ComponentA  a;
+
+     // this is ordinary field
+     int  b;
+}
++------------------------------------------+
+
+  You will need to prepare the following component descriptor which lists
+  ComponentA as a requirement:
+
++------------------------------------------+
+...
+<component>
+  <role>foo.SomeComponent</role>
+  <implementation>foo.SomeComponentImpl</implementation>
+  <requirements>
+    <requirement>
+      <role>org.codehaus.plexus.ComponentA</role>
+    </requirement>
+  </requirements>
+<component>
+...
++------------------------------------------+
+
+** Collections
+
+ Plexus can also inject Maps, List or arrays of dependent components.  In the
+ case of arrays of components the same approach is applied as in the case of
+ "singular" dependencies. The only difference is that all visible
+ implementations of a given role will be used.
+
+ Java:
+
++------------------------------------------+
+package foo;
+public class SomeComponentImpl
+{
+     org.codehaus.plexus.ComponentA  a[];
+}
++------------------------------------------+
+
+ XML Descriptor:
+
++------------------------------------------+
+...
+<component>
+  <role>foo.SomeComponent</role>
+  <implementation>foo.SomeComponentImpl</implementation>
+  <requirements>
+    <requirement>
+      <role>org.codehaus.plexus.ComponentA</role>
+    </requirement>
+  </requirements>
+</component>
+
+...
+
+<component>
+  <role>org.codehaus.plexus.ComponentA</role>
+  <role-hint>A</role-hint>
+  ...
+</component>
+<component>
+  <role>org.codehaus.plexus.ComponentA</role>
+  <role-hint>B</role-hint>
+  ...
+</component>
+...
++------------------------------------------+
+
+ In case of a <<<List>>>, or a <<<Map>>> you must explicitly define where dependencies should be
+ injected. You can do this with the help of the <<<field-name>>> tag:
+
+ XML Descriptor:
+
++------------------------------------------+
+...
+<component>
+  ...
+  <requirements>
+    <requirement>
+      <role>org.codehaus.plexus.ComponentB</role>
+      <role-hint>foo</role-hint>
+      <field-name>mapA</field-name>
+    </requirement>
+    <requirement>
+      <role>org.codehaus.plexus.ComponentB</role>
+      <role-hint>bar</role-hint>
+      <field-name>listB</field-name>
+    </requirement>
+  </requirements>
+</component>
+...
++------------------------------------------+
+
+ Java:
+
++------------------------------------------+
+package foo;
+public class SomeComponentImpl
+{
+       private Map mapA;
+       private List listB;
+}
++------------------------------------------+
+
+ <<Note>> that when using a Map the value of a component's <<<role-hint>>> is used as
+ the key and the component instance is used as the value.
+
+
+ You can also use the <<<field>>> tag for a "singular" component's requirements.
+
+ XML Descriptor:
+
++------------------------------------------+
+...
+<component>
+  ...
+  <requirements>
+    <requirement>
+      <role>org.codehaus.plexus.ComponentB</role>
+      <role-hint>foo</role-hint>
+      <field>b1</field>
+    </requirement>
+    <requirement>
+      <role>org.codehaus.plexus.ComponentB</role>
+      <role-hint>bar</role-hint>
+      <field>b2</field>
+    </requirement>
+  </requirements>
+<component>
+...
++------------------------------------------+
+
+  Java:
+
++------------------------------------------+
+package foo;
+public class SomeComponentImpl
+{
+    //(component with role-hint = "foo" will be injected here)
+    org.codehaus.plexus.ComponentB  b1;
+
+    //(component with role-hint = "bar" will be injected here)
+    org.codehaus.plexus.ComponentB  b2;
+}
++------------------------------------------+
+
+ Explicit specification into which field dependencies should be injected is
+ considered to be a good pattern and might even be required in future versions
+ of Plexus.
+
+** Configuration
+ 
+ Lastly, there is an optional configuration section which is used to configure
+ your component.
+
++------------------------------------------+
+...
+<component>
+  ...
+  <configuration>
+    <a>bleh</a>
+    <b>
+      <x>1</x>
+      <y>2.0f</y>
+    </b>
+  </configuration>
+<component>
+...
++------------------------------------------+
+
+ You may read more about it {{{plexus-auto-configuration.html}here}}.
+
+ And that's all you need to know about component configuration to
+ get you started!
+
+ <<Important remark>>: Component configuration and component requirements
+ (definition of dependencies on some other components) are separated in Plexus.
+ In some popular containers like Spring this is not the case. The reason
+ for this is that component requirements are constant - components always needs
+ to use the same set of services provided by other components in order to
+ function properly. But configuration of a component is more dynamic.  For
+ example components which provide an implementation of a jdbc database connection pool
+ must always be configured in each application which uses it.
+
+~~ TODO The link in the following paragraph is broken
+ 
+ If you want to learn more about more advanced options you can read
+ {{{component-descriptor-specification.xml}Component Descriptor}}.

@@ -1,0 +1,56 @@
+ -----
+ Plexus
+ -----
+ Brett Porter
+ -----
+ 25 May 2006
+ -----
+
+Overview
+
+  The Plexus project provides a full software stack for creating and executing software projects. Founded on the
+  Plexus container, applications can utilise component-oriented programming to build modular, reusable components
+  that can easily be assembled and reused.
+
+  While Plexus is similar to other <inversion-of-control> (IoC) or <dependency injection> frameworks such as the
+  Spring Framework, it's fully-fledged container supports many more features such as:
+  
+    * Component lifecycles 
+
+    * Component instantiation strategies
+    
+    * Nested containers  
+    
+    * Component configuration
+    
+    * Auto-wiring
+    
+    * Component dependencies, and 
+
+    * Various dependency injection techniques including constructor injection, setter injection, and private field
+  injection. 
+  
+  
+  See the {{{ref/feature-comparison.html} Feature Comparison}} page for more information on
+  the differences between Plexus and other products.
+
+  The Plexus project provides a number of pre-built components for common tasks and toolkits
+  such as Jetty, Velocity, Hibernate, i18n, and {{{ref/available-components.html} many more}}. However,
+  Plexus is also able to reuse your existing components written for other IoC frameworks such as
+  Spring, Avalon and Pico Container unmodified, as well as allowing you to reuse your existing code
+  inside the Plexus Container.
+
+  Plexus comes with an application server that can run your applications, making it trivial to
+  build a standalone executable distribution with common features such as service execution if needed.
+  However, Plexus applications can be run in any environment by embedding the container in an existing
+  application, including Java EE applications or web applications.
+
+  Components in Plexus need not be written in Java, with component factories existing for
+  Jython, JRuby, Beanshell, and Groovy.
+
+  The Plexus container is currently used in a number of applications and frameworks, most notably Maven 2.0 and
+  Webwork 2.2 (Struts Action Framework 2.0).
+
+  For answers to common questions about Plexus, see the {{{faq.html} FAQ}}.
+
+

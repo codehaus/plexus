@@ -1,0 +1,306 @@
+ -----
+ More Concise Component Descriptior
+ -----
+ Michal Maczka
+ -----
+ 
+<<This is an old piece of documentation, yet to be integrated into the new site and removed>>
+
+ h3. Problem
+
+I have a proposition regarding component descriptors - I  would like to see in them more precise information which describe component.
+
+Just to remind - at the moment  component descriptor it looks like:
+{code:xml}
+  <component>
+      <role>org.apache.maven.Maven</role>
+      <implementation>org.apache.maven.DefaultMaven</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.plugin.PluginManager</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.project.MavenProjectBuilder</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.i18n.I18N</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.lifecycle.MavenLifecycleManager</role>
+        </requirement>
+      </requirements>
+    </component>
+{code}
+
+
+
+There are some "bad" things happening here:
+
+* Requirments are not precisly defined. We don't know many things about requirments (e.g. their cardinality)
+* Two distinct things are collapsed into single one: definition of requirements and specification of the way in which components are wired.
+
+Say that above section exits in component.xml file and now we will put  the following section into plexus.xml file:
+
+{code:xml}
+  <component>
+      <role>org.apache.maven.Maven</role>
+      <implementation>org.apache.maven.DefaultMaven</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.plugin.PluginManager</role>
+          <role-hint>EclipsePluginManager</role-hint>
+        </requirement>
+    </component>
+{code}
+
+In this case the question is what is going on here? Is the only the single requirement of given component overriden? What happens with others?  It is also a question of nomenclature: Why we are reusing "requirement section" while neither component implmentation nor
+its requirments haven't changed. Aren't we just giving hints to container how those requirments should be resolved? What we can overidde and how we can validate if we did it right?
+
+
+
+h3. The solution
+
+
+I'd like to see 2-3 tags more in component descriptor:
+
+id (unique identifier of given dependency)
+property (as we will need to support field, bean property or constructor parameter number)
+cardinality (can be "1" or "N") - cardinality should be used for building graph (DAG) outside of component composers.
+
+
+
+{code:xml}
+  <component>
+      <role>org.apache.maven.Maven</role>
+      <implementation>org.apache.maven.DefaultMaven</implementation>
+      <requirements>
+          <requirement>
+            <id>pluginManager</id>
+            <role>org.apache.maven.plugin.PluginManager</role>
+            <property>pluginManager</property>
+            <cardinality>1</cardinality>
+          </requirement>
+            ...
+      </requirements>
+    </component>
+{code}
+
+
+Such precise specification will make component composers much simpler. They will know exactly what to do just by looking at descriptor -
+- no more magic -  guessing what's the matchig field will be removed.
+This will also super simple to build a DAG of component dependecies just by using component descriptor
+
+The number of tags in my solution and their names are not so important here  - what matters is the general idea
+and this idea is that component _should list_ in immutable and precise way all its dependencies and their cardinality.
+Actual composition (wiring) should use that information and should provide flexible way of satisfying
+component's requirements
+
+During component composition if any default values should be overridden - this should happen in plexus.xml file
+
+{code:xml}
+<component>
+   <role>XXX</role>
+   </configuration/>
+   <selectors>
+        <property>
+            <id>velocity</id>
+            <role-hint>my-velocity</role-hint>
+        <property>
+        <property>
+            <id>foo</id>
+            <implementation>org.codehaus.Foo</implementation>
+        <property>
+   </composition>
+<componet>
+{code}
+
+This will allow to precisly "override" just one of the requirments which can very useful for example for testing component. This reflects the fact that component requirments have never changed - we are just
+give some hints to container how to wire components.
+
+And we are able using immutable requirements defined in component descriptor to validate in given "wiring" is correct.
+
+
+*Why do we need to provide a cardinality?*
+
+First remarks is component composer should be not used for diging any information - enough facts
+should be known to composer to make something extremly simple - just obey component decriptor and do what it tells. The same inofrmation should be used by Component Registry (DAG)
+
+
+
+
+What I am doing in some cases is:
+
+{code}
+
+inteface Foo
+{
+     void doStuff();
+
+}
+
+
+
+class Multiplexer implements Foo
+{
+      Foo foo1;
+      Foo foo2;
+
+      public void doStuff()
+      {
+             if ( xxx )
+             {
+                   foo1.doStuff();
+             }
+             else
+             {
+                   foo2.doStuff();
+             }
+      }
+
+}
+{code}
+
+
+Descriptor of Multiplexer looks like;
+
+{code:xml}
+    <component>
+      <role>Foo</role>
+      <implementation>Multiplexer</implementation>
+      <requirements>
+          <requirement>
+            <role>Foo</role>
+            <role-hint>foo1</role-hint>
+             <field-name>foo1</field-name>
+          </requirement>
+          <requirement>
+            <role>Foo</role>
+             <role-hint>foo2</role-hint>
+             <field-name>foo2 </field-name>
+          </requirement>
+      </requirements>
+    </component>
+{code}
+
+
+So the reasoning: if field-name(property)  was provided then  cardinality = 'many' (denoted as 'N")
+imo is not valid and results in over simplification.
+
+
+So the question is how to handle  cases like:
+
+
+{code}
+class ComponentA implements A
+{
+     private List foos;
+     private Baa[] baas
+     private Map idToMooMap;
+
+     private B b;
+     private C c;
+
+}
+{code}
+
+
+I would do:
+
+{code:xml}
+    <component>
+      <role>A</role>
+      <implementation>Component</implementation>
+      <requirements>
+          <requirement>
+            <role>Foo</role>
+             <cardinality>N</cardinality>
+          </requirement>
+          <requirement>
+            <role>Baa</role>
+             <cardinality>N</cardinality>
+          </requirement>
+          <requirement>
+            <role>Moo</role>
+             <cardinality>N</cardinality>
+          </requirement>
+          <requirement>
+            <role>B</role>
+             <cardinality>1</cardinality>
+          </requirement>
+          <requirement>
+            <role>C</role>
+             <cardinality>1</cardinality>
+          </requirement>
+      </requirements>
+    </component>
+{code}
+
+
+
+
+
+
+If we will go even further we can imagine to have also some information in component decsriptor about its configuration settings:
+
+{code:xml}
+  <component>
+      <role>org.apache.maven.Maven</role>
+      <implementation>org.apache.maven.DefaultMaven</implementation>
+      <requirements>
+          <requirement>
+            <id>pluginManager</id>
+            <role>org.apache.maven.plugin.PluginManager</role>
+            <property>pluginManager</property>
+            <cardinality>1</cardinality>
+          </requirement>
+
+            ...
+      </requirements>
+       <configuration-spec>
+            <tag>
+                  <property>foo</property>
+                  <type>int</type>
+             <tag>
+            <tag>
+                  <property>foo</property>
+                  <type>org.codehaus.Foo</type>
+             <tag>
+       <configuration-spec>
+    </component>
+{code}
+
+
+The good example when it can help is the in all those places where we have to use
+
+<sometag implemenation="xxxxx">
+
+Also it defines which properties (fields in normal case) should be saved when component is passivated.
+
+
+
+
+
+
+
+
+*Generic digression*: frameworks like Spring provide far more generic way of stating requirements,  but for example spring does not have any mechanism for validating if all requirements of given component can be satisfied.
+
+
+h3. Motivations
+
+Motivations for that improvment are simple:
+
+The list of [Introduction To Components#Criteria for Componets] contains the following point:
+
+* Component includes a specification of all dependencies (hardware and software platform, versions, other components).
+
+I am littelary reading that point and interpering it: component must "export" a [Detailed Dependency List|http://componentfactory.org/Results.asp?id=36] which will conatain the information about its all dependecies.
+IMO it would be nice if this list would be immutable and defined once an forever, simply becouse this list never changes for the same component. While Componet Assembling is made we should use this list to verify if all requiremnts were satisfied.
+
+I belive that the right place for representing such information about the component is at meta level - so meta data is needed
+Some people may argue (e.g. Pico guys) that such meta data can be found in java classes (in case of pico via examining contructor signature).  I don't believe in such approch.  In my opinion far richer meta data is needed and more precise metadata is - the things are simpler.
+
+
+I am seeing a component based application as something which can be composed using GUI tools and verified by tools. Plexus supports various component personalites and we should be able to unify the way in which our tools are looking at components.
+
+The only disadvantage of that approch is that we need to provide that metadata. Here tools must help - it will be quite easy to use CDC and such tool for generating component descriptors from java code.

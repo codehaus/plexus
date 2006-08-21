@@ -1,0 +1,148 @@
+ -----
+ Chapter 1 : Setting up a Web application project
+ -----
+ Rahul Thakur
+ -----
+ 10th July 2006 
+ -----
+
+Overview
+
+ The chapter explains how to set up a Plexus web application project.
+
+* Pre-requisites
+
+ The tutorial assumes you have Maven 2.0.x+ setup and have an internet 
+ connection and are able to download required Maven artifacts from online 
+ repositories.
+
+ 
+* Set up a Web application project from an Archetype
+
+ We use Maven's Web application archetype to create a skeleton web application 
+ project to get us started. 
+
+ From the command prompt, change directory to the location where you wish to 
+ set up the new Plexus Component project.  Run the following command from the
+ command line to setup an initial project structure
+
++------------------------------------------+
+ mvn archetype:create -DarchetypeGroupId=org.apache.maven.archetype -DarchetypeArtifactId=maven-archetype-webapp -DarchetypeVersion=1.0-
+SNAPSHOT -DgroupId=org.codehaus.plexus.examples -DartifactId=plexus-example-webapp  -DpackageName=org.codehaus.plexus.tutorial -Dpackaging=war
++------------------------------------------+ 
+
+ This should create a blank web application project.
+
+** Archetype creation options explained
+
+ More info on archetype creation and usage can be found here?
+
+ The following table explains the options that we used above.
+
+*----------+--------------+----------------:
+| Commandline Option 	| Description 	| Required |
+*----------+--------------+----------------:
+| -DarchetypeGroupId 	| "groupId" for the archetype we want to use 	| Yes |
+*----------+--------------+----------------:
+| -DarchetypeArtifact 	| "artifactId" for the archetype we want to use |	Yes |
+*----------+--------------+----------------:
+| -DarchetypeVersion 	| "version" for the archetype we want to use 	| Yes| 
+*----------+--------------+----------------:
+| -DgroupId 	| "groupId" for the project to be generated 	| Yes |
+*----------+--------------+----------------:
+| -DartifactId | "artifactId" for the project to be generated |	Yes |
+*----------+--------------+----------------:
+| -DpackageName |	Base package name to be use for any Java sources being copied over 	| No|
+*----------+--------------+----------------:
+ 
+* Generate a Project for your IDE.
+
+** For Eclipse.
+ 
+   [[1]] Change directory to the newly created directory 'plexus-example-webapp'
+   
+   [[1]] Open up pom.xml and review the handful of dependencies setup there for version changes.
+
+   [[1]] Run the following command from command prompt to generate Eclipse project setting files.
+
++------------------------------------------+
+ mvn eclipse:eclipse
++------------------------------------------+
+
+ Eclipse project files should get generated succesfully at this point. If there were any unsatisfied dependencies (due to 2-1-3), update <version> for dependencies in pom.xml to an available release version.
+ 
+   [[1]] Fire up Eclipse and import the generated project into an Eclipse Workspace.
+ 
+** Add sources/resources directories
+
+  Create the following directories under the project root for our application resources:
+
+  [[1]] <<<src/main/java>>>
+
+  [[1]] <<<src/main/resources>>>
+
+  [[1]] <<<src/test/java>>>
+
+  [[1]] <<<src/test/resources>>>
+
+
+* Adding project dependencies
+
+  We add project dependencies to the <<<pom.xml>>> located under project root. 
+  The <<<pom.xml>>> looks like below:
+
++-------------+
+<?xml version="1.0"?><project>
+  <parent>
+    <artifactId>plexus-examples</artifactId>
+    <groupId>org.codehaus.plexus.examples</groupId>
+    <version>1-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.plexus.examples</groupId>
+  <artifactId>plexus-example-webapp</artifactId>
+  <packaging>war</packaging>
+  <name>Plexus Web Application Example</name>
+  <version>1.0-SNAPSHOT</version>
+  <url>http://maven.apache.org</url>
+  <build>
+    <finalName>plexus-example-webapp</finalName>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Added for plexus webapp example -->
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-servlet</artifactId>
+      <version>1.0-beta-5-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-10-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>
++-------------+
+
+ Update Eclipse project dependencies for new library that we added above, to do this:  
+
+  [[1]] Open up a command prompt window
+  
+  [[2]] Change directory to the Website Monitor project's folder, and
+  
+  [[3]] Run the following command to update the Eclipse project dependencies.       
+   
++------------------------------------------+
+mvn  eclipse:clean  eclipse:eclipse
++------------------------------------------+
+
+
+ Refresh the Eclipse project in the workspace to reflect the updated dependencies.
+ 
+

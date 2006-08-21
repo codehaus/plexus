@@ -1,0 +1,57 @@
+ -----
+ Native Personality
+ -----
+ -----
+
+<<This is an old piece of documentation, yet to be integrated into the new site and removed>>
+
+API Overview
+
+ The plexus personality revolves around two segments.  The begin and end
+ segments.  The begin segment is run when your component is being started up
+ and the end segment when it is being shut down.
+
+ * Begin Phase
+
+ *--+--+--*
+ |Phase|Interface|Description|
+ |LogEnable|LogEnable|Passes a logger to your component.  You will most likely want to inhereit AbstractLogEnabled instead|
+ |Composition|(no interface)|Injects your dependencies (see below)|
+ |Context|Contexutualizable|Passes the plexus context.  From here you can acess the home directory, Plexus Container, and more.
+ |Configuration|PlexusConfigurable|Gives you access to the PlexusConfiguration to configure your application|
+ |Intialization|Initializable|Initializes your component.
+ |Start|Startable|Start's your component|
+ *--+--+--*
+
+ * End Phase
+
+ *--+--+--*
+ ||Phase||Interface||Description||
+ |Stop|Startable|Stop's your component|
+ |Dispose|Disposable|Allows you to dispose of the components you depend on and other resources.|
+ |LogDisable|LogEnabled|Disables component logging|
+ *--+--+--*
+
+ * Dependency Injection
+
+ Plexus has the ability to do automatic dependency injection.  When your
+ component is being composed it will automatically fill in the fields or
+ setters with your components dependencies.
+
+ * Configuration
+
+ The Plexus personality can configure your component two ways.  In the auto
+ configuration mode, it matches the xml to fields and classes on your
+ components using [XStream|http://xstream.codehaus.org]. For example, if you
+ have a String field named "cheese" on your component, then this would
+ automatically set that field to "swiss":
+
++---+
+<configuration>
+  <cheese>swiss</cheese>
+</configuration>
++---+
+
+ If this doesn't provide the needed flexibility you can implement the interface
+ PlexusConfigurable and the PlexusConfiguration object for your component will
+ be passed on to you.

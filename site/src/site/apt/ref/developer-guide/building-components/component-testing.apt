@@ -1,0 +1,405 @@
+ ------
+ Developer Guide - Testing Plexus Components
+ ------
+ Michal Maczka
+ ------
+ 17th June, 2006
+ ------
+
+ <<<The contents of this document are a work in progress>>>
+
+Testing Plexus Components
+
+ If you are using Plexus you are going to use and most likely write your own
+ components.  In the second case you will need to be able to test them. Plexus
+ container uses quite a rare approach for testing components: components are
+ tested inside the container.
+
+ Like a fish needs water, a component by its [definition] needs a container.
+ Fish should be only lifted from the water - its natural environment - for a
+ short time, as fish needs water to breathe and water supports the weight of
+ the fish.  Keep the fish in water; keep the component in its natural
+ environment - the container.  As there are fishes, which are hard to catch,
+ there are components, which are hard to test outside the container. And as
+ there are some fishes, which can be never caught, there are some components,
+ which practically cannot be tested outside the container.
+
+ Important remark: *component testing* is not exactly the same thing as *class
+ testing*.  In case of Plexus a component in the simplest possible case is a
+ java class plus the component descriptor.  Traditional unit testing allows you
+ to test java classes, but you should be able to test if component as a whole
+ is error free and ready to be used.  It means that component's metadata must
+ also be validated - you want to be sure that component definition was written
+ properly, component's requirements were stated properly, correct component
+ profile was chosen etc.
+
+ Another thing, which is so appealing about this approach is the fact that
+ testing environment and production environment are exactly the same - this
+ eliminates some surprises which otherwise would appear only when component was
+ deployed.
+
+ Last but not least  -although it might be counter-intuitive such approach is
+ really making testing easier!  Plexus and other lightweight containers have
+ proven to *be a perfect mock infrastructure*: the container is used for
+ "plumbing" components with its depended components. That is why a container is
+ a perfect tool for injecting Mock implementation during test time and real
+ implementation at the runtime.
+
+ Note that Plexus is quite "lightweight" and it usually can be embedded a
+ couple of times per second.
+
+* Example
+
+ Component Interface
+
++---+
+package org.codehaus.plexus.tutorial.lesson2;
+
+public interface HelloWorld
+{
+    String ROLE =  HelloWorld.class.getName();
+
+    String getGreeting();
+}
++---+
+
+ Component Implementation:
+
++---+
+package org.codehaus.plexus.tutorial.lesson2;
+
+public class DefaultHelloWorld  implements HelloWorld
+{
+    public String getGreeting()
+    {
+        return "Hello World!";
+    }
+}
++---+
+
+ Component Test Case:
+
++---+
+package org.codehaus.plexus.tutorial.lesson2;
+
+import org.codehaus.plexus.PlexusTestCase;
+
+public class DefaultHelloWorldTest
+    extends PlexusTestCase
+{
+    public void testHelloWorld()
+        throws exception
+    {
+        HelloWorld helloWorld = ( HelloWorld ) lookup( HelloWorld.ROLE );
+
+        assertEquals( "Hello World!", helloWorld.getGreeting() );
+    }
+}
++---+
+
+ Normal [component discovery] is performed during the initialization of the
+ test case.  It means that if your component descriptor was alraedy added to
+ /META-INF/plexus/components.xml file it will be visible during tests.
+
+ In case when you want to override the deafults the only thing you have to do
+ is to create new xml file having the name which matches the class name but
+ with extentinon ".xml". This file must be placed in the same package as the
+ class and be visible in the unit test's classpath.
+
+ In case of DefaultHelloWorldTest the file should be names DefaultHelloWorldTest.xml
+
++---+
+<plexus>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.tutorial.lesson2.HelloWorld</role>
+      <implementation>org.codehaus.plexus.tutorial.lesson2.DefaultHelloWorld</implementation>
+    </component>
+  </components>
+</plexus>
++---+
+
+* Container Driven Testing
+
+ Now we will show an example how container can help in component testing and
+ how it can be used for providing "mock components" during tests.
+
+ As exmplained above plexus provides a possiblity of perform lightning-fast
+ component tests. which directly which takes place inside container.  As Plexus
+ suports IoC paradigm and it's Dependecy Injection in particular the container
+ is a perfect envinroment for providing mock implementation of component's
+ requirements.
+
+~~!component-tesing-1.gif!
+
+** Implementation:
+
++---+
+src\main\java\org\codehaus\plexus\example\CheeseConnoisseur.java
+                                                                 \Cheese.java
+                                                                 \DefaultCheeseFinder.java
+                                                                 \CheeseFinder.java
+                                                                 \CheeseEater.java
+src\main\resources\META-INF\plexus\components.xml
++---+
+
+** Tests:
+
++---+
+$root\src\main\test\org\codehaus\plexus\example\
+                                                                   MockCheeseFinder.java
+                                                                   CheeseConnoisseurTest.java
+                                                                   CheeseConnoisseurTest.xml
++---+
+
+ Now file by file we will explain what is inside of each of files:
+
++---+
+$root\src\main\java\org\codehaus\plexus\example\Cheese.java
++---+
+
++---+
+package org.codehaus.plexus.example;
+
+public class Cheese
+{
+    String name;
+
+    int price;
+
+    public Cheese( String name, int price )
+    {
+        this.name = name;
+
+        this.price = price;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
+    public int getPrice()
+    {
+        return price;
+    }
+
+    public void setPrice( int price )
+    {
+        this.price = price;
+    }
+}
++---+
+
++---+
+$root\src\main\java\org\codehaus\plexus\example\CheeseEater.java
++---+
+
++---+
+package org.codehaus.plexus.example;
+
+
+public interface CheeseEater
+{
+    String ROLE = CheeseEater.class.getName();
+
+    Cheese chooseCheese();
+
+}
++---+
+
++---+
+$root\src\main\java\org\codehaus\plexus\example\CheeseFinder.java
++---+
+
++---+
+package org.codehaus.plexus.example;
+
+import java.util.List;
+
+public interface CheeseFinder
+{
+    String ROLE = CheeseFinder.class.getName();
+
+    List getAllCheeses();
+}
++---+
+
++---+
+$root\src\main\java\org\codehaus\plexus\example\DefaultCheeseFinder.java
++---+
+
++---+
+package org.codehaus.plexus.example;
+
+import java.util.List;
+
+public class DefaultCheeseFinder implements CheeseFinder
+{
+
+    public List getAllCheeses()
+    {
+        List retValue = null;
+
+        //...
+
+        return retValue;
+
+    }
+}
++---+
+
++---+
+$root\src\main\java\org\codehaus\plexus\example\CheeseConnoisseur.java
++---+
+
++---+
+package org.codehaus.plexus.example;
+
+import java.util.Iterator;
+import java.util.List;
+
+
+public class CheeseConnoisseur  implements CheeseEater
+{
+    /**
+     * @component.requirement
+     */
+    private CheeseFinder cheeseFinder;
+
+    public Cheese chooseCheese()
+    {
+        Cheese retValue = null;
+
+        int maxPrice = 0;
+
+        List cheeses = cheeseFinder.getAllCheeses();
+
+        for ( Iterator iterator = cheeses.iterator(); iterator.hasNext(); )
+        {
+            Cheese cheese = ( Cheese ) iterator.next();
+
+            int currentPrice = cheese.getPrice();
+
+            if (  currentPrice > maxPrice )
+            {
+                retValue = cheese;
+
+                maxPrice = currentPrice;
+            }
+        }
+
+        return retValue;
+    }
+}
++---+
+
+
++---+
+$root\src\main\resources\META-INF\plexus\components.xml
++---+
+
++---+
+<component-set>
+    <components>
+        <component>
+            <role>org.codehaus.plexus.example.CheeseEater</role>
+            <implementation>org.codehaus.plexus.example.CheeseConnoisseur</implementation>
+            <requirements>
+                <requirement>
+                    <role>org.codehaus.plexus.example.CheeseFinder</role>
+                </requirement>
+            </requirements>
+        </component>
+    </components>
+</component-set>
++---+
+
+** Test Code:
+
++---+
+$root\src\test\java\org\codehaus\plexus\example\CheeseConnoisseurTest.java
++---+
+
++---+
+package org.codehaus.plexus.example;
+
+import org.codehaus.plexus.PlexusTestCase;
+
+public class CheeseConnoisseurTest extends PlexusTestCase
+{
+
+    private CheeseEater connoisseur;
+
+
+    protected void setUp() throws Exception
+    {
+        super.setUp();
+
+        connoisseur = ( CheeseEater ) lookup( CheeseEater.ROLE );
+    }
+
+    public void testConnoisseur()
+    {
+       Cheese cheese = connoisseur.chooseCheese();
+
+       assertEquals( "Gruyere", cheese.getName() );
+    }
+}
++---+
+
++---+
+$root\src\test\java\org\codehaus\plexus\example\MockCheeseFinder.java
++---+
+
++---+
+package org.codehaus.plexus.example;
+
+import java.util.List;
+import java.util.LinkedList;
+
+public class MockCheeseFinder implements CheeseFinder
+{
+    public List getAllCheeses()
+    {
+        List retValue = new LinkedList();
+
+        addCheese( retValue, "Gruyere", 120 );
+
+        addCheese( retValue, "Appenzell", 100 );
+
+        addCheese( retValue, "Vacherin-Fribourgeois", 80 );
+
+        return retValue;
+    }
+
+    private void addCheese( List cheeses, String name, int price )
+    {
+        Cheese chesee = new Cheese( name, price );
+
+        cheeses.add( chesee );
+
+    }
+}
++---+
+
++---+
+$root\src\test\java\org\codehaus\plexus\example\CheeseConnoisseurTest.xml
++---+
+
++---+
+<plexus>
+    <components>
+        <!-- We will use mock component for testing-->
+        <component>
+            <role>org.codehaus.plexus.example.CheeseFinder</role>
+            <implementation>org.codehaus.plexus.example.MockCheeseFinder</implementation>
+        </component>
+    </components>
+</plexus>
++---+

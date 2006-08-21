@@ -1,0 +1,49 @@
+ -----
+Pico Personality
+ -----
+ Michal Maczka
+ -----
+
+<<This is an old piece of documentation, yet to be integrated into the new site and removed>>
+
+Comparision of Plexus and Pico
+	
+ What characterizes Pico personality is the fact that for Pico components
+ instantiation and composition phases are collapsed into one, single operation.
+ This is due the fact that Pico components are written with accordance to  the
+ type of dependency injection named *Constructor Injection*.  <<Constructor
+ Injection>> simply means that dependencies are provided (injected) to the
+ component via the constructor.
+
+ For Plexus this type of dependency injection is not fundamentally different
+ from other types of dependency injection, which are supported by plexus: Field
+ Dependency Injection, Setter Dependency Injection, Contextualizable Lookup
+ etc.   T he main differences between Plexus and Pico container is this that
+ our "Pico" friends strongly believe that constructor dependency injection is
+ is superior to anything else and that container can function (almost) without
+ any metadata.
+
+ We don't subscribe to this point of view. Plexus native API promotes [Field
+ Dependency Injection] and we are recommending using it as it clearly separates
+ two concerns: component instantiation and resolution of component's
+ dependencies.  This type of dependency injection makes the encapsulation even
+ stronger as internals of component are not exposed via any public API.  
+
+ But we leave the choice to users which type of the dependency injection is the
+ most suitable for them.  Components are all about composition and composition
+ takes place on meta level of the container and meta data is the glue which
+ makes it possible.  We believe that any "serious" container must have rich
+ enough metadata for effectively "plumbing" existing components.  We also
+ believe that although we do require much more metadata then Pico, the usage of
+ Plexus is almost as simple as usage of Pico but we provide more powerful
+ options, which are eliminated by the lack of metadata in Pico container.  Note
+ also that component testing is often even simpler in case of Plexus then in
+ case of Pico due to the fact that we leverage container as mock infrastructure
+ and we make a use of existing metadata so for example "requirements"
+ (dependencies) of the component does not have to be listed specifically for
+ unit tests.  This makes unit tests shorter hence simpler.
+	
+ Plexus is probably more similar to Nano Container or most likely it is
+ comparable to whatever future Micro Container might be.
+
+ How to use Pico Components inside Plexus

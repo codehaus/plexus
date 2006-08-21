@@ -1,0 +1,54 @@
+ -----
+Developer's Guide
+ -----
+ Michal Maczka
+ -----
+
+<<This is an old piece of documentation, yet to be integrated into the new site and removed>>
+
+ * [Getting Started]
+
+ * [Developing Components]
+
+  * [Introduction To Components]
+
+  * [Personalities]
+
+   * [Personalities Overview]
+
+   * [Plexus Personality]
+
+   * [Avalon Personality]
+
+   * [Pico Personality]
+
+  * [Configuration files]
+
+  * [Component Descriptor]
+
+  * [Building Components]
+
+   * [One Minute Tutorial]
+
+   * [Component Testing]
+
+ * [Developing Applications]
+
+  * [Runtime Builder]
+
+  * [CDC]
+
+ * [Plexus Application Server]
+
+  * [Building PARs]
+
+  * [Deploying PARs]
+
+  * [Services]
+
+ * [Advanced Topics]
+
+  * [Plexus Class Loading]
+
+ * [Developing a website monitor]
+ 
