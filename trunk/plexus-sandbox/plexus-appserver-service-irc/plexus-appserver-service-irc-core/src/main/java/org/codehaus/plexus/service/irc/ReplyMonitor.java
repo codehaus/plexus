@@ -47,7 +47,8 @@ class ReplyMonitor extends IRCEventAdapter {
    * @param message The reply
    */
   public void onReply(int num, String value, String message) {
-    if (num == type) {
+    if (num == type ||
+        (type == IRCUtil.RPL_TOPIC && num == IRCUtil.RPL_NOTOPIC)) {
       reply = message;
 
       synchronized(this) {
