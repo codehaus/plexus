@@ -1,17 +1,8 @@
 
 class Hello
-  def execute
-    puts "java.util.Random.nextInt: #{$random.nextInt}"
-    puts "from_class: #{$from_class.to_s}"
-  end
-
-  def print( msg )
-    puts "printed: #{msg}"
+  def print( greeting )
+    puts "#{greeting} from #{$hello_from.to_s}"
   end
 end
 
-h = Hello.new
-
-h.print "Hey"
-
-return h
+Hello.new.print "Hello"
