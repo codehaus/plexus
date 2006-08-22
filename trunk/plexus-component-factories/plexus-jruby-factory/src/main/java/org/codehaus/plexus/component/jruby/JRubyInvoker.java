@@ -219,9 +219,7 @@ public class JRubyInvoker
 
         if ( classRealm != null )
         {
-            URL scriptLocation = classRealm.getResource( impl );
-
-            if ( scriptLocation == null )
+            if ( classRealm.getResource( impl ) == null )
             {
                 StringBuffer buf = new StringBuffer( "Cannot find: " + impl + " in classpath:" );
                 for ( int i = 0; i < classRealm.getConstituents().length; i++ )
@@ -232,7 +230,7 @@ public class JRubyInvoker
                 throw new ComponentInstantiationException( buf.toString() );
             }
 
-            reader = new InputStreamReader( scriptLocation.openStream() );
+            reader = new InputStreamReader( classRealm.getResourceAsStream( impl ) );
         }
         else if ( reader == null )
         {
