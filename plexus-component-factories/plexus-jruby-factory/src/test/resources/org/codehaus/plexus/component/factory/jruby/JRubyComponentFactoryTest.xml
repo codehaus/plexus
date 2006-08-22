@@ -5,5 +5,22 @@
       <implementation>/hello.rb</implementation>
       <component-factory>jruby</component-factory>
     </component>
+
+    <component>
+      <role>execute</role>
+      <implementation>/execute.rb</implementation>
+      <component-factory>jruby</component-factory>
+    </component>
+
+    <component>
+      <role>injected</role>
+      <implementation>/injected.rb</implementation>
+      <component-factory>jruby</component-factory>
+      <configuration>
+        <inputs>
+          <key>value</key>
+        </inputs>
+      </configuration>
+    </component>
   </components>
 </plexus>

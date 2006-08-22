@@ -24,22 +24,10 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringOutputStream;
 import org.jruby.IRuby;
 import org.jruby.Ruby;
-import org.jruby.RubyException;
-import org.jruby.RubyFixnum;
-import org.jruby.RubyGlobal;
-import org.jruby.RubyHash;
 import org.jruby.RubyIO;
-import org.jruby.RubyKernel;
 import org.jruby.RubyNil;
-import org.jruby.ast.Node;
-import org.jruby.exceptions.JumpException;
-import org.jruby.exceptions.RaiseException;
-import org.jruby.internal.runtime.ValueAccessor;
 import org.jruby.javasupport.JavaUtil;
 import org.jruby.javasupport.bsf.JRubyEngine;
-import org.jruby.parser.ParserSupport;
-import org.jruby.runtime.GlobalVariable;
-import org.jruby.runtime.IAccessor;
 import org.jruby.runtime.builtin.IRubyObject;
 
 /**
@@ -206,9 +194,9 @@ public class JRubyInvoker
 
     /**
      * Invokes the script after all other values are set.
-     * @return an IRubyObject of returned values
+     * @return an Object of possibly returned value
      */
-    public IRubyObject invoke()
+    public Object invoke()
         throws IOException, ComponentInstantiationException
     {
         return invoke( System.out, System.err );
@@ -218,9 +206,9 @@ public class JRubyInvoker
      * Invokes the script after all other values are set.
      * @param stdout stream where jruby output to
      * @param stderr stream where jruby errors to
-     * @return an IRubyObject of returned values
+     * @return an Object of possibly returned values
      */
-    public IRubyObject invoke( OutputStream stdout, OutputStream stderr )
+    public Object invoke( OutputStream stdout, OutputStream stderr )
         throws IOException, ComponentInstantiationException
     {
         String impl = componentDescriptor.getImplementation();
@@ -248,10 +236,9 @@ public class JRubyInvoker
         }
         else if ( reader == null )
         {
-            throw new ComponentInstantiationException(
-                                                       "If no classRealm is given in the constructor, a script Reader must be set." );
+            throw new ComponentInstantiationException( "If no classRealm is given in the constructor, a script Reader must be set." );
         }
-        IRubyObject result = null;
+        Object result = null;
         ClassLoader oldClassLoader = null;
         ClassLoader classLoader = classRealm == null ? null : classRealm.getClassLoader();
         if ( classLoader != null )
@@ -325,15 +312,31 @@ public class JRubyInvoker
                     }
                 }
 
-                BSFManager.registerScriptingEngine("ruby", JRubyEngine.class.getName(), new String[] { "rb" });
+                BSFManager.registerScriptingEngine( "ruby", JRubyEngine.class.getName(), new String[] { "rb" } );
 
-                manager.declareBean("stdout", out, RubyIO.class);
-                manager.declareBean("defout", out, RubyIO.class);
-                manager.declareBean(">", out, RubyIO.class);
-                manager.declareBean("stderr", err, RubyIO.class);
-                manager.declareBean("deferr", err, RubyIO.class);
+                manager.declareBean( "stdout", out, RubyIO.class);
+                manager.declareBean( "defout", out, RubyIO.class);
+                manager.declareBean( ">", out, RubyIO.class);
+                manager.declareBean( "stderr", err, RubyIO.class);
+                manager.declareBean( "deferr", err, RubyIO.class);
 
-                result = (IRubyObject)manager.eval( "ruby", "<script>", 1, 1, bos.toString() );
+                manager.declareBean("STDOUT", stdout, RubyIO.class);
+                manager.declareBean("STDERR", stderr, RubyIO.class);
+
+                manager.declareBean( "VERBOSE", warning == 2 ? Boolean.TRUE : Boolean.FALSE, Boolean.class );
+
+                String[] args = new String[1];
+                args[0] = buildLibs();
+                IRubyObject argumentArray = runtime.newArray( JavaUtil.convertJavaArrayToRuby( runtime, args ) );
+                manager.declareBean( "ARGV", argumentArray, String[].class );
+                manager.declareBean( "*", argumentArray, String[].class );
+
+                manager.declareBean( "-p", assumePrintLoop ? Boolean.TRUE : Boolean.FALSE, Boolean.class );
+                manager.declareBean( "-n", assumeLoop ? Boolean.TRUE : Boolean.FALSE, Boolean.class );
+                manager.declareBean( "-a", autoSplit ? Boolean.TRUE : Boolean.FALSE, Boolean.class );
+                manager.declareBean( "-l", processLineEnds ? Boolean.TRUE : Boolean.FALSE, Boolean.class );
+
+                result = manager.eval( "ruby", "<script>", 1, 1, bos.toString() );
             }
             catch( BSFException e )
             {
@@ -439,157 +442,16 @@ public class JRubyInvoker
         return scriptStream;
     }
 
-    private IRubyObject runInterpreter( IRuby runtime, String script, OutputStream out, OutputStream err )
-    {
-        try
-        {
-            initializeRuntime( runtime, out, err );
-            Node parsedScript = getParsedScript( runtime, script );
-            return runtime.eval( parsedScript );
-        }
-        catch ( JumpException je )
-        {
-            if ( je.getJumpType() == JumpException.JumpType.RaiseJump )
-            {
-                RubyException raisedException = ( (RaiseException) je ).getException();
-
-                if ( raisedException.isKindOf( runtime.getClass( "SystemExit" ) ) )
-                {
-                    RubyFixnum status = (RubyFixnum) raisedException.getInstanceVariable( "status" );
-                    return status;
-                }
-                else
-                {
-                    runtime.printError( raisedException );
-                    return raisedException;
-                }
-            }
-            else if ( je.getJumpType() == JumpException.JumpType.ThrowJump )
-            {
-                runtime.printError( (RubyException) je.getTertiaryData() );
-                return (RubyException) je.getTertiaryData();
-            }
-            else
-            {
-                throw je;
-            }
-        }
-    }
-
-    private Node getParsedScript( IRuby runtime, String script )
-    {
-        Node result = runtime.parse( script, "<script>" );
-        if ( assumePrintLoop )
-        {
-            result = new ParserSupport().appendPrintToBlock( result );
-        }
-        if ( assumeLoop )
-        {
-            result = new ParserSupport().appendWhileLoopToBlock( result, processLineEnds, autoSplit );
-        }
-        return result;
-    }
-
-    // Build script args
-    private void initializeRuntime( final IRuby runtime, final OutputStream out, final OutputStream err )
-    {
-        // new String[]{} are script args... can we pass in script args?
-        String[] args = new String[1];
-        args[0] = buildLibs();
-        IRubyObject argumentArray = runtime.newArray( JavaUtil.convertJavaArrayToRuby( runtime, args ) );
-        runtime.setVerbose( runtime.newBoolean( warning == 2 ) );
-
-        IRubyObject stdout = new RubyIO( runtime, out ); //RubyIO.fdOpen(runtime, RubyIO.STDOUT);
-        IRubyObject stderr = new RubyIO( runtime, err ); //RubyIO.fdOpen(runtime, RubyIO.STDERR);
-
-        runtime.defineVariable( new OutputGlobalVariable( runtime, "$stdout", stdout ) );
-        runtime.defineVariable( new OutputGlobalVariable( runtime, "$stderr", stderr ) );
-        runtime.defineVariable( new OutputGlobalVariable( runtime, "$>", stdout ) );
-        runtime.defineVariable( new OutputGlobalVariable( runtime, "$defout", stdout ) );
-        runtime.defineVariable( new OutputGlobalVariable( runtime, "$deferr", stderr ) );
-
-        runtime.defineGlobalConstant( "STDOUT", stdout );
-        runtime.defineGlobalConstant( "STDERR", stderr );
-
-        runtime.getGlobalVariables().define( "$VERBOSE", new IAccessor()
-        {
-            public IRubyObject getValue()
-            {
-                return runtime.getVerbose();
-            }
-
-            public IRubyObject setValue( IRubyObject newValue )
-            {
-                if ( newValue.isNil() )
-                {
-                    runtime.setVerbose( newValue );
-                }
-                else
-                {
-                    runtime.setVerbose( runtime.newBoolean( newValue != runtime.getFalse() ) );
-                }
-                return newValue;
-            }
-        } );
-        runtime.getObject().setConstant( "$VERBOSE", warning == 2 ? runtime.getTrue() : runtime.getNil() );
-        runtime.defineGlobalConstant( "ARGV", argumentArray );
-
-        defineGlobal( runtime, "$-p", assumePrintLoop );
-        defineGlobal( runtime, "$-n", assumeLoop );
-        defineGlobal( runtime, "$-a", autoSplit );
-        defineGlobal( runtime, "$-l", processLineEnds );
-        runtime.getGlobalVariables().defineReadonly( "$*", new ValueAccessor( argumentArray ) );
-
-        // Inject inputs as a global named "$INPUTS"
-        RubyHash globalInputs = new RubyHash( runtime );
-        globalInputs.putAll( inputs );
-        runtime.getGlobalVariables().set( "$INPUTS", globalInputs );
-
-        // TODO this is a fake cause we have no real process number in Java
-        runtime.getGlobalVariables().defineReadonly( "$$", new ValueAccessor( runtime.newFixnum( runtime.hashCode() ) ) );
-        runtime.defineVariable( new RubyGlobal.StringGlobalVariable( runtime, "$0", runtime.newString( "<script>" ) ) );
-        runtime.getLoadService().init( libPaths );
-
-        Iterator iter = reqLibs.iterator();
-        while ( iter.hasNext() )
-        {
-            String scriptName = (String) iter.next();
-            RubyKernel.require( runtime.getTopSelf(), runtime.newString( scriptName ) );
-        }
-    }
-
-    private void defineGlobal( IRuby runtime, String name, boolean value )
-    {
-        runtime.getGlobalVariables().defineReadonly( name, new ValueAccessor( value ? runtime.getTrue() : runtime.getNil() ) );
-    }
-
-    private static class OutputGlobalVariable
-        extends GlobalVariable
-    {
-        public OutputGlobalVariable( IRuby runtime, String name, IRubyObject value )
-        {
-            super( runtime, name, value );
-        }
-
-        public IRubyObject set( IRubyObject value )
-        {
-            if ( value == get() )
-            {
-                return value;
-            }
-            if ( value instanceof RubyIO )
-            {
-                if ( !( (RubyIO) value ).isOpen() )
-                {
-                    throw value.getRuntime().newIOError( "not opened for writing" );
-                }
-            }
-            if ( !value.respondsTo( "write" ) )
-            {
-                throw runtime
-                    .newTypeError( name() + " must have write method, " + value.getType().getName() + " given" );
-            }
-            return super.set( value );
-        }
-    }
+//    // Build script args
+//    private void initializeRuntime( final IRuby runtime, final OutputStream out, final OutputStream err )
+//    {
+//        runtime.getLoadService().init( libPaths );
+//
+//        Iterator iter = reqLibs.iterator();
+//        while ( iter.hasNext() )
+//        {
+//            String scriptName = (String) iter.next();
+//            RubyKernel.require( runtime.getTopSelf(), runtime.newString( scriptName ) );
+//        }
+//    }
 }

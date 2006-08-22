@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.component.jruby.JRubyInvoker;
 import org.codehaus.plexus.util.StringOutputStream;
-import org.jruby.runtime.builtin.IRubyObject;
 
 /**
  * 
@@ -15,26 +14,53 @@ import org.jruby.runtime.builtin.IRubyObject;
 public class JRubyComponentFactoryTest
     extends PlexusTestCase
 {
-    public void testComponent()
+    public void testHello()
         throws Exception
     {
         JRubyInvoker invoker = (JRubyInvoker) lookup( "hello" );
-
         assertNotNull( invoker );
 
-        invoker.inputValue( "from_class", JRubyComponentFactoryTest.class );
+        invoker.inputValue( "hello_from", JRubyComponentFactoryTest.class );
+
+        invoker.invoke();
+    }
+
+    public void testExecute()
+        throws Exception
+    {
+        JRubyInvoker invoker = (JRubyInvoker) lookup( "execute" );
+        assertNotNull( invoker );
+
         invoker.inputValue( "random", new Random() );
+
+        Executor result = (Executor)invoker.invoke();
+        result.execute();
+    }
+
+    public void testInjected()
+        throws Exception
+    {
+        JRubyInvoker invoker = (JRubyInvoker) lookup( "injected" );
+        assertNotNull( invoker );
+
+        invoker.invoke();
+    }
+
+    public void testLog()
+        throws Exception
+    {
+        JRubyInvoker invoker = (JRubyInvoker) lookup( "hello" );
+        assertNotNull( invoker );
+
+        invoker.inputValue( "hello_from", JRubyComponentFactoryTest.class );
 
         StringOutputStream stdout = new StringOutputStream();
         StringOutputStream stderr = new StringOutputStream();
-
-        IRubyObject result = invoker.invoke( stdout, stderr );
-        ((IRubyObject)result).callMethod( "execute" );
-
+        invoker.invoke( stdout, stderr );
         logOutput( stdout, false );
         logOutput( stderr, true );
     }
-
+    
     private void logOutput( StringOutputStream out, boolean error )
     {
         String output = out.toString();
