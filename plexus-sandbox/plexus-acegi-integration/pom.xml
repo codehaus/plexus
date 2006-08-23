@@ -28,11 +28,6 @@
       <artifactId>aspectjrt</artifactId>
       <version>1.5.2</version>
     </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-xwork-integration</artifactId>
-      <version>1.0-alpha-2-SNAPSHOT</version>
-    </dependency>
   </dependencies>
 
   <build>
