@@ -21,7 +21,6 @@ import org.codehaus.plexus.logging.Logger;
 
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.interceptor.ExceptionHolder;
-import com.opensymphony.xwork.interceptor.ExceptionMappingInterceptor;
 
 /**
  * Exception interceptor that will also log the exception.
