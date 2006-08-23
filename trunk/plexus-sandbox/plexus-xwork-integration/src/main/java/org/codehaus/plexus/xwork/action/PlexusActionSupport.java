@@ -18,18 +18,28 @@ package org.codehaus.plexus.xwork.action;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import com.opensymphony.xwork.ActionSupport;
+import com.opensymphony.webwork.interceptor.SessionAware;
+
+import java.util.Map;
 
 /**
  * PlexusActionSupport
  *
  * @author Jesse McConnell <jesse@codehaus.org>
- * @version $Id$
+ * @version $Id:$
  */
 public abstract class PlexusActionSupport
     extends ActionSupport
-    implements LogEnabled
+    implements LogEnabled, SessionAware
 {
+    protected Map session;
+
     private Logger logger;
+
+    public void setSession( Map map )
+    {
+       this.session = map;
+    }
 
     public void enableLogging( Logger logger )
     {
