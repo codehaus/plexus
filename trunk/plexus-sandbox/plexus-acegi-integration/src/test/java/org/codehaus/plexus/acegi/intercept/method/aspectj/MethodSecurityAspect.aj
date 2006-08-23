@@ -20,7 +20,7 @@ package org.codehaus.plexus.acegi.intercept.method.aspectj;
  * <p>Acegi interceptor for {@link ProtectedClass} method calls.</p>
  * 
  * @author <a href="mailto:carlos@apache.org">Carlos Sanchez</a>
- * @version $Id: ContinuumUserDetailsService.java 421005 2006-07-11 22:00:29Z carlos $
+ * @version $Id$
  */
 public aspect MethodSecurityAspect extends SecurityAspect
 {
