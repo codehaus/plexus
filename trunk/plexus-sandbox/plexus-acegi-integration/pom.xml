@@ -23,6 +23,16 @@
       <artifactId>aspectjrt</artifactId>
       <version>1.5.2</version>
     </dependency>
+    <dependency>
+      <groupId>aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+      <version>1.5.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-xwork-integration</artifactId>
+      <version>1.0-alpha-2-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -35,6 +45,17 @@
             <goals>
               <goal>compile</goal>
               <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>descriptor</goal>
             </goals>
           </execution>
         </executions>
