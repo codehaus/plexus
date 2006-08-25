@@ -205,7 +205,7 @@ public class Log4JLoggerManager
                 }
                 catch ( LinkageError ex )
                 {
-                    IllegalArgumentException e = new IllegalArgumentException( "Could load the appender class: " + appender.getType(), ex );
+                    IllegalArgumentException e = new IllegalArgumentException( "Could load the appender class: " + appender.getType() );
                     e.initCause( ex );
                     throw e;
                 }
