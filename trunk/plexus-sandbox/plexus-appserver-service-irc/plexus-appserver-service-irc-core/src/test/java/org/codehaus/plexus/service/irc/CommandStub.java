@@ -17,4 +17,8 @@ public class CommandStub implements IRCCommand {
   public void onPrivateCommand(IRCUser user, String message) {
     
   }
+
+  public String getHelp(String channel) {
+    return "This is a stub command";
+  }
 }
