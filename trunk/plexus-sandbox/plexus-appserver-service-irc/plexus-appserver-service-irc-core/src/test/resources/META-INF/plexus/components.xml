@@ -10,5 +10,10 @@
         </requirement>
       </requirements>
     </component>
+    <component>
+      <role>org.codehaus.plexus.service.irc.IRCCommand</role>
+      <implementation>org.codehaus.plexus.service.irc.BrokenCommandStub</implementation>
+      <role-hint>broken</role-hint>
+    </component>
   </components>
 </component-set>
