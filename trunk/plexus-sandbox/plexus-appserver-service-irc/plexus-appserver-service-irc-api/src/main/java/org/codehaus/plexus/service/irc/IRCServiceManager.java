@@ -1,5 +1,8 @@
 package org.codehaus.plexus.service.irc;
 
+import org.codehaus.plexus.logging.LogEnabled;
+import org.codehaus.plexus.logging.Logger;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.List;
@@ -11,6 +14,8 @@ import java.util.List;
  * Time: 22:10:27
  */
 public interface IRCServiceManager {
+
+  public Logger getLogger();
 
   public boolean connect(String host, String nick, String username,
                          String realname) throws IOException;
