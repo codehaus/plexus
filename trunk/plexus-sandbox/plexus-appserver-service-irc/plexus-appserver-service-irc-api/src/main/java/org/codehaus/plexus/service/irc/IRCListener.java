@@ -49,4 +49,6 @@ public interface IRCListener {
   public void onTopic(String channel, IRCUser user, String topic);
 
   public void onVersion(String target, IRCUser user);
+
+  public void onTime(String target, IRCUser user);
 }

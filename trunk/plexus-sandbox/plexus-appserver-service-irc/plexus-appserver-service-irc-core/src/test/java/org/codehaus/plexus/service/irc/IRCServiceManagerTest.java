@@ -2,6 +2,8 @@ package org.codehaus.plexus.service.irc;
 
 import org.codehaus.plexus.PlexusTestCase;
 
+import java.util.Date;
+
 /**
  * A simple test of the IRCServiceManager framework
  * User: aje
@@ -14,7 +16,7 @@ public class IRCServiceManagerTest extends PlexusTestCase {
     IRCServiceManager ircManager = (IRCServiceManager)
         lookup(IRCServiceManager.class.getName());
     assertNotNull(ircManager);
-    ircManager.connect("irc.codehaus.org", "nick", "user", "real");
+    ircManager.connect("irc.codehaus.org", "nick1234", "user", "real");
 
     ircManager.join("#test");
     Thread.sleep(2000); // this seems to help establish the connection
