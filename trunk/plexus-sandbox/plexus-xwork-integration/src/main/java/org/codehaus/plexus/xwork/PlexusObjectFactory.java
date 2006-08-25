@@ -53,8 +53,7 @@ public class PlexusObjectFactory
             // uh oh! looks like the lifecycle listener wasn't installed. Let's inform the user
             String message = "********** FATAL ERROR STARTING UP PLEXUS-WEBWORK INTEGRATION **********\n" +
                 "Looks like the Plexus listener was not configured for your web app! \n" +
-                "You need to add the following to web.xml: \n" + "\n" +
-                "    <listener>\n" +
+                "You need to add the following to web.xml: \n" + "\n" + "    <listener>\n" +
                 "        <listener-class>org.codehaus.plexus.xwork.PlexusLifecycleListener</listener-class>\n" +
                 "    </listener>";
             servletContext.log( message );
