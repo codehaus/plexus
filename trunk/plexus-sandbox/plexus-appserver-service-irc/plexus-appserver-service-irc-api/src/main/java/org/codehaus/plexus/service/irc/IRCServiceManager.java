@@ -57,4 +57,6 @@ public interface IRCServiceManager {
   public String getTopic(String channel);
 
   public void setTopic(String channel, String topic);
+
+  public String getTime(String nick);
 }

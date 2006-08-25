@@ -5,6 +5,7 @@ import org.schwering.irc.lib.IRCUser;
 import org.codehaus.plexus.logging.Logger;
 
 import java.util.Iterator;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -252,6 +253,9 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     } else if (message.equals("VERSION")) {
       onVersion(target, user);
       return;
+    } else if (message.equals("TIME")) {
+      onTime(target, user);
+      return;
     }
 
 
@@ -367,6 +371,23 @@ public class DefaultIRCServiceListener implements IRCEventListener {
       IRCListener next = (IRCListener) listenerIter.next();
       try {
         next.onVersion(target, ircUser);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
+    }
+  }
+
+  public void onTime(String target, IRCUser user) {
+    manager.sendNotice(user.getNick(), IRCUtil.actionIndicator +
+        "Time " + new Date());
+    org.codehaus.plexus.service.irc.IRCUser ircUser =
+        new DefaultIRCUser(user);
+
+    Iterator listenerIter = manager.getListeners().iterator();
+    while (listenerIter.hasNext()) {
+      IRCListener next = (IRCListener) listenerIter.next();
+      try {
+        next.onTime(target, ircUser);
       } catch (Exception e) {
         handleException(next, e);
       }
