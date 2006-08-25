@@ -174,5 +174,9 @@ public class DefaultIRCServiceManager extends AbstractLogEnabled
     if (conn != null)
       conn.doTopic(channel, topic);
   }
+
+  public String getTime(String nick) {
+    return (new ReplyMonitor(conn, IRCUtil.RPL_TIME, nick)).getReply();
+  }
 }
 
