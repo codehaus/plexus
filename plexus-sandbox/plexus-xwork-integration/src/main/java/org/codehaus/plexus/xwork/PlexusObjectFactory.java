@@ -13,6 +13,7 @@ import com.opensymphony.xwork.util.OgnlUtil;
 import com.opensymphony.xwork.validator.Validator;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.logging.Logger;
 
 import javax.servlet.ServletContext;
 import java.util.ArrayList;
@@ -196,30 +197,35 @@ public class PlexusObjectFactory
         }
         catch ( ComponentLookupException e1 )
         {
+            getLogger().debug( "Failed to lookup class", e1 );
             try
             {
                 return base.lookup( Action.class.getName(), className ).getClass();
             }
             catch ( ComponentLookupException e2 )
             {
+                getLogger().debug( "Failed to lookup class as action", e2 );
                 try
                 {
                     return base.lookup( Interceptor.class.getName(), className ).getClass();
                 }
                 catch ( ComponentLookupException e3 )
                 {
+                    getLogger().debug( "Failed to lookup class as interceptor", e2 );
                     try
                     {
                         return base.lookup( Validator.class.getName(), className ).getClass();
                     }
                     catch ( ComponentLookupException e4 )
                     {
+                        getLogger().debug( "Failed to lookup class as validator", e2 );
                         try
                         {
                             return base.lookup( Result.class.getName(), className ).getClass();
                         }
                         catch ( ComponentLookupException e5 )
                         {
+                            getLogger().debug( "Failed to lookup class as result", e2 );
                             return super.getClassInstance( className );
                         }
                     }
@@ -283,5 +289,11 @@ public class PlexusObjectFactory
         Object o = super.buildBean( super.getClassInstance( className ), extraContext );
         pc.autowire( o );
         return o;
+    }
+
+    private Logger getLogger()
+    {
+        // Cheating here...
+        return base.getLoggerManager().getLoggerForComponent( ObjectFactory.class.getName(), "plexus" );
     }
 }
