@@ -22,4 +22,22 @@ public class IRCServiceManagerTest extends PlexusTestCase {
 
     ircManager.disconnect("test ending");
   }
+
+  public void testCatching() throws Exception {
+    String exception = "none";
+
+    IRCServiceManager ircManager = (IRCServiceManager)
+        lookup(IRCServiceManager.class.getName());
+    DefaultIRCServiceListener listeners =
+        new DefaultIRCServiceListener(ircManager);
+    try {
+      listeners.onPrivmsg("#test",
+          new org.schwering.irc.lib.IRCUser("nick", "user", "host"),
+          "~broken test");
+    } catch (Exception e) {
+      exception = e.getMessage();
+    }
+
+    assertEquals(exception, "none");
+  }
 }

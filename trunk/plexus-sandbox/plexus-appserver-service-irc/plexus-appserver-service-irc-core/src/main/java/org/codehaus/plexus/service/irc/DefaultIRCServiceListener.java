@@ -2,6 +2,7 @@ package org.codehaus.plexus.service.irc;
 
 import org.schwering.irc.lib.*;
 import org.schwering.irc.lib.IRCUser;
+import org.codehaus.plexus.logging.Logger;
 
 import java.util.Iterator;
 
@@ -23,11 +24,31 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     this.manager = manager;
   }
 
+  private void handleException(IRCListener listener, Exception e) {
+    writeException("IRCListener", listener.getClass().getName(), e);
+  }
+
+  private void handleException(IRCCommand command, Exception e) {
+    writeException("IRCCommand", command.getClass().getName(), e);
+  }
+
+  private void writeException(String type, String source, Exception e) {
+    Logger log = manager.getLogger();
+    log.error("-------------------------------------------------");
+    log.error(" Plexus IRC Framework detected an exception in   ");
+    log.error(" " + type + ": " + source, e);
+    log.error("-------------------------------------------------");
+  }
+
   public void onRegistered() {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onRegistered();
+      try {
+        next.onRegistered();
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -35,7 +56,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onDisconnected();
+      try {
+        next.onDisconnected();
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -43,7 +68,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onError(message);
+      try {
+        next.onError(message);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -51,7 +80,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onError(num, message);
+      try {
+        next.onError(num, message);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -62,7 +95,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onInvite(channel, ircUser, invitee);
+      try {
+        next.onInvite(channel, ircUser, invitee);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -73,7 +110,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onJoin(channel, ircUser);
+      try {
+        next.onJoin(channel, ircUser);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -84,7 +125,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onKick(channel, ircUser, kickee, message);
+      try {
+        next.onKick(channel, ircUser, kickee, message);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -96,7 +141,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onMode(channel, ircUser, modeParser);
+      try {
+        next.onMode(channel, ircUser, modeParser);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
 */
   }
@@ -108,7 +157,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onMode(ircUser, string, mode);
+      try {
+        next.onMode(ircUser, string, mode);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -119,7 +172,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onNick(ircUser, newNick);
+      try {
+        next.onNick(ircUser, newNick);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -130,7 +187,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onNotice(target, ircUser, message);
+      try {
+        next.onNotice(target, ircUser, message);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -141,7 +202,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onPart(channel, ircUser, message);
+      try {
+        next.onPart(channel, ircUser, message);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -149,7 +214,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onPing(ping);
+      try {
+        next.onPing(ping);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -161,10 +230,14 @@ public class DefaultIRCServiceListener implements IRCEventListener {
       return;
     String rest = message.substring(command.length()).trim();
 
-    if (target.equals(manager.getNick())) {
-      match.onPrivateCommand(user, rest);
-    } else {
-      match.onCommand(target, user, rest);
+    try {
+      if (target.equals(manager.getNick())) {
+        match.onPrivateCommand(user, rest);
+      } else {
+        match.onCommand(target, user, rest);
+      }
+    } catch (Exception e) {
+      handleException(match, e);
     }
   }
 
@@ -207,13 +280,21 @@ public class DefaultIRCServiceListener implements IRCEventListener {
       Iterator listenerIter = manager.getListeners().iterator();
       while (listenerIter.hasNext()) {
         IRCListener next = (IRCListener) listenerIter.next();
-        next.onPrivateMessage(ircUser, message);
+        try {
+          next.onPrivateMessage(ircUser, message);
+        } catch (Exception e) {
+          handleException(next, e);
+        }
       }
     } else {
       Iterator listenerIter = manager.getListeners().iterator();
       while (listenerIter.hasNext()) {
         IRCListener next = (IRCListener) listenerIter.next();
-        next.onMessage(target, ircUser, message);
+        try {
+          next.onMessage(target, ircUser, message);
+        } catch (Exception e) {
+          handleException(next, e);
+        }
       }
     }
   }
@@ -225,7 +306,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onQuit(ircUser, message);
+      try {
+        next.onQuit(ircUser, message);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -233,7 +318,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onReply(num, value, message);
+      try {
+        next.onReply(num, value, message);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -244,7 +333,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onTopic(channel, ircUser, topic);
+      try {
+        next.onTopic(channel, ircUser, topic);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -255,7 +348,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onAction(target, ircUser, action);
+      try {
+        next.onAction(target, ircUser, action);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
@@ -268,7 +365,11 @@ public class DefaultIRCServiceListener implements IRCEventListener {
     Iterator listenerIter = manager.getListeners().iterator();
     while (listenerIter.hasNext()) {
       IRCListener next = (IRCListener) listenerIter.next();
-      next.onVersion(target, ircUser);
+      try {
+        next.onVersion(target, ircUser);
+      } catch (Exception e) {
+        handleException(next, e);
+      }
     }
   }
 
