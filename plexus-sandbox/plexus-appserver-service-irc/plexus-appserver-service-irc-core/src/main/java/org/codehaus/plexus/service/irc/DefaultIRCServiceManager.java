@@ -1,6 +1,7 @@
 package org.codehaus.plexus.service.irc;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.*;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.schwering.irc.lib.IRCConnection;
@@ -39,6 +40,10 @@ public class DefaultIRCServiceManager extends AbstractLogEnabled
     } catch (IOException e) {
       throw new StoppingException("Error disconnecting from server", e);
     }
+  }
+
+  public Logger getLogger() {
+    return super.getLogger();
   }
 
   public boolean connect(String host, String nick, String username,
