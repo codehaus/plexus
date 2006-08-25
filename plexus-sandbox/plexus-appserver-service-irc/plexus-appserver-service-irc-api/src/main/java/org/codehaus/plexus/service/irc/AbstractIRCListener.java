@@ -52,4 +52,8 @@ public abstract class AbstractIRCListener implements IRCListener {
   public void onVersion(String target, IRCUser user) {
     /* The correct response is now handled internally */
   }
+
+  public void onTime(String target, IRCUser user) {
+    /* The correct response is now handled internally */
+  }
 }
