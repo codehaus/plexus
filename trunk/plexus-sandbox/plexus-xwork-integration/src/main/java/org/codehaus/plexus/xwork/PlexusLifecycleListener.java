@@ -20,8 +20,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -87,11 +89,9 @@ public class PlexusLifecycleListener
 
             ServletContext ctx = servletContextEvent.getServletContext();
 
-            PlexusContainer pc = new DefaultPlexusContainer( "default", loader, setConfigurationStream( ctx ) );
+            PlexusContainer pc = new DefaultPlexusContainer( "default", loader, setConfigurationStream( ctx ), initializeContext( ctx, resolveContextProperties( ctx ) ) );
 
             ctx.setAttribute( KEY, pc );
-
-            initializeContext( ctx, pc, resolveContextProperties( ctx ) );
         }
         catch ( PlexusContainerException e )
         {
@@ -104,26 +104,20 @@ public class PlexusLifecycleListener
         loaded = true;
     }
 
-    private void initializeContext( ServletContext ctx, PlexusContainer pc, Properties properties )
+    private Map initializeContext( ServletContext ctx, Properties properties )
     {
+        Map map = new HashMap();
+
         // used by the servlet configuration phase
-        pc.addContextValue( ServletContext.class.getName(), ctx );
+        map.put( ServletContext.class.getName(), ctx );
 
-        Set keys = properties.keySet();
+        map.putAll( properties );
 
-        for ( Iterator iter = keys.iterator(); iter.hasNext(); )
-        {
-            String key = (String) iter.next();
-
-            String value = properties.getProperty( key );
-
-            pc.addContextValue( key, value );
-        }
+        return map;
     }
 
     private static Properties resolveContextProperties( ServletContext context )
     {
-
         Properties properties = new Properties();
 
         String filename = context.getInitParameter( PLEXUS_PROPERTIES_PARAM );
