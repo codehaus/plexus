@@ -40,9 +40,11 @@ public class TaskQueueTest
     {
         super.setUp();
 
-        taskQueue = (TaskQueue) lookup( TaskQueue.ROLE );;
+        taskQueue = (TaskQueue) lookup( TaskQueue.ROLE );
     }
 
+    // NOTE: If we were using a blocking queue, the sleep/continue in the ThreadedTaskQueueExecutor wouldn't
+    // be necessary; the queue would block until an element was available.
     public void testEmptyQueue()
         throws Exception
     {
