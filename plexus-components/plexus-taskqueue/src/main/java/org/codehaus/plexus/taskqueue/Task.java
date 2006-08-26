@@ -31,4 +31,8 @@ package org.codehaus.plexus.taskqueue;
  */
 public interface Task
 {
+    /**
+     * @return the maximum time in milliseconds this task may run before it's cancelled.
+     */
+    long getMaxExecutionTime();
 }

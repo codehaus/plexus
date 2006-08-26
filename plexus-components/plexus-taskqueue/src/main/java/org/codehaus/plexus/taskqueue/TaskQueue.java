@@ -1,7 +1,5 @@
 package org.codehaus.plexus.taskqueue;
 
-import java.util.List;
-
 /*
  * The MIT License
  *
@@ -26,6 +24,10 @@ import java.util.List;
  * SOFTWARE.
  */
 
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
+
+import java.util.List;
+
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -40,7 +42,8 @@ public interface TaskQueue
     // ----------------------------------------------------------------------
 
     /**
-     * @param task The task to add to the queue.
+     * @param task
+     *            The task to add to the queue.
      * @return Returns true if the task was accepted into the queue.
      */
     boolean put( Task task )
@@ -55,4 +58,18 @@ public interface TaskQueue
 
     List getQueueSnapshot()
         throws TaskQueueException;
+
+    /**
+     * Retrieves and removes the head of the queue, waiting at most timeout timeUnit when no element is available.
+     *
+     * @param timeout
+     *            time to wait, in timeUnit units
+     * @param timeUnit
+     *            how to interpret the timeout parameter.
+     * @return the head of the queue, or null if the timeout elapsed
+     * @throws InterruptedException
+     *             when this thread is interrupted while waiting
+     */
+    Task poll( int timeout, TimeUnit timeUnit )
+        throws InterruptedException;
 }

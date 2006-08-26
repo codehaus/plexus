@@ -24,7 +24,7 @@ package org.codehaus.plexus.taskqueue;
  * SOFTWARE.
  */
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -40,6 +40,6 @@ public interface TaskViabilityEvaluator
      * @return Returns a list of tasks to remove from the queue.
      * @throws TaskQueueException
      */
-    List evaluate( List tasks )
+    Collection evaluate( Collection tasks )
         throws TaskQueueException;
 }

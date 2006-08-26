@@ -24,6 +24,7 @@ package org.codehaus.plexus.taskqueue;
  * SOFTWARE.
  */
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 public class BuildProjectTaskViabilityEvaluator
     implements TaskViabilityEvaluator
 {
-    public List evaluate( List tasks )
+    public Collection evaluate( Collection tasks )
         throws TaskQueueException
     {
         BuildProjectTask okTask = null;
