@@ -1,6 +1,7 @@
 package org.codehaus.plexus.xwork;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
@@ -42,54 +43,11 @@ public class PlexusLifecycleListener
 
     public void contextInitialized( ServletContextEvent servletContextEvent )
     {
-
         try
         {
-            // TODO: we should sort something out in Plexus so that this isn't necessary.
-            // When run inside a Maven plugin (eg, the Jetty plugin), this will pick up the Maven core class
-            // configuration instead of the webapp. While ideally Maven would isolate the plugin classes from itself,
-            // Plexus should also be more flexible about how it is configured.
-            // The workaround is just to filter out requests for META-INF/plexus/plexus.xml when it is requested
-            // during construction of the container
-            ClassLoader loader = new ClassLoader( getClass().getClassLoader() )
-            {
-                // Note! This method is final in JDK 1.4, so this will only run under JDK 5+
-                // Normally it shouldn't need to be overridden, but ClassWorlds will use it as part of it's findResource
-                // implementation
-                public Enumeration getResources( String name )
-                    throws IOException
-                {
-                    List l = new ArrayList();
-                    for ( Enumeration e = super.getResources( name ); e.hasMoreElements(); )
-                    {
-                        URL url = (URL) e.nextElement();
-
-                        if ( !url.toExternalForm().endsWith( "META-INF/plexus/plexus.xml" ) )
-                        {
-                            l.add( url );
-                        }
-                    }
-
-                    return Collections.enumeration( l );
-                }
-
-                protected Enumeration findResources( String name )
-                    throws IOException
-                {
-                    if ( !name.equals( "META-INF/plexus/plexus.xml" ) )
-                    {
-                        return super.findResources( name );
-                    }
-                    else
-                    {
-                        return Collections.enumeration( Collections.EMPTY_LIST );
-                    }
-                }
-            };
-
             ServletContext ctx = servletContextEvent.getServletContext();
 
-            PlexusContainer pc = new DefaultPlexusContainer( "default", loader, setConfigurationStream( ctx ), initializeContext( ctx, resolveContextProperties( ctx ) ) );
+            PlexusContainer pc = new DefaultPlexusContainer( "default", getClass().getClassLoader(), setConfigurationStream( ctx ), initializeContext( ctx, resolveContextProperties( ctx ) ) );
 
             ctx.setAttribute( KEY, pc );
         }
@@ -107,6 +65,11 @@ public class PlexusLifecycleListener
     private Map initializeContext( ServletContext ctx, Properties properties )
     {
         Map map = new HashMap();
+
+        // When run inside a Maven plugin (eg, the Jetty plugin), this will pick up the Maven core class
+        // configuration instead of the webapp. While ideally Maven would isolate the plugin classes from itself,
+        // this prevents Plexus from attempting to load a container configuration file as a workaround.
+        map.put( PlexusConstants.IGNORE_CONTAINER_CONFIGURATION, Boolean.TRUE );
 
         // used by the servlet configuration phase
         map.put( ServletContext.class.getName(), ctx );
@@ -168,7 +131,6 @@ public class PlexusLifecycleListener
             File f = new File( realPath );
 
             contexProperties.setProperty( PLEXUS_HOME, f.getAbsolutePath() );
-
         }
         else
         {
