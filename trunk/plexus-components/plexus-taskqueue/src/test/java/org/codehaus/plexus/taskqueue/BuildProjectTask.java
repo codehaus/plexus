@@ -41,8 +41,20 @@ public class BuildProjectTask
 
     private long timestamp;
 
+    private long maxExecutionTime;
+
+    private long executionTime;
+
+    private boolean cancelled;
+
+    private boolean done;
+
+    private boolean started;
+
+    private boolean ignoreInterrupts;
+
     public BuildProjectTask( boolean passAEntryEvaluator, boolean passBEntryEvaluator, boolean passAExitEvaluator,
-                     boolean passBExitEvaluator )
+                             boolean passBExitEvaluator )
     {
         this.passAEntryEvaluator = passAEntryEvaluator;
 
@@ -84,4 +96,65 @@ public class BuildProjectTask
     {
         return timestamp;
     }
+
+    public long getMaxExecutionTime()
+    {
+        return maxExecutionTime;
+    }
+
+    public void setMaxExecutionTime( long timeout )
+    {
+        maxExecutionTime = timeout;
+    }
+
+    public void setExecutionTime( long l )
+    {
+        this.executionTime = l;
+    }
+
+    public long getExecutionTime()
+    {
+        return executionTime;
+    }
+
+    public boolean isCancelled()
+    {
+        return cancelled;
+    }
+
+    public void cancel()
+    {
+        cancelled = true;
+    }
+
+    public void done()
+    {
+        this.done = true;
+    }
+
+    public boolean isDone()
+    {
+        return done;
+    }
+
+    public boolean isStarted()
+    {
+        return started;
+    }
+
+    public void start()
+    {
+        this.started = true;
+    }
+
+    public void setIgnoreInterrupts( boolean ignore )
+    {
+        this.ignoreInterrupts = ignore;
+    }
+
+    public boolean ignoreInterrupts()
+    {
+        return ignoreInterrupts;
+    }
+
 }

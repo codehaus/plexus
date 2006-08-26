@@ -24,12 +24,6 @@ package org.codehaus.plexus.taskqueue;
  * SOFTWARE.
  */
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Collections;
-
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
@@ -42,6 +36,16 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Configurable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+
+import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -60,7 +64,7 @@ public class DefaultTaskQueue
 
     private List taskViabilityEvaluators;
 
-    private List queue;
+    private BlockingQueue queue;
 
     // ----------------------------------------------------------------------
     // Component Lifecycle
@@ -75,38 +79,41 @@ public class DefaultTaskQueue
     public void configure( PlexusConfiguration config )
         throws PlexusConfigurationException
     {
-        PlexusConfiguration[] entryEvaluators = config.getChild( "task-entry-evaluators" ).getChildren( "task-entry-evaluator" );
+        PlexusConfiguration[] entryEvaluators = config.getChild( "task-entry-evaluators" )
+            .getChildren( "task-entry-evaluator" );
 
         taskEntryEvaluators = new ArrayList();
 
         for ( int i = 0; i < entryEvaluators.length; i++ )
         {
-            configureEntryEvaluator( entryEvaluators[ i ] );
+            configureEntryEvaluator( entryEvaluators[i] );
         }
 
-        PlexusConfiguration[] exitEvaluators = config.getChild( "task-exit-evaluators" ).getChildren( "task-exit-evaluator" );
+        PlexusConfiguration[] exitEvaluators = config.getChild( "task-exit-evaluators" )
+            .getChildren( "task-exit-evaluator" );
 
         taskExitEvaluators = new ArrayList();
 
         for ( int i = 0; i < entryEvaluators.length; i++ )
         {
-            configureExitEvaluator( exitEvaluators[ i ] );
+            configureExitEvaluator( exitEvaluators[i] );
         }
 
-        PlexusConfiguration[] viabilityEvaluators = config.getChild( "task-viability-evaluators" ).getChildren( "task-viability-evaluator" );
+        PlexusConfiguration[] viabilityEvaluators = config.getChild( "task-viability-evaluators" )
+            .getChildren( "task-viability-evaluator" );
 
         taskViabilityEvaluators = new ArrayList();
 
         for ( int i = 0; i < viabilityEvaluators.length; i++ )
         {
-            configureViabilityEvaluator( viabilityEvaluators[ i ] );
+            configureViabilityEvaluator( viabilityEvaluators[i] );
         }
     }
 
     public void initialize()
         throws InitializationException
     {
-        queue = new LinkedList();
+        queue = new LinkedBlockingQueue();
     }
 
     // ----------------------------------------------------------------------
@@ -150,7 +157,7 @@ public class DefaultTaskQueue
         {
             TaskViabilityEvaluator taskViabilityEvaluator = (TaskViabilityEvaluator) it.next();
 
-            List toBeRemoved = taskViabilityEvaluator.evaluate( Collections.unmodifiableList( queue ) );
+            Collection toBeRemoved = taskViabilityEvaluator.evaluate( Collections.unmodifiableCollection( queue ) );
 
             for ( Iterator it2 = toBeRemoved.iterator(); it2.hasNext(); )
             {
@@ -166,7 +173,7 @@ public class DefaultTaskQueue
     public Task take()
         throws TaskQueueException
     {
-        while( true )
+        while ( true )
         {
             Task task = dequeue();
 
@@ -197,6 +204,12 @@ public class DefaultTaskQueue
         }
     }
 
+    public Task poll( int timeout, TimeUnit timeUnit )
+        throws InterruptedException
+    {
+        return (Task) queue.poll( timeout, timeUnit );
+    }
+
     // ----------------------------------------------------------------------
     // Queue Inspection
     // ----------------------------------------------------------------------
@@ -204,7 +217,7 @@ public class DefaultTaskQueue
     public List getQueueSnapshot()
         throws TaskQueueException
     {
-        synchronized( queue )
+        synchronized ( queue )
         {
             return Collections.unmodifiableList( new ArrayList( queue ) );
         }
@@ -216,22 +229,17 @@ public class DefaultTaskQueue
 
     private void enqueue( Task task )
     {
-        synchronized( queue )
+        synchronized ( queue )
         {
-            queue.add( task );
+            queue.offer( task );
         }
     }
 
     private Task dequeue()
     {
-        synchronized( queue )
+        synchronized ( queue )
         {
-            if ( queue.size() == 0 )
-            {
-                return null;
-            }
-
-            return (Task) queue.remove( 0 );
+            return (Task) queue.poll();
         }
     }
 
