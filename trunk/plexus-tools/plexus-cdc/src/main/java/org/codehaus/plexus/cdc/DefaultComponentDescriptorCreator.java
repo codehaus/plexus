@@ -75,6 +75,8 @@ public class DefaultComponentDescriptorCreator
     extends AbstractLogEnabled
     implements ComponentDescriptorCreator
 {
+    private static final String LS = System.getProperty( "line.separator" );
+
     // TODO: Make a list
     private ComponentGleaner gleaner;
 
@@ -214,7 +216,7 @@ public class DefaultComponentDescriptorCreator
 
             w.endElement();
 
-            writer.write( System.getProperty( "line.separator" ) );
+            writer.write( LS );
 
             writer.close();
         }
