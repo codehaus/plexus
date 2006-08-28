@@ -6,7 +6,7 @@ import EDU.oswego.cs.dl.util.concurrent.FutureResult;
 
 /**
  * Register an interest in a property and wait for the reply to come in.
- * Currently it only supports "getTopic".
+ * Currently it only supports <code>getTopic</code> and <code>getTime</code>.
  */
 class ReplyMonitor extends IRCEventAdapter {
 
@@ -100,7 +100,7 @@ class ReplyMonitor extends IRCEventAdapter {
           IRCUtil.actionIndicator );
 
     try {
-      ret = (String) reply.get();
+      ret = (String) reply.timedGet(60000); // wait only a minute for replies
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
