@@ -1,0 +1,25 @@
+<model>
+  <id>rbac</id>
+  <name>RBACModel</name>
+  <version>1.0.0</version>
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>org.codehaus.plexus.rbac</value>
+    </default>
+  </defaults>
+  <classes>
+    <class rootElement="true" xml.tagName="model">
+      <name>RBACModel</name>
+      <version>1.0.0</version>
+      <fields>
+        <field>
+          <name>id</name>
+          <version>1.0.0</version>
+          <type>int</type>
+        </field>
+      </fields>
+      </class>
+
+  </classes>
+</model>
