@@ -2,6 +2,7 @@ package org.codehaus.plexus.service.irc;
 
 import org.schwering.irc.lib.*;
 import org.schwering.irc.lib.IRCUser;
+import EDU.oswego.cs.dl.util.concurrent.FutureResult;
 
 /**
  * Register an interest in a property and wait for the reply to come in.
@@ -11,7 +12,8 @@ class ReplyMonitor extends IRCEventAdapter {
 
   private IRCConnection conn;
   private int type;
-  private String param, reply;
+  private String param;
+  private FutureResult reply;
 
   /**
    * Make an asynchronous request in a synchronous manner.
@@ -34,16 +36,13 @@ class ReplyMonitor extends IRCEventAdapter {
     this.conn = conn;
     this.type = type;
     this.param = param;
+    this.reply = new FutureResult();
   }
 
-  /* This compensates for a big in IRCLib - hopefully soon to be fixed */
+  /* This compensates for a bug in IRCLib - hopefully soon to be fixed */
   public void onNotice(String target, IRCUser ircUser, String message) {
     if (type == IRCUtil.RPL_TIME && message.startsWith("TIME ")) {
-      reply = message.substring(5);
-
-      synchronized(this) {
-        notify();
-      }
+      reply.set(message.substring(5));
     }
   }
 
@@ -59,12 +58,27 @@ class ReplyMonitor extends IRCEventAdapter {
   public void onReply(int num, String value, String message) {
     if (num == type ||
         (type == IRCUtil.RPL_TOPIC && num == IRCUtil.RPL_NOTOPIC)) {
-      reply = message;
-
-      synchronized(this) {
-        notify();
-      }
+      reply.set(message);
     }
+  }
+
+  /**
+   * If an error is recieved we should probably pass this on...
+   *
+   * @param message The error
+   */
+  public void onError(String message) {
+    reply.set("error - " + message);
+  }
+
+  /**
+   * If an error is recieved we should probably pass this on...
+   *
+   * @param num     The error number
+   * @param message The error
+   */
+  public void onError(int num, String message) {
+    reply.set("error (" + num + ") - " + message);
   }
 
   /**
@@ -77,19 +91,20 @@ class ReplyMonitor extends IRCEventAdapter {
     if (type != IRCUtil.RPL_TOPIC && type != IRCUtil.RPL_TIME)
       return null;
 
+    String ret = null;
     conn.addIRCEventListener(this);
     if (type == IRCUtil.RPL_TOPIC)
       conn.doTopic(param);
-    else if (type == IRCUtil.RPL_TIME)
+    if (type == IRCUtil.RPL_TIME)
       conn.doPrivmsg(param, IRCUtil.actionIndicator + "TIME");
+
     try {
-      synchronized(this) {
-        wait();
-      }
-    } catch (InterruptedException e) {
+      ret = (String) reply.get();
+    } catch (Exception e) {
       e.printStackTrace();
+    } finally {
+      conn.removeIRCEventListener(this);
     }
-    conn.removeIRCEventListener(this);
-    return reply;
+    return ret;
   }
 }
