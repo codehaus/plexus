@@ -1,6 +1,7 @@
-package org.codehaus.plexus.security;
+package org.codehaus.plexus.security.authorization;
 
-import org.codehaus.plexus.security.exception.AuthorizationException;
+import org.codehaus.plexus.security.authorization.AuthorizationException;
+import org.codehaus.plexus.security.PlexusSecuritySession;
 
 import java.util.Map;
 /*

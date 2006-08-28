@@ -7,10 +7,13 @@ import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
-import org.codehaus.plexus.security.exception.AuthenticationException;
-import org.codehaus.plexus.security.exception.AuthorizationException;
-import org.codehaus.plexus.security.exception.NotAuthenticatedException;
-import org.codehaus.plexus.security.exception.PlexusSecurityRealmException;
+import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.security.authentication.Authenticator;
+import org.codehaus.plexus.security.authentication.NotAuthenticatedException;
+import org.codehaus.plexus.security.authorization.AuthorizationException;
+import org.codehaus.plexus.security.authorization.AuthorizationResult;
+import org.codehaus.plexus.security.authorization.Authorizer;
 
 import java.util.Map;
 /*
@@ -70,10 +73,10 @@ public class DefaultPlexusSecurityRealm
             }
             else
             {
-                psr.setAuthenticator( (Authenticator) container.lookup( "org.codehaus.plexus.security.Authenticator", authenticator ) );
+                psr.setAuthenticator( (Authenticator) container.lookup( Authenticator.ROLE , authenticator ) );
             }
             
-            psr.setAuthorizer( (Authorizer) container.lookup( "org.codehaus.plexus.security.Authorizer", authorizer ) );
+            psr.setAuthorizer( (Authorizer) container.lookup( Authorizer.ROLE , authorizer ) );
 
             securityRealms.put( id, psr );
 

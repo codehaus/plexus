@@ -1,6 +1,9 @@
-package org.codehaus.plexus.security;
+package org.codehaus.plexus.security.authentication;
 
-import org.codehaus.plexus.security.exception.AuthenticationException;
+import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.authentication.Authenticator;
+import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.security.authentication.AuthenticationStore;
 
 import java.util.Map;
 /*
@@ -29,7 +32,7 @@ import java.util.Map;
  * @version: $ID:$
  *
  * @plexus.component
- *   role="org.codehaus.plexus.security.Authenticator"
+ *   rolorg.codehaus.plexus.security.authentication.Authenticatortor"
  *   role-hint="default"
  */
 public class DefaultAuthenticator

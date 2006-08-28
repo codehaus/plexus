@@ -1,6 +1,7 @@
-package org.codehaus.plexus.security;
+package org.codehaus.plexus.security.authorization;
 
-import org.codehaus.plexus.security.exception.AuthenticationException;
+import org.codehaus.plexus.security.authorization.AuthorizationException;
+import org.codehaus.plexus.security.PlexusSecuritySession;
 
 import java.util.Map;
 /*
@@ -20,27 +21,16 @@ import java.util.Map;
  */
 
 /**
- * AuthenticationStore: interface that the implementation of an authentication system must provide so it can be wired
- * into the PlexusSecurityRealm
- *
- *
+ * Authorizer:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- *
  */
-public interface AuthenticationStore
+public interface Authorizer
 {
-    public static String ROLE = AuthenticationStore.class.getName();
+    public static String ROLE = Authorizer.class.getName();
 
-    /**
-     * Authenticate the map of tokens and return an authentication object or throw an
-     * AuthenticationException.  
-     *
-     * @param tokens
-     * @return
-     * @throws AuthenticationException
-     */
-    public AuthenticationResult authenticate( Map tokens ) throws AuthenticationException;
+    public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
+        throws AuthorizationException;
 
 }
