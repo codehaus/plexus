@@ -1,0 +1,16 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.plexus.security</groupId>
+    <artifactId>plexus-security</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>plexus-security-authorization</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <modules>
+    <module>plexus-security-authorization-api</module>
+    <module>plexus-security-authorization-rbac-model</module>
+    <module>plexus-security-authorization-rbac-stores</module>
+  </modules>
+</project>

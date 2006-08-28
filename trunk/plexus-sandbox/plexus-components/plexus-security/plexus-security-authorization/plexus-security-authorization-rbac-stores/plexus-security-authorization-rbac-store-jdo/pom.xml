@@ -5,6 +5,6 @@
     <artifactId>plexus-security-authorization-rbac-stores</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-authorization-rbac-store-memory</artifactId>
+  <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
   <packaging>pom</packaging>
 </project>
