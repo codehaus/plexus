@@ -4,6 +4,7 @@ import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.classworlds.ClassWorld;
 import org.codehaus.classworlds.DuplicateRealmException;
 import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
@@ -37,7 +38,22 @@ public class CreateAppContainerPhase
     public void execute( AppDeploymentContext context )
         throws AppDeploymentException
     {
-        DefaultPlexusContainer applicationContainer = new DefaultPlexusContainer();
+        DefaultPlexusContainer appServerContainer = context.getAppServerContainer();
+
+        String name = "plexus.application." + context.getApplicationId();
+
+        getLogger().info( "Using appDir = " + context.getAppDir() );
+
+        DefaultPlexusContainer applicationContainer = null;
+
+        try
+        {
+            applicationContainer = new DefaultPlexusContainer( name, appServerContainer.getClassWorld(), appServerContainer );
+        }
+        catch ( PlexusContainerException e )
+        {
+            throw new AppDeploymentException( "Error starting container.", e );
+        }
 
         try
         {
@@ -69,11 +85,6 @@ public class CreateAppContainerPhase
         // appserver. Need to think about how to really separate the apps
         // from the parent container.
         // ----------------------------------------------------------------------
-
-        DefaultPlexusContainer appServerContainer = context.getAppServerContainer();
-
-        getLogger().info( "Using appDir = " + context.getAppDir() );
-
 
         try
         {
@@ -110,23 +121,6 @@ public class CreateAppContainerPhase
         }
 
         applicationContainer.addContextValue( "plexus.appserver", appserver );
-
-        applicationContainer.setParentPlexusContainer( appServerContainer );
-
-        applicationContainer.setClassWorld( appServerContainer.getClassWorld() );
-
-        // ----------------------------------------------------------------------
-        // Create the realm for the appserver
-        // ----------------------------------------------------------------------
-
-        ClassRealm realm = new SimpleClassRealm( "plexus.application." + context.getApplicationId(),
-                                                 new SimpleClassLoader(
-                                                     appServerContainer.getContainerRealm().getClassLoader() ),
-                                                 appServerContainer.getClassWorld() );
-
-        // When the core realm is set then the container realm will also be the core realm.
-
-        applicationContainer.setCoreRealm( realm );
 
         // ----------------------------------------------------------------------
         //

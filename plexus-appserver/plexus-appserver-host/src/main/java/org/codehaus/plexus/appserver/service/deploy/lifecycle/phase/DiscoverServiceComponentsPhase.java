@@ -19,7 +19,7 @@ public class DiscoverServiceComponentsPhase
     {
         try
         {
-            context.getContainer().discoverComponents( context.getContainer().getCoreRealm() );
+            context.getContainer().discoverComponents( context.getContainer().getContainerRealm() );
         }
         catch ( PlexusConfigurationException e )
         {
