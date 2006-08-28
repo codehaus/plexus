@@ -14,12 +14,130 @@
       <version>1.0.0</version>
       <fields>
         <field>
+          <name>roles</name>
+          <version>1.0.0</version>
+          <description>The roles available to be assigned</description>
+          <association>
+            <type>Role</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>Role</name>
+      <version>1.0.0</version>
+      <fields>
+        <field>
           <name>id</name>
           <version>1.0.0</version>
           <type>int</type>
         </field>
+        <field>
+          <name>name</name>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>description</name>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>excludeRoles</name>
+          <version>1.0.0</version>
+          <type>int</type>
+          <multiplicity>*</multiplicity>
+          <description>
+            role id's that this role can not be shared with for a user, useful for indicating
+            that two roles are mutually exclusive
+          </description>
+        </field>
+        <field>
+          <name>roles</name>
+          <version>1.0.0</version>
+          <association>
+            <type>Role</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>permissions</name>
+          <version>1.0.0</version>
+          <association>
+            <type>Permission</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
       </fields>
-      </class>
-
+    </class>
+    <class>
+      <name>Permission</name>
+      <version>1.0.0</version>
+      <fields>
+        <field>
+          <name>id</name>
+          <version>1.0.0</version>
+          <type>int</type>
+        </field>
+        <field>
+          <name>name</name>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>description</name>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>operation</name>
+          <version>1.0.0</version>
+          <association>
+            <type>Operation</type>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>Operation</name>
+      <version>1.0.0</version>
+      <fields>
+        <field>
+          <name>id</name>
+          <version>1.0.0</version>
+          <type>int</type>
+        </field>
+        <field>
+          <name>name</name>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>object</name>
+          <version>1.0.0</version>
+          <association>
+            <type>Object</type>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>Object</name>
+      <version>1.0.0</version>
+      <description>
+        In RBAC terms, this is the entity which an operation is associated with that which permissions are based on.
+      </description>
+      <fields>
+        <field>
+          <name>identifier</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <description>
+            The string identifier for an operation.
+          </description>
+        </field>
+      </fields>
+    </class>
   </classes>
 </model>
