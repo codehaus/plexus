@@ -48,23 +48,13 @@
     <module>plexus-jdo</module>
     <module>plexus-jetty-httpd</module>    
     <module>plexus-jetty</module>
-    <!--
-    <module>plexus-ldap-helper</module>
-    <module>plexus-mail-sender</module>
-    -->    
     <module>plexus-mimetyper</module>    
     <module>plexus-notification</module>
-    <!--
-    <module>plexus-password-store</module>
-    -->
     <module>plexus-resource</module>
     <module>plexus-security</module>
     <module>plexus-summit</module>
     <module>plexus-taskqueue</module>    
     <module>plexus-velocity</module>
-    <!-- broken
-    <module>plexus-workflow</module>
-    -->
     <module>plexus-xmlrpc</module>
   </modules>
 </project>
