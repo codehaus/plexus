@@ -137,6 +137,15 @@
             The string identifier for an operation.
           </description>
         </field>
+        <field>
+          <name>isPattern</name>
+          <version>1.0.0</version>
+          <type>boolean</type>
+          <description>
+            true if the identifer is a pattern that is to be evaluated, for example x.* could match x.a or x.b and x.**
+            could match x.foo TODO is this even snv commia good idea? 
+          </description>
+        </field>
       </fields>
     </class>
   </classes>
