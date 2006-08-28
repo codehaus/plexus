@@ -365,7 +365,7 @@ public class JettyServletContainer
                     // create a realm. We need to create a realm so that we can discover all
                     // the components in the webapp.
 
-                    ClassRealm realm = container.getCoreRealm();
+                    ClassRealm realm = container.getContainerRealm();
 
                     List jars = FileUtils.getFiles( war, "**/*.jar", null );
 
@@ -399,7 +399,7 @@ public class JettyServletContainer
             {
                 // Dirty hack, need better methods for classloaders because i can set the core realm but not get it,
                 // or get the container realm but not set it. blah!
-                webappContext.setClassLoader( container.getCoreRealm().getClassLoader() );
+                webappContext.setClassLoader( container.getContainerRealm().getClassLoader() );
             }
 
             // Save the classloader for reloads
@@ -419,7 +419,7 @@ public class JettyServletContainer
                 webappContext.setClassLoader( (ClassLoader) classLoaders.get( webapp.getContext() ) );
                 ClassRealm cr = (ClassRealm) classRealms.get( webapp.getContext() );
 
-                ((DefaultPlexusContainer)container).setCoreRealm( cr );
+                ((DefaultPlexusContainer)container).setContainerRealm( cr );
             }
         }
 

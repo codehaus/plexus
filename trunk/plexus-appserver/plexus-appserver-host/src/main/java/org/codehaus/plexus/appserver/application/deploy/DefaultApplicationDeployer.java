@@ -160,7 +160,7 @@ public class DefaultApplicationDeployer
 
         app.dispose();
 
-        ClassRealm realm = app.getCoreRealm();
+        ClassRealm realm = app.getContainerRealm();
 
         try
         {
