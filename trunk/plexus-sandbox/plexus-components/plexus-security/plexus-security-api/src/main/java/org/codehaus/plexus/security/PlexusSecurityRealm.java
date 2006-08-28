@@ -1,9 +1,11 @@
 package org.codehaus.plexus.security;
 
-import org.codehaus.plexus.security.exception.PlexusSecurityRealmException;
-import org.codehaus.plexus.security.exception.AuthenticationException;
-import org.codehaus.plexus.security.exception.AuthorizationException;
-import org.codehaus.plexus.security.exception.NotAuthenticatedException;
+import org.codehaus.plexus.security.PlexusSecurityRealmException;
+import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.authorization.AuthorizationException;
+import org.codehaus.plexus.security.authentication.NotAuthenticatedException;
+import org.codehaus.plexus.security.authorization.Authorizer;
+import org.codehaus.plexus.security.authentication.Authenticator;
 
 import java.util.Map;
 

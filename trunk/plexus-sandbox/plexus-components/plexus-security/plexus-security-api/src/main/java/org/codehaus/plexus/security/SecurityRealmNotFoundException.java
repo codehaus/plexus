@@ -1,5 +1,4 @@
 package org.codehaus.plexus.security;
-
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -16,22 +15,19 @@ package org.codehaus.plexus.security;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.exception.AuthenticationException;
-
-import java.util.Map;
-
-
 /**
- * Authenticator:
+ * SecurityRealmNotFoundException:
  *
- * @author Jesse McConnell
- * @version $ID:$
+ * @author: Jesse McConnell <jesse@codehaus.org>
+ * @version: $ID:$
  */
-public interface Authenticator
+public class SecurityRealmNotFoundException
+    extends Exception
 {
-    String ROLE = Authenticator.class.getName();
 
-    public AuthenticationResult authenticate( Map tokens )
-        throws AuthenticationException;
+    public SecurityRealmNotFoundException( String name )
+    {
+        super( name );
+    }
 
 }

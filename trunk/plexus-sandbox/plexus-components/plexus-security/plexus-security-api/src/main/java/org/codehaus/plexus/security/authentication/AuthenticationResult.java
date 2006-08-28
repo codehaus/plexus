@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security;
+package org.codehaus.plexus.security.authentication;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -15,59 +15,65 @@ package org.codehaus.plexus.security;
  * limitations under the License.
  */
 
+import java.io.Serializable;
+
 /**
- * AuthorizationResult: wrapper object for results from the authorization system
+ * AuthenticationResult: wrapper object for information that comes back from the authentication system
  *
- * @author: Jesse McConnell <jesse@codehaus.org>
- * @version: $ID:$
+ * @author Jesse McConnell <jesse@codehaus.org>
+ * @version $ID:$
  */
-public class AuthorizationResult
+public class AuthenticationResult
+    implements Serializable
 {
     /**
-     * the name of the authorization store that generated this result
+     * the name of the authentication store that generated this AuthenticationResult
      */
-    private String authorizationStore;
+    private String authenticationStore;
 
     /**
-     * boolean for authorized or not behavior
+     * boolean representing authentication status
      */
-    private boolean isAuthorized = false;
+    private boolean isAuthenticated = false;
 
     /**
-     * the principal actor on the system, most commonly the username, but some systems may use this as a different value
+     * the main actor or principal agent in the system, most commonly the username corresponding to the authentication
+     * request
+     *
+     * Note: the toString() of the principle Object should always represent the unique agent
      */
     private Object principal;
 
     /**
-     * optional informational message from the authorization system
+     * optional message the authentication store can set
      */
     private String message;
 
     /**
-     * optional exception that might be thrown from the authorization system
+     * optional exception the authentication store can set
      */
     private Exception exception;
 
     /**
-     * optional payload object containing implementation specific information
+     * optional authentication payload object
      */
     private Object payload;
-    
-    private AuthorizationResult() {}
 
-    public AuthorizationResult( String authorizationStore )
+    private AuthenticationResult(){}    
+
+    public AuthenticationResult( String authenticationStore )
     {
-        this.authorizationStore = authorizationStore;
+        this.authenticationStore = authenticationStore;
     }
 
-    public boolean isAuthorized()
+    public void setAuthenticated( boolean isAuthenticated )
     {
-        return isAuthorized;
+        this.isAuthenticated = isAuthenticated;
     }
 
-    public void setAuthorized( boolean authorized )
+    public boolean isAuthenticated()
     {
-        isAuthorized = authorized;
+        return isAuthenticated;
     }
 
     public Object getPrincipal()
@@ -110,13 +116,13 @@ public class AuthorizationResult
         this.payload = payload;
     }
 
-    public String getAuthorizationStore()
+    public String getAuthenticationStore()
     {
-        return authorizationStore;
+        return authenticationStore;
     }
 
-    public void setAuthorizationStore( String authorizationStore )
+    public void setAuthenticationStore( String authenticationStore )
     {
-        this.authorizationStore = authorizationStore;
+        this.authenticationStore = authenticationStore;
     }
 }

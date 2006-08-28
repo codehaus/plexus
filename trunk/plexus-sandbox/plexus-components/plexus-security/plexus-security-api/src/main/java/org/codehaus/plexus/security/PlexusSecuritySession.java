@@ -1,4 +1,6 @@
 package org.codehaus.plexus.security;
+
+import org.codehaus.plexus.security.authentication.AuthenticationResult;
 /*
  * Copyright 2005 The Codehaus.
  *

@@ -1,4 +1,5 @@
-package org.codehaus.plexus.security.exception;
+package org.codehaus.plexus.security.authorization;
+
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -15,19 +16,38 @@ package org.codehaus.plexus.security.exception;
  * limitations under the License.
  */
 
+
 /**
- * SecurityRealmNotFoundException:
+ * EntityAuthenticationException.java
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  */
-public class SecurityRealmNotFoundException
+public class AuthorizationException
     extends Exception
 {
-
-    public SecurityRealmNotFoundException( String name )
+    /**
+     *
+     */
+    public AuthorizationException()
     {
-        super( name );
     }
 
+    /**
+     *
+     * @param message
+     */
+    public AuthorizationException( String message )
+    {
+        super( message );
+    }
+
+    /**
+     * @param message
+     * @param cause
+     */
+    public AuthorizationException( String message, Exception cause )
+    {
+        super( message, cause );
+    }
 }

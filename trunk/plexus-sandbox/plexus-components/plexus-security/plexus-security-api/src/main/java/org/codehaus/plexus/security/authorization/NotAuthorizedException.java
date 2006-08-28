@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.exception;
+package org.codehaus.plexus.security.authorization;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -16,19 +16,36 @@ package org.codehaus.plexus.security.exception;
  */
 
 /**
- * The exception thrown if an entity is unauthorized to access a resource.
+ * EntityAuthenticationException.java
  *
- * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
- * @since Mar 1, 2003
+ * @author: Jesse McConnell <jesse@codehaus.org>
+ * @version: $ID:$
  */
-public class UnauthorizedException
+public class NotAuthorizedException
     extends Exception
 {
     /**
+     *
+     */
+    public NotAuthorizedException()
+    {
+    }
+
+    /**
+     *
      * @param message
      */
-    public UnauthorizedException( String message )
+    public NotAuthorizedException( String message )
     {
         super( message );
+    }
+
+    /**
+     * @param message
+     * @param cause
+     */
+    public NotAuthorizedException( String message, Exception cause )
+    {
+        super( message, cause );
     }
 }

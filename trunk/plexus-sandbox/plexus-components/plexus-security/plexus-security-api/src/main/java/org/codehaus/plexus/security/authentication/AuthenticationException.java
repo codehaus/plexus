@@ -1,4 +1,5 @@
-package org.codehaus.plexus.security.exception;
+package org.codehaus.plexus.security.authentication;
+
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -16,38 +17,38 @@ package org.codehaus.plexus.security.exception;
  */
 
 /**
- * EntityAuthenticationException.java
+ * AuthenticationException.java
  *
- * @author Dan Diephouse
- * @since Nov 24, 2002
+ * @author Jesse McConnell
+ * @version $ID:$
  */
-public class NotAuthenticatedException
+public class AuthenticationException
     extends Exception
 {
     /**
-     * Constructor EntityAuthenticationException.
+     * Constructor AuthenticationException.
      */
-    public NotAuthenticatedException()
+    public AuthenticationException()
     {
     }
 
     /**
-     * Constructor EntityAuthenticationException.
+     * Constructor AuthenticationException.
      *
      * @param message
      */
-    public NotAuthenticatedException( String message )
+    public AuthenticationException( String message )
     {
         super( message );
     }
 
     /**
-     * Constructor EntityAuthenticationException.
+     * Constructor AuthenticationException.
      *
      * @param message
      * @param cause
      */
-    public NotAuthenticatedException( String message, Exception cause )
+    public AuthenticationException( String message, Exception cause )
     {
         super( message, cause );
     }
