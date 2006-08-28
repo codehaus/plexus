@@ -96,7 +96,8 @@ class ReplyMonitor extends IRCEventAdapter {
     if (type == IRCUtil.RPL_TOPIC)
       conn.doTopic(param);
     if (type == IRCUtil.RPL_TIME)
-      conn.doPrivmsg(param, IRCUtil.actionIndicator + "TIME");
+      conn.doPrivmsg(param, IRCUtil.actionIndicator + "TIME" +
+          IRCUtil.actionIndicator );
 
     try {
       ret = (String) reply.get();
