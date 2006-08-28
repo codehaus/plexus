@@ -1,4 +1,5 @@
-package org.codehaus.plexus.security.exception;
+package org.codehaus.plexus.security.authentication;
+
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -15,37 +16,22 @@ package org.codehaus.plexus.security.exception;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.authentication.AuthenticationException;
+
+import java.util.Map;
+
+
 /**
- * EntityAuthenticationException.java
+ * Authenticator:
  *
- * @author: Jesse McConnell <jesse@codehaus.org>
- * @version: $ID:$
+ * @author Jesse McConnell
+ * @version $ID:$
  */
-public class NotAuthorizedException
-    extends Exception
+public interface Authenticator
 {
-    /**
-     *
-     */
-    public NotAuthorizedException()
-    {
-    }
+    String ROLE = Authenticator.class.getName();
 
-    /**
-     *
-     * @param message
-     */
-    public NotAuthorizedException( String message )
-    {
-        super( message );
-    }
+    public AuthenticationResult authenticate( Map tokens )
+        throws AuthenticationException;
 
-    /**
-     * @param message
-     * @param cause
-     */
-    public NotAuthorizedException( String message, Exception cause )
-    {
-        super( message, cause );
-    }
 }

@@ -1,6 +1,10 @@
-package org.codehaus.plexus.security;
+package org.codehaus.plexus.security.authorization;
 
-import org.codehaus.plexus.security.exception.AuthorizationException;
+import org.codehaus.plexus.security.authorization.AuthorizationException;
+import org.codehaus.plexus.security.authorization.AuthorizationResult;
+import org.codehaus.plexus.security.authorization.AuthorizationStore;
+import org.codehaus.plexus.security.authorization.Authorizer;
+import org.codehaus.plexus.security.PlexusSecuritySession;
 
 import java.util.Map;
 /*
@@ -27,7 +31,7 @@ import java.util.Map;
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- * @plexus.component role="org.codehaus.plexus.security.Authorizer"
+ * @plexus.component rolorg.codehaus.plexus.security.authorization.Authorizerzer"
  * role-hint="default"
  */
 public class DefaultAuthorizer

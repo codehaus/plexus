@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.exception;
+package org.codehaus.plexus.security;
 /*
  * Copyright 2005 The Codehaus.
  *
