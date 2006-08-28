@@ -3,7 +3,6 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus</artifactId>
   <packaging>pom</packaging>
@@ -166,7 +165,7 @@
       </roles>
     </developer>
     <developer>
-      <name>Trygve Laugst&oslash;l</name>
+      <name>Trygve Laugstol</name>
       <id>trygvis</id>
       <email>trygvis@codehaus.org</email>
       <roles>
@@ -223,7 +222,12 @@
     <url>http://www.codehaus.org/</url>
   </organization>
   <modules>
+    <!--
+    
+    Until the bug is fixed in Maven which is pulling in the trunk to the
+    appserver build.
     <module>plexus-appserver</module>
+    -->
     <module>plexus-archetypes</module>
     <module>plexus-examples</module>
     <module>plexus-components</module>
