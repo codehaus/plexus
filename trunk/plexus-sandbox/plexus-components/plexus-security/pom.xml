@@ -3,12 +3,12 @@
   <parent>
     <groupId>org.codehaus.plexus</groupId>
     <artifactId>plexus-components</artifactId>
-    <version>1.1.5</version>
+    <version>1.1.6</version>
   </parent>
   <groupId>org.codehaus.plexus.security</groupId>
-  <artifactId>plexus-security-parent</artifactId>
+  <artifactId>plexus-security</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>Plexus Security Parent</name>
+  <name>Plexus Security</name>
   <packaging>pom</packaging>
   <dependencies>
     <dependency>
@@ -18,12 +18,5 @@
     </dependency>
   </dependencies>
   <modules>
-    <module>plexus-security-api</module>
-    <module>plexus-security-model</module>
-    <module>plexus-security-simple</module>
-<!--
-    <module>plexus-security-rbac</module>
--->
-    <module>plexus-security-acegi</module>
   </modules>
 </project>
