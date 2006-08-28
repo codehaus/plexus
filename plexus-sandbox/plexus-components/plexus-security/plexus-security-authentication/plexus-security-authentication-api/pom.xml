@@ -5,7 +5,7 @@
     <artifactId>plexus-security-authentication</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-api</artifactId>
+  <artifactId>plexus-security-authentication-api</artifactId>
   <name>Plexus Security Authentication</name>
    <build>
     <plugins>
