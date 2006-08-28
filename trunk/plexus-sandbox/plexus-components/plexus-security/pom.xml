@@ -18,5 +18,12 @@
     </dependency>
   </dependencies>
   <modules>
+    <module>plexus-security-authentication</module>
+    <module>plexus-security-authorization</module>
+    <module>plexus-security-system</module>
+    <!--
+    <module>plexus-security-ui</module>
+    <module>plexus-security-user-management</module>
+    -->
   </modules>
 </project>
