@@ -326,7 +326,7 @@ public class PlexusDefaultComponentGleaner
                 continue;
             }
 
-            Map parameters = tag.getNamedParameterMap();
+            Map parameters = new HashMap( tag.getNamedParameterMap() );
 
             // ----------------------------------------------------------------------
             // Role
