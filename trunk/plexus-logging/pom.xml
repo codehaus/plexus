@@ -11,9 +11,6 @@
   <name>Plexus Logging Parent</name>
   <modules>
     <module>plexus-logging-provider-test</module>  
-<!--
-    <module>plexus-commons-logging</module>
--->
     <module>plexus-jdk-logging</module>
     <module>plexus-log4j-logging</module>
   </modules>  
@@ -21,7 +18,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-8</version>
+      <version>1.0-alpha-10-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
