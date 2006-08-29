@@ -26,12 +26,14 @@ package org.codehaus.plexus.cdc;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.component.discovery.DefaultComponentDiscoverer;
+import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.Iterator;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -40,18 +42,64 @@ import java.io.FileReader;
 public class ComponentDescriptorCreatorTest
     extends PlexusTestCase
 {
+
     public void testBasic()
         throws Exception
     {
+        ComponentSetDescriptor csd = buildCsd( 1 );
+
+        assertEquals( 1, csd.getComponents().size() );
+
+        ComponentDescriptor cd = (ComponentDescriptor) csd.getComponents().get( 0 );
+
+        assertEquals( "My super component.", cd.getDescription() );
+
+        assertEquals( "foo", cd.getAlias() );
+
+        assertEquals( "bar", cd.getRoleHint() );
+
+        assertEquals( "1.2", cd.getVersion() );
+    }
+
+    public void testInheritAnotations()
+        throws Exception
+    {
+        ComponentSetDescriptor csd = buildCsd( 2 );
+
+        assertEquals( 2, csd.getComponents().size() );
+
+        Iterator it = csd.getComponents().iterator();
+        
+        int i = 0;
+
+        while ( it.hasNext() )
+        {
+            ComponentDescriptor cd = (ComponentDescriptor) it.next();
+            
+            if ( cd.getRole().indexOf( "Child" ) >= 0 )
+            {
+                ComponentRequirement requirement = (ComponentRequirement) cd.getRequirements().get( 0 );
+                assertEquals( "Requirement " + requirement.getRole() + " in component " + cd.getRole()
+                    + " has wrong role hint", "myHint", requirement.getRoleHint() );
+                i++;
+            }
+        }
+        
+        assertEquals( "Expected 2 components with role *Child*", 2, i );
+    }
+
+    private ComponentSetDescriptor buildCsd( int testNumber )
+        throws Exception
+    {
+        File[] sourceDirectories = new File[] { getTestFile( "src/test/projects/test" + testNumber ) };
+
+        File outputDirectory = getTestFile( "target/cdc-output/test" + testNumber + "/META-INF/plexus" );
+
         ComponentDescriptorCreator cdc = (ComponentDescriptorCreator) lookup( ComponentDescriptorCreator.ROLE );
 
         // ----------------------------------------------------------------------
         // Generate
         // ----------------------------------------------------------------------
-
-        File[] sourceDirectories = new File[]{getTestFile( "src/test-project" ),};
-
-        File outputDirectory = getTestFile( "target/cdc-output/META-INF/plexus" );
 
         if ( outputDirectory.exists() )
         {
@@ -76,18 +124,6 @@ public class ComponentDescriptorCreatorTest
 
         FileReader reader = new FileReader( outputFile );
 
-        ComponentSetDescriptor csd = discoverer.createComponentDescriptors( reader, outputFile.getAbsolutePath() );
-
-        assertEquals( 1, csd.getComponents().size() );
-
-        ComponentDescriptor cd = (ComponentDescriptor) csd.getComponents().get( 0 );
-
-        assertEquals( "My super component.", cd.getDescription() );
-
-        assertEquals( "foo", cd.getAlias() );
-
-        assertEquals( "bar", cd.getRoleHint() );
-
-        assertEquals( "1.2", cd.getVersion() );
+        return discoverer.createComponentDescriptors( reader, outputFile.getAbsolutePath() );
     }
 }
