@@ -40,6 +40,22 @@ public interface IRCServiceManager {
 
   public void part(String channel, String reason);
 
+  public void op(String channel, String nick);
+
+  public void deOp(String channel, String nick);
+
+  public void voice(String channel, String nick);
+
+  public void deVoice(String channel, String nick);
+
+  public void kick(String channel, String nick);
+
+  public void kick(String channel, String nick, String reason);
+
+  public void ban(String channel, String mask);
+
+  public void unBan(String channel, String mask);
+
   public Map getCommands();
 
   public List getListeners();

@@ -116,6 +116,46 @@ public class DefaultIRCServiceManager extends AbstractLogEnabled
       conn.doPart(channel, reason);
   }
 
+  public void op(String channel, String nick) {
+    if (conn != null)
+      conn.doMode(channel, "+o " + nick);
+  }
+
+  public void deOp(String channel, String nick) {
+    if (conn != null)
+      conn.doMode(channel, "-o " + nick);
+  }
+
+  public void voice(String channel, String nick) {
+    if (conn != null)
+      conn.doMode(channel, "+v " + nick);
+  }
+
+  public void deVoice(String channel, String nick) {
+    if (conn != null)
+      conn.doMode(channel, "-v " + nick);
+  }
+
+  public void kick(String channel, String nick) {
+    if (conn != null)
+      conn.doKick(channel, nick);
+  }
+
+  public void kick(String channel, String nick, String reason) {
+    if (conn != null)
+      conn.doKick(channel, nick, reason);
+  }
+
+  public void ban(String channel, String mask) {
+    if (conn != null)
+      conn.doMode(channel, "+b " + mask);
+  }
+
+  public void unBan(String channel, String mask) {
+    if (conn != null)
+      conn.doMode(channel, "-b " + mask);
+  }
+
   public Map getCommands() {
     try {
       return locator.lookupMap("org.codehaus.plexus.service.irc.IRCCommand");
