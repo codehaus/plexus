@@ -25,9 +25,7 @@ package org.codehaus.plexus.maven.plugin.application;
  */
 
 import org.apache.maven.plugin.MojoExecutionException;
-import org.codehaus.plexus.builder.application.ApplicationBuilder;
 import org.codehaus.plexus.builder.application.ApplicationBuilderException;
-import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
 
 import java.io.File;
 

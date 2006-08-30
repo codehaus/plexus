@@ -27,14 +27,14 @@ package org.codehaus.plexus.jetty;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.jetty.configuration.InitParameter;
+import org.codehaus.plexus.jetty.configuration.ProxyHttpListener;
 import org.codehaus.plexus.jetty.configuration.ServletContext;
 import org.codehaus.plexus.jetty.configuration.WebContext;
 import org.codehaus.plexus.jetty.configuration.Webapp;
-import org.codehaus.plexus.jetty.configuration.ProxyHttpListener;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.util.FileUtils;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.HttpListener;
@@ -44,15 +44,14 @@ import org.mortbay.jetty.servlet.ServletHolder;
 import org.mortbay.jetty.servlet.ServletHttpContext;
 import org.mortbay.jetty.servlet.WebApplicationContext;
 import org.mortbay.util.InetAddrPort;
-import org.mortbay.util.MultiException;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -63,12 +62,12 @@ import java.util.HashMap;
  */
 public class JettyServletContainer
     extends AbstractLogEnabled
-    implements ServletContainer,
-    Startable
+    implements ServletContainer, Startable
 {
     private Server server;
 
     private Map classLoaders = new HashMap();
+
     private Map classRealms = new HashMap();
 
     // ----------------------------------------------------------------------
@@ -146,9 +145,7 @@ public class JettyServletContainer
         }
     }
 
-    public void deployWarDirectory( File directory,
-                                    DefaultPlexusContainer container,
-                                    Webapp webapp )
+    public void deployWarDirectory( File directory, DefaultPlexusContainer container, Webapp webapp )
         throws ServletContainerException
     {
         deployWAR( directory, false, null, container, webapp );
@@ -297,10 +294,7 @@ public class JettyServletContainer
         throw new ServletContainerException( "No such context '" + contextPath + "'." );
     }
 
-    private void deployWAR( File war,
-                            boolean extractWar,
-                            File extractionLocation,
-                            DefaultPlexusContainer container,
+    private void deployWAR( File war, boolean extractWar, File extractionLocation, DefaultPlexusContainer container,
                             Webapp webapp )
         throws ServletContainerException
     {
@@ -419,7 +413,7 @@ public class JettyServletContainer
                 webappContext.setClassLoader( (ClassLoader) classLoaders.get( webapp.getContext() ) );
                 ClassRealm cr = (ClassRealm) classRealms.get( webapp.getContext() );
 
-                ((DefaultPlexusContainer)container).setContainerRealm( cr );
+                ( (DefaultPlexusContainer) container ).setContainerRealm( cr );
             }
         }
 
