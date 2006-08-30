@@ -1,8 +1,8 @@
 package org.codehaus.plexus.appserver.application.deploy.lifecycle.phase;
 
+import org.codehaus.plexus.appserver.AppDescriptor;
 import org.codehaus.plexus.appserver.AppServerObject;
 import org.codehaus.plexus.appserver.ApplicationServer;
-import org.codehaus.plexus.appserver.AppDescriptor;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 

@@ -24,13 +24,12 @@ package org.codehaus.plexus.appserver.service.deploy;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.appserver.ApplicationServerException;
-import org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase;
+import org.codehaus.plexus.appserver.deploy.AbstractDeployer;
 import org.codehaus.plexus.appserver.service.deploy.lifecycle.ServiceDeploymentContext;
 import org.codehaus.plexus.appserver.service.deploy.lifecycle.ServiceDeploymentException;
 import org.codehaus.plexus.appserver.service.deploy.lifecycle.phase.ServiceDeploymentPhase;
-import org.codehaus.plexus.appserver.deploy.AbstractDeployer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
@@ -38,8 +37,8 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 import java.io.File;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
@@ -48,9 +47,7 @@ import java.util.Iterator;
  */
 public class DefaultServiceDeployer
     extends AbstractDeployer
-    implements ServiceDeployer,
-    Initializable,
-    Contextualizable
+    implements ServiceDeployer, Initializable, Contextualizable
 {
     private File servicesDirectory;
 
@@ -62,16 +59,13 @@ public class DefaultServiceDeployer
     // ServiceDeployer Implementation
     // ----------------------------------------------------------------------
 
-    public void deploy( String serviceId,
-                        File location )
+    public void deploy( String serviceId, File location )
         throws ApplicationServerException
     {
         deploy( serviceId, location, true );
     }
 
-    private void deploy( String id,
-                         File sar,
-                         boolean expandSar )
+    private void deploy( String id, File sar, boolean expandSar )
         throws ApplicationServerException
     {
         ServiceDeploymentContext context = new ServiceDeploymentContext( id, sar, servicesDirectory, container );
@@ -89,7 +83,8 @@ public class DefaultServiceDeployer
             }
             catch ( ComponentLookupException e )
             {
-                throw new ApplicationServerException( "The requested app server lifecycle phase cannot be found: " + phaseId, e );
+                throw new ApplicationServerException(
+                    "The requested app server lifecycle phase cannot be found: " + phaseId, e );
             }
             catch ( ServiceDeploymentException e )
             {

@@ -14,8 +14,7 @@ public class CreateAppRuntimeProfilePhase
         throws AppDeploymentException
     {
         AppRuntimeProfile profile = new AppRuntimeProfile( context.getApplicationId(),
-                                                           context.getApplicationsDirectory(),
-                                                           context.getPar(),
+                                                           context.getApplicationsDirectory(), context.getPar(),
                                                            context.getApplicationContainer(),
                                                            context.getAppServerContainer(),
                                                            context.getAppConfiguration() );

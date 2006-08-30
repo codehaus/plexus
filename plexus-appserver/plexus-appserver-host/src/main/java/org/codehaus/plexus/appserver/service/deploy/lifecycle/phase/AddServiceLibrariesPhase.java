@@ -2,12 +2,8 @@ package org.codehaus.plexus.appserver.service.deploy.lifecycle.phase;
 
 import org.codehaus.plexus.appserver.service.deploy.lifecycle.ServiceDeploymentContext;
 import org.codehaus.plexus.appserver.service.deploy.lifecycle.ServiceDeploymentException;
-import org.codehaus.plexus.appserver.deploy.DeploymentException;
-import org.codehaus.plexus.appserver.ApplicationServerException;
-import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * @author Jason van Zyl

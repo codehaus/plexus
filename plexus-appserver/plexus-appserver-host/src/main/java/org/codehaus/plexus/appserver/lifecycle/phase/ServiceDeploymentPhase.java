@@ -1,12 +1,11 @@
 package org.codehaus.plexus.appserver.lifecycle.phase;
 
-import org.codehaus.plexus.appserver.lifecycle.phase.AbstractAppServerPhase;
 import org.codehaus.plexus.appserver.lifecycle.AppServerContext;
 import org.codehaus.plexus.appserver.lifecycle.AppServerLifecycleException;
-import org.codehaus.plexus.appserver.supervisor.SupervisorListener;
-import org.codehaus.plexus.appserver.supervisor.SupervisorException;
-import org.codehaus.plexus.appserver.supervisor.Supervisor;
 import org.codehaus.plexus.appserver.service.deploy.ServiceDeployer;
+import org.codehaus.plexus.appserver.supervisor.Supervisor;
+import org.codehaus.plexus.appserver.supervisor.SupervisorException;
+import org.codehaus.plexus.appserver.supervisor.SupervisorListener;
 
 import java.io.File;
 

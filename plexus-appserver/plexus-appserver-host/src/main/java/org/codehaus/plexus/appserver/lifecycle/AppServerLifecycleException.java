@@ -2,7 +2,7 @@ package org.codehaus.plexus.appserver.lifecycle;
 
 /**
  * @author Jason van Zyl
- */            
+ */
 public class AppServerLifecycleException
     extends Exception
 {
@@ -11,8 +11,7 @@ public class AppServerLifecycleException
         super( string );
     }
 
-    public AppServerLifecycleException( String string,
-                                        Throwable throwable )
+    public AppServerLifecycleException( String string, Throwable throwable )
     {
         super( string, throwable );
     }
