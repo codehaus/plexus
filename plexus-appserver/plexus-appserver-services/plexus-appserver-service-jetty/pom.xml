@@ -32,32 +32,47 @@
     <dependency>
       <groupId>jetty</groupId>
       <artifactId>org.mortbay.jetty</artifactId>
-      <version>4.2.24</version>
+      <version>5.1.10</version>
     </dependency>
     <dependency>
       <groupId>tomcat</groupId>
       <artifactId>jasper-compiler</artifactId>
-      <version>4.1.30</version>
-    </dependency>
-    <dependency>
-      <groupId>servletapi</groupId>
-      <artifactId>servletapi</artifactId>
-      <version>2.3</version>
-    </dependency>
-    <dependency>
-      <groupId>geronimo-spec</groupId>
-      <artifactId>geronimo-spec-servlet</artifactId>
-      <version>2.4-rc4</version>
+      <version>5.5.15</version>
     </dependency>
     <dependency>
       <groupId>tomcat</groupId>
       <artifactId>jasper-runtime</artifactId>
-      <version>4.1.30</version>
+      <version>5.5.15</version>
     </dependency>
     <dependency>
-      <groupId>geronimo-spec</groupId>
-      <artifactId>geronimo-spec-jsp</artifactId>
-      <version>2.0-rc4</version>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.4</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-el</groupId>
+      <artifactId>commons-el</artifactId>
+      <version>1.0</version>
+      <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>log4j</artifactId>
+          <groupId>log4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>logkit</artifactId>
+          <groupId>logkit</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 </project>

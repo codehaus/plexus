@@ -101,13 +101,13 @@ public class JettyPlexusService
                 // Extract the jar
                 // ----------------------------------------------------------------------
 
-                expand( new File( webapp.getFile() ), new File( webapp.getExtractionPath() ), false );
+                expand( getFile( webapp.getFile() ), getFile( webapp.getExtractionPath() ), false );
 
-                webAppDir = new File( webapp.getExtractionPath() );
+                webAppDir = getFile( webapp.getExtractionPath() );
             }
             else
             {
-                webAppDir = new File( webapp.getPath() );
+                webAppDir = getFile( webapp.getPath() );
             }
 
             if ( !webAppDir.isDirectory() )
@@ -274,5 +274,10 @@ public class JettyPlexusService
                 servletContainer.addListener( httpListener );
             }
         }
+    }
+
+    private File getFile( String path )
+    {
+        return FileUtils.resolveFile( new File( ".", path );
     }
 }
