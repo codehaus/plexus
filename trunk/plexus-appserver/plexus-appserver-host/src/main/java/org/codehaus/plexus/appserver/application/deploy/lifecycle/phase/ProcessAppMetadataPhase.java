@@ -8,10 +8,10 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.File;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
@@ -70,7 +70,7 @@ public class ProcessAppMetadataPhase
         }
 
         File appDir = new File( context.getApplicationsDirectory(), appId );
-        
+
         context.setAppDir( appDir );
 
         // Put the found application id into the context.

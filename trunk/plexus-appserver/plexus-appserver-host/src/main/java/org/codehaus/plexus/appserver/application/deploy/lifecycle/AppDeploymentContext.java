@@ -1,10 +1,9 @@
 package org.codehaus.plexus.appserver.application.deploy.lifecycle;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.appserver.ApplicationServer;
+import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 import java.io.File;
 import java.util.Map;
@@ -46,11 +45,8 @@ public class AppDeploymentContext
 
     private boolean expandPar;
 
-    public AppDeploymentContext( File par,
-                                 File applicationsDirectory,
-                                 Map deployments,
-                                 DefaultPlexusContainer appServerContainer,
-                                 ApplicationServer appServer,
+    public AppDeploymentContext( File par, File applicationsDirectory, Map deployments,
+                                 DefaultPlexusContainer appServerContainer, ApplicationServer appServer,
                                  boolean expandPar )
     {
         this.par = par;
@@ -82,7 +78,6 @@ public class AppDeploymentContext
     {
         return appServerContainer;
     }
-
 
     // Properties
 

@@ -15,13 +15,13 @@ import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
@@ -48,7 +48,8 @@ public class CreateAppContainerPhase
 
         try
         {
-            applicationContainer = new DefaultPlexusContainer( name, appServerContainer.getClassWorld(), appServerContainer );
+            applicationContainer =
+                new DefaultPlexusContainer( name, appServerContainer.getClassWorld(), appServerContainer );
         }
         catch ( PlexusContainerException e )
         {
@@ -179,9 +180,7 @@ public class CreateAppContainerPhase
 
         SimpleClassLoader classLoader;
 
-        public SimpleClassRealm( String id,
-                                 SimpleClassLoader classLoader,
-                                 ClassWorld world )
+        public SimpleClassRealm( String id, SimpleClassLoader classLoader, ClassWorld world )
         {
             this.id = id;
             this.classLoader = classLoader;
@@ -239,8 +238,7 @@ public class CreateAppContainerPhase
             return world;
         }
 
-        public void importFrom( String a,
-                                String b )
+        public void importFrom( String a, String b )
         {
             throw new UnsupportedOperationException();
         }

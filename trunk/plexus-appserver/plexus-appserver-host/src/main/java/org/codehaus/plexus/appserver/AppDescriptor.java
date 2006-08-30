@@ -7,22 +7,27 @@ import java.io.File;
  */
 public class AppDescriptor
 {
-    /** Application id */
+    /**
+     * Application id
+     */
     private String id;
 
-    /** Application name */
+    /**
+     * Application name
+     */
     private String name;
 
-    /** Plexus Application Archive */
+    /**
+     * Plexus Application Archive
+     */
     private File par;
 
-    /** Application deployment directory */
+    /**
+     * Application deployment directory
+     */
     private File appDirectory;
 
-    public AppDescriptor( String id,
-                          String name,
-                          File par,
-                          File appDirectory )
+    public AppDescriptor( String id, String name, File par, File appDirectory )
     {
         this.id = id;
         this.name = name;

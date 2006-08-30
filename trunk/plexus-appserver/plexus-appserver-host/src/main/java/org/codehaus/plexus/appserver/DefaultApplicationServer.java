@@ -24,30 +24,31 @@ package org.codehaus.plexus.appserver;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.util.List;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.LinkedHashMap;
-import java.util.Collection;
-
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.appserver.application.deploy.ApplicationDeployer;
-import org.codehaus.plexus.appserver.service.deploy.ServiceDeployer;
-import org.codehaus.plexus.appserver.lifecycle.phase.AppServerPhase;
+import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.appserver.lifecycle.AppServerContext;
 import org.codehaus.plexus.appserver.lifecycle.AppServerLifecycleException;
-import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
+import org.codehaus.plexus.appserver.lifecycle.phase.AppServerPhase;
+import org.codehaus.plexus.appserver.service.deploy.ServiceDeployer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.context.Context;
-import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
+import org.codehaus.plexus.util.FileUtils;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
@@ -61,10 +62,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 
 public class DefaultApplicationServer
     extends AbstractLogEnabled
-    implements ApplicationServer,
-    Initializable,
-    Contextualizable,
-    Startable
+    implements ApplicationServer, Initializable, Contextualizable, Startable
 {
     private PlexusContainer container;
 
@@ -91,8 +89,7 @@ public class DefaultApplicationServer
     // Delegation to the appserver deploy
     // ----------------------------------------------------------------------------
 
-    public void deploy( String id,
-                        File location )
+    public void deploy( String id, File location )
         throws ApplicationServerException
     {
         applicationDeployer.deploy( id, location );
@@ -151,7 +148,7 @@ public class DefaultApplicationServer
         // and services will be deployed.
         // ----------------------------------------------------------------------
 
-        File appServerHome = new File( System.getProperty( "plexus.home" ) );
+        File appServerHome = FileUtils.resolveFile( new File( "." ), System.getProperty( "plexus.home" ) );
 
         AppServerContext appServerContext = new AppServerContext( this, appServerHome );
 

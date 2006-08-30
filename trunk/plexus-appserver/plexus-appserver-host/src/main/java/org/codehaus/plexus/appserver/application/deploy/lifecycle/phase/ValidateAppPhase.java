@@ -28,8 +28,7 @@ public class ValidateAppPhase
 
         String appId = context.getApplicationId();
 
-        File applicationConfigurationFile =
-            new File( new File( appDir, PlexusApplicationConstants.CONF_DIRECTORY ),
+        File applicationConfigurationFile = new File( new File( appDir, PlexusApplicationConstants.CONF_DIRECTORY ),
                                                       PlexusApplicationConstants.CONFIGURATION_FILE );
 
         if ( !applicationConfigurationFile.exists() )

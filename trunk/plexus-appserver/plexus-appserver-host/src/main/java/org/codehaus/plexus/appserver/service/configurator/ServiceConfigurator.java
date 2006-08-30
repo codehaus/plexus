@@ -1,9 +1,8 @@
 package org.codehaus.plexus.appserver.service.configurator;
 
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
-import org.codehaus.plexus.appserver.service.PlexusService;
 import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 /**
  * @author Jason van Zyl
@@ -13,8 +12,6 @@ public interface ServiceConfigurator
 {
     String ROLE = ServiceConfigurator.class.getName();
 
-    Object configure( Object configurationObject,
-                      PlexusConfiguration serviceConfiguration,
-                      ClassRealm realm )
+    Object configure( Object configurationObject, PlexusConfiguration serviceConfiguration, ClassRealm realm )
         throws ComponentConfigurationException;
 }

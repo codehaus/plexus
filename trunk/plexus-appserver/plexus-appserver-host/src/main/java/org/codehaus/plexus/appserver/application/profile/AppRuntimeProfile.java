@@ -24,13 +24,13 @@ package org.codehaus.plexus.appserver.application.profile;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -58,12 +58,8 @@ public class AppRuntimeProfile
     //
     // ----------------------------------------------------------------------
 
-    public AppRuntimeProfile( String name,
-                              File home,
-                              File lib,
-                              DefaultPlexusContainer applicationContainer,
-                              PlexusContainer applicationServerContainer,
-                              PlexusConfiguration applicationConfiguration )
+    public AppRuntimeProfile( String name, File home, File lib, DefaultPlexusContainer applicationContainer,
+                              PlexusContainer applicationServerContainer, PlexusConfiguration applicationConfiguration )
     {
         this.name = name;
 

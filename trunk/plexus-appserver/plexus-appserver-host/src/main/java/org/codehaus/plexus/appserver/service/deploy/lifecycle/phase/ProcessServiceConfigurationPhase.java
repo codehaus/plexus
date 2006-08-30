@@ -1,22 +1,18 @@
 package org.codehaus.plexus.appserver.service.deploy.lifecycle.phase;
 
+import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.appserver.PlexusServiceConstants;
 import org.codehaus.plexus.appserver.service.deploy.lifecycle.ServiceDeploymentContext;
 import org.codehaus.plexus.appserver.service.deploy.lifecycle.ServiceDeploymentException;
-import org.codehaus.plexus.appserver.deploy.DeploymentException;
-import org.codehaus.plexus.appserver.PlexusServiceConstants;
-import org.codehaus.plexus.appserver.ApplicationServerException;
-import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
-import org.codehaus.plexus.component.repository.io.PlexusTools;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.DefaultPlexusContainer;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.FileReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
 
 /**
  * @author Jason van Zyl
@@ -58,8 +54,7 @@ public class ProcessServiceConfigurationPhase
         }
     }
 
-    private void startComponents( PlexusConfiguration serviceConfig,
-                                  DefaultPlexusContainer container )
+    private void startComponents( PlexusConfiguration serviceConfig, DefaultPlexusContainer container )
         throws PlexusConfigurationException, ComponentLookupException
     {
         PlexusConfiguration[] loadOnStartComponents =

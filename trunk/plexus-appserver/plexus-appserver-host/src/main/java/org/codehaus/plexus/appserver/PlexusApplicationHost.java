@@ -22,14 +22,15 @@ package org.codehaus.plexus.appserver;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.io.FileReader;
-
 import org.codehaus.classworlds.ClassWorld;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
+import org.codehaus.plexus.util.FileUtils;
+
+import java.io.File;
+import java.io.FileReader;
 
 // Container host plexus container is configured and initialized
 // The appserver component is looked up
@@ -96,7 +97,7 @@ public class PlexusApplicationHost
 
         container.addContextValue( "plexus.logs", System.getProperty( "plexus.home" ) + "/logs" );
 
-        File plexusLogs = new File( System.getProperty( "plexus.home" ) + "/logs" );
+        File plexusLogs = FileUtils.resolveFile( new File( "." ), System.getProperty( "plexus.home" ) + "/logs" );
 
         if ( !plexusLogs.exists() )
         {
@@ -210,7 +211,7 @@ public class PlexusApplicationHost
         }
 
         synchronized ( this )
-        {    
+        {
             while ( !isStopped )
             {
                 try

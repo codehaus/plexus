@@ -47,8 +47,7 @@ public class DefaultSupervisor
     // Supervisor Implementation
     // ----------------------------------------------------------------------
 
-    public void addDirectory( File directory,
-                              SupervisorListener listener )
+    public void addDirectory( File directory, SupervisorListener listener )
         throws SupervisorException
     {
         if ( !directory.isDirectory() )
@@ -84,8 +83,7 @@ public class DefaultSupervisor
     //
     // ----------------------------------------------------------------------
 
-    private void scanDirectory( File dir,
-                                SupervisorListener listener )
+    private void scanDirectory( File dir, SupervisorListener listener )
     {
         File[] files = dir.listFiles( new FileFilter()
         {
