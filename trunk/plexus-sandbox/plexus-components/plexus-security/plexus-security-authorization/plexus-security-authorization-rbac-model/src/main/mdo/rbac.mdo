@@ -44,22 +44,15 @@
           <type>String</type>
         </field>
         <field>
-          <name>excludeRoles</name>
-          <version>1.0.0</version>
-          <type>int</type>
-          <multiplicity>*</multiplicity>
-          <description>
-            role id's that this role can not be shared with for a user, useful for indicating
-            that two roles are mutually exclusive
-          </description>
-        </field>
-        <field>
           <name>roles</name>
           <version>1.0.0</version>
           <association>
             <type>Role</type>
             <multiplicity>*</multiplicity>
           </association>
+          <description>
+            roles that will inherit the permissions of this role
+          </description>
         </field>
         <field>
           <name>permissions</name>
@@ -89,6 +82,15 @@
           <name>description</name>
           <version>1.0.0</version>
           <type>String</type>
+        </field>
+        <field>
+          <name>policyAssignment</name>
+          <version>1.0.0</version>
+          <type>boolean</type>
+          <defaultValue>false</defaultValue>
+          <description>
+            true of the permission was granted as a policy decision
+          </description>
         </field>
         <field>
           <name>operation</name>
@@ -143,7 +145,7 @@
           <type>boolean</type>
           <description>
             true if the identifer is a pattern that is to be evaluated, for example x.* could match x.a or x.b and x.**
-            could match x.foo TODO is this even snv commia good idea? 
+            could match x.foo TODO is this even snv commia good idea?
           </description>
         </field>
       </fields>
