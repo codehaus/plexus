@@ -34,10 +34,6 @@
           <artifactId>jdbc-stdext</artifactId>
           <groupId>javax.sql</groupId>
         </exclusion>
-        <exclusion>
-          <artifactId>jaas</artifactId>
-          <groupId>javax.security</groupId>
-        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
