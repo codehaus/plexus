@@ -78,9 +78,16 @@ public class PlexusJdoUtils
             {
                 pm.makePersistent( object );
             }
+            catch ( NullPointerException npe )
+            {
+                // Do not hide useful error messages.
+                // This exception can occur if you have an object with a List that isn't initialized yet.
+                throw new PlexusStoreException( "Unable to update object due to unexpected null value.", npe );
+            }
             catch ( Exception e )
             {
-                //We retry if we obtain an exceptio like a dead lock
+                // TODO: Refactor to avoid using Exception catch-all.
+                // We retry if we obtain an exception like a dead lock
                 pm.makePersistent( object );
             }
 
