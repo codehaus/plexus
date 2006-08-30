@@ -43,4 +43,65 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <!-- I Couldn't get the test classes to generate from modello.
+           So I just placed the pre-generated classes into the src/test/* tree instead.
+           I left this configuration in here to allow others to possibly get this
+           automatic approach to work out.
+           - Joakim
+        -->
+      <!--
+      <plugin>
+        <groupId>org.codehaus.modello</groupId>
+        <artifactId>modello-maven-plugin</artifactId>
+        <version>1.0-alpha-9</version>
+        <configuration>
+          <version>1.0.0</version>
+          <packageWithVersion>false</packageWithVersion>
+          <model>src/test/mdo/testobjects.xml</model>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate-test-source</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>target/test-generated-sources/modello</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-jdo-mappings</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>jpox-jdo-mapping</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>target/test-classes</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+       -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jpox-maven-plugin</artifactId>
+        <version>1.0.3-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>enhance</goal>
+            </goals>
+            <configuration>
+              <classes>${basedir}/target/test-classes</classes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

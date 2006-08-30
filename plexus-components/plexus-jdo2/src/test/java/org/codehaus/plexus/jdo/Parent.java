@@ -25,51 +25,152 @@ package org.codehaus.plexus.jdo;
  */
 
 /**
- * @author <a href="mailto:mattis@inamo.no">Mathias Bjerke</a>
+ * modello:java generated file.
+ * 
+ * @author <a href="mailto:mattis@inamo.no">Mathias Bjerke</a> 
+ * @version $Id$
  */
 public class Parent
+    implements java.io.Serializable
 {
-    private long id;
 
-    private double price;
+    /**
+     * Field id
+     */
+    private int id = 0;
 
+    /**
+     * Field price
+     */
+    private double price = 0.0;
+
+    /**
+     * Field name
+     */
     private String name;
 
+    /**
+     * Field description
+     */
     private String description;
 
-    private Parent()
+    /**
+     * Field children
+     */
+    private java.util.List children;
+
+    /**
+     * Method addChildren
+     * 
+     * @param child
+     */
+    public void addChildren( Child child )
     {
-    }
-
-    public Parent( String name, String desc, double price )
-    {
-        this.name = name;
-
-        this.description = desc;
-
-        this.price = price;
-    }
-
-    public long getId()
-    {
-        return id;
-    }
-
-    public void setId( long id )
-    {
-        this.id = id;
+        getChildren().add( child );
     }
 
     /**
-     * @return Returns the description.
+     * Method equals
+     * 
+     * @param other
+     */
+    public boolean equals( Object other )
+    {
+        if ( this == other )
+        {
+            return true;
+        }
+
+        if ( !( other instanceof Parent ) )
+        {
+            return false;
+        }
+
+        Parent that = (Parent) other;
+        boolean result = true;
+        result = result && id == that.id;
+        return result;
+    }
+
+    /**
+     * Method getChildren
+     */
+    public java.util.List getChildren()
+    {
+        if ( this.children == null )
+        {
+            this.children = new java.util.ArrayList();
+        }
+
+        return this.children;
+    }
+
+    /**
+     * Get description
      */
     public String getDescription()
     {
-        return description;
+        return this.description;
     }
 
     /**
-     * @param description The description to set.
+     * Get id
+     */
+    public int getId()
+    {
+        return this.id;
+    }
+
+    /**
+     * Get name
+     */
+    public String getName()
+    {
+        return this.name;
+    }
+
+    /**
+     * Get price
+     */
+    public double getPrice()
+    {
+        return this.price;
+    }
+
+    /**
+     * Method hashCode
+     */
+    public int hashCode()
+    {
+        int result = 17;
+        result = 37 * result + (int) ( id ^ ( id >>> 32 ) );
+        return result;
+    }
+
+    /**
+     * Method removeChildren
+     * 
+     * @param child
+     */
+    public void removeChildren( Child child )
+    {
+        getChildren().remove( child );
+    }
+
+    /**
+     * Set children
+     * 
+     * @param children
+     */
+    public void setChildren( java.util.List children )
+    {
+        this.children = children;
+    }
+
+    /**
+     * Set description
+     * 
+     * @param description
      */
     public void setDescription( String description )
     {
@@ -77,15 +178,19 @@ public class Parent
     }
 
     /**
-     * @return Returns the name.
+     * Set id
+     * 
+     * @param id
      */
-    public String getName()
+    public void setId( int id )
     {
-        return name;
+        this.id = id;
     }
 
     /**
-     * @param name The name to set.
+     * Set name
+     * 
+     * @param name
      */
     public void setName( String name )
     {
@@ -93,19 +198,23 @@ public class Parent
     }
 
     /**
-     * @return Returns the price.
-     */
-    public double getPrice()
-    {
-        return price;
-    }
-
-    /**
-     * @param price The price to set.
+     * Set price
+     * 
+     * @param price
      */
     public void setPrice( double price )
     {
         this.price = price;
     }
-}
 
+    /**
+     * Method toString
+     */
+    public java.lang.String toString()
+    {
+        StringBuffer buf = new StringBuffer();
+        buf.append( "id = '" );
+        buf.append( getId() + "'" );
+        return buf.toString();
+    }
+}
