@@ -44,5 +44,4 @@ public class MemoryAuthenticatorTest
 
         assertEquals( "jason", ar.getPrincipal() );
     }
-
 }
