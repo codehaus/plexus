@@ -7,8 +7,16 @@
   </parent>
   <artifactId>plexus-security-authentication-providers</artifactId>
   <packaging>pom</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authentication-api</artifactId>
+    </dependency>
+  </dependencies>
   <modules>
+    <!--
     <module>plexus-security-authentication-provider-acegi</module>
+    -->
     <module>plexus-security-authentication-provider-memory</module>
   </modules>
 </project>

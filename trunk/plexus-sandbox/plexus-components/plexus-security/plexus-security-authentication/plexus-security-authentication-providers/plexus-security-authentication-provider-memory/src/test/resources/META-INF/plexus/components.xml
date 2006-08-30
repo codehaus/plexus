@@ -1,52 +1,13 @@
 <plexus>
   <components>
     <component>
-      <role>org.codehaus.plexus.security.Authenticator</role>
-      <role-hint>default</role-hint>
-      <implementation>org.codehaus.plexus.security.DefaultAuthenticator</implementation>
-      <description>DefaultAuthenticator:</description>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.security.AuthenticationStore</role>
-          <role-hint>simple</role-hint>
-          <field-name>authStore</field-name>
-        </requirement>
-      </requirements>
-    </component>
-    <component>
-      <role>org.codehaus.plexus.security.Authorizer</role>
-      <role-hint>default</role-hint>
-      <implementation>org.codehaus.plexus.security.DefaultAuthorizer</implementation>
-      <description>DefaultAuthorizer:</description>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.security.AuthorizationStore</role>
-          <role-hint>simple</role-hint>
-          <field-name>store</field-name>
-        </requirement>
-      </requirements>
-    </component>
-    <component>
-      <role>org.codehaus.plexus.security.PlexusSecurityRealm</role>
-      <role-hint>default</role-hint>
-      <implementation>org.codehaus.plexus.security.DefaultPlexusSecurityRealm</implementation>
-      <description>DefaultPlexusSecurityRealm:</description>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.security.Authenticator</role>
-          <field-name>authenticator</field-name>
-        </requirement>
-        <requirement>
-          <role>org.codehaus.plexus.security.Authorizer</role>
-          <field-name>authorizer</field-name>
-        </requirement>
-        <!--
-        <requirement>
-          <role>org.codehaus.plexus.PlexusContainer</role>
-          <field-name>container</field-name>
-        </requirement>
-        -->
-      </requirements>
+      <role>org.codehaus.plexus.security.authentication.Authenticator</role>
+      <role-hint>memory</role-hint>
+      <implementation>org.codehaus.plexus.security.authentication.memory.MemoryAuthenticator</implementation>
+      <configuration>
+        <login>jason</login>
+        <password>kungfu</password>
+      </configuration>
     </component>
   </components>
 </plexus>

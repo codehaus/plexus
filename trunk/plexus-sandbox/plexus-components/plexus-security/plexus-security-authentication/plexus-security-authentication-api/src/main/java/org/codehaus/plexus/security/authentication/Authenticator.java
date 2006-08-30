@@ -31,7 +31,6 @@ public interface Authenticator
 {
     String ROLE = Authenticator.class.getName();
 
-    public AuthenticationResult authenticate( Map tokens )
+    public AuthenticationResult authenticate( AuthenticationDataSource source )
         throws AuthenticationException;
-
 }
