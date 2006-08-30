@@ -111,12 +111,15 @@ public class DefaultJdoFactory
 
                     try
                     {
+                        /* shutdown the database */
                         DriverManager.getConnection( "jdbc:derby:" + databasePath + ";shutdown=true" );
                     }
                     catch ( SQLException e )
                     {
-                        // Shouldn't happen.
-                        throw new RuntimeException( e );
+                        /*
+                         * In Derby, any request to the DriverManager with a shutdown=true attribute raises an exception.
+                         * http://db.apache.org/derby/manuals/reference/sqlj251.html
+                         */
                     }
 
                     System.gc();
