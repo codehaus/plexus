@@ -1,8 +1,5 @@
 package org.codehaus.plexus.service.xmlrpc.configuration;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /*
  * The MIT License
  *

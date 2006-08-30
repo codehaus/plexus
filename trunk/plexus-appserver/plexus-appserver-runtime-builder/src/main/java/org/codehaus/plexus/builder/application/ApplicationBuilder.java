@@ -22,12 +22,12 @@ package org.codehaus.plexus.builder.application;
  * SOFTWARE.
  */
 
+import org.apache.maven.artifact.repository.ArtifactRepository;
+
 import java.io.File;
 import java.util.List;
-import java.util.Set;
 import java.util.Properties;
-
-import org.apache.maven.artifact.repository.ArtifactRepository;
+import java.util.Set;
 
 /**
  * @author Jason van Zyl
@@ -38,16 +38,10 @@ public interface ApplicationBuilder
 {
     String ROLE = ApplicationBuilder.class.getName();
 
-    void assemble( String applicationName,
-                   File workingDirectory,
-                   List remoteRepositories,
-                   ArtifactRepository localRespository,
-                   Set projectArtifacts,
-                   Set additionalCoreArtifacts,
-                   Set serviceArtifacts,
-                   File applicationConfiguration,
-                   File configurationsDirectory,
-                   Properties configurationProperties)
+    void assemble( String applicationName, File workingDirectory, List remoteRepositories,
+                   ArtifactRepository localRespository, Set projectArtifacts, Set additionalCoreArtifacts,
+                   Set serviceArtifacts, File applicationConfiguration, File configurationsDirectory,
+                   Properties configurationProperties )
         throws ApplicationBuilderException;
 
     void bundle( File outputFile, File workingDirectory )

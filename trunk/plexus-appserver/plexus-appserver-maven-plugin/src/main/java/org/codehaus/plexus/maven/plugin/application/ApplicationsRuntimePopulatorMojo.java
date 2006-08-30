@@ -1,11 +1,9 @@
 package org.codehaus.plexus.maven.plugin.application;
 
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.artifact.Artifact;
-import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
 
-import java.io.File;
 import java.util.Iterator;
 
 /**

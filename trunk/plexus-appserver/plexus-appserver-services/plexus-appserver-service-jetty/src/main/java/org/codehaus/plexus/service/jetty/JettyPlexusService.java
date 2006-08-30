@@ -26,23 +26,23 @@ package org.codehaus.plexus.service.jetty;
 
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.jetty.ServletContainer;
-import org.codehaus.plexus.jetty.ServletContainerException;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.appserver.service.AbstractPlexusService;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.jetty.ServletContainer;
+import org.codehaus.plexus.jetty.ServletContainerException;
 import org.codehaus.plexus.jetty.configuration.HttpListener;
 import org.codehaus.plexus.jetty.configuration.ProxyHttpListener;
 import org.codehaus.plexus.jetty.configuration.ServiceConfiguration;
-import org.codehaus.plexus.jetty.configuration.Webapp;
-import org.codehaus.plexus.jetty.configuration.WebContext;
 import org.codehaus.plexus.jetty.configuration.ServletContext;
+import org.codehaus.plexus.jetty.configuration.WebContext;
+import org.codehaus.plexus.jetty.configuration.Webapp;
 import org.codehaus.plexus.jetty.configuration.builder.ServiceConfigurationBuilder;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.HashSet;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -73,12 +73,10 @@ public class JettyPlexusService
     // PlexusService Implementation
     // ----------------------------------------------------------------------
 
-    public void beforeApplicationStart( AppRuntimeProfile runtimeProfile,
-                                        PlexusConfiguration serviceConfiguration )
+    public void beforeApplicationStart( AppRuntimeProfile runtimeProfile, PlexusConfiguration serviceConfiguration )
         throws Exception
     {
         // We probably need to stop running contexts here ...
-
 
         ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration,
                                                                                       runtimeProfile.getApplicationServerContainer().getContainerRealm() );
@@ -156,8 +154,7 @@ public class JettyPlexusService
         }
     }
 
-    public void afterApplicationStart( AppRuntimeProfile appRuntimeProfile,
-                                       PlexusConfiguration serviceConfiguration )
+    public void afterApplicationStart( AppRuntimeProfile appRuntimeProfile, PlexusConfiguration serviceConfiguration )
         throws Exception
     {
         ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration,
@@ -171,17 +168,17 @@ public class JettyPlexusService
 
             //if ( !servletContainer.hasContext( application.getContext() ) )
             //{
-                // ----------------------------------------------------------------------------
-                // Now we need to find all the components that might be included in the webapp.
-                // We have to do this here because now the container is initialized which
-                // means discovery can occur.
-                // ----------------------------------------------------------------------------
+            // ----------------------------------------------------------------------------
+            // Now we need to find all the components that might be included in the webapp.
+            // We have to do this here because now the container is initialized which
+            // means discovery can occur.
+            // ----------------------------------------------------------------------------
 
-                DefaultPlexusContainer c = appRuntimeProfile.getApplicationContainer();
+            DefaultPlexusContainer c = appRuntimeProfile.getApplicationContainer();
 
-                ClassRealm realm = c.getContainerRealm();
+            ClassRealm realm = c.getContainerRealm();
 
-                c.discoverComponents( realm );
+            c.discoverComponents( realm );
             //}
 
             servletContainer.startApplication( application.getContext() );
@@ -210,8 +207,7 @@ public class JettyPlexusService
     //
     // ----------------------------------------------------------------------------
 
-    private void processWebContextConfiguration( WebContext context,
-                                                 AppRuntimeProfile profile )
+    private void processWebContextConfiguration( WebContext context, AppRuntimeProfile profile )
         throws Exception
     {
         if ( context.getVirtualHost() == null )

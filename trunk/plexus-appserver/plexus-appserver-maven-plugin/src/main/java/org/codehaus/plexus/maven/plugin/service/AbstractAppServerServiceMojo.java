@@ -1,7 +1,7 @@
 package org.codehaus.plexus.maven.plugin.service;
 
-import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
 import org.codehaus.plexus.builder.service.ServiceBuilder;
+import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
 
 import java.io.File;
 
