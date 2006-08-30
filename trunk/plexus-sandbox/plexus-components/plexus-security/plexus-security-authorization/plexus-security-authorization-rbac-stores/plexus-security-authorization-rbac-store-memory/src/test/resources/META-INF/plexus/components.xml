@@ -27,9 +27,9 @@
       </requirements>
     </component>
     <component>
-      <role>org.codehaus.plexus.security.PlexusSecurityRealm</role>
+      <role>org.codehaus.plexus.security.PlexusSecuritySystemexusSecurityRealm</role>
       <role-hint>default</role-hint>
-      <implementation>org.codehaus.plexus.security.DefaultPlexusSecurityRealm</implementation>
+      <implementation>org.codehaus.plexus.security.DefaultPlexusSecuritySystemfaultPlexusSecurityRealm</implementation>
       <description>DefaultPlexusSecurityRealm:</description>
       <requirements>
         <requirement>

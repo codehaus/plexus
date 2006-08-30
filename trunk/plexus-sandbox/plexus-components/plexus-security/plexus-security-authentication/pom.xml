@@ -7,10 +7,6 @@
   </parent>
   <artifactId>plexus-security-authentication</artifactId>
   <packaging>pom</packaging>
-  <dependencies>
-    <groupId>org.codehaus.plexus.security</groupId>
-    <artifactId>plexus-security-system</artifactId>
-  </dependencies>
   <modules>
     <module>plexus-security-authentication-api</module>
     <module>plexus-security-authentication-providers</module>

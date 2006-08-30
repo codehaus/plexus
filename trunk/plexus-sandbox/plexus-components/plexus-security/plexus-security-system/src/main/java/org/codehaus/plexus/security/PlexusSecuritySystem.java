@@ -1,4 +1,5 @@
 package org.codehaus.plexus.security;
+
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -16,18 +17,13 @@ package org.codehaus.plexus.security;
  */
 
 /**
- * SecurityRealmNotFoundException:
+ * PlexusSecuritySystem:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
+ *
  */
-public class SecurityRealmNotFoundException
-    extends Exception
+public interface PlexusSecuritySystem
 {
-
-    public SecurityRealmNotFoundException( String name )
-    {
-        super( name );
-    }
-
+    public static String ROLE = PlexusSecuritySystem.class.getName();
 }
