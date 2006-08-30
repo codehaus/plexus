@@ -108,6 +108,7 @@ public class PlexusJdoUtils
         return persistentObject;
     }
 
+    // TODO: Allow use of long as id type.
     public static Object getObjectById( PersistenceManager pm, Class clazz, int id )
         throws PlexusStoreException, PlexusObjectNotFoundException
     {

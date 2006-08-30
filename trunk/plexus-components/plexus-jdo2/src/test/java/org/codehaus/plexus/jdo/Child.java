@@ -25,52 +25,125 @@ package org.codehaus.plexus.jdo;
  */
 
 /**
+ * modello:java generated file.
+ * 
  * @author <a href="mailto:mattis@inamo.no">Mathias Bjerke</a>
+ * @version $Id$
  */
 public class Child
+    implements java.io.Serializable
 {
-    private long id;
 
+    /**
+     * Field id
+     */
+    private int id = 0;
+
+    /**
+     * Field name
+     */
     private String name;
 
-    private long hufse;
+    /**
+     * Field description
+     */
+    private String description;
 
-    private Child()
+    /**
+     * Method equals
+     * 
+     * @param other
+     */
+    public boolean equals( Object other )
     {
+        if ( this == other )
+        {
+            return true;
+        }
+
+        if ( !( other instanceof Child ) )
+        {
+            return false;
+        }
+
+        Child that = (Child) other;
+        boolean result = true;
+        result = result && id == that.id;
+        return result;
     }
 
-    public Child( String name )
+    /**
+     * Get description
+     */
+    public String getDescription()
     {
-        this.name = name;
+        return this.description;
     }
 
-    public long getId()
+    /**
+     * Get id
+     */
+    public int getId()
     {
-        return id;
+        return this.id;
     }
 
-    public void setId( long id )
+    /**
+     * Get name
+     */
+    public String getName()
+    {
+        return this.name;
+    }
+
+    /**
+     * Method hashCode
+     */
+    public int hashCode()
+    {
+        int result = 17;
+        result = 37 * result + (int) ( id ^ ( id >>> 32 ) );
+        return result;
+    }
+
+    /**
+     * Set description
+     * 
+     * @param description
+     */
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    /**
+     * Set id
+     * 
+     * @param id
+     */
+    public void setId( int id )
     {
         this.id = id;
     }
 
-    public String getName()
-    {
-        return name;
-    }
-
+    /**
+     * Set name
+     * 
+     * @param name
+     */
     public void setName( String name )
     {
         this.name = name;
     }
 
-    public long getHufse()
+    /**
+     * Method toString
+     */
+    public java.lang.String toString()
     {
-        return hufse;
-    }
-
-    public void setHufse( long hufse )
-    {
-        this.hufse = hufse;
+        StringBuffer buf = new StringBuffer();
+        buf.append( "id = '" );
+        buf.append( getId() + "'" );
+        return buf.toString();
     }
 }
