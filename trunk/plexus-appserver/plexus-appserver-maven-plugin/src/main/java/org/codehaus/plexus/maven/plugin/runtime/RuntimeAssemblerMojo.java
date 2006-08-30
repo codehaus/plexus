@@ -22,17 +22,15 @@ package org.codehaus.plexus.maven.plugin.runtime;
  * SOFTWARE.
  */
 
+import org.apache.maven.plugin.MojoExecutionException;
+import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
+import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Properties;
-
-import org.apache.maven.plugin.MojoExecutionException;
-
-import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
-import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
-import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
