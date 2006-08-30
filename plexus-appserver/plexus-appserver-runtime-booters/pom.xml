@@ -16,7 +16,7 @@
         <artifactId>plexus-appserver-runtime-booter-common</artifactId>
         <version>${project.version}</version>
       </dependency>
-    </dependencies>    
+    </dependencies>
   </dependencyManagement>
   <dependencies>
     <dependency>

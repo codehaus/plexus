@@ -16,13 +16,13 @@ package org.codehaus.plexus.jetty;
  * limitations under the License.
  */
 
-import java.net.Socket;
-
 import org.mortbay.http.HttpFields;
 import org.mortbay.http.HttpMessage;
 import org.mortbay.http.HttpRequest;
 import org.mortbay.http.SocketListener;
 import org.mortbay.util.InetAddrPort;
+
+import java.net.Socket;
 
 /**
  * Forced Host Listener
@@ -54,8 +54,7 @@ public class JettyProxyHttpListener
         forcedHost = host;
     }
 
-    protected void customizeRequest( Socket socket,
-                                     HttpRequest request )
+    protected void customizeRequest( Socket socket, HttpRequest request )
     {
         request.setState( HttpMessage.__MSG_EDITABLE );
 

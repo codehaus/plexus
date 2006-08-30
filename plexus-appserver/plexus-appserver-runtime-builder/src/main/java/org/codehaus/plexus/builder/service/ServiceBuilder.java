@@ -24,12 +24,12 @@ package org.codehaus.plexus.builder.service;
  * SOFTWARE.
  */
 
+import org.apache.maven.artifact.repository.ArtifactRepository;
+
 import java.io.File;
-import java.util.Set;
 import java.util.List;
 import java.util.Properties;
-
-import org.apache.maven.artifact.repository.ArtifactRepository;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -40,15 +40,9 @@ public interface ServiceBuilder
 {
     String ROLE = ServiceBuilder.class.getName();
 
-    void build( String servicename,
-                File outputDirectory,
-                File classes,
-                List remoteRepositories,
-                ArtifactRepository localRespository,
-                Set serviceArtifacts,
-                File plexusConfiguration,
-                File configurationsDirectory,
-                Properties configurationProperties )
+    void build( String servicename, File outputDirectory, File classes, List remoteRepositories,
+                ArtifactRepository localRespository, Set serviceArtifacts, File plexusConfiguration,
+                File configurationsDirectory, Properties configurationProperties )
         throws ServiceBuilderException;
 
     void bundle( File outputFile, File workingDirectory )

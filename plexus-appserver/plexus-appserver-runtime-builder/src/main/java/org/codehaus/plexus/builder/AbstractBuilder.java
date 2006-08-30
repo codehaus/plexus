@@ -22,6 +22,24 @@ package org.codehaus.plexus.builder;
  * SOFTWARE.
  */
 
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+import org.apache.maven.project.MavenProjectBuilder;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.InterpolationFilterReader;
+import org.codehaus.plexus.util.Os;
+import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.cli.CommandLineException;
+import org.codehaus.plexus.util.cli.Commandline;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -35,25 +53,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
-import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
-import org.apache.maven.project.MavenProjectBuilder;
-
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.InterpolationFilterReader;
-import org.codehaus.plexus.util.Os;
-import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.cli.CommandLineException;
-import org.codehaus.plexus.util.cli.Commandline;
 
 /**
  * @author Jason van Zyl
@@ -139,55 +138,37 @@ public abstract class AbstractBuilder
     //
     // ----------------------------------------------------------------------
 
-    protected void filterCopy( File in,
-                               File out,
-                               Map map )
+    protected void filterCopy( File in, File out, Map map )
         throws IOException
     {
         filterCopy( new FileReader( in ), out, map );
     }
 
-    protected void filterCopy( File in,
-                               File out,
-                               Map map,
-                               String beginToken,
-                               String endToken )
+    protected void filterCopy( File in, File out, Map map, String beginToken, String endToken )
         throws IOException
     {
         filterCopy( new FileReader( in ), out, map, beginToken, endToken );
     }
 
-    protected void filterCopy( InputStream in,
-                               File out,
-                               Map map )
+    protected void filterCopy( InputStream in, File out, Map map )
         throws IOException
     {
         filterCopy( new InputStreamReader( in ), out, map );
     }
 
-    protected void filterCopy( InputStream in,
-                               File out,
-                               Map map,
-                               String beginToken,
-                               String endToken )
+    protected void filterCopy( InputStream in, File out, Map map, String beginToken, String endToken )
         throws IOException
     {
         filterCopy( new InputStreamReader( in ), out, map, beginToken, endToken );
     }
 
-    protected void filterCopy( Reader in,
-                               File out,
-                               Map map )
+    protected void filterCopy( Reader in, File out, Map map )
         throws IOException
     {
         filterCopy( in, out, map, "@", "@" );
     }
 
-    protected void filterCopy( Reader in,
-                               File out,
-                               Map map,
-                               String beginToken,
-                               String endToken )
+    protected void filterCopy( Reader in, File out, Map map, String beginToken, String endToken )
         throws IOException
     {
         InterpolationFilterReader reader = new InterpolationFilterReader( in, map, beginToken, endToken );
@@ -203,9 +184,7 @@ public abstract class AbstractBuilder
     // Artifact methods
     // ----------------------------------------------------------------------
 
-    protected void copyArtifact( Artifact artifact,
-                                 File outputDir,
-                                 File destination )
+    protected void copyArtifact( Artifact artifact, File outputDir, File destination )
         throws IOException
     {
         String dest = destination.getAbsolutePath().substring( outputDir.getAbsolutePath().length() + 1 );
@@ -215,9 +194,7 @@ public abstract class AbstractBuilder
         FileUtils.copyFileToDirectory( artifact.getFile(), destination );
     }
 
-    protected void copyArtifacts( File outputDir,
-                                  File dir,
-                                  Set artifacts )
+    protected void copyArtifacts( File outputDir, File dir, Set artifacts )
         throws IOException
     {
         for ( Iterator it = artifacts.iterator(); it.hasNext(); )
@@ -228,9 +205,7 @@ public abstract class AbstractBuilder
         }
     }
 
-    protected Set getBootArtifacts( Set projectArtifacts,
-                                    List remoteRepositories,
-                                    ArtifactRepository localRepository,
+    protected Set getBootArtifacts( Set projectArtifacts, List remoteRepositories, ArtifactRepository localRepository,
                                     boolean ignoreIfMissing )
         throws ArtifactResolutionException
     {
@@ -243,11 +218,8 @@ public abstract class AbstractBuilder
         return artifacts;
     }
 
-    protected Set getCoreArtifacts( Set projectArtifacts,
-                                    Set additionalCoreArtifacts,
-                                    List remoteRepositories,
-                                    ArtifactRepository localRepository,
-                                    boolean ignoreIfMissing )
+    protected Set getCoreArtifacts( Set projectArtifacts, Set additionalCoreArtifacts, List remoteRepositories,
+                                    ArtifactRepository localRepository, boolean ignoreIfMissing )
         throws ArtifactResolutionException
     {
         Set artifacts = new HashSet();
@@ -273,8 +245,7 @@ public abstract class AbstractBuilder
         return artifacts;
     }
 
-    protected Set getExcludedArtifacts( Set projectArtifacts,
-                                        List remoteRepositories,
+    protected Set getExcludedArtifacts( Set projectArtifacts, List remoteRepositories,
                                         ArtifactRepository localRepository )
         throws ArtifactResolutionException
     {
@@ -290,11 +261,8 @@ public abstract class AbstractBuilder
         return artifacts;
     }
 
-    protected Set findArtifacts( List remoteRepositories,
-                                 ArtifactRepository localRepository,
-                                 Set sourceArtifacts,
-                                 boolean resolveTransitively,
-                                 ArtifactFilter artifactFilter )
+    protected Set findArtifacts( List remoteRepositories, ArtifactRepository localRepository, Set sourceArtifacts,
+                                 boolean resolveTransitively, ArtifactFilter artifactFilter )
         throws ArtifactResolutionException
     {
         ArtifactResolutionResult result;
@@ -328,10 +296,7 @@ public abstract class AbstractBuilder
         return resolvedArtifacts;
     }
 
-    protected String resolveVersion( String groupId,
-                                     String artifactId,
-                                     Set projectArtifacts,
-                                     boolean ignoreIfMissing,
+    protected String resolveVersion( String groupId, String artifactId, Set projectArtifacts, boolean ignoreIfMissing,
                                      Set resolvedArtifacts )
     {
         for ( Iterator it = projectArtifacts.iterator(); it.hasNext(); )
@@ -413,8 +378,7 @@ public abstract class AbstractBuilder
 
         private ArtifactFilter filterB;
 
-        public AndArtifactFilter( ArtifactFilter filterA,
-                                  ArtifactFilter filterB )
+        public AndArtifactFilter( ArtifactFilter filterA, ArtifactFilter filterB )
         {
             this.filterA = filterA;
 

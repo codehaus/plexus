@@ -22,20 +22,17 @@ package org.codehaus.plexus.maven.plugin.application;
  * SOFTWARE.
  */
 
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.codehaus.plexus.builder.application.ApplicationBuilderException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.Properties;
-
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.plugin.MojoExecutionException;
-
-import org.codehaus.plexus.builder.application.ApplicationBuilder;
-import org.codehaus.plexus.builder.application.ApplicationBuilderException;
-import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -124,9 +121,9 @@ public class ApplicationAssemblerMojo
 
         try
         {
-            applicationBuilder.assemble( applicationName, applicationAssemblyDirectory, remoteRepositories, localRepository,
-                              projectArtifacts, additionalCoreArtifacts, services, applicationConfiguration,
-                              configurationsDirectory, interpolationProperties );
+            applicationBuilder.assemble( applicationName, applicationAssemblyDirectory, remoteRepositories,
+                                         localRepository, projectArtifacts, additionalCoreArtifacts, services,
+                                         applicationConfiguration, configurationsDirectory, interpolationProperties );
         }
         catch ( ApplicationBuilderException e )
         {

@@ -28,8 +28,8 @@ import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ComponentConfigurator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.jetty.configuration.ServiceConfiguration;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -41,8 +41,7 @@ public class DefaultServiceConfigurationBuilder
 {
     private ComponentConfigurator configurator;
 
-    public ServiceConfiguration buildConfiguration( PlexusConfiguration serviceConfiguration,
-                                                    ClassRealm realm )
+    public ServiceConfiguration buildConfiguration( PlexusConfiguration serviceConfiguration, ClassRealm realm )
         throws ComponentConfigurationException
     {
         ServiceConfiguration configuration = new ServiceConfiguration();

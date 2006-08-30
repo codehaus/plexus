@@ -24,21 +24,10 @@ package org.codehaus.plexus.builder.service;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.ArrayList;
-import java.util.Collections;
-
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
-
 import org.codehaus.plexus.appserver.PlexusServiceConstants;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
@@ -46,6 +35,15 @@ import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -60,15 +58,9 @@ public class DefaultServiceBuilder
     // ServiceBuilder Implementation
     // ----------------------------------------------------------------------
 
-    public void build( String serviceName,
-                       File outputDirectory,
-                       File serviceJar,
-                       List remoteRepositories,
-                       ArtifactRepository localRepository,
-                       Set serviceArtifacts,
-                       File serviceConfiguration,
-                       File configurationsDirectory,
-                       Properties configurationProperties )
+    public void build( String serviceName, File outputDirectory, File serviceJar, List remoteRepositories,
+                       ArtifactRepository localRepository, Set serviceArtifacts, File serviceConfiguration,
+                       File configurationsDirectory, Properties configurationProperties )
         throws ServiceBuilderException
     {
         // ----------------------------------------------------------------------
@@ -82,7 +74,8 @@ public class DefaultServiceBuilder
 
         if ( configurationsDirectory != null && !configurationsDirectory.isDirectory() )
         {
-            throw new ServiceBuilderException( "The configurations directory isn't a directory: '" + configurationsDirectory.getAbsolutePath() + "." );
+            throw new ServiceBuilderException(
+                "The configurations directory isn't a directory: '" + configurationsDirectory.getAbsolutePath() + "." );
         }
 
         File libDir;
@@ -133,11 +126,11 @@ public class DefaultServiceBuilder
 
             excludedArtifacts.addAll( getBootArtifacts( serviceArtifacts, remoteRepositories, localRepository, true ) );
 
-            excludedArtifacts.addAll( getCoreArtifacts( serviceArtifacts, Collections.EMPTY_SET, remoteRepositories, localRepository, true ) );
+            excludedArtifacts.addAll( getCoreArtifacts( serviceArtifacts, Collections.EMPTY_SET, remoteRepositories,
+                                                        localRepository, true ) );
 
-            ArtifactFilter filter = new AndArtifactFilter(
-                new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
-                new GroupArtifactTypeArtifactFilter( excludedArtifacts ) );
+            ArtifactFilter filter = new AndArtifactFilter( new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
+                                                           new GroupArtifactTypeArtifactFilter( excludedArtifacts ) );
 
             artifacts = findArtifacts( remoteRepositories, localRepository, serviceArtifacts, true, filter );
         }
@@ -186,9 +179,7 @@ public class DefaultServiceBuilder
     //
     // ----------------------------------------------------------------------
 
-    private void processConfigurations( File confDir,
-                                        File plexusConfigurationFile,
-                                        Properties configurationProperties,
+    private void processConfigurations( File confDir, File plexusConfigurationFile, Properties configurationProperties,
                                         File configurationsDirectory )
         throws ServiceBuilderException, IOException
     {
@@ -198,7 +189,8 @@ public class DefaultServiceBuilder
 
         if ( !plexusConfigurationFile.exists() )
         {
-            throw new ServiceBuilderException( "The appserver configurator file doesn't exist: '" + plexusConfigurationFile.getAbsolutePath() + "'." );
+            throw new ServiceBuilderException(
+                "The appserver configurator file doesn't exist: '" + plexusConfigurationFile.getAbsolutePath() + "'." );
         }
 
         FileUtils.copyFile( plexusConfigurationFile, new File( confDir, PlexusServiceConstants.CONFIGURATION_FILE ) );
@@ -220,7 +212,7 @@ public class DefaultServiceBuilder
 
         excludes.add( "**/CVS/**" );
 
-        scanner.setExcludes( (String[]) excludes.toArray( new String[ excludes.size() ] ) );
+        scanner.setExcludes( (String[]) excludes.toArray( new String[excludes.size()] ) );
 
         scanner.scan();
 

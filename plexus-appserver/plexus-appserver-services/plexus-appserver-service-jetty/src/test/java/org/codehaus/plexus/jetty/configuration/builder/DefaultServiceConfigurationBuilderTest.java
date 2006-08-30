@@ -24,19 +24,19 @@ package org.codehaus.plexus.jetty.configuration.builder;
  * SOFTWARE.
  */
 
-import java.io.FileReader;
-import java.util.List;
-
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.jetty.configuration.ServiceConfiguration;
-import org.codehaus.plexus.jetty.configuration.Webapp;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.jetty.configuration.HttpListener;
 import org.codehaus.plexus.jetty.configuration.ProxyHttpListener;
+import org.codehaus.plexus.jetty.configuration.ServiceConfiguration;
 import org.codehaus.plexus.jetty.configuration.WebContext;
-import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+import org.codehaus.plexus.jetty.configuration.Webapp;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+
+import java.io.FileReader;
+import java.util.List;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -48,13 +48,16 @@ public class DefaultServiceConfigurationBuilderTest
     public void testBasic()
         throws Exception
     {
-        ServiceConfigurationBuilder configurationBuilder = (ServiceConfigurationBuilder) lookup( ServiceConfigurationBuilder.ROLE );
+        ServiceConfigurationBuilder configurationBuilder =
+            (ServiceConfigurationBuilder) lookup( ServiceConfigurationBuilder.ROLE );
 
-        Xpp3Dom dom = Xpp3DomBuilder.build( new FileReader( getTestFile( "src/test/resources/full-configuration-example.xml" ) )  );
+        Xpp3Dom dom = Xpp3DomBuilder.build(
+            new FileReader( getTestFile( "src/test/resources/full-configuration-example.xml" ) ) );
 
         PlexusConfiguration plexusConfiguration = new XmlPlexusConfiguration( dom );
 
-        ServiceConfiguration configuration = configurationBuilder.buildConfiguration( plexusConfiguration, getContainer().getContainerRealm() );
+        ServiceConfiguration configuration =
+            configurationBuilder.buildConfiguration( plexusConfiguration, getContainer().getContainerRealm() );
 
         assertNotNull( configuration );
 
@@ -79,7 +82,7 @@ public class DefaultServiceConfigurationBuilderTest
         assertEquals( "www.foo.com", webapp.getVirtualHost() );
 
         assertTrue( webapp.isStandardWebappClassloader() );
-        
+
         // ----------------------------------------------------------------------
         // Assert the listeners
         // ----------------------------------------------------------------------
