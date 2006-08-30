@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.simple;
+package org.codehaus.plexus.security.authentication.memory;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.security.PlexusSecurityRealm;
