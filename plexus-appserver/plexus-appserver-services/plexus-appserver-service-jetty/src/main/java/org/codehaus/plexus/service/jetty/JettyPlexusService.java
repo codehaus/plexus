@@ -38,6 +38,7 @@ import org.codehaus.plexus.jetty.configuration.ServletContext;
 import org.codehaus.plexus.jetty.configuration.WebContext;
 import org.codehaus.plexus.jetty.configuration.Webapp;
 import org.codehaus.plexus.jetty.configuration.builder.ServiceConfigurationBuilder;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.util.HashSet;
@@ -274,6 +275,6 @@ public class JettyPlexusService
 
     private File getFile( String path )
     {
-        return FileUtils.resolveFile( new File( ".", path );
+        return FileUtils.resolveFile( new File( "." ), path );
     }
 }
