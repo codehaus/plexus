@@ -458,7 +458,7 @@ public class JettyServletContainer
         {
             server.start();
         }
-        catch ( MultiException e )
+        catch ( Exception e )
         {
             throw new StartingException( "Error while starting Jetty", e );
         }
