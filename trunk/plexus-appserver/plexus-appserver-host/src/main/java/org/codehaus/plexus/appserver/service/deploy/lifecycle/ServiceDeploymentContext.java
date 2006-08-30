@@ -1,13 +1,8 @@
 package org.codehaus.plexus.appserver.service.deploy.lifecycle;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
-import org.codehaus.plexus.appserver.ApplicationServer;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 import java.io.File;
-import java.util.Map;
-import java.util.Properties;
 
 /**
  * @author Jason van Zyl
@@ -28,9 +23,7 @@ public class ServiceDeploymentContext
 
     File serviceDirectory;
 
-    public ServiceDeploymentContext( String serviceId,
-                                     File sar,
-                                     File servicesDirectory,
+    public ServiceDeploymentContext( String serviceId, File sar, File servicesDirectory,
                                      DefaultPlexusContainer container )
     {
         this.serviceId = serviceId;

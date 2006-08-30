@@ -1,7 +1,7 @@
 package org.codehaus.plexus.appserver;
 
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.appserver.deploy.DeploymentException;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.Expand;
 
 import java.io.File;

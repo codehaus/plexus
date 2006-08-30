@@ -11,8 +11,7 @@ public class DeploymentException
         super( string );
     }
 
-    public DeploymentException( String string,
-                                Throwable throwable )
+    public DeploymentException( String string, Throwable throwable )
     {
         super( string, throwable );
     }

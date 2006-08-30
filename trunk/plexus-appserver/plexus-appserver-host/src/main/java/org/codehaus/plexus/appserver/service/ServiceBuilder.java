@@ -24,13 +24,15 @@ package org.codehaus.plexus.appserver.service;
 
 /**
  * A bean which builds services.
- * 
+ *
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  * @since Jul 17, 2004
  */
 public class ServiceBuilder
 {
     private String userConfig;
+
     private String targetDirectory;
+
     private String targetJar;
 }

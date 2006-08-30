@@ -24,7 +24,7 @@ package org.codehaus.plexus.appserver.application.event;
 
 /**
  * Listens for appserver events.
- * 
+ *
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
  * @since Jul 17, 2004
  */

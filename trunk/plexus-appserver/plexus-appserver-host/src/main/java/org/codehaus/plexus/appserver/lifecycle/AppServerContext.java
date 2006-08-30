@@ -13,8 +13,7 @@ public class AppServerContext
 
     private File appServerHome;
 
-    public AppServerContext( ApplicationServer appServer,
-                             File appServerHome )
+    public AppServerContext( ApplicationServer appServer, File appServerHome )
     {
         this.appServer = appServer;
         this.appServerHome = appServerHome;

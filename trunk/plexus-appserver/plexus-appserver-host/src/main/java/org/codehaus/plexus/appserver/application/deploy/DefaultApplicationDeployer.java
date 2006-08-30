@@ -26,8 +26,8 @@ import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.classworlds.NoSuchRealmException;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.appserver.ApplicationServerException;
 import org.codehaus.plexus.appserver.ApplicationServer;
+import org.codehaus.plexus.appserver.ApplicationServerException;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase;
@@ -57,10 +57,7 @@ import java.util.Map;
  */
 public class DefaultApplicationDeployer
     extends AbstractDeployer
-    implements ApplicationDeployer,
-    Contextualizable,
-    Initializable,
-    Disposable
+    implements ApplicationDeployer, Contextualizable, Initializable, Disposable
 {
     private Map deployments;
 
@@ -80,16 +77,13 @@ public class DefaultApplicationDeployer
     // Deployment
     // ----------------------------------------------------------------------
 
-    public void deploy( String appId,
-                        File par )
+    public void deploy( String appId, File par )
         throws ApplicationServerException
     {
         deployJar( appId, par, true );
     }
 
-    private void deployJar( String appId,
-                            File file,
-                            boolean expandPar )
+    private void deployJar( String appId, File file, boolean expandPar )
         throws ApplicationServerException
     {
         AppDeploymentContext context = new AppDeploymentContext( file, applicationsDirectory, deployments,

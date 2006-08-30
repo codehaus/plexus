@@ -22,9 +22,9 @@ package org.codehaus.plexus.appserver.application.deploy;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.appserver.ApplicationServerException;
 import org.codehaus.plexus.appserver.application.event.ApplicationListener;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
-import org.codehaus.plexus.appserver.ApplicationServerException;
 import org.codehaus.plexus.appserver.deploy.Deployer;
 
 /**
