@@ -1,0 +1,93 @@
+<model>
+  <id>plexus-jdo2-test-objects</id>
+  <name>Plexus JDO2 Component Test Model</name>
+  <description>Test Object for Plexus JDO2 Component object model.</description>
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>org.codehaus.plexus.jdo</value>
+    </default>
+  </defaults>
+
+  <classes>
+    <class stash.storable="true">
+      <name>Basic</name>
+      <version>1.0.0+</version>
+      <fields>
+        <field>
+          <name>id</name>
+          <identifier>true</identifier>
+          <version>1.0.0+</version>
+          <type>int</type>
+        </field>
+        <field>
+          <name>name</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>description</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+      </fields>
+    </class>
+    <class stash.storable="true">
+      <name>Parent</name>
+      <version>1.0.0+</version>
+      <fields>
+        <field>
+          <name>id</name>
+          <identifier>true</identifier>
+          <version>1.0.0+</version>
+          <type>int</type>
+        </field>
+        <field>
+          <name>price</name>
+          <version>1.0.0+</version>
+          <type>double</type>
+        </field>
+        <field>
+          <name>name</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>description</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>children</name>
+          <version>1.0.0+</version>
+          <association stash.part="true">
+            <type>Child</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class stash.storable="true">
+      <name>Child</name>
+      <version>1.0.0+</version>
+      <fields>
+        <field>
+          <name>id</name>
+          <identifier>true</identifier>
+          <version>1.0.0+</version>
+          <type>int</type>
+        </field>
+        <field>
+          <name>name</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>description</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+      </fields>
+    </class>
+  </classes>
+</model>
