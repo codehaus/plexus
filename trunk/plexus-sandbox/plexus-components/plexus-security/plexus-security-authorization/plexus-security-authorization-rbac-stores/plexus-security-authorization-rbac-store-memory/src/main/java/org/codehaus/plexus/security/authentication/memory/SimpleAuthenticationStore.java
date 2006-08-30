@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.simple;
+package org.codehaus.plexus.security.authentication.memory;
 
 import org.codehaus.plexus.security.AuthenticationResult;
 import org.codehaus.plexus.security.AuthenticationStore;
@@ -29,7 +29,7 @@ import java.util.Map;
  *
  * @plexus.component
  *   role="org.codehaus.plexus.security.AuthenticationStore"
- *   role-hint="simple"
+ *   role-hint="memory"
  */
 public class SimpleAuthenticationStore
     implements AuthenticationStore

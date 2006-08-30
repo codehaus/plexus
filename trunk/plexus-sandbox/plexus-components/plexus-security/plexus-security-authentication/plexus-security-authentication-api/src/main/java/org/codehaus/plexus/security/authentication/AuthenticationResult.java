@@ -26,49 +26,19 @@ import java.io.Serializable;
 public class AuthenticationResult
     implements Serializable
 {
-    /**
-     * the name of the authentication store that generated this AuthenticationResult
-     */
-    private String authenticationStore;
+    private boolean isAuthenticated;
 
-    /**
-     * boolean representing authentication status
-     */
-    private boolean isAuthenticated = false;
-
-    /**
-     * the main actor or principal agent in the system, most commonly the username corresponding to the authentication
-     * request
-     *
-     * Note: the toString() of the principle Object should always represent the unique agent
-     */
     private Object principal;
 
-    /**
-     * optional message the authentication store can set
-     */
-    private String message;
-
-    /**
-     * optional exception the authentication store can set
-     */
     private Exception exception;
 
-    /**
-     * optional authentication payload object
-     */
-    private Object payload;
-
-    private AuthenticationResult(){}    
-
-    public AuthenticationResult( String authenticationStore )
+    public AuthenticationResult( boolean authenticated,
+                                 Object principal,
+                                 Exception exception )
     {
-        this.authenticationStore = authenticationStore;
-    }
-
-    public void setAuthenticated( boolean isAuthenticated )
-    {
-        this.isAuthenticated = isAuthenticated;
+        isAuthenticated = authenticated;
+        this.principal = principal;
+        this.exception = exception;
     }
 
     public boolean isAuthenticated()
@@ -81,48 +51,8 @@ public class AuthenticationResult
         return principal;
     }
 
-    public void setPrincipal( Object principal )
-    {
-        this.principal = principal;
-    }
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    public void setMessage( String message )
-    {
-        this.message = message;
-    }
-
     public Exception getException()
     {
         return exception;
-    }
-
-    public void setException( Exception exception )
-    {
-        this.exception = exception;
-    }
-
-    public Object getPayload()
-    {
-        return payload;
-    }
-
-    public void setPayload( Object payload )
-    {
-        this.payload = payload;
-    }
-
-    public String getAuthenticationStore()
-    {
-        return authenticationStore;
-    }
-
-    public void setAuthenticationStore( String authenticationStore )
-    {
-        this.authenticationStore = authenticationStore;
     }
 }
