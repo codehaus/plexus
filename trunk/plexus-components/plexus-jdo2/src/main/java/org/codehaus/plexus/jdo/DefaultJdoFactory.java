@@ -26,6 +26,7 @@ package org.codehaus.plexus.jdo;
 
 import java.util.Properties;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;
@@ -112,9 +113,10 @@ public class DefaultJdoFactory
                     {
                         DriverManager.getConnection( "jdbc:derby:" + databasePath + ";shutdown=true" );
                     }
-                    catch ( Exception e )
+                    catch ( SQLException e )
                     {
                         // Shouldn't happen.
+                        throw new RuntimeException( e );
                     }
 
                     System.gc();
