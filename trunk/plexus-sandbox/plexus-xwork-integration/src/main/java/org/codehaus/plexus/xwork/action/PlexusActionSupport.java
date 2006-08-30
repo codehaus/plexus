@@ -15,10 +15,15 @@ package org.codehaus.plexus.xwork.action;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.opensymphony.webwork.interceptor.SessionAware;
+import com.opensymphony.xwork.ActionSupport;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
-import com.opensymphony.xwork.ActionSupport;
-import com.opensymphony.webwork.interceptor.SessionAware;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 
 import java.util.Map;
 
@@ -30,8 +35,10 @@ import java.util.Map;
  */
 public abstract class PlexusActionSupport
     extends ActionSupport
-    implements LogEnabled, SessionAware
+    implements Contextualizable, LogEnabled, SessionAware
 {
+    protected PlexusContainer container;
+
     protected Map session;
 
     private Logger logger;
@@ -50,4 +57,14 @@ public abstract class PlexusActionSupport
     {
         return logger;
     }
+
+    public void contextualize( Context context )
+        throws ContextException
+    {
+        // this ought to work, but we could also get the context from the ActionContext this way
+        // container = (PlexusContainer) ActionContext.getContext().getApplication().get( PlexusLifecycleListener.KEY );
+        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+    }
+
+
 }
