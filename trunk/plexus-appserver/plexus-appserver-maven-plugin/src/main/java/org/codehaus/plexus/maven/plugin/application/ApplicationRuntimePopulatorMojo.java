@@ -24,12 +24,10 @@ package org.codehaus.plexus.maven.plugin.application;
  * SOFTWARE.
  */
 
-import java.io.File;
-
 import org.apache.maven.plugin.MojoExecutionException;
-
-import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
 import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
+
+import java.io.File;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>

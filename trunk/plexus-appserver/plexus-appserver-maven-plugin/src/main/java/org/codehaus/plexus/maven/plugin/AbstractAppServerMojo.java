@@ -1,13 +1,13 @@
 package org.codehaus.plexus.maven.plugin;
 
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
 
+import java.io.File;
 import java.util.List;
 import java.util.Set;
-import java.io.File;
 
 /**
  * @author Jason van Zyl
@@ -70,5 +70,5 @@ public abstract class AbstractAppServerMojo
      * @parameter expression="${project.build.directory}/plexus-test-runtime"
      * @required
      */
-    protected File runtimePath;    
+    protected File runtimePath;
 }

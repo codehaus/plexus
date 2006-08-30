@@ -38,8 +38,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -63,7 +63,8 @@ public class PlexusRuntimeBuilderTest
     {
         PlexusRuntimeBuilder runtimeBuilder = (PlexusRuntimeBuilder) lookup( PlexusRuntimeBuilder.ROLE );
 
-        ArtifactRepositoryFactory artifactRepositoryFactory = (ArtifactRepositoryFactory) lookup( ArtifactRepositoryFactory.ROLE );
+        ArtifactRepositoryFactory artifactRepositoryFactory =
+            (ArtifactRepositoryFactory) lookup( ArtifactRepositoryFactory.ROLE );
 
         // ----------------------------------------------------------------------
         // Clean the output directory
@@ -79,12 +80,11 @@ public class PlexusRuntimeBuilderTest
 
         List remoteRepositories = new ArrayList();
 
-        ArtifactRepositoryLayout repositoryLayout = (ArtifactRepositoryLayout) lookup( ArtifactRepositoryLayout.ROLE, "legacy" );
+        ArtifactRepositoryLayout repositoryLayout =
+            (ArtifactRepositoryLayout) lookup( ArtifactRepositoryLayout.ROLE, "legacy" );
 
-        ArtifactRepository localRepository =
-            artifactRepositoryFactory.createArtifactRepository( "local",
-                                                                "file://" + getTestFile( "src/test/repository" ).getAbsolutePath(),
-                                                                repositoryLayout );
+        ArtifactRepository localRepository = artifactRepositoryFactory.createArtifactRepository( "local", "file://" +
+            getTestFile( "src/test/repository" ).getAbsolutePath(), repositoryLayout );
 
         Set projectArtifacts = new HashSet();
 
@@ -104,13 +104,8 @@ public class PlexusRuntimeBuilderTest
 
         Properties configurationProperties = PropertyUtils.loadProperties( configurationPropertiesFile );
 
-        runtimeBuilder.build( workingDirectory,
-                              remoteRepositories,
-                              localRepository,
-                              projectArtifacts,
-                              Collections.EMPTY_SET,
-                              plexusConfiguration,
-                              configurationProperties );
+        runtimeBuilder.build( workingDirectory, remoteRepositories, localRepository, projectArtifacts,
+                              Collections.EMPTY_SET, plexusConfiguration, configurationProperties );
     }
 
     // ----------------------------------------------------------------------
@@ -121,7 +116,8 @@ public class PlexusRuntimeBuilderTest
     {
         Artifact artifact = artifactFactory.createBuildArtifact( groupId, artifactId, version, "jar" );
 
-        artifact.setFile( getTestFile( "src/test/repository/" + groupId + "/jars/" + artifactId + "-" + version + ".jar" ) );
+        artifact.setFile(
+            getTestFile( "src/test/repository/" + groupId + "/jars/" + artifactId + "-" + version + ".jar" ) );
 
         return artifact;
     }

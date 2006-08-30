@@ -26,9 +26,7 @@ package org.codehaus.plexus.maven.plugin.service;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilder;
 
-import java.io.File;
 import java.util.Iterator;
 
 /**

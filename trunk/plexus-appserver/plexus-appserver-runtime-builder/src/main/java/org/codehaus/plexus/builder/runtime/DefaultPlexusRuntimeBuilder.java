@@ -22,6 +22,20 @@ package org.codehaus.plexus.builder.runtime;
  * SOFTWARE.
  */
 
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.exception.ResourceNotFoundException;
+import org.codehaus.plexus.appserver.PlexusRuntimeConstants;
+import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.jar.JarArchiver;
+import org.codehaus.plexus.builder.AbstractBuilder;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.cli.CommandLineException;
+import org.codehaus.plexus.velocity.VelocityComponent;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,21 +50,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.exception.ResourceNotFoundException;
-
-import org.codehaus.plexus.appserver.PlexusRuntimeConstants;
-import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archiver.jar.JarArchiver;
-import org.codehaus.plexus.builder.AbstractBuilder;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.cli.CommandLineException;
-import org.codehaus.plexus.velocity.VelocityComponent;
 
 /**
  * @author <a href="jason@maven.org">Jason van Zyl</a>
@@ -84,19 +83,17 @@ public class DefaultPlexusRuntimeBuilder
     //
     // ----------------------------------------------------------------------
 
-    /** @requirement */
+    /**
+     * @requirement
+     */
     protected VelocityComponent velocity;
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
-    public void build( File workingDirectory,
-                       List remoteRepositories,
-                       ArtifactRepository localRepository,
-                       Set projectArtifacts,
-                       Set additionalCoreArtifacts,
-                       File containerConfiguration,
+    public void build( File workingDirectory, List remoteRepositories, ArtifactRepository localRepository,
+                       Set projectArtifacts, Set additionalCoreArtifacts, File containerConfiguration,
                        Properties configurationProperties )
         throws PlexusRuntimeBuilderException
     {
@@ -123,9 +120,8 @@ public class DefaultPlexusRuntimeBuilder
 
             if ( !containerConfiguration.exists() )
             {
-                throw new PlexusRuntimeBuilderException( "The specified plexus configurator file " +
-                                                         "'" + containerConfiguration.getAbsolutePath() + "'" +
-                                                         " doesn't exist." );
+                throw new PlexusRuntimeBuilderException( "The specified plexus configurator file " + "'" +
+                    containerConfiguration.getAbsolutePath() + "'" + " doesn't exist." );
             }
 
             // ----------------------------------------------------------------------
@@ -140,7 +136,8 @@ public class DefaultPlexusRuntimeBuilder
             {
                 bootArtifacts = getBootArtifacts( projectArtifacts, remoteRepositories, localRepository, false );
 
-                coreArtifacts = getCoreArtifacts( projectArtifacts, additionalCoreArtifacts, remoteRepositories, localRepository, false );
+                coreArtifacts = getCoreArtifacts( projectArtifacts, additionalCoreArtifacts, remoteRepositories,
+                                                  localRepository, false );
             }
             catch ( ArtifactResolutionException e )
             {
@@ -151,11 +148,8 @@ public class DefaultPlexusRuntimeBuilder
             // Find and put the classworlds version into the properties
             // ----------------------------------------------------------------------
 
-            String classworldsVersion = resolveVersion( "classworlds",
-                                                        "classworlds",
-                                                        projectArtifacts,
-                                                        false,
-                                                        new HashSet() );
+            String classworldsVersion =
+                resolveVersion( "classworlds", "classworlds", projectArtifacts, false, new HashSet() );
 
             configurationProperties.setProperty( PROPERTY_CLASSWORLDS_VERSION, classworldsVersion );
 
@@ -277,7 +271,7 @@ public class DefaultPlexusRuntimeBuilder
 
     private File getAppsDirectory( File workingDirectory )
     {
-        return new File( workingDirectory, PlexusRuntimeConstants.APPLICATIONS_DIRECTORY);
+        return new File( workingDirectory, PlexusRuntimeConstants.APPLICATIONS_DIRECTORY );
     }
 
     private File getServicesDirectory( File workingDirectory )
@@ -319,8 +313,7 @@ public class DefaultPlexusRuntimeBuilder
         executable( new File( binDir, "plexus.sh" ) );
     }
 
-    private void processMainConfiguration( File containerConfiguration,
-                                           Properties configurationProperties,
+    private void processMainConfiguration( File containerConfiguration, Properties configurationProperties,
                                            File confDir )
         throws IOException
     {
@@ -329,10 +322,7 @@ public class DefaultPlexusRuntimeBuilder
         filterCopy( containerConfiguration, out, configurationProperties );
     }
 
-    private void javaServiceWrapper( File binDir,
-                                     File coreDir,
-                                     File confDir,
-                                     Properties configurationProperties )
+    private void javaServiceWrapper( File binDir, File coreDir, File confDir, Properties configurationProperties )
         throws IOException, CommandLineException
     {
         File linux = new File( binDir, "linux" );
@@ -355,8 +345,7 @@ public class DefaultPlexusRuntimeBuilder
         // Generic parts
         // ----------------------------------------------------------------------
 
-        copyResourceToFile( JSW + "/wrapper.jar",
-                            new File( coreDir, "boot/wrapper.jar" ) );
+        copyResourceToFile( JSW + "/wrapper.jar", new File( coreDir, "boot/wrapper.jar" ) );
 
         // ----------------------------------------------------------------------
         // Linux
@@ -366,7 +355,7 @@ public class DefaultPlexusRuntimeBuilder
         filterCopy( getResourceAsStream( JSW + "/run.sh" ), runSh, configurationProperties );
         executable( runSh );
 
-        copyResource( "linux/wrapper", "linux/wrapper", true, binDir  );
+        copyResource( "linux/wrapper", "linux/wrapper", true, binDir );
         copyResource( "linux/libwrapper.so", "linux/libwrapper.so", false, binDir );
         Properties linuxProps = new Properties();
         linuxProps.setProperty( "library.path", "../../bin/linux" );
@@ -411,7 +400,7 @@ public class DefaultPlexusRuntimeBuilder
         filterCopy( getResourceAsStream( JSW + "/run.sh" ), runSh, configurationProperties );
         executable( runSh );
 
-        copyResource( "solaris/wrapper", "solaris/wrapper", true, binDir  );
+        copyResource( "solaris/wrapper", "solaris/wrapper", true, binDir );
         copyResource( "solaris/libwrapper.so", "solaris/libwrapper.so", false, binDir );
 
         Properties solarisProps = new Properties();
@@ -445,15 +434,10 @@ public class DefaultPlexusRuntimeBuilder
             }
         }
 
-        filterCopy( getResourceAsStream( JSW + "/wrapper.conf" ),
-                    new File( destDir, "wrapper.conf" ),
-                    props );
+        filterCopy( getResourceAsStream( JSW + "/wrapper.conf" ), new File( destDir, "wrapper.conf" ), props );
     }
 
-    protected void copyResource( String filename,
-                                 String resource,
-                                 boolean makeExecutable,
-                                 File basedir )
+    protected void copyResource( String filename, String resource, boolean makeExecutable, File basedir )
         throws CommandLineException, IOException
     {
         File target = new File( basedir, filename );
@@ -466,8 +450,7 @@ public class DefaultPlexusRuntimeBuilder
         }
     }
 
-    private void copyResourceToFile( String resource,
-                                     File target )
+    private void copyResourceToFile( String resource, File target )
         throws IOException
     {
         InputStream is = getResourceAsStream( resource );
@@ -525,11 +508,12 @@ public class DefaultPlexusRuntimeBuilder
     // Velocity methods
     // ----------------------------------------------------------------------
 
-    protected void mergeTemplate( String templateName, File outputFileName, boolean dos, Properties configurationProperties )
+    protected void mergeTemplate( String templateName, File outputFileName, boolean dos,
+                                  Properties configurationProperties )
         throws IOException, PlexusRuntimeBuilderException
     {
-        StringWriter buffer = new StringWriter( 100 * FileUtils.ONE_KB);
-        
+        StringWriter buffer = new StringWriter( 100 * FileUtils.ONE_KB );
+
         File tmpFile = File.createTempFile( outputFileName.getName(), null );
 
         try
@@ -551,7 +535,7 @@ public class DefaultPlexusRuntimeBuilder
 
         String line;
 
-        while( (line = reader.readLine() ) != null )
+        while ( ( line = reader.readLine() ) != null )
         {
             output.write( line.getBytes() );
 

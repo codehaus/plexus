@@ -22,21 +22,10 @@ package org.codehaus.plexus.builder.application;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
-
 import org.codehaus.plexus.appserver.PlexusApplicationConstants;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
@@ -44,6 +33,15 @@ import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 import org.codehaus.plexus.util.xml.XMLWriter;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -58,15 +56,9 @@ public class DefaultApplicationBuilder
     // ApplicationBuilder Implementation
     // ----------------------------------------------------------------------
 
-    public void assemble( String applicationName,
-                          File workingDirectory,
-                          List remoteRepositories,
-                          ArtifactRepository localRepository,
-                          Set projectArtifacts,
-                          Set additionalCoreArtifacts,
-                          Set serviceArtifacts,
-                          File applicationConfiguration,
-                          File configurationsDirectory,
+    public void assemble( String applicationName, File workingDirectory, List remoteRepositories,
+                          ArtifactRepository localRepository, Set projectArtifacts, Set additionalCoreArtifacts,
+                          Set serviceArtifacts, File applicationConfiguration, File configurationsDirectory,
                           Properties configurationProperties )
         throws ApplicationBuilderException
     {
@@ -201,8 +193,7 @@ public class DefaultApplicationBuilder
         }
     }
 
-    public void bundle( File outputFile,
-                        File workingDirectory )
+    public void bundle( File outputFile, File workingDirectory )
         throws ApplicationBuilderException
     {
         Archiver archiver = new JarArchiver();
@@ -225,9 +216,7 @@ public class DefaultApplicationBuilder
     //
     // ----------------------------------------------------------------------
 
-    private void processConfigurations( File confDir,
-                                        File applicationConfiguration,
-                                        Properties configurationProperties,
+    private void processConfigurations( File confDir, File applicationConfiguration, Properties configurationProperties,
                                         File configurationsDirectory )
         throws IOException, ApplicationBuilderException
     {
@@ -257,7 +246,7 @@ public class DefaultApplicationBuilder
             }
             */
 
-            scanner.setExcludes( (String[]) excludes.toArray( new String[ excludes.size() ] ) );
+            scanner.setExcludes( (String[]) excludes.toArray( new String[excludes.size()] ) );
 
             scanner.scan();
 

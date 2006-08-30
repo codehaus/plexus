@@ -24,10 +24,8 @@ package org.codehaus.plexus.service.xmlrpc.configuration;
  * SOFTWARE.
  */
 
-import java.util.List;
 import java.util.ArrayList;
-
-import org.codehaus.plexus.service.xmlrpc.configuration.XmlRpcService;
+import java.util.List;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel VEnisse</a>

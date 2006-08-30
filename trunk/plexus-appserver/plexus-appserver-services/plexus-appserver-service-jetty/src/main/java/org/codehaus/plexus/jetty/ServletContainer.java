@@ -24,15 +24,15 @@ package org.codehaus.plexus.jetty;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.net.UnknownHostException;
-
 import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.jetty.configuration.Webapp;
-import org.codehaus.plexus.jetty.configuration.ServletContext;
-import org.codehaus.plexus.jetty.configuration.WebContext;
 import org.codehaus.plexus.jetty.configuration.HttpListener;
 import org.codehaus.plexus.jetty.configuration.ProxyHttpListener;
+import org.codehaus.plexus.jetty.configuration.ServletContext;
+import org.codehaus.plexus.jetty.configuration.WebContext;
+import org.codehaus.plexus.jetty.configuration.Webapp;
+
+import java.io.File;
+import java.net.UnknownHostException;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -46,7 +46,7 @@ public interface ServletContainer
     boolean hasContext( String contextPath );
 
     void addListener( HttpListener listener )
-                      throws ServletContainerException, UnknownHostException;
+        throws ServletContainerException, UnknownHostException;
 
     void addProxyListener( ProxyHttpListener listener )
         throws ServletContainerException, UnknownHostException;
@@ -61,9 +61,7 @@ public interface ServletContainer
     // For simple document serving
     // ----------------------------------------------------------------------------
 
-    void deployWarDirectory( File directory,
-                             DefaultPlexusContainer container,
-                             Webapp webapp )
+    void deployWarDirectory( File directory, DefaultPlexusContainer container, Webapp webapp )
         throws ServletContainerException;
 
     public void deployServletContext( ServletContext servletContext )
