@@ -23,6 +23,7 @@ import java.util.Set;
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
+ * @todo chain of command rule processing
  */
 public interface Authorizer
 {
