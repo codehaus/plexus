@@ -6,10 +6,13 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-authorization-rbac-stores</artifactId>
+  <name>Plexus Security :: RBAC Authroization Stores</name>
   <packaging>pom</packaging>
   <modules>
-    <module>plexus-security-authorization-rbac-store-jdo</module>
     <module>plexus-security-authorization-rbac-store-memory</module>
+    <!--
+    <module>plexus-security-authorization-rbac-store-jdo</module>  
     <module>plexus-security-authorization-rbac-store-xstream</module>
+    -->
   </modules>
 </project>

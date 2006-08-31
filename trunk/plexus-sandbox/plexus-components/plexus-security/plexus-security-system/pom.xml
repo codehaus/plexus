@@ -6,7 +6,7 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-system</artifactId>
-  <name>Plexus Security System</name>
+  <name>Plexus Security :: System</name>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
@@ -20,6 +20,10 @@
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-user-management-api</artifactId>
+    </dependency>    
   </dependencies>
   <build>
     <plugins>
