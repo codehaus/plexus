@@ -66,8 +66,6 @@
     <module>plexus-security-authentication</module>
     <module>plexus-security-authorization</module>
     <module>plexus-security-user-management</module>    
-    <!--
     <module>plexus-security-ui</module>
-    -->
   </modules>
 </project>
