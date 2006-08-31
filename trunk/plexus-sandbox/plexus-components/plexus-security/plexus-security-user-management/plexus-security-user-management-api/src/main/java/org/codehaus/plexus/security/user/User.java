@@ -5,4 +5,5 @@ package org.codehaus.plexus.security.user;
  */
 public interface User
 {
+    Object getPrincipal();
 }
