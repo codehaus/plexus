@@ -18,6 +18,8 @@ package org.codehaus.plexus.security.authorization;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
+import java.util.Set;
+
 /**
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
@@ -34,6 +36,11 @@ public class DefaultAuthorizer
         throws AuthorizationException
     {
         return new AuthorizationResult( "dummy" );
+    }
+
+    public Set getRoles( Object principal )
+    {
+        return store.getRoles( principal );
     }
 }
 
