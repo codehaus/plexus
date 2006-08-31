@@ -17,6 +17,7 @@ package org.codehaus.plexus.security.authorization;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.security.user.User;
 
 import java.util.Set;
 
@@ -32,10 +33,14 @@ public class DefaultAuthorizer
 {
     private AuthorizationStore store;
 
-    public AuthorizationResult authorize( AuthorizationDataSource source )
+    public AuthorizationResult isAuthorized( AuthorizationDataSource source )
         throws AuthorizationException
     {
-        return new AuthorizationResult( "dummy" );
+        Object principal = source.getPrincipal();
+
+        User user = source.getUser();
+
+        return new AuthorizationResult( true, principal, null );
     }
 
     public Set getRoles( Object principal )

@@ -1,8 +1,11 @@
-package org.codehaus.plexus.security.authentication.memory;
+package org.codehaus.plexus.security.authorization.memory;
 
 import org.codehaus.plexus.security.AuthorizationResult;
 import org.codehaus.plexus.security.AuthorizationStore;
 import org.codehaus.plexus.security.PlexusSecuritySession;
+import org.codehaus.plexus.security.authorization.AuthorizationStore;
+import org.codehaus.plexus.security.authorization.AuthorizationResult;
+import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.exception.AuthorizationException;
 
 import java.util.Map;
@@ -33,14 +36,8 @@ import java.util.Map;
 public class SimpleAuthorizationStore
     implements AuthorizationStore
 {
-    public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
+    public AuthorizationResult authorize( SecuritySession session )
         throws AuthorizationException
     {
-        AuthorizationResult authResult = new AuthorizationResult( SimpleAuthorizationStore.class.getName() );
-
-        authResult.setAuthorized( session.isAuthentic() );
-        authResult.setPrincipal( session.getPrincipal() );
-
-        return authResult;
     }
 }

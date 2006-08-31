@@ -22,11 +22,12 @@ import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authorization.Authorizer;
+import org.codehaus.plexus.security.authorization.AuthorizationResult;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-
-import java.util.Set;
+import org.codehaus.plexus.security.system.SecuritySession;
+import org.codehaus.plexus.security.system.DefaultSecuritySession;
 
 /**
  * DefaultSecuritySystem:
@@ -68,4 +69,10 @@ public class DefaultSecuritySystem
 
         return new DefaultSecuritySession( result, user );
     }
+
+    public void authorized( SecuritySession session )
+    {
+        AuthorizationResult result = authorizer.isAuthorized( )
+    }
+
 }

@@ -2,6 +2,7 @@ package org.codehaus.plexus.security.system;
 
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.system.SecuritySession;
 
 /**
  * @author Jason van Zyl

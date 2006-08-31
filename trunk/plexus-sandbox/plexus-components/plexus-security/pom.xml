@@ -20,6 +20,11 @@
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
+        <artifactId>plexus-security-system</artifactId>
+        <version>${project.version}</version>
+      </dependency>      
+      <dependency>
+        <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authentication-api</artifactId>
         <version>${project.version}</version>
       </dependency>

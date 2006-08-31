@@ -8,6 +8,16 @@
   <artifactId>plexus-security-authorization</artifactId>
   <name>Plexus Security :: Authorization</name>
   <packaging>pom</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-common</artifactId>
+    </dependency>
+    <dependency>                                                                                                                                                                                                                            
+      <groupId>org.codehaus.plexus.security</groupId>                                                                                                                                                                                       
+      <artifactId>plexus-security-user-management-api</artifactId>                                                                                                                                                                          
+    </dependency>           
+  </dependencies>
   <modules>
     <module>plexus-security-authorization-api</module>
     <module>plexus-security-authorization-rbac-model</module>
