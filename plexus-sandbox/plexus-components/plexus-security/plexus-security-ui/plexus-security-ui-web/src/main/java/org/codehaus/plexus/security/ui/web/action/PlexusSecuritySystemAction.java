@@ -20,7 +20,7 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 import org.codehaus.plexus.security.system.SecuritySystem;
 
 /**
- * SecuritySystemAction:
+ * PlexusSecuritySystemAction:
  *
  * @author Jesse McConnell <jesse@codehaus.org>
  * @version $Id:$
@@ -29,7 +29,7 @@ import org.codehaus.plexus.security.system.SecuritySystem;
  *   role="com.opensymphony.xwork.Action"
  *   role-hint="plexusSecuritySystem"
  */
-public class SecuritySystemAction
+public class PlexusSecuritySystemAction
     extends PlexusActionSupport
 {
     /**
