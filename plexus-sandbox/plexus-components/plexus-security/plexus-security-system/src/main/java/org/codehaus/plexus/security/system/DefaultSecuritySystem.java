@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security;
+package org.codehaus.plexus.security.system;
 
 /*
  * Copyright 2005 The Codehaus.
@@ -22,6 +22,9 @@ import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authorization.Authorizer;
+import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserNotFoundException;
 
 /**
  * DefaultSecuritySystem:
@@ -30,7 +33,7 @@ import org.codehaus.plexus.security.authorization.Authorizer;
  * @version: $ID:$
  *
  * @plexus.component
- *   role="org.codehaus.plexus.security.SecuritySystem"
+ *   role="org.codehaus.plexus.security.system.SecuritySystem"
  *   role-hint="default"
  *
  * @todo allow for multiple authentication providers i.e. using window and radius
@@ -49,16 +52,18 @@ public class DefaultSecuritySystem
      */
     private Authorizer authorizer;
 
+    /**
+     * @plexus.requirement
+     */
+    private UserManager userManager;
 
     public SecuritySession authenticate( AuthenticationDataSource source )
-        throws AuthenticationException
+        throws AuthenticationException, UserNotFoundException
     {
         AuthenticationResult result = authenticator.authenticate( source );
 
-        // Grab the user data
-
-        // Create a session
-
-        // Put the user data in the session
+        User user = userManager.findUser( result.getPrincipal() );
+        
+        return new DefaultSecuritySession( result, user );
     }
 }
