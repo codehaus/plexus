@@ -26,6 +26,8 @@ import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 
+import java.util.Set;
+
 /**
  * DefaultSecuritySystem:
  *
@@ -63,7 +65,7 @@ public class DefaultSecuritySystem
         AuthenticationResult result = authenticator.authenticate( source );
 
         User user = userManager.findUser( result.getPrincipal() );
-        
+
         return new DefaultSecuritySession( result, user );
     }
 }
