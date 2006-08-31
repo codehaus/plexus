@@ -7,7 +7,21 @@
   </parent>
   <artifactId>plexus-security-system</artifactId>
   <name>Plexus Security System</name>
-   <build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authentication-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authorization-api</artifactId>
+    </dependency>
+  </dependencies>
+  <build>
     <plugins>
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
@@ -24,5 +38,5 @@
         </executions>
       </plugin>
     </plugins>
-  </build> 
+  </build>
 </project>

@@ -1,5 +1,9 @@
 package org.codehaus.plexus.security;
 
+import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
+import org.codehaus.plexus.security.authentication.AuthenticationException;
+
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -17,13 +21,16 @@ package org.codehaus.plexus.security;
  */
 
 /**
- * PlexusSecuritySystem:
+ * SecuritySystem:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  *
  */
-public interface PlexusSecuritySystem
+public interface SecuritySystem
 {
-    public static String ROLE = PlexusSecuritySystem.class.getName();
+    static String ROLE = SecuritySystem.class.getName();
+
+    SecuritySession authenticate( AuthenticationDataSource source )
+        throws AuthenticationException;
 }

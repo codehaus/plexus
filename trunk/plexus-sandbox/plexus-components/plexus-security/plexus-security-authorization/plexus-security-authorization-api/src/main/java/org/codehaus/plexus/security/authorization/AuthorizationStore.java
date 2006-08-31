@@ -1,9 +1,5 @@
 package org.codehaus.plexus.security.authorization;
 
-import org.codehaus.plexus.security.authorization.AuthorizationException;
-import org.codehaus.plexus.security.PlexusSecuritySession;
-
-import java.util.Map;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -34,19 +30,6 @@ public interface AuthorizationStore
 {
     public static String ROLE = AuthorizationStore.class.getName();
 
-    /**
-     * Check if the session and the map of tokens contain the necessary information to determine if the usage would
-     * be authorized or not.  If the usage would result in an unauthorized activity then throw the NotAuthorizedException
-     * If not enough information is present then the method should throw an AuthenticationException.  If the activity is
-     * authorized then create an AuthorizationResult and return it, this method should only return successful authorization
-     * or throw an exception.
-     *
-     * @param session
-     * @param tokens
-     * @return
-     * @throws AuthorizationException
-     */
-    public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
+    public AuthorizationResult authorize( AuthorizationDataSource source )
         throws AuthorizationException;
-
 }
