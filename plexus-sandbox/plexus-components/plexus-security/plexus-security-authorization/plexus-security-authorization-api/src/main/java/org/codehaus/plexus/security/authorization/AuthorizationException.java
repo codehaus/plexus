@@ -28,13 +28,6 @@ public class AuthorizationException
 {
     /**
      *
-     */
-    public AuthorizationException()
-    {
-    }
-
-    /**
-     *
      * @param message
      */
     public AuthorizationException( String message )

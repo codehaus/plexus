@@ -1,12 +1,5 @@
 package org.codehaus.plexus.security.authorization;
 
-import org.codehaus.plexus.security.authorization.AuthorizationException;
-import org.codehaus.plexus.security.authorization.AuthorizationResult;
-import org.codehaus.plexus.security.authorization.AuthorizationStore;
-import org.codehaus.plexus.security.authorization.Authorizer;
-import org.codehaus.plexus.security.PlexusSecuritySession;
-
-import java.util.Map;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -23,40 +16,24 @@ import java.util.Map;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+
 /**
- * DefaultAuthorizer: the default authorizer optionally uses the store
- * <p/>
- * While the store is a requirement in the DefaultAuthenticator, it is optional in the Authorizer, if it is setup
- * then it will be used, otherwise it defaults to whether or not the session is authenticated.
- *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  * @plexus.component rolorg.codehaus.plexus.security.authorization.Authorizerzer"
  * role-hint="default"
  */
 public class DefaultAuthorizer
+    extends AbstractLogEnabled
     implements Authorizer
 {
-    /**
-     *
-     */
     private AuthorizationStore store;
 
-    public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
+    public AuthorizationResult authorize( AuthorizationDataSource source )
         throws AuthorizationException
     {
-        if ( store == null )
-        {
-            AuthorizationResult authResult = new AuthorizationResult( DefaultAuthorizer.class.getName() );
-            
-            authResult.setAuthorized( session.isAuthentic() );
-
-            return authResult;
-        }
-        else
-        {
-            return store.authorize( session, tokens );
-        }
+        return new AuthorizationResult( "dummy" );
     }
 }
 
