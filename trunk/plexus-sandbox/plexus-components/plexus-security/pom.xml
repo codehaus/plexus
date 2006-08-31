@@ -23,6 +23,11 @@
         <artifactId>plexus-security-authentication-api</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.security</groupId>
+        <artifactId>plexus-security-authorization-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>      
       <!-- Plexus -->
       <dependency>
         <groupId>org.codehaus.plexus</groupId>

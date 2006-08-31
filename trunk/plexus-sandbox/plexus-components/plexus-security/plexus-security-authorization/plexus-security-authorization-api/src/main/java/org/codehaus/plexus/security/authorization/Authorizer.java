@@ -1,9 +1,5 @@
 package org.codehaus.plexus.security.authorization;
 
-import org.codehaus.plexus.security.authorization.AuthorizationException;
-import org.codehaus.plexus.security.PlexusSecuritySession;
-
-import java.util.Map;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -30,7 +26,7 @@ public interface Authorizer
 {
     public static String ROLE = Authorizer.class.getName();
 
-    public AuthorizationResult authorize( PlexusSecuritySession session, Map tokens )
+    public AuthorizationResult authorize( AuthorizationDataSource source )
         throws AuthorizationException;
 
 }
