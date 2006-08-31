@@ -200,25 +200,26 @@ public class PlexusObjectFactory
      * @throws ComponentNotFoundException if the component was simply not found.
      * @throws ComponentCreationException if the component was found, but failed to be created correctly.
      */
-    private Class lookupClass(Class clazz, String className) 
+    private Class lookupClass( Class clazz, String className )
         throws ComponentNotFoundException, ComponentCreationException
     {
         try
         {
-            return base.lookup( clazz.getName(), className).getClass();
+            return base.lookup( clazz.getName(), className ).getClass();
         }
-        catch(ComponentLookupException e)
+        catch ( ComponentLookupException e )
         {
             Throwable cause = e.getCause();
-            while(cause != null)
+            while ( cause != null )
             {
-                if(cause instanceof CompositionException)
+                if ( cause instanceof CompositionException )
                 {
-                    throw new ComponentCreationException("Unable to create " + className + " as " + clazz + " due to plexus misconfiguration.", e);
+                    throw new ComponentCreationException( "Unable to create " + className + " as " + clazz
+                        + " due to plexus misconfiguration.", e );
                 }
                 cause = cause.getCause();
             }
-            throw new ComponentNotFoundException("Failed lookup for " + className + " as " + clazz + ".", e);
+            throw new ComponentNotFoundException( "Failed lookup for " + className + " as " + clazz + ".", e );
         }
     }
 
@@ -239,7 +240,7 @@ public class PlexusObjectFactory
             getLogger().debug( e.getMessage(), e );
             // Fall Thru to next lookup Technique.
         }
-        
+
         try
         {
             return lookupClass( Action.class, className );
@@ -253,7 +254,7 @@ public class PlexusObjectFactory
         {
             getLogger().debug( e.getMessage(), e );
         }
-        
+
         try
         {
             return lookupClass( Interceptor.class, className );
@@ -267,7 +268,7 @@ public class PlexusObjectFactory
         {
             getLogger().debug( e.getMessage(), e );
         }
-        
+
         try
         {
             return lookupClass( Validator.class, className );
@@ -281,7 +282,7 @@ public class PlexusObjectFactory
         {
             getLogger().debug( e.getMessage(), e );
         }
-        
+
         try
         {
             return lookupClass( Result.class, className );
