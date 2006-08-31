@@ -3,7 +3,7 @@ package org.codehaus.plexus.security.system;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.system.SecuritySession;
+import org.codehaus.plexus.security.authorization.AuthorizationException;
 
 /*
  * Copyright 2005 The Codehaus.
@@ -42,7 +42,10 @@ public interface SecuritySystem
     // ----------------------------------------------------------------------------
     // Authorization
     // ----------------------------------------------------------------------------
-        
+
+    boolean isAuthorized( SecuritySession session, Object permission )
+        throws AuthorizationException;
+
     // ----------------------------------------------------------------------------
     // User Management
     // ----------------------------------------------------------------------------
