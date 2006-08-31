@@ -60,6 +60,10 @@ public class DefaultSecuritySystem
      */
     private UserManager userManager;
 
+    // ----------------------------------------------------------------------------
+    // Authentication: delegate to the authenticator
+    // ----------------------------------------------------------------------------
+
     public SecuritySession authenticate( AuthenticationDataSource source )
         throws AuthenticationException, UserNotFoundException
     {
@@ -70,9 +74,16 @@ public class DefaultSecuritySystem
         return new DefaultSecuritySession( result, user );
     }
 
+    // ----------------------------------------------------------------------------
+    // Authorization: delegate to the authorizer
+    // ----------------------------------------------------------------------------
+
     public void authorized( SecuritySession session )
     {
-        AuthorizationResult result = authorizer.isAuthorized( )
+        //AuthorizationResult result = authorizer.isAuthorized( )
     }
 
+    // ----------------------------------------------------------------------------
+    // User Management: delegate to the user manager
+    // ----------------------------------------------------------------------------
 }

@@ -17,6 +17,16 @@ public class MemoryUserManager
         users = new HashMap();
     }
 
+    public User addUser( User user )
+    {
+        return null;
+    }
+
+    public User updateUser( User user )
+    {
+        return null;
+    }
+
     public User findUser( Object principal )
         throws UserNotFoundException
     {
@@ -28,5 +38,10 @@ public class MemoryUserManager
         }
 
         return user;
+    }
+
+    public void deleteUser( User user )
+    {
+
     }
 }
