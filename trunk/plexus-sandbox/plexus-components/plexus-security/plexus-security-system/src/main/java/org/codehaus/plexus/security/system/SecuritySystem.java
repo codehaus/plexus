@@ -1,8 +1,8 @@
-package org.codehaus.plexus.security;
+package org.codehaus.plexus.security.system;
 
-import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.user.UserNotFoundException;
 
 /*
  * Copyright 2005 The Codehaus.
@@ -32,5 +32,5 @@ public interface SecuritySystem
     static String ROLE = SecuritySystem.class.getName();
 
     SecuritySession authenticate( AuthenticationDataSource source )
-        throws AuthenticationException;
+        throws AuthenticationException, UserNotFoundException;
 }
