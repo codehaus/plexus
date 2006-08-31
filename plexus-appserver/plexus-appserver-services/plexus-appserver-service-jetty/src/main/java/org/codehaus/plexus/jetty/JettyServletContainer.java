@@ -353,16 +353,16 @@ public class JettyServletContainer
             {
                 getLogger().info( "Using standard webapp classloader for webapp." );
 
-                try
+/*                try
                 {
                     // We need to start the context to trigger the unpacking so that we can
                     // create a realm. We need to create a realm so that we can discover all
                     // the components in the webapp.
 
                     ClassRealm realm = container.getContainerRealm();
-
-                    List jars = FileUtils.getFiles( war, "**/*.jar", null );
-
+*/
+//                    List jars = FileUtils.getFiles( war, "**/*.jar", null );
+/*
                     // The webapp directory needs to be unpacked before we can pick up the files
 
                     for ( Iterator i = jars.iterator(); i.hasNext(); )
@@ -388,6 +388,7 @@ public class JettyServletContainer
                 {
                     throw new ServletContainerException( "Error creating webapp classloader.", e );
                 }
+*/
             }
             else
             {
