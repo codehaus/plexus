@@ -12,6 +12,7 @@ import com.opensymphony.xwork.interceptor.Interceptor;
 import com.opensymphony.xwork.util.OgnlUtil;
 import com.opensymphony.xwork.validator.Validator;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.composition.CompositionException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.Logger;
 
@@ -184,52 +185,116 @@ public class PlexusObjectFactory
 
         return lookup( clazz.getName(), extraContext );
     }
+    
+    /**
+     * Specialized Class Lookup supplement for standard plexus process, used to differentiate between a class
+     * that just doesn't match the provided criteria, and one that did match, but failed to be created due to
+     * component composition issues.  
+     * 
+     * Used to provide useful exception messages to a web-app during a lookup in {@link #getClassInstance(String)}
+     * 
+     * @param clazz the type of class to look up
+     * @param className the name of the specific class (or plexus role) to look up.
+     * @return the class that was found.
+     * 
+     * @throws ComponentNotFoundException if the component was simply not found.
+     * @throws ComponentCreationException if the component was found, but failed to be created correctly.
+     */
+    private Class lookupClass(Class clazz, String className) 
+        throws ComponentNotFoundException, ComponentCreationException
+    {
+        try
+        {
+            return base.lookup( clazz.getName(), className).getClass();
+        }
+        catch(ComponentLookupException e)
+        {
+            Throwable cause = e.getCause();
+            while(cause != null)
+            {
+                if(cause instanceof CompositionException)
+                {
+                    throw new ComponentCreationException("Unable to create " + className + " as " + clazz + " due to plexus misconfiguration.", e);
+                }
+                cause = cause.getCause();
+            }
+            throw new ComponentNotFoundException("Failed lookup for " + className + " as " + clazz + ".", e);
+        }
+    }
 
     public Class getClassInstance( String className )
         throws ClassNotFoundException
     {
-        // TODO: these chain of exceptions can potentially hide useful errors. Perhaps Plexus could differentiate a
-        // component lookup exception from a component not found exception.
         try
         {
-            return base.lookup( className ).getClass();
+            return lookupClass( Class.class, className );
         }
-        catch ( ComponentLookupException e1 )
+        catch ( ComponentCreationException e )
         {
-            getLogger().debug( "Failed to lookup class", e1 );
-            try
-            {
-                return base.lookup( Action.class.getName(), className ).getClass();
-            }
-            catch ( ComponentLookupException e2 )
-            {
-                getLogger().debug( "Failed to lookup class as action", e2 );
-                try
-                {
-                    return base.lookup( Interceptor.class.getName(), className ).getClass();
-                }
-                catch ( ComponentLookupException e3 )
-                {
-                    getLogger().debug( "Failed to lookup class as interceptor", e2 );
-                    try
-                    {
-                        return base.lookup( Validator.class.getName(), className ).getClass();
-                    }
-                    catch ( ComponentLookupException e4 )
-                    {
-                        getLogger().debug( "Failed to lookup class as validator", e2 );
-                        try
-                        {
-                            return base.lookup( Result.class.getName(), className ).getClass();
-                        }
-                        catch ( ComponentLookupException e5 )
-                        {
-                            getLogger().debug( "Failed to lookup class as result", e2 );
-                            return super.getClassInstance( className );
-                        }
-                    }
-                }
-            }
+            getLogger().error( e.getMessage(), e );
+            throw new ClassNotFoundException( className, e );
+        }
+        catch ( ComponentNotFoundException e )
+        {
+            getLogger().debug( e.getMessage(), e );
+            // Fall Thru to next lookup Technique.
+        }
+        
+        try
+        {
+            return lookupClass( Action.class, className );
+        }
+        catch ( ComponentCreationException e )
+        {
+            getLogger().error( e.getMessage(), e );
+            throw new ClassNotFoundException( className, e );
+        }
+        catch ( ComponentNotFoundException e )
+        {
+            getLogger().debug( e.getMessage(), e );
+        }
+        
+        try
+        {
+            return lookupClass( Interceptor.class, className );
+        }
+        catch ( ComponentCreationException e )
+        {
+            getLogger().error( e.getMessage(), e );
+            throw new ClassNotFoundException( className, e );
+        }
+        catch ( ComponentNotFoundException e )
+        {
+            getLogger().debug( e.getMessage(), e );
+        }
+        
+        try
+        {
+            return lookupClass( Validator.class, className );
+        }
+        catch ( ComponentCreationException e )
+        {
+            getLogger().error( e.getMessage(), e );
+            throw new ClassNotFoundException( className, e );
+        }
+        catch ( ComponentNotFoundException e )
+        {
+            getLogger().debug( e.getMessage(), e );
+        }
+        
+        try
+        {
+            return lookupClass( Result.class, className );
+        }
+        catch ( ComponentCreationException e )
+        {
+            getLogger().error( e.getMessage(), e );
+            throw new ClassNotFoundException( className, e );
+        }
+        catch ( ComponentNotFoundException e )
+        {
+            getLogger().debug( e.getMessage(), e );
+            return super.getClassInstance( className );
         }
     }
 
