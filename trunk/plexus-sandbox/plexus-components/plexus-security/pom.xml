@@ -37,7 +37,12 @@
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-api</artifactId>
         <version>${project.version}</version>
-      </dependency>            
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.security</groupId>
+        <artifactId>plexus-security-ui-web</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <!-- Plexus -->
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
@@ -67,5 +72,6 @@
     <module>plexus-security-authorization</module>
     <module>plexus-security-user-management</module>    
     <module>plexus-security-ui</module>
+    <module>plexus-security-examples</module>
   </modules>
 </project>

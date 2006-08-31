@@ -17,16 +17,15 @@ package org.codehaus.plexus.security.system;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.security.authentication.Authenticator;
-import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.security.authentication.Authenticator;
+import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.authorization.Authorizer;
-import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.system.SecuritySession;
-import org.codehaus.plexus.security.system.DefaultSecuritySession;
 
 /**
  * DefaultSecuritySystem:
@@ -73,6 +72,11 @@ public class DefaultSecuritySystem
         return new DefaultSecuritySession( result, user );
     }
 
+    public String getAuthenticatorId()
+    {
+        return "authenticator info 1.0";
+    }
+
     // ----------------------------------------------------------------------------
     // Authorization: delegate to the authorizer
     // ----------------------------------------------------------------------------
@@ -82,7 +86,24 @@ public class DefaultSecuritySystem
         //AuthorizationResult result = authorizer.authenticate( )
     }
 
+    public boolean isAuthorized( SecuritySession session, Object permission )
+        throws AuthorizationException
+    {
+        return false;
+    }
+
+    public String getAuthorizerId()
+    {
+        return "authorizer info 1.0";
+    }
+
     // ----------------------------------------------------------------------------
     // User Management: delegate to the user manager
     // ----------------------------------------------------------------------------
+
+
+    public String getUserManagementId()
+    {
+        return "user management info 1.0";
+    }
 }

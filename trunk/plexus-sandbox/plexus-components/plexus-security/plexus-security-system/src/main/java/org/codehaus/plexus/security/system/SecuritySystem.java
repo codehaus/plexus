@@ -39,6 +39,8 @@ public interface SecuritySystem
     SecuritySession authenticate( AuthenticationDataSource source )
         throws AuthenticationException, UserNotFoundException;
 
+    String getAuthenticatorId();
+
     // ----------------------------------------------------------------------------
     // Authorization
     // ----------------------------------------------------------------------------
@@ -46,7 +48,12 @@ public interface SecuritySystem
     boolean isAuthorized( SecuritySession session, Object permission )
         throws AuthorizationException;
 
+    String getAuthorizerId();
+
     // ----------------------------------------------------------------------------
     // User Management
     // ----------------------------------------------------------------------------
+    String getUserManagementId();
+
 }
+
