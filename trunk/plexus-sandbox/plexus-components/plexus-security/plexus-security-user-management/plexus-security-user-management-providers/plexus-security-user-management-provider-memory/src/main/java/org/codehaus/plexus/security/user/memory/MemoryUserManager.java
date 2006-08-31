@@ -19,12 +19,12 @@ public class MemoryUserManager
 
     public User addUser( User user )
     {
-        return null;
+        users.put( user.getPrincipal(), user );
     }
 
     public User updateUser( User user )
     {
-        return null;
+        return addUser( user );
     }
 
     public User findUser( Object principal )
@@ -42,6 +42,6 @@ public class MemoryUserManager
 
     public void deleteUser( User user )
     {
-
+        users.remove( user );
     }
 }

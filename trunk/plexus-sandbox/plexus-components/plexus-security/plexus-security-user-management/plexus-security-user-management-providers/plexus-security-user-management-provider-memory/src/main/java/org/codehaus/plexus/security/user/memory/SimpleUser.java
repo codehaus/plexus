@@ -14,7 +14,6 @@ public class SimpleUser
 
     private String email;
 
-
     public SimpleUser( String firstName,
                        String lastName,
                        String email )
@@ -37,5 +36,10 @@ public class SimpleUser
     public String getEmail()
     {
         return email;
+    }
+
+    public Object getPrincipal()
+    {
+        return new Integer( hashCode() );
     }
 }
