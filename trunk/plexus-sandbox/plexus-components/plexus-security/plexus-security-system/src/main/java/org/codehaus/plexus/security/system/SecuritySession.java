@@ -8,6 +8,8 @@ import org.codehaus.plexus.security.user.User;
  */
 public interface SecuritySession
 {
+    public static final String ROLE = SecuritySession.class.getName(); 
+
     AuthenticationResult getAuthenticationResult();
 
     User getUser();
