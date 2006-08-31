@@ -6,7 +6,7 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-authorization</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <name>Plexus Security :: Authorization</name>
   <packaging>pom</packaging>
   <modules>
     <module>plexus-security-authorization-api</module>
