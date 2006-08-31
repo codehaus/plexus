@@ -3,6 +3,7 @@ package org.codehaus.plexus.security.system;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.system.SecuritySession;
 
 /*
  * Copyright 2005 The Codehaus.

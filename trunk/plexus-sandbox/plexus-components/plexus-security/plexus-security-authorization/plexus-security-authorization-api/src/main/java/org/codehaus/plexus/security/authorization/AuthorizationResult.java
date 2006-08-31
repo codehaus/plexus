@@ -23,41 +23,20 @@ package org.codehaus.plexus.security.authorization;
  */
 public class AuthorizationResult
 {
-    /**
-     * the name of the authorization store that generated this result
-     */
-    private String authorizationStore;
+    private boolean isAuthorized;
 
-    /**
-     * boolean for authorized or not behavior
-     */
-    private boolean isAuthorized = false;
-
-    /**
-     * the principal actor on the system, most commonly the username, but some systems may use this as a different value
-     */
     private Object principal;
 
-    /**
-     * optional informational message from the authorization system
-     */
-    private String message;
-
-    /**
-     * optional exception that might be thrown from the authorization system
-     */
     private Exception exception;
 
-    /**
-     * optional payload object containing implementation specific information
-     */
-    private Object payload;
-    
-    private AuthorizationResult() {}
 
-    public AuthorizationResult( String authorizationStore )
+    public AuthorizationResult( boolean authorized,
+                                Object principal,
+                                Exception exception )
     {
-        this.authorizationStore = authorizationStore;
+        isAuthorized = authorized;
+        this.principal = principal;
+        this.exception = exception;
     }
 
     public boolean isAuthorized()
@@ -65,58 +44,13 @@ public class AuthorizationResult
         return isAuthorized;
     }
 
-    public void setAuthorized( boolean authorized )
-    {
-        isAuthorized = authorized;
-    }
-
     public Object getPrincipal()
     {
         return principal;
     }
 
-    public void setPrincipal( Object principal )
-    {
-        this.principal = principal;
-    }
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    public void setMessage( String message )
-    {
-        this.message = message;
-    }
-
     public Exception getException()
     {
         return exception;
-    }
-
-    public void setException( Exception exception )
-    {
-        this.exception = exception;
-    }
-
-    public Object getPayload()
-    {
-        return payload;
-    }
-
-    public void setPayload( Object payload )
-    {
-        this.payload = payload;
-    }
-
-    public String getAuthorizationStore()
-    {
-        return authorizationStore;
-    }
-
-    public void setAuthorizationStore( String authorizationStore )
-    {
-        this.authorizationStore = authorizationStore;
     }
 }

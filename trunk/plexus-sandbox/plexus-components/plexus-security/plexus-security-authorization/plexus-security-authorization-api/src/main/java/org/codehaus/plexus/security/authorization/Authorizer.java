@@ -30,7 +30,7 @@ public interface Authorizer
 
     Set getRoles( Object principal );
 
-    AuthorizationResult authorize( AuthorizationDataSource source )
+    AuthorizationResult isAuthorized( AuthorizationDataSource source )
         throws AuthorizationException;
 
 }

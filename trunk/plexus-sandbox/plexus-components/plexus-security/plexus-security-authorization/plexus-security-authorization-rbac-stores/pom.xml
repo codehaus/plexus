@@ -8,6 +8,12 @@
   <artifactId>plexus-security-authorization-rbac-stores</artifactId>
   <name>Plexus Security :: RBAC Authroization Stores</name>
   <packaging>pom</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authorization-api</artifactId>
+    </dependency>
+  </dependencies>
   <modules>
     <module>plexus-security-authorization-rbac-store-memory</module>
     <!--
