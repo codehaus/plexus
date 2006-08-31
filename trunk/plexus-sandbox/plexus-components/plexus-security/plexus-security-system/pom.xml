@@ -23,7 +23,7 @@
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-user-management-api</artifactId>
-    </dependency>    
+    </dependency>
   </dependencies>
   <build>
     <plugins>
