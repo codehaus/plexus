@@ -20,6 +20,8 @@ public class MemoryUserManager
     public User addUser( User user )
     {
         users.put( user.getPrincipal(), user );
+
+        return user;
     }
 
     public User updateUser( User user )
