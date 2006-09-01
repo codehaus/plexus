@@ -31,9 +31,9 @@ public class MemoryAuthorizationDataSource
 
     User user;
 
-    String permission;
+    Object permission;
 
-    public MemoryAuthorizationDataSource( Object principal, User user, String permission )
+    public MemoryAuthorizationDataSource( Object principal, User user, Object permission )
     {
         this.principal = principal;
         this.user = user;
@@ -60,12 +60,12 @@ public class MemoryAuthorizationDataSource
         this.user = user;
     }
 
-    public String getPermission()
+    public Object getPermission()
     {
         return permission;
     }
 
-    public void setPermission( String permission )
+    public void setPermission( Object permission )
     {
         this.permission = permission;
     }

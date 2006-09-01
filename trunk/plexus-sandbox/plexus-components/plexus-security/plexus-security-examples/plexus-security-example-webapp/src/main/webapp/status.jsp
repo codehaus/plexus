@@ -12,14 +12,23 @@
       <p>
         test of the jsp tag 1:<br/>
         <br/>
-        you should see and X right here ->
+        you should see an X right here ->
 
         <pss:ifAuthorized permission="foo">
           X
         </pss:ifAuthorized>
-                
-
       </p>
 
+      <p>
+        test of the jsp tag 2:<br/>
+        <br/>
+        you should NOT see an X right here ->
+        <pss:ifAuthorized permission="bar">
+          X
+        </pss:ifAuthorized>
+      </p>
+
+
+      
     </body>
 </html>
