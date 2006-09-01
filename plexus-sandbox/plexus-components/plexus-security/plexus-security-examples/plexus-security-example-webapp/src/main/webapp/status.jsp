@@ -6,29 +6,44 @@
     </head>
     <body>
       <p>
-        status page
+        jsp tag test page
       </p>
-
+      <hr/>
       <p>
-        test of the jsp tag 1:<br/>
+        test of the jsp tag pss:ifAuthorized 1:<br/>
         <br/>
         you should see an X right here ->
-
         <pss:ifAuthorized permission="foo">
           X
         </pss:ifAuthorized>
       </p>
-
+      <hr/>
       <p>
-        test of the jsp tag 2:<br/>
+        test of the jsp tag pss:ifAuthorized 2:<br/>
         <br/>
         you should NOT see an X right here ->
         <pss:ifAuthorized permission="bar">
           X
         </pss:ifAuthorized>
       </p>
-
-
-      
+      <hr/>
+      <p>
+        test of the jsp tag pss:ifAnyAuthorized 3:<br/>
+        <br/>
+        you should see an X right here ->
+        <pss:ifAnyAuthorized permissions="foo,bar">
+          X
+        </pss:ifAnyAuthorized>
+      </p>
+      <hr/>
+      <p>
+        test of the jsp tag pss:ifAnyAuthorized 4:<br/>
+        <br/>
+        you should NOT see an X right here ->
+        <pss:ifAnyAuthorized permissions="bar,dor">
+          X
+        </pss:ifAnyAuthorized>
+      </p>
+      <hr/>
     </body>
 </html>
