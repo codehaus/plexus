@@ -26,7 +26,7 @@ import org.codehaus.plexus.security.user.User;
 /**
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $Id:$
- * 
+ *
  * @plexus.component role="org.codehaus.plexus.security.authorization.Authorizer"
  * role-hint="memory"
  */
@@ -42,7 +42,16 @@ public class MemoryAuthorizer
 
         User user = source.getUser();
 
-        return new AuthorizationResult( true, principal, null );
+        Object permission = source.getPermission();
+
+        if ( "foo".equals( permission.toString() ) )
+        {
+            return new AuthorizationResult( true, principal, null );
+        }
+        else
+        {
+            return new AuthorizationResult( false, principal, null );
+        }
     }
 }
 

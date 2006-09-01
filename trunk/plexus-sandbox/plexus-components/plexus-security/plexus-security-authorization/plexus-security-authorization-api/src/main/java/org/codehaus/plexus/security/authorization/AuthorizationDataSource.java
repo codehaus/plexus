@@ -12,4 +12,6 @@ public interface AuthorizationDataSource
     Object getPrincipal();
 
     User getUser();
+
+    Object getPermission();
 }
