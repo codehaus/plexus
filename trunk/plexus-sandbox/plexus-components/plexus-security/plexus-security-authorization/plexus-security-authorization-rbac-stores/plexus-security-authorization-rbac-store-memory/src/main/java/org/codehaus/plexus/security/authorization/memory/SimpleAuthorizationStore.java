@@ -1,14 +1,6 @@
 package org.codehaus.plexus.security.authorization.memory;
 
-import org.codehaus.plexus.security.AuthorizationResult;
-import org.codehaus.plexus.security.AuthorizationStore;
-import org.codehaus.plexus.security.PlexusSecuritySession;
-import org.codehaus.plexus.security.authorization.AuthorizationStore;
-import org.codehaus.plexus.security.authorization.AuthorizationResult;
-import org.codehaus.plexus.security.authorization.AuthorizationException;
-import org.codehaus.plexus.security.exception.AuthorizationException;
 
-import java.util.Map;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -25,19 +17,42 @@ import java.util.Map;
  * limitations under the License.
  */
 
+
+import org.codehaus.plexus.security.authorization.AuthorizationStore;
+import org.codehaus.plexus.security.authorization.AuthorizationResult;
+import org.codehaus.plexus.security.authorization.AuthorizationException;
+import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
+import org.codehaus.plexus.security.system.SecuritySession;
+
+import java.util.Set;
+
 /**
  * SimpleAuthorizationStore:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- * @plexus.component role="org.codehaus.plexus.security.AuthorizationStore"
- * role-hint="memory"
+ *
+ * @plexus.component
+ *   role="org.codehaus.plexus.security.AuthorizationStore"
+ *   role-hint="memory"
  */
 public class SimpleAuthorizationStore
     implements AuthorizationStore
 {
+    public Set getRoles( Object principal )
+    {
+        return null;
+    }
+
+    public AuthorizationResult authorize( AuthorizationDataSource source )
+        throws AuthorizationException
+    {
+        return null;
+    }
+
     public AuthorizationResult authorize( SecuritySession session )
         throws AuthorizationException
     {
+        return null;
     }
 }

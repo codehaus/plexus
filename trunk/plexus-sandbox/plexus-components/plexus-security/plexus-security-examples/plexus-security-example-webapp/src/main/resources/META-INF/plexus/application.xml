@@ -1,0 +1,73 @@
+<plexus>
+  <components>
+
+    <component>
+      <role>org.codehaus.plexus.security.system.SecuritySystem</role>
+      <implementation>org.codehaus.plexus.security.system.DefaultSecuritySystem</implementation>
+      <role-hint>default</role-hint>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.authentication.Authenticator</role>
+          <role-hint>memory</role-hint>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.authorization.Authorizer</role>
+          <role-hint>memory</role-hint>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.user.UserManager</role>
+          <role-hint>memory</role-hint>
+        </requirement>
+      </requirements>
+
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.security.authorization.Authorizer</role>
+      <implementation>org.codehaus.plexus.security.authorization.DefaultAuthorizer</implementation>
+      <role-hint>memory</role-hint>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.AuthorizationStore</role>
+          <role-hint>memory</role-hint>
+        </requirement>
+      </requirements>
+    </component>
+
+    <!--
+     | Logger manager
+     -->
+    <component>
+      <role>org.codehaus.plexus.logging.LoggerManager</role>
+      <implementation>org.codehaus.plexus.logging.log4j.Log4JLoggerManager</implementation>
+      <lifecycle-handler>basic</lifecycle-handler>
+
+      <configuration>
+        <threshold>DEBUG</threshold>
+        <default-appender>console</default-appender>
+        <appenders>
+          <appender>
+            <id>console</id>
+            <threshold>INFO</threshold>
+            <type>org.apache.log4j.ConsoleAppender</type>
+            <conversion-pattern>%d [%t] %-5p %-30c{1} - %m%n</conversion-pattern>
+          </appender>
+        </appenders>
+        <levels>
+          <level>
+            <hierarchy>org.codehaus.plexus.velocity</hierarchy>
+            <level>WARN</level>
+          </level>
+          <level>
+            <hierarchy>com.opensymphony.xwork</hierarchy>
+            <level>INFO</level>
+          </level>
+          <level>
+            <hierarchy>com.opensymphony.webwork</hierarchy>
+            <level>INFO</level>
+          </level>
+        </levels>
+      </configuration>
+    </component>
+  </components>
+</plexus>

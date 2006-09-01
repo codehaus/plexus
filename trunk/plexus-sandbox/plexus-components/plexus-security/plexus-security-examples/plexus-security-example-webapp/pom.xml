@@ -13,8 +13,8 @@
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-common</artifactId>
     </dependency>
-    <dependency>                                                                                                                                                                                                                            
-      <groupId>org.codehaus.plexus.security</groupId>                                                                                                                                                                                       
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-system</artifactId>
     </dependency>
     <dependency>
@@ -22,9 +22,26 @@
       <artifactId>plexus-security-ui-web</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authentication-provider-memory</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-user-management-provider-memory</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authorization-api</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-xwork-integration</artifactId>
       <version>1.0-alpha-2-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>opensymphony</groupId>
+      <artifactId>sitemesh</artifactId>
+      <version>2.2.1</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -37,7 +54,12 @@
       <artifactId>jsp-api</artifactId>
       <version>2.0</version>
       <scope>provided</scope>
-    </dependency>    
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-log4j-logging</artifactId>
+      <version>1.1-alpha-2</version>
+    </dependency>
     <dependency>
       <groupId>taglibs</groupId>
       <artifactId>standard</artifactId>

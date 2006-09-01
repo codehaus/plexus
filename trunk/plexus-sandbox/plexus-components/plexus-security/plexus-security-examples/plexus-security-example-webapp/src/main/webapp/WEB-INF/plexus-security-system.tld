@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+<taglib>
+  <tlibversion>1.1</tlibversion>
+  <jspversion>1.2</jspversion>
+  <shortname>pss</shortname>
+  <uri>plexus-security-system</uri>
+
+  <tag>
+    <name>ifAuthorized</name>
+    <tagclass>org.codehaus.plexus.security.ui.web.jsp.IfAuthorizedTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <attribute>
+      <name>permission</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+    <tag>
+    <name>ifAnyAuthorized</name>
+    <tagclass>org.codehaus.plexus.security.ui.web.jsp.IfAnyAuthorizedTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <attribute>
+      <name>permissions</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+</taglib>

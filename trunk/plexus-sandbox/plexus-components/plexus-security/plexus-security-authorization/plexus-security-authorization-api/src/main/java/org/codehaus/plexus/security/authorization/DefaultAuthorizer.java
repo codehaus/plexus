@@ -23,15 +23,19 @@ import java.util.Set;
 
 /**
  * @author: Jesse McConnell <jesse@codehaus.org>
- * @version: $ID:$
- * @plexus.component rolorg.codehaus.plexus.security.authorization.Authorizerzer"
+ * @version: $Id:$
+ * @plexus.component role="org.codehaus.plexus.security.authorization.Authorizer"
  * role-hint="default"
  */
 public class DefaultAuthorizer
     extends AbstractLogEnabled
     implements Authorizer
 {
-    private AuthorizationStore store;
+
+    /**
+     * @ plexus.requirement
+     */
+   // private AuthorizationStore store;
 
     public AuthorizationResult isAuthorized( AuthorizationDataSource source )
         throws AuthorizationException
@@ -45,7 +49,7 @@ public class DefaultAuthorizer
 
     public Set getRoles( Object principal )
     {
-        return store.getRoles( principal );
+        return null;//store.getRoles( principal );
     }
 }
 
