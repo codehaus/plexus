@@ -27,6 +27,12 @@
           	<value></value>
           </property>
 -->
+
+          <!--
+          NOTE: JPOX 1.1.1 won't create the tables on start
+          http://www.jpox.org/servlet/jira/browse/CORE-2946
+          -->
+
           <property>
           	<name>org.jpox.autoCreateSchema</name>
           	<value>true</value>
