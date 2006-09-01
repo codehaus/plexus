@@ -21,8 +21,11 @@ import com.opensymphony.xwork.ActionContext;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.security.authorization.AuthorizationException;
+import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
+import org.codehaus.plexus.security.authorization.memory.MemoryAuthorizationDataSource;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.xwork.PlexusLifecycleListener;
 
 import javax.servlet.jsp.JspTagException;
@@ -58,6 +61,8 @@ public class IfAnyAuthorizedTag
 
         SecuritySession securitySession = (SecuritySession)context.getSession().get( SecuritySession.ROLE );
 
+        User user = securitySession.getUser();
+
         try
         {
             SecuritySystem securitySystem = (SecuritySystem) container.lookup( SecuritySystem.ROLE );
@@ -67,8 +72,13 @@ public class IfAnyAuthorizedTag
             while ( strtok.hasMoreTokens() )
             {
                 String permission = strtok.nextToken().trim();
+                
+                //todo make this not suck
+                AuthorizationDataSource source = new MemoryAuthorizationDataSource( user.getPrincipal(), user, permission );
 
-                if ( securitySystem.isAuthorized( securitySession, permission ) )
+
+
+                if ( securitySystem.isAuthorized( source ) )
                 {
                     return true;
                 }
