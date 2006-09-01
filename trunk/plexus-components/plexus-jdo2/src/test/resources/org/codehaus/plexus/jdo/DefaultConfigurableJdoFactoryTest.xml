@@ -1,0 +1,89 @@
+<plexus>
+
+  <components>
+
+    <component>
+      <role>org.codehaus.plexus.jdo.JdoFactory</role>
+      <implementation>org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory</implementation>
+      <configuration>
+
+        <!-- HSQLDB Configuration -->
+        <!--
+          NOTE: NO NOT USE THIS CONFIGURATION FOR A PRODUCTION SYSTEM.
+          HSQLDB keeps all data in memory at all times.
+        -->
+        <driverName>org.hsqldb.jdbcDriver</driverName>
+        <url>jdbc:hsqldb:mem:test</url>
+        <userName>sa</userName>
+        <password></password>
+
+        <!-- Apache Derby Configuration -->
+        <!--
+        <driverName>org.apache.derby.jdbc.EmbeddedDriver</driverName>
+        <url>jdbc:derby:${plexus.home}/database;create=true</url>
+        <userName>sa</userName>
+        <password></password>
+        -->
+
+        <!-- Postgresql Configuration -->
+        <!--
+        <driverName>org.postgresql.Driver</driverName>
+        <url>jdbc:postgresql://localhost/continuum</url>
+        <userName>username</userName>
+        <password></password>
+        -->
+
+        <!-- JPOX and JDO configuration -->
+        <persistenceManagerFactoryClass>org.jpox.PersistenceManagerFactoryImpl</persistenceManagerFactoryClass>
+        <otherProperties>
+          <property>
+            <name>org.jpox.autoCreateSchema</name>
+            <value>true</value>
+          </property>
+          <property>
+            <name>org.jpox.autoStartMechanism</name>
+            <value>SchemaTable</value>
+          </property>
+          <property>
+            <name>org.jpox.autoStartMechanismMode</name>
+            <value>Ignored</value>
+          </property>
+          <property>
+            <name>org.jpox.transactionIsolation</name>
+            <value>READ_UNCOMMITTED</value>
+          </property>
+          <property>
+            <name>org.jpox.poid.transactionIsolation</name>
+            <value>READ_UNCOMMITTED</value>
+          </property>
+        </otherProperties>
+      </configuration>
+    </component>
+
+    <!--
+     | Logger manager
+    <component>
+      <role>org.codehaus.plexus.logging.LoggerManager</role>
+      <implementation>org.codehaus.plexus.logging.log4j.Log4JLoggerManager</implementation>
+      <lifecycle-handler>basic</lifecycle-handler>
+
+      <configuration>
+        <threshold>INFO</threshold>
+        <default-appender>console</default-appender>
+        <appenders>
+          <appender>
+            <id>console</id>
+            <threshold>INFO</threshold>
+            <type>org.apache.log4j.ConsoleAppender</type>
+            <conversion-pattern>%d [%t] %-5p %-30c{1} - %m%n</conversion-pattern>
+          </appender>
+        </appenders>
+        <levels>
+        </levels>
+      </configuration>
+    </component>
+     -->
+
+  </components>
+
+</plexus>

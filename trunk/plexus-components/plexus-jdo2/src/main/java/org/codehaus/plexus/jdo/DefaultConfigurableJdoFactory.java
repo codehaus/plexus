@@ -1,7 +1,7 @@
 package org.codehaus.plexus.jdo;
 
 /*
-* Copyright 2005 The Apache Software Foundation.
+* Copyright 2005-2006 The Apache Software Foundation.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@ package org.codehaus.plexus.jdo;
 * limitations under the License.
 */
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-
-import java.util.Properties;
 import java.util.Iterator;
 import java.util.Map;
-import javax.jdo.PersistenceManagerFactory;
+import java.util.Properties;
+
 import javax.jdo.JDOHelper;
+import javax.jdo.PersistenceManagerFactory;
+
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -100,7 +100,10 @@ javax.jdo.mapping.Schema		Name of the schema to use by default for all classes p
     public void initialize()
         throws InitializationException
     {
-        otherProperties = new Properties();
+        if ( otherProperties == null )
+        {
+            otherProperties = new Properties();
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -161,7 +164,14 @@ javax.jdo.mapping.Schema		Name of the schema to use by default for all classes p
             }
             else
             {
-                Properties properties = new Properties( otherProperties );
+                Properties properties = new Properties();
+
+                Iterator it = otherProperties.entrySet().iterator();
+                while ( it.hasNext() )
+                {
+                    Map.Entry entry = (Map.Entry) it.next();
+                    properties.setProperty( (String) entry.getKey(), (String) entry.getValue() );
+                }
 
                 setPropertyInner( properties, "javax.jdo.PersistenceManagerFactoryClass", persistenceManagerFactoryClass );
                 setPropertyInner( properties, "javax.jdo.option.ConnectionDriverName", driverName );
