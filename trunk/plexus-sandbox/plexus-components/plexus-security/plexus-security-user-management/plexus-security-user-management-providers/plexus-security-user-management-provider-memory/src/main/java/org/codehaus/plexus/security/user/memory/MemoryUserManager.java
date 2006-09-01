@@ -47,8 +47,8 @@ public class MemoryUserManager
         return user;
     }
 
-    public void deleteUser( User user )
+    public void deleteUser( Object principal )
     {
-        users.remove( user );
+        users.remove( principal );
     }
 }

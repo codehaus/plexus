@@ -8,7 +8,7 @@
   <body>
     <ww:actionerror/>
     <ww:form action="login">
-      <table>                                          
+      <table>
         <tr>
           <td>username</td>
           <td><ww:textfield name="username"/></td>
@@ -16,6 +16,10 @@
         <tr>
           <td>password</td>
           <td><ww:password name="password"/></td>
+        </tr>
+         <tr>
+          <td>email</td>
+          <td><ww:password name="email"/></td>
         </tr>
       </table>
       <center><ww:submit/></center>

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization;
+package org.codehaus.plexus.security.authorization.memory;
 
 /*
  * Copyright 2005 The Codehaus.
@@ -17,25 +17,23 @@ package org.codehaus.plexus.security.authorization;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
+import org.codehaus.plexus.security.authorization.AuthorizationException;
+import org.codehaus.plexus.security.authorization.AuthorizationResult;
+import org.codehaus.plexus.security.authorization.Authorizer;
 import org.codehaus.plexus.security.user.User;
-
-import java.util.Set;
 
 /**
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $Id:$
+ * 
  * @plexus.component role="org.codehaus.plexus.security.authorization.Authorizer"
- * role-hint="default"
+ * role-hint="memory"
  */
-public class DefaultAuthorizer
+public class MemoryAuthorizer
     extends AbstractLogEnabled
     implements Authorizer
 {
-
-    /**
-     * @ plexus.requirement
-     */
-   // private AuthorizationStore store;
 
     public AuthorizationResult isAuthorized( AuthorizationDataSource source )
         throws AuthorizationException
@@ -45,11 +43,6 @@ public class DefaultAuthorizer
         User user = source.getUser();
 
         return new AuthorizationResult( true, principal, null );
-    }
-
-    public Set getRoles( Object principal )
-    {
-        return null;//store.getRoles( principal );
     }
 }
 

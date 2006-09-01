@@ -3,7 +3,10 @@ package org.codehaus.plexus.security.system;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.authorization.AuthorizationException;
+import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
+import org.codehaus.plexus.security.authorization.AuthorizationResult;
 
 /*
  * Copyright 2005 The Codehaus.
@@ -36,16 +39,22 @@ public interface SecuritySystem
     // Authentication
     // ----------------------------------------------------------------------------
 
-    SecuritySession authenticate( AuthenticationDataSource source )
+    public SecuritySession authenticate( AuthenticationDataSource source )
         throws AuthenticationException, UserNotFoundException;
 
-    String getAuthenticatorId();
+    public boolean isAuthenticated( AuthenticationDataSource source )
+        throws AuthenticationException, UserNotFoundException;
+
+    public String getAuthenticatorId();
 
     // ----------------------------------------------------------------------------
     // Authorization
     // ----------------------------------------------------------------------------
 
-    boolean isAuthorized( SecuritySession session, Object permission )
+    public AuthorizationResult authorize( AuthorizationDataSource source )
+        throws AuthorizationException;
+
+    boolean isAuthorized( AuthorizationDataSource source )
         throws AuthorizationException;
 
     String getAuthorizerId();
@@ -53,6 +62,8 @@ public interface SecuritySystem
     // ----------------------------------------------------------------------------
     // User Management
     // ----------------------------------------------------------------------------
+
+    public UserManager getUserManager();
     String getUserManagementId();
 
 }
