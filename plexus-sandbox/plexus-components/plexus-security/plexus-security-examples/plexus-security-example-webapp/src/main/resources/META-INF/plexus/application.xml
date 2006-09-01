@@ -19,19 +19,6 @@
           <role-hint>memory</role-hint>
         </requirement>
       </requirements>
-
-    </component>
-
-    <component>
-      <role>org.codehaus.plexus.security.authorization.Authorizer</role>
-      <implementation>org.codehaus.plexus.security.authorization.DefaultAuthorizer</implementation>
-      <role-hint>memory</role-hint>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.security.AuthorizationStore</role>
-          <role-hint>memory</role-hint>
-        </requirement>
-      </requirements>
     </component>
 
     <!--

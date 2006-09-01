@@ -14,5 +14,5 @@ public interface UserManager
     User findUser( Object principal )
         throws UserNotFoundException;
 
-    void deleteUser( User user );
+    void deleteUser( Object principal );
 }

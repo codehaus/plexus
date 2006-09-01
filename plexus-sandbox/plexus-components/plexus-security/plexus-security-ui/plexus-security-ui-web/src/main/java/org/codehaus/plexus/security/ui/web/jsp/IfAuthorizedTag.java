@@ -20,8 +20,11 @@ import com.opensymphony.xwork.ActionContext;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.security.authorization.AuthorizationException;
+import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
+import org.codehaus.plexus.security.authorization.memory.MemoryAuthorizationDataSource;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.xwork.PlexusLifecycleListener;
 
 import javax.servlet.jsp.JspTagException;
@@ -56,7 +59,13 @@ public class IfAuthorizedTag
         {
             SecuritySystem securitySystem = (SecuritySystem) container.lookup( SecuritySystem.ROLE );
 
-            return securitySystem.isAuthorized( securitySession, permission );
+            //todo make this not suck
+            User user = securitySession.getUser();
+
+
+            AuthorizationDataSource source = new MemoryAuthorizationDataSource( user.getPrincipal(), user, permission );
+
+            return securitySystem.isAuthorized( source );
         }
         catch ( ComponentLookupException cle )
         {
