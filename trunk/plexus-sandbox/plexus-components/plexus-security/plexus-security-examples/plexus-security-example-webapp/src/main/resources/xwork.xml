@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.1.1//EN" "http://www.opensymphony.com/xwork/xwork-1.1.1.dtd">
+
+<xwork>
+  <include file="webwork-default.xml"/>
+  <include file="plexus-security-xwork.xml"/>
+
+  <package name="default" extends="webwork-default" namespace="/">
+
+    <default-interceptor-ref name="defaultStack"/>
+
+    <action name="login" class="session" method="login">
+      <result name="input">/login.jsp</result>
+      <result name="error">/login.jsp</result>
+      <result name="success" type="chain">status</result>
+    </action>
+
+    <action name="logout" class="session" method="logout">
+      <result name="error">/status.jsp</result>
+      <result name="success" type="chain">status</result>
+    </action>
+
+    <action name="status" class="status" method="status">
+      <result name="error">/status.jsp</result>
+      <result name="success">/status.jsp</result>
+    </action>
+
+  </package>
+</xwork>

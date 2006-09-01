@@ -28,7 +28,7 @@ import org.codehaus.plexus.security.authentication.Authenticator;
  * @version: $ID:$
  *
  * @plexus.component
- *   role="org.codehaus.plexus.security.authentication.memory.Authenticator"
+ *   role="org.codehaus.plexus.security.authentication.Authenticator"
  *   role-hint="memory"
  */
 public class MemoryAuthenticator

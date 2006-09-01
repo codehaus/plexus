@@ -1,7 +1,8 @@
-package org.codehaus.plexus.security.authentication;
+package org.codehaus.plexus.security.example.web.action;
 
+import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +18,25 @@ package org.codehaus.plexus.security.authentication;
  */
 
 /**
- * Authenticator:
+ * PlexusSecuritySystemAction:
  *
- * @author Jesse McConnell
- * @version $ID:$
+ * @author Jesse McConnell <jesse@codehaus.org>
+ * @version $Id:$
+ *
+ * @plexus.component
+ *   role="com.opensymphony.xwork.Action"
+ *   role-hint="status"
  */
-public interface Authenticator
+public class StatusAction
+    extends PlexusActionSupport
 {
-    String ROLE = Authenticator.class.getName();
+    /**
+     * @ plexus.requirement
+     */
+    //private SecuritySystem securitySystem;
 
-    public AuthenticationResult authenticate( AuthenticationDataSource source )
-        throws AuthenticationException;
+    public String status()
+    {
+        return SUCCESS;
+    }
 }

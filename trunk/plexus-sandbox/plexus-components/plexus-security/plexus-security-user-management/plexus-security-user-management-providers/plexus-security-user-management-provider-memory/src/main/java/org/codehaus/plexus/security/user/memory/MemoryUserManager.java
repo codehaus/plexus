@@ -7,6 +7,11 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
 import java.util.Map;
 import java.util.HashMap;
 
+/**
+ * @plexus.component
+ *   role="org.codehaus.plexus.security.user.UserManager"
+ *   role-hint="memory"
+ */
 public class MemoryUserManager
     implements UserManager
 {
