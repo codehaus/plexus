@@ -23,6 +23,8 @@ import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
 import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.authorization.Authorizer;
+import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
+import org.codehaus.plexus.security.authorization.AuthorizationResult;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
@@ -72,6 +74,12 @@ public class DefaultSecuritySystem
         return new DefaultSecuritySession( result, user );
     }
 
+    public boolean isAuthenticated( AuthenticationDataSource source )
+        throws AuthenticationException, UserNotFoundException
+    {
+        return authenticate( source ).getAuthenticationResult().isAuthenticated();
+    }
+
     public String getAuthenticatorId()
     {
         return "authenticator info 1.0";
@@ -81,15 +89,16 @@ public class DefaultSecuritySystem
     // Authorization: delegate to the authorizer
     // ----------------------------------------------------------------------------
 
-    public void authorized( SecuritySession session )
-    {
-        //AuthorizationResult result = authorizer.authenticate( )
-    }
-
-    public boolean isAuthorized( SecuritySession session, Object permission )
+    public AuthorizationResult authorize( AuthorizationDataSource source)
         throws AuthorizationException
     {
-        return false;
+        return authorizer.isAuthorized( source );
+    }
+
+    public boolean isAuthorized( AuthorizationDataSource source )
+        throws AuthorizationException
+    {
+        return authorize(source).isAuthorized();
     }
 
     public String getAuthorizerId()
@@ -101,6 +110,10 @@ public class DefaultSecuritySystem
     // User Management: delegate to the user manager
     // ----------------------------------------------------------------------------
 
+    public UserManager getUserManager()
+    {
+        return userManager;
+    }
 
     public String getUserManagementId()
     {

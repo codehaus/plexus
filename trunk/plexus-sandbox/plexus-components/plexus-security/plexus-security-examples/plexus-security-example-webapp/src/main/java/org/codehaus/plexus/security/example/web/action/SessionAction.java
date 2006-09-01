@@ -7,6 +7,9 @@ import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.memory.MemoryAuthenticationDataSource;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.memory.SimpleUser;
 /*
  * Copyright 2005 The Apache Software Foundation.
  *
@@ -45,12 +48,21 @@ public class SessionAction
 
     private String password;
 
+    private String email;
+
     public String login()
     {
         if ( username == null || password == null )
         {
             return ERROR;
         }
+
+        UserManager um = securitySystem.getUserManager();
+
+        User user = new SimpleUser( username, password, email );
+
+        um.addUser( user );
+
 
         AuthenticationDataSource source = new MemoryAuthenticationDataSource( username, password );
 
@@ -110,4 +122,13 @@ public class SessionAction
         this.password = password;
     }
 
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail( String email )
+    {
+        this.email = email;
+    }
 }

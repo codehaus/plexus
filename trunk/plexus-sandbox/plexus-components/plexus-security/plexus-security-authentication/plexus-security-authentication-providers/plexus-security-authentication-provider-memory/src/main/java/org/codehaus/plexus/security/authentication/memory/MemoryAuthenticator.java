@@ -41,7 +41,11 @@ public class MemoryAuthenticator
     public AuthenticationResult authenticate( AuthenticationDataSource source )
         throws AuthenticationException
     {
+
         MemoryAuthenticationDataSource s = (MemoryAuthenticationDataSource) source;
+
+        login = s.getLogin();
+        password = s.getPassword();
 
         if ( s.getPassword().equals( password ) )
         {

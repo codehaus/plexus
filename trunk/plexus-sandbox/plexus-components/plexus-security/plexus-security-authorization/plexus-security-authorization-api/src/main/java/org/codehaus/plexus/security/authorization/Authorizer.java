@@ -1,7 +1,5 @@
 package org.codehaus.plexus.security.authorization;
 
-import java.util.Set;
-
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -29,9 +27,6 @@ public interface Authorizer
 {
     static String ROLE = Authorizer.class.getName();
 
-    Set getRoles( Object principal );
-
     AuthorizationResult isAuthorized( AuthorizationDataSource source )
         throws AuthorizationException;
-
 }

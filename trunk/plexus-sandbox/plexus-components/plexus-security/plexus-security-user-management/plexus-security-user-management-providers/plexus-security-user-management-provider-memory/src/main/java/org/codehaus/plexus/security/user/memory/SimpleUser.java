@@ -8,29 +8,29 @@ import org.codehaus.plexus.security.user.User;
 public class SimpleUser
     implements User
 {
-    private String firstName;
+    private String username;
 
-    private String lastName;
+    private String password;
 
     private String email;
 
-    public SimpleUser( String firstName,
-                       String lastName,
+    public SimpleUser( String username,
+                       String password,
                        String email )
     {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
         this.email = email;
     }
 
-    public String getFirstName()
+    public String getUsername()
     {
-        return firstName;
+        return username;
     }
 
-    public String getLastName()
+    public String getPassword()
     {
-        return lastName;
+        return password;
     }
 
     public String getEmail()
@@ -40,6 +40,6 @@ public class SimpleUser
 
     public Object getPrincipal()
     {
-        return new Integer( hashCode() );
+        return username;
     }
 }
