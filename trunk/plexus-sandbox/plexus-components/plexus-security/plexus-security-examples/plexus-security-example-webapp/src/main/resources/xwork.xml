@@ -3,16 +3,15 @@
 
 <xwork>
   <include file="webwork-default.xml"/>
-  <include file="plexus-security-xwork.xml"/>
 
   <package name="default" extends="webwork-default" namespace="/">
 
     <default-interceptor-ref name="defaultStack"/>
-   <!--
+    
     <action name="plexusSecuritySystem" class="plexusSecuritySystem">
       <result name="success">/plexusSecuritySystem.jsp</result>
     </action>
-       -->
+    
     <action name="login" class="session" method="login">
       <result name="input">/login.jsp</result>
       <result name="error">/login.jsp</result>
