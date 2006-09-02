@@ -1,5 +1,7 @@
 package org.codehaus.plexus.taskqueue.execution;
 
+import org.codehaus.plexus.taskqueue.Task;
+
 /*
  * The MIT License
  *
@@ -31,4 +33,20 @@ package org.codehaus.plexus.taskqueue.execution;
 public interface TaskQueueExecutor
 {
     String ROLE = TaskQueueExecutor.class.getName();
+
+    /**
+     * Returns the currently executing task.
+     *
+     * @return the currently executing task.
+     */
+    Task getCurrentTask();
+
+    /**
+     * Cancels execution of this task, if it's currently running.
+     * Does NOT remove it from the associated queue!
+     *
+     * @param task The task to cancel
+     * @return true if the task was cancelled, false if the task was not executing.
+     */
+    boolean cancelTask( Task task );
 }
