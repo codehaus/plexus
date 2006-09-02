@@ -34,6 +34,7 @@ import org.codehaus.plexus.taskqueue.Task;
 import org.codehaus.plexus.taskqueue.TaskQueue;
 import org.codehaus.plexus.util.StringUtils;
 
+import edu.emory.mathcs.backport.java.util.concurrent.CancellationException;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutionException;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
@@ -43,12 +44,17 @@ import edu.emory.mathcs.backport.java.util.concurrent.TimeoutException;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author <a href="mailto:kenney@codehaus.org">Kenney Westerhof</a>
  * @version $Id$
  */
 public class ThreadedTaskQueueExecutor
     extends AbstractLogEnabled
     implements TaskQueueExecutor, Initializable, Startable
 {
+    private static final int SHUTDOWN = 1;
+
+    private static final int CANCEL_TASK = 2;
+
     /** @requirement */
     private TaskQueue queue;
 
@@ -66,18 +72,22 @@ public class ThreadedTaskQueueExecutor
 
     private ExecutorService executorService;
 
+    private Task currentTask;
+
     private class ExecutorRunnable
         extends Thread
     {
-        private boolean shutdown;
+        private volatile int command;
 
         private boolean done;
 
         public void run()
         {
-            while ( !shutdown )
+            while ( command != SHUTDOWN )
             {
                 final Task task;
+
+                currentTask = null;
 
                 try
                 {
@@ -85,6 +95,8 @@ public class ThreadedTaskQueueExecutor
                 }
                 catch ( InterruptedException e )
                 {
+                    getLogger().info( "Executor thread interrupted, command: "
+                        + ( command == SHUTDOWN ? "Shutdown" : command == CANCEL_TASK ? "Cancel task" : "Unknown" ) );
                     continue;
                 }
 
@@ -92,6 +104,8 @@ public class ThreadedTaskQueueExecutor
                 {
                     continue;
                 }
+
+                currentTask = task;
 
                 Future future = executorService.submit( new Runnable()
                 {
@@ -110,40 +124,15 @@ public class ThreadedTaskQueueExecutor
 
                 try
                 {
-                    for ( ;; )
-                    {
-                        try
-                        {
-                            future.get( task.getMaxExecutionTime(), TimeUnit.MILLISECONDS );
-                        }
-                        catch ( InterruptedException e )
-                        {
-                            if ( shutdown )
-                            {
-                                getLogger()
-                                    .info( "Interrupted while waiting for task to complete; shutdown flag set, so cancelling task" );
-                                // cancel this task and bail (the while loop will terminate due to the shutdown flag).
-                                cancel( future );
-                            }
-                            else
-                            {
-                                // when can this thread be interrupted, and should we ignore it if shutdown = false?
-                                getLogger().warn( "Interrupted while waiting for task to complete; ignoring", e );
-                            }
-                        }
-                    }
+                    waitForTask( task, future );
                 }
                 catch ( ExecutionException e )
                 {
                     getLogger().error( "Error executing task", e );
                 }
-                catch ( TimeoutException e )
-                {
-                    getLogger().warn( "Task " + task + " didn't complete within time, cancelling it." );
-
-                    cancel( future );
-                }
             }
+
+            currentTask = null;
 
             getLogger().info( "Executor thread '" + name + "' exited." );
 
@@ -152,6 +141,68 @@ public class ThreadedTaskQueueExecutor
             synchronized ( this )
             {
                 notifyAll();
+            }
+        }
+
+        private void waitForTask( Task task, Future future )
+            throws ExecutionException
+        {
+            boolean stop = false;
+
+            while ( !stop )
+            {
+                try
+                {
+                    if ( task.getMaxExecutionTime() == 0 )
+                    {
+                        getLogger().debug( "Waiting indefinitely for task to complete" );
+                        future.get();
+                        return;
+                    }
+                    else
+                    {
+                        getLogger().debug( "Waiting at most " + task.getMaxExecutionTime() + "ms for task completion" );
+                        future.get( task.getMaxExecutionTime(), TimeUnit.MILLISECONDS );
+                        getLogger().debug( "Task completed within " + task.getMaxExecutionTime() + "ms" );
+                        return;
+                    }
+                }
+                catch ( InterruptedException e )
+                {
+                    switch ( command )
+                    {
+                        case SHUTDOWN:
+                        {
+                            getLogger().info( "Shutdown command received. Cancelling task." );
+                            cancel( future );
+                            return;
+                        }
+
+                        case CANCEL_TASK:
+                        {
+                            command = 0;
+                            getLogger().info( "Cancelling task" );
+                            cancel( future );
+                            return;
+                        }
+
+                        default:
+                            // when can this thread be interrupted, and should we ignore it if shutdown = false?
+                            getLogger().warn( "Interrupted while waiting for task to complete; ignoring", e );
+                            break;
+                    }
+                }
+                catch ( TimeoutException e )
+                {
+                    getLogger().warn( "Task " + task + " didn't complete within time, cancelling it." );
+                    cancel( future );
+                    return;
+                }
+                catch ( CancellationException e )
+                {
+                    getLogger().warn( "The task was cancelled", e );
+                    return;
+                }
             }
         }
 
@@ -165,23 +216,47 @@ public class ThreadedTaskQueueExecutor
                 }
                 else
                 {
-                    getLogger().warn( "Task not cancelled. done: " + future.isDone() + " cancelled: "
-                        + future.isCancelled() );
+                    getLogger().warn( "Task not cancelled (Flags: done: " + future.isDone() + " cancelled: "
+                        + future.isCancelled() + ")" );
                 }
             }
             else
             {
-                getLogger().debug( "Task successfully canceled" );
+                getLogger().debug( "Task successfully cancelled" );
             }
         }
 
-        public void shutdown()
+        public synchronized void shutdown()
         {
-            getLogger().info( "Executor thread got shutdown signal." );
+            getLogger().debug( "Signalling executor thread to shutdown" );
 
-            shutdown = true;
+            command = SHUTDOWN;
 
             interrupt();
+        }
+
+        public synchronized boolean cancelTask( Task task )
+        {
+            if ( !task.equals( currentTask ) )
+            {
+                getLogger().debug( "Not cancelling task - it is not running" );
+                return false;
+            }
+
+            if ( command != SHUTDOWN )
+            {
+                getLogger().debug( "Signalling executor thread to cancel task" );
+
+                command = CANCEL_TASK;
+
+                interrupt();
+            }
+            else
+            {
+                getLogger().debug( "Executor thread already stopping; task will be cancelled automatically" );
+            }
+
+            return true;
         }
 
         public boolean isDone()
@@ -228,12 +303,11 @@ public class ThreadedTaskQueueExecutor
 
         long endTime = System.currentTimeMillis() + maxSleep;
 
-        while ( !executorRunnable.isDone() )
+        while ( !executorRunnable.isDone() && executorRunnable.isAlive() )
         {
             if ( System.currentTimeMillis() > endTime )
             {
-                getLogger().warn( "Timeout, stopping task executor '" + name + "." );
-
+                getLogger().warn( "Timeout waiting for executor thread '" + name + "' to stop, aborting" );
                 break;
             }
 
@@ -250,6 +324,19 @@ public class ThreadedTaskQueueExecutor
             {
                 // ignore
             }
+
+            // notify again, just in case.
+            executorRunnable.shutdown();
         }
+    }
+
+    public Task getCurrentTask()
+    {
+        return currentTask;
+    }
+
+    public synchronized boolean cancelTask( Task task )
+    {
+        return executorRunnable.cancelTask( task );
     }
 }
