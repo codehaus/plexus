@@ -9,7 +9,7 @@
     <!-- 
     <resource>src/main/resources/log4j.properties</resource>
     -->
-    <resource>src/main/resources/plexus-request.xml</resource>
+    <resource>src/main/resources/META-INF/plexus/application.xml</resource>
     <resource>src/main/resources/webwork.properties</resource>
     <resource>src/main/resources/xwork.xml</resource>
     <resource>src/main/webapp/index.jsp</resource>
