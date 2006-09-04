@@ -49,7 +49,7 @@ public class PlexusObjectFactory
 
     public void init( ServletContext servletContext )
     {
-        if ( !PlexusLifecycleListener.loaded )
+        if ( !PlexusLifecycleListener.isLoaded() )
         {
             // uh oh! looks like the lifecycle listener wasn't installed. Let's inform the user
             String message = "********** FATAL ERROR STARTING UP PLEXUS-WEBWORK INTEGRATION **********\n" +
