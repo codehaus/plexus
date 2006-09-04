@@ -22,6 +22,14 @@
             <multiplicity>*</multiplicity>
           </association>
         </field>
+        <field>
+          <name>assignments</name>
+          <version>1.0.0</version>
+          <association>
+            <type>UserAssignment</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
       </fields>
     </class>
     <class>
@@ -84,15 +92,6 @@
           <type>String</type>
         </field>
         <field>
-          <name>policyAssignment</name>
-          <version>1.0.0</version>
-          <type>boolean</type>
-          <defaultValue>false</defaultValue>
-          <description>
-            true of the permission was granted as a policy decision
-          </description>
-        </field>
-        <field>
           <name>operation</name>
           <version>1.0.0</version>
           <association>
@@ -147,6 +146,25 @@
             true if the identifer is a pattern that is to be evaluated, for example x.* could match x.a or x.b and x.**
             could match x.foo TODO is this even snv commia good idea?
           </description>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>UserAssignment</name>
+      <description>binding of a principal to a role</description>
+      <version>1.0.0</version>
+      <fields>
+        <field>
+          <name>principal</name>
+          <version>1.0.0</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>roles</name>
+          <version>1.0.0</version>
+          <type>int</type>
+          <multiplicity>*</multiplicity>
+          <description>the id of a role that should be declared above</description>
         </field>
       </fields>
     </class>
