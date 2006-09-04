@@ -41,9 +41,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.xwork.PlexusLifecycleListener;
 
 /**
@@ -75,9 +76,10 @@ import org.codehaus.plexus.xwork.PlexusLifecycleListener;
  * @version $Id$
  */
 public class FilterToComponentProxy
-    extends AbstractLogEnabled
     implements Filter
 {
+    private static final Log log = LogFactory.getLog( FilterToComponentProxy.class );
+
     private ServletContext ctx;
 
     private Filter delegate;
@@ -146,7 +148,7 @@ public class FilterToComponentProxy
         catch ( ComponentLookupException e )
         {
             /* need to log as the web server doesn't print the cause */
-            getLogger().error( "Component '" + componentName + "' not found in container", e );
+            log.error( "Component '" + componentName + "' not found in container", e );
             throw new ServletException( "Component '" + componentName + "' not found in container", e );
         }
 
