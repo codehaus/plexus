@@ -6,7 +6,7 @@ import com.opensymphony.xwork.ActionSupport;
 import java.util.Map;
 
 /**
- *
+ * @plexus.component role="com.opensymphony.xwork.Action" role-hint="helloAction"
  */
 public class DefaultHelloWorld
     extends ActionSupport
