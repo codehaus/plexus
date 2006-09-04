@@ -38,7 +38,17 @@ public class PlexusLifecycleListener
 
     public static final String KEY = "webwork.plexus.container";
 
-    public static boolean loaded = false;
+    private static boolean loaded = false;
+
+    private static void setLoaded( boolean loaded )
+    {
+        PlexusLifecycleListener.loaded = loaded;
+    }
+
+    public static boolean isLoaded()
+    {
+        return loaded;
+    }
 
     public void contextInitialized( ServletContextEvent servletContextEvent )
     {
@@ -58,7 +68,7 @@ public class PlexusLifecycleListener
         {
             throw new RuntimeException( e );
         }
-        loaded = true;
+        setLoaded( true );
     }
 
     private Map initializeContext( ServletContext ctx, Properties properties )
@@ -158,7 +168,7 @@ public class PlexusLifecycleListener
         {
             pc.dispose();
         }
-        loaded = false;
+        setLoaded( false );
     }
 
     public void sessionCreated( HttpSessionEvent httpSessionEvent )
