@@ -20,7 +20,6 @@
   </dependencies>
   <modules>
     <module>plexus-security-authorization-api</module>
-    <module>plexus-security-authorization-rbac-model</module>
-    <module>plexus-security-authorization-rbac-stores</module>
+    <module>plexus-security-authorization-rbac</module>
   </modules>
 </project>
