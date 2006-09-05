@@ -1,11 +1,13 @@
 package org.codehaus.plexus.security.user;
 
 /**
+ * User Manager Interface
+ * 
  * @author Jason van Zyl
  */
 public interface UserManager
 {
-    String ROLE = UserManager.class.getName();
+    public static final String ROLE = UserManager.class.getName();
 
     User addUser( User user );
 
