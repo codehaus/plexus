@@ -94,7 +94,7 @@ public class DefaultPlexusRuntimeBuilder
 
     public void build( File workingDirectory, List remoteRepositories, ArtifactRepository localRepository,
                        Set projectArtifacts, Set additionalCoreArtifacts, File containerConfiguration,
-                       Properties configurationProperties )
+                       Properties configurationProperties, boolean addManagementAgent )
         throws PlexusRuntimeBuilderException
     {
         try
@@ -136,7 +136,18 @@ public class DefaultPlexusRuntimeBuilder
             {
                 bootArtifacts = getBootArtifacts( projectArtifacts, remoteRepositories, localRepository, false );
 
-                coreArtifacts = getCoreArtifacts( projectArtifacts, additionalCoreArtifacts, remoteRepositories,
+                Set newAdditionalCoreArtifacts = new HashSet();
+                if ( addManagementAgent )
+                {
+                    if ( additionalCoreArtifacts != null && !additionalCoreArtifacts.isEmpty() )
+                    {
+                        newAdditionalCoreArtifacts.addAll( additionalCoreArtifacts );
+                    }
+                    newAdditionalCoreArtifacts.add( "org.livetribe:livetribe-slp" );
+                    newAdditionalCoreArtifacts.add( "backport-util-concurrent:backport-util-concurrent" );
+                }
+
+                coreArtifacts = getCoreArtifacts( projectArtifacts, newAdditionalCoreArtifacts, remoteRepositories,
                                                   localRepository, false );
             }
             catch ( ArtifactResolutionException e )

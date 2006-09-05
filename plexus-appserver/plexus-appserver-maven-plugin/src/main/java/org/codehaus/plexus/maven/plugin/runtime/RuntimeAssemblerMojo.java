@@ -61,6 +61,11 @@ public class RuntimeAssemblerMojo
      */
     private HashSet additionalCoreArtifacts;
 
+    /**
+     * @parameter expression="${addManagementAgent}"
+     */
+    private boolean addManagementAgent;
+
     public void execute()
         throws MojoExecutionException
     {
@@ -87,7 +92,8 @@ public class RuntimeAssemblerMojo
         try
         {
             runtimeBuilder.build( runtimePath, remoteRepositories, localRepository, projectArtifacts,
-                                  additionalCoreArtifacts, runtimeConfiguration, interpolationProperties );
+                                  additionalCoreArtifacts, runtimeConfiguration, interpolationProperties,
+                                  addManagementAgent );
         }
         catch ( PlexusRuntimeBuilderException e )
         {
