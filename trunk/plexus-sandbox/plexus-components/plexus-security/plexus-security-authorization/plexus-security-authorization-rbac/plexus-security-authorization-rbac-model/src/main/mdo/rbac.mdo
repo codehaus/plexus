@@ -5,11 +5,11 @@
   <defaults>
     <default>
       <key>package</key>
-      <value>org.codehaus.plexus.rbac</value>
+      <value>org.codehaus.plexus.authorization.rbac</value>
     </default>
   </defaults>
   <classes>
-    <class rootElement="true" xml.tagName="model">
+    <class rootElement="true" xml.tagName="model" jpox.stashable="true">
       <name>RBACModel</name>
       <version>1.0.0</version>
       <fields>
@@ -17,7 +17,7 @@
           <name>roles</name>
           <version>1.0.0</version>
           <description>The roles available to be assigned</description>
-          <association>
+          <association stash.part="true">
             <type>Role</type>
             <multiplicity>*</multiplicity>
           </association>
@@ -25,7 +25,7 @@
         <field>
           <name>assignments</name>
           <version>1.0.0</version>
-          <association>
+          <association stash.part="true">
             <type>UserAssignment</type>
             <multiplicity>*</multiplicity>
           </association>
@@ -40,11 +40,13 @@
           <name>id</name>
           <version>1.0.0</version>
           <type>int</type>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>name</name>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>description</name>
@@ -80,11 +82,13 @@
           <name>id</name>
           <version>1.0.0</version>
           <type>int</type>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>name</name>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>description</name>
@@ -94,7 +98,7 @@
         <field>
           <name>operation</name>
           <version>1.0.0</version>
-          <association>
+          <association stash.part="true">
             <type>Operation</type>
           </association>
         </field>
@@ -108,23 +112,25 @@
           <name>id</name>
           <version>1.0.0</version>
           <type>int</type>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>name</name>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field>
-          <name>object</name>
+          <name>actor</name>
           <version>1.0.0</version>
-          <association>
-            <type>Object</type>
+          <association stash.part="true">
+            <type>Actor</type>
           </association>
         </field>
       </fields>
     </class>
     <class>
-      <name>Object</name>
+      <name>Actor</name>
       <version>1.0.0</version>
       <description>
         In RBAC terms, this is the entity which an operation is associated with that which permissions are based on.
@@ -134,6 +140,7 @@
           <name>identifier</name>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
           <description>
             The string identifier for an operation.
           </description>
@@ -149,7 +156,7 @@
         </field>
       </fields>
     </class>
-    <class>
+    <class jpox.stashable="true">
       <name>UserAssignment</name>
       <description>binding of a principal to a role</description>
       <version>1.0.0</version>
@@ -158,13 +165,15 @@
           <name>principal</name>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>roles</name>
           <version>1.0.0</version>
-          <type>int</type>
-          <multiplicity>*</multiplicity>
-          <description>the id of a role that should be declared above</description>
+          <association stash.part="true">
+            <type>Role</type>
+            <multiplicity>*</multiplicity>
+          </association>
         </field>
       </fields>
     </class>
