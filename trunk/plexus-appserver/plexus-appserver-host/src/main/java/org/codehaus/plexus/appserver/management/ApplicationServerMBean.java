@@ -1,4 +1,4 @@
-package org.codehaus.plexus.appserver;
+package org.codehaus.plexus.appserver.management;
 
 /*
  * The MIT License
@@ -24,22 +24,17 @@ package org.codehaus.plexus.appserver;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
+import org.codehaus.plexus.appserver.ApplicationServerException;
 
 import java.io.File;
 
 /**
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @author Jason van Zyl
+ * @author <a href="mailto:evenisse@apache.org">Emmanuel Venisse</a>
  * @version $Id$
  */
-public interface ApplicationServer
+public interface ApplicationServerMBean
+    extends MBean
 {
-    String ROLE = ApplicationServer.class.getName();
-
-    AppRuntimeProfile getApplicationRuntimeProfile( String applicationId )
-        throws ApplicationServerException;
-
     void deploy( String id, File location )
         throws ApplicationServerException;
 
@@ -48,8 +43,4 @@ public interface ApplicationServer
 
     void undeploy( String id )
         throws ApplicationServerException;
-
-    void addAppDescriptor( AppDescriptor appDescriptor );
-
-    AppDescriptor getAppDescriptor( String appName );
 }

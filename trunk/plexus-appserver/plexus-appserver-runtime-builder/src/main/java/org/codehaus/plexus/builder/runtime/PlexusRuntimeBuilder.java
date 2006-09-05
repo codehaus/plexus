@@ -40,7 +40,7 @@ public interface PlexusRuntimeBuilder
 
     void build( File workingDirectory, List remoteRepositories, ArtifactRepository localRepository,
                 Set projectArtifacts, Set additionalCoreArtifacts, File containerConfiguration,
-                Properties configurationProperties )
+                Properties configurationProperties, boolean addManagementAgent )
         throws PlexusRuntimeBuilderException;
 
     void bundle( File outputFile, File workingDirectory )

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.appserver;
+package org.codehaus.plexus.appserver.management;
 
 /*
  * The MIT License
@@ -24,32 +24,45 @@ package org.codehaus.plexus.appserver;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
+import org.codehaus.plexus.appserver.ApplicationServer;
+import org.codehaus.plexus.appserver.ApplicationServerException;
 
 import java.io.File;
 
 /**
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @author Jason van Zyl
+ * @author <a href="mailto:evenisse@apache.org">Emmanuel Venisse</a>
  * @version $Id$
+ * @plexus.component role="org.codehaus.plexus.appserver.management.MBean" role-hint="applicationServer"
  */
-public interface ApplicationServer
+public class DefaultApplicationServerMBean
+    extends AbstractMBean
+    implements ApplicationServerMBean
 {
-    String ROLE = ApplicationServer.class.getName();
+    /**
+     * @plexus.requirement
+     */
+    ApplicationServer appserver;
 
-    AppRuntimeProfile getApplicationRuntimeProfile( String applicationId )
-        throws ApplicationServerException;
+    public String getName()
+    {
+        return "ApplicationServer";
+    }
 
-    void deploy( String id, File location )
-        throws ApplicationServerException;
+    public void deploy( String id, File location )
+        throws ApplicationServerException
+    {
+        appserver.deploy( id, location );
+    }
 
-    void redeploy( String id )
-        throws ApplicationServerException;
+    public void redeploy( String id )
+        throws ApplicationServerException
+    {
+        appserver.redeploy( id );
+    }
 
-    void undeploy( String id )
-        throws ApplicationServerException;
-
-    void addAppDescriptor( AppDescriptor appDescriptor );
-
-    AppDescriptor getAppDescriptor( String appName );
+    public void undeploy( String id )
+        throws ApplicationServerException
+    {
+        appserver.undeploy( id );
+    }
 }

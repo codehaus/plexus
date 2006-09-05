@@ -8,4 +8,42 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-appserver-host</artifactId>
   <name>Plexus Application Server Host</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.livetribe</groupId>
+      <artifactId>livetribe-slp</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>merge</id>
+            <configuration>
+              <output>${project.build.outputDirectory}/META-INF/plexus/components.xml</output>
+              <descriptors>
+                <descriptor>${project.build.directory}/generated-resources/plexus/META-INF/plexus/components.xml</descriptor>
+                <descriptor>src/main/plexus/components.xml</descriptor>
+              </descriptors>
+            </configuration>
+            <goals>
+              <goal>merge-descriptors</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
