@@ -1,0 +1,27 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.plexus.security</groupId>
+    <artifactId>plexus-security</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>plexus-security-authorization-rbac</artifactId>
+  <name>Plexus Security :: RBAC Authorization</name>
+  <packaging>pom</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-common</artifactId>
+    </dependency>
+    <dependency>                                                                                                                                                                                                                            
+      <groupId>org.codehaus.plexus.security</groupId>                                                                                                                                                                                       
+      <artifactId>plexus-security-user-management-api</artifactId>                                                                                                                                                                          
+    </dependency>           
+  </dependencies>
+  <modules>
+    <module>plexus-security-authorization-rbac-model</module>
+    <module>plexus-security-authorization-rbac-stores</module>
+    <module>plexus-security-authorization-rbac-authorizer</module>
+    <module>plexus-security-authorization-rbac-ui-web</module>
+  </modules>
+</project>
