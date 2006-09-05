@@ -1,0 +1,130 @@
+<model>
+  <id>plexus-security-user-management-provider-jdo</id>
+  <name>Plexus Security User Management Model for JDO</name>
+  <description>Plexus Security User Management object model.</description>
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>org.codehaus.plexus.security.user.jdo</value>
+    </default>
+  </defaults>
+
+  <classes>
+    <class stash.storable="true">
+      <name>JdoUser</name>
+      <version>1.0.0+</version>
+      <interfaces>
+        <interface>org.codehaus.plexus.security.user.User</interface>
+      </interfaces>
+      <description>
+@plexus.component role="org.codehaus.plexus.security.user.User"
+                  role-hint="jdo"
+      </description>
+      <fields>
+        <field>
+          <name>accountId</name>
+          <version>1.0.0+</version>
+          <type>int</type>
+          <identifier>true</identifier>
+          <description>Account ID.
+
+WARNING: The User.accountId field is managed by the underlying UserManager implementation.
+
+Do not set this field, as any value you set will be overridden by the UserManager implementation upon a call to the {@link org.codehaus.plexus.security.user.UserManager#addUser(User)} method.
+          </description>
+        </field>
+        <field>
+          <name>username</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <identifier>true</identifier>
+        </field>
+<!--
+        <field>
+          <name>guest</name>
+          <version>1.0.0+</version>
+          <type>boolean</type>
+          <defaultValue>false</defaultValue>
+        </field>
+ -->
+        <field>
+          <name>password</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <identifier>true</identifier>
+        </field>
+        <field>
+          <name>encodedPassword</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <identifier>true</identifier>
+        </field>
+        <field>
+          <name>fullName</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <identifier>true</identifier>
+        </field>
+        <field>
+          <name>email</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <identifier>true</identifier>
+        </field>
+        <field>
+          <name>lastPasswordChange</name>
+          <version>1.0.0+</version>
+          <type>Date</type>
+        </field>
+        <field>
+          <name>lastLoginDate</name>
+          <version>1.0.0+</version>
+          <type>Date</type>
+        </field>
+        <field>
+          <name>countFailedLoginAttempts</name>
+          <version>1.0.0+</version>
+          <type>int</type>
+        </field>
+        <field>
+          <name>locked</name>
+          <version>1.0.0+</version>
+          <type>boolean</type>
+          <defaultValue>false</defaultValue>
+<!--      Uncomment, when modello's JDO mapping supports boolean.
+          <identifier>true</identifier> -->
+        </field>
+        <field>
+          <name>previousEncodedPasswords</name>
+          <version>1.0.0+</version>
+          <association stash.part="true">
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>accountCreationDate</name>
+          <version>1.0.0+</version>
+          <type>Date</type>
+        </field>
+      </fields>
+      <codeSegments>
+        <codeSegment>
+          <version>1.0.0+</version>
+          <code><![CDATA[
+              public JdoUser()
+              {
+                 // Intentionally initialize List to avoid JPOX NullPointerException Issues.
+              	 previousEncodedPasswords = new java.util.ArrayList();
+              }
+
+              public Object getPrincipal()
+              {
+                 return new Integer( accountId );
+              }
+          ]]></code>
+        </codeSegment>
+      </codeSegments>
+    </class>
+  </classes>
+</model>
