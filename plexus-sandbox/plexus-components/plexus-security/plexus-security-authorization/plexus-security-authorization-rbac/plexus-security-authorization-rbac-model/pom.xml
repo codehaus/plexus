@@ -1,9 +1,9 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.plexus</groupId>
-    <artifactId>plexus-components</artifactId>
-    <version>1.1.5</version>
+    <groupId>org.codehaus.plexus.security</groupId>
+    <artifactId>plexus-security-authorization-rbac</artifactId>
+    <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-authorization-rbac-model</artifactId>
   <name>Plexus Security :: RBAC Authorization Model</name>
@@ -25,7 +25,20 @@
               <goal>java</goal>             
               <goal>xpp3-reader</goal>
               <goal>xsd</goal>
+              <goal>jpox-jdo-mapping</goal>
             </goals>            
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jpox-maven-plugin</artifactId>
+        <version>1.0.3-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>enhance</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
