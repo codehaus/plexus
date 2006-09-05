@@ -105,7 +105,7 @@ public class PlexusRuntimeBuilderTest
         Properties configurationProperties = PropertyUtils.loadProperties( configurationPropertiesFile );
 
         runtimeBuilder.build( workingDirectory, remoteRepositories, localRepository, projectArtifacts,
-                              Collections.EMPTY_SET, plexusConfiguration, configurationProperties );
+                              Collections.EMPTY_SET, plexusConfiguration, configurationProperties, false );
     }
 
     // ----------------------------------------------------------------------
