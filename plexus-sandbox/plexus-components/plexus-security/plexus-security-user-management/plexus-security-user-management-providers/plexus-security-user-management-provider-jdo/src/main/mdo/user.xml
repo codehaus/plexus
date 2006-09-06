@@ -10,7 +10,7 @@
   </defaults>
 
   <classes>
-    <class stash.storable="true">
+    <class stash.storable="true" jpox.use-identifiers-as-primary-key="false">
       <name>JdoUser</name>
       <version>1.0.0+</version>
       <interfaces>
@@ -21,7 +21,7 @@
                   role-hint="jdo"
       </description>
       <fields>
-        <field>
+        <field jpox.column="id" jpox.primary-key="true">
           <name>accountId</name>
           <version>1.0.0+</version>
           <type>int</type>
@@ -91,8 +91,7 @@ Do not set this field, as any value you set will be overridden by the UserManage
           <version>1.0.0+</version>
           <type>boolean</type>
           <defaultValue>false</defaultValue>
-<!--      Uncomment, when modello's JDO mapping supports boolean.
-          <identifier>true</identifier> -->
+          <identifier>true</identifier>
         </field>
         <field>
           <name>previousEncodedPasswords</name>
