@@ -34,9 +34,9 @@ import java.io.File;
  * @version $Id$
  * @plexus.component role="org.codehaus.plexus.appserver.management.MBean" role-hint="applicationServer"
  */
-public class DefaultApplicationServerMBean
+public class ApplicationServerMBean
     extends AbstractMBean
-    implements ApplicationServerMBean
+    implements ApplicationServerMBeanMBean
 {
     /**
      * @plexus.requirement
