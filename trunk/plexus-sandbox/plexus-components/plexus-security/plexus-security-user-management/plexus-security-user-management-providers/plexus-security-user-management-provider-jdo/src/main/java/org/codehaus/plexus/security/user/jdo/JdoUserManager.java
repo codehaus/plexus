@@ -25,10 +25,17 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.UserManagerException;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 
+import java.util.Collection;
+import java.util.List;
+
+import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
+import javax.jdo.Query;
+import javax.jdo.Transaction;
 
 /**
  * JdoUserManager 
@@ -50,6 +57,146 @@ public class JdoUserManager
 
     private PersistenceManagerFactory pmf;
 
+    // ------------------------------------------------------------------
+
+    public User createUser( String username, String fullname, String email )
+    {
+        User user = new JdoUser();
+        user.setUsername( username );
+        user.setFullName( fullname );
+        user.setEmail( email );
+
+        return user;
+    }
+
+    public List getUsers()
+    {
+        return getAllObjectsDetached( JdoUser.class );
+    }
+
+    public User addUser( User user )
+    {
+        if ( !( user instanceof JdoUser ) )
+        {
+            throw new UserManagerException( "Unable to Add User. User object " + user.getClass().getName()
+                + " is not an instance of " + JdoUser.class.getName() );
+        }
+        return (User) PlexusJdoUtils.addObject( getPersistenceManager(), user );
+    }
+
+    public void deleteUser( Object principal )
+    {
+        try
+        {
+            User user = findUser( principal );
+
+            PlexusJdoUtils.removeObject( getPersistenceManager(), (JdoUser) user );
+        }
+        catch ( UserNotFoundException e )
+        {
+            getLogger().warn( "Unable to delete user " + principal + ", user not found.", e );
+        }
+    }
+
+    public void deleteUser( String username )
+    {
+        try
+        {
+            User user = findUser( username );
+
+            PlexusJdoUtils.removeObject( getPersistenceManager(), (JdoUser) user );
+        }
+        catch ( UserNotFoundException e )
+        {
+            getLogger().warn( "Unable to delete user " + username + ", user not found.", e );
+        }
+    }
+
+    public User findUser( Object principal )
+        throws UserNotFoundException
+    {
+        if ( !( principal instanceof Integer ) )
+        {
+            throw new UserManagerException( "Unable to find user based on non-Integer principal." );
+        }
+
+        int accountId = ( (Integer) principal ).intValue();
+        try
+        {
+            return (User) PlexusJdoUtils.getObjectById( getPersistenceManager(), JdoUser.class, accountId, null );
+        }
+        catch ( PlexusObjectNotFoundException e )
+        {
+            throw new UserNotFoundException( "Unable to find user: " + e.getMessage(), e );
+        }
+        catch ( PlexusStoreException e )
+        {
+            throw new UserNotFoundException( "Unable to find user: " + e.getMessage(), e );
+        }
+    }
+
+    public User findUser( String username )
+        throws UserNotFoundException
+    {
+        PersistenceManager pm = getPersistenceManager();
+
+        Transaction tx = pm.currentTransaction();
+
+        try
+        {
+            tx.begin();
+
+            Extent extent = pm.getExtent( JdoUser.class, true );
+
+            Query query = pm.newQuery( extent );
+
+            query.declareImports( "import java.lang.String" ); //$NON-NLS-1$
+
+            query.declareParameters( "String username" ); //$NON-NLS-1$
+
+            query.setFilter( "this.username == username" ); //$NON-NLS-1$
+
+            Collection result = (Collection) query.execute( username );
+
+            if ( result.size() == 0 )
+            {
+                tx.commit();
+
+                throw new UserNotFoundException( "User (username:" + username + ") not found." );
+            }
+
+            Object object = pm.detachCopy( result.iterator().next() );
+
+            tx.commit();
+
+            return (User) object;
+        }
+        finally
+        {
+            rollback( tx );
+        }
+    }
+
+    public User updateUser( User user )
+    {
+        if ( !( user instanceof JdoUser ) )
+        {
+            throw new UserManagerException( "Unable to Update User. User object " + user.getClass().getName()
+                + " is not an instance of " + JdoUser.class.getName() );
+        }
+
+        try
+        {
+            PlexusJdoUtils.updateObject( getPersistenceManager(), (JdoUser) user );
+        }
+        catch ( PlexusStoreException e )
+        {
+            throw new UserManagerException( "Unable to update user.", e );
+        }
+
+        return user;
+    }
+
     public void initialize()
         throws InitializationException
     {
@@ -65,63 +212,23 @@ public class JdoUserManager
         return pm;
     }
 
-    public User addUser( User user )
+    private List getAllObjectsDetached( Class clazz )
     {
-        return (User) PlexusJdoUtils.addObject( getPersistenceManager(), user );
+        return getAllObjectsDetached( clazz, null );
     }
 
-    public void deleteUser( Object principal )
+    private List getAllObjectsDetached( Class clazz, String fetchGroup )
     {
-        try
-        {
-            User user = findUser( principal );
-
-            PlexusJdoUtils.removeObject( getPersistenceManager(), user );
-        }
-        catch ( UserNotFoundException e )
-        {
-            getLogger().warn( "Unable to delete user " + principal + ", user not found.", e );
-        }
+        return getAllObjectsDetached( clazz, null, fetchGroup );
     }
 
-    public User findUser( Object principal )
-        throws UserNotFoundException
+    private List getAllObjectsDetached( Class clazz, String ordering, String fetchGroup )
     {
-        User user = null;
-
-        if ( !( principal instanceof Integer ) )
-        {
-            throw new UserNotFoundException( "Unable to find user based on non-Integer principal." );
-        }
-
-        int accountId = ( (Integer) principal ).intValue();
-        try
-        {
-            user = (User) PlexusJdoUtils.getObjectById( getPersistenceManager(), User.class, accountId, null );
-        }
-        catch ( PlexusObjectNotFoundException e )
-        {
-            throw new UserNotFoundException( "Unable to find user: " + e.getMessage(), e );
-        }
-        catch ( PlexusStoreException e )
-        {
-            throw new UserNotFoundException( "Unable to find user: " + e.getMessage(), e );
-        }
-
-        return user;
+        return PlexusJdoUtils.getAllObjectsDetached( getPersistenceManager(), clazz, ordering, fetchGroup );
     }
 
-    public User updateUser( User user )
+    private void rollback( Transaction tx )
     {
-        try
-        {
-            PlexusJdoUtils.updateObject( getPersistenceManager(), user );
-        }
-        catch ( PlexusStoreException e )
-        {
-            throw new RuntimeException( "Unable to update user.", e );
-        }
-
-        return user;
+        PlexusJdoUtils.rollbackIfActive( tx );
     }
 }
