@@ -12,10 +12,22 @@
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.security.authorization.Authorizer</role>
-          <role-hint>memory</role-hint>
+          <role-hint>rbac</role-hint>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.security.user.UserManager</role>
+          <role-hint>memory</role-hint>
+        </requirement>
+      </requirements>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.security.authorization.Authorizer</role>
+      <role-hint>rbac</role-hint>
+      <implementation>org.codehaus.plexus.security.authorization.rbac.RbacAuthorizer</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.authorization.rbac.store.RbacStore</role>
           <role-hint>memory</role-hint>
         </requirement>
       </requirements>

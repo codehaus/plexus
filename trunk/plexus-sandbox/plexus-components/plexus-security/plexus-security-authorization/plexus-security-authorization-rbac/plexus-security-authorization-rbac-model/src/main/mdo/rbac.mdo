@@ -159,7 +159,7 @@
           </description>
         </field>
         <field>
-          <name>isPattern</name>
+          <name>pattern</name>
           <version>1.0.0</version>
           <type>boolean</type>
           <description>

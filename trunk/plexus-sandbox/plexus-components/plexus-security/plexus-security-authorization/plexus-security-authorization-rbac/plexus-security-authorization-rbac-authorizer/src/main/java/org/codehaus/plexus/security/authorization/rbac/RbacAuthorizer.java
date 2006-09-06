@@ -72,9 +72,26 @@ public class RbacAuthorizer
                         {
                             if ( resource != null )
                             {
-                                if ( permission.getOperation().getResource().getIdentifier().equals( resource.toString() ) )
+                                // todo, expand this a bit more to support *-* type patterns                              
+                                if ( permission.getOperation().getResource().isPattern() )
                                 {
-                                    return new AuthorizationResult(true, permission, null);
+                                    String strToMatch = permission.getOperation().getResource().getIdentifier();
+
+                                    int patternPosition = strToMatch.indexOf( '*' );
+
+                                    strToMatch = strToMatch.substring( 0, patternPosition );
+
+                                    if ( resource.toString().startsWith( strToMatch ) )
+                                    {
+                                        return new AuthorizationResult(true, permission, null);
+                                    }
+                                }
+                                else
+                                {
+                                    if ( permission.getOperation().getResource().getIdentifier().equals( resource.toString() ) )
+                                    {
+                                        return new AuthorizationResult(true, permission, null);
+                                    }
                                 }
                             }
                         }
