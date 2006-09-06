@@ -2,7 +2,6 @@ package org.codehaus.plexus.security.authorization.memory;
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.security.authorization.rbac.Operation;
 import org.codehaus.plexus.security.authorization.rbac.Permission;
 import org.codehaus.plexus.security.authorization.rbac.RBACModel;
 import org.codehaus.plexus.security.authorization.rbac.Role;
@@ -167,6 +166,15 @@ public class MemoryRbacStore
         return assignableRoles;
     }
 
+    public void removeRole( int roleId )
+        throws RbacStoreException
+    {
+        // just removing top lvl roles atm.
+        if ( getRole( roleId) != null )
+        {
+            store.removeRole( getRole( roleId ) );
+        }
+    }
 
     // ----------------------------------------------------------------------
     // Permission methods
@@ -185,13 +193,6 @@ public class MemoryRbacStore
         return getRole( roleId ).getPermissions();
     }
 
-    // ----------------------------------------------------------------------
-    // Operation methods
-    // ----------------------------------------------------------------------
-    public void addOperation( int permissionId, Operation operation )
-        throws RbacStoreException
-    {
-    }
 
     // ----------------------------------------------------------------------
     // Role Assignment methods

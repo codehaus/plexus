@@ -89,16 +89,33 @@ public class DefaultSecuritySystem
     // Authorization: delegate to the authorizer
     // ----------------------------------------------------------------------------
 
-    public AuthorizationResult authorize( AuthorizationDataSource source)
+    public AuthorizationResult authorize( SecuritySession session, Object permission )
         throws AuthorizationException
     {
+        AuthorizationDataSource source = new AuthorizationDataSource( session.getUser().getPrincipal(), session.getUser(), permission );
+
         return authorizer.isAuthorized( source );
     }
 
-    public boolean isAuthorized( AuthorizationDataSource source )
+    public boolean isAuthorized( SecuritySession session, Object permission )
         throws AuthorizationException
     {
-        return authorize(source).isAuthorized();
+
+        return authorize( session, permission).isAuthorized();
+    }
+
+    public AuthorizationResult authorize( SecuritySession session, Object permission, Object resource )
+        throws AuthorizationException
+    {
+        AuthorizationDataSource source = new AuthorizationDataSource( session.getUser().getPrincipal(), session.getUser(), permission, resource );
+
+        return authorizer.isAuthorized( source );
+    }
+
+    public boolean isAuthorized( SecuritySession session, Object permission, Object resource )
+        throws AuthorizationException
+    {
+        return authorize( session, permission, resource).isAuthorized();
     }
 
     public String getAuthorizerId()

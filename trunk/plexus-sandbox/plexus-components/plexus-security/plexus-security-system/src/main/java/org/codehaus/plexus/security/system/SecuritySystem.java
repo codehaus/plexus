@@ -2,11 +2,10 @@ package org.codehaus.plexus.security.system;
 
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
-import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.authorization.AuthorizationException;
-import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
 import org.codehaus.plexus.security.authorization.AuthorizationResult;
+import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.UserNotFoundException;
 
 /*
  * Copyright 2005 The Codehaus.
@@ -51,10 +50,16 @@ public interface SecuritySystem
     // Authorization
     // ----------------------------------------------------------------------------
 
-    public AuthorizationResult authorize( AuthorizationDataSource source )
+    public AuthorizationResult authorize( SecuritySession session, Object permission )
         throws AuthorizationException;
 
-    boolean isAuthorized( AuthorizationDataSource source )
+    public boolean isAuthorized( SecuritySession session, Object permission )
+        throws AuthorizationException;
+
+    public AuthorizationResult authorize( SecuritySession session, Object permission, Object resource )
+        throws AuthorizationException;
+
+    public boolean isAuthorized( SecuritySession session, Object permission, Object resource )
         throws AuthorizationException;
 
     String getAuthorizerId();

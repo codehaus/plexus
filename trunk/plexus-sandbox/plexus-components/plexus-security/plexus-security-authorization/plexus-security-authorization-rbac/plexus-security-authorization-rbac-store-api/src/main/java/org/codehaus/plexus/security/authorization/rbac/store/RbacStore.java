@@ -17,7 +17,6 @@ package org.codehaus.plexus.security.authorization.rbac.store;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.authorization.rbac.Permission;
 import org.codehaus.plexus.security.authorization.rbac.Role;
 
 import java.util.List;
@@ -32,7 +31,6 @@ import java.util.List;
 public interface RbacStore
 {
     public static final String ROLE = RbacStore.class.getName();
-
 
     // ----------------------------------------------------------------------
     // Role methods
@@ -49,21 +47,56 @@ public interface RbacStore
     public List getAssignableRoles()
         throws RbacStoreException;
 
+    public void removeRole( int roleId )
+        throws RbacStoreException;
 
     // ----------------------------------------------------------------------
     // Permission methods
     // ----------------------------------------------------------------------
+    /*
+         these will be needed more for the dynamic generation of roles, permissions, etc
+
     public void addPermission( int roleId, Permission permission )
         throws RbacStoreException;
 
     public List getPermissions( int roleId )
         throws RbacStoreException;
 
+    public List getAllPermissions()
+        throws RbacStoreException;
+
+    public void removePermissionFromRole( int roleId, int permissionId )
+        throws RbacStoreException;
+
+    public void removePermission( int permissionsId )
+        throws RbacStoreException;
+
+
+
+
+    // ----------------------------------------------------------------------
+    // Operation methods
+    // ----------------------------------------------------------------------
+    public List getAllOperations()
+        throws RbacStoreException;
+
+    public void removeOperation( int operationId )
+        throws RbacStoreException;
+
+
+    // ----------------------------------------------------------------------
+    // Resource methods
+    // ----------------------------------------------------------------------
+    public List getAllResources()
+        throws RbacStoreException;
+
+    public void removeResource( int resourceId )
+        throws RbacStoreException;
+    */
 
     // ----------------------------------------------------------------------
     // User Assignment methods
     // ----------------------------------------------------------------------
-
     public List getRoleAssignments( String principal )
         throws RbacStoreException;
 
