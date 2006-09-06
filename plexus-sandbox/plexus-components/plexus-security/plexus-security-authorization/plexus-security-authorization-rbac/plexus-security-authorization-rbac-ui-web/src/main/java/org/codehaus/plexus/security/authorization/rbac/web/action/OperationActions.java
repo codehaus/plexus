@@ -41,6 +41,12 @@ public class OperationActions
 
     private int roleId;
 
+    private int permissionId;
+
+    private int operationId;
+
+    
+
     private Operation operation;
 
     public String display()

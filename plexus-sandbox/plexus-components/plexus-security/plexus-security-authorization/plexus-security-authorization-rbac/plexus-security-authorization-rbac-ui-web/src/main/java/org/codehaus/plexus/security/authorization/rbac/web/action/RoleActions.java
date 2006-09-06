@@ -71,13 +71,20 @@ public class RoleActions
         }
         else
         {
-            addActionError("unable to add role" );
+            addActionError("unable to add role, its either null or exists already" );
             return ERROR;
         }
 
         return SUCCESS;
     }
 
+    public String removeRole()
+        throws RbacStoreException
+    {
+        store.removeRole( roleId );
+
+        return SUCCESS;
+    }
 
     public int getRoleId()
     {
