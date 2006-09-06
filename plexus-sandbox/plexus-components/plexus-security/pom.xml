@@ -37,15 +37,25 @@
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-api</artifactId>
         <version>${project.version}</version>
-      </dependency>      
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.security</groupId>
+        <artifactId>plexus-security-authorization-rapi</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-api</artifactId>
         <version>${project.version}</version>
       </dependency>
-        <dependency>
+      <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-provider-memory</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.security</groupId>
+        <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

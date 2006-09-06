@@ -7,7 +7,7 @@
   </parent>
   <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
   <name>Plexus Security :: RBAC Authorizer</name>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
@@ -30,4 +30,20 @@
       <artifactId>plexus-security-authorization-rbac-model</artifactId>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
