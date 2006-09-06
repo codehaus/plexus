@@ -16,8 +16,8 @@
   </dependencies>
   <modules>
     <module>plexus-security-authorization-rbac-store-memory</module>
-    <module>plexus-security-authorization-rbac-store-jdo</module>  
     <!--
+    <module>plexus-security-authorization-rbac-store-jdo</module>  
     <module>plexus-security-authorization-rbac-store-xstream</module>
     -->
   </modules>

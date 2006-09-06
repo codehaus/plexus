@@ -24,6 +24,11 @@ package org.codehaus.plexus.security.authorization.rbac.store;
 public class RbacStoreException
     extends Exception
 {
+    public RbacStoreException( Throwable throwable )
+    {
+        super( throwable );
+    }
+
     public RbacStoreException( String string )
     {
         super( string );

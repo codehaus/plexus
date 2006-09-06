@@ -6,12 +6,16 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
-  <name>Plexus Security :: RBAC Authroization JDO Store</name>
+  <name>Plexus Security :: RBAC Authorization JDO Store</name>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-rbac-model</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authorization-rbac-store-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -58,4 +62,22 @@
       </exclusions>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <configuration>
+          <containerDescriptor>true</containerDescriptor>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

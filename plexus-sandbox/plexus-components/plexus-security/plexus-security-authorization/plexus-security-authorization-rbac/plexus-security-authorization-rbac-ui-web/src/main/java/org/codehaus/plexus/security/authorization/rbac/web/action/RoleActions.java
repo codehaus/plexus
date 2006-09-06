@@ -1,6 +1,11 @@
 package org.codehaus.plexus.security.authorization.rbac.web.action;
 
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+import org.codehaus.plexus.security.authorization.rbac.store.RbacStore;
+import org.codehaus.plexus.security.authorization.rbac.store.RbacStoreException;
+import org.codehaus.plexus.security.authorization.rbac.Role;
+
+import java.util.List;
 /*
  * Copyright 2005 The Apache Software Foundation.
  *
@@ -22,9 +27,86 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
+ *
+ * @plexus.component
+ *   role="com.opensymphony.xwork.Action"
+ *   role-hint="plexusSecurityRole"
  */
 public class RoleActions
     extends PlexusActionSupport
 {
+    /**
+     * @plexus.requirement
+     */
+    private RbacStore store;
+
+    private int roleId;
+
+    private Role role;
+
+    private List roles;
+
+    public String display()
+        throws RbacStoreException
+    {
+        role = store.getRole( roleId );
+
+        return SUCCESS;
+    }
+
+    public String summary()
+        throws RbacStoreException
+    {
+        roles = store.getAllRoles();
+
+        return SUCCESS;
+    }
+
+    public String addRole()
+        throws RbacStoreException
+    {
+        if ( role != null && store.getRole( role.getId() ) == null)
+        {
+            store.addRole( role );
+        }
+        else
+        {
+            addActionError("unable to add role" );
+            return ERROR;
+        }
+
+        return SUCCESS;
+    }
+
+
+    public int getRoleId()
+    {
+        return roleId;
+    }
+
+    public void setRoleId( int roleId )
+    {
+        this.roleId = roleId;
+    }
+
+    public Role getRole()
+    {
+        return role;
+    }
+
+    public void setRole( Role role )
+    {
+        this.role = role;
+    }
+
+    public List getRoles()
+    {
+        return roles;
+    }
+
+    public void setRoles( List roles )
+    {
+        this.roles = roles;
+    }
 
 }
