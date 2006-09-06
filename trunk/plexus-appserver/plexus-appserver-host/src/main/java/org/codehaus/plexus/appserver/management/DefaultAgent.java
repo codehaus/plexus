@@ -79,7 +79,7 @@ public class DefaultAgent
                 for ( Iterator i = mbeans.iterator(); i.hasNext(); )
                 {
                     MBean mbean = (MBean) i.next();
-                    mbeanServer.registerMBean( mbean, new ObjectName( mbean.getDomain() + ":" + mbean.getName() ) );
+                    mbeanServer.registerMBean( mbean, new ObjectName( mbean.getDomain() + ":name=" + mbean.getName() ) );
                 }
             }
 
