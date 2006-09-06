@@ -21,8 +21,6 @@ import com.opensymphony.xwork.ActionContext;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.security.authorization.AuthorizationException;
-import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
-import org.codehaus.plexus.security.authorization.memory.MemoryAuthorizationDataSource;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.user.User;
@@ -47,9 +45,16 @@ public class IfAnyAuthorizedTag
      */
     private String permissions;
 
+    private String resource;
+
     public void setPermissions( String permissions )
     {
         this.permissions = permissions;
+    }
+
+    public void setResource( String resource )
+    {
+        this.resource = resource;
     }
 
     protected boolean condition()
@@ -72,15 +77,20 @@ public class IfAnyAuthorizedTag
             while ( strtok.hasMoreTokens() )
             {
                 String permission = strtok.nextToken().trim();
-                
-                //todo make this not suck
-                AuthorizationDataSource source = new MemoryAuthorizationDataSource( user.getPrincipal(), user, permission );
 
-
-
-                if ( securitySystem.isAuthorized( source ) )
+                if ( resource != null )
                 {
-                    return true;
+                    if ( securitySystem.isAuthorized( securitySession, permission, resource ) )
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if ( securitySystem.isAuthorized( securitySession, permission ) )
+                    {
+                        return true;
+                    }
                 }
             }
         }
