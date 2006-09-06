@@ -126,6 +126,14 @@
           <type>String</type>
         </field>
         <field>
+          <name>resourceRequired</name>
+          <version>1.0.0</version>
+          <type>boolean</type>
+          <description>
+            true if the resource is required for authorization to be granted
+          </description>
+        </field>
+        <field>
           <name>resource</name>
           <version>1.0.0</version>
           <association stash.part="true">

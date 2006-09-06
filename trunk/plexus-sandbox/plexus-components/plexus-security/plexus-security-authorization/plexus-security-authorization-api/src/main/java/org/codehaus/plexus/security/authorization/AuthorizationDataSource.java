@@ -5,13 +5,68 @@ import org.codehaus.plexus.security.user.User;
 /**
  * @author Jason van Zyl
  */
-public interface AuthorizationDataSource
+public class AuthorizationDataSource
 {
-    String ROLE = AuthorizationDataSource.class.getName();
+    Object principal;
 
-    Object getPrincipal();
+    User user;
 
-    User getUser();
+    Object permission;
 
-    Object getPermission();
+    Object resource;
+
+    public AuthorizationDataSource( Object principal, User user, Object permission )
+    {
+        this.principal = principal;
+        this.user = user;
+        this.permission = permission;
+    }
+
+    public AuthorizationDataSource( Object principal, User user, Object permission, Object resource )
+    {
+        this.principal = principal;
+        this.user = user;
+        this.permission = permission;
+        this.resource = resource;
+    }
+
+    public Object getPrincipal()
+    {
+        return principal;
+    }
+
+    public void setPrincipal( String principal )
+    {
+        this.principal = principal;
+    }
+
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser( User user )
+    {
+        this.user = user;
+    }
+
+    public Object getPermission()
+    {
+        return permission;
+    }
+
+    public void setPermission( Object permission )
+    {
+        this.permission = permission;
+    }
+
+    public Object getResource()
+    {
+        return resource;
+    }
+
+    public void setResource( Object resource )
+    {
+        this.resource = resource;
+    }
 }
