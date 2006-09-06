@@ -24,9 +24,13 @@ package org.codehaus.plexus.appserver.management;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.util.FileUtils;
 import org.livetribe.slp.Attributes;
 import org.livetribe.slp.Scopes;
 import org.livetribe.slp.ServiceInfo;
@@ -38,10 +42,13 @@ import javax.management.ObjectName;
 import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXConnectorServerFactory;
 import javax.management.remote.JMXServiceURL;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.management.ManagementFactory;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 
 /**
  * @author <a href="mailto:evenisse@apache.org">Emmanuel Venisse</a>
@@ -50,7 +57,7 @@ import java.util.Locale;
  */
 public class DefaultAgent
     extends AbstractLogEnabled
-    implements Agent, Initializable
+    implements Agent, Initializable, Contextualizable
 {
     /**
      * @plexus.requirement role="org.codehaus.plexus.appserver.management.MBean"
@@ -64,6 +71,8 @@ public class DefaultAgent
     private MBeanServer mbeanServer;
 
     private JMXServiceURL jmxServiceURL;
+
+    private String tempDirectory;
 
     public void initialize()
         throws InitializationException
@@ -79,7 +88,8 @@ public class DefaultAgent
                 for ( Iterator i = mbeans.iterator(); i.hasNext(); )
                 {
                     MBean mbean = (MBean) i.next();
-                    mbeanServer.registerMBean( mbean, new ObjectName( mbean.getDomain() + ":name=" + mbean.getName() ) );
+                    mbeanServer.registerMBean( mbean,
+                                               new ObjectName( mbean.getDomain() + ":name=" + mbean.getName() ) );
                 }
             }
 
@@ -110,6 +120,13 @@ public class DefaultAgent
             serviceAgent.register( serviceInfo );
             serviceAgent.start();
 
+            File serviceFile = new File( tempDirectory, "agent.properties" );
+            Properties props = new Properties();
+            props.put( "jmxServiceUrl", jmxServiceURL.toString() );
+            props.put( "slpPort", String.valueOf( slpPort ) );
+            props.store( new FileOutputStream( serviceFile ), null );
+            FileUtils.forceDeleteOnExit( serviceFile );
+
             getLogger().info( "JMX manager agent is up and running (" + jmxServiceURL + ")." );
             getLogger().info( "JMX agent is registered in SLP service on port " + slpPort );
         }
@@ -117,5 +134,11 @@ public class DefaultAgent
         {
             throw new InitializationException( "Can't load JMX agent.", e );
         }
+    }
+
+    public void contextualize( Context context )
+        throws ContextException
+    {
+        tempDirectory = (String) context.get( "plexus.temp" );
     }
 }

@@ -93,11 +93,17 @@ public class PlexusApplicationHost
 
         container.addContextValue( "plexus.home", System.getProperty( "plexus.home" ) );
 
-        container.addContextValue( "plexus.work", System.getProperty( "plexus.home" ) + "/work" );
+        container.addContextValue( "plexus.work",
+                                   System.getProperty( "plexus.home" ) + "/" + PlexusRuntimeConstants.WORK_DIRECTORY );
 
-        container.addContextValue( "plexus.logs", System.getProperty( "plexus.home" ) + "/logs" );
+        container.addContextValue( "plexus.temp",
+                                   System.getProperty( "plexus.home" ) + "/" + PlexusRuntimeConstants.TEMP_DIRECTORY );
 
-        File plexusLogs = FileUtils.resolveFile( new File( "." ), System.getProperty( "plexus.home" ) + "/logs" );
+        container.addContextValue( "plexus.logs",
+                                   System.getProperty( "plexus.home" ) + "/" + PlexusRuntimeConstants.LOGS_DIRECTORY );
+
+        File plexusLogs = FileUtils.resolveFile( new File( "." ), System.getProperty( "plexus.home" ) + "/" +
+            PlexusRuntimeConstants.LOGS_DIRECTORY );
 
         if ( !plexusLogs.exists() )
         {

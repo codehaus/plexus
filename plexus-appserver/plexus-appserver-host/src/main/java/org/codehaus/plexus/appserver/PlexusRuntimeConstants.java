@@ -46,6 +46,8 @@ public class PlexusRuntimeConstants
 
     public final static String TEMP_DIRECTORY = "temp";
 
+    public final static String WORK_DIRECTORY = "work";
+
     public final static String SERVICES_DIRECTORY = "services";
 
     public static final String CONFIGURATION_FILE = "plexus.xml";
