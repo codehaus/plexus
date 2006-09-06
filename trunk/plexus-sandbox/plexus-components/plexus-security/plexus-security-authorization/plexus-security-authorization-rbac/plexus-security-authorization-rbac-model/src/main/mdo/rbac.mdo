@@ -5,7 +5,7 @@
   <defaults>
     <default>
       <key>package</key>
-      <value>org.codehaus.plexus.authorization.rbac</value>
+      <value>org.codehaus.plexus.security.authorization.rbac</value>
     </default>
   </defaults>
   <classes>
@@ -32,7 +32,7 @@
         </field>
       </fields>
     </class>
-    <class>
+    <class jpox.stashable="true">
       <name>Role</name>
       <version>1.0.0</version>
       <fields>
@@ -46,7 +46,6 @@
           <name>name</name>
           <version>1.0.0</version>
           <type>String</type>
-          <identifier>true</identifier>
         </field>
         <field>
           <name>description</name>
@@ -54,9 +53,17 @@
           <type>String</type>
         </field>
         <field>
+          <name>assignable</name>
+          <version>1.0.0</version>
+          <type>boolean</type>
+          <description>
+            true if this role is available to be assigned to a user
+          </description>
+        </field>
+        <field>
           <name>roles</name>
           <version>1.0.0</version>
-          <association>
+          <association stash.part="true">
             <type>Role</type>
             <multiplicity>*</multiplicity>
           </association>
@@ -67,14 +74,14 @@
         <field>
           <name>permissions</name>
           <version>1.0.0</version>
-          <association>
+          <association stash.part="true">
             <type>Permission</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
       </fields>
     </class>
-    <class>
+    <class jpox.stashable="true">
       <name>Permission</name>
       <version>1.0.0</version>
       <fields>
@@ -88,7 +95,6 @@
           <name>name</name>
           <version>1.0.0</version>
           <type>String</type>
-          <identifier>true</identifier>
         </field>
         <field>
           <name>description</name>
@@ -104,7 +110,7 @@
         </field>
       </fields>
     </class>
-    <class>
+    <class jpox.stashable="true">
       <name>Operation</name>
       <version>1.0.0</version>
       <fields>
@@ -118,19 +124,18 @@
           <name>name</name>
           <version>1.0.0</version>
           <type>String</type>
-          <identifier>true</identifier>
         </field>
         <field>
-          <name>actor</name>
+          <name>resource</name>
           <version>1.0.0</version>
           <association stash.part="true">
-            <type>Actor</type>
+            <type>Resource</type>
           </association>
         </field>
       </fields>
     </class>
-    <class>
-      <name>Actor</name>
+    <class jpox.stashable="true">
+      <name>Resource</name>
       <version>1.0.0</version>
       <description>
         In RBAC terms, this is the entity which an operation is associated with that which permissions are based on.

@@ -22,14 +22,27 @@
             </configuration>
             <goals>
               <goal>xpp3-writer</goal>
-              <goal>java</goal>             
+              <goal>java</goal>
               <goal>xpp3-reader</goal>
               <goal>xsd</goal>
-              <goal>jpox-jdo-mapping</goal>
-            </goals>            
+            </goals>
           </execution>
+         <!--
+          <execution>
+            <id>jpox-jdo-mapping</id>
+            <configuration>
+              <model>src/main/mdo/rbac.mdo</model>
+              <version>1.0.0</version>
+              <outputDirectory>${basedir}/target/classes/org/codehaus/plexus/security/authorization/rbac/model</outputDirectory>
+            </configuration>
+            <goals>
+              <goal>jpox-jdo-mapping</goal>
+            </goals>
+          </execution>
+          -->
         </executions>
       </plugin>
+      <!--
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jpox-maven-plugin</artifactId>
@@ -42,6 +55,7 @@
           </execution>
         </executions>
       </plugin>
+      -->
     </plugins>
   </build>
 </project>

@@ -1,5 +1,6 @@
 package org.codehaus.plexus.security.authorization.rbac.store;
 
+
 /*
  * Copyright 2005 The Apache Software Foundation.
  *
@@ -16,6 +17,12 @@ package org.codehaus.plexus.security.authorization.rbac.store;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.authorization.rbac.Permission;
+import org.codehaus.plexus.security.authorization.rbac.Role;
+
+import java.util.List;
+
+
 /**
  * RbacStore:
  *
@@ -26,12 +33,43 @@ public interface RbacStore
 {
     public static final String ROLE = RbacStore.class.getName();
 
-    /*
-     * User Assignment methods
-     */
-    public void addRoleToUser( int userId, int roleId )
+
+    // ----------------------------------------------------------------------
+    // Role methods
+    // ----------------------------------------------------------------------
+    public void addRole( Role role)
         throws RbacStoreException;
 
-    public void removeRoleFromUser( int userId, int roleId )
+    public Role getRole( int roleId )
+        throws RbacStoreException;
+
+    public List getAllRoles()
+        throws RbacStoreException;
+
+    public List getAssignableRoles()
+        throws RbacStoreException;
+
+
+    // ----------------------------------------------------------------------
+    // Permission methods
+    // ----------------------------------------------------------------------
+    public void addPermission( int roleId, Permission permission )
+        throws RbacStoreException;
+
+    public List getPermissions( int roleId )
+        throws RbacStoreException;
+
+
+    // ----------------------------------------------------------------------
+    // User Assignment methods
+    // ----------------------------------------------------------------------
+
+    public List getRoleAssignments( String principal )
+        throws RbacStoreException;
+
+    public void addRoleAssignment( String principal, int roleId )
+        throws RbacStoreException;
+
+    public void removeRoleAssignment( String principal, int roleId )
         throws RbacStoreException;
 }
