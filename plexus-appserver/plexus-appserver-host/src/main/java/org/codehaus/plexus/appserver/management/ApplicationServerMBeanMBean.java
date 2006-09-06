@@ -32,7 +32,7 @@ import java.io.File;
  * @author <a href="mailto:evenisse@apache.org">Emmanuel Venisse</a>
  * @version $Id$
  */
-public interface ApplicationServerMBean
+public interface ApplicationServerMBeanMBean
     extends MBean
 {
     void deploy( String id, File location )
