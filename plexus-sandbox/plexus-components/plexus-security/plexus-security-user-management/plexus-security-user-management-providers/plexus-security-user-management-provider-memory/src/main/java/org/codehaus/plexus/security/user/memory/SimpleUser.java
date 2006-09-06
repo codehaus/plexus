@@ -50,13 +50,8 @@ public class SimpleUser
 
     private Date accountCreationDate;
 
-    public SimpleUser( String username,
-                       String password,
-                       String email )
+    public SimpleUser( )
     {
-        this.username = username;
-        this.password = password;
-        this.email = email;
     }
 
     public void addPreviousEncodedPassword( String encodedPassword )
