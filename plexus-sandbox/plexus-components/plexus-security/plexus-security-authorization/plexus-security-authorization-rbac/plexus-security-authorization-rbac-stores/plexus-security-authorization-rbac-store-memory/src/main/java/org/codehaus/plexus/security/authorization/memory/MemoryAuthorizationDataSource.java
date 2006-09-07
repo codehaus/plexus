@@ -1,6 +1,5 @@
 package org.codehaus.plexus.security.authorization.memory;
 
-import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
 import org.codehaus.plexus.security.user.User;
 /*
  * Copyright 2005 The Apache Software Foundation.
@@ -25,7 +24,7 @@ import org.codehaus.plexus.security.user.User;
  * @version $Id:$
  */
 public class MemoryAuthorizationDataSource
-    implements AuthorizationDataSource
+//    implements AuthorizationDataSource
 {
     Object principal;
 
