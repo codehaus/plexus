@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * User Security Policy. 
  * 
- * @plexus.component role="org.apache.maven.user.model.UserSecurityPolicy"
+ * @plexus.component role="org.codehaus.plexus.security.user.policy.UserSecurityPolicy"
  * 
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
