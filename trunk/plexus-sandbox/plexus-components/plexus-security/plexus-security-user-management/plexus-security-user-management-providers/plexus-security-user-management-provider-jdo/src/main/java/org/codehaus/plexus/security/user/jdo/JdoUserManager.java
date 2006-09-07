@@ -27,6 +27,8 @@ import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserManagerException;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.user.policy.UserSecurityPolicy;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -54,6 +56,11 @@ public class JdoUserManager
      * @plexus.requirement
      */
     private JdoFactory jdoFactory;
+    
+    /**
+     * @plexus.requirement
+     */
+    private UserSecurityPolicy userSecurityPolicy;
 
     private PersistenceManagerFactory pmf;
 
@@ -81,6 +88,14 @@ public class JdoUserManager
             throw new UserManagerException( "Unable to Add User. User object " + user.getClass().getName()
                 + " is not an instance of " + JdoUser.class.getName() );
         }
+        
+        if ( ((JdoUser)user).getAccountId() > 0 )
+        {
+            throw new IllegalStateException( Messages.getString( "user.manager.cannot.add.user.with.accountId" ) ); //$NON-NLS-1$
+        }
+        
+        getUserSecurityPolicy().changeUserPassword( user );
+        
         return (User) PlexusJdoUtils.addObject( getPersistenceManager(), user );
     }
 
@@ -184,6 +199,13 @@ public class JdoUserManager
             throw new UserManagerException( "Unable to Update User. User object " + user.getClass().getName()
                 + " is not an instance of " + JdoUser.class.getName() );
         }
+        
+        // If password is supplied, assume changing of password.
+        // TODO: Consider adding a boolean to the updateUser indicating a password change or not.
+        if ( StringUtils.isNotEmpty( user.getPassword() ) )
+        {
+            getUserSecurityPolicy().changeUserPassword( user );
+        }
 
         try
         {
@@ -230,5 +252,15 @@ public class JdoUserManager
     private void rollback( Transaction tx )
     {
         PlexusJdoUtils.rollbackIfActive( tx );
+    }
+
+    public UserSecurityPolicy getUserSecurityPolicy()
+    {
+        return userSecurityPolicy;
+    }
+
+    public void setUserSecurityPolicy( UserSecurityPolicy userSecurityPolicy )
+    {
+        this.userSecurityPolicy = userSecurityPolicy;
     }
 }
