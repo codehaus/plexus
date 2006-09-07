@@ -72,6 +72,7 @@ public class SessionAction
             if ( securitySession.getAuthenticationResult().isAuthenticated() )
             {
                 session.put( SecuritySession.ROLE, securitySession );
+                session.put( "user", securitySession.getUser() );
                 session.put( "authStatus", "true" );
                 return SUCCESS;
             }
