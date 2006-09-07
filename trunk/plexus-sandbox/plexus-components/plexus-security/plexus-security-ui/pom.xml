@@ -52,5 +52,6 @@
   <modules>
     <module>plexus-security-ui-web</module>
     <module>plexus-security-ui-swing</module>
+    <module>plexus-security-ui-web-rbac</module>
   </modules>
 </project>

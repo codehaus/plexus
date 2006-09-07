@@ -57,7 +57,7 @@ public class SessionAction
             //
             UserManager um = securitySystem.getUserManager();
 
-            User user = new SimpleUser( username, password, null );
+            User user = new SimpleUser( username, password, "" );
 
             um.addUser( user );
             //
