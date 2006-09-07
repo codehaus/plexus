@@ -201,7 +201,18 @@ public class MemoryRbacStore
     public List getRoleAssignments( String principal )
         throws RbacStoreException
     {
-        return store.getAssignments();
+        List assignments = store.getAssignments();
+
+        for (Iterator i = assignments.iterator(); i.hasNext() ;)
+        {
+            UserAssignment assignment = (UserAssignment) i.next();
+            if ( assignment.getPrincipal().equals( principal ) )
+            {
+                return assignment.getRoles();
+            }
+        }
+
+        throw new RbacStoreException( principal + " has no assigned roles" );
     }
 
     public void addRoleAssignment( String principal, int roleId )
