@@ -1,12 +1,10 @@
 package org.codehaus.plexus.security.authentication.memory;
 
-import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
-
 /**
  * @author Jason van Zyl
  */
 public class MemoryAuthenticationDataSource
-    implements AuthenticationDataSource
+//    implements AuthenticationDataSource
 {
     private String login;
 
@@ -21,7 +19,7 @@ public class MemoryAuthenticationDataSource
     }
 
 
-    public String getLogin()
+    public String getUsername()
     {
         return login;
     }
