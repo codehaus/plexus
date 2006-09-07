@@ -55,11 +55,16 @@ public class AbstractJAASPasswordEncoder
         try
         {
             md = MessageDigest.getInstance( this.algorithm );
+            String precode = rawPass;
+            
+            // Only checking for null, not using StringUtils.isNotEmpty() as
+            // whitespace can make up a valid salt. 
             if ( salt != null )
             {
-                md.update( salt.toString().getBytes( "UTF-8" ) ); //$NON-NLS-1$
+                // Conforming to acegi password encoding standards for compatibility
+                precode += "{" + salt + "}";
             }
-            md.update( rawPass.getBytes( "UTF-8" ) ); //$NON-NLS-1$
+            md.update( precode.getBytes( "UTF-8" ) ); //$NON-NLS-1$
 
             byte raw[] = md.digest();
             String hash = ( new BASE64Encoder() ).encode( raw );
