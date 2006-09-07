@@ -57,7 +57,10 @@ public class SessionAction
             //
             UserManager um = securitySystem.getUserManager();
 
-            User user = new SimpleUser( username, password, "" );
+            User user = new SimpleUser();
+
+            user.setUsername( username );
+            user.setPassword( password );
 
             um.addUser( user );
             //
@@ -97,7 +100,7 @@ public class SessionAction
         else
         {
             return INPUT;
-        }        
+        }
     }
 
     public String logout()
