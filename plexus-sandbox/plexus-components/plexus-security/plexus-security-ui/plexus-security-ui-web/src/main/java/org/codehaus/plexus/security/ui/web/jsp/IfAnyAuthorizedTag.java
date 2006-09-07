@@ -23,7 +23,6 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
-import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.xwork.PlexusLifecycleListener;
 
 import javax.servlet.jsp.JspTagException;
@@ -66,7 +65,11 @@ public class IfAnyAuthorizedTag
 
         SecuritySession securitySession = (SecuritySession)context.getSession().get( SecuritySession.ROLE );
 
-        User user = securitySession.getUser();
+        // check if securitySession exists, if it doesn't just return false, the user isn't logged in
+        if ( securitySession == null )
+        {
+            return false;
+        }
 
         try
         {
