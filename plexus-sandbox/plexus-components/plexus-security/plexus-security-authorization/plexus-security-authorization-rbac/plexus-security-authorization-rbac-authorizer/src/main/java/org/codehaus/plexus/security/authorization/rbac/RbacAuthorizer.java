@@ -72,7 +72,7 @@ public class RbacAuthorizer
                         {
                             if ( resource != null )
                             {
-                                // todo, expand this a bit more to support *-* type patterns                              
+                                // todo, expand this a bit more to support *-* type patterns, make some kinda evaluator class                               
                                 if ( permission.getOperation().getResource().isPattern() )
                                 {
                                     String strToMatch = permission.getOperation().getResource().getIdentifier();

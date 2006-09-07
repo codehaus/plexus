@@ -1,15 +1,14 @@
 package org.codehaus.plexus.security.example.web.action;
 
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
-import org.codehaus.plexus.security.system.SecuritySystem;
-import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
-import org.codehaus.plexus.security.authentication.memory.MemoryAuthenticationDataSource;
-import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.system.SecuritySession;
+import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.security.user.memory.SimpleUser;
+import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 /*
  * Copyright 2005 The Apache Software Foundation.
  *
@@ -64,7 +63,7 @@ public class SessionAction
         um.addUser( user );
 
 
-        AuthenticationDataSource source = new MemoryAuthenticationDataSource( username, password );
+        AuthenticationDataSource source = new AuthenticationDataSource( username, password );
 
         try
         {
@@ -81,7 +80,6 @@ public class SessionAction
                 addActionError( "authentication failed" );
                 return ERROR;
             }
-
         }
         catch ( AuthenticationException ae )
         {
