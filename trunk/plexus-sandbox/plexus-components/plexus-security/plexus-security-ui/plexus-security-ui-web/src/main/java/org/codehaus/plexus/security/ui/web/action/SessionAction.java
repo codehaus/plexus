@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.ui.web;
+package org.codehaus.plexus.security.ui.web.action;
 
 /*
  * Copyright 2005 The Apache Software Foundation.
@@ -23,7 +23,6 @@ import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.memory.SimpleUser;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
@@ -57,16 +56,13 @@ public class SessionAction
             //
             UserManager um = securitySystem.getUserManager();
 
-            User user = new SimpleUser();
-
-            user.setUsername( username );
+            String fullName = "bobs your uncle";
+            String emailAddress = "fake@address.com";
+            
+            User user = um.createUser( username, fullName, emailAddress );
             user.setPassword( password );
 
             um.addUser( user );
-            //
-            //
-            //
-
 
             try
             {
