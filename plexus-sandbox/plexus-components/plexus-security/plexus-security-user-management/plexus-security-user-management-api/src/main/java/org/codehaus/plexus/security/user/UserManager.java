@@ -1,5 +1,7 @@
 package org.codehaus.plexus.security.user;
 
+import org.codehaus.plexus.security.user.policy.UserSecurityPolicy;
+
 import java.util.List;
 
 /**
@@ -88,4 +90,18 @@ public interface UserManager
      */
     void deleteUser( String username )
         throws UserNotFoundException;
+    
+    /**
+     * Set the User Security Policy.
+     * 
+     * @param securityPolicy the security policy.
+     */
+    void setUserSecurityPolicy(UserSecurityPolicy securityPolicy);
+    
+    /**
+     * Get the User Security Policy.
+     * 
+     * @return the user security policy.
+     */
+    UserSecurityPolicy getUserSecurityPolicy();
 }

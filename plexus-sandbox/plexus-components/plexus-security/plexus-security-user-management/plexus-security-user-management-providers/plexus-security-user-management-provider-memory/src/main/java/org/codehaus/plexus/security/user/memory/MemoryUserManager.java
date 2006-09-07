@@ -3,6 +3,9 @@ package org.codehaus.plexus.security.user.memory;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.user.policy.DefaultUserSecurityPolicy;
+import org.codehaus.plexus.security.user.policy.UserSecurityPolicy;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,22 +21,34 @@ import java.util.HashMap;
 public class MemoryUserManager
     implements UserManager
 {
+    private UserSecurityPolicy userSecurityPolicy;
+    
     private Map users;
 
     public MemoryUserManager()
     {
         users = new HashMap();
+        userSecurityPolicy = new DefaultUserSecurityPolicy();
     }
 
     public User addUser( User user )
     {
         users.put( user.getPrincipal(), user );
+        
+        getUserSecurityPolicy().changeUserPassword( user );
 
         return user;
     }
 
     public User updateUser( User user )
     {
+        // If password is supplied, assume changing of password.
+        // TODO: Consider adding a boolean to the updateUser indicating a password change or not.
+        if ( StringUtils.isNotEmpty( user.getPassword() ) )
+        {
+            getUserSecurityPolicy().changeUserPassword( user );
+        }
+        
         return addUser( user );
     }
 
@@ -98,5 +113,15 @@ public class MemoryUserManager
     public List getUsers()
     {
         return new ArrayList( users.values() );
+    }
+
+    public UserSecurityPolicy getUserSecurityPolicy()
+    {
+        return userSecurityPolicy;
+    }
+
+    public void setUserSecurityPolicy( UserSecurityPolicy securityPolicy )
+    {
+        userSecurityPolicy = securityPolicy;
     }
 }
