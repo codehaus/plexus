@@ -35,11 +35,6 @@
         <groupId>org.codehaus.plexus.security</groupId>
         <version>${project.version}</version>
       </dependency>
-      <dependency>
-        <artifactId>plexus-security-authorization-rbac-ui-web</artifactId>
-        <groupId>org.codehaus.plexus.security</groupId>
-        <version>${project.version}</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
   <modules>
@@ -47,6 +42,5 @@
     <module>plexus-security-authorization-rbac-store-api</module>
     <module>plexus-security-authorization-rbac-stores</module>
     <module>plexus-security-authorization-rbac-authorizer</module>
-    <module>plexus-security-authorization-rbac-ui-web</module>
   </modules>
 </project>
