@@ -22,6 +22,7 @@ import java.util.Set;
 /**
  * Permission which represents a set of operations
  * that can be performed on a set of target objects.
+ * @deprecated use the {@link org.codehaus.plexus.security.rbac.Permission} interface instead.
  */
 public interface Permission
 {

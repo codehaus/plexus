@@ -2,14 +2,11 @@ package org.codehaus.plexus.security.authorization.memory;
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.security.authorization.rbac.Permission;
-import org.codehaus.plexus.security.authorization.rbac.RBACModel;
-import org.codehaus.plexus.security.authorization.rbac.Role;
-import org.codehaus.plexus.security.authorization.rbac.UserAssignment;
-import org.codehaus.plexus.security.authorization.rbac.io.xpp3.RBACModelXpp3Reader;
-import org.codehaus.plexus.security.authorization.rbac.io.xpp3.RBACModelXpp3Writer;
 import org.codehaus.plexus.security.authorization.rbac.store.RbacStore;
 import org.codehaus.plexus.security.authorization.rbac.store.RbacStoreException;
+import org.codehaus.plexus.security.rbac.RBACModel;
+import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.security.rbac.UserAssignment;
 
 import java.io.File;
 import java.io.FileReader;
@@ -17,21 +14,6 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-/*
- * Copyright 2005 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 /**
  * MemoryRbacStore: a very quick and dirty implementation of a rbac store
@@ -92,10 +74,11 @@ public class MemoryRbacStore
     // ----------------------------------------------------------------------
     // Role methods
     // ----------------------------------------------------------------------
-    public void addRole( Role role )
+    public Role addRole( Role role )
         throws RbacStoreException
     {
         store.addRole( role );
+        return role;
     }
 
     public Role getRole( int roleId )
@@ -260,7 +243,6 @@ public class MemoryRbacStore
         {
             throw new RbacStoreException( "role does not exist: " + roleId );
         }
-
     }
 
 

@@ -15,6 +15,7 @@
     </dependency>
   </dependencies>
   <modules>
-    <module>plexus-security-user-management-provider-memory</module>
+    <!-- <module>plexus-security-user-management-provider-memory</module> -->
+    <module>plexus-security-user-management-provider-jdo</module>
   </modules>
 </project>

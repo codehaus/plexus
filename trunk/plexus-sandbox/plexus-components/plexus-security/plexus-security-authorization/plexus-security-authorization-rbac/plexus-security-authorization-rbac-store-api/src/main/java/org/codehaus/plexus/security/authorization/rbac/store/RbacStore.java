@@ -1,6 +1,5 @@
 package org.codehaus.plexus.security.authorization.rbac.store;
 
-
 /*
  * Copyright 2005 The Apache Software Foundation.
  *
@@ -17,10 +16,12 @@ package org.codehaus.plexus.security.authorization.rbac.store;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.authorization.rbac.Role;
+import org.codehaus.plexus.security.rbac.Operation;
+import org.codehaus.plexus.security.rbac.Permission;
+import org.codehaus.plexus.security.rbac.Resource;
+import org.codehaus.plexus.security.rbac.Role;
 
 import java.util.List;
-
 
 /**
  * RbacStore:
@@ -35,7 +36,7 @@ public interface RbacStore
     // ----------------------------------------------------------------------
     // Role methods
     // ----------------------------------------------------------------------
-    public void addRole( Role role)
+    public Role addRole( Role role )
         throws RbacStoreException;
 
     public Role getRole( int roleId )
@@ -47,16 +48,17 @@ public interface RbacStore
     public List getAssignableRoles()
         throws RbacStoreException;
 
-    public void removeRole( int roleId )
+    public Role removeRole( int roleId )
+        throws RbacStoreException;
+
+    public Role removeRole( Role role )
         throws RbacStoreException;
 
     // ----------------------------------------------------------------------
     // Permission methods
     // ----------------------------------------------------------------------
-    /*
-         these will be needed more for the dynamic generation of roles, permissions, etc
 
-    public void addPermission( int roleId, Permission permission )
+    public Permission addPermission( int roleId, Permission permission )
         throws RbacStoreException;
 
     public List getPermissions( int roleId )
@@ -65,14 +67,14 @@ public interface RbacStore
     public List getAllPermissions()
         throws RbacStoreException;
 
-    public void removePermissionFromRole( int roleId, int permissionId )
+    public Permission removePermissionFromRole( int roleId, int permissionId )
         throws RbacStoreException;
 
-    public void removePermission( int permissionsId )
+    public Permission getPermission( int permissionId )
         throws RbacStoreException;
 
-
-
+    public Permission removePermission( int permissionId )
+        throws RbacStoreException;
 
     // ----------------------------------------------------------------------
     // Operation methods
@@ -80,9 +82,11 @@ public interface RbacStore
     public List getAllOperations()
         throws RbacStoreException;
 
-    public void removeOperation( int operationId )
+    public Operation getOperation( int operationId )
         throws RbacStoreException;
 
+    public Operation removeOperation( int operationId )
+        throws RbacStoreException;
 
     // ----------------------------------------------------------------------
     // Resource methods
@@ -90,9 +94,11 @@ public interface RbacStore
     public List getAllResources()
         throws RbacStoreException;
 
-    public void removeResource( int resourceId )
+    public Resource getResource( int resourceId )
         throws RbacStoreException;
-    */
+
+    public Resource removeResource( int resourceId )
+        throws RbacStoreException;
 
     // ----------------------------------------------------------------------
     // User Assignment methods
@@ -100,9 +106,9 @@ public interface RbacStore
     public List getRoleAssignments( String principal )
         throws RbacStoreException;
 
-    public void addRoleAssignment( String principal, int roleId )
+    public Role addRoleAssignment( String principal, int roleId )
         throws RbacStoreException;
 
-    public void removeRoleAssignment( String principal, int roleId )
+    public Role removeRoleAssignment( String principal, int roleId )
         throws RbacStoreException;
 }

@@ -1,8 +1,8 @@
 package org.codehaus.plexus.security.authorization.rbac.web.action;
 
-import org.codehaus.plexus.security.authorization.rbac.Operation;
 import org.codehaus.plexus.security.authorization.rbac.store.RbacStore;
 import org.codehaus.plexus.security.authorization.rbac.store.RbacStoreException;
+import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 /*
  * Copyright 2005 The Apache Software Foundation.
