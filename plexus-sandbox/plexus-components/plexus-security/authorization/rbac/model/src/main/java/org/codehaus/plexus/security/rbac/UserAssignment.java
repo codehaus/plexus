@@ -16,10 +16,11 @@ package org.codehaus.plexus.security.rbac;
  * limitations under the License.
  */
 
-import java.util.List;
-
 /**
- * UserAssignment 
+ * UserAssignment - This the mapping object that takes the principal for a user and associates it with a
+ * set of Roles.
+ * 
+ * This is the many to many mapping object needed by persistence stores.
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
@@ -28,43 +29,27 @@ import java.util.List;
  */
 public interface UserAssignment
 {
-
     /**
-     * Method addRole
-     * 
-     * @param role
-     */
-    public void addRole( Role role );
-
-    /**
-     * Get null
+     * The principal for the User that the set of roles is associated with. 
      */
     public String getPrincipal();
 
     /**
-     * Method getRoles
+     * Get the roles for this user.
      */
-    public List getRoles();
+    public Roles getRoles();
 
     /**
-     * Method removeRole
-     * 
-     * @param role
-     */
-    public void removeRole( Role role );
-
-    /**
-     * Set null
+     * Set the user principal object for this association.
      * 
      * @param principal
      */
     public void setPrincipal( String principal );
 
     /**
-     * Set null
+     * Set the roles for this user.
      * 
-     * @param roles
+     * @param roles the roles
      */
-    public void setRoles( List roles );
-
+    public void setRoles( Roles roles );
 }
