@@ -60,6 +60,13 @@ public interface Role
      * Method getChildRoles
      */
     public Roles getChildRoles();
+    
+    /**
+     * Convienence method to see if Role has Child Roles.
+     * 
+     * @return true if child roles exists and has any roles being tracked.
+     */
+    public boolean hasChildRoles();
 
     /**
      * Long description of the role.
