@@ -60,9 +60,10 @@ public class PlexusJdoUtils
         }
     }
 
-    public static void updateObject( PersistenceManager pm, Object object )
+    public static Object updateObject( PersistenceManager pm, Object object )
         throws PlexusStoreException
     {
+        Object ret = object;
         Transaction tx = pm.currentTransaction();
 
         try
@@ -76,7 +77,7 @@ public class PlexusJdoUtils
 
             try
             {
-                pm.makePersistent( object );
+                ret = pm.makePersistent( object );
             }
             catch ( NullPointerException npe )
             {
@@ -88,7 +89,7 @@ public class PlexusJdoUtils
             {
                 // TODO: Refactor to avoid using Exception catch-all.
                 // We retry if we obtain an exception like a dead lock
-                pm.makePersistent( object );
+                ret = pm.makePersistent( object );
             }
 
             tx.commit();
@@ -97,6 +98,8 @@ public class PlexusJdoUtils
         {
             rollbackIfActive( tx );
         }
+        
+        return ret;
     }
 
     public static Object makePersistent( PersistenceManager pm, Object object, boolean detach )
