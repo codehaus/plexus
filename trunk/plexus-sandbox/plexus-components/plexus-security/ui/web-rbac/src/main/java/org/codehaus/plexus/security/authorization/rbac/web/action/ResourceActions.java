@@ -1,6 +1,11 @@
 package org.codehaus.plexus.security.authorization.rbac.web.action;
 
-
+import com.opensymphony.xwork.ModelDriven;
+import com.opensymphony.xwork.Preparable;
+import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.security.rbac.Resource;
+import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 /*
  * Copyright 2005 The Apache Software Foundation.
  *
@@ -17,13 +22,6 @@ package org.codehaus.plexus.security.authorization.rbac.web.action;
  * limitations under the License.
  */
 
-import com.opensymphony.xwork.ModelDriven;
-import com.opensymphony.xwork.Preparable;
-import org.codehaus.plexus.security.rbac.Operation;
-import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
-
 /**
  * OperationActions:
  *
@@ -35,7 +33,7 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  *   role-hint="plexusSecurityOperation"
 
  */
-public class OperationActions
+public class ResourceActions
     extends PlexusActionSupport implements ModelDriven, Preparable
 {
     /**
@@ -43,20 +41,20 @@ public class OperationActions
      */
     private RBACManager manager;
 
-    private int operationId;
+    private int resourceId;
 
-    private Operation operation;
+    private Resource resource;
 
     public void prepare()
         throws Exception
     {
         try
         {
-            operation = manager.getOperation( operationId );
+            resource = manager.getResource( resourceId );
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            operation = manager.createOperation( "name", "resourceIdentifier");
+            resource = manager.createResource( "identifier");
         }
     }
 
@@ -64,12 +62,12 @@ public class OperationActions
     {
         try
         {
-            manager.getOperation( operation.getId() );
-            manager.updateOperation( operation );
+            manager.getOperation( resource.getId() );
+            manager.updateResource( resource );
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            manager.addOperation( operation );
+            manager.addResource( resource );
         }
 
         return SUCCESS;
@@ -80,11 +78,11 @@ public class OperationActions
     {
         try
         {
-            manager.removeOperation( manager.getOperation( operationId ) );
+            manager.removeResource( manager.getResource( resourceId ) );
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            throw new RbacActionException( "unable to locate operation to remove " + operationId , ne );
+            throw new RbacActionException( "unable to locate resource to remove " + resourceId , ne );
         }
         return SUCCESS;
     }
@@ -92,22 +90,22 @@ public class OperationActions
 
     public Object getModel()
     {
-        return operation;
+        return resource;
     }
 
-    public int getOperationId()
+    public int getResourceId()
     {
-        return operationId;
+        return resourceId;
     }
 
-    public void setOperationId( int operationId )
+    public void setResourceId( int resourceId )
     {
-        this.operationId = operationId;
+        this.resourceId = resourceId;
     }
 
-    public void setOperation( Operation operation )
+    public void setResource( Resource resource )
     {
-        this.operation = operation;
+        this.resource = resource;
     }
 
 }
