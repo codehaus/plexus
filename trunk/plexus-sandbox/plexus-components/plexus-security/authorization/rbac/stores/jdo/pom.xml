@@ -67,7 +67,7 @@
         <configuration>
           <version>1.0.0</version>
           <packageWithVersion>false</packageWithVersion>
-          <model>src/main/mdo/rbac.mdo</model>
+          <model>src/main/mdo/rbac-jdo.mdo</model>
         </configuration>
         <executions>
           <execution>

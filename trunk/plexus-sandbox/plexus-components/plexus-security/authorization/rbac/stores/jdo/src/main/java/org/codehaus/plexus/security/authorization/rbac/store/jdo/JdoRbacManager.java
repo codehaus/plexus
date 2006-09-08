@@ -37,7 +37,6 @@ import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.Roles;
 import org.codehaus.plexus.security.rbac.UserAssignment;
-import org.codehaus.plexus.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -63,7 +62,6 @@ import javax.jdo.Transaction;
 public class JdoRbacManager
     implements RBACManager, Initializable
 {
-
     /**
      * @plexus.requirement
      */
@@ -129,30 +127,10 @@ public class JdoRbacManager
         return getAllObjectsDetached( JdoRole.class );
     }
 
-    public List getAllAssignableRoles()
-        throws RbacStoreException
-    {
-        // TODO: use jpox/jdo query mechanism here instead!
-        List allRoles = getAllRoles();
-        List assignableRoles = new ArrayList();
-
-        Iterator it = allRoles.iterator();
-        while ( it.hasNext() )
-        {
-            Role role = (Role) it.next();
-            if ( role.isAssignable() )
-            {
-                assignableRoles.add( role );
-            }
-        }
-
-        return assignableRoles;
-    }
-
     public void removeRole( Role role )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        removeObject( normalizeRole( role ) );
+        removeObject( slapHandOfBadUsers( role ) );
     }
 
     public Role updateRole( Role role )
@@ -160,19 +138,25 @@ public class JdoRbacManager
     {
         return (Role) updateObject( role );
     }
-    
-    private Role normalizeRole( Role role )
+
+    /**
+     * Internal method to aide in elimination of NullPointer exceptions from bad users.
+     * 
+     * @param role
+     * @return
+     */
+    private Role slapHandOfBadUsers( Role role )
     {
-        if( role.getChildRoles() == null )
+        if ( role.getChildRoles() == null )
         {
             role.setChildRoles( new JdoRoles() );
         }
-        
-        if( role.getPermissions() == null )
+
+        if ( role.getPermissions() == null )
         {
             role.setPermissions( new ArrayList() );
         }
-        
+
         return role;
     }
 
@@ -402,8 +386,7 @@ public class JdoRbacManager
     public UserAssignment getUserAssignment( String principal )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        // FIXME: remove Integer Parsing when Plexus-JDO2 supports String Intentity usage.
-        return (UserAssignment) getObjectById( JdoUserAssignment.class, Integer.parseInt( principal ) );
+        return (UserAssignment) getObjectById( JdoUserAssignment.class, principal );
     }
 
     /**
@@ -492,6 +475,26 @@ public class JdoRbacManager
         return permissionSet;
     }
 
+    public List getAllAssignableRoles()
+        throws RbacStoreException
+    {
+        // TODO: use jpox/jdo query mechanism here instead!
+        List allRoles = getAllRoles();
+        List assignableRoles = new ArrayList();
+
+        Iterator it = allRoles.iterator();
+        while ( it.hasNext() )
+        {
+            Role role = (Role) it.next();
+            if ( role.isAssignable() )
+            {
+                assignableRoles.add( role );
+            }
+        }
+
+        return assignableRoles;
+    }
+
     // ----------------------------------------------------------------------
     // Component Lifecycle
     // ----------------------------------------------------------------------
@@ -566,11 +569,11 @@ public class JdoRbacManager
 
     private Object removeObject( Object o )
     {
-        if(o == null)
+        if ( o == null )
         {
             throw new RbacStoreException( "Unable to remove null object '" + o.getClass().getName() + "'" );
         }
-        
+
         PlexusJdoUtils.removeObject( getPersistenceManager(), o );
         return o;
     }
@@ -602,5 +605,4 @@ public class JdoRbacManager
     {
         PlexusJdoUtils.rollbackIfActive( tx );
     }
-
 }
