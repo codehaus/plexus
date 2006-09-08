@@ -1,14 +1,7 @@
 package org.codehaus.plexus.security.authorization.rbac.web.action;
 
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
-import org.codehaus.plexus.security.authorization.rbac.store.RbacStore;
-import org.codehaus.plexus.security.authorization.rbac.store.RbacStoreException;
-import org.codehaus.plexus.security.authorization.rbac.Role;
-import org.codehaus.plexus.security.rbac.RoleInterface;
-
-import java.util.List;
 /*
- * Copyright 2005 The Apache Software Foundation.
+ * Copyright 2005 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +15,14 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+
+import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+
+import java.util.List;
 
 /**
  * RoleActions:
@@ -39,7 +40,7 @@ public class RoleActions
     /**
      * @plexus.requirement
      */
-    private RbacStore store;
+    private RBACManager manager;
 
     private int roleId;
 
@@ -48,31 +49,38 @@ public class RoleActions
     private List roles;
 
     public String display()
-        throws RbacStoreException
+        throws RbacActionException
     {
-        role = store.getRole( roleId );
+        try
+        {
+            role = manager.getRole( roleId );
+        }
+        catch ( RbacObjectNotFoundException ne )
+        {
+            throw new RbacActionException( "unable to locate role", ne );
+        }
 
         return SUCCESS;
     }
 
     public String summary()
-        throws RbacStoreException
+        throws RbacActionException
     {
-        roles = store.getAllRoles();
+        roles = manager.getRoles();
 
         return SUCCESS;
     }
 
     public String addRole()
-        throws RbacStoreException
+        throws RbacActionException
     {
-        if ( role != null && store.getRole( role.getId() ) == null)
+        if ( role != null )
         {
-            store.addRole( role );
+            manager.addRole( role );
         }
         else
         {
-            addActionError("unable to add role, its either null or exists already" );
+            addActionError( "unable to add role, its either null or exists already" );
             return ERROR;
         }
 
@@ -80,9 +88,16 @@ public class RoleActions
     }
 
     public String removeRole()
-        throws RbacStoreException
+        throws RbacActionException
     {
-        store.removeRole( roleId );
+        try
+        {
+            manager.removeRole( manager.getRole( roleId ) );
+        }
+        catch ( RbacObjectNotFoundException ne )
+        {
+            throw new RbacActionException( "unable to locate role to remove", ne );
+        }
 
         return SUCCESS;
     }
@@ -97,7 +112,7 @@ public class RoleActions
         this.roleId = roleId;
     }
 
-    public RoleInterface getRole()
+    public Role getRole()
     {
         return role;
     }

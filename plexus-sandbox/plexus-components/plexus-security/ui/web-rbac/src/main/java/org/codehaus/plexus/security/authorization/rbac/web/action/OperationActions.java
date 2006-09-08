@@ -1,9 +1,6 @@
 package org.codehaus.plexus.security.authorization.rbac.web.action;
 
-import org.codehaus.plexus.security.authorization.rbac.store.RbacStore;
-import org.codehaus.plexus.security.authorization.rbac.store.RbacStoreException;
-import org.codehaus.plexus.security.rbac.Operation;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+
 /*
  * Copyright 2005 The Apache Software Foundation.
  *
@@ -20,6 +17,13 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  * limitations under the License.
  */
 
+import com.opensymphony.xwork.ModelDriven;
+import com.opensymphony.xwork.Preparable;
+import org.codehaus.plexus.security.rbac.Operation;
+import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+
 /**
  * OperationActions:
  *
@@ -32,29 +36,75 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
  */
 public class OperationActions
-    extends PlexusActionSupport
+    extends PlexusActionSupport implements ModelDriven, Preparable
 {
     /**
      * @plexus.requirement
      */
-    private RbacStore store;
-
-    private int roleId;
-
-    private int permissionId;
+    private RBACManager manager;
 
     private int operationId;
 
-    
-
     private Operation operation;
 
-    public String display()
-        throws RbacStoreException
+    public void prepare()
+        throws Exception
     {
-        //operation = store.;
+        try
+        {
+            operation = manager.getOperation( operationId );
+        }
+        catch ( RbacObjectNotFoundException ne )
+        {
+            throw new RbacActionException( "unable to location operation " + operationId, ne );
+        }
+    }
+
+    public String display()
+    {
+        return SUCCESS;
+    }
+
+    public String add()
+    {
+        manager.addOperation( operation );
 
         return SUCCESS;
+    }
+
+    public String remove()
+        throws RbacActionException
+    {
+        try
+        {
+            manager.removeOperation( manager.getOperation( operationId ) );
+        }
+        catch ( RbacObjectNotFoundException ne )
+        {
+            throw new RbacActionException( "unable to locate operation to remove " + operationId , ne );
+        }
+        return SUCCESS;
+    }
+
+
+    public Object getModel()
+    {
+        return operation;
+    }
+
+    public int getOperationId()
+    {
+        return operationId;
+    }
+
+    public void setOperationId( int operationId )
+    {
+        this.operationId = operationId;
+    }
+
+    public void setOperation( Operation operation )
+    {
+        this.operation = operation;
     }
 
 }

@@ -1,12 +1,7 @@
 package org.codehaus.plexus.security.authorization.rbac.web.action;
 
-import org.codehaus.plexus.security.authorization.rbac.store.RbacStore;
-import org.codehaus.plexus.security.authorization.rbac.store.RbacStoreException;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
-
-import java.util.List;
 /*
- * Copyright 2005 The Apache Software Foundation.
+ * Copyright 2005 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +15,15 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+
+import org.codehaus.plexus.security.rbac.RbacStoreException;
+import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.security.rbac.UserAssignment;
+import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+
+import java.util.List;
 
 /**
  * UserAssignmentActions:
@@ -37,7 +41,7 @@ public class UserAssignmentActions
     /**
      * @plexus.requirement
      */
-    private RbacStore store;
+    private RBACManager manager;
 
     private int roleId;
 
@@ -48,28 +52,56 @@ public class UserAssignmentActions
     private List availableRoles;
 
     public String display()
-        throws RbacStoreException
+        throws RbacActionException
     {
-        assignedRoles = store.getRoleAssignments( principal );
+        try
+        {
+            assignedRoles = manager.getAssignedRoles( principal );
 
-        availableRoles = store.getAssignableRoles();
-
+            availableRoles = manager.getAllAssignableRoles();
+        }
+        catch ( RbacStoreException  se )
+        {
+            throw new RbacActionException( se );
+        }
+        catch ( RbacObjectNotFoundException ne )
+        {
+            throw new RbacActionException( ne );
+        }
         return SUCCESS;
     }
 
     public String assignRole()
-        throws RbacStoreException
+        throws RbacActionException
     {
-        store.addRoleAssignment( principal, roleId );
+        try
+        {
+            UserAssignment assignment = manager.createUserAssignment( principal );
+
+            assignment.getRoles().addRole( manager.getRole( roleId ) );
+        }
+        catch ( RbacObjectNotFoundException ne )
+        {
+            throw new RbacActionException( "unable to locate role to assign", ne );
+        }
 
         return SUCCESS;
     }
 
 
     public String removeRole()
-        throws RbacStoreException
+        throws RbacActionException
     {
-        store.removeRoleAssignment( principal, roleId );
+        try
+        {
+            UserAssignment assignment = manager.getUserAssignment( principal );
+
+            assignment.getRoles().removeRole( manager.getRole( roleId ) );
+        }
+        catch ( RbacObjectNotFoundException ne )
+        {
+            throw new RbacActionException( ne );
+        }
 
         return SUCCESS;
     }
