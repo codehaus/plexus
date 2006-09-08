@@ -41,6 +41,8 @@
     <module>model</module>
     <module>store-api</module>
     <module>stores</module>
+    <!--
     <module>authorizer</module>
+      -->
   </modules>
 </project>

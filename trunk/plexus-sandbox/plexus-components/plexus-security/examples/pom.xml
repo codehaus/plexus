@@ -7,8 +7,8 @@
   </parent>
   <artifactId>plexus-security-examples</artifactId>
   <name>Plexus Security :: Examples</name>
-  <packaging>pom</packaging>  
+  <packaging>pom</packaging>
   <modules>
-    <module>plexus-security-example-webapp</module>
+    <module>webapp</module>
   </modules>
 </project>

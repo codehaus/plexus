@@ -16,8 +16,8 @@
   </dependencies>
   <modules>
     <module>jdo</module>
-    <module>memory</module>
     <!--
+    <module>memory</module>
     <module>xstream</module>
     -->
   </modules>
