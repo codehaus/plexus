@@ -9,13 +9,13 @@
   <name>Plexus Security :: Authentication</name>
   <packaging>pom</packaging>
   <dependencies>
-    <dependency>                                                                                                                                                                                                                            
-      <groupId>org.codehaus.plexus.security</groupId>                                                                                                                                                                                       
-      <artifactId>plexus-security-user-management-api</artifactId>                                                                                                                                                                          
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-user-management-api</artifactId>
     </dependency>
-  </dependencies>             
+  </dependencies>
   <modules>
-    <module>plexus-security-authentication-api</module>
-    <module>plexus-security-authentication-providers</module>
+    <module>api</module>
+    <module>providers</module>
   </modules>
 </project>
