@@ -13,13 +13,13 @@
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-common</artifactId>
     </dependency>
-    <dependency>                                                                                                                                                                                                                            
-      <groupId>org.codehaus.plexus.security</groupId>                                                                                                                                                                                       
-      <artifactId>plexus-security-user-management-api</artifactId>                                                                                                                                                                          
-    </dependency>           
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-user-management-api</artifactId>
+    </dependency>
   </dependencies>
   <modules>
-    <module>plexus-security-authorization-api</module>
-    <module>plexus-security-authorization-rbac</module>
+    <module>api</module>
+    <module>rbac</module>
   </modules>
 </project>
