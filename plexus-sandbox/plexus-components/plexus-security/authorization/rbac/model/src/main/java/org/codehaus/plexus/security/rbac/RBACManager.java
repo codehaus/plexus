@@ -17,6 +17,7 @@ package org.codehaus.plexus.security.rbac;
  */
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * RBACManager 
@@ -39,11 +40,11 @@ public interface RBACManager
 
     /**
      * Creates an implementation specific {@link Role}.
-     * 
+     *
      * Note: this method does not add the {@link Role} to the underlying store.
-     *       a call to {@link #addRole(Role)} is required to track the role created with this 
+     *       a call to {@link #addRole(Role)} is required to track the role created with this
      *       method call.
-     * 
+     *
      * @param name the name.
      * @param description the description.
      * @return the new {@link Role} object with an empty (non-null) {@link Role#getChildRoles()} object.
@@ -52,15 +53,15 @@ public interface RBACManager
 
     /**
      * Method addRole
-     * 
+     *
      * @param role
      */
     public Role addRole( Role role )
         throws RbacStoreException;
 
     /**
-     * 
-     * 
+     *
+     *
      * @param roleId
      * @return
      * @throws RbacObjectNotFoundException
@@ -77,7 +78,7 @@ public interface RBACManager
 
     /**
      * Set The roles available to be assigned
-     * 
+     *
      * @param roles
      */
     public void setRoles( List roles )
@@ -85,14 +86,14 @@ public interface RBACManager
 
     /**
      * Method removeRole
-     * 
+     *
      * @param role
      */
     public void removeRole( Role role )
         throws RbacObjectNotFoundException, RbacStoreException;
 
     /**
-     * 
+     *
      * @param role
      * @return
      * @throws RbacObjectNotFoundException
@@ -106,11 +107,11 @@ public interface RBACManager
     // ------------------------------------------------------------------
     /**
      * Creates an implementation specific {@link Permission}.
-     * 
+     *
      * Note: this method does not add the {@link Permission} to the underlying store.
-     *       a call to {@link #addPermission(Permission)} is required to track the permission created 
+     *       a call to {@link #addPermission(Permission)} is required to track the permission created
      *       with this method call.
-     * 
+     *
      * @param name the name.
      * @param description the description.
      * @return the new Permission.
@@ -118,13 +119,13 @@ public interface RBACManager
     public Permission createPermission( String name, String description );
 
     /**
-     * Creates an implementation specific {@link Permission} with specified {@link Operation}, 
+     * Creates an implementation specific {@link Permission} with specified {@link Operation},
      * and {@link Resource} identifiers.
-     * 
+     *
      * Note: this method does not add the Permission, Operation, or Resource to the underlying store.
-     *       a call to {@link #addPermission(Permission)} is required to track the permission, operation, 
+     *       a call to {@link #addPermission(Permission)} is required to track the permission, operation,
      *       or resource created with this method call.
-     * 
+     *
      * @param name the name.
      * @param description the description.
      * @param operation the {@link Operation#setName(String)} value
@@ -157,11 +158,11 @@ public interface RBACManager
 
     /**
      * Creates an implementation specific {@link Operation}.
-     * 
+     *
      * Note: this method does not add the {@link Operation} to the underlying store.
-     *       a call to {@link #addOperation(Operation)} is required to track the operation created 
+     *       a call to {@link #addOperation(Operation)} is required to track the operation created
      *       with this method call.
-     * 
+     *
      * @param name the name.
      * @param description the description.
      * @return the new Operation.
@@ -192,11 +193,11 @@ public interface RBACManager
 
     /**
      * Creates an implementation specific {@link Resource}.
-     * 
+     *
      * Note: this method does not add the {@link Resource} to the underlying store.
-     *       a call to {@link #addResource(Resource)} is required to track the resource created 
+     *       a call to {@link #addResource(Resource)} is required to track the resource created
      *       with this method call.
-     * 
+     *
      * @param identifier the identifier.
      * @return the new Resource.
      */
@@ -226,11 +227,11 @@ public interface RBACManager
 
     /**
      * Creates an implementation specific {@link UserAssignment}.
-     * 
+     *
      * Note: this method does not add the {@link UserAssignment} to the underlying store.
-     *       a call to {@link #addUserAssignment(UserAssignment)} is required to track the user 
+     *       a call to {@link #addUserAssignment(UserAssignment)} is required to track the user
      *       assignment created with this method call.
-     * 
+     *
      * @param principal the principal reference to the user.
      * @return the new UserAssignment with an empty (non-null) {@link UserAssignment#getRoles()} object.
      */
@@ -238,7 +239,7 @@ public interface RBACManager
 
     /**
      * Method addUserAssignment
-     * 
+     *
      * @param userAssignment
      */
     public UserAssignment addUserAssignment( UserAssignment userAssignment )
@@ -255,7 +256,7 @@ public interface RBACManager
 
     /**
      * Set null
-     * 
+     *
      * @param assignments
      */
     public void setUserAssignments( List assignments )
@@ -263,7 +264,7 @@ public interface RBACManager
 
     /**
      * Method removeAssignment
-     * 
+     *
      * @param userAssignment
      */
     public void removeUserAssignment( UserAssignment userAssignment )
@@ -271,4 +272,36 @@ public interface RBACManager
 
     public UserAssignment updateUserAssignment( UserAssignment userAssignment )
         throws RbacObjectNotFoundException, RbacStoreException;
+
+
+    // ------------------------------------------------------------------
+    // UserAssignment Utility Methods
+    // ------------------------------------------------------------------
+
+    /**
+     * returns the active roles for a given principal
+     *
+     * NOTE: roles that are returned might have have roles themselves, if
+     * you just want all permissions then use {@link #getAssignedPermissions( Object principal )} 
+     *
+     * @param principal
+     * @return
+     * @throws RbacObjectNotFoundException
+     * @throws RbacStoreException
+     */
+    public List getAssignedRoles( Object principal )
+        throws RbacObjectNotFoundException, RbacStoreException;
+
+    /**
+     * returns a set of all permissions that are in all active roles for a given
+     * principal
+     *
+     * @param principal
+     * @return
+     * @throws RbacObjectNotFoundException
+     * @throws RbacStoreException
+     */
+    public Set getAssignedPermissions( Object principal )
+        throws RbacObjectNotFoundException, RbacStoreException;
+
 }
