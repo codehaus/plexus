@@ -73,16 +73,15 @@ public interface RBACManager
     /**
      * Method getRoles
      */
-    public List getRoles()
+    public List getAllRoles()
         throws RbacStoreException;
-
+    
     /**
-     * Set The roles available to be assigned
-     *
-     * @param roles
+     * Get the List of Assignable Roles.
+     * 
+     * @return
      */
-    public void setRoles( List roles )
-        throws RbacStoreException;
+    public List getAssignableRoles();
 
     /**
      * Method removeRole
@@ -128,11 +127,11 @@ public interface RBACManager
      *
      * @param name the name.
      * @param description the description.
-     * @param operation the {@link Operation#setName(String)} value
-     * @param resource the {@link Resource#setIdentifier(String)} value
+     * @param operationName the {@link Operation#setName(String)} value
+     * @param resourceIdentifier the {@link Resource#setIdentifier(String)} value
      * @return the new Permission.
      */
-    public Permission createPermission( String name, String description, String operation, String resource );
+    public Permission createPermission( String name, String description, String operationName, String resourceIdentifier );
 
     public Permission addPermission( Permission permission )
         throws RbacStoreException;
@@ -140,10 +139,7 @@ public interface RBACManager
     public Permission getPermission( int permissionId )
         throws RbacObjectNotFoundException, RbacStoreException;
 
-    public List getPermissions()
-        throws RbacStoreException;
-
-    public void setPermissions( List permissions )
+    public List getAllPermissions()
         throws RbacStoreException;
 
     public void removePermission( Permission permission )
@@ -175,10 +171,7 @@ public interface RBACManager
     public Operation getOperation( int operationId )
         throws RbacObjectNotFoundException, RbacStoreException;
 
-    public List getOperations()
-        throws RbacStoreException;
-
-    public void setOperations( List operation )
+    public List getAllOperations()
         throws RbacStoreException;
 
     public void removeOperation( Operation operation )
@@ -209,10 +202,7 @@ public interface RBACManager
     public Resource getResource( int resourceId )
         throws RbacObjectNotFoundException, RbacStoreException;
 
-    public List getResources()
-        throws RbacStoreException;
-
-    public void setResources( List resources )
+    public List getAllResources()
         throws RbacStoreException;
 
     public void removeResource( Resource resource )
@@ -235,7 +225,7 @@ public interface RBACManager
      * @param principal the principal reference to the user.
      * @return the new UserAssignment with an empty (non-null) {@link UserAssignment#getRoles()} object.
      */
-    public UserAssignment createUserAssignment( Object principal );
+    public UserAssignment createUserAssignment( String principal );
 
     /**
      * Method addUserAssignment
@@ -245,21 +235,13 @@ public interface RBACManager
     public UserAssignment addUserAssignment( UserAssignment userAssignment )
         throws RbacStoreException;
 
-    public UserAssignment getUserAssignment( Object principal )
+    public UserAssignment getUserAssignment( String principal )
         throws RbacObjectNotFoundException, RbacStoreException;
 
     /**
      * Method getAssignments
      */
-    public List getUserAssignments()
-        throws RbacStoreException;
-
-    /**
-     * Set null
-     *
-     * @param assignments
-     */
-    public void setUserAssignments( List assignments )
+    public List getAllUserAssignments()
         throws RbacStoreException;
 
     /**
@@ -272,7 +254,6 @@ public interface RBACManager
 
     public UserAssignment updateUserAssignment( UserAssignment userAssignment )
         throws RbacObjectNotFoundException, RbacStoreException;
-
 
     // ------------------------------------------------------------------
     // UserAssignment Utility Methods
@@ -289,7 +270,7 @@ public interface RBACManager
      * @throws RbacObjectNotFoundException
      * @throws RbacStoreException
      */
-    public List getAssignedRoles( Object principal )
+    public Roles getAssignedRoles( Object principal )
         throws RbacObjectNotFoundException, RbacStoreException;
 
     /**

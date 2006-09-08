@@ -21,36 +21,37 @@ import org.codehaus.plexus.jdo.ConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.JdoFactory;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoRole;
-import org.codehaus.plexus.security.authorization.rbac.store.RbacStore;
+import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.Role;
 import org.jpox.SchemaTool;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.PersistenceManagerFactory;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.jdo.PersistenceManager;
+import javax.jdo.PersistenceManagerFactory;
+
 /**
- * JdoRbacStoreTest:
+ * JdoRbacManagerTest:
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
  */
-public class JdoRbacStoreTest
+public class JdoRbacManagerTest
     extends PlexusTestCase
 {
-    private RbacStore store = null;
+    private RBACManager rbacManager = null;
 
-    public RbacStore getStore()
+    public RBACManager getRbacManager()
     {
-        return store;
+        return rbacManager;
     }
 
-    public void setStore( RbacStore store )
+    public void setRbacManager( RBACManager store )
     {
-        this.store = store;
+        this.rbacManager = store;
     }
 
     /**
@@ -100,20 +101,25 @@ public class JdoRbacStoreTest
 
         pm.close();
 
-        setStore( (JdoRbacStore) lookup( RbacStore.ROLE, "jdo" ) );
+        setRbacManager( (JdoRbacManager) lookup( RBACManager.ROLE, "jdo" ) );
     }
 
     public void testStoreInitialization()
         throws Exception
     {
-        assertNotNull( getStore() );
-
-        Role role = new JdoRole();
-
-        getStore().addRole( role );
-
-        assertEquals( 1, getStore().getAllRoles().size() );
+        assertNotNull( getRbacManager() );
         
-        getStore().removeRole( role );
+        Role role = getRbacManager().createRole( "ADMIN", "Administrative User" );
+        role.setAssignable( false );
+
+        assertNotNull( role );
+        
+        Role added = getRbacManager().addRole( role );
+
+        assertEquals( 1, getRbacManager().getAllRoles().size() );
+        
+        assertNotNull( added );
+        
+        getRbacManager().removeRole( added );
     }
 }

@@ -14,10 +14,6 @@
       <artifactId>plexus-security-authorization-rbac-model</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-authorization-rbac-store-api</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-jdo2</artifactId>
       <version>1.0-alpha-7-SNAPSHOT</version>
