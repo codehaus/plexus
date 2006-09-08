@@ -8,11 +8,7 @@
   <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
   <name>Plexus Security :: RBAC Authorizer</name>
   <packaging>jar</packaging>
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-common</artifactId>
-    </dependency>
+  <dependencies>    
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-user-management-api</artifactId>
@@ -20,10 +16,6 @@
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-authorization-rbac-store-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
