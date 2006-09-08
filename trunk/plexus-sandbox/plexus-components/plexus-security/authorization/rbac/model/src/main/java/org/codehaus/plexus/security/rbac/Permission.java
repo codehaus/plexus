@@ -17,12 +17,16 @@ package org.codehaus.plexus.security.rbac;
  */
 
 /**
- * Permission 
+ * Permission
+ *
+ * A permission is the wrapper for an operation and a resource effectively saying
+ * that the operation is authorized for that resource.
+ *
+ * P(Operation, Resource)
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * @todo fix and expand javadoc
  */
 public interface Permission
 {
@@ -33,60 +37,60 @@ public interface Permission
 
     /**
      * Implementation managed ID for this object.
-     * 
+     *
      * NOTE: There is intentionally no .setId(int) object.
-     * 
+     *
      * @return the id for this object.
      */
     public int getId();
 
     /**
-     * Get null
+     * Long description of the Permission
      */
     public String getDescription();
 
     /**
-     * Get null
+     * short name of the permission
      */
     public String getName();
 
     /**
-     * Get null
+     * Operation that this permission is authorizing
      */
     public Operation getOperation();
-    
+
     /**
      * This is the resource associated with this permission.
-     * 
+     *
      * Implementors must always supply a Resource.
-     * 
+     *
      * @return the Resource.
      */
     public Resource getResource();
 
     /**
      * Set null
-     * 
+     *
      * @param description
      */
     public void setDescription( String description );
 
     /**
      * Set null
-     * 
+     *
      * @param name
      */
     public void setName( String name );
 
     /**
      * Set null
-     * 
+     *
      * @param operation
      */
     public void setOperation( Operation operation );
-    
+
     /**
-     * 
+     *
      * @param resource
      */
     public void setResource( Resource resource );

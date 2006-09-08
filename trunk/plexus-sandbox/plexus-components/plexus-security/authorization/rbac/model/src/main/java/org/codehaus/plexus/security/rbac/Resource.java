@@ -17,12 +17,23 @@ package org.codehaus.plexus.security.rbac;
  */
 
 /**
- * Resource 
+ * Resource
+ *
+ * Resources are things that can be paired up with operations inside of a
+ * permission.
+ *
+ * Rbac doesn't strictly specify what a resource (or Object) is, so there are a
+ * couple of variations planned for resources.
+ *
+ * Initially the resource is simply a string representaton of whatever you desire
+ * to match up to an operation.  Eventually we want to support different types of
+ * expression evaluation for these resources, like a tuple resource.  *-* where
+ * wildcards can be used on the resource definition to streamline the assigning of
+ * permissions for _large_ sets of things.
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * @todo expand on javadoc
  */
 public interface Resource
 {
@@ -30,48 +41,48 @@ public interface Resource
      * Resource identifier refering to all objects.
      */
     public static final String GLOBAL = "*";
-    
+
     /**
      * Resource identifier refering to no objects.
      */
     public static final String NULL = "";
-    
+
     /**
      * Implementation managed ID for this object.
-     * 
+     *
      * NOTE: There is intentionally no .setId(int) object.
-     * 
+     *
      * @return the id for this object.
      */
     public int getId();
 
     /**
      * Get The string identifier for an operation.
-     *           
+     *
      */
     public String getIdentifier();
 
     /**
-     * true if the identifer is a pattern that is to be evaluated, for 
-     * example x.* could match x.a or x.b and x.** could match x.foo 
-     * 
+     * true if the identifer is a pattern that is to be evaluated, for
+     * example x.* could match x.a or x.b and x.** could match x.foo
+     *
      * Jesse: See {@link #setPattern(boolean)}
-     *           
+     *
      */
     public boolean isPattern();
 
     /**
      * Set The string identifier for an operation.
-     *           
-     * 
+     *
+     *
      * @param identifier
      */
     public void setIdentifier( String identifier );
 
     /**
-     * true if the identifer is a pattern that is to be evaluated, for 
-     * example x.* could match x.a or x.b and x.** could match x.foo 
-     * 
+     * true if the identifer is a pattern that is to be evaluated, for
+     * example x.* could match x.a or x.b and x.** could match x.foo
+     *
      * TODO is this even a good idea?
      * TODO we could look for a character like '*' or a string starting with "%/" to indicate if this is a pattern or not.
      * 
