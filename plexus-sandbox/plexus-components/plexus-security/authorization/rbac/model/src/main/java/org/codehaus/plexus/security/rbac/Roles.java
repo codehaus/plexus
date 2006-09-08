@@ -26,6 +26,20 @@ import java.util.List;
  */
 public interface Roles
 {
+    /**
+     * Plexus Role Name
+     */
+    public static final String ROLE = Roles.class.getName();
+    
+    /**
+     * Implementation managed ID for this object.
+     * 
+     * NOTE: There is intentionally no .setId(int) object.
+     * 
+     * @return the id for this object.
+     */
+    public int getId();
+    
     public Role getRole(int roleId);
     
     public void addRole(Role role);
