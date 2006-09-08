@@ -16,6 +16,7 @@ package org.codehaus.plexus.security.rbac;
  * limitations under the License.
  */
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public interface Roles
      * Plexus Role Name
      */
     public static final String ROLE = Roles.class.getName();
-    
+
     /**
      * Implementation managed ID for this object.
      * 
@@ -39,14 +40,25 @@ public interface Roles
      * @return the id for this object.
      */
     public int getId();
-    
-    public Role getRole(int roleId);
-    
-    public void addRole(Role role);
-    
-    public void removeRole(Role role);
-    
-    public List getRoles();
-    
-    public void setRoles(List roles);
+
+    public Role getRole( int roleId )
+        throws RbacObjectNotFoundException, RbacStoreException;
+
+    public void addRole( Role role )
+        throws RbacStoreException;
+
+    public void removeRole( Role role )
+        throws RbacObjectNotFoundException, RbacStoreException;
+
+    public List getRoles()
+        throws RbacStoreException;
+
+    public void setRoles( List roles )
+        throws RbacStoreException;
+
+    public Iterator iterator();
+
+    public boolean hasRoles();
+
+    public boolean isEmpty();
 }
