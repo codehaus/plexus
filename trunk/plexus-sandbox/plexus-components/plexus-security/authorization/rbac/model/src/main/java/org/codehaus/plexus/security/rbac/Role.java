@@ -41,14 +41,14 @@ public interface Role
     public void addPermission( Permission permission );
 
     /**
-     * Method addRole
+     * Add a role which this role will inherit all permissions from
      * 
      * @param role
      */
     public void addRole( Role role );
 
     /**
-     * Get null
+     * Long description of the role.
      */
     public String getDescription();
 
