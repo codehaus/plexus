@@ -41,11 +41,9 @@ public interface Role
     public void addPermission( Permission permission );
 
     /**
-     * Add a role which this role will inherit all permissions from
-     * 
-     * @param role
+     * Method getChildRoles
      */
-    public void addRole( Role role );
+    public Roles getChildRoles();
 
     /**
      * Long description of the role.
@@ -63,11 +61,6 @@ public interface Role
     public List getPermissions();
 
     /**
-     * Method getRoles
-     */
-    public List getRoles();
-
-    /**
      * true if this role is available to be assigned to a user
      */
     public boolean isAssignable();
@@ -80,18 +73,18 @@ public interface Role
     public void removePermission( Permission permission );
 
     /**
-     * Method removeRole
-     * 
-     * @param role
-     */
-    public void removeRole( Role role );
-
-    /**
      * true if this role is available to be assigned to a user
      * 
      * @param assignable
      */
     public void setAssignable( boolean assignable );
+
+    /**
+     * roles that will inherit the permissions of this role
+     * 
+     * @param roles
+     */
+    public void setChildRoles( Roles roles );
 
     /**
      * Set null
@@ -113,12 +106,4 @@ public interface Role
      * @param permissions
      */
     public void setPermissions( List permissions );
-
-    /**
-     * roles that will inherit the permissions of this role
-     * 
-     * @param roles
-     */
-    public void setRoles( List roles );
-
 }
