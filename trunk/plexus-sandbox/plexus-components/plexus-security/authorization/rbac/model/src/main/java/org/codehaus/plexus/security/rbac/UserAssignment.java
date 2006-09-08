@@ -37,7 +37,7 @@ public interface UserAssignment
     /**
      * The principal for the User that the set of roles is associated with. 
      */
-    public int getPrincipal();
+    public String getPrincipal();
 
     /**
      * Get the roles for this user.
@@ -49,7 +49,7 @@ public interface UserAssignment
      * 
      * @param principal
      */
-    public int setPrincipal( String principal );
+    public void setPrincipal( String principal );
 
     /**
      * Set the roles for this user.
