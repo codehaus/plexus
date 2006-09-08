@@ -3,6 +3,9 @@ package org.codehaus.plexus.security.ui.web.action;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.policy.PasswordRuleViolationException;
+import org.codehaus.plexus.security.user.policy.PasswordRuleViolations;
+import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 /*
  * Copyright 2005 The Apache Software Foundation.
@@ -20,15 +23,19 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  * limitations under the License.
  */
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * SessionAction:
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
+ * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id:$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="registerUser"
+ * role-hint="newuser"
  */
-public class RegisterUserAction
+public class NewUserAction
     extends PlexusActionSupport
 {
 
@@ -41,30 +48,65 @@ public class RegisterUserAction
 
     private String password;
 
+    private String passwordConfirm;
+
     private String email;
 
     private String fullName;
 
-
     public String createUser()
     {
-        if ( username != null && fullName != null && password != null && email != null )
+        // TODO: use commons-validator for these fields.
+
+        if ( StringUtils.isEmpty( username ) )
         {
-
-            UserManager um = securitySystem.getUserManager();
-
-            User user = um.createUser( username, fullName, email );
-
-            user.setPassword( password );
-
-            um.updateUser( user );
-
-            return SUCCESS;
+            addActionError( "User Name is required." );
         }
-        else
+
+        if ( StringUtils.isEmpty( fullName ) )
         {
-            return INPUT;
+            addActionError( "Full Name is required." );
         }
+
+        if ( StringUtils.isEmpty( email ) )
+        {
+            addActionError( "Email Address is required." );
+        }
+
+        // TODO: Validate Email Address (use commons-validator)
+
+        if ( StringUtils.equals( password, passwordConfirm ) )
+        {
+            addActionError( "Passwords do not match." );
+        }
+
+        UserManager um = securitySystem.getUserManager();
+
+        User user = um.createUser( username, fullName, email );
+
+        user.setPassword( password );
+
+        try
+        {
+            um.addUser( user );
+        }
+        catch ( PasswordRuleViolationException e )
+        {
+            PasswordRuleViolations violations = e.getViolations();
+            List violationList = violations.getLocalizedViolations();
+            Iterator it = violationList.iterator();
+            while ( it.hasNext() )
+            {
+                addActionError( (String) it.next() );
+            }
+        }
+
+        if ( hasActionErrors() )
+        {
+            return ERROR;
+        }
+
+        return SUCCESS;
     }
 
     public String getUsername()
@@ -105,5 +147,15 @@ public class RegisterUserAction
     public void setFullName( String fullName )
     {
         this.fullName = fullName;
+    }
+
+    public String getPasswordConfirm()
+    {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm( String passwordConfirm )
+    {
+        this.passwordConfirm = passwordConfirm;
     }
 }
