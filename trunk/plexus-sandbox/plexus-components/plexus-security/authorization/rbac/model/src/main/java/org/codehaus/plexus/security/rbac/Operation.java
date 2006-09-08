@@ -30,11 +30,23 @@ public interface Operation
      * Plexus Role Name
      */
     public static final String ROLE = Operation.class.getName();
+
+    /**
+     * 
+     * @return
+     */
+    public String getDescription();
     
     /**
      * Get name
      */
-    public abstract String getName();
+    public String getName();
+    
+    /**
+     * 
+     * @param description
+     */
+    public void setDescription( String description );
 
     /**
      * Set name
