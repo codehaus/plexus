@@ -41,13 +41,13 @@
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>1.8.0.4</version>
-      <scope>runtime</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-log4j-logging</artifactId>
       <version>1.1-alpha-2</version>
-      <scope>runtime</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>jpox</groupId>
@@ -65,13 +65,50 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-maven-plugin</artifactId>
+        <groupId>org.codehaus.modello</groupId>
+        <artifactId>modello-maven-plugin</artifactId>
+        <version>1.0-alpha-11-SNAPSHOT</version>
         <configuration>
-          <containerDescriptor>true</containerDescriptor>
+          <version>1.0.0</version>
+          <packageWithVersion>false</packageWithVersion>
+          <model>src/main/mdo/rbac.mdo</model>
         </configuration>
         <executions>
           <execution>
+            <id>modello-java</id>
+            <goals>
+              <goal>java</goal>
+            </goals>
+           </execution>
+          <execution>
+            <id>jpox-jdo-mapping</id>
+            <goals>
+              <goal>jpox-jdo-mapping</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/classes/org/codehaus/plexus/security/authorization/rbac/jdo</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jpox-maven-plugin</artifactId>
+        <version>1.0.3-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>enhance</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate</id>
             <goals>
               <goal>descriptor</goal>
             </goals>
