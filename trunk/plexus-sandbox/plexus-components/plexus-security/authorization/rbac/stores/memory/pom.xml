@@ -40,6 +40,9 @@
           <execution>
             <id>modello-java</id>
             <goals>
+              <goal>xpp3-writer</goal>
+              <goal>xpp3-reader</goal>
+              <goal>xsd</goal>
               <goal>java</goal>
             </goals>
           </execution>
