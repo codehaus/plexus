@@ -47,8 +47,11 @@ public interface Permission
     public Operation getOperation();
     
     /**
+     * This is the resource associated with this permission.
      * 
-     * @return
+     * Implementors must always supply a Resource.
+     * 
+     * @return the Resource.
      */
     public Resource getResource();
 
