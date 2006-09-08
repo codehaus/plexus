@@ -76,14 +76,7 @@ public interface RBACManager
     public List getAllRoles()
         throws RbacStoreException;
     
-    /**
-     * Get the List of Assignable Roles.
-     * 
-     * @return
-     */
-    public List getAssignableRoles();
-
-    /**
+   /**
      * Method removeRole
      *
      * @param role
@@ -287,10 +280,10 @@ public interface RBACManager
 
     /**
      * returns a list of all assignable roles
+     * 
      * @return
      * @throws RbacStoreException
      */
     public List getAllAssignableRoles()
         throws RbacStoreException;
-    
 }
