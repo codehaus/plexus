@@ -27,14 +27,23 @@ package org.codehaus.plexus.security.rbac;
 public interface Resource
 {
     /**
-     * Resource refering to all objects.
+     * Resource identifier refering to all objects.
      */
-    public static final Resource GLOBAL = new DefaultGlobalResource();
+    public static final String GLOBAL = "*";
     
     /**
-     * Resource refering to no objects.
+     * Resource identifier refering to no objects.
      */
-    public static final Resource NULL = new DefaultNullResource();
+    public static final String NULL = "";
+    
+    /**
+     * Implementation managed ID for this object.
+     * 
+     * NOTE: There is intentionally no .setId(int) object.
+     * 
+     * @return the id for this object.
+     */
+    public int getId();
 
     /**
      * Get The string identifier for an operation.
@@ -46,7 +55,7 @@ public interface Resource
      * true if the identifer is a pattern that is to be evaluated, for 
      * example x.* could match x.a or x.b and x.** could match x.foo 
      * 
-     * TODO is this even a good idea?
+     * Jesse: See {@link #setPattern(boolean)}
      *           
      */
     public boolean isPattern();
@@ -64,6 +73,7 @@ public interface Resource
      * example x.* could match x.a or x.b and x.** could match x.foo 
      * 
      * TODO is this even a good idea?
+     * TODO we could look for a character like '*' or a string starting with "%/" to indicate if this is a pattern or not.
      * 
      * @param pattern
      */

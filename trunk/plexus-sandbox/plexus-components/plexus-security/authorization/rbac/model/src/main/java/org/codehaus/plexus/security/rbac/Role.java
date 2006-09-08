@@ -34,6 +34,15 @@ public interface Role
     public static final String ROLE = Role.class.getName();
 
     /**
+     * Implementation managed ID for this object.
+     * 
+     * NOTE: There is intentionally no .setId(int) object.
+     * 
+     * @return the id for this object.
+     */
+    public int getId();
+
+    /**
      * Method addPermission
      * 
      * @param permission

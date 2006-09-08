@@ -30,6 +30,15 @@ public interface Operation
      * Plexus Role Name
      */
     public static final String ROLE = Operation.class.getName();
+    
+    /**
+     * Implementation managed ID for this object.
+     * 
+     * NOTE: There is intentionally no .setId(int) object.
+     * 
+     * @return the id for this object.
+     */
+    public int getId();
 
     /**
      * 
