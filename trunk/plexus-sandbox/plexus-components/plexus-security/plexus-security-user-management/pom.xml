@@ -9,7 +9,7 @@
   <name>Plexus Security :: User Management API</name>
   <packaging>pom</packaging>
   <modules>
-    <module>plexus-security-user-management-api</module>
-    <module>plexus-security-user-management-providers</module>
+    <module>api</module>
+    <module>providers</module>
   </modules>
 </project>
