@@ -30,6 +30,16 @@ public interface Permission
      * Plexus Role Name
      */
     public static final String ROLE = Permission.class.getName();
+    
+    /**
+     * The resource identifier for all objects.
+     */
+    public static final String GLOBAL_RESOURCE = "*";
+    
+    /**
+     * The resource identifier for no objects.
+     */
+    public static final String NO_RESOURCE = "";
 
     /**
      * Get null
@@ -44,7 +54,7 @@ public interface Permission
     /**
      * Get null
      */
-    public Operation getOperation();
+    public String getOperation();
     
     /**
      * This is the resource associated with this permission.
@@ -53,7 +63,7 @@ public interface Permission
      * 
      * @return the Resource.
      */
-    public Resource getResource();
+    public String getResource();
 
     /**
      * Set null
@@ -74,12 +84,12 @@ public interface Permission
      * 
      * @param operation
      */
-    public void setOperation( Operation operation );
+    public void setOperation( String operation );
     
     /**
      * 
      * @param resource
      */
-    public void setResource( Resource resource );
+    public void setResource( String resource );
 
 }
