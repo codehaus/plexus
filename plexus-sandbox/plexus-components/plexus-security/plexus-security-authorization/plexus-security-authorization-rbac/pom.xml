@@ -38,9 +38,9 @@
     </dependencies>
   </dependencyManagement>
   <modules>
-    <module>plexus-security-authorization-rbac-model</module>
-    <module>plexus-security-authorization-rbac-store-api</module>
-    <module>plexus-security-authorization-rbac-stores</module>
-    <module>plexus-security-authorization-rbac-authorizer</module>
+    <module>model</module>
+    <module>store-api</module>
+    <module>stores</module>
+    <module>authorizer</module>
   </modules>
 </project>
