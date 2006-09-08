@@ -45,6 +45,12 @@ public interface Permission
      * Get null
      */
     public Operation getOperation();
+    
+    /**
+     * 
+     * @return
+     */
+    public Resource getResource();
 
     /**
      * Set null
@@ -66,5 +72,11 @@ public interface Permission
      * @param operation
      */
     public void setOperation( Operation operation );
+    
+    /**
+     * 
+     * @param resource
+     */
+    public void setResource( Resource resource );
 
 }
