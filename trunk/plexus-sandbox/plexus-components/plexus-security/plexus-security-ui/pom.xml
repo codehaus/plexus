@@ -50,8 +50,8 @@
     </dependencies>
   </dependencyManagement>
   <modules>
-    <module>plexus-security-ui-web</module>
-    <module>plexus-security-ui-swing</module>
-    <module>plexus-security-ui-web-rbac</module>
+    <module>web</module>
+    <module>swing</module>
+    <module>web-rbac</module>
   </modules>
 </project>
