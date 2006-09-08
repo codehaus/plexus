@@ -16,8 +16,8 @@
   </dependencies>
   <modules>
     <!--
-    <module>plexus-security-authentication-provider-acegi</module>
+    <module>acegi</module>
     -->
-    <module>plexus-security-authentication-provider-memory</module>
+    <module>memory</module>
   </modules>
 </project>
