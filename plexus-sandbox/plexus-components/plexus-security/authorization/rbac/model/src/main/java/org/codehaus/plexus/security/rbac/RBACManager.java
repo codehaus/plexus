@@ -19,19 +19,19 @@ import java.util.List;
  */
 
 /**
- * RBACModel 
+ * RBACManager 
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @todo expand on javadoc
  */
-public interface RBACModel
+public interface RBACManager
 {
     /**
      * Plexus Role Name
      */
-    public static final String ROLE = RBACModel.class.getName();
+    public static final String ROLE = RBACManager.class.getName();
 
     /**
      * Method addAssignment
@@ -85,13 +85,18 @@ public interface RBACModel
      */
     public void setRoles( List roles );
 
-
     public void setOperations( List operation );
     public void addOperation( Operation operation );
+    public List getOperations();
     public void setPermissions( List permissions );
     public void addPermission( Permission permission );
+    public List getPermissions();
     public void setResources ( List resources );
     public void addResource( Resource resource );
-
-
+    public List getResources();
+    
+    public Role createRole(String name, String description);
+    public Permission createPermission(String name, String description, String operation, String resource);
+    public Operation createOperation(String name, String description);
+    public Resource createResource(String identifier);
 }
