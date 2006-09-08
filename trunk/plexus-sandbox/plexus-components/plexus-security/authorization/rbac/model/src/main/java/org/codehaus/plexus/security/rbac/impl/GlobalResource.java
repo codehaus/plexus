@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.rbac;
+package org.codehaus.plexus.security.rbac.impl;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -16,30 +16,34 @@ package org.codehaus.plexus.security.rbac;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.rbac.Resource;
+
 /**
- * Operation
+ * GlobalResource 
  *
- * @author Jesse McConnell <jmcconnell@apache.org>
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * @todo expand on javadoc
  */
-public interface Operation
+public class GlobalResource
+    implements Resource
 {
-    /**
-     * Plexus Role Name
-     */
-    public static final String ROLE = Operation.class.getName();
-    
-    /**
-     * Get name
-     */
-    public abstract String getName();
+    public String getIdentifier()
+    {
+        return "*";
+    }
 
-    /**
-     * Set name
-     * 
-     * @param name
-     */
-    public void setName( String name );
+    public boolean isPattern()
+    {
+        return true;
+    }
+
+    public void setIdentifier( String identifier )
+    {
+        // Ignore
+    }
+
+    public void setPattern( boolean pattern )
+    {
+        // Ignore
+    }
 }

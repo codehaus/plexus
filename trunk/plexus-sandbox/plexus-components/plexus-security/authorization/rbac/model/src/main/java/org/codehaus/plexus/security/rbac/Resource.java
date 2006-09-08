@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.rbac;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.rbac.impl.GlobalResource;
+
 /**
  * Resource 
  *
@@ -26,6 +28,7 @@ package org.codehaus.plexus.security.rbac;
  */
 public interface Resource
 {
+    public static final Resource GLOBAL = new GlobalResource();
 
     /**
      * Get The string identifier for an operation.
