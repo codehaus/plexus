@@ -282,7 +282,7 @@ public interface RBACManager
      * returns the active roles for a given principal
      *
      * NOTE: roles that are returned might have have roles themselves, if
-     * you just want all permissions then use {@link #getAssignedPermissions( Object principal )} 
+     * you just want all permissions then use {@link #getAssignedPermissions( Object principal )}
      *
      * @param principal
      * @return
@@ -304,4 +304,12 @@ public interface RBACManager
     public Set getAssignedPermissions( Object principal )
         throws RbacObjectNotFoundException, RbacStoreException;
 
+    /**
+     * returns a list of all assignable roles
+     * @return
+     * @throws RbacStoreException
+     */
+    public List getAllAssignableRoles()
+        throws RbacStoreException;
+    
 }
