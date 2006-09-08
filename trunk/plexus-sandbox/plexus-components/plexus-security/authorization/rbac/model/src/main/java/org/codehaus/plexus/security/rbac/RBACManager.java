@@ -1,7 +1,5 @@
 package org.codehaus.plexus.security.rbac;
 
-import java.util.List;
-
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
  *
@@ -17,6 +15,8 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import java.util.List;
 
 /**
  * RBACManager 
@@ -96,6 +96,7 @@ public interface RBACManager
     public List getResources();
     
     public Role createRole(String name, String description);
+    public Permission createPermission(String name, String description);
     public Permission createPermission(String name, String description, String operation, String resource);
     public Operation createOperation(String name, String description);
     public Resource createResource(String identifier);
