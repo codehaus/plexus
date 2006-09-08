@@ -52,6 +52,8 @@
   <modules>
     <module>web</module>
     <module>swing</module>
+    <!--
     <module>web-rbac</module>
+     -->
   </modules>
 </project>
