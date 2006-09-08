@@ -19,10 +19,13 @@ package org.codehaus.plexus.security.rbac;
 /**
  * Operation
  *
+ * In RBAC the operation is an action or functionality that can be linked with a
+ * particular resource into an assignable Permission.  Operations don't exist outside
+ * Permissions.
+ *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * @todo expand on javadoc
  */
 public interface Operation
 {
@@ -30,29 +33,32 @@ public interface Operation
      * Plexus Role Name
      */
     public static final String ROLE = Operation.class.getName();
-    
+
     /**
      * Implementation managed ID for this object.
-     * 
+     *
      * NOTE: There is intentionally no .setId(int) object.
-     * 
+     *
      * @return the id for this object.
      */
     public int getId();
 
     /**
-     * 
-     * @return
+     * Long description of an operation.
+     *
+     * @return String
      */
     public String getDescription();
-    
+
     /**
-     * Get name
+     * name of the operation that is used in the act of authorization
+     *
+     * 'modify-foo', 'change-password'
      */
     public String getName();
-    
+
     /**
-     * 
+     *
      * @param description
      */
     public void setDescription( String description );
