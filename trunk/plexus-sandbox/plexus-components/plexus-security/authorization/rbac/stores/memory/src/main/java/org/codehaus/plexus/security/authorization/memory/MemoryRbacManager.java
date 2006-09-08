@@ -2,6 +2,9 @@ package org.codehaus.plexus.security.authorization.memory;
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.security.authorization.rbac.memory.MemoryRbacModel;
+import org.codehaus.plexus.security.authorization.rbac.memory.io.xpp3.RBACMemoryModelXpp3Reader;
+import org.codehaus.plexus.security.authorization.rbac.memory.io.xpp3.RBACMemoryModelXpp3Writer;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
@@ -13,6 +16,8 @@ import org.codehaus.plexus.security.rbac.Roles;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,33 +39,31 @@ import java.util.Set;
 public class MemoryRbacManager
     implements RBACManager, Initializable
 {
-    RBACManager store = null;
+    MemoryRbacModel model = null;
 
     public void initialize()
         throws InitializationException
     {
-//        RBACModelXpp3Reader reader = new RBACModelXpp3Reader();
-//
-//        try
-//        {
-//            store = reader.read( new FileReader( getBasedir() + File.separator + "rbac-store-model.xml" ) );
-//        }
-//        catch ( Exception e )
-//        {
-//            throw new InitializationException( "error loading file rbac-store-model.xml", e );
-//        }
+        RBACMemoryModelXpp3Reader reader = new RBACMemoryModelXpp3Reader();
+
+        try
+        {
+            model = reader.read( new FileReader( getBasedir() + File.separator + "rbac-store-model.xml" ) );
+        }
+        catch ( Exception e )
+        {
+            throw new InitializationException( "error loading file rbac-store-model.xml", e );
+        }
     }
 
 
     public void store()
         throws Exception
     {
-//        RBACModelXpp3Writer writer = new RBACModelXpp3Writer();
-//
-//        writer.write( new FileWriter( getBasedir() + File.separator + "rbac-store-model.xml"), store);
+        RBACMemoryModelXpp3Writer writer = new RBACMemoryModelXpp3Writer();
+
+        writer.write( new FileWriter( getBasedir() + File.separator + "rbac-store-model.xml"), model);
     }
-
-
 
     public static String getBasedir()
     {
@@ -81,58 +84,20 @@ public class MemoryRbacManager
     public Role addRole( Role role )
         throws RbacStoreException
     {
-        store.addRole( role );
+        model.getRoles().addRole( role );
         return role;
     }
 
     public Role getRole( int roleId )
-        throws RbacStoreException
+        throws RbacObjectNotFoundException
     {
-        for (Iterator i = store.getAllRoles().iterator(); i.hasNext(); )
-        {
-            Role role = (Role)i.next();
-
-            if ( role.getId() == roleId )
-            {
-                return role;
-            }
-        }
-
-        throw new RbacStoreException( "unable to locate role: " + roleId );
+        return model.getRoles().getRole( roleId );
     }
 
     public List getAllRoles()
         throws RbacStoreException
     {
-        List gatheredRoles = new ArrayList();
-
-        for (Iterator i = store.getAllRoles().iterator(); i.hasNext(); )
-        {
-            Role role = (Role) i.next();
-
-            gatherRoles( gatheredRoles, role );
-        }
-
-        return gatheredRoles;
-    }
-
-    private void gatherRoles( List gatheredRoles, Role role )
-    {
-        if ( role.hasChildRoles() )
-        {
-            for ( Iterator i = role.getChildRoles().iterator(); i.hasNext(); )
-            {
-                Role r = (Role)i.next();
-
-                gatheredRoles.add( r );
-
-                gatherRoles( gatheredRoles, r );
-            }
-        }
-        else
-        {
-            gatheredRoles.add( role );
-        }
+        return model.getRoles().flattenRoleHierarchy();
     }
 
     public List getAssignableRoles()
@@ -140,7 +105,7 @@ public class MemoryRbacManager
     {
         List assignableRoles = new ArrayList();
 
-        for ( Iterator i = store.getAllRoles().iterator(); i.hasNext(); )
+        for ( Iterator i = model.getRoles().iterator(); i.hasNext(); )
         {
             Role role = (Role)i.next();
 
@@ -159,7 +124,7 @@ public class MemoryRbacManager
         // just removing top lvl roles atm.
         if ( getRole( roleId) != null )
         {
-            store.removeRole( getRole( roleId ) );
+            model.getRoles().removeRole( getRole( roleId ) );
         }
     }
 
@@ -167,7 +132,7 @@ public class MemoryRbacManager
     // Permission methods
     // ----------------------------------------------------------------------
     public void addPermission( int roleId, Permission permission )
-        throws RbacStoreException
+        throws RbacStoreException, RbacObjectNotFoundException
     {
         Role role = getRole( roleId );
 
@@ -175,7 +140,7 @@ public class MemoryRbacManager
     }
 
     public List getPermissions( int roleId )
-        throws RbacStoreException
+        throws RbacStoreException, RbacObjectNotFoundException
     {
         return getRole( roleId ).getPermissions();
     }
@@ -504,6 +469,14 @@ public class MemoryRbacManager
 
     public Roles getAssignedRoles( Object principal )
         throws RbacObjectNotFoundException, RbacStoreException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    public List getAllAssignableRoles()
+        throws RbacStoreException
     {
         // TODO Auto-generated method stub
         return null;

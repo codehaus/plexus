@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <model>
   <id>rbac-memory</id>
-  <name>RBAC Memory Model</name>
+  <name>RBACMemoryModel</name>
   <version>1.0.0</version>
   <defaults>
     <default>
@@ -10,8 +10,31 @@
     </default>
   </defaults>
   <classes>
+
+    <class rootElement="true" xml.tagName="rbac-model">
+      <name>MemoryRbacModel</name>
+      <version>1.0.0</version>
+      <fields>
+        <field>
+          <name>roles</name>
+          <version>1.0.0</version>
+          <association>
+            <type>MemoryRoles</type>
+            <multiplicity>1</multiplicity>
+          </association>
+        </field>
+        <field xml.tagName="user-assignments">
+          <name>userAssignments</name>
+          <version>1.0.0</version>
+          <association>
+            <type>MemoryUserAssignment</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
   
-    <class>
+    <class xml.tagName="role">
       <name>MemoryRole</name>
       <version>1.0.0</version>
       <interfaces>
@@ -49,7 +72,7 @@ Do not set this field in application code, as any value you set may cause uninte
             true if this role is available to be assigned to a user
           </description>
         </field>
-        <field>
+        <field xml.tagName="child-roles">
           <name>childRoles</name>
           <version>1.0.0</version>
           <association stash.part="true" java.generate-break="false" java.generate-create="false" java.use-interface="org.codehaus.plexus.security.rbac.Roles">
@@ -71,7 +94,7 @@ Do not set this field in application code, as any value you set may cause uninte
       </fields>
     </class>
 
-    <class>
+    <class xml.tagName="roles">
       <name>MemoryRoles</name>
       <version>1.0.0</version>
       <interfaces>
@@ -102,7 +125,7 @@ Do not set this field in application code, as any value you set may cause uninte
       </fields>
     </class>
     
-    <class>
+    <class xml.tagName="permission">
       <name>MemoryPermission</name>
       <version>1.0.0</version>
       <interfaces>
@@ -150,7 +173,7 @@ Do not set this field in application code, as any value you set may cause uninte
       </fields>
     </class>
     
-    <class>
+    <class xml.tagName="operation">
       <name>MemoryOperation</name>
       <version>1.0.0</version>
       <interfaces>
@@ -190,7 +213,7 @@ Do not set this field in application code, as any value you set may cause uninte
       </fields>
     </class>
     
-    <class>
+    <class xml.tagName="resource">
       <name>MemoryResource</name>
       <version>1.0.0</version>
       <description>
@@ -232,7 +255,7 @@ Do not set this field in application code, as any value you set may cause uninte
       </fields>
     </class>
     
-    <class>
+    <class xml.tagName="user-assignment">
       <name>MemoryUserAssignment</name>
       <description>binding of a principal to a role</description>
       <version>1.0.0</version>
