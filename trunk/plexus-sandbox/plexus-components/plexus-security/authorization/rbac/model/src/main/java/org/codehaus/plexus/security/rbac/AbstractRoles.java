@@ -16,8 +16,10 @@ package org.codehaus.plexus.security.rbac;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * AbstractRoles useful for common logic that implementors can use.
@@ -63,5 +65,37 @@ public abstract class AbstractRoles
 
         // If we got here, we didn't find it.
         throw new RbacObjectNotFoundException( "Role " + roleId + " not found." );
+    }
+
+    public List flattenRoleHierarchy()
+    {
+        List ret = new ArrayList();
+
+        recursiveAddRole( ret, this );
+
+        return ret;
+    }
+
+    private void recursiveAddRole( List ret, Roles roles )
+    {
+        Iterator it = roles.iterator();
+        while ( it.hasNext() )
+        {
+            Role role = (Role) it.next();
+            if ( !ret.contains( role ) )
+            {
+                ret.add( role );
+            }
+
+            if ( role.hasChildRoles() )
+            {
+                recursiveAddRole( ret, role.getChildRoles() );
+            }
+        }
+    }
+
+    protected void assertNoCyclicRoleHierarchy()
+    {
+        // TODO: Write plexus-utils/DAG cyclic prevention code.
     }
 }

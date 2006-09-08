@@ -61,4 +61,13 @@ public interface Roles
     public boolean hasRoles();
 
     public boolean isEmpty();
+    
+    /**
+     * Flatten the hierarchy of roles into a single list.
+     * 
+     * WARNING: This process looses the heirarchy information.
+     * 
+     * @return the flat list of roles found in this Role and below.
+     */
+    public List flattenRoleHierarchy();
 }
