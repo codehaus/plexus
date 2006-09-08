@@ -21,10 +21,17 @@ import java.util.List;
 /**
  * Role 
  *
+ * A role is assignable to a user and effectively grants that user all of the
+ * permissions that are present in that role.  A role can also contain other roles
+ * which add the permissions in those roles to the available permissions for authorization.
+ *
+ * A role can contain any number of permissions
+ * A role can contain any number of other roles
+ * A role can be assigned to any number of users
+ *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * @todo fix and expand javadoc
  */
 public interface Role
 {
@@ -35,16 +42,16 @@ public interface Role
 
     /**
      * Implementation managed ID for this object.
-     * 
+     *
      * NOTE: There is intentionally no .setId(int) object.
-     * 
+     *
      * @return the id for this object.
      */
     public int getId();
 
     /**
      * Method addPermission
-     * 
+     *
      * @param permission
      */
     public void addPermission( Permission permission );
@@ -76,42 +83,42 @@ public interface Role
 
     /**
      * Method removePermission
-     * 
+     *
      * @param permission
      */
     public void removePermission( Permission permission );
 
     /**
      * true if this role is available to be assigned to a user
-     * 
+     *
      * @param assignable
      */
     public void setAssignable( boolean assignable );
 
     /**
      * roles that will inherit the permissions of this role
-     * 
+     *
      * @param roles
      */
     public void setChildRoles( Roles roles );
 
     /**
      * Set null
-     * 
+     *
      * @param description
      */
     public void setDescription( String description );
 
     /**
      * Set null
-     * 
+     *
      * @param name
      */
     public void setName( String name );
 
     /**
      * Set null
-     * 
+     *
      * @param permissions
      */
     public void setPermissions( List permissions );
