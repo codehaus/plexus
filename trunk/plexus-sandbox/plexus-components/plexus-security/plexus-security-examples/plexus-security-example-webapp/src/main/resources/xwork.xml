@@ -17,6 +17,11 @@
       <result name="error">/login.jsp</result>
       <result name="success" type="chain">status</result>
     </action>
+    
+    <action name="newuser" class="session" method="newuser">
+      <result name="success">/login.jsp</result>
+      <result name="error">/newuser.jsp</result>
+    </action>
 
     <action name="logout" class="session" method="logout">
       <result name="error">/status.jsp</result>
