@@ -22,6 +22,7 @@ import java.util.HashSet;
 
 /**
  * Permission entry which represents a single operation on a target object.
+ * @deprecated use {@link org.codehaus.plexus.security.rbac.Operation} interface instead.
  */
 public interface Operation
 {

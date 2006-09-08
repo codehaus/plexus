@@ -4,6 +4,7 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 import org.codehaus.plexus.security.authorization.rbac.store.RbacStore;
 import org.codehaus.plexus.security.authorization.rbac.store.RbacStoreException;
 import org.codehaus.plexus.security.authorization.rbac.Role;
+import org.codehaus.plexus.security.rbac.RoleInterface;
 
 import java.util.List;
 /*
@@ -96,7 +97,7 @@ public class RoleActions
         this.roleId = roleId;
     }
 
-    public Role getRole()
+    public RoleInterface getRole()
     {
         return role;
     }

@@ -20,7 +20,9 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.jdo.ConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.JdoFactory;
+import org.codehaus.plexus.security.authorization.rbac.jdo.JdoRole;
 import org.codehaus.plexus.security.authorization.rbac.store.RbacStore;
+import org.codehaus.plexus.security.rbac.Role;
 import org.jpox.SchemaTool;
 
 import javax.jdo.PersistenceManager;
@@ -87,7 +89,8 @@ public class JdoRbacStoreTest
             System.setProperty( (String) entry.getKey(), (String) entry.getValue() );
         }
 
-        SchemaTool.createSchemaTables( new URL[]{getClass().getResource( "/org/codehaus/plexus/security/authorization/rbac/model/META-INF/package.jdo" )}, null, false ); //$NON-NLS-1$
+        SchemaTool.createSchemaTables( new URL[] { getClass()
+            .getResource( "/org/codehaus/plexus/security/authorization/rbac/jdo/package.jdo" ) }, null, false ); //$NON-NLS-1$
 
         PersistenceManagerFactory pmf = jdoFactory.getPersistenceManagerFactory();
 
@@ -100,10 +103,17 @@ public class JdoRbacStoreTest
         setStore( (JdoRbacStore) lookup( RbacStore.ROLE, "jdo" ) );
     }
 
-
     public void testStoreInitialization()
         throws Exception
     {
         assertNotNull( getStore() );
+
+        Role role = new JdoRole();
+
+        getStore().addRole( role );
+
+        assertEquals( 1, getStore().getAllRoles().size() );
+        
+        getStore().removeRole( role );
     }
 }
