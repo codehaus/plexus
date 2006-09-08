@@ -16,12 +16,14 @@ package org.codehaus.plexus.security.authorization.rbac.web.action;
  * limitations under the License.
  */
 
+import com.opensymphony.xwork.ModelDriven;
+import com.opensymphony.xwork.Preparable;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
-import com.opensymphony.xwork.ModelDriven;
-import com.opensymphony.xwork.Preparable;
+
+import java.util.List;
 
 /**
  * PermissionActions:
@@ -32,7 +34,7 @@ import com.opensymphony.xwork.Preparable;
  * role-hint="plexusSecurityPermission"
  */
 public class PermissionActions
-    extends PlexusActionSupport implements ModelDriven, Preparable
+    extends PlexusActionSupport implements Preparable, ModelDriven
 
 {
     /**
@@ -44,16 +46,23 @@ public class PermissionActions
 
     private Permission permission;
 
+    private List operations;
+
+    private List resources;
+
     public void prepare()
         throws Exception
     {
+        operations = manager.getAllOperations();
+        resources = manager.getAllResources();
+
         try
         {
             permission = manager.getPermission( permissionId );
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            throw new RbacActionException( "unable to location permission " + permissionId, ne );
+            permission = manager.createPermission( "name", "description" );
         }
     }
 
@@ -62,15 +71,19 @@ public class PermissionActions
         return permission;
     }
 
-    public String display()
+    public String save()
+        throws RbacActionException
     {
-        return SUCCESS;
-    }
-
-    public String add()
-    {
-        manager.addPermission( permission );
-
+        try
+        {
+            manager.getPermission( permission.getId() );
+            manager.updatePermission( permission );
+        }
+        catch ( RbacObjectNotFoundException ne )
+        {
+            manager.addPermission( permission );
+        }
+       
         return SUCCESS;
     }
 
@@ -98,8 +111,34 @@ public class PermissionActions
         this.permissionId = permissionId;
     }
 
+    public Permission getPermission()
+    {
+        return permission;
+    }
+
     public void setPermission( Permission permission )
     {
         this.permission = permission;
     }
+
+    public List getOperations()
+    {
+        return operations;
+    }
+
+    public void setOperations( List operations )
+    {
+        this.operations = operations;
+    }
+
+    public List getResources()
+    {
+        return resources;
+    }
+
+    public void setResources( List resources )
+    {
+        this.resources = resources;
+    }
+
 }
