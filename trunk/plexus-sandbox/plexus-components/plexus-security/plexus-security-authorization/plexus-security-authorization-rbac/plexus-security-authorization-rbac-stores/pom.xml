@@ -15,10 +15,10 @@
     </dependency>
   </dependencies>
   <modules>
-    <module>plexus-security-authorization-rbac-store-memory</module>
+    <module>jdo</module>
+    <module>memory</module>
     <!--
-    <module>plexus-security-authorization-rbac-store-jdo</module>
-    <module>plexus-security-authorization-rbac-store-xstream</module>
+    <module>xstream</module>
     -->
   </modules>
 </project>
