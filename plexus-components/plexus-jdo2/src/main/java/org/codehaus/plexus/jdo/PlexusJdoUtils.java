@@ -118,7 +118,50 @@ public class PlexusJdoUtils
         return persistentObject;
     }
 
-    // TODO: Allow use of long as id type.
+    public static Object getObjectById( PersistenceManager pm, Class clazz, String id )
+        throws PlexusObjectNotFoundException, PlexusStoreException
+    {
+        return getObjectById( pm, clazz, id, null );
+    }
+    
+    public static Object getObjectById( PersistenceManager pm, Class clazz, String id, String fetchGroup )
+        throws PlexusStoreException, PlexusObjectNotFoundException
+    {
+        Transaction tx = pm.currentTransaction();
+
+        try
+        {
+            tx.begin();
+
+            if ( fetchGroup != null )
+            {
+                pm.getFetchPlan().addGroup( fetchGroup );
+            }
+
+            Object objectId = pm.newObjectIdInstance( clazz, id );
+
+            Object object = pm.getObjectById( objectId );
+
+            object = pm.detachCopy( object );
+
+            tx.commit();
+
+            return object;
+        }
+        catch ( JDOObjectNotFoundException e )
+        {
+            throw new PlexusObjectNotFoundException( clazz.getName(), id );
+        }
+        catch ( JDOException e )
+        {
+            throw new PlexusStoreException( "Error handling JDO", e );
+        }
+        finally
+        {
+            rollbackIfActive( tx );
+        }
+    }
+    
     public static Object getObjectById( PersistenceManager pm, Class clazz, int id )
         throws PlexusStoreException, PlexusObjectNotFoundException
     {
