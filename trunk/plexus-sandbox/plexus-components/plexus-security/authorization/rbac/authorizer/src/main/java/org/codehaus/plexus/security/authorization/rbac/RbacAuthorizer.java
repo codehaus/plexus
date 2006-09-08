@@ -21,11 +21,14 @@ import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.authorization.AuthorizationResult;
 import org.codehaus.plexus.security.authorization.Authorizer;
 import org.codehaus.plexus.security.authorization.NotAuthorizedException;
-import org.codehaus.plexus.security.authorization.rbac.store.RbacStore;
-import org.codehaus.plexus.security.authorization.rbac.store.RbacStoreException;
+import org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvaluator;
+import org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvaluationException;
+import org.codehaus.plexus.security.rbac.Permission;
+import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 /**
  * RbacAuthorizer:
@@ -44,8 +47,18 @@ public class RbacAuthorizer
     /**
      * @plexus.requirement
      */
-    private RbacStore store;
+    private RBACManager manager;
 
+    /**
+     * @plexus.requirement role-hint="default"
+     */
+    private PermissionEvaluator evaluator;
+
+    /**
+     * @param source
+     * @return
+     * @throws AuthorizationException
+     */
     public AuthorizationResult isAuthorized( AuthorizationDataSource source )
         throws AuthorizationException
     {
@@ -55,59 +68,27 @@ public class RbacAuthorizer
 
         try
         {
-            List roles = store.getRoleAssignments( principal.toString() );
+            Set permissions = manager.getAssignedPermissions( principal.toString() );
 
-            for ( Iterator i = roles.iterator(); i.hasNext(); )
+            for ( Iterator i = permissions.iterator(); i.hasNext(); )
             {
-                Role role = (Role)i.next();
+                Permission permission = (Permission)i.next();
 
-                for ( Iterator j = role.getPermissions().iterator(); j.hasNext(); )
+                if ( evaluator.evaluate( permission, operation, resource ) )
                 {
-                    Permission permission = (Permission) j.next();
-
-                    // check if the operation for that permission matches the desired operation
-                    if ( permission.getOperation().getName().equals( operation.toString() ) )
-                    {
-                        if ( permission.getOperation().isResourceRequired() )
-                        {
-                            if ( resource != null )
-                            {
-                                // todo, expand this a bit more to support *-* type patterns, make some kinda evaluator class                               
-                                if ( permission.getOperation().getResource().isPattern() )
-                                {
-                                    String strToMatch = permission.getOperation().getResource().getIdentifier();
-
-                                    int patternPosition = strToMatch.indexOf( '*' );
-
-                                    strToMatch = strToMatch.substring( 0, patternPosition );
-
-                                    if ( resource.toString().startsWith( strToMatch ) )
-                                    {
-                                        return new AuthorizationResult(true, permission, null);
-                                    }
-                                }
-                                else
-                                {
-                                    if ( permission.getOperation().getResource().getIdentifier().equals( resource.toString() ) )
-                                    {
-                                        return new AuthorizationResult(true, permission, null);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            return new AuthorizationResult(true, permission, null);
-                        }
-                    }
+                    return new AuthorizationResult( true, permission, null );
                 }
             }
-            return new AuthorizationResult(false, null, new NotAuthorizedException( "no matching permissions" ) );
 
+            return new AuthorizationResult(false, null, new NotAuthorizedException( "no matching permissions" ) );
         }
-        catch ( RbacStoreException e )
+        catch ( PermissionEvaluationException pe )
         {
-            throw new AuthorizationException( "error with rbac store", e );
+            throw new AuthorizationException( "error evaluating permissions", pe );
+        }
+        catch ( RbacObjectNotFoundException nfe)
+        {
+            throw new AuthorizationException( "error with rbac manager", nfe );
         }
     }
 }
