@@ -24,5 +24,8 @@
       </table>
       <center><ww:submit/></center>
     </ww:form>
+    
+    <hr>
+    <a href="newuser.action">Need an Account?</a>
   </body>
 </html>
