@@ -79,14 +79,14 @@ public class PermissionActions
     {
         try
         {
-            manager.removePermission( manager.getPermission( permissionId );
+            manager.removePermission( manager.getPermission( permissionId ) );
         }
         catch ( RbacObjectNotFoundException ne )
         {
             throw new RbacActionException( "unable to locate permission to remove " + permissionId , ne );
         }
         return SUCCESS;
-    }    
+    }
 
     public int getPermissionId()
     {
