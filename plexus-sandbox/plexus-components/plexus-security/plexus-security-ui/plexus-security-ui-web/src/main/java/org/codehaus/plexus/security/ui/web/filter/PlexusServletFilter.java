@@ -51,6 +51,32 @@ public abstract class PlexusServletFilter
         return container;
     }
 
+    public Object lookup( String role )
+        throws ServletException
+    {
+        try
+        {
+            return getContainer().lookup( role );
+        }
+        catch ( ComponentLookupException e )
+        {
+            throw new ServletException( "Unable to lookup plexus component '" + role + "'.", e );
+        }
+    }
+
+    public Object lookup( String role, String hint )
+        throws ServletException
+    {
+        try
+        {
+            return getContainer().lookup( role, hint );
+        }
+        catch ( ComponentLookupException e )
+        {
+            throw new ServletException( "Unable to lookup plexus component '" + role + "'.", e );
+        }
+    }
+
     public void init( FilterConfig filterConfig )
         throws ServletException
     {
