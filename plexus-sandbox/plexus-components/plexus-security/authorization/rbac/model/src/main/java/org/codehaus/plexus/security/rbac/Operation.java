@@ -17,69 +17,29 @@ package org.codehaus.plexus.security.rbac;
  */
 
 /**
- * Permission 
+ * Operation
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * @todo fix and expand javadoc
+ * @todo expand on javadoc
  */
-public interface Permission
+public interface Operation
 {
     /**
      * Plexus Role Name
      */
-    public static final String ROLE = Permission.class.getName();
-
-    /**
-     * Get null
-     */
-    public String getDescription();
-
-    /**
-     * Get null
-     */
-    public String getName();
-
-    /**
-     * Get null
-     */
-    public Operation getOperation();
+    public static final String ROLE = Operation.class.getName();
     
     /**
-     * This is the resource associated with this permission.
-     * 
-     * Implementors must always supply a Resource.
-     * 
-     * @return the Resource.
+     * Get name
      */
-    public Resource getResource();
+    public abstract String getName();
 
     /**
-     * Set null
-     * 
-     * @param description
-     */
-    public void setDescription( String description );
-
-    /**
-     * Set null
+     * Set name
      * 
      * @param name
      */
     public void setName( String name );
-
-    /**
-     * Set null
-     * 
-     * @param operation
-     */
-    public void setOperation( Operation operation );
-    
-    /**
-     * 
-     * @param resource
-     */
-    public void setResource( Resource resource );
-
 }
