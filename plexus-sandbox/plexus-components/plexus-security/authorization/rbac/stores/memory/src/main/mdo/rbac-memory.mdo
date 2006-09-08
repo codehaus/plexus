@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <model>
-  <id>rbac-jdo</id>
-  <name>RBAC JDO Model</name>
+  <id>rbac-memory</id>
+  <name>RBAC Memory Model</name>
   <version>1.0.0</version>
   <defaults>
     <default>
       <key>package</key>
-      <value>org.codehaus.plexus.security.authorization.rbac.jdo</value>
+      <value>org.codehaus.plexus.security.authorization.rbac.memory</value>
     </default>
   </defaults>
   <classes>
-    
-    <class jpox.stashable="true">
-      <name>JdoRole</name>
+  
+    <class>
+      <name>MemoryRole</name>
       <version>1.0.0</version>
       <interfaces>
         <interface>org.codehaus.plexus.security.rbac.Role</interface>
@@ -53,7 +53,7 @@ Do not set this field in application code, as any value you set may cause uninte
           <name>childRoles</name>
           <version>1.0.0</version>
           <association stash.part="true" java.generate-break="false" java.generate-create="false" java.use-interface="org.codehaus.plexus.security.rbac.Roles">
-            <type>JdoRoles</type>
+            <type>MemoryRoles</type>
             <multiplicity>1</multiplicity>
           </association>
           <description>
@@ -64,7 +64,7 @@ Do not set this field in application code, as any value you set may cause uninte
           <name>permissions</name>
           <version>1.0.0</version>
           <association stash.part="true" java.generate-break="false" java.generate-create="false" java.use-interface="org.codehaus.plexus.security.rbac.Permission">
-            <type>JdoPermission</type>
+            <type>MemoryPermission</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
@@ -72,7 +72,7 @@ Do not set this field in application code, as any value you set may cause uninte
     </class>
 
     <class>
-      <name>JdoRoles</name>
+      <name>MemoryRoles</name>
       <version>1.0.0</version>
       <interfaces>
         <interface>org.codehaus.plexus.security.rbac.Roles</interface>
@@ -95,15 +95,15 @@ Do not set this field in application code, as any value you set may cause uninte
           <name>roles</name>
           <version>1.0.0</version>
           <association stash.part="true" java.generate-break="false" java.generate-create="false" java.use-interface="org.codehaus.plexus.security.rbac.Role">
-            <type>JdoRole</type>
+            <type>MemoryRole</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
       </fields>
     </class>
-   
-    <class jpox.stashable="true">
-      <name>JdoPermission</name>
+    
+    <class>
+      <name>MemoryPermission</name>
       <version>1.0.0</version>
       <interfaces>
         <interface>org.codehaus.plexus.security.rbac.Permission</interface>
@@ -135,7 +135,7 @@ Do not set this field in application code, as any value you set may cause uninte
           <name>operation</name>
           <version>1.0.0</version>
           <association stash.part="true" java.use-interface="org.codehaus.plexus.security.rbac.Operation">
-            <type>JdoOperation</type>
+            <type>MemoryOperation</type>
             <multiplicity>1</multiplicity>
           </association>
         </field>
@@ -143,15 +143,15 @@ Do not set this field in application code, as any value you set may cause uninte
           <name>resource</name>
           <version>1.0.0</version>
           <association stash.part="true" java.use-interface="org.codehaus.plexus.security.rbac.Resource">
-            <type>JdoResource</type>
+            <type>MemoryResource</type>
             <multiplicity>1</multiplicity>
           </association>
         </field>
       </fields>
     </class>
-
-    <class jpox.stashable="true">
-      <name>JdoOperation</name>
+    
+    <class>
+      <name>MemoryOperation</name>
       <version>1.0.0</version>
       <interfaces>
         <interface>org.codehaus.plexus.security.rbac.Operation</interface>
@@ -190,8 +190,8 @@ Do not set this field in application code, as any value you set may cause uninte
       </fields>
     </class>
     
-    <class jpox.stashable="true">
-      <name>JdoResource</name>
+    <class>
+      <name>MemoryResource</name>
       <version>1.0.0</version>
       <description>
         In RBAC terms, this is the entity which an operation is associated with that which permissions are based on.
@@ -232,8 +232,8 @@ Do not set this field in application code, as any value you set may cause uninte
       </fields>
     </class>
     
-    <class jpox.stashable="true">
-      <name>JdoUserAssignment</name>
+    <class>
+      <name>MemoryUserAssignment</name>
       <description>binding of a principal to a role</description>
       <version>1.0.0</version>
       <interfaces>
@@ -250,7 +250,7 @@ Do not set this field in application code, as any value you set may cause uninte
           <name>roles</name>
           <version>1.0.0</version>
           <association stash.part="true" java.use-interface="org.codehaus.plexus.security.rbac.Roles">
-            <type>JdoRoles</type>
+            <type>MemoryRoles</type>
             <multiplicity>1</multiplicity>
           </association>
         </field>
