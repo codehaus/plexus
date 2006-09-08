@@ -129,7 +129,7 @@ public class JdoRbacManager
         return getAllObjectsDetached( JdoRole.class );
     }
 
-    public List getAssignableRoles()
+    public List getAllAssignableRoles()
         throws RbacStoreException
     {
         // TODO: use jpox/jdo query mechanism here instead!
