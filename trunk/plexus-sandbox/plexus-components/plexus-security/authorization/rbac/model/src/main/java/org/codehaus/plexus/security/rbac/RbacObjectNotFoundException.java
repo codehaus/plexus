@@ -17,32 +17,33 @@ package org.codehaus.plexus.security.rbac;
  */
 
 /**
- * DefaultNullResource - for a Resource not attached to anything. 
+ * RbacObjectNotFoundException used by {@link RBACManager} methods to identify
+ * when a RBAC Object Was Not Found. 
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class DefaultNullResource
-    implements Resource
+public class RbacObjectNotFoundException
+    extends Exception
 {
 
-    public String getIdentifier()
+    public RbacObjectNotFoundException()
     {
-        return "";
+        super();
     }
 
-    public boolean isPattern()
+    public RbacObjectNotFoundException( String message, Throwable cause )
     {
-        return true;
+        super( message, cause );
     }
 
-    public void setIdentifier( String identifier )
+    public RbacObjectNotFoundException( String message )
     {
-        // Ignore
+        super( message );
     }
 
-    public void setPattern( boolean pattern )
+    public RbacObjectNotFoundException( Throwable cause )
     {
-        // Ignore
+        super( cause );
     }
 }

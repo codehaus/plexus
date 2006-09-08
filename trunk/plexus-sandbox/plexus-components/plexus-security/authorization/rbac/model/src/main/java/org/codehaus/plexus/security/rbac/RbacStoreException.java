@@ -16,34 +16,35 @@ package org.codehaus.plexus.security.rbac;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.rbac.Resource;
-
 /**
- * DefaultGlobalResource 
+ * RbacStoreException used by {@link RBACManager} methods to indicate
+ * a fundamental persistence or store issue. 
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class DefaultGlobalResource
-    implements Resource
+public class RbacStoreException
+    extends RuntimeException
 {
-    public String getIdentifier()
+
+    public RbacStoreException()
     {
-        return "*";
+        super();
     }
 
-    public boolean isPattern()
+    public RbacStoreException( String message, Throwable cause )
     {
-        return true;
+        super( message, cause );
     }
 
-    public void setIdentifier( String identifier )
+    public RbacStoreException( String message )
     {
-        // Ignore
+        super( message );
     }
 
-    public void setPattern( boolean pattern )
+    public RbacStoreException( Throwable cause )
     {
-        // Ignore
+        super( cause );
     }
+
 }

@@ -30,9 +30,14 @@ package org.codehaus.plexus.security.rbac;
 public interface UserAssignment
 {
     /**
+     * Plexus Role Name
+     */
+    public static final String ROLE = UserAssignment.class.getName();
+    
+    /**
      * The principal for the User that the set of roles is associated with. 
      */
-    public String getPrincipal();
+    public int getPrincipal();
 
     /**
      * Get the roles for this user.
@@ -44,7 +49,7 @@ public interface UserAssignment
      * 
      * @param principal
      */
-    public void setPrincipal( String principal );
+    public int setPrincipal( String principal );
 
     /**
      * Set the roles for this user.
