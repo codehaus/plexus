@@ -84,4 +84,14 @@ public interface RBACModel
      * @param roles
      */
     public void setRoles( List roles );
+
+
+    public void setOperations( List operation );
+    public void addOperation( Operation operation );
+    public void setPermissions( List permissions );
+    public void addPermission( Permission permission );
+    public void setResources ( List resources );
+    public void addResource( Resource resource );
+
+
 }
