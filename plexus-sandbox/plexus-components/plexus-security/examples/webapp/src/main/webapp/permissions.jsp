@@ -7,7 +7,7 @@
 
   <body>
     <p>
-      permissions list page
+      Permissions list page
     </p>
     <ww:actionerror/>
 
@@ -21,9 +21,8 @@
     </ww:iterator>
 
     <p>
-      <ww:url id="newPermissionUrl" action="permission">
+      <ww:url id="newPermissionUrl" action="permission"/>
 
-      </ww:url>
       <ww:a href="%{newPermissionUrl}">new</ww:a><br/>
     </p>
     
