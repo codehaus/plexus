@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 
@@ -98,13 +97,8 @@ public class JdoUserManagerTest
         assertEquals( "New UserManager should contain no users.", 0, userManager.getUsers().size() );
     }
     
-    private void DMP(String desc, User user)
-    {
-        System.err.println( "User [" + desc + "] - username[" + user.getUsername() + "] - principal["
-            + user.getPrincipal() + "] - jdo-Id[" + JDOHelper.getObjectId( user ) + "] - fullname[" + user.getFullName() + "]" );
-    }
-    
-    public void testAddFindUserByPrincipal() throws UserNotFoundException
+    public void testAddFindUserByPrincipal()
+        throws UserNotFoundException
     {
         assertCleanUserManager();
 
@@ -112,28 +106,21 @@ public class JdoUserManagerTest
         smcqueen.setUsername( "smcqueen" );
         smcqueen.setFullName( "Steve McQueen" );
         smcqueen.setPassword( "the cooler king" );
-        
-        DMP("Original  ", smcqueen);
 
         /* Keep a reference to the object that was added.
          * Since it has the actual principal that was managed by jpox/jdo.
          */
         User added = userManager.addUser( smcqueen );
-        DMP("Post Added", smcqueen);
-        DMP("Returned  ", added);
 
         assertEquals( 1, userManager.getUsers().size() );
-        
-        User unknown = (User) userManager.getUsers().get( 0 );
-        DMP("Get(0)    ", unknown);
 
         /* Fetch user from userManager using principal returned earlier */
         User actual = userManager.findUser( added.getPrincipal() );
-        DMP("Actual    ", actual);
-        assertEquals( smcqueen.toString(), actual.toString() );
+        assertEquals( added, actual );
     }
     
-    public void testAddFindUserByUsername() throws UserNotFoundException
+    public void testAddFindUserByUsername()
+        throws UserNotFoundException
     {
         assertCleanUserManager();
 
@@ -142,11 +129,11 @@ public class JdoUserManagerTest
         smcqueen.setFullName( "Steve McQueen" );
         smcqueen.setPassword( "the cooler king" );
 
-        userManager.addUser( smcqueen );
+        User added = userManager.addUser( smcqueen );
 
         assertEquals( 1, userManager.getUsers().size() );
 
         User actual = userManager.findUser( "smcqueen" );
-        assertEquals( smcqueen, actual );
+        assertEquals( added, actual );
     }
 }
