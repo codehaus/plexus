@@ -30,7 +30,7 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  *
  * @plexus.component
  *   role="com.opensymphony.xwork.Action"
- *   role-hint="plexusSecurityOperation"
+ *   role-hint="plexusSecurityResource"
 
  */
 public class ResourceActions
