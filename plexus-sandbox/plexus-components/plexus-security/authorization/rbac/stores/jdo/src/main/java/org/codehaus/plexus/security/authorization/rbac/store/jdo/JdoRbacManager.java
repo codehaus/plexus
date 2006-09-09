@@ -515,16 +515,21 @@ public class JdoRbacManager
     }
 
     private Object getObjectById( Class clazz, Object id )
-        throws RbacStoreException
+        throws RbacObjectNotFoundException, RbacStoreException
     {
-        // TODO: Update PlexusJdoUtils to support String or Object identity.
-        if ( !( id instanceof Integer ) )
+        try
         {
-            throw new RbacStoreException( "Object By Id only works with Integer IDs so far." );
+            return PlexusJdoUtils.getObjectById( getPersistenceManager(), clazz, id.toString() );
         }
-
-        Integer iid = (Integer) id;
-        return getObjectById( clazz, iid.intValue() );
+        catch ( PlexusObjectNotFoundException e )
+        {
+            throw new RbacObjectNotFoundException( "Unable to find RBAC Object '" + id + "' of type " + clazz.getName(),
+                                                   e );
+        }
+        catch ( PlexusStoreException e )
+        {
+            throw new RbacStoreException( "Unable to get rbac object id '" + id + "' of type " + clazz.getName(), e );
+        }
     }
 
     private Object getObjectById( Class clazz, int id )
