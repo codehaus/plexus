@@ -1,3 +1,4 @@
+<?xml version="1.0" ?>
 <model>
   <id>plexus-security-user-management-provider-jdo</id>
   <name>Plexus Security User Management Model for JDO</name>
@@ -10,7 +11,8 @@
   </defaults>
 
   <classes>
-    <class stash.storable="true" jpox.use-identifiers-as-primary-key="false">
+    <class stash.storable="true" jpox.use-identifiers-as-primary-key="false" 
+           jpox.xidentity-class="org.codehaus.plexus.security.user.jdo.UsernamePrimaryKey">
       <name>JdoUser</name>
       <version>1.0.0+</version>
       <interfaces>
@@ -21,19 +23,7 @@
                   role-hint="jdo"
       </description>
       <fields>
-        <field jpox.column="id" jpox.primary-key="true">
-          <name>accountId</name>
-          <version>1.0.0+</version>
-          <type>int</type>
-          <identifier>true</identifier>
-          <description>Account ID.
-
-WARNING: The User.accountId field is managed by the underlying UserManager implementation.
-
-Do not set this field, as any value you set will be overridden by the UserManager implementation upon a call to the {@link org.codehaus.plexus.security.user.UserManager#addUser(User)} method.
-          </description>
-        </field>
-        <field>
+        <field jpox.primary-key="true">
           <name>username</name>
           <version>1.0.0+</version>
           <type>String</type>
@@ -119,7 +109,7 @@ Do not set this field, as any value you set will be overridden by the UserManage
 
               public Object getPrincipal()
               {
-                 return new Integer( accountId );
+                 return username;
               }
           ]]></code>
         </codeSegment>
