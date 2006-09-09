@@ -20,24 +20,23 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.jdo.ConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.JdoFactory;
-import org.codehaus.plexus.security.authorization.rbac.jdo.JdoRole;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.security.rbac.Resource;
 import org.jpox.SchemaTool;
 
+import javax.jdo.PersistenceManager;
+import javax.jdo.PersistenceManagerFactory;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.PersistenceManagerFactory;
-
 /**
  * JdoRbacManagerTest:
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
- * @version $Id:$
+ * @version $Id$
  */
 public class JdoRbacManagerTest
     extends PlexusTestCase
@@ -121,5 +120,23 @@ public class JdoRbacManagerTest
         assertNotNull( added );
         
         getRbacManager().removeRole( added );
+    }
+
+    public void testResources()
+        throws Exception
+    {
+        assertNotNull( getRbacManager() );
+
+        Resource resource = getRbacManager().createResource( "foo" );
+
+        assertNotNull( resource );
+
+        Resource added = getRbacManager().addResource( resource );
+
+        assertEquals( 1, getRbacManager().getAllResources().size() );
+
+        assertNotNull( added );
+
+        getRbacManager().removeResource( added );
     }
 }
