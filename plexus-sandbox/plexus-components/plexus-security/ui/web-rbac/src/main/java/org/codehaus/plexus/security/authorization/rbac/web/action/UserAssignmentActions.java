@@ -56,7 +56,7 @@ public class UserAssignmentActions
     {
         try
         {
-            assignedRoles = manager.getAssignedRoles( principal );
+            assignedRoles = manager.getAssignedRoles( principal ).getRoles();
 
             availableRoles = manager.getAllAssignableRoles();
         }
