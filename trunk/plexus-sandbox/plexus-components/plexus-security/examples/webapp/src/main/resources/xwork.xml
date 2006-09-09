@@ -65,12 +65,16 @@
     </action>
 
     <action name="resource" class="plexusSecurityResource">
+      <interceptor-ref name="model-driven"/>
+    <interceptor-ref name="basicStack"/>
       <result name="success">/resource.jsp</result>
     </action>
 
     <action name="saveResource" class="plexusSecurityResource" method="save">
+      <interceptor-ref name="model-driven"/>
+    <interceptor-ref name="basicStack"/>
       <result name="success" type="redirect-action">resources</result>
-      <interceptor-ref name="paramsPrepareParamsStack"/>
+
     </action>
   </package>
 </xwork>

@@ -14,7 +14,7 @@
     <ww:form action="saveResource" method="post">
       <ww:hidden name="save" value="true"/>
 
-     <ww:textfield label="identifer" name="identifer"/> <br/>
+     <ww:textfield label="identifier" name="identifier"/> <br/>
      <ww:checkbox label="isPattern" name="pattern"/> <br/>
 
 
