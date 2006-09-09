@@ -30,12 +30,12 @@ import java.util.List;
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
- * @plexus.component
- *   role="com.opensymphony.xwork.Action"
- *   role-hint="plexusSecurityPermission"
+ * @plexus.component role="com.opensymphony.xwork.Action"
+ * role-hint="plexusSecurityPermission"
  */
 public class PermissionActions
-    extends PlexusActionSupport implements Preparable, ModelDriven
+    extends PlexusActionSupport
+    implements Preparable, ModelDriven
 
 {
     /**
@@ -51,21 +51,22 @@ public class PermissionActions
 
     private List resources;
 
-    private List permissions;
-
     public void prepare()
         throws Exception
     {
         operations = manager.getAllOperations();
         resources = manager.getAllResources();
 
-        try
+        if ( permission == null )
         {
-            permission = manager.getPermission( permissionId );
-        }
-        catch ( RbacObjectNotFoundException ne )
-        {
-            permission = manager.createPermission( "name", "description" );
+            try
+            {
+                permission = manager.getPermission( permissionId );
+            }
+            catch ( RbacObjectNotFoundException ne )
+            {
+                permission = manager.createPermission( "name", "description" );
+            }
         }
     }
 
@@ -74,12 +75,6 @@ public class PermissionActions
         return permission;
     }
 
-    public String summary()
-    {
-        permissions = manager.getAllPermissions();
-
-        return SUCCESS;
-    }
 
     public String save()
         throws RbacActionException
@@ -110,7 +105,7 @@ public class PermissionActions
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            throw new RbacActionException( "unable to locate permission to remove " + permissionId , ne );
+            throw new RbacActionException( "unable to locate permission to remove " + permissionId, ne );
         }
         return SUCCESS;
     }
@@ -154,15 +149,4 @@ public class PermissionActions
     {
         this.resources = resources;
     }
-
-    public List getPermissions()
-    {
-        return permissions;
-    }
-
-    public void setPermissions( List permissions )
-    {
-        this.permissions = permissions;
-    }
-
 }
