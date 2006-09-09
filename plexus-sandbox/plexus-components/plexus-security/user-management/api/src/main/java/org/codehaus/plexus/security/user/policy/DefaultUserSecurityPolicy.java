@@ -26,7 +26,7 @@ public class DefaultUserSecurityPolicy
      * @plexus.configuration default-value="6"
      */
     private int previousPasswordsCount;
-    
+
     /**
      * @plexus.requirement role-hint="sha256"
      */
@@ -37,7 +37,7 @@ public class DefaultUserSecurityPolicy
      * 
      * @plexus.requirement role="org.apache.maven.user.model.PasswordRule" role-hint="must-have"
      */
-    private List rules;
+    private List rules = new ArrayList();
 
     public int getPreviousPasswordsCount()
     {
@@ -72,7 +72,7 @@ public class DefaultUserSecurityPolicy
     public void addPasswordRule( PasswordRule rule )
     {
         // TODO: check for duplicates? if so, check should only be based on Rule class name.
-        
+
         rule.setUserSecurityPolicy( this );
         this.rules.add( rule );
     }
@@ -95,14 +95,14 @@ public class DefaultUserSecurityPolicy
     public void setPasswordRules( List newRules )
     {
         this.rules.clear();
-        
+
         if ( newRules == null )
         {
             return;
         }
-        
+
         // Intentionally iterating to ensure policy settings in provided rules.
-        
+
         Iterator it = newRules.iterator();
         while ( it.hasNext() )
         {
@@ -161,11 +161,11 @@ public class DefaultUserSecurityPolicy
             throw exception;
         }
     }
-    
+
     public void initialize()
         throws InitializationException
     {
-        if( rules != null )
+        if ( rules != null )
         {
             Iterator it = rules.iterator();
             while ( it.hasNext() )
@@ -174,7 +174,8 @@ public class DefaultUserSecurityPolicy
                 rule.setUserSecurityPolicy( this );
             }
         }
-        else{
+        else
+        {
             rules = new ArrayList();
             addPasswordRule( new MustHavePasswordRule() );
         }
