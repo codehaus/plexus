@@ -38,15 +38,14 @@ import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.Roles;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
+import javax.jdo.PersistenceManager;
+import javax.jdo.PersistenceManagerFactory;
+import javax.jdo.Transaction;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import javax.jdo.PersistenceManager;
-import javax.jdo.PersistenceManagerFactory;
-import javax.jdo.Transaction;
 
 /**
  * JdoRbacManager:
@@ -141,7 +140,7 @@ public class JdoRbacManager
 
     /**
      * Internal method to aide in elimination of NullPointer exceptions from bad users.
-     * 
+     *
      * @param role
      * @return
      */
@@ -423,7 +422,7 @@ public class JdoRbacManager
      * returns the active roles for a given principal
      *
      * NOTE: roles that are returned might have have roles themselves, if
-     * you just want all permissions then use {@link #getAssignedPermissions( Object principal )} 
+     * you just want all permissions then use {@link #getAssignedPermissions( Object principal )}
      *
      * @param principal
      * @return
@@ -533,13 +532,13 @@ public class JdoRbacManager
     }
 
     private Object getObjectById( Class clazz, int id )
-        throws RbacStoreException
+        throws RbacStoreException, RbacObjectNotFoundException
     {
         return getObjectById( clazz, id, null );
     }
 
     private Object getObjectById( Class clazz, int id, String fetchGroup )
-        throws RbacStoreException
+        throws RbacStoreException, RbacObjectNotFoundException
     {
         try
         {
@@ -547,8 +546,7 @@ public class JdoRbacManager
         }
         catch ( PlexusObjectNotFoundException e )
         {
-            // TODO make PlexusObjectNotFoundException runtime or change plexus not to wrap jdo exceptions
-            throw new RuntimeException( e.getMessage() );
+            throw new RbacObjectNotFoundException( e.getMessage() );
         }
         catch ( PlexusStoreException e )
         {
