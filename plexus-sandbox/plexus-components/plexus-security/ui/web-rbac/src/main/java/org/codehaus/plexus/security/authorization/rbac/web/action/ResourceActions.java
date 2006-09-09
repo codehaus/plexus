@@ -7,7 +7,7 @@ import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 /*
- * Copyright 2005 The Apache Software Foundation.
+ * Copyright 2005 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,8 +43,6 @@ public class ResourceActions
 
     private Resource resource;
 
-    private boolean save = false;
-
     public void prepare()
         throws Exception
     {
@@ -53,6 +51,8 @@ public class ResourceActions
             try
             {
                 resource = manager.getResource( resourceId );
+                resourceId = resource.getId();
+                getLogger().info( "resourceId " + resourceId + " loaded");
             }
             catch ( RbacObjectNotFoundException ne )
             {
@@ -66,7 +66,7 @@ public class ResourceActions
     {
         try
         {
-            getLogger().info( "attempting resource check" );
+            getLogger().info( "attempting resource check " + resource.getId() );
             manager.getResource( resource.getId() );
             getLogger().info( "updating " + resource.getIdentifier() );
             manager.updateResource( resource );
@@ -74,7 +74,8 @@ public class ResourceActions
         catch ( RbacObjectNotFoundException ne )
         {
             getLogger().info( "adding " + resource.getIdentifier() );
-            manager.addResource( resource );
+            resource = manager.addResource( resource );
+            getLogger().info( "new resource id is " + resource.getId() );
         }
 
         return SUCCESS;
@@ -113,15 +114,5 @@ public class ResourceActions
     public void setResource( Resource resource )
     {
         this.resource = resource;
-    }
-
-    public boolean isSave()
-    {
-        return save;
-    }
-
-    public void setSave( boolean save )
-    {
-        this.save = save;
     }
 }
