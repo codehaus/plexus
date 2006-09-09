@@ -23,8 +23,6 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.security.user.memory.MemoryUserManager;
 import org.codehaus.plexus.security.user.memory.SimpleUser;
 
-import java.util.Date;
-
 /**
  * {@link MemoryUserManager} test:
  * 
@@ -33,10 +31,7 @@ import java.util.Date;
 public class MemoryUserManagerTest
     extends PlexusTestCase
 {
-    /**
-     * Component lookup test. 
-     * @throws Exception
-     */
+
     public void testLookup()
         throws Exception
     {
@@ -86,9 +81,9 @@ public class MemoryUserManagerTest
 
         assertEquals( 1, um.getUsers().size() );
 
-        // attempt delete
         um.deleteUser( user.getPrincipal() );
         assertEquals( 0, um.getUsers().size() );
+
         // attempt finding a non-existent user
         try
         {
@@ -150,12 +145,12 @@ public class MemoryUserManagerTest
     {
         UserManager um = (UserManager) lookup( UserManager.ROLE );
 
-        // create and add a few users
+        // create and add a user
         User u1 = um.createUser( "root", "Root User", "root@somedomain.com" );
         u1.setPassword( "rootpass" );
         um.addUser( u1 );
 
-        // find an existing user
+        // find user
         User user = um.findUser( "root" );
         assertNotNull( user );
         assertSame( u1, user );
@@ -166,5 +161,14 @@ public class MemoryUserManagerTest
         user.setFullName( "Super User" );
 
         um.updateUser( user );
+
+        // find updated user
+        user = um.findUser( "superuser" );
+        assertNotNull( user );
+        assertEquals( "superuser", user.getUsername() );
+        assertEquals( "superuser@somedomain.com", user.getEmail() );
+        assertEquals( "Super User", user.getFullName() );
+        assertTrue( um.getUserSecurityPolicy().getPasswordEncoder().isPasswordValid( user.getEncodedPassword(),
+                                                                                     "superpass" ) );
     }
 }
