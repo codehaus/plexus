@@ -16,43 +16,31 @@ package org.codehaus.plexus.security.authorization.rbac.store.jdo;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.jdo.ConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.JdoFactory;
+import org.codehaus.plexus.security.authorization.store.test.AbstractRbacManagerTestCase;
 import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.security.rbac.Role;
-import org.codehaus.plexus.security.rbac.Resource;
 import org.jpox.SchemaTool;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.PersistenceManagerFactory;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.jdo.PersistenceManager;
+import javax.jdo.PersistenceManagerFactory;
+
 /**
  * JdoRbacManagerTest:
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
+ * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
 public class JdoRbacManagerTest
-    extends PlexusTestCase
+    extends AbstractRbacManagerTestCase
 {
-    private RBACManager rbacManager = null;
-
-    public RBACManager getRbacManager()
-    {
-        return rbacManager;
-    }
-
-    public void setRbacManager( RBACManager store )
-    {
-        this.rbacManager = store;
-    }
-
     /**
      * Creates a new RbacStore which contains no data.
      */
@@ -101,47 +89,5 @@ public class JdoRbacManagerTest
         pm.close();
 
         setRbacManager( (JdoRbacManager) lookup( RBACManager.ROLE, "jdo" ) );
-    }
-
-    public void testStoreInitialization()
-        throws Exception
-    {
-        assertNotNull( getRbacManager() );
-        
-        Role role = getRbacManager().createRole( "ADMIN", "Administrative User" );
-        role.setAssignable( false );
-
-        assertNotNull( role );
-        
-        Role added = getRbacManager().addRole( role );
-
-        assertEquals( 1, getRbacManager().getAllRoles().size() );
-        
-        assertNotNull( added );
-        
-        getRbacManager().removeRole( added );
-    }
-
-    public void testResources()
-        throws Exception
-    {
-        assertNotNull( getRbacManager() );
-
-        Resource resource = getRbacManager().createResource( "foo" );
-        Resource resource2 = getRbacManager().createResource( "bar" );
-
-        assertNotNull( resource );
-
-        Resource added = getRbacManager().addResource( resource );
-        Resource added2 = getRbacManager().addResource( resource2 );
-
-
-        assertEquals( 2, getRbacManager().getAllResources().size() );
-
-        System.out.println("resource id - " + added.getId() + " " + added2.getId() );
-
-        assertNotNull( added );
-
-        getRbacManager().removeResource( added );
     }
 }
