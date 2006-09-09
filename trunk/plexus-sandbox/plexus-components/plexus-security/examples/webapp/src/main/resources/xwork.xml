@@ -33,5 +33,31 @@
       <result name="success">/status.jsp</result>
     </action>
 
+
+    <!-- rbac actions -->
+    <action name="permissions" class="plexusSecurityPermission" method="summary">
+      <result name="success">/permissions.jsp</result>
+    </action>
+
+    <action name="permission" class="plexusSecurityPermission">
+      <result name="success">/permission.jsp</result>
+    </action>
+
+    <action name="savePermission" class="plexusSecurityPermission" method="save">
+      <result name="success" type="redirect-action">permissions</result>
+    </action>
+
+    <action name="operations" class="plexusSecurityOperation" method="summary">
+      <result name="success">/operations.jsp</result>
+    </action>
+
+    <action name="operation" class="plexusSecurityOperation">
+      <result name="success">/operation.jsp</result>
+    </action>
+
+    <action name="saveOperation" class="plexusSecurityOperation" method="save">
+      <result name="success" type="redirect-action">operations</result>
+    </action>
+
   </package>
 </xwork>

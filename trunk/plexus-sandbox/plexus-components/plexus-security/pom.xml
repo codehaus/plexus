@@ -60,6 +60,16 @@
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
+        <artifactId>plexus-security-authorization-rbac-model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.security</groupId>
+        <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-ui-web</artifactId>
         <version>${project.version}</version>
       </dependency>

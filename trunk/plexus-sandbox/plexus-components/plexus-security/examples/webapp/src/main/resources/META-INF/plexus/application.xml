@@ -27,11 +27,22 @@
       <implementation>org.codehaus.plexus.security.authorization.rbac.RbacAuthorizer</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.security.authorization.rbac.store.RbacStore</role>
-          <role-hint>memory</role-hint>
+          <role>org.codehaus.plexus.security.rbac.RBACManager</role>
+          <role-hint>jdo</role-hint>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvaluator</role>
+          <role-hint>default</role-hint>
         </requirement>
       </requirements>
     </component>
+
+    
+    <component>
+      <role>org.codehaus.plexus.jdo.JdoFactory</role>
+      <implementation>org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory</implementation>
+    </component>
+
 
     <!--
      | Logger manager
