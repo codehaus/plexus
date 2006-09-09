@@ -3,6 +3,7 @@ package org.codehaus.plexus.security.authorization.memory;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.security.authorization.rbac.memory.MemoryRbacModel;
+import org.codehaus.plexus.security.authorization.rbac.memory.MemoryRole;
 import org.codehaus.plexus.security.authorization.rbac.memory.io.xpp3.RBACMemoryModelXpp3Reader;
 import org.codehaus.plexus.security.authorization.rbac.memory.io.xpp3.RBACMemoryModelXpp3Writer;
 import org.codehaus.plexus.security.rbac.Operation;
@@ -39,30 +40,47 @@ import java.util.Set;
 public class MemoryRbacManager
     implements RBACManager, Initializable
 {
-    MemoryRbacModel model = null;
+    private MemoryRbacModel model = null;
+
+    private File rbacStoreFile = null;
+
+    public File getRbacStoreFile()
+    {
+        if ( rbacStoreFile == null )
+        {
+            rbacStoreFile = new File( getBasedir() + File.separator + "rbac-store-model.xml" );
+        }
+        return rbacStoreFile;
+    }
 
     public void initialize()
         throws InitializationException
     {
         RBACMemoryModelXpp3Reader reader = new RBACMemoryModelXpp3Reader();
 
-        try
+        if ( getRbacStoreFile().exists() )
         {
-            model = reader.read( new FileReader( getBasedir() + File.separator + "rbac-store-model.xml" ) );
+            try
+            {
+                model = reader.read( new FileReader( getRbacStoreFile() ) );
+            }
+            catch ( Exception e )
+            {
+                throw new InitializationException( "error loading file rbac-store-model.xml", e );
+            }
         }
-        catch ( Exception e )
+        else
         {
-            throw new InitializationException( "error loading file rbac-store-model.xml", e );
+            model = new MemoryRbacModel();
         }
     }
-
 
     public void store()
         throws Exception
     {
         RBACMemoryModelXpp3Writer writer = new RBACMemoryModelXpp3Writer();
 
-        writer.write( new FileWriter( getBasedir() + File.separator + "rbac-store-model.xml"), model);
+        writer.write( new FileWriter( getRbacStoreFile() ), model );
     }
 
     public static String getBasedir()
@@ -76,7 +94,6 @@ public class MemoryRbacManager
 
         return basedir;
     }
-
 
     // ----------------------------------------------------------------------
     // Role methods
@@ -107,7 +124,7 @@ public class MemoryRbacManager
 
         for ( Iterator i = model.getRoles().iterator(); i.hasNext(); )
         {
-            Role role = (Role)i.next();
+            Role role = (Role) i.next();
 
             if ( role.isAssignable() )
             {
@@ -122,7 +139,7 @@ public class MemoryRbacManager
         throws RbacStoreException, RbacObjectNotFoundException
     {
         // just removing top lvl roles atm.
-        if ( getRole( roleId) != null )
+        if ( getRole( roleId ) != null )
         {
             model.getRoles().removeRole( getRole( roleId ) );
         }
@@ -145,14 +162,12 @@ public class MemoryRbacManager
         return getRole( roleId ).getPermissions();
     }
 
-
     public Operation addOperation( Operation operation )
         throws RbacStoreException
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public Permission addPermission( Permission permission )
         throws RbacStoreException
@@ -161,14 +176,12 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public Resource addResource( Resource resource )
         throws RbacStoreException
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public UserAssignment addUserAssignment( UserAssignment userAssignment )
         throws RbacStoreException
@@ -177,13 +190,11 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public Operation createOperation( String name, String description )
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public Permission createPermission( String name, String description )
     {
@@ -191,13 +202,11 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public Permission createPermission( String name, String description, String operation, String resource )
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public Resource createResource( String identifier )
     {
@@ -205,20 +214,20 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public Role createRole( String name, String description )
     {
-        // TODO Auto-generated method stub
-        return null;
-    }
+        Role role = new MemoryRole();
+        role.setName( name );
+        role.setDescription( description );
 
+        return role;
+    }
 
     public UserAssignment createUserAssignment( Object principal )
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public Operation getOperation( int operationId )
         throws RbacObjectNotFoundException, RbacStoreException
@@ -227,14 +236,12 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public List getOperations()
         throws RbacStoreException
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public Permission getPermission( int permissionId )
         throws RbacObjectNotFoundException, RbacStoreException
@@ -243,14 +250,12 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public List getPermissions()
         throws RbacStoreException
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public Resource getResource( int resourceId )
         throws RbacObjectNotFoundException, RbacStoreException
@@ -259,14 +264,12 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public List getResources()
         throws RbacStoreException
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public List getRoles()
         throws RbacStoreException
@@ -275,14 +278,12 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public UserAssignment getUserAssignment( Object principal )
         throws RbacObjectNotFoundException, RbacStoreException
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public List getUserAssignments()
         throws RbacStoreException
@@ -291,86 +292,75 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public void removeOperation( Operation operation )
         throws RbacObjectNotFoundException, RbacStoreException
     {
         // TODO Auto-generated method stub
-        
-    }
 
+    }
 
     public void removePermission( Permission permission )
         throws RbacObjectNotFoundException, RbacStoreException
     {
         // TODO Auto-generated method stub
-        
-    }
 
+    }
 
     public void removeResource( Resource resource )
         throws RbacStoreException
     {
         // TODO Auto-generated method stub
-        
-    }
 
+    }
 
     public void removeRole( Role role )
         throws RbacObjectNotFoundException, RbacStoreException
     {
         // TODO Auto-generated method stub
-        
-    }
 
+    }
 
     public void removeUserAssignment( UserAssignment userAssignment )
         throws RbacObjectNotFoundException, RbacStoreException
     {
         // TODO Auto-generated method stub
-        
-    }
 
+    }
 
     public void setOperations( List operation )
         throws RbacStoreException
     {
         // TODO Auto-generated method stub
-        
-    }
 
+    }
 
     public void setPermissions( List permissions )
         throws RbacStoreException
     {
         // TODO Auto-generated method stub
-        
-    }
 
+    }
 
     public void setResources( List resources )
         throws RbacStoreException
     {
         // TODO Auto-generated method stub
-        
-    }
 
+    }
 
     public void setRoles( List roles )
         throws RbacStoreException
     {
         // TODO Auto-generated method stub
-        
-    }
 
+    }
 
     public void setUserAssignments( List assignments )
         throws RbacStoreException
     {
         // TODO Auto-generated method stub
-        
-    }
 
+    }
 
     public Operation updateOperation( Operation operation )
         throws RbacObjectNotFoundException, RbacStoreException
@@ -379,14 +369,12 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public Permission updatePermission( Permission permission )
         throws RbacObjectNotFoundException, RbacStoreException
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public Resource updateResource( Resource resource )
         throws RbacStoreException
@@ -395,14 +383,12 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public Role updateRole( Role role )
         throws RbacObjectNotFoundException, RbacStoreException
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public UserAssignment updateUserAssignment( UserAssignment userAssignment )
         throws RbacObjectNotFoundException, RbacStoreException
@@ -411,7 +397,6 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public Set getAssignedPermissions( Object principal )
         throws RbacObjectNotFoundException, RbacStoreException
     {
@@ -419,13 +404,11 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public UserAssignment createUserAssignment( String principal )
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public List getAllOperations()
         throws RbacStoreException
@@ -434,14 +417,12 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public List getAllPermissions()
         throws RbacStoreException
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public List getAllResources()
         throws RbacStoreException
@@ -450,14 +431,12 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public List getAllUserAssignments()
         throws RbacStoreException
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public UserAssignment getUserAssignment( String principal )
         throws RbacObjectNotFoundException, RbacStoreException
@@ -466,14 +445,12 @@ public class MemoryRbacManager
         return null;
     }
 
-
     public Roles getAssignedRoles( Object principal )
         throws RbacObjectNotFoundException, RbacStoreException
     {
         // TODO Auto-generated method stub
         return null;
     }
-
 
     public List getAllAssignableRoles()
         throws RbacStoreException
