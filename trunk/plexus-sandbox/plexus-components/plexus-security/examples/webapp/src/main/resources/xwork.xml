@@ -35,20 +35,19 @@
 
 
     <!-- rbac actions -->
-    <action name="permissions" class="plexusSecurityPermission" method="summary">
+    <action name="permissions" class="plexusSecuritySummary" method="permissionSummary">
       <result name="success">/permissions.jsp</result>
     </action>
 
     <action name="permission" class="plexusSecurityPermission">
       <result name="success">/permission.jsp</result>
-
     </action>
 
     <action name="savePermission" class="plexusSecurityPermission" method="save">
       <result name="success" type="redirect-action">permissions</result>
     </action>
 
-    <action name="operations" class="plexusSecurityOperation" method="summary">
+    <action name="operations" class="plexusSecuritySummary" method="operationSummary">
       <result name="success">/operations.jsp</result>
     </action>
 
@@ -60,21 +59,28 @@
       <result name="success" type="redirect-action">operations</result>
     </action>
 
-    <action name="resources" class="plexusSecurityResource" method="summary">
+    <action name="resources" class="plexusSecuritySummary" method="resourceSummary">
       <result name="success">/resources.jsp</result>
     </action>
 
     <action name="resource" class="plexusSecurityResource">
-      <interceptor-ref name="model-driven"/>
-    <interceptor-ref name="basicStack"/>
       <result name="success">/resource.jsp</result>
     </action>
 
     <action name="saveResource" class="plexusSecurityResource" method="save">
-      <interceptor-ref name="model-driven"/>
-    <interceptor-ref name="basicStack"/>
       <result name="success" type="redirect-action">resources</result>
+    </action>
 
+    <action name="roles" class="plexusSecuritySummary" method="roleSummary">
+      <result name="success">/roles.jsp</result>
+    </action>
+
+    <action name="role" class="plexusSecurityRole">
+      <result name="success">/role.jsp</result>
+    </action>
+
+    <action name="saveRole" class="plexusSecurityRole" method="save">
+      <result name="success" type="redirect-action">roles</result>
     </action>
   </package>
 </xwork>
