@@ -1,17 +1,16 @@
 package org.codehaus.plexus.security.user.memory;
 
-import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.user.policy.DefaultUserSecurityPolicy;
 import org.codehaus.plexus.security.user.policy.UserSecurityPolicy;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
  * @plexus.component
@@ -21,21 +20,22 @@ import java.util.HashMap;
 public class MemoryUserManager
     implements UserManager
 {
+    /**
+     * @plexus.requirement
+     */
     private UserSecurityPolicy userSecurityPolicy;
-    
-    private Map users;
 
-    public MemoryUserManager()
-    {
-        users = new HashMap();
-        userSecurityPolicy = new DefaultUserSecurityPolicy();
-    }
+    private Map users = new HashMap();
 
     public User addUser( User user )
     {
         users.put( user.getPrincipal(), user );
-        
-        getUserSecurityPolicy().changeUserPassword( user );
+
+        // If there exists no encoded password, then this is a new user setup 
+        if ( StringUtils.isEmpty( user.getEncodedPassword() ) )
+        {
+            getUserSecurityPolicy().changeUserPassword( user );
+        }
 
         return user;
     }
@@ -48,7 +48,7 @@ public class MemoryUserManager
         {
             getUserSecurityPolicy().changeUserPassword( user );
         }
-        
+
         return addUser( user );
     }
 
