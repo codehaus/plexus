@@ -66,7 +66,7 @@ public class RoleActions
     public String summary()
         throws RbacActionException
     {
-        roles = manager.getRoles();
+        roles = manager.getAllRoles();
 
         return SUCCESS;
     }
