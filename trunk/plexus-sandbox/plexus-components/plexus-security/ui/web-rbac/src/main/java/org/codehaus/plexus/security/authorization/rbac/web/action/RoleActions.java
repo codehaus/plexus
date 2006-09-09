@@ -22,8 +22,6 @@ import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
-import java.util.List;
-
 /**
  * RoleActions:
  *
@@ -46,8 +44,6 @@ public class RoleActions
 
     private Role role;
 
-    private List roles;
-
     public String display()
         throws RbacActionException
     {
@@ -59,14 +55,6 @@ public class RoleActions
         {
             throw new RbacActionException( "unable to locate role", ne );
         }
-
-        return SUCCESS;
-    }
-
-    public String summary()
-        throws RbacActionException
-    {
-        roles = manager.getAllRoles();
 
         return SUCCESS;
     }
@@ -121,15 +109,4 @@ public class RoleActions
     {
         this.role = role;
     }
-
-    public List getRoles()
-    {
-        return roles;
-    }
-
-    public void setRoles( List roles )
-    {
-        this.roles = roles;
-    }
-
 }
