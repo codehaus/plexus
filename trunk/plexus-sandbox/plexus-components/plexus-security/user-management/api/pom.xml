@@ -7,4 +7,21 @@
   </parent>
   <artifactId>plexus-security-user-management-api</artifactId>
   <name>Plexus Security :: User Manager API</name>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
