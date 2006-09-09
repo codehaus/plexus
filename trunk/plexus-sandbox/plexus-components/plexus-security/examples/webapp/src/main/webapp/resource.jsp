@@ -2,7 +2,7 @@
 
 <html>
   <head>
-    <title>Plexus Example Webapp resource</title>
+    <title>Plexus Example Webapp Resource</title>
   </head>
 
   <body>

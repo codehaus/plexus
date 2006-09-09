@@ -2,12 +2,12 @@
 
 <html>
   <head>
-    <title>Plexus Example Webapp resource</title>
+    <title>Plexus Example Webapp Resource</title>
   </head>
 
   <body>
     <p>
-      resources list page
+      Resources list page
     </p>
     <ww:actionerror/>
 
@@ -21,9 +21,8 @@
     </ww:iterator>
 
     <p>
-      <ww:url id="newResourceUrl" action="resource">
+      <ww:url id="newResourceUrl" action="resource"/>
 
-      </ww:url>
       <ww:a href="%{newResourceUrl}">new</ww:a><br/>
     </p>
     
