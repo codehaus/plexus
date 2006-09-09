@@ -6,6 +6,8 @@ import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+
+import java.util.List;
 /*
  * Copyright 2005 The Apache Software Foundation.
  *
@@ -45,28 +47,45 @@ public class ResourceActions
 
     private Resource resource;
 
+    private List resources;
+
+    private boolean save = false;
+
     public void prepare()
         throws Exception
     {
+        if ( !save )
+        {
         try
         {
             resource = manager.getResource( resourceId );
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            resource = manager.createResource( "identifier");
+            resource = manager.createResource( "identifier" );
         }
+    }
+    }
+
+    public String summary()
+    {
+        resources = manager.getAllResources();
+
+        return SUCCESS;
     }
 
     public String save()
     {
         try
         {
-            manager.getOperation( resource.getId() );
+            getLogger().info( "attempting resource check" );
+            manager.getResource( resource.getId() );
+            getLogger().info( "updating " + resource.getIdentifier() );
             manager.updateResource( resource );
         }
         catch ( RbacObjectNotFoundException ne )
         {
+            getLogger().info( "adding " + resource.getIdentifier() );
             manager.addResource( resource );
         }
 
@@ -108,4 +127,23 @@ public class ResourceActions
         this.resource = resource;
     }
 
+    public List getResources()
+    {
+        return resources;
+    }
+
+    public void setResources( List resources )
+    {
+        this.resources = resources;
+    }
+
+    public boolean isSave()
+    {
+        return save;
+    }
+
+    public void setSave( boolean save )
+    {
+        this.save = save;
+    }
 }
