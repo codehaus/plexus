@@ -73,6 +73,11 @@
         <artifactId>plexus-security-ui-web</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.security</groupId>
+        <artifactId>plexus-security-ui-web-rbac</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <!-- Plexus -->
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
