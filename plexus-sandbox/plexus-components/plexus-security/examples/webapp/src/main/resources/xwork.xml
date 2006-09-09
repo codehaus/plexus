@@ -41,6 +41,7 @@
 
     <action name="permission" class="plexusSecurityPermission">
       <result name="success">/permission.jsp</result>
+
     </action>
 
     <action name="savePermission" class="plexusSecurityPermission" method="save">
@@ -59,5 +60,17 @@
       <result name="success" type="redirect-action">operations</result>
     </action>
 
+    <action name="resources" class="plexusSecurityResource" method="summary">
+      <result name="success">/resources.jsp</result>
+    </action>
+
+    <action name="resource" class="plexusSecurityResource">
+      <result name="success">/resource.jsp</result>
+    </action>
+
+    <action name="saveResource" class="plexusSecurityResource" method="save">
+      <result name="success" type="redirect-action">resources</result>
+      <interceptor-ref name="paramsPrepareParamsStack"/>
+    </action>
   </package>
 </xwork>

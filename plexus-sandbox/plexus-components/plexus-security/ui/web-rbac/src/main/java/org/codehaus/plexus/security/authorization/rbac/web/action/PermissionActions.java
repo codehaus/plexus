@@ -51,6 +51,8 @@ public class PermissionActions
 
     private List resources;
 
+    private List permissions;
+
     public void prepare()
         throws Exception
     {
@@ -72,16 +74,27 @@ public class PermissionActions
         return permission;
     }
 
+    public String summary()
+    {
+        permissions = manager.getAllPermissions();
+
+        return SUCCESS;
+    }
+
     public String save()
         throws RbacActionException
     {
         try
         {
+
             manager.getPermission( permission.getId() );
+
+            getLogger().info( "updating permission" );
             manager.updatePermission( permission );
         }
         catch ( RbacObjectNotFoundException ne )
         {
+            getLogger().info( "adding permission" );
             manager.addPermission( permission );
         }
 
@@ -140,6 +153,16 @@ public class PermissionActions
     public void setResources( List resources )
     {
         this.resources = resources;
+    }
+
+    public List getPermissions()
+    {
+        return permissions;
+    }
+
+    public void setPermissions( List permissions )
+    {
+        this.permissions = permissions;
     }
 
 }
