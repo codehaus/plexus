@@ -6,8 +6,6 @@ import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
-
-import java.util.List;
 /*
  * Copyright 2005 The Apache Software Foundation.
  *
@@ -29,14 +27,12 @@ import java.util.List;
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
- *
- * @plexus.component
- *   role="com.opensymphony.xwork.Action"
- *   role-hint="plexusSecurityResource"
-
+ * @plexus.component role="com.opensymphony.xwork.Action"
+ * role-hint="plexusSecurityResource"
  */
 public class ResourceActions
-    extends PlexusActionSupport implements ModelDriven, Preparable
+    extends PlexusActionSupport
+    implements ModelDriven, Preparable
 {
     /**
      * @plexus.requirement
@@ -47,32 +43,24 @@ public class ResourceActions
 
     private Resource resource;
 
-    private List resources;
-
     private boolean save = false;
 
     public void prepare()
         throws Exception
     {
-        if ( !save )
+        if ( resource == null )
         {
-        try
-        {
-            resource = manager.getResource( resourceId );
+            try
+            {
+                resource = manager.getResource( resourceId );
+            }
+            catch ( RbacObjectNotFoundException ne )
+            {
+                resource = manager.createResource( "identifier" );
+            }
         }
-        catch ( RbacObjectNotFoundException ne )
-        {
-            resource = manager.createResource( "identifier" );
-        }
-    }
     }
 
-    public String summary()
-    {
-        resources = manager.getAllResources();
-
-        return SUCCESS;
-    }
 
     public String save()
     {
@@ -101,7 +89,7 @@ public class ResourceActions
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            throw new RbacActionException( "unable to locate resource to remove " + resourceId , ne );
+            throw new RbacActionException( "unable to locate resource to remove " + resourceId, ne );
         }
         return SUCCESS;
     }
@@ -125,16 +113,6 @@ public class ResourceActions
     public void setResource( Resource resource )
     {
         this.resource = resource;
-    }
-
-    public List getResources()
-    {
-        return resources;
-    }
-
-    public void setResources( List resources )
-    {
-        this.resources = resources;
     }
 
     public boolean isSave()
