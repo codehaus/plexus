@@ -128,12 +128,17 @@ public class JdoRbacManagerTest
         assertNotNull( getRbacManager() );
 
         Resource resource = getRbacManager().createResource( "foo" );
+        Resource resource2 = getRbacManager().createResource( "bar" );
 
         assertNotNull( resource );
 
         Resource added = getRbacManager().addResource( resource );
+        Resource added2 = getRbacManager().addResource( resource2 );
 
-        assertEquals( 1, getRbacManager().getAllResources().size() );
+
+        assertEquals( 2, getRbacManager().getAllResources().size() );
+
+        System.out.println("resource id - " + added.getId() + " " + added2.getId() );
 
         assertNotNull( added );
 
