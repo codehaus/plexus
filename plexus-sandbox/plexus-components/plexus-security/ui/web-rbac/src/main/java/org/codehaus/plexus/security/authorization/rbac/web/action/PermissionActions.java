@@ -30,8 +30,9 @@ import java.util.List;
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
- * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="plexusSecurityPermission"
+ * @plexus.component
+ *   role="com.opensymphony.xwork.Action"
+ *   role-hint="plexusSecurityPermission"
  */
 public class PermissionActions
     extends PlexusActionSupport implements Preparable, ModelDriven
@@ -83,7 +84,7 @@ public class PermissionActions
         {
             manager.addPermission( permission );
         }
-       
+
         return SUCCESS;
     }
 
