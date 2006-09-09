@@ -51,7 +51,8 @@ public interface UserManager
      * @return the user that was just updated.
      * @throws UserNotFoundException if the user was not found to update.
      */
-    User updateUser( User user );
+    User updateUser( User user )
+        throws UserNotFoundException;
     
     /**
      * Find a User using a User name.

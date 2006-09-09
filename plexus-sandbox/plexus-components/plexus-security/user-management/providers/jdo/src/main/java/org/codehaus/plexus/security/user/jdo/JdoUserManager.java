@@ -93,7 +93,7 @@ public class JdoUserManager
         
         getUserSecurityPolicy().changeUserPassword( user );
         
-        return (User) PlexusJdoUtils.addObject( getPersistenceManager(), user );
+        return (User) addObject( user );
     }
 
     public void deleteUser( Object principal )
@@ -102,7 +102,7 @@ public class JdoUserManager
         {
             User user = findUser( principal );
 
-            PlexusJdoUtils.removeObject( getPersistenceManager(), (JdoUser) user );
+            removeObject( (JdoUser) user );
         }
         catch ( UserNotFoundException e )
         {
@@ -152,7 +152,7 @@ public class JdoUserManager
         return (User) getObjectById( JdoUser.class, username );
     }
 
-    public User updateUser( User user )
+    public User updateUser( User user ) throws UserNotFoundException
     {
         if ( !( user instanceof JdoUser ) )
         {
@@ -167,14 +167,7 @@ public class JdoUserManager
             getUserSecurityPolicy().changeUserPassword( user );
         }
 
-        try
-        {
-            PlexusJdoUtils.updateObject( getPersistenceManager(), (JdoUser) user );
-        }
-        catch ( PlexusStoreException e )
-        {
-            throw new UserManagerException( "Unable to update user.", e );
-        }
+        updateObject( (JdoUser) user );
 
         return user;
     }

@@ -11,8 +11,7 @@
   </defaults>
 
   <classes>
-    <class stash.storable="true" jpox.use-identifiers-as-primary-key="false" 
-           jpox.xidentity-class="org.codehaus.plexus.security.user.jdo.UsernamePrimaryKey">
+    <class stash.storable="true" jpox.use-identifiers-as-primary-key="false">
       <name>JdoUser</name>
       <version>1.0.0+</version>
       <interfaces>
@@ -23,7 +22,7 @@
                   role-hint="jdo"
       </description>
       <fields>
-        <field jpox.primary-key="true">
+        <field jpox.primary-key="true" jpox.value-strategy="" jpox.persistence-modifier="persistent">
           <name>username</name>
           <version>1.0.0+</version>
           <type>String</type>
