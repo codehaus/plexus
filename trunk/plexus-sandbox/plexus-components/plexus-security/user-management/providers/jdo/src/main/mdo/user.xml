@@ -22,7 +22,7 @@
                   role-hint="jdo"
       </description>
       <fields>
-        <field jpox.primary-key="true" jpox.value-strategy="" jpox.persistence-modifier="persistent">
+        <field jpox.primary-key="true" jpox.value-strategy="off" jpox.persistence-modifier="persistent">
           <name>username</name>
           <version>1.0.0+</version>
           <type>String</type>
