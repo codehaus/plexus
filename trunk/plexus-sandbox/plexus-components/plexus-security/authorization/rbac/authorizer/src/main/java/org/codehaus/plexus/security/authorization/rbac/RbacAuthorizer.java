@@ -68,7 +68,7 @@ public class RbacAuthorizer
 
         try
         {
-            Set permissions = manager.getAssignedPermissions( principal.toString() );
+            Set permissions = manager.getAssignedPermissions( principal );
 
             for ( Iterator i = permissions.iterator(); i.hasNext(); )
             {
@@ -84,11 +84,11 @@ public class RbacAuthorizer
         }
         catch ( PermissionEvaluationException pe )
         {
-            throw new AuthorizationException( "error evaluating permissions", pe );
+            return new AuthorizationResult( false, null, pe );
         }
         catch ( RbacObjectNotFoundException nfe)
         {
-            throw new AuthorizationException( "error with rbac manager", nfe );
+            return new AuthorizationResult( false, null, nfe );
         }
     }
 }
