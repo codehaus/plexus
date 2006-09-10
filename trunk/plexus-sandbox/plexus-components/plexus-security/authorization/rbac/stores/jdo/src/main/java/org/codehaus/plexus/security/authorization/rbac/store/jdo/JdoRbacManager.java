@@ -36,11 +36,10 @@ import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
-import java.util.List;
-
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Transaction;
+import java.util.List;
 
 /**
  * JdoRbacManager:
@@ -411,7 +410,14 @@ public class JdoRbacManager extends AbstractRBACManager
     {
         try
         {
-            return PlexusJdoUtils.getObjectById( getPersistenceManager(), clazz, id.toString() );
+            if ( id == null )
+            {
+                throw new RbacObjectNotFoundException( "Unable to find RBAC object because id was null" );
+            }
+            else
+            {
+                return PlexusJdoUtils.getObjectById( getPersistenceManager(), clazz, id.toString() );
+            }
         }
         catch ( PlexusObjectNotFoundException e )
         {
