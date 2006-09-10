@@ -47,6 +47,13 @@ public interface Role
      * @param permission
      */
     public void addPermission( Permission permission );
+    
+    /**
+     * Method addChildRole
+     * 
+     * @param childRole
+     */
+    public void addChildRole( Role childRole );
 
     /**
      * Method getChildRoles
