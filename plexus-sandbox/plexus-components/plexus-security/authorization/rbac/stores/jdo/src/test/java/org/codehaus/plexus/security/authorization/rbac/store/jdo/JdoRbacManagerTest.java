@@ -20,7 +20,6 @@ import org.codehaus.plexus.jdo.ConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.JdoFactory;
 import org.codehaus.plexus.security.authorization.store.test.AbstractRbacManagerTestCase;
-import org.codehaus.plexus.security.rbac.AbstractRBACManager;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.jpox.SchemaTool;
 
@@ -89,6 +88,6 @@ public class JdoRbacManagerTest
 
         pm.close();
 
-        setRbacManager( (AbstractRBACManager) lookup( RBACManager.ROLE, "jdo" ) );
+        setRbacManager( (JdoRbacManager) lookup( RBACManager.ROLE, "jdo" ) );
     }
 }

@@ -40,7 +40,7 @@ public class OperationActions
      */
     private RBACManager manager;
 
-    private String operationName;
+    private int operationId;
 
     private Operation operation;
 
@@ -51,8 +51,8 @@ public class OperationActions
         {
             try
             {
-                operation = manager.getOperation( operationName );
-                operationName = operation.getName();
+                operation = manager.getOperation( operationId );
+                operationId = operation.getId();
             }
             catch ( RbacObjectNotFoundException ne )
             {
@@ -65,7 +65,7 @@ public class OperationActions
     {
         try
         {
-            Operation temp = manager.getOperation( operation.getName() );
+            Operation temp = manager.getOperation( operation.getId() );
 
             temp.setName( operation.getName() );
             temp.setDescription( operation.getDescription() );
@@ -85,11 +85,11 @@ public class OperationActions
     {
         try
         {
-            manager.removeOperation( manager.getOperation( operationName ) );
+            manager.removeOperation( manager.getOperation( operationId ) );
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            throw new RbacActionException( "unable to locate operation to remove " + operationName, ne );
+            throw new RbacActionException( "unable to locate operation to remove " + operationId, ne );
         }
         return SUCCESS;
     }
@@ -100,14 +100,14 @@ public class OperationActions
         return operation;
     }
 
-    public String getOperationName()
+    public int getOperationId()
     {
-        return operationName;
+        return operationId;
     }
 
-    public void setOperationName( String operationName )
+    public void setOperationId( int operationId )
     {
-        this.operationName = operationName;
+        this.operationId = operationId;
     }
 
     public void setOperation( Operation operation )

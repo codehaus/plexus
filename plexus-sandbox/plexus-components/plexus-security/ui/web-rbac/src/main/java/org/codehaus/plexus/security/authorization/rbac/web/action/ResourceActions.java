@@ -39,7 +39,7 @@ public class ResourceActions
      */
     private RBACManager manager;
 
-    private String resourceIdentifier;
+    private int resourceId;
 
     private Resource resource;
 
@@ -50,8 +50,8 @@ public class ResourceActions
         {
             try
             {
-                resource = manager.getResource( resourceIdentifier );
-                resourceIdentifier = resource.getIdentifier();
+                resource = manager.getResource( resourceId );
+                resourceId = resource.getId();
             }
             catch ( RbacObjectNotFoundException ne )
             {
@@ -66,7 +66,7 @@ public class ResourceActions
         try
         {
             // todo figure out if there is anyway to actually have this model driven action work with jdo objects
-            Resource temp = manager.getResource( resourceIdentifier );
+            Resource temp = manager.getResource( resourceId );
 
             temp.setIdentifier( resource.getIdentifier() );
             temp.setPattern( resource.isPattern() );
@@ -86,28 +86,29 @@ public class ResourceActions
     {
         try
         {
-            manager.removeResource( manager.getResource( resourceIdentifier ) );
+            manager.removeResource( manager.getResource( resourceId ) );
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            throw new RbacActionException( "unable to locate resource to remove " + resourceIdentifier, ne );
+            throw new RbacActionException( "unable to locate resource to remove " + resourceId, ne );
         }
         return SUCCESS;
     }
+
 
     public Object getModel()
     {
         return resource;
     }
 
-    public String getResourceIdentifier()
+    public int getResourceId()
     {
-        return resourceIdentifier;
+        return resourceId;
     }
 
-    public void setResourceIdentifier( String resourceIdentifier )
+    public void setResourceId( int resourceId )
     {
-        this.resourceIdentifier = resourceIdentifier;
+        this.resourceId = resourceId;
     }
 
     public void setResource( Resource resource )
