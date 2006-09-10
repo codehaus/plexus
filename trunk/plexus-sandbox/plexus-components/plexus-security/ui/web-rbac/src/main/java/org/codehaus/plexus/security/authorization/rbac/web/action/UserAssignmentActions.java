@@ -23,6 +23,7 @@ import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class UserAssignmentActions
      */
     private RBACManager manager;
 
-    private int roleId;
+    private String roleName;
 
     private String principal;
 
@@ -56,7 +57,7 @@ public class UserAssignmentActions
     {
         try
         {
-            assignedRoles = manager.getAssignedRoles( principal ).getRoles();
+            assignedRoles = new ArrayList( manager.getAssignedRoles( principal ).values() );
 
             availableRoles = manager.getAllAssignableRoles();
         }
@@ -78,7 +79,7 @@ public class UserAssignmentActions
         {
             UserAssignment assignment = manager.createUserAssignment( principal );
 
-            assignment.getRoles().addRole( manager.getRole( roleId ) );
+            assignment.addRole( manager.getRole( roleName ) );
         }
         catch ( RbacObjectNotFoundException ne )
         {
@@ -88,7 +89,15 @@ public class UserAssignmentActions
         return SUCCESS;
     }
 
-
+    /* TODO: We should be careful with use of 'remove' vs 'delete' or just spell it out.
+     * 
+     * For example, this method should just 'detach' the role from this particular user assignment, not actually 
+     * delete the role from the underlying usermanager.
+     * 
+     * To do that, a call to usermanager.removeRole() should remove the role entirely.
+     * 
+     * TODO: Do we need the ability to do a reverse lookup.  Given a role, get a list of Users with it set? 
+     */
     public String removeRole()
         throws RbacActionException
     {
@@ -96,7 +105,7 @@ public class UserAssignmentActions
         {
             UserAssignment assignment = manager.getUserAssignment( principal );
 
-            assignment.getRoles().removeRole( manager.getRole( roleId ) );
+            assignment.getRoles().remove( roleName );
         }
         catch ( RbacObjectNotFoundException ne )
         {
@@ -106,15 +115,14 @@ public class UserAssignmentActions
         return SUCCESS;
     }
 
-
-    public int getRoleId()
+    public String getRoleName()
     {
-        return roleId;
+        return roleName;
     }
 
-    public void setRoleId( int roleId )
+    public void setRoleName( String roleName )
     {
-        this.roleId = roleId;
+        this.roleName = roleName;
     }
 
     public String getPrincipal()
