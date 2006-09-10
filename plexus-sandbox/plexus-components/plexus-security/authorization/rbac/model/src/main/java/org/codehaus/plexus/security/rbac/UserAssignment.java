@@ -49,6 +49,13 @@ public interface UserAssignment
      * Get the roles for this user.
      */
     public Map getRoles();
+    
+    /**
+     * Add a role to this assignment.
+     * 
+     * @param role the role.
+     */
+    public void addRole( Role role );
 
     /**
      * Set the user principal object for this association.
