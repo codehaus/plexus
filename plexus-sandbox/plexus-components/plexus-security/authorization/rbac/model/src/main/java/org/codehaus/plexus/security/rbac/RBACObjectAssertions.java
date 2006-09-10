@@ -116,7 +116,7 @@ public class RBACObjectAssertions
 
         if ( StringUtils.isEmpty( operation.getName() ) )
         {
-            throw new RbacObjectInvalidException( scope, "Operation objects must have name." );
+            throw new RbacObjectInvalidException( scope, "Operation.name must not be empty." );
         }
     }
 
@@ -156,7 +156,7 @@ public class RBACObjectAssertions
 
         if ( StringUtils.isEmpty( assignment.getPrincipal() ) )
         {
-            throw new RbacObjectInvalidException( scope, "UserAssigment.principal cannot by empty." );
+            throw new RbacObjectInvalidException( scope, "UserAssigment.principal cannot be empty." );
         }
 
         if ( assignment.getRoles() == null )
