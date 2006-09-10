@@ -12,10 +12,11 @@
     </p>
     <ww:actionerror/>
     <ww:form action="saveResource" method="post">
-      <ww:hidden name="save" value="true"/>
+      <ww:hidden name="resourceId"/>
 
-     <ww:textfield label="identifier" name="identifier"/> <br/>
-     <ww:checkbox label="isPattern" name="pattern"/> <br/>
+      <ww:textfield label="id" name="id"/> <br/>
+      <ww:textfield label="identifier" name="identifier"/> <br/>
+      <ww:checkbox label="isPattern" name="pattern"/> <br/>
 
 
       <center><ww:submit/></center>

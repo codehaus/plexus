@@ -7,17 +7,17 @@
   <package name="default" extends="webwork-default" namespace="/">
 
     <default-interceptor-ref name="defaultStack"/>
-    
+
     <action name="plexusSecuritySystem" class="plexusSecuritySystem">
       <result name="success">/plexusSecuritySystem.jsp</result>
     </action>
-    
+
     <action name="login" class="session" method="login">
       <result name="input">/login.jsp</result>
       <result name="error">/login.jsp</result>
       <result name="success" type="chain">status</result>
     </action>
-    
+
     <action name="newuser" class="session" method="newuser">
       <result name="success">/login.jsp</result>
       <result name="error">/newuser.jsp</result>
@@ -40,10 +40,12 @@
     </action>
 
     <action name="permission" class="plexusSecurityPermission">
+      <interceptor-ref name="paramsPrepareParamsStack"/>
       <result name="success">/permission.jsp</result>
     </action>
 
     <action name="savePermission" class="plexusSecurityPermission" method="save">
+      <interceptor-ref name="paramsPrepareParamsStack"/>
       <result name="success" type="redirect-action">permissions</result>
     </action>
 
@@ -52,10 +54,12 @@
     </action>
 
     <action name="operation" class="plexusSecurityOperation">
+      <interceptor-ref name="paramsPrepareParamsStack"/>
       <result name="success">/operation.jsp</result>
     </action>
 
     <action name="saveOperation" class="plexusSecurityOperation" method="save">
+      <interceptor-ref name="paramsPrepareParamsStack"/>
       <result name="success" type="redirect-action">operations</result>
     </action>
 
@@ -64,10 +68,12 @@
     </action>
 
     <action name="resource" class="plexusSecurityResource">
+      <interceptor-ref name="paramsPrepareParamsStack"/>
       <result name="success">/resource.jsp</result>
     </action>
 
     <action name="saveResource" class="plexusSecurityResource" method="save">
+      <interceptor-ref name="paramsPrepareParamsStack"/>
       <result name="success" type="redirect-action">resources</result>
     </action>
 
@@ -76,10 +82,12 @@
     </action>
 
     <action name="role" class="plexusSecurityRole">
+      <interceptor-ref name="paramsPrepareParamsStack"/>
       <result name="success">/role.jsp</result>
     </action>
 
     <action name="saveRole" class="plexusSecurityRole" method="save">
+      <interceptor-ref name="paramsPrepareParamsStack"/>
       <result name="success" type="redirect-action">roles</result>
     </action>
   </package>

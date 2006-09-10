@@ -12,6 +12,7 @@
 </p>
 <ww:actionerror/>
 <ww:form action="saveOperation" method="post">
+  <ww:hidden name="operationId"/>
 
   <ww:textfield label="name" name="name"/> <br/>
   <ww:textfield label="description" name="description"/> <br/>
