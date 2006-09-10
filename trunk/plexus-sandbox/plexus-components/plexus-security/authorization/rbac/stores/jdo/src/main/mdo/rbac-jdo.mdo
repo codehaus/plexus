@@ -165,6 +165,7 @@
       <interfaces>
         <interface>org.codehaus.plexus.security.rbac.UserAssignment</interface>
       </interfaces>
+      <superClass>org.codehaus.plexus.security.rbac.AbstractUserAssignment</superClass>
       <fields>
         <field jpox.primary-key="true" jpox.value-strategy="off">
           <name>principal</name>
