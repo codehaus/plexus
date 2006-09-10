@@ -15,10 +15,10 @@
     </dependency>
   </dependencies>
   <modules>
+    <module>test</module>
     <module>jdo</module>
-    <module>test</module> 
-    <!--
     <module>memory</module>
+    <!--
     <module>xstream</module>
     -->
   </modules>
