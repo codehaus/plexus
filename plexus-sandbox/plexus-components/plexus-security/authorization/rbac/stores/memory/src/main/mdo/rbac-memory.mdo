@@ -23,10 +23,19 @@
             <multiplicity>1</multiplicity>
           </association>
         </field>
+        <field>
+          <name>resources</name>
+          <version>1.0.0</version>
+          <type>Map</type>
+          <association java.init="field" stash.part="true" stash.keyType="java.lang.String">
+            <type>MemoryResource</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
         <field xml.tagName="user-assignments">
           <name>userAssignments</name>
           <version>1.0.0</version>
-          <association>
+          <association java.init="field">
             <type>MemoryUserAssignment</type>
             <multiplicity>*</multiplicity>
           </association>
@@ -86,7 +95,7 @@ Do not set this field in application code, as any value you set may cause uninte
         <field>
           <name>permissions</name>
           <version>1.0.0</version>
-          <association stash.part="true" java.generate-break="false" java.generate-create="false" java.use-interface="org.codehaus.plexus.security.rbac.Permission">
+          <association stash.part="true" java.init="field" java.generate-break="false" java.generate-create="false" java.use-interface="org.codehaus.plexus.security.rbac.Permission">
             <type>MemoryPermission</type>
             <multiplicity>*</multiplicity>
           </association>
@@ -117,7 +126,7 @@ Do not set this field in application code, as any value you set may cause uninte
         <field>
           <name>roles</name>
           <version>1.0.0</version>
-          <association stash.part="true" java.generate-break="false" java.generate-create="false" java.use-interface="org.codehaus.plexus.security.rbac.Role">
+          <association stash.part="true" java.init="field" java.generate-break="false" java.generate-create="false" java.use-interface="org.codehaus.plexus.security.rbac.Role">
             <type>MemoryRole</type>
             <multiplicity>*</multiplicity>
           </association>
@@ -272,7 +281,7 @@ Do not set this field in application code, as any value you set may cause uninte
         <field>
           <name>roles</name>
           <version>1.0.0</version>
-          <association stash.part="true" java.use-interface="org.codehaus.plexus.security.rbac.Roles">
+          <association stash.part="true" java.init="field" java.use-interface="org.codehaus.plexus.security.rbac.Roles">
             <type>MemoryRoles</type>
             <multiplicity>1</multiplicity>
           </association>
