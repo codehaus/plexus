@@ -1,10 +1,5 @@
 package org.codehaus.plexus.security.acegi;
 
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.security.PlexusSecurityRealm;
-
-import java.util.Map;
-import java.util.HashMap;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -20,6 +15,11 @@ import java.util.HashMap;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.security.authentication.Authenticator;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * TestAcegiAuthenticationStore:
@@ -27,20 +27,16 @@ import java.util.HashMap;
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  */
-public class TestAcegiAuthenticationStore
+public class TestAcegiAuthenticator
     extends PlexusTestCase
 {
 
-    public void setUp() throws Exception
+    public void testLookup()
+        throws Exception
     {
-        super.setUp();
+        Authenticator component = (Authenticator) lookup( Authenticator.ROLE, "acegi" );
+        assertNotNull( component );
     }
-
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
-    }
-
 
     /**
      * 
@@ -53,11 +49,8 @@ public class TestAcegiAuthenticationStore
             tokens.put( "authTokenType", "org.acegisecurity.providers.UsernamePasswordAuthenticationToken" );
             tokens.put( "username", "foo" );
             tokens.put( "password", "bar" );
-            PlexusSecurityRealm psr = (PlexusSecurityRealm)lookup( "org.codehaus.plexus.security.PlexusSecurityRealm");
-
-            assertTrue( psr.isAuthenticated( tokens ) );
         }
-        catch (Exception e)
+        catch ( Exception e )
         {
             e.printStackTrace();
             fail();
