@@ -25,7 +25,8 @@ import org.codehaus.plexus.security.authentication.Authenticator;
 import java.util.Map;
 
 /**
- * AcegiAuthenticationStore:
+ * {@link Authenticator} implementation that uses the appropriate Acegi 
+ * authentication provider implementation.<p>
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
@@ -34,15 +35,21 @@ import java.util.Map;
 public class AcegiAuthenticator
     implements Authenticator
 {
-    /**
-     * @plexus.requirement
-     */
-    private ProviderManager manager;
 
     /**
+     * Token factory creates an Acegi authentication wrapper around credentials
+     * that is used by the Acegi authentication provider.  
      * @plexus.requirement
      */
     private AuthenticationTokenFactory tokenFactory;
+
+    /**
+     * ProviderManager is the actual Acegi entity here that does the authentication 
+     * after the {@link #tokenFactory} has return an Acegi {@link Authentication} 
+     * request object.
+     * @plexus.requirement
+     */
+    private ProviderManager manager;
 
     /**
      * @see org.codehaus.plexus.security.authentication.Authenticator#authenticate(org.codehaus.plexus.security.authentication.AuthenticationDataSource)
