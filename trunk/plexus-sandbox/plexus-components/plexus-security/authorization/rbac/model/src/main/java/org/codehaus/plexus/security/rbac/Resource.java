@@ -48,9 +48,17 @@ public interface Resource
     public static final String NULL = "";
 
     /**
+     * Implementation managed ID for this object.
+     *
+     * NOTE: There is intentionally no .setId(int) object.
+     *
+     * @return the id for this object.
+     */
+    public int getId();
+
+    /**
      * Get The string identifier for an operation.
      *
-     * NOTE: This field is considered the Primary Key for this object.
      */
     public String getIdentifier();
 
@@ -66,8 +74,7 @@ public interface Resource
     /**
      * Set The string identifier for an operation.
      *
-     * NOTE: This field is considered the Primary Key for this object.
-     * 
+     *
      * @param identifier
      */
     public void setIdentifier( String identifier );

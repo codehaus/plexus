@@ -21,8 +21,6 @@ import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
@@ -52,19 +50,6 @@ public class LoginAction
     {
         if ( username != null && password != null )
         {
-            //
-            // this can be removed once we have a functional user management system
-            //
-            UserManager um = securitySystem.getUserManager();
-
-            String fullName = "bobs your uncle";
-            String emailAddress = "fake@address.com";
-            
-            User user = um.createUser( username, fullName, emailAddress );
-            user.setPassword( password );
-
-            um.addUser( user );
-
             try
             {
                 SecuritySession securitySession =

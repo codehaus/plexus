@@ -36,16 +36,21 @@ public interface Permission
     public static final String ROLE = Permission.class.getName();
 
     /**
+     * Implementation managed ID for this object.
+     *
+     * NOTE: There is intentionally no .setId(int) object.
+     *
+     * @return the id for this object.
+     */
+    public int getId();
+
+    /**
      * Long description of the Permission
      */
     public String getDescription();
 
     /**
-     * Get the short name of the permission.
-     * 
-     * NOTE: This field is considered the Primary Key for this object.
-     * 
-     * @return the short name for this permission.
+     * short name of the permission
      */
     public String getName();
 
@@ -71,7 +76,7 @@ public interface Permission
     public void setDescription( String description );
 
     /**
-     * Set the short name for this permission.
+     * Set null
      *
      * @param name
      */

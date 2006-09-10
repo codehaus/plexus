@@ -1,7 +1,5 @@
 package org.codehaus.plexus.security.rbac;
 
-import java.util.Map;
-
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
  *
@@ -37,30 +35,17 @@ public interface UserAssignment
     public static final String ROLE = UserAssignment.class.getName();
     
     /**
-     * The principal for the User that the set of roles is associated with.
-     * 
-     * NOTE: This field is considered the Primary Key for this object.
-     * 
-     * @return the principal for the User.
+     * The principal for the User that the set of roles is associated with. 
      */
     public String getPrincipal();
 
     /**
      * Get the roles for this user.
      */
-    public Map getRoles();
-    
-    /**
-     * Add a role to this assignment.
-     * 
-     * @param role the role.
-     */
-    public void addRole( Role role );
+    public Roles getRoles();
 
     /**
      * Set the user principal object for this association.
-     * 
-     * NOTE: This field is considered the Primary Key for this object.
      * 
      * @param principal
      */
@@ -71,5 +56,5 @@ public interface UserAssignment
      * 
      * @param roles the roles
      */
-    public void setRoles( Map roles );
+    public void setRoles( Roles roles );
 }
