@@ -35,6 +35,15 @@ public interface Operation
     public static final String ROLE = Operation.class.getName();
 
     /**
+     * Implementation managed ID for this object.
+     *
+     * NOTE: There is intentionally no .setId(int) object.
+     *
+     * @return the id for this object.
+     */
+    public int getId();
+
+    /**
      * Long description of an operation.
      *
      * @return String
@@ -45,10 +54,6 @@ public interface Operation
      * name of the operation that is used in the act of authorization
      *
      * 'modify-foo', 'change-password'
-     * 
-     * NOTE: This field is considered the Primary Key for this object.
-     * 
-     * @return the name of the operation.
      */
     public String getName();
 
@@ -59,11 +64,7 @@ public interface Operation
     public void setDescription( String description );
 
     /**
-     * Set name of the operation that is used in the act of authorization
-     * 
-     * 'modify-foo', 'change-password'
-     * 
-     * NOTE: This field is considered the Primary Key for this object.
+     * Set name
      * 
      * @param name
      */
