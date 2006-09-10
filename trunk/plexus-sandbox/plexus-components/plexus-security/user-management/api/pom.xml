@@ -6,7 +6,7 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-user-management-api</artifactId>
-  <name>Plexus Security :: User Manager API</name>
+  <name>Plexus Security :: User Management API</name>
 
   <build>
     <plugins>
