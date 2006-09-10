@@ -17,6 +17,7 @@ package org.codehaus.plexus.security.rbac;
  */
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Role 
@@ -41,25 +42,23 @@ public interface Role
     public static final String ROLE = Role.class.getName();
 
     /**
-     * Implementation managed ID for this object.
-     *
-     * NOTE: There is intentionally no .setId(int) object.
-     *
-     * @return the id for this object.
-     */
-    public int getId();
-
-    /**
      * Method addPermission
      *
      * @param permission
      */
     public void addPermission( Permission permission );
+    
+    /**
+     * Method addChildRole
+     * 
+     * @param childRole
+     */
+    public void addChildRole( Role childRole );
 
     /**
      * Method getChildRoles
      */
-    public Roles getChildRoles();
+    public Map getChildRoles();
     
     /**
      * Convienence method to see if Role has Child Roles.
@@ -74,7 +73,9 @@ public interface Role
     public String getDescription();
 
     /**
-     * Get null
+     * Get the name.
+     * 
+     * NOTE: This field is considered the Primary Key for this object.
      */
     public String getName();
 
@@ -107,24 +108,26 @@ public interface Role
      *
      * @param roles
      */
-    public void setChildRoles( Roles roles );
+    public void setChildRoles( Map roles );
 
     /**
-     * Set null
+     * Set the Description
      *
      * @param description
      */
     public void setDescription( String description );
 
     /**
-     * Set null
+     * Set Name
+     * 
+     * NOTE: This field is considered the Primary Key for this object.
      *
      * @param name
      */
     public void setName( String name );
 
     /**
-     * Set null
+     * Set Permissions
      *
      * @param permissions
      */

@@ -19,22 +19,11 @@
       </interfaces>
       <superClass>org.codehaus.plexus.security.rbac.AbstractRole</superClass>
       <fields>
-        <field>
-          <name>id</name>
-          <version>1.0.0</version>
-          <type>int</type>
-          <description>JDO ID.
-
-WARNING: The jdoId field is managed by the underlying JDO implementation.
-
-Do not set this field in application code, as any value you set may cause unintended side effects with the persistence of this object.
-          </description>
-          <identifier>true</identifier>
-        </field>
-        <field>
+        <field jpox.primary-key="true" jpox.value-strategy="off">
           <name>name</name>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>description</name>
@@ -52,9 +41,10 @@ Do not set this field in application code, as any value you set may cause uninte
         <field>
           <name>childRoles</name>
           <version>1.0.0</version>
-          <association stash.part="true" java.generate-break="false" java.generate-create="false" java.use-interface="org.codehaus.plexus.security.rbac.Roles">
-            <type>JdoRoles</type>
-            <multiplicity>1</multiplicity>
+          <type>Map</type>
+          <association stash.part="true" java.init="field" java.generate-break="false" java.generate-create="false" stash.keyType="java.lang.String">
+            <type>JdoRole</type>
+            <multiplicity>*</multiplicity>
           </association>
           <description>
             roles that will inherit the permissions of this role
@@ -63,7 +53,7 @@ Do not set this field in application code, as any value you set may cause uninte
         <field>
           <name>permissions</name>
           <version>1.0.0</version>
-          <association stash.part="true" java.generate-break="false" java.generate-create="false" java.use-interface="org.codehaus.plexus.security.rbac.Permission">
+          <association stash.part="true" java.init="field" java.generate-break="false" java.generate-create="false" java.use-interface="org.codehaus.plexus.security.rbac.Permission">
             <type>JdoPermission</type>
             <multiplicity>*</multiplicity>
           </association>
@@ -71,37 +61,6 @@ Do not set this field in application code, as any value you set may cause uninte
       </fields>
     </class>
 
-    <class>
-      <name>JdoRoles</name>
-      <version>1.0.0</version>
-      <interfaces>
-        <interface>org.codehaus.plexus.security.rbac.Roles</interface>
-      </interfaces>
-      <superClass>org.codehaus.plexus.security.rbac.AbstractRoles</superClass>
-      <fields>
-        <field>
-          <name>id</name>
-          <version>1.0.0</version>
-          <type>int</type>
-          <description>JDO ID.
-
-WARNING: The jdoId field is managed by the underlying JDO implementation.
-
-Do not set this field in application code, as any value you set may cause unintended side effects with the persistence of this object.
-          </description>
-          <identifier>true</identifier>
-        </field>
-        <field>
-          <name>roles</name>
-          <version>1.0.0</version>
-          <association stash.part="true" java.generate-break="false" java.generate-create="false" java.use-interface="org.codehaus.plexus.security.rbac.Role">
-            <type>JdoRole</type>
-            <multiplicity>*</multiplicity>
-          </association>
-        </field>
-      </fields>
-    </class>
-   
     <class jpox.stashable="true">
       <name>JdoPermission</name>
       <version>1.0.0</version>
@@ -109,22 +68,11 @@ Do not set this field in application code, as any value you set may cause uninte
         <interface>org.codehaus.plexus.security.rbac.Permission</interface>
       </interfaces>
       <fields>
-        <field>
-          <name>id</name>
-          <version>1.0.0</version>
-          <type>int</type>
-          <description>JDO ID.
-
-WARNING: The jdoId field is managed by the underlying JDO implementation.
-
-Do not set this field in application code, as any value you set may cause unintended side effects with the persistence of this object.
-          </description>
-          <identifier>true</identifier>
-        </field>
-        <field>
+        <field jpox.primary-key="true" jpox.value-strategy="off">
           <name>name</name>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>description</name>
@@ -157,22 +105,11 @@ Do not set this field in application code, as any value you set may cause uninte
         <interface>org.codehaus.plexus.security.rbac.Operation</interface>
       </interfaces>
       <fields>
-        <field>
-          <name>id</name>
-          <version>1.0.0</version>
-          <type>int</type>
-          <description>JDO ID.
-
-WARNING: The jdoId field is managed by the underlying JDO implementation.
-
-Do not set this field in application code, as any value you set may cause unintended side effects with the persistence of this object.
-          </description>
-          <identifier>true</identifier>
-        </field>
-        <field>
+        <field jpox.primary-key="true" jpox.value-strategy="off">
           <name>name</name>
           <version>1.0.0</version>
           <type>String</type>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>description</name>
@@ -200,25 +137,14 @@ Do not set this field in application code, as any value you set may cause uninte
         <interface>org.codehaus.plexus.security.rbac.Resource</interface>
       </interfaces>
       <fields>
-        <field>
-          <name>id</name>
-          <version>1.0.0</version>
-          <type>int</type>
-          <description>JDO ID.
-
-WARNING: The jdoId field is managed by the underlying JDO implementation.
-
-Do not set this field in application code, as any value you set may cause unintended side effects with the persistence of this object.
-          </description>
-          <identifier>true</identifier>
-        </field>
-        <field>
+        <field jpox.primary-key="true" jpox.value-strategy="off">
           <name>identifier</name>
           <version>1.0.0</version>
           <type>String</type>
           <description>
             The string identifier for an operation.
           </description>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>pattern</name>
@@ -239,8 +165,9 @@ Do not set this field in application code, as any value you set may cause uninte
       <interfaces>
         <interface>org.codehaus.plexus.security.rbac.UserAssignment</interface>
       </interfaces>
+      <superClass>org.codehaus.plexus.security.rbac.AbstractUserAssignment</superClass>
       <fields>
-        <field>
+        <field jpox.primary-key="true" jpox.value-strategy="off">
           <name>principal</name>
           <version>1.0.0</version>
           <type>String</type>
@@ -249,9 +176,10 @@ Do not set this field in application code, as any value you set may cause uninte
         <field>
           <name>roles</name>
           <version>1.0.0</version>
-          <association stash.part="true" java.use-interface="org.codehaus.plexus.security.rbac.Roles">
-            <type>JdoRoles</type>
-            <multiplicity>1</multiplicity>
+          <type>Map</type>
+          <association stash.part="true" stash.keyType="java.lang.String">
+            <type>JdoRole</type>
+            <multiplicity>*</multiplicity>
           </association>
         </field>
       </fields>

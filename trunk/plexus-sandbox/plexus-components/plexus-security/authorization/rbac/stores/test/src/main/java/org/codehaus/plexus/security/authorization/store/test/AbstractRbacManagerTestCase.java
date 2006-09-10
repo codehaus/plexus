@@ -75,6 +75,8 @@ public class AbstractRbacManagerTestCase
         assertNotNull( added );
 
         getRbacManager().removeRole( added );
+        
+        assertEquals( 0, getRbacManager().getAllRoles().size() );
     }
 
     public void testResources()
@@ -88,15 +90,15 @@ public class AbstractRbacManagerTestCase
         assertNotNull( resource );
 
         Resource added = getRbacManager().addResource( resource );
+        assertNotNull( added );
         Resource added2 = getRbacManager().addResource( resource2 );
+        assertNotNull( added2 );
 
         assertEquals( 2, getRbacManager().getAllResources().size() );
 
-        System.out.println( "resource id - " + added.getId() + " " + added2.getId() );
-
-        assertNotNull( added );
-
         getRbacManager().removeResource( added );
+        
+        assertEquals( 1, getRbacManager().getAllResources().size() );
     }
 
 }
