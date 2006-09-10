@@ -160,6 +160,12 @@ public class DefaultUserSecurityPolicy
             exception.setViolations( violations );
             throw exception;
         }
+        
+        // If you got this far, then ensure that the password is never null.
+        if( user.getPassword() == null )
+        {
+            user.setPassword( "" );
+        }
     }
 
     public void initialize()
