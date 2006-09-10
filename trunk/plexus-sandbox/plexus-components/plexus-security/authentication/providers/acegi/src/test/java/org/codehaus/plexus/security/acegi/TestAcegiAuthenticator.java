@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.acegi;
  * limitations under the License.
  */
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
 
 import java.util.HashMap;
@@ -42,19 +44,39 @@ public class TestAcegiAuthenticator
      * 
      */
     public void testUsernamePasswordAuthentication()
+        throws Exception
     {
+
+        Map tokens = new HashMap();
+        tokens.put( "authTokenType", "org.acegisecurity.providers.UsernamePasswordAuthenticationToken" );
+        tokens.put( "username", "foo" );
+        tokens.put( "password", "bar" );
+
+        // test case of valid credentials 
+        AcegiAuthenticationDataSource ds = new AcegiAuthenticationDataSource( "foo", "bar", tokens );
+        Authenticator authenticator = (Authenticator) lookup( Authenticator.ROLE, "acegi" );
         try
         {
-            Map tokens = new HashMap();
-            tokens.put( "authTokenType", "org.acegisecurity.providers.UsernamePasswordAuthenticationToken" );
-            tokens.put( "username", "foo" );
-            tokens.put( "password", "bar" );
+            AuthenticationResult result = authenticator.authenticate( ds );
+            assertTrue( result.isAuthenticated() );
         }
-        catch ( Exception e )
+        catch ( AuthenticationException e )
         {
-            e.printStackTrace();
-            fail();
+            fail( "Unexpected Exception!" );
         }
+
+        // test case of invalid credentials
+        ds = new AcegiAuthenticationDataSource( "kill", "bill", tokens );
+        try
+        {
+            AuthenticationResult result = authenticator.authenticate( ds );
+            assertFalse( result.isAuthenticated() );
+        }
+        catch ( AuthenticationException e )
+        {
+            fail( "Unexpected Exception!" );
+        }
+
     }
 
 }
