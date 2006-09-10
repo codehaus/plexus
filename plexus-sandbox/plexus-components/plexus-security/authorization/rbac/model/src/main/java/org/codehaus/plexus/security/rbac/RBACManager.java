@@ -61,15 +61,13 @@ public interface RBACManager
     
     public boolean roleExists( Role role );
     
-    public boolean valid( Role role );
-
     /**
      * Method addRole
      *
      * @param role
      */
     public Role addRole( Role role )
-        throws RbacStoreException;
+        throws RbacObjectInvalidException, RbacStoreException;
 
     /**
      *
@@ -94,7 +92,7 @@ public interface RBACManager
      * @param role
      */
     public void removeRole( Role role )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
     /**
      * Method removeRole
@@ -102,7 +100,7 @@ public interface RBACManager
      * @param roleName
      */
     public void removeRole( String roleName )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
     
     /**
      *
@@ -112,7 +110,7 @@ public interface RBACManager
      * @throws RbacStoreException
      */
     public Role updateRole( Role role )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
     // ------------------------------------------------------------------
     // Permission Methods
@@ -156,10 +154,8 @@ public interface RBACManager
     
     public boolean permissionExists( Permission permission );
     
-    public boolean valid( Permission permission );
-
     public Permission addPermission( Permission permission )
-        throws RbacStoreException;
+        throws RbacObjectInvalidException, RbacStoreException;
 
     public Permission getPermission( String permissionName )
         throws RbacObjectNotFoundException, RbacStoreException;
@@ -168,13 +164,13 @@ public interface RBACManager
         throws RbacStoreException;
 
     public void removePermission( Permission permission )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
     public void removePermission( String permissionName )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
     
     public Permission updatePermission( Permission permission )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
     // ------------------------------------------------------------------
     // Operation Methods
@@ -197,10 +193,8 @@ public interface RBACManager
     
     public boolean operationExists( Operation operation );
     
-    public boolean valid( Operation operation );
-    
     public Operation addOperation( Operation operation )
-        throws RbacStoreException;
+        throws RbacObjectInvalidException, RbacStoreException;
 
     public Operation getOperation( String operationName )
         throws RbacObjectNotFoundException, RbacStoreException;
@@ -209,13 +203,13 @@ public interface RBACManager
         throws RbacStoreException;
 
     public void removeOperation( Operation operation )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
     public void removeOperation( String operationName )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
     
     public Operation updateOperation( Operation operation )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
     // ------------------------------------------------------------------
     // Resource Methods
@@ -237,10 +231,8 @@ public interface RBACManager
     
     public boolean resourceExists( Resource resource );
     
-    public boolean valid( Resource resource );
-    
     public Resource addResource( Resource resource )
-        throws RbacStoreException;
+        throws RbacObjectInvalidException, RbacStoreException;
 
     public Resource getResource( String resourceIdentifier )
         throws RbacObjectNotFoundException, RbacStoreException;
@@ -249,13 +241,13 @@ public interface RBACManager
         throws RbacStoreException;
 
     public void removeResource( Resource resource )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
     public void removeResource( String resourceIdentifier )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
     
     public Resource updateResource( Resource resource )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
     // ------------------------------------------------------------------
     // UserAssignment Methods
@@ -277,15 +269,13 @@ public interface RBACManager
     
     public boolean userAssignmentExists( UserAssignment assignment );
     
-    public boolean valid( UserAssignment assignment  );
-    
     /**
      * Method addUserAssignment
      *
      * @param userAssignment
      */
     public UserAssignment addUserAssignment( UserAssignment userAssignment )
-        throws RbacStoreException;
+        throws RbacObjectInvalidException, RbacStoreException;
 
     public UserAssignment getUserAssignment( String principal )
         throws RbacObjectNotFoundException, RbacStoreException;
@@ -302,7 +292,7 @@ public interface RBACManager
      * @param userAssignment
      */
     public void removeUserAssignment( UserAssignment userAssignment )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
     
     /**
      * Method removeAssignment
@@ -310,10 +300,10 @@ public interface RBACManager
      * @param principal
      */
     public void removeUserAssignment( String principal )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
     public UserAssignment updateUserAssignment( UserAssignment userAssignment )
-        throws RbacObjectNotFoundException, RbacStoreException;
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
     // ------------------------------------------------------------------
     // UserAssignment Utility Methods

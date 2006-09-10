@@ -17,6 +17,8 @@ package org.codehaus.plexus.security.authorization.store.test;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.security.rbac.Operation;
+import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
@@ -66,6 +68,10 @@ public class AbstractRbacManagerTestCase
         Role role = getRbacManager().createRole( "ADMIN", "Administrative User" );
         role.setAssignable( false );
 
+        Permission perm = getRbacManager().createPermission( "EDIT_ANY_USER", "Edit a user account.", "EDIT", "User:*" );
+
+        role.addPermission( perm );
+
         assertNotNull( role );
 
         Role added = getRbacManager().addRole( role );
@@ -75,7 +81,7 @@ public class AbstractRbacManagerTestCase
         assertNotNull( added );
 
         getRbacManager().removeRole( added );
-        
+
         assertEquals( 0, getRbacManager().getAllRoles().size() );
     }
 
@@ -97,7 +103,7 @@ public class AbstractRbacManagerTestCase
         assertEquals( 2, getRbacManager().getAllResources().size() );
 
         getRbacManager().removeResource( added );
-        
+
         assertEquals( 1, getRbacManager().getAllResources().size() );
     }
 
