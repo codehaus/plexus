@@ -26,26 +26,21 @@ import org.codehaus.plexus.security.authorization.rbac.jdo.JdoOperation;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoPermission;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoResource;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoRole;
-import org.codehaus.plexus.security.authorization.rbac.jdo.JdoRoles;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoUserAssignment;
+import org.codehaus.plexus.security.rbac.AbstractRBACManager;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
-import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.RbacStoreException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
-import org.codehaus.plexus.security.rbac.Roles;
 import org.codehaus.plexus.security.rbac.UserAssignment;
+
+import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Transaction;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 /**
  * JdoRbacManager:
@@ -58,8 +53,8 @@ import java.util.Set;
  *   role="org.codehaus.plexus.security.rbac.RBACManager"
  *   role-hint="jdo"
  */
-public class JdoRbacManager
-    implements RBACManager, Initializable
+public class JdoRbacManager extends AbstractRBACManager
+    implements Initializable
 {
     /**
      * @plexus.requirement
@@ -88,7 +83,6 @@ public class JdoRbacManager
         Role role = new JdoRole();
         role.setName( name );
         role.setDescription( description );
-        role.setChildRoles( new JdoRoles() );
         return role;
     }
 
@@ -106,15 +100,15 @@ public class JdoRbacManager
     /**
      *
      *
-     * @param roleId
+     * @param roleName
      * @return
      * @throws RbacObjectNotFoundException
      * @throws RbacStoreException
      */
-    public Role getRole( int roleId )
+    public Role getRole( String roleName )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        return (Role) getObjectById( JdoRole.class, roleId );
+        return (Role) getObjectById( JdoRole.class, roleName );
     }
 
     /**
@@ -129,34 +123,13 @@ public class JdoRbacManager
     public void removeRole( Role role )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        removeObject( slapHandOfBadUsers( role ) );
+        removeObject( role );
     }
 
     public Role updateRole( Role role )
         throws RbacObjectNotFoundException, RbacStoreException
     {
         return (Role) updateObject( role );
-    }
-
-    /**
-     * Internal method to aide in elimination of NullPointer exceptions from bad users.
-     *
-     * @param role
-     * @return
-     */
-    private Role slapHandOfBadUsers( Role role )
-    {
-        if ( role.getChildRoles() == null )
-        {
-            role.setChildRoles( new JdoRoles() );
-        }
-
-        if ( role.getPermissions() == null )
-        {
-            role.setPermissions( new ArrayList() );
-        }
-
-        return role;
     }
 
     // ----------------------------------------------------------------------
@@ -221,10 +194,10 @@ public class JdoRbacManager
         return (Permission) addObject( permission );
     }
 
-    public Permission getPermission( int permissionId )
+    public Permission getPermission( String permissionName )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        return (Permission) getObjectById( JdoPermission.class, permissionId );
+        return (Permission) getObjectById( JdoPermission.class, permissionName );
     }
 
     public List getAllPermissions()
@@ -274,10 +247,10 @@ public class JdoRbacManager
         return (Operation) addObject( operation );
     }
 
-    public Operation getOperation( int operationId )
+    public Operation getOperation( String operationName )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        return (Operation) getObjectById( JdoOperation.class, operationId );
+        return (Operation) getObjectById( JdoOperation.class, operationName );
     }
 
     public List getAllOperations()
@@ -325,10 +298,10 @@ public class JdoRbacManager
         return (Resource) addObject( resource );
     }
 
-    public Resource getResource( int resourceId )
+    public Resource getResource( String resourceIdentifier )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        return (Resource) getObjectById( JdoResource.class, resourceId );
+        return (Resource) getObjectById( JdoResource.class, resourceIdentifier );
     }
 
     public List getAllResources()
@@ -338,13 +311,13 @@ public class JdoRbacManager
     }
 
     public void removeResource( Resource resource )
-        throws RbacStoreException
+        throws RbacObjectNotFoundException, RbacStoreException
     {
         removeObject( resource );
     }
 
     public Resource updateResource( Resource resource )
-        throws RbacStoreException
+        throws RbacObjectNotFoundException, RbacStoreException
     {
         return (Resource) updateObject( resource );
     }
@@ -418,86 +391,6 @@ public class JdoRbacManager
     // UserAssignment Utility Methods
     // ------------------------------------------------------------------
 
-    /**
-     * returns the active roles for a given principal
-     *
-     * NOTE: roles that are returned might have have roles themselves, if
-     * you just want all permissions then use {@link #getAssignedPermissions( Object principal )}
-     *
-     * @param principal
-     * @return
-     * @throws RbacObjectNotFoundException
-     * @throws RbacStoreException
-     */
-    public Roles getAssignedRoles( Object principal )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        UserAssignment ua = getUserAssignment( principal.toString() );
-
-        return ua.getRoles();
-    }
-
-    /**
-     * returns a set of all permissions that are in all active roles for a given
-     * principal
-     *
-     * @param principal
-     * @return
-     * @throws RbacObjectNotFoundException
-     * @throws RbacStoreException
-     */
-    public Set getAssignedPermissions( Object principal )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        UserAssignment ua = getUserAssignment( principal.toString() );
-
-        // TODO: use jpox/jdo query mechanism here instead!
-
-        List flatRoles = ua.getRoles().flattenRoleHierarchy();
-        Set permissionSet = new HashSet();
-
-        Iterator it = flatRoles.iterator();
-        while ( it.hasNext() )
-        {
-            Role role = (Role) it.next();
-            Iterator itperm = role.getPermissions().iterator();
-            while ( itperm.hasNext() )
-            {
-                Permission permission = (Permission) itperm.next();
-                if ( !permissionSet.contains( permission ) )
-                {
-                    permissionSet.add( permission );
-                }
-            }
-        }
-
-        return permissionSet;
-    }
-
-    public List getAllAssignableRoles()
-        throws RbacStoreException
-    {
-        // TODO: use jpox/jdo query mechanism here instead!
-        List allRoles = getAllRoles();
-        List assignableRoles = new ArrayList();
-
-        Iterator it = allRoles.iterator();
-        while ( it.hasNext() )
-        {
-            Role role = (Role) it.next();
-            if ( role.isAssignable() )
-            {
-                assignableRoles.add( role );
-            }
-        }
-
-        return assignableRoles;
-    }
-
-    // ----------------------------------------------------------------------
-    // Component Lifecycle
-    // ----------------------------------------------------------------------
-
     public void initialize()
         throws InitializationException
     {
@@ -570,7 +463,7 @@ public class JdoRbacManager
         return PlexusJdoUtils.getAllObjectsDetached( getPersistenceManager(), clazz, ordering, fetchGroup );
     }
 
-    private Object removeObject( Object o )
+    public Object removeObject( Object o )
     {
         if ( o == null )
         {
