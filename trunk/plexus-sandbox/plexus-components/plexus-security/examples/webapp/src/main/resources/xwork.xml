@@ -49,6 +49,10 @@
       <result name="success" type="redirect-action">permissions</result>
     </action>
 
+    <action name="removePermission" class="plexusSecurityPermission" method="remove">
+      <result name="success" type="redirect-action">permissions</result>
+    </action>
+
     <action name="operations" class="plexusSecuritySummary" method="operationSummary">
       <result name="success">/operations.jsp</result>
     </action>
@@ -60,6 +64,10 @@
 
     <action name="saveOperation" class="plexusSecurityOperation" method="save">
       <interceptor-ref name="paramsPrepareParamsStack"/>
+      <result name="success" type="redirect-action">operations</result>
+    </action>
+
+    <action name="removeOperation" class="plexusSecurityOperation" method="remove">
       <result name="success" type="redirect-action">operations</result>
     </action>
 
@@ -77,6 +85,10 @@
       <result name="success" type="redirect-action">resources</result>
     </action>
 
+    <action name="removeResource" class="plexusSecurityResource" method="remove">
+      <result name="success">/resources.jsp</result>
+    </action>
+
     <action name="roles" class="plexusSecuritySummary" method="roleSummary">
       <result name="success">/roles.jsp</result>
     </action>
@@ -90,5 +102,18 @@
       <interceptor-ref name="paramsPrepareParamsStack"/>
       <result name="success" type="redirect-action">roles</result>
     </action>
+
+    <action name="removeRole" class="plexusSecurityRole" method="remove">
+      <result name="success" type="redirect-action">roles</result>
+    </action>
+
+    <action name="removeAssignedRole" class="plexusSecurityRole" method="removeAssignedRole">
+      <result name="success" type="chain">role</result>
+    </action>
+
+    <action name="removeAssignedPermission" class="plexusSecurityRole" method="removeAssignedPermission">
+      <result name="success" type="chain">role</result>
+    </action>
+
   </package>
 </xwork>
