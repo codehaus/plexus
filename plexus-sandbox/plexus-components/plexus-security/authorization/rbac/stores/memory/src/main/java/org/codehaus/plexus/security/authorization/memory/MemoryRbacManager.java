@@ -1,31 +1,37 @@
 package org.codehaus.plexus.security.authorization.memory;
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.security.authorization.rbac.memory.MemoryRbacModel;
-import org.codehaus.plexus.security.authorization.rbac.memory.MemoryResource;
-import org.codehaus.plexus.security.authorization.rbac.memory.MemoryRole;
-import org.codehaus.plexus.security.authorization.rbac.memory.MemoryRoles;
-import org.codehaus.plexus.security.authorization.rbac.memory.io.xpp3.RBACMemoryModelXpp3Reader;
-import org.codehaus.plexus.security.authorization.rbac.memory.io.xpp3.RBACMemoryModelXpp3Writer;
+/*
+ * Copyright 2001-2006 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import org.codehaus.plexus.security.rbac.AbstractRBACManager;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RBACObjectAssertions;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.RbacStoreException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
-import org.codehaus.plexus.security.rbac.Roles;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * MemoryRbacManager: a very quick and dirty implementation of a rbac store
@@ -41,180 +47,145 @@ import java.util.Set;
  *   role-hint="memory"
  */
 public class MemoryRbacManager
-    implements RBACManager, Initializable
+    extends AbstractRBACManager
+    implements RBACManager
 {
-    private MemoryRbacModel model = null;
+    private Map roles = new HashMap();
 
-    private File rbacStoreFile = null;
+    private Map permissions = new HashMap();
 
-    public File getRbacStoreFile()
-    {
-        if ( rbacStoreFile == null )
-        {
-            rbacStoreFile = new File( getBasedir() + File.separator + "rbac-store-model.xml" );
-        }
-        return rbacStoreFile;
-    }
+    private Map operations = new HashMap();
 
-    public void initialize()
-        throws InitializationException
-    {
-        RBACMemoryModelXpp3Reader reader = new RBACMemoryModelXpp3Reader();
+    private Map resources = new HashMap();
 
-        if ( getRbacStoreFile().exists() )
-        {
-            try
-            {
-                model = reader.read( new FileReader( getRbacStoreFile() ) );
-            }
-            catch ( Exception e )
-            {
-                throw new InitializationException( "error loading file rbac-store-model.xml", e );
-            }
-        }
-        else
-        {
-            model = new MemoryRbacModel();
-        }
-
-        // Satisfy base level settings.
-        if ( model.getRoles() == null )
-        {
-            model.setRoles( new MemoryRoles() );
-        }
-    }
-
-    public void store()
-        throws Exception
-    {
-        RBACMemoryModelXpp3Writer writer = new RBACMemoryModelXpp3Writer();
-
-        writer.write( new FileWriter( getRbacStoreFile() ), model );
-    }
-
-    public static String getBasedir()
-    {
-        String basedir = System.getProperty( "basedir" );
-
-        if ( basedir == null )
-        {
-            basedir = new File( "" ).getAbsolutePath();
-        }
-
-        return basedir;
-    }
+    private Map userAssignments = new HashMap();
 
     // ----------------------------------------------------------------------
     // Role methods
     // ----------------------------------------------------------------------
+
     public Role addRole( Role role )
         throws RbacStoreException
     {
-        model.getRoles().addRole( role );
-        return role;
+        RBACObjectAssertions.assertValid( "Add Role", role );
+
+        return (Role) roles.put( role.getName(), role );
     }
 
-    public Role getRole( int roleId )
+    private void assertRoleExists( String roleName )
         throws RbacObjectNotFoundException
     {
-        return model.getRoles().getRole( roleId );
+        if ( !roles.containsKey( roleName ) )
+        {
+            throw new RbacObjectNotFoundException( "Role '" + roleName + "' does not exist." );
+        }
+    }
+
+    public Role getRole( String roleName )
+        throws RbacObjectNotFoundException
+    {
+        assertRoleExists( roleName );
+
+        return (Role) roles.get( roleName );
+    }
+
+    public void removeRole( Role role )
+        throws RbacStoreException, RbacObjectNotFoundException
+    {
+        RBACObjectAssertions.assertValid( "Remove Role", role );
+
+        assertRoleExists( role.getName() );
+
+        roles.remove( role.getName() );
+    }
+
+    public Role updateRole( Role role )
+        throws RbacObjectNotFoundException, RbacStoreException
+    {
+        RBACObjectAssertions.assertValid( "Update Role", role );
+
+        assertRoleExists( role.getName() );
+
+        return (Role) roles.put( role.getName(), role );
     }
 
     public List getAllRoles()
         throws RbacStoreException
     {
-        return model.getRoles().flattenRoleHierarchy();
-    }
-
-    public List getAssignableRoles()
-        throws RbacStoreException
-    {
-        List assignableRoles = new ArrayList();
-
-        for ( Iterator i = model.getRoles().iterator(); i.hasNext(); )
-        {
-            Role role = (Role) i.next();
-
-            if ( role.isAssignable() )
-            {
-                assignableRoles.add( role );
-            }
-        }
-
-        return assignableRoles;
-    }
-
-    public void removeRole( int roleId )
-        throws RbacStoreException, RbacObjectNotFoundException
-    {
-        // just removing top lvl roles atm.
-        if ( getRole( roleId ) != null )
-        {
-            model.getRoles().removeRole( getRole( roleId ) );
-        }
+        return Collections.unmodifiableList( new ArrayList( roles.values() ) );
     }
 
     // ----------------------------------------------------------------------
     // Permission methods
     // ----------------------------------------------------------------------
-    public void addPermission( int roleId, Permission permission )
-        throws RbacStoreException, RbacObjectNotFoundException
-    {
-        Role role = getRole( roleId );
-
-        role.addPermission( permission );
-    }
-
-    public List getPermissions( int roleId )
-        throws RbacStoreException, RbacObjectNotFoundException
-    {
-        return getRole( roleId ).getPermissions();
-    }
 
     public Operation addOperation( Operation operation )
         throws RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
+        RBACObjectAssertions.assertValid( "Add Operation", operation );
+
+        return (Operation) operations.put( operation.getName(), operation );
     }
 
     public Permission addPermission( Permission permission )
         throws RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
+        RBACObjectAssertions.assertValid( "Add Permission", permission );
+
+        return (Permission) permissions.put( permission.getName(), permission );
     }
 
     public Resource addResource( Resource resource )
         throws RbacStoreException
     {
-        model.addResource( resource.getIdentifier(), (MemoryResource) resource );
-        return resource;
+        RBACObjectAssertions.assertValid( "Add Resource", resource );
+
+        return (Resource) resources.put( resource.getIdentifier(), resource );
     }
 
     public UserAssignment addUserAssignment( UserAssignment userAssignment )
         throws RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
+        RBACObjectAssertions.assertValid( "Add UserAssignment", userAssignment );
+
+        return (UserAssignment) userAssignments.put( userAssignment.getPrincipal(), userAssignment );
     }
 
     public Operation createOperation( String name, String description )
     {
-        // TODO Auto-generated method stub
-        return null;
+        Operation operation = new MemoryOperation();
+        operation.setName( name );
+        operation.setDescription( description );
+
+        return operation;
     }
 
     public Permission createPermission( String name, String description )
     {
-        // TODO Auto-generated method stub
-        return null;
+        Permission permission = new MemoryPermission();
+        permission.setName( name );
+        permission.setDescription( description );
+
+        return permission;
     }
 
-    public Permission createPermission( String name, String description, String operation, String resource )
+    public Permission createPermission( String name, String description, String operationName, String resourceIdentifier )
     {
-        // TODO Auto-generated method stub
-        return null;
+        Permission permission = new MemoryPermission();
+        permission.setName( name );
+        permission.setDescription( description );
+
+        Operation operation = new MemoryOperation();
+        operation.setName( operationName );
+
+        permission.setOperation( operation );
+
+        Resource resource = new MemoryResource();
+        resource.setIdentifier( resourceIdentifier );
+
+        permission.setResource( resource );
+
+        return permission;
     }
 
     public Resource createResource( String identifier )
@@ -234,239 +205,189 @@ public class MemoryRbacManager
         return role;
     }
 
-    public UserAssignment createUserAssignment( Object principal )
+    private void assertPermissionExists( String permissionName )
+        throws RbacObjectNotFoundException
     {
-        // TODO Auto-generated method stub
-        return null;
+        if ( !permissions.containsKey( permissionName ) )
+        {
+            throw new RbacObjectNotFoundException( "Permission '" + permissionName + "' does not exist." );
+        }
     }
 
-    public Operation getOperation( int operationId )
+    public Permission getPermission( String permissionName )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
-    }
+        assertPermissionExists( permissionName );
 
-    public List getOperations()
-        throws RbacStoreException
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public Permission getPermission( int permissionId )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public List getPermissions()
-        throws RbacStoreException
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public Resource getResource( int resourceId )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        // TODO Auto-generated method stub
-        return null;
+        return (Permission) permissions.get( permissionName );
     }
 
     public List getResources()
         throws RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public List getRoles()
-        throws RbacStoreException
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public UserAssignment getUserAssignment( Object principal )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public List getUserAssignments()
-        throws RbacStoreException
-    {
-        // TODO Auto-generated method stub
-        return null;
+        return Collections.unmodifiableList( new ArrayList( resources.values() ) );
     }
 
     public void removeOperation( Operation operation )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        // TODO Auto-generated method stub
+        RBACObjectAssertions.assertValid( "Remove Operation", operation );
 
+        assertOpertionExists( operation.getName() );
+
+        operations.remove( operation.getName() );
     }
 
-    public void removePermission( Permission permission )
-        throws RbacObjectNotFoundException, RbacStoreException
+    private void assertOpertionExists( String operationName )
+        throws RbacObjectNotFoundException
     {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void removeResource( Resource resource )
-        throws RbacStoreException
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void removeRole( Role role )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void removeUserAssignment( UserAssignment userAssignment )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void setOperations( List operation )
-        throws RbacStoreException
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void setPermissions( List permissions )
-        throws RbacStoreException
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void setResources( List resources )
-        throws RbacStoreException
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void setRoles( List roles )
-        throws RbacStoreException
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void setUserAssignments( List assignments )
-        throws RbacStoreException
-    {
-        // TODO Auto-generated method stub
-
+        if ( !operations.containsKey( operationName ) )
+        {
+            throw new RbacObjectNotFoundException( "Operation '" + operationName + "' not found." );
+        }
     }
 
     public Operation updateOperation( Operation operation )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
+        RBACObjectAssertions.assertValid( "Update Operation", operation );
+
+        assertOpertionExists( operation.getName() );
+
+        return (Operation) operations.put( operation.getName(), operation );
+    }
+
+    public void removePermission( Permission permission )
+        throws RbacObjectNotFoundException, RbacStoreException
+    {
+        RBACObjectAssertions.assertValid( "Remove Permission", permission );
+
+        assertPermissionExists( permission.getName() );
+
+        permissions.remove( permission.getName() );
     }
 
     public Permission updatePermission( Permission permission )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
+        RBACObjectAssertions.assertValid( "Update Permission", permission );
+
+        assertPermissionExists( permission.getName() );
+
+        return (Permission) permissions.put( permission.getName(), permission );
+    }
+
+    public void removeResource( Resource resource )
+        throws RbacObjectNotFoundException, RbacStoreException
+    {
+        RBACObjectAssertions.assertValid( "Remove Resource", resource );
+
+        assertResourceExists( resource.getIdentifier() );
+
+        resources.remove( resource.getIdentifier() );
+    }
+
+    private void assertResourceExists( String resourceIdentifier )
+        throws RbacObjectNotFoundException
+    {
+        if ( resources.containsKey( resourceIdentifier ) )
+        {
+            throw new RbacObjectNotFoundException( "Resource '" + resourceIdentifier + "' not found." );
+        }
     }
 
     public Resource updateResource( Resource resource )
-        throws RbacStoreException
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public Role updateRole( Role role )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
+        RBACObjectAssertions.assertValid( "Update Resource", resource );
+
+        assertResourceExists( resource.getIdentifier() );
+
+        return (Resource) resources.put( resource.getIdentifier(), resource );
+    }
+
+    private void assertUserAssignmentExists( String principal )
+        throws RbacObjectNotFoundException
+    {
+        if ( userAssignments.containsKey( principal ) )
+        {
+            throw new RbacObjectNotFoundException( "UserAssignment '" + principal + "' not found." );
+        }
+    }
+
+    public void removeUserAssignment( UserAssignment userAssignment )
+        throws RbacObjectNotFoundException, RbacStoreException
+    {
+        RBACObjectAssertions.assertValid( "Remove User Assignment", userAssignment );
+
+        assertUserAssignmentExists( userAssignment.getPrincipal() );
+
+        userAssignments.remove( userAssignment.getPrincipal() );
     }
 
     public UserAssignment updateUserAssignment( UserAssignment userAssignment )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
-    }
+        RBACObjectAssertions.assertValid( "Remove User Assignment", userAssignment );
 
-    public Set getAssignedPermissions( Object principal )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        // TODO Auto-generated method stub
-        return null;
+        assertUserAssignmentExists( userAssignment.getPrincipal() );
+
+        return (UserAssignment) userAssignments.put( userAssignment.getPrincipal(), userAssignment );
     }
 
     public UserAssignment createUserAssignment( String principal )
     {
-        // TODO Auto-generated method stub
-        return null;
+        UserAssignment ua = new MemoryUserAssignment();
+        ua.setPrincipal( principal );
+
+        return ua;
     }
 
     public List getAllOperations()
         throws RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return Collections.unmodifiableList( new ArrayList( operations.values() ) );
     }
 
     public List getAllPermissions()
         throws RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return Collections.unmodifiableList( new ArrayList( permissions.values() ) );
     }
 
     public List getAllResources()
         throws RbacStoreException
     {
-        return Collections.unmodifiableList( new ArrayList( model.getResources().values() ) );
+        return Collections.unmodifiableList( new ArrayList( resources.values() ) );
     }
 
     public List getAllUserAssignments()
         throws RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return Collections.unmodifiableList( new ArrayList( userAssignments.values() ) );
     }
 
     public UserAssignment getUserAssignment( String principal )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
+        assertUserAssignmentExists( principal );
+
+        return (UserAssignment) userAssignments.get( principal );
     }
 
-    public Roles getAssignedRoles( Object principal )
+    public Operation getOperation( String operationName )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
+        assertOpertionExists( operationName );
+
+        return (Operation) operations.get( operationName );
     }
 
-    public List getAllAssignableRoles()
-        throws RbacStoreException
+    public Resource getResource( String resourceIdentifier )
+        throws RbacObjectNotFoundException, RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
-    }
+        assertResourceExists( resourceIdentifier );
 
+        return (Resource) resources.get( resourceIdentifier );
+    }
 }
