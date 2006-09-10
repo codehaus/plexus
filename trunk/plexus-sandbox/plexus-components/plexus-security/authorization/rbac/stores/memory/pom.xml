@@ -33,27 +33,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.modello</groupId>
-        <artifactId>modello-maven-plugin</artifactId>
-        <version>1.0-alpha-11-SNAPSHOT</version>
-        <configuration>
-          <version>1.0.0</version>
-          <packageWithVersion>false</packageWithVersion>
-          <model>src/main/mdo/rbac-memory.mdo</model>
-        </configuration>
-        <executions>
-          <execution>
-            <id>modello-java</id>
-            <goals>
-              <goal>xpp3-writer</goal>
-              <goal>xpp3-reader</goal>
-              <goal>xsd</goal>
-              <goal>java</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-maven-plugin</artifactId>
         <executions>
