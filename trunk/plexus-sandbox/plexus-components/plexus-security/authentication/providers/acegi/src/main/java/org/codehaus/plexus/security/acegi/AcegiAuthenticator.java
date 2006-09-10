@@ -22,7 +22,7 @@ import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * AcegiAuthenticationStore:
@@ -50,8 +50,8 @@ public class AcegiAuthenticator
     public AuthenticationResult authenticate( AuthenticationDataSource source )
         throws org.codehaus.plexus.security.authentication.AuthenticationException
     {
-        // TODO: Where are the tokens being sourced from?
-        HashMap tokens = new HashMap();
+
+        Map tokens = ( (AcegiAuthenticationDataSource) source ).getTokenMap();
         Authentication authenticationToken = tokenFactory.getAuthenticationToken( tokens );
 
         try
@@ -65,8 +65,7 @@ public class AcegiAuthenticator
         }
         catch ( org.acegisecurity.AuthenticationException e )
         {
-            new AuthenticationResult( false, source.getUsername(), e );
+            return new AuthenticationResult( false, source.getUsername(), e );
         }
-        return new AuthenticationResult( false, null, null );
     }
 }

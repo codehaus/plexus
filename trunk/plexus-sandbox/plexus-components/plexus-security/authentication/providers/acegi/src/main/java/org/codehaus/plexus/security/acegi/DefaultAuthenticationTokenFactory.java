@@ -22,6 +22,12 @@ public class DefaultAuthenticationTokenFactory
     implements AuthenticationTokenFactory
 {
 
+    private static final String TOKEN_PASSWORD = "password";
+
+    private static final String TOKEN_USERNAME = "username";
+
+    private static final String TOKEN_AUTH_TOKEN_TYPE = "authTokenType";
+
     private String authTokenType;
 
     public Authentication getAuthenticationToken( Map tokenMap )
@@ -34,7 +40,7 @@ public class DefaultAuthenticationTokenFactory
         // if not configured, the check the tokenMap
         if ( tokenType == null )
         {
-            tokenType = (String) tokenMap.get( "authTokenType" );
+            tokenType = (String) tokenMap.get( TOKEN_AUTH_TOKEN_TYPE );
         }
 
         // if tokenType is still null then throw exception
@@ -46,12 +52,12 @@ public class DefaultAuthenticationTokenFactory
             }
             else
             {
-                throw new AuthenticationException( "unsupported authentication token type " + tokenType );
+                throw new AuthenticationException( "Unsupported authentication token type " + tokenType );
             }
         }
         else
         {
-            throw new AuthenticationException( "unable to discover authentication token type" );
+            throw new AuthenticationException( "Unable to discover authentication token type" );
         }
 
     }
@@ -59,16 +65,18 @@ public class DefaultAuthenticationTokenFactory
     private Authentication getUsernamePasswordAuthenticationToken( Map tokenMap )
         throws AuthenticationException
     {
-        Object username = tokenMap.get( "username" );
-        Object password = tokenMap.get( "password" );
+        Object username = tokenMap.get( TOKEN_USERNAME );
+        Object password = tokenMap.get( TOKEN_PASSWORD );
 
         if ( username == null )
         {
-            throw new AuthenticationException( "unable to build authentication token, username missing" );
+            throw new AuthenticationException( "Unable to build authentication token, missing token '" + TOKEN_USERNAME
+                + "'" );
         }
         else if ( password == null )
         {
-            throw new AuthenticationException( "unable to build authentication token, password missing" );
+            throw new AuthenticationException( "Unable to build authentication token, missing token '" + TOKEN_PASSWORD
+                + "'" );
         }
         else
         {
