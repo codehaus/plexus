@@ -17,11 +17,19 @@ package org.codehaus.plexus.security.authorization.store.test;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.security.authorization.AuthorizationResult;
+import org.codehaus.plexus.security.authorization.NotAuthorizedException;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.security.rbac.RbacStoreException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.security.rbac.UserAssignment;
+
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * AbstractRbacManagerTestCase 
@@ -60,17 +68,24 @@ public class AbstractRbacManagerTestCase
         super.tearDown();
     }
 
-    public void testStoreInitialization()
-        throws Exception
+    private Role getAdminRole()
     {
-        assertNotNull( getRbacManager() );
-
         Role role = getRbacManager().createRole( "ADMIN", "Administrative User" );
         role.setAssignable( false );
 
         Permission perm = getRbacManager().createPermission( "EDIT_ANY_USER", "Edit a user account.", "EDIT", "User:*" );
 
         role.addPermission( perm );
+
+        return role;
+    }
+
+    public void testStoreInitialization()
+        throws Exception
+    {
+        assertNotNull( getRbacManager() );
+
+        Role role = getAdminRole();
 
         assertNotNull( role );
 
@@ -105,6 +120,31 @@ public class AbstractRbacManagerTestCase
         getRbacManager().removeResource( added );
 
         assertEquals( 1, getRbacManager().getAllResources().size() );
+    }
+
+    public void testGetAssignedPermissionsNoChildRoles()
+        throws RbacStoreException, RbacObjectNotFoundException
+    {
+        Role admin = getAdminRole();
+
+        admin = getRbacManager().addRole( admin );
+
+        assertEquals( 1, getRbacManager().getAllRoles().size() );
+
+        String adminPrincipal = "admin";
+
+        UserAssignment ua = getRbacManager().createUserAssignment( adminPrincipal );
+
+        ua.addRole( admin );
+
+        getRbacManager().addUserAssignment( ua );
+
+        assertEquals( 1, getRbacManager().getAllUserAssignments().size() );
+
+        Set assignedPermissions = getRbacManager().getAssignedPermissions( adminPrincipal );
+
+        assertNotNull( assignedPermissions );
+        assertEquals( 1, assignedPermissions.size() );
     }
 
 }
