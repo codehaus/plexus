@@ -68,7 +68,7 @@ public class RbacAuthorizer
 
         try
         {
-            Set permissions = manager.getAssignedPermissions( principal );
+            Set permissions = manager.getAssignedPermissions( principal.toString() );
 
             for ( Iterator i = permissions.iterator(); i.hasNext(); )
             {
