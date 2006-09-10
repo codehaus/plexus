@@ -16,6 +16,7 @@ package org.codehaus.plexus.security.rbac;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ import java.util.Set;
  * @version $Id$
  */
 public abstract class AbstractRBACManager
+    extends AbstractLogEnabled
     implements RBACManager
 {
 
@@ -166,33 +168,168 @@ public abstract class AbstractRBACManager
         return getAllUserAssignments().contains( assignment );
     }
 
+    private void objectValidityWarning( String msg )
+    {
+        getLogger().warn( msg );
+    }
+
     public boolean valid( Operation operation )
     {
-        
-        return false;
+        if ( operation == null )
+        {
+            objectValidityWarning( "Null operation object is invalid." );
+            return false;
+        }
+
+        if ( StringUtils.isEmpty( operation.getName() ) )
+        {
+            objectValidityWarning( "Operation objects must have name." );
+            return false;
+        }
+
+        return true;
     }
 
     public boolean valid( Permission permission )
     {
-        // TODO Auto-generated method stub
-        return false;
+        if ( permission == null )
+        {
+            objectValidityWarning( "Null Permission object is invalid." );
+            return false;
+        }
+
+        if ( StringUtils.isEmpty( permission.getName() ) )
+        {
+            objectValidityWarning( "Permission.name must not be empty." );
+            return false;
+        }
+
+        if ( !valid( permission.getOperation() ) )
+        {
+            objectValidityWarning( "Permission.operation must be valid." );
+            return false;
+        }
+
+        if ( !valid( permission.getResource() ) )
+        {
+            objectValidityWarning( "Permission.resource must be valid." );
+            return false;
+        }
+
+        return true;
     }
 
     public boolean valid( Resource resource )
     {
-        // TODO Auto-generated method stub
-        return false;
+        if ( resource == null )
+        {
+            objectValidityWarning( "Null Resource object is invalid." );
+            return false;
+        }
+
+        if ( StringUtils.isEmpty( resource.getIdentifier() ) )
+        {
+            objectValidityWarning( "Resource.identifier must not be empty." );
+            return false;
+        }
+
+        return true;
     }
 
     public boolean valid( Role role )
     {
-        // TODO Auto-generated method stub
+        if ( role == null )
+        {
+            objectValidityWarning( "Null Role object is invalid." );
+            return false;
+        }
+
+        if ( StringUtils.isEmpty( role.getName() ) )
+        {
+            objectValidityWarning( "Role.name must not be empty." );
+            return false;
+        }
+
+        if ( role.getPermissions() == null )
+        {
+            objectValidityWarning( "Role.permissions cannot be null." );
+            return false;
+        }
+
+        if ( role.getPermissions().isEmpty() )
+        {
+            objectValidityWarning( "Role.permissions cannot be empty." );
+            return false;
+        }
+
+        int i = 0;
+        Iterator it = role.getPermissions().iterator();
+        while ( it.hasNext() )
+        {
+            Permission perm = (Permission) it.next();
+            if ( !valid( perm ) )
+            {
+                objectValidityWarning( "Role.permissions[" + i + "] must be valid." );
+                return false;
+            }
+            i++;
+        }
+
+        i = 0;
+        it = role.getChildRoles().values().iterator();
+        while ( it.hasNext() )
+        {
+            Role child = (Role) it.next();
+            if ( !valid( child ) )
+            {
+                objectValidityWarning( "Role.childRoles[" + i + "] must be valid." );
+                return false;
+            }
+            i++;
+        }
+
         return false;
     }
 
     public boolean valid( UserAssignment assignment )
     {
-        // TODO Auto-generated method stub
+        if ( assignment == null )
+        {
+            objectValidityWarning( "Null UserAssigment object is invalid." );
+            return false;
+        }
+
+        if ( StringUtils.isEmpty( assignment.getPrincipal() ) )
+        {
+            objectValidityWarning( "UserAssigment.principal cannot by empty." );
+            return false;
+        }
+
+        if ( assignment.getRoles() == null )
+        {
+            objectValidityWarning( "UserAssignment.roles cannot be null." );
+            return false;
+        }
+
+        if ( assignment.getRoles().isEmpty() )
+        {
+            objectValidityWarning( "UserAssignment.roles cannot be empty." );
+            return false;
+        }
+
+        int i = 0;
+        Iterator it = assignment.getRoles().values().iterator();
+        while ( it.hasNext() )
+        {
+            Role role = (Role) it.next();
+            if ( !valid( role ) )
+            {
+                objectValidityWarning( "UserAssignment.roles[" + i + "] must be valid." );
+                return false;
+            }
+            i++;
+        }
+
         return false;
     }
 
