@@ -32,6 +32,6 @@ public abstract class AbstractRole
             return false;
         }
 
-        return getChildRoles().hasRoles();
+        return !getChildRoles().isEmpty();
     }
 }
