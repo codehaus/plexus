@@ -19,6 +19,5 @@
     <module>acegi</module>
     -->
     <module>memory</module>
-    <module>user-manager</module>
   </modules>
 </project>

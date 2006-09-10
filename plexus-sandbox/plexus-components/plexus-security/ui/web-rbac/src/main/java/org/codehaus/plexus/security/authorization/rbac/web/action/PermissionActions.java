@@ -43,13 +43,13 @@ public class PermissionActions
      */
     private RBACManager manager;
 
-    private int permissionId;
+    private String permissionName;
 
     private Permission permission;
 
-    private int operationId;
+    private String operationName;
 
-    private int resourceId;
+    private String resourceIdentifier;
 
     private List operations;
 
@@ -65,8 +65,8 @@ public class PermissionActions
         {
             try
             {
-                permission = manager.getPermission( permissionId );
-                permissionId = permission.getId();
+                permission = manager.getPermission( permissionName );
+                permissionName = permission.getName();
             }
             catch ( RbacObjectNotFoundException ne )
             {
@@ -86,12 +86,12 @@ public class PermissionActions
     {
         try
         {
-            Permission temp = manager.getPermission( permission.getId() );
+            Permission temp = manager.getPermission( permission.getName() );
 
             temp.setName( permission.getName() );
             temp.setDescription( permission.getDescription() );
-            temp.setOperation( manager.getOperation( operationId ) );
-            temp.setResource( manager.getResource( resourceId ) );
+            temp.setOperation( manager.getOperation( operationName ) );
+            temp.setResource( manager.getResource( resourceIdentifier ) );
 
             manager.updatePermission( temp );
         }
@@ -108,23 +108,23 @@ public class PermissionActions
     {
         try
         {
-            manager.removePermission( manager.getPermission( permissionId ) );
+            manager.removePermission( manager.getPermission( permissionName ) );
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            throw new RbacActionException( "unable to locate permission to remove " + permissionId, ne );
+            throw new RbacActionException( "unable to locate permission to remove " + permissionName, ne );
         }
         return SUCCESS;
     }
 
-    public int getPermissionId()
+    public String getPermissionName()
     {
-        return permissionId;
+        return permissionName;
     }
 
-    public void setPermissionId( int permissionId )
+    public void setPermissionName( String name )
     {
-        this.permissionId = permissionId;
+        this.permissionName = name;
     }
 
     public Permission getPermission()
@@ -137,24 +137,24 @@ public class PermissionActions
         this.permission = permission;
     }
 
-    public int getOperationId()
+    public String getOperationName()
     {
-        return operationId;
+        return operationName;
     }
 
-    public void setOperationId( int operationId )
+    public void setOperationName( String operationName )
     {
-        this.operationId = operationId;
+        this.operationName = operationName;
     }
 
-    public int getResourceId()
+    public String getResourceIdentifier()
     {
-        return resourceId;
+        return resourceIdentifier;
     }
 
-    public void setResourceId( int resourceId )
+    public void setResourceIdentifier( String resourceIdentifier )
     {
-        this.resourceId = resourceId;
+        this.resourceIdentifier = resourceIdentifier;
     }
 
     public List getOperations()

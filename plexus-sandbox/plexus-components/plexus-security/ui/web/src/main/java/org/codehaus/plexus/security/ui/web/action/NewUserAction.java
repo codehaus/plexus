@@ -73,7 +73,7 @@ public class NewUserAction
             addActionError( "Email Address is required." );
         }
 
-        // TODO : Validate Email Address (use commons-validator)
+        // TODO: Validate Email Address (use commons-validator)
 
         if ( StringUtils.equals( password, passwordConfirm ) )
         {

@@ -17,6 +17,7 @@ package org.codehaus.plexus.security.rbac;
  */
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -62,12 +63,12 @@ public interface RBACManager
     /**
      *
      *
-     * @param roleId
+     * @param roleName
      * @return
      * @throws RbacObjectNotFoundException
      * @throws RbacStoreException
      */
-    public Role getRole( int roleId )
+    public Role getRole( String roleName )
         throws RbacObjectNotFoundException, RbacStoreException;
 
     /**
@@ -84,6 +85,14 @@ public interface RBACManager
     public void removeRole( Role role )
         throws RbacObjectNotFoundException, RbacStoreException;
 
+    /**
+     * Method removeRole
+     *
+     * @param roleName
+     */
+    public void removeRole( String roleName )
+        throws RbacObjectNotFoundException, RbacStoreException;
+    
     /**
      *
      * @param role
@@ -129,7 +138,7 @@ public interface RBACManager
     public Permission addPermission( Permission permission )
         throws RbacStoreException;
 
-    public Permission getPermission( int permissionId )
+    public Permission getPermission( String permissionName )
         throws RbacObjectNotFoundException, RbacStoreException;
 
     public List getAllPermissions()
@@ -138,6 +147,9 @@ public interface RBACManager
     public void removePermission( Permission permission )
         throws RbacObjectNotFoundException, RbacStoreException;
 
+    public void removePermission( String permissionName )
+        throws RbacObjectNotFoundException, RbacStoreException;
+    
     public Permission updatePermission( Permission permission )
         throws RbacObjectNotFoundException, RbacStoreException;
 
@@ -161,7 +173,7 @@ public interface RBACManager
     public Operation addOperation( Operation operation )
         throws RbacStoreException;
 
-    public Operation getOperation( int operationId )
+    public Operation getOperation( String operationName )
         throws RbacObjectNotFoundException, RbacStoreException;
 
     public List getAllOperations()
@@ -170,6 +182,9 @@ public interface RBACManager
     public void removeOperation( Operation operation )
         throws RbacObjectNotFoundException, RbacStoreException;
 
+    public void removeOperation( String operationName )
+        throws RbacObjectNotFoundException, RbacStoreException;
+    
     public Operation updateOperation( Operation operation )
         throws RbacObjectNotFoundException, RbacStoreException;
 
@@ -192,17 +207,20 @@ public interface RBACManager
     public Resource addResource( Resource resource )
         throws RbacStoreException;
 
-    public Resource getResource( int resourceId )
+    public Resource getResource( String resourceIdentifier )
         throws RbacObjectNotFoundException, RbacStoreException;
 
     public List getAllResources()
         throws RbacStoreException;
 
     public void removeResource( Resource resource )
-        throws RbacStoreException;
+        throws RbacObjectNotFoundException, RbacStoreException;
 
+    public void removeResource( String resourceIdentifier )
+        throws RbacObjectNotFoundException, RbacStoreException;
+    
     public Resource updateResource( Resource resource )
-        throws RbacStoreException;
+        throws RbacObjectNotFoundException, RbacStoreException;
 
     // ------------------------------------------------------------------
     // UserAssignment Methods
@@ -244,6 +262,14 @@ public interface RBACManager
      */
     public void removeUserAssignment( UserAssignment userAssignment )
         throws RbacObjectNotFoundException, RbacStoreException;
+    
+    /**
+     * Method removeAssignment
+     *
+     * @param principal
+     */
+    public void removeUserAssignment( String principal )
+        throws RbacObjectNotFoundException, RbacStoreException;
 
     public UserAssignment updateUserAssignment( UserAssignment userAssignment )
         throws RbacObjectNotFoundException, RbacStoreException;
@@ -263,7 +289,7 @@ public interface RBACManager
      * @throws RbacObjectNotFoundException
      * @throws RbacStoreException
      */
-    public Roles getAssignedRoles( Object principal )
+    public Map getAssignedRoles( String principal )
         throws RbacObjectNotFoundException, RbacStoreException;
 
     /**
@@ -275,7 +301,7 @@ public interface RBACManager
      * @throws RbacObjectNotFoundException
      * @throws RbacStoreException
      */
-    public Set getAssignedPermissions( Object principal )
+    public Set getAssignedPermissions( String principal )
         throws RbacObjectNotFoundException, RbacStoreException;
 
     /**
