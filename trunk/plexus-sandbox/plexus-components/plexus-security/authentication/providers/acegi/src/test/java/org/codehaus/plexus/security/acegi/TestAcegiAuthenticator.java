@@ -41,7 +41,7 @@ public class TestAcegiAuthenticator
     }
 
     /**
-     * 
+     * Tests if the {@link AcegiAuthenticator} authenticates as expected.
      */
     public void testUsernamePasswordAuthentication()
         throws Exception
@@ -53,7 +53,7 @@ public class TestAcegiAuthenticator
         tokens.put( "password", "bar" );
 
         // test case of valid credentials 
-        AcegiAuthenticationDataSource ds = new AcegiAuthenticationDataSource( "foo", "bar", tokens );
+        AcegiAuthenticationDataSource ds = new AcegiAuthenticationDataSource( tokens );
         Authenticator authenticator = (Authenticator) lookup( Authenticator.ROLE, "acegi" );
         try
         {
@@ -66,7 +66,8 @@ public class TestAcegiAuthenticator
         }
 
         // test case of invalid credentials
-        ds = new AcegiAuthenticationDataSource( "kill", "bill", tokens );
+        tokens.put( "password", "killbill" );
+        ds = new AcegiAuthenticationDataSource( tokens );
         try
         {
             AuthenticationResult result = authenticator.authenticate( ds );
