@@ -30,6 +30,8 @@ import org.codehaus.plexus.security.authorization.rbac.jdo.JdoUserAssignment;
 import org.codehaus.plexus.security.rbac.AbstractRBACManager;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
+import org.codehaus.plexus.security.rbac.RBACObjectAssertions;
+import org.codehaus.plexus.security.rbac.RbacObjectInvalidException;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.RbacStoreException;
 import org.codehaus.plexus.security.rbac.Resource;
@@ -91,8 +93,9 @@ public class JdoRbacManager extends AbstractRBACManager
      * @param role
      */
     public Role addRole( Role role )
-        throws RbacStoreException
+        throws RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( role );
         return (Role) addObject( role );
     }
 
@@ -120,14 +123,16 @@ public class JdoRbacManager extends AbstractRBACManager
     }
 
     public void removeRole( Role role )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( role );
         removeObject( role );
     }
 
     public Role updateRole( Role role )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( role );
         return (Role) updateObject( role );
     }
 
@@ -188,8 +193,9 @@ public class JdoRbacManager extends AbstractRBACManager
     }
 
     public Permission addPermission( Permission permission )
-        throws RbacStoreException
+        throws RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( permission );
         return (Permission) addObject( permission );
     }
 
@@ -206,14 +212,16 @@ public class JdoRbacManager extends AbstractRBACManager
     }
 
     public void removePermission( Permission permission )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( permission );
         removeObject( permission );
     }
 
     public Permission updatePermission( Permission permission )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( permission );
         return (Permission) updateObject( permission );
     }
 
@@ -241,8 +249,9 @@ public class JdoRbacManager extends AbstractRBACManager
     }
 
     public Operation addOperation( Operation operation )
-        throws RbacStoreException
+        throws RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( operation );
         return (Operation) addObject( operation );
     }
 
@@ -259,14 +268,16 @@ public class JdoRbacManager extends AbstractRBACManager
     }
 
     public void removeOperation( Operation operation )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( operation );
         removeObject( operation );
     }
 
     public Operation updateOperation( Operation operation )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( operation );
         return (Operation) updateObject( operation );
     }
 
@@ -292,13 +303,14 @@ public class JdoRbacManager extends AbstractRBACManager
     }
 
     public Resource addResource( Resource resource )
-        throws RbacStoreException
+        throws RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( resource );
         return (Resource) addObject( resource );
     }
 
     public Resource getResource( String resourceIdentifier )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
         return (Resource) getObjectById( JdoResource.class, resourceIdentifier );
     }
@@ -310,14 +322,16 @@ public class JdoRbacManager extends AbstractRBACManager
     }
 
     public void removeResource( Resource resource )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( resource );
         removeObject( resource );
     }
 
     public Resource updateResource( Resource resource )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( resource );
         return (Resource) updateObject( resource );
     }
 
@@ -349,8 +363,9 @@ public class JdoRbacManager extends AbstractRBACManager
      * @param userAssignment
      */
     public UserAssignment addUserAssignment( UserAssignment userAssignment )
-        throws RbacStoreException
+        throws RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( userAssignment );
         return (UserAssignment) addObject( userAssignment );
     }
 
@@ -375,14 +390,16 @@ public class JdoRbacManager extends AbstractRBACManager
      * @param userAssignment
      */
     public void removeUserAssignment( UserAssignment userAssignment )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( userAssignment );
         removeObject( userAssignment );
     }
 
     public UserAssignment updateUserAssignment( UserAssignment userAssignment )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
+        RBACObjectAssertions.assertValid( userAssignment );
         return (UserAssignment) updateObject( userAssignment );
     }
 
