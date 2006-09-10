@@ -47,6 +47,10 @@ public class PermissionActions
 
     private Permission permission;
 
+    private int operationId;
+
+    private int resourceId;
+
     private List operations;
 
     private List resources;
@@ -62,6 +66,7 @@ public class PermissionActions
             try
             {
                 permission = manager.getPermission( permissionId );
+                permissionId = permission.getId();
             }
             catch ( RbacObjectNotFoundException ne )
             {
@@ -81,15 +86,17 @@ public class PermissionActions
     {
         try
         {
+            Permission temp = manager.getPermission( permission.getId() );
 
-            manager.getPermission( permission.getId() );
+            temp.setName( permission.getName() );
+            temp.setDescription( permission.getDescription() );
+            temp.setOperation( manager.getOperation( operationId ) );
+            temp.setResource( manager.getResource( resourceId ) );
 
-            getLogger().info( "updating permission" );
-            manager.updatePermission( permission );
+            manager.updatePermission( temp );
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            getLogger().info( "adding permission" );
             manager.addPermission( permission );
         }
 
@@ -128,6 +135,26 @@ public class PermissionActions
     public void setPermission( Permission permission )
     {
         this.permission = permission;
+    }
+
+    public int getOperationId()
+    {
+        return operationId;
+    }
+
+    public void setOperationId( int operationId )
+    {
+        this.operationId = operationId;
+    }
+
+    public int getResourceId()
+    {
+        return resourceId;
+    }
+
+    public void setResourceId( int resourceId )
+    {
+        this.resourceId = resourceId;
     }
 
     public List getOperations()

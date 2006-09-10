@@ -26,14 +26,15 @@ import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
- * SessionAction:
+ * LoginAction:
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
- * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="session"
+ * @plexus.component
+ *   role="com.opensymphony.xwork.Action"
+ *   role-hint="plexusSecurityLogin"
  */
-public class SessionAction
+public class LoginAction
     extends PlexusActionSupport
 {
 

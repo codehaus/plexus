@@ -27,13 +27,13 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * SessionAction:
+ * LoginAction:
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id:$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="newuser"
+ * role-hint="plexusSecurityNewUser"
  */
 public class NewUserAction
     extends PlexusActionSupport

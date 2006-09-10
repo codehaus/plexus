@@ -17,10 +17,15 @@ package org.codehaus.plexus.security.authorization.rbac.web.action;
  */
 
 
+import com.opensymphony.xwork.ModelDriven;
+import com.opensymphony.xwork.Preparable;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.security.rbac.Roles;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+
+import java.util.List;
 
 /**
  * RoleActions:
@@ -34,6 +39,7 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  */
 public class RoleActions
     extends PlexusActionSupport
+    implements Preparable, ModelDriven
 {
     /**
      * @plexus.requirement
@@ -42,34 +48,81 @@ public class RoleActions
 
     private int roleId;
 
+    private int permissionId;
+
+    private int childRoleId;
+
     private Role role;
 
-    public String display()
+    private List permissions;
+
+    private List roles;
+
+    public void prepare()
+    {
+        permissions = manager.getAllPermissions();
+        roles = manager.getAllRoles();
+
+        try
+        {
+            role = manager.getRole( roleId );
+            roleId = role.getId();
+        }
+        catch ( RbacObjectNotFoundException ne )
+        {
+            role = manager.createRole( "name", "description" );
+        }
+    }
+
+    public String save()
         throws RbacActionException
     {
         try
         {
-            role = manager.getRole( roleId );
+            Role temp = manager.getRole( role.getId() );
+
+            temp.setName( role.getName() );
+            temp.setDescription( role.getDescription() );
+            temp.setAssignable( role.isAssignable() );
+
+            if ( childRoleId != 0 )
+            {
+                Roles childRoles = temp.getChildRoles();
+                childRoles.addRole( manager.getRole( childRoleId ) );
+            }
+
+            if ( permissionId != 0 )
+            {
+                List permissions = temp.getPermissions();
+                permissions.add( manager.getPermission( permissionId ) );
+            }
+
+            manager.updateRole( temp );
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            throw new RbacActionException( "unable to locate role", ne );
+            manager.addRole( role );
         }
 
         return SUCCESS;
     }
 
-    public String addRole()
+    public String removeChildRole()
         throws RbacActionException
     {
-        if ( role != null )
+        try
         {
-            manager.addRole( role );
+            Role temp = manager.getRole( role.getId() );
+
+            Roles childRoles = temp.getChildRoles();
+
+            childRoles.removeRole( manager.getRole( childRoleId ) );
+
+            manager.updateRole( temp );
         }
-        else
+        catch ( RbacObjectNotFoundException ne )
         {
-            addActionError( "unable to add role, its either null or exists already" );
-            return ERROR;
+            throw new RbacActionException( "unable to locate role to remove", ne );
         }
 
         return SUCCESS;
@@ -100,7 +153,27 @@ public class RoleActions
         this.roleId = roleId;
     }
 
-    public Role getRole()
+    public int getPermissionId()
+    {
+        return permissionId;
+    }
+
+    public void setPermissionId( int permissionId )
+    {
+        this.permissionId = permissionId;
+    }
+
+    public int getChildRoleId()
+    {
+        return childRoleId;
+    }
+
+    public void setChildRoleId( int childRoleId )
+    {
+        this.childRoleId = childRoleId;
+    }
+
+    public Object getModel()
     {
         return role;
     }
@@ -108,5 +181,25 @@ public class RoleActions
     public void setRole( Role role )
     {
         this.role = role;
+    }
+
+    public List getPermissions()
+    {
+        return permissions;
+    }
+
+    public void setPermissions( List permissions )
+    {
+        this.permissions = permissions;
+    }
+
+    public List getRoles()
+    {
+        return roles;
+    }
+
+    public void setRoles( List roles )
+    {
+        this.roles = roles;
     }
 }

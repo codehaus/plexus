@@ -71,6 +71,8 @@ public class SummaryActions
     {
         resources = manager.getAllResources();
 
+        getLogger().info( "Resources: " + resources.size() );
+
         return SUCCESS;
     }
 
