@@ -17,18 +17,15 @@ package org.codehaus.plexus.security.authorization.store.test;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.security.authorization.AuthorizationResult;
-import org.codehaus.plexus.security.authorization.NotAuthorizedException;
-import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacObjectInvalidException;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.RbacStoreException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -80,6 +77,18 @@ public class AbstractRbacManagerTestCase
         return role;
     }
 
+    private Role getDeveloperRole()
+    {
+        Role role = getRbacManager().createRole( "DEVELOPER", "Trusted Developer" );
+        role.setAssignable( true );
+
+        Permission perm = getRbacManager().createPermission( "EDIT_MY_USER", "Edit own user account.", "EDIT", "User:Self" );
+
+        role.addPermission( perm );
+
+        return role;
+    }
+    
     public void testStoreInitialization()
         throws Exception
     {
@@ -120,6 +129,54 @@ public class AbstractRbacManagerTestCase
         getRbacManager().removeResource( added );
 
         assertEquals( 1, getRbacManager().getAllResources().size() );
+    }
+    
+    public void testAddRemovePermission() throws RbacObjectInvalidException, RbacStoreException, RbacObjectNotFoundException
+    {
+        assertNotNull( getRbacManager() );
+        
+        Role adminRole = getRbacManager().addRole(getAdminRole());
+        Role userRole = getRbacManager().addRole(getDeveloperRole());
+
+        assertEquals( 2, getRbacManager().getAllRoles().size() );
+        assertEquals( 2, getRbacManager().getAllPermissions().size() );
+
+        Permission createUserPerm = getRbacManager().createPermission( "CREATE_USER", "Create User", "CREATE", "User" );
+
+        // perm shouldn't exist in manager (yet)
+        assertEquals( 2, getRbacManager().getAllPermissions().size() );
+        
+        adminRole.addPermission( createUserPerm );
+        getRbacManager().updateRole( adminRole );
+
+        // perm should exist in manager now.
+        assertEquals( 3, getRbacManager().getAllPermissions().size() );
+        Permission fetched = getRbacManager().getPermission( "CREATE_USER" );
+        assertNotNull( fetched );
+    }
+    
+    public void testUserAssignmentAddRole() throws RbacStoreException, RbacObjectNotFoundException
+    {
+        Role adminRole = getRbacManager().addRole(getAdminRole());
+    
+        assertEquals( 1, getRbacManager().getAllRoles().size() );
+        
+        String adminPrincipal = "admin";
+        
+        UserAssignment assignment = getRbacManager().createUserAssignment( adminPrincipal );
+        
+        assignment.addRole( adminRole );
+
+        getRbacManager().addUserAssignment( assignment );
+        
+        assertEquals( 1, getRbacManager().getAllUserAssignments().size() );
+        assertEquals( 1, getRbacManager().getAllRoles().size() );
+        
+        UserAssignment ua = getRbacManager().getUserAssignment( adminPrincipal );
+        assertNotNull( ua );
+        
+        Role fetched = (Role) ua.getRoles().get("ADMIN");
+        assertNotNull( fetched );
     }
 
     public void testGetAssignedPermissionsNoChildRoles()
