@@ -51,20 +51,7 @@ public class LoginAction
     public String login()
     {
         if ( username != null && password != null )
-        {
-            //
-            // this can be removed once we have a functional user management system
-            //
-            UserManager um = securitySystem.getUserManager();
-
-            String fullName = "bobs your uncle";
-            String emailAddress = "fake@address.com";
-            
-            User user = um.createUser( username, fullName, emailAddress );
-            user.setPassword( password );
-
-            um.addUser( user );
-
+        {           
             try
             {
                 SecuritySession securitySession =
