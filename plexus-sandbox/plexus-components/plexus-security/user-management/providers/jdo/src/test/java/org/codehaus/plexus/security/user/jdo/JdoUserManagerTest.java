@@ -16,13 +16,11 @@ package org.codehaus.plexus.security.user.jdo;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.jdo.ConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.JdoFactory;
-import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.user.provider.test.AbstractUserManagerTestCase;
 import org.jpox.SchemaTool;
 
 import java.net.URL;
@@ -40,15 +38,13 @@ import javax.jdo.PersistenceManagerFactory;
  * @version $Id$
  */
 public class JdoUserManagerTest
-    extends PlexusTestCase
+    extends AbstractUserManagerTestCase
 {
-    private JdoUserManager userManager = null;
-    
     protected void setUp()
         throws Exception
     {
         super.setUp();
-        
+
         ConfigurableJdoFactory jdoFactory = (ConfigurableJdoFactory) lookup( JdoFactory.ROLE );
         assertEquals( DefaultConfigurableJdoFactory.class.getName(), jdoFactory.getClass().getName() );
 
@@ -77,7 +73,8 @@ public class JdoUserManagerTest
             System.setProperty( (String) entry.getKey(), (String) entry.getValue() );
         }
 
-        SchemaTool.createSchemaTables( new URL[] { getClass().getResource( "/org/codehaus/plexus/security/user/jdo/package.jdo" ) }, null, false ); //$NON-NLS-1$
+        SchemaTool.createSchemaTables( new URL[] { getClass()
+            .getResource( "/org/codehaus/plexus/security/user/jdo/package.jdo" ) }, null, false ); //$NON-NLS-1$
 
         PersistenceManagerFactory pmf = jdoFactory.getPersistenceManagerFactory();
 
@@ -86,54 +83,8 @@ public class JdoUserManagerTest
         PersistenceManager pm = pmf.getPersistenceManager();
 
         pm.close();
-        
-        userManager = (JdoUserManager) lookup( UserManager.ROLE, "jdo" );
+
+        setUserManager( (JdoUserManager) lookup( UserManager.ROLE, "jdo" ) );
     }
-    
-    private void assertCleanUserManager()
-    {
-        assertNotNull( userManager );
-        
-        assertEquals( "New UserManager should contain no users.", 0, userManager.getUsers().size() );
-    }
-    
-    public void testAddFindUserByPrincipal()
-        throws UserNotFoundException
-    {
-        assertCleanUserManager();
 
-        User smcqueen = new JdoUser();
-        smcqueen.setUsername( "smcqueen" );
-        smcqueen.setFullName( "Steve McQueen" );
-        smcqueen.setPassword( "the cooler king" );
-
-        /* Keep a reference to the object that was added.
-         * Since it has the actual principal that was managed by jpox/jdo.
-         */
-        User added = userManager.addUser( smcqueen );
-
-        assertEquals( 1, userManager.getUsers().size() );
-
-        /* Fetch user from userManager using principal returned earlier */
-        User actual = userManager.findUser( added.getPrincipal() );
-        assertEquals( added, actual );
-    }
-    
-    public void testAddFindUserByUsername()
-        throws UserNotFoundException
-    {
-        assertCleanUserManager();
-
-        User smcqueen = new JdoUser();
-        smcqueen.setUsername( "smcqueen" );
-        smcqueen.setFullName( "Steve McQueen" );
-        smcqueen.setPassword( "the cooler king" );
-
-        User added = userManager.addUser( smcqueen );
-
-        assertEquals( 1, userManager.getUsers().size() );
-
-        User actual = userManager.findUser( "smcqueen" );
-        assertEquals( added, actual );
-    }
 }

@@ -51,6 +51,11 @@ public class AbstractJAASPasswordEncoder
     
     public String encodePassword( String rawPass, Object salt )
     {
+        if ( rawPass == null )
+        {
+            throw new IllegalArgumentException( "rawPass parameter cannot be null." );
+        }
+        
         MessageDigest md = null;
         try
         {
