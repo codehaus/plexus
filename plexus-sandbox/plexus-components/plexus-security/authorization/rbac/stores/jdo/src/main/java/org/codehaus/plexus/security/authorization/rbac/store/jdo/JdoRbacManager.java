@@ -354,7 +354,7 @@ public class JdoRbacManager extends AbstractRBACManager
         return (UserAssignment) addObject( userAssignment );
     }
 
-    public UserAssignmegetUserAssignment( String principal )
+    public UserAssignment getUserAssignment( String principal )
         throws RbacObjectNotFoundException, RbacStoreException
     {
         return (UserAssignment) getObjectById( JdoUserAssignment.class, principal );
@@ -507,4 +507,6 @@ public class JdoRbacManager extends AbstractRBACManager
     {
         PlexusJdoUtils.rollbackIfActive( tx );
     }
+
+    
 }
