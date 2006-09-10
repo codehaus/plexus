@@ -48,20 +48,25 @@ public class RoleActions
 
     private int roleId;
 
-    private int permissionId;
+    private int assignedPermissionId;
 
-    private int childRoleId;
+    private int assignedRoleId;
+
+    private int removePermissionId;
+
+    private int removeRoleId;
 
     private Role role;
 
-    private List permissions;
+    private List assignablePermissions;
 
-    private List roles;
+    private List assignableRoles;
 
     public void prepare()
     {
-        permissions = manager.getAllPermissions();
-        roles = manager.getAllRoles();
+        assignablePermissions = manager.getAllPermissions();
+        getLogger().info( "Permissions to render " + assignablePermissions.size() );
+        assignableRoles = manager.getAllRoles();
 
         try
         {
@@ -85,16 +90,16 @@ public class RoleActions
             temp.setDescription( role.getDescription() );
             temp.setAssignable( role.isAssignable() );
 
-            if ( childRoleId != 0 )
+            if ( assignedRoleId != 0 )
             {
                 Roles childRoles = temp.getChildRoles();
-                childRoles.addRole( manager.getRole( childRoleId ) );
+                childRoles.addRole( manager.getRole( assignedRoleId ) );
             }
 
-            if ( permissionId != 0 )
+            if ( assignedPermissionId != 0 )
             {
                 List permissions = temp.getPermissions();
-                permissions.add( manager.getPermission( permissionId ) );
+                permissions.add( manager.getPermission( assignedPermissionId ) );
             }
 
             manager.updateRole( temp );
@@ -107,7 +112,7 @@ public class RoleActions
         return SUCCESS;
     }
 
-    public String removeChildRole()
+    public String removeAssignedRole()
         throws RbacActionException
     {
         try
@@ -116,13 +121,34 @@ public class RoleActions
 
             Roles childRoles = temp.getChildRoles();
 
-            childRoles.removeRole( manager.getRole( childRoleId ) );
+            childRoles.removeRole( manager.getRole( removeRoleId ) );
 
             manager.updateRole( temp );
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            throw new RbacActionException( "unable to locate role to remove", ne );
+            throw new RbacActionException( "unable to locate assigned role to remove", ne );
+        }
+
+        return SUCCESS;
+    }
+
+    public String removeAssignedPermission()
+        throws RbacActionException
+    {
+        try
+        {
+            Role temp = manager.getRole( role.getId() );
+
+            List permissions = temp.getPermissions();
+
+            permissions.remove( manager.getPermission( removePermissionId ) );
+
+            manager.updateRole( temp );
+        }
+        catch ( RbacObjectNotFoundException ne )
+        {
+            throw new RbacActionException( "unable to locate permission to remove", ne );
         }
 
         return SUCCESS;
@@ -153,24 +179,44 @@ public class RoleActions
         this.roleId = roleId;
     }
 
-    public int getPermissionId()
+    public int getAssignedPermissionId()
     {
-        return permissionId;
+        return assignedPermissionId;
     }
 
-    public void setPermissionId( int permissionId )
+    public void setAssignedPermissionId( int assignedPermissionId )
     {
-        this.permissionId = permissionId;
+        this.assignedPermissionId = assignedPermissionId;
     }
 
-    public int getChildRoleId()
+    public int getAssignedRoleId()
     {
-        return childRoleId;
+        return assignedRoleId;
     }
 
-    public void setChildRoleId( int childRoleId )
+    public void setAssignedRoleId( int assignedRoleId )
     {
-        this.childRoleId = childRoleId;
+        this.assignedRoleId = assignedRoleId;
+    }
+
+    public int getRemovePermissionId()
+    {
+        return removePermissionId;
+    }
+
+    public void setRemovePermissionId( int removePermissionId )
+    {
+        this.removePermissionId = removePermissionId;
+    }
+
+    public int getRemoveRoleId()
+    {
+        return removeRoleId;
+    }
+
+    public void setRemoveRoleId( int removeRoleId )
+    {
+        this.removeRoleId = removeRoleId;
     }
 
     public Object getModel()
@@ -183,23 +229,23 @@ public class RoleActions
         this.role = role;
     }
 
-    public List getPermissions()
+    public List getAssignablePermissions()
     {
-        return permissions;
+        return assignablePermissions;
     }
 
-    public void setPermissions( List permissions )
+    public void setAssignablePermissions( List assignablePermissions )
     {
-        this.permissions = permissions;
+        this.assignablePermissions = assignablePermissions;
     }
 
-    public List getRoles()
+    public List getAssignableRoles()
     {
-        return roles;
+        return assignableRoles;
     }
 
-    public void setRoles( List roles )
+    public void setAssignableRoles( List assignableRoles )
     {
-        this.roles = roles;
+        this.assignableRoles = assignableRoles;
     }
 }
