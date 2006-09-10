@@ -38,10 +38,11 @@ import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
+import java.util.List;
+
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Transaction;
-import java.util.List;
 
 /**
  * JdoRbacManager:
