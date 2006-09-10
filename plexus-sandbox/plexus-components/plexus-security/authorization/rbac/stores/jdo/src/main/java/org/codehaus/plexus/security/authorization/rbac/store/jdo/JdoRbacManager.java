@@ -97,7 +97,30 @@ public class JdoRbacManager extends AbstractRBACManager
         throws RbacObjectInvalidException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( role );
-        return (Role) addObject( role );
+        
+        PersistenceManager pm = getPersistenceManager();
+        
+        Transaction tx = pm.currentTransaction();
+
+        try
+        {
+            tx.begin();
+
+            pm.makePersistent( role );
+
+            role = (Role) pm.detachCopy( role );
+            
+            pm.detachCopy( role.getChildRoles() );
+            pm.detachCopy( role.getPermissions() );
+
+            tx.commit();
+
+            return role;
+        }
+        finally
+        {
+            rollback( tx );
+        }
     }
 
     /**
@@ -445,30 +468,6 @@ public class JdoRbacManager extends AbstractRBACManager
         catch ( PlexusStoreException e )
         {
             throw new RbacStoreException( "Unable to get rbac object id '" + id + "' of type " + clazz.getName(), e );
-        }
-    }
-
-    private Object getObjectById( Class clazz, int id )
-        throws RbacStoreException, RbacObjectNotFoundException
-    {
-        return getObjectById( clazz, id, null );
-    }
-
-    private Object getObjectById( Class clazz, int id, String fetchGroup )
-        throws RbacStoreException, RbacObjectNotFoundException
-    {
-        try
-        {
-            return PlexusJdoUtils.getObjectById( getPersistenceManager(), clazz, id, fetchGroup );
-        }
-        catch ( PlexusObjectNotFoundException e )
-        {
-            throw new RbacObjectNotFoundException( e.getMessage() );
-        }
-        catch ( PlexusStoreException e )
-        {
-            throw new RbacStoreException( "Unable to get object '" + clazz.getName() + "', id '" + id
-                + "', fetch-group '" + fetchGroup + "' from jdo store." );
         }
     }
 
