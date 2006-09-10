@@ -27,7 +27,7 @@ import org.codehaus.plexus.security.system.SecuritySystem;
  *
  * @plexus.component
  *   role="com.opensymphony.xwork.Action"
- *   role-hint="plexusSecuritySystem"
+ *   role-hint="plexusSecuritySystemInfo"
  */
 public class PlexusSecuritySystemAction
     extends PlexusActionSupport

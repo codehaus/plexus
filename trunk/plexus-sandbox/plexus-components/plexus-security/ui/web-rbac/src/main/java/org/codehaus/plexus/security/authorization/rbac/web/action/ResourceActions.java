@@ -52,7 +52,6 @@ public class ResourceActions
             {
                 resource = manager.getResource( resourceId );
                 resourceId = resource.getId();
-                getLogger().info( "resourceId " + resourceId + " loaded");
             }
             catch ( RbacObjectNotFoundException ne )
             {
@@ -66,16 +65,17 @@ public class ResourceActions
     {
         try
         {
-            getLogger().info( "attempting resource check " + resource.getId() );
-            manager.getResource( resource.getId() );
-            getLogger().info( "updating " + resource.getIdentifier() );
-            manager.updateResource( resource );
+            // todo figure out if there is anyway to actually have this model driven action work with jdo objects
+            Resource temp = manager.getResource( resourceId );
+
+            temp.setIdentifier( resource.getIdentifier() );
+            temp.setPattern( resource.isPattern() );
+
+            manager.updateResource( temp );
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            getLogger().info( "adding " + resource.getIdentifier() );
             resource = manager.addResource( resource );
-            getLogger().info( "new resource id is " + resource.getId() );
         }
 
         return SUCCESS;

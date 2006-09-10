@@ -52,6 +52,7 @@ public class OperationActions
             try
             {
                 operation = manager.getOperation( operationId );
+                operationId = operation.getId();
             }
             catch ( RbacObjectNotFoundException ne )
             {
@@ -64,8 +65,12 @@ public class OperationActions
     {
         try
         {
-            manager.getOperation( operation.getId() );
-            manager.updateOperation( operation );
+            Operation temp = manager.getOperation( operation.getId() );
+
+            temp.setName( operation.getName() );
+            temp.setDescription( operation.getDescription() );
+
+            manager.updateOperation( temp );
         }
         catch ( RbacObjectNotFoundException ne )
         {
