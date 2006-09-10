@@ -22,7 +22,7 @@ import com.opensymphony.xwork.Preparable;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.Role;
-import org.codehaus.plexus.security.rbac.Roles;
+import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 import java.util.List;
@@ -46,15 +46,15 @@ public class RoleActions
      */
     private RBACManager manager;
 
-    private int roleId;
+    private String roleName;
 
-    private int assignedPermissionId;
+    private String permissionName;
 
-    private int assignedRoleId;
+    private String childRoleName;
 
-    private int removePermissionId;
+    private String removePermissionName;
 
-    private int removeRoleId;
+    private String removeRoleName;
 
     private Role role;
 
@@ -70,9 +70,8 @@ public class RoleActions
 
         try
         {
-            role = manager.getRole( roleId );
-            getLogger().info(" contains permissions: " + role.getPermissions().size() );
-            roleId = role.getId();
+            role = manager.getRole( roleName );
+            roleName = role.getName();
         }
         catch ( RbacObjectNotFoundException ne )
         {
@@ -85,26 +84,20 @@ public class RoleActions
     {
         try
         {
-            Role temp = manager.getRole( role.getId() );
+            Role temp = manager.getRole( role.getName() );
 
             temp.setName( role.getName() );
             temp.setDescription( role.getDescription() );
             temp.setAssignable( role.isAssignable() );
 
-            if ( assignedRoleId != 0 )
+            if ( StringUtils.isNotEmpty(childRoleName) )
             {
-                Roles childRoles = temp.getChildRoles();
-                childRoles.addRole( manager.getRole( assignedRoleId ) );
-                temp.setChildRoles( childRoles );
-
+                temp.addChildRole( manager.getRole( childRoleName ) );
             }
 
-            if ( assignedPermissionId != 0 )
+            if ( StringUtils.isNotEmpty(permissionName) )
             {
-                List permissions = temp.getPermissions();
-                permissions.add( manager.getPermission( assignedPermissionId ) );
-
-                temp.setPermissions( permissions );
+                temp.addPermission( manager.getPermission( permissionName ) );
             }
 
             manager.updateRole( temp );
@@ -122,11 +115,9 @@ public class RoleActions
     {
         try
         {
-            Role temp = manager.getRole( roleId );
+            Role temp = manager.getRole( role.getName() );
 
-            Roles childRoles = temp.getChildRoles();
-
-            childRoles.removeRole( manager.getRole( removeRoleId ) );
+            temp.getChildRoles().remove( manager.getRole( childRoleName ) );
 
             manager.updateRole( temp );
         }
@@ -143,11 +134,11 @@ public class RoleActions
     {
         try
         {
-            Role temp = manager.getRole( roleId );
+            Role temp = manager.getRole( role.getName() );
 
             List permissions = temp.getPermissions();
 
-            permissions.remove( manager.getPermission( removePermissionId ) );
+            permissions.remove( manager.getPermission( removePermissionName ) );
 
             manager.updateRole( temp );
         }
@@ -164,7 +155,7 @@ public class RoleActions
     {
         try
         {
-            manager.removeRole( manager.getRole( roleId ) );
+            manager.removeRole( manager.getRole( roleName ) );
         }
         catch ( RbacObjectNotFoundException ne )
         {
@@ -174,54 +165,54 @@ public class RoleActions
         return SUCCESS;
     }
 
-    public int getRoleId()
+    public String getChildRoleName()
     {
-        return roleId;
+        return childRoleName;
     }
 
-    public void setRoleId( int roleId )
+    public void setChildRoleName( String childRoleName )
     {
-        this.roleId = roleId;
+        this.childRoleName = childRoleName;
     }
 
-    public int getAssignedPermissionId()
+    public String getPermissionName()
     {
-        return assignedPermissionId;
+        return permissionName;
     }
 
-    public void setAssignedPermissionId( int assignedPermissionId )
+    public void setPermissionName( String permissionName )
     {
-        this.assignedPermissionId = assignedPermissionId;
+        this.permissionName = permissionName;
     }
 
-    public int getAssignedRoleId()
+    public String getRoleName()
     {
-        return assignedRoleId;
+        return roleName;
     }
 
-    public void setAssignedRoleId( int assignedRoleId )
+    public void setRoleName( String roleName )
     {
-        this.assignedRoleId = assignedRoleId;
+        this.roleName = roleName;
     }
 
-    public int getRemovePermissionId()
+    public String getRemovePermissionName()
     {
-        return removePermissionId;
+        return removePermissionName;
     }
 
-    public void setRemovePermissionId( int removePermissionId )
+    public void setRemovePermissionName( String removePermissionName )
     {
-        this.removePermissionId = removePermissionId;
+        this.removePermissionName = removePermissionName;
     }
 
-    public int getRemoveRoleId()
+    public String getRemoveRoleName()
     {
-        return removeRoleId;
+        return removeRoleName;
     }
 
-    public void setRemoveRoleId( int removeRoleId )
+    public void setRemoveRoleName( String removeRoleName )
     {
-        this.removeRoleId = removeRoleId;
+        this.removeRoleName = removeRoleName;
     }
 
     public Object getModel()
