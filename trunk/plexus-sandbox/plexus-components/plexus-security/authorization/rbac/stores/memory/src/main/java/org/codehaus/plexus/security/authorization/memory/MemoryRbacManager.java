@@ -3,7 +3,9 @@ package org.codehaus.plexus.security.authorization.memory;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.security.authorization.rbac.memory.MemoryRbacModel;
+import org.codehaus.plexus.security.authorization.rbac.memory.MemoryResource;
 import org.codehaus.plexus.security.authorization.rbac.memory.MemoryRole;
+import org.codehaus.plexus.security.authorization.rbac.memory.MemoryRoles;
 import org.codehaus.plexus.security.authorization.rbac.memory.io.xpp3.RBACMemoryModelXpp3Reader;
 import org.codehaus.plexus.security.authorization.rbac.memory.io.xpp3.RBACMemoryModelXpp3Writer;
 import org.codehaus.plexus.security.rbac.Operation;
@@ -20,6 +22,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -72,6 +75,12 @@ public class MemoryRbacManager
         else
         {
             model = new MemoryRbacModel();
+        }
+
+        // Satisfy base level settings.
+        if ( model.getRoles() == null )
+        {
+            model.setRoles( new MemoryRoles() );
         }
     }
 
@@ -179,8 +188,8 @@ public class MemoryRbacManager
     public Resource addResource( Resource resource )
         throws RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
+        model.addResource( resource.getIdentifier(), (MemoryResource) resource );
+        return resource;
     }
 
     public UserAssignment addUserAssignment( UserAssignment userAssignment )
@@ -210,8 +219,10 @@ public class MemoryRbacManager
 
     public Resource createResource( String identifier )
     {
-        // TODO Auto-generated method stub
-        return null;
+        Resource resource = new MemoryResource();
+        resource.setIdentifier( identifier );
+
+        return resource;
     }
 
     public Role createRole( String name, String description )
@@ -427,8 +438,7 @@ public class MemoryRbacManager
     public List getAllResources()
         throws RbacStoreException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return Collections.unmodifiableList( new ArrayList( model.getResources().values() ) );
     }
 
     public List getAllUserAssignments()
