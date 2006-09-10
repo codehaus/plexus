@@ -24,6 +24,7 @@ import org.codehaus.plexus.security.rbac.AbstractRBACManager;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.jpox.SchemaTool;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
@@ -55,13 +56,13 @@ public class JdoRbacManagerTest
 
         jdoFactory.setPersistenceManagerFactoryClass( "org.jpox.PersistenceManagerFactoryImpl" ); //$NON-NLS-1$
 
-        jdoFactory.setDriverName( "org.hsqldb.jdbcDriver" ); //$NON-NLS-1$
+        jdoFactory.setDriverName( System.getProperty( "jdo.test.driver", "org.hsqldb.jdbcDriver" ) ); //$NON-NLS-1$  //$NON-NLS-2$
 
-        jdoFactory.setUrl( "jdbc:hsqldb:mem:" + getName() ); //$NON-NLS-1$
+        jdoFactory.setUrl( System.getProperty( "jdo.test.url", "jdbc:hsqldb:mem:" + getName() ) ); //$NON-NLS-1$  //$NON-NLS-2$
 
-        jdoFactory.setUserName( "sa" ); //$NON-NLS-1$
+        jdoFactory.setUserName( System.getProperty( "jdo.test.user", "sa" ) ); //$NON-NLS-1$
 
-        jdoFactory.setPassword( "" ); //$NON-NLS-1$
+        jdoFactory.setPassword( System.getProperty( "jdo.test.pass", "" ) ); //$NON-NLS-1$
 
         jdoFactory.setProperty( "org.jpox.transactionIsolation", "READ_UNCOMMITTED" ); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -78,8 +79,14 @@ public class JdoRbacManagerTest
             System.setProperty( (String) entry.getKey(), (String) entry.getValue() );
         }
 
-        SchemaTool.createSchemaTables( new URL[] { getClass()
-            .getResource( "/org/codehaus/plexus/security/authorization/rbac/jdo/package.jdo" ) }, null, false ); //$NON-NLS-1$
+        URL jdoFileUrls[] = new URL[] { getClass()
+            .getResource( "/org/codehaus/plexus/security/authorization/rbac/jdo/package.jdo" ) }; //$NON-NLS-1$
+        
+        File propsFile = null; // intentional
+        boolean verbose = true;
+
+        SchemaTool.deleteSchemaTables( jdoFileUrls, propsFile, verbose );
+        SchemaTool.createSchemaTables( jdoFileUrls, propsFile, verbose );
 
         PersistenceManagerFactory pmf = jdoFactory.getPersistenceManagerFactory();
 
