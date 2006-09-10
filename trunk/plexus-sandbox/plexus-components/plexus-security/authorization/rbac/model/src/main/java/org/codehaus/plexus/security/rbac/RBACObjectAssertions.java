@@ -174,7 +174,7 @@ public class RBACObjectAssertions
         while ( it.hasNext() )
         {
             Role role = (Role) it.next();
-            assertValid( "UserAssignment.roles[" + i + "] must be valid.", role );
+            assertValid( "UserAssignment.roles[" + i + "]", role );
             i++;
         }
     }
