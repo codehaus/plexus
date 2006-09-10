@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.rbac;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -62,6 +64,136 @@ public abstract class AbstractRBACManager
         throws RbacObjectNotFoundException, RbacStoreException
     {
         removeUserAssignment( getUserAssignment( principal ) );
+    }
+
+    public boolean resourceExists( Resource resource )
+    {
+        return getAllResources().contains( resource );
+    }
+
+    public boolean resourceExists( String identifier )
+    {
+        Iterator it = getAllResources().iterator();
+        while ( it.hasNext() )
+        {
+            Resource resource = (Resource) it.next();
+            if ( StringUtils.equals( resource.getIdentifier(), identifier ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean operationExists( Operation operation )
+    {
+        return getAllOperations().contains( operation );
+    }
+
+    public boolean operationExists( String name )
+    {
+        Iterator it = getAllOperations().iterator();
+        while ( it.hasNext() )
+        {
+            Operation operation = (Operation) it.next();
+            if ( StringUtils.equals( operation.getName(), name ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean permissionExists( Permission permission )
+    {
+        return getAllPermissions().contains( permission );
+    }
+
+    public boolean permissionExists( String name )
+    {
+        Iterator it = getAllPermissions().iterator();
+        while ( it.hasNext() )
+        {
+            Permission permission = (Permission) it.next();
+            if ( StringUtils.equals( permission.getName(), name ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean roleExists( Role role )
+    {
+        return getAllRoles().contains( role );
+    }
+
+    public boolean roleExists( String name )
+    {
+        Iterator it = getAllRoles().iterator();
+        while ( it.hasNext() )
+        {
+            Role role = (Role) it.next();
+            if ( StringUtils.equals( role.getName(), name ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean userAssignmentExists( String principal )
+    {
+        Iterator it = getAllUserAssignments().iterator();
+        while ( it.hasNext() )
+        {
+            UserAssignment assignment = (UserAssignment) it.next();
+            if ( StringUtils.equals( assignment.getPrincipal(), principal ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean userAssignmentExists( UserAssignment assignment )
+    {
+        return getAllUserAssignments().contains( assignment );
+    }
+
+    public boolean valid( Operation operation )
+    {
+        
+        return false;
+    }
+
+    public boolean valid( Permission permission )
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public boolean valid( Resource resource )
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public boolean valid( Role role )
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public boolean valid( UserAssignment assignment )
+    {
+        // TODO Auto-generated method stub
+        return false;
     }
 
     /**

@@ -51,6 +51,17 @@ public interface RBACManager
      * @return the new {@link Role} object with an empty (non-null) {@link Role#getChildRoles()} object.
      */
     public Role createRole( String name, String description );
+    
+    /**
+     * Tests for the existance of a Role.
+     * 
+     * @return true if role exists in store.
+     */
+    public boolean roleExists( String name );
+    
+    public boolean roleExists( Role role );
+    
+    public boolean valid( Role role );
 
     /**
      * Method addRole
@@ -134,6 +145,18 @@ public interface RBACManager
      * @return the new Permission.
      */
     public Permission createPermission( String name, String description, String operationName, String resourceIdentifier );
+    
+    /**
+     * Tests for the existance of a permission.
+     * 
+     * @param name the name to test for.
+     * @return true if permission exists.
+     */
+    public boolean permissionExists( String name );
+    
+    public boolean permissionExists( Permission permission );
+    
+    public boolean valid( Permission permission );
 
     public Permission addPermission( Permission permission )
         throws RbacStoreException;
@@ -170,6 +193,12 @@ public interface RBACManager
      */
     public Operation createOperation( String name, String description );
 
+    public boolean operationExists( String name );
+    
+    public boolean operationExists( Operation operation );
+    
+    public boolean valid( Operation operation );
+    
     public Operation addOperation( Operation operation )
         throws RbacStoreException;
 
@@ -204,6 +233,12 @@ public interface RBACManager
      */
     public Resource createResource( String identifier );
 
+    public boolean resourceExists( String identifier );
+    
+    public boolean resourceExists( Resource resource );
+    
+    public boolean valid( Resource resource );
+    
     public Resource addResource( Resource resource )
         throws RbacStoreException;
 
@@ -238,6 +273,12 @@ public interface RBACManager
      */
     public UserAssignment createUserAssignment( String principal );
 
+    public boolean userAssignmentExists( String principal );
+    
+    public boolean userAssignmentExists( UserAssignment assignment );
+    
+    public boolean valid( UserAssignment assignment  );
+    
     /**
      * Method addUserAssignment
      *
