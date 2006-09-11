@@ -231,6 +231,11 @@ public class MemoryRole
     {
         this.permissions = permissions;
     }
+    
+    public void addChildRole( Role child )
+    {
+        childRoles.put( child.getName(), child );
+    }
 
     /**
      * Method toString
