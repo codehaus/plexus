@@ -25,10 +25,8 @@ package org.codehaus.plexus.security.rbac;
 public abstract class AbstractUserAssignment
     implements UserAssignment
 {
-
     public void addRole( Role role )
     {
-        getRoles().put( role.getName(), role );
+        getRoles().add( role );
     }
-
 }

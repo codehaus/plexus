@@ -65,7 +65,7 @@ public class UserAssignmentActions
             if ( principal != null && manager.userAssignmentExists( principal ) )
             {
                 getLogger().info( "recovering assigned roles" );
-                assignedRoles = new ArrayList( manager.getAssignedRoles( principal ).values() );
+                assignedRoles = new ArrayList( manager.getAssignedRoles( principal ) );
             }
             else
             {

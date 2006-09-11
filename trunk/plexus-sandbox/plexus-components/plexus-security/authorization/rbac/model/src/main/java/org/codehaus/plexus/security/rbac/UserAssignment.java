@@ -1,6 +1,6 @@
 package org.codehaus.plexus.security.rbac;
 
-import java.util.Map;
+import java.util.List;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -48,7 +48,7 @@ public interface UserAssignment
     /**
      * Get the roles for this user.
      */
-    public Map getRoles();
+    public List getRoles();
     
     /**
      * Add a role to this assignment.
@@ -71,5 +71,5 @@ public interface UserAssignment
      * 
      * @param roles the roles
      */
-    public void setRoles( Map roles );
+    public void setRoles( List roles );
 }

@@ -17,7 +17,6 @@ package org.codehaus.plexus.security.rbac;
  */
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Role 

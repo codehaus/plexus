@@ -17,6 +17,7 @@ package org.codehaus.plexus.security.rbac;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.CollectionUtils;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
@@ -24,7 +25,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -188,7 +188,7 @@ public abstract class AbstractRBACManager
 
         if ( ua.getRoles() != null )
         {
-            Iterator it = ua.getRoles().values().iterator();
+            Iterator it = ua.getRoles().iterator();
             while ( it.hasNext() )
             {
                 Role role = (Role) it.next();
@@ -255,12 +255,23 @@ public abstract class AbstractRBACManager
      * @throws RbacObjectNotFoundException
      * @throws RbacStoreException
      */
-    public Map getAssignedRoles( String principal )
+    public Collection getAssignedRoles( String principal )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        UserAssignment ua = getUserAssignment( principal.toString() );
+        UserAssignment ua = getUserAssignment( principal );
 
         return ua.getRoles();
+    }
+    
+    public Collection getUnassignedRoles( String principal )
+        throws RbacStoreException, RbacObjectNotFoundException
+    {
+        UserAssignment ua = getUserAssignment( principal );
+
+        Collection assignedRoles = ua.getRoles();
+        List allRoles = getAllAssignableRoles();
+
+        return CollectionUtils.subtract( allRoles, assignedRoles );
     }
 
     public Resource getGlobalResource()

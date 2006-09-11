@@ -16,8 +16,8 @@ package org.codehaus.plexus.security.rbac;
  * limitations under the License.
  */
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -290,8 +290,19 @@ public interface RBACManager
      * @throws RbacObjectNotFoundException
      * @throws RbacStoreException
      */
-    public Map getAssignedRoles( String principal )
+    public Collection getAssignedRoles( String principal )
         throws RbacObjectNotFoundException, RbacStoreException;
+    
+    /**
+     * Get a list of all assignable roles that are currently not assigned to the specific user.
+     * 
+     * @param principal
+     * @return
+     * @throws RbacStoreException
+     * @throws RbacObjectNotFoundException
+     */
+    public Collection getUnassignedRoles( String principal )
+        throws RbacStoreException, RbacObjectNotFoundException;
 
     /**
      * returns a set of all permissions that are in all active roles for a given
