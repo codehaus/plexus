@@ -270,8 +270,22 @@ public abstract class AbstractRBACManager
     {
         if ( globalResource == null )
         {
-            globalResource = createResource( Resource.GLOBAL );
-            addResource( globalResource );
+            if ( resourceExists( Resource.GLOBAL ) )
+            {
+                try
+                {
+                    globalResource = getResource( Resource.GLOBAL );
+                }
+                catch ( RbacObjectNotFoundException ne )
+                {
+                    throw new RbacStoreException( "global resource exists, but doesn't!", ne );
+                }
+            }
+            else
+            {
+                globalResource = createResource( Resource.GLOBAL );
+                addResource( globalResource );
+            }
         }
         return globalResource;
     }
