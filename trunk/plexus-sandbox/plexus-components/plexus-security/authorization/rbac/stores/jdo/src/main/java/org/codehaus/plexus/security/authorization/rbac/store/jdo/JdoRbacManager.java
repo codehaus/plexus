@@ -67,8 +67,12 @@ public class JdoRbacManager
      * @plexus.requirement
      */
     private JdoFactory jdoFactory;
-
+    
     private PersistenceManagerFactory pmf;
+    
+    private static final String ROLE_DETAIL = "JdoRole_detail";
+    
+    private static final String USER_ASSIGNMENT_DETAIL = "JdoUserAssignment_detail";
 
     // ----------------------------------------------------------------------
     // Role methods
@@ -135,7 +139,7 @@ public class JdoRbacManager
     public Role getRole( String roleName )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        return (Role) getObjectById( JdoRole.class, roleName );
+        return (Role) getObjectById( JdoRole.class, roleName, ROLE_DETAIL );
     }
 
     /**
@@ -462,7 +466,7 @@ public class JdoRbacManager
     public UserAssignment saveUserAssignment( UserAssignment userAssignment )
         throws RbacObjectInvalidException, RbacStoreException
     {
-        // RBACObjectAssertions.assertValid( userAssignment );
+        RBACObjectAssertions.assertValid( userAssignment );
         return (UserAssignment) saveObject( userAssignment );
     }
     
@@ -479,7 +483,7 @@ public class JdoRbacManager
     public UserAssignment getUserAssignment( String principal )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        return (UserAssignment) getObjectById( JdoUserAssignment.class, principal );
+        return (UserAssignment) getObjectById( JdoUserAssignment.class, principal, USER_ASSIGNMENT_DETAIL );
     }
 
     /**

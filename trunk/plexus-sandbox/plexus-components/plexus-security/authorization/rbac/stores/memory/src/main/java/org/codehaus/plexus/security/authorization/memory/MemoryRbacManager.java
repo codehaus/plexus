@@ -165,6 +165,11 @@ public class MemoryRbacManager
         RBACObjectAssertions.assertValid( "Save UserAssignment", userAssignment );
 
         userAssignments.put( userAssignment.getPrincipal(), userAssignment );
+        Iterator it = userAssignment.getRoles().iterator();
+        while ( it.hasNext() )
+        {
+            saveRole( (Role) it.next() );
+        }
         return userAssignment;
     }
 
