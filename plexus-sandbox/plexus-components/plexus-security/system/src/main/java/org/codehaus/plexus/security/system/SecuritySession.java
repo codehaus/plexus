@@ -10,6 +10,8 @@ public interface SecuritySession
 {
     public static final String ROLE = SecuritySession.class.getName(); 
 
+    public static final String USERKEY = "SecuritySessionUser";
+
     AuthenticationResult getAuthenticationResult();
 
     User getUser();

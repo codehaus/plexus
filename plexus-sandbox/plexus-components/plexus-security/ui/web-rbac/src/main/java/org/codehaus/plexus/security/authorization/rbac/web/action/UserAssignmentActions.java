@@ -92,12 +92,23 @@ public class UserAssignmentActions
     {
         try
         {
-            UserAssignment assignment = manager.createUserAssignment( principal );
+            if ( principal == null )
+            {
+                throw new RbacActionException( "principal can not be null" );
+            }
 
-            assignment.addRole( manager.getRole( roleName ) );
-
-            manager.saveUserAssignment( assignment );
-            getLogger().info( "adding user assignment" );
+            if ( manager.userAssignmentExists( principal ) )
+            {
+                UserAssignment assignment = manager.getUserAssignment( principal );
+                assignment.addRole( manager.getRole( roleName ) );
+                manager.saveUserAssignment( assignment );
+            }
+            else
+            {
+                UserAssignment assignment = manager.createUserAssignment( principal );
+                assignment.addRole( manager.getRole( roleName ) );
+                manager.saveUserAssignment( assignment );
+            }
         }
         catch ( RbacObjectNotFoundException ne )
         {
@@ -121,6 +132,11 @@ public class UserAssignmentActions
     {
         try
         {
+            if ( principal == null )
+            {
+                throw new RbacActionException( "principal can not be null" );
+            }
+
             UserAssignment assignment = manager.getUserAssignment( principal );
 
             assignment.getRoles().remove( roleName );
