@@ -20,7 +20,7 @@
 
     <ww:iterator id="resource" value="resources">
       <ww:url id="resourceUrl" action="resource">
-        <ww:param name="resourceId" value="${resource.id}"/>
+        <ww:param name="resourceIdentifier">${resource.identifier}</ww:param>
       </ww:url>
       <ww:a href="%{resourceUrl}">${resource.identifier}</ww:a><br/>
     </ww:iterator>

@@ -32,10 +32,8 @@ import java.util.List;
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
- *
- * @plexus.component
- *   role="com.opensymphony.xwork.Action"
- *   role-hint="plexusSecurityRole"
+ * @plexus.component role="com.opensymphony.xwork.Action"
+ * role-hint="plexusSecurityRole"
  */
 public class RoleActions
     extends PlexusActionSupport
@@ -48,7 +46,7 @@ public class RoleActions
 
     private String roleName;
 
-    private String permissionName;
+    private String assignPermissionName;
 
     private String childRoleName;
 
@@ -63,17 +61,18 @@ public class RoleActions
     private List assignableRoles;
 
     public void prepare()
+        throws Exception
     {
         assignablePermissions = manager.getAllPermissions();
         getLogger().info( "Permissions to render " + assignablePermissions.size() );
         assignableRoles = manager.getAllRoles();
 
-        try
+        if ( manager.roleExists( roleName ) )
         {
             role = manager.getRole( roleName );
             roleName = role.getName();
         }
-        catch ( RbacObjectNotFoundException ne )
+        else
         {
             role = manager.createRole( "name", "description" );
         }
@@ -84,27 +83,43 @@ public class RoleActions
     {
         try
         {
-            Role temp = manager.getRole( role.getName() );
-
-            temp.setName( role.getName() );
-            temp.setDescription( role.getDescription() );
-            temp.setAssignable( role.isAssignable() );
-
-            if ( StringUtils.isNotEmpty(childRoleName) )
+            if ( manager.roleExists( role ) )
             {
-                temp.addChildRole( manager.getRole( childRoleName ) );
-            }
+                Role temp = manager.getRole( role.getName() );
 
-            if ( StringUtils.isNotEmpty(permissionName) )
+                temp.setName( role.getName() );
+                temp.setDescription( role.getDescription() );
+                temp.setAssignable( role.isAssignable() );
+
+                if ( StringUtils.isNotEmpty( childRoleName ) )
+                {
+                    temp.addChildRole( manager.getRole( childRoleName ) );
+                }
+
+                if ( StringUtils.isNotEmpty( assignPermissionName ) )
+                {
+                    temp.addPermission( manager.getPermission( assignPermissionName ) );
+                }
+
+                manager.updateRole( temp );
+            }
+            else
             {
-                temp.addPermission( manager.getPermission( permissionName ) );
-            }
+                if ( StringUtils.isNotEmpty( childRoleName ) )
+                {
+                    role.addChildRole( manager.getRole( childRoleName ) );
+                }
 
-            manager.updateRole( temp );
+                if ( StringUtils.isNotEmpty( assignPermissionName ) )
+                {
+                    role.addPermission( manager.getPermission( assignPermissionName ) );
+                }
+                manager.addRole( role );
+            }
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            manager.addRole( role );
+            throw new RbacActionException( ne );
         }
 
         return SUCCESS;
@@ -115,7 +130,7 @@ public class RoleActions
     {
         try
         {
-            Role temp = manager.getRole( role.getName() );
+            Role temp = manager.getRole( roleName );
 
             temp.getChildRoles().remove( manager.getRole( childRoleName ) );
 
@@ -134,7 +149,7 @@ public class RoleActions
     {
         try
         {
-            Role temp = manager.getRole( role.getName() );
+            Role temp = manager.getRole( roleName );
 
             List permissions = temp.getPermissions();
 
@@ -175,14 +190,14 @@ public class RoleActions
         this.childRoleName = childRoleName;
     }
 
-    public String getPermissionName()
+    public String getAssignPermissionName()
     {
-        return permissionName;
+        return assignPermissionName;
     }
 
-    public void setPermissionName( String permissionName )
+    public void setAssignPermissionName( String assignPermissionName )
     {
-        this.permissionName = permissionName;
+        this.assignPermissionName = assignPermissionName;
     }
 
     public String getRoleName()

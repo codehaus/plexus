@@ -51,16 +51,16 @@ public interface RBACManager
      * @return the new {@link Role} object with an empty (non-null) {@link Role#getChildRoles()} object.
      */
     public Role createRole( String name, String description );
-    
+
     /**
      * Tests for the existance of a Role.
-     * 
+     *
      * @return true if role exists in store.
      */
     public boolean roleExists( String name );
-    
+
     public boolean roleExists( Role role );
-    
+
     /**
      * Method addRole
      *
@@ -85,7 +85,7 @@ public interface RBACManager
      */
     public List getAllRoles()
         throws RbacStoreException;
-    
+
    /**
      * Method removeRole
      *
@@ -101,7 +101,7 @@ public interface RBACManager
      */
     public void removeRole( String roleName )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
-    
+
     /**
      *
      * @param role
@@ -143,17 +143,17 @@ public interface RBACManager
      * @return the new Permission.
      */
     public Permission createPermission( String name, String description, String operationName, String resourceIdentifier );
-    
+
     /**
      * Tests for the existance of a permission.
-     * 
+     *
      * @param name the name to test for.
      * @return true if permission exists.
      */
     public boolean permissionExists( String name );
-    
+
     public boolean permissionExists( Permission permission );
-    
+
     public Permission addPermission( Permission permission )
         throws RbacObjectInvalidException, RbacStoreException;
 
@@ -168,7 +168,7 @@ public interface RBACManager
 
     public void removePermission( String permissionName )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
-    
+
     public Permission updatePermission( Permission permission )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
@@ -190,9 +190,9 @@ public interface RBACManager
     public Operation createOperation( String name, String description );
 
     public boolean operationExists( String name );
-    
+
     public boolean operationExists( Operation operation );
-    
+
     public Operation addOperation( Operation operation )
         throws RbacObjectInvalidException, RbacStoreException;
 
@@ -207,7 +207,7 @@ public interface RBACManager
 
     public void removeOperation( String operationName )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
-    
+
     public Operation updateOperation( Operation operation )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
@@ -228,9 +228,9 @@ public interface RBACManager
     public Resource createResource( String identifier );
 
     public boolean resourceExists( String identifier );
-    
+
     public boolean resourceExists( Resource resource );
-    
+
     public Resource addResource( Resource resource )
         throws RbacObjectInvalidException, RbacStoreException;
 
@@ -245,7 +245,7 @@ public interface RBACManager
 
     public void removeResource( String resourceIdentifier )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
-    
+
     public Resource updateResource( Resource resource )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
@@ -266,9 +266,9 @@ public interface RBACManager
     public UserAssignment createUserAssignment( String principal );
 
     public boolean userAssignmentExists( String principal );
-    
+
     public boolean userAssignmentExists( UserAssignment assignment );
-    
+
     /**
      * Method addUserAssignment
      *
@@ -293,7 +293,7 @@ public interface RBACManager
      */
     public void removeUserAssignment( UserAssignment userAssignment )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
-    
+
     /**
      * Method removeAssignment
      *
@@ -342,5 +342,14 @@ public interface RBACManager
      * @throws RbacStoreException
      */
     public List getAllAssignableRoles()
+        throws RbacStoreException;
+
+    /**
+     * returns the global resource object
+     *
+     * @return
+     * @throws RbacStoreException
+     */
+    public Resource getGlobalResource()
         throws RbacStoreException;
 }

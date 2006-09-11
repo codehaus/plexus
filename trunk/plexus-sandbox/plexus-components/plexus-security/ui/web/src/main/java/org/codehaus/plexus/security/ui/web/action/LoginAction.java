@@ -21,8 +21,6 @@ import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
