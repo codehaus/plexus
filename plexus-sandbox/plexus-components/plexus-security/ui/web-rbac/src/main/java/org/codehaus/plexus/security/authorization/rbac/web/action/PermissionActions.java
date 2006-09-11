@@ -109,7 +109,14 @@ public class PermissionActions
             else
             {
                 permission.setOperation( manager.getOperation( operationName ) );
-                permission.setResource( manager.getResource( resourceIdentifier ) );
+                if ( !globalResource )
+                {
+                    permission.setResource( manager.getResource( resourceIdentifier ) );
+                }
+                else
+                {
+                    permission.setResource( manager.getGlobalResource() );
+                }
                 manager.addPermission( permission );
             }
         }
