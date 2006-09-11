@@ -69,7 +69,19 @@ public class JdoRbacManagerTest
         jdoFactory.setProperty( "org.jpox.poid.transactionIsolation", "READ_UNCOMMITTED" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         jdoFactory.setProperty( "org.jpox.autoCreateSchema", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
+        
+        jdoFactory.setProperty( "javax.jdo.option.RetainValues", "true" );
 
+        jdoFactory.setProperty( "javax.jdo.option.RestoreValues", "true" );
+
+        // jdoFactory.setProperty( "org.jpox.autoCreateColumns", "true" );
+        
+        jdoFactory.setProperty( "org.jpox.validateTables", "true" );
+
+        jdoFactory.setProperty( "org.jpox.validateColumns", "true" );
+
+        jdoFactory.setProperty( "org.jpox.validateConstraints", "true" );
+        
         Properties properties = jdoFactory.getProperties();
 
         for ( Iterator it = properties.entrySet().iterator(); it.hasNext(); )

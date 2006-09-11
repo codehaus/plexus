@@ -1,7 +1,5 @@
 package org.codehaus.plexus.security.rbac;
 
-import java.util.HashMap;
-
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
  *
@@ -18,6 +16,8 @@ import java.util.HashMap;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
+
 /**
  * AbstractRole useful for common logic that implementors can use. 
  *
@@ -32,10 +32,10 @@ public abstract class AbstractRole
     {
         if ( getChildRoles() == null )
         {
-            setChildRoles( new HashMap() );
+            setChildRoles( new ArrayList() );
         }
 
-        getChildRoles().put( childRole.getName(), childRole );
+        getChildRoles().add( childRole );
     }
 
     public boolean hasChildRoles()

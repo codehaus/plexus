@@ -72,7 +72,7 @@ public class PermissionActions
             }
             else
             {
-                permission = manager.createPermission( "name", "description" );
+                permission = manager.createPermission( "name" );
             }
         }
     }
@@ -86,44 +86,11 @@ public class PermissionActions
     public String save()
         throws RbacActionException
     {
-        try
-        {
-            if ( manager.permissionExists( permission ) )
-            {
-                Permission temp = manager.getPermission( permission.getName() );
+        Permission temp = manager.createPermission( permission.getName(), operationName, resourceIdentifier );
 
-                temp.setName( permission.getName() );
-                temp.setDescription( permission.getDescription() );
-                temp.setOperation( manager.getOperation( operationName ) );
-                if ( !globalResource )
-                {
-                    temp.setResource( manager.getResource( resourceIdentifier ) );
-                }
-                else
-                {
-                    temp.setResource( manager.getGlobalResource() );
-                }
+        temp.setDescription( permission.getDescription() );
 
-                manager.updatePermission( temp );
-            }
-            else
-            {
-                permission.setOperation( manager.getOperation( operationName ) );
-                if ( !globalResource )
-                {
-                    permission.setResource( manager.getResource( resourceIdentifier ) );
-                }
-                else
-                {
-                    permission.setResource( manager.getGlobalResource() );
-                }
-                manager.addPermission( permission );
-            }
-        }
-        catch ( RbacObjectNotFoundException ne )
-        {
-            throw new RbacActionException( ne );
-        }
+        manager.savePermission( temp );
 
         return SUCCESS;
     }
@@ -205,8 +172,7 @@ public class PermissionActions
     public boolean isGlobalResource()
     {
         return globalResource;
-    }
-
+}
     public void setGlobalResource( boolean globalResource )
     {
         this.globalResource = globalResource;

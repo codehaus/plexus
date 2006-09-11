@@ -92,22 +92,12 @@ public class UserAssignmentActions
     {
         try
         {
-            if ( manager.userAssignmentExists( principal ) )
-            {
-                getLogger().info( "updating user assignment" );
-                UserAssignment assignment = manager.getUserAssignment( principal );
-                assignment.addRole( manager.getRole( roleName ) );
-                manager.updateUserAssignment( assignment );
-            }
-            else
-            {
-                getLogger().info( "adding user assignment" );
-                UserAssignment assignment = manager.createUserAssignment( principal );
+            UserAssignment assignment = manager.createUserAssignment( principal );
 
-                assignment.addRole( manager.getRole( roleName ) );
+            assignment.addRole( manager.getRole( roleName ) );
 
-                manager.addUserAssignment( assignment );
-            }
+            manager.saveUserAssignment( assignment );
+            getLogger().info( "adding user assignment" );
         }
         catch ( RbacObjectNotFoundException ne )
         {

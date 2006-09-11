@@ -67,7 +67,7 @@ public class RBACObjectAssertions
         }
 
         i = 0;
-        it = role.getChildRoles().values().iterator();
+        it = role.getChildRoles().iterator();
         while ( it.hasNext() )
         {
             Role child = (Role) it.next();

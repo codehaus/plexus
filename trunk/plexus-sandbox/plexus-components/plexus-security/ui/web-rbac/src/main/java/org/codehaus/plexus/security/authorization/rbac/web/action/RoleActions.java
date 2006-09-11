@@ -19,6 +19,7 @@ package org.codehaus.plexus.security.authorization.rbac.web.action;
 
 import com.opensymphony.xwork.ModelDriven;
 import com.opensymphony.xwork.Preparable;
+
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.Role;
@@ -33,7 +34,7 @@ import java.util.List;
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="plexusSecurityRole"
+ *   role-hint="plexusSecurityRole"
  */
 public class RoleActions
     extends PlexusActionSupport
@@ -74,7 +75,7 @@ public class RoleActions
         }
         else
         {
-            role = manager.createRole( "name", "description" );
+            role = manager.createRole( "name" );
         }
     }
 
@@ -83,39 +84,22 @@ public class RoleActions
     {
         try
         {
-            if ( manager.roleExists( role ) )
+            Role temp = manager.createRole( role.getName() );
+
+            temp.setDescription( role.getDescription() );
+            temp.setAssignable( role.isAssignable() );
+
+            if ( StringUtils.isNotEmpty(childRoleName) )
             {
-                Role temp = manager.getRole( role.getName() );
-
-                temp.setName( role.getName() );
-                temp.setDescription( role.getDescription() );
-                temp.setAssignable( role.isAssignable() );
-
-                if ( StringUtils.isNotEmpty( childRoleName ) )
-                {
-                    temp.addChildRole( manager.getRole( childRoleName ) );
-                }
+                temp.addChildRole( manager.getRole( childRoleName ) );
+            }
 
                 if ( StringUtils.isNotEmpty( assignPermissionName ) )
-                {
+            {
                     temp.addPermission( manager.getPermission( assignPermissionName ) );
-                }
-
-                manager.updateRole( temp );
             }
-            else
-            {
-                if ( StringUtils.isNotEmpty( childRoleName ) )
-                {
-                    role.addChildRole( manager.getRole( childRoleName ) );
-                }
 
-                if ( StringUtils.isNotEmpty( assignPermissionName ) )
-                {
-                    role.addPermission( manager.getPermission( assignPermissionName ) );
-                }
-                manager.addRole( role );
-            }
+            manager.saveRole( temp );
         }
         catch ( RbacObjectNotFoundException ne )
         {
@@ -134,7 +118,7 @@ public class RoleActions
 
             temp.getChildRoles().remove( manager.getRole( childRoleName ) );
 
-            manager.updateRole( temp );
+            manager.saveRole( temp );
         }
         catch ( RbacObjectNotFoundException ne )
         {
@@ -155,7 +139,7 @@ public class RoleActions
 
             permissions.remove( manager.getPermission( removePermissionName ) );
 
-            manager.updateRole( temp );
+            manager.saveRole( temp );
         }
         catch ( RbacObjectNotFoundException ne )
         {

@@ -56,7 +56,7 @@ public class OperationActions
             }
             else
             {
-                operation = manager.createOperation( "name", "description" );
+                operation = manager.createOperation( "name" );
             }
         }
     }
@@ -64,30 +64,14 @@ public class OperationActions
     public String save()
         throws RbacActionException
     {
-        try
-        {
-            if ( manager.operationExists( operation ) )
-            {
-                Operation temp = manager.getOperation( operation.getName() );
+        Operation temp = manager.createOperation( operation.getName() );
 
-                temp.setName( operation.getName() );
-                temp.setDescription( operation.getDescription() );
+        temp.setName( operation.getName() );
+        temp.setDescription( operation.getDescription() );
 
-                manager.updateOperation( temp );
-            }
-            else
-            {
-                manager.addOperation( operation );
-            }
-        }
-        catch ( RbacObjectNotFoundException ne )
-        {
-            throw new RbacActionException( ne );
-
-        }
+        manager.saveOperation( temp );
         return SUCCESS;
     }
-
 
     public String remove()
         throws RbacActionException
@@ -102,6 +86,7 @@ public class OperationActions
         }
         return SUCCESS;
     }
+
 
     public Object getModel()
     {

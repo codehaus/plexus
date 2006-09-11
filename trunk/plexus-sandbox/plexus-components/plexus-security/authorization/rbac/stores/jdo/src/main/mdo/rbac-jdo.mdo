@@ -10,7 +10,7 @@
     </default>
   </defaults>
   <classes>
-    
+
     <class jpox.stashable="true">
       <name>JdoRole</name>
       <version>1.0.0</version>
@@ -38,11 +38,14 @@
             true if this role is available to be assigned to a user
           </description>
         </field>
-        <field>
+        <field jpox.persistence-modifier="persistent" jpox.fetchGroupNames="role-detail">
           <name>childRoles</name>
           <version>1.0.0</version>
-          <type>Map</type>
-          <association stash.part="true" java.init="field" java.generate-break="false" java.generate-create="false" stash.keyType="java.lang.String">
+          <association stash.part="true" 
+                       java.init="field" 
+                       java.generate-break="false" 
+                       java.generate-create="false"
+                       java.use-interface="org.codehaus.plexus.security.rbac.Role">
             <type>JdoRole</type>
             <multiplicity>*</multiplicity>
           </association>
@@ -50,10 +53,14 @@
             roles that will inherit the permissions of this role
           </description>
         </field>
-        <field>
+        <field jpox.fetchGroupNames="role-detail">
           <name>permissions</name>
           <version>1.0.0</version>
-          <association stash.part="true" java.init="field" java.generate-break="false" java.generate-create="false" java.use-interface="org.codehaus.plexus.security.rbac.Permission">
+          <association stash.part="true" 
+                       java.init="field" 
+                       java.generate-break="false" 
+                       java.generate-create="false" 
+                       java.use-interface="org.codehaus.plexus.security.rbac.Permission">
             <type>JdoPermission</type>
             <multiplicity>*</multiplicity>
           </association>
@@ -79,18 +86,26 @@
           <version>1.0.0</version>
           <type>String</type>
         </field>
-        <field>
+        <field jpox.persistence-modifier="persistent">
           <name>operation</name>
           <version>1.0.0</version>
-          <association stash.part="true" java.use-interface="org.codehaus.plexus.security.rbac.Operation">
+          <association stash.part="true" 
+                       java.use-interface="org.codehaus.plexus.security.rbac.Operation"
+                       jpox.join="false"
+                       jpox.mappedBy="name"
+                       jpox.dependent="false">
             <type>JdoOperation</type>
             <multiplicity>1</multiplicity>
           </association>
         </field>
-        <field>
+        <field jpox.persistence-modifier="persistent">
           <name>resource</name>
           <version>1.0.0</version>
-          <association stash.part="true" java.use-interface="org.codehaus.plexus.security.rbac.Resource">
+          <association stash.part="true" 
+                       java.use-interface="org.codehaus.plexus.security.rbac.Resource"
+                       jpox.join="false"
+                       jpox.mappedBy="identifier"
+                       jpox.dependent="false">
             <type>JdoResource</type>
             <multiplicity>1</multiplicity>
           </association>

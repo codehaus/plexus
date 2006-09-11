@@ -21,7 +21,9 @@ import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.Role;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -102,9 +104,9 @@ public class MemoryRole
     /**
      * Method getChildRoles
      */
-    public Map getChildRoles()
+    public List getChildRoles()
     {
-        return this.childRoles;
+        return Collections.unmodifiableList( new ArrayList( this.childRoles.values() ) );
     }
 
     /**
@@ -161,8 +163,7 @@ public class MemoryRole
     {
         if ( !( memoryPermission instanceof MemoryPermission ) )
         {
-            throw new ClassCastException(
-                                          "MemoryRole.removePermissions(memoryPermission) parameter must be instanceof "
+            throw new ClassCastException( "MemoryRole.removePermissions(memoryPermission) parameter must be instanceof "
                                               + MemoryPermission.class.getName() );
         }
         getPermissions().remove( ( (MemoryPermission) memoryPermission ) );
@@ -189,9 +190,16 @@ public class MemoryRole
      * 
      * @param childRoles
      */
-    public void setChildRoles( Map childRoles )
+    public void setChildRoles( List roles )
     {
-        this.childRoles = childRoles;
+        this.childRoles.clear();
+
+        Iterator it = roles.iterator();
+        while ( it.hasNext() )
+        {
+            Role role = (Role) it.next();
+            addChildRole( role );
+        }
     }
 
     /**
