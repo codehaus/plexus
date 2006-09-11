@@ -468,7 +468,7 @@ public class JdoRbacManager
     
     public boolean userAssignmentExists( String principal )
     {
-        return objectExistsInJdoById( UserAssignment.class, principal );
+        return objectExistsInJdoById( JdoUserAssignment.class, principal );
     }
 
     public boolean userAssignmentExists( UserAssignment assignment )
