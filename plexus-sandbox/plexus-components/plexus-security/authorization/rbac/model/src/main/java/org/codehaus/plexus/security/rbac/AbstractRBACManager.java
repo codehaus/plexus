@@ -216,8 +216,7 @@ public abstract class AbstractRBACManager
         /*
         if ( role.getChildRoles() != null )
         {
-
-            Iterator it = role.getChildRoles().values().iterator();
+            Iterator it = role.getChildRoles().iterator();
             while ( it.hasNext() )
             {
                 Role child = (Role) it.next();

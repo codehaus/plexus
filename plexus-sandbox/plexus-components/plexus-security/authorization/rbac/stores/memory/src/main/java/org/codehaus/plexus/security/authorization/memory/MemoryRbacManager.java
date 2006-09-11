@@ -64,12 +64,13 @@ public class MemoryRbacManager
     // Role methods
     // ----------------------------------------------------------------------
 
-    public Role addRole( Role role )
+    public Role saveRole( Role role )
         throws RbacStoreException
     {
-        RBACObjectAssertions.assertValid( "Add Role", role );
+        RBACObjectAssertions.assertValid( "Save Role", role );
 
-        return (Role) roles.put( role.getName(), role );
+        roles.put( role.getName(), role );
+        return role;
     }
 
     private void assertRoleExists( String roleName )
@@ -99,15 +100,7 @@ public class MemoryRbacManager
         roles.remove( role.getName() );
     }
 
-    public Role updateRole( Role role )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        RBACObjectAssertions.assertValid( "Update Role", role );
-
-        assertRoleExists( role.getName() );
-
-        return (Role) roles.put( role.getName(), role );
-    }
+    
 
     public List getAllRoles()
         throws RbacStoreException
@@ -119,61 +112,62 @@ public class MemoryRbacManager
     // Permission methods
     // ----------------------------------------------------------------------
 
-    public Operation addOperation( Operation operation )
+    public Operation saveOperation( Operation operation )
         throws RbacStoreException
     {
-        RBACObjectAssertions.assertValid( "Add Operation", operation );
+        RBACObjectAssertions.assertValid( "Save Operation", operation );
 
-        return (Operation) operations.put( operation.getName(), operation );
+        operations.put( operation.getName(), operation );
+        return operation;
     }
 
-    public Permission addPermission( Permission permission )
+    public Permission savePermission( Permission permission )
         throws RbacStoreException
     {
-        RBACObjectAssertions.assertValid( "Add Permission", permission );
+        RBACObjectAssertions.assertValid( "Save Permission", permission );
 
-        return (Permission) permissions.put( permission.getName(), permission );
+        permissions.put( permission.getName(), permission );
+        return permission;
     }
 
-    public Resource addResource( Resource resource )
+    public Resource saveResource( Resource resource )
         throws RbacStoreException
     {
-        RBACObjectAssertions.assertValid( "Add Resource", resource );
+        RBACObjectAssertions.assertValid( "Save Resource", resource );
 
-        return (Resource) resources.put( resource.getIdentifier(), resource );
+        resources.put( resource.getIdentifier(), resource );
+        return resource;
     }
 
-    public UserAssignment addUserAssignment( UserAssignment userAssignment )
+    public UserAssignment saveUserAssignment( UserAssignment userAssignment )
         throws RbacStoreException
     {
-        RBACObjectAssertions.assertValid( "Add UserAssignment", userAssignment );
+        RBACObjectAssertions.assertValid( "Save UserAssignment", userAssignment );
 
-        return (UserAssignment) userAssignments.put( userAssignment.getPrincipal(), userAssignment );
+        userAssignments.put( userAssignment.getPrincipal(), userAssignment );
+        return userAssignment;
     }
 
-    public Operation createOperation( String name, String description )
+    public Operation createOperation( String name )
     {
         Operation operation = new MemoryOperation();
         operation.setName( name );
-        operation.setDescription( description );
 
         return operation;
     }
 
-    public Permission createPermission( String name, String description )
+    public Permission createPermission( String name )
     {
         Permission permission = new MemoryPermission();
         permission.setName( name );
-        permission.setDescription( description );
 
         return permission;
     }
 
-    public Permission createPermission( String name, String description, String operationName, String resourceIdentifier )
+    public Permission createPermission( String name, String operationName, String resourceIdentifier )
     {
         Permission permission = new MemoryPermission();
         permission.setName( name );
-        permission.setDescription( description );
 
         Operation operation = new MemoryOperation();
         operation.setName( operationName );
@@ -196,11 +190,10 @@ public class MemoryRbacManager
         return resource;
     }
 
-    public Role createRole( String name, String description )
+    public Role createRole( String name )
     {
         Role role = new MemoryRole();
         role.setName( name );
-        role.setDescription( description );
 
         return role;
     }
@@ -247,16 +240,6 @@ public class MemoryRbacManager
         }
     }
 
-    public Operation updateOperation( Operation operation )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        RBACObjectAssertions.assertValid( "Update Operation", operation );
-
-        assertOpertionExists( operation.getName() );
-
-        return (Operation) operations.put( operation.getName(), operation );
-    }
-
     public void removePermission( Permission permission )
         throws RbacObjectNotFoundException, RbacStoreException
     {
@@ -265,16 +248,6 @@ public class MemoryRbacManager
         assertPermissionExists( permission.getName() );
 
         permissions.remove( permission.getName() );
-    }
-
-    public Permission updatePermission( Permission permission )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        RBACObjectAssertions.assertValid( "Update Permission", permission );
-
-        assertPermissionExists( permission.getName() );
-
-        return (Permission) permissions.put( permission.getName(), permission );
     }
 
     public void removeResource( Resource resource )
@@ -296,16 +269,6 @@ public class MemoryRbacManager
         }
     }
 
-    public Resource updateResource( Resource resource )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        RBACObjectAssertions.assertValid( "Update Resource", resource );
-
-        assertResourceExists( resource.getIdentifier() );
-
-        return (Resource) resources.put( resource.getIdentifier(), resource );
-    }
-
     private void assertUserAssignmentExists( String principal )
         throws RbacObjectNotFoundException
     {
@@ -323,16 +286,6 @@ public class MemoryRbacManager
         assertUserAssignmentExists( userAssignment.getPrincipal() );
 
         userAssignments.remove( userAssignment.getPrincipal() );
-    }
-
-    public UserAssignment updateUserAssignment( UserAssignment userAssignment )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        RBACObjectAssertions.assertValid( "Remove User Assignment", userAssignment );
-
-        assertUserAssignmentExists( userAssignment.getPrincipal() );
-
-        return (UserAssignment) userAssignments.put( userAssignment.getPrincipal(), userAssignment );
     }
 
     public UserAssignment createUserAssignment( String principal )

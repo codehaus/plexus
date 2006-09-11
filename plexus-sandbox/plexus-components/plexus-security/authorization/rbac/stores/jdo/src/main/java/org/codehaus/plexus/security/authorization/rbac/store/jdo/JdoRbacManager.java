@@ -38,8 +38,12 @@ import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Transaction;
@@ -55,7 +59,8 @@ import javax.jdo.Transaction;
  *   role="org.codehaus.plexus.security.rbac.RBACManager"
  *   role-hint="jdo"
  */
-public class JdoRbacManager extends AbstractRBACManager
+public class JdoRbacManager
+    extends AbstractRBACManager
     implements Initializable
 {
     /**
@@ -77,14 +82,22 @@ public class JdoRbacManager extends AbstractRBACManager
      *       method call.
      *
      * @param name the name.
-     * @param description the description.
      * @return the new {@link Role} object with an empty (non-null) {@link Role#getChildRoles()} object.
      */
-    public Role createRole( String name, String description )
+    public Role createRole( String name )
     {
-        Role role = new JdoRole();
-        role.setName( name );
-        role.setDescription( description );
+        Role role;
+        
+        try
+        {
+            role = getRole( name );
+        }
+        catch ( RbacObjectNotFoundException e )
+        {
+            role = new JdoRole();
+            role.setName( name );
+        }
+        
         return role;
     }
 
@@ -93,34 +106,22 @@ public class JdoRbacManager extends AbstractRBACManager
      *
      * @param role
      */
-    public Role addRole( Role role )
+    public Role saveRole( Role role )
         throws RbacObjectInvalidException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( role );
         
-        PersistenceManager pm = getPersistenceManager();
-        
-        Transaction tx = pm.currentTransaction();
+        return (Role) saveObject( role );
+    }
+    
+    public boolean roleExists( Role role )
+    {
+        return objectExistsInJdo( role );
+    }
 
-        try
-        {
-            tx.begin();
-
-            pm.makePersistent( role );
-
-            role = (Role) pm.detachCopy( role );
-            
-            pm.detachCopy( role.getChildRoles() );
-            pm.detachCopy( role.getPermissions() );
-
-            tx.commit();
-
-            return role;
-        }
-        finally
-        {
-            rollback( tx );
-        }
+    public boolean roleExists( String name )
+    {
+        return objectExistsInJdoById( JdoRole.class, name );
     }
 
     /**
@@ -153,13 +154,6 @@ public class JdoRbacManager extends AbstractRBACManager
         removeObject( role );
     }
 
-    public Role updateRole( Role role )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
-    {
-        RBACObjectAssertions.assertValid( role );
-        return (Role) updateObject( role );
-    }
-
     // ----------------------------------------------------------------------
     // Permission methods
     // ----------------------------------------------------------------------
@@ -172,14 +166,22 @@ public class JdoRbacManager extends AbstractRBACManager
      *       with this method call.
      *
      * @param name the name.
-     * @param description the description.
      * @return the new Permission.
      */
-    public Permission createPermission( String name, String description )
+    public Permission createPermission( String name )
     {
-        Permission permission = new JdoPermission();
-        permission.setName( name );
-        permission.setDescription( description );
+        Permission permission;
+        
+        try
+        {
+            permission = getPermission( name );
+        }
+        catch ( RbacObjectNotFoundException e )
+        {
+            permission = new JdoPermission();
+            permission.setName( name );
+        }
+        
         return permission;
     }
 
@@ -192,35 +194,58 @@ public class JdoRbacManager extends AbstractRBACManager
      *       or resource created with this method call.
      *
      * @param name the name.
-     * @param description the description.
      * @param operationName the {@link Operation#setName(String)} value
      * @param resourceIdentifier the {@link Resource#setIdentifier(String)} value
      * @return the new Permission.
      */
-    public Permission createPermission( String name, String description, String operationName, String resourceIdentifier )
+    public Permission createPermission( String name, String operationName, String resourceIdentifier )
     {
         Permission permission = new JdoPermission();
         permission.setName( name );
-        permission.setDescription( description );
 
-        Operation operation = new JdoOperation();
-        operation.setName( operationName );
-
+        Operation operation;
+        try
+        {
+            operation = getOperation( operationName );
+        }
+        catch ( RbacObjectNotFoundException e )
+        {
+            operation = new JdoOperation();
+            operation.setName( operationName );
+        }
         permission.setOperation( operation );
 
-        Resource resource = new JdoResource();
-        resource.setIdentifier( resourceIdentifier );
-
+        Resource resource;
+        try
+        {
+            resource = getResource( resourceIdentifier );
+        }
+        catch ( RbacObjectNotFoundException e )
+        {
+            resource = new JdoResource();
+            resource.setIdentifier( resourceIdentifier );
+        }
         permission.setResource( resource );
 
         return permission;
     }
 
-    public Permission addPermission( Permission permission )
+    public Permission savePermission( Permission permission )
         throws RbacObjectInvalidException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( permission );
-        return (Permission) addObject( permission );
+        
+        return (Permission) saveObject( permission );
+    }
+
+    public boolean permissionExists( Permission permission )
+    {
+        return objectExistsInJdo( permission );
+    }
+
+    public boolean permissionExists( String name )
+    {
+        return objectExistsInJdoById( JdoPermission.class, name );
     }
 
     public Permission getPermission( String permissionName )
@@ -242,11 +267,24 @@ public class JdoRbacManager extends AbstractRBACManager
         removeObject( permission );
     }
 
-    public Permission updatePermission( Permission permission )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
+    public Set getAssignedPermissions( String principal )
+        throws RbacObjectNotFoundException, RbacStoreException
     {
-        RBACObjectAssertions.assertValid( permission );
-        return (Permission) updateObject( permission );
+        List list = getAllObjectsDetached( JdoPermission.class, "name ascending" );
+
+        // TODO: figure out how to query using UNIQUE for this from jdo directly.
+        Set uniquePerms = new HashSet();
+        Iterator it = list.iterator();
+        while ( it.hasNext() )
+        {
+            Permission perm = (Permission) it.next();
+            if ( !uniquePerms.contains( perm ) )
+            {
+                uniquePerms.add( perm );
+            }
+        }
+
+        return uniquePerms;
     }
 
     // ----------------------------------------------------------------------
@@ -260,23 +298,40 @@ public class JdoRbacManager extends AbstractRBACManager
      *       with this method call.
      *
      * @param name the name.
-     * @param description the description.
      * @return the new Operation.
      */
-    public Operation createOperation( String name, String description )
+    public Operation createOperation( String name )
     {
-        Operation operation = new JdoOperation();
-        operation.setName( name );
-        operation.setDescription( description );
+        Operation operation;
+        
+        try
+        {
+            operation = getOperation( name );
+        }
+        catch ( RbacObjectNotFoundException e )
+        {
+            operation = new JdoOperation();
+            operation.setName( name );
+        }
 
         return operation;
     }
 
-    public Operation addOperation( Operation operation )
+    public Operation saveOperation( Operation operation )
         throws RbacObjectInvalidException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( operation );
-        return (Operation) addObject( operation );
+        return (Operation) saveObject( operation );
+    }
+    
+    public boolean operationExists( Operation operation )
+    {
+        return objectExistsInJdo( operation );
+    }
+
+    public boolean operationExists( String name )
+    {
+        return objectExistsInJdoById( JdoOperation.class, name );
     }
 
     public Operation getOperation( String operationName )
@@ -298,13 +353,6 @@ public class JdoRbacManager extends AbstractRBACManager
         removeObject( operation );
     }
 
-    public Operation updateOperation( Operation operation )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
-    {
-        RBACObjectAssertions.assertValid( operation );
-        return (Operation) updateObject( operation );
-    }
-
     // ----------------------------------------------------------------------
     // Resource methods
     // ----------------------------------------------------------------------
@@ -320,21 +368,40 @@ public class JdoRbacManager extends AbstractRBACManager
      */
     public Resource createResource( String identifier )
     {
-        Resource resource = new JdoResource();
-        resource.setIdentifier( identifier );
-
+        Resource resource;
+        
+        try
+        {
+            resource = getResource( identifier );
+        }
+        catch ( RbacObjectNotFoundException e )
+        {
+            resource = new JdoResource();
+            resource.setIdentifier( identifier );
+        }
+        
         return resource;
     }
 
-    public Resource addResource( Resource resource )
+    public Resource saveResource( Resource resource )
         throws RbacObjectInvalidException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( resource );
-        return (Resource) addObject( resource );
+        return (Resource) saveObject( resource );
+    }
+    
+    public boolean resourceExists( Resource resource )
+    {
+        return objectExistsInJdo( resource );
+    }
+
+    public boolean resourceExists( String identifier )
+    {
+        return objectExistsInJdoById( JdoResource.class, identifier );
     }
 
     public Resource getResource( String resourceIdentifier )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacStoreException
     {
         return (Resource) getObjectById( JdoResource.class, resourceIdentifier );
     }
@@ -350,13 +417,6 @@ public class JdoRbacManager extends AbstractRBACManager
     {
         RBACObjectAssertions.assertValid( resource );
         removeObject( resource );
-    }
-
-    public Resource updateResource( Resource resource )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
-    {
-        RBACObjectAssertions.assertValid( resource );
-        return (Resource) updateObject( resource );
     }
 
     // ----------------------------------------------------------------------
@@ -375,8 +435,17 @@ public class JdoRbacManager extends AbstractRBACManager
      */
     public UserAssignment createUserAssignment( String principal )
     {
-        UserAssignment ua = new JdoUserAssignment();
-        ua.setPrincipal( principal );
+        UserAssignment ua;
+        
+        try
+        {
+            ua = getUserAssignment( principal );
+        }
+        catch ( RbacObjectNotFoundException e )
+        {
+            ua = new JdoUserAssignment();
+            ua.setPrincipal( principal );
+        }
 
         return ua;
     }
@@ -386,11 +455,21 @@ public class JdoRbacManager extends AbstractRBACManager
      *
      * @param userAssignment
      */
-    public UserAssignment addUserAssignment( UserAssignment userAssignment )
+    public UserAssignment saveUserAssignment( UserAssignment userAssignment )
         throws RbacObjectInvalidException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( userAssignment );
-        return (UserAssignment) addObject( userAssignment );
+        return (UserAssignment) saveObject( userAssignment );
+    }
+    
+    public boolean userAssignmentExists( String principal )
+    {
+        return objectExistsInJdoById( UserAssignment.class, principal );
+    }
+
+    public boolean userAssignmentExists( UserAssignment assignment )
+    {
+        return objectExistsInJdo( assignment );
     }
 
     public UserAssignment getUserAssignment( String principal )
@@ -420,13 +499,6 @@ public class JdoRbacManager extends AbstractRBACManager
         removeObject( userAssignment );
     }
 
-    public UserAssignment updateUserAssignment( UserAssignment userAssignment )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
-    {
-        RBACObjectAssertions.assertValid( userAssignment );
-        return (UserAssignment) updateObject( userAssignment );
-    }
-
     // ------------------------------------------------------------------
     // UserAssignment Utility Methods
     // ------------------------------------------------------------------
@@ -435,12 +507,54 @@ public class JdoRbacManager extends AbstractRBACManager
         throws InitializationException
     {
         pmf = jdoFactory.getPersistenceManagerFactory();
+
+        /* DEBUG STUFF
+         System.err.println( "PersistenceManagerFactory.retainValues = " + pmf.getRetainValues() );
+         System.err.println( "PersistenceManagerFactory.restoreValues = " + pmf.getRestoreValues() );
+
+         Collection coll = pmf.supportedOptions();
+         Iterator it = coll.iterator();
+         while ( it.hasNext() )
+         {
+         System.err.println( "Supported Option: " + it.next() );
+         }
+         */
     }
 
     // ----------------------------------------------------------------------
     // jdo utility methods
     // ----------------------------------------------------------------------
+    
+    private Object saveObject( Object object )
+    {
+        if( objectExistsInJdo( object ) )
+        {
+            return updateObject( object );
+        }
+        else
+        {
+            return addObject( object );
+        }
+    }
 
+    private boolean objectExistsInJdo( Object object )
+    {
+        return ( JDOHelper.getObjectId( object ) != null );
+    }
+
+    private boolean objectExistsInJdoById( Class clazz, Object id )
+    {
+        try
+        {
+            Object o = getObjectById( clazz, id );
+            return ( o != null );
+        }
+        catch ( RbacObjectNotFoundException e )
+        {
+            return false;
+        }
+    }
+    
     private Object addObject( Object object )
     {
         return PlexusJdoUtils.addObject( getPersistenceManager(), object );
@@ -455,19 +569,41 @@ public class JdoRbacManager extends AbstractRBACManager
             {
                 throw new RbacObjectNotFoundException( "Unable to find RBAC object because id was null" );
             }
-            else
-            {
-                return PlexusJdoUtils.getObjectById( getPersistenceManager(), clazz, id.toString() );
-            }
+            return PlexusJdoUtils.getObjectById( getPersistenceManager(), clazz, id.toString() );
         }
         catch ( PlexusObjectNotFoundException e )
         {
-            throw new RbacObjectNotFoundException( "Unable to find RBAC Object '" + id + "' of type " + clazz.getName(),
+            throw new RbacObjectNotFoundException(
+                                                   "Unable to find RBAC Object '" + id + "' of type " + clazz.getName(),
                                                    e );
         }
         catch ( PlexusStoreException e )
         {
             throw new RbacStoreException( "Unable to get rbac object id '" + id + "' of type " + clazz.getName(), e );
+        }
+    }
+
+    private Object getObjectById( Class clazz, Object id, String fetchGroup )
+        throws RbacObjectNotFoundException, RbacStoreException
+    {
+        try
+        {
+            if ( id == null )
+            {
+                throw new RbacObjectNotFoundException( "Unable to find RBAC object because id was null" );
+            }
+
+            return PlexusJdoUtils.getObjectById( getPersistenceManager(), clazz, id.toString(), fetchGroup );
+        }
+        catch ( PlexusObjectNotFoundException e )
+        {
+            throw new RbacObjectNotFoundException( "Unable to find RBAC Object '" + id + "' of type " + clazz.getName()
+                + " using fetch-group '" + fetchGroup + "'", e );
+        }
+        catch ( PlexusStoreException e )
+        {
+            throw new RbacStoreException( "Unable to get rbac object id '" + id + "' of type " + clazz.getName()
+                + " using fetch-group '" + fetchGroup + "'", e );
         }
     }
 
@@ -525,5 +661,4 @@ public class JdoRbacManager extends AbstractRBACManager
         PlexusJdoUtils.rollbackIfActive( tx );
     }
 
-    
 }
