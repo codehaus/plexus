@@ -11,12 +11,15 @@
     </p>
     <ww:actionerror/>
     <ww:form action="savePermission" method="post">
-     <ww:hidden name="permissionId"/>
+     <ww:hidden name="permissionName"/>
 
      <ww:textfield label="Name" name="name"/> <br/>
      <ww:textfield label="Description" name="description"/> <br/>
-     <ww:select label="Operation" name="operationId" list="operations" listKey="id" listValue="name" value="operation.id" emptyOption="true"/> <br/>
-     <ww:select label="Resource" name="resourceId" list="resources" listKey="id" listValue="identifier" value="resource.id" emptyOption="true"/>
+     <ww:select label="Operation" name="operationName" list="operations" listKey="name" listValue="name" value="operation.name" emptyOption="true"/> <br/>
+      <br/>
+     <ww:select label="Resource" name="resourceIdentifier" list="resources" listKey="identifier" listValue="identifier" value="resource.identifier" emptyOption="true"/><br/>
+      or <br/>
+     <ww:checkbox label="Is GlobalResource?" name="globalResource"/><br/>
 
       <center><ww:submit/></center>
     </ww:form>

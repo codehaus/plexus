@@ -55,6 +55,8 @@ public class PermissionActions
 
     private List resources;
 
+    private boolean globalResource;
+
     public void prepare()
         throws Exception
     {
@@ -63,12 +65,12 @@ public class PermissionActions
 
         if ( permission == null )
         {
-            try
+            if ( manager.permissionExists( permissionName ) )
             {
                 permission = manager.getPermission( permissionName );
                 permissionName = permission.getName();
             }
-            catch ( RbacObjectNotFoundException ne )
+            else
             {
                 permission = manager.createPermission( "name", "description" );
             }
@@ -86,18 +88,34 @@ public class PermissionActions
     {
         try
         {
-            Permission temp = manager.getPermission( permission.getName() );
+            if ( manager.permissionExists( permission ) )
+            {
+                Permission temp = manager.getPermission( permission.getName() );
 
-            temp.setName( permission.getName() );
-            temp.setDescription( permission.getDescription() );
-            temp.setOperation( manager.getOperation( operationName ) );
-            temp.setResource( manager.getResource( resourceIdentifier ) );
+                temp.setName( permission.getName() );
+                temp.setDescription( permission.getDescription() );
+                temp.setOperation( manager.getOperation( operationName ) );
+                if ( !globalResource )
+                {
+                    temp.setResource( manager.getResource( resourceIdentifier ) );
+                }
+                else
+                {
+                    temp.setResource( manager.getGlobalResource() );
+                }
 
-            manager.updatePermission( temp );
+                manager.updatePermission( temp );
+            }
+            else
+            {
+                permission.setOperation( manager.getOperation( operationName ) );
+                permission.setResource( manager.getResource( resourceIdentifier ) );
+                manager.addPermission( permission );
+            }
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            manager.addPermission( permission );
+            throw new RbacActionException( ne );
         }
 
         return SUCCESS;
@@ -175,5 +193,15 @@ public class PermissionActions
     public void setResources( List resources )
     {
         this.resources = resources;
+    }
+
+    public boolean isGlobalResource()
+    {
+        return globalResource;
+    }
+
+    public void setGlobalResource( boolean globalResource )
+    {
+        this.globalResource = globalResource;
     }
 }
