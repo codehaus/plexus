@@ -283,7 +283,7 @@ public abstract class AbstractRBACManager
             else
             {
                 globalResource = createResource( Resource.GLOBAL );
-                addResource( globalResource );
+                saveResource( globalResource );
             }
         }
         return globalResource;
