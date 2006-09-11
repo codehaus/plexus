@@ -26,6 +26,8 @@ import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -331,5 +333,61 @@ public class AbstractRbacManagerTestCase
         UserAssignment bob = getRbacManager().createUserAssignment( username );
         bob.addRole( getRbacManager().getRole( roleName ) );
         getRbacManager().saveUserAssignment( bob );
+    }
+    
+    public void testGetAssignedRoles() throws RbacStoreException, RbacObjectNotFoundException
+    {
+        // Setup 3 roles.
+        getRbacManager().saveRole( getAdminRole() );
+        getRbacManager().saveRole( getProjectAdminRole() );
+        Role added = getRbacManager().saveRole( getDeveloperRole() );
+        String roleName = added.getName();
+
+        assertEquals( 3, getRbacManager().getAllRoles().size() );
+
+        // Setup User / Assignment with 1 role.
+        String username = "bob";
+
+        UserAssignment assignment = getRbacManager().createUserAssignment( username );
+        assignment.addRole( getRbacManager().getRole( roleName ) );
+        assignment = getRbacManager().saveUserAssignment( assignment );
+
+        assertEquals( 1, getRbacManager().getAllUserAssignments().size() );
+        assertEquals( 3, getRbacManager().getAllRoles().size() );
+
+        // Get the List of Assigned Roles for user bob.
+        Collection assignedRoles = getRbacManager().getAssignedRoles( username );
+
+        assertNotNull( assignedRoles );
+        assertEquals( 1, assignedRoles.size() );
+    }
+    
+    public void testGetAssignedPermissions() throws RbacStoreException, RbacObjectNotFoundException
+    {
+        // Setup 3 roles.
+        getRbacManager().saveRole( getAdminRole() );
+        getRbacManager().saveRole( getProjectAdminRole() );
+        Role added = getRbacManager().saveRole( getDeveloperRole() );
+        String roleName = added.getName();
+
+        assertEquals( 3, getRbacManager().getAllRoles().size() );
+        assertEquals( 3, getRbacManager().getAllPermissions().size() );
+
+        // Setup User / Assignment with 1 role.
+        String username = "bob";
+
+        UserAssignment assignment = getRbacManager().createUserAssignment( username );
+        assignment.addRole( getRbacManager().getRole( roleName ) );
+        assignment = getRbacManager().saveUserAssignment( assignment );
+
+        assertEquals( 1, getRbacManager().getAllUserAssignments().size() );
+        assertEquals( 3, getRbacManager().getAllRoles().size() );
+        assertEquals( 3, getRbacManager().getAllPermissions().size() );
+
+        // Get the List of Assigned Roles for user bob.
+        Collection assignedPermissions = getRbacManager().getAssignedPermissions( username );
+
+        assertNotNull( assignedPermissions );
+        assertEquals( 1, assignedPermissions.size() );
     }
 }
