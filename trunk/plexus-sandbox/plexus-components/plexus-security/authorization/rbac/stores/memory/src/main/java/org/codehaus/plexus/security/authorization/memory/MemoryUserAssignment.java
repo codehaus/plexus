@@ -16,9 +16,11 @@ package org.codehaus.plexus.security.authorization.memory;
  * limitations under the License.
  */
 
-
 import org.codehaus.plexus.security.rbac.AbstractUserAssignment;
 import org.codehaus.plexus.security.rbac.UserAssignment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * MemoryUserAssignment 
@@ -39,18 +41,7 @@ public class MemoryUserAssignment
     /**
      * Field roles
      */
-    private java.util.Map roles;
-
-    /**
-     * Method addRole
-     * 
-     * @param key
-     * @param value
-     */
-    public void addRole( Object key, MemoryRole value )
-    {
-        getRoles().put( key, value );
-    }
+    private List roles = new ArrayList();
 
     /**
      * Method equals
@@ -87,11 +78,11 @@ public class MemoryUserAssignment
     /**
      * Method getRoles
      */
-    public java.util.Map getRoles()
+    public List getRoles()
     {
         if ( this.roles == null )
         {
-            this.roles = new java.util.HashMap();
+            this.roles = new ArrayList();
         }
 
         return this.roles;
@@ -122,7 +113,7 @@ public class MemoryUserAssignment
      * 
      * @param roles
      */
-    public void setRoles( java.util.Map roles )
+    public void setRoles( List roles )
     {
         this.roles = roles;
     }

@@ -175,7 +175,7 @@ public class AbstractRbacManagerTestCase
         UserAssignment ua = getRbacManager().getUserAssignment( adminPrincipal );
         assertNotNull( ua );
         
-        Role fetched = (Role) ua.getRoles().get("ADMIN");
+        Role fetched = (Role) getRbacManager().getRole( "ADMIN" );
         assertNotNull( fetched );
     }
 
