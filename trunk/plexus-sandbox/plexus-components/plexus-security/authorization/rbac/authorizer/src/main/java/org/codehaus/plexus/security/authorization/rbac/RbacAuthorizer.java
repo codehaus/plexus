@@ -75,9 +75,7 @@ public class RbacAuthorizer
             for ( Iterator i = permissions.iterator(); i.hasNext(); )
             {
                 Permission permission = (Permission)i.next();
-
-                getLogger().info( "checking permission " + permission.getName() );              
-
+              
                 if ( evaluator.evaluate( permission, operation, resource ) )
                 {
                     return new AuthorizationResult( true, permission, null );
@@ -88,10 +86,13 @@ public class RbacAuthorizer
         }
         catch ( PermissionEvaluationException pe )
         {
+            pe.printStackTrace();
             return new AuthorizationResult( false, null, pe );
         }
         catch ( RbacObjectNotFoundException nfe)
         {
+            nfe.printStackTrace();
+
             return new AuthorizationResult( false, null, nfe );
         }
     }

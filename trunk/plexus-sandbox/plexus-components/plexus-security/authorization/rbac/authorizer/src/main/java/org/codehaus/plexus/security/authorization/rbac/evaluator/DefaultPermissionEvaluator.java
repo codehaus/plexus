@@ -35,6 +35,11 @@ public class DefaultPermissionEvaluator
         // check if this permission applies to the operation at all
         if ( permission.getOperation().getName().equals( operation.toString() ) )
         {
+            if ( resource == null )
+            {
+                return true;
+            }
+
             // check if it is a global resource, if it is then since the operations match we return true
             if ( resource != null && Resource.GLOBAL.equals( resource.toString() ) )
             {
