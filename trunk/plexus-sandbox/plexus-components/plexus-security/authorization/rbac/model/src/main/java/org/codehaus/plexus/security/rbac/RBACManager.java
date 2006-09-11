@@ -321,9 +321,10 @@ public interface RBACManager
      * 
      * @return
      * @throws RbacStoreException
+     * @throws RbacObjectNotFoundException 
      */
     public List getAllAssignableRoles()
-        throws RbacStoreException;
+        throws RbacStoreException, RbacObjectNotFoundException;
 
     /**
      * returns the global resource object
