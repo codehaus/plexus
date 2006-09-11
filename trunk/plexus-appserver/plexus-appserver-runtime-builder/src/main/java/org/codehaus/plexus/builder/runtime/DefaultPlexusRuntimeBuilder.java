@@ -35,11 +35,18 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.velocity.VelocityComponent;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -205,7 +212,7 @@ public class DefaultPlexusRuntimeBuilder
             // shared amongst the apps and the appserver configurator.
             // ----------------------------------------------------------------------
 
-            processMainConfiguration( containerConfiguration, configurationProperties, confDir );
+            processMainConfiguration( containerConfiguration, configurationProperties, confDir, addManagementAgent );
 
             createSystemScripts( binDir, confDir, configurationProperties );
 
@@ -325,12 +332,61 @@ public class DefaultPlexusRuntimeBuilder
     }
 
     private void processMainConfiguration( File containerConfiguration, Properties configurationProperties,
-                                           File confDir )
+                                           File confDir, boolean addManagementAgent )
         throws IOException
     {
         File out = new File( confDir, "plexus.xml" );
 
-        filterCopy( containerConfiguration, out, configurationProperties );
+        File conf = containerConfiguration;
+
+        if ( addManagementAgent )
+        {
+            Document doc;
+            try
+            {
+                SAXReader reader = new SAXReader();
+                doc = reader.read( conf );
+                Element loadOnStart = (Element) doc.selectSingleNode( "//plexus/load-on-start" );
+                if ( loadOnStart == null )
+                {
+                    loadOnStart = doc.getRootElement().addElement( "load-on-start" );
+                }
+
+                loadOnStart.addElement( "component" ).addElement( "role" ).addText(
+                    "org.codehaus.plexus.appserver.management.Agent" );
+
+                Element components = (Element) doc.selectSingleNode( "//plexus/components" );
+                if ( components == null )
+                {
+                    components = doc.getRootElement().addElement( "components" );
+                }
+
+                Element component = components.addElement( "component" );
+                component.addElement( "role" ).addText( "org.codehaus.plexus.appserver.management.Agent" );
+                component.addElement( "implementation" ).addText(
+                    "org.codehaus.plexus.appserver.management.DefaultAgent" );
+                Element requirement = component.addElement( "requirements" ).addElement( "requirement" );
+                requirement.addElement( "role" ).addText( "org.codehaus.plexus.appserver.management.MBean" );
+                requirement.addElement( "field-name" ).addText( "mbeans" );
+                Element configuration = component.addElement( "configuration" );
+                configuration.addElement( "serviceUrl" ).addText( "service:jmx:rmi:///" );
+                configuration.addElement( "slpPort" ).addText( "3427" );
+
+                OutputFormat format = OutputFormat.createPrettyPrint();
+                format.setLineSeparator( System.getProperty( "line.separator" ) );
+                conf = new File( "target/tmp/plexus.xml" );
+                conf.getParentFile().mkdirs();
+                XMLWriter writer = new XMLWriter( new FileWriter( conf ), format );
+                writer.write( doc );
+                writer.close();
+            }
+            catch ( DocumentException e )
+            {
+                getLogger().warn( "can't read " + conf.getCanonicalPath() );
+            }
+        }
+
+        filterCopy( conf, out, configurationProperties );
     }
 
     private void javaServiceWrapper( File binDir, File coreDir, File confDir, Properties configurationProperties )
