@@ -170,7 +170,7 @@ public class RBACObjectAssertions
         }
 
         int i = 0;
-        Iterator it = assignment.getRoles().values().iterator();
+        Iterator it = assignment.getRoles().iterator();
         while ( it.hasNext() )
         {
             Role role = (Role) it.next();

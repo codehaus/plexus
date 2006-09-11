@@ -184,11 +184,14 @@
           <type>String</type>
           <identifier>true</identifier>
         </field>
-        <field>
+        <field jpox.persistence-modifier="persistent">
           <name>roles</name>
           <version>1.0.0</version>
-          <type>Map</type>
-          <association stash.part="true" stash.keyType="java.lang.String">
+          <association stash.part="true" 
+                       java.init="field"
+                       java.generate-break="false"
+                       java.generate-create="false"
+                       java.use-interface="org.codehaus.plexus.security.rbac.Role">
             <type>JdoRole</type>
             <multiplicity>*</multiplicity>
           </association>
