@@ -36,14 +36,14 @@ public class DefaultPermissionEvaluator
         if ( permission.getOperation().getName().equals( operation.toString() ) )
         {
             // check if it is a global resource, if it is then since the operations match we return true
-            if ( Resource.GLOBAL.equals( resource.toString() ) )
+            if ( resource != null && Resource.GLOBAL.equals( resource.toString() ) )
             {
                 return true;
             }
 
             // check if the resource identifier of the permission matches the resource we are checking against
             // if it does then return true
-            if ( permission.getResource().getIdentifier().equals( resource.toString() ) )
+            if ( resource != null && permission.getResource().getIdentifier().equals( resource.toString() ) )
             {
                 return true;
             }
