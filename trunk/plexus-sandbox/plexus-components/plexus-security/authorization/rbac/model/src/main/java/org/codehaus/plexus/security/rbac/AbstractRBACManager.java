@@ -250,7 +250,7 @@ public abstract class AbstractRBACManager
      * NOTE: roles that are returned might have have roles themselves, if
      * you just want all permissions then use {@link #getAssignedPermissions( Object principal )}
      *
-     * @param principal
+     * @param principal 
      * @return
      * @throws RbacObjectNotFoundException
      * @throws RbacStoreException
@@ -269,7 +269,7 @@ public abstract class AbstractRBACManager
         if ( globalResource == null )
         {
             globalResource = createResource( Resource.GLOBAL );
-            saveResource( globalResource );
+            globalResource = saveResource( globalResource );
         }
         return globalResource;
     }

@@ -86,25 +86,21 @@
           <version>1.0.0</version>
           <type>String</type>
         </field>
-        <field jpox.persistence-modifier="persistent">
+        <field>
           <name>operation</name>
           <version>1.0.0</version>
           <association stash.part="true" 
                        java.use-interface="org.codehaus.plexus.security.rbac.Operation"
-                       jpox.join="false"
-                       jpox.mappedBy="name"
                        jpox.dependent="false">
             <type>JdoOperation</type>
             <multiplicity>1</multiplicity>
           </association>
         </field>
-        <field jpox.persistence-modifier="persistent">
+        <field>
           <name>resource</name>
           <version>1.0.0</version>
           <association stash.part="true" 
                        java.use-interface="org.codehaus.plexus.security.rbac.Resource"
-                       jpox.join="false"
-                       jpox.mappedBy="identifier"
                        jpox.dependent="false">
             <type>JdoResource</type>
             <multiplicity>1</multiplicity>

@@ -6,7 +6,7 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-authorization-rbac-store-test</artifactId>
-  <name>Plexus Security :: RBAC Memory Authorization Store Test Framework</name>
+  <name>Plexus Security :: RBAC Authorization Store Test Framework</name>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
