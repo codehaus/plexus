@@ -60,7 +60,7 @@ public class LoginAction
                 if ( securitySession.getAuthenticationResult().isAuthenticated() )
                 {
                     session.put( SecuritySession.ROLE, securitySession );
-                    session.put( "user", securitySession.getUser() );
+                    session.put( SecuritySession.USERKEY , securitySession.getUser() );
                     session.put( "authStatus", new Boolean( true ) );
                     return SUCCESS;
                 }

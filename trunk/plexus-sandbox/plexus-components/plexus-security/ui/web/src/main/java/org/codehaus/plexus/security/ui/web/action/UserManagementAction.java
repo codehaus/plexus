@@ -4,6 +4,7 @@ import com.opensymphony.xwork.ModelDriven;
 import com.opensymphony.xwork.Preparable;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 /*
  * Copyright 2005 The Apache Software Foundation.
@@ -49,7 +50,7 @@ public class UserManagementAction
     {
         if ( username == null )
         {
-            username = ((User)session.get( "user" )).getUsername();
+            username = ((User)session.get( SecuritySession.USERKEY )).getUsername();
             user = manager.findUser( username );
         }
         else
