@@ -40,12 +40,12 @@ public interface Resource
     /**
      * Resource identifier refering to all objects.
      */
-    public static final String GLOBAL = "#[global]#";
+    public static final String GLOBAL = "*";
 
     /**
      * Resource identifier refering to no objects.
      */
-    public static final String NULL = "#[none]#";
+    public static final String NULL = "-";
 
     /**
      * Get The string identifier for an operation.
