@@ -145,6 +145,8 @@ public class MemoryRbacManager
         RBACObjectAssertions.assertValid( "Save Permission", permission );
 
         permissions.put( permission.getName(), permission );
+        saveOperation( permission.getOperation() );
+        saveResource( permission.getResource() );
         return permission;
     }
 

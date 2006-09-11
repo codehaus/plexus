@@ -204,4 +204,30 @@ public class AbstractRbacManagerTestCase
         assertEquals( 1, assignedPermissions.size() );
     }
 
+    public void testGlobalResource()
+    {
+        Permission editConfiguration = getRbacManager().createPermission( "Edit Configuration" );
+        editConfiguration.setOperation( getRbacManager().createOperation( "edit-configuration" ) );
+        editConfiguration.setResource( getRbacManager().getGlobalResource() );
+        getRbacManager().savePermission( editConfiguration );
+        
+        assertEquals( 1, getRbacManager().getAllPermissions().size() );
+        assertEquals( 1, getRbacManager().getAllOperations().size() );
+        assertEquals( 1, getRbacManager().getAllResources().size() );
+        
+        Permission deleteConfiguration = getRbacManager().createPermission( "Delete Configuration" );
+        deleteConfiguration.setOperation( getRbacManager().createOperation( "delete-configuration" ) );
+        deleteConfiguration.setResource( getRbacManager().getGlobalResource() );
+        getRbacManager().savePermission( deleteConfiguration );
+        
+        assertEquals( 2, getRbacManager().getAllPermissions().size() );
+        assertEquals( 2, getRbacManager().getAllOperations().size() );
+        assertEquals( 1, getRbacManager().getAllResources().size() );
+    }
+    
+    public void testGlobalResourceOneLiner()
+    {
+        getRbacManager().savePermission( getRbacManager().createPermission( "Edit Configuration", "edit-configuration", Resource.GLOBAL ) );
+        getRbacManager().savePermission( getRbacManager().createPermission( "Delete Configuration", "delete-configuration", Resource.GLOBAL ) );
+    }
 }
