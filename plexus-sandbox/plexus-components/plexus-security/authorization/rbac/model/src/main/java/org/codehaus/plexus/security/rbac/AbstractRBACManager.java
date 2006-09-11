@@ -213,7 +213,7 @@ public abstract class AbstractRBACManager
                 }
             }
         }
-        /*
+        
         if ( role.getChildRoles() != null )
         {
             Iterator it = role.getChildRoles().iterator();
@@ -223,7 +223,6 @@ public abstract class AbstractRBACManager
                 gatherUniquePermissions( child, coll );
             }
         }
-        */
     }
 
     public List getAllAssignableRoles()
