@@ -53,7 +53,6 @@ import java.util.Properties;
 /**
  * @author <a href="mailto:evenisse@apache.org">Emmanuel Venisse</a>
  * @version $Id$
- * @plexus.component role="org.codehaus.plexus.appserver.management.Agent"
  */
 public class DefaultAgent
     extends AbstractLogEnabled
@@ -64,9 +63,15 @@ public class DefaultAgent
      */
     private List mbeans;
 
-    private String serviceUrl = "service:jmx:rmi:///";
+    /**
+     * @plexus.configuration default-value="service:jmx:rmi:///"
+     */
+    private String serviceUrl;
 
-    private int slpPort = 3427;
+    /**
+     * @plexus.configuration default-value="3427"
+     */
+    private int slpPort;
 
     private MBeanServer mbeanServer;
 
