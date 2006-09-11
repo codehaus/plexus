@@ -48,12 +48,12 @@ public class ResourceActions
     {
         if ( resource == null )
         {
-            try
+            if ( manager.resourceExists( resourceIdentifier ) )
             {
                 resource = manager.getResource( resourceIdentifier );
                 resourceIdentifier = resource.getIdentifier();
             }
-            catch ( RbacObjectNotFoundException ne )
+            else
             {
                 resource = manager.createResource( "identifier" );
             }
@@ -62,20 +62,28 @@ public class ResourceActions
 
 
     public String save()
+        throws RbacActionException
     {
         try
         {
-            // todo figure out if there is anyway to actually have this model driven action work with jdo objects
-            Resource temp = manager.getResource( resourceIdentifier );
+            if ( manager.resourceExists( resourceIdentifier ) )
+            {
+                // todo figure out if there is anyway to actually have this model driven action work with jdo objects
+                Resource temp = manager.getResource( resourceIdentifier );
 
-            temp.setIdentifier( resource.getIdentifier() );
-            temp.setPattern( resource.isPattern() );
+                temp.setIdentifier( resource.getIdentifier() );
+                temp.setPattern( resource.isPattern() );
 
-            manager.updateResource( temp );
+                manager.updateResource( temp );
+            }
+            else
+            {
+                resource = manager.addResource( resource );
+            }
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            resource = manager.addResource( resource );
+            throw new RbacActionException( ne );
         }
 
         return SUCCESS;

@@ -20,7 +20,7 @@
 
     <ww:iterator id="permission" value="permissions">
       <ww:url id="permissionUrl" action="permission">
-        <ww:param name="permissionId" value="${permission.id}"/>
+        <ww:param name="permissionName">${permission.name}</ww:param>
       </ww:url>
 
       <ww:a href="%{permissionUrl}">${permission.name}</ww:a><br/>

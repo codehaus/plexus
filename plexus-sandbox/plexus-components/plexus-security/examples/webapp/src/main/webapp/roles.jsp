@@ -22,7 +22,7 @@
 
     <ww:iterator id="role" value="roles">
       <ww:url id="roleUrl" action="role">
-        <ww:param name="roleId" value="${role.id}"/>
+        <ww:param name="roleName">${role.name}</ww:param>
       </ww:url>
 
       <ww:a href="%{roleUrl}">${role.name}</ww:a><br/>

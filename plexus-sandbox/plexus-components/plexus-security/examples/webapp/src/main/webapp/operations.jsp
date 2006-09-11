@@ -20,7 +20,7 @@
 
     <ww:iterator id="operation" value="operations">
       <ww:url id="operationUrl" action="operation">
-        <ww:param name="operationId" value="${operation.id}"/>
+        <ww:param name="operationName">${operation.name}</ww:param>
       </ww:url>
 
       <ww:a href="%{operationUrl}">${operation.name}</ww:a><br/>

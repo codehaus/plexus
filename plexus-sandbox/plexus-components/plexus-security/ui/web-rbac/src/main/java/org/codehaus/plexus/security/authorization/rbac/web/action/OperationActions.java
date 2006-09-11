@@ -49,36 +49,45 @@ public class OperationActions
     {
         if ( operation == null )
         {
-            try
+            if ( manager.operationExists( operationName ) )
             {
                 operation = manager.getOperation( operationName );
                 operationName = operation.getName();
             }
-            catch ( RbacObjectNotFoundException ne )
+            else
             {
-                operation = manager.createOperation( "name", "resourceIdentifier" );
+                operation = manager.createOperation( "name", "description" );
             }
         }
     }
 
     public String save()
+        throws RbacActionException
     {
         try
         {
-            Operation temp = manager.getOperation( operation.getName() );
+            if ( manager.operationExists( operation ) )
+            {
+                Operation temp = manager.getOperation( operation.getName() );
 
-            temp.setName( operation.getName() );
-            temp.setDescription( operation.getDescription() );
+                temp.setName( operation.getName() );
+                temp.setDescription( operation.getDescription() );
 
-            manager.updateOperation( temp );
+                manager.updateOperation( temp );
+            }
+            else
+            {
+                manager.addOperation( operation );
+            }
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            manager.addOperation( operation );
-        }
+            throw new RbacActionException( ne );
 
+        }
         return SUCCESS;
     }
+
 
     public String remove()
         throws RbacActionException
@@ -93,7 +102,6 @@ public class OperationActions
         }
         return SUCCESS;
     }
-
 
     public Object getModel()
     {

@@ -21,6 +21,7 @@ import org.codehaus.plexus.security.rbac.RbacStoreException;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.UserAssignment;
+import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 import java.util.ArrayList;
@@ -57,9 +58,23 @@ public class UserAssignmentActions
     {
         try
         {
-            assignedRoles = new ArrayList( manager.getAssignedRoles( principal ).values() );
-
             availableRoles = manager.getAllAssignableRoles();
+
+            principal = ((User)session.get( "user" )).getPrincipal().toString();
+
+            if ( principal != null && manager.userAssignmentExists( principal ) )
+            {
+                getLogger().info( "recovering assigned roles" );
+                assignedRoles = new ArrayList( manager.getAssignedRoles( principal ).values() );
+            }
+            else
+            {
+                getLogger().info( "new assigned roles" );
+                assignedRoles = new ArrayList();
+            }
+
+            getLogger().info( "assigned roles: " + assignedRoles.size() );
+            getLogger().info( "available roles: " + availableRoles.size() );
         }
         catch ( RbacStoreException  se )
         {
@@ -77,9 +92,22 @@ public class UserAssignmentActions
     {
         try
         {
-            UserAssignment assignment = manager.createUserAssignment( principal );
+            if ( manager.userAssignmentExists( principal ) )
+            {
+                getLogger().info( "updating user assignment" );
+                UserAssignment assignment = manager.getUserAssignment( principal );
+                assignment.addRole( manager.getRole( roleName ) );
+                manager.updateUserAssignment( assignment );
+            }
+            else
+            {
+                getLogger().info( "adding user assignment" );
+                UserAssignment assignment = manager.createUserAssignment( principal );
 
-            assignment.addRole( manager.getRole( roleName ) );
+                assignment.addRole( manager.getRole( roleName ) );
+
+                manager.addUserAssignment( assignment );
+            }
         }
         catch ( RbacObjectNotFoundException ne )
         {
@@ -90,13 +118,13 @@ public class UserAssignmentActions
     }
 
     /* TODO: We should be careful with use of 'remove' vs 'delete' or just spell it out.
-     * 
-     * For example, this method should just 'detach' the role from this particular user assignment, not actually 
+     *
+     * For example, this method should just 'detach' the role from this particular user assignment, not actually
      * delete the role from the underlying usermanager.
-     * 
+     *
      * To do that, a call to usermanager.removeRole() should remove the role entirely.
-     * 
-     * TODO: Do we need the ability to do a reverse lookup.  Given a role, get a list of Users with it set? 
+     *
+     * TODO: Do we need the ability to do a reverse lookup.  Given a role, get a list of Users with it set?
      */
     public String removeRole()
         throws RbacActionException

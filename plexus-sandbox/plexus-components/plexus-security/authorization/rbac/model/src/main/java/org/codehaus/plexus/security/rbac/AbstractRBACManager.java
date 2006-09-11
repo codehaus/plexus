@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * AbstractRBACManager 
+ * AbstractRBACManager
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -37,6 +37,8 @@ public abstract class AbstractRBACManager
     extends AbstractLogEnabled
     implements RBACManager
 {
+
+    private Resource globalResource;
 
     public void removeRole( String roleName )
         throws RbacObjectNotFoundException, RbacStoreException
@@ -211,7 +213,7 @@ public abstract class AbstractRBACManager
                 }
             }
         }
-
+        /*
         if ( role.getChildRoles() != null )
         {
 
@@ -222,6 +224,7 @@ public abstract class AbstractRBACManager
                 gatherUniquePermissions( child, coll );
             }
         }
+        */
     }
 
     public List getAllAssignableRoles()
@@ -260,6 +263,17 @@ public abstract class AbstractRBACManager
         UserAssignment ua = getUserAssignment( principal.toString() );
 
         return ua.getRoles();
+    }
+
+    public Resource getGlobalResource()
+        throws RbacStoreException
+    {
+        if ( globalResource == null )
+        {
+            globalResource = createResource( Resource.GLOBAL );
+            addResource( globalResource );
+        }
+        return globalResource;
     }
 
 }
