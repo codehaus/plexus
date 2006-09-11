@@ -64,14 +64,43 @@ public class DefaultSecuritySystem
     // Authentication: delegate to the authenticator
     // ----------------------------------------------------------------------------
 
+    /**
+     * delegate to the authentication system for boolean authentication checks,
+     * if the result is authentic then pull the user object from the user
+     * manager and add it to the session.  If the result is false return the result in
+     * an authenticated session and a null user object.
+     *
+     * in the event of a successful authentication and a lack of corresponding user in the
+     * usermanager return a null user as well
+     *
+     * //todo should this last case create a user in the usermanager?
+     *
+     * @param source
+     * @return
+     * @throws AuthenticationException
+     * @throws UserNotFoundException
+     */
     public SecuritySession authenticate( AuthenticationDataSource source )
         throws AuthenticationException, UserNotFoundException
     {
         AuthenticationResult result = authenticator.authenticate( source );
 
-        User user = userManager.findUser( result.getPrincipal() );
-
-        return new DefaultSecuritySession( result, user );
+        if ( result.isAuthenticated() )
+        {
+            if ( userManager.userExists( result.getPrincipal() ) )
+            {
+                User user = userManager.findUser( result.getPrincipal() );
+                return new DefaultSecuritySession( result, user );
+            }
+            else
+            {
+               return new DefaultSecuritySession( result, null );
+            }
+        }
+        else
+        {
+            return new DefaultSecuritySession( result, null );
+        }
     }
 
     public boolean isAuthenticated( AuthenticationDataSource source )
