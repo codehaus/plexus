@@ -41,7 +41,7 @@
         <field jpox.persistence-modifier="persistent" jpox.fetchGroupNames="role-detail">
           <name>childRoles</name>
           <version>1.0.0</version>
-          <association stash.part="true" 
+          <association stash.part="false" 
                        java.init="field" 
                        java.generate-break="false" 
                        java.generate-create="false"
@@ -184,10 +184,10 @@
           <type>String</type>
           <identifier>true</identifier>
         </field>
-        <field jpox.persistence-modifier="persistent">
+        <field jpox.persistence-modifier="persistent" jpox.fetchGroupNames="roles-in-ua-detail">
           <name>roles</name>
           <version>1.0.0</version>
-          <association stash.part="true" 
+          <association stash.part="false" 
                        java.init="field"
                        java.generate-break="false"
                        java.generate-create="false"
