@@ -27,6 +27,9 @@ public abstract class AbstractUserAssignment
 {
     public void addRole( Role role )
     {
-        getRoles().add( role );
+        if ( !getRoles().contains( role ) )
+        {
+            getRoles().add( role );
+        }
     }
 }
