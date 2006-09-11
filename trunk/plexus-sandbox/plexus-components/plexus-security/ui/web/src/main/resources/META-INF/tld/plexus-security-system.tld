@@ -18,11 +18,11 @@
     <attribute>
       <name>resource</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
     </attribute>
   </tag>
 
-    <tag>
+  <tag>
     <name>ifAnyAuthorized</name>
     <tagclass>org.codehaus.plexus.security.ui.web.jsp.IfAnyAuthorizedTag</tagclass>
     <bodycontent>JSP</bodycontent>
@@ -34,7 +34,7 @@
       <attribute>
       <name>resource</name>
       <required>false</required>
-      <rtexprvalue>false</rtexprvalue>
+      <rtexprvalue>true</rtexprvalue>
     </attribute>
   </tag>
 

@@ -213,7 +213,7 @@ public abstract class AbstractRBACManager
                 }
             }
         }
-        
+
         if ( role.getChildRoles() != null )
         {
             Iterator it = role.getChildRoles().iterator();
@@ -278,7 +278,7 @@ public abstract class AbstractRBACManager
         throws RbacStoreException
     {
         if ( globalResource == null )
-        {
+        {            
             globalResource = createResource( Resource.GLOBAL );
             globalResource = saveResource( globalResource );
         }
