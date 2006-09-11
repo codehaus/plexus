@@ -47,6 +47,8 @@ public class DefaultJdoFactory
     Initializable,
     Disposable
 {
+    private static final String CONNECTION_DRIVER_NAME = "javax.jdo.option.ConnectionDriverName";
+
     /**
      * @configuration
      */
@@ -74,7 +76,12 @@ public class DefaultJdoFactory
 
         try
         {
-            driverClass = (String) properties.get( "javax.jdo.option.ConnectionDriverName" );
+            driverClass = (String) properties.get( CONNECTION_DRIVER_NAME );
+            
+            if ( driverClass == null )
+            {
+                throw new InitializationException( "Property " + CONNECTION_DRIVER_NAME + " was not set in JDO Factory." );
+            }
 
             //TODO: Class.forName is evil
             Class.forName( driverClass );
