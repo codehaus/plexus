@@ -75,7 +75,9 @@ public class RbacAuthorizer
             for ( Iterator i = permissions.iterator(); i.hasNext(); )
             {
                 Permission permission = (Permission)i.next();
-              
+
+                getLogger().info( "checking permission " + permission.getName() );
+
                 if ( evaluator.evaluate( permission, operation, resource ) )
                 {
                     return new AuthorizationResult( true, permission, null );
