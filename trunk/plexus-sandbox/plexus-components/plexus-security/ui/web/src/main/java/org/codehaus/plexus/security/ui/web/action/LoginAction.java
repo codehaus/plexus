@@ -23,6 +23,8 @@ import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
+import java.util.HashMap;
+
 /**
  * LoginAction:
  *
@@ -49,7 +51,7 @@ public class LoginAction
     public String login()
     {
         if ( username != null && password != null )
-        {           
+        {
             try
             {
                 SecuritySession securitySession =
@@ -88,6 +90,7 @@ public class LoginAction
     public String logout()
     {
         session.clear();
+        session = new HashMap();
 
         return SUCCESS;
     }

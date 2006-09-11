@@ -58,19 +58,19 @@ public class UserAssignmentActions
     {
         try
         {
-            availableRoles = manager.getAllAssignableRoles();
-
             principal = ((User)session.get( "user" )).getPrincipal().toString();
 
             if ( principal != null && manager.userAssignmentExists( principal ) )
             {
                 getLogger().info( "recovering assigned roles" );
                 assignedRoles = new ArrayList( manager.getAssignedRoles( principal ) );
+                availableRoles = new ArrayList( manager.getUnassignedRoles( principal ) );
             }
             else
             {
                 getLogger().info( "new assigned roles" );
                 assignedRoles = new ArrayList();
+                availableRoles = manager.getAllAssignableRoles();
             }
 
             getLogger().info( "assigned roles: " + assignedRoles.size() );

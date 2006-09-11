@@ -26,6 +26,7 @@ import org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvalu
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -41,6 +42,7 @@ import java.util.Set;
  *   role-hint="rbac"
  */
 public class RbacAuthorizer
+    extends AbstractLogEnabled
     implements Authorizer
 {
 
@@ -73,6 +75,8 @@ public class RbacAuthorizer
             for ( Iterator i = permissions.iterator(); i.hasNext(); )
             {
                 Permission permission = (Permission)i.next();
+
+                getLogger().info( "checking permission " + permission.getName() );              
 
                 if ( evaluator.evaluate( permission, operation, resource ) )
                 {
