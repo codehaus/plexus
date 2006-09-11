@@ -66,7 +66,10 @@ public class RBACObjectAssertions
             i++;
         }
 
-        /* TODO: Determine how to avoid detach error with getChildRoles().
+        /* TODO: Re-enable when jpox configuration is resolved.
+         * javax.jdo.JDODetachedFieldAccessException: You have just attempted to access field "childRoles" yet 
+         * this field was not detached when you detached the object. Either dont access this field, or detach 
+         * the field when detaching the object.
         i = 0;
         it = role.getChildRoles().iterator();
         while ( it.hasNext() )
@@ -75,7 +78,7 @@ public class RBACObjectAssertions
             assertValid( "Role.childRoles[" + i + "]", child );
             i++;
         }
-        */
+         */
     }
 
     public static void assertValid( Permission permission )
