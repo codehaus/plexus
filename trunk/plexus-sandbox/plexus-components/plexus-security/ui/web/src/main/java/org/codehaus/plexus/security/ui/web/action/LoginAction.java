@@ -16,14 +16,13 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import com.opensymphony.webwork.dispatcher.SessionMap;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
-
-import java.util.HashMap;
 
 /**
  * LoginAction:
@@ -89,8 +88,9 @@ public class LoginAction
 
     public String logout()
     {
-        session.clear();
-        session = new HashMap();
+        SessionMap session = (SessionMap) this.session;
+
+        session.invalidate();
 
         return SUCCESS;
     }
