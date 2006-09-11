@@ -462,7 +462,7 @@ public class JdoRbacManager
     public UserAssignment saveUserAssignment( UserAssignment userAssignment )
         throws RbacObjectInvalidException, RbacStoreException
     {
-        RBACObjectAssertions.assertValid( userAssignment );
+        // RBACObjectAssertions.assertValid( userAssignment );
         return (UserAssignment) saveObject( userAssignment );
     }
     
