@@ -38,10 +38,7 @@ import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
@@ -70,10 +67,8 @@ public class JdoRbacManager
     
     private PersistenceManagerFactory pmf;
     
-    private static final String ROLE_DETAIL = "JdoRole_detail";
+    private static final String ROLE_DETAIL = "role-child-detail";
     
-    private static final String USER_ASSIGNMENT_DETAIL = "JdoUserAssignment_detail";
-
     // ----------------------------------------------------------------------
     // Role methods
     // ----------------------------------------------------------------------
@@ -115,7 +110,7 @@ public class JdoRbacManager
     {
         RBACObjectAssertions.assertValid( role );
         
-        return (Role) saveObject( role );
+        return (Role) saveObject( role, ROLE_DETAIL );
     }
     
     public boolean roleExists( Role role )
@@ -271,26 +266,6 @@ public class JdoRbacManager
     {
         RBACObjectAssertions.assertValid( permission );
         removeObject( permission );
-    }
-
-    public Set getAssignedPermissions( String principal )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        List list = getAllObjectsDetached( JdoPermission.class, "name ascending" );
-
-        // TODO: figure out how to query using UNIQUE for this from jdo directly.
-        Set uniquePerms = new HashSet();
-        Iterator it = list.iterator();
-        while ( it.hasNext() )
-        {
-            Permission perm = (Permission) it.next();
-            if ( !uniquePerms.contains( perm ) )
-            {
-                uniquePerms.add( perm );
-            }
-        }
-
-        return uniquePerms;
     }
 
     // ----------------------------------------------------------------------
@@ -467,7 +442,7 @@ public class JdoRbacManager
         throws RbacObjectInvalidException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( userAssignment );
-        return (UserAssignment) saveObject( userAssignment );
+        return (UserAssignment) saveObject( userAssignment, ROLE_DETAIL );
     }
     
     public boolean userAssignmentExists( String principal )
@@ -483,7 +458,7 @@ public class JdoRbacManager
     public UserAssignment getUserAssignment( String principal )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        return (UserAssignment) getObjectById( JdoUserAssignment.class, principal, USER_ASSIGNMENT_DETAIL );
+        return (UserAssignment) getObjectById( JdoUserAssignment.class, principal, ROLE_DETAIL );
     }
 
     /**
@@ -535,6 +510,7 @@ public class JdoRbacManager
     
     private Object saveObject( Object object )
     {
+        /* Original Technique
         if( objectExistsInJdo( object ) )
         {
             return updateObject( object );
@@ -542,6 +518,28 @@ public class JdoRbacManager
         else
         {
             return addObject( object );
+        }
+        */
+        
+        try
+        {
+            return PlexusJdoUtils.saveObject( getPersistenceManager(), object, null );
+        }
+        catch ( PlexusStoreException e )
+        {
+            throw new RbacStoreException( "Unable to save " + object.getClass().getName() + " object.", e );
+        }
+    }
+    
+    private Object saveObject( Object object, String fetchGroup )
+    {
+        try
+        {
+            return PlexusJdoUtils.saveObject( getPersistenceManager(), object, new String[] { fetchGroup } );
+        }
+        catch ( PlexusStoreException e )
+        {
+            throw new RbacStoreException( "Unable to save " + object.getClass().getName() + " object.", e );
         }
     }
 

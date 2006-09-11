@@ -191,7 +191,8 @@ public abstract class AbstractRBACManager
             Iterator it = ua.getRoles().iterator();
             while ( it.hasNext() )
             {
-                Role role = (Role) it.next();
+                Role role = getRole( ( (Role) it.next() ).getName() );
+                
                 gatherUniquePermissions( role, permissionSet );
             }
         }
@@ -226,7 +227,7 @@ public abstract class AbstractRBACManager
     }
 
     public List getAllAssignableRoles()
-        throws RbacStoreException
+        throws RbacStoreException, RbacObjectNotFoundException
     {
         List allRoles = getAllRoles();
         List assignableRoles = new ArrayList();
@@ -234,7 +235,7 @@ public abstract class AbstractRBACManager
         Iterator it = allRoles.iterator();
         while ( it.hasNext() )
         {
-            Role role = (Role) it.next();
+            Role role = getRole( ( (Role) it.next() ).getName() );
             if ( role.isAssignable() )
             {
                 assignableRoles.add( role );
