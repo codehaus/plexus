@@ -75,6 +75,14 @@ public interface UserManager
         throws UserNotFoundException;
 
     /**
+     * true if the user exists, false if it doesn't
+     *
+     * @param principal
+     * @return true, if user exists
+     */
+    boolean userExists( Object principal );
+
+    /**
      * Delete a user using the principal.
      * 
      * @param principal the principal to look for.

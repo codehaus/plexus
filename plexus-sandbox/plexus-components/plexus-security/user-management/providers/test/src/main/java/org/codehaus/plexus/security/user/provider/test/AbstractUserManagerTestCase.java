@@ -194,6 +194,20 @@ public class AbstractUserManagerTestCase
         }
     }
 
+    public void testUserExists() throws Exception
+    {
+        UserManager um = getUserManager();
+
+        // create and add a few users
+        User u1 = um.createUser( "admin", "Administrator", "admin@somedomain.com" );
+        u1.setPassword( "adminpass" );
+        um.addUser( u1 );
+
+        assertTrue( um.userExists( "admin" ) );
+        assertFalse( um.userExists( "voodoohatrack" ) ); 
+
+    }
+
     public void testUpdateUser()
         throws Exception
     {
