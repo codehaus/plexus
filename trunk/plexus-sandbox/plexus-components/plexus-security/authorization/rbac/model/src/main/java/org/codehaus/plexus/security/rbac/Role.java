@@ -58,7 +58,7 @@ public interface Role
     /**
      * Method getChildRoles
      */
-    public Map getChildRoles();
+    public List getChildRoles();
     
     /**
      * Convienence method to see if Role has Child Roles.
@@ -108,7 +108,7 @@ public interface Role
      *
      * @param roles
      */
-    public void setChildRoles( Map roles );
+    public void setChildRoles( List roles );
 
     /**
      * Set the Description

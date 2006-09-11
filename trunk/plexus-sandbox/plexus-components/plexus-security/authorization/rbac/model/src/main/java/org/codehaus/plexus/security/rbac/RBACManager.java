@@ -40,17 +40,15 @@ public interface RBACManager
     // ------------------------------------------------------------------
 
     /**
-     * Creates an implementation specific {@link Role}.
+     * Creates an implementation specific {@link Role}, or return an existing {@link Role}, depending
+     * on the provided <code>name</code> parameter.
      *
-     * Note: this method does not add the {@link Role} to the underlying store.
-     *       a call to {@link #addRole(Role)} is required to track the role created with this
-     *       method call.
+     * Note: Be sure to use {@link #saveRole(Role)} in order to persist any changes to the Role. 
      *
      * @param name the name.
-     * @param description the description.
-     * @return the new {@link Role} object with an empty (non-null) {@link Role#getChildRoles()} object.
+     * @return the new {@link Role} object.
      */
-    public Role createRole( String name, String description );
+    public Role createRole( String name );
 
     /**
      * Tests for the existance of a Role.
@@ -61,12 +59,7 @@ public interface RBACManager
 
     public boolean roleExists( Role role );
 
-    /**
-     * Method addRole
-     *
-     * @param role
-     */
-    public Role addRole( Role role )
+    public Role saveRole( Role role )
         throws RbacObjectInvalidException, RbacStoreException;
 
     /**
@@ -102,47 +95,32 @@ public interface RBACManager
     public void removeRole( String roleName )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
-    /**
-     *
-     * @param role
-     * @return
-     * @throws RbacObjectNotFoundException
-     * @throws RbacStoreException
-     */
-    public Role updateRole( Role role )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
-
     // ------------------------------------------------------------------
     // Permission Methods
     // ------------------------------------------------------------------
     /**
-     * Creates an implementation specific {@link Permission}.
+     * Creates an implementation specific {@link Permission}, or return an existing {@link Permission}, depending
+     * on the provided <code>name</code> parameter.
      *
-     * Note: this method does not add the {@link Permission} to the underlying store.
-     *       a call to {@link #addPermission(Permission)} is required to track the permission created
-     *       with this method call.
+     * Note: Be sure to use {@link #savePermission(Permission)} in order to persist any changes to the Role.
      *
      * @param name the name.
-     * @param description the description.
      * @return the new Permission.
      */
-    public Permission createPermission( String name, String description );
+    public Permission createPermission( String name );
 
     /**
      * Creates an implementation specific {@link Permission} with specified {@link Operation},
      * and {@link Resource} identifiers.
      *
-     * Note: this method does not add the Permission, Operation, or Resource to the underlying store.
-     *       a call to {@link #addPermission(Permission)} is required to track the permission, operation,
-     *       or resource created with this method call.
+     * Note: Be sure to use {@link #savePermission(Permission)} in order to persist any changes to the Role.
      *
      * @param name the name.
-     * @param description the description.
      * @param operationName the {@link Operation#setName(String)} value
      * @param resourceIdentifier the {@link Resource#setIdentifier(String)} value
      * @return the new Permission.
      */
-    public Permission createPermission( String name, String description, String operationName, String resourceIdentifier );
+    public Permission createPermission( String name, String operationName, String resourceIdentifier );
 
     /**
      * Tests for the existance of a permission.
@@ -154,7 +132,7 @@ public interface RBACManager
 
     public boolean permissionExists( Permission permission );
 
-    public Permission addPermission( Permission permission )
+    public Permission savePermission( Permission permission )
         throws RbacObjectInvalidException, RbacStoreException;
 
     public Permission getPermission( String permissionName )
@@ -169,33 +147,36 @@ public interface RBACManager
     public void removePermission( String permissionName )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
-    public Permission updatePermission( Permission permission )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
-
     // ------------------------------------------------------------------
     // Operation Methods
     // ------------------------------------------------------------------
 
     /**
-     * Creates an implementation specific {@link Operation}.
+     * Creates an implementation specific {@link Operation}, or return an existing {@link Operation}, depending
+     * on the provided <code>name</code> parameter.
      *
-     * Note: this method does not add the {@link Operation} to the underlying store.
-     *       a call to {@link #addOperation(Operation)} is required to track the operation created
-     *       with this method call.
+     * Note: Be sure to use {@link #saveOperation(Operation)} in order to persist any changes to the Role.
      *
      * @param name the name.
-     * @param description the description.
      * @return the new Operation.
      */
-    public Operation createOperation( String name, String description );
+    public Operation createOperation( String name );
 
     public boolean operationExists( String name );
 
     public boolean operationExists( Operation operation );
 
-    public Operation addOperation( Operation operation )
+    /**
+     * Save the new or existing operation to the store.
+     * 
+     * @param operation the operation to save (new or existing)
+     * @return the Operation that was saved.
+     * @throws RbacObjectInvalidException
+     * @throws RbacStoreException
+     */
+    public Operation saveOperation( Operation operation )
         throws RbacObjectInvalidException, RbacStoreException;
-
+    
     public Operation getOperation( String operationName )
         throws RbacObjectNotFoundException, RbacStoreException;
 
@@ -208,19 +189,15 @@ public interface RBACManager
     public void removeOperation( String operationName )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
-    public Operation updateOperation( Operation operation )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
-
     // ------------------------------------------------------------------
     // Resource Methods
     // ------------------------------------------------------------------
 
     /**
-     * Creates an implementation specific {@link Resource}.
+     * Creates an implementation specific {@link Resource}, or return an existing {@link Resource}, depending
+     * on the provided <code>identifier</code> parameter.
      *
-     * Note: this method does not add the {@link Resource} to the underlying store.
-     *       a call to {@link #addResource(Resource)} is required to track the resource created
-     *       with this method call.
+     * Note: Be sure to use {@link #saveResource(Resource)} in order to persist any changes to the Role.
      *
      * @param identifier the identifier.
      * @return the new Resource.
@@ -231,7 +208,7 @@ public interface RBACManager
 
     public boolean resourceExists( Resource resource );
 
-    public Resource addResource( Resource resource )
+    public Resource saveResource( Resource resource )
         throws RbacObjectInvalidException, RbacStoreException;
 
     public Resource getResource( String resourceIdentifier )
@@ -246,22 +223,18 @@ public interface RBACManager
     public void removeResource( String resourceIdentifier )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
-    public Resource updateResource( Resource resource )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
-
     // ------------------------------------------------------------------
     // UserAssignment Methods
     // ------------------------------------------------------------------
 
     /**
-     * Creates an implementation specific {@link UserAssignment}.
+     * Creates an implementation specific {@link UserAssignment}, or return an existing {@link UserAssignment}, 
+     * depending on the provided <code>identifier</code> parameter.
      *
-     * Note: this method does not add the {@link UserAssignment} to the underlying store.
-     *       a call to {@link #addUserAssignment(UserAssignment)} is required to track the user
-     *       assignment created with this method call.
+     * Note: Be sure to use {@link #saveUserAssignment(UserAssignment)} in order to persist any changes to the Role.
      *
      * @param principal the principal reference to the user.
-     * @return the new UserAssignment with an empty (non-null) {@link UserAssignment#getRoles()} object.
+     * @return the new UserAssignment object.
      */
     public UserAssignment createUserAssignment( String principal );
 
@@ -270,11 +243,11 @@ public interface RBACManager
     public boolean userAssignmentExists( UserAssignment assignment );
 
     /**
-     * Method addUserAssignment
+     * Method saveUserAssignment
      *
      * @param userAssignment
      */
-    public UserAssignment addUserAssignment( UserAssignment userAssignment )
+    public UserAssignment saveUserAssignment( UserAssignment userAssignment )
         throws RbacObjectInvalidException, RbacStoreException;
 
     public UserAssignment getUserAssignment( String principal )
@@ -300,9 +273,6 @@ public interface RBACManager
      * @param principal
      */
     public void removeUserAssignment( String principal )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
-
-    public UserAssignment updateUserAssignment( UserAssignment userAssignment )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
 
     // ------------------------------------------------------------------

@@ -67,10 +67,10 @@ public class AbstractRbacManagerTestCase
 
     private Role getAdminRole()
     {
-        Role role = getRbacManager().createRole( "ADMIN", "Administrative User" );
+        Role role = getRbacManager().createRole( "ADMIN" );
         role.setAssignable( false );
 
-        Permission perm = getRbacManager().createPermission( "EDIT_ANY_USER", "Edit a user account.", "EDIT", "User:*" );
+        Permission perm = getRbacManager().createPermission( "EDIT_ANY_USER", "EDIT", "User:*" );
 
         role.addPermission( perm );
 
@@ -79,10 +79,10 @@ public class AbstractRbacManagerTestCase
 
     private Role getDeveloperRole()
     {
-        Role role = getRbacManager().createRole( "DEVELOPER", "Trusted Developer" );
+        Role role = getRbacManager().createRole( "DEVELOPER" );
         role.setAssignable( true );
 
-        Permission perm = getRbacManager().createPermission( "EDIT_MY_USER", "Edit own user account.", "EDIT", "User:Self" );
+        Permission perm = getRbacManager().createPermission( "EDIT_MY_USER", "EDIT", "User:Self" );
 
         role.addPermission( perm );
 
@@ -98,7 +98,7 @@ public class AbstractRbacManagerTestCase
 
         assertNotNull( role );
 
-        Role added = getRbacManager().addRole( role );
+        Role added = getRbacManager().saveRole( role );
 
         assertEquals( 1, getRbacManager().getAllRoles().size() );
 
@@ -119,9 +119,9 @@ public class AbstractRbacManagerTestCase
 
         assertNotNull( resource );
 
-        Resource added = getRbacManager().addResource( resource );
+        Resource added = getRbacManager().saveResource( resource );
         assertNotNull( added );
-        Resource added2 = getRbacManager().addResource( resource2 );
+        Resource added2 = getRbacManager().saveResource( resource2 );
         assertNotNull( added2 );
 
         assertEquals( 2, getRbacManager().getAllResources().size() );
@@ -135,19 +135,19 @@ public class AbstractRbacManagerTestCase
     {
         assertNotNull( getRbacManager() );
         
-        Role adminRole = getRbacManager().addRole(getAdminRole());
-        Role userRole = getRbacManager().addRole(getDeveloperRole());
+        Role adminRole = getRbacManager().saveRole(getAdminRole());
+        getRbacManager().saveRole(getDeveloperRole());
 
         assertEquals( 2, getRbacManager().getAllRoles().size() );
         assertEquals( 2, getRbacManager().getAllPermissions().size() );
 
-        Permission createUserPerm = getRbacManager().createPermission( "CREATE_USER", "Create User", "CREATE", "User" );
+        Permission createUserPerm = getRbacManager().createPermission( "CREATE_USER", "CREATE", "User" );
 
         // perm shouldn't exist in manager (yet)
         assertEquals( 2, getRbacManager().getAllPermissions().size() );
         
         adminRole.addPermission( createUserPerm );
-        getRbacManager().updateRole( adminRole );
+        getRbacManager().saveRole( adminRole );
 
         // perm should exist in manager now.
         assertEquals( 3, getRbacManager().getAllPermissions().size() );
@@ -157,7 +157,7 @@ public class AbstractRbacManagerTestCase
     
     public void testUserAssignmentAddRole() throws RbacStoreException, RbacObjectNotFoundException
     {
-        Role adminRole = getRbacManager().addRole(getAdminRole());
+        Role adminRole = getRbacManager().saveRole(getAdminRole());
     
         assertEquals( 1, getRbacManager().getAllRoles().size() );
         
@@ -167,7 +167,7 @@ public class AbstractRbacManagerTestCase
         
         assignment.addRole( adminRole );
 
-        getRbacManager().addUserAssignment( assignment );
+        getRbacManager().saveUserAssignment( assignment );
         
         assertEquals( 1, getRbacManager().getAllUserAssignments().size() );
         assertEquals( 1, getRbacManager().getAllRoles().size() );
@@ -184,7 +184,7 @@ public class AbstractRbacManagerTestCase
     {
         Role admin = getAdminRole();
 
-        admin = getRbacManager().addRole( admin );
+        admin = getRbacManager().saveRole( admin );
 
         assertEquals( 1, getRbacManager().getAllRoles().size() );
 
@@ -194,7 +194,7 @@ public class AbstractRbacManagerTestCase
 
         ua.addRole( admin );
 
-        getRbacManager().addUserAssignment( ua );
+        getRbacManager().saveUserAssignment( ua );
 
         assertEquals( 1, getRbacManager().getAllUserAssignments().size() );
 
