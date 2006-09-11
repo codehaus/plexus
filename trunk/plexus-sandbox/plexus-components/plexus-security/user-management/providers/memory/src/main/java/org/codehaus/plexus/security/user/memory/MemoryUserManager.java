@@ -65,6 +65,19 @@ public class MemoryUserManager
         return user;
     }
 
+    public boolean userExists( Object principal )
+    {
+        try
+        {
+            findUser( principal );
+            return true;
+        }
+        catch ( UserNotFoundException ne )
+        {
+            return false;
+        }
+    }
+
     public void deleteUser( Object principal )
     {
         users.remove( principal );

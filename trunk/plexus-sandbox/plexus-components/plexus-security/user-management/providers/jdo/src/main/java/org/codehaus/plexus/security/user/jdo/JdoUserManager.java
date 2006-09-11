@@ -30,11 +30,10 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.security.user.policy.UserSecurityPolicy;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.util.List;
-
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Transaction;
+import java.util.List;
 
 /**
  * JdoUserManager 
@@ -150,6 +149,20 @@ public class JdoUserManager
         throws UserNotFoundException
     {
         return (User) getObjectById( JdoUser.class, username );
+    }
+
+
+    public boolean userExists( Object principal )
+    {
+        try
+        {
+            findUser( principal );
+            return true;
+        }
+        catch ( UserNotFoundException ne )
+        {
+            return false;
+        }
     }
 
     public User updateUser( User user ) throws UserNotFoundException
