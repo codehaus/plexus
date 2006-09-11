@@ -30,6 +30,7 @@ import org.codehaus.plexus.security.rbac.UserAssignment;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +71,25 @@ public class MemoryRbacManager
         RBACObjectAssertions.assertValid( "Save Role", role );
 
         roles.put( role.getName(), role );
+
+        if ( role.hasChildRoles() )
+        {
+            Iterator it = role.getChildRoles().iterator();
+            while ( it.hasNext() )
+            {
+                saveRole( (Role) it.next() );
+            }
+        }
+
+        if ( role.getPermissions() != null )
+        {
+            Iterator it = role.getPermissions().iterator();
+            while ( it.hasNext() )
+            {
+                savePermission( (Permission) it.next() );
+            }
+        }
+
         return role;
     }
 
@@ -99,8 +119,6 @@ public class MemoryRbacManager
 
         roles.remove( role.getName() );
     }
-
-    
 
     public List getAllRoles()
         throws RbacStoreException
@@ -263,7 +281,7 @@ public class MemoryRbacManager
     private void assertResourceExists( String resourceIdentifier )
         throws RbacObjectNotFoundException
     {
-        if ( resources.containsKey( resourceIdentifier ) )
+        if ( !resources.containsKey( resourceIdentifier ) )
         {
             throw new RbacObjectNotFoundException( "Resource '" + resourceIdentifier + "' not found." );
         }
@@ -272,7 +290,7 @@ public class MemoryRbacManager
     private void assertUserAssignmentExists( String principal )
         throws RbacObjectNotFoundException
     {
-        if ( userAssignments.containsKey( principal ) )
+        if ( !userAssignments.containsKey( principal ) )
         {
             throw new RbacObjectNotFoundException( "UserAssignment '" + principal + "' not found." );
         }
