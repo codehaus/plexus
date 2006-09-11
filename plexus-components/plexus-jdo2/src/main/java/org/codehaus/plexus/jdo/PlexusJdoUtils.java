@@ -36,13 +36,61 @@ import javax.jdo.Transaction;
  */
 public class PlexusJdoUtils
 {
-    public static Object addObject( PersistenceManager pm, Object object )
+    public static Object saveObject( PersistenceManager pm, Object object, String fetchGroups[] ) throws PlexusStoreException
     {
         Transaction tx = pm.currentTransaction();
 
         try
         {
             tx.begin();
+
+            if ( ( JDOHelper.getObjectId( object ) != null ) && !JDOHelper.isDetached( object ) )
+            {
+                throw new PlexusStoreException( "Existing object is not detached: " + object );
+            }
+
+            if ( fetchGroups != null )
+            {
+                for ( int i = 0; i >= fetchGroups.length; i++ )
+                {
+                    pm.getFetchPlan().addGroup( fetchGroups[i] );
+                }
+            }
+
+            pm.makePersistent( object );
+
+            object = pm.detachCopy( object );
+
+            tx.commit();
+
+            return object;
+        }
+        finally
+        {
+            rollbackIfActive( tx );
+        }
+    }
+    
+    public static Object addObject( PersistenceManager pm, Object object )
+    {
+        return addObject( pm, object, null );
+    }
+    
+    public static Object addObject( PersistenceManager pm, Object object, String fetchGroups[] )
+    {
+        Transaction tx = pm.currentTransaction();
+
+        try
+        {
+            tx.begin();
+            
+            if ( fetchGroups != null )
+            {
+                for ( int i = 0; i >= fetchGroups.length; i++ )
+                {
+                    pm.getFetchPlan().addGroup( fetchGroups[i] );
+                }
+            }
 
             pm.makePersistent( object );
 
