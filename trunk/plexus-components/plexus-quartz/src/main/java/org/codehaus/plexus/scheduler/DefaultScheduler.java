@@ -28,6 +28,11 @@ public class DefaultScheduler
     public void scheduleJob( JobDetail jobDetail, Trigger trigger )
         throws SchedulerException
     {
+        if ( jobDetail == null || jobDetail.getName() == null )
+        {
+            throw new SchedulerException( "No job or no job name - cannot schedule this job" );
+        }
+
         if ( jobExists( jobDetail.getName(), jobDetail.getGroup() ) )
         {
             getLogger().warn( "Will not schedule this job as a job {" + jobDetail.getName() + ":" +
@@ -97,6 +102,11 @@ public class DefaultScheduler
     public void unscheduleJob( String jobName, String groupName )
         throws SchedulerException
     {
+        if ( jobName == null ) 
+        {
+            throw new SchedulerException( "Job name null - cannot unschedule job" );
+        }
+
         try
         {
             if ( jobExists( jobName, groupName ) )
