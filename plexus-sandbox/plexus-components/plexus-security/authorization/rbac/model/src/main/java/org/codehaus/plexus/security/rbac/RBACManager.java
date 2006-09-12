@@ -18,6 +18,7 @@ package org.codehaus.plexus.security.rbac;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -62,6 +63,9 @@ public interface RBACManager
     public Role saveRole( Role role )
         throws RbacObjectInvalidException, RbacStoreException;
 
+    public void saveRoles( Collection roles )
+        throws RbacObjectInvalidException, RbacStoreException;
+
     /**
      *
      *
@@ -72,7 +76,16 @@ public interface RBACManager
      */
     public Role getRole( String roleName )
         throws RbacObjectNotFoundException, RbacStoreException;
+    
+    public Map getRoles( Collection roleNames )
+        throws RbacObjectNotFoundException, RbacStoreException;
 
+    public void addChildRole( Role role, Role childRole )
+        throws RbacObjectInvalidException, RbacStoreException;
+    
+    public Map getChildRoles( Role role )
+        throws RbacStoreException;
+    
     /**
      * Method getRoles
      */
@@ -94,7 +107,7 @@ public interface RBACManager
      */
     public void removeRole( String roleName )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
-
+    
     // ------------------------------------------------------------------
     // Permission Methods
     // ------------------------------------------------------------------

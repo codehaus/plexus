@@ -41,15 +41,15 @@
         <field jpox.persistence-modifier="persistent" 
                jpox.fetchGroupNames="role-child-detail"
                jpox.join-table="ROLE_CHILDROLE_MAP">
-          <name>childRoles</name>
+          <name>childRoleNames</name>
           <version>1.0.0</version>
           <association stash.part="true" 
                        jpox.join="true"
                        java.init="field" 
                        java.generate-break="false" 
                        java.generate-create="false"
-                       java.use-interface="org.codehaus.plexus.security.rbac.Role">
-            <type>JdoRole</type>
+                       zjava.use-interface="org.codehaus.plexus.security.rbac.Role">
+            <type>String</type>
             <multiplicity>*</multiplicity>
           </association>
           <description>
