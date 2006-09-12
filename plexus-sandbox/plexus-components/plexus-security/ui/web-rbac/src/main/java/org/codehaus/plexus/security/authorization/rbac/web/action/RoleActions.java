@@ -91,7 +91,7 @@ public class RoleActions
 
             if ( StringUtils.isNotEmpty(childRoleName) )
             {
-                temp.addChildRole( manager.getRole( childRoleName ) );
+                temp.addChildRoleName( childRoleName );
             }
 
                 if ( StringUtils.isNotEmpty( assignPermissionName ) )
@@ -116,7 +116,7 @@ public class RoleActions
         {
             Role temp = manager.getRole( roleName );
 
-            temp.getChildRoles().remove( manager.getRole( childRoleName ) );
+            temp.getChildRoleNames().remove( childRoleName );
 
             manager.saveRole( temp );
         }
