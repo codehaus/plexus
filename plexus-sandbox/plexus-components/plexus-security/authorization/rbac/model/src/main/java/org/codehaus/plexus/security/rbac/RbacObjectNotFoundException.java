@@ -26,6 +26,7 @@ package org.codehaus.plexus.security.rbac;
 public class RbacObjectNotFoundException
     extends Exception
 {
+    private Object object;
 
     public RbacObjectNotFoundException()
     {
@@ -37,13 +38,30 @@ public class RbacObjectNotFoundException
         super( message, cause );
     }
 
+    public RbacObjectNotFoundException( String message, Throwable cause, Object object )
+    {
+        super( message, cause );
+        this.object = object;
+    }
+
     public RbacObjectNotFoundException( String message )
     {
         super( message );
     }
 
+    public RbacObjectNotFoundException( String message, Object object )
+    {
+        super( message );
+        this.object = object;
+    }
+
     public RbacObjectNotFoundException( Throwable cause )
     {
         super( cause );
+    }
+
+    public Object getObject()
+    {
+        return object;
     }
 }
