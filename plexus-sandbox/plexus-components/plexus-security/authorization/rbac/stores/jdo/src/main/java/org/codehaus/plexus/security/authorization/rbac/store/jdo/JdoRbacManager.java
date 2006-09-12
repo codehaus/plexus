@@ -16,12 +16,6 @@ package org.codehaus.plexus.security.authorization.rbac.store.jdo;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.jdo.JdoFactory;
-import org.codehaus.plexus.jdo.PlexusJdoUtils;
-import org.codehaus.plexus.jdo.PlexusObjectNotFoundException;
-import org.codehaus.plexus.jdo.PlexusStoreException;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoOperation;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoPermission;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoResource;
@@ -37,13 +31,10 @@ import org.codehaus.plexus.security.rbac.RbacStoreException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
+import org.codehaus.plexus.util.StringUtils;
 
+import java.util.Iterator;
 import java.util.List;
-
-import javax.jdo.JDOHelper;
-import javax.jdo.PersistenceManager;
-import javax.jdo.PersistenceManagerFactory;
-import javax.jdo.Transaction;
 
 /**
  * JdoRbacManager:
@@ -58,14 +49,11 @@ import javax.jdo.Transaction;
  */
 public class JdoRbacManager
     extends AbstractRBACManager
-    implements Initializable
 {
     /**
      * @plexus.requirement
      */
-    private JdoFactory jdoFactory;
-    
-    private PersistenceManagerFactory pmf;
+    private JdoTool jdo;
     
     private static final String ROLE_DETAIL = "role-child-detail";
     
@@ -110,17 +98,17 @@ public class JdoRbacManager
     {
         RBACObjectAssertions.assertValid( role );
         
-        return (Role) saveObject( role, ROLE_DETAIL );
+        return (Role) jdo.saveObject( role, new String[] { ROLE_DETAIL } );
     }
     
     public boolean roleExists( Role role )
     {
-        return objectExistsInJdo( role );
+        return jdo.objectExists( role );
     }
 
     public boolean roleExists( String name )
     {
-        return objectExistsInJdoById( JdoRole.class, name );
+        return jdo.objectExistsById( JdoRole.class, name );
     }
 
     /**
@@ -134,7 +122,7 @@ public class JdoRbacManager
     public Role getRole( String roleName )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        return (Role) getObjectById( JdoRole.class, roleName, ROLE_DETAIL );
+        return (Role) jdo.getObjectById( JdoRole.class, roleName, ROLE_DETAIL );
     }
 
     /**
@@ -143,14 +131,14 @@ public class JdoRbacManager
     public List getAllRoles()
         throws RbacStoreException
     {
-        return getAllObjectsDetached( JdoRole.class );
+        return jdo.getAllObjects( JdoRole.class );
     }
 
     public void removeRole( Role role )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( role );
-        removeObject( role );
+        jdo.removeObject( role );
     }
 
     // ----------------------------------------------------------------------
@@ -236,36 +224,36 @@ public class JdoRbacManager
     {
         RBACObjectAssertions.assertValid( permission );
         
-        return (Permission) saveObject( permission );
+        return (Permission) jdo.saveObject( permission, null );
     }
 
     public boolean permissionExists( Permission permission )
     {
-        return objectExistsInJdo( permission );
+        return jdo.objectExists( permission );
     }
 
     public boolean permissionExists( String name )
     {
-        return objectExistsInJdoById( JdoPermission.class, name );
+        return jdo.objectExistsById( JdoPermission.class, name );
     }
 
     public Permission getPermission( String permissionName )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        return (Permission) getObjectById( JdoPermission.class, permissionName );
+        return (Permission) jdo.getObjectById( JdoPermission.class, permissionName, null );
     }
 
     public List getAllPermissions()
         throws RbacStoreException
     {
-        return getAllObjectsDetached( JdoPermission.class );
+        return jdo.getAllObjects( JdoPermission.class );
     }
 
     public void removePermission( Permission permission )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( permission );
-        removeObject( permission );
+        jdo.removeObject( permission );
     }
 
     // ----------------------------------------------------------------------
@@ -302,36 +290,36 @@ public class JdoRbacManager
         throws RbacObjectInvalidException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( operation );
-        return (Operation) saveObject( operation );
+        return (Operation) jdo.saveObject( operation, null );
     }
     
     public boolean operationExists( Operation operation )
     {
-        return objectExistsInJdo( operation );
+        return jdo.objectExists( operation );
     }
 
     public boolean operationExists( String name )
     {
-        return objectExistsInJdoById( JdoOperation.class, name );
+        return jdo.objectExistsById( JdoOperation.class, name );
     }
 
     public Operation getOperation( String operationName )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        return (Operation) getObjectById( JdoOperation.class, operationName );
+        return (Operation) jdo.getObjectById( JdoOperation.class, operationName, null );
     }
 
     public List getAllOperations()
         throws RbacStoreException
     {
-        return getAllObjectsDetached( JdoOperation.class );
+        return jdo.getAllObjects( JdoOperation.class );
     }
 
     public void removeOperation( Operation operation )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( operation );
-        removeObject( operation );
+        jdo.removeObject( operation );
     }
 
     // ----------------------------------------------------------------------
@@ -370,36 +358,36 @@ public class JdoRbacManager
         throws RbacObjectInvalidException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( resource );
-        return (Resource) saveObject( resource );
+        return (Resource) jdo.saveObject( resource, null );
     }
     
     public boolean resourceExists( Resource resource )
     {
-        return objectExistsInJdo( resource );
+        return jdo.objectExists( resource );
     }
 
     public boolean resourceExists( String identifier )
     {
-        return objectExistsInJdoById( JdoResource.class, identifier );
+        return jdo.objectExistsById( JdoResource.class, identifier );
     }
 
     public Resource getResource( String resourceIdentifier )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        return (Resource) getObjectById( JdoResource.class, resourceIdentifier );
+        return (Resource) jdo.getObjectById( JdoResource.class, resourceIdentifier, null );
     }
 
     public List getAllResources()
         throws RbacStoreException
     {
-        return getAllObjectsDetached( JdoResource.class );
+        return jdo.getAllObjects( JdoResource.class );
     }
 
     public void removeResource( Resource resource )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( resource );
-        removeObject( resource );
+        jdo.removeObject( resource );
     }
 
     // ----------------------------------------------------------------------
@@ -441,24 +429,61 @@ public class JdoRbacManager
     public UserAssignment saveUserAssignment( UserAssignment userAssignment )
         throws RbacObjectInvalidException, RbacStoreException
     {
-        RBACObjectAssertions.assertValid( userAssignment );
-        return (UserAssignment) saveObject( userAssignment, ROLE_DETAIL );
+        assertValid( "Save User Assignment", userAssignment );
+        
+        JdoTool.dumpObjectState( System.err, userAssignment );
+        
+        return (UserAssignment) jdo.saveObject( userAssignment, new String[] { ROLE_DETAIL } );
     }
     
     public boolean userAssignmentExists( String principal )
     {
-        return objectExistsInJdoById( JdoUserAssignment.class, principal );
+        return jdo.objectExistsById( JdoUserAssignment.class, principal );
     }
 
     public boolean userAssignmentExists( UserAssignment assignment )
     {
-        return objectExistsInJdo( assignment );
+        return jdo.objectExists( assignment );
     }
 
     public UserAssignment getUserAssignment( String principal )
         throws RbacObjectNotFoundException, RbacStoreException
     {
-        return (UserAssignment) getObjectById( JdoUserAssignment.class, principal, ROLE_DETAIL );
+        return (UserAssignment) jdo.getObjectById( JdoUserAssignment.class, principal, ROLE_DETAIL );
+    }
+    
+    public void assertValid( String scope, UserAssignment assignment )
+        throws RbacObjectInvalidException
+    {
+        if ( assignment == null )
+        {
+            throw new RbacObjectInvalidException( scope, "Null UserAssigment object is invalid." );
+        }
+
+        if ( StringUtils.isEmpty( assignment.getPrincipal() ) )
+        {
+            throw new RbacObjectInvalidException( scope, "UserAssigment.principal cannot be empty." );
+        }
+
+        if ( assignment.getRoles() == null )
+        {
+            throw new RbacObjectInvalidException( scope, "UserAssignment.roles cannot be null." );
+        }
+
+        if ( assignment.getRoles().isEmpty() )
+        {
+            throw new RbacObjectInvalidException( scope, "UserAssignment.roles cannot be empty." );
+        }
+
+        int i = 0;
+        Iterator it = assignment.getRoles().iterator();
+        while ( it.hasNext() )
+        {
+            Role role = (Role) it.next();
+            JdoTool.dumpObjectState( System.err, role );
+            RBACObjectAssertions.assertValid( "UserAssignment.roles[" + i + "]", role );
+            i++;
+        }
     }
 
     /**
@@ -467,7 +492,7 @@ public class JdoRbacManager
     public List getAllUserAssignments()
         throws RbacStoreException
     {
-        return getAllObjectsDetached( JdoUserAssignment.class );
+        return jdo.getAllObjects( JdoUserAssignment.class );
     }
 
     /**
@@ -479,191 +504,6 @@ public class JdoRbacManager
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( userAssignment );
-        removeObject( userAssignment );
+        jdo.removeObject( userAssignment );
     }
-
-    // ------------------------------------------------------------------
-    // UserAssignment Utility Methods
-    // ------------------------------------------------------------------
-
-    public void initialize()
-        throws InitializationException
-    {
-        pmf = jdoFactory.getPersistenceManagerFactory();
-
-        /* DEBUG STUFF
-         System.err.println( "PersistenceManagerFactory.retainValues = " + pmf.getRetainValues() );
-         System.err.println( "PersistenceManagerFactory.restoreValues = " + pmf.getRestoreValues() );
-
-         Collection coll = pmf.supportedOptions();
-         Iterator it = coll.iterator();
-         while ( it.hasNext() )
-         {
-         System.err.println( "Supported Option: " + it.next() );
-         }
-         */
-    }
-
-    // ----------------------------------------------------------------------
-    // jdo utility methods
-    // ----------------------------------------------------------------------
-    
-    private Object saveObject( Object object )
-    {
-        /* Original Technique
-        if( objectExistsInJdo( object ) )
-        {
-            return updateObject( object );
-        }
-        else
-        {
-            return addObject( object );
-        }
-        */
-        
-        try
-        {
-            return PlexusJdoUtils.saveObject( getPersistenceManager(), object, null );
-        }
-        catch ( PlexusStoreException e )
-        {
-            throw new RbacStoreException( "Unable to save " + object.getClass().getName() + " object.", e );
-        }
-    }
-    
-    private Object saveObject( Object object, String fetchGroup )
-    {
-        try
-        {
-            return PlexusJdoUtils.saveObject( getPersistenceManager(), object, new String[] { fetchGroup } );
-        }
-        catch ( PlexusStoreException e )
-        {
-            throw new RbacStoreException( "Unable to save " + object.getClass().getName() + " object.", e );
-        }
-    }
-
-    private boolean objectExistsInJdo( Object object )
-    {
-        return ( JDOHelper.getObjectId( object ) != null );
-    }
-
-    private boolean objectExistsInJdoById( Class clazz, Object id )
-    {
-        try
-        {
-            Object o = getObjectById( clazz, id );
-            return ( o != null );
-        }
-        catch ( RbacObjectNotFoundException e )
-        {
-            return false;
-        }
-    }
-    
-    private Object addObject( Object object )
-    {
-        return PlexusJdoUtils.addObject( getPersistenceManager(), object );
-    }
-
-    private Object getObjectById( Class clazz, Object id )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        try
-        {
-            if ( id == null )
-            {
-                throw new RbacObjectNotFoundException( "Unable to find RBAC object because id was null" );
-            }
-            return PlexusJdoUtils.getObjectById( getPersistenceManager(), clazz, id.toString() );
-        }
-        catch ( PlexusObjectNotFoundException e )
-        {
-            throw new RbacObjectNotFoundException( "Unable to find RBAC Object '" + id + "' of type " + clazz.getName(),
-                                                   e );
-        }
-        catch ( PlexusStoreException e )
-        {
-            throw new RbacStoreException( "Unable to get rbac object id '" + id + "' of type " + clazz.getName(), e );
-        }
-    }
-
-    private Object getObjectById( Class clazz, Object id, String fetchGroup )
-        throws RbacObjectNotFoundException, RbacStoreException
-    {
-        try
-        {
-            if ( id == null )
-            {
-                throw new RbacObjectNotFoundException( "Unable to find RBAC object because id was null" );
-            }
-
-            return PlexusJdoUtils.getObjectById( getPersistenceManager(), clazz, id.toString(), fetchGroup );
-        }
-        catch ( PlexusObjectNotFoundException e )
-        {
-            throw new RbacObjectNotFoundException( "Unable to find RBAC Object '" + id + "' of type " + clazz.getName()
-                + " using fetch-group '" + fetchGroup + "'", e );
-        }
-        catch ( PlexusStoreException e )
-        {
-            throw new RbacStoreException( "Unable to get rbac object id '" + id + "' of type " + clazz.getName()
-                + " using fetch-group '" + fetchGroup + "'", e );
-        }
-    }
-
-    private List getAllObjectsDetached( Class clazz )
-    {
-        return getAllObjectsDetached( clazz, null );
-    }
-
-    private List getAllObjectsDetached( Class clazz, String fetchGroup )
-    {
-        return getAllObjectsDetached( clazz, null, fetchGroup );
-    }
-
-    private List getAllObjectsDetached( Class clazz, String ordering, String fetchGroup )
-    {
-        return PlexusJdoUtils.getAllObjectsDetached( getPersistenceManager(), clazz, ordering, fetchGroup );
-    }
-
-    public Object removeObject( Object o )
-    {
-        if ( o == null )
-        {
-            throw new RbacStoreException( "Unable to remove null object '" + o.getClass().getName() + "'" );
-        }
-
-        PlexusJdoUtils.removeObject( getPersistenceManager(), o );
-        return o;
-    }
-
-    private Object updateObject( Object object )
-        throws RbacStoreException
-    {
-        try
-        {
-            return PlexusJdoUtils.updateObject( getPersistenceManager(), object );
-        }
-        catch ( PlexusStoreException e )
-        {
-            throw new RbacStoreException( "Unable to update the '" + object.getClass().getName()
-                + "' object in the jdo database.", e );
-        }
-    }
-
-    private PersistenceManager getPersistenceManager()
-    {
-        PersistenceManager pm = pmf.getPersistenceManager();
-
-        pm.getFetchPlan().setMaxFetchDepth( -1 );
-
-        return pm;
-    }
-
-    private void rollback( Transaction tx )
-    {
-        PlexusJdoUtils.rollbackIfActive( tx );
-    }
-
 }
