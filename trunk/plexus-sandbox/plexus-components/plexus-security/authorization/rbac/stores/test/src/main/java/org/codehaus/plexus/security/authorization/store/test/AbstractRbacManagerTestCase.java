@@ -325,7 +325,7 @@ public class AbstractRbacManagerTestCase
                                                           Resource.GLOBAL ) );
     }
 
-    public void testUserAssignmentAddSecondRole()
+    public void testUserAssignmentAddRemoveSecondRole()
         throws RbacStoreException, RbacObjectNotFoundException
     {
         RBACManager manager = getRbacManager();
@@ -347,7 +347,21 @@ public class AbstractRbacManagerTestCase
         // Perform Second Role process.
         UserAssignment bob = manager.createUserAssignment( username );
         bob.addRole( manager.getRole( roleName ) );
-        manager.saveUserAssignment( bob );
+        bob = manager.saveUserAssignment( bob );
+
+        assertEquals( 1, manager.getAllUserAssignments().size() );
+        assertEquals( 2, manager.getAllRoles().size() );
+        assertEquals( 2, bob.getRoles().size() );
+
+        List roles = bob.getRoles();
+        assertEquals( 2, roles.size() );
+        roles.remove( manager.getRole( roleName ) );
+        assertEquals( 1,  roles.size() );
+        bob.setRoles( roles );
+        bob = manager.saveUserAssignment( bob );
+
+        assertEquals( 1, bob.getRoles().size() );
+
     }
 
     public void testGetAssignedRoles()
