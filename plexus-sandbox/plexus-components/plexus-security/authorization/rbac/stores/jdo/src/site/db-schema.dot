@@ -35,10 +35,10 @@ digraph structs {
         [TABLE NAME]
       </TD></TR>
       <TR><TD ALIGN="LEFT" BGCOLOR="#def1b8">
-        [PRIMARY KEY]
+        [COLUMN / PRIMARY KEY]
       </TD></TR>
-      <TR><TD ALIGN="LEFT">
-        [COLUMN]
+      <TR><TD ALIGN="LEFT" BGCOLOR="#fffacd">
+        [COLUMN / INDEXED]
       </TD></TR>
       <TR><TD ALIGN="LEFT">
         [COLUMN]
@@ -72,10 +72,10 @@ digraph structs {
       <TR><TD PORT="ROLE_PERMISSION_MAP.heading" BGCOLOR="#9bab96" ALIGN="CENTER">
         ROLE_PERMISSION_MAP
       </TD></TR>
-      <TR><TD PORT="ROLE_NAME" ALIGN="LEFT">
+      <TR><TD PORT="ROLE_NAME" ALIGN="LEFT" BGCOLOR="#fffacd">
         ROLE_NAME
       </TD></TR>
-      <TR><TD PORT="PERMISSION_NAME" ALIGN="LEFT">
+      <TR><TD PORT="PERMISSION_NAME" ALIGN="LEFT" BGCOLOR="#fffacd">
         PERMISSION_NAME
       </TD></TR>
     </TABLE>>
@@ -87,10 +87,10 @@ digraph structs {
       <TR><TD PORT="ROLE_ROLE_MAP.heading" BGCOLOR="#9bab96" ALIGN="CENTER">
         ROLE_ROLE_MAP
       </TD></TR>
-      <TR><TD PORT="PARENT_ROLE_NAME" ALIGN="LEFT">
+      <TR><TD PORT="PARENT_ROLE_NAME" ALIGN="LEFT" BGCOLOR="#fffacd">
         PARENT_ROLE_NAME
       </TD></TR>
-      <TR><TD PORT="CHILD_ROLE_NAME" ALIGN="LEFT">
+      <TR><TD PORT="CHILD_ROLE_NAME" ALIGN="LEFT" BGCOLOR="#fffacd">
         CHILD_ROLE_NAME
       </TD></TR>
     </TABLE>>
@@ -108,10 +108,10 @@ digraph structs {
       <TR><TD PORT="DESCRIPTION" ALIGN="LEFT">
         DESCRIPTION
       </TD></TR>
-      <TR><TD PORT="OPERATION_NAME" ALIGN="LEFT">
+      <TR><TD PORT="OPERATION_NAME" ALIGN="LEFT" BGCOLOR="#fffacd">
         OPERATION_NAME
       </TD></TR>
-      <TR><TD PORT="RESOURCE_IDENTIFIER" ALIGN="LEFT">
+      <TR><TD PORT="RESOURCE_IDENTIFIER" ALIGN="LEFT" BGCOLOR="#fffacd">
         RESOURCE_IDENTIFIER
       </TD></TR>
     </TABLE>>
@@ -156,10 +156,10 @@ digraph structs {
       <TR><TD PORT="USER_ASSIGNMENTS.heading" BGCOLOR="#9bab96" ALIGN="CENTER">
         USER_ASSIGNMENTS
       </TD></TR>
-      <TR><TD PORT="PRINCIPAL" ALIGN="LEFT">
+      <TR><TD PORT="PRINCIPAL" ALIGN="LEFT" BGCOLOR="#fffacd">
         PRINCIPAL
       </TD></TR>
-      <TR><TD PORT="ROLE_NAME" ALIGN="LEFT">
+      <TR><TD PORT="ROLE_NAME" ALIGN="LEFT" BGCOLOR="#fffacd">
         ROLE_NAME
       </TD></TR>
     </TABLE>>
