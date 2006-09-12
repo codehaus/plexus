@@ -91,7 +91,7 @@ public class AbstractRbacManagerTestCase
 
         return role;
     }
-    
+
     private Role getProjectAdminRole()
     {
         Role role = getRbacManager().createRole( "PROJECT_ADMIN" );
@@ -103,7 +103,7 @@ public class AbstractRbacManagerTestCase
 
         return role;
     }
-    
+
     public void testStoreInitialization()
         throws Exception
     {
@@ -145,13 +145,14 @@ public class AbstractRbacManagerTestCase
 
         assertEquals( 1, getRbacManager().getAllResources().size() );
     }
-    
-    public void testAddRemovePermission() throws RbacObjectInvalidException, RbacStoreException, RbacObjectNotFoundException
+
+    public void testAddRemovePermission()
+        throws RbacObjectInvalidException, RbacStoreException, RbacObjectNotFoundException
     {
         assertNotNull( getRbacManager() );
-        
-        Role adminRole = getRbacManager().saveRole(getAdminRole());
-        getRbacManager().saveRole(getDeveloperRole());
+
+        Role adminRole = getRbacManager().saveRole( getAdminRole() );
+        getRbacManager().saveRole( getDeveloperRole() );
 
         assertEquals( 2, getRbacManager().getAllRoles().size() );
         assertEquals( 2, getRbacManager().getAllPermissions().size() );
@@ -160,7 +161,7 @@ public class AbstractRbacManagerTestCase
 
         // perm shouldn't exist in manager (yet)
         assertEquals( 2, getRbacManager().getAllPermissions().size() );
-        
+
         adminRole.addPermission( createUserPerm );
         getRbacManager().saveRole( adminRole );
 
@@ -169,8 +170,9 @@ public class AbstractRbacManagerTestCase
         Permission fetched = getRbacManager().getPermission( "CREATE_USER" );
         assertNotNull( fetched );
     }
-    
-    public void testAddGetRole() throws RbacStoreException, RbacObjectNotFoundException
+
+    public void testAddGetRole()
+        throws RbacStoreException, RbacObjectNotFoundException
     {
         assertNotNull( getRbacManager() );
 
@@ -185,102 +187,108 @@ public class AbstractRbacManagerTestCase
         assertEquals( adminRole, actualAdmin );
         assertEquals( develRole, actualDevel );
     }
-    
-    public void testAddGetChildRole() throws RbacStoreException, RbacObjectNotFoundException
+
+    public void testAddGetChildRole()
+        throws RbacStoreException, RbacObjectNotFoundException
     {
-        assertNotNull( getRbacManager() );
+        RBACManager manager = getRbacManager();
+        assertNotNull( manager );
 
-        Role adminRole = getRbacManager().saveRole( getAdminRole() );
-        Role develRole = getRbacManager().saveRole( getDeveloperRole() );
+        Role adminRole = manager.saveRole( getAdminRole() );
+        Role develRole = manager.saveRole( getDeveloperRole() );
 
-        assertEquals( 2, getRbacManager().getAllRoles().size() );
+        assertEquals( 2, manager.getAllRoles().size() );
 
-        Role actualAdmin = getRbacManager().getRole( adminRole.getName() );
-        Role actualDevel = getRbacManager().getRole( develRole.getName() );
+        Role actualAdmin = manager.getRole( adminRole.getName() );
+        Role actualDevel = manager.getRole( develRole.getName() );
 
         assertEquals( adminRole, actualAdmin );
         assertEquals( develRole, actualDevel );
-        
-        // Now do a child role.
-        
-        develRole.addChildRole( getProjectAdminRole() );
-        
-        getRbacManager().saveRole( develRole );
-        
-        assertEquals( 3, getRbacManager().getAllRoles().size() );
+
+        // Now add a child role.
+        manager.addChildRole( develRole, getProjectAdminRole() );
+
+        manager.saveRole( develRole );
+
+        assertEquals( 3, manager.getAllRoles().size() );
     }
-    
-    public void testAddGetChildRoleViaName() throws RbacStoreException, RbacObjectNotFoundException
+
+    public void testAddGetChildRoleViaName()
+        throws RbacStoreException, RbacObjectNotFoundException
     {
-        assertNotNull( getRbacManager() );
+        RBACManager manager = getRbacManager();
+        assertNotNull( manager );
 
-        Role adminRole = getRbacManager().saveRole( getAdminRole() );
-        Role develRole = getRbacManager().saveRole( getDeveloperRole() );
+        Role adminRole = manager.saveRole( getAdminRole() );
+        Role develRole = manager.saveRole( getDeveloperRole() );
 
-        assertEquals( 2, getRbacManager().getAllRoles().size() );
+        assertEquals( 2, manager.getAllRoles().size() );
 
-        Role actualAdmin = getRbacManager().getRole( adminRole.getName() );
-        Role actualDevel = getRbacManager().getRole( develRole.getName() );
+        Role actualAdmin = manager.getRole( adminRole.getName() );
+        Role actualDevel = manager.getRole( develRole.getName() );
 
         assertEquals( adminRole, actualAdmin );
         assertEquals( develRole, actualDevel );
-        
+
         // Now do a child role.
         Role projectRole = getProjectAdminRole();
         String projectRoleName = projectRole.getName();
-        getRbacManager().saveRole( projectRole );
-        
-        develRole.addChildRole( getRbacManager().getRole( projectRoleName ) );
-        
-        getRbacManager().saveRole( develRole );
-        
-        assertEquals( 3, getRbacManager().getAllRoles().size() );
+        manager.saveRole( projectRole );
+
+        develRole.addChildRoleName( projectRoleName );
+
+        manager.saveRole( develRole );
+
+        assertEquals( 3, manager.getAllRoles().size() );
     }
-    
-    public void testUserAssignmentAddRole() throws RbacStoreException, RbacObjectNotFoundException
+
+    public void testUserAssignmentAddRole()
+        throws RbacStoreException, RbacObjectNotFoundException
     {
-        Role adminRole = getRbacManager().saveRole(getAdminRole());
-    
-        assertEquals( 1, getRbacManager().getAllRoles().size() );
-        
+        RBACManager manager = getRbacManager();
+        Role adminRole = manager.saveRole( getAdminRole() );
+
+        assertEquals( 1, manager.getAllRoles().size() );
+
         String adminPrincipal = "admin";
-        
-        UserAssignment assignment = getRbacManager().createUserAssignment( adminPrincipal );
-        
+
+        UserAssignment assignment = manager.createUserAssignment( adminPrincipal );
+
         assignment.addRole( adminRole );
 
-        getRbacManager().saveUserAssignment( assignment );
-        
-        assertEquals( 1, getRbacManager().getAllUserAssignments().size() );
-        assertEquals( 1, getRbacManager().getAllRoles().size() );
-        
-        UserAssignment ua = getRbacManager().getUserAssignment( adminPrincipal );
+        manager.saveUserAssignment( assignment );
+
+        assertEquals( 1, manager.getAllUserAssignments().size() );
+        assertEquals( 1, manager.getAllRoles().size() );
+
+        UserAssignment ua = manager.getUserAssignment( adminPrincipal );
         assertNotNull( ua );
-        
-        Role fetched = (Role) getRbacManager().getRole( "ADMIN" );
+
+        Role fetched = (Role) manager.getRole( "ADMIN" );
         assertNotNull( fetched );
     }
 
     public void testGetAssignedPermissionsNoChildRoles()
         throws RbacStoreException, RbacObjectNotFoundException
     {
+        RBACManager manager = getRbacManager();
         Role admin = getAdminRole();
 
-        admin = getRbacManager().saveRole( admin );
+        admin = manager.saveRole( admin );
 
-        assertEquals( 1, getRbacManager().getAllRoles().size() );
+        assertEquals( 1, manager.getAllRoles().size() );
 
         String adminPrincipal = "admin";
 
-        UserAssignment ua = getRbacManager().createUserAssignment( adminPrincipal );
+        UserAssignment ua = manager.createUserAssignment( adminPrincipal );
 
         ua.addRole( admin );
 
-        getRbacManager().saveUserAssignment( ua );
+        manager.saveUserAssignment( ua );
 
-        assertEquals( 1, getRbacManager().getAllUserAssignments().size() );
+        assertEquals( 1, manager.getAllUserAssignments().size() );
 
-        Set assignedPermissions = getRbacManager().getAssignedPermissions( adminPrincipal );
+        Set assignedPermissions = manager.getAssignedPermissions( adminPrincipal );
 
         assertNotNull( assignedPermissions );
         assertEquals( 1, assignedPermissions.size() );
@@ -288,110 +296,136 @@ public class AbstractRbacManagerTestCase
 
     public void testGlobalResource()
     {
-        Permission editConfiguration = getRbacManager().createPermission( "Edit Configuration" );
-        editConfiguration.setOperation( getRbacManager().createOperation( "edit-configuration" ) );
-        editConfiguration.setResource( getRbacManager().getGlobalResource() );
-        getRbacManager().savePermission( editConfiguration );
-        
-        assertEquals( 1, getRbacManager().getAllPermissions().size() );
-        assertEquals( 1, getRbacManager().getAllOperations().size() );
-        assertEquals( 1, getRbacManager().getAllResources().size() );
-        
-        Permission deleteConfiguration = getRbacManager().createPermission( "Delete Configuration" );
-        deleteConfiguration.setOperation( getRbacManager().createOperation( "delete-configuration" ) );
-        deleteConfiguration.setResource( getRbacManager().getGlobalResource() );
-        getRbacManager().savePermission( deleteConfiguration );
-        
-        assertEquals( 2, getRbacManager().getAllPermissions().size() );
-        assertEquals( 2, getRbacManager().getAllOperations().size() );
-        assertEquals( 1, getRbacManager().getAllResources().size() );
+        RBACManager manager = getRbacManager();
+        Permission editConfiguration = manager.createPermission( "Edit Configuration" );
+        editConfiguration.setOperation( manager.createOperation( "edit-configuration" ) );
+        editConfiguration.setResource( manager.getGlobalResource() );
+        manager.savePermission( editConfiguration );
+
+        assertEquals( 1, manager.getAllPermissions().size() );
+        assertEquals( 1, manager.getAllOperations().size() );
+        assertEquals( 1, manager.getAllResources().size() );
+
+        Permission deleteConfiguration = manager.createPermission( "Delete Configuration" );
+        deleteConfiguration.setOperation( manager.createOperation( "delete-configuration" ) );
+        deleteConfiguration.setResource( manager.getGlobalResource() );
+        manager.savePermission( deleteConfiguration );
+
+        assertEquals( 2, manager.getAllPermissions().size() );
+        assertEquals( 2, manager.getAllOperations().size() );
+        assertEquals( 1, manager.getAllResources().size() );
     }
-    
+
     public void testGlobalResourceOneLiner()
     {
-        getRbacManager().savePermission( getRbacManager().createPermission( "Edit Configuration", "edit-configuration", Resource.GLOBAL ) );
-        getRbacManager().savePermission( getRbacManager().createPermission( "Delete Configuration", "delete-configuration", Resource.GLOBAL ) );
+        RBACManager manager = getRbacManager();
+        manager
+            .savePermission( manager.createPermission( "Edit Configuration", "edit-configuration", Resource.GLOBAL ) );
+        manager.savePermission( manager.createPermission( "Delete Configuration", "delete-configuration",
+                                                          Resource.GLOBAL ) );
     }
-    
-    public void testUserAssignmentAddSecondRole() throws RbacStoreException, RbacObjectNotFoundException
+
+    public void testUserAssignmentAddSecondRole()
+        throws RbacStoreException, RbacObjectNotFoundException
     {
+        RBACManager manager = getRbacManager();
         // Setup User / Assignment with 1 role.
         String username = "bob";
-        
-        UserAssignment assignment = getRbacManager().createUserAssignment( username );
+
+        UserAssignment assignment = manager.createUserAssignment( username );
         assignment.addRole( getDeveloperRole() );
-        assignment = getRbacManager().saveUserAssignment( assignment );
-        
-        assertEquals( 1, getRbacManager().getAllUserAssignments().size() );
-        assertEquals( 1, getRbacManager().getAllRoles().size() );
+        assignment = manager.saveUserAssignment( assignment );
+
+        assertEquals( 1, manager.getAllUserAssignments().size() );
+        assertEquals( 1, manager.getAllRoles().size() );
 
         // Create another role add it to manager.
         Role projectAdmin = getProjectAdminRole();
         String roleName = projectAdmin.getName();
-        projectAdmin = getRbacManager().saveRole( projectAdmin );
-        
+        projectAdmin = manager.saveRole( projectAdmin );
+
         // Perform Second Role process.
-        UserAssignment bob = getRbacManager().createUserAssignment( username );
-        bob.addRole( getRbacManager().getRole( roleName ) );
-        getRbacManager().saveUserAssignment( bob );
+        UserAssignment bob = manager.createUserAssignment( username );
+        bob.addRole( manager.getRole( roleName ) );
+        manager.saveUserAssignment( bob );
     }
-    
-    public void testGetAssignedRoles() throws RbacStoreException, RbacObjectNotFoundException
+
+    public void testGetAssignedRoles()
+        throws RbacStoreException, RbacObjectNotFoundException
     {
+        RBACManager manager = getRbacManager();
         // Setup 3 roles.
-        getRbacManager().saveRole( getAdminRole() );
-        getRbacManager().saveRole( getProjectAdminRole() );
-        Role added = getRbacManager().saveRole( getDeveloperRole() );
+        manager.saveRole( getAdminRole() );
+        manager.saveRole( getProjectAdminRole() );
+        Role added = manager.saveRole( getDeveloperRole() );
         String roleName = added.getName();
 
-        assertEquals( 3, getRbacManager().getAllRoles().size() );
+        assertEquals( 3, manager.getAllRoles().size() );
 
         // Setup User / Assignment with 1 role.
         String username = "bob";
 
-        UserAssignment assignment = getRbacManager().createUserAssignment( username );
-        assignment.addRole( getRbacManager().getRole( roleName ) );
-        assignment = getRbacManager().saveUserAssignment( assignment );
+        UserAssignment assignment = manager.createUserAssignment( username );
+        assignment.addRole( manager.getRole( roleName ) );
+        assignment = manager.saveUserAssignment( assignment );
 
-        assertEquals( 1, getRbacManager().getAllUserAssignments().size() );
-        assertEquals( 3, getRbacManager().getAllRoles().size() );
+        assertEquals( 1, manager.getAllUserAssignments().size() );
+        assertEquals( 3, manager.getAllRoles().size() );
 
         // Get the List of Assigned Roles for user bob.
-        Collection assignedRoles = getRbacManager().getAssignedRoles( username );
+        Collection assignedRoles = manager.getAssignedRoles( username );
 
         assertNotNull( assignedRoles );
         assertEquals( 1, assignedRoles.size() );
     }
-    
-    public void testGetAssignedPermissions() throws RbacStoreException, RbacObjectNotFoundException
+
+    public void testGetAssignedPermissions()
+        throws RbacStoreException, RbacObjectNotFoundException
     {
+        RBACManager manager = getRbacManager();
         // Setup 3 roles.
-        getRbacManager().saveRole( getAdminRole() );
-        getRbacManager().saveRole( getProjectAdminRole() );
-        Role added = getRbacManager().saveRole( getDeveloperRole() );
+        manager.saveRole( getAdminRole() );
+        manager.saveRole( getProjectAdminRole() );
+        Role added = manager.saveRole( getDeveloperRole() );
         String roleName = added.getName();
 
-        assertEquals( 3, getRbacManager().getAllRoles().size() );
-        assertEquals( 3, getRbacManager().getAllPermissions().size() );
+        assertEquals( 3, manager.getAllRoles().size() );
+        assertEquals( 3, manager.getAllPermissions().size() );
 
         // Setup User / Assignment with 1 role.
         String username = "bob";
 
-        UserAssignment assignment = getRbacManager().createUserAssignment( username );
-        assignment.addRole( getRbacManager().getRole( roleName ) );
-        assignment = getRbacManager().saveUserAssignment( assignment );
+        UserAssignment assignment = manager.createUserAssignment( username );
+        assignment.addRole( manager.getRole( roleName ) );
+        assignment = manager.saveUserAssignment( assignment );
 
-        assertEquals( 1, getRbacManager().getAllUserAssignments().size() );
-        assertEquals( 3, getRbacManager().getAllRoles().size() );
-        assertEquals( 3, getRbacManager().getAllPermissions().size() );
+        assertEquals( 1, manager.getAllUserAssignments().size() );
+        assertEquals( 3, manager.getAllRoles().size() );
+        assertEquals( 3, manager.getAllPermissions().size() );
 
         // Get the List of Assigned Roles for user bob.
-        Collection assignedPermissions = getRbacManager().getAssignedPermissions( username );
+        Collection assignedPermissions = manager.getAssignedPermissions( username );
 
         assertNotNull( assignedPermissions );
         assertEquals( 1, assignedPermissions.size() );
     }
-    
+
+    public Role getChildRole( RBACManager manager, Role role, String expectedChildRoleName, int childRoleCount )
+        throws RbacStoreException, RbacObjectNotFoundException
+    {
+        assertTrue( role.hasChildRoles() );
+        List childNames = role.getChildRoleNames();
+        assertNotNull( childNames );
+        assertEquals( 1, childNames.size() );
+        String childName = (String) childNames.get( 0 );
+        assertNotNull( childName );
+        Role childRole = (Role) manager.getRole( childName );
+        assertNotNull( childRole );
+        assertEquals( expectedChildRoleName, childRole.getName() );
+
+        return childRole;
+    }
+
     public void testGetRolesDeep()
         throws RbacStoreException, RbacObjectNotFoundException
     {
@@ -413,32 +447,17 @@ public class AbstractRbacManagerTestCase
         assertNotNull( devel );
 
         // First Depth.
-        List childDevel = devel.getChildRoles();
-        assertNotNull( childDevel );
-        assertEquals( 1, childDevel.size() );
-        Role trusted = (Role) childDevel.get( 0 );
-        assertNotNull( trusted );
-        assertEquals( "Trusted Developer", trusted.getName() );
+        Role trusted = getChildRole( manager, devel, "Trusted Developer", 1 );
 
         // Second Depth.
-        List childTrusted = trusted.getChildRoles();
-        assertNotNull( childTrusted );
-        assertEquals( 1, childTrusted.size() );
-        Role sysAdmin = (Role) childTrusted.get( 0 );
-        assertNotNull( sysAdmin );
-        assertEquals( "System Administrator", sysAdmin.getName() );
+        Role sysAdmin = getChildRole( manager, trusted, "System Administrator", 1 );
 
         // Third Depth.
-        List childSysAdmin = sysAdmin.getChildRoles();
-        assertNotNull( childSysAdmin );
-        assertEquals( 1, childSysAdmin.size() );
-        Role userAdmin = (Role) childSysAdmin.get( 0 );
-        assertNotNull( userAdmin );
-        assertEquals( "User Administrator", userAdmin.getName() );
-
+        Role userAdmin = getChildRole( manager, sysAdmin, "User Administrator", 1 );
     }
-    
-    public void testGetAssignedPermissionsDeep() throws RbacStoreException, RbacObjectNotFoundException
+
+    public void testGetAssignedPermissionsDeep()
+        throws RbacStoreException, RbacObjectNotFoundException
     {
         RBACManager manager = getArchivaDefaults();
 
@@ -457,18 +476,19 @@ public class AbstractRbacManagerTestCase
         Collection assignedPermissions = manager.getAssignedPermissions( username );
 
         assertNotNull( assignedPermissions );
-        assertEquals( 1, assignedPermissions.size() );
+        assertEquals( 6, assignedPermissions.size() );
     }
-    
-    public void testLargeApplicationInit() throws RbacStoreException, RbacObjectNotFoundException
+
+    public void testLargeApplicationInit()
+        throws RbacStoreException, RbacObjectNotFoundException
     {
         RBACManager manager = getArchivaDefaults();
-        
+
         assertEquals( 6, manager.getAllPermissions().size() );
         assertEquals( 11, manager.getAllOperations().size() );
         assertEquals( 4, manager.getAllRoles().size() );
     }
-    
+
     private RBACManager getArchivaDefaults()
         throws RbacObjectNotFoundException
     {
@@ -539,7 +559,7 @@ public class AbstractRbacManagerTestCase
             Operation operation = manager.createOperation( "remove-roles" );
             manager.saveOperation( operation );
         }
-        
+
         if ( !manager.permissionExists( "Edit Configuration" ) )
         {
             Permission editConfiguration = manager.createPermission( "Edit Configuration", "edit-configuration",
@@ -585,7 +605,7 @@ public class AbstractRbacManagerTestCase
 
             manager.savePermission( regenIndex );
         }
-        
+
         if ( !manager.roleExists( "User Administrator" ) )
         {
             Role userAdmin = manager.createRole( "User Administrator" );
@@ -594,11 +614,11 @@ public class AbstractRbacManagerTestCase
             userAdmin.setAssignable( true );
             manager.saveRole( userAdmin );
         }
-        
+
         if ( !manager.roleExists( "System Administrator" ) )
         {
             Role admin = manager.createRole( "System Administrator" );
-            admin.addChildRole( manager.getRole( "User Administrator" ) );
+            admin.addChildRoleName( "User Administrator" );
             admin.addPermission( manager.getPermission( "Edit Configuration" ) );
             admin.addPermission( manager.getPermission( "Run Indexer" ) );
             admin.addPermission( manager.getPermission( "Add Repository" ) );
@@ -606,25 +626,25 @@ public class AbstractRbacManagerTestCase
             admin.setAssignable( true );
             manager.saveRole( admin );
         }
-        
+
         if ( !manager.roleExists( "Trusted Developer" ) )
         {
             Role developer = manager.createRole( "Trusted Developer" );
-            developer.addChildRole( manager.getRole( "System Administrator" ) );
+            developer.addChildRoleName( "System Administrator" );
             developer.addPermission( manager.getPermission( "Run Indexer" ) );
             developer.setAssignable( true );
             manager.saveRole( developer );
         }
-        
+
         if ( !manager.roleExists( "Developer" ) )
         {
             Role developer = manager.createRole( "Developer" );
-            developer.addChildRole( manager.getRole( "Trusted Developer" ) );
+            developer.addChildRoleName( "Trusted Developer" );
             developer.addPermission( manager.getPermission( "Run Indexer" ) );
             developer.setAssignable( true );
             manager.saveRole( developer );
         }
-        
+
         return manager;
     }
 }

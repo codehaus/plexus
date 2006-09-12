@@ -48,16 +48,16 @@ public interface Role
     public void addPermission( Permission permission );
     
     /**
-     * Method addChildRole
+     * Method addChildRoleName
      * 
-     * @param childRole
+     * @param name the name of the child role.
      */
-    public void addChildRole( Role childRole );
+    public void addChildRoleName( String name );
 
     /**
-     * Method getChildRoles
+     * Method getChildRoleNames
      */
-    public List getChildRoles();
+    public List getChildRoleNames();
     
     /**
      * Convienence method to see if Role has Child Roles.
@@ -103,11 +103,11 @@ public interface Role
     public void setAssignable( boolean assignable );
 
     /**
-     * roles that will inherit the permissions of this role
+     * The names of the roles that will inherit the permissions of this role
      *
-     * @param roles
+     * @param names the list of names of other roles.
      */
-    public void setChildRoles( List roles );
+    public void setChildRoleNames( List names );
 
     /**
      * Set the Description

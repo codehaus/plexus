@@ -16,8 +16,6 @@ package org.codehaus.plexus.security.rbac;
  * limitations under the License.
  */
 
-import java.util.ArrayList;
-
 /**
  * AbstractRole useful for common logic that implementors can use. 
  *
@@ -28,23 +26,8 @@ public abstract class AbstractRole
     implements Role
 {
 
-    public void addChildRole( Role childRole )
-    {
-        if ( getChildRoles() == null )
-        {
-            setChildRoles( new ArrayList() );
-        }
-
-        getChildRoles().add( childRole );
-    }
-
     public boolean hasChildRoles()
     {
-        if ( getChildRoles() == null )
-        {
-            return false;
-        }
-
-        return !getChildRoles().isEmpty();
+        return ( getChildRoleNames() != null ) && !getChildRoleNames().isEmpty();
     }
 }

@@ -21,6 +21,7 @@ import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RBACObjectAssertions;
+import org.codehaus.plexus.security.rbac.RbacObjectInvalidException;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.RbacStoreException;
 import org.codehaus.plexus.security.rbac.Resource;
@@ -28,6 +29,7 @@ import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -72,15 +74,6 @@ public class MemoryRbacManager
 
         roles.put( role.getName(), role );
 
-        if ( role.hasChildRoles() )
-        {
-            Iterator it = role.getChildRoles().iterator();
-            while ( it.hasNext() )
-            {
-                saveRole( (Role) it.next() );
-            }
-        }
-
         if ( role.getPermissions() != null )
         {
             Iterator it = role.getPermissions().iterator();
@@ -93,6 +86,23 @@ public class MemoryRbacManager
         return role;
     }
 
+    public void saveRoles( Collection roles )
+        throws RbacObjectInvalidException, RbacStoreException
+    {
+        if ( roles == null )
+        {
+            // Nothing to do.
+            return;
+        }
+
+        Iterator it = roles.iterator();
+        while ( it.hasNext() )
+        {
+            Role role = (Role) it.next();
+            saveRole( role );
+        }
+    }
+    
     private void assertRoleExists( String roleName )
         throws RbacObjectNotFoundException
     {
@@ -368,4 +378,5 @@ public class MemoryRbacManager
 
         return (Resource) resources.get( resourceIdentifier );
     }
+
 }
