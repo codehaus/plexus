@@ -11,7 +11,7 @@
   </defaults>
   <classes>
 
-    <class jpox.stashable="true">
+    <class jpox.stashable="true" jpox.table="ROLES">
       <name>JdoRole</name>
       <version>1.0.0</version>
       <interfaces>
@@ -39,11 +39,12 @@
           </description>
         </field>
         <field jpox.persistence-modifier="persistent" 
-               jpox.fetchGroupNames="role-child-detail">
+               jpox.fetchGroupNames="role-child-detail"
+               jpox.join-table="ROLE_CHILDROLE_MAP">
           <name>childRoles</name>
           <version>1.0.0</version>
-          <association stash.part="false" 
-                       jpox.join="false"
+          <association stash.part="true" 
+                       jpox.join="true"
                        java.init="field" 
                        java.generate-break="false" 
                        java.generate-create="false"
@@ -55,11 +56,12 @@
             roles that will inherit the permissions of this role
           </description>
         </field>
-        <field jpox.fetchGroupNames="role-child-detail">
+        <field jpox.fetchGroupNames="role-child-detail"
+               jpox.join-table="ROLE_PERMISSION_MAP">
           <name>permissions</name>
           <version>1.0.0</version>
-          <association stash.part="false" 
-                       jpox.join="false"
+          <association stash.part="true" 
+                       jpox.join="true"
                        java.init="field" 
                        java.generate-break="false" 
                        java.generate-create="false" 
@@ -71,7 +73,7 @@
       </fields>
     </class>
 
-    <class jpox.stashable="true">
+    <class jpox.stashable="true" jpox.table="PERMISSIONS">
       <name>JdoPermission</name>
       <version>1.0.0</version>
       <interfaces>
@@ -89,7 +91,7 @@
           <version>1.0.0</version>
           <type>String</type>
         </field>
-        <field>
+        <field jpox.indexed="true">
           <name>operation</name>
           <version>1.0.0</version>
           <association stash.part="true" 
@@ -99,7 +101,7 @@
             <multiplicity>1</multiplicity>
           </association>
         </field>
-        <field>
+        <field jpox.indexed="true">
           <name>resource</name>
           <version>1.0.0</version>
           <association stash.part="true" 
@@ -112,7 +114,7 @@
       </fields>
     </class>
 
-    <class jpox.stashable="true">
+    <class jpox.stashable="true" jpox.table="OPERATIONS">
       <name>JdoOperation</name>
       <version>1.0.0</version>
       <interfaces>
@@ -141,7 +143,7 @@
       </fields>
     </class>
 
-    <class jpox.stashable="true">
+    <class jpox.stashable="true" jpox.table="RESOURCES">
       <name>JdoResource</name>
       <version>1.0.0</version>
       <description>
@@ -172,7 +174,7 @@
       </fields>
     </class>
 
-    <class jpox.stashable="true">
+    <class jpox.stashable="true" jpox.table="USER_ASSIGNMENTS">
       <name>JdoUserAssignment</name>
       <description>binding of a principal to a role</description>
       <version>1.0.0</version>
@@ -188,11 +190,13 @@
           <identifier>true</identifier>
         </field>
         <field jpox.persistence-modifier="persistent" 
-               jpox.fetchGroupNames="role-child-detail">
+               jpox.fetchGroupNames="role-child-detail"
+               jpox.indexed="true"
+               jpox.join-table="USER_ASSIGNMENT_MAP">
           <name>roles</name>
           <version>1.0.0</version>
-          <association stash.part="false" 
-                       jpox.join="false"
+          <association stash.part="true" 
+                       jpox.join="true"
                        java.init="field"
                        java.generate-break="false"
                        java.generate-create="false"
