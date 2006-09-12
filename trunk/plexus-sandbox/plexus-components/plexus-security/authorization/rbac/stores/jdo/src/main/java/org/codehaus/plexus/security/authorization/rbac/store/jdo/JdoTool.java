@@ -98,7 +98,7 @@ public class JdoTool
         out.println( INDENT + "object id : " + JDOHelper.getObjectId( o ) );
     }
 
-    private PersistenceManager getPersistenceManager()
+    public PersistenceManager getPersistenceManager()
     {
         PersistenceManager pm = pmf.getPersistenceManager();
 

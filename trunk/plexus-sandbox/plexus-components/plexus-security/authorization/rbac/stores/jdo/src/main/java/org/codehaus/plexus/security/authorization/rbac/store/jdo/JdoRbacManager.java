@@ -33,8 +33,13 @@ import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 import org.codehaus.plexus.util.StringUtils;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.jdo.JDOHelper;
+import javax.jdo.PersistenceManager;
+import javax.jdo.Transaction;
 
 /**
  * JdoRbacManager:
@@ -140,6 +145,51 @@ public class JdoRbacManager
         RBACObjectAssertions.assertValid( role );
         jdo.removeObject( role );
     }
+    
+    public void saveRoles( Collection roles )
+        throws RbacObjectInvalidException, RbacStoreException
+    {
+        if ( roles == null )
+        {
+            // Nothing to do.
+            return;
+        }
+
+        // This is done in JdoRbacManager as opposed to JdoTool as we need to assertValid() on each role and
+        // also wrap the entire collection into a single atomic save/makePersistent.
+
+        PersistenceManager pm = jdo.getPersistenceManager();
+        Transaction tx = pm.currentTransaction();
+
+        try
+        {
+            tx.begin();
+
+            Iterator it = roles.iterator();
+            while ( it.hasNext() )
+            {
+                Role role = (Role) it.next();
+
+                if ( ( JDOHelper.getObjectId( role ) != null ) && !JDOHelper.isDetached( role ) )
+                {
+                    // This is a fatal error that means we need to fix our code.
+                    // Leave it as a JDOUserException, it's intentional.
+                    throw new RbacStoreException( "Existing Role is not detached: " + role );
+                }
+
+                RBACObjectAssertions.assertValid( role );
+
+                pm.makePersistent( role );
+            }
+
+            tx.commit();
+        }
+        finally
+        {
+            jdo.rollbackIfActive( tx );
+        }
+    }
+    
 
     // ----------------------------------------------------------------------
     // Permission methods
@@ -506,4 +556,5 @@ public class JdoRbacManager
         RBACObjectAssertions.assertValid( userAssignment );
         jdo.removeObject( userAssignment );
     }
+
 }

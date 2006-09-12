@@ -21,11 +21,7 @@ import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.Role;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * MemoryRole 
@@ -54,9 +50,9 @@ public class MemoryRole
     private boolean assignable = false;
 
     /**
-     * Field childRoles
+     * Field childRoleNames
      */
-    private Map childRoles = new HashMap();
+    private List childRoleNames = new ArrayList();
 
     /**
      * Field permissions
@@ -104,9 +100,9 @@ public class MemoryRole
     /**
      * Method getChildRoles
      */
-    public List getChildRoles()
+    public List getChildRoleNames()
     {
-        return Collections.unmodifiableList( new ArrayList( this.childRoles.values() ) );
+        return this.childRoleNames;
     }
 
     /**
@@ -183,26 +179,6 @@ public class MemoryRole
     }
 
     /**
-     * Set 
-     *             roles that will inherit the permissions of this
-     * role
-     *           
-     * 
-     * @param childRoles
-     */
-    public void setChildRoles( List roles )
-    {
-        this.childRoles.clear();
-
-        Iterator it = roles.iterator();
-        while ( it.hasNext() )
-        {
-            Role role = (Role) it.next();
-            addChildRole( role );
-        }
-    }
-
-    /**
      * Set null
      * 
      * @param description
@@ -232,11 +208,6 @@ public class MemoryRole
         this.permissions = permissions;
     }
     
-    public void addChildRole( Role child )
-    {
-        childRoles.put( child.getName(), child );
-    }
-
     /**
      * Method toString
      */
@@ -246,5 +217,22 @@ public class MemoryRole
         buf.append( "name = '" );
         buf.append( getName() + "'" );
         return buf.toString();
+    }
+
+    public void addChildRoleName( String name )
+    {
+        this.childRoleNames.add( name );
+    }
+
+    public void setChildRoleNames( List names )
+    {
+        if(names == null)
+        {
+            this.childRoleNames.clear();
+        }
+        else
+        {
+            this.childRoleNames = names;
+        }
     }
 }

@@ -22,9 +22,11 @@ import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -215,12 +217,13 @@ public abstract class AbstractRBACManager
             }
         }
 
-        if ( role.getChildRoles() != null )
+        if ( role.hasChildRoles() )
         {
-            Iterator it = role.getChildRoles().iterator();
+            Map childRoles = getChildRoles( role );
+            Iterator it = childRoles.values().iterator();
             while ( it.hasNext() )
             {
-                Role child = (Role) it.next();
+                Role child = (Role) it.next(); 
                 gatherUniquePermissions( child, coll );
             }
         }
@@ -284,6 +287,62 @@ public abstract class AbstractRBACManager
             globalResource = saveResource( globalResource );
         }
         return globalResource;
+    }
+
+    public void addChildRole( Role role, Role childRole )
+        throws RbacObjectInvalidException, RbacStoreException
+    {
+        saveRole( childRole );
+        role.addChildRoleName( childRole.getName() );
+    }
+
+    public Map getChildRoles( Role role )
+        throws RbacStoreException
+    {
+        List roleNames = role.getChildRoleNames();
+        Map childRoles = new HashMap();
+        
+        boolean childRoleNamesUpdated = false;
+        
+        Iterator it = roleNames.listIterator();
+        while ( it.hasNext() )
+        {
+            String roleName = (String) it.next();
+            try
+            {
+                Role child = getRole( roleName );
+                childRoles.put( child.getName(), child );
+            }
+            catch ( RbacObjectNotFoundException e )
+            {
+                // Found a bad roleName! - remove it.
+                it.remove();
+                childRoleNamesUpdated = true;
+            }
+        }
+    
+        if ( childRoleNamesUpdated )
+        {
+            saveRole( role );
+        }
+        
+        return childRoles;
+    }
+
+    public Map getRoles( Collection roleNames )
+        throws RbacObjectNotFoundException, RbacStoreException
+    {
+        Map roleMap = new HashMap();
+    
+        Iterator it = roleNames.iterator();
+        while ( it.hasNext() )
+        {
+            String roleName = (String) it.next();
+            Role child = getRole( roleName );
+            roleMap.put( child.getName(), child );
+        }
+    
+        return roleMap;
     }
 
 }
