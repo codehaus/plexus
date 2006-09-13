@@ -46,7 +46,6 @@ public class LoginAction
 
     private String password;
 
-
     public String login()
     {
         if ( username != null && password != null )
@@ -65,7 +64,10 @@ public class LoginAction
                 }
                 else
                 {
-                    addActionError( "authentication failed" );
+                    getLogger().debug( "Login Action failed against principal : "
+                                           + securitySession.getAuthenticationResult().getPrincipal(),
+                                       securitySession.getAuthenticationResult().getException() );
+                    addActionError( "Authentication failed" );
                     return ERROR;
                 }
             }
