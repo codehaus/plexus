@@ -189,7 +189,8 @@
           <type>String</type>
           <identifier>true</identifier>
         </field>
-        <field jpox.persistence-modifier="persistent" 
+        <field java.adder="false"
+               jpox.persistence-modifier="persistent" 
                jpox.fetchGroupNames="role-child-detail"
                jpox.indexed="true"
                jpox.join-table="USER_ASSIGNMENT_MAP">
