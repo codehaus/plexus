@@ -137,9 +137,17 @@ public class UserAssignmentActions
                 throw new RbacActionException( "principal can not be null" );
             }
 
+            getLogger().info( "removing " + roleName + " for " + principal );
+
             UserAssignment assignment = manager.getUserAssignment( principal );
 
-            assignment.getRoles().remove( roleName );
+            List roles = assignment.getRoles();
+            
+            roles.remove( manager.getRole( roleName ) );
+
+            assignment.setRoles( roles );
+
+            manager.saveUserAssignment( assignment );
         }
         catch ( RbacObjectNotFoundException ne )
         {
