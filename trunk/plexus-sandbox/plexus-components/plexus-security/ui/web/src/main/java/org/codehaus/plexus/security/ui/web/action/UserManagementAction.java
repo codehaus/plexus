@@ -1,13 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action;
 
-import com.opensymphony.xwork.ModelDriven;
-import com.opensymphony.xwork.Preparable;
-import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.system.SecuritySession;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 /*
- * Copyright 2005 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +16,13 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  * limitations under the License.
  */
 
+import com.opensymphony.xwork.ModelDriven;
+import com.opensymphony.xwork.Preparable;
+import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.system.SecuritySession;
+import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+
 /**
  * LoginAction:
  *
@@ -30,6 +31,7 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  * @plexus.component
  *   role="com.opensymphony.xwork.Action"
  *   role-hint="plexusSecurityUserManagement"
+ *   instantiation-strategy="per-lookup"
  */
 public class UserManagementAction
     extends PlexusActionSupport
