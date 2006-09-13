@@ -54,14 +54,6 @@
             </roleDefault>
           </roleDefaults>
         </configuration>
-        <executions>
-          <execution>
-            <id>generate</id>
-            <goals>
-              <goal>descriptor</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
