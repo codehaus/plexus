@@ -3,6 +3,15 @@
     <component>
       <role>org.codehaus.plexus.jdo.JdoFactory</role>
       <implementation>org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory</implementation>
+      <configuration>
+        <persistenceManagerFactoryClass>org.jpox.PersistenceManagerFactoryImpl</persistenceManagerFactoryClass>
+        <otherProperties>
+          <property>
+            <name>javax.jdo.PersistenceManagerFactoryClass</name>
+            <value>org.jpox.PersistenceManagerFactoryImpl</value>
+          </property>
+        </otherProperties>
+      </configuration>
     </component>
     
     <component>

@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.ui.web.filter.authentication;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.authentication.AuthenticationException;
+
 /**
  * HttpAuthenticationException 
  *
@@ -23,7 +25,7 @@ package org.codehaus.plexus.security.ui.web.filter.authentication;
  * @version $Id$
  */
 public class HttpAuthenticationException
-    extends Exception
+    extends AuthenticationException
 {
 
     public HttpAuthenticationException()

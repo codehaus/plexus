@@ -17,9 +17,9 @@ package org.codehaus.plexus.security.ui.web.filter.authentication.basic;
  */
 
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.ui.web.filter.authentication.AbstractHttpAuthenticationFilter;
-import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthentication;
-import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticationException;
+import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator;
 
 import java.io.IOException;
 
@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 public class HttpBasicAuthenticationFilter
     extends AbstractHttpAuthenticationFilter
 {
-    private HttpBasicAuthentication httpAuthentication;
+    private HttpAuthenticator httpAuthentication;
 
     public void init( FilterConfig filterConfig )
         throws ServletException
@@ -49,7 +49,7 @@ public class HttpBasicAuthenticationFilter
 
         try
         {
-            httpAuthentication = (HttpBasicAuthentication) getContainer().lookup( HttpAuthentication.ROLE, "basic" );
+            httpAuthentication = (HttpAuthenticator) getContainer().lookup( HttpAuthenticator.ROLE, "basic" );
         }
         catch ( ComponentLookupException e )
         {
@@ -77,9 +77,9 @@ public class HttpBasicAuthenticationFilter
         {
             httpAuthentication.authenticate( httpRequest, httpResponse );
         }
-        catch ( HttpAuthenticationException e )
+        catch ( AuthenticationException e )
         {
-            HttpBasicAuthentication httpauthn = new HttpBasicAuthentication();
+            HttpAuthenticator httpauthn = new HttpBasicAuthentication();
             httpauthn.challenge( httpRequest, httpResponse, getRealmName(), e );
             return;
         }

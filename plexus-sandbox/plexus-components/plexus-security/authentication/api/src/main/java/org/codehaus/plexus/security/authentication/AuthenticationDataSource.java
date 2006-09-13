@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.authentication;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.util.StringUtils;
+
 /**
  * @author Jason van Zyl
  *
@@ -28,6 +30,8 @@ public class AuthenticationDataSource
     private String username;
 
     private String password;
+    
+    private String defaultPrincipal;
 
     public AuthenticationDataSource( String login, String password )
     {
@@ -45,12 +49,28 @@ public class AuthenticationDataSource
         return password;
     }
 
+    public String getDefaultPrincipal()
+    {
+        return defaultPrincipal;
+    }
+    
+    public void setDefaultPrincipal( String principal )
+    {
+        defaultPrincipal = principal;
+    }
+
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
         sb.append( "AuthenticationDataSource[" );
         sb.append( "username=" ).append( username );
-        sb.append( ",password=" ).append( password );
+        sb.append( ",password=" );
+        if ( StringUtils.isNotEmpty( password ) )
+        {
+            // Intentionally not showing real password 
+            sb.append( "***" );
+        }
+        sb.append( ",defaultPrincipal=" ).append( defaultPrincipal );
         sb.append( "]" );
         return sb.toString();
     }
