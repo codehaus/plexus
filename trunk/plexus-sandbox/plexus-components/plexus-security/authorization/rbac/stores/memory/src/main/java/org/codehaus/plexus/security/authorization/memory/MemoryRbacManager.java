@@ -27,6 +27,7 @@ import org.codehaus.plexus.security.rbac.RbacStoreException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -185,42 +186,81 @@ public class MemoryRbacManager
 
     public Operation createOperation( String name )
     {
-        Operation operation = new MemoryOperation();
-        operation.setName( name );
+        Operation operation;
+        
+        try
+        {
+            operation = getOperation( name );
+        }
+        catch ( RbacObjectNotFoundException e )
+        {
+            operation = new MemoryOperation();
+            operation.setName( name );
+        }
 
         return operation;
     }
 
     public Permission createPermission( String name )
     {
-        Permission permission = new MemoryPermission();
-        permission.setName( name );
+        Permission permission;
+        
+        try
+        {
+            permission = getPermission( name );
+        }
+        catch ( RbacObjectNotFoundException e )
+        {
+            permission = new MemoryPermission();
+            permission.setName( name );
+        }
 
         return permission;
     }
 
     public Permission createPermission( String name, String operationName, String resourceIdentifier )
     {
-        Permission permission = new MemoryPermission();
-        permission.setName( name );
-
-        Operation operation = new MemoryOperation();
-        operation.setName( operationName );
-
-        permission.setOperation( operation );
-
-        Resource resource = new MemoryResource();
-        resource.setIdentifier( resourceIdentifier );
-
-        permission.setResource( resource );
+        Permission permission;
+        
+        try
+        {
+            permission = getPermission( name );
+            
+            if ( StringUtils.equals( operationName, permission.getOperation().getName() ) )
+            {
+                throw new RbacStoreException( "Attempted to create a permission named '" + name + 
+                                              "' with an operation named '" + operationName + 
+                                              "', but that overides the existing '" + name + 
+                                              "' permission with operation '" + 
+                                              permission.getOperation().getName() + "'" );
+            }
+            
+        }
+        catch ( RbacObjectNotFoundException e )
+        {
+            permission = new MemoryPermission();
+            permission.setName( name );
+            
+            permission.setOperation( createOperation( operationName ) );
+            permission.setResource( createResource( resourceIdentifier ) );
+        }
 
         return permission;
     }
 
     public Resource createResource( String identifier )
     {
-        Resource resource = new MemoryResource();
-        resource.setIdentifier( identifier );
+        Resource resource;
+        
+        try
+        {
+            resource = getResource( identifier );
+        }
+        catch ( RbacObjectNotFoundException e )
+        {
+            resource = new MemoryResource();
+            resource.setIdentifier( identifier );
+        }
 
         return resource;
     }
@@ -325,10 +365,17 @@ public class MemoryRbacManager
 
     public UserAssignment createUserAssignment( String principal )
     {
-        UserAssignment ua = new MemoryUserAssignment();
-        ua.setPrincipal( principal );
+        try
+        {
+            return getUserAssignment( principal );
+        }
+        catch ( RbacObjectNotFoundException e )
+        {
+            UserAssignment ua = new MemoryUserAssignment();
+            ua.setPrincipal( principal );
 
-        return ua;
+            return ua;
+        } 
     }
 
     public List getAllOperations()
