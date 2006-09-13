@@ -23,6 +23,7 @@ import org.codehaus.plexus.security.authentication.Authenticator;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.user.policy.PasswordEncoder;
 
 /**
  * {@link Authenticator} implementation that uses a wrapped {@link UserManager} to authenticate.
@@ -52,20 +53,30 @@ public class UserManagerAuthenticator
 
         try
         {
+            getLogger().warn( "Authenticate: " + ds );
             User user = userManager.findUser( ds.getUsername() );
-            boolean isPasswordValid = userManager.getUserSecurityPolicy().getPasswordEncoder()
-                .isPasswordValid( user.getEncodedPassword(), ds.getPassword() );
+            
+            PasswordEncoder encoder = userManager.getUserSecurityPolicy().getPasswordEncoder();
+            getLogger().warn( "PasswordEncoder: " + encoder.getClass().getName() );
+            getLogger().warn( "encoder.isPasswordValid( \"" + user.getEncodedPassword() + "\", \"" + ds.getPassword() + "\");");
+            
+            boolean isPasswordValid = encoder.isPasswordValid( user.getEncodedPassword(), ds.getPassword() );
             if ( isPasswordValid )
             {
+                getLogger().warn( "Login for user " + ds.getUsername() + " failed. bad password." );
                 return new AuthenticationResult( true, ds.getUsername(), null );
             }
-            return new AuthenticationResult( false, null, null );
+            else
+            {
+                getLogger().debug( "Password is Invalid for user " + ds.getUsername() + "." );
+                return new AuthenticationResult( false, ds.getUsername(), null );
+            }
         }
         catch ( UserNotFoundException e )
         {
-            return new AuthenticationResult( false, null, e );
+            getLogger().warn( "Login for user " + ds.getUsername() + " failed. user not found." );
+            return new AuthenticationResult( false, ds.getUsername(), e );
         }
-
     }
 
     /**

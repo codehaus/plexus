@@ -64,7 +64,7 @@ public class NewUserAction
         {
             addActionError( "Passwords do not match." );
         }
-
+        
         UserManager um = securitySystem.getUserManager();
 
         if ( um.userExists( username ) )
@@ -91,7 +91,6 @@ public class NewUserAction
                     addActionError( (String) it.next() );
                 }
             }
-
         }
         
         if ( hasActionErrors() )

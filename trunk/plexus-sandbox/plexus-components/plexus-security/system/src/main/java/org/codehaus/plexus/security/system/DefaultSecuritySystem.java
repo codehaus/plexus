@@ -84,21 +84,28 @@ public class DefaultSecuritySystem
         throws AuthenticationException, UserNotFoundException
     {
         AuthenticationResult result = authenticator.authenticate( source );
+        
+        getLogger().debug( "authenticator.authenticate() result: " + result );
 
         if ( result.isAuthenticated() )
         {
+            getLogger().debug("User '" + result.getPrincipal() + "' authenticated.");
             if ( userManager.userExists( result.getPrincipal() ) )
             {
+                getLogger().debug("User '" + result.getPrincipal() + "' exists.");
                 User user = userManager.findUser( result.getPrincipal() );
+                getLogger().debug("User: " + user );
                 return new DefaultSecuritySession( result, user );
             }
             else
             {
-               return new DefaultSecuritySession( result, null );
+                getLogger().debug("User '" + result.getPrincipal() + "' DOES NOT exist.");
+                return new DefaultSecuritySession( result, null );
             }
         }
         else
         {
+            getLogger().debug("User '" + result.getPrincipal() + "' IS NOT authenticated.");
             return new DefaultSecuritySession( result, null );
         }
     }
