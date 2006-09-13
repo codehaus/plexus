@@ -53,22 +53,21 @@ public class UserManagerAuthenticator
 
         try
         {
-            getLogger().warn( "Authenticate: " + ds );
+            getLogger().debug( "Authenticate: " + ds );
             User user = userManager.findUser( ds.getUsername() );
             
             PasswordEncoder encoder = userManager.getUserSecurityPolicy().getPasswordEncoder();
-            getLogger().warn( "PasswordEncoder: " + encoder.getClass().getName() );
-            getLogger().warn( "encoder.isPasswordValid( \"" + user.getEncodedPassword() + "\", \"" + ds.getPassword() + "\");");
+            getLogger().debug( "PasswordEncoder: " + encoder.getClass().getName() );
             
             boolean isPasswordValid = encoder.isPasswordValid( user.getEncodedPassword(), ds.getPassword() );
             if ( isPasswordValid )
             {
-                getLogger().warn( "Login for user " + ds.getUsername() + " failed. bad password." );
+                getLogger().debug( "User " + ds.getUsername() + " provided a valid password" );
                 return new AuthenticationResult( true, ds.getUsername(), null );
             }
             else
             {
-                getLogger().debug( "Password is Invalid for user " + ds.getUsername() + "." );
+                getLogger().warn( "Password is Invalid for user " + ds.getUsername() + "." );
                 return new AuthenticationResult( false, ds.getUsername(), null );
             }
         }

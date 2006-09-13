@@ -16,11 +16,13 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
-import com.opensymphony.webwork.dispatcher.SessionMap;
+import com.opensymphony.xwork.interceptor.NoParameters;
+
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
@@ -35,8 +37,8 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  */
 public class LoginAction
     extends PlexusActionSupport
+    implements NoParameters
 {
-
     /**
      * @plexus.requirement
      */
@@ -45,11 +47,15 @@ public class LoginAction
     private String username;
 
     private String password;
-
+    
     public String login()
     {
+        getLogger().debug( ".login([" + username + "], ***)" );
         if ( username != null && password != null )
         {
+            // An attempt should log out your authentication tokens first!
+            setAuthTokens( null, null, false );
+            
             try
             {
                 SecuritySession securitySession =
@@ -57,9 +63,8 @@ public class LoginAction
 
                 if ( securitySession.getAuthenticationResult().isAuthenticated() )
                 {
-                    session.put( SecuritySession.ROLE, securitySession );
-                    session.put( SecuritySession.USERKEY , securitySession.getUser() );
-                    session.put( "authStatus", new Boolean( true ) );
+                    // Success!  Create tokens.
+                    setAuthTokens( securitySession, securitySession.getUser(), true );
                     return SUCCESS;
                 }
                 else
@@ -90,11 +95,19 @@ public class LoginAction
 
     public String logout()
     {
-        SessionMap session = (SessionMap) this.session;
-
-        session.invalidate();
+        session.clear();
+        
+        this.setSession( session );
 
         return SUCCESS;
+    }
+    
+    private void setAuthTokens( SecuritySession securitySession, User user, boolean authStatus )
+    {
+        session.put( SecuritySession.ROLE, securitySession );
+        session.put( SecuritySession.USERKEY, user );
+        session.put( "authStatus", new Boolean( authStatus ) );
+        this.setSession( session );
     }
 
     public String getUsername()
