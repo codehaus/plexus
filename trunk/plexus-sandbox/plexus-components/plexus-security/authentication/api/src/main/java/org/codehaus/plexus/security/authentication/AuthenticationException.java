@@ -42,14 +42,13 @@ public class AuthenticationException
         super( message );
     }
 
-    /**
-     * Constructor AuthenticationException.
-     *
-     * @param message
-     * @param cause
-     */
-    public AuthenticationException( String message, Exception cause )
+    public AuthenticationException( String message, Throwable cause )
     {
         super( message, cause );
+    }
+
+    public AuthenticationException( Throwable cause )
+    {
+        super( cause );
     }
 }

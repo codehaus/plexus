@@ -16,8 +16,10 @@ package org.codehaus.plexus.security.ui.web.filter.authentication.basic;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.ui.web.filter.authentication.AbstractHttpAuthentication;
-import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticationException;
+import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
+import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator;
 import org.codehaus.plexus.util.Base64;
 
 import java.io.IOException;
@@ -28,18 +30,26 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * HttpBasicAuthentication 
  *
- * @plexus.component role="org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthentication"
+ * @plexus.component role="org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator"
  *                   role-hint="basic"
  * 
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
 public class HttpBasicAuthentication
-    extends AbstractHttpAuthentication
+    extends HttpAuthenticator
 {
-    public void authenticate( HttpServletRequest request, HttpServletResponse response )
-        throws HttpAuthenticationException
+
+    public AuthenticationResult getAuthenticationResult( HttpServletRequest request, HttpServletResponse response,
+                                                         String defaultPrincipal )
+        throws AuthenticationException
     {
+        if ( isAlreadyAuthenticated() )
+        {
+            return getSecuritySession().getAuthenticationResult();
+        }
+
+        AuthenticationDataSource authDataSource;
         String header = request.getHeader( "Authorization" );
 
         if ( ( header != null ) && header.startsWith( "Basic " ) )
@@ -57,12 +67,16 @@ public class HttpBasicAuthentication
                 password = token.substring( delim + 1 );
             }
 
-            if ( !isAlreadyAuthenticated() )
-            {
-                assertValidUser( username, password );
-                return;
-            }
+            authDataSource = new AuthenticationDataSource( username, password );
         }
+        else
+        {
+            // Default Empty Source.
+            authDataSource = new AuthenticationDataSource( null, null );
+        }
+
+        authDataSource.setDefaultPrincipal( defaultPrincipal );
+        return super.authenticate( authDataSource );
     }
 
     /**
@@ -75,11 +89,10 @@ public class HttpBasicAuthentication
      * @throws IOException if there was a problem with the {@link HttpServletResponse#sendError(int, String)} call.
      */
     public void challenge( HttpServletRequest request, HttpServletResponse response, String realmName,
-                           HttpAuthenticationException exception )
+                           AuthenticationException exception )
         throws IOException
     {
         response.addHeader( "WWW-Authenticate", "Basic realm=\"" + realmName + "\"" );
         response.sendError( HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage() );
     }
-
 }
