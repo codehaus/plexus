@@ -1,4 +1,5 @@
 package org.codehaus.plexus.security.authentication;
+
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -54,5 +55,25 @@ public class AuthenticationResult
     public Exception getException()
     {
         return exception;
+    }
+    
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append( "AuthenticationResult[" );
+        sb.append( "principal=" ).append( principal );
+        sb.append( ",isAuthenticated=" ).append( Boolean.toString( isAuthenticated ) );
+        sb.append( ",exception=" );
+        if ( exception != null )
+        {
+            sb.append( exception.getClass().getName() );
+            sb.append( " : " ).append( exception.getMessage() );
+        }
+        else
+        {
+            sb.append( "<null>" );
+        }
+        sb.append( "]" );
+        return sb.toString();
     }
 }
