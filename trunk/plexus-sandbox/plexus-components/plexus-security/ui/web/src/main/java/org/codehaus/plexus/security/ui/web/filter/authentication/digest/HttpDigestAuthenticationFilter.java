@@ -17,9 +17,9 @@ package org.codehaus.plexus.security.ui.web.filter.authentication.digest;
  */
 
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.ui.web.filter.authentication.AbstractHttpAuthenticationFilter;
-import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthentication;
-import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticationException;
+import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator;
 import org.codehaus.plexus.security.ui.web.filter.authentication.basic.HttpBasicAuthentication;
 
 import java.io.IOException;
@@ -57,7 +57,7 @@ public class HttpDigestAuthenticationFilter
 
         try
         {
-            httpAuthentication = (HttpDigestAuthentication) getContainer().lookup( HttpAuthentication.ROLE, "digest" );
+            httpAuthentication = (HttpDigestAuthentication) getContainer().lookup( HttpAuthenticator.ROLE, "digest" );
         }
         catch ( ComponentLookupException e )
         {
@@ -86,9 +86,9 @@ public class HttpDigestAuthenticationFilter
             httpAuthentication.setRealm( getRealmName() );
             httpAuthentication.authenticate( httpRequest, httpResponse );
         }
-        catch ( HttpAuthenticationException e )
+        catch ( AuthenticationException e )
         {
-            HttpBasicAuthentication httpauthn = new HttpBasicAuthentication();
+            HttpAuthenticator httpauthn = new HttpBasicAuthentication();
             httpauthn.challenge( httpRequest, httpResponse, getRealmName(), e );
             return;
         }

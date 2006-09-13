@@ -28,6 +28,7 @@ import org.codehaus.plexus.security.authorization.AuthorizationResult;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * DefaultSecuritySystem:
@@ -83,31 +84,53 @@ public class DefaultSecuritySystem
     public SecuritySession authenticate( AuthenticationDataSource source )
         throws AuthenticationException, UserNotFoundException
     {
-        AuthenticationResult result = authenticator.authenticate( source );
+        boolean hasDefaultPrincipal = StringUtils.isNotEmpty( source.getDefaultPrincipal() );
         
+        // Empty Username ?
+        if ( StringUtils.isEmpty( source.getUsername() ) )
+        {
+            AuthenticationResult result = new AuthenticationResult( hasDefaultPrincipal, source.getDefaultPrincipal(),
+                                                                    null );
+            return new DefaultSecuritySession( result, findDefaultUser( source ) );
+        }
+        
+        // Perform Authentication.
+        AuthenticationResult result = authenticator.authenticate( source );
+
         getLogger().debug( "authenticator.authenticate() result: " + result );
 
+        // Process Results.
         if ( result.isAuthenticated() )
         {
-            getLogger().debug("User '" + result.getPrincipal() + "' authenticated.");
+            getLogger().debug( "User '" + result.getPrincipal() + "' authenticated." );
             if ( userManager.userExists( result.getPrincipal() ) )
             {
-                getLogger().debug("User '" + result.getPrincipal() + "' exists.");
+                getLogger().debug( "User '" + result.getPrincipal() + "' exists." );
                 User user = userManager.findUser( result.getPrincipal() );
-                getLogger().debug("User: " + user );
+                getLogger().debug( "User: " + user );
                 return new DefaultSecuritySession( result, user );
             }
             else
             {
-                getLogger().debug("User '" + result.getPrincipal() + "' DOES NOT exist.");
-                return new DefaultSecuritySession( result, null );
+                getLogger().debug( "User '" + result.getPrincipal() + "' DOES NOT exist." );
+                return new DefaultSecuritySession( result, findDefaultUser( source ) );
             }
         }
         else
         {
-            getLogger().debug("User '" + result.getPrincipal() + "' IS NOT authenticated.");
-            return new DefaultSecuritySession( result, null );
+            getLogger().debug( "User '" + result.getPrincipal() + "' IS NOT authenticated." );
+            return new DefaultSecuritySession( result, findDefaultUser( source ) );
         }
+    }
+    
+    private User findDefaultUser( AuthenticationDataSource source )
+        throws UserNotFoundException
+    {
+        if ( StringUtils.isNotEmpty( source.getDefaultPrincipal() ) )
+        {
+            return userManager.findUser( source.getDefaultPrincipal() );
+        }
+        return null;
     }
 
     public boolean isAuthenticated( AuthenticationDataSource source )
@@ -128,7 +151,8 @@ public class DefaultSecuritySystem
     public AuthorizationResult authorize( SecuritySession session, Object permission )
         throws AuthorizationException
     {
-        AuthorizationDataSource source = new AuthorizationDataSource( session.getUser().getPrincipal(), session.getUser(), permission );
+        AuthorizationDataSource source = new AuthorizationDataSource( session.getUser().getPrincipal(), session
+            .getUser(), permission );
 
         return authorizer.isAuthorized( source );
     }
@@ -137,13 +161,14 @@ public class DefaultSecuritySystem
         throws AuthorizationException
     {
 
-        return authorize( session, permission).isAuthorized();
+        return authorize( session, permission ).isAuthorized();
     }
 
     public AuthorizationResult authorize( SecuritySession session, Object permission, Object resource )
         throws AuthorizationException
     {
-        AuthorizationDataSource source = new AuthorizationDataSource( session.getUser().getPrincipal(), session.getUser(), permission, resource );
+        AuthorizationDataSource source = new AuthorizationDataSource( session.getUser().getPrincipal(), session
+            .getUser(), permission, resource );
 
         return authorizer.isAuthorized( source );
     }
@@ -151,7 +176,7 @@ public class DefaultSecuritySystem
     public boolean isAuthorized( SecuritySession session, Object permission, Object resource )
         throws AuthorizationException
     {
-        return authorize( session, permission, resource).isAuthorized();
+        return authorize( session, permission, resource ).isAuthorized();
     }
 
     public String getAuthorizerId()

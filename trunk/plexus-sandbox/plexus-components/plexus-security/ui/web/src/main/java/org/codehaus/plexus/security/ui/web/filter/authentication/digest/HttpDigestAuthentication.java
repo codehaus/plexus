@@ -16,7 +16,10 @@ package org.codehaus.plexus.security.ui.web.filter.authentication.digest;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.ui.web.filter.authentication.AbstractHttpAuthentication;
+import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
+import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator;
 import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticationException;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
@@ -32,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * HttpDigestAuthentication methods for working with <a href="http://www.faqs.org/rfcs/rfc2617.html">RFC 2617 HTTP Authentication</a>.
  * 
- * @plexus.component role="org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthentication"
+ * @plexus.component role="org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator"
  *                   role-hint="basic"
  *                   instantiation-strategy="per-lookup"
  * 
@@ -40,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
  * @version $Id$
  */
 public class HttpDigestAuthentication
-    extends AbstractHttpAuthentication
+    extends HttpAuthenticator
 {
     /**
      * @plexus.requirement
@@ -61,14 +64,16 @@ public class HttpDigestAuthentication
 
     private String realm;
 
-    public void authenticate( HttpServletRequest request, HttpServletResponse response )
-        throws HttpAuthenticationException
+    public AuthenticationResult getAuthenticationResult( HttpServletRequest request, HttpServletResponse response,
+                                             String defaultPrincipal )
+        throws AuthenticationException
     {
         if ( isAlreadyAuthenticated() )
         {
-            return;
+            return getSecuritySession().getAuthenticationResult();
         }
 
+        AuthenticationDataSource authDataSource = new AuthenticationDataSource( null, null );
         String authHeader = request.getHeader( "Authorization" );
 
         if ( ( authHeader != null ) && authHeader.startsWith( "Digest " ) )
@@ -79,17 +84,7 @@ public class HttpDigestAuthentication
             digestHeader.parseClientHeader( rawDigestHeader, getRealm(), digestKey );
 
             // Lookup password for presented username
-            // TODO: move this section of ugly code to authentication modules.
-            User user;
-            try
-            {
-                user = userManager.findUser( digestHeader.username );
-            }
-            catch ( UserNotFoundException e )
-            {
-                getLogger().debug( "User '" + digestHeader.username + "' not found.", e );
-                throw new HttpAuthenticationException( "User name or password invalid." );
-            }
+            User user = findUser( digestHeader.username, defaultPrincipal );
 
             String serverSideHash = generateDigestHash( digestHeader, user.getPassword(), request.getMethod() );
 
@@ -97,6 +92,51 @@ public class HttpDigestAuthentication
             {
                 throw new HttpAuthenticationException( "Digest response was invalid." );
             }
+            
+            authDataSource.setDefaultPrincipal( user.getUsername() );
+        }
+        else
+        {
+            authDataSource.setDefaultPrincipal( defaultPrincipal );
+        }
+
+        return super.authenticate( authDataSource );
+    }
+
+    public User findUser( String username, String defaultPrincipal ) throws HttpAuthenticationException
+    {
+        UserNotFoundException primaryException = null;
+        
+        try
+        {
+            return userManager.findUser( username );
+        }
+        catch ( UserNotFoundException e )
+        {
+            primaryException = e;
+            // Fall Thru
+        }
+        
+        if ( StringUtils.isNotEmpty( defaultPrincipal ) )
+        {
+            try
+            {
+                return userManager.findUser( defaultPrincipal );
+            }
+            catch ( UserNotFoundException e )
+            {
+                String msg = "Unable to find primary user '" + username + 
+                             "' and default principal '" + defaultPrincipal + "'.";
+                getLogger().error( msg, e );
+                throw new HttpAuthenticationException( msg, e );
+            }
+        }
+        else
+        {
+            String msg = "Unable to find primary user '" + username + 
+                         "' (no default principal backup)";
+            getLogger().error( msg, primaryException );
+            throw new HttpAuthenticationException(msg, primaryException);
         }
     }
 
@@ -110,7 +150,7 @@ public class HttpDigestAuthentication
      * @throws IOException if there was a problem with the {@link HttpServletResponse#sendError(int, String)} call.
      */
     public void challenge( HttpServletRequest request, HttpServletResponse response, String realmName,
-                           HttpAuthenticationException exception )
+                           AuthenticationException exception )
         throws IOException
     {
         // The Challenge Header
@@ -182,4 +222,5 @@ public class HttpDigestAuthentication
     {
         this.realm = realm;
     }
+
 }
