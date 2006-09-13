@@ -16,8 +16,6 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
-import com.opensymphony.xwork.interceptor.NoParameters;
-
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.system.SecuritySession;
@@ -34,10 +32,10 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  * @plexus.component
  *   role="com.opensymphony.xwork.Action"
  *   role-hint="plexusSecurityLogin"
+ *   instantiation-strategy="per-lookup"
  */
 public class LoginAction
     extends PlexusActionSupport
-    implements NoParameters
 {
     /**
      * @plexus.requirement
@@ -55,6 +53,8 @@ public class LoginAction
         {
             // An attempt should log out your authentication tokens first!
             setAuthTokens( null, null, false );
+            
+            clearErrorsAndMessages();
             
             try
             {
