@@ -17,6 +17,7 @@ package org.codehaus.plexus.security.authorization.memory;
  */
 
 import org.codehaus.plexus.security.rbac.AbstractUserAssignment;
+import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
 import java.util.ArrayList;
