@@ -364,6 +364,28 @@ public class AbstractRbacManagerTestCase
         assertEquals( 2, manager.getAllRoles().size() );
     }
 
+    public void testUserAssignmentMultipleRoles()
+        throws RbacStoreException, RbacObjectNotFoundException
+    {
+        RBACManager manager = getRbacManager();
+        // Setup User / Assignment with 1 role.
+        String username = "bob";
+
+        UserAssignment assignment = manager.createUserAssignment( username );
+        Role devRole = getDeveloperRole();
+        assignment.addRole( devRole );
+        assignment = manager.saveUserAssignment( assignment );
+
+        assertEquals( 1, manager.getAllUserAssignments().size() );
+        assertEquals( 1, manager.getAllRoles().size() );
+
+        // assign the same role again to the same user
+        assignment.addRole( manager.getRole( devRole.getName() ) );
+        manager.saveUserAssignment( assignment );
+
+        // we certainly shouldn't have 2 roles here now
+        assertEquals( 1, assignment.getRoles().size() );
+    }
 
     public void testGetAssignedRoles()
         throws RbacStoreException, RbacObjectNotFoundException
