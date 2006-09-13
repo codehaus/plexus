@@ -343,7 +343,7 @@ public class AbstractRbacManagerTestCase
         Role projectAdmin = getProjectAdminRole();
         String roleName = projectAdmin.getName();
         projectAdmin = manager.saveRole( projectAdmin );
-
+        
         // Perform Second Role process.
         UserAssignment bob = manager.createUserAssignment( username );
         bob.addRole( manager.getRole( roleName ) );
