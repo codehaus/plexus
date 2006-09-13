@@ -361,8 +361,9 @@ public class AbstractRbacManagerTestCase
         bob = manager.saveUserAssignment( bob );
 
         assertEquals( 1, bob.getRoles().size() );
-
+        assertEquals( 2, manager.getAllRoles().size() );
     }
+
 
     public void testGetAssignedRoles()
         throws RbacStoreException, RbacObjectNotFoundException
