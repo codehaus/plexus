@@ -76,23 +76,23 @@ public interface RBACManager
      */
     public Role getRole( String roleName )
         throws RbacObjectNotFoundException, RbacStoreException;
-    
+
     public Map getRoles( Collection roleNames )
         throws RbacObjectNotFoundException, RbacStoreException;
 
     public void addChildRole( Role role, Role childRole )
         throws RbacObjectInvalidException, RbacStoreException;
-    
+
     public Map getChildRoles( Role role )
         throws RbacStoreException;
-    
+
     /**
      * Method getRoles
      */
     public List getAllRoles()
         throws RbacStoreException;
 
-   /**
+    /**
      * Method removeRole
      *
      * @param role
@@ -107,7 +107,7 @@ public interface RBACManager
      */
     public void removeRole( String roleName )
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException;
-    
+
     // ------------------------------------------------------------------
     // Permission Methods
     // ------------------------------------------------------------------
@@ -189,7 +189,7 @@ public interface RBACManager
      */
     public Operation saveOperation( Operation operation )
         throws RbacObjectInvalidException, RbacStoreException;
-    
+
     public Operation getOperation( String operationName )
         throws RbacObjectNotFoundException, RbacStoreException;
 
@@ -299,13 +299,22 @@ public interface RBACManager
      * you just want all permissions then use {@link #getAssignedPermissions( Object principal )}
      *
      * @param principal
-     * @return
+     * @return Collection of {@link Role} objects.
      * @throws RbacObjectNotFoundException
      * @throws RbacStoreException
      */
     public Collection getAssignedRoles( String principal )
         throws RbacObjectNotFoundException, RbacStoreException;
-    
+
+    /**
+     * Get the Collection of {@link Role} objects for this UserAssignment.
+     * 
+     * @param userAssignment
+     * @return Collection of {@link Role} objects for the provided UserAssignment.
+     */
+    public Collection getAssignedRoles( UserAssignment userAssignment )
+        throws RbacObjectNotFoundException, RbacStoreException;
+
     /**
      * Get a list of all assignable roles that are currently not assigned to the specific user.
      * 

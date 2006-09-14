@@ -17,9 +17,9 @@ package org.codehaus.plexus.security.authorization.rbac.web.action;
  */
 
 
-import org.codehaus.plexus.security.rbac.RbacStoreException;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.security.rbac.RbacStoreException;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
@@ -100,13 +100,13 @@ public class UserAssignmentActions
             if ( manager.userAssignmentExists( principal ) )
             {
                 UserAssignment assignment = manager.getUserAssignment( principal );
-                assignment.addRole( manager.getRole( roleName ) );
+                assignment.addRoleName( roleName  );
                 manager.saveUserAssignment( assignment );
             }
             else
             {
                 UserAssignment assignment = manager.createUserAssignment( principal );
-                assignment.addRole( manager.getRole( roleName ) );
+                assignment.addRoleName( roleName );
                 manager.saveUserAssignment( assignment );
             }
         }
@@ -120,8 +120,8 @@ public class UserAssignmentActions
 
     /* TODO: We should be careful with use of 'remove' vs 'delete' or just spell it out.
      *
-     * For example, this method should just 'detach' the role from this particular user assignment, not actually
-     * delete the role from the underlying usermanager.
+     * For example, this method should just 'detach' or 'drop' the role from this particular 
+     * user assignment, not actually delete the role from the underlying usermanager.
      *
      * To do that, a call to usermanager.removeRole() should remove the role entirely.
      *
@@ -137,16 +137,9 @@ public class UserAssignmentActions
                 throw new RbacActionException( "principal can not be null" );
             }
 
-            getLogger().info( "removing " + roleName + " for " + principal );
-
             UserAssignment assignment = manager.getUserAssignment( principal );
 
-            List roles = assignment.getRoles();
-            
-            roles.remove( manager.getRole( roleName ) );
-
-            assignment.setRoles( roles );
-
+            assignment.removeRoleName( roleName );
             manager.saveUserAssignment( assignment );
         }
         catch ( RbacObjectNotFoundException ne )
