@@ -21,6 +21,7 @@ import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator;
 import org.codehaus.plexus.util.Base64;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.IOException;
 
@@ -93,6 +94,11 @@ public class HttpBasicAuthentication
         throws IOException
     {
         response.addHeader( "WWW-Authenticate", "Basic realm=\"" + realmName + "\"" );
-        response.sendError( HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage() );
+        String message = "You must provide a username and password to access this resource.";
+        if ( ( exception != null ) && StringUtils.isNotEmpty( exception.getMessage() ) )
+        {
+            message = exception.getMessage();
+        }
+        response.sendError( HttpServletResponse.SC_UNAUTHORIZED, message );
     }
 }
