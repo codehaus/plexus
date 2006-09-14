@@ -35,7 +35,7 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>      
+      <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
