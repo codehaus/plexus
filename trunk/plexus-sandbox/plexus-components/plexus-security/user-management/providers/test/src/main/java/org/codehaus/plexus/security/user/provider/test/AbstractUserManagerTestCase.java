@@ -79,6 +79,7 @@ public class AbstractUserManagerTestCase
         throws UserNotFoundException
     {
         assertCleanUserManager();
+        securityPolicy.setEnabled( false );
 
         User smcqueen = getUserManager().createUser( "smcqueen", "Steve McQueen", "the cooler king" );
 
@@ -98,6 +99,7 @@ public class AbstractUserManagerTestCase
         throws UserNotFoundException
     {
         assertCleanUserManager();
+        securityPolicy.setEnabled( false );
 
         User smcqueen = getUserManager().createUser( "smcqueen", "Steve McQueen", "the cooler king" );
 
@@ -112,6 +114,9 @@ public class AbstractUserManagerTestCase
     public void testCreateUser()
         throws Exception
     {
+        assertCleanUserManager();
+        securityPolicy.setEnabled( false );
+
         UserManager um = getUserManager();
         User user = um.createUser( "admin", "Administrator", "admin@somedomain.com" );
         user.setPassword( "adminpass" );
@@ -123,6 +128,9 @@ public class AbstractUserManagerTestCase
     public void testAddUser()
         throws Exception
     {
+        assertCleanUserManager();
+        securityPolicy.setEnabled( false );
+
         UserManager um = getUserManager();
         assertNotNull( um.getUsers() );
         assertEquals( 0, um.getUsers().size() );
@@ -138,6 +146,9 @@ public class AbstractUserManagerTestCase
     public void testDeleteUser()
         throws Exception
     {
+        assertCleanUserManager();
+        securityPolicy.setEnabled( false );
+
         UserManager um = getUserManager();
         User user = um.createUser( "admin", "Administrator", "admin@somedomain.com" );
         user.setPassword( "adminpass" );
@@ -163,6 +174,9 @@ public class AbstractUserManagerTestCase
     public void testFindUser()
         throws Exception
     {
+        assertCleanUserManager();
+        securityPolicy.setEnabled( false );
+
         UserManager um = getUserManager();
 
         // create and add a few users
@@ -206,6 +220,9 @@ public class AbstractUserManagerTestCase
     public void testUserExists()
         throws Exception
     {
+        assertCleanUserManager();
+        securityPolicy.setEnabled( false );
+
         UserManager um = getUserManager();
 
         // create and add a few users
@@ -221,6 +238,9 @@ public class AbstractUserManagerTestCase
     public void testUpdateUser()
         throws Exception
     {
+        assertCleanUserManager();
+        securityPolicy.setEnabled( false );
+
         UserManager um = getUserManager();
 
         // create and add a user

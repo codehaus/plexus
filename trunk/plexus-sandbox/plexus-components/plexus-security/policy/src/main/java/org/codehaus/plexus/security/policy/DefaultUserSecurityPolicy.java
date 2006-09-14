@@ -16,10 +16,16 @@ package org.codehaus.plexus.security.policy;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.policy.rules.MustHavePasswordRule;
+import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
@@ -36,7 +42,7 @@ import java.util.List;
  * @version $Id$
  */
 public class DefaultUserSecurityPolicy
-    implements UserSecurityPolicy, Initializable
+    implements UserSecurityPolicy, Initializable, Contextualizable
 {
     /**
      * @plexus.configuration default-value="6"
@@ -52,11 +58,16 @@ public class DefaultUserSecurityPolicy
      * @plexus.requirement role-hint="sha256"
      */
     private PasswordEncoder passwordEncoder;
+    
+    /**
+     * @plexus.configuration default-value="true"
+     */
+    private boolean enabled = true;
 
     /**
      * The List of {@link PasswordRule} objects.
      * 
-     * @plexus.requirement role="org.apache.maven.user.model.PasswordRule" role-hint="must-have"
+     * @plexus.requirement role="org.codehaus.plexus.security.policy.PasswordRule"
      */
     private List rules = new ArrayList();
 
@@ -84,7 +95,7 @@ public class DefaultUserSecurityPolicy
     {
         this.loginAttemptCount = loginAttemptCount;
     }
-    
+
     /**
      * Get the password encoder to be used for password operations
      * 
@@ -95,6 +106,17 @@ public class DefaultUserSecurityPolicy
         return passwordEncoder;
     }
 
+
+    public boolean isEnabled()
+    {
+        return enabled;
+    }
+
+    public void setEnabled( boolean enabled )
+    {
+        this.enabled = enabled;
+    }
+    
     /**
      * Add a Specific Rule to the Password Rules List.
      * 
@@ -173,27 +195,30 @@ public class DefaultUserSecurityPolicy
     public void validatePassword( User user )
         throws PasswordRuleViolationException
     {
-        // Trim password.
-        user.setPassword( StringUtils.trim( user.getPassword() ) );
-
-        PasswordRuleViolations violations = new PasswordRuleViolations();
-
-        Iterator it = getPasswordRules().iterator();
-        while ( it.hasNext() )
+        if ( isEnabled() )
         {
-            PasswordRule rule = (PasswordRule) it.next();
-            rule.testPassword( violations, user );
+            // Trim password.
+            user.setPassword( StringUtils.trim( user.getPassword() ) );
+
+            PasswordRuleViolations violations = new PasswordRuleViolations();
+
+            Iterator it = getPasswordRules().iterator();
+            while ( it.hasNext() )
+            {
+                PasswordRule rule = (PasswordRule) it.next();
+                rule.testPassword( violations, user );
+            }
+
+            if ( violations.hasViolations() )
+            {
+                PasswordRuleViolationException exception = new PasswordRuleViolationException();
+                exception.setViolations( violations );
+                throw exception;
+            }
         }
 
-        if ( violations.hasViolations() )
-        {
-            PasswordRuleViolationException exception = new PasswordRuleViolationException();
-            exception.setViolations( violations );
-            throw exception;
-        }
-        
         // If you got this far, then ensure that the password is never null.
-        if( user.getPassword() == null )
+        if ( user.getPassword() == null )
         {
             user.setPassword( "" );
         }
@@ -202,13 +227,35 @@ public class DefaultUserSecurityPolicy
     public void initialize()
         throws InitializationException
     {
+        rules = new ArrayList();
+
+        try
+        {
+            rules.add( (PasswordRule) plexus.lookup( PasswordRule.ROLE, "must-have" ) );
+            rules.add( (PasswordRule) plexus.lookup( PasswordRule.ROLE, "character-length" ) );
+            rules.add( (PasswordRule) plexus.lookup( PasswordRule.ROLE, "alpha-count" ) );
+            rules.add( (PasswordRule) plexus.lookup( PasswordRule.ROLE, "numerical-count" ) );
+            rules.add( (PasswordRule) plexus.lookup( PasswordRule.ROLE, "reuse" ) );
+        }
+        catch ( ComponentLookupException e )
+        {
+            throw new InitializationException( "Unable to lookup password rules.", e );
+        }
+
         if ( rules != null )
         {
-            Iterator it = rules.iterator();
+            Iterator it = rules.listIterator();
             while ( it.hasNext() )
             {
                 PasswordRule rule = (PasswordRule) it.next();
-                rule.setUserSecurityPolicy( this );
+                if ( !rule.isEnabled() )
+                {
+                    it.remove();
+                }
+                else
+                {
+                    rule.setUserSecurityPolicy( this );
+                }
             }
         }
         else
@@ -218,4 +265,11 @@ public class DefaultUserSecurityPolicy
         }
     }
 
+    private PlexusContainer plexus;
+
+    public void contextualize( Context context )
+        throws ContextException
+    {
+        plexus = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+    }
 }

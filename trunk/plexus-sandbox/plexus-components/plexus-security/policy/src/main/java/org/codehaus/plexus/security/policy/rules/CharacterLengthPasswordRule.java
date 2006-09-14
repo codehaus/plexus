@@ -32,11 +32,19 @@ import org.codehaus.plexus.util.StringUtils;
  * @version $Id$
  */
 public class CharacterLengthPasswordRule
+    extends AbstractPasswordRule
     implements PasswordRule
 {
+    /**
+     * @plexus.configuration default-value="1"
+     */
     private int minimumCharacters;
+
+    /**
+     * @plexus.configuration default-value="8"
+     */
     private int maximumCharacters;
-    
+
     public CharacterLengthPasswordRule()
     {
         minimumCharacters = 1;
@@ -70,7 +78,7 @@ public class CharacterLengthPasswordRule
 
     public void testPassword( PasswordRuleViolations violations, User user )
     {
-        if(minimumCharacters > maximumCharacters)
+        if ( minimumCharacters > maximumCharacters )
         {
             /* this should caught up front during the configuration of the component */
             // TODO: Throw runtime exception instead?
@@ -78,11 +86,10 @@ public class CharacterLengthPasswordRule
                 new Integer( minimumCharacters ),
                 new Integer( maximumCharacters ) } ); //$NON-NLS-1$
         }
-        
+
         String password = user.getPassword();
-        
-        if ( StringUtils.isEmpty( password ) 
-            || password.length() < minimumCharacters
+
+        if ( StringUtils.isEmpty( password ) || password.length() < minimumCharacters
             || password.length() > maximumCharacters )
         {
             violations.addViolation( "user.password.violation.length", new Object[] {

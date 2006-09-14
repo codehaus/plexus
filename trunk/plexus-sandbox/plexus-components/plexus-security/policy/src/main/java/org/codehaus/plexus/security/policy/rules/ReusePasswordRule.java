@@ -34,6 +34,7 @@ import java.util.Iterator;
  * @version $Id$
  */
 public class ReusePasswordRule
+    extends AbstractPasswordRule
     implements PasswordRule
 {
     private UserSecurityPolicy securityPolicy;
@@ -94,8 +95,8 @@ public class ReusePasswordRule
 
         if ( hasReusedPassword( user, password ) )
         {
-            violations.addViolation( "user.password.violation.reuse", new Object[] { 
-                new Integer( getPreviousPasswordCount() ) } ); //$NON-NLS-1$
+            violations.addViolation( "user.password.violation.reuse",
+                                     new Object[] { new Integer( getPreviousPasswordCount() ) } ); //$NON-NLS-1$
         }
     }
 }
