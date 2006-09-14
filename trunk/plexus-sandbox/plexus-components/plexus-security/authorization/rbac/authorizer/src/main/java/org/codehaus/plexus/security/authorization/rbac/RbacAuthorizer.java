@@ -16,17 +16,17 @@ package org.codehaus.plexus.security.authorization.rbac;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
 import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.authorization.AuthorizationResult;
 import org.codehaus.plexus.security.authorization.Authorizer;
 import org.codehaus.plexus.security.authorization.NotAuthorizedException;
-import org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvaluator;
 import org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvaluationException;
+import org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvaluator;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -76,7 +76,7 @@ public class RbacAuthorizer
             {
                 Permission permission = (Permission)i.next();
 
-                getLogger().debug( "checking permission " + permission.getName() );
+                //getLogger().debug( "checking permission " + permission.getName() );
 
                 if ( evaluator.evaluate( permission, operation, resource ) )
                 {
