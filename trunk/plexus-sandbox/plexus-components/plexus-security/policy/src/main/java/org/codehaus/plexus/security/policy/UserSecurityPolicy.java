@@ -79,6 +79,20 @@ public interface UserSecurityPolicy
     public void setPreviousPasswordsCount( int count );
 
     /**
+     * Gets the count of login attempts to allow.
+     * 
+     * @return the count of login attempts to allow.
+     */
+    public int getLoginAttemptCount();
+    
+    /**
+     * Sets the count of login attempts to allow.
+     * 
+     * @param count the count of login attempts to allow.
+     */
+    public void setLoginAttemptCount( int count );
+    
+    /**
      * Change the password of a user.
      * 
      * This method does not check if a user is allowed to change his/her password.

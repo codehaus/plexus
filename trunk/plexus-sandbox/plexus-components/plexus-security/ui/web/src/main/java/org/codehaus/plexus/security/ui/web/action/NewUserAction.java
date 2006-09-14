@@ -16,11 +16,11 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
+import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.policy.PasswordRuleViolationException;
-import org.codehaus.plexus.security.user.policy.PasswordRuleViolations;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 

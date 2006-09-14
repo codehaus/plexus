@@ -25,6 +25,7 @@ package org.codehaus.plexus.security.authentication;
 public class MustChangePasswordException
     extends AuthenticationException
 {
+    private Object principal;
 
     public MustChangePasswordException()
     {

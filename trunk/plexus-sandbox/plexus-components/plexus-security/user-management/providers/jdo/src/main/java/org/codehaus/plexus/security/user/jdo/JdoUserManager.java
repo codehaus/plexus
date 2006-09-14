@@ -23,17 +23,18 @@ import org.codehaus.plexus.jdo.PlexusStoreException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserManagerException;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.user.policy.UserSecurityPolicy;
 import org.codehaus.plexus.util.StringUtils;
+
+import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Transaction;
-import java.util.List;
 
 /**
  * JdoUserManager 
@@ -90,7 +91,7 @@ public class JdoUserManager
             throw new IllegalStateException( Messages.getString( "user.manager.cannot.add.user.without.username" ) ); //$NON-NLS-1$
         }
         
-        getUserSecurityPolicy().changeUserPassword( user );
+        userSecurityPolicy.changeUserPassword( user );
         
         return (User) addObject( user );
     }
@@ -177,7 +178,7 @@ public class JdoUserManager
         // TODO: Consider adding a boolean to the updateUser indicating a password change or not.
         if ( StringUtils.isNotEmpty( user.getPassword() ) )
         {
-            getUserSecurityPolicy().changeUserPassword( user );
+            userSecurityPolicy.changeUserPassword( user );
         }
 
         updateObject( (JdoUser) user );
@@ -233,16 +234,6 @@ public class JdoUserManager
         }
     }
     
-    public UserSecurityPolicy getUserSecurityPolicy()
-    {
-        return userSecurityPolicy;
-    }
-
-    public void setUserSecurityPolicy( UserSecurityPolicy userSecurityPolicy )
-    {
-        this.userSecurityPolicy = userSecurityPolicy;
-    }
-
     private List getAllObjectsDetached( Class clazz )
     {
         return getAllObjectsDetached( clazz, null );

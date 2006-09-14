@@ -44,6 +44,11 @@ public class DefaultUserSecurityPolicy
     private int previousPasswordsCount;
 
     /**
+     * @plexus.configuration default-value="3"
+     */
+    private int loginAttemptCount;
+
+    /**
      * @plexus.requirement role-hint="sha256"
      */
     private PasswordEncoder passwordEncoder;
@@ -70,6 +75,16 @@ public class DefaultUserSecurityPolicy
         this.previousPasswordsCount = previousPasswordsCount;
     }
 
+    public int getLoginAttemptCount()
+    {
+        return loginAttemptCount;
+    }
+
+    public void setLoginAttemptCount( int loginAttemptCount )
+    {
+        this.loginAttemptCount = loginAttemptCount;
+    }
+    
     /**
      * Get the password encoder to be used for password operations
      * 
@@ -202,4 +217,5 @@ public class DefaultUserSecurityPolicy
             addPasswordRule( new MustHavePasswordRule() );
         }
     }
+
 }

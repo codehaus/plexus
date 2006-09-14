@@ -11,6 +11,10 @@
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-policy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-user-management-provider-test</artifactId>
       <scope>test</scope>
     </dependency>

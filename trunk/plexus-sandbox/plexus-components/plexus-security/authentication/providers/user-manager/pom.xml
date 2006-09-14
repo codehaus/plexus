@@ -20,9 +20,11 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>
-        plexus-security-user-management-provider-memory
-      </artifactId>
+      <artifactId>plexus-security-policy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-user-management-provider-memory</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
