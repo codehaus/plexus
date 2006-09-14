@@ -30,6 +30,8 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -121,11 +123,22 @@ public abstract class HttpAuthenticator
     public abstract AuthenticationResult getAuthenticationResult( HttpServletRequest request,
                                                                   HttpServletResponse response, String defaultPrincipal )
         throws AuthenticationException;
+    
+    public Map getContextSession()
+    {
+        ActionContext context = ActionContext.getContext();
+        Map sessionMap = context.getSession();
+        if ( sessionMap == null )
+        {
+            sessionMap = new HashMap();
+        }
+
+        return sessionMap;
+    }
 
     public User getSessionUser()
     {
-        ActionContext context = ActionContext.getContext();
-        return (User) context.getSession().get( SecuritySession.USERKEY );
+        return (User) getContextSession().get( SecuritySession.USERKEY );
     }
 
     public boolean isAlreadyAuthenticated()
@@ -137,31 +150,32 @@ public abstract class HttpAuthenticator
 
     public SecuritySession getSecuritySession()
     {
-        ActionContext context = ActionContext.getContext();
-        return (SecuritySession) context.getSession().get( SecuritySession.ROLE );
+        return (SecuritySession) getContextSession().get( SecuritySession.ROLE );
     }
 
     public void setSecuritySession( SecuritySession session )
     {
-        ActionContext context = ActionContext.getContext();
-        context.getSession().put( SecuritySession.ROLE, session );
-        context.getSession().put( SecuritySession.USERKEY, session.getUser() );
+        Map map = getContextSession();
+        map.put( SecuritySession.ROLE, session );
+        map.put( SecuritySession.USERKEY, session.getUser() );
+        ActionContext.getContext().setSession( map );
     }
 
     public void setSessionUser( User user )
     {
-        ActionContext context = ActionContext.getContext();
-        context.getSession().put( SecuritySession.ROLE, null );
-        context.getSession().put( SecuritySession.USERKEY, user );
+        Map map = getContextSession();
+        map.put( SecuritySession.ROLE, null );
+        map.put( SecuritySession.USERKEY, user );
+        ActionContext.getContext().setSession( map );
     }
-
     
     public String storeDefaultUser( String principal )
     {
-        ActionContext context = ActionContext.getContext();
-        context.getSession().put( SecuritySession.ROLE, null );
-        context.getSession().put( SecuritySession.USERKEY, null );
-
+        Map map = getContextSession();
+        map.put( SecuritySession.ROLE, null );
+        map.put( SecuritySession.USERKEY, null );
+        ActionContext.getContext().setSession( map );
+        
         if ( StringUtils.isEmpty( principal ) )
         {
             return null;
@@ -170,7 +184,8 @@ public abstract class HttpAuthenticator
         try
         {
             User user = securitySystem.getUserManager().findUser( principal );
-            context.getSession().put( SecuritySession.USERKEY, user );
+            map.put( SecuritySession.USERKEY, user );
+            ActionContext.getContext().setSession( map );
 
             return user.getPrincipal().toString();
 
