@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.rbac.web;
+package org.codehaus.plexus.security.authorization.rbac.web.interceptor;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -21,13 +21,12 @@ import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.interceptor.Interceptor;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.security.authorization.rbac.web.interceptor.SecureAction;
 import org.codehaus.plexus.security.authorization.AuthorizationResult;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
 
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * SecureActionInterceptor
