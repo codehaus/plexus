@@ -49,6 +49,11 @@ public class UserManagerAuthenticator
      * @plexus.requirement
      */
     private UserSecurityPolicy securityPolicy;
+    
+    public String getId()
+    {
+        return "UserManagerAuthenticator";
+    }
 
     /**
      * @see org.codehaus.plexus.security.authentication.Authenticator#authenticate(org.codehaus.plexus.security.authentication.AuthenticationDataSource)

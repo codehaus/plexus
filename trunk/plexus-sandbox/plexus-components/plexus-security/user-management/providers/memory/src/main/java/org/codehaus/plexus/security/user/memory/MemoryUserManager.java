@@ -22,11 +22,14 @@ import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @plexus.component
@@ -40,6 +43,26 @@ public class MemoryUserManager
      * @plexus.requirement
      */
     private UserSecurityPolicy userSecurityPolicy;
+    
+    public String getId()
+    {
+        Properties props = new Properties();
+        URL url = this.getClass().getResource( "META-INF/maven/org.codehaus.plexus.security/plexus-security-user-management-provider-memory/pom.properties" );
+        
+        if(url != null)
+        {
+            try
+            {
+                props.load( url.openStream() );
+                return "MemoryUserManager - " + props.getProperty( "version" );
+            }
+            catch ( IOException e )
+            {
+                // Fall thru
+            }
+        }
+        return "MemoryUserManager - (unknown version)";
+    }
 
     private Map users = new HashMap();
 

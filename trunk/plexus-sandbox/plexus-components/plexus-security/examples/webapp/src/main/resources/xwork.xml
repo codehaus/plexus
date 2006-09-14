@@ -11,125 +11,117 @@
        contained within this package.
        ==================================================================  -->
   
-  <package name="securityAdmin" namespace="/security/admin">
+  <package name="securityAdmin" extends="webwork-default" namespace="/security/admin">
   
-    <action name="user" class="userAdmin" method="list">
-      <result name="list">/WEB-INF/jsp/security/admin/userList.jspf</result>
-      <result name="edit">/WEB-INF/jsp/security/admin/userEdit.jspf</result>
-      <result name="create">/WEB-INF/jsp/security/admin/userCreate.jspf</result>
+    <action name="systeminfo" class="pss-sysinfo" method="input">
+      <result>/WEB-INF/jsp/security/admin/systemInformation.jsp</result>
+    </action>
+    
+    <action name="adminConsole" class="pss-admin-console" method="input">
+      <result>/WEB-INF/jsp/security/admin/console.jsp</result>
+    </action>
+    
+    <!-- ==== User Management Actions =============================== -->
+    
+    <action name="userlist" class="pss-admin-user-list" method="input">
+      <result name="input">/WEB-INF/jsp/security/admin/userList.jsp</result>
+      <result name="success">/WEB-INF/jsp/security/admin/userList.jsp</result>
+    </action>
+    
+    <action name="userfind" class="pss-admin-user-find" method="input">
+      <result name="input" type="redirect-action">userList</result>
+      <result name="error" type="redirect-action">userList</result>
+      <result name="success" type="redirect-action">userEdit</result>
+    </action>
+    
+    <action name="useredit" class="pss-admin-user-edit" method="input">
+      <result name="input">/WEB-INF/jsp/security/admin/userEdit.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/admin/userEdit.jsp</result>
+      <result name="success" type="redirect-action">userList</result>
+    </action>
+    
+    <action name="usercreate" class="pss-admin-user-create" method="input">
+      <result name="input">/WEB-INF/jsp/security/admin/userCreate.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/admin/userCreate.jsp</result>
+      <result name="success" type="redirect-action">userEdit</result>
+    </action>
+    
+    <action name="userdelete" class="pss-admin-user-delete" method="input">
+      <result name="input">/WEB-INF/jsp/security/admin/userDelete.jsp</result>
+      <result name="error" type="redirect-action">userList</result>
+      <result name="success" type="redirect-action">userList</result>
+    </action>
+    
+    <!-- ==== RBAC Actions ========================================== -->
+    
+    <action name="assignments" class="pss-assignments" method="input">
+      <result name="input">/WEB-INF/jsp/security/assignments.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/assignments.jsp</result>
+      <result name="success" type="redirect-action">adminConsole</result>
+    </action>
+    
+    <action name="roles" class="pss-roles" method="input">
+      <result name="input">/WEB-INF/jsp/security/roles.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/roles.jsp</result>
+      <result name="success" type="redirect-action">adminConsole</result>
+    </action>
+    
+    <action name="permissions" class="pss-permissions" method="input">
+      <result name="input">/WEB-INF/jsp/security/permissions.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/permissions.jsp</result>
+      <result name="success" type="redirect-action">adminConsole</result>
     </action>
     
   </package>
 
-  <package name="default" extends="webwork-default" namespace="/">
+  <!-- ==================================================================
+       Security Tools for Users
+       namespace: /security/*
+       All Users should be able to access and use the actions contained
+       within this package.
+       ==================================================================  -->
+  
+  <package name="default" extends="webwork-default" namespace="/security">
 
     <default-interceptor-ref name="defaultStack"/>
-
-    <action name="plexusSecuritySystem" class="plexusSecuritySystem">
-      <result name="success">/plexusSecuritySystem.jsp</result>
+    
+    <action name="mainPage" class="mainPage" method="mainPage">
+      <result>/WEB-INF/jsp/security/index.jsp</result>
+    </action>
+    
+    <action name="login" class="pss-login" method="input">
+      <result name="input">/WEB-INF/jsp/security/login.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/login.jsp</result>
+      <result name="success" type="redirect-action">mainPage</result>
     </action>
 
-    <action name="login" class="session" method="login">
-      <result name="input">/login.jsp</result>
-      <result name="error">/login.jsp</result>
-      <result name="success" type="chain">status</result>
+    <action name="logout" class="pss-logout" method="input">
+      <result type="redirect-action">mainPage</result>
     </action>
 
-    <action name="newuser" class="session" method="newuser">
-      <result name="success">/login.jsp</result>
-      <result name="error">/newuser.jsp</result>
+    <!-- 
+    <action name="statusline" class="status" method="input">
+      <result name="input">/WEB-INF/jsp/security/statusline.jspf</result>
     </action>
-
-    <action name="logout" class="session" method="logout">
-      <result name="error">/status.jsp</result>
-      <result name="success" type="chain">status</result>
+      -->    
+    
+    <action name="account" class="pss-account" method="input">
+      <result name="input">/WEB-INF/jsp/security/account.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/account.jsp</result>
+      <result name="success" type="redirect-action">mainPage</result>
     </action>
-
-    <action name="status" class="status" method="status">
-      <result name="error">/status.jsp</result>
-      <result name="success">/status.jsp</result>
+    
+    <action name="register" class="pss-register" method="input">
+      <result name="input">/WEB-INF/jsp/security/register.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/register.jsp</result>
+      <result name="success" type="redirect-action">mainPage</result>
     </action>
-
-    <!-- rbac actions -->
-    <action name="permissions" class="plexusSecuritySummary" method="permissionSummary">
-      <result name="success">/permissions.jsp</result>
+    
+    <action name="password" class="pss-password" method="input">
+      <result name="input">/WEB-INF/jsp/security/password.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/password.jsp</result>
+      <result name="success" type="redirect-action">mainPage</result>
     </action>
-
-    <action name="permission" class="plexusSecurityPermission">
-      <interceptor-ref name="paramsPrepareParamsStack"/>
-      <result name="success">/permission.jsp</result>
-    </action>
-
-    <action name="savePermission" class="plexusSecurityPermission" method="save">
-      <interceptor-ref name="paramsPrepareParamsStack"/>
-      <result name="success" type="redirect-action">permissions</result>
-    </action>
-
-    <action name="removePermission" class="plexusSecurityPermission" method="remove">
-      <result name="success" type="redirect-action">permissions</result>
-    </action>
-
-    <action name="operations" class="plexusSecuritySummary" method="operationSummary">
-      <result name="success">/operations.jsp</result>
-    </action>
-
-    <action name="operation" class="plexusSecurityOperation">
-      <interceptor-ref name="paramsPrepareParamsStack"/>
-      <result name="success">/operation.jsp</result>
-    </action>
-
-    <action name="saveOperation" class="plexusSecurityOperation" method="save">
-      <interceptor-ref name="paramsPrepareParamsStack"/>
-      <result name="success" type="redirect-action">operations</result>
-    </action>
-
-    <action name="removeOperation" class="plexusSecurityOperation" method="remove">
-      <result name="success" type="redirect-action">operations</result>
-    </action>
-
-    <action name="resources" class="plexusSecuritySummary" method="resourceSummary">
-      <result name="success">/resources.jsp</result>
-    </action>
-
-    <action name="resource" class="plexusSecurityResource">
-      <interceptor-ref name="paramsPrepareParamsStack"/>
-      <result name="success">/resource.jsp</result>
-    </action>
-
-    <action name="saveResource" class="plexusSecurityResource" method="save">
-      <interceptor-ref name="paramsPrepareParamsStack"/>
-      <result name="success" type="redirect-action">resources</result>
-    </action>
-
-    <action name="removeResource" class="plexusSecurityResource" method="remove">
-      <result name="success">/resources.jsp</result>
-    </action>
-
-    <action name="roles" class="plexusSecuritySummary" method="roleSummary">
-      <result name="success">/roles.jsp</result>
-    </action>
-
-    <action name="role" class="plexusSecurityRole">
-      <interceptor-ref name="paramsPrepareParamsStack"/>
-      <result name="success">/role.jsp</result>
-    </action>
-
-    <action name="saveRole" class="plexusSecurityRole" method="save">
-      <interceptor-ref name="paramsPrepareParamsStack"/>
-      <result name="success" type="redirect-action">roles</result>
-    </action>
-
-    <action name="removeRole" class="plexusSecurityRole" method="remove">
-      <result name="success" type="redirect-action">roles</result>
-    </action>
-
-    <action name="removeAssignedRole" class="plexusSecurityRole" method="removeAssignedRole">
-      <result name="success" type="chain">role</result>
-    </action>
-
-    <action name="removeAssignedPermission" class="plexusSecurityRole" method="removeAssignedPermission">
-      <result name="success" type="chain">role</result>
-    </action>
-
+    
   </package>
 </xwork>

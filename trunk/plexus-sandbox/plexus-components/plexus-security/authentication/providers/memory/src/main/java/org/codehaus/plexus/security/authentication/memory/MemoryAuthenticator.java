@@ -38,6 +38,11 @@ public class MemoryAuthenticator
 
     private String password;
 
+    public String getId()
+    {
+        return "MemoryAuthenticator";
+    }
+    
     public AuthenticationResult authenticate( AuthenticationDataSource s )
         throws AuthenticationException
     {

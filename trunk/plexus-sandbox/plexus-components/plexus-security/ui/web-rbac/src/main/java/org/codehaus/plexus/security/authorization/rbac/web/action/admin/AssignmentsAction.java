@@ -1,7 +1,7 @@
-package org.codehaus.plexus.security.authorization;
+package org.codehaus.plexus.security.authorization.rbac.web.action.admin;
 
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2001-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,20 @@ package org.codehaus.plexus.security.authorization;
  * limitations under the License.
  */
 
-/**
- * Authorizer:
- *
- * @author: Jesse McConnell <jesse@codehaus.org>
- * @version: $ID:$
- * @todo chain of command rule processing
- */
-public interface Authorizer
-{
-    public static final String ROLE = Authorizer.class.getName();
-    
-    public String getId();
+import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
-    AuthorizationResult isAuthorized( AuthorizationDataSource source )
-        throws AuthorizationException;
+/**
+ * AssignmentsAction 
+ *
+ * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
+ * @version $Id$
+ * 
+ * @plexus.component role="com.opensymphony.xwork.Action"
+ *                   role-hint="pss-assignments"
+ *                   instantiation-strategy="per-lookup"
+ */
+public class AssignmentsAction
+    extends PlexusActionSupport
+{
+
 }

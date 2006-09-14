@@ -24,7 +24,9 @@ package org.codehaus.plexus.security.authentication;
  */
 public interface Authenticator
 {
-    String ROLE = Authenticator.class.getName();
+    public static final String ROLE = Authenticator.class.getName();
+    
+    public String getId();
 
     public AuthenticationResult authenticate( AuthenticationDataSource source )
         throws AccountLockedException, MustChangePasswordException, AuthenticationException;

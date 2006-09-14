@@ -141,7 +141,11 @@ public class DefaultSecuritySystem
 
     public String getAuthenticatorId()
     {
-        return "authenticator info 1.0";
+        if ( authenticator == null )
+        {
+            return "<null>";
+        }
+        return authenticator.getId();
     }
 
     // ----------------------------------------------------------------------------
@@ -181,7 +185,11 @@ public class DefaultSecuritySystem
 
     public String getAuthorizerId()
     {
-        return "authorizer info 1.0";
+        if ( authorizer == null )
+        {
+            return "<null>";
+        }
+        return authorizer.getId();
     }
 
     // ----------------------------------------------------------------------------
@@ -195,6 +203,10 @@ public class DefaultSecuritySystem
 
     public String getUserManagementId()
     {
-        return "user management info 1.0";
+        if ( userManager == null )
+        {
+            return "<null>";
+        }
+        return userManager.getId();
     }
 }

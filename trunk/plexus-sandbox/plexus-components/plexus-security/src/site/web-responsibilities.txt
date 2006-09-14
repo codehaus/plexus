@@ -11,11 +11,11 @@ plexus-security/ui/web - Authentication Actions and Views.
                          Views:     User List
                          Commands:  Show List
                          Results:   Show List             [userlist.action]
-                         Links:     Create User <form>    [usercreate.action] 
+                         Links:     Create User <form>    [usercreate.action]
                                     Edit User <form>      [useredit.action]
                          From:      User Triggered.
 
-      /userfind.action   
+      /userfind.action
                          Views:     Show Search Box
                          Commands:  Find User
                          Results:   Edit User             [userfind.action]
@@ -31,7 +31,7 @@ plexus-security/ui/web - Authentication Actions and Views.
                                     Show List             [userlist.action]
                          From:      User List Row Button.
                                     Find User Result.
-              
+
       /usercreate.action
                          Views:     Show New User Page
                          Commands:  Display New User Page
@@ -40,7 +40,7 @@ plexus-security/ui/web - Authentication Actions and Views.
                          Results:   Edit User             [useredit.action]
                                     Display User Details  [usercreate.action]
                          From:      User List Button.
-      
+
       /userdelete.action
                          Views:     Show Delete Confirmation Page.
                          Commands:  Confirm Delete User
@@ -49,6 +49,8 @@ plexus-security/ui/web - Authentication Actions and Views.
                                     Display User List     [userlist.action]
                          From:      User List Row Screen Button.
                                     User Edit Screen Button.
+
+      /systeminfo.action
 
    namespace: /security  (General Access Tools)
 
@@ -61,7 +63,11 @@ plexus-security/ui/web - Authentication Actions and Views.
                          Links:     Self <form>
                          From:      User triggered.
                                     Authentication Framework - Must Authn Exception?
-                                    
+
+      /logout.action
+
+      /status.action
+
       /account.action
                          Views:     Show Account Details <form>
                          Commands:  Display Account Details.
@@ -69,7 +75,7 @@ plexus-security/ui/web - Authentication Actions and Views.
                          Result:    Account Details (on error)
                                     Main Page ???
                          From:      User triggered.
-                                    
+
       /register.action
                          Views:     New User Registration Page
                          Commands:  Display New User Registration Page
@@ -77,14 +83,14 @@ plexus-security/ui/web - Authentication Actions and Views.
                          Result:    New User Registration Page (on error)
                                     Main Page ???
                          From:      User triggered.
-                                    
+
       /password.action
                          Views:     Password Change Password Page.
                          Commands:  Display Change Password Page.
                                     Submit Password Change.
                          Result:    Password Change Screen (on error)
                                     Main Page ???
-                         From:      User triggered. 
+                         From:      User triggered.
                                     Authentication Framework - Password Change Exception.
                                     Security Policy - Password Expired Exception.
 
@@ -114,7 +120,7 @@ plexus-security/ui/web-rbac - Authorizations Actions and Views.
                          From:      Show All Roles Row.
                                     Edit Role Details Form.
                                     Current Roles View.     [assignments!current.action]
-                                    
+
      /permissions.action
                          Views:     Show Permissions List.
                                     Edit Permission.
@@ -127,5 +133,5 @@ plexus-security/ui/web-rbac - Authorizations Actions and Views.
                          From:      Show Permissions List.
                                     Edit Permission.
                                     Show Role Details        [roles!details.action]
- 
+
 

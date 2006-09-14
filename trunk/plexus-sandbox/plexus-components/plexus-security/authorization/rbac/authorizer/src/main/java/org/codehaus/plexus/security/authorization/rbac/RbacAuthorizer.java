@@ -55,6 +55,11 @@ public class RbacAuthorizer
      * @plexus.requirement role-hint="default"
      */
     private PermissionEvaluator evaluator;
+    
+    public String getId()
+    {
+        return "RbacAuthorizer";
+    }
 
     /**
      * @param source
