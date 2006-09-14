@@ -1,17 +1,12 @@
 <?xml version="1.0"?>
 <project>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>plexus-security-authentication-providers</artifactId>
     <groupId>org.codehaus.plexus.security</groupId>
+    <artifactId>plexus-security-authentication-providers</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.codehaus.plexus.security</groupId>
-  <artifactId>
-    plexus-security-authentication-provider-user-manager
-  </artifactId>
   <name>Plexus Security :: User Manager Authentication Provider</name>
-  <version>1.0-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
