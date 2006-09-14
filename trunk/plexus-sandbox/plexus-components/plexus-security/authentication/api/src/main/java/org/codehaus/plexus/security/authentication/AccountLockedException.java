@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.authentication;
 
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2001-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,31 @@ package org.codehaus.plexus.security.authentication;
  */
 
 /**
- * Authenticator:
+ * AccountLockedException 
  *
- * @author Jesse McConnell
- * @version $ID:$
+ * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
+ * @version $Id$
  */
-public interface Authenticator
+public class AccountLockedException
+    extends AuthenticationException
 {
-    String ROLE = Authenticator.class.getName();
+    public AccountLockedException()
+    {
+        super();
+    }
 
-    public AuthenticationResult authenticate( AuthenticationDataSource source )
-        throws AccountLockedException, MustChangePasswordException, AuthenticationException;
+    public AccountLockedException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
+
+    public AccountLockedException( String message )
+    {
+        super( message );
+    }
+
+    public AccountLockedException( Throwable cause )
+    {
+        super( cause );
+    }
 }
