@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.authentication;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.user.User;
+
 /**
  * AccountLockedException 
  *
@@ -25,23 +27,20 @@ package org.codehaus.plexus.security.authentication;
 public class AccountLockedException
     extends AuthenticationException
 {
+    private User user;
+
     public AccountLockedException()
     {
         super();
     }
 
-    public AccountLockedException( String message, Throwable cause )
-    {
-        super( message, cause );
-    }
-
-    public AccountLockedException( String message )
+    public AccountLockedException( String message, User user )
     {
         super( message );
     }
 
-    public AccountLockedException( Throwable cause )
+    public User getUser()
     {
-        super( cause );
+        return user;
     }
 }

@@ -1,9 +1,25 @@
 package org.codehaus.plexus.security.user.memory;
 
+/*
+ * Copyright 2001-2006 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.user.policy.UserSecurityPolicy;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
@@ -34,7 +50,7 @@ public class MemoryUserManager
         // If there exists no encoded password, then this is a new user setup 
         if ( StringUtils.isEmpty( user.getEncodedPassword() ) )
         {
-            getUserSecurityPolicy().changeUserPassword( user );
+            userSecurityPolicy.changeUserPassword( user );
         }
 
         return user;
@@ -46,7 +62,7 @@ public class MemoryUserManager
         // TODO: Consider adding a boolean to the updateUser indicating a password change or not.
         if ( StringUtils.isNotEmpty( user.getPassword() ) )
         {
-            getUserSecurityPolicy().changeUserPassword( user );
+            userSecurityPolicy.changeUserPassword( user );
         }
 
         return addUser( user );
@@ -126,15 +142,5 @@ public class MemoryUserManager
     public List getUsers()
     {
         return new ArrayList( users.values() );
-    }
-
-    public UserSecurityPolicy getUserSecurityPolicy()
-    {
-        return userSecurityPolicy;
-    }
-
-    public void setUserSecurityPolicy( UserSecurityPolicy securityPolicy )
-    {
-        userSecurityPolicy = securityPolicy;
     }
 }
