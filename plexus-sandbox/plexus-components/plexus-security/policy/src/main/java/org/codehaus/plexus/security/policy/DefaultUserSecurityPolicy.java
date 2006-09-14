@@ -44,6 +44,8 @@ import java.util.List;
 public class DefaultUserSecurityPolicy
     implements UserSecurityPolicy, Initializable, Contextualizable
 {
+    private static final String ENABLEMENT_KEY = DefaultUserSecurityPolicy.ROLE + ":ENABLED";
+
     /**
      * @plexus.configuration default-value="6"
      */
@@ -59,11 +61,6 @@ public class DefaultUserSecurityPolicy
      */
     private PasswordEncoder passwordEncoder;
     
-    /**
-     * @plexus.configuration default-value="true"
-     */
-    private boolean enabled = true;
-
     /**
      * The List of {@link PasswordRule} objects.
      * 
@@ -105,16 +102,22 @@ public class DefaultUserSecurityPolicy
     {
         return passwordEncoder;
     }
-
-
+    
     public boolean isEnabled()
     {
-        return enabled;
+        Boolean bool = (Boolean) PolicyContext.getContext().get( ENABLEMENT_KEY );
+        if(bool == null)
+        {
+            // no key? assume true. (default is true)
+            return true;
+        }
+        
+        return bool.booleanValue();
     }
 
     public void setEnabled( boolean enabled )
     {
-        this.enabled = enabled;
+        PolicyContext.getContext().put( ENABLEMENT_KEY, new Boolean( enabled ) );
     }
     
     /**
@@ -272,4 +275,5 @@ public class DefaultUserSecurityPolicy
     {
         plexus = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
     }
+    
 }
