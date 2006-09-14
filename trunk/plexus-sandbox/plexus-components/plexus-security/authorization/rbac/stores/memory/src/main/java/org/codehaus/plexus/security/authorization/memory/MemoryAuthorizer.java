@@ -34,6 +34,10 @@ public class MemoryAuthorizer
     extends AbstractLogEnabled
     implements Authorizer
 {
+    public String getId()
+    {
+        return MemoryAuthorizer.class.getName();
+    }
 
     public AuthorizationResult isAuthorized( AuthorizationDataSource source )
         throws AuthorizationException
@@ -44,6 +48,7 @@ public class MemoryAuthorizer
 
         Object permission = source.getPermission();
 
+        // TODO: Actually use a real permission!
         if ( "foo".equals( permission.toString() ) )
         {
             return new AuthorizationResult( true, principal, null );

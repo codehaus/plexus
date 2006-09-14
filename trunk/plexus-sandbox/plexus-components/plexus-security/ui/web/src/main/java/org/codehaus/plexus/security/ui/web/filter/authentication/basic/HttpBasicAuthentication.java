@@ -40,6 +40,11 @@ import javax.servlet.http.HttpServletResponse;
 public class HttpBasicAuthentication
     extends HttpAuthenticator
 {
+    
+    public String getId()
+    {
+        return HttpBasicAuthentication.class.getName();
+    }
 
     public AuthenticationResult getAuthenticationResult( HttpServletRequest request, HttpServletResponse response,
                                                          String defaultPrincipal )

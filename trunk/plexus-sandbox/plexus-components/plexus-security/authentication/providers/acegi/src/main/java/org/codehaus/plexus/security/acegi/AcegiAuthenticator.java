@@ -35,6 +35,10 @@ import java.util.Map;
 public class AcegiAuthenticator
     implements Authenticator
 {
+    public String getId()
+    {
+        return "Acegi Authenticator";
+    }
 
     /**
      * Token factory creates an Acegi authentication wrapper around credentials

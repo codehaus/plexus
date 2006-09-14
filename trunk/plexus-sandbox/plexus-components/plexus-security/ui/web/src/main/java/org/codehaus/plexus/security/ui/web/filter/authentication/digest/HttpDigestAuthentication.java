@@ -62,6 +62,11 @@ public class HttpDigestAuthentication
     private String digestKey;
 
     private String realm;
+    
+    public String getId()
+    {
+        return HttpDigestAuthentication.class.getName();
+    }
 
     public AuthenticationResult getAuthenticationResult( HttpServletRequest request, HttpServletResponse response,
                                              String defaultPrincipal )

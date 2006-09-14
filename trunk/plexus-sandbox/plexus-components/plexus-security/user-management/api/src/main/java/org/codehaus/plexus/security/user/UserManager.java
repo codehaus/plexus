@@ -29,6 +29,13 @@ public interface UserManager
     public static final String ROLE = UserManager.class.getName();
     
     /**
+     * And Identifier for the UserManager.
+     * 
+     * @return the user manager identifier.
+     */
+    String getId();
+    
+    /**
      * Factory method to create new User Objects based on provider specific
      * implementation.
      * 

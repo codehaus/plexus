@@ -28,9 +28,14 @@ import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserManagerException;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
@@ -60,6 +65,26 @@ public class JdoUserManager
     private UserSecurityPolicy userSecurityPolicy;
 
     private PersistenceManagerFactory pmf;
+    
+    public String getId()
+    {
+        Properties props = new Properties();
+        URL url = this.getClass().getResource( "META-INF/maven/org.codehaus.plexus.security/plexus-security-user-management-provider-jdo/pom.properties" );
+        
+        if(url != null)
+        {
+            try
+            {
+                props.load( url.openStream() );
+                return "JdoUserManager - " + props.getProperty( "version" );
+            }
+            catch ( IOException e )
+            {
+                // Fall thru
+            }
+        }
+        return "JdoUserManager - (unknown version)";
+    }
 
     // ------------------------------------------------------------------
 
