@@ -25,14 +25,15 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
- * LoginAction:
+ * LoginAction
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
- * @version $Id:$
- * @plexus.component
- *   role="com.opensymphony.xwork.Action"
- *   role-hint="plexusSecurityLogin"
- *   instantiation-strategy="per-lookup"
+ * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
+ * @version $Id$
+ * 
+ * @plexus.component role="com.opensymphony.xwork.Action"
+ *                   role-hint="pss-login"
+ *                   instantiation-strategy="per-lookup"
  */
 public class LoginAction
     extends PlexusActionSupport
@@ -45,7 +46,7 @@ public class LoginAction
     private String username;
 
     private String password;
-    
+
     public String login()
     {
         getLogger().debug( ".login([" + username + "], ***)" );
@@ -53,13 +54,13 @@ public class LoginAction
         {
             // An attempt should log out your authentication tokens first!
             setAuthTokens( null, null, false );
-            
+
             clearErrorsAndMessages();
-            
+
             try
             {
-                SecuritySession securitySession =
-                    securitySystem.authenticate( new AuthenticationDataSource( username, password ) );
+                SecuritySession securitySession = securitySystem
+                    .authenticate( new AuthenticationDataSource( username, password ) );
 
                 if ( securitySession.getAuthenticationResult().isAuthenticated() )
                 {
@@ -69,7 +70,8 @@ public class LoginAction
                 }
                 else
                 {
-                    getLogger().debug( "Login Action failed against principal : "
+                    getLogger().debug(
+                                       "Login Action failed against principal : "
                                            + securitySession.getAuthenticationResult().getPrincipal(),
                                        securitySession.getAuthenticationResult().getException() );
                     addActionError( "Authentication failed" );
@@ -96,12 +98,12 @@ public class LoginAction
     public String logout()
     {
         session.clear();
-        
+
         this.setSession( session );
 
         return SUCCESS;
     }
-    
+
     private void setAuthTokens( SecuritySession securitySession, User user, boolean authStatus )
     {
         session.put( SecuritySession.ROLE, securitySession );
