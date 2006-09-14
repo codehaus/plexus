@@ -44,6 +44,8 @@ public abstract class HttpAuthenticator
     extends AbstractLogEnabled
     implements Authenticator
 {
+    public static final String ROLE = HttpAuthenticator.ROLE;
+    
     /**
      * @plexus.requirement
      */
