@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
  * 
  * @plexus.component role="org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator"
  *                   role-hint="basic"
- *                   instantiation-strategy="per-lookup"
  * 
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
