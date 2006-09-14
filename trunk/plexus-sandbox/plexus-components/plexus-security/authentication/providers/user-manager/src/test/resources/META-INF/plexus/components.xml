@@ -14,6 +14,10 @@
           <role>org.codehaus.plexus.security.user.UserManager</role>
           <role-hint>memory</role-hint>
         </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.policy.UserSecurityPolicy</role>
+          <field-name>securityPolicy</field-name>
+        </requirement>
       </requirements>
     </component>
   </components>
