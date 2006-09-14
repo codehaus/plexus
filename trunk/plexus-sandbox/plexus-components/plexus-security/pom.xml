@@ -39,82 +39,88 @@
       </roles>
     </developer>
   </developers>
+
+  <properties>
+    <!-- This is done to prevent local project overide of the dependency versions -->
+    <security.version>1.0-SNAPSHOT</security.version>
+  </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-common</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-system</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-policy</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authentication-api</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authentication-provider-memory</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-api</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rapi</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-api</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-provider-memory</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-model</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-store-test</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-ui-web</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-ui-web-rbac</artifactId>
-        <version>${project.version}</version>
+        <version>${security.version}</version>
       </dependency>
       <!-- Plexus -->
       <dependency>
@@ -125,14 +131,6 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
-    <!--
-    This should be possible, the DAG should be smart enough to not add this
-    dependency to the project in the reactor
-    <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-common</artifactId>
-    </dependency>
-    -->
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
@@ -162,7 +160,7 @@
     </plugins>
   </build>
   <modules>
-    <module>common</module>
+    <!-- <module>common</module> -->
     <module>system</module>
     <module>policy</module>
     <module>authentication</module>
