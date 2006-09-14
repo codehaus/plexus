@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.user.policy;
+package org.codehaus.plexus.security.policy;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.

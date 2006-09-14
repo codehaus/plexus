@@ -17,6 +17,7 @@ package org.codehaus.plexus.security.user.provider.test;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
@@ -30,22 +31,31 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
 public class AbstractUserManagerTestCase
     extends PlexusTestCase
 {
+    /**
+     * This value is set by the sub classes of this test case.
+     * They should override .setUp() and inject this value via
+     * the {@link #setUserManager(UserManager)} method call.
+     */
     private UserManager userManager;
+
+    private UserSecurityPolicy securityPolicy;
 
     public UserManager getUserManager()
     {
         return userManager;
     }
 
-    public void setUserManager( UserManager userManager )
+    public void setUserManager( UserManager um )
     {
-        this.userManager = userManager;
+        this.userManager = um;
     }
 
     protected void setUp()
         throws Exception
     {
         super.setUp();
+
+        securityPolicy = (UserSecurityPolicy) lookup( UserSecurityPolicy.ROLE );
     }
 
     protected void tearDown()
@@ -179,8 +189,7 @@ public class AbstractUserManagerTestCase
         // test if the plain string password is encoded and NULL'ified
         assertNull( user.getPassword() );
         // test if encoded password was as expected 
-        assertTrue( um.getUserSecurityPolicy().getPasswordEncoder().isPasswordValid( user.getEncodedPassword(),
-                                                                                     "rootpass" ) );
+        assertTrue( securityPolicy.getPasswordEncoder().isPasswordValid( user.getEncodedPassword(), "rootpass" ) );
 
         // attempt finding a non-existent user
         try
@@ -194,7 +203,8 @@ public class AbstractUserManagerTestCase
         }
     }
 
-    public void testUserExists() throws Exception
+    public void testUserExists()
+        throws Exception
     {
         UserManager um = getUserManager();
 
@@ -204,7 +214,7 @@ public class AbstractUserManagerTestCase
         um.addUser( u1 );
 
         assertTrue( um.userExists( "admin" ) );
-        assertFalse( um.userExists( "voodoohatrack" ) ); 
+        assertFalse( um.userExists( "voodoohatrack" ) );
 
     }
 
@@ -234,7 +244,6 @@ public class AbstractUserManagerTestCase
         assertNotNull( user );
         assertEquals( "superuser@somedomain.com", user.getEmail() );
         assertEquals( "Super User", user.getFullName() );
-        assertTrue( um.getUserSecurityPolicy().getPasswordEncoder().isPasswordValid( user.getEncodedPassword(),
-                                                                                     "superpass" ) );
+        assertTrue( securityPolicy.getPasswordEncoder().isPasswordValid( user.getEncodedPassword(), "superpass" ) );
     }
 }

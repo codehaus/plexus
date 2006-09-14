@@ -16,14 +16,16 @@ package org.codehaus.plexus.security.authentication.user;
  * limitations under the License.
  */
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.security.authentication.AccountLockedException;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
+import org.codehaus.plexus.security.policy.PasswordEncoder;
+import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.user.policy.PasswordEncoder;
 
 /**
  * {@link Authenticator} implementation that uses a wrapped {@link UserManager} to authenticate.
@@ -43,6 +45,11 @@ public class UserManagerAuthenticator
      * @plexus.requirement
      */
     private UserManager userManager;
+    
+    /**
+     * @plexus.requirement
+     */
+    private UserSecurityPolicy securityPolicy;
 
     /**
      * @see org.codehaus.plexus.security.authentication.Authenticator#authenticate(org.codehaus.plexus.security.authentication.AuthenticationDataSource)
@@ -50,32 +57,62 @@ public class UserManagerAuthenticator
     public AuthenticationResult authenticate( AuthenticationDataSource ds )
         throws AuthenticationException
     {
-
+        boolean authenticationSuccess = false;
+        String username = null;
+        boolean locked = false;
+        boolean mustChangePassword = false;
+        Exception resultException = null;
+        
         try
         {
             getLogger().debug( "Authenticate: " + ds );
             User user = userManager.findUser( ds.getUsername() );
+            username = user.getUsername();
             
-            PasswordEncoder encoder = userManager.getUserSecurityPolicy().getPasswordEncoder();
+            if (user.isLocked())
+            {
+                locked = true;
+                throw new AccountLockedException( "Account " + ds.getUsername() + " is locked.", user );
+            }
+            
+            PasswordEncoder encoder = securityPolicy.getPasswordEncoder();
             getLogger().debug( "PasswordEncoder: " + encoder.getClass().getName() );
             
             boolean isPasswordValid = encoder.isPasswordValid( user.getEncodedPassword(), ds.getPassword() );
             if ( isPasswordValid )
             {
                 getLogger().debug( "User " + ds.getUsername() + " provided a valid password" );
+                
+                authenticationSuccess = true;
+                user.setCountFailedLoginAttempts( 0 );
+                userManager.updateUser( user );
+                
                 return new AuthenticationResult( true, ds.getUsername(), null );
             }
             else
             {
                 getLogger().warn( "Password is Invalid for user " + ds.getUsername() + "." );
+                
+                int attempt = user.getCountFailedLoginAttempts();
+                attempt++;
+                user.setCountFailedLoginAttempts( attempt );
+                
+                if( attempt >= securityPolicy.getLoginAttemptCount() )
+                {
+                    // TODO write exception here.
+                }
+                
+                userManager.updateUser( user );
                 return new AuthenticationResult( false, ds.getUsername(), null );
             }
         }
         catch ( UserNotFoundException e )
         {
             getLogger().warn( "Login for user " + ds.getUsername() + " failed. user not found." );
-            return new AuthenticationResult( false, ds.getUsername(), e );
+            resultException = e;
         }
+        
+        return new AuthenticationResult(authenticationSuccess, locked, mustChangePassword, username, resultException);
     }
 
     /**

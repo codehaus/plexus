@@ -53,6 +53,11 @@
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
+        <artifactId>plexus-security-policy</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authentication-api</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -159,6 +164,7 @@
   <modules>
     <module>common</module>
     <module>system</module>
+    <module>policy</module>
     <module>authentication</module>
     <module>authorization</module>
     <module>user-management</module>
