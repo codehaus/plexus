@@ -32,10 +32,14 @@ import org.codehaus.plexus.util.StringUtils;
  * @version $Id$
  */
 public class NumericalPasswordRule
-implements PasswordRule
+    extends AbstractPasswordRule
+    implements PasswordRule
 {
+    /**
+     * @plexus.configuration default-value="1"
+     */
     private int minimumCount;
-    
+
     public NumericalPasswordRule()
     {
         this.minimumCount = 1;
@@ -62,7 +66,7 @@ implements PasswordRule
          *     }
          * }
          */
-        
+
         // JDK 1.4 Technique - NOT LOCALIZED.
         for ( int i = 0; i < password.length(); i++ )
         {
@@ -90,7 +94,7 @@ implements PasswordRule
     {
         // Ignore, policy not needed in this rule.
     }
-    
+
     public void testPassword( PasswordRuleViolations violations, User user )
     {
         if ( countDigitCharacters( user.getPassword() ) < this.minimumCount )
