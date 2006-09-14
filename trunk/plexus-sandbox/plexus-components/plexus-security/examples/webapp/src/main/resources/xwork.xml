@@ -3,6 +3,8 @@
 
 <xwork>
   <include file="webwork-default.xml"/>
+  
+  <include file="plexus-security-xwork.xml" />
 
   <package name="default" extends="webwork-default" namespace="/">
 
@@ -32,7 +34,6 @@
       <result name="error">/status.jsp</result>
       <result name="success">/status.jsp</result>
     </action>
-
 
     <!-- rbac actions -->
     <action name="permissions" class="plexusSecuritySummary" method="permissionSummary">
