@@ -242,7 +242,6 @@ public class PlexusObjectFactory
         }
         catch ( ComponentNotFoundException e )
         {
-            getLogger().debug( e.getMessage() );
             exceptions.add( e );
             // Fall Thru to next lookup Technique.
         }
@@ -258,7 +257,6 @@ public class PlexusObjectFactory
         }
         catch ( ComponentNotFoundException e )
         {
-            getLogger().debug( e.getMessage() );
             exceptions.add( e );
             // Fall Thru to next lookup Technique.
         }
@@ -274,7 +272,6 @@ public class PlexusObjectFactory
         }
         catch ( ComponentNotFoundException e )
         {
-            getLogger().debug( e.getMessage() );
             exceptions.add( e );
             // Fall Thru to next lookup Technique.
         }
@@ -290,7 +287,6 @@ public class PlexusObjectFactory
         }
         catch ( ComponentNotFoundException e )
         {
-            getLogger().debug( e.getMessage() );
             exceptions.add( e );
             // Fall Thru to next lookup Technique.
         }
@@ -306,20 +302,18 @@ public class PlexusObjectFactory
         }
         catch ( ComponentNotFoundException e )
         {
-            getLogger().debug( e.getMessage() );
             exceptions.add( e );
             // Fall Thru to next lookup Technique.
         }
         
-        // If we reached this point, things have gone squirly
-        getLogger().error( "All standard lookups have failed for getClassInstance( \"" + className
+        getLogger().debug( "All standard lookups have failed for getClassInstance( \"" + className
                                + "\" ), the following exceptions detail the problem." );
         
         Iterator it = exceptions.iterator();
         while ( it.hasNext() )
         {
             Exception e = (Exception) it.next();
-            getLogger().error( e.getMessage(), e );
+            getLogger().debug( e.getMessage(), e );
         }
         
         // Try the xwork component lookup as a fallback.
