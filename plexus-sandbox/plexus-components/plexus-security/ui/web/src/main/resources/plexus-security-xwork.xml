@@ -1,9 +1,33 @@
+<?xml version="1.0"?>
+
 <!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.1.1//EN" "http://www.opensymphony.com/xwork/xwork-1.1.1.dtd">
 
 <xwork>
+
+<!--
   <package name="securitySystem" namespace="/securitySystem">
     <action name="plexusSecuritySystem" class="plexusSecuritySystem">
       <result name="success">/plexusSecuritySystem.jsp</result>
     </action>
   </package>
+  
+  -->
+  
+  <!-- ==================================================================
+       Security Tools for Administrators
+       namespace: /security/admin/*
+       Only Administrators should be able to access and use the actions
+       contained within this package.
+       ==================================================================  -->
+  
+  <package name="securityAdmin" namespace="/security/admin">
+  
+    <action name="user" class="userAdmin">
+      <result name="list">/WEB-INF/jsp/security/admin/userList.jsp</result>
+      <result name="edit">/WEB-INF/jsp/security/admin/userEdit.jsp</result>
+      <result name="create">/WEB-INF/jsp/security/admin/userCreate.jsp</result>
+    </action>
+    
+  </package>
+  
 </xwork>
