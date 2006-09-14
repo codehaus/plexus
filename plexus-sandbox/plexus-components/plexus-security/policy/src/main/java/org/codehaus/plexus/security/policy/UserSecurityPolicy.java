@@ -30,7 +30,7 @@ import java.util.List;
 public interface UserSecurityPolicy
 {
     public static final String ROLE = UserSecurityPolicy.class.getName();
-    
+
     // ----------------------------------------------------------------------
     // Password Management
     // ----------------------------------------------------------------------
@@ -41,15 +41,14 @@ public interface UserSecurityPolicy
      * @return the PasswordEncoder implementation to use.
      */
     public PasswordEncoder getPasswordEncoder();
-    
-    
+
     /**
      * Add a Specific Rule to the Password Rules List.
      * 
      * @param rule the rule to add. 
      */
     void addPasswordRule( PasswordRule rule );
-    
+
     /**
      * Get the Password Rules List.
      * 
@@ -63,14 +62,14 @@ public interface UserSecurityPolicy
      * @param rules the list of {@link PasswordRule} objects.
      */
     void setPasswordRules( List rules );
-    
+
     /**
      * Gets the count of Previous Passwords that should be tracked.
      * 
      * @return the count of previous passwords to track.
      */
     public int getPreviousPasswordsCount();
-    
+
     /**
      * Sets the count of previous passwords that should be tracked.
      * 
@@ -84,13 +83,29 @@ public interface UserSecurityPolicy
      * @return the count of login attempts to allow.
      */
     public int getLoginAttemptCount();
-    
+
     /**
      * Sets the count of login attempts to allow.
      * 
      * @param count the count of login attempts to allow.
      */
     public void setLoginAttemptCount( int count );
+
+    /**
+     * Enable the policies or not.
+     * 
+     * Useful in code when application startup or application init is being performed. 
+     *  
+     * @param enabled true if enabled.
+     */
+    public void setEnabled( boolean enabled );
+
+    /**
+     * Determines if the policies are enabled or not.
+     * 
+     * @return true if enabled.
+     */
+    public boolean isEnabled();
     
     /**
      * Change the password of a user.
@@ -105,12 +120,13 @@ public interface UserSecurityPolicy
      * @param user the user password to validate, remember, and encode.
      */
     public void changeUserPassword( User user );
-    
+
     /**
      * Validate the incoming {@link User#getPassword()} against the specified
      * PasswordRules.
      * 
      * @param user the user to validate.
      */
-    public void validatePassword( User user );
+    public void validatePassword( User user )
+        throws PasswordRuleViolationException;
 }

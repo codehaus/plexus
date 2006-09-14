@@ -6,9 +6,7 @@
         org.codehaus.plexus.security.authentication.Authenticator
       </role>
       <role-hint>user-manager</role-hint>
-      <implementation>
-        org.codehaus.plexus.security.authentication.user.UserManagerAuthenticator
-      </implementation>
+      <implementation>org.codehaus.plexus.security.authentication.user.UserManagerAuthenticator</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.security.user.UserManager</role>

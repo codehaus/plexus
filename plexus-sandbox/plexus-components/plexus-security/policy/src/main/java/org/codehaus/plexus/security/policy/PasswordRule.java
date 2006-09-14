@@ -32,6 +32,11 @@ public interface PasswordRule
     public static final String ROLE = PasswordRule.class.getName();
     
     /**
+     * Tests if rule is enabled (or not)
+     */
+    boolean isEnabled();
+    
+    /**
      * Sets the User Security Policy to use.
      * 
      * The policy is set once per instance of a PasswordRule object.

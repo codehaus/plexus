@@ -31,6 +31,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @version $Id$
  */
 public class MustHavePasswordRule
+    extends AbstractPasswordRule
     implements PasswordRule
 {
     public void setUserSecurityPolicy( UserSecurityPolicy policy )
@@ -46,4 +47,3 @@ public class MustHavePasswordRule
         }
     }
 }
-

@@ -32,8 +32,12 @@ import org.codehaus.plexus.util.StringUtils;
  * @version $Id$
  */
 public class AlphaPasswordRule
+    extends AbstractPasswordRule
     implements PasswordRule
 {
+    /**
+     * @plexus.configuration default-value="1"
+     */
     private int minimumCount;
 
     public AlphaPasswordRule()

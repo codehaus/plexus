@@ -19,6 +19,7 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
+import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
@@ -30,6 +31,19 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
 public class UserManagerAuthenticatorTest
     extends PlexusTestCase
 {
+    /**
+     * @plexus.requirement
+     */
+    private UserSecurityPolicy userSecurityPolicy;
+    
+    protected void setUp()
+        throws Exception
+    {
+        super.setUp();
+        userSecurityPolicy = (UserSecurityPolicy) lookup( UserSecurityPolicy.ROLE );
+        userSecurityPolicy.setEnabled( false );
+    }
+
     public void testLookup()
         throws Exception
     {
@@ -42,6 +56,7 @@ public class UserManagerAuthenticatorTest
         throws Exception
     {
         // Set up a few users for the Authenticator
+        
         UserManager um = (UserManager) lookup( UserManager.ROLE, "memory" );
         User user = um.createUser( "test", "Test User", "testuser@somedomain.com" );
         user.setPassword( "testpass" );
