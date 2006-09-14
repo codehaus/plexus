@@ -37,6 +37,10 @@ import java.util.List;
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * 
+ * @plexus.component role="com.opensymphony.xwork.Action"
+ *                   role-hint="userAdmin"
+ *                   instantiation-strategy="per-lookup"
  */
 public class UserAdminAction extends PlexusActionSupport
 {

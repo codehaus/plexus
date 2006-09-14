@@ -3,8 +3,23 @@
 
 <xwork>
   <include file="webwork-default.xml"/>
+
+  <!-- ==================================================================
+       Security Tools for Administrators
+       namespace: /security/admin/*
+       Only Administrators should be able to access and use the actions
+       contained within this package.
+       ==================================================================  -->
   
-  <include file="plexus-security-xwork.xml" />
+  <package name="securityAdmin" namespace="/security/admin">
+  
+    <action name="user" class="userAdmin" method="list">
+      <result name="list">/WEB-INF/jsp/security/admin/userList.jspf</result>
+      <result name="edit">/WEB-INF/jsp/security/admin/userEdit.jspf</result>
+      <result name="create">/WEB-INF/jsp/security/admin/userCreate.jspf</result>
+    </action>
+    
+  </package>
 
   <package name="default" extends="webwork-default" namespace="/">
 
