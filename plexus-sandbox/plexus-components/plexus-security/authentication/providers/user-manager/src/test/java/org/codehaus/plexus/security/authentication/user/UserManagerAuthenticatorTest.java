@@ -33,7 +33,7 @@ public class UserManagerAuthenticatorTest
     public void testLookup()
         throws Exception
     {
-        Authenticator component = (Authenticator) lookup( Authenticator.ROLE );
+        Authenticator component = (Authenticator) lookup( Authenticator.ROLE, "user-manager" );
         assertNotNull( component );
         assertEquals( UserManagerAuthenticator.class.getName(), component.getClass().getName() );
     }
@@ -56,8 +56,8 @@ public class UserManagerAuthenticatorTest
         um.addUser( user );
 
         // test with valid credentials
-        UserManagerAuthenticator auth = (UserManagerAuthenticator) lookup( Authenticator.ROLE );
-        // auth.setUserManager( um );
+        Authenticator auth = (Authenticator) lookup( Authenticator.ROLE, "user-manager" );
+        assertNotNull( auth );
 
         AuthenticationResult result = auth.authenticate( new AuthenticationDataSource( "anonymous", "nopass" ) );
         assertTrue( result.isAuthenticated() );

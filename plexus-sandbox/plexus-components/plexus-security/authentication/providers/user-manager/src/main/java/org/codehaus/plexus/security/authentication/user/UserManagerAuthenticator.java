@@ -40,7 +40,6 @@ public class UserManagerAuthenticator
     extends AbstractLogEnabled
     implements Authenticator
 {
-
     /**
      * @plexus.requirement
      */
