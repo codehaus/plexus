@@ -28,7 +28,7 @@ public class AuthenticationResult
     implements Serializable
 {
     private boolean isAuthenticated;
-
+    
     private Object principal;
 
     private Exception exception;
