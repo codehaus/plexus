@@ -65,20 +65,6 @@ public class RBACObjectAssertions
             assertValid( "Role.permissions[" + i + "]", perm );
             i++;
         }
-
-        /* TODO: Re-enable when jpox configuration is resolved.
-         * javax.jdo.JDODetachedFieldAccessException: You have just attempted to access field "childRoles" yet 
-         * this field was not detached when you detached the object. Either dont access this field, or detach 
-         * the field when detaching the object.
-        i = 0;
-        it = role.getChildRoles().iterator();
-        while ( it.hasNext() )
-        {
-            Role child = (Role) it.next();
-            assertValid( "Role.childRoles[" + i + "]", child );
-            i++;
-        }
-         */
     }
 
     public static void assertValid( Permission permission )
@@ -164,22 +150,26 @@ public class RBACObjectAssertions
             throw new RbacObjectInvalidException( scope, "UserAssigment.principal cannot be empty." );
         }
 
-        if ( assignment.getRoles() == null )
+        if ( assignment.getRoleNames() == null )
         {
             throw new RbacObjectInvalidException( scope, "UserAssignment.roles cannot be null." );
         }
 
-        if ( assignment.getRoles().isEmpty() )
+        if ( assignment.getRoleNames().isEmpty() )
         {
             throw new RbacObjectInvalidException( scope, "UserAssignment.roles cannot be empty." );
         }
 
         int i = 0;
-        Iterator it = assignment.getRoles().iterator();
+        Iterator it = assignment.getRoleNames().iterator();
         while ( it.hasNext() )
         {
-            Role role = (Role) it.next();
-            assertValid( "UserAssignment.roles[" + i + "]", role );
+            String name = (String) it.next();
+
+            if ( StringUtils.isEmpty( name ) )
+            {
+                throw new RbacObjectInvalidException( scope, "UserAssignment.rolename[" + i + "] cannot be empty." );
+            }
             i++;
         }
     }

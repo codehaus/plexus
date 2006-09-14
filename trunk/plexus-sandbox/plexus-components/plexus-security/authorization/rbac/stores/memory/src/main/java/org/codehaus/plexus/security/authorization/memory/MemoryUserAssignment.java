@@ -79,7 +79,7 @@ public class MemoryUserAssignment
     /**
      * Method getRoles
      */
-    public List getRoles()
+    public List getRoleNames()
     {
         if ( this.roles == null )
         {
@@ -114,7 +114,7 @@ public class MemoryUserAssignment
      * 
      * @param roles
      */
-    public void setRoles( List roles )
+    public void setRoleNames( List roles )
     {
         this.roles = roles;
     }

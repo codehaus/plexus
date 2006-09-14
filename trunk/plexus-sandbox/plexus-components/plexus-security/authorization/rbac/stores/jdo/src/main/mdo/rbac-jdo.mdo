@@ -11,7 +11,9 @@
   </defaults>
   <classes>
 
-    <class jpox.stashable="true" jpox.table="ROLES">
+    <class jpox.stashable="true" 
+           jpox.table="ROLES"
+           jpox.not-persisted-fields="modelEncoding">
       <name>JdoRole</name>
       <version>1.0.0</version>
       <interfaces>
@@ -73,7 +75,9 @@
       </fields>
     </class>
 
-    <class jpox.stashable="true" jpox.table="PERMISSIONS">
+    <class jpox.stashable="true" 
+           jpox.table="PERMISSIONS"
+           jpox.not-persisted-fields="modelEncoding">
       <name>JdoPermission</name>
       <version>1.0.0</version>
       <interfaces>
@@ -114,7 +118,9 @@
       </fields>
     </class>
 
-    <class jpox.stashable="true" jpox.table="OPERATIONS">
+    <class jpox.stashable="true" 
+           jpox.table="OPERATIONS"
+           jpox.not-persisted-fields="modelEncoding">
       <name>JdoOperation</name>
       <version>1.0.0</version>
       <interfaces>
@@ -143,7 +149,9 @@
       </fields>
     </class>
 
-    <class jpox.stashable="true" jpox.table="RESOURCES">
+    <class jpox.stashable="true" 
+           jpox.table="RESOURCES"
+           jpox.not-persisted-fields="modelEncoding">
       <name>JdoResource</name>
       <version>1.0.0</version>
       <description>
@@ -174,7 +182,9 @@
       </fields>
     </class>
 
-    <class jpox.stashable="true" jpox.table="USER_ASSIGNMENTS">
+    <class jpox.stashable="true" 
+           jpox.table="USER_ASSIGNMENTS"
+           jpox.not-persisted-fields="modelEncoding">
       <name>JdoUserAssignment</name>
       <description>binding of a principal to a role</description>
       <version>1.0.0</version>
@@ -189,20 +199,23 @@
           <type>String</type>
           <identifier>true</identifier>
         </field>
+        <field>
+          <name>timestamp</name>
+          <version>1.0.0</version>
+          <type>Date</type>
+        </field>
         <field java.adder="false"
                jpox.persistence-modifier="persistent" 
-               jpox.fetchGroupNames="role-child-detail"
                jpox.indexed="true"
-               jpox.join-table="USER_ASSIGNMENT_MAP">
-          <name>roles</name>
+               jpox.join-table="USERASSIGNMENT_ROLENAMES">
+          <name>roleNames</name>
           <version>1.0.0</version>
           <association stash.part="true" 
                        jpox.join="true"
                        java.init="field"
                        java.generate-break="false"
-                       java.generate-create="false"
-                       java.use-interface="org.codehaus.plexus.security.rbac.Role">
-            <type>JdoRole</type>
+                       java.generate-create="false">
+            <type>String</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>

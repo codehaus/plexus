@@ -47,15 +47,38 @@ public interface UserAssignment
 
     /**
      * Get the roles for this user.
+     * 
+     * @return List of &lt;{@link String}&gt; objects representing the Role Names.
      */
-    public List getRoles();
+    public List getRoleNames();
     
     /**
-     * Add a role to this assignment.
+     * Add a rolename to this assignment.
      * 
      * @param role the role.
      */
-    public void addRole( Role role );
+    public void addRoleName( Role role );
+    
+    /**
+     * Add a rolename to this assignment.
+     * 
+     * @param roleName the role name.
+     */
+    public void addRoleName( String roleName );
+    
+    /**
+     * Remove a rolename from this assignment.
+     * 
+     * @param role the role who's name is to be removed.
+     */
+    public void removeRoleName( Role role );
+    
+    /**
+     * Remove a role name from this assignment.
+     * 
+     * @param roleName the role name to be removed.
+     */
+    public void removeRoleName( String roleName );
 
     /**
      * Set the user principal object for this association.
@@ -67,9 +90,9 @@ public interface UserAssignment
     public void setPrincipal( String principal );
 
     /**
-     * Set the roles for this user.
+     * Set the roles names for this user.
      * 
-     * @param roles the roles
+     * @param roles the List of &lt;{@link String}&gt; objects representing the Role Names.
      */
-    public void setRoles( List roles );
+    public void setRoleNames( List roles );
 }

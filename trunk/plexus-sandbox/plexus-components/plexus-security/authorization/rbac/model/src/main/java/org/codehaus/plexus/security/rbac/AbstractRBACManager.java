@@ -188,14 +188,30 @@ public abstract class AbstractRBACManager
 
         Set permissionSet = new HashSet();
 
-        if ( ua.getRoles() != null )
+        if ( ua.getRoleNames() != null )
         {
-            Iterator it = ua.getRoles().iterator();
+            boolean childRoleNamesUpdated = false;
+
+            Iterator it = ua.getRoleNames().listIterator();
             while ( it.hasNext() )
             {
-                Role role = getRole( ( (Role) it.next() ).getName() );
-                
-                gatherUniquePermissions( role, permissionSet );
+                String roleName = (String) it.next();
+                try
+                {
+                    Role role = getRole( roleName );
+                    gatherUniquePermissions( role, permissionSet );
+                }
+                catch ( RbacObjectNotFoundException e )
+                {
+                    // Found a bad role name. remove it!
+                    it.remove();
+                    childRoleNamesUpdated = true;
+                }
+            }
+
+            if ( childRoleNamesUpdated )
+            {
+                saveUserAssignment( ua );
             }
         }
 
@@ -223,7 +239,7 @@ public abstract class AbstractRBACManager
             Iterator it = childRoles.values().iterator();
             while ( it.hasNext() )
             {
-                Role child = (Role) it.next(); 
+                Role child = (Role) it.next();
                 gatherUniquePermissions( child, coll );
             }
         }
@@ -264,15 +280,64 @@ public abstract class AbstractRBACManager
     {
         UserAssignment ua = getUserAssignment( principal );
 
-        return ua.getRoles();
+        return getAssignedRoles( ua );
     }
-    
+
+    public Collection getAssignedRoles( UserAssignment ua )
+        throws RbacObjectNotFoundException, RbacStoreException
+    {
+        Set roleSet = new HashSet();
+
+        if ( ua.getRoleNames() != null )
+        {
+            boolean childRoleNamesUpdated = false;
+
+            Iterator it = ua.getRoleNames().listIterator();
+            while ( it.hasNext() )
+            {
+                String roleName = (String) it.next();
+                try
+                {
+                    Role role = getRole( roleName );
+                    
+                    if ( !roleSet.contains( roleName ) )
+                    {
+                        roleSet.add( roleName );
+                    }
+                    
+                    Map roleMap = getChildRoles( role );
+
+                    Iterator itroles = roleMap.values().iterator();
+                    while ( itroles.hasNext() )
+                    {
+                        Role childrole = (Role) itroles.next();
+                        if ( !roleSet.contains( childrole ) )
+                        {
+                            roleSet.add( childrole );
+                        }
+                    }
+                }
+                catch ( RbacObjectNotFoundException e )
+                {
+                    // Found a bad role name. remove it!
+                    it.remove();
+                    childRoleNamesUpdated = true;
+                }
+            }
+
+            if ( childRoleNamesUpdated )
+            {
+                saveUserAssignment( ua );
+            }
+        }
+
+        return roleSet;
+    }
+
     public Collection getUnassignedRoles( String principal )
         throws RbacStoreException, RbacObjectNotFoundException
     {
-        UserAssignment ua = getUserAssignment( principal );
-
-        Collection assignedRoles = ua.getRoles();
+        Collection assignedRoles = getAssignedRoles( principal );
         List allRoles = getAllAssignableRoles();
 
         return CollectionUtils.subtract( allRoles, assignedRoles );
@@ -282,7 +347,7 @@ public abstract class AbstractRBACManager
         throws RbacStoreException
     {
         if ( globalResource == null )
-        {            
+        {
             globalResource = createResource( Resource.GLOBAL );
             globalResource = saveResource( globalResource );
         }
@@ -301,9 +366,9 @@ public abstract class AbstractRBACManager
     {
         List roleNames = role.getChildRoleNames();
         Map childRoles = new HashMap();
-        
+
         boolean childRoleNamesUpdated = false;
-        
+
         Iterator it = roleNames.listIterator();
         while ( it.hasNext() )
         {
@@ -320,12 +385,12 @@ public abstract class AbstractRBACManager
                 childRoleNamesUpdated = true;
             }
         }
-    
+
         if ( childRoleNamesUpdated )
         {
             saveRole( role );
         }
-        
+
         return childRoles;
     }
 
@@ -333,7 +398,7 @@ public abstract class AbstractRBACManager
         throws RbacObjectNotFoundException, RbacStoreException
     {
         Map roleMap = new HashMap();
-    
+
         Iterator it = roleNames.iterator();
         while ( it.hasNext() )
         {
@@ -341,8 +406,7 @@ public abstract class AbstractRBACManager
             Role child = getRole( roleName );
             roleMap.put( child.getName(), child );
         }
-    
+
         return roleMap;
     }
-
 }
