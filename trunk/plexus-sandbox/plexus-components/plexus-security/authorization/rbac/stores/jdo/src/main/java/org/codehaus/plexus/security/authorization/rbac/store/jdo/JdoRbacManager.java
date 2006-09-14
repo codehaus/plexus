@@ -60,7 +60,8 @@ public class JdoRbacManager
      */
     private JdoTool jdo;
     
-    private static final String ROLE_DETAIL = "role-child-detail";
+    // private static final String ROLE_DETAIL = "role-child-detail";
+    private static final String ROLE_DETAIL = null;
     
     // ----------------------------------------------------------------------
     // Role methods
@@ -479,9 +480,7 @@ public class JdoRbacManager
     public UserAssignment saveUserAssignment( UserAssignment userAssignment )
         throws RbacObjectInvalidException, RbacStoreException
     {
-        assertValid( "Save User Assignment", userAssignment );
-        
-        JdoTool.dumpObjectState( System.err, userAssignment );
+        RBACObjectAssertions.assertValid( "Save User Assignment", userAssignment );
         
         return (UserAssignment) jdo.saveObject( userAssignment, new String[] { ROLE_DETAIL } );
     }
@@ -502,40 +501,6 @@ public class JdoRbacManager
         return (UserAssignment) jdo.getObjectById( JdoUserAssignment.class, principal, ROLE_DETAIL );
     }
     
-    public void assertValid( String scope, UserAssignment assignment )
-        throws RbacObjectInvalidException
-    {
-        if ( assignment == null )
-        {
-            throw new RbacObjectInvalidException( scope, "Null UserAssigment object is invalid." );
-        }
-
-        if ( StringUtils.isEmpty( assignment.getPrincipal() ) )
-        {
-            throw new RbacObjectInvalidException( scope, "UserAssigment.principal cannot be empty." );
-        }
-
-        if ( assignment.getRoles() == null )
-        {
-            throw new RbacObjectInvalidException( scope, "UserAssignment.roles cannot be null." );
-        }
-
-        if ( assignment.getRoles().isEmpty() )
-        {
-            throw new RbacObjectInvalidException( scope, "UserAssignment.roles cannot be empty." );
-        }
-
-        int i = 0;
-        Iterator it = assignment.getRoles().iterator();
-        while ( it.hasNext() )
-        {
-            Role role = (Role) it.next();
-            JdoTool.dumpObjectState( System.err, role );
-            RBACObjectAssertions.assertValid( "UserAssignment.roles[" + i + "]", role );
-            i++;
-        }
-    }
-
     /**
      * Method getAssignments
      */

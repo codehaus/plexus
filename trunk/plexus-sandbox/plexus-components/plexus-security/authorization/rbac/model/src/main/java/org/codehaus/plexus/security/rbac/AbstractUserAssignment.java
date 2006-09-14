@@ -1,5 +1,7 @@
 package org.codehaus.plexus.security.rbac;
 
+import java.util.List;
+
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
  *
@@ -25,11 +27,29 @@ package org.codehaus.plexus.security.rbac;
 public abstract class AbstractUserAssignment
     implements UserAssignment
 {
-    public void addRole( Role role )
+
+    public void addRoleName( Role role )
     {
-        if ( !getRoles().contains( role ) )
+        addRoleName( role.getName() );
+    }
+
+    public void addRoleName( String roleName )
+    {
+        List names = getRoleNames();
+        if ( !names.contains( roleName ) )
         {
-            getRoles().add( role );
+            names.add( roleName );
         }
+        setRoleNames( names );
+    }
+
+    public void removeRoleName( Role role )
+    {
+        removeRoleName( role.getName() );
+    }
+
+    public void removeRoleName( String roleName )
+    {
+        getRoleNames().remove( roleName );
     }
 }
