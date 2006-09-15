@@ -40,12 +40,6 @@ public abstract class AbstractUserCredentialsAction
     // Plexus Component Requirements
     // ------------------------------------------------------------------
     
-    
-    
-    // ------------------------------------------------------------------
-    // Action Parameters
-    // ------------------------------------------------------------------
-
     /**
      * @plexus.requirement
      */
@@ -54,11 +48,19 @@ public abstract class AbstractUserCredentialsAction
     /**
      * @plexus.requirement
      */
-    private UserSecurityPolicy securityPolicy;
+    protected UserSecurityPolicy securityPolicy;
+    
+    // ------------------------------------------------------------------
+    // Action Parameters
+    // ------------------------------------------------------------------
 
     protected UserCredentials user;
+    
+    // ------------------------------------------------------------------
+    // Action Entry Points - (aka Names)
+    // ------------------------------------------------------------------
 
-    public void validateCrendialsLoose()
+    public void validateCredentialsLoose()
     {
         if ( StringUtils.isEmpty( user.getUsername() ) )
         {
@@ -83,7 +85,7 @@ public abstract class AbstractUserCredentialsAction
 
     public void validateCredentialsStrict()
     {
-        validateCrendialsLoose();
+        validateCredentialsLoose();
 
         // TODO: Figure out email validation.
         // EmailValidator emailvalidator = new EmailValidator();

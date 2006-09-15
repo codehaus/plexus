@@ -55,7 +55,7 @@ public class SystemInfoAction
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
 
-    public String info()
+    public String show()
     {
         authentication = securitySystem.getAuthenticatorId();
         authorization = securitySystem.getAuthorizerId();

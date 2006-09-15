@@ -16,7 +16,8 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+import org.codehaus.plexus.security.ui.web.model.UserCredentials;
+import org.codehaus.plexus.security.user.User;
 
 /**
  * RegisterAction 
@@ -29,7 +30,52 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  *                   instantiation-strategy="per-lookup"
  */
 public class RegisterAction
-    extends PlexusActionSupport
+    extends AbstractUserCredentialsAction
 {
+    // ------------------------------------------------------------------
+    // Action Entry Points - (aka Names)
+    // ------------------------------------------------------------------
 
+    public String input()
+    {
+        if ( user == null )
+        {
+            user = new UserCredentials();
+        }
+
+        return INPUT;
+    }
+
+    public String submit()
+    {
+        if ( user == null )
+        {
+            user = new UserCredentials();
+            addActionError( "Invalid user credentials." );
+            return ERROR;
+        }
+        
+        validateCredentialsStrict();
+
+        // NOTE: Do not perform Password Rules Validation Here.
+
+        if ( manager.userExists( user.getUsername() ) )
+        {
+            // Means that the role name doesn't exist.
+            // We need to fail fast and return to the previous page.
+            addActionError( "User '" + user.getUsername() + "' already exists." );
+        }
+
+        if ( hasActionErrors() || hasFieldErrors() )
+        {
+            return ERROR;
+        }
+
+        User u = manager.createUser( user.getUsername(), user.getFullName(), user.getEmail() );
+        u.setPassword( user.getPassword() );
+
+        manager.addUser( u );
+
+        return SUCCESS;
+    }
 }
