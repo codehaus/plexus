@@ -16,8 +16,6 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
-
 /**
  * LogoutAction 
  *
@@ -29,7 +27,7 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  *                   instantiation-strategy="per-lookup"
  */
 public class LogoutAction
-    extends PlexusActionSupport
+    extends AbstractAuthenticationAction
 {
     public String logout()
     {

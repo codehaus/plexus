@@ -19,10 +19,7 @@ package org.codehaus.plexus.security.ui.web.action;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.system.SecuritySession;
-import org.codehaus.plexus.security.system.SecuritySystem;
-import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
  * LoginAction
@@ -36,16 +33,19 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  *                   instantiation-strategy="per-lookup"
  */
 public class LoginAction
-    extends PlexusActionSupport
+    extends AbstractAuthenticationAction
 {
-    /**
-     * @plexus.requirement
-     */
-    private SecuritySystem securitySystem;
+    // ------------------------------------------------------------------
+    // Plexus Component Requirements
+    // ------------------------------------------------------------------
 
     private String username;
 
     private String password;
+
+    // ------------------------------------------------------------------
+    // Action Entry Points - (aka Names)
+    // ------------------------------------------------------------------
 
     public String login()
     {
@@ -70,8 +70,7 @@ public class LoginAction
                 }
                 else
                 {
-                    getLogger().debug(
-                                       "Login Action failed against principal : "
+                    getLogger().debug( "Login Action failed against principal : "
                                            + securitySession.getAuthenticationResult().getPrincipal(),
                                        securitySession.getAuthenticationResult().getException() );
                     addActionError( "Authentication failed" );
@@ -95,22 +94,9 @@ public class LoginAction
         }
     }
 
-    public String logout()
-    {
-        session.clear();
-
-        this.setSession( session );
-
-        return SUCCESS;
-    }
-
-    private void setAuthTokens( SecuritySession securitySession, User user, boolean authStatus )
-    {
-        session.put( SecuritySession.ROLE, securitySession );
-        session.put( SecuritySession.USERKEY, user );
-        session.put( "authStatus", new Boolean( authStatus ) );
-        this.setSession( session );
-    }
+    // ------------------------------------------------------------------
+    // Parameter Accessor Methods
+    // ------------------------------------------------------------------
 
     public String getUsername()
     {

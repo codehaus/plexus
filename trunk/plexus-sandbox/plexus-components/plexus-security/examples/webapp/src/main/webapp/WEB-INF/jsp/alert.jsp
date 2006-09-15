@@ -14,4 +14,29 @@
   ~ limitations under the License.
   --%>
 
-<%response.sendRedirect( request.getContextPath() + "/security/login.action" );%>
+<%@ taglib prefix="ww" uri="/webwork" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<html>
+<head>
+  <title>Security Alert Page</title>
+  <ww:head/>
+</head>
+
+<body>
+
+<div id="contentArea">
+  <div id="searchBox">
+    <div id="results">
+      You are not authorized for this activity.
+    </div>
+  </div>
+</div>
+
+<div class="clear">
+  <hr/>
+</div>
+
+</body>
+
+</html>

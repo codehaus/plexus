@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.ui.web.action.admin;
+package org.codehaus.plexus.security.ui.web.action;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -16,23 +16,18 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.system.SecuritySession;
+import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * UserListAction 
+ * AbstractAuthenticationAction 
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
- * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-admin-user-list"
- *                   instantiation-strategy="per-lookup"
  */
-public class UserListAction
+public class AbstractAuthenticationAction
     extends PlexusActionSupport
 {
     // ------------------------------------------------------------------
@@ -42,43 +37,18 @@ public class UserListAction
     /**
      * @plexus.requirement
      */
-    private UserManager manager;
-
+    protected SecuritySystem securitySystem;
+    
     // ------------------------------------------------------------------
-    // Action Parameters
-    // ------------------------------------------------------------------
-
-    private List users;
-
-    // ------------------------------------------------------------------
-    // Action Entry Points - (aka Names)
+    // Internal Support Methods
     // ------------------------------------------------------------------
 
-    public String show()
+    protected void setAuthTokens( SecuritySession securitySession, User user, boolean authStatus )
     {
-        List userList = manager.getUsers();
-        if ( userList == null )
-        {
-            users = new ArrayList();
-        }
-
-        users = userList;
-
-        return INPUT;
-    }
-
-    // ------------------------------------------------------------------
-    // Parameter Accessor Methods
-    // ------------------------------------------------------------------
-
-    public List getUsers()
-    {
-        return users;
-    }
-
-    public void setUsers( List users )
-    {
-        this.users = users;
+        session.put( SecuritySession.ROLE, securitySession );
+        session.put( SecuritySession.USERKEY, user );
+        session.put( "authStatus", new Boolean( authStatus ) );
+        this.setSession( session );
     }
 
 }

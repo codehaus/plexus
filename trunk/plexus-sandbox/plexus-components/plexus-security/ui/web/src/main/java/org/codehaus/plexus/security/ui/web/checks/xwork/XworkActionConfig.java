@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.ui.web.action.admin;
+package org.codehaus.plexus.security.ui.web.checks.xwork;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -16,23 +16,35 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * AdminConsoleAction 
+ * XworkActionConfig 
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
- * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-admin-console"
- *                   instantiation-strategy="per-lookup"
  */
-public class AdminConsoleAction
-    extends PlexusActionSupport
+public class XworkActionConfig
 {
-    public String show()
+    public String name;
+    
+    public String clazz;
+
+    public String method;
+
+    public List results = new ArrayList();
+
+    public XworkActionConfig( String name, String className, String method )
     {
-        return INPUT;
+        this.name = name;
+        this.clazz = className;
+        this.method = method;
+    }
+
+    public XworkActionConfig addResult( String name )
+    {
+        results.add( name );
+        return this;
     }
 }
