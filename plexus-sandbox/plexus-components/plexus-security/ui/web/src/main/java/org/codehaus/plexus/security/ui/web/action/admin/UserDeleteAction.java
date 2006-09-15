@@ -16,9 +16,10 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.ui.web.action.AbstractUserCredentialsAction;
+import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
  * UserDeleteAction 
@@ -31,10 +32,19 @@ import org.codehaus.plexus.util.StringUtils;
  *                   instantiation-strategy="per-lookup"
  */
 public class UserDeleteAction
-    extends AbstractUserCredentialsAction
+    extends PlexusActionSupport
 {
     // ------------------------------------------------------------------
     // Plexus Component Requirements
+    // ------------------------------------------------------------------
+
+    /**
+     * @plexus.requirement
+     */
+    private UserManager manager;
+    
+    // ------------------------------------------------------------------
+    // Action Parameters
     // ------------------------------------------------------------------
 
     private String username;
@@ -43,7 +53,7 @@ public class UserDeleteAction
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
 
-    public String input()
+    public String confirm()
     {
         if ( username == null )
         {

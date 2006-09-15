@@ -14,4 +14,22 @@
   ~ limitations under the License.
   --%>
 
-<%response.sendRedirect( request.getContextPath() + "/security/login.action" );%>
+<%@ taglib prefix="ww" uri="/webwork" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<html>
+<head>
+  <title>Error Occurred</title>
+  <ww:head />
+</head>
+
+<body>
+
+<h1>Error Occurred</h1>
+
+<ww:actionerror />
+
+<ww:actionmessage />
+
+</body>
+</html>

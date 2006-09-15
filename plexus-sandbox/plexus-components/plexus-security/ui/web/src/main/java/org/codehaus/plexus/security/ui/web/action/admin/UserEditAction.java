@@ -21,7 +21,6 @@ import org.codehaus.plexus.security.ui.web.model.UserCredentials;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
  * UserEditAction 
@@ -37,12 +36,16 @@ public class UserEditAction
     extends AbstractUserCredentialsAction
 {
     // ------------------------------------------------------------------
-    // Plexus Component Requirements
+    // Action Parameters
     // ------------------------------------------------------------------
 
     private String username;
 
-    public String input()
+    // ------------------------------------------------------------------
+    // Action Entry Points - (aka Names)
+    // ------------------------------------------------------------------
+    
+    public String edit()
     {
         if ( username == null )
         {
@@ -108,6 +111,8 @@ public class UserEditAction
             addActionError( "Unable to edit user with null user credentials." );
             return ERROR;
         }
+        
+        validateCredentialsLoose();
 
         if ( !manager.userExists( username ) )
         {
@@ -144,16 +149,6 @@ public class UserEditAction
     // ------------------------------------------------------------------
     // Parameter Accessor Methods
     // ------------------------------------------------------------------
-
-    public UserCredentials getUser()
-    {
-        return user;
-    }
-
-    public void setUser( UserCredentials user )
-    {
-        this.user = user;
-    }
 
     public String getUsername()
     {

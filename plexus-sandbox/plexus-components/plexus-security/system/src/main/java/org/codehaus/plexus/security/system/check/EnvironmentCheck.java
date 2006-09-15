@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.ui.web.action.admin;
+package org.codehaus.plexus.security.system.check;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -16,23 +16,22 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+import java.util.List;
 
 /**
- * AdminConsoleAction 
+ * EnvironmentCheck - Perform an Environment Check. 
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
- * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-admin-console"
- *                   instantiation-strategy="per-lookup"
  */
-public class AdminConsoleAction
-    extends PlexusActionSupport
+public interface EnvironmentCheck
 {
-    public String show()
-    {
-        return INPUT;
-    }
+    public static final String ROLE = EnvironmentCheck.class.getName();
+
+    /**
+     * Validate the environment.
+     * 
+     * @param violations list to populate with environment violations.
+     */
+    public void validateEnvironment( List violations );
 }

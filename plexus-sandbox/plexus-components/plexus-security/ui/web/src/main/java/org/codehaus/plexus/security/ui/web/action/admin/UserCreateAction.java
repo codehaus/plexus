@@ -16,12 +16,9 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.policy.UserSecurityPolicy;
+import org.codehaus.plexus.security.ui.web.action.AbstractUserCredentialsAction;
 import org.codehaus.plexus.security.ui.web.model.UserCredentials;
 import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
  * UserCreateAction 
@@ -34,33 +31,13 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  *                   instantiation-strategy="per-lookup"
  */
 public class UserCreateAction
-    extends PlexusActionSupport
+    extends AbstractUserCredentialsAction
 {
-    // ------------------------------------------------------------------
-    // Plexus Component Requirements
-    // ------------------------------------------------------------------
-
-    /**
-     * @plexus.requirement
-     */
-    private UserManager manager;
-
-    /**
-     * @plexus.requirement
-     */
-    private UserSecurityPolicy securityPolicy;
-
-    // ------------------------------------------------------------------
-    // Action Parameters
-    // ------------------------------------------------------------------
-
-    private UserCredentials user;
-
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
 
-    public String input()
+    public String edit()
     {
         if ( user == null )
         {
@@ -78,26 +55,8 @@ public class UserCreateAction
             addActionError( "Invalid user credentials." );
             return ERROR;
         }
-
-        if ( StringUtils.isEmpty( user.getUsername() ) )
-        {
-            addFieldError( "user.username", "Username is required." );
-        }
-
-        if ( StringUtils.isEmpty( user.getFullName() ) )
-        {
-            addFieldError( "user.fullName", "Full name is required." );
-        }
-
-        if ( StringUtils.isEmpty( user.getEmail() ) )
-        {
-            addFieldError( "user.email", "Email address is required." );
-        }
-
-        if ( StringUtils.equals( user.getPassword(), user.getConfirmPassword() ) )
-        {
-            addFieldError( "user.password", "Password do not match." );
-        }
+        
+        validateCredentialsLoose();
 
         // NOTE: Do not perform Password Rules Validation Here.
 
@@ -108,7 +67,7 @@ public class UserCreateAction
             addActionError( "User '" + user.getUsername() + "' already exists." );
         }
 
-        if ( hasActionErrors() )
+        if ( hasActionErrors() || hasFieldErrors() )
         {
             return ERROR;
         }
@@ -116,24 +75,17 @@ public class UserCreateAction
         User u = manager.createUser( user.getUsername(), user.getFullName(), user.getEmail() );
         u.setPassword( user.getPassword() );
 
+        // Disable Password Rules for this creation.
         securityPolicy.setEnabled( false );
-        manager.addUser( u );
-        securityPolicy.setEnabled( true );
+        try
+        {
+            manager.addUser( u );
+        }
+        finally
+        {
+            securityPolicy.setEnabled( true );
+        }
 
         return SUCCESS;
-    }
-
-    // ------------------------------------------------------------------
-    // Parameter Accessor Methods
-    // ------------------------------------------------------------------
-
-    public UserCredentials getUser()
-    {
-        return user;
-    }
-
-    public void setUser( UserCredentials user )
-    {
-        this.user = user;
     }
 }

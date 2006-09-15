@@ -20,8 +20,6 @@ import org.codehaus.plexus.security.ui.web.model.UserCredentials;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
-
 
 /**
  * AccountAction 
@@ -37,10 +35,14 @@ public class AccountAction
     extends AbstractUserCredentialsAction
 {
     // ------------------------------------------------------------------
-    // Plexus Component Requirements
+    // Action Parameters
     // ------------------------------------------------------------------
 
     private String username;
+
+    // ------------------------------------------------------------------
+    // Action Entry Points - (aka Names)
+    // ------------------------------------------------------------------
 
     public String input()
     {
@@ -88,7 +90,7 @@ public class AccountAction
 
         return INPUT;
     }
-    
+
     public String submit()
     {
         if ( username == null )
@@ -140,7 +142,7 @@ public class AccountAction
 
         return SUCCESS;
     }
-    
+
     // ------------------------------------------------------------------
     // Parameter Accessor Methods
     // ------------------------------------------------------------------
