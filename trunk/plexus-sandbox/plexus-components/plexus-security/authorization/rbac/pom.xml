@@ -18,22 +18,22 @@
       <dependency>
         <artifactId>plexus-security-authorization-rbac-model</artifactId>
         <groupId>org.codehaus.plexus.security</groupId>
-        <version>${project.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <artifactId>plexus-security-authorization-rbac-store-api</artifactId>
         <groupId>org.codehaus.plexus.security</groupId>
-        <version>${project.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <artifactId>plexus-security-authorization-rbac-stores</artifactId>
         <groupId>org.codehaus.plexus.security</groupId>
-        <version>${project.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
         <groupId>org.codehaus.plexus.security</groupId>
-        <version>${project.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
