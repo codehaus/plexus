@@ -16,6 +16,7 @@
   </dependencies>
   <modules>
     <module>acegi</module>
+    <module>open</module>
     <module>memory</module>
     <module>user-manager</module>
   </modules>
