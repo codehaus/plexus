@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -6,21 +5,12 @@
     <artifactId>plexus-security-authentication-providers</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-authentication-provider-user-manager</artifactId>
-  <name>Plexus Security :: Authentication Provider :: User Manager</name>
+  <artifactId>plexus-security-authentication-provider-open</artifactId>
+  <name>Plexus Security :: Authentication Provider :: Open</name>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authentication-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-policy</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-user-management-provider-memory</artifactId>
-      <scope>test</scope>
     </dependency>
   </dependencies>
   <build>

@@ -6,7 +6,7 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-authentication-provider-memory</artifactId>
-  <name>Plexus Security :: Memory Authentication Provider</name>
+  <name>Plexus Security :: Authentication Provider :: Memory</name>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
