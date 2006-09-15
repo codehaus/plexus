@@ -29,6 +29,10 @@ import org.codehaus.plexus.security.authentication.MustChangePasswordException;
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * 
+ * @plexus.component
+ *   role="org.codehaus.plexus.security.authentication.Authenticator"
+ *   role-hint="open"
  */
 public class OpenAuthenticator
     implements Authenticator
