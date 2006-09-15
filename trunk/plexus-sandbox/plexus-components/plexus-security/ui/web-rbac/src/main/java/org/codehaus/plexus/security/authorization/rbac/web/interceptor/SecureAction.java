@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.authorization.rbac.web.interceptor;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,40 +16,20 @@ package org.codehaus.plexus.security.authorization.rbac.web.interceptor;
  * limitations under the License.
  */
 
-import java.util.List;
-
 /**
  * SecureAction
  *
+ * @author Jesse McConnell <jesse@codehaus.org>
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id: SecureAction.java 4035 2006-09-14 12:59:40Z joakime $
  */
 public interface SecureAction
 {
-
-
     /**
-     * the list of the operations required for this secured action to execute
+     * get an authorization bundle to process for authn and authz
      *
-     * NOTE: any _one_ of these operations is required
-     * @return
      */
-    public List getRequiredOperations()
-        throws SecureActionException;
+    public SecureActionBundle getSecureActionBundle()
+         throws SecureActionException;
 
-    /**
-     * the resource that that the operations are tests against for authz
-     *
-     * either a resource string or Resource.GLOBAL
-     */
-    public String getRequiredResource()
-        throws SecureActionException;
-
-
-    /**
-     * return true of this secured action requires authentication
-     * @return
-     */
-    public boolean authenticationRequired()
-        throws SecureActionException;
 }
