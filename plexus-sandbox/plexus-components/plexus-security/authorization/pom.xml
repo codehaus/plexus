@@ -16,6 +16,7 @@
   </dependencies>
   <modules>
     <module>api</module>
+    <module>open</module>
     <module>rbac</module>
   </modules>
 </project>
