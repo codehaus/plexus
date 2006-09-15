@@ -35,10 +35,8 @@ import java.util.List;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @author Jesse McConnell <jesse@codehaus.org>
  * @version $Id: SecureActionInterceptor.java 4035 2006-09-14 12:59:40Z joakime $
- * 
- * @plexus.component
- *   role="com.opensymphony.xwork.interceptor.Interceptor"
- *   role-hint="pssSecureActionInterceptor"
+ * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor"
+ * role-hint="pssSecureActionInterceptor"
  */
 public class SecureActionInterceptor
     extends AbstractLogEnabled
@@ -75,54 +73,63 @@ public class SecureActionInterceptor
 
         Action action = (Action) context.getActionInvocation().getAction();
 
-        if ( action instanceof SecureAction )
+        try
         {
-            SecureAction secureAction = (SecureAction) action;
-            SecureActionBundle bundle = secureAction.getSecureActionBundle();
-
-            SecuritySession session = (SecuritySession) context.getSession().get( SecuritySession.ROLE );
-
-            // check the authentication requirements
-            if ( bundle.requiresAuthentication() )
+            if ( action instanceof SecureAction )
             {
-                if ( session == null || !session.getAuthenticationResult().isAuthenticated() )
+                SecureAction secureAction = (SecureAction) action;
+                SecureActionBundle bundle = secureAction.getSecureActionBundle();
+
+                SecuritySession session = (SecuritySession) context.getSession().get( SecuritySession.ROLE );
+
+                // check the authentication requirements
+                if ( bundle.requiresAuthentication() )
                 {
-                    getLogger().debug( "not authenticated, need to authentication for this action" );
-                    
-                    return "requires-authentication";
-                }
-            }
-
-            List authzTuples = bundle.getAuthorizationTuples();
-
-            // if operations are returned we need to perform authorization checks
-            if ( authzTuples != null && authzTuples.size() > 0 )
-            {
-                // authn adds a session, if there is no session they are not authorized and authn is required for
-                // authz, even if it is just a guest user
-                if ( session == null )
-                {
-                    getLogger().debug( "session required for authorization to run" );
-                    return "requires-authentication";
-                }
-
-                for ( Iterator i = authzTuples.iterator(); i.hasNext(); )
-                {
-                    SecureActionBundle.AuthorizationTuple tuple = ( SecureActionBundle.AuthorizationTuple ) i.next();
-                    AuthorizationResult authzResult =
-                        securitySystem.authorize( session, tuple.getOperation(), tuple.getResource() );
-
-                    if ( authzResult.isAuthorized() )
+                    if ( session == null || !session.getAuthenticationResult().isAuthenticated() )
                     {
-                        getLogger().debug( session.getUser().getPrincipal() + " is authorized for action "
-                            + secureAction.getClass().getName() + " by " + tuple.toString() );
-                        return invocation.invoke();
+                        getLogger().debug( "not authenticated, need to authentication for this action" );
+
+                        return "requires-authentication";
                     }
                 }
 
-                return "requires-authorization";
+                List authzTuples = bundle.getAuthorizationTuples();
+
+                // if operations are returned we need to perform authorization checks
+                if ( authzTuples != null && authzTuples.size() > 0 )
+                {
+                    // authn adds a session, if there is no session they are not authorized and authn is required for
+                    // authz, even if it is just a guest user
+                    if ( session == null )
+                    {
+                        getLogger().debug( "session required for authorization to run" );
+                        return "requires-authentication";
+                    }
+
+                    for ( Iterator i = authzTuples.iterator(); i.hasNext(); )
+                    {
+                        SecureActionBundle.AuthorizationTuple tuple = (SecureActionBundle.AuthorizationTuple) i.next();
+                        AuthorizationResult authzResult =
+                            securitySystem.authorize( session, tuple.getOperation(), tuple.getResource() );
+
+                        if ( authzResult.isAuthorized() )
+                        {
+                            getLogger().debug( session.getUser().getPrincipal() + " is authorized for action " +
+                                secureAction.getClass().getName() + " by " + tuple.toString() );
+                            return invocation.invoke();
+                        }
+                    }
+
+                    return "requires-authorization";
+                }
             }
         }
+        catch ( SecureActionException se )
+        {
+            getLogger().debug( "can't generate the SecureActionBundle, deny access: " + se.getMessage() );
+            return "requires-authentication";
+        }
+
         getLogger().debug( "not a secure action " + action.getClass().getName() );
         return invocation.invoke();
     }
