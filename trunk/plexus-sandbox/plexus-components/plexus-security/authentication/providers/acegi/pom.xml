@@ -6,7 +6,7 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-authentication-provider-acegi</artifactId>
-  <name>Plexus Security Acegi Authentication Provider</name>
+  <name>Plexus Security :: Authentication Provider :: Acegi</name>
   <repositories>
    <repository>
       <id>acegi-snapshot</id>
@@ -15,7 +15,7 @@
       <releases>
         <enabled>false</enabled>
       </releases>
-    </repository>    
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -46,5 +46,5 @@
         </executions>
       </plugin>
     </plugins>
-  </build> 
+  </build>
 </project>
