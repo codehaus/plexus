@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.authorization.rbac.web.interceptor;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * SecureActionInterceptor
+ * SecureActionInterceptor: Interceptor that will detect webwork actions that implement the SecureAction
+ * interface and providing they do verify that the current user is authorized to execute the action
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @author Jesse McConnell <jesse@codehaus.org>
@@ -77,11 +78,12 @@ public class SecureActionInterceptor
         if ( action instanceof SecureAction )
         {
             SecureAction secureAction = (SecureAction) action;
+            SecureActionBundle bundle = secureAction.getSecureActionBundle();
 
             SecuritySession session = (SecuritySession) context.getSession().get( SecuritySession.ROLE );
 
             // check the authentication requirements
-            if ( secureAction.authenticationRequired() )
+            if ( bundle.requiresAuthentication() )
             {
                 if ( session == null || !session.getAuthenticationResult().isAuthenticated() )
                 {
@@ -91,33 +93,29 @@ public class SecureActionInterceptor
                 }
             }
 
-            List opList = secureAction.getRequiredOperations();
+            List authzTuples = bundle.getAuthorizationTuples();
 
             // if operations are returned we need to perform authorization checks
-            if ( opList != null && opList.size() > 0 )
+            if ( authzTuples != null && authzTuples.size() > 0 )
             {
+                // authn adds a session, if there is no session they are not authorized and authn is required for
+                // authz, even if it is just a guest user
                 if ( session == null )
                 {
                     getLogger().debug( "session required for authorization to run" );
                     return "requires-authentication";
                 }
-                else if ( secureAction.getRequiredResource() == null || "".equals( secureAction.getRequiredResource() ) )
-                {
-                    getLogger().warn( "***" );
-                    getLogger().warn( "*** action is not configured correctly, required resource should return something revelant, or the global resource" );
-                    getLogger().warn( "***" );
-                    
-                    return "requires-authorization";
-                }
 
-                for ( Iterator i = opList.iterator(); i.hasNext(); )
+                for ( Iterator i = authzTuples.iterator(); i.hasNext(); )
                 {
-                    String operation = (String) i.next();
+                    SecureActionBundle.AuthorizationTuple tuple = ( SecureActionBundle.AuthorizationTuple ) i.next();
                     AuthorizationResult authzResult =
-                        securitySystem.authorize( session, operation, secureAction.getRequiredResource() );
+                        securitySystem.authorize( session, tuple.getOperation(), tuple.getResource() );
 
                     if ( authzResult.isAuthorized() )
                     {
+                        getLogger().debug( session.getUser().getPrincipal() + " is authorized for action "
+                            + secureAction.getClass().getName() + " by " + tuple.toString() );
                         return invocation.invoke();
                     }
                 }
