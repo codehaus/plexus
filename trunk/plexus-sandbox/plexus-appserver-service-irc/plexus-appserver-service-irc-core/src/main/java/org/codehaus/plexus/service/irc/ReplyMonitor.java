@@ -3,6 +3,7 @@ package org.codehaus.plexus.service.irc;
 import org.schwering.irc.lib.*;
 import org.schwering.irc.lib.IRCUser;
 import EDU.oswego.cs.dl.util.concurrent.FutureResult;
+import EDU.oswego.cs.dl.util.concurrent.TimeoutException;
 
 /**
  * Register an interest in a property and wait for the reply to come in.
@@ -101,6 +102,8 @@ class ReplyMonitor extends IRCEventAdapter {
 
     try {
       ret = (String) reply.timedGet(60000); // wait only a minute for replies
+    } catch (TimeoutException e) {
+      System.err.println("Timed out waiting for type " + type);
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
