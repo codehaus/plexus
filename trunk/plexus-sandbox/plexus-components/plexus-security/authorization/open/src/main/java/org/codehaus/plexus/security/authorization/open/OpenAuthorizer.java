@@ -26,6 +26,10 @@ import org.codehaus.plexus.security.authorization.Authorizer;
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * 
+ * @plexus.component
+ *   role="org.codehaus.plexus.security.authorization.Authorizer"
+ *   role-hint="rbac"
  */
 public class OpenAuthorizer
     implements Authorizer
