@@ -30,7 +30,7 @@
 
   <div>
   <hr/>
-  <ww:action name="pssLogin" namespace="/security" />
+  <ww:action name="pssLogin" executeResult="true" namespace="/security" />
   <hr/>
   </div>
       
