@@ -42,7 +42,8 @@
     
     <action name="pssLogin" class="pss-login" method="show">
       <result name="input">/WEB-INF/jsp/pss/login.jspf</result>
-      <result name="error" type="redirect-action">/WEB-INF/jsp/pss/login.jspf</result>
+      <result name="error" type="redirect">/main.action?dest=login</result>
+      <result name="success" type="redirect">/main.action?dest=login</result>
     </action>
 
     <action name="logout" class="pss-logout" method="show">
