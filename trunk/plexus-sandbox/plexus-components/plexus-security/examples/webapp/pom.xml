@@ -21,6 +21,11 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-ui-web-integration</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-ui-web-rbac</artifactId>
     </dependency>
     <dependency>
@@ -153,7 +158,11 @@
                 <include>WEB-INF/database</include>
                 <include>WEB-INF/logs</include>
                 <include>WEB-INF/temp</include>
+                <!-- 
+                   Do not delete this directory as it is pulled into
+                   this location via svn:externals command to better aid development.
                 <include>WEB-INF/jsp/pss</include>
+                  -->
               </includes>
             </fileset>
           </filesets>

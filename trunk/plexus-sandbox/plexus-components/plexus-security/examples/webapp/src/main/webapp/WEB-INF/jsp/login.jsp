@@ -14,4 +14,28 @@
   ~ limitations under the License.
   --%>
 
-<%response.sendRedirect( request.getContextPath() + "/main.action" );%>
+<%@ taglib prefix="ww" uri="/webwork" %>
+
+<html>
+<head>
+  <title>Login Page</title>
+  <ww:head/>
+</head>
+
+<body onload="javascript:document.forms['login'].username.focus();">
+
+<div id="contentArea">
+    
+  <h2>Login</h2>
+
+  <div>
+  <hr/>
+  <ww:action name="pssLogin" namespace="/security" />
+  <hr/>
+  </div>
+      
+</div>
+
+</body>
+
+</html>

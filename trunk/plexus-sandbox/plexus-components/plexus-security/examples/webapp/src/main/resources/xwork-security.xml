@@ -1,0 +1,135 @@
+<?xml version="1.0" ?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.1.1//EN" "http://www.opensymphony.com/xwork/xwork-1.1.1.dtd">
+
+<!-- ==================================================================
+     Plexus Security Tools
+     
+     This should contain the /security/admin and /security namespaced
+     action configurations.
+     
+     These configurations will likely not need changing.
+     
+     These configurations point to the overlaid jspf files.
+     ==================================================================  -->
+
+<xwork>
+  <include file="webwork-default.xml"/>
+  
+  <!-- ==================================================================
+       Security Tools for Users
+       
+       All Users should be able to access and use the actions contained
+       within this package.
+       ==================================================================  -->
+  
+  <package name="security" extends="webwork-default" namespace="/security">
+    <interceptors>
+      <interceptor name="pssEnvCheck" class="pssEnvironmentCheckInterceptor"/>
+      <interceptor name="pssSecureActions" class="pssSecureActionInterceptor"/>
+      <interceptor-stack name="securedStack">
+        <interceptor-ref name="pssEnvCheck"/>
+        <interceptor-ref name="defaultStack"/>
+        <interceptor-ref name="pssSecureActions"/>
+      </interceptor-stack>
+      <interceptor-stack name="securedPrepareParamsStack">
+        <interceptor-ref name="pssEnvCheck"/>
+        <interceptor-ref name="paramsPrepareParamsStack"/>
+        <interceptor-ref name="pssSecureActions"/>
+      </interceptor-stack>
+    </interceptors>
+
+    <default-interceptor-ref name="securedStack"/>
+    
+    <action name="pssLogin" class="pss-login" method="show">
+      <result name="input">/WEB-INF/jsp/pss/login.jspf</result>
+      <result name="error">/WEB-INF/jsp/pss/login.jspf</result>
+    </action>
+
+    <action name="logout" class="pss-logout" method="show">
+      <result type="redirect">/WEB-INF/jsp/mainpage.jsp</result>
+    </action>
+
+    <!-- 
+    <action name="statusline" class="status" method="input">
+      <result name="input">/WEB-INF/jsp/security/statusline.jspf</result>
+    </action>
+      -->    
+    
+    <action name="account" class="pss-account" method="show">
+      <result name="input">/WEB-INF/jsp/security/account.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/account.jsp</result>
+      <result name="success" type="redirect">/WEB-INF/jsp/mainpage.jsp</result>
+    </action>
+    
+    <action name="register" class="pss-register" method="show">
+      <result name="input">/WEB-INF/jsp/security/register.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/register.jsp</result>
+      <result name="success" type="redirect">/WEB-INF/jsp/mainpage.jsp</result>
+    </action>
+    
+    <action name="password" class="pss-password" method="show">
+      <result name="input">/WEB-INF/jsp/security/password.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/password.jsp</result>
+      <result name="success" type="redirect">/WEB-INF/jsp/mainpage.jsp</result>
+    </action>
+    
+  <!-- ==================================================================
+       Security Tools for Administrators
+       
+       Only Administrators should be able to access and use these actions
+       ==================================================================  -->
+    
+    <action name="systeminfo" class="pss-sysinfo" method="show">
+      <result>/WEB-INF/jsp/security/admin/systemInformation.jspf</result>
+    </action>
+    
+    <action name="adminConsole" class="pss-admin-console" method="show">
+      <result>/WEB-INF/jsp/security/admin/console.jspf</result>
+    </action>
+    
+    <action name="userlist" class="pss-admin-user-list" method="show">
+      <result name="input">/WEB-INF/jsp/security/admin/userList.jsp</result>
+      <result name="success">/WEB-INF/jsp/security/admin/userList.jsp</result>
+    </action>
+    
+    <action name="useredit" class="pss-admin-user-edit" method="edit">
+      <result name="input">/WEB-INF/jsp/security/admin/userEdit.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/admin/userEdit.jsp</result>
+      <result name="success" type="redirect-action">userList</result>
+    </action>
+    
+    <action name="usercreate" class="pss-admin-user-create" method="edit">
+      <result name="input">/WEB-INF/jsp/security/admin/userCreate.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/admin/userCreate.jsp</result>
+      <result name="success" type="redirect-action">userEdit</result>
+    </action>
+    
+    <action name="userdelete" class="pss-admin-user-delete" method="confirm">
+      <result name="input">/WEB-INF/jsp/security/admin/userDelete.jsp</result>
+      <result name="error" type="redirect-action">userList</result>
+      <result name="success" type="redirect-action">userList</result>
+    </action>
+    
+    <!-- ==== RBAC Actions ========================================== -->
+    
+    <action name="assignments" class="pss-assignments" method="show">
+      <result name="input">/WEB-INF/jsp/security/assignments.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/assignments.jsp</result>
+      <result name="success" type="redirect-action">adminConsole</result>
+    </action>
+    
+    <action name="roles" class="pss-roles" method="show">
+      <result name="input">/WEB-INF/jsp/security/roles.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/roles.jsp</result>
+      <result name="success" type="redirect-action">adminConsole</result>
+    </action>
+    
+    <action name="permissions" class="pss-permissions" method="show">
+      <result name="input">/WEB-INF/jsp/security/permissions.jsp</result>
+      <result name="error">/WEB-INF/jsp/security/permissions.jsp</result>
+      <result name="success" type="redirect-action">adminConsole</result>
+    </action>
+    
+  </package>
+  
+</xwork>

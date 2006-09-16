@@ -16,24 +16,41 @@ package org.codehaus.plexus.security.example.web.action;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
- * PlexusSecuritySystemAction:
-22 *
- * @author Jesse McConnell <jesse@codehaus.org>
- * @version $Id:$
+ * MainAction 
  *
+ * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
+ * @version $Id$
+ * 
  * @plexus.component
  *   role="com.opensymphony.xwork.Action"
- *   role-hint="status"
+ *   role-hint="main"
  */
-public class StatusAction
+public class MainAction
     extends PlexusActionSupport
 {
+    private String dest;
 
-    public String status()
+    public String getDest()
     {
+        return dest;
+    }
+
+    public void setDest( String dest )
+    {
+        this.dest = dest;
+    }
+
+    public String show()
+    {
+        if ( StringUtils.isNotEmpty( dest ) )
+        {
+            return dest;
+        }
+
         return SUCCESS;
     }
 }
