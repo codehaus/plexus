@@ -7,7 +7,7 @@
   </parent>
   <artifactId>plexus-security-ui-web-integration</artifactId>
   <name>Plexus Security :: UI Web :: XWork Integration</name>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
@@ -18,11 +18,15 @@
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-xwork-integration</artifactId>
     </dependency>
-  <!--
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-policy</artifactId>
     </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+  <!--
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-user-management-provider-memory</artifactId>
@@ -40,10 +44,6 @@
       <groupId>opensymphony</groupId>
       <artifactId>sitemesh</artifactId>
       <version>2.2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
