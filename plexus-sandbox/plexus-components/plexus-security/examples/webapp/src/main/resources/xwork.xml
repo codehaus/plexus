@@ -3,8 +3,13 @@
 
 <xwork>
   <include file="webwork-default.xml"/>
-  
-  <package name="base" extends="webwork-default">
+  <include file="xwork-security.xml"/>
+    
+  <!-- ==================================================================
+       Application Webapp Specific Configuration.
+       ==================================================================  -->
+ 
+  <package name="root" extends="webwork-default" namespace="/">
     <interceptors>
       <interceptor name="pssEnvCheck" class="pssEnvironmentCheckInterceptor"/>
       <interceptor name="pssSecureActions" class="pssSecureActionInterceptor"/>
@@ -19,10 +24,9 @@
         <interceptor-ref name="pssSecureActions"/>
       </interceptor-stack>
     </interceptors>
-    
-    <!-- Default interceptor stack. -->
+  
     <default-interceptor-ref name="securedStack"/>
-    
+
     <global-results>
       <result name="security-success">/WEB-INF/jsp/mainpage.jsp</result>
       <result name="error">/WEB-INF/jsp/generalError.jsp</result>
@@ -30,146 +34,10 @@
       <result name="requires-authentication">/WEB-INF/jsp/alert.jsp</result>
       <result name="requires-authorization">/WEB-INF/jsp/alert.jsp</result>
     </global-results>    
-  </package>  
-
-  <!-- ==================================================================
-       Security Tools for Administrators
-       namespace: /security/admin/*
-       Only Administrators should be able to access and use the actions
-       contained within this package.
-       ==================================================================  -->
- 
-  <package name="securityAdmin" extends="webwork-default" namespace="/admin">
-    <interceptors>
-      <interceptor name="pssEnvCheck" class="pssEnvironmentCheckInterceptor"/>
-      <interceptor name="pssSecureActions" class="pssSecureActionInterceptor"/>
-      <interceptor-stack name="securedStack">
-        <interceptor-ref name="pssEnvCheck"/>
-        <interceptor-ref name="defaultStack"/>
-        <interceptor-ref name="pssSecureActions"/>
-      </interceptor-stack>
-      <interceptor-stack name="securedPrepareParamsStack">
-        <interceptor-ref name="pssEnvCheck"/>
-        <interceptor-ref name="paramsPrepareParamsStack"/>
-        <interceptor-ref name="pssSecureActions"/>
-      </interceptor-stack>
-    </interceptors>
-  
-    <default-interceptor-ref name="securedStack"/>
     
-    <action name="systeminfo" class="pss-sysinfo" method="show">
-      <result>/WEB-INF/jsp/security/admin/systemInformation.jsp</result>
+    <action name="main" class="main" method="show">
+      <result name="login">/WEB-INF/jsp/login.jsp</result>
+      <result name="success">/WEB-INF/jsp/mainpage.jsp</result>
     </action>
-    
-    <action name="adminConsole" class="pss-admin-console" method="show">
-      <result>/WEB-INF/jsp/security/admin/console.jsp</result>
-    </action>
-    
-    <!-- ==== User Management Actions =============================== -->
-    
-    <action name="userlist" class="pss-admin-user-list" method="show">
-      <result name="input">/WEB-INF/jsp/security/admin/userList.jsp</result>
-      <result name="success">/WEB-INF/jsp/security/admin/userList.jsp</result>
-    </action>
-    
-    <action name="useredit" class="pss-admin-user-edit" method="edit">
-      <result name="input">/WEB-INF/jsp/security/admin/userEdit.jsp</result>
-      <result name="error">/WEB-INF/jsp/security/admin/userEdit.jsp</result>
-      <result name="success" type="redirect-action">userList</result>
-    </action>
-    
-    <action name="usercreate" class="pss-admin-user-create" method="edit">
-      <result name="input">/WEB-INF/jsp/security/admin/userCreate.jsp</result>
-      <result name="error">/WEB-INF/jsp/security/admin/userCreate.jsp</result>
-      <result name="success" type="redirect-action">userEdit</result>
-    </action>
-    
-    <action name="userdelete" class="pss-admin-user-delete" method="confirm">
-      <result name="input">/WEB-INF/jsp/security/admin/userDelete.jsp</result>
-      <result name="error" type="redirect-action">userList</result>
-      <result name="success" type="redirect-action">userList</result>
-    </action>
-    
-    <!-- ==== RBAC Actions ========================================== -->
-    
-    <action name="assignments" class="pss-assignments" method="show">
-      <result name="input">/WEB-INF/jsp/security/assignments.jsp</result>
-      <result name="error">/WEB-INF/jsp/security/assignments.jsp</result>
-      <result name="success" type="redirect-action">adminConsole</result>
-    </action>
-    
-    <action name="roles" class="pss-roles" method="show">
-      <result name="input">/WEB-INF/jsp/security/roles.jsp</result>
-      <result name="error">/WEB-INF/jsp/security/roles.jsp</result>
-      <result name="success" type="redirect-action">adminConsole</result>
-    </action>
-    
-    <action name="permissions" class="pss-permissions" method="show">
-      <result name="input">/WEB-INF/jsp/security/permissions.jsp</result>
-      <result name="error">/WEB-INF/jsp/security/permissions.jsp</result>
-      <result name="success" type="redirect-action">adminConsole</result>
-    </action>
-    
-  </package>
-
-  <!-- ==================================================================
-       Security Tools for Users
-       namespace: /security/*
-       All Users should be able to access and use the actions contained
-       within this package.
-       ==================================================================  -->
-  
-  <package name="default" extends="webwork-default" namespace="/">
-    <interceptors>
-      <interceptor name="pssEnvCheck" class="pssEnvironmentCheckInterceptor"/>
-      <interceptor name="pssSecureActions" class="pssSecureActionInterceptor"/>
-      <interceptor-stack name="securedStack">
-        <interceptor-ref name="pssEnvCheck"/>
-        <interceptor-ref name="defaultStack"/>
-        <interceptor-ref name="pssSecureActions"/>
-      </interceptor-stack>
-      <interceptor-stack name="securedPrepareParamsStack">
-        <interceptor-ref name="pssEnvCheck"/>
-        <interceptor-ref name="paramsPrepareParamsStack"/>
-        <interceptor-ref name="pssSecureActions"/>
-      </interceptor-stack>
-    </interceptors>
-
-    <default-interceptor-ref name="securedStack"/>
-    
-    <action name="login" class="pss-login" method="show">
-      <result name="input">/WEB-INF/jsp/security/login.jsp</result>
-      <result name="error">/WEB-INF/jsp/security/login.jsp</result>
-      <result name="success" type="redirect">/WEB-INF/jsp/mainpage.jsp</result>
-    </action>
-
-    <action name="logout" class="pss-logout" method="show">
-      <result type="redirect">/WEB-INF/jsp/mainpage.jsp</result>
-    </action>
-
-    <!-- 
-    <action name="statusline" class="status" method="input">
-      <result name="input">/WEB-INF/jsp/security/statusline.jspf</result>
-    </action>
-      -->    
-    
-    <action name="account" class="pss-account" method="show">
-      <result name="input">/WEB-INF/jsp/security/account.jsp</result>
-      <result name="error">/WEB-INF/jsp/security/account.jsp</result>
-      <result name="success" type="redirect">/WEB-INF/jsp/mainpage.jsp</result>
-    </action>
-    
-    <action name="register" class="pss-register" method="show">
-      <result name="input">/WEB-INF/jsp/security/register.jsp</result>
-      <result name="error">/WEB-INF/jsp/security/register.jsp</result>
-      <result name="success" type="redirect">/WEB-INF/jsp/mainpage.jsp</result>
-    </action>
-    
-    <action name="password" class="pss-password" method="show">
-      <result name="input">/WEB-INF/jsp/security/password.jsp</result>
-      <result name="error">/WEB-INF/jsp/security/password.jsp</result>
-      <result name="success" type="redirect">/WEB-INF/jsp/mainpage.jsp</result>
-    </action>
-    
   </package>
 </xwork>
