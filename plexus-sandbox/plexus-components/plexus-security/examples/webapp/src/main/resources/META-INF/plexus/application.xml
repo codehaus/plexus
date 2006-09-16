@@ -129,6 +129,10 @@
         </appenders>
         <levels>
           <level>
+            <hierarchy>org.codehaus.plexus.security</hierarchy>
+            <level>DEBUG</level>
+          </level>
+          <level>
             <hierarchy>org.codehaus.plexus.velocity</hierarchy>
             <level>WARN</level>
           </level>

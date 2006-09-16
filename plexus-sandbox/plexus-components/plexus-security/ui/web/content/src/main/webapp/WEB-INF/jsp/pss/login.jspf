@@ -27,7 +27,8 @@
   </div>
 </div>
 
-<ww:form action="pssLogin" method="post" name="login" cssClass="security login" id="loginForm">
+<ww:form action="pssLogin!login" namespace="/security" theme="xhtml" 
+         id="loginForm" method="post" name="login" cssClass="security login">
   <ww:textfield label="Username" name="username" size="30" required="true" />
   <ww:password  label="Password" name="password" size="20" required="true" />
   <ww:submit value="Login"/>
@@ -36,6 +37,7 @@
 <%-- TODO: Figure out how to auto-focus to first field --%>
 
 <ul class="tips">
+  <%--
   <li>
      Forgot your Username? 
      <ww:url id="forgottenAccount" action="pssFindAccount" />
@@ -46,6 +48,7 @@
      <ww:url id="forgottenPassword" action="pssResetPassword" />
      <ww:a href="%{forgottenPassword}">Request a password reset.</ww:a>
   </li>
+    --%>
   <li>
     Need an Account?
     <ww:url id="registerUrl" action="pssRegister" />
