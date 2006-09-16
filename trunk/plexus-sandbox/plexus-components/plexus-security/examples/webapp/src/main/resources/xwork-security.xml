@@ -40,10 +40,11 @@
 
     <default-interceptor-ref name="securedStack"/>
     
-    <action name="pssLogin" class="pss-login" method="show">
-      <result name="input">/WEB-INF/jsp/pss/login.jspf</result>
-      <result name="error" type="redirect">/main.action?dest=login</result>
-      <result name="success" type="redirect">/main.action?dest=login</result>
+    <action name="login" class="pss-login" method="show">
+      <result name="input">/WEB-INF/jsp/pss/login.jsp</result>
+      <result name="error">/WEB-INF/jsp/pss/login.jsp</result>
+      <!-- [CONFIGURABLE] Set this result to the page to display on successful login, or a click on cancel. -->
+      <result name="success">/WEB-INF/jsp/pss/login.jsp</result>
     </action>
 
     <action name="logout" class="pss-logout" method="show">
