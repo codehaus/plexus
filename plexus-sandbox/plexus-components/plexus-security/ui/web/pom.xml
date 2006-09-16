@@ -13,5 +13,6 @@
     <module>taglib</module>
     <module>integration</module>
     <module>content</module>
+    <module>rbac</module>
   </modules>
 </project>
