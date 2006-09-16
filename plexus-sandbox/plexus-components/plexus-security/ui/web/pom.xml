@@ -7,7 +7,7 @@
   </parent>
   <artifactId>plexus-security-ui-web</artifactId>
   <name>Plexus Security :: UI Web</name>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>

@@ -40,87 +40,83 @@
     </developer>
   </developers>
 
-  <properties>
-    <!-- This is done to prevent local project overide of the dependency versions -->
-    <security.version>1.0-SNAPSHOT</security.version>
-  </properties>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-common</artifactId>
-        <version>${security.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-system</artifactId>
-        <version>${security.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-policy</artifactId>
-        <version>${security.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authentication-api</artifactId>
-        <version>${security.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authentication-provider-memory</artifactId>
-        <version>${security.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-api</artifactId>
-        <version>${security.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rapi</artifactId>
-        <version>${security.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-api</artifactId>
-        <version>${security.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-provider-memory</artifactId>
-        <version>${security.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
-        <version>${security.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-model</artifactId>
-        <version>${security.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-store-test</artifactId>
-        <version>${security.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
-        <version>${security.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-ui-web</artifactId>
-        <version>${security.version}</version>
+        <type>war</type>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-ui-web-rbac</artifactId>
-        <version>${security.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
       <!-- Plexus -->
       <dependency>
