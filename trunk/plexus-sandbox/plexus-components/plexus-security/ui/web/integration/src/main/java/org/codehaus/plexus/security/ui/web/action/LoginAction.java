@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import com.opensymphony.xwork.ActionContext;
+
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.system.SecuritySession;
@@ -46,17 +48,19 @@ public class LoginAction
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
+    
 
     public String show()
     {
-        System.err.println("LoginAction.show()");
-        return SUCCESS;
+        // System.err.println("LoginAction.show()");
+        
+        return INPUT;
     }
     
     public String login()
     {
-        System.err.println("LoginAction.login()");
-        getLogger().debug( ".login([" + username + "], ***)" );
+        // System.err.println("LoginAction.login()");
+        // getLogger().debug( ".login([" + username + "], ***)" );
         if ( username != null && password != null )
         {
             // An attempt should log out your authentication tokens first!
