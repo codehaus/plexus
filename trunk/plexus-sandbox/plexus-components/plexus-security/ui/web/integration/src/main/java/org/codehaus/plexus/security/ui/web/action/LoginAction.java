@@ -47,8 +47,15 @@ public class LoginAction
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
 
+    public String show()
+    {
+        System.err.println("LoginAction.show()");
+        return SUCCESS;
+    }
+    
     public String login()
     {
+        System.err.println("LoginAction.login()");
         getLogger().debug( ".login([" + username + "], ***)" );
         if ( username != null && password != null )
         {

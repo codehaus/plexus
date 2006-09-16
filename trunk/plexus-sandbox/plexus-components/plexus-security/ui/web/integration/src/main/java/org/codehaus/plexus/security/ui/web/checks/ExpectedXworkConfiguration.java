@@ -18,6 +18,7 @@ package org.codehaus.plexus.security.ui.web.checks;
 
 import com.opensymphony.xwork.config.Configuration;
 import com.opensymphony.xwork.config.ConfigurationManager;
+import com.opensymphony.xwork.config.providers.XmlConfigurationProvider;
 
 import org.codehaus.plexus.security.system.check.EnvironmentCheck;
 import org.codehaus.plexus.security.ui.web.checks.xwork.XworkPackageConfig;
@@ -50,16 +51,36 @@ public class ExpectedXworkConfiguration
 {
     public void validateEnvironment( List violations )
     {
+        // Get the configuration.
         Configuration xworkConfig = ConfigurationManager.getConfiguration();
 
         if ( xworkConfig != null )
         {
             List internalViolations = new ArrayList();
 
+
+            XworkPackageConfig expectedPackage = new XworkPackageConfig( "/security" );
+
+            expectedPackage.addAction( "mainPage", null, null );
+
+            expectedPackage.addAction( "account", "pss-account", "show" ).addResult( "input" ).addResult( "error" )
+                .addResult( "success" );
+
+            expectedPackage.addAction( "login", "pss-login", "show" ).addResult( "input" ).addResult( "error" )
+                .addResult( "success" );
+
+            expectedPackage.addAction( "logout", "pss-logout", "show" ).addResult( "input" ).addResult( "error" )
+                .addResult( "success" );
+
+            expectedPackage.addAction( "register", "pss-register", "show" ).addResult( "input" ).addResult( "error" )
+                .addResult( "success" );
+
+            expectedPackage.addAction( "password", "pss-password", "show" ).addResult( "input" ).addResult( "error" )
+                .addResult( "success" );
+
             // -----------------------------------------------------------------
             // Security Admin Tests
-            XworkPackageConfig expectedPackage = new XworkPackageConfig( "/security/admin" );
-
+            
             expectedPackage.addAction( "systeminfo", "pss-sysinfo", "show" );
             expectedPackage.addAction( "adminConsole", "pss-admin-console", "show" );
 
@@ -85,30 +106,7 @@ public class ExpectedXworkConfiguration
 
             expectedPackage.addAction( "permissions", "pss-permissions", "show" ).addResult( "input" )
                 .addResult( "error" ).addResult( "success" );
-
-            checkPackage( internalViolations, expectedPackage, xworkConfig );
-
-            // -----------------------------------------------------------------
-            // Security Tests
-            expectedPackage = new XworkPackageConfig( "/" );
-
-            expectedPackage.addAction( "mainPage", null, null );
-
-            expectedPackage.addAction( "account", "pss-account", "show" ).addResult( "input" ).addResult( "error" )
-                .addResult( "success" );
-
-            expectedPackage.addAction( "login", "pss-login", "show" ).addResult( "input" ).addResult( "error" )
-                .addResult( "success" );
-
-            expectedPackage.addAction( "logout", "pss-logout", "show" ).addResult( "input" ).addResult( "error" )
-                .addResult( "success" );
-
-            expectedPackage.addAction( "register", "pss-register", "show" ).addResult( "input" ).addResult( "error" )
-                .addResult( "success" );
-
-            expectedPackage.addAction( "password", "pss-password", "show" ).addResult( "input" ).addResult( "error" )
-                .addResult( "success" );
-
+            
             checkPackage( internalViolations, expectedPackage, xworkConfig );
 
             if ( internalViolations.size() > 0 )
