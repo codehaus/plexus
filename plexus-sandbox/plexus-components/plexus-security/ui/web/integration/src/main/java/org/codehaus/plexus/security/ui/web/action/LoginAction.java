@@ -101,7 +101,7 @@ public class LoginAction
         }
         else
         {
-            return INPUT;
+            return ERROR;
         }
     }
 
