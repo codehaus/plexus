@@ -147,7 +147,6 @@
             <fileset>
               <directory>${basedir}/src/main/webapp</directory>
               <includes>
-                <include>user</include>
                 <include>META-INF</include>
                 <include>WEB-INF/classes</include>
                 <include>WEB-INF/lib</include>
@@ -163,7 +162,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
+        <version>2.0.1</version>
         <configuration>
+          <archiveClasses>true</archiveClasses>
           <dependentWarExcludes>WEB-INF/web.xml</dependentWarExcludes>
         </configuration>
       </plugin>
@@ -204,4 +205,22 @@
       </plugin>
     </plugins>
   </build>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>codehaus.org</id>
+      <name>Codehaus Snapshot Development Repository</name>
+      <url>http://snapshots.repository.codehaus.org/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </pluginRepository>
+    <pluginRepository>
+      <id>apache.org</id>
+      <name>Apache Snapshot Repository</name>
+      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
 </project>
