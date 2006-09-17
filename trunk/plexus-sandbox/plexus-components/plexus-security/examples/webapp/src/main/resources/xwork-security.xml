@@ -44,7 +44,7 @@
       <result name="input">/WEB-INF/jsp/pss/login.jspf</result>
       <result name="error">/WEB-INF/jsp/pss/login.jspf</result>
       <!-- [CONFIGURABLE] Set this result to the page to display on successful login, or a click on cancel. -->
-      <result name="success">/WEB-INF/jsp/pss/login.jspf</result>
+      <result name="success">/WEB-INF/jsp/pss/login.jspf</result>      
     </action>
 
     <action name="logout" class="pss-logout" method="show">
@@ -63,10 +63,11 @@
       <result name="success" type="redirect">/WEB-INF/jsp/mainpage.jsp</result>
     </action>
     
-    <action name="register" class="pss-register" method="show">
-      <result name="input">/WEB-INF/jsp/security/register.jsp</result>
-      <result name="error">/WEB-INF/jsp/security/register.jsp</result>
+    <action name="register" class="pss-register" method="show">                  
+      <result name="error">/WEB-INF/jsp/pss/userCredentials.jspf</result>
       <result name="success" type="redirect">/WEB-INF/jsp/mainpage.jsp</result>
+      <interceptor-ref name="basicStack"/>
+      <result name="input">/WEB-INF/jsp/pss/userCredentials.jspf</result>      
     </action>
     
     <action name="password" class="pss-password" method="show">
