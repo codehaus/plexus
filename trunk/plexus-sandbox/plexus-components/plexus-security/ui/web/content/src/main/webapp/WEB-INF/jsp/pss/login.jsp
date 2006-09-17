@@ -16,6 +16,18 @@
 
 <%@ taglib prefix="ww" uri="/webwork" %>
 
+<html>
+<head>
+  <title>Login Page</title>
+  <ww:head/>
+</head>
+
+<body onload="javascript:document.forms['login'].username.focus();">
+
+<div id="contentArea">
+    
+  <h2>Login</h2>
+
 <div id="results">
   <%-- This is where the "Account Created Successfully" type message goes. --%>
   <div class="success">
@@ -51,6 +63,12 @@
     --%>
   <li>
     Need an Account?
-    <ww:url id="registerUrl" action="register" />
+    <ww:url id="registerUrl" action="pssRegister" />
     <ww:a href="%{registerUrl}">Register!</ww:a>
 </ul>
+
+</div>
+
+</body>
+
+</html>
