@@ -27,7 +27,7 @@
   </div>
 </div>
 
-<ww:form action="login" namespace="/security" theme="xhtml" 
+<ww:form action="login!login" namespace="/security" theme="xhtml" 
          id="loginForm" method="post" name="login" cssClass="security login">
   <ww:textfield label="Username" name="username" size="30" required="true" />
   <ww:password  label="Password" name="password" size="20" required="true" />
