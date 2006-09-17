@@ -46,7 +46,7 @@ public class RegisterAction
         return INPUT;
     }
 
-    public String submit()
+    public String register()
     {
         if ( user == null )
         {
@@ -54,7 +54,7 @@ public class RegisterAction
             addActionError( "Invalid user credentials." );
             return ERROR;
         }
-
+        
         validateCredentialsStrict();
 
         // NOTE: Do not perform Password Rules Validation Here.
