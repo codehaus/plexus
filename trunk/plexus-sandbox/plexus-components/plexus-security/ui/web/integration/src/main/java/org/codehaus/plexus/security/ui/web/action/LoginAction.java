@@ -52,8 +52,7 @@ public class LoginAction
 
     public String show()
     {
-        // System.err.println("LoginAction.show()");
-        
+        // System.err.println("LoginAction.show()");        
         return INPUT;
     }
     

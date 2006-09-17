@@ -36,7 +36,7 @@ public class RegisterAction
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
 
-    public String input()
+    public String show()
     {
         if ( user == null )
         {
@@ -54,7 +54,7 @@ public class RegisterAction
             addActionError( "Invalid user credentials." );
             return ERROR;
         }
-        
+
         validateCredentialsStrict();
 
         // NOTE: Do not perform Password Rules Validation Here.
