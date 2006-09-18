@@ -39,7 +39,7 @@
   </thead>
   <tbody>
 
-    <ww:iterator value="userList">
+    <ww:iterator value="users">
       <tr>
         <td><!--  TODO: link the username to user edit action. -->
         <ww:property value="username" />
