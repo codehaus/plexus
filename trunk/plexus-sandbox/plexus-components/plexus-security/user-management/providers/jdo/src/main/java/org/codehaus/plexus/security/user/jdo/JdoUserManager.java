@@ -20,16 +20,14 @@ import org.codehaus.plexus.jdo.JdoFactory;
 import org.codehaus.plexus.jdo.PlexusJdoUtils;
 import org.codehaus.plexus.jdo.PlexusObjectNotFoundException;
 import org.codehaus.plexus.jdo.PlexusStoreException;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
+import org.codehaus.plexus.security.user.AbstractUserManager;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserManagerException;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.IOException;
@@ -51,7 +49,7 @@ import javax.jdo.Transaction;
  * @version $Id$
  */
 public class JdoUserManager
-    extends AbstractLogEnabled
+    extends AbstractUserManager
     implements UserManager, Initializable
 {
     /**
@@ -118,6 +116,8 @@ public class JdoUserManager
         
         userSecurityPolicy.extensionChangePassword( user );
         
+        fireUserManagerUserAdded( user );
+        
         return (User) addObject( user );
     }
 
@@ -126,6 +126,8 @@ public class JdoUserManager
         try
         {
             User user = findUser( principal );
+            
+            fireUserManagerUserRemoved( user );
 
             removeObject( (JdoUser) user );
         }
@@ -140,6 +142,8 @@ public class JdoUserManager
         try
         {
             User user = findUser( username );
+            
+            fireUserManagerUserRemoved( user );
 
             PlexusJdoUtils.removeObject( getPersistenceManager(), (JdoUser) user );
         }
@@ -207,6 +211,8 @@ public class JdoUserManager
         }
 
         updateObject( (JdoUser) user );
+        
+        fireUserManagerUserUpdated( user );
 
         return user;
     }
@@ -223,6 +229,8 @@ public class JdoUserManager
 
         pm.getFetchPlan().setMaxFetchDepth( -1 );
 
+        triggerInit();
+        
         return pm;
     }
 
@@ -303,5 +311,18 @@ public class JdoUserManager
     {
         PlexusJdoUtils.rollbackIfActive( tx );
     }
+    
+    private boolean hasTriggeredInit = false;
 
+    public void triggerInit()
+    {
+        if ( !hasTriggeredInit )
+        {
+            hasTriggeredInit = true;
+            
+            List users = getAllObjectsDetached( JdoUser.class );
+            
+            fireUserManagerInit( users.isEmpty() );
+        }
+    }    
 }

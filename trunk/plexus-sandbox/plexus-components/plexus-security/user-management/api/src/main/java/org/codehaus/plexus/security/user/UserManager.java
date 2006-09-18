@@ -36,6 +36,21 @@ public interface UserManager
     String getId();
     
     /**
+     * Add a {@link UserManagerListener} to track major events in the
+     * UserManager.
+     * 
+     * @param listener the listener to add.
+     */
+    void addUserManagerListener( UserManagerListener listener );
+    
+    /**
+     * Remove a {@link UserManagerListener} from the collection of listeners.
+     * 
+     * @param listener the listener to remove.
+     */
+    void removeUserManagerListener( UserManagerListener listener );
+    
+    /**
      * Factory method to create new User Objects based on provider specific
      * implementation.
      * 

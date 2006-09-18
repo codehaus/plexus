@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.user.provider.test;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,8 @@ public class AbstractUserManagerTestCase
     private UserManager userManager;
 
     private UserSecurityPolicy securityPolicy;
+    
+    private UserManagerEventTracker eventTracker;
 
     public UserManager getUserManager()
     {
@@ -48,6 +50,11 @@ public class AbstractUserManagerTestCase
     public void setUserManager( UserManager um )
     {
         this.userManager = um;
+        if ( this.userManager != null )
+        {
+            this.eventTracker = new UserManagerEventTracker();
+            this.userManager.addUserManagerListener( this.eventTracker );
+        }
     }
 
     protected void setUp()
@@ -93,6 +100,15 @@ public class AbstractUserManagerTestCase
         /* Fetch user from userManager using principal returned earlier */
         User actual = userManager.findUser( added.getPrincipal() );
         assertEquals( added, actual );
+        
+        /* Check into the event tracker. */
+        assertEquals( 1, getEventTracker().countInit );
+        assertNotNull( getEventTracker().lastDbFreshness );
+        assertTrue( getEventTracker().lastDbFreshness.booleanValue() );
+        
+        assertEquals( 1, getEventTracker().addedUsernames.size() );
+        assertEquals( 0, getEventTracker().removedUsernames.size() );
+        assertEquals( 0, getEventTracker().updatedUsernames.size() );
     }
 
     public void testAddFindUserByUsername()
@@ -109,6 +125,15 @@ public class AbstractUserManagerTestCase
 
         User actual = userManager.findUser( "smcqueen" );
         assertEquals( added, actual );
+        
+        /* Check into the event tracker. */
+        assertEquals( 1, getEventTracker().countInit );
+        assertNotNull( getEventTracker().lastDbFreshness );
+        assertTrue( getEventTracker().lastDbFreshness.booleanValue() );
+        
+        assertEquals( 1, getEventTracker().addedUsernames.size() );
+        assertEquals( 0, getEventTracker().removedUsernames.size() );
+        assertEquals( 0, getEventTracker().updatedUsernames.size() );
     }
 
     public void testCreateUser()
@@ -123,6 +148,15 @@ public class AbstractUserManagerTestCase
         um.addUser( user );
 
         assertEquals( 1, um.getUsers().size() );
+        
+        /* Check into the event tracker. */
+        assertEquals( 1, getEventTracker().countInit );
+        assertNotNull( getEventTracker().lastDbFreshness );
+        assertTrue( getEventTracker().lastDbFreshness.booleanValue() );
+        
+        assertEquals( 1, getEventTracker().addedUsernames.size() );
+        assertEquals( 0, getEventTracker().removedUsernames.size() );
+        assertEquals( 0, getEventTracker().updatedUsernames.size() );
     }
 
     public void testAddUser()
@@ -141,6 +175,15 @@ public class AbstractUserManagerTestCase
 
         assertNotNull( um.getUsers() );
         assertEquals( 1, um.getUsers().size() );
+        
+        /* Check into the event tracker. */
+        assertEquals( 1, getEventTracker().countInit );
+        assertNotNull( getEventTracker().lastDbFreshness );
+        assertTrue( getEventTracker().lastDbFreshness.booleanValue() );
+        
+        assertEquals( 1, getEventTracker().addedUsernames.size() );
+        assertEquals( 0, getEventTracker().removedUsernames.size() );
+        assertEquals( 0, getEventTracker().updatedUsernames.size() );
     }
 
     public void testDeleteUser()
@@ -169,6 +212,15 @@ public class AbstractUserManagerTestCase
         {
             // do nothing, expected!
         }
+        
+        /* Check into the event tracker. */
+        assertEquals( 1, getEventTracker().countInit );
+        assertNotNull( getEventTracker().lastDbFreshness );
+        assertTrue( getEventTracker().lastDbFreshness.booleanValue() );
+        
+        assertEquals( 1, getEventTracker().addedUsernames.size() );
+        assertEquals( 1, getEventTracker().removedUsernames.size() );
+        assertEquals( 0, getEventTracker().updatedUsernames.size() );
     }
 
     public void testFindUser()
@@ -215,6 +267,15 @@ public class AbstractUserManagerTestCase
         {
             // do nothing, expected!
         }
+        
+        /* Check into the event tracker. */
+        assertEquals( 1, getEventTracker().countInit );
+        assertNotNull( getEventTracker().lastDbFreshness );
+        assertTrue( getEventTracker().lastDbFreshness.booleanValue() );
+        
+        assertEquals( 3, getEventTracker().addedUsernames.size() );
+        assertEquals( 0, getEventTracker().removedUsernames.size() );
+        assertEquals( 0, getEventTracker().updatedUsernames.size() );
     }
 
     public void testUserExists()
@@ -233,6 +294,14 @@ public class AbstractUserManagerTestCase
         assertTrue( um.userExists( "admin" ) );
         assertFalse( um.userExists( "voodoohatrack" ) );
 
+        /* Check into the event tracker. */
+        assertEquals( 1, getEventTracker().countInit );
+        assertNotNull( getEventTracker().lastDbFreshness );
+        assertTrue( getEventTracker().lastDbFreshness.booleanValue() );
+        
+        assertEquals( 1, getEventTracker().addedUsernames.size() );
+        assertEquals( 0, getEventTracker().removedUsernames.size() );
+        assertEquals( 0, getEventTracker().updatedUsernames.size() );
     }
 
     public void testUpdateUser()
@@ -265,5 +334,24 @@ public class AbstractUserManagerTestCase
         assertEquals( "superuser@somedomain.com", user.getEmail() );
         assertEquals( "Super User", user.getFullName() );
         assertTrue( securityPolicy.getPasswordEncoder().isPasswordValid( user.getEncodedPassword(), "superpass" ) );
+        
+        /* Check into the event tracker. */
+        assertEquals( 1, getEventTracker().countInit );
+        assertNotNull( getEventTracker().lastDbFreshness );
+        assertTrue( getEventTracker().lastDbFreshness.booleanValue() );
+        
+        assertEquals( 1, getEventTracker().addedUsernames.size() );
+        assertEquals( 0, getEventTracker().removedUsernames.size() );
+        assertEquals( 1, getEventTracker().updatedUsernames.size() );
+    }
+
+    public UserManagerEventTracker getEventTracker()
+    {
+        return eventTracker;
+    }
+
+    public void setEventTracker( UserManagerEventTracker eventTracker )
+    {
+        this.eventTracker = eventTracker;
     }
 }

@@ -17,6 +17,7 @@ package org.codehaus.plexus.security.user.memory;
  */
 
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
+import org.codehaus.plexus.security.user.AbstractUserManager;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
@@ -37,19 +38,23 @@ import java.util.Properties;
  *   role-hint="memory"
  */
 public class MemoryUserManager
+    extends AbstractUserManager
     implements UserManager
 {
     /**
      * @plexus.requirement
      */
     private UserSecurityPolicy userSecurityPolicy;
-    
+
     public String getId()
     {
         Properties props = new Properties();
-        URL url = this.getClass().getResource( "META-INF/maven/org.codehaus.plexus.security/plexus-security-user-management-provider-memory/pom.properties" );
-        
-        if(url != null)
+        URL url = this
+            .getClass()
+            .getResource(
+                          "META-INF/maven/org.codehaus.plexus.security/plexus-security-user-management-provider-memory/pom.properties" );
+
+        if ( url != null )
         {
             try
             {
@@ -68,7 +73,8 @@ public class MemoryUserManager
 
     public User addUser( User user )
     {
-        users.put( user.getPrincipal(), user );
+        saveUser( user );
+        fireUserManagerUserAdded( user );
 
         // If there exists no encoded password, then this is a new user setup 
         if ( StringUtils.isEmpty( user.getEncodedPassword() ) )
@@ -77,6 +83,12 @@ public class MemoryUserManager
         }
 
         return user;
+    }
+    
+    private void saveUser( User user )
+    {
+        triggerInit();
+        users.put( user.getPrincipal(), user );
     }
 
     public User updateUser( User user )
@@ -88,12 +100,17 @@ public class MemoryUserManager
             userSecurityPolicy.extensionChangePassword( user );
         }
 
-        return addUser( user );
+        saveUser( user );
+        
+        fireUserManagerUserUpdated( user );
+        
+        return user;
     }
 
     public User findUser( Object principal )
         throws UserNotFoundException
     {
+        triggerInit();
         User user = (User) users.get( principal );
 
         if ( user == null )
@@ -117,9 +134,9 @@ public class MemoryUserManager
         }
     }
 
-    public void deleteUser( Object principal )
+    public void deleteUser( Object principal ) throws UserNotFoundException
     {
-        users.remove( principal );
+        deleteUser( principal.toString() );
     }
 
     public User createUser( String username, String fullName, String emailAddress )
@@ -136,12 +153,15 @@ public class MemoryUserManager
         throws UserNotFoundException
     {
         User user = findUser( username );
-        deleteUser( user.getPrincipal() );
+        users.remove( user.getPrincipal() );
+        
+        fireUserManagerUserRemoved( user );
     }
 
     public User findUser( String username )
         throws UserNotFoundException
     {
+        triggerInit();
         User user = null;
 
         Iterator it = users.values().iterator();
@@ -164,6 +184,18 @@ public class MemoryUserManager
 
     public List getUsers()
     {
+        triggerInit();
         return new ArrayList( users.values() );
+    }
+
+    private boolean hasTriggeredInit = false;
+
+    public void triggerInit()
+    {
+        if ( !hasTriggeredInit )
+        {
+            fireUserManagerInit( users.isEmpty() );
+            hasTriggeredInit = true;
+        }
     }
 }
