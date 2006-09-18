@@ -16,7 +16,8 @@ package org.codehaus.plexus.security.example.web.action;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.util.StringUtils;
+import com.opensymphony.xwork.ActionContext;
+
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
@@ -32,25 +33,10 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 public class MainAction
     extends PlexusActionSupport
 {
-    private String dest;
-
-    public String getDest()
-    {
-        return dest;
-    }
-
-    public void setDest( String dest )
-    {
-        this.dest = dest;
-    }
-
     public String show()
     {
-        if ( StringUtils.isNotEmpty( dest ) )
-        {
-            return dest;
-        }
-
+        session.put("action_context", ActionContext.getContext());
+        
         return SUCCESS;
     }
 }

@@ -26,42 +26,7 @@
   </title>
 
   <style type="text/css" media="all">
-    body {
-      background-color: #ccfdfd;
-    }
-    #breadcrumbs {
-      background-color: #ddddff;
-      margin: 0px;
-      padding-top 3px;
-    }
-    
-    #breadcrumbs .xright {
-      float:right;
-    }
-    
-    #nestedContent {
-      margin: 0px 30px 30px 30px;
-      padding: 5px;
-      border: 1px black solid;
-      background-color: white;
-    }
-    
-    .note {
-      margin: 30px 0px 0px 30px;
-      padding-bottom: 0px;
-      font-size: 80%;
-      color: gray;
-      font-style: italic;
-    }
-    
-    .errorMessage,
-    .errorLabel {
-      color: red;
-    }
-    
-    .required {
-      color: red;
-    }
+    @IMPORT url("/css/main.css");
   </style>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 </head>
@@ -69,9 +34,9 @@
 <body onload="<decorator:getProperty property="body.onload" />" class="composite">
 
 <div id="banner">
-  <h1>Plexus Security Example Webapp</h1>
+  <ww:url id="main" action="main" namespace="/" includeParams="none"/>
+  <h1><ww:a href="%{main}">Plexus Security Example Webapp</ww:a></h1>
   <div class="clear">
-    <hr/>
   </div>
 </div>
 
@@ -83,39 +48,88 @@
   </div>
 
   <div class="xleft">
-    <ww:url id="loginUrl" action="login" method="input" namespace="/" includeParams="none"/>
-    <ww:url id="registerUrl" action="register" method="input" namespace="/" includeParams="none"/>
+    <ww:url id="loginUrl" action="login" namespace="/security" includeParams="none"/>
+    <ww:url id="registerUrl" action="register" namespace="/security" includeParams="none"/>
 
     <ww:if test="${sessionScope.authStatus != true}">
       <ww:a href="%{loginUrl}">Login</ww:a> - <ww:a href="%{registerUrl}">Register</ww:a>
     </ww:if>
     <ww:else>
       <ww:url id="logoutUrl" action="logout" namespace="/" includeParams="none"/>
-      Welcome, <b>${sessionScope.SecuritySessionUser.username}</b> -
+      Welcome, <b>${sessionScope.securitySession.user.username}</b> -
       <ww:a href="%{logoutUrl}">Logout</ww:a>
     </ww:else>
   </div>
   
   <div class="clear">
-    <hr/>
   </div>
 </div>
 
-  <p class="note">Everything within this white box is the actual jsp content.</p>
+  <p class="note">The gray content is arriving via the /WEB-INF/jsp/decorators/default.jsp managed by sitemesh.<br/>
+  Everything within the white box below is the actual jsp content.</p>
   <div id="nestedContent">
     <decorator:body/>
   </div>
 
+  <div id="xworkinfo">
+  
+    <strong>request scope:</strong>
+    <ul>
+    <c:forEach var="rs" items="${requestScope}">
+      <li>
+        <em><c:out value="${rs.key}" /></em> : 
+          <c:choose>
+            <c:when test="${rs.value != null}">
+              (<c:out value="${rs.value.class.name}" /> ) <br />
+              &nbsp; &nbsp; &nbsp; <c:out value="${rs.value}" />
+            </c:when>
+            <c:otherwise>
+              &lt;null&gt;
+            </c:otherwise>
+          </c:choose>
+      </li>
+    </c:forEach>
+    </ul>
+    
+    <strong>session scope:</strong>
+    <ul>
+    <c:forEach var="ss" items="${sessionScope}">
+      <li>
+        <em><c:out value="${ss.key}" /></em> : 
+          <c:choose>
+            <c:when test="${ss.value != null}">
+              (<c:out value="${ss.value.class.name}" /> ) <br />
+              &nbsp; &nbsp; &nbsp; <c:out value="${ss.value}" />
+            </c:when>
+            <c:otherwise>
+              &lt;null&gt;
+            </c:otherwise>
+          </c:choose>
+      </li>
+    </c:forEach>
+    </ul>
+    
+    <%-- 
+       Application Scope is empty.
+       Could be an xwork/webwork specific thing.
+    <strong>application scope:</strong>
+    <ul>
+    <c:forEach var="as" items="${applicationScope.keys}">
+      <li>
+        [<c:out value="${as}" /> ]
+      </li>
+    </c:forEach>
+    </ul>
+     --%>
+     
+  </div>
+
 <div class="clear">
-  <hr/>
 </div>
 
 <div id="footer">
   <div class="xright">&#169; 2006 Codehaus.org </div>
-
   <div class="clear">
-    <hr/>
-
   </div>
 </div>
 </body>

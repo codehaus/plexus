@@ -36,9 +36,7 @@
     </global-results>    
     
     <action name="main" class="main" method="show">
-      <result name="login">/WEB-INF/jsp/login.jsp</result>
       <result name="success">/WEB-INF/jsp/mainpage.jsp</result>
-      <result name="register">/WEB-INF/jsp/register.jsp</result>
     </action>
   </package>
 </xwork>
