@@ -62,6 +62,12 @@ public abstract class AbstractUserCredentialsAction
 
     public void validateCredentialsLoose()
     {
+        System.out.println("user.username        = [" + user.getUsername() + "]" );
+        System.out.println("user.fullName        = [" + user.getFullName() + "]" );
+        System.out.println("user.email           = [" + user.getEmail() + "]" );
+        System.out.println("user.password        = [" + user.getPassword() + "]" );
+        System.out.println("user.confirmPassword = [" + user.getConfirmPassword() + "]" );
+        
         if ( StringUtils.isEmpty( user.getUsername() ) )
         {
             addFieldError( "user.username", "User Name is required." );
