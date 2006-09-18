@@ -46,29 +46,25 @@
   </ww:iterator>
 </ul>
 
-<pss:ifAnyAuthorized permissions="grant-roles,remove-roles">
+<%--<pss:ifAnyAuthorized permissions="grant-roles,remove-roles">--%>
   <h2>Role Management</h2>
 
-  <pss:ifAuthorized permission="grant-roles">
-    <h3>Grant Role</h3>
-    <ww:form action="user" name="grantRole" method="post" namespace="/security/admin">
-      <ww:hidden name="principal" value="${edituser.username}" />
-      <ww:hidden name="username" value="${edituser.username}" />
-      <ww:select name="roleName" list="availableRoles" labelposition="top" />
-      <ww:submit value="Grant" />
-    </ww:form>
-  </pss:ifAuthorized>
+<%--  <pss:ifAuthorized permission="grant-roles">--%>
+    <h3>Grant</h3>
+    <ww:action name="userRolesToGrant" executeResult="true" >
+      <ww:param name="principal">${user.username}</ww:param>
+    </ww:action>
 
-  <pss:ifAuthorized permission="remove-roles">
+<%--  </pss:ifAuthorized> --%>
+
+ <%--:ifAuthorized permission="remove-roles"> --%>
     <h3>Remove</h3>
-    <ww:form action="user" name="removeRole" method="post" namespace="/security/admin">
-      <ww:hidden name="principal" value="${edituser.username}" />
-      <ww:hidden name="username" value="${edituser.username}" />
-      <ww:select name="roleName" list="assignedRoles" labelposition="top" />
-      <ww:submit value="Remove" />
-    </ww:form>
-  </pss:ifAuthorized>
-</pss:ifAnyAuthorized>
+    <ww:action name="userRolesToRemove" executeResult="true" >
+      <ww:param name="principal">${user.username}</ww:param>
+    </ww:action>
+
+<%--pss:ifAuthorized>--%>
+<%--</pss:ifAnyAuthorized>--%>
 
 </body>
 
