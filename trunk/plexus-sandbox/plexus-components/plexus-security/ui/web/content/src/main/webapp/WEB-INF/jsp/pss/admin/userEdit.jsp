@@ -18,7 +18,7 @@
 <%@ taglib prefix="pss" uri="plexusSecuritySystem"%>
 
 <ww:form cssClass="edit" action="user" name="edit" method="post" namespace="/security/admin">
-  <%@ include file="/WEB-INF/jsp/security/userCredentials.jspf"%>
+  <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jspf"%>
   <ww:submit value="Update User" />
 </ww:form>
 
