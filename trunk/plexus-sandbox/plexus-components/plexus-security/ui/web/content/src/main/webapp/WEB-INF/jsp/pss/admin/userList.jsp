@@ -41,8 +41,11 @@
 
     <ww:iterator value="users">
       <tr>
-        <td><!--  TODO: link the username to user edit action. -->
-        <ww:property value="username" />
+        <td>
+          <ww:url id="usereditUrl" action="useredit">
+            <ww:param name="username">${username}</ww:param>
+          </ww:url>
+          <ww:a href="%{usereditUrl}"><ww:property value="username" /></ww:a>
         </td>
         <td><ww:property value="fullName" /></td>
         <td><ww:property value="email" /></td>
