@@ -211,6 +211,20 @@ public interface User
      * @param locked true if account is to be locked.
      */
     void setLocked(boolean locked);
+
+    /**
+     * Determines if this user account must change their password on next login.
+     * 
+     * @return true if user must change password on next login.
+     */
+    boolean isPasswordChangeRequired();
+    
+    /**
+     * Sets the flag to indicate if this user must change their password on next login.
+     * 
+     * @param changeRequired true if user must change password on next login.
+     */
+    void setPasswordChangeRequired( boolean changeRequired );
     
     // --------------------------------------------------------------------
     // Statistics
