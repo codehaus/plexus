@@ -35,10 +35,10 @@ public class WebSecurityConstants
     /**
      * Key in the sessionScope for the {@link User} object.
      */
-    public static final String SECURITY_SESSION_USER = "securityUser";
+    public static final String USER_KEY = "securityUser";
     
     /**
      * Key in the sessionScope for the flag indicating if the authenticated or not.
      */
-    public static final String SECURITY_SESSION_AUTH = "securityAuth";
+    public static final String AUTH_STATUS_KEY = "securityAuth";
 }
