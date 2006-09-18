@@ -146,9 +146,15 @@
     <!-- ==== RBAC Actions ========================================== -->
     
     <action name="assignments" class="pss-assignments" method="show">
-      <result name="input">/WEB-INF/jsp/security/assignments.jsp</result>
-      <result name="error">/WEB-INF/jsp/security/assignments.jsp</result>
-      <result name="success" type="redirect-action">adminConsole</result>
+      <result name="input">/WEB-INF/jsp/pss/include/assignments.jspf</result>
+      <result name="error">/WEB-INF/jsp/pss/include/assignments.jspf</result>
+      <result name="success" type="redirect-action">useredit</result>
+    </action>
+    
+    <action name="rolecreate" class="pss-role-create" method="show">
+      <result name="input">/WEB-INF/jsp/pss/admin/roleCreate.jsp</result>
+      <result name="error">/WEB-INF/jsp/pss/admin/roleCreate.jsp</result>
+      <result name="success" type="redirect-action">userlist</result>
     </action>
     
     <action name="roles" class="pss-roles" method="show">

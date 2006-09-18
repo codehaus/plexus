@@ -29,6 +29,7 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  * @version $Id:$
  * @plexus.component role="com.opensymphony.xwork.Action"
  * role-hint="plexusSecurityResource"
+ * @deprecated will be removed before 1.0
  */
 public class ResourceActions
     extends PlexusActionSupport

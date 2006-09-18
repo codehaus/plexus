@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.authorization.rbac.web.action.admin;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import java.util.List;
  * @version $Id$
  * 
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="role-edit"
+ *                   role-hint="pss-role-edit"
  *                   instantiation-strategy="per-lookup"
  */
 public class EditRoleAction

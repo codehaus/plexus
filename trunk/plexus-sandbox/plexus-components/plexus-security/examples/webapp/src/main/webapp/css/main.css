@@ -38,6 +38,26 @@ body {
   float:right;
 }
 
+.securityLinks {
+  background-color: white;
+  border: 1px solid black;
+  padding: 2px;
+  color: black;
+}
+
+.securityLinks a {
+  color: black !important;
+}
+
+.securityLinks .admin {
+  background-color: #ffdddd;
+  color: red;
+}
+
+.securityLinks .admin a {
+  color: red !important;
+}
+
 #nestedContent {
   margin: 0px 30px 30px 30px;
   padding: 5px;
