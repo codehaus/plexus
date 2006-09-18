@@ -56,9 +56,9 @@
     </action>
 
     <action name="logout" class="pss-logout" method="logout">
-      <result name="security-login-cancel" type="security-external">
+      <result name="security-logout" type="security-external">
         <param name="externalResult">security-logout</param>
-      </result>      
+      </result> 
     </action>
 
     <action name="register" class="pss-register" method="show">                  

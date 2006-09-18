@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import com.opensymphony.webwork.dispatcher.SessionMap;
+
 /**
  * LogoutAction 
  *
@@ -35,6 +37,11 @@ public class LogoutAction
     public String logout()
     {
         setAuthTokens( null, null, false );
+
+        if ( session != null )
+        {
+            ( ( SessionMap ) session ).invalidate();
+        }
 
         return LOGOUT;
     }
