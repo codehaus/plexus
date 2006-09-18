@@ -16,12 +16,11 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
-import com.opensymphony.xwork.ActionContext;
-
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * LoginAction
@@ -37,6 +36,9 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
 public class LoginAction
     extends AbstractAuthenticationAction
 {
+    private static final String LOGIN_SUCCESS = "security-login-success";
+    private static final String LOGIN_CANCEL = "security-login-cancel";
+    
     // ------------------------------------------------------------------
     // Plexus Component Requirements
     // ------------------------------------------------------------------
@@ -58,48 +60,45 @@ public class LoginAction
     
     public String login()
     {
-        // System.err.println("LoginAction.login()");
-        // getLogger().debug( ".login([" + username + "], ***)" );
-        if ( username != null && password != null )
+        if ( StringUtils.isEmpty(username)  )
         {
-            // An attempt should log out your authentication tokens first!
-            setAuthTokens( null, null, false );
+            addFieldError( "username", "Username cannot be empty." );
+            return ERROR;
+        }
+        
+        // An attempt should log out your authentication tokens first!
+        setAuthTokens( null, null, false );
 
-            clearErrorsAndMessages();
+        clearErrorsAndMessages();
 
-            try
+        try
+        {
+            SecuritySession securitySession = securitySystem
+                .authenticate( new AuthenticationDataSource( username, password ) );
+
+            if ( securitySession.getAuthenticationResult().isAuthenticated() )
             {
-                SecuritySession securitySession = securitySystem
-                    .authenticate( new AuthenticationDataSource( username, password ) );
-
-                if ( securitySession.getAuthenticationResult().isAuthenticated() )
-                {
-                    // Success!  Create tokens.
-                    setAuthTokens( securitySession, securitySession.getUser(), true );
-                    return SUCCESS;
-                }
-                else
-                {
-                    getLogger().debug( "Login Action failed against principal : "
-                                           + securitySession.getAuthenticationResult().getPrincipal(),
-                                       securitySession.getAuthenticationResult().getException() );
-                    addActionError( "Authentication failed" );
-                    return ERROR;
-                }
+                // Success!  Create tokens.
+                setAuthTokens( securitySession, securitySession.getUser(), true );
+                return LOGIN_SUCCESS;
             }
-            catch ( AuthenticationException ae )
+            else
             {
-                addActionError( ae.getMessage() );
-                return ERROR;
-            }
-            catch ( UserNotFoundException ue )
-            {
-                addActionError( ue.getMessage() );
+                getLogger().debug( "Login Action failed against principal : "
+                                       + securitySession.getAuthenticationResult().getPrincipal(),
+                                   securitySession.getAuthenticationResult().getException() );
+                addActionError( "Authentication failed" );
                 return ERROR;
             }
         }
-        else
+        catch ( AuthenticationException ae )
         {
+            addActionError( ae.getMessage() );
+            return ERROR;
+        }
+        catch ( UserNotFoundException ue )
+        {
+            addActionError( ue.getMessage() );
             return ERROR;
         }
     }
