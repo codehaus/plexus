@@ -51,12 +51,21 @@
     <ww:url id="loginUrl" action="login" namespace="/security" includeParams="none"/>
     <ww:url id="registerUrl" action="register" namespace="/security" includeParams="none"/>
 
-    <ww:if test="${sessionScope.authStatus != true}">
+    <ww:if test="${sessionScope.securityAuth != true}">
       <ww:a href="%{loginUrl}">Login</ww:a> - <ww:a href="%{registerUrl}">Register</ww:a>
     </ww:if>
     <ww:else>
       <ww:url id="logoutUrl" action="logout" namespace="/" includeParams="none"/>
-      Welcome, <b>${sessionScope.securitySession.user.username}</b> -
+      Welcome, 
+      <c:choose>
+        <c:when test="${sessionScope.securityUser != null}">
+          <b>${sessionScope.securityUser.username}</b>
+        </c:when>
+        <c:otherwise>
+          <b>Unknown User</b>
+        </c:otherwise>
+      </c:choose>
+       -
       <ww:a href="%{logoutUrl}">Logout</ww:a>
     </ww:else>
   </div>

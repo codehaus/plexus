@@ -29,12 +29,13 @@ package org.codehaus.plexus.security.ui.web.action;
 public class LogoutAction
     extends AbstractAuthenticationAction
 {
+    // Result Names.
+    private static final String LOGOUT = "security-logout";
+
     public String logout()
     {
-        session.clear();
+        setAuthTokens( null, null, false );
 
-        this.setSession( session );
-        
-        return SUCCESS;
+        return LOGOUT;
     }
 }

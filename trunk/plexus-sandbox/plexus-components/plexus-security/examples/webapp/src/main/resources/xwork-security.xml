@@ -56,7 +56,9 @@
     </action>
 
     <action name="logout" class="pss-logout" method="show">
-      <result type="redirect">/WEB-INF/jsp/mainpage.jsp</result>
+      <result name="security-login-cancel" type="security-external">
+        <param name="externalResult">security-logout</param>
+      </result>      
     </action>
 
     <!-- 
