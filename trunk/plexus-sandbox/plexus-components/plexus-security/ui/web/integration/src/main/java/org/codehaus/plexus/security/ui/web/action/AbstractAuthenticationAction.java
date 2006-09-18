@@ -47,8 +47,8 @@ public class AbstractAuthenticationAction
     protected void setAuthTokens( SecuritySession securitySession, User user, boolean authStatus )
     {
         session.put( WebSecurityConstants.SECURITY_SESSION_KEY, securitySession );
-        session.put( WebSecurityConstants.SECURITY_SESSION_USER, user );
-        session.put( WebSecurityConstants.SECURITY_SESSION_USER, new Boolean( authStatus ) );
+        session.put( WebSecurityConstants.USER_KEY, user );
+        session.put( WebSecurityConstants.AUTH_STATUS_KEY, new Boolean( authStatus ) );
         this.setSession( session );
     }
 
