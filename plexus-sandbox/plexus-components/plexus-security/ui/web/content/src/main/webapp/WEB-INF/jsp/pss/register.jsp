@@ -24,13 +24,13 @@
 
 <body>
 
-<%@ include file="/WEB-INF/jsp/pss/formValidationResults.jspf" %>
+<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jspf" %>
 
 <h2>Register for an Account</h2>
    
-<ww:form action="register" namespace="/security" theme="xhtml"
+<ww:form action="register!register" namespace="/security" theme="xhtml"
          id="registerForm" method="post" name="register" cssClass="security register">     
-  <%@ include file="/WEB-INF/jsp/pss/userCredentials.jspf" %>
+  <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jspf" %>
   <ww:submit type="submit" value="Register" name="registerButton" />
   <ww:submit type="cancel" value="Cancel"   name="cancelButton"   />
 </ww:form>
