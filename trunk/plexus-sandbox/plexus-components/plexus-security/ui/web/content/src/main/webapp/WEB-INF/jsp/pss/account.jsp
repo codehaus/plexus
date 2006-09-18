@@ -18,7 +18,7 @@
 
 <html>
 <head>
-  <title>Registration Page</title>
+  <title>Account Details</title>
   <ww:head/>
 </head>
 
@@ -26,12 +26,12 @@
 
 <%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jspf" %>
 
-<h2>Register for an Account</h2>
+<h2>Account Details</h2>
    
-<ww:form action="register!register" namespace="/security" theme="xhtml"
+<ww:form action="account!submit" namespace="/security" theme="xhtml"
          id="registerForm" method="post" name="register" cssClass="security register">     
   <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jspf" %>
-  <ww:submit type="submit" value="Register" name="registerButton" />
+  <ww:submit type="submit" value="Submit"   name="submitButton" />
   <ww:submit type="cancel" value="Cancel"   name="cancelButton"   />
 </ww:form>
 
