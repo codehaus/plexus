@@ -17,8 +17,24 @@
 <%@ taglib prefix="ww" uri="/webwork"%>
 <%@ taglib prefix="pss" uri="plexusSecuritySystem"%>
 
-<ww:form cssClass="edit" action="user" name="edit" method="post" namespace="/security/admin">
+<html>
+<head>
+  <title>[Admin] User Edit</title>
+  <ww:head/>
+</head>
+
+<body>
+
+<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jspf" %>
+
+<h2>[Admin] User Edit</h2>
+
+<ww:form action="useredit!submit" namespace="/security" theme="xhtml"
+         id="userEditForm" method="post" name="useredit" cssClass="security userEdit">
   <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jspf"%>
+  <ww:checkbox label="Locked User" name="user.locked" />
+  <ww:checkbox label="Change Password Next Login" name="user.passwordChangeRequired" />
+  <ww:hidden   label="Username"    name="username" />
   <ww:submit value="Update User" />
 </ww:form>
 
@@ -29,8 +45,6 @@
     <li><em>${role}</em></li>
   </ww:iterator>
 </ul>
-
-
 
 <pss:ifAnyAuthorized permissions="grant-roles,remove-roles">
   <h2>Role Management</h2>
@@ -56,3 +70,6 @@
   </pss:ifAuthorized>
 </pss:ifAnyAuthorized>
 
+</body>
+
+</html>
