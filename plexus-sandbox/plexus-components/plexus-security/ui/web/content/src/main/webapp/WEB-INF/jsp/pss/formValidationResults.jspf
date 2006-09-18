@@ -16,25 +16,13 @@
 
 <%@ taglib prefix="ww" uri="/webwork" %>
 
-<html>
-<head>
-  <title>Registration Page</title>
-  <ww:head/>
-</head>
-
-<body>
-
-<%@ include file="/WEB-INF/jsp/pss/formValidationResults.jspf" %>
-
-<h2>Register for an Account</h2>
-   
-<ww:form action="register" namespace="/security" theme="xhtml"
-         id="registerForm" method="post" name="register" cssClass="security register">     
-  <%@ include file="/WEB-INF/jsp/pss/userCredentials.jspf" %>
-  <ww:submit type="submit" value="Register" name="registerButton" />
-  <ww:submit type="cancel" value="Cancel"   name="cancelButton"   />
-</ww:form>
-
-</body>
-
-</html>
+<div id="results">
+  <%-- This is where the "Account Created Successfully" type message goes. --%>
+  <div class="success">
+    <ww:actionmessage />
+  </div>
+  <%-- This is where errors from the action and other non-form field specific errors appear. --%>
+  <div class="errors">
+    <ww:actionerror />
+  </div>
+</div>

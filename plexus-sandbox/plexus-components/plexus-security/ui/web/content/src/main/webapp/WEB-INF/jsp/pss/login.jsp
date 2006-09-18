@@ -24,26 +24,16 @@
 
 <body onload="javascript:document.forms['login'].username.focus();">
 
-<div id="contentArea">
-    
-  <h2>Login</h2>
+<h2>Login</h2>
 
-<div id="results">
-  <%-- This is where the "Account Created Successfully" type message goes. --%>
-  <div class="success">
-    <ww:actionmessage />
-  </div>
-  <%-- This is where errors from the action and other non-form field specific errors appear. --%>
-  <div class="errors">
-    <ww:actionerror />
-  </div>
-</div>
+<%@ include file="/WEB-INF/jsp/pss/formValidationResults.jspf" %>
 
 <ww:form action="login!login" namespace="/security" theme="xhtml" 
          id="loginForm" method="post" name="login" cssClass="security login">
   <ww:textfield label="Username" name="username" size="30" required="true" />
   <ww:password  label="Password" name="password" size="20" required="true" />
-  <ww:submit value="Login"/>
+  <ww:submit type="submit" value="Login" name="submitButton" />
+  <ww:submit type="button" value="Cancel" name="cancelButton" />
 </ww:form>
 
 <%-- TODO: Figure out how to auto-focus to first field --%>
@@ -52,22 +42,20 @@
   <%--
   <li>
      Forgot your Username? 
-     <ww:url id="forgottenAccount" action="pssFindAccount" />
+     <ww:url id="forgottenAccount" action="findAccount" />
      <ww:a href="%{forgottenAccount}">Email me my account information.</ww:a>
   </li>
   <li>
      Forgot your Password? 
-     <ww:url id="forgottenPassword" action="pssResetPassword" />
+     <ww:url id="forgottenPassword" action="resetPassword" />
      <ww:a href="%{forgottenPassword}">Request a password reset.</ww:a>
   </li>
     --%>
   <li>
     Need an Account?
-    <ww:url id="registerUrl" action="pssRegister" />
+    <ww:url id="registerUrl" action="register" />
     <ww:a href="%{registerUrl}">Register!</ww:a>
 </ul>
-
-</div>
 
 </body>
 
