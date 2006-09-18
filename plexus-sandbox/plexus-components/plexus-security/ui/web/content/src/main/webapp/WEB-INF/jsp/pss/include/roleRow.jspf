@@ -15,6 +15,7 @@
   --%>
 
 <%@ taglib prefix="ww" uri="/webwork"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
   <td>
     <c:out value="${role.name}" />

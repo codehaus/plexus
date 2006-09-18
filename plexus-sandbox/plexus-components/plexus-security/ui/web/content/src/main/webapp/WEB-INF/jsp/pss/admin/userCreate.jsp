@@ -15,6 +15,7 @@
   --%>
 
 <%@ taglib prefix="ww" uri="/webwork"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
 <head>
@@ -24,13 +25,13 @@
 
 <body>
 
-<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jspf" %>
+<c:import url="/WEB-INF/jsp/pss/include/formValidationResults.jspf" />
 
 <h2>[Admin] User Create</h2>
 
 <ww:form action="usercreate!submit" namespace="/security" theme="xhtml"
          id="userCreateForm" method="post" name="usercreate" cssClass="security userCreate">
-  <%@ include file="/WEB-INF/jsp/security/userCredentials.jspf"%>
+  <c:import url="/WEB-INF/jsp/pss/include/userCredentials.jspf" />
   <ww:submit value="Create User" />
 </ww:form>
 

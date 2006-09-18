@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright 2005-2006 The Apache Software Foundation.
+  ~ Copyright 2005-2006 The Codehaus.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
   --%>
 
 <%@ taglib prefix="ww" uri="/webwork" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
 <head>
@@ -26,7 +27,7 @@
 
 <h2>Login</h2>
 
-<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jspf" %>
+<c:import url="/WEB-INF/jsp/pss/include/formValidationResults.jspf" />
 
 <ww:form action="login!login" namespace="/security" theme="xhtml" 
          id="loginForm" method="post" name="login" cssClass="security login">
@@ -55,6 +56,7 @@
     Need an Account?
     <ww:url id="registerUrl" action="register" />
     <ww:a href="%{registerUrl}">Register!</ww:a>
+  </li>
 </ul>
 
 </body>
