@@ -8,7 +8,7 @@
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.security.authentication.Authenticator</role>
-          <role-hint>memory</role-hint>
+          <role-hint>user-manager</role-hint>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.security.authorization.Authorizer</role>
@@ -16,7 +16,7 @@
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.security.user.UserManager</role>
-          <role-hint>memory</role-hint>
+          <role-hint>jdo</role-hint>
         </requirement>
       </requirements>
     </component>
