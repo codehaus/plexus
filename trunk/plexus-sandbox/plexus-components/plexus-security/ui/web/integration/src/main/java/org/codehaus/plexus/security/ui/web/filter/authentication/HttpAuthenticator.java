@@ -23,6 +23,8 @@ import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
+import org.codehaus.plexus.security.policy.AccountLockedException;
+import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.user.User;
@@ -55,9 +57,11 @@ public abstract class HttpAuthenticator
 
     /**
      * The Public Face of the Authenticator.
+     * @throws MustChangePasswordException 
+     * @throws AccountLockedException 
      */
     public AuthenticationResult authenticate( AuthenticationDataSource source )
-        throws AuthenticationException
+        throws AuthenticationException, AccountLockedException, MustChangePasswordException
     {
         try
         {
@@ -90,12 +94,24 @@ public abstract class HttpAuthenticator
     public void authenticate( HttpServletRequest request, HttpServletResponse response )
         throws AuthenticationException
     {
-        AuthenticationResult result = getAuthenticationResult( request, response, null );
-
-        if ( ( result == null ) || ( !result.isAuthenticated() ) )
+        try
         {
-            throw new HttpAuthenticationException( "You are not authenticated." );
+            AuthenticationResult result = getAuthenticationResult( request, response, null );
+            
+            if ( ( result == null ) || ( !result.isAuthenticated() ) )
+            {
+                throw new HttpAuthenticationException( "You are not authenticated." );
+            }
         }
+        catch ( AccountLockedException e )
+        {
+            throw new HttpAuthenticationException( "Your account is locked." );
+        }
+        catch ( MustChangePasswordException e )
+        {
+            throw new HttpAuthenticationException( "You must change your password." );
+        }
+
     }
 
     /**
@@ -119,10 +135,12 @@ public abstract class HttpAuthenticator
      * @param defaultPrincipal
      * @return null if no http auth credentials, or the actual authentication result based on the credentials.
      * @throws AuthenticationException
+     * @throws MustChangePasswordException 
+     * @throws AccountLockedException 
      */
     public abstract AuthenticationResult getAuthenticationResult( HttpServletRequest request,
                                                                   HttpServletResponse response, String defaultPrincipal )
-        throws AuthenticationException;
+        throws AuthenticationException, AccountLockedException, MustChangePasswordException;
     
     public Map getContextSession()
     {

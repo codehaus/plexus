@@ -4,12 +4,12 @@ import org.codehaus.plexus.security.policy.PasswordEncoder;
 import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
+import org.codehaus.plexus.security.ui.web.WebSecurityConstants;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.security.SecurityPermission;
 import java.util.Iterator;
 
 /*
@@ -59,8 +59,6 @@ public class PasswordAction
     // Action Parameters
     // ------------------------------------------------------------------
 
-    private String username;
-    
     private String existingPassword;
 
     private String newPassword;
@@ -70,8 +68,8 @@ public class PasswordAction
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
-
-    public String input()
+    
+    public String show()
     {
         return INPUT;
     }
@@ -98,7 +96,7 @@ public class PasswordAction
         User user;
         try
         {
-            user = manager.findUser( username );
+            user = getSessionUser();
             securityPolicy.validatePassword( user );
         }
         catch ( PasswordRuleViolationException e )
@@ -116,11 +114,6 @@ public class PasswordAction
             }
             return ERROR;
         }
-        catch ( UserNotFoundException e )
-        {
-            addActionError( "User '" + username + "' not found." );
-            return ERROR;
-        }
 
         if ( hasActionErrors() || hasFieldErrors() )
         {
@@ -134,10 +127,25 @@ public class PasswordAction
         if ( encoder.isPasswordValid( user.getEncodedPassword(), encodedPassword ) )
         {
             // We can save the new password.
-            
+            try
+            {
+                manager.updateUser( user );
+            }
+            catch ( UserNotFoundException e )
+            {
+                addActionError( "Unable to update user '" + user.getUsername() + "' not found." );
+                addActionError( "Likely occurs because an Administrator deleted your account." );
+                
+                return ERROR;
+            }
         }
         
         return SUCCESS;
+    }
+    
+    private User getSessionUser()
+    {
+        return (User) session.get( WebSecurityConstants.USER_KEY );
     }
 
     // ------------------------------------------------------------------
@@ -172,15 +180,5 @@ public class PasswordAction
     public void setNewPasswordConfirm( String newPasswordConfirm )
     {
         this.newPasswordConfirm = newPasswordConfirm;
-    }
-
-    public String getUsername()
-    {
-        return username;
-    }
-
-    public void setUsername( String username )
-    {
-        this.username = username;
     }
 }

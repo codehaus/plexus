@@ -108,7 +108,21 @@ public interface UserSecurityPolicy
     public boolean isEnabled();
     
     /**
-     * Change the password of a user.
+     * Sets the policy of how long a password will be valid until it expires.
+     * 
+     * @param passwordExpiry the number of days until a password expires. (or -1 to disable)
+     */
+    public void setPasswordExpirationDays( int passwordExpiry );
+    
+    /**
+     * Gets the policy of how long a password will be valid until it expires.
+     * 
+     * @return the number of days until a password expires. (or -1 for disabled)
+     */
+    public int getPasswordExpirationDays();
+    
+    /**
+     * Extension Point - Change the password of a user.
      * 
      * This method does not check if a user is allowed to change his/her password.
      * Any kind of authorization checks for password change allowed on guest or 
@@ -119,7 +133,24 @@ public interface UserSecurityPolicy
      * 
      * @param user the user password to validate, remember, and encode.
      */
-    public void changeUserPassword( User user );
+    public void extensionChangePassword( User user )
+        throws PasswordRuleViolationException;
+    
+    /**
+     * Extension Point - Test User for Password Expiration.
+     * 
+     * @param user the user to test password expiration against.
+     */
+    public void extensionPasswordExpiration( User user )
+        throws MustChangePasswordException;
+
+    /**
+     * Extension Point - Test if user has excessive logins
+     * 
+     * @param user the user to test excessive logins against.
+     */
+    public void extensionExcessiveLoginAttempts( User user )
+        throws AccountLockedException;
 
     /**
      * Validate the incoming {@link User#getPassword()} against the specified

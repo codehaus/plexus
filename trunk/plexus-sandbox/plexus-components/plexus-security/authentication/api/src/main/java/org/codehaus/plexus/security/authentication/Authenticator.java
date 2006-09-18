@@ -16,6 +16,9 @@ package org.codehaus.plexus.security.authentication;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.policy.AccountLockedException;
+import org.codehaus.plexus.security.policy.MustChangePasswordException;
+
 /**
  * Authenticator:
  *

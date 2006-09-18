@@ -16,11 +16,12 @@ package org.codehaus.plexus.security.authentication.user;
  * limitations under the License.
  */
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.security.authentication.AccountLockedException;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
+import org.codehaus.plexus.security.policy.AccountLockedException;
+import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.policy.PasswordEncoder;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
@@ -56,10 +57,13 @@ public class UserManagerAuthenticator
     }
 
     /**
+     * @throws org.codehaus.plexus.security.policy.AccountLockedException 
+     * @throws MustChangePasswordException 
+     * @throws PolicyViolationException 
      * @see org.codehaus.plexus.security.authentication.Authenticator#authenticate(org.codehaus.plexus.security.authentication.AuthenticationDataSource)
      */
     public AuthenticationResult authenticate( AuthenticationDataSource ds )
-        throws AuthenticationException
+        throws AuthenticationException, AccountLockedException, MustChangePasswordException
     {
         boolean authenticationSuccess = false;
         String username = null;
@@ -79,6 +83,11 @@ public class UserManagerAuthenticator
                 throw new AccountLockedException( "Account " + ds.getUsername() + " is locked.", user );
             }
             
+            if (user.isPasswordChangeRequired())
+            {
+                throw new MustChangePasswordException( "User " + ds.getUsername() + " must change their password." );
+            }
+            
             PasswordEncoder encoder = securityPolicy.getPasswordEncoder();
             getLogger().debug( "PasswordEncoder: " + encoder.getClass().getName() );
             
@@ -86,6 +95,8 @@ public class UserManagerAuthenticator
             if ( isPasswordValid )
             {
                 getLogger().debug( "User " + ds.getUsername() + " provided a valid password" );
+                
+                securityPolicy.extensionPasswordExpiration( user );
                 
                 authenticationSuccess = true;
                 user.setCountFailedLoginAttempts( 0 );
@@ -97,16 +108,15 @@ public class UserManagerAuthenticator
             {
                 getLogger().warn( "Password is Invalid for user " + ds.getUsername() + "." );
                 
-                int attempt = user.getCountFailedLoginAttempts();
-                attempt++;
-                user.setCountFailedLoginAttempts( attempt );
-                
-                if( attempt >= securityPolicy.getLoginAttemptCount() )
+                try
                 {
-                    // TODO write exception here.
+                    securityPolicy.extensionExcessiveLoginAttempts( user );
+                }
+                finally
+                {
+                    userManager.updateUser( user );
                 }
                 
-                userManager.updateUser( user );
                 return new AuthenticationResult( false, ds.getUsername(), null );
             }
         }
