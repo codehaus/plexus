@@ -43,9 +43,8 @@
     <action name="login" class="pss-login" method="show">
       <result name="error">/WEB-INF/jsp/pss/login.jspf</result>
       <!-- [CONFIGURABLE] Set this result to the page to display on successful login, or a click on cancel. -->
-      <result name="success">/WEB-INF/jsp/pss/login.jspf</result>      
-      <interceptor-ref name="basicStack"/>
-      <result name="input">/WEB-INF/jsp/pss/login.jspf</result>
+      <result name="success">/WEB-INF/jsp/pss/login.jsp</result>      
+      <result name="input">/WEB-INF/jsp/pss/login.jsp</result>
     </action>
 
     <action name="logout" class="pss-logout" method="show">
