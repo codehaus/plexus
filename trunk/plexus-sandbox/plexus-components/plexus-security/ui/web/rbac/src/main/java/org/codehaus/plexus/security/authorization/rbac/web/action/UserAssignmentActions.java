@@ -19,9 +19,7 @@ package org.codehaus.plexus.security.authorization.rbac.web.action;
 
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.security.rbac.RbacStoreException;
 import org.codehaus.plexus.security.rbac.UserAssignment;
-import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 import java.util.ArrayList;
@@ -35,7 +33,7 @@ import java.util.List;
  *
  * @plexus.component
  *   role="com.opensymphony.xwork.Action"
- *   role-hint="plexusSecurityUserAssignment"
+ *   role-hint="pss-user-assignments"
  */
 public class UserAssignmentActions
     extends PlexusActionSupport
@@ -53,41 +51,41 @@ public class UserAssignmentActions
 
     private List availableRoles;
 
-    public String display()
-        throws RbacActionException
+    public String assignedRoles()
     {
         try
         {
-            principal = ((User)session.get( "user" )).getPrincipal().toString();
-
             if ( principal != null && manager.userAssignmentExists( principal ) )
             {
-                getLogger().info( "recovering assigned roles" );
                 assignedRoles = new ArrayList( manager.getAssignedRoles( principal ) );
-                availableRoles = new ArrayList( manager.getUnassignedRoles( principal ) );
             }
             else
             {
-                getLogger().info( "new assigned roles" );
                 assignedRoles = new ArrayList();
-                availableRoles = manager.getAllAssignableRoles();
             }
-
-            getLogger().info( "assigned roles: " + assignedRoles.size() );
-            getLogger().info( "available roles: " + availableRoles.size() );
-        }
-        catch ( RbacStoreException  se )
-        {
-            throw new RbacActionException( se );
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            throw new RbacActionException( ne );
+            addActionError( "unable to retrieve assigned roles for principal " + principal );
+            return ERROR;
         }
+
         return SUCCESS;
     }
 
-    public String assignRole()
+    public String availableRoles()
+    {
+        availableRoles = new ArrayList( manager.getAllRoles() );
+
+        if ( availableRoles == null )
+        {
+            availableRoles = new ArrayList();
+        }
+
+        return SUCCESS;
+    }
+
+    public String grantRole()
         throws RbacActionException
     {
         try
