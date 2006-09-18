@@ -28,7 +28,8 @@
     <default-interceptor-ref name="securedStack"/>
 
     <global-results>
-      <result name="security-success">/WEB-INF/jsp/mainpage.jsp</result>
+      <result name="security-login-success" type="redirect-action">main</result>
+      <result name="security-login-cancel" type="redirect-action">main</result>
       <result name="error">/WEB-INF/jsp/generalError.jsp</result>
       <result name="admin-account-needed">/WEB-INF/jsp/alert.jsp</result>
       <result name="requires-authentication">/WEB-INF/jsp/alert.jsp</result>
