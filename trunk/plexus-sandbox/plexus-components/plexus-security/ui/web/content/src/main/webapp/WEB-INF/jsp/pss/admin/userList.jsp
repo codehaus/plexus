@@ -57,7 +57,8 @@
 </table>
 
 <div class="buttonbar">
-  <ww:form cssClass="buttonbar" action="userCreate" method="post" namespace="/security">
+  <ww:form action="usercreate!show" namespace="/security" theme="xhtml"
+           id="buttonBar" method="post" name="buttonbar" cssClass="security buttonbar">
     <ww:submit value="Create User" />
   </ww:form>
 </div>

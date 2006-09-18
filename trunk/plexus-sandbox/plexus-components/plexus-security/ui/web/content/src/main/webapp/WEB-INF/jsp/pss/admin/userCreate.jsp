@@ -16,7 +16,24 @@
 
 <%@ taglib prefix="ww" uri="/webwork"%>
 
-<ww:form cssClass="create" action="user" name="create" method="post" namespace="/security/admin">
+<html>
+<head>
+  <title>[Admin] User Create</title>
+  <ww:head/>
+</head>
+
+<body>
+
+<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jspf" %>
+
+<h2>[Admin] User Create</h2>
+
+<ww:form action="usercreate!submit" namespace="/security" theme="xhtml"
+         id="userCreateForm" method="post" name="usercreate" cssClass="security userCreate">
   <%@ include file="/WEB-INF/jsp/security/userCredentials.jspf"%>
   <ww:submit value="Create User" />
 </ww:form>
+
+</body>
+
+</html>
