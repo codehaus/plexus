@@ -29,6 +29,7 @@ import java.util.List;
  * @plexus.component
  *   role="com.opensymphony.xwork.Action"
  *   role-hint="plexusSecuritySummary"
+ * @deprecated will be removed before 1.0
  */
 public class SummaryActions
     extends PlexusActionSupport

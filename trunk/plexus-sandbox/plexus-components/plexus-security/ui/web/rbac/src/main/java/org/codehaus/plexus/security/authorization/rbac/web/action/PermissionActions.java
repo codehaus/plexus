@@ -32,6 +32,7 @@ import java.util.List;
  * @version $Id:$
  * @plexus.component role="com.opensymphony.xwork.Action"
  * role-hint="plexusSecurityPermission"
+ * @deprecated will be removed before version 1.0
  */
 public class PermissionActions
     extends PlexusActionSupport
