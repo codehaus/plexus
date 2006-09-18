@@ -16,8 +16,7 @@ package org.codehaus.plexus.security.example.web.action;
  * limitations under the License.
  */
 
-import com.opensymphony.xwork.ActionContext;
-
+import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
@@ -33,10 +32,24 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 public class MainAction
     extends PlexusActionSupport
 {
+    /**
+     * @plexus.requirement
+     */
+    private SecuritySystem securitySystem;
+
     public String show()
     {
-        session.put("action_context", ActionContext.getContext());
-        
+        if ( securitySystem == null )
+        {
+            session.put( "SecuritySystemWARNING", "SecuritySystem is null!" );
+        }
+        else
+        {
+            session.put( "security_id_authenticator", securitySystem.getAuthenticatorId() );
+            session.put( "security_id_authorizor", securitySystem.getAuthorizerId() );
+            session.put( "security_id_user_management", securitySystem.getUserManagementId() );
+        }
+
         return SUCCESS;
     }
 }
