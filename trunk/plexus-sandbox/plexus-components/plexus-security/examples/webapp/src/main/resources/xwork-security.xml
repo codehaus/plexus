@@ -29,6 +29,8 @@
 
     <interceptors>
       <interceptor name="pssEnvCheck" class="pssEnvironmentCheckInterceptor"/>
+      <!-- TODO: Change back to plexus role-hint when we can get it working ... -->
+      <!-- <interceptor name="pssSecureActions" class="org.codehaus.plexus.security.authorization.rbac.web.interceptor.SecureActionInterceptor"/>  -->
       <interceptor name="pssSecureActions" class="pssSecureActionInterceptor"/>
       <interceptor-stack name="securedStack">
         <interceptor-ref name="defaultStack"/>
@@ -79,8 +81,14 @@
       -->    
     
     <action name="account" class="pss-account" method="show">
-      <result name="input">/WEB-INF/jsp/security/account.jsp</result>
-      <result name="error">/WEB-INF/jsp/security/account.jsp</result>
+      <result name="input">/WEB-INF/jsp/pss/account.jsp</result>
+      <result name="error">/WEB-INF/jsp/pss/account.jsp</result>
+      <result name="security-account-success" type="security-external">
+        <param name="externalResult">security-account-success</param>
+      </result>      
+      <result name="security-account-cancel" type="security-external">
+        <param name="externalResult">security-account-cancel</param>
+      </result>      
     </action>
     
     
@@ -105,19 +113,19 @@
     </action>
     
     <action name="userlist" class="pss-admin-user-list" method="show">
-      <result name="input">/WEB-INF/jsp/security/admin/userList.jsp</result>
-      <result name="success">/WEB-INF/jsp/security/admin/userList.jsp</result>
+      <result name="input">/WEB-INF/jsp/pss/admin/userList.jsp</result>
+      <result name="success">/WEB-INF/jsp/pss/admin/userList.jsp</result>
     </action>
     
     <action name="useredit" class="pss-admin-user-edit" method="edit">
-      <result name="input">/WEB-INF/jsp/security/admin/userEdit.jsp</result>
-      <result name="error">/WEB-INF/jsp/security/admin/userEdit.jsp</result>
+      <result name="input">/WEB-INF/jsp/pss/admin/userEdit.jsp</result>
+      <result name="error">/WEB-INF/jsp/pss/admin/userEdit.jsp</result>
       <result name="success" type="redirect-action">userList</result>
     </action>
     
     <action name="usercreate" class="pss-admin-user-create" method="edit">
-      <result name="input">/WEB-INF/jsp/security/admin/userCreate.jsp</result>
-      <result name="error">/WEB-INF/jsp/security/admin/userCreate.jsp</result>
+      <result name="input">/WEB-INF/jsp/pss/admin/userCreate.jsp</result>
+      <result name="error">/WEB-INF/jsp/pss/admin/userCreate.jsp</result>
       <result name="success" type="redirect-action">userEdit</result>
     </action>
     

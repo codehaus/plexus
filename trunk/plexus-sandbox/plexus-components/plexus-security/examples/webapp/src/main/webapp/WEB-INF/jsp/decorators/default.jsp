@@ -43,6 +43,12 @@
 <div id="breadcrumbs">
   
   <div class="xright">
+  
+    <ww:if test="${sessionScope.securityAuth == true}">
+      <ww:url id="userListUrl" action="userlist" namespace="/security" includeParams="none"/>
+      <ww:a href="%{userListUrl}">User List</ww:a> | 
+    </ww:if>
+  
     <a href="http://www.codehaus.org/">Codehaus</a> |
     <a href="http://plexus.codehaus.org/">Plexus</a> 
   </div>
@@ -59,7 +65,12 @@
       Welcome, 
       <c:choose>
         <c:when test="${sessionScope.securityUser != null}">
+          <ww:url id="accountUrl" action="account" namespace="/security">
+            <ww:param name="username">${sessionScope.securityUser.username}</ww:param>
+          </ww:url>
+          <ww:a href="%{accountUrl}">
           <b>${sessionScope.securityUser.username}</b>
+          </ww:a>
         </c:when>
         <c:otherwise>
           <b>Unknown User</b>
