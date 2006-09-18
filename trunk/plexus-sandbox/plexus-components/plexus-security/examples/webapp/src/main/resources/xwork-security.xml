@@ -61,6 +61,17 @@
       </result>      
     </action>
 
+    <action name="register" class="pss-register" method="show">                  
+      <result name="input">/WEB-INF/jsp/pss/register.jsp</result>      
+      <result name="error">/WEB-INF/jsp/pss/register.jsp</result>
+      <result name="security-register-success" type="security-external">
+        <param name="externalResult">security-register-success</param>
+      </result>      
+      <result name="security-register-cancel" type="security-external">
+        <param name="externalResult">security-register-cancel</param>
+      </result>      
+    </action>
+    
     <!-- 
     <action name="statusline" class="status" method="input">
       <result name="input">/WEB-INF/jsp/security/statusline.jspf</result>
@@ -72,12 +83,6 @@
       <result name="error">/WEB-INF/jsp/security/account.jsp</result>
     </action>
     
-    <action name="register" class="pss-register" method="show">                  
-      <result name="input">/WEB-INF/jsp/pss/register.jsp</result>      
-      <result name="error">/WEB-INF/jsp/pss/register.jsp</result>
-      <!-- [CONFIGURABLE] Set this result to the page to display on successful login, or a click on cancel. -->
-      <result name="success" type="redirect">/WEB-INF/jsp/mainpage.jsp</result>
-    </action>
     
     <action name="password" class="pss-password" method="show">
       <result name="input">/WEB-INF/jsp/security/password.jsp</result>
