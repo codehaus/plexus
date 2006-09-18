@@ -171,12 +171,12 @@
       <result name="success">/WEB-INF/jsp/pss/include/removeRoles.jspf</result>
     </action>
 
-    <action name="grantRole" class="pss-user-assignment" method="grantRole">
+    <action name="grantRole" class="pss-user-assignments" method="grantRole">
       <result name="error" type="redirect-action">userlist</result>
       <result name="success" type="redirect-action">userlist</result>
     </action>
 
-    <action name="removeRole" class="pss-user-assignment" method="removeRole">
+    <action name="removeRole" class="pss-user-assignments" method="removeRole">
       <result name="error" type="redirect-action">userlist</result>
       <result name="success" type="redirect-action">userlist</result>
     </action>
