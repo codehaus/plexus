@@ -50,19 +50,19 @@ public class RoleCreateAction
      * @plexus.requirement
      */
     private RBACManager manager;
-    
+
     // ------------------------------------------------------------------
     // Action Parameters
     // ------------------------------------------------------------------
 
     private String principal;
-    
+
     private CreateRoleDetails role;
-    
+
     private SimplePermission addpermission;
-    
+
     private boolean addPermissionButton;
-    
+
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
@@ -70,27 +70,28 @@ public class RoleCreateAction
     public String show()
     {
         role = new CreateRoleDetails();
-        
+
         addpermission = new SimplePermission();
-        
+
         return INPUT;
     }
-    
+
     public String addpermission()
     {
-        if(addpermission == null)
+        if ( addpermission == null )
         {
-            addActionError("Unable to add null permission.");
+            addActionError( "Unable to add null permission." );
             return ERROR;
         }
-        
-        role.addPermission( addpermission.getName(), addpermission.getOperationName(), addpermission.getResourceIdentifier() );
-        
+
+        role.addPermission( addpermission.getName(), addpermission.getOperationName(), addpermission
+            .getResourceIdentifier() );
+
         addpermission = new SimplePermission();
-        
+
         return INPUT;
     }
-    
+
     public String submit()
     {
         if ( role == null )
@@ -103,13 +104,13 @@ public class RoleCreateAction
         {
             return addpermission();
         }
-        
+
         if ( StringUtils.isEmpty( role.getName() ) )
         {
             addActionError( "Unable to create role with empty name." );
             return ERROR;
         }
-        
+
         try
         {
             Role _role;
@@ -149,8 +150,8 @@ public class RoleCreateAction
         {
             addActionError( "Unable to get Role '" + role.getName() + "': Role not found." );
             return ERROR;
-        }        
-        
+        }
+
         return SUCCESS;
     }
 
