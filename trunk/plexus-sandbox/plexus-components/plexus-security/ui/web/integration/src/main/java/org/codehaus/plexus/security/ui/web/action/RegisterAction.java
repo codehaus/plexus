@@ -32,6 +32,15 @@ import org.codehaus.plexus.security.user.User;
 public class RegisterAction
     extends AbstractUserCredentialsAction
 {
+    private static final String REGISTER_SUCCESS = "security-register-success";
+    private static final String REGISTER_CANCEL = "security-register-cancel";
+    
+    // ------------------------------------------------------------------
+    // Plexus Component Requirements
+    // ------------------------------------------------------------------
+
+    private boolean cancelButton;
+    
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
@@ -48,6 +57,11 @@ public class RegisterAction
 
     public String register()
     {
+        if ( cancelButton )
+        {
+            return REGISTER_CANCEL;
+        }
+        
         if ( user == null )
         {
             user = new UserCredentials();
@@ -76,6 +90,16 @@ public class RegisterAction
 
         manager.addUser( u );
 
-        return SUCCESS;
+        return REGISTER_SUCCESS;
+    }
+
+    public boolean isCancelButton()
+    {
+        return cancelButton;
+    }
+
+    public void setCancelButton( boolean cancelButton )
+    {
+        this.cancelButton = cancelButton;
     }
 }
