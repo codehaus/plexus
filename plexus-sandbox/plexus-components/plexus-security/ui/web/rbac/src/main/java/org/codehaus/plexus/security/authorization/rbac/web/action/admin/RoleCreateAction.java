@@ -61,7 +61,7 @@ public class RoleCreateAction
 
     private SimplePermission addpermission;
 
-    private boolean addPermissionButton;
+    private String submitMode;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
@@ -69,9 +69,11 @@ public class RoleCreateAction
 
     public String show()
     {
-        role = new CreateRoleDetails();
-
-        addpermission = new SimplePermission();
+        if ( role == null )
+        {
+            role = new CreateRoleDetails();
+            addpermission = new SimplePermission();
+        }
 
         return INPUT;
     }
@@ -100,7 +102,7 @@ public class RoleCreateAction
             return ERROR;
         }
 
-        if ( addPermissionButton )
+        if ( StringUtils.equals( getSubmitMode(), "addPermission" ) )
         {
             return addpermission();
         }
@@ -189,14 +191,13 @@ public class RoleCreateAction
         this.addpermission = addpermission;
     }
 
-    public boolean isAddPermissionButton()
+    public String getSubmitMode()
     {
-        return addPermissionButton;
+        return submitMode;
     }
 
-    public void setAddPermissionButton( boolean addPermissionButton )
+    public void setSubmitMode( String submitMode )
     {
-        this.addPermissionButton = addPermissionButton;
+        this.submitMode = submitMode;
     }
-
 }
