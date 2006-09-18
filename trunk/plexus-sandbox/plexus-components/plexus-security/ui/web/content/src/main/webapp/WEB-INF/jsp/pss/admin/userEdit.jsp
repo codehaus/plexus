@@ -41,9 +41,16 @@
 <h2>Currently Assigned Roles</h2>
 
 <ul>
-  <ww:iterator id="role" value="edituser.assignedRoles">
-    <li><em>${role}</em></li>
-  </ww:iterator>
+<c:choose>
+  <c:when test="${!empty edituser.assignedRoles}">
+    <ww:iterator id="role" value="edituser.assignedRoles">
+      <li><em>${role}</em></li>
+    </ww:iterator>
+  </c:when>
+  <c:otherwise>
+    <li><em>No Roles Assigned (yet)</em></li>
+  </c:otherwise>
+</c:choose>
 </ul>
 
 <%--<pss:ifAnyAuthorized permissions="grant-roles,remove-roles">--%>
