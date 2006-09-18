@@ -39,9 +39,108 @@ public abstract class AbstractRBACManager
     extends AbstractLogEnabled
     implements RBACManager
 {
+    private List listeners = new ArrayList();
 
     private Resource globalResource;
 
+    public void addListener( RBACManagerListener listener )
+    {
+        if ( !listeners.contains( listener ) )
+        {
+            listeners.add( listener );
+        }
+    }
+
+    public void removeListener( RBACManagerListener listener )
+    {
+        listeners.remove( listener );
+    }
+
+    public void fireRbacInit( boolean freshdb )
+    {
+        Iterator it = listeners.iterator();
+        while ( it.hasNext() )
+        {
+            RBACManagerListener listener = (RBACManagerListener) it.next();
+            try
+            {
+                listener.rbacInit( freshdb );
+            }
+            catch ( Exception e )
+            {
+                getLogger().warn( "Unable to trigger .rbacInit( boolean ) to " + listener.getClass().getName(), e );
+            }
+        }
+    }
+
+    public void fireRbacRoleSaved( Role role )
+    {
+        Iterator it = listeners.iterator();
+        while ( it.hasNext() )
+        {
+            RBACManagerListener listener = (RBACManagerListener) it.next();
+            try
+            {
+                listener.rbacRoleSaved( role );
+            }
+            catch ( Exception e )
+            {
+                getLogger().warn( "Unable to trigger .rbacRoleSaved( Role ) to " + listener.getClass().getName(), e );
+            }
+        }
+    }
+    
+    public void fireRbacRoleRemoved( Role role )
+    {
+        Iterator it = listeners.iterator();
+        while ( it.hasNext() )
+        {
+            RBACManagerListener listener = (RBACManagerListener) it.next();
+            try
+            {
+                listener.rbacRoleRemoved( role );
+            }
+            catch ( Exception e )
+            {
+                getLogger().warn( "Unable to trigger .rbacRoleRemoved( Role ) to " + listener.getClass().getName(), e );
+            }
+        }
+    }
+    
+    public void fireRbacPermissionSaved( Permission permission )
+    {
+        Iterator it = listeners.iterator();
+        while ( it.hasNext() )
+        {
+            RBACManagerListener listener = (RBACManagerListener) it.next();
+            try
+            {
+                listener.rbacPermissionSaved( permission );
+            }
+            catch ( Exception e )
+            {
+                getLogger().warn( "Unable to trigger .rbacPermissionSaved( Permission ) to " + listener.getClass().getName(), e );
+            }
+        }
+    }
+    
+    public void fireRbacPermissionRemoved( Permission permission )
+    {
+        Iterator it = listeners.iterator();
+        while ( it.hasNext() )
+        {
+            RBACManagerListener listener = (RBACManagerListener) it.next();
+            try
+            {
+                listener.rbacPermissionRemoved( permission );
+            }
+            catch ( Exception e )
+            {
+                getLogger().warn( "Unable to trigger .rbacPermissionRemoved( Permission ) to " + listener.getClass().getName(), e );
+            }
+        }
+    }    
+    
     public void removeRole( String roleName )
         throws RbacObjectNotFoundException, RbacStoreException
     {
@@ -299,12 +398,12 @@ public abstract class AbstractRBACManager
                 try
                 {
                     Role role = getRole( roleName );
-                    
+
                     if ( !roleSet.contains( roleName ) )
                     {
                         roleSet.add( roleName );
                     }
-                    
+
                     Map roleMap = getChildRoles( role );
 
                     Iterator itroles = roleMap.values().iterator();

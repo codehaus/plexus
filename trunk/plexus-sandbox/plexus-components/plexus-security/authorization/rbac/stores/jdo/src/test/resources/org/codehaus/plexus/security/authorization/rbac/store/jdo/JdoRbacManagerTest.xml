@@ -17,7 +17,7 @@
     <component>
       <role>org.codehaus.plexus.logging.LoggerManager</role>
       <implementation>org.codehaus.plexus.logging.log4j.Log4JLoggerManager</implementation>
-      <lifecycle-handler>basic</lifecycle-handler>
+      <!--<lifecycle-handler>basic</lifecycle-handler> -->
 
       <configuration>
         <threshold>DEBUG</threshold>
@@ -31,6 +31,14 @@
           </appender>
         </appenders>
         <levels>
+          <level>
+            <hierarchy>org.codehaus.plexus.security</hierarchy>
+            <level>DEBUG</level>
+          </level>
+          <level>
+            <hierarchy>org.codehaus.plexus.jdo</hierarchy>
+            <level>DEBUG</level>
+          </level>
           <level>
             <hierarchy>org.apache.maven.continuum.project.builder.ContinuumProjectBuilder</hierarchy>
             <level>DEBUG</level>

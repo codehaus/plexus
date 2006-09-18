@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.authorization.rbac.store.jdo;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoOperation;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoPermission;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoResource;
@@ -24,6 +26,7 @@ import org.codehaus.plexus.security.authorization.rbac.jdo.JdoUserAssignment;
 import org.codehaus.plexus.security.rbac.AbstractRBACManager;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
+import org.codehaus.plexus.security.rbac.RBACManagerListener;
 import org.codehaus.plexus.security.rbac.RBACObjectAssertions;
 import org.codehaus.plexus.security.rbac.RbacObjectInvalidException;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
@@ -31,7 +34,6 @@ import org.codehaus.plexus.security.rbac.RbacStoreException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
-import org.codehaus.plexus.util.StringUtils;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -54,6 +56,7 @@ import javax.jdo.Transaction;
  */
 public class JdoRbacManager
     extends AbstractRBACManager
+    implements RBACManagerListener, Initializable
 {
     /**
      * @plexus.requirement
@@ -522,4 +525,34 @@ public class JdoRbacManager
         jdo.removeObject( userAssignment );
     }
 
+    public void initialize()
+        throws InitializationException
+    {
+        jdo.setListener( this );
+    }
+
+    public void rbacInit( boolean freshdb )
+    {
+        fireRbacInit( freshdb );
+    }
+
+    public void rbacPermissionRemoved( Permission permission )
+    {
+        fireRbacPermissionRemoved( permission );        
+    }
+
+    public void rbacPermissionSaved( Permission permission )
+    {
+        fireRbacPermissionSaved( permission );
+    }
+
+    public void rbacRoleRemoved( Role role )
+    {
+        fireRbacRoleRemoved( role );
+    }
+
+    public void rbacRoleSaved( Role role )
+    {
+        fireRbacRoleSaved( role );
+    }
 }

@@ -19,8 +19,12 @@ package org.codehaus.plexus.security.authorization.rbac.store.jdo;
 import org.codehaus.plexus.jdo.JdoFactory;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.security.authorization.rbac.jdo.JdoRole;
+import org.codehaus.plexus.security.rbac.Permission;
+import org.codehaus.plexus.security.rbac.RBACManagerListener;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.RbacStoreException;
+import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.PrintStream;
@@ -35,6 +39,9 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
+import javax.jdo.listener.DeleteLifecycleListener;
+import javax.jdo.listener.InstanceLifecycleEvent;
+import javax.jdo.listener.StoreLifecycleListener;
 import javax.jdo.spi.Detachable;
 import javax.jdo.spi.PersistenceCapable;
 
@@ -48,7 +55,7 @@ import javax.jdo.spi.PersistenceCapable;
  * @version $Id$
  */
 public class JdoTool
-    implements Initializable
+    implements Initializable, DeleteLifecycleListener, StoreLifecycleListener
 {
     /**
      * @plexus.requirement
@@ -57,10 +64,14 @@ public class JdoTool
 
     private PersistenceManagerFactory pmf;
 
+    private RBACManagerListener listener;
+
     public void initialize()
         throws InitializationException
     {
         pmf = jdoFactory.getPersistenceManagerFactory();
+
+        pmf.addInstanceLifecycleListener( this, null );
     }
 
     public static void dumpObjectState( PrintStream out, Object o )
@@ -104,7 +115,23 @@ public class JdoTool
 
         pm.getFetchPlan().setMaxFetchDepth( -1 );
 
+        triggerInit();
+
         return pm;
+    }
+
+    private boolean hasTriggeredInit = false;
+
+    public void triggerInit()
+    {
+        if ( !hasTriggeredInit )
+        {
+            hasTriggeredInit = true;
+
+            List roles = getAllObjects( JdoRole.class );
+
+            listener.rbacInit( roles.isEmpty() );
+        }
     }
 
     public Object saveObject( Object object )
@@ -317,5 +344,60 @@ public class JdoTool
         {
             // ignore
         }
+    }
+
+    public RBACManagerListener getListener()
+    {
+        return listener;
+    }
+
+    public void setListener( RBACManagerListener listener )
+    {
+        this.listener = listener;
+    }
+
+    public void postDelete( InstanceLifecycleEvent evt )
+    {
+        PersistenceCapable obj = ( (PersistenceCapable) evt.getSource() );
+
+        if ( obj == null )
+        {
+            // Do not track null objects.
+            // These events are typically a product of an internal lifecycle event.
+            return;
+        }
+
+        if ( obj instanceof Role )
+        {
+            listener.rbacRoleRemoved( (Role) obj );
+        }
+        else if ( obj instanceof Permission )
+        {
+            listener.rbacPermissionRemoved( (Permission) obj );
+        }
+    }
+
+    public void preDelete( InstanceLifecycleEvent evt )
+    {
+        // ignore
+    }
+
+    public void postStore( InstanceLifecycleEvent evt )
+    {
+        PersistenceCapable obj = ( (PersistenceCapable) evt.getSource() );
+
+        if ( obj instanceof Role )
+        {
+            listener.rbacRoleSaved( (Role) obj );
+        }
+        else if ( obj instanceof Permission )
+        {
+            listener.rbacPermissionSaved( (Permission) obj );
+        }
+    }
+
+    public void preStore( InstanceLifecycleEvent evt )
+    {
+        // ignore
     }
 }
