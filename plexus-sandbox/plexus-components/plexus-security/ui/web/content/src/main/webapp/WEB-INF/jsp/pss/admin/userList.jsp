@@ -16,6 +16,18 @@
 
 <%@ taglib prefix="ww" uri="/webwork"%>
 
+<html>
+<head>
+  <title>[Admin] User List</title>
+  <ww:head/>
+</head>
+
+<body>
+
+<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jspf" %>
+
+<h2>[Admin] User List</h2>
+
 <table border="1" cellspacing="0" cellpadding="2" width="80%">
   <thead>
     <tr>
@@ -29,7 +41,9 @@
 
     <ww:iterator value="userList">
       <tr>
-        <td><ww:property value="username" /></td>
+        <td><!--  TODO: link the username to user edit action. -->
+        <ww:property value="username" />
+        </td>
         <td><ww:property value="fullName" /></td>
         <td><ww:property value="email" /></td>
         <td><ww:property value="locked" /></td>
@@ -40,7 +54,12 @@
 </table>
 
 <div class="buttonbar">
-  <ww:form cssClass="buttonbar" action="user" name="create" method="post" namespace="/security/admin">
+  <ww:form cssClass="buttonbar" action="userCreate" method="post" namespace="/security">
     <ww:submit value="Create User" />
   </ww:form>
 </div>
+
+
+</body>
+
+</html>
