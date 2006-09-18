@@ -25,10 +25,12 @@ import org.codehaus.plexus.security.user.UserManager;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class UserCredentials
+public abstract class UserCredentials
 {
+    // Potentially Editable Field.
     private String username;
 
+    // Editable Fields.
     private String password;
 
     private String confirmPassword;
@@ -36,7 +38,14 @@ public class UserCredentials
     private String fullName;
 
     private String email;
-
+    
+    // Display Only Fields.
+    private String timestampAccountCreation;
+    
+    private String timestampLastLogin;
+    
+    private String timestampLastPasswordChange;
+    
     public User createUser( UserManager um )
     {
         User user = um.createUser( username, fullName, email );
@@ -96,4 +105,35 @@ public class UserCredentials
         this.username = username;
     }
 
+    public abstract boolean isEdit();
+
+    public String getTimestampAccountCreation()
+    {
+        return timestampAccountCreation;
+    }
+
+    public String getTimestampLastLogin()
+    {
+        return timestampLastLogin;
+    }
+
+    public String getTimestampLastPasswordChange()
+    {
+        return timestampLastPasswordChange;
+    }
+
+    public void setTimestampAccountCreation( String timestampAccountCreation )
+    {
+        this.timestampAccountCreation = timestampAccountCreation;
+    }
+
+    public void setTimestampLastLogin( String timestampLastLogin )
+    {
+        this.timestampLastLogin = timestampLastLogin;
+    }
+
+    public void setTimestampLastPasswordChange( String timestampLastPasswordChange )
+    {
+        this.timestampLastPasswordChange = timestampLastPasswordChange;
+    }
 }

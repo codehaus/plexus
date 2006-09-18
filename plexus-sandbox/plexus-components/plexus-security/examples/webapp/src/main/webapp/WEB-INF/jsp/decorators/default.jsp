@@ -55,7 +55,7 @@
       <ww:a href="%{loginUrl}">Login</ww:a> - <ww:a href="%{registerUrl}">Register</ww:a>
     </ww:if>
     <ww:else>
-      <ww:url id="logoutUrl" action="logout" namespace="/" includeParams="none"/>
+      <ww:url id="logoutUrl" action="logout" namespace="/security" includeParams="none"/>
       Welcome, 
       <c:choose>
         <c:when test="${sessionScope.securityUser != null}">

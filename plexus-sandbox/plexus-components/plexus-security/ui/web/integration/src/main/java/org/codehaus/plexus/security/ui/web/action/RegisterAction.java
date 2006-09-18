@@ -16,7 +16,7 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.ui.web.model.UserCredentials;
+import org.codehaus.plexus.security.ui.web.model.CreateUserCredentials;
 import org.codehaus.plexus.security.user.User;
 
 /**
@@ -41,6 +41,8 @@ public class RegisterAction
 
     private boolean cancelButton;
     
+    private CreateUserCredentials user;
+    
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
@@ -49,7 +51,7 @@ public class RegisterAction
     {
         if ( user == null )
         {
-            user = new UserCredentials();
+            user = new CreateUserCredentials();
         }
 
         return INPUT;
@@ -64,10 +66,12 @@ public class RegisterAction
         
         if ( user == null )
         {
-            user = new UserCredentials();
+            user = new CreateUserCredentials();
             addActionError( "Invalid user credentials." );
             return ERROR;
         }
+        
+        internalUser = user;
         
         validateCredentialsStrict();
 
@@ -93,6 +97,10 @@ public class RegisterAction
         return REGISTER_SUCCESS;
     }
 
+    // ------------------------------------------------------------------
+    // Parameter Accessor Methods
+    // ------------------------------------------------------------------
+
     public boolean isCancelButton()
     {
         return cancelButton;
@@ -101,5 +109,15 @@ public class RegisterAction
     public void setCancelButton( boolean cancelButton )
     {
         this.cancelButton = cancelButton;
+    }
+
+    public CreateUserCredentials getUser()
+    {
+        return user;
+    }
+
+    public void setUser( CreateUserCredentials user )
+    {
+        this.user = user;
     }
 }

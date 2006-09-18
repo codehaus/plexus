@@ -54,7 +54,7 @@ public abstract class AbstractUserCredentialsAction
     // Action Parameters
     // ------------------------------------------------------------------
 
-    protected UserCredentials user;
+    protected UserCredentials internalUser;
     
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
@@ -62,28 +62,22 @@ public abstract class AbstractUserCredentialsAction
 
     public void validateCredentialsLoose()
     {
-        System.out.println("user.username        = [" + user.getUsername() + "]" );
-        System.out.println("user.fullName        = [" + user.getFullName() + "]" );
-        System.out.println("user.email           = [" + user.getEmail() + "]" );
-        System.out.println("user.password        = [" + user.getPassword() + "]" );
-        System.out.println("user.confirmPassword = [" + user.getConfirmPassword() + "]" );
-        
-        if ( StringUtils.isEmpty( user.getUsername() ) )
+        if ( StringUtils.isEmpty( internalUser.getUsername() ) )
         {
             addFieldError( "user.username", "User Name is required." );
         }
 
-        if ( StringUtils.isEmpty( user.getFullName() ) )
+        if ( StringUtils.isEmpty( internalUser.getFullName() ) )
         {
             addFieldError( "user.fullname", "Full Name is required." );
         }
 
-        if ( StringUtils.isEmpty( user.getEmail() ) )
+        if ( StringUtils.isEmpty( internalUser.getEmail() ) )
         {
             addFieldError( "user.email", "Email Address is required." );
         }
 
-        if ( !StringUtils.equals( user.getPassword(), user.getConfirmPassword() ) )
+        if ( !StringUtils.equals( internalUser.getPassword(), internalUser.getConfirmPassword() ) )
         {
             addFieldError( "user.confirmPassword", "Passwords do not match." );
         }
@@ -96,9 +90,9 @@ public abstract class AbstractUserCredentialsAction
         // TODO: Figure out email validation.
         // EmailValidator emailvalidator = new EmailValidator();
         // emailvalidator.setFieldName( "user.email" );
-        // emailvalidator.validate( user.getEmail() );
+        // emailvalidator.validate( internalUser.getEmail() );
 
-        User tmpuser = user.createUser( manager );
+        User tmpuser = internalUser.createUser( manager );
 
         try
         {
@@ -109,26 +103,12 @@ public abstract class AbstractUserCredentialsAction
             processPasswordRuleViolations( e );
         }
 
-        if ( ( StringUtils.isEmpty( user.getPassword() ) ) )
+        if ( ( StringUtils.isEmpty( internalUser.getPassword() ) ) )
         {
             addFieldError( "user.password", "Password is required." );
         }
     }
     
-    // ------------------------------------------------------------------
-    // Parameter Accessor Methods
-    // ------------------------------------------------------------------
-
-    public UserCredentials getUser()
-    {
-        return user;
-    }
-
-    public void setUser( UserCredentials user )
-    {
-        this.user = user;
-    }
-
     // ------------------------------------------------------------------
     // Internal Support Methods
     // ------------------------------------------------------------------
