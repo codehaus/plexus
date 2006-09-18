@@ -17,7 +17,7 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  */
 
 import org.codehaus.plexus.security.ui.web.action.AbstractUserCredentialsAction;
-import org.codehaus.plexus.security.ui.web.model.EditUserCredentials;
+import org.codehaus.plexus.security.ui.web.model.AdminEditUserCredentials;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
@@ -41,7 +41,7 @@ public class UserEditAction
 
     private String username;
     
-    private EditUserCredentials user;
+    private AdminEditUserCredentials user;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
@@ -69,18 +69,18 @@ public class UserEditAction
             return ERROR;
         }
         
-        internalUser = user;
-
+        
         try
         {
             User u = manager.findUser( username );
+            
             if ( u == null )
             {
                 addActionError( "Unable to operate on null user." );
                 return ERROR;
             }
 
-            user = new EditUserCredentials( u );
+            user = new AdminEditUserCredentials( u );
         }
         catch ( UserNotFoundException e )
         {
@@ -135,6 +135,8 @@ public class UserEditAction
             u.setFullName( user.getFullName() );
             u.setEmail( user.getEmail() );
             u.setPassword( user.getPassword() );
+            u.setLocked( user.isLocked() );
+            u.setPasswordChangeRequired( user.isPasswordChangeRequired() );
 
             manager.updateUser( u );
         }
@@ -161,12 +163,12 @@ public class UserEditAction
         this.username = username;
     }
 
-    public EditUserCredentials getUser()
+    public AdminEditUserCredentials getUser()
     {
         return user;
     }
 
-    public void setUser( EditUserCredentials user )
+    public void setUser( AdminEditUserCredentials user )
     {
         this.user = user;
     }

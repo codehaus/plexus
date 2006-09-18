@@ -27,6 +27,17 @@
 
 <h4>This is the example mainpage</h4>
 
+<div id="results">
+  <%-- This is where the "Account Created Successfully" type message goes. --%>
+  <div class="success">
+    <ww:actionmessage />
+  </div>
+  <%-- This is where errors from the action and other non-form field specific errors appear. --%>
+  <div class="errors">
+    <ww:actionerror />
+  </div>
+</div>
+
 <ol>
 <li>
   <ww:url id="login" action="login" namespace="/security" />
