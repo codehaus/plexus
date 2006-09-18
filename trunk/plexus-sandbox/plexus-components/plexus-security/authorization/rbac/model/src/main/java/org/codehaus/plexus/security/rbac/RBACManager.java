@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.rbac;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,10 @@ public interface RBACManager
      * Plexus Role Name
      */
     public static final String ROLE = RBACManager.class.getName();
+    
+    public void addListener( RBACManagerListener listener );
+    
+    public void removeListener( RBACManagerListener listener );
 
     // ------------------------------------------------------------------
     // Role Methods
