@@ -16,7 +16,7 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.ui.web.model.UserCredentials;
+import org.codehaus.plexus.security.ui.web.model.EditUserCredentials;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
@@ -39,6 +39,8 @@ public class AccountAction
     // ------------------------------------------------------------------
 
     private String username;
+    
+    private EditUserCredentials user;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
@@ -65,6 +67,8 @@ public class AccountAction
             addActionError( "User '" + username + "' does not exist." );
             return ERROR;
         }
+        
+        internalUser = user;
 
         try
         {
@@ -75,12 +79,7 @@ public class AccountAction
                 return ERROR;
             }
 
-            user = new UserCredentials();
-            user.setUsername( username );
-            user.setFullName( u.getFullName() );
-            user.setEmail( u.getEmail() );
-            user.setPassword( "" );
-            user.setConfirmPassword( "" );
+            user = new EditUserCredentials( u );
         }
         catch ( UserNotFoundException e )
         {
@@ -118,6 +117,8 @@ public class AccountAction
             addActionError( "User '" + username + "' does not exist." );
             return ERROR;
         }
+        
+        internalUser = user;
 
         try
         {
@@ -155,5 +156,15 @@ public class AccountAction
     public void setUsername( String username )
     {
         this.username = username;
+    }
+
+    public EditUserCredentials getUser()
+    {
+        return user;
+    }
+
+    public void setUser( EditUserCredentials user )
+    {
+        this.user = user;
     }
 }

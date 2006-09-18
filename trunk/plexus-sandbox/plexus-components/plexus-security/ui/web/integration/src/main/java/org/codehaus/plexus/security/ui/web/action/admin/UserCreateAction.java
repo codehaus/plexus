@@ -17,7 +17,7 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  */
 
 import org.codehaus.plexus.security.ui.web.action.AbstractUserCredentialsAction;
-import org.codehaus.plexus.security.ui.web.model.UserCredentials;
+import org.codehaus.plexus.security.ui.web.model.CreateUserCredentials;
 import org.codehaus.plexus.security.user.User;
 
 /**
@@ -34,6 +34,12 @@ public class UserCreateAction
     extends AbstractUserCredentialsAction
 {
     // ------------------------------------------------------------------
+    // Action Parameters
+    // ------------------------------------------------------------------
+    
+    private CreateUserCredentials user;
+    
+    // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
 
@@ -41,7 +47,7 @@ public class UserCreateAction
     {
         if ( user == null )
         {
-            user = new UserCredentials();
+            user = new CreateUserCredentials();
         }
 
         return INPUT;
@@ -51,10 +57,12 @@ public class UserCreateAction
     {
         if ( user == null )
         {
-            user = new UserCredentials();
+            user = new CreateUserCredentials( );
             addActionError( "Invalid user credentials." );
             return ERROR;
         }
+        
+        internalUser = user;
         
         validateCredentialsLoose();
 
@@ -87,5 +95,19 @@ public class UserCreateAction
         }
 
         return SUCCESS;
+    }
+
+    // ------------------------------------------------------------------
+    // Parameter Accessor Methods
+    // ------------------------------------------------------------------
+
+    public CreateUserCredentials getUser()
+    {
+        return user;
+    }
+
+    public void setUser( CreateUserCredentials user )
+    {
+        this.user = user;
     }
 }
