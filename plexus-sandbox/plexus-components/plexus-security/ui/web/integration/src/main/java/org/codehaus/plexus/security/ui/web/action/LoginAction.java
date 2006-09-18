@@ -47,8 +47,6 @@ public class LoginAction
 
     private String password;
     
-    private boolean submitBUtton;
-    
     private boolean cancelButton;
 
     // ------------------------------------------------------------------
@@ -133,5 +131,15 @@ public class LoginAction
     public void setPassword( String password )
     {
         this.password = password;
+    }
+
+    public boolean isCancelButton()
+    {
+        return cancelButton;
+    }
+
+    public void setCancelButton( boolean cancelButton )
+    {
+        this.cancelButton = cancelButton;
     }
 }
