@@ -162,7 +162,25 @@
       <result name="error">/WEB-INF/jsp/security/permissions.jsp</result>
       <result name="success" type="redirect-action">adminConsole</result>
     </action>
-    
+
+    <action name="userRolesToGrant" class="pss-user-assignments" method="availableRoles">
+      <result name="success">/WEB-INF/jsp/pss/include/grantRoles.jspf</result>
+    </action>
+
+    <action name="userRolesToRemove" class="pss-user-assignments" method="assignedRoles">
+      <result name="success">/WEB-INF/jsp/pss/include/removeRoles.jspf</result>
+    </action>
+
+    <action name="grantRole" class="pss-user-assignment" method="grantRole">
+      <result name="error" type="redirect-action">userlist</result>
+      <result name="success" type="redirect-action">userlist</result>
+    </action>
+
+    <action name="removeRole" class="pss-user-assignment" method="removeRole">
+      <result name="error" type="redirect-action">userlist</result>
+      <result name="success" type="redirect-action">userlist</result>
+    </action>
+
   </package>
   
 </xwork>
