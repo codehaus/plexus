@@ -62,11 +62,12 @@
                jpox.join-table="ROLE_PERMISSION_MAP">
           <name>permissions</name>
           <version>1.0.0</version>
-          <association stash.part="true" 
+          <association stash.part="true"
                        jpox.join="true"
-                       java.init="field" 
-                       java.generate-break="false" 
-                       java.generate-create="false" 
+                       jpox.dependent="false"
+                       java.init="field"
+                       java.generate-break="false"
+                       java.generate-create="false"
                        java.use-interface="org.codehaus.plexus.security.rbac.Permission">
             <type>JdoPermission</type>
             <multiplicity>*</multiplicity>

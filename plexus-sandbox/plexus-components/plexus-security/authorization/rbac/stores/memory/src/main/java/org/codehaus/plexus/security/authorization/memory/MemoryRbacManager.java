@@ -73,7 +73,11 @@ public class MemoryRbacManager
     {
         RBACObjectAssertions.assertValid( "Save Role", role );
 
+        triggerInit();
+        
         roles.put( role.getName(), role );
+        
+        fireRbacRoleSaved( role );
 
         if ( role.getPermissions() != null )
         {
@@ -116,6 +120,8 @@ public class MemoryRbacManager
     public Role getRole( String roleName )
         throws RbacObjectNotFoundException
     {
+        triggerInit();
+        
         assertRoleExists( roleName );
 
         return (Role) roles.get( roleName );
@@ -127,6 +133,8 @@ public class MemoryRbacManager
         RBACObjectAssertions.assertValid( "Remove Role", role );
 
         assertRoleExists( role.getName() );
+        
+        fireRbacRoleRemoved( role );
 
         roles.remove( role.getName() );
     }
@@ -134,6 +142,8 @@ public class MemoryRbacManager
     public List getAllRoles()
         throws RbacStoreException
     {
+        triggerInit();
+        
         return Collections.unmodifiableList( new ArrayList( roles.values() ) );
     }
 
@@ -144,6 +154,8 @@ public class MemoryRbacManager
     public Operation saveOperation( Operation operation )
         throws RbacStoreException
     {
+        triggerInit();
+        
         RBACObjectAssertions.assertValid( "Save Operation", operation );
 
         operations.put( operation.getName(), operation );
@@ -153,9 +165,14 @@ public class MemoryRbacManager
     public Permission savePermission( Permission permission )
         throws RbacStoreException
     {
+        triggerInit();
+        
         RBACObjectAssertions.assertValid( "Save Permission", permission );
 
         permissions.put( permission.getName(), permission );
+        
+        fireRbacPermissionSaved( permission );
+        
         saveOperation( permission.getOperation() );
         saveResource( permission.getResource() );
         return permission;
@@ -164,6 +181,8 @@ public class MemoryRbacManager
     public Resource saveResource( Resource resource )
         throws RbacStoreException
     {
+        triggerInit();
+        
         RBACObjectAssertions.assertValid( "Save Resource", resource );
 
         resources.put( resource.getIdentifier(), resource );
@@ -173,6 +192,8 @@ public class MemoryRbacManager
     public UserAssignment saveUserAssignment( UserAssignment userAssignment )
         throws RbacStoreException
     {
+        triggerInit();
+        
         RBACObjectAssertions.assertValid( "Save UserAssignment", userAssignment );
 
         userAssignments.put( userAssignment.getPrincipal(), userAssignment );
@@ -280,6 +301,8 @@ public class MemoryRbacManager
     public Permission getPermission( String permissionName )
         throws RbacObjectNotFoundException, RbacStoreException
     {
+        triggerInit();
+        
         assertPermissionExists( permissionName );
 
         return (Permission) permissions.get( permissionName );
@@ -288,6 +311,8 @@ public class MemoryRbacManager
     public List getResources()
         throws RbacStoreException
     {
+        triggerInit();
+        
         return Collections.unmodifiableList( new ArrayList( resources.values() ) );
     }
 
@@ -314,8 +339,10 @@ public class MemoryRbacManager
         throws RbacObjectNotFoundException, RbacStoreException
     {
         RBACObjectAssertions.assertValid( "Remove Permission", permission );
-
+        
         assertPermissionExists( permission.getName() );
+
+        fireRbacPermissionRemoved( permission );
 
         permissions.remove( permission.getName() );
     }
@@ -376,30 +403,40 @@ public class MemoryRbacManager
     public List getAllOperations()
         throws RbacStoreException
     {
+        triggerInit();
+        
         return Collections.unmodifiableList( new ArrayList( operations.values() ) );
     }
 
     public List getAllPermissions()
         throws RbacStoreException
     {
+        triggerInit();
+        
         return Collections.unmodifiableList( new ArrayList( permissions.values() ) );
     }
 
     public List getAllResources()
         throws RbacStoreException
     {
+        triggerInit();
+        
         return Collections.unmodifiableList( new ArrayList( resources.values() ) );
     }
 
     public List getAllUserAssignments()
         throws RbacStoreException
     {
+        triggerInit();
+        
         return Collections.unmodifiableList( new ArrayList( userAssignments.values() ) );
     }
 
     public UserAssignment getUserAssignment( String principal )
         throws RbacObjectNotFoundException, RbacStoreException
     {
+        triggerInit();
+        
         assertUserAssignmentExists( principal );
 
         return (UserAssignment) userAssignments.get( principal );
@@ -408,6 +445,8 @@ public class MemoryRbacManager
     public Operation getOperation( String operationName )
         throws RbacObjectNotFoundException, RbacStoreException
     {
+        triggerInit();
+        
         assertOpertionExists( operationName );
 
         return (Operation) operations.get( operationName );
@@ -416,9 +455,21 @@ public class MemoryRbacManager
     public Resource getResource( String resourceIdentifier )
         throws RbacObjectNotFoundException, RbacStoreException
     {
+        triggerInit();
+        
         assertResourceExists( resourceIdentifier );
 
         return (Resource) resources.get( resourceIdentifier );
     }
 
+    private boolean hasTriggeredInit = false;
+
+    public void triggerInit()
+    {
+        if ( !hasTriggeredInit )
+        {
+            fireRbacInit( roles.isEmpty() );
+            hasTriggeredInit = true;
+        }
+    }
 }
