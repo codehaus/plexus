@@ -29,9 +29,7 @@
 
 <ol>
 <li>
-  <ww:url id="login" action="main">
-    <ww:param name="dest">login</ww:param>
-  </ww:url>
+  <ww:url id="login" action="login" namespace="/security" />
   Go Ahead <ww:a href="%{login}">Login.</ww:a>
 </li>
 </ol>
