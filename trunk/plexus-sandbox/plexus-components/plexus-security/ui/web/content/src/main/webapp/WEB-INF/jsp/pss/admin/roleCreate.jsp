@@ -48,26 +48,29 @@
         </thead>
       <c:choose>
         <c:when test="${!empty role.permissions}">
-          <ww:iterator id="permission" value="role.permissions">
+          <c:forEach var="permission" varStatus="loop" items="${role.permissions}">
             <tr>
               <td>
-                <c:out value="${permission.name}" />
+                <input type="text" name="role.permissions.name"
+                  value="${permission.name}" />
               </td>
               <td>
-                <c:out value="${permission.operationName}" />
+                <input type="text" name="role.permissions.operationName"
+                  value="${permission.operationName}" />
               </td>
               <td>
-                <c:out value="${permission.resourceIdentifier}" />
+                <input type="text" name="role.permissions.resourceIdentifier"
+                  value="${permission.resourceIdentifier}" />
               </td>
             </tr>
-          </ww:iterator>
+          </c:forEach>
         </c:when>
         <c:otherwise>
           <em>No Permissions Defined for this Role (yet)</em>
         </c:otherwise>
       </c:choose>
       
-      <tr>
+      <tr class="addPermission">
         <td>
           <ww:textfield name="addpermission.name" theme="simple"/>
         </td>
@@ -78,15 +81,24 @@
           <ww:textfield name="addpermission.resourceIdentifier" theme="simple" />
         </td>
         <td>
-          <ww:submit type="button" value="Add Permission" name="addButton" theme="simple" />
+          <ww:submit type="button" value="Add Permission" theme="simple" 
+                     onclick="setSubmitMode('addPermission')" />
         </td>
       </tr>
       </table>
       
     </td>
   </tr>
-  <ww:submit value="Submit" name="submitButton" />
+  <ww:hidden name="submitMode" value="normal" />
+  <ww:submit value="Submit" onclick="setSubmitMode('normal')" />
 </ww:form>
+
+<script language="javascript">
+  function setSubmitMode(mode)
+  {
+    document.forms["roleCreateForm"].submitMode.value = mode;
+  }
+</script>
 
 </body>
 </html>
