@@ -49,6 +49,8 @@ public class SimpleUser
     private List previousEncodedPasswords;
 
     private Date accountCreationDate;
+    
+    private boolean passwordChangeRequired;
 
     public SimpleUser( )
     {
@@ -176,5 +178,15 @@ public class SimpleUser
     public void setUsername( String username )
     {
         this.username = username;
+    }
+
+    public boolean isPasswordChangeRequired()
+    {
+        return passwordChangeRequired;
+    }
+
+    public void setPasswordChangeRequired( boolean passwordChangeRequired )
+    {
+        this.passwordChangeRequired = passwordChangeRequired;
     }
 }

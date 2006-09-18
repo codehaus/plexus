@@ -28,14 +28,6 @@
           <type>String</type>
           <identifier>true</identifier>
         </field>
-<!--
-        <field>
-          <name>guest</name>
-          <version>1.0.0+</version>
-          <type>boolean</type>
-          <defaultValue>false</defaultValue>
-        </field>
- -->
         <field>
           <name>password</name>
           <version>1.0.0+</version>
@@ -77,6 +69,13 @@
         </field>
         <field>
           <name>locked</name>
+          <version>1.0.0+</version>
+          <type>boolean</type>
+          <defaultValue>false</defaultValue>
+          <identifier>true</identifier>
+        </field>
+        <field>
+          <name>passwordChangeRequired</name>
           <version>1.0.0+</version>
           <type>boolean</type>
           <defaultValue>false</defaultValue>
