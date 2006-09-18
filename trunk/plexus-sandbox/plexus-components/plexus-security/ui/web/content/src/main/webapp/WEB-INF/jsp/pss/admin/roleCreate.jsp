@@ -32,8 +32,8 @@
 
 <ww:form action="rolecreate!submit" method="post" theme="xhtml"
          name="roleCreateForm" cssClass="securiy rolecreate">
-  <ww:textfield label="Role Name" name="role.name" />
-  <ww:textfield label="Role Description" name="role.description" />
+  <ww:textfield label="Role Name" name="roleName" />
+  <ww:textfield label="Role Description" name="description" />
   <tr>
     <td valign="top">Permissions</td>
     <td>
@@ -47,19 +47,19 @@
         </tr>
         </thead>
       <c:choose>
-        <c:when test="${!empty role.permissions}">
-          <c:forEach var="permission" varStatus="loop" items="${role.permissions}">
+        <c:when test="${!empty permissions}">
+          <c:forEach var="permission" varStatus="loop" items="${permissions}">
             <tr>
               <td>
-                <input type="text" name="role.permissions.name"
+                <input type="text" name="permissions(${loop.index}).name"
                   value="${permission.name}" />
               </td>
               <td>
-                <input type="text" name="role.permissions.operationName"
+                <input type="text" name="permissions(${loop.index}).operationName"
                   value="${permission.operationName}" />
               </td>
               <td>
-                <input type="text" name="role.permissions.resourceIdentifier"
+                <input type="text" name="permissions(${loop.index}).resourceIdentifier"
                   value="${permission.resourceIdentifier}" />
               </td>
             </tr>
