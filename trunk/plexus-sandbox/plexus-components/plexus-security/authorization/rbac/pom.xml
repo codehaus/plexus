@@ -41,5 +41,6 @@
     <module>model</module>
     <module>stores</module>
     <module>authorizer</module>
+    <module>template</module>
   </modules>
 </project>
