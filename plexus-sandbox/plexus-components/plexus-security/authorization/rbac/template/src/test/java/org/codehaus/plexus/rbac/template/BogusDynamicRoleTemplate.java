@@ -1,11 +1,9 @@
 package org.codehaus.plexus.rbac.template;
 
 import org.codehaus.plexus.security.rbac.Permission;
-import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
-
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,34 +25,42 @@ import org.codehaus.plexus.security.rbac.Role;
  * @version: $ID:$
  *
  * @plexus.component
- *   role="org.codehaus.plexus.rbac.template.RoleTemplate"
+ *   role="org.codehaus.plexus.rbac.template.DynamicRoleTemplate"
  *   role-hint="bogus"
  */
-public class BogusRoleTemplate
-   extends AbstractRoleTemplate
+public class BogusDynamicRoleTemplate
+    extends AbstractDynamicRoleTemplate
 {
 
 
-    public String getRoleName()
+    public String getRoleNamePrefix()
     {
-        return "bogus-role";
+        return "Bogus Role";
     }
 
     /**
      *
      * @return
-     * @throws RoleTemplateException
+     * @throws org.codehaus.plexus.rbac.template.RoleTemplateException
      */
-    public boolean createRole( )
+    public boolean createRole( String roleTemplateName, String resource )
         throws RoleTemplateException
     {
-        Permission bogusPermission = rbacManager.createPermission( "bogus-permission", "bogus-operation", Resource.GLOBAL );
+     System.out.println( "rbacmanager in bogus dynamic " + rbacManager.toString());
+        Permission bogusPermission = rbacManager.createPermission( "bogus-permission-" + resource, "bogus-operation", resource );
         bogusPermission = rbacManager.savePermission( bogusPermission );
 
-        Role bogusRole = rbacManager.createRole( "bogus-role" );
+        Role bogusRole = rbacManager.createRole( getRoleName( roleTemplateName, resource ) );
         bogusRole.addPermission( bogusPermission );
         bogusRole = rbacManager.saveRole( bogusRole );
 
-        return true;
+        if ( rbacManager.roleExists( bogusRole.getName() ) )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
