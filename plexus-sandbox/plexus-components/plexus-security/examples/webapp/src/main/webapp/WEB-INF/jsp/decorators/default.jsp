@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright 2005-2006 The Apache Software Foundation.
+  ~ Copyright 2005-2006 The Codehaus.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -43,42 +43,12 @@
 <div id="breadcrumbs">
   
   <div class="xright">
-  
-    <ww:if test="${sessionScope.securityAuth == true}">
-      <ww:url id="userListUrl" action="userlist" namespace="/security" includeParams="none"/>
-      <ww:a href="%{userListUrl}">User List</ww:a> | 
-    </ww:if>
-  
     <a href="http://www.codehaus.org/">Codehaus</a> |
     <a href="http://plexus.codehaus.org/">Plexus</a> 
   </div>
 
   <div class="xleft">
-    <ww:url id="loginUrl" action="login" namespace="/security" includeParams="none"/>
-    <ww:url id="registerUrl" action="register" namespace="/security" includeParams="none"/>
-
-    <ww:if test="${sessionScope.securityAuth != true}">
-      <ww:a href="%{loginUrl}">Login</ww:a> - <ww:a href="%{registerUrl}">Register</ww:a>
-    </ww:if>
-    <ww:else>
-      <ww:url id="logoutUrl" action="logout" namespace="/security" includeParams="none"/>
-      Welcome, 
-      <c:choose>
-        <c:when test="${sessionScope.securityUser != null}">
-          <ww:url id="accountUrl" action="account" namespace="/security">
-            <ww:param name="username">${sessionScope.securityUser.username}</ww:param>
-          </ww:url>
-          <ww:a href="%{accountUrl}">
-          <b>${sessionScope.securityUser.username}</b>
-          </ww:a>
-        </c:when>
-        <c:otherwise>
-          <b>Unknown User</b>
-        </c:otherwise>
-      </c:choose>
-       -
-      <ww:a href="%{logoutUrl}">Logout</ww:a>
-    </ww:else>
+    <%@ include file="/WEB-INF/jsp/pss/include/securityLinks.jspf" %>
   </div>
   
   <div class="clear">
@@ -93,24 +63,33 @@
 
   <div id="xworkinfo">
   
-    <strong>request scope:</strong>
+    <%--
+    <strong>application scope:</strong>
     <ul>
-    <c:forEach var="rs" items="${requestScope}">
-      <li>
-        <em><c:out value="${rs.key}" /></em> : 
-          <c:choose>
-            <c:when test="${rs.value != null}">
-              (<c:out value="${rs.value.class.name}" /> ) <br />
-              &nbsp; &nbsp; &nbsp; <c:out value="${rs.value}" />
-            </c:when>
-            <c:otherwise>
-              &lt;null&gt;
-            </c:otherwise>
-          </c:choose>
-      </li>
-    </c:forEach>
+    <c:choose>
+      <c:when test="${!empty applicationScope}">
+        <c:forEach var="ss" items="${applicationScope}">
+          <li>
+            <em><c:out value="${ss.key}" /></em> :
+              <c:choose>
+                <c:when test="${ss != null}">
+                  (<c:out value="${ss.value.class.name}" /> ) <br />
+                  &nbsp; &nbsp; &nbsp; <c:out value="${ss.value}" />
+                </c:when>
+                <c:otherwise>
+                  &lt;null&gt;
+                </c:otherwise>
+              </c:choose>
+          </li>
+        </c:forEach>
+      </c:when>
+      <c:otherwise>
+        <li>[ empty ]</li>
+      </c:otherwise>
+    </c:choose>
     </ul>
-    
+      --%>
+  
     <strong>session scope:</strong>
     <ul>
     <c:forEach var="ss" items="${sessionScope}">
@@ -129,18 +108,41 @@
     </c:forEach>
     </ul>
     
-    <%-- 
-       Application Scope is empty.
-       Could be an xwork/webwork specific thing.
-    <strong>application scope:</strong>
+    <strong>request scope:</strong>
     <ul>
-    <c:forEach var="as" items="${applicationScope.keys}">
+    <c:forEach var="rs" items="${requestScope}">
       <li>
-        [<c:out value="${as}" /> ]
+        <em><c:out value="${rs.key}" /></em> : 
+          <c:choose>
+            <c:when test="${rs.value != null}">
+              (<c:out value="${rs.value.class.name}" /> ) <br />
+              &nbsp; &nbsp; &nbsp; <c:out value="${rs.value}" />
+            </c:when>
+            <c:otherwise>
+              &lt;null&gt;
+            </c:otherwise>
+          </c:choose>
       </li>
     </c:forEach>
     </ul>
-     --%>
+    
+    <strong>page scope:</strong>
+    <ul>
+    <c:forEach var="ps" items="${requestScope}">
+      <li>
+        <em><c:out value="${ps.key}" /></em> : 
+          <c:choose>
+            <c:when test="${ps.value != null}">
+              (<c:out value="${ps.value.class.name}" /> ) <br />
+              &nbsp; &nbsp; &nbsp; <c:out value="${ps.value}" />
+            </c:when>
+            <c:otherwise>
+              &lt;null&gt;
+            </c:otherwise>
+          </c:choose>
+      </li>
+    </c:forEach>
+    </ul>
      
   </div>
 

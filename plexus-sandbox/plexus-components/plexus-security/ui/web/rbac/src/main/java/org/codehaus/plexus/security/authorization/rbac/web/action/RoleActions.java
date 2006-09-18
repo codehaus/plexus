@@ -35,6 +35,7 @@ import java.util.List;
  * @version $Id:$
  * @plexus.component role="com.opensymphony.xwork.Action"
  *   role-hint="plexusSecurityRole"
+ * @deprecated will be removed before 1.0
  */
 public class RoleActions
     extends PlexusActionSupport
