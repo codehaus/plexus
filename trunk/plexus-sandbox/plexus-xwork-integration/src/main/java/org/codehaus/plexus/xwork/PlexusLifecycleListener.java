@@ -59,10 +59,6 @@ public class PlexusLifecycleListener
             PlexusContainer pc = new DefaultPlexusContainer( "default", getClass().getClassLoader(), setConfigurationStream( ctx ), initializeContext( ctx, resolveContextProperties( ctx ) ) );
 
             ctx.setAttribute( KEY, pc );
-
-            pc.initialize();
-
-            pc.start();
         }
         catch ( PlexusContainerException e )
         {
