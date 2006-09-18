@@ -23,6 +23,10 @@
        ==================================================================  -->
   
   <package name="security" extends="webwork-default" namespace="/security">
+    <result-types>
+      <result-type name="security-external" class="org.codehaus.plexus.security.ui.web.action.SecurityExternalResult" />
+    </result-types>
+
     <interceptors>
       <interceptor name="pssEnvCheck" class="pssEnvironmentCheckInterceptor"/>
       <interceptor name="pssSecureActions" class="pssSecureActionInterceptor"/>
@@ -37,15 +41,18 @@
         <interceptor-ref name="pssSecureActions"/>
       </interceptor-stack>
     </interceptors>
-
+    
     <default-interceptor-ref name="securedStack"/>
     
     <action name="login" class="pss-login" method="show">
       <result name="input">/WEB-INF/jsp/pss/login.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/login.jsp</result>
-      <!-- 
-      <result name="success" type="redirect">/WEB-INF/jsp/pss/login.jsp</result>      
-        -->
+      <result name="security-login-success" type="security-external">
+        <param name="externalResult">security-login-success</param>
+      </result>      
+      <result name="security-login-cancel" type="security-external">
+        <param name="externalResult">security-login-cancel</param>
+      </result>      
     </action>
 
     <action name="logout" class="pss-logout" method="show">

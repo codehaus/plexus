@@ -46,12 +46,15 @@ public class LoginAction
     private String username;
 
     private String password;
+    
+    private boolean submitBUtton;
+    
+    private boolean cancelButton;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
     
-
     public String show()
     {
         // System.err.println("LoginAction.show()");        
@@ -60,6 +63,11 @@ public class LoginAction
     
     public String login()
     {
+        if ( cancelButton )
+        {
+            return LOGIN_CANCEL;
+        }
+        
         if ( StringUtils.isEmpty(username)  )
         {
             addFieldError( "username", "Username cannot be empty." );
