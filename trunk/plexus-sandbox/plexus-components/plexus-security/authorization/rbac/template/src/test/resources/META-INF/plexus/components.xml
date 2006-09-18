@@ -13,9 +13,16 @@
       </requirements>
     </component>
 
-    <component>
-      
+   <component>
+      <role>org.codehaus.plexus.rbac.template.DynamicRoleTemplate</role>
+      <role-hint>bogus</role-hint>
+      <implementation>org.codehaus.plexus.rbac.template.BogusDynamicRoleTemplate</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.rbac.RBACManager</role>
+          <role-hint>memory</role-hint>
+        </requirement>
+      </requirements>
     </component>
-
   </components>
 </plexus>

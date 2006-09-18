@@ -1,7 +1,6 @@
 package org.codehaus.plexus.rbac.template;
-
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,29 +25,34 @@ package org.codehaus.plexus.rbac.template;
  * consistent set of Permissions for dealing with Operations on the resource, and then the
  * adding of the Permissions to the Role and finally the Role itself.
  *
- * @author Jesse McConnell <jesse@codehaus.org>
+ * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
  */
-public interface RoleTemplate
+public interface DynamicRoleTemplate
 {
-    public static final String ROLE = RoleTemplate.class.getName();
+    public static final String ROLE = DynamicRoleTemplate.class.getName();
 
+
+    public String getRoleName( String roleTemplateName, String resource )
+        throws RoleTemplateException;
 
     /**
-     * return the name of the role this is a template for
+     * the proper role name prefix, for example 'Maintainer" for "Maintainer - foo'
      * @return
      */
-    public String getRoleName();
+    public String getRoleNamePrefix();
 
     /**
-     * RoleTemplate should be implemented when you have roles that are unchanging, the rolename is not different
-     * and the resource associated with it never changes.  These roles generally exist once across the entire
-     * system.
+     * Create the role desired using the resource as the potentially dynamic resource.
      *
+     * In strict RBAC terms the Resource is actually the Object in P( Operation, Object )
+     * notations.
+     *
+     * @param resource
      * @return
-     * @throws RoleTemplateException
+     * @throws org.codehaus.plexus.rbac.template.RoleTemplateException
      */
-    public boolean createRole()
+    public boolean createRole( String roleName, String resource )
         throws RoleTemplateException;
 
 }
