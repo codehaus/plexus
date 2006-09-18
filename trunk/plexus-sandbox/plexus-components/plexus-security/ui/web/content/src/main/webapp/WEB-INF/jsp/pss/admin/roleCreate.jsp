@@ -34,7 +34,7 @@
   <ww:textfield label="Role Name" name="role.name" />
   <ww:textfield label="Role Description" name="role.description" />
   <tr>
-    <td>Permissions</td>
+    <td valign="top">Permissions</td>
     </td>
     <td>
     
@@ -67,23 +67,23 @@
       
       <tr>
         <td>
-          <ww:textfield name="addpermission.name" />
+          <ww:textfield name="addpermission.name" theme="simple"/>
         </td>
         <td>
-          <ww:textfield name="addpermission.operationName" />
+          <ww:textfield name="addpermission.operationName" theme="simple" />
         </td>
         <td>
-          <ww:textfield name="addpermission.resourceIdentifier" />
+          <ww:textfield name="addpermission.resourceIdentifier" theme="simple" />
         </td>
         <td>
-          <ww:submit value="Add Permission" name="addPermissionButton" />
+          <ww:submit value="Add Permission" name="addPermissionButton" theme="simple" />
         </td>
       </tr>
       </table>
       
     </td>
   </tr>
-  <ww:submit value="Submit" />
+  <ww:submit value="Submit" name="submitButton" />
 </ww:form>
 
 </body>
