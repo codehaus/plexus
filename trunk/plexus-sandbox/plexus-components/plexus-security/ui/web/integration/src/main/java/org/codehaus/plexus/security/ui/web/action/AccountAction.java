@@ -34,10 +34,15 @@ import org.codehaus.plexus.util.StringUtils;
 public class AccountAction
     extends AbstractUserCredentialsAction
 {
+    private static final String ACCOUNT_SUCCESS = "security-account-success";
+    private static final String ACCOUNT_CANCEL = "security-account-cancel";
+    
     // ------------------------------------------------------------------
     // Action Parameters
     // ------------------------------------------------------------------
 
+    private boolean cancelButton;
+    
     private String username;
     
     private EditUserCredentials user;
@@ -46,7 +51,7 @@ public class AccountAction
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
 
-    public String input()
+    public String show()
     {
         if ( username == null )
         {
@@ -92,6 +97,11 @@ public class AccountAction
 
     public String submit()
     {
+        if ( cancelButton )
+        {
+            return ACCOUNT_CANCEL;
+        }
+        
         if ( username == null )
         {
             addActionError( "Unable to edit user with null username." );
@@ -141,7 +151,7 @@ public class AccountAction
             return ERROR;
         }
 
-        return SUCCESS;
+        return ACCOUNT_SUCCESS;
     }
 
     // ------------------------------------------------------------------
@@ -166,5 +176,15 @@ public class AccountAction
     public void setUser( EditUserCredentials user )
     {
         this.user = user;
+    }
+
+    public boolean isCancelButton()
+    {
+        return cancelButton;
+    }
+
+    public void setCancelButton( boolean cancelButton )
+    {
+        this.cancelButton = cancelButton;
     }
 }

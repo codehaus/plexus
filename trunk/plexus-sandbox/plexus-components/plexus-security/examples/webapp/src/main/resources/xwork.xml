@@ -30,6 +30,8 @@
       <result name="security-logout" type="redirect-action">main</result>
       <result name="security-register-success" type="redirect-action">main</result>
       <result name="security-register-cancel" type="redirect-action">main</result>
+      <result name="security-account-success" type="redirect-action">main</result>
+      <result name="security-account-cancel" type="redirect-action">main</result>
       
       <result name="error">/WEB-INF/jsp/generalError.jsp</result>
       <result name="admin-account-needed">/WEB-INF/jsp/alert.jsp</result>
