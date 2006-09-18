@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.rbac.web.action;
+package org.codehaus.plexus.security.authorization.rbac.web.action.admin;
 
 /*
 * Copyright 2005 The Apache Software Foundation.
@@ -16,62 +16,67 @@ package org.codehaus.plexus.security.authorization.rbac.web.action;
 * limitations under the License.
 */
 
-import com.opensymphony.xwork.ModelDriven;
 import com.opensymphony.xwork.Preparable;
+
+import org.codehaus.plexus.security.authorization.rbac.web.action.RbacActionException;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * OperationActions:
+ * OperationsAction:
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="plexusSecurityOperation"
- * @deprecated will be removed before version 1.0
+ *                   role-hint="pss-operations"
  */
-public class OperationActions
+public class OperationsAction
     extends PlexusActionSupport
-    implements ModelDriven, Preparable
+    implements Preparable
 {
+    private static final String LIST = "list";
+    
     /**
      * @plexus.requirement
      */
     private RBACManager manager;
 
     private String operationName;
+    
+    private String description;
 
-    private Operation operation;
+    private List allOperations;
 
     public void prepare()
         throws Exception
     {
-        if ( operation == null )
+        if(allOperations == null)
         {
-            if ( manager.operationExists( operationName ) )
-            {
-                operation = manager.getOperation( operationName );
-                operationName = operation.getName();
-            }
-            else
-            {
-                operation = manager.createOperation( "name" );
-            }
+            allOperations = new ArrayList();
         }
+    }
+    
+    public String list()
+    {
+        allOperations = manager.getAllOperations();
+        
+        return LIST;
     }
 
     public String save()
         throws RbacActionException
     {
-        Operation temp = manager.createOperation( operation.getName() );
+        Operation temp = manager.createOperation( operationName );
 
-        temp.setName( operation.getName() );
-        temp.setDescription( operation.getDescription() );
+        temp.setDescription( description );
 
         manager.saveOperation( temp );
-        return SUCCESS;
+        return LIST;
     }
 
     public String remove()
@@ -85,13 +90,27 @@ public class OperationActions
         {
             throw new RbacActionException( "unable to locate operation to remove " + operationName, ne );
         }
-        return SUCCESS;
+        return LIST;
     }
 
-
-    public Object getModel()
+    public List getAllOperations()
     {
-        return operation;
+        return allOperations;
+    }
+
+    public void setAllOperations( List allOperations )
+    {
+        this.allOperations = allOperations;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
     }
 
     public String getOperationName()
@@ -102,11 +121,6 @@ public class OperationActions
     public void setOperationName( String operationName )
     {
         this.operationName = operationName;
-    }
-
-    public void setOperation( Operation operation )
-    {
-        this.operation = operation;
     }
 
 }

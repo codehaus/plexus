@@ -25,6 +25,8 @@ import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
+import java.util.List;
+
 /**
  * PermissionsAction 
  *
@@ -38,6 +40,8 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 public class PermissionsAction
     extends PlexusActionSupport
 {
+    private static final String LIST = "list";
+    
     // ------------------------------------------------------------------
     // Plexus Component Requirements
     // ------------------------------------------------------------------
@@ -60,10 +64,19 @@ public class PermissionsAction
     private String operationDescription;
 
     private String resourceIdentifier;
+    
+    private List allPermissions;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
+    
+    public String list()
+    {
+        allPermissions = manager.getAllPermissions();
+        
+        return LIST;
+    }
 
     public String input()
     {
@@ -83,7 +96,7 @@ public class PermissionsAction
         {
             // Means that the role name doesn't exist.
             // We should exit early and not attempt to look up the permission information.
-            return INPUT;
+            return LIST;
         }
 
         try
@@ -120,7 +133,7 @@ public class PermissionsAction
             return ERROR;
         }
 
-        return SUCCESS;
+        return LIST;
     }
 
     public String submit()
@@ -176,7 +189,7 @@ public class PermissionsAction
             return ERROR;
         }
 
-        return SUCCESS;
+        return LIST;
     }
 
     // ------------------------------------------------------------------
@@ -231,6 +244,16 @@ public class PermissionsAction
     public void setResourceIdentifier( String resourceIdentifier )
     {
         this.resourceIdentifier = resourceIdentifier;
+    }
+
+    public List getAllPermissions()
+    {
+        return allPermissions;
+    }
+
+    public void setAllPermissions( List allPermissions )
+    {
+        this.allPermissions = allPermissions;
     }
 
 }
