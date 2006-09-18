@@ -16,12 +16,12 @@ package org.codehaus.plexus.security.authentication.open;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.authentication.AccountLockedException;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
-import org.codehaus.plexus.security.authentication.MustChangePasswordException;
+import org.codehaus.plexus.security.policy.AccountLockedException;
+import org.codehaus.plexus.security.policy.MustChangePasswordException;
 
 /**
  * OpenAuthenticator - Does not test user / password.

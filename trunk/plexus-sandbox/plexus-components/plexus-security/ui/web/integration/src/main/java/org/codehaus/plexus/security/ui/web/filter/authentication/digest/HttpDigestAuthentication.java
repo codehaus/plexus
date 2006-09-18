@@ -19,6 +19,8 @@ package org.codehaus.plexus.security.ui.web.filter.authentication.digest;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.security.policy.AccountLockedException;
+import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator;
 import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticationException;
 import org.codehaus.plexus.security.user.User;
@@ -70,7 +72,7 @@ public class HttpDigestAuthentication
 
     public AuthenticationResult getAuthenticationResult( HttpServletRequest request, HttpServletResponse response,
                                              String defaultPrincipal )
-        throws AuthenticationException
+        throws AuthenticationException, AccountLockedException, MustChangePasswordException
     {
         if ( isAlreadyAuthenticated() )
         {

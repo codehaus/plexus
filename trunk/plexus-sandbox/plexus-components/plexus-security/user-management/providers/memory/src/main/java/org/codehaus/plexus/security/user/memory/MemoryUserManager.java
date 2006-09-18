@@ -73,7 +73,7 @@ public class MemoryUserManager
         // If there exists no encoded password, then this is a new user setup 
         if ( StringUtils.isEmpty( user.getEncodedPassword() ) )
         {
-            userSecurityPolicy.changeUserPassword( user );
+            userSecurityPolicy.extensionChangePassword( user );
         }
 
         return user;
@@ -85,7 +85,7 @@ public class MemoryUserManager
         // TODO: Consider adding a boolean to the updateUser indicating a password change or not.
         if ( StringUtils.isNotEmpty( user.getPassword() ) )
         {
-            userSecurityPolicy.changeUserPassword( user );
+            userSecurityPolicy.extensionChangePassword( user );
         }
 
         return addUser( user );

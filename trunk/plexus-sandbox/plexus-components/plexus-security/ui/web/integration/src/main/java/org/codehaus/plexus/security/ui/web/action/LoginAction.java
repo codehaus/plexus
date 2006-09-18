@@ -18,6 +18,8 @@ package org.codehaus.plexus.security.ui.web.action;
 
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.policy.AccountLockedException;
+import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
@@ -38,6 +40,8 @@ public class LoginAction
 {
     private static final String LOGIN_SUCCESS = "security-login-success";
     private static final String LOGIN_CANCEL = "security-login-cancel";
+    private static final String PASSWORD_CHANGE = "must-change-password";
+    private static final String ACCOUNT_LOCKED = "security-login-locked";
     
     // ------------------------------------------------------------------
     // Plexus Component Requirements
@@ -106,6 +110,16 @@ public class LoginAction
         {
             addActionError( ue.getMessage() );
             return ERROR;
+        }
+        catch ( AccountLockedException e )
+        {
+            addActionError( "Your Account is Locked." );
+            return ACCOUNT_LOCKED;
+        }
+        catch ( MustChangePasswordException e )
+        {
+            addActionError( "You must change your password." );
+            return PASSWORD_CHANGE;
         }
     }
 
