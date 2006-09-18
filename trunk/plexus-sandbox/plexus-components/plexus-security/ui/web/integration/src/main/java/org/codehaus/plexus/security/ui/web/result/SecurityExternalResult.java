@@ -25,7 +25,7 @@ import com.opensymphony.xwork.ActionInvocation;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * 
- * @plexus.component role="com.opensymphony.xwork"
+ * @plexus.component role="com.opensymphony.xwork.Result"
  *                   role-hint="securityExternalResult"
  *                   instantiation-strategy="per-lookup"
  */
