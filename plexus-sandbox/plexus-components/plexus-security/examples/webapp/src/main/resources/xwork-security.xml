@@ -24,7 +24,7 @@
   
   <package name="security" extends="webwork-default" namespace="/security">
     <result-types>
-      <result-type name="security-external" class="org.codehaus.plexus.security.ui.web.action.SecurityExternalResult" />
+      <result-type name="security-external" class="securityExternalResult" />
     </result-types>
 
     <interceptors>
