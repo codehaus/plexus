@@ -46,6 +46,12 @@ body {
   color: black;
 }
 
+#nestedContent .wwFormTable .errorMessage {
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+
 #xworkinfo {
   font-size: 0.7em;
 }
