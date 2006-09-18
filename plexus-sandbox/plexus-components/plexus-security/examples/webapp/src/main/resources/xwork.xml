@@ -21,7 +21,7 @@
         <interceptor-ref name="pssSecureActions"/>
       </interceptor-stack>
     </interceptors>
-  
+
     <default-interceptor-ref name="securedStack"/>
 
     <global-results>
