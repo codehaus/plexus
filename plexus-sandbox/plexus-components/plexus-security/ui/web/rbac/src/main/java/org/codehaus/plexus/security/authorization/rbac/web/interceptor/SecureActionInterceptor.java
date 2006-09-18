@@ -36,7 +36,7 @@ import java.util.List;
  * @author Jesse McConnell <jesse@codehaus.org>
  * @version $Id: SecureActionInterceptor.java 4035 2006-09-14 12:59:40Z joakime $
  * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor"
- * role-hint="pssSecureActionInterceptor"
+ *                   role-hint="pssSecureActionInterceptor"
  */
 public class SecureActionInterceptor
     extends AbstractLogEnabled
