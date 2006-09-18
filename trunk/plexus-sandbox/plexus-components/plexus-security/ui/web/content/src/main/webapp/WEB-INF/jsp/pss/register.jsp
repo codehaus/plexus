@@ -15,6 +15,7 @@
   --%>
 
 <%@ taglib prefix="ww" uri="/webwork" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
 <head>
@@ -24,13 +25,13 @@
 
 <body>
 
-<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jspf" %>
+<c:import url="/WEB-INF/jsp/pss/include/formValidationResults.jspf" />
 
 <h2>Register for an Account</h2>
    
 <ww:form action="register!register" namespace="/security" theme="xhtml"
          id="registerForm" method="post" name="register" cssClass="security register">     
-  <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jspf" %>
+  <c:import url="/WEB-INF/jsp/pss/include/userCredentials.jspf" />
   <ww:submit type="submit" value="Register" name="registerButton" />
   <ww:submit type="cancel" value="Cancel"   name="cancelButton"   />
 </ww:form>
