@@ -15,6 +15,7 @@
   --%>
 
 <%@ taglib prefix="ww" uri="/webwork"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
 <head>
@@ -24,7 +25,7 @@
 
 <body>
 
-<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jspf" %>
+<c:import url="/WEB-INF/jsp/pss/include/formValidationResults.jspf" />
 
 <h2>[Admin] User List</h2>
 

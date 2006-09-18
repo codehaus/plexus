@@ -30,7 +30,7 @@
           <ww:checkbox name="removeSelectedRoles" value="%{name}" theme="simple"/>
         </td>
   
-        <%@ include file="/WEB-INF/jsp/pss/include/roleRow.jspf"%>
+        <c:import url="/WEB-INF/jsp/pss/include/roleRow.jspf" />
 
       </tr>
     </ww:iterator>
@@ -63,7 +63,7 @@
           <ww:checkbox name="addSelectedRoles" value="%{name}" theme="simple"/>
         </td>
   
-        <%@ include file="/WEB-INF/jsp/pss/include/roleRow.jspf"%>
+        <c:import url="/WEB-INF/jsp/pss/include/roleRow.jspf" />
 
       </tr>
     </ww:iterator>

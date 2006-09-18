@@ -21,7 +21,7 @@
       or <br/>
      <ww:checkbox label="Is GlobalResource?" name="globalResource"/><br/>
 
-      <center><ww:submit/></center>
+     <ww:submit/>
     </ww:form>
 
   </body>

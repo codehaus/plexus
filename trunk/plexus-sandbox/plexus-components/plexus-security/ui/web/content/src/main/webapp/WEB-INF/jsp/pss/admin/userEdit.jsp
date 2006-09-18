@@ -25,13 +25,13 @@
 
 <body>
 
-<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jspf" %>
+<c:import url="/WEB-INF/jsp/pss/include/formValidationResults.jspf" />
 
 <h2>[Admin] User Edit</h2>
 
 <ww:form action="useredit!submit" namespace="/security" theme="xhtml"
          id="userEditForm" method="post" name="useredit" cssClass="security userEdit">
-  <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jspf"%>
+  <c:import url="/WEB-INF/jsp/pss/include/userCredentials.jspf" />
   <ww:checkbox label="Locked User" name="user.locked" />
   <ww:checkbox label="Change Password Next Login" name="user.passwordChangeRequired" />
   <ww:hidden   label="Username"    name="username" />

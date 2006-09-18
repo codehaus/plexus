@@ -26,23 +26,25 @@
 
 <body>
 
-<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jspf" %>
+<c:import url="/WEB-INF/jsp/pss/include/formValidationResults.jspf" />
 
 <h2>[Admin] Create Role</h2>
 
-<ww:form action="rolecreate!submit" method="post" theme="xhtml">
+<ww:form action="rolecreate!submit" method="post" theme="xhtml"
+         name="roleCreateForm" cssClass="securiy rolecreate">
   <ww:textfield label="Role Name" name="role.name" />
   <ww:textfield label="Role Description" name="role.description" />
   <tr>
     <td valign="top">Permissions</td>
-    </td>
     <td>
     
-      <table>
+      <table cellspacing="0" cellpadding="2" cssClass="permission">
         <thead>
+        <tr>
           <th>Name</th>
           <th>Operation</th>
           <th>Resource</th>
+        </tr>
         </thead>
       <c:choose>
         <c:when test="${!empty role.permissions}">
@@ -76,7 +78,7 @@
           <ww:textfield name="addpermission.resourceIdentifier" theme="simple" />
         </td>
         <td>
-          <ww:submit value="Add Permission" name="addPermissionButton" theme="simple" />
+          <ww:submit type="button" value="Add Permission" name="addButton" theme="simple" />
         </td>
       </tr>
       </table>
