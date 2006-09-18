@@ -19,6 +19,9 @@ package org.codehaus.plexus.security.authorization.rbac.web.action.admin;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * RolesAction 
  *
@@ -32,8 +35,24 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 public class RolesAction
     extends PlexusActionSupport
 {
+    private static final String LIST = "list";
+    
     /**
      * @plexus.requirement
      */
     private RBACManager manager;
+    
+    private List allRoles;
+    
+    public String list()
+    {
+        allRoles = manager.getAllRoles();
+        
+        if(allRoles == null)
+        {
+            allRoles = new ArrayList();
+        }
+        
+        return LIST;
+    }
 }

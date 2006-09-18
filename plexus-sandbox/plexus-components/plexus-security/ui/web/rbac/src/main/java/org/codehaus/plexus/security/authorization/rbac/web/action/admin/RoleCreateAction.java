@@ -16,7 +16,6 @@ package org.codehaus.plexus.security.authorization.rbac.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.authorization.rbac.web.model.CreateRoleDetails;
 import org.codehaus.plexus.security.authorization.rbac.web.model.SimplePermission;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
@@ -57,7 +56,13 @@ public class RoleCreateAction
 
     private String principal;
 
-    private CreateRoleDetails role;
+    private String roleName;
+
+    private String description;
+
+    private List permissions;
+
+    private List childRoles;
 
     private SimplePermission addpermission;
 
@@ -69,9 +74,18 @@ public class RoleCreateAction
 
     public String show()
     {
-        if ( role == null )
+        if ( permissions == null )
         {
-            role = new CreateRoleDetails();
+            permissions = new ArrayList();
+        }
+
+        if ( childRoles == null )
+        {
+            childRoles = new ArrayList();
+        }
+
+        if ( addpermission == null )
+        {
             addpermission = new SimplePermission();
         }
 
@@ -85,9 +99,13 @@ public class RoleCreateAction
             addActionError( "Unable to add null permission." );
             return ERROR;
         }
-
-        role.addPermission( addpermission.getName(), addpermission.getOperationName(), addpermission
-            .getResourceIdentifier() );
+        
+        if ( permissions == null )
+        {
+            permissions = new ArrayList();
+        }
+        
+        permissions.add( addpermission );
 
         addpermission = new SimplePermission();
 
@@ -96,18 +114,12 @@ public class RoleCreateAction
 
     public String submit()
     {
-        if ( role == null )
-        {
-            addActionError( "Unable to create null role." );
-            return ERROR;
-        }
-
         if ( StringUtils.equals( getSubmitMode(), "addPermission" ) )
         {
             return addpermission();
         }
 
-        if ( StringUtils.isEmpty( role.getName() ) )
+        if ( StringUtils.isEmpty( roleName ) )
         {
             addActionError( "Unable to create role with empty name." );
             return ERROR;
@@ -116,41 +128,41 @@ public class RoleCreateAction
         try
         {
             Role _role;
-            if ( manager.roleExists( role.getName() ) )
+            if ( manager.roleExists( roleName ) )
             {
-                _role = manager.getRole( role.getName() );
+                _role = manager.getRole( roleName );
             }
             else
             {
-                _role = manager.createRole( role.getName() );
+                _role = manager.createRole( roleName );
             }
 
-            _role.setDescription( role.getDescription() );
-            _role.setChildRoleNames( role.getChildRoleNames() );
+            _role.setDescription( description );
+            _role.setChildRoleNames( childRoles );
 
-            List permissionList = new ArrayList();
-            Iterator it = role.getPermissions().iterator();
+            List _permissionList = new ArrayList();
+            Iterator it = permissions.iterator();
             while ( it.hasNext() )
             {
                 SimplePermission perm = (SimplePermission) it.next();
-                permissionList.add( manager.createPermission( perm.getName(), perm.getOperationName(), perm
+                _permissionList.add( manager.createPermission( perm.getName(), perm.getOperationName(), perm
                     .getResourceIdentifier() ) );
             }
 
-            _role.setPermissions( permissionList );
+            _role.setPermissions( _permissionList );
 
             manager.saveRole( _role );
 
-            addActionMessage( "Successfully Saved Role '" + role.getName() + "'" );
+            addActionMessage( "Successfully Saved Role '" + roleName + "'" );
         }
         catch ( RbacStoreException e )
         {
-            addActionError( "Unable to get Role '" + role.getName() + "': " + e.getMessage() );
+            addActionError( "Unable to get Role '" + roleName + "': " + e.getMessage() );
             return ERROR;
         }
         catch ( RbacObjectNotFoundException e )
         {
-            addActionError( "Unable to get Role '" + role.getName() + "': Role not found." );
+            addActionError( "Unable to get Role '" + roleName + "': Role not found." );
             return ERROR;
         }
 
@@ -169,16 +181,6 @@ public class RoleCreateAction
     public void setPrincipal( String principal )
     {
         this.principal = principal;
-    }
-
-    public CreateRoleDetails getRole()
-    {
-        return role;
-    }
-
-    public void setRole( CreateRoleDetails role )
-    {
-        this.role = role;
     }
 
     public SimplePermission getAddpermission()

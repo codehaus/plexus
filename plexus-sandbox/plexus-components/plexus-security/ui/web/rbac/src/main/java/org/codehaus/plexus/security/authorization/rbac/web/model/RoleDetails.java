@@ -52,7 +52,6 @@ public abstract class RoleDetails
         permission.setName( permissionName );
         permission.setOperationName( operationName );
         permission.setResourceIdentifier( resourceIdentifier );
-        permission.setId( permissions.size() );
 
         permissions.add( permission );
     }

@@ -1,13 +1,7 @@
-package org.codehaus.plexus.security.authorization.rbac.web.action;
+package org.codehaus.plexus.security.authorization.rbac.web.action.admin;
 
-import com.opensymphony.xwork.ModelDriven;
-import com.opensymphony.xwork.Preparable;
-import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.security.rbac.Resource;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,45 +16,62 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  * limitations under the License.
  */
 
+import com.opensymphony.xwork.Preparable;
+
+import org.codehaus.plexus.security.authorization.rbac.web.action.RbacActionException;
+import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.security.rbac.Resource;
+import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * OperationActions:
+ * OperationsAction:
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="plexusSecurityResource"
- * @deprecated will be removed before 1.0
+ *                   role-hint="pss-resources"
  */
-public class ResourceActions
+public class ResourcesAction
     extends PlexusActionSupport
-    implements ModelDriven, Preparable
+    implements Preparable
 {
+    private static final String LIST = "list";
+    
     /**
      * @plexus.requirement
      */
     private RBACManager manager;
 
     private String resourceIdentifier;
+    
+    private boolean isPattern;
 
-    private Resource resource;
+    private List allResources;
 
     public void prepare()
         throws Exception
     {
-        if ( resource == null )
+        if ( allResources == null )
         {
-            if ( manager.resourceExists( resourceIdentifier ) )
-            {
-                resource = manager.getResource( resourceIdentifier );
-                resourceIdentifier = resource.getIdentifier();
-            }
-            else
-            {
-                resource = manager.createResource( "identifier" );
-            }
+            allResources = new ArrayList();
         }
     }
-
+    
+    public String list()
+    {
+        allResources = manager.getAllResources();
+        
+        if ( allResources == null )
+        {
+            allResources = new ArrayList();
+        }
+        
+        return LIST;
+    }
 
     public String save()
         throws RbacActionException
@@ -68,12 +79,12 @@ public class ResourceActions
         // todo figure out if there is anyway to actually have this model driven action work with jdo objects
         Resource temp = manager.createResource( resourceIdentifier );
 
-        temp.setIdentifier( resource.getIdentifier() );
-        temp.setPattern( resource.isPattern() );
+        temp.setIdentifier( resourceIdentifier );
+        temp.setPattern( isPattern );
 
         manager.saveResource( temp );
 
-        return SUCCESS;
+        return LIST;
     }
 
     public String remove()
@@ -87,12 +98,17 @@ public class ResourceActions
         {
             throw new RbacActionException( "unable to locate resource to remove " + resourceIdentifier, ne );
         }
-        return SUCCESS;
+        return LIST;
     }
 
-    public Object getModel()
+    public List getAllResources()
     {
-        return resource;
+        return allResources;
+    }
+
+    public void setAllResources( List allResources )
+    {
+        this.allResources = allResources;
     }
 
     public String getResourceIdentifier()
@@ -105,8 +121,13 @@ public class ResourceActions
         this.resourceIdentifier = resourceIdentifier;
     }
 
-    public void setResource( Resource resource )
+    public boolean isPattern()
     {
-        this.resource = resource;
+        return isPattern;
+    }
+
+    public void setPattern( boolean isPattern )
+    {
+        this.isPattern = isPattern;
     }
 }
