@@ -28,11 +28,23 @@ package org.codehaus.plexus.security.authorization.rbac.web.model;
  */
 public class SimplePermission
 {
+    private int id;
+
     private String name;
 
     private String operationName;
 
     private String resourceIdentifier;
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId( int id )
+    {
+        this.id = id;
+    }
 
     public String getName()
     {
