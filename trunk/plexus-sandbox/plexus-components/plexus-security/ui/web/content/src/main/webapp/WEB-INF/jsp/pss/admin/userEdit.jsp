@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright 2005-2006 The Apache Software Foundation.
+  ~ Copyright 2005-2006 The Codehaus.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -38,40 +38,9 @@
   <ww:submit value="Update User" />
 </ww:form>
 
-<h2>Currently Assigned Roles</h2>
-
-<ul>
-<c:choose>
-  <c:when test="${!empty edituser.assignedRoles}">
-    <ww:iterator id="role" value="edituser.assignedRoles">
-      <li><em>${role}</em></li>
-    </ww:iterator>
-  </c:when>
-  <c:otherwise>
-    <li><em>No Roles Assigned (yet)</em></li>
-  </c:otherwise>
-</c:choose>
-</ul>
-
-<%--<pss:ifAnyAuthorized permissions="grant-roles,remove-roles">--%>
-  <h2>Role Management</h2>
-
-<%--  <pss:ifAuthorized permission="grant-roles">--%>
-    <h3>Grant</h3>
-    <ww:action name="userRolesToGrant" executeResult="true" >
-      <ww:param name="principal">${user.username}</ww:param>
-    </ww:action>
-
-<%--  </pss:ifAuthorized> --%>
-
- <%--:ifAuthorized permission="remove-roles"> --%>
-    <h3>Remove</h3>
-    <ww:action name="userRolesToRemove" executeResult="true" >
-      <ww:param name="principal">${user.username}</ww:param>
-    </ww:action>
-
-<%--pss:ifAuthorized>--%>
-<%--</pss:ifAnyAuthorized>--%>
+  <ww:action name="assignments!show" executeResult="true" >
+    <ww:param name="principal">${user.username}</ww:param>
+  </ww:action>
 
 </body>
 
