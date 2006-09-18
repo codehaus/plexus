@@ -128,19 +128,19 @@
     <action name="useredit" class="pss-admin-user-edit" method="edit">
       <result name="input">/WEB-INF/jsp/pss/admin/userEdit.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/admin/userEdit.jsp</result>
-      <result name="success" type="redirect-action">userList</result>
+      <result name="success" type="redirect-action">userlist</result>
     </action>
     
-    <action name="usercreate" class="pss-admin-user-create" method="edit">
+    <action name="usercreate" class="pss-admin-user-create" method="show">
       <result name="input">/WEB-INF/jsp/pss/admin/userCreate.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/admin/userCreate.jsp</result>
-      <result name="success" type="redirect-action">userEdit</result>
+      <result name="success" type="redirect-action">userlist</result>
     </action>
     
     <action name="userdelete" class="pss-admin-user-delete" method="confirm">
-      <result name="input">/WEB-INF/jsp/security/admin/userDelete.jsp</result>
-      <result name="error" type="redirect-action">userList</result>
-      <result name="success" type="redirect-action">userList</result>
+      <result name="input">/WEB-INF/jsp/pss/admin/userDelete.jsp</result>
+      <result name="error" type="redirect-action">userlist</result>
+      <result name="success" type="redirect-action">userlist</result>
     </action>
     
     <!-- ==== RBAC Actions ========================================== -->

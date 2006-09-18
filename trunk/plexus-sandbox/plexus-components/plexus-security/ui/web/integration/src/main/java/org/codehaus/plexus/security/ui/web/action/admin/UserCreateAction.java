@@ -43,7 +43,7 @@ public class UserCreateAction
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
 
-    public String edit()
+    public String show()
     {
         if ( user == null )
         {
