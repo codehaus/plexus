@@ -83,7 +83,7 @@ public abstract class AbstractUserCredentialsAction
             addFieldError( "user.email", "Email Address is required." );
         }
 
-        if ( StringUtils.equals( user.getPassword(), user.getConfirmPassword() ) )
+        if ( !StringUtils.equals( user.getPassword(), user.getConfirmPassword() ) )
         {
             addFieldError( "user.confirmPassword", "Passwords do not match." );
         }
