@@ -25,6 +25,8 @@ import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.authorization.Authorizer;
 import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
 import org.codehaus.plexus.security.authorization.AuthorizationResult;
+import org.codehaus.plexus.security.policy.AccountLockedException;
+import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
@@ -80,9 +82,11 @@ public class DefaultSecuritySystem
      * @return
      * @throws AuthenticationException
      * @throws UserNotFoundException
+     * @throws MustChangePasswordException 
+     * @throws AccountLockedException 
      */
     public SecuritySession authenticate( AuthenticationDataSource source )
-        throws AuthenticationException, UserNotFoundException
+        throws AuthenticationException, UserNotFoundException, AccountLockedException, MustChangePasswordException
     {
         boolean hasDefaultPrincipal = StringUtils.isNotEmpty( source.getDefaultPrincipal() );
         
@@ -134,7 +138,7 @@ public class DefaultSecuritySystem
     }
 
     public boolean isAuthenticated( AuthenticationDataSource source )
-        throws AuthenticationException, UserNotFoundException
+        throws AuthenticationException, UserNotFoundException, AccountLockedException, MustChangePasswordException
     {
         return authenticate( source ).getAuthenticationResult().isAuthenticated();
     }

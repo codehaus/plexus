@@ -19,6 +19,8 @@ package org.codehaus.plexus.security.ui.web.filter.authentication.basic;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.security.policy.AccountLockedException;
+import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator;
 import org.codehaus.plexus.util.Base64;
 import org.codehaus.plexus.util.StringUtils;
@@ -48,7 +50,7 @@ public class HttpBasicAuthentication
 
     public AuthenticationResult getAuthenticationResult( HttpServletRequest request, HttpServletResponse response,
                                                          String defaultPrincipal )
-        throws AuthenticationException
+        throws AuthenticationException, AccountLockedException, MustChangePasswordException
     {
         if ( isAlreadyAuthenticated() )
         {

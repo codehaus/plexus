@@ -116,7 +116,7 @@ public class JdoUserManager
             throw new IllegalStateException( Messages.getString( "user.manager.cannot.add.user.without.username" ) ); //$NON-NLS-1$
         }
         
-        userSecurityPolicy.changeUserPassword( user );
+        userSecurityPolicy.extensionChangePassword( user );
         
         return (User) addObject( user );
     }
@@ -203,7 +203,7 @@ public class JdoUserManager
         // TODO: Consider adding a boolean to the updateUser indicating a password change or not.
         if ( StringUtils.isNotEmpty( user.getPassword() ) )
         {
-            userSecurityPolicy.changeUserPassword( user );
+            userSecurityPolicy.extensionChangePassword( user );
         }
 
         updateObject( (JdoUser) user );

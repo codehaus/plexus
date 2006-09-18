@@ -47,6 +47,11 @@ public class DefaultUserSecurityPolicy
     private static final String ENABLEMENT_KEY = DefaultUserSecurityPolicy.ROLE + ":ENABLED";
 
     /**
+     * @plexus.requirement role-hint="sha256"
+     */
+    private PasswordEncoder passwordEncoder;
+    
+    /**
      * @plexus.configuration default-value="6"
      */
     private int previousPasswordsCount;
@@ -57,9 +62,9 @@ public class DefaultUserSecurityPolicy
     private int loginAttemptCount;
 
     /**
-     * @plexus.requirement role-hint="sha256"
+     * @plexus.configuration default-value="90"
      */
-    private PasswordEncoder passwordEncoder;
+    private int passwordExpirationDays;
     
     /**
      * The List of {@link PasswordRule} objects.
@@ -167,8 +172,27 @@ public class DefaultUserSecurityPolicy
             this.rules.add( rule );
         }
     }
+    
+    public void extensionPasswordExpiration( User user )
+        throws MustChangePasswordException
+    {
+        
+    }
+    
+    public void extensionExcessiveLoginAttempts( User user )
+        throws AccountLockedException
+    {
+        int attempt = user.getCountFailedLoginAttempts();
+        attempt++;
+        user.setCountFailedLoginAttempts( attempt );
+        
+        if( attempt >= getLoginAttemptCount() )
+        {
+            throw new AccountLockedException();
+        }
+    }
 
-    public void changeUserPassword( User user )
+    public void extensionChangePassword( User user )
         throws PasswordRuleViolationException
     {
         validatePassword( user );
@@ -275,5 +299,14 @@ public class DefaultUserSecurityPolicy
     {
         plexus = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
     }
-    
+
+    public int getPasswordExpirationDays()
+    {
+        return passwordExpirationDays;
+    }
+
+    public void setPasswordExpirationDays( int passwordExpirationDays )
+    {
+        this.passwordExpirationDays = passwordExpirationDays;
+    }
 }

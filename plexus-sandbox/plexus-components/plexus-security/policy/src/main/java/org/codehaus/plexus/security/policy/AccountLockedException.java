@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.policy;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.user.User;
+
 /**
  * AccountLockedException 
  *
@@ -25,25 +27,22 @@ package org.codehaus.plexus.security.policy;
 public class AccountLockedException
     extends PolicyViolationException
 {
+    private User user;
 
     public AccountLockedException()
     {
         super();
     }
 
-    public AccountLockedException( String message, Throwable cause )
-    {
-        super( message, cause );
-    }
-
-    public AccountLockedException( String message )
+    public AccountLockedException( String message, User user )
     {
         super( message );
+        this.user = user;
     }
 
-    public AccountLockedException( Throwable cause )
+    public User getUser()
     {
-        super( cause );
+        return user;
     }
-
 }
+
