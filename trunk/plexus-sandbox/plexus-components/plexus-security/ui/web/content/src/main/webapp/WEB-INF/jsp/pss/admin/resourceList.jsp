@@ -48,16 +48,16 @@
         <c:forEach var="resource" items="${allResources}">
           <tr>
             <td>
-              <ww:checkbox name="selectedResources" value="${resource.name}" />
+              <ww:checkbox name="selectedResources" value="${resource.identifier}" />
             </td>
             <td>
               <ww:url id="resourceUrl" action="resource-edit">
-                <ww:param name="resourceName" value="${resource.name}" />
+                <ww:param name="resourceIdentifier" value="${resource.identifier}" />
               </ww:url>
-              <ww:a href="%{resourceUrl}"><c:out value="${resource.name}" /></ww:a>
+              <ww:a href="%{resourceUrl}"><c:out value="${resource.identifier}" /></ww:a>
             </td>
             <td>
-              <c:out value="${resource.description}" />
+              <c:out value="${resource.pattern}" />
             </td>
           </tr>
         </c:forEach>
