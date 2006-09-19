@@ -10,6 +10,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.component.composition.CompositionException;
 import org.codehaus.plexus.xwork.PlexusLifecycleListener;
 import org.codehaus.plexus.xwork.PlexusObjectFactory;
 import org.easymock.EasyMock;
@@ -62,11 +63,10 @@ public class CustomInterceptorTest
 
         ServletContextEvent servletContextEvent = new ServletContextEvent( servletContext );
 
-        boolean disabled = true;
-
-        if ( disabled )
+        boolean enabled = false;
+        
+        if ( enabled )
         {
-
             servletContext.log( "Could not find META-INF/plexus/application.xml, skipping" );
 
             servletContext
@@ -86,10 +86,9 @@ public class CustomInterceptorTest
 
             EasyMock.expect( servletContext.getRealPath( "/WEB-INF" ) ).andReturn( getBasedir() + "/target/" )
                 .anyTimes();
-
-            EasyMock.expect( servletContext.getAttribute( "webwork.plexus.container" ) ).andReturn( container )
-                .anyTimes();
         }
+
+        EasyMock.expect( servletContext.getAttribute( "webwork.plexus.container" ) ).andReturn( container ).anyTimes();
 
         EasyMock.replay( new Object[] { servletContext } );
 
@@ -99,8 +98,17 @@ public class CustomInterceptorTest
 
         objFactory.init( servletContext );
 
-        Interceptor interceptor = objFactory.buildInterceptor( config, new HashMap() );
+        try
+        {
+            Interceptor interceptor = objFactory.buildInterceptor( config, new HashMap() );
 
-        assertNotNull( interceptor );
+            fail( "Expected CompositionException" );
+            //assertNotNull( interceptor );
+        }
+        catch ( Exception e )
+        {
+            assertEquals( CompositionException.class.getName(), e.getCause().getClass().getName() );
+        }
+
     }
 }

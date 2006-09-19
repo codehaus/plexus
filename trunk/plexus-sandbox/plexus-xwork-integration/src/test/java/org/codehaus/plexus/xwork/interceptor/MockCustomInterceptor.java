@@ -76,9 +76,10 @@ public class MockCustomInterceptor
         return testComponent;
     }
 
-    public void setTestComponent( MockComponent testComponent )
-    {
-        this.testComponent = testComponent;
-    }
+    // Introduce a Composition Exception , see PLX - 278 
+    //    public void setTestComponent( MockComponent testComponent )
+    //    {
+    //        this.testComponent = testComponent;
+    //    }
 
 }
