@@ -3,7 +3,6 @@
  */
 package org.codehaus.plexus.xwork.interceptor;
 
-import java.net.URL;
 import java.util.HashMap;
 
 import javax.servlet.ServletContext;
@@ -62,31 +61,6 @@ public class CustomInterceptorTest
         ServletContext servletContext = (ServletContext) EasyMock.createNiceMock( ServletContext.class );
 
         ServletContextEvent servletContextEvent = new ServletContextEvent( servletContext );
-
-        boolean enabled = false;
-        
-        if ( enabled )
-        {
-            servletContext.log( "Could not find META-INF/plexus/application.xml, skipping" );
-
-            servletContext
-                .log( "Loading plexus context properties from: 'E:\\plexus\\plexus-sandbox\\plexus-xwork-integration/test/resources/plexus.properties'" );
-
-            EasyMock.expect( servletContext.getInitParameter( "plexus-properties" ) )
-                .andReturn( getBasedir() + "/test/resources/plexus.properties" ).anyTimes();
-
-            EasyMock
-                .expect(
-                         servletContext
-                             .getResource( "E:\\plexus\\plexus-sandbox\\plexus-xwork-integration/test/resources/plexus.properties" ) )
-                .andReturn( new URL( "file:///" + getBasedir() + "/test/resources/plexus.properties" ) ).anyTimes();
-
-            servletContext
-                .log( "Could not load plexus context properties from: 'E:\\plexus\\plexus-sandbox\\plexus-xwork-integration/test/resources/plexus.properties'" );
-
-            EasyMock.expect( servletContext.getRealPath( "/WEB-INF" ) ).andReturn( getBasedir() + "/target/" )
-                .anyTimes();
-        }
 
         EasyMock.expect( servletContext.getAttribute( "webwork.plexus.container" ) ).andReturn( container ).anyTimes();
 
