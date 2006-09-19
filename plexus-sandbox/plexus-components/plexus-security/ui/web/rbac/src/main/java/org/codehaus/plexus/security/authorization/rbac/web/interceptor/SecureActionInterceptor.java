@@ -42,11 +42,13 @@ public class SecureActionInterceptor
     extends AbstractLogEnabled
     implements Interceptor
 {
+    private static final String REQUIRES_AUTHORIZATION = "requires-authorization";
+    private static final String REQUIRES_AUTHENTICATION = "requires-authentication";
+    
     /**
      * @plexus.requirement
      */
     private SecuritySystem securitySystem;
-
 
     public void destroy()
     {
@@ -89,7 +91,7 @@ public class SecureActionInterceptor
                     {
                         getLogger().debug( "not authenticated, need to authentication for this action" );
 
-                        return "requires-authentication";
+                        return REQUIRES_AUTHENTICATION;
                     }
                 }
 
@@ -103,7 +105,7 @@ public class SecureActionInterceptor
                     if ( session == null )
                     {
                         getLogger().debug( "session required for authorization to run" );
-                        return "requires-authentication";
+                        return REQUIRES_AUTHENTICATION;
                     }
 
                     for ( Iterator i = authzTuples.iterator(); i.hasNext(); )
@@ -120,14 +122,14 @@ public class SecureActionInterceptor
                         }
                     }
 
-                    return "requires-authorization";
+                    return REQUIRES_AUTHORIZATION;
                 }
             }
         }
         catch ( SecureActionException se )
         {
             getLogger().debug( "can't generate the SecureActionBundle, deny access: " + se.getMessage() );
-            return "requires-authentication";
+            return REQUIRES_AUTHENTICATION;
         }
 
         getLogger().debug( "not a secure action " + action.getClass().getName() );
