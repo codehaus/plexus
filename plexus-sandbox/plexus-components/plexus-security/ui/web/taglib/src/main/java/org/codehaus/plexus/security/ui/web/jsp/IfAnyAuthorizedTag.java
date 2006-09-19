@@ -62,6 +62,11 @@ public class IfAnyAuthorizedTag
     {
         ActionContext context = ActionContext.getContext();
 
+        if ( context.getApplication() == null )
+        {
+            return false;
+        }
+
         PlexusContainer container = (PlexusContainer)context.getApplication().get( PlexusLifecycleListener.KEY ) ;
 
         SecuritySession securitySession = (SecuritySession)context.getSession().get( WebSecurityConstants.SECURITY_SESSION_KEY );
