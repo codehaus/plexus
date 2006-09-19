@@ -399,9 +399,9 @@ public abstract class AbstractRBACManager
                 {
                     Role role = getRole( roleName );
 
-                    if ( !roleSet.contains( roleName ) )
+                    if ( !roleSet.contains( role ) )
                     {
-                        roleSet.add( roleName );
+                        roleSet.add( role );
                     }
 
                     Map roleMap = getChildRoles( role );
