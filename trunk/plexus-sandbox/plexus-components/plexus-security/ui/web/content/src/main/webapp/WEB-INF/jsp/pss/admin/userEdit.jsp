@@ -39,7 +39,7 @@
   <ww:submit value="Update User" />
 </ww:form>
 
-  <ww:action name="assignments!show" executeResult="true" >
+  <ww:action name="assignments" executeResult="true" >
     <ww:param name="principal">${user.username}</ww:param>
   </ww:action>
 
