@@ -345,6 +345,27 @@ public class AbstractRbacManagerTestCase
         assertEquals( 0, eventTracker.removedPermissionNames.size() );
     }
 
+    public void testUserAssignmentWithChildRoles()
+        throws RbacStoreException, RbacObjectNotFoundException
+    {
+        RBACManager manager = getRbacManager();
+        Role developerRole = manager.saveRole( getDeveloperRole() );
+
+        Role adminRole = getAdminRole();
+
+        adminRole.addChildRoleName( developerRole.getName() );
+
+        adminRole = manager.saveRole( adminRole );
+
+        String adminPrincipal = "admin";
+        UserAssignment assignment = manager.createUserAssignment( adminPrincipal );
+        assignment.addRoleName( adminRole );
+        assignment = manager.saveUserAssignment( assignment );
+
+        assertEquals( 1, assignment.getRoleNames().size() );
+        assertEquals( 1, manager.getAssignedRoles( adminPrincipal ).size() );
+    }
+
     public void testGetAssignedPermissionsNoChildRoles()
         throws RbacStoreException, RbacObjectNotFoundException
     {

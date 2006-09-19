@@ -382,6 +382,15 @@ public abstract class AbstractRBACManager
         return getAssignedRoles( ua );
     }
 
+    /**
+     * returns only the roles that are assigned, not the roles that might be child roles of the
+     * assigned roles.
+     *
+     * @param ua
+     * @return
+     * @throws RbacObjectNotFoundException
+     * @throws RbacStoreException
+     */
     public Collection getAssignedRoles( UserAssignment ua )
         throws RbacObjectNotFoundException, RbacStoreException
     {
@@ -402,18 +411,6 @@ public abstract class AbstractRBACManager
                     if ( !roleSet.contains( role ) )
                     {
                         roleSet.add( role );
-                    }
-
-                    Map roleMap = getChildRoles( role );
-
-                    Iterator itroles = roleMap.values().iterator();
-                    while ( itroles.hasNext() )
-                    {
-                        Role childrole = (Role) itroles.next();
-                        if ( !roleSet.contains( childrole ) )
-                        {
-                            roleSet.add( childrole );
-                        }
                     }
                 }
                 catch ( RbacObjectNotFoundException e )

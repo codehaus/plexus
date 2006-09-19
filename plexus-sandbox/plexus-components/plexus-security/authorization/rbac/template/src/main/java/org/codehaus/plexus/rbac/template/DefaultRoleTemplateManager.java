@@ -1,11 +1,13 @@
 package org.codehaus.plexus.rbac.template;
 
-import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.security.rbac.Role;
+
+import java.util.List;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -46,6 +48,11 @@ public class DefaultRoleTemplateManager
      */
     private RBACManager rbacManager;
 
+    /**
+     * @plexus.requirement role="org.codehaus.plexus.rbac.template.RoleTemplate"
+     */
+    List roleTemplates;
+    
     /**
      *
      * @param roleTemplateName
