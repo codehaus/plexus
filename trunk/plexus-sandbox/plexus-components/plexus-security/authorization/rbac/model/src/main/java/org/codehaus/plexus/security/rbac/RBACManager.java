@@ -312,7 +312,7 @@ public interface RBACManager
 
     /**
      * Get the Collection of {@link Role} objects for this UserAssignment.
-     * 
+     *
      * @param userAssignment
      * @return Collection of {@link Role} objects for the provided UserAssignment.
      */
