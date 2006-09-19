@@ -15,6 +15,7 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.composition.CompositionException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.util.StringUtils;
 
 import javax.servlet.ServletContext;
 import java.util.ArrayList;
@@ -328,6 +329,7 @@ public class PlexusObjectFactory
         }
         catch ( ComponentCreationException e )
         {
+            getLogger().error( e.getMessage(), e );
             throw e;
         }
         catch ( ComponentNotFoundException e )
@@ -378,9 +380,14 @@ public class PlexusObjectFactory
     private Object lookup( PlexusContainer plexus, String role, String roleHint )
         throws ComponentNotFoundException, ComponentCreationException
     {
+        if ( StringUtils.isEmpty( role ) )
+        {
+            throw new ComponentNotFoundException( "Unable to find component for empty role." );
+        }
+        
         try
         {
-            return base.lookup( role, roleHint );
+            return plexus.lookup( role, roleHint );
         }
         catch ( ComponentLookupException e )
         {
