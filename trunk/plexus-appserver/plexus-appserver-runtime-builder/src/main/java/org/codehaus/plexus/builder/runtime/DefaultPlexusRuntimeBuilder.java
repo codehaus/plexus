@@ -144,12 +144,12 @@ public class DefaultPlexusRuntimeBuilder
                 bootArtifacts = getBootArtifacts( projectArtifacts, remoteRepositories, localRepository, false );
 
                 Set newAdditionalCoreArtifacts = new HashSet();
+                if ( additionalCoreArtifacts != null && !additionalCoreArtifacts.isEmpty() )
+                {
+                    newAdditionalCoreArtifacts.addAll( additionalCoreArtifacts );
+                }
                 if ( addManagementAgent )
                 {
-                    if ( additionalCoreArtifacts != null && !additionalCoreArtifacts.isEmpty() )
-                    {
-                        newAdditionalCoreArtifacts.addAll( additionalCoreArtifacts );
-                    }
                     newAdditionalCoreArtifacts.add( "org.livetribe:livetribe-slp" );
                     newAdditionalCoreArtifacts.add( "backport-util-concurrent:backport-util-concurrent" );
                 }
