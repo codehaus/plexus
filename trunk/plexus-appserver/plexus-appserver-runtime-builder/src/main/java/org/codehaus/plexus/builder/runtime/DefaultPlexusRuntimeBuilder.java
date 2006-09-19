@@ -150,6 +150,8 @@ public class DefaultPlexusRuntimeBuilder
                 }
                 if ( addManagementAgent )
                 {
+                    newAdditionalCoreArtifacts.add( "mx4j:mx4j" );
+                    newAdditionalCoreArtifacts.add( "mx4j:mx4j-remote" );
                     newAdditionalCoreArtifacts.add( "org.livetribe:livetribe-slp" );
                     newAdditionalCoreArtifacts.add( "backport-util-concurrent:backport-util-concurrent" );
                 }

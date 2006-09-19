@@ -38,13 +38,13 @@ import org.livetribe.slp.ServiceURL;
 import org.livetribe.slp.api.sa.StandardServiceAgent;
 
 import javax.management.MBeanServer;
+import javax.management.MBeanServerFactory;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXConnectorServerFactory;
 import javax.management.remote.JMXServiceURL;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.lang.management.ManagementFactory;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -84,8 +84,7 @@ public class DefaultAgent
     {
         try
         {
-            // Get the platform MBeanServer
-            mbeanServer = ManagementFactory.getPlatformMBeanServer();
+            mbeanServer = MBeanServerFactory.createMBeanServer();
 
             // Register mbeans
             if ( mbeans != null )
