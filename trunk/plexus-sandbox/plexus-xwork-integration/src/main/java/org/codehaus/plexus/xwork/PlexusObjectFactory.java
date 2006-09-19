@@ -190,10 +190,6 @@ public class PlexusObjectFactory
     }
     
     /**
-     * Specialized Class Lookup supplement for standard plexus process, used to differentiate between a class
-     * that just doesn't match the provided criteria, and one that did match, but failed to be created due to
-     * component composition issues.  
-     * 
      * Used to provide useful exception messages to a web-app during a lookup in {@link #getClassInstance(String)}
      * 
      * @param clazz the type of class to look up
@@ -206,26 +202,9 @@ public class PlexusObjectFactory
     private Class lookupClass( Class clazz, String className )
         throws ComponentNotFoundException, ComponentCreationException
     {
-        try
-        {
-            return base.lookup( clazz.getName(), className ).getClass();
-        }
-        catch ( ComponentLookupException e )
-        {
-            Throwable cause = e.getCause();
-            while ( cause != null )
-            {
-                if ( cause instanceof CompositionException )
-                {
-                    throw new ComponentCreationException( "Unable to create " + className + " as " + clazz
-                        + " due to plexus misconfiguration.", e );
-                }
-                cause = cause.getCause();
-            }
-            throw new ComponentNotFoundException( "Failed lookup for " + className + " as " + clazz + ".", e );
-        }
+        return lookup( base, clazz.getName(), className ).getClass();
     }
-
+    
     public Class getClassInstance( String className )
         throws ClassNotFoundException
     {
@@ -347,7 +326,11 @@ public class PlexusObjectFactory
             plexusComponents.add( id );
             return o;
         }
-        catch ( ComponentLookupException e )
+        catch ( ComponentCreationException e )
+        {
+            throw e;
+        }
+        catch ( ComponentNotFoundException e )
         {
             Object o = loadComponentWithXWork( base, role, roleHint, extraContext );
             otherComponents.add( id );
@@ -355,10 +338,10 @@ public class PlexusObjectFactory
         }
     }
 
-    private Object loadComponentWithPlexus( PlexusContainer pc, String role, String roleHint )
-        throws ComponentLookupException
+    private Object loadComponentWithPlexus( PlexusContainer pc, String role, String roleHint ) 
+        throws ComponentNotFoundException, ComponentCreationException
     {
-        return pc.lookup( role, roleHint );
+        return lookup( pc, role, roleHint );
     }
 
     private Object loadComponentWithXWork( PlexusContainer pc, String role, String roleHint, Map extraContext )
@@ -376,7 +359,45 @@ public class PlexusObjectFactory
         pc.autowire( o );
         return o;
     }
-
+    
+    /**
+     * Specialized Lookup supplement for standard plexus process, used to differentiate between an object
+     * that just doesn't match the provided criteria, and one that did match, but failed to be created due to
+     * component composition issues.  
+     * 
+     * Used to provide useful exception messages to a web-app during a lookup in {@link #getClassInstance(String)} and
+     * {@link #lookup(String, String, Map)}
+     * 
+     * @param clazz the type of class to look up
+     * @param className the name of the specific class (or plexus role) to look up.
+     * @return the class that was found.
+     * 
+     * @throws ComponentNotFoundException if the component was simply not found.
+     * @throws ComponentCreationException if the component was found, but failed to be created correctly.
+     */
+    private Object lookup( PlexusContainer plexus, String role, String roleHint )
+        throws ComponentNotFoundException, ComponentCreationException
+    {
+        try
+        {
+            return base.lookup( role, roleHint );
+        }
+        catch ( ComponentLookupException e )
+        {
+            Throwable cause = e.getCause();
+            while ( cause != null )
+            {
+                if ( cause instanceof CompositionException )
+                {
+                    throw new ComponentCreationException( "Unable look up " + role + ":" + roleHint
+                        + " due to plexus misconfiguration.", e );
+                }
+                cause = cause.getCause();
+            }
+            throw new ComponentNotFoundException( "Failed lookup for " + role + ":" + roleHint + ".", e );
+        }
+    }
+    
     private Logger getLogger()
     {
         // Cheating here...
