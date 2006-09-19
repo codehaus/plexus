@@ -31,7 +31,7 @@ public class SecureActionBundle
     private List authorizationTuples = new ArrayList();
 
 
-    public void requiresAuthorization( String operation, String resource )
+    public void addRequiredAuthorization( String operation, String resource )
         throws SecureActionException
     {
         if ( operation != null && resource != null )
@@ -61,7 +61,7 @@ public class SecureActionBundle
     }
 
 
-    public class AuthorizationTuple
+    public static class AuthorizationTuple
     {
         private String operation;
 
