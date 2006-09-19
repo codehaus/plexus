@@ -21,23 +21,12 @@
 
 <c:choose>
   <c:when test="${!empty assignedRoles}">
-    <ww:form action="assignments!edituser" namespace="/security" name="removeRoles" theme="simple">
-    <table cellspacing="0" cellpadding="5" border="1">
-    <ww:iterator id="role" value="assignedRoles">
-      <tr>
-      
-        <td>
-          <ww:checkbox name="removeSelectedRoles" value="%{name}" theme="simple"/>
-        </td>
-  
-        <c:import url="/WEB-INF/jsp/pss/include/roleRow.jspf" />
 
-      </tr>
-    </ww:iterator>
-    <tr><td>
+    <ww:form action="removeRolesFromUser" namespace="/security" name="removeRoles">
+      <ww:hidden name="principal" value="${username}"/>
+      <ww:hidden name="removeRolesButton" value="true"/>
+      <ww:checkboxlist list="assignedRoles" name="removeSelectedRoles" listValue="name" listKey="name" theme="simple"/>
       <ww:submit value="Remove Selected Roles" name="removeRolesButton" theme="simple" />
-    </td></tr>
-    </table>
     </ww:form>
   </c:when>
   <c:otherwise>
@@ -54,23 +43,11 @@
 
 <c:choose>
   <c:when test="${!empty availableRoles}">
-    <ww:form action="assignments!edituser" namespace="/security" name="addRoles">
-    <table cellspacing="0" cellpadding="5" border="1">
-    <ww:iterator id="role" value="assignedRoles">
-      <tr>
-      
-        <td>
-          <ww:checkbox name="addSelectedRoles" value="%{name}" theme="simple"/>
-        </td>
-  
-        <c:import url="/WEB-INF/jsp/pss/include/roleRow.jspf" />
-
-      </tr>
-    </ww:iterator>
-    <tr><td>
+    <ww:form action="addRolesToUser" namespace="/security" name="addRoles">
+      <ww:hidden name="principal" value="${username}"/>
+      <ww:hidden name="addRolesButton" value="true"/>
+      <ww:checkboxlist list="availableRoles" name="addSelectedRoles" listValue="name" listKey="name" theme="simple"/>
       <ww:submit value="Add Selected Roles" name="addRolesButton" theme="simple" />
-    </td></tr>
-    </table>
     </ww:form>
   </c:when>
   <c:otherwise>
