@@ -2,6 +2,7 @@ package org.codehaus.plexus.rbac.profile;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.Role;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -48,7 +49,7 @@ public class RoleTemplateTest
     {
         assertTrue( true );
     }
-        /*
+
     public void testRoleTemplate()
         throws Exception
     {
@@ -73,5 +74,5 @@ System.out.println( "rbacmanager2 " + rbacManager.toString());
         Role bogusRole2 = roleManager.getDynamicRole( "bogus", "two" );
 
         assertTrue( rbacManager.roleExists( bogusRole2.getName() ) );
-    } */
+    } 
 }
