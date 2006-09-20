@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.ui.web;
+package org.codehaus.plexus.security.system;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -16,16 +16,15 @@ package org.codehaus.plexus.security.ui.web;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.user.User;
 
 /**
- * WebSecurityConstants - constants for use with web applications that use plexus-security. 
+ * SecuritySystemConstants - constants for use with contexts that use plexus-security. 
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class WebSecurityConstants
+public class SecuritySystemConstants
 {
     /**
      * Key in the sessionScope for the {@link SecuritySession} object. 

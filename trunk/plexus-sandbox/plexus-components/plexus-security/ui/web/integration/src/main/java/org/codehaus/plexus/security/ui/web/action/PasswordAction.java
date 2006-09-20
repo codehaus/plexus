@@ -4,10 +4,10 @@ import org.codehaus.plexus.security.policy.PasswordEncoder;
 import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
-import org.codehaus.plexus.security.ui.web.WebSecurityConstants;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.system.SecuritySystemConstants;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.Iterator;
@@ -145,7 +145,7 @@ public class PasswordAction
     
     private User getSessionUser()
     {
-        return (User) session.get( WebSecurityConstants.USER_KEY );
+        return (User) session.get( SecuritySystemConstants.USER_KEY );
     }
 
     // ------------------------------------------------------------------
