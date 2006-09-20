@@ -178,9 +178,17 @@
         <artifactId>maven-war-plugin</artifactId>
         <version>2.0.1</version>
         <configuration>
-          <archiveClasses>true</archiveClasses>
+          <archiveClasses>false</archiveClasses>
           <dependentWarExcludes>WEB-INF/web.xml</dependentWarExcludes>
         </configuration>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>inplace</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.plexus</groupId>

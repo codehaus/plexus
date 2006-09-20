@@ -27,6 +27,7 @@
     <global-results>
       <result name="security-login-success" type="redirect-action">main</result>
       <result name="security-login-cancel" type="redirect-action">main</result>
+      <result name="security-login-locked" type="redirect-action">main</result>
       <result name="security-logout" type="redirect-action">main</result>
       <result name="security-register-success" type="redirect-action">main</result>
       <result name="security-register-cancel" type="redirect-action">main</result>
