@@ -1,6 +1,9 @@
-package org.codehaus.plexus.security.ui.web.role.template;
+package org.codehaus.plexus.rbac.profile;
+
+import java.util.List;
+import java.util.Collections;
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +19,25 @@ package org.codehaus.plexus.security.ui.web.role.template;
  */
 
 /**
- * RoleConstants:
+ * RoleTemplateTest:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
+ *
+ * @plexus.component
+ *   role="org.codehaus.plexus.rbac.profile.DynamicRoleProfile"
+ *   role-hint="bogus"
  */
-public class RoleConstants
+public class BogusDynamicRoleProfile
+    extends AbstractDynamicRoleProfile
 {
-    public static final String USER_MANAGEMENT_ROLE = "User Administrator";
-    public static final String USER_MANAGEMENT_PERMISSION = "user-management-permission";
-    public static final String USER_MANAGEMENT_MASTER_OPERATION = "user-management-master-operation";
-    public static final String USER_MANAGEMENT_ROLE_ADMIN_OPERATION = "user-management-role-admin-operation";
-    public static final String USER_MANAGEMENT_EDIT_DETAILS_OPERATION = "user-management-edit-details-operation";                   
+    public String getRoleName( String resource )
+    {
+        return "BOGUS ROLE" + RoleProfileConstants.DELIMITER + resource;
+    }
+
+    public List getOperations()
+    {
+        return Collections.singletonList( "BOGUS-OPERATION" );
+    }
 }

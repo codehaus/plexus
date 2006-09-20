@@ -1,4 +1,4 @@
-package org.codehaus.plexus.rbac.template;
+package org.codehaus.plexus.rbac.profile;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.security.rbac.RBACManager;
@@ -29,7 +29,7 @@ public class RoleTemplateTest
 {
     private RBACManager rbacManager;
 
-    private RoleTemplateManager roleManager;
+    private RoleProfileManager roleManager;
 
     /**
      * Creates a new RbacStore which contains no data.
@@ -41,14 +41,14 @@ public class RoleTemplateTest
 
         rbacManager = (RBACManager) lookup ( RBACManager.ROLE, "memory" );
 
-        roleManager = (RoleTemplateManager) lookup ( RoleTemplateManager.ROLE, "default" );
+        roleManager = (RoleProfileManager) lookup ( RoleProfileManager.ROLE, "default" );
     }
 
     public void testNothing()
     {
         assertTrue( true );
     }
-/*
+        /*
     public void testRoleTemplate()
         throws Exception
     {
@@ -66,13 +66,12 @@ public class RoleTemplateTest
     public void testDynamicRoleTemplate()
         throws Exception
     {
-        Role bogusRole = roleManager.getRole( "bogus", "one" );
+        Role bogusRole = roleManager.getDynamicRole( "bogus", "one" );
 System.out.println( "rbacmanager2 " + rbacManager.toString());
         assertTrue( rbacManager.roleExists( bogusRole.getName() ) );
 
-        bogusRole = roleManager.getRole( "bogus", "two" );
+        Role bogusRole2 = roleManager.getDynamicRole( "bogus", "two" );
 
-        assertTrue( rbacManager.roleExists( bogusRole.getName() ) );
-    }
-    */
+        assertTrue( rbacManager.roleExists( bogusRole2.getName() ) );
+    } */
 }

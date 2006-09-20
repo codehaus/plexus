@@ -1,6 +1,11 @@
-package org.codehaus.plexus.rbac.template;
+package org.codehaus.plexus.rbac.profile;
+
+import org.codehaus.plexus.security.rbac.Role;
+
+import java.util.List;
+
 /*
- * Copyright 2006 The Apache Software Foundation.
+ * Copyright 2005 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +21,7 @@ package org.codehaus.plexus.rbac.template;
  */
 
 /**
- * RoleTemplate: Implementations of this interface should construct a role and pass it
+ * RoleProfile: Implementations of this interface should construct a role and pass it
  * back to the calling code.  The implementation should also add the role to the store as well
  * via the RBACManager.
  *
@@ -25,34 +30,29 @@ package org.codehaus.plexus.rbac.template;
  * consistent set of Permissions for dealing with Operations on the resource, and then the
  * adding of the Permissions to the Role and finally the Role itself.
  *
- * @author Jesse McConnell <jmcconnell@apache.org>
+ * @author Jesse McConnell <jesse@codehaus.org>
  * @version $Id:$
  */
-public interface DynamicRoleTemplate
+public interface RoleProfile
 {
-    public static final String ROLE = DynamicRoleTemplate.class.getName();
-
-
-    public String getRoleName( String roleTemplateName, String resource )
-        throws RoleTemplateException;
+    public static final String ROLE = RoleProfile.class.getName();
 
     /**
-     * the proper role name prefix, for example 'Maintainer" for "Maintainer - foo'
+     * return the name of the role this is a profile for
      * @return
      */
-    public String getRoleNamePrefix();
+    public String getRoleName();
 
     /**
-     * Create the role desired using the resource as the potentially dynamic resource.
-     *
-     * In strict RBAC terms the Resource is actually the Object in P( Operation, Object )
-     * notations.
-     *
-     * @param resource
+     * return the list of operations that this role will be granted global access to
      * @return
-     * @throws org.codehaus.plexus.rbac.template.RoleTemplateException
      */
-    public boolean createRole( String roleName, String resource )
-        throws RoleTemplateException;
+    public List getOperations();
 
+    /**
+     * return the role, either for the rbacManager should the role exist already, or
+     * go through the motions to create it
+     */
+    public Role getRole()
+        throws RoleProfileException;
 }

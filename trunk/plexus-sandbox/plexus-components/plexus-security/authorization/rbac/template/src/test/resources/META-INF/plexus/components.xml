@@ -2,9 +2,9 @@
   <components>
 
     <component>
-      <role>org.codehaus.plexus.rbac.template.RoleTemplate</role>
+      <role>org.codehaus.plexus.rbac.profile.RoleProfile</role>
       <role-hint>bogus</role-hint>
-      <implementation>org.codehaus.plexus.rbac.template.BogusRoleTemplate</implementation>
+      <implementation>org.codehaus.plexus.rbac.profile.BogusRoleProfile</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.security.rbac.RBACManager</role>
@@ -14,9 +14,9 @@
     </component>
 
    <component>
-      <role>org.codehaus.plexus.rbac.template.DynamicRoleTemplate</role>
+      <role>org.codehaus.plexus.rbac.profile.DynamicRoleProfile</role>
       <role-hint>bogus</role-hint>
-      <implementation>org.codehaus.plexus.rbac.template.BogusDynamicRoleTemplate</implementation>
+      <implementation>org.codehaus.plexus.rbac.profile.BogusDynamicRoleProfile</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.security.rbac.RBACManager</role>

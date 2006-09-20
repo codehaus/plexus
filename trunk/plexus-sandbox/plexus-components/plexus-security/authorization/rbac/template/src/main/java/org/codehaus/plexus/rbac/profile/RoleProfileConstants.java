@@ -1,6 +1,4 @@
-package org.codehaus.plexus.rbac.template;
-
-import org.codehaus.plexus.security.rbac.Role;
+package org.codehaus.plexus.rbac.profile;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -18,19 +16,13 @@ import org.codehaus.plexus.security.rbac.Role;
  */
 
 /**
- * RoleTemplateManager:
+ * RoleProfileConstants:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  */
-public interface RoleTemplateManager
+public class RoleProfileConstants
 {
-    String ROLE = RoleTemplateManager.class.getName();
-
-    public Role getRole( String roleName )
-        throws RoleTemplateException;
-
-    public Role getRole( String roleName, String resource )
-        throws RoleTemplateException;
+    public static final String DELIMITER = "-";
 
 }

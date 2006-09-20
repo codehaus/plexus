@@ -1,6 +1,10 @@
-package org.codehaus.plexus.rbac.template;
+package org.codehaus.plexus.rbac.profile;
+
+import java.util.List;
+import java.util.Collections;
+
 /*
- * Copyright 2005 The Apache Software Foundation.
+ * Copyright 2005 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +20,25 @@ package org.codehaus.plexus.rbac.template;
  */
 
 /**
- * RoleTemplateException:
+ * RoleTemplateTest:
  *
- * @author Jesse McConnell <jmcconnell@apache.org>
- * @version $Id:$
+ * @author: Jesse McConnell <jesse@codehaus.org>
+ * @version: $ID:$
+ *
+ * @plexus.component
+ *   role="org.codehaus.plexus.rbac.profile.RoleProfile"
+ *   role-hint="bogus"
  */
-public class RoleTemplateException
-    extends Exception
+public class BogusRoleProfile
+    extends AbstractRoleProfile
 {
-    public RoleTemplateException( String string )
+    public String getRoleName()
     {
-        super( string );
+        return "bogus-role";
     }
 
-    public RoleTemplateException( String string, Throwable throwable )
+    public List getOperations()
     {
-        super( string, throwable );
+        return Collections.singletonList( "bogus-operation" );
     }
 }
