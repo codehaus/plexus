@@ -47,23 +47,16 @@ public class RBACObjectAssertions
             throw new RbacObjectInvalidException( scope, "Role.name must not be empty." );
         }
 
-        if ( role.getPermissions() == null )
+        if ( role.getPermissions() != null )
         {
-            throw new RbacObjectInvalidException( scope, "Role.permissions cannot be null." );
-        }
-
-        if ( role.getPermissions().isEmpty() )
-        {
-            throw new RbacObjectInvalidException( scope, "Role.permissions cannot be empty." );
-        }
-
-        int i = 0;
-        Iterator it = role.getPermissions().iterator();
-        while ( it.hasNext() )
-        {
-            Permission perm = (Permission) it.next();
-            assertValid( "Role.permissions[" + i + "]", perm );
-            i++;
+            int i = 0;
+            Iterator it = role.getPermissions().iterator();
+            while ( it.hasNext() )
+            {
+                Permission perm = (Permission) it.next();
+                assertValid( "Role.permissions[" + i + "]", perm );
+                i++;
+            }
         }
     }
 

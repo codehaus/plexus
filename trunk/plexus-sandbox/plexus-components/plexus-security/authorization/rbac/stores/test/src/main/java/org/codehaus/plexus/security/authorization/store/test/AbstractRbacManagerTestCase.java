@@ -234,6 +234,37 @@ public class AbstractRbacManagerTestCase
         assertEquals( 2, eventTracker.addedPermissionNames.size() );
         assertEquals( 0, eventTracker.removedPermissionNames.size() );
     }
+    
+    public void testAllowRoleWithoutPermissions()
+        throws RbacStoreException, RbacObjectNotFoundException
+    {
+        assertNotNull( getRbacManager() );
+        
+        String rolename = "Test Role";
+        
+        Role testRole = getRbacManager().createRole( rolename );
+        testRole = getRbacManager().saveRole( testRole );
+        
+        assertNotNull( testRole );
+        assertEquals( 1, getRbacManager().getAllRoles().size() );
+        assertEquals( 0, getRbacManager().getAllPermissions().size() );
+        
+        Role actualRole = getRbacManager().getRole( rolename );
+
+        assertEquals( testRole, actualRole );
+        assertEquals( 1, getRbacManager().getAllRoles().size() );
+        assertEquals( 0, getRbacManager().getAllPermissions().size() );
+
+        /* Assert some event tracker stuff */
+        assertNotNull( eventTracker );
+        assertEquals( 1, eventTracker.initCount );
+        assertTrue( eventTracker.lastDbFreshness.booleanValue() );
+
+        assertEquals( 1, eventTracker.addedRoleNames.size() );
+        assertEquals( 0, eventTracker.removedRoleNames.size() );
+        assertEquals( 0, eventTracker.addedPermissionNames.size() );
+        assertEquals( 0, eventTracker.removedPermissionNames.size() );
+    }
 
     public void testAddGetChildRole()
         throws RbacStoreException, RbacObjectNotFoundException
