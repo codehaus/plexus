@@ -74,5 +74,31 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <!-- Jetty Plus dependencies -->
+    <dependency>
+      <groupId>jetty</groupId>
+      <artifactId>org.mortbay.jetty.plus</artifactId>
+      <version>5.1.10</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.activation</groupId>
+      <artifactId>activation</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.3.2</version>
+    </dependency>
+	<dependency>
+      <groupId>geronimo-spec</groupId>
+      <artifactId>geronimo-spec-jta</artifactId>
+      <version>1.0.1B-rc4</version>
+    </dependency>
+	<dependency>
+      <groupId>com.experlog</groupId>
+      <artifactId>xapool</artifactId>
+      <version>1.5.0</version>
+    </dependency>
   </dependencies>
 </project>
