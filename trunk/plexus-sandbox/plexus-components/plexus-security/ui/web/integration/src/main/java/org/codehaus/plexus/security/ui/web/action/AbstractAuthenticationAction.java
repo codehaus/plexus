@@ -18,7 +18,7 @@ package org.codehaus.plexus.security.ui.web.action;
 
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
-import org.codehaus.plexus.security.ui.web.WebSecurityConstants;
+import org.codehaus.plexus.security.system.SecuritySystemConstants;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
@@ -46,9 +46,9 @@ public class AbstractAuthenticationAction
 
     protected void setAuthTokens( SecuritySession securitySession, User user, boolean authStatus )
     {
-        session.put( WebSecurityConstants.SECURITY_SESSION_KEY, securitySession );
-        session.put( WebSecurityConstants.USER_KEY, user );
-        session.put( WebSecurityConstants.AUTH_STATUS_KEY, new Boolean( authStatus ) );
+        session.put( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
+        session.put( SecuritySystemConstants.USER_KEY, user );
+        session.put( SecuritySystemConstants.AUTH_STATUS_KEY, new Boolean( authStatus ) );
         this.setSession( session );
     }
 

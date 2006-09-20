@@ -24,6 +24,7 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.authorization.AuthorizationResult;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.system.SecuritySystemConstants;
 
 import java.util.Iterator;
 import java.util.List;
@@ -82,7 +83,7 @@ public class SecureActionInterceptor
                 SecureAction secureAction = (SecureAction) action;
                 SecureActionBundle bundle = secureAction.getSecureActionBundle();
 
-                SecuritySession session = (SecuritySession) context.getSession().get( SecuritySession.ROLE );
+                SecuritySession session = (SecuritySession) context.getSession().get( SecuritySystemConstants.SECURITY_SESSION_KEY );
 
                 // check the authentication requirements
                 if ( bundle.requiresAuthentication() )
