@@ -16,6 +16,9 @@
     <component>
       <role>org.codehaus.plexus.jetty.ServletContainer</role>
       <implementation>org.codehaus.plexus.jetty.JettyServletContainer</implementation>
+      <configuration>
+        <jettyXmlFilename>${plexus.home}/conf/jetty.xml</jettyXmlFilename>
+      </configuration>
     </component>
     <component>
       <role>org.codehaus.plexus.jetty.configuration.builder.ServiceConfigurationBuilder</role>

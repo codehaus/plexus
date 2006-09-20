@@ -39,18 +39,18 @@ import org.codehaus.plexus.util.FileUtils;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.HttpListener;
 import org.mortbay.http.handler.ResourceHandler;
-import org.mortbay.jetty.Server;
+import org.mortbay.jetty.plus.Server;
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.mortbay.jetty.servlet.ServletHttpContext;
 import org.mortbay.jetty.servlet.WebApplicationContext;
 import org.mortbay.util.InetAddrPort;
+import org.mortbay.xml.XmlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,6 +65,8 @@ public class JettyServletContainer
     implements ServletContainer, Startable
 {
     private Server server;
+
+    private String jettyXmlFilename;
 
     private Map classLoaders = new HashMap();
 
@@ -91,6 +93,28 @@ public class JettyServletContainer
         }
 
         return false;
+    }
+
+    public String getJettyXmlFileName()
+    {
+        return jettyXmlFilename;
+    }
+
+    public void applyJettyXml()
+        throws Exception
+    {
+        if ( getJettyXmlFileName() == null )
+        {
+            return;
+        }
+
+        File jettyFile = new File( getJettyXmlFileName() );
+        if ( jettyFile.exists() )
+        {
+            getLogger().info( "Configuring Jetty from xml configuration file = " + jettyFile.getCanonicalPath() );
+            XmlConfiguration xmlConfiguration = new XmlConfiguration( jettyFile.getCanonicalFile().toURL() );
+            xmlConfiguration.configure( server );
+        }
     }
 
     public void addListener( org.codehaus.plexus.jetty.configuration.HttpListener listener )
@@ -451,6 +475,8 @@ public class JettyServletContainer
 
         try
         {
+            applyJettyXml();
+
             server.start();
         }
         catch ( Exception e )
