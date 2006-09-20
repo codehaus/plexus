@@ -1,7 +1,10 @@
-package org.codehaus.plexus.rbac.template;
+package org.codehaus.plexus.rbac.profile;
 
+import org.codehaus.plexus.security.rbac.Role;
+
+import java.util.List;
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +20,7 @@ package org.codehaus.plexus.rbac.template;
  */
 
 /**
- * RoleTemplate: Implementations of this interface should construct a role and pass it
+ * RoleProfile: Implementations of this interface should construct a role and pass it
  * back to the calling code.  The implementation should also add the role to the store as well
  * via the RBACManager.
  *
@@ -26,29 +29,17 @@ package org.codehaus.plexus.rbac.template;
  * consistent set of Permissions for dealing with Operations on the resource, and then the
  * adding of the Permissions to the Role and finally the Role itself.
  *
- * @author Jesse McConnell <jesse@codehaus.org>
+ * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
  */
-public interface RoleTemplate
+public interface DynamicRoleProfile
 {
-    public static final String ROLE = RoleTemplate.class.getName();
+    public static final String ROLE = DynamicRoleProfile.class.getName();
 
+    public String getRoleName( String resource );
 
-    /**
-     * return the name of the role this is a template for
-     * @return
-     */
-    public String getRoleName();
+    public List getOperations();
 
-    /**
-     * RoleTemplate should be implemented when you have roles that are unchanging, the rolename is not different
-     * and the resource associated with it never changes.  These roles generally exist once across the entire
-     * system.
-     *
-     * @return
-     * @throws RoleTemplateException
-     */
-    public boolean createRole()
-        throws RoleTemplateException;
+    public Role getRole( String resource ) throws RoleProfileException;
 
 }

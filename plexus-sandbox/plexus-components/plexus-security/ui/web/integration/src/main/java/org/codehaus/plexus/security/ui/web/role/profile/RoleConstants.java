@@ -1,8 +1,6 @@
-package org.codehaus.plexus.rbac.template;
-
-import org.codehaus.plexus.security.rbac.RBACManager;
+package org.codehaus.plexus.security.ui.web.role.profile;
 /*
- * Copyright 2006 The Apache Software Foundation.
+ * Copyright 2005 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,24 +16,19 @@ import org.codehaus.plexus.security.rbac.RBACManager;
  */
 
 /**
- * AbstractRoleTemplate:
+ * RoleConstants:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  */
-public abstract class AbstractDynamicRoleTemplate
-    implements DynamicRoleTemplate
+public class RoleConstants
 {
-    /**
-     * @plexus.requirement
-     */
-    protected RBACManager rbacManager;
+    // roles
+    public static final String USER_MANAGEMENT_ROLE = "User Administrator";
 
-
-    public String getRoleName( String roleName, String resource )
-        throws RoleTemplateException
-    {
-        
-        return getRoleNamePrefix() + " - " + resource;
-    }
+    // operations
+    public static final String USER_MANAGEMENT_REGISTER_OPERATION = "user-management-register";
+    public static final String USER_MANAGEMENT_EDIT_USER_OPERATION = "user-management-edit-user";
+    public static final String USER_MANAGEMENT_CREATE_USER_OPERATION = "user-management-create-user";
+    public static final String USER_MANAGEMENT_MANAGE_ROLES_OPERATION = "user-management-manage-roles";
 }
