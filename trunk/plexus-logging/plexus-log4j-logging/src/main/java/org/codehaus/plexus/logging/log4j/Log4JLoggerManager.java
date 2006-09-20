@@ -276,7 +276,7 @@ public class Log4JLoggerManager
             {
                 Level level = (Level) it.next();
 
-                log4JProperties.put( "log4j.logger." + level.getHierarchy(), level.getLevel() );
+                log4JProperties.put( "log4j.logger." + level.getHierarchy(), level.getLevel() + level.getAppenders() );
             }
         }
 

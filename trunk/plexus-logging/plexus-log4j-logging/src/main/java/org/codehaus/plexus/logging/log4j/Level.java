@@ -1,5 +1,7 @@
 package org.codehaus.plexus.logging.log4j;
 
+import org.codehaus.plexus.util.StringUtils;
+
 /*
  * LICENSE
  */
@@ -15,6 +17,8 @@ public class Level
 
     /** */
     private String level;
+    
+    private String appenders;
 
     /**
      * @return Returns the hierarchy.
@@ -30,5 +34,27 @@ public class Level
     public String getLevel()
     {
         return level;
+    }
+    
+    /**
+     * @return Returns the appender list to use.
+     */
+    public String getAppenders()
+    {
+        if ( StringUtils.isEmpty( appenders ) )
+        {
+            return "";
+        }
+        else
+        {
+            if ( appenders.startsWith( "," ) )
+            {
+                return appenders;
+            }
+            else
+            {
+                return ", " + appenders;
+            }
+        }
     }
 }
