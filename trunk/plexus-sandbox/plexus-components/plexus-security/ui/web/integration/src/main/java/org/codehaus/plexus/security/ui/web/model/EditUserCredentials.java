@@ -28,6 +28,17 @@ import org.codehaus.plexus.security.user.User;
 public class EditUserCredentials
     extends UserCredentials
 {
+    public EditUserCredentials()
+    {
+        super();
+    }
+    
+    public EditUserCredentials( String username )
+    {
+        super();
+        super.setUsername( username );
+    }
+    
     public EditUserCredentials( User user )
     {
         super();
@@ -40,11 +51,6 @@ public class EditUserCredentials
         super.setTimestampAccountCreation( DateUtils.formatWithAge( user.getAccountCreationDate(), "ago" ) );
         super.setTimestampLastLogin( DateUtils.formatWithAge( user.getLastLoginDate(), "ago" ) );
         super.setTimestampLastPasswordChange( DateUtils.formatWithAge( user.getLastPasswordChange(), "ago" ) );
-    }
-
-    public void setUsername( String username )
-    {
-        // Do nothing.
     }
 
     public boolean isEdit()
