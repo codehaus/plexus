@@ -4,8 +4,7 @@
 <!-- ==================================================================
      Plexus Security Tools
      
-     This should contain the /security/admin and /security namespaced
-     action configurations.
+     This should contain the /security namespaced action configurations.
      
      These configurations will likely not need changing.
      
@@ -80,12 +79,6 @@
       </result>      
     </action>
     
-    <!-- 
-    <action name="statusline" class="status" method="input">
-      <result name="input">/WEB-INF/jsp/security/statusline.jspf</result>
-    </action>
-      -->    
-    
     <action name="account" class="pss-account" method="show">
       <result name="input">/WEB-INF/jsp/pss/account.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/account.jsp</result>
@@ -96,7 +89,6 @@
         <param name="externalResult">security-account-cancel</param>
       </result>      
     </action>
-    
     
     <action name="password" class="pss-password" method="show">
       <result name="input">/WEB-INF/jsp/pss/password.jsp</result>

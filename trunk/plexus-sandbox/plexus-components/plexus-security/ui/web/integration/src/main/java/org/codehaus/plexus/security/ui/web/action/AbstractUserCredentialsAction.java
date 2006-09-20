@@ -113,7 +113,7 @@ public abstract class AbstractUserCredentialsAction
     // Internal Support Methods
     // ------------------------------------------------------------------
 
-    private void processPasswordRuleViolations( PasswordRuleViolationException e )
+    protected void processPasswordRuleViolations( PasswordRuleViolationException e )
     {
         PasswordRuleViolations violations = e.getViolations();
 

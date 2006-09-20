@@ -18,6 +18,7 @@ package org.codehaus.plexus.security.ui.web.model;
 
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * UserCredentials 
@@ -53,6 +54,36 @@ public abstract class UserCredentials
         user.setPassword( password );
 
         return user;
+    }
+    
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append( "UserCredentials[" );
+        sb.append( "username=" ).append( username );
+        sb.append( ",fullName=" ).append( fullName );
+        sb.append( ",email=" ).append( email );
+        sb.append( ",password=" );
+        if ( StringUtils.isNotEmpty( password ) )
+        {
+            sb.append( "<***>" );
+        }
+        else
+        {
+            sb.append( "<empty>" );
+        }
+        sb.append( ",confirmPassword=" );
+        if ( StringUtils.isNotEmpty( confirmPassword ) )
+        {
+            sb.append( "<***>" );
+        }
+        else
+        {
+            sb.append( "<empty>" );
+        }
+
+        return sb.append("]").toString();
     }
 
     public String getConfirmPassword()
