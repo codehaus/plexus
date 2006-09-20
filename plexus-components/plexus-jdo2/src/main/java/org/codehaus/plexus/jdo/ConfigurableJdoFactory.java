@@ -29,15 +29,5 @@ public interface ConfigurableJdoFactory
 
     void setPersistenceManagerFactoryClass( String persistenceManagerFactoryClass );
 
-    void setDriverName( String driverName );
-
-    void setUrl( String url );
-
-    void setUserName( String userName );
-
-    void setPassword( String password );
-
-    void setProperty( String key, String value );
-
     Properties getProperties();
 }
