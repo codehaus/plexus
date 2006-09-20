@@ -23,7 +23,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
-import org.codehaus.plexus.security.ui.web.WebSecurityConstants;
+import org.codehaus.plexus.security.system.SecuritySystemConstants;
 import org.codehaus.plexus.xwork.PlexusLifecycleListener;
 
 import javax.servlet.jsp.JspTagException;
@@ -69,7 +69,7 @@ public class IfAnyAuthorizedTag
 
         PlexusContainer container = (PlexusContainer)context.getApplication().get( PlexusLifecycleListener.KEY ) ;
 
-        SecuritySession securitySession = (SecuritySession)context.getSession().get( WebSecurityConstants.SECURITY_SESSION_KEY );
+        SecuritySession securitySession = (SecuritySession)context.getSession().get( SecuritySystemConstants.SECURITY_SESSION_KEY );
 
         // check if securitySession exists, if it doesn't just return false, the user isn't logged in
         if ( securitySession == null )
