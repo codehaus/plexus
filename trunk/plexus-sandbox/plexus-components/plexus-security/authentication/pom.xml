@@ -16,6 +16,7 @@
   </dependencies>
   <modules>
     <module>api</module>
+    <module>keys</module>
     <module>providers</module>
   </modules>
 </project>
