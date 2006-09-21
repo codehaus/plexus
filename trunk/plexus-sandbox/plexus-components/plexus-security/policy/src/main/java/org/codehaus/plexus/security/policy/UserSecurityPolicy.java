@@ -92,6 +92,20 @@ public interface UserSecurityPolicy
     public void setLoginAttemptCount( int count );
 
     /**
+     * Get the Validation Settings.
+     * 
+     * @return the validation settings.
+     */
+    public UserValidationSettings getUserValidationSettings();
+    
+    /**
+     * Set the Validation Settings.
+     * 
+     * @param settings the settings.
+     */
+    public void setUserValidationSettings(UserValidationSettings settings);
+
+    /**
      * Enable the policies or not.
      * 
      * Useful in code when application startup or application init is being performed. 

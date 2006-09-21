@@ -16,8 +16,15 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.keys.AuthenticationKey;
+import org.codehaus.plexus.security.keys.KeyManager;
+import org.codehaus.plexus.security.keys.KeyManagerException;
+import org.codehaus.plexus.security.ui.web.mail.Mailer;
 import org.codehaus.plexus.security.ui.web.model.CreateUserCredentials;
 import org.codehaus.plexus.security.user.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * RegisterAction 
@@ -33,16 +40,29 @@ public class RegisterAction
     extends AbstractUserCredentialsAction
 {
     private static final String REGISTER_SUCCESS = "security-register-success";
+
     private static final String REGISTER_CANCEL = "security-register-cancel";
-    
+
     // ------------------------------------------------------------------
     // Plexus Component Requirements
     // ------------------------------------------------------------------
 
+    /**
+     * @plexus.requirement
+     */
+    private Mailer mailer;
+
+    /**
+     * @plexus.requirement
+     */
+    private KeyManager keyManager;
+
     private boolean cancelButton;
-    
+
     private CreateUserCredentials user;
-    
+
+    private boolean emailValidationRequired;
+
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
@@ -54,6 +74,8 @@ public class RegisterAction
             user = new CreateUserCredentials();
         }
 
+        emailValidationRequired = securityPolicy.getUserValidationSettings().isEmailValidationRequired();
+
         return INPUT;
     }
 
@@ -63,16 +85,16 @@ public class RegisterAction
         {
             return REGISTER_CANCEL;
         }
-        
+
         if ( user == null )
         {
             user = new CreateUserCredentials();
             addActionError( "Invalid user credentials." );
             return ERROR;
         }
-        
+
         internalUser = user;
-        
+
         validateCredentialsStrict();
 
         // NOTE: Do not perform Password Rules Validation Here.
@@ -91,6 +113,31 @@ public class RegisterAction
 
         User u = manager.createUser( user.getUsername(), user.getFullName(), user.getEmail() );
         u.setPassword( user.getPassword() );
+        u.setValidated( false );
+        u.setLocked( false );
+
+        if ( securityPolicy.getUserValidationSettings().isEmailValidationRequired() )
+        {
+            u.setLocked( true );
+
+            try
+            {
+                AuthenticationKey authkey = keyManager.createKey( u.getPrincipal().toString(),
+                                                                  "New User Email Validation", securityPolicy
+                                                                      .getUserValidationSettings()
+                                                                      .getEmailValidationTimeout() );
+
+                List recipients = new ArrayList();
+                recipients.add( u.getEmail() );
+
+                mailer.sendAccountValidationEmail( recipients, authkey, securityPolicy.getUserValidationSettings().getEmailValidationUrl() );
+            }
+            catch ( KeyManagerException e )
+            {
+                addActionError( "Unable to process new user registration request." );
+                return ERROR;
+            }
+        }
 
         manager.addUser( u );
 
@@ -119,5 +166,15 @@ public class RegisterAction
     public void setUser( CreateUserCredentials user )
     {
         this.user = user;
+    }
+
+    public boolean isEmailValidationRequired()
+    {
+        return emailValidationRequired;
+    }
+
+    public void setEmailValidationRequired( boolean emailValidationRequired )
+    {
+        this.emailValidationRequired = emailValidationRequired;
     }
 }

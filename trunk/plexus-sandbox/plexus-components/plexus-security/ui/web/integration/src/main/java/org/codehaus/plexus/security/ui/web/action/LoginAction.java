@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action;
 
 /*
- * Copyright 2005 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,8 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
-import org.codehaus.plexus.security.authentication.AuthenticationException;
-import org.codehaus.plexus.security.policy.AccountLockedException;
-import org.codehaus.plexus.security.policy.MustChangePasswordException;
-import org.codehaus.plexus.security.system.SecuritySession;
-import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDataSource;
+import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -38,15 +34,16 @@ import org.codehaus.plexus.util.StringUtils;
 public class LoginAction
     extends AbstractAuthenticationAction
 {
-    private static final String LOGIN_SUCCESS = "security-login-success";
-    private static final String LOGIN_CANCEL = "security-login-cancel";
-    private static final String PASSWORD_CHANGE = "must-change-password";
-    private static final String ACCOUNT_LOCKED = "security-login-locked";
     
     // ------------------------------------------------------------------
     // Plexus Component Requirements
     // ------------------------------------------------------------------
 
+    /**
+     * @plexus.requirement
+     */
+    protected SecuritySystem securitySystem;
+    
     private String username;
 
     private String password;
@@ -59,7 +56,6 @@ public class LoginAction
     
     public String show()
     {
-        // System.err.println("LoginAction.show()");        
         return INPUT;
     }
     
@@ -76,56 +72,12 @@ public class LoginAction
             return ERROR;
         }
         
-        // An attempt should log out your authentication tokens first!
-        setAuthTokens( null, null, false );
-
-        clearErrorsAndMessages();
-
-        try
-        {
-            SecuritySession securitySession = securitySystem
-                .authenticate( new AuthenticationDataSource( username, password ) );
-
-            if ( securitySession.getAuthenticationResult().isAuthenticated() )
-            {
-                // Success!  Create tokens.
-                setAuthTokens( securitySession, securitySession.getUser(), true );
-                return LOGIN_SUCCESS;
-            }
-            else
-            {
-                getLogger().debug( "Login Action failed against principal : "
-                                       + securitySession.getAuthenticationResult().getPrincipal(),
-                                   securitySession.getAuthenticationResult().getException() );
-                addActionError( "Authentication failed" );
-                return ERROR;
-            }
-        }
-        catch ( AuthenticationException ae )
-        {
-            addActionError( ae.getMessage() );
-            return ERROR;
-        }
-        catch ( UserNotFoundException ue )
-        {
-            addActionError( ue.getMessage() );
-            return ERROR;
-        }
-        catch ( AccountLockedException e )
-        {
-            addActionError( "Your Account is Locked." );
-            return ACCOUNT_LOCKED;
-        }
-        catch ( MustChangePasswordException e )
-        {
-            addActionError( "You must change your password." );
-            return PASSWORD_CHANGE;
-        }
+        PasswordBasedAuthenticationDataSource authdatasource = new PasswordBasedAuthenticationDataSource();
+        authdatasource.setUsername( username );
+        authdatasource.setPassword( password );
+        
+        return webLogin( securitySystem, authdatasource );
     }
-
-    // ------------------------------------------------------------------
-    // Parameter Accessor Methods
-    // ------------------------------------------------------------------
 
     public String getUsername()
     {
