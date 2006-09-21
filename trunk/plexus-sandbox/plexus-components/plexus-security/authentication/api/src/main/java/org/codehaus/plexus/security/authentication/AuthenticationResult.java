@@ -28,20 +28,25 @@ public class AuthenticationResult
     implements Serializable
 {
     private boolean isAuthenticated;
-    
+
     private Object principal;
 
     private Exception exception;
 
-    public AuthenticationResult( boolean authenticated,
-                                 Object principal,
-                                 Exception exception )
+    public AuthenticationResult()
+    {
+        this.isAuthenticated = false;
+        this.principal = null;
+        this.exception = null;
+    }
+
+    public AuthenticationResult( boolean authenticated, Object principal, Exception exception )
     {
         isAuthenticated = authenticated;
         this.principal = principal;
         this.exception = exception;
     }
-    
+
     public boolean isAuthenticated()
     {
         return isAuthenticated;
@@ -56,7 +61,7 @@ public class AuthenticationResult
     {
         return exception;
     }
-    
+
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
