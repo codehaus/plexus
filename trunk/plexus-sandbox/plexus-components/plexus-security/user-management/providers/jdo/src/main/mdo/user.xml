@@ -75,6 +75,20 @@
           <identifier>true</identifier>
         </field>
         <field>
+          <name>permanent</name>
+          <version>1.0.0+</version>
+          <type>boolean</type>
+          <defaultValue>false</defaultValue>
+          <identifier>true</identifier>
+        </field>
+        <field>
+          <name>validated</name>
+          <version>1.0.0+</version>
+          <type>boolean</type>
+          <defaultValue>false</defaultValue>
+          <identifier>true</identifier>
+        </field>
+        <field>
           <name>passwordChangeRequired</name>
           <version>1.0.0+</version>
           <type>boolean</type>
