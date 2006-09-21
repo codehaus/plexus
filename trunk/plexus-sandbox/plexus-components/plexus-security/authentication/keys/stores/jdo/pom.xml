@@ -1,0 +1,107 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.plexus.security</groupId>
+    <artifactId>plexus-security-keys-stores</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>plexus-security-keys-jdo</artifactId>
+  <name>Plexus Security :: Key Management JDO Store</name>
+  <packaging>jar</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-keys-api</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-jdo2</artifactId>
+      <version>1.0-alpha-7-SNAPSHOT</version>
+      <exclusions>
+        <exclusion>
+          <groupId>xerces</groupId>
+          <artifactId>xercesImpl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>xerces</groupId>
+          <artifactId>xmlParserAPIs</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    
+    <dependency>
+      <groupId>jpox</groupId>
+      <artifactId>jpox</artifactId>
+      <version>1.1.1</version>
+      <scope>compile</scope>
+      <exclusions>
+        <!-- targeting JDK 1.4 we don't need this -->
+        <exclusion>
+          <groupId>javax.sql</groupId>
+          <artifactId>jdbc-stdext</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>1.7.3.3</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-keys-test</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    
+  </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.modello</groupId>
+        <artifactId>modello-maven-plugin</artifactId>
+        <version>1.0-alpha-11-SNAPSHOT</version>
+        <configuration>
+          <version>1.0.0</version>
+          <packageWithVersion>false</packageWithVersion>
+          <model>src/main/mdo/keys.mdo</model>
+        </configuration>
+        <executions>
+          <execution>
+            <id>modello-java</id>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>jpox-jdo-mapping</id>
+            <goals>
+              <goal>jpox-jdo-mapping</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/classes/org/codehaus/plexus/security/keys/jdo</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jpox-maven-plugin</artifactId>
+        <version>1.0.3-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>enhance</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>  
+</project>
