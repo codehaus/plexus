@@ -7,6 +7,7 @@
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.jetty.ServletContainer</role>
+          <role-hint>jetty-plus</role-hint>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.jetty.configuration.builder.ServiceConfigurationBuilder</role>
@@ -15,10 +16,15 @@
     </component>
     <component>
       <role>org.codehaus.plexus.jetty.ServletContainer</role>
-      <implementation>org.codehaus.plexus.jetty.JettyServletContainer</implementation>
+      <role-hint>jetty-plus</role-hint>
+      <implementation>org.codehaus.plexus.jetty.JettyPlusServletContainer</implementation>
       <configuration>
-        <jettyXmlFilename>${plexus.home}/conf/jetty.xml</jettyXmlFilename>
+        <jettyXmlFile>${plexus.home}/conf/jetty.xml</jettyXmlFile>
       </configuration>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.jetty.ServletContainer</role>
+      <implementation>org.codehaus.plexus.jetty.JettyServletContainer</implementation>
     </component>
     <component>
       <role>org.codehaus.plexus.jetty.configuration.builder.ServiceConfigurationBuilder</role>
