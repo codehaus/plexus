@@ -61,8 +61,9 @@ public class AcegiAuthenticator
     public AuthenticationResult authenticate( AuthenticationDataSource source )
         throws org.codehaus.plexus.security.authentication.AuthenticationException
     {
+        AcegiAuthenticationDataSource authsource = (AcegiAuthenticationDataSource) source;
 
-        Map tokens = ( (AcegiAuthenticationDataSource) source ).getTokenMap();
+        Map tokens = authsource.getTokenMap();
         Authentication authenticationToken = tokenFactory.getAuthenticationToken( tokens );
 
         try
@@ -76,7 +77,12 @@ public class AcegiAuthenticator
         }
         catch ( org.acegisecurity.AuthenticationException e )
         {
-            return new AuthenticationResult( false, source.getUsername(), e );
+            return new AuthenticationResult( false, authsource.getUsername(), e );
         }
+    }
+
+    public boolean supportsDataSource( AuthenticationDataSource source )
+    {
+        return ( source instanceof AcegiAuthenticationDataSource );
     }
 }

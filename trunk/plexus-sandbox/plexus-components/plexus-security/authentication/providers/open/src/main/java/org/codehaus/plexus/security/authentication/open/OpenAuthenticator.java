@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.authentication.open;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
+import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDataSource;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.policy.MustChangePasswordException;
 
@@ -41,11 +42,17 @@ public class OpenAuthenticator
     public AuthenticationResult authenticate( AuthenticationDataSource s )
         throws AccountLockedException, MustChangePasswordException, AuthenticationException
     {
-        return new AuthenticationResult( true, s.getUsername(), null );
+        PasswordBasedAuthenticationDataSource source = (PasswordBasedAuthenticationDataSource) s;
+        return new AuthenticationResult( true, source.getUsername(), null );
     }
 
     public String getId()
     {
         return "Open Authenticator";
+    }
+
+    public boolean supportsDataSource( AuthenticationDataSource source )
+    {
+        return ( source instanceof PasswordBasedAuthenticationDataSource );
     }
 }
