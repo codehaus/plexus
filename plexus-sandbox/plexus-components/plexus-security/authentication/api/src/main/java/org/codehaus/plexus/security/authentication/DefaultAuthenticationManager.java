@@ -63,11 +63,14 @@ public class DefaultAuthenticationManager
         {
             Authenticator authenticator = (Authenticator) i.next();
 
-            AuthenticationResult authResult = authenticator.authenticate( source );
-
-            if ( authResult.isAuthenticated() )
+            if ( authenticator.supportsDataSource( source ) )
             {
-                return authResult;
+                AuthenticationResult authResult = authenticator.authenticate( source );
+
+                if ( authResult.isAuthenticated() )
+                {
+                    return authResult;
+                }
             }
         }
 
