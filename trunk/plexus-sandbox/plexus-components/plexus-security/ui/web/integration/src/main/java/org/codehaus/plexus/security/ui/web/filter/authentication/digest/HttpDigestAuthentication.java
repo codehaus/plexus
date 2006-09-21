@@ -19,6 +19,7 @@ package org.codehaus.plexus.security.ui.web.filter.authentication.digest;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.security.authentication.TokenBasedAuthenticationDataSource;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator;
@@ -79,7 +80,7 @@ public class HttpDigestAuthentication
             return getSecuritySession().getAuthenticationResult();
         }
 
-        AuthenticationDataSource authDataSource = new AuthenticationDataSource( null, null );
+        TokenBasedAuthenticationDataSource authDataSource = new TokenBasedAuthenticationDataSource( );
         String authHeader = request.getHeader( "Authorization" );
 
         if ( ( authHeader != null ) && authHeader.startsWith( "Digest " ) )
@@ -98,12 +99,6 @@ public class HttpDigestAuthentication
             {
                 throw new HttpAuthenticationException( "Digest response was invalid." );
             }
-            
-            authDataSource.setDefaultPrincipal( user.getUsername() );
-        }
-        else
-        {
-            authDataSource.setDefaultPrincipal( defaultPrincipal );
         }
 
         return super.authenticate( authDataSource );

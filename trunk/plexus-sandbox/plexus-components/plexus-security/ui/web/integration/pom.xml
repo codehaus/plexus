@@ -1,3 +1,4 @@
+<?xml version="1.0" ?>
 <project>
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -15,8 +16,9 @@
       <version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-xwork-integration</artifactId>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-keys-api</artifactId>
+      <version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
@@ -26,6 +28,25 @@
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-rbac-profile</artifactId>
       <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-xwork-integration</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-mail-sender-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-velocity</artifactId>
+      <version>1.1.2</version>
+      <exclusions>
+        <exclusion>
+          <groupId>plexus</groupId>
+          <artifactId>plexus-utils</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>

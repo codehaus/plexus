@@ -35,6 +35,17 @@ public class PasswordBasedAuthenticationDataSource
 
     private String password;
     
+    public PasswordBasedAuthenticationDataSource()
+    {
+        
+    }
+    
+    public PasswordBasedAuthenticationDataSource(String username, String password)
+    {
+        this.username = username;
+        this.password = password;
+    }
+    
     public String getPassword()
     {
         return password;

@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,14 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
+import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.policy.AccountLockedException;
+import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.system.SecuritySystemConstants;
-import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
@@ -31,25 +35,62 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 public class AbstractAuthenticationAction
     extends PlexusActionSupport
 {
-    // ------------------------------------------------------------------
-    // Plexus Component Requirements
-    // ------------------------------------------------------------------
-
-    /**
-     * @plexus.requirement
-     */
-    protected SecuritySystem securitySystem;
+    static final String LOGIN_SUCCESS = "security-login-success";
+    static final String LOGIN_CANCEL = "security-login-cancel";
+    static final String PASSWORD_CHANGE = "must-change-password";
+    static final String ACCOUNT_LOCKED = "security-login-locked";
     
-    // ------------------------------------------------------------------
-    // Internal Support Methods
-    // ------------------------------------------------------------------
-
-    protected void setAuthTokens( SecuritySession securitySession, User user, boolean authStatus )
+    protected void setAuthTokens( SecuritySession securitySession )
     {
         session.put( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
-        session.put( SecuritySystemConstants.USER_KEY, user );
-        session.put( SecuritySystemConstants.AUTH_STATUS_KEY, new Boolean( authStatus ) );
         this.setSession( session );
     }
 
+    protected String webLogin( SecuritySystem securitySystem, AuthenticationDataSource authdatasource )
+    {
+        // An attempt should log out your authentication tokens first!
+        setAuthTokens( null );
+    
+        clearErrorsAndMessages();
+    
+        try
+        {
+            SecuritySession securitySession = securitySystem.authenticate( authdatasource );
+    
+            if ( securitySession.getAuthenticationResult().isAuthenticated() )
+            {
+                // Success!  Create tokens.
+                setAuthTokens( securitySession );
+                return LOGIN_SUCCESS;
+            }
+            else
+            {
+                getLogger().debug( "Login Action failed against principal : "
+                                       + securitySession.getAuthenticationResult().getPrincipal(),
+                                   securitySession.getAuthenticationResult().getException() );
+                addActionError( "Authentication failed" );
+                return ERROR;
+            }
+        }
+        catch ( AuthenticationException ae )
+        {
+            addActionError( ae.getMessage() );
+            return ERROR;
+        }
+        catch ( UserNotFoundException ue )
+        {
+            addActionError( ue.getMessage() );
+            return ERROR;
+        }
+        catch ( AccountLockedException e )
+        {
+            addActionError( "Your Account is Locked." );
+            return ACCOUNT_LOCKED;
+        }
+        catch ( MustChangePasswordException e )
+        {
+            addActionError( "You must change your password." );
+            return PASSWORD_CHANGE;
+        }
+    }
 }
