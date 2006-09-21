@@ -1,8 +1,8 @@
 package org.codehaus.plexus.jetty;
 
-import org.mortbay.xml.XmlConfiguration;
-import org.mortbay.jetty.plus.Server;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
+import org.mortbay.jetty.plus.Server;
+import org.mortbay.xml.XmlConfiguration;
 
 import java.io.File;
 
