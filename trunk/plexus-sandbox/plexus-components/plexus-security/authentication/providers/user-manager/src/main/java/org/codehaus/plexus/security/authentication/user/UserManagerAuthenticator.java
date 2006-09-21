@@ -25,6 +25,7 @@ import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDa
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.policy.PasswordEncoder;
+import org.codehaus.plexus.security.policy.PolicyViolationException;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
@@ -69,8 +70,6 @@ public class UserManagerAuthenticator
     {
         boolean authenticationSuccess = false;
         String username = null;
-        boolean locked = false;
-        boolean mustChangePassword = false;
         Exception resultException = null;
         PasswordBasedAuthenticationDataSource source = (PasswordBasedAuthenticationDataSource) ds;
         
@@ -82,7 +81,6 @@ public class UserManagerAuthenticator
             
             if (user.isLocked())
             {
-                locked = true;
                 throw new AccountLockedException( "Account " + source.getUsername() + " is locked.", user );
             }
             
@@ -154,8 +152,7 @@ public class UserManagerAuthenticator
 
     public boolean supportsDataSource( AuthenticationDataSource source )
     {
-        // TODO Auto-generated method stub
-        return false;
+        return ( source instanceof PasswordBasedAuthenticationDataSource );
     }
 
 }
