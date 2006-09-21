@@ -21,6 +21,7 @@ import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationManager;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.security.authentication.Authenticator;
 import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
 import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.authorization.AuthorizationResult;
@@ -30,7 +31,6 @@ import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * DefaultSecuritySystem:
@@ -41,6 +41,8 @@ import org.codehaus.plexus.util.StringUtils;
  * @plexus.component
  *   role="org.codehaus.plexus.security.system.SecuritySystem"
  *   role-hint="default"
+ *
+ * @todo allow for multiple authentication providers i.e. using window and radius
  */
 public class DefaultSecuritySystem
     extends AbstractLogEnabled
@@ -64,7 +66,7 @@ public class DefaultSecuritySystem
     // ----------------------------------------------------------------------------
     // Authentication: delegate to the authnManager
     // ----------------------------------------------------------------------------
-
+    
     /**
      * delegate to the authentication system for boolean authentication checks,
      * if the result is authentic then pull the user object from the user
@@ -84,18 +86,8 @@ public class DefaultSecuritySystem
      * @throws AccountLockedException 
      */
     public SecuritySession authenticate( AuthenticationDataSource source )
-        throws AuthenticationException, UserNotFoundException, AccountLockedException, MustChangePasswordException
+    throws AuthenticationException, UserNotFoundException, AccountLockedException, MustChangePasswordException
     {
-        boolean hasDefaultPrincipal = StringUtils.isNotEmpty( source.getDefaultPrincipal() );
-        
-        // Empty Username ?
-        if ( StringUtils.isEmpty( source.getUsername() ) )
-        {
-            AuthenticationResult result = new AuthenticationResult( hasDefaultPrincipal, source.getDefaultPrincipal(),
-                                                                    null );
-            return new DefaultSecuritySession( result, findDefaultUser( source ) );
-        }
-        
         // Perform Authentication.
         AuthenticationResult result = authnManager.authenticate( source );
 
@@ -115,26 +107,16 @@ public class DefaultSecuritySystem
             else
             {
                 getLogger().debug( "User '" + result.getPrincipal() + "' DOES NOT exist." );
-                return new DefaultSecuritySession( result, findDefaultUser( source ) );
+                return new DefaultSecuritySession( result );
             }
         }
         else
         {
             getLogger().debug( "User '" + result.getPrincipal() + "' IS NOT authenticated." );
-            return new DefaultSecuritySession( result, findDefaultUser( source ) );
+            return new DefaultSecuritySession( result );
         }
     }
     
-    private User findDefaultUser( AuthenticationDataSource source )
-        throws UserNotFoundException
-    {
-        if ( StringUtils.isNotEmpty( source.getDefaultPrincipal() ) )
-        {
-            return userManager.findUser( source.getDefaultPrincipal() );
-        }
-        return null;
-    }
-
     public boolean isAuthenticated( AuthenticationDataSource source )
         throws AuthenticationException, UserNotFoundException, AccountLockedException, MustChangePasswordException
     {
