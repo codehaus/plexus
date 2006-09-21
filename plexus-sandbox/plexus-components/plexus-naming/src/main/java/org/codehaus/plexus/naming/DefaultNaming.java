@@ -37,6 +37,11 @@ public class DefaultNaming
      */
     private List resources;
 
+    /**
+     * @plexus.configuration default-value="true"
+     */
+    private boolean setSystemProperties = true; // deliberately set true default here so you must declare it false, not just omit it
+
     public Context createInitialContext()
         throws NamingException
     {
@@ -50,6 +55,12 @@ public class DefaultNaming
     public void initialize()
         throws InitializationException
     {
+        if ( setSystemProperties )
+        {
+            System.setProperty( Context.INITIAL_CONTEXT_FACTORY, org.apache.naming.java.javaURLContextFactory.class.getName() );
+            System.setProperty( Context.URL_PKG_PREFIXES, "org.apache.naming" );
+        }
+
         try
         {
             envContext =
