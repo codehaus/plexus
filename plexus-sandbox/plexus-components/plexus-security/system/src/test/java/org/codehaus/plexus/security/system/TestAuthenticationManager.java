@@ -1,8 +1,9 @@
-package org.codehaus.plexus.security.authentication;
+package org.codehaus.plexus.security.system;
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.security.authentication.AuthenticationManager;
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +39,7 @@ public class TestAuthenticationManager
        throws Exception
    {
        AuthenticationManager authManager = (AuthenticationManager) lookup( AuthenticationManager.ROLE );
-       
+
        assertEquals( 1, authManager.getAuthenticators().size() );
    }
 

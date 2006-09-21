@@ -19,12 +19,12 @@ package org.codehaus.plexus.security.system;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.authentication.AuthenticationManager;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
-import org.codehaus.plexus.security.authentication.Authenticator;
-import org.codehaus.plexus.security.authorization.AuthorizationException;
-import org.codehaus.plexus.security.authorization.Authorizer;
 import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
+import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.authorization.AuthorizationResult;
+import org.codehaus.plexus.security.authorization.Authorizer;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.user.User;
@@ -41,8 +41,6 @@ import org.codehaus.plexus.util.StringUtils;
  * @plexus.component
  *   role="org.codehaus.plexus.security.system.SecuritySystem"
  *   role-hint="default"
- *
- * @todo allow for multiple authentication providers i.e. using window and radius
  */
 public class DefaultSecuritySystem
     extends AbstractLogEnabled
@@ -51,7 +49,7 @@ public class DefaultSecuritySystem
     /**
      * @plexus.requirement
      */
-    private Authenticator authenticator;
+    private AuthenticationManager authnManager;
 
     /**
      * @plexus.requirement
@@ -64,7 +62,7 @@ public class DefaultSecuritySystem
     private UserManager userManager;
 
     // ----------------------------------------------------------------------------
-    // Authentication: delegate to the authenticator
+    // Authentication: delegate to the authnManager
     // ----------------------------------------------------------------------------
 
     /**
@@ -99,9 +97,9 @@ public class DefaultSecuritySystem
         }
         
         // Perform Authentication.
-        AuthenticationResult result = authenticator.authenticate( source );
+        AuthenticationResult result = authnManager.authenticate( source );
 
-        getLogger().debug( "authenticator.authenticate() result: " + result );
+        getLogger().debug( "authnManager.authenticate() result: " + result );
 
         // Process Results.
         if ( result.isAuthenticated() )
@@ -145,11 +143,11 @@ public class DefaultSecuritySystem
 
     public String getAuthenticatorId()
     {
-        if ( authenticator == null )
+        if ( authnManager == null )
         {
             return "<null>";
         }
-        return authenticator.getId();
+        return authnManager.getId();
     }
 
     // ----------------------------------------------------------------------------
