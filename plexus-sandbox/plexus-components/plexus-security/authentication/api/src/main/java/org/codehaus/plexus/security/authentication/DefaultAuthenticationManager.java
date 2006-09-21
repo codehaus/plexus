@@ -48,7 +48,7 @@ public class DefaultAuthenticationManager
 
     public String getId()
     {
-        return "$ID:$";
+        return this.getClass().getName() + "\n" + knownAuthenticators();
     }
 
     public AuthenticationResult authenticate( AuthenticationDataSource source )
