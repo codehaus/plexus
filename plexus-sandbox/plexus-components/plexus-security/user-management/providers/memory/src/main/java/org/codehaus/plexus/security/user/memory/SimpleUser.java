@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.user.memory;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author Jason van Zyl
+ * A Simple User record.
+ * 
+ * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  */
 public class SimpleUser
     implements User
@@ -45,6 +47,10 @@ public class SimpleUser
     private int countFailedLoginAttempts = 0;
 
     private boolean locked = false;
+    
+    private boolean permanent = false;
+    
+    private boolean validated = false;
 
     private List previousEncodedPasswords;
 
@@ -188,5 +194,25 @@ public class SimpleUser
     public void setPasswordChangeRequired( boolean passwordChangeRequired )
     {
         this.passwordChangeRequired = passwordChangeRequired;
+    }
+
+    public boolean isPermanent()
+    {
+        return permanent;
+    }
+
+    public void setPermanent( boolean permanent )
+    {
+        this.permanent = permanent;
+    }
+
+    public boolean isValidated()
+    {
+        return validated;
+    }
+
+    public void setValidated( boolean validated )
+    {
+        this.validated = validated;
     }
 }
