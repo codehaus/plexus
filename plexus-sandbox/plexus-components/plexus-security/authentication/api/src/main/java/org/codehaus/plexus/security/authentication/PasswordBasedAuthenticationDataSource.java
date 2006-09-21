@@ -35,13 +35,6 @@ public class PasswordBasedAuthenticationDataSource
 
     private String password;
     
-    private String defaultPrincipal;
-    
-    public String getDefaultPrincipal()
-    {
-        return defaultPrincipal;
-    }
-
     public String getPassword()
     {
         return password;
@@ -52,11 +45,6 @@ public class PasswordBasedAuthenticationDataSource
         return username;
     }
     
-    public void setDefaultPrincipal( String principal )
-    {
-        defaultPrincipal = principal;
-    }
-
     public void setPassword( String password )
     {
         this.password = password;
@@ -78,7 +66,6 @@ public class PasswordBasedAuthenticationDataSource
             // Intentionally not showing real password 
             sb.append( "***" );
         }
-        sb.append( ",defaultPrincipal=" ).append( defaultPrincipal );
         sb.append( "]" );
         return sb.toString();
     }
