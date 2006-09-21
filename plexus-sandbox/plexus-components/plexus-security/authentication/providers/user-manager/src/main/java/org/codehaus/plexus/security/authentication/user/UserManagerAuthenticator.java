@@ -15,11 +15,13 @@ package org.codehaus.plexus.security.authentication.user;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
+import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDataSource;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.policy.PasswordEncoder;
@@ -70,31 +72,32 @@ public class UserManagerAuthenticator
         boolean locked = false;
         boolean mustChangePassword = false;
         Exception resultException = null;
+        PasswordBasedAuthenticationDataSource source = (PasswordBasedAuthenticationDataSource) ds;
         
         try
         {
-            getLogger().debug( "Authenticate: " + ds );
-            User user = userManager.findUser( ds.getUsername() );
+            getLogger().debug( "Authenticate: " + source );
+            User user = userManager.findUser( source.getUsername() );
             username = user.getUsername();
             
             if (user.isLocked())
             {
                 locked = true;
-                throw new AccountLockedException( "Account " + ds.getUsername() + " is locked.", user );
+                throw new AccountLockedException( "Account " + source.getUsername() + " is locked.", user );
             }
             
             if (user.isPasswordChangeRequired())
             {
-                throw new MustChangePasswordException( "User " + ds.getUsername() + " must change their password." );
+                throw new MustChangePasswordException( "User " + source.getUsername() + " must change their password." );
             }
             
             PasswordEncoder encoder = securityPolicy.getPasswordEncoder();
             getLogger().debug( "PasswordEncoder: " + encoder.getClass().getName() );
             
-            boolean isPasswordValid = encoder.isPasswordValid( user.getEncodedPassword(), ds.getPassword() );
+            boolean isPasswordValid = encoder.isPasswordValid( user.getEncodedPassword(), source.getPassword() );
             if ( isPasswordValid )
             {
-                getLogger().debug( "User " + ds.getUsername() + " provided a valid password" );
+                getLogger().debug( "User " + source.getUsername() + " provided a valid password" );
                 
                 securityPolicy.extensionPasswordExpiration( user );
                 
@@ -102,11 +105,11 @@ public class UserManagerAuthenticator
                 user.setCountFailedLoginAttempts( 0 );
                 userManager.updateUser( user );
                 
-                return new AuthenticationResult( true, ds.getUsername(), null );
+                return new AuthenticationResult( true, source.getUsername(), null );
             }
             else
             {
-                getLogger().warn( "Password is Invalid for user " + ds.getUsername() + "." );
+                getLogger().warn( "Password is Invalid for user " + source.getUsername() + "." );
                 
                 try
                 {
@@ -117,16 +120,16 @@ public class UserManagerAuthenticator
                     userManager.updateUser( user );
                 }
                 
-                return new AuthenticationResult( false, ds.getUsername(), null );
+                return new AuthenticationResult( false, source.getUsername(), null );
             }
         }
         catch ( UserNotFoundException e )
         {
-            getLogger().warn( "Login for user " + ds.getUsername() + " failed. user not found." );
+            getLogger().warn( "Login for user " + source.getUsername() + " failed. user not found." );
             resultException = e;
         }
         
-        return new AuthenticationResult(authenticationSuccess, locked, mustChangePassword, username, resultException);
+        return new AuthenticationResult(authenticationSuccess, username, resultException);
     }
 
     /**
@@ -147,6 +150,12 @@ public class UserManagerAuthenticator
     public void setUserManager( UserManager userManager )
     {
         this.userManager = userManager;
+    }
+
+    public boolean supportsDataSource( AuthenticationDataSource source )
+    {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }

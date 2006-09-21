@@ -20,6 +20,7 @@ import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
+import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDataSource;
 
 /**
  * MemoryAuthenticator:
@@ -42,19 +43,25 @@ public class MemoryAuthenticator
     {
         return "MemoryAuthenticator";
     }
-    
+
     public AuthenticationResult authenticate( AuthenticationDataSource s )
         throws AuthenticationException
     {
+        PasswordBasedAuthenticationDataSource source = (PasswordBasedAuthenticationDataSource) s;
 
-        login = s.getUsername();
-        password = s.getPassword();
+        login = source.getUsername();
+        password = source.getPassword();
 
-        if ( s.getPassword().equals( password ) )
+        if ( source.getPassword().equals( password ) )
         {
             return new AuthenticationResult( true, login, null );
         }
 
         return new AuthenticationResult( false, null, null );
+    }
+
+    public boolean supportsDataSource( AuthenticationDataSource source )
+    {
+        return ( source instanceof PasswordBasedAuthenticationDataSource );
     }
 }

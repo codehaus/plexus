@@ -4,6 +4,7 @@
 package org.codehaus.plexus.security.acegi;
 
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
+import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDataSource;
 
 import java.util.Map;
 
@@ -18,7 +19,7 @@ import java.util.Map;
  * @version $Id$
  */
 public class AcegiAuthenticationDataSource
-    extends AuthenticationDataSource
+    extends PasswordBasedAuthenticationDataSource
 {
     private static final String TOKEN_USERNAME = "username";
 
@@ -31,9 +32,6 @@ public class AcegiAuthenticationDataSource
 
     public AcegiAuthenticationDataSource( Map tokenMap )
     {
-        // TODO: remove call to super constructor 
-        // after AuthenticationDataSource is changed to be an interface
-        super( null, null );
         this.tokenMap = tokenMap;
     }
 

@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.authentication;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,62 +16,14 @@ package org.codehaus.plexus.security.authentication;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.util.StringUtils;
-
 /**
- * @author Jason van Zyl
+ * Just a tag to indicate that the implementing class is an AuthenticationDataSource.
  *
  * todo which this back to an interface and use the mojo style expression evaluation to populate the particular required fields
+ * @see PasswordBasedAuthenticationDataSource
+ * @see TokenBasedAuthenticationDataSource
  */
-public class AuthenticationDataSource
+public interface AuthenticationDataSource
 {
     public String ROLE = AuthenticationDataSource.class.getName();
-
-    private String username;
-
-    private String password;
-    
-    private String defaultPrincipal;
-
-    public AuthenticationDataSource( String login, String password )
-    {
-        this.username = login;
-        this.password = password;
-    }
-
-    public String getUsername()
-    {
-        return username;
-    }
-
-    public String getPassword()
-    {
-        return password;
-    }
-
-    public String getDefaultPrincipal()
-    {
-        return defaultPrincipal;
-    }
-    
-    public void setDefaultPrincipal( String principal )
-    {
-        defaultPrincipal = principal;
-    }
-
-    public String toString()
-    {
-        StringBuffer sb = new StringBuffer();
-        sb.append( "AuthenticationDataSource[" );
-        sb.append( "username=" ).append( username );
-        sb.append( ",password=" );
-        if ( StringUtils.isNotEmpty( password ) )
-        {
-            // Intentionally not showing real password 
-            sb.append( "***" );
-        }
-        sb.append( ",defaultPrincipal=" ).append( defaultPrincipal );
-        sb.append( "]" );
-        return sb.toString();
-    }
 }

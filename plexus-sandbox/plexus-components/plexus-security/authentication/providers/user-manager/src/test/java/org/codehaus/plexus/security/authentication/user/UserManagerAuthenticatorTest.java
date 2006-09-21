@@ -19,6 +19,7 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
+import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDataSource;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
@@ -74,18 +75,29 @@ public class UserManagerAuthenticatorTest
         Authenticator auth = (Authenticator) lookup( Authenticator.ROLE, "user-manager" );
         assertNotNull( auth );
 
-        AuthenticationResult result = auth.authenticate( new AuthenticationDataSource( "anonymous", "nopass" ) );
+        AuthenticationResult result = auth.authenticate( createAuthDataSource( "anonymous", "nopass" ) );
         assertTrue( result.isAuthenticated() );
 
         // test with invalid password
-        result = auth.authenticate( new AuthenticationDataSource( "anonymous", "wrongpass" ) );
+        result = auth.authenticate( createAuthDataSource( "anonymous", "wrongpass" ) );
         assertFalse( result.isAuthenticated() );
         assertNull( result.getException() );
 
         // test with unknown user
-        result = auth.authenticate( new AuthenticationDataSource( "unknownuser", "wrongpass" ) );
+        result = auth.authenticate( createAuthDataSource( "unknownuser", "wrongpass" ) );
         assertFalse( result.isAuthenticated() );
         assertNotNull( result.getException() );
         assertEquals( result.getException().getClass().getName(), UserNotFoundException.class.getName() );
+    }
+    
+    private PasswordBasedAuthenticationDataSource createAuthDataSource(String username, String password)
+    {
+        PasswordBasedAuthenticationDataSource source = new PasswordBasedAuthenticationDataSource();
+        
+        source.setUsername( username );
+        source.setPassword( password );
+        
+        return source;
+        
     }
 }

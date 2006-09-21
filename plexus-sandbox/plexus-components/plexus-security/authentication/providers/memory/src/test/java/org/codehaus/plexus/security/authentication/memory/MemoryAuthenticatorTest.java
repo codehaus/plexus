@@ -17,9 +17,9 @@ package org.codehaus.plexus.security.authentication.memory;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.security.authentication.Authenticator;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
-import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
+import org.codehaus.plexus.security.authentication.Authenticator;
+import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDataSource;
 
 /**
  * MemoryAuthenticatorTest:
@@ -37,7 +37,9 @@ public class MemoryAuthenticatorTest
 
         assertNotNull( authenticator );
 
-        AuthenticationDataSource ds = new AuthenticationDataSource( "jason", "kungfu" );
+        PasswordBasedAuthenticationDataSource ds = new PasswordBasedAuthenticationDataSource();
+        ds.setUsername( "jason" );
+        ds.setPassword( "kungfu" );
 
         AuthenticationResult ar = authenticator.authenticate( ds );
 
