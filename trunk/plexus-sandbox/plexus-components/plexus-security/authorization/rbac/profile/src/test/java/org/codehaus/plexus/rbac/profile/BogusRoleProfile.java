@@ -20,7 +20,7 @@ import java.util.Collections;
  */
 
 /**
- * RoleTemplateTest:
+ * RoleProfileTest:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$

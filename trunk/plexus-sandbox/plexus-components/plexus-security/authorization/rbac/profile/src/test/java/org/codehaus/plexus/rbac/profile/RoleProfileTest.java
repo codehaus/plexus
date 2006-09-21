@@ -20,12 +20,12 @@ import org.codehaus.plexus.security.rbac.Role;
  */
 
 /**
- * RoleTemplateTest:
+ * RoleProfileTest:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
  */
-public class RoleTemplateTest
+public class RoleProfileTest
     extends PlexusTestCase
 {
     private RBACManager rbacManager;
@@ -43,11 +43,6 @@ public class RoleTemplateTest
         rbacManager = (RBACManager) lookup ( RBACManager.ROLE, "memory" );
 
         roleManager = (RoleProfileManager) lookup ( RoleProfileManager.ROLE, "default" );
-    }
-
-    public void testNothing()
-    {
-        assertTrue( true );
     }
 
     public void testRoleTemplate()
