@@ -124,6 +124,26 @@
         <artifactId>plexus-container-default</artifactId>
         <version>1.0-alpha-10-SNAPSHOT</version>
       </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-mail-sender-api</artifactId>
+        <version>1.0-alpha-3</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-mail-sender-simple</artifactId>
+        <version>1.0-alpha-3</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-mail-sender-test</artifactId>
+        <version>1.0-alpha-3</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-mail-sender-javamail</artifactId>
+        <version>1.0-alpha-3</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>

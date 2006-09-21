@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.policy;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,6 +65,11 @@ public class DefaultUserSecurityPolicy
      * @plexus.configuration default-value="90"
      */
     private int passwordExpirationDays;
+    
+    /**
+     * @plexus.requirement
+     */
+    private UserValidationSettings userValidationSettings;
     
     /**
      * The List of {@link PasswordRule} objects.
@@ -308,5 +313,15 @@ public class DefaultUserSecurityPolicy
     public void setPasswordExpirationDays( int passwordExpirationDays )
     {
         this.passwordExpirationDays = passwordExpirationDays;
+    }
+
+    public UserValidationSettings getUserValidationSettings()
+    {
+        return userValidationSettings;
+    }
+
+    public void setUserValidationSettings( UserValidationSettings userValidationSettings )
+    {
+        this.userValidationSettings = userValidationSettings;
     }
 }

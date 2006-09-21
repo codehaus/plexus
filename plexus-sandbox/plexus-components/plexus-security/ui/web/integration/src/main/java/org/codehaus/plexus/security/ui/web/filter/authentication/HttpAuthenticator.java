@@ -22,7 +22,6 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
-import org.codehaus.plexus.security.authentication.Authenticator;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.system.SecuritySession;
@@ -46,10 +45,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class HttpAuthenticator
     extends AbstractLogEnabled
-    implements Authenticator
 {
     public static final String ROLE = HttpAuthenticator.ROLE;
-    
+
     /**
      * @plexus.requirement
      */
@@ -60,26 +58,26 @@ public abstract class HttpAuthenticator
      * @throws MustChangePasswordException 
      * @throws AccountLockedException 
      */
-    public AuthenticationResult authenticate( AuthenticationDataSource source )
+    public AuthenticationResult authenticate( AuthenticationDataSource ds )
         throws AuthenticationException, AccountLockedException, MustChangePasswordException
     {
         try
         {
-            SecuritySession securitySession = securitySystem.authenticate( source );
+            SecuritySession securitySession = securitySystem.authenticate( ds );
 
             setSecuritySession( securitySession );
-            
+
             return securitySession.getAuthenticationResult();
         }
         catch ( AuthenticationException e )
         {
-            String msg = "Unable to authenticate user '" + source.getUsername() + "'";
+            String msg = "Unable to authenticate user: " + ds;
             getLogger().info( msg, e );
             throw new HttpAuthenticationException( msg, e );
         }
         catch ( UserNotFoundException e )
         {
-            getLogger().info( "Login attempt against unknown user '" + source.getUsername() + "'." );
+            getLogger().info( "Login attempt against unknown user: " + ds );
             throw new HttpAuthenticationException( "User name or password invalid." );
         }
     }
@@ -97,7 +95,7 @@ public abstract class HttpAuthenticator
         try
         {
             AuthenticationResult result = getAuthenticationResult( request, response, null );
-            
+
             if ( ( result == null ) || ( !result.isAuthenticated() ) )
             {
                 throw new HttpAuthenticationException( "You are not authenticated." );
@@ -126,7 +124,7 @@ public abstract class HttpAuthenticator
     public abstract void challenge( HttpServletRequest request, HttpServletResponse response, String realmName,
                                     AuthenticationException exception )
         throws IOException;
-    
+
     /**
      * Parse the incoming request and return an AuthenticationResult.
      *  
@@ -141,7 +139,7 @@ public abstract class HttpAuthenticator
     public abstract AuthenticationResult getAuthenticationResult( HttpServletRequest request,
                                                                   HttpServletResponse response, String defaultPrincipal )
         throws AuthenticationException, AccountLockedException, MustChangePasswordException;
-    
+
     public Map getContextSession()
     {
         ActionContext context = ActionContext.getContext();
@@ -186,14 +184,14 @@ public abstract class HttpAuthenticator
         map.put( SecuritySession.USERKEY, user );
         ActionContext.getContext().setSession( map );
     }
-    
+
     public String storeDefaultUser( String principal )
     {
         Map map = getContextSession();
         map.put( SecuritySession.ROLE, null );
         map.put( SecuritySession.USERKEY, null );
         ActionContext.getContext().setSession( map );
-        
+
         if ( StringUtils.isEmpty( principal ) )
         {
             return null;

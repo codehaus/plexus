@@ -37,12 +37,25 @@ public class DateUtils
      */
     public static String formatWithAge( Date date, String suffix )
     {
+        return formatWithAge( date, "EEE, d MMM yyyy HH:mm:ss Z", suffix );
+    }
+
+    /**
+     * Provided a date you will get a timestamp and the age/old that you want.
+     *
+     * @param date the date to compare to now.
+     * @param dateFormat the {@link SimpleDateFormat} format string to use for the date.
+     * @param suffix the suffix in the age string.  using "ago" here would result in "2006 Aug 23, 11:43 pm - 12 days ago"
+     * @return the formated string.
+     */
+    public static String formatWithAge( Date date, String dateFormat, String suffix )
+    {
         if ( date == null )
         {
             return null;
         }
 
-        SimpleDateFormat format = new SimpleDateFormat( "EEE, d MMM yyyy HH:mm:ss Z" );
+        SimpleDateFormat format = new SimpleDateFormat( dateFormat );
 
         StringBuffer out = new StringBuffer();
         out.append( format.format( date ) );

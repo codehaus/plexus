@@ -7,6 +7,7 @@ import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.system.SecuritySystemConstants;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -64,6 +65,11 @@ public class PasswordAction
     private String newPassword;
 
     private String newPasswordConfirm;
+
+    /**
+     * @plexus.requirement
+     */
+    protected SecuritySystem securitySystem;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)

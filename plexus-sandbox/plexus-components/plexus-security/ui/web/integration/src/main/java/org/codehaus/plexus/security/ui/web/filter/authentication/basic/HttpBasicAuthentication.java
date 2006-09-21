@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.filter.authentication.basic;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@ package org.codehaus.plexus.security.ui.web.filter.authentication.basic;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDataSource;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator;
@@ -57,7 +57,7 @@ public class HttpBasicAuthentication
             return getSecuritySession().getAuthenticationResult();
         }
 
-        AuthenticationDataSource authDataSource;
+        PasswordBasedAuthenticationDataSource authDataSource;
         String header = request.getHeader( "Authorization" );
 
         if ( ( header != null ) && header.startsWith( "Basic " ) )
@@ -75,15 +75,14 @@ public class HttpBasicAuthentication
                 password = token.substring( delim + 1 );
             }
 
-            authDataSource = new AuthenticationDataSource( username, password );
+            authDataSource = new PasswordBasedAuthenticationDataSource( username, password );
         }
         else
         {
             // Default Empty Source.
-            authDataSource = new AuthenticationDataSource( null, null );
+            authDataSource = new PasswordBasedAuthenticationDataSource();
         }
 
-        authDataSource.setDefaultPrincipal( defaultPrincipal );
         return super.authenticate( authDataSource );
     }
 
