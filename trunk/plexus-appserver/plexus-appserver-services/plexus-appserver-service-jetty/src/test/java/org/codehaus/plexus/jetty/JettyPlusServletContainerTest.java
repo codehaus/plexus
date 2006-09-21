@@ -3,7 +3,7 @@ package org.codehaus.plexus.jetty;
 /*
  * The MIT License
  *
- * Copyright (c) 2004, The Codehaus
+ * Copyright (c) 2006, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,24 +24,43 @@ package org.codehaus.plexus.jetty;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
-import org.mortbay.jetty.Server;
 
-public class JettyServletContainer
-    extends AbstractJettyServletContainer
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import java.sql.Connection;
+
+/**
+ * Test the JettyPlusServletContainer class.
+ */
+public class JettyPlusServletContainerTest
+    extends PlexusTestCase
 {
-    public void start()
-        throws StartingException
+    public void testJndi()
+        throws Exception
     {
-        server = new Server();
+        JettyPlusServletContainer container = (JettyPlusServletContainer) lookup( ServletContainer.ROLE, "jetty-plus" );
+        container.setJettyXmlFile( getTestFile( "target/test-classes/jetty.xml" ) );
 
         try
         {
-            server.start();
+            container.start();
+
+            Context ctx = new InitialContext();
+            ctx = (Context) ctx.lookup( "java:comp/env" );
+
+            DataSource dataSource = (DataSource) ctx.lookup( "jdbc/testDS" );
+            assertNotNull( dataSource );
+            Connection conn = dataSource.getConnection();
+            assertNotNull( conn );
+            conn.close();
         }
-        catch ( Exception e )
+        finally
         {
-            throw new StartingException( "Error while starting Jetty", e );
+            container.stop();
         }
     }
 }
