@@ -25,11 +25,9 @@ package org.codehaus.plexus.jetty;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 
