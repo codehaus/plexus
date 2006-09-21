@@ -31,18 +31,18 @@ public interface User
      * The Plexus ROLE for this interface.
      */
     public static final String ROLE = User.class.getName();
-    
+
     /**
      * This is the object used to track the user within the provider.
      * 
      * @return the principal for this user.
      */
     Object getPrincipal();
-    
+
     // --------------------------------------------------------------------
     // Standard User Requirements.
     // --------------------------------------------------------------------
-    
+
     /**
      * Gets the User Name for this user.
      * 
@@ -51,7 +51,7 @@ public interface User
      * @return the user name.
      */
     String getUsername();
-    
+
     /**
      * Sets the User Name for this user.
      * 
@@ -59,8 +59,8 @@ public interface User
      * 
      * @param name the user name.
      */
-    void setUsername(String name);
-    
+    void setUsername( String name );
+
     /**
      * Gets the Full Name for this user.
      * 
@@ -69,7 +69,7 @@ public interface User
      * @return the full name.
      */
     String getFullName();
-    
+
     /**
      * Sets the Full Name for this user.
      * 
@@ -77,8 +77,8 @@ public interface User
      * 
      * @param name the full name.
      */
-    void setFullName(String name);
-    
+    void setFullName( String name );
+
     /**
      * Gets the email address for this user.
      * 
@@ -87,7 +87,7 @@ public interface User
      * @return the email address.
      */
     String getEmail();
-    
+
     /**
      * Sets the email address for this user.
      * 
@@ -95,12 +95,12 @@ public interface User
      * 
      * @param address the email address.
      */
-    void setEmail(String address);
-    
+    void setEmail( String address );
+
     // --------------------------------------------------------------------
     // Password Requirements.
     // --------------------------------------------------------------------
-    
+
     /**
      * Gets the Raw (unencoded) Password.
      * Used only on password change requests.
@@ -125,22 +125,22 @@ public interface User
      * @return the raw encoded password.
      */
     String getPassword();
-    
+
     /**
      * Sets the raw (unencoded) password for this user.
      * 
      * @param rawPassword the raw unencoded password for this user.
      * @see #getPassword()
      */
-    void setPassword(String rawPassword);
-    
+    void setPassword( String rawPassword );
+
     /**
      * Gets the Encoded Password.
      * 
      * @return the encoded password.
      */
     String getEncodedPassword();
-    
+
     /**
      * Sets the Encoded Password.
      * 
@@ -148,8 +148,8 @@ public interface User
      * 
      * @param encodedPassword
      */
-    void setEncodedPassword(String encodedPassword);
-    
+    void setEncodedPassword( String encodedPassword );
+
     /**
      * Gets the Date of the Last Password Change.
      * 
@@ -158,7 +158,7 @@ public interface User
      * @return the date of the last password change.
      */
     Date getLastPasswordChange();
-    
+
     /**
      * Sets the Last Password Change Date.
      * 
@@ -166,8 +166,8 @@ public interface User
      * 
      * @param passwordChangeDate the date that the last password change occured.
      */
-    void setLastPasswordChange(Date passwordChangeDate);
-    
+    void setLastPasswordChange( Date passwordChangeDate );
+
     /**
      * Gets the list of previous password (in encoded format).
      * 
@@ -176,24 +176,40 @@ public interface User
      * @return the list of {@link String} objects.  Represents previous passwords (in encoded format). 
      */
     List getPreviousEncodedPasswords();
-    
+
     /**
      * Sets the list of previous passwords (in encoded format)
      * 
      * @param encodedPasswordList (list of {@link String} objects.) the previously passwords in encoded format.
      */
-    void setPreviousEncodedPasswords(List encodedPasswordList);
-    
+    void setPreviousEncodedPasswords( List encodedPasswordList );
+
     /**
      * Add encoded password to previously passwords in encoded format.
      * 
      * @param encodedPassword the encoded password to add.
      */
-    void addPreviousEncodedPassword(String encodedPassword);
-    
+    void addPreviousEncodedPassword( String encodedPassword );
+
     // --------------------------------------------------------------------
     // State
     // --------------------------------------------------------------------
+
+    /**
+     * Gets the flag indicating if this user is a permanent user or not.
+     * 
+     * Usually Root / Admin / Guest users are flagged as such.
+     */
+    boolean isPermanent();
+
+    /**
+     * Sets the permanent flag for this user.
+     * 
+     * Users such as Root / Admin / Guest are typically flagged as permanent.
+     * 
+     * @param permanent true if permanent.
+     */
+    void setPermanent( boolean permanent );
 
     /**
      * Determines if this user account is locked from use or not.
@@ -210,7 +226,7 @@ public interface User
      * 
      * @param locked true if account is to be locked.
      */
-    void setLocked(boolean locked);
+    void setLocked( boolean locked );
 
     /**
      * Determines if this user account must change their password on next login.
@@ -218,49 +234,63 @@ public interface User
      * @return true if user must change password on next login.
      */
     boolean isPasswordChangeRequired();
-    
+
     /**
      * Sets the flag to indicate if this user must change their password on next login.
      * 
      * @param changeRequired true if user must change password on next login.
      */
     void setPasswordChangeRequired( boolean changeRequired );
-    
+
+    /**
+     * Gets the flag indicating if this user has been validated (or not)
+     * 
+     * @return true if validated.
+     */
+    boolean isValidated();
+
+    /**
+     * Sets the flag indicating if this user has been validated (or not)
+     * 
+     * @param valid true if validated.
+     */
+    void setValidated( boolean valid );
+
     // --------------------------------------------------------------------
     // Statistics
     // --------------------------------------------------------------------
-    
+
     /**
      * Get Count of Failed Login Attempts.
      * 
      * @return the count of failed login attempts.
      */
     int getCountFailedLoginAttempts();
-    
+
     /**
      * Set the count of failed login attempts.
      *
      * @param count the count of failed login attempts.
      */
-    void setCountFailedLoginAttempts(int count);
-    
+    void setCountFailedLoginAttempts( int count );
+
     /**
      * Get the Creation Date for this account.
      * 
      * @return the date of creation for this account.
      */
     Date getAccountCreationDate();
-    
+
     /**
      * Get the Last Successful Login Date for this account.
      * 
      * @return the date of the last successful login
      */
     Date getLastLoginDate();
-    
+
     /**
      * Sets the Last Successful Login Date for this account.
      *
      */
-    void setLastLoginDate(Date date);
+    void setLastLoginDate( Date date );
 }
