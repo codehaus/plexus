@@ -7,8 +7,8 @@
       <role-hint>default</role-hint>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.security.authentication.Authenticator</role>
-          <role-hint>user-manager</role-hint>
+          <role>org.codehaus.plexus.security.authentication.AuthenticationManager</role>
+          <role-hint>default</role-hint>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.security.authorization.Authorizer</role>
