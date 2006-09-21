@@ -21,6 +21,8 @@ package org.codehaus.plexus.security.policy;
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * 
+ * @plexus.component role="org.codehaus.plexus.security.policy.UserValidationSettings"
  */
 public class DefaultUserValidationSettings
     implements UserValidationSettings
