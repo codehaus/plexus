@@ -1,0 +1,13 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.plexus.security</groupId>
+    <artifactId>plexus-security-keys-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>plexus-security-keys-api</artifactId>
+  <name>Plexus Security :: Key Management API</name>
+  <packaging>jar</packaging>
+  <dependencies>
+  </dependencies>
+</project>
