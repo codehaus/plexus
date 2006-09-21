@@ -29,11 +29,27 @@ public class DefaultSecuritySession
 
     private User user;
 
-    public DefaultSecuritySession( AuthenticationResult authenticationResult,
-                                   User user )
+    private boolean authenticated;
+
+    public DefaultSecuritySession()
+    {
+        this.authenticationResult = new AuthenticationResult();
+        this.user = null;
+        this.authenticated = false;
+    }
+
+    public DefaultSecuritySession( AuthenticationResult authResult )
+    {
+        this.authenticationResult = authResult;
+        this.user = null;
+        this.authenticated = false;
+    }
+
+    public DefaultSecuritySession( AuthenticationResult authenticationResult, User user )
     {
         this.authenticationResult = authenticationResult;
         this.user = user;
+        this.authenticated = true;
     }
 
     public AuthenticationResult getAuthenticationResult()
@@ -44,5 +60,10 @@ public class DefaultSecuritySession
     public User getUser()
     {
         return user;
+    }
+
+    public boolean isAuthenticated()
+    {
+        return authenticated;
     }
 }
