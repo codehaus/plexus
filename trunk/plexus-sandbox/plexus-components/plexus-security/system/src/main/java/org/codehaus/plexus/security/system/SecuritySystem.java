@@ -1,15 +1,5 @@
 package org.codehaus.plexus.security.system;
 
-import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
-import org.codehaus.plexus.security.authentication.AuthenticationException;
-import org.codehaus.plexus.security.authorization.AuthorizationException;
-import org.codehaus.plexus.security.authorization.AuthorizationResult;
-import org.codehaus.plexus.security.policy.AccountLockedException;
-import org.codehaus.plexus.security.policy.MustChangePasswordException;
-import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.UserNotFoundException;
-
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -25,6 +15,15 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
+import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.authorization.AuthorizationException;
+import org.codehaus.plexus.security.authorization.AuthorizationResult;
+import org.codehaus.plexus.security.policy.AccountLockedException;
+import org.codehaus.plexus.security.policy.MustChangePasswordException;
+import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.UserNotFoundException;
 
 /**
  * SecuritySystem:
