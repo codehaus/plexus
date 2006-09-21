@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<plexus>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.jdo.JdoFactory</role>
+      <implementation>org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory</implementation>
+    </component>
+  </components>
+</plexus>
