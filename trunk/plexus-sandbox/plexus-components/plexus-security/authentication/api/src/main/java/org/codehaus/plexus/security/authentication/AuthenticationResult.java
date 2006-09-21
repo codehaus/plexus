@@ -29,10 +29,6 @@ public class AuthenticationResult
 {
     private boolean isAuthenticated;
     
-    private boolean locked;
-    
-    private boolean changePasswordRequired;
-    
     private Object principal;
 
     private Exception exception;
@@ -44,23 +40,8 @@ public class AuthenticationResult
         isAuthenticated = authenticated;
         this.principal = principal;
         this.exception = exception;
-        this.locked = false;
-        this.changePasswordRequired = false;
     }
     
-    public AuthenticationResult( boolean authenticated,
-                                 boolean locked,
-                                 boolean changePasswordRequired,
-                                 Object principal,
-                                 Exception exception )
-    {
-        isAuthenticated = authenticated;
-        this.principal = principal;
-        this.exception = exception;
-        this.locked = locked;
-        this.changePasswordRequired = changePasswordRequired;
-    }
-
     public boolean isAuthenticated()
     {
         return isAuthenticated;

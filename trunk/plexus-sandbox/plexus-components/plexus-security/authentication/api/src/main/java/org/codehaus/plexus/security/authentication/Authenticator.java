@@ -28,8 +28,10 @@ import org.codehaus.plexus.security.policy.MustChangePasswordException;
 public interface Authenticator
 {
     public static final String ROLE = Authenticator.class.getName();
-    
+
     public String getId();
+
+    public boolean supportsDataSource( AuthenticationDataSource source );
 
     public AuthenticationResult authenticate( AuthenticationDataSource source )
         throws AccountLockedException, MustChangePasswordException, AuthenticationException;
