@@ -19,5 +19,6 @@
     <module>open</module>
     <module>memory</module>
     <module>user-manager</module>
+    <module>keystore</module>
   </modules>
 </project>

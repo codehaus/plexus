@@ -26,4 +26,6 @@ package org.codehaus.plexus.security.authentication;
 public interface AuthenticationDataSource
 {
     public String ROLE = AuthenticationDataSource.class.getName();
+
+    public Object getPrincipal();
 }
