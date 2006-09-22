@@ -43,36 +43,50 @@ public abstract class AbstractRoleProfile
     private Role generateRole()
         throws RoleProfileException
     {
-        List operations = getOperations();
 
         Role role = rbacManager.createRole( getRoleName() );
 
         try
         {
-            for ( Iterator i = operations.iterator(); i.hasNext(); )
+            if ( getOperations() != null )
             {
-                String operationString = (String) i.next();
+                List operations = getOperations();
 
-                if ( !rbacManager.operationExists( operationString ) )
+                for ( Iterator i = operations.iterator(); i.hasNext(); )
                 {
-                    Operation operation = rbacManager.createOperation( operationString );
-                    operation = rbacManager.saveOperation( operation );
-                }
+                    String operationString = (String) i.next();
 
-                if ( !rbacManager.permissionExists(
-                    operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL ) )
+                    if ( !rbacManager.operationExists( operationString ) )
+                    {
+                        Operation operation = rbacManager.createOperation( operationString );
+                        operation = rbacManager.saveOperation( operation );
+                    }
+
+                    if ( !rbacManager.permissionExists(
+                        operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL ) )
+                    {
+
+                        Permission permission = rbacManager.createPermission(
+                            operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL );
+                        permission.setOperation( rbacManager.getOperation( operationString ) );
+                        permission.setResource( rbacManager.getGlobalResource() );
+                        rbacManager.savePermission( permission );
+
+                    }
+
+                    role.addPermission( rbacManager.getPermission(
+                        operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL ) );
+                }
+            }
+
+            if ( getChildRoles() != null )
+            {
+                List childRoles = getChildRoles();
+
+                for ( Iterator i = childRoles.iterator(); i.hasNext(); )
                 {
-
-                    Permission permission = rbacManager.createPermission(
-                        operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL );
-                    permission.setOperation( rbacManager.getOperation( operationString ) );
-                    permission.setResource( rbacManager.getGlobalResource() );
-                    rbacManager.savePermission( permission );
-
+                    role.addChildRoleName( (String) i.next() );
                 }
-
-                role.addPermission(
-                    rbacManager.getPermission( operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL ) );
             }
         }
         catch ( RbacObjectNotFoundException ne )
@@ -83,6 +97,18 @@ public abstract class AbstractRoleProfile
         role = rbacManager.saveRole( role );
 
         return role;
+    }
+
+
+    /**
+     * by default roles don't have child roles, so the abstract base class for this will just take care of it
+     * and if the implementing role profile has need of it then can just override it.
+     *
+     * @return
+     */
+    public List getChildRoles()
+    {
+        return null;
     }
 
 

@@ -50,6 +50,12 @@ public interface RoleProfile
     public List getOperations();
 
     /**
+     * returns the list of roles that this role will reference as child roles for purposes of
+     * role heirarchies
+     */
+    public List getChildRoles();
+
+    /**
      * return the role, either for the rbacManager should the role exist already, or
      * go through the motions to create it
      */
