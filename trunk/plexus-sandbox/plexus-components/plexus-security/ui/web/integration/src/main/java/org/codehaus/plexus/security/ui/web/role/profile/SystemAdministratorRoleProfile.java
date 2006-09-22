@@ -2,10 +2,10 @@ package org.codehaus.plexus.security.ui.web.role.profile;
 
 import org.codehaus.plexus.rbac.profile.AbstractRoleProfile;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 /*
- * Copyright 2006 The Codehaus.
+ * Copyright 2005 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,33 +21,29 @@ import java.util.List;
  */
 
 /**
- * UserManagementRoleProfile:
+ * SystemAdministratorRoleProfile:
  *
- * @author: Jesse McConnell <jmcconnell@apache.org>
+ * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- *
- * @plexus.component
- *   role="org.codehaus.plexus.rbac.profile.RoleProfile"
- *   role-hint="user-management-role"
  */
-public class UserManagementRoleProfile
+public class SystemAdministratorRoleProfile
     extends AbstractRoleProfile
 {
 
+
     public String getRoleName()
     {
-        return RoleConstants.USER_MANAGEMENT_ROLE;
+        return RoleConstants.SYSTEM_ADMINISTRATOR_ROLE;
     }
 
     public List getOperations()
     {
-        List operations = new ArrayList();
-        operations.add( RoleConstants.USER_MANAGEMENT_REGISTER_OPERATION );
-        operations.add( RoleConstants.USER_MANAGEMENT_CREATE_USER_OPERATION );
-        operations.add( RoleConstants.USER_MANAGEMENT_EDIT_USER_OPERATION );
-        operations.add( RoleConstants.USER_MANAGEMENT_MANAGE_ROLES_OPERATION );
-
-        return operations;
+        return null;
     }
 
+
+    public List getChildRoles()
+    {
+        return Collections.singletonList( RoleConstants.USER_ADMINISTRATOR_ROLE );
+    }
 }
