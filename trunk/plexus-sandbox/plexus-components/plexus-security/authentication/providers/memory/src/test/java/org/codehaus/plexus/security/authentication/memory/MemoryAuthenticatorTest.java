@@ -38,7 +38,7 @@ public class MemoryAuthenticatorTest
         assertNotNull( authenticator );
 
         PasswordBasedAuthenticationDataSource ds = new PasswordBasedAuthenticationDataSource();
-        ds.setUsername( "jason" );
+        ds.setPrincipal( "jason" );
         ds.setPassword( "kungfu" );
 
         AuthenticationResult ar = authenticator.authenticate( ds );

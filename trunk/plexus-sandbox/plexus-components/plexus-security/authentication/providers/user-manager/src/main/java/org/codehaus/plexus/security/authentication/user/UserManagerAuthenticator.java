@@ -76,17 +76,17 @@ public class UserManagerAuthenticator
         try
         {
             getLogger().debug( "Authenticate: " + source );
-            User user = userManager.findUser( source.getUsername() );
+            User user = userManager.findUser( source.getPrincipal() );
             username = user.getUsername();
             
             if (user.isLocked())
             {
-                throw new AccountLockedException( "Account " + source.getUsername() + " is locked.", user );
+                throw new AccountLockedException( "Account " + source.getPrincipal() + " is locked.", user );
             }
             
             if (user.isPasswordChangeRequired())
             {
-                throw new MustChangePasswordException( "User " + source.getUsername() + " must change their password." );
+                throw new MustChangePasswordException( "User " + source.getPrincipal() + " must change their password." );
             }
             
             PasswordEncoder encoder = securityPolicy.getPasswordEncoder();
@@ -95,7 +95,7 @@ public class UserManagerAuthenticator
             boolean isPasswordValid = encoder.isPasswordValid( user.getEncodedPassword(), source.getPassword() );
             if ( isPasswordValid )
             {
-                getLogger().debug( "User " + source.getUsername() + " provided a valid password" );
+                getLogger().debug( "User " + source.getPrincipal() + " provided a valid password" );
                 
                 securityPolicy.extensionPasswordExpiration( user );
                 
@@ -103,11 +103,11 @@ public class UserManagerAuthenticator
                 user.setCountFailedLoginAttempts( 0 );
                 userManager.updateUser( user );
                 
-                return new AuthenticationResult( true, source.getUsername(), null );
+                return new AuthenticationResult( true, source.getPrincipal(), null );
             }
             else
             {
-                getLogger().warn( "Password is Invalid for user " + source.getUsername() + "." );
+                getLogger().warn( "Password is Invalid for user " + source.getPrincipal() + "." );
                 
                 try
                 {
@@ -118,12 +118,12 @@ public class UserManagerAuthenticator
                     userManager.updateUser( user );
                 }
                 
-                return new AuthenticationResult( false, source.getUsername(), null );
+                return new AuthenticationResult( false, source.getPrincipal(), null );
             }
         }
         catch ( UserNotFoundException e )
         {
-            getLogger().warn( "Login for user " + source.getUsername() + " failed. user not found." );
+            getLogger().warn( "Login for user " + source.getPrincipal() + " failed. user not found." );
             resultException = e;
         }
         

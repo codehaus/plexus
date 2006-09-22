@@ -31,19 +31,19 @@ public class TokenBasedAuthenticationDataSource
 {
     private String token;
 
-    private Object principal;
+    private String principal;
 
 
-    private TokenBasedAuthenticationDataSource()
-    {
-    }
-
-    public TokenBasedAuthenticationDataSource( Object principal )
+    public TokenBasedAuthenticationDataSource( String principal )
     {
         this.principal = principal;
     }
 
-    public Object getPrincipal()
+    public TokenBasedAuthenticationDataSource()
+    {
+    }
+
+    public String getPrincipal()
     {
         return principal;
     }
@@ -51,6 +51,11 @@ public class TokenBasedAuthenticationDataSource
     public String getToken()
     {
         return token;
+    }
+
+    public void setPrincipal( String principal )
+    {
+        this.principal = principal;
     }
 
     public void setToken( String token )
@@ -62,7 +67,8 @@ public class TokenBasedAuthenticationDataSource
     {
         StringBuffer sb = new StringBuffer();
         sb.append( "TokenBasedAuthenticationDataSource[" );
-        sb.append( "token=" ).append( token );
+        sb.append( "principal=" ).append( principal );
+        sb.append( ",token=" ).append( token );
         sb.append( "]" );
         return sb.toString();
     }

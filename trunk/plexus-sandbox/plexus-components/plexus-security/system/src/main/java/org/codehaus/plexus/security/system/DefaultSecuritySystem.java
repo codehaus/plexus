@@ -21,7 +21,6 @@ import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationManager;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
-import org.codehaus.plexus.security.authentication.Authenticator;
 import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
 import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.authorization.AuthorizationResult;

@@ -16,7 +16,6 @@ package org.codehaus.plexus.security.authentication.user;
  * limitations under the License.
  */
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
 import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDataSource;
@@ -94,7 +93,7 @@ public class UserManagerAuthenticatorTest
     {
         PasswordBasedAuthenticationDataSource source = new PasswordBasedAuthenticationDataSource();
         
-        source.setUsername( username );
+        source.setPrincipal( username );
         source.setPassword( password );
         
         return source;

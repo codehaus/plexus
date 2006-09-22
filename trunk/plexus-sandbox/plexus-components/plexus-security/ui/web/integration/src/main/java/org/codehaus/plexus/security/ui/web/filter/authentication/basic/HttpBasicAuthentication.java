@@ -48,8 +48,7 @@ public class HttpBasicAuthentication
         return HttpBasicAuthentication.class.getName();
     }
 
-    public AuthenticationResult getAuthenticationResult( HttpServletRequest request, HttpServletResponse response,
-                                                         String defaultPrincipal )
+    public AuthenticationResult getAuthenticationResult( HttpServletRequest request, HttpServletResponse response )
         throws AuthenticationException, AccountLockedException, MustChangePasswordException
     {
         if ( isAlreadyAuthenticated() )
