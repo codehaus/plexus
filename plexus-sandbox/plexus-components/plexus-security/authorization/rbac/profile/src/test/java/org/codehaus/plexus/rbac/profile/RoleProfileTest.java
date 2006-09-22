@@ -74,11 +74,14 @@ System.out.println( "rbacmanager2 " + rbacManager.toString());
     public void testComboWithChildRoles()
         throws Exception
     {
+
         Role s1 = roleManager.getRole( "bogus" );
+        Role b0 = roleManager.getDynamicRole( "bogus", "one" );            
         Role b1 = roleManager.getDynamicRole( "more-bogus", "one" );
+        
 
         assertTrue( b1.hasChildRoles() );
-        assertEquals( 1, b1.getChildRoleNames().size() );
+        assertEquals( 2, b1.getChildRoleNames().size() );
 
         assertTrue( rbacManager.roleExists( s1.getName() ) );
         assertTrue( rbacManager.roleExists( b1.getName() ) );
