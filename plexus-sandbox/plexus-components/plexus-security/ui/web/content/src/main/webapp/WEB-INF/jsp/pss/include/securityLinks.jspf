@@ -20,7 +20,7 @@
 <span class="securityLinks">
 
 <c:choose>
-  <c:when test="${sessionScope.securityAuth != true}">
+  <c:when test="${sessionScope.securitySession.authenticated != true}">
     <ww:url id="loginUrl" action="login" namespace="/security" includeParams="none"/>
     <ww:url id="registerUrl" action="register" namespace="/security" includeParams="none"/>
     <ww:a href="%{loginUrl}">Login</ww:a> - <ww:a href="%{registerUrl}">Register</ww:a>
@@ -30,11 +30,11 @@
     
     Welcome, 
     <c:choose>
-      <c:when test="${sessionScope.securityUser != null}">
+      <c:when test="${sessionScope.securitySession.user != null}">
         <ww:url id="accountUrl" action="account" namespace="/security">
-          <ww:param name="username">${sessionScope.securityUser.username}</ww:param>
+          <ww:param name="username">${sessionScope.securitySession.user.username}</ww:param>
         </ww:url>
-        <b><ww:a href="%{accountUrl}">${sessionScope.securityUser.username}</ww:a></b>
+        <b><ww:a href="%{accountUrl}">${sessionScope.securitySession.user.username}</ww:a></b>
       </c:when>
       <c:otherwise>
         <b>Unknown User</b>
