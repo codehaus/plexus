@@ -68,6 +68,8 @@ public class ValidateAccountAction
             User user = securitySystem.getUserManager().findUser( authkey.getForPrincipal() );
             
             user.setValidated( true );
+            user.setLocked( false );
+            user.setPasswordChangeRequired( true );
             
             securitySystem.getUserManager().updateUser( user );
             
