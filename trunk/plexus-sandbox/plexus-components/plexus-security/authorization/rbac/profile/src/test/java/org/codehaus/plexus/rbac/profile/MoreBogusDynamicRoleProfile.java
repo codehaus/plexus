@@ -33,7 +33,7 @@ public class MoreBogusDynamicRoleProfile
 {
     public String getRoleName( String resource )
     {
-        return "BOGUS ROLE" + RoleProfileConstants.DELIMITER + resource;
+        return "MORE BOGUS ROLE" + RoleProfileConstants.DELIMITER + resource;
     }
 
     public List getOperations()
@@ -42,8 +42,16 @@ public class MoreBogusDynamicRoleProfile
     }
 
 
+    // add a child for the statis role bogus
     public List getChildRoles()
     {
         return Collections.singletonList( "bogus" );
+    }
+
+
+    // add a child for the dynamic role bogus
+    public List getDynamicChildRoles( String resource )
+    {
+        return Collections.singletonList( "BOGUS ROLE" + RoleProfileConstants.DELIMITER + resource );
     }
 }
