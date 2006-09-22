@@ -24,11 +24,14 @@ package org.codehaus.plexus.security.ui.web.role.profile;
 public class RoleConstants
 {
     // roles
-    public static final String USER_MANAGEMENT_ROLE = "User Administrator";
+    public static final String SYSTEM_ADMINISTRATOR_ROLE = "System Administrator";
+    public static final String USER_ADMINISTRATOR_ROLE = "User Administrator";
 
     // operations
     public static final String USER_MANAGEMENT_REGISTER_OPERATION = "user-management-register";
     public static final String USER_MANAGEMENT_EDIT_USER_OPERATION = "user-management-edit-user";
     public static final String USER_MANAGEMENT_CREATE_USER_OPERATION = "user-management-create-user";
-    public static final String USER_MANAGEMENT_MANAGE_ROLES_OPERATION = "user-management-manage-roles";
+    public static final String USER_MANAGEMENT_GRANT_ROLE_OPERATION = "user-management-grant-role";
+    public static final String USER_MANAGEMENT_REMOVE_ROLE_OPERATION = "user-management-remove-role";
+
 }
