@@ -94,6 +94,16 @@ public abstract class AbstractDynamicRoleProfile
                     role.addChildRoleName( (String) i.next() );
                 }
             }
+
+            if ( getDynamicChildRoles( resource ) != null )
+            {
+                List childRoles = getDynamicChildRoles( resource );
+
+                for ( Iterator i = childRoles.iterator(); i.hasNext(); )
+                {
+                    role.addChildRoleName( (String) i.next() );
+                }
+            }
         }
         catch ( RbacObjectNotFoundException ne )
         {
@@ -112,6 +122,19 @@ public abstract class AbstractDynamicRoleProfile
      * @return
      */
     public List getChildRoles()
+    {
+        return null;
+    }
+
+
+    /**
+     * some roles might require the resource in order to get dynamic child role if multiple roles are being made
+     * together for a certain resource
+     *
+     * @param resource
+     * @return
+     */
+    public List getDynamicChildRoles( String resource )
     {
         return null;
     }
