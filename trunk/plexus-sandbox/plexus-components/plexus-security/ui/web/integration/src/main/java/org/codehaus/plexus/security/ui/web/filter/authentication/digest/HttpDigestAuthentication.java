@@ -71,8 +71,7 @@ public class HttpDigestAuthentication
         return HttpDigestAuthentication.class.getName();
     }
 
-    public AuthenticationResult getAuthenticationResult( HttpServletRequest request, HttpServletResponse response,
-                                             String defaultPrincipal )
+    public AuthenticationResult getAuthenticationResult( HttpServletRequest request, HttpServletResponse response )
         throws AuthenticationException, AccountLockedException, MustChangePasswordException
     {
         if ( isAlreadyAuthenticated() )
@@ -80,7 +79,7 @@ public class HttpDigestAuthentication
             return getSecuritySession().getAuthenticationResult();
         }
 
-        TokenBasedAuthenticationDataSource authDataSource = new TokenBasedAuthenticationDataSource( );
+        TokenBasedAuthenticationDataSource authDataSource = new TokenBasedAuthenticationDataSource();
         String authHeader = request.getHeader( "Authorization" );
 
         if ( ( authHeader != null ) && authHeader.startsWith( "Digest " ) )
@@ -91,7 +90,8 @@ public class HttpDigestAuthentication
             digestHeader.parseClientHeader( rawDigestHeader, getRealm(), digestKey );
 
             // Lookup password for presented username
-            User user = findUser( digestHeader.username, defaultPrincipal );
+            User user = findUser( digestHeader.username );
+            authDataSource.setPrincipal( user.getPrincipal().toString() );
 
             String serverSideHash = generateDigestHash( digestHeader, user.getPassword(), request.getMethod() );
 
@@ -104,40 +104,18 @@ public class HttpDigestAuthentication
         return super.authenticate( authDataSource );
     }
 
-    public User findUser( String username, String defaultPrincipal ) throws HttpAuthenticationException
+    public User findUser( String username )
+        throws HttpAuthenticationException
     {
-        UserNotFoundException primaryException = null;
-        
         try
         {
             return userManager.findUser( username );
         }
         catch ( UserNotFoundException e )
         {
-            primaryException = e;
-            // Fall Thru
-        }
-        
-        if ( StringUtils.isNotEmpty( defaultPrincipal ) )
-        {
-            try
-            {
-                return userManager.findUser( defaultPrincipal );
-            }
-            catch ( UserNotFoundException e )
-            {
-                String msg = "Unable to find primary user '" + username + 
-                             "' and default principal '" + defaultPrincipal + "'.";
-                getLogger().error( msg, e );
-                throw new HttpAuthenticationException( msg, e );
-            }
-        }
-        else
-        {
-            String msg = "Unable to find primary user '" + username + 
-                         "' (no default principal backup)";
-            getLogger().error( msg, primaryException );
-            throw new HttpAuthenticationException(msg, primaryException);
+            String msg = "Unable to find primary user '" + username + "'.";
+            getLogger().error( msg, e );
+            throw new HttpAuthenticationException( msg, e );
         }
     }
 

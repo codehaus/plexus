@@ -94,7 +94,7 @@ public abstract class HttpAuthenticator
     {
         try
         {
-            AuthenticationResult result = getAuthenticationResult( request, response, null );
+            AuthenticationResult result = getAuthenticationResult( request, response );
 
             if ( ( result == null ) || ( !result.isAuthenticated() ) )
             {
@@ -130,14 +130,13 @@ public abstract class HttpAuthenticator
      *  
      * @param request
      * @param response
-     * @param defaultPrincipal
      * @return null if no http auth credentials, or the actual authentication result based on the credentials.
      * @throws AuthenticationException
      * @throws MustChangePasswordException 
      * @throws AccountLockedException 
      */
     public abstract AuthenticationResult getAuthenticationResult( HttpServletRequest request,
-                                                                  HttpServletResponse response, String defaultPrincipal )
+                                                                  HttpServletResponse response )
         throws AuthenticationException, AccountLockedException, MustChangePasswordException;
 
     public Map getContextSession()
