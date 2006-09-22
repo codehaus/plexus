@@ -31,6 +31,23 @@ public class TokenBasedAuthenticationDataSource
 {
     private String token;
 
+    private Object principal;
+
+
+    private TokenBasedAuthenticationDataSource()
+    {
+    }
+
+    public TokenBasedAuthenticationDataSource( Object principal )
+    {
+        this.principal = principal;
+    }
+
+    public Object getPrincipal()
+    {
+        return principal;
+    }
+
     public String getToken()
     {
         return token;
