@@ -24,5 +24,17 @@
         </requirement>
       </requirements>
     </component>
+
+   <component>
+      <role>org.codehaus.plexus.rbac.profile.DynamicRoleProfile</role>
+      <role-hint>more-bogus</role-hint>
+      <implementation>org.codehaus.plexus.rbac.profile.MoreBogusDynamicRoleProfile</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.rbac.RBACManager</role>
+          <role-hint>memory</role-hint>
+        </requirement>
+      </requirements>
+    </component>
   </components>
 </plexus>
