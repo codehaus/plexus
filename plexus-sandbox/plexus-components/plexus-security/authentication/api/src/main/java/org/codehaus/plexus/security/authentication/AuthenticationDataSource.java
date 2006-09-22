@@ -27,5 +27,5 @@ public interface AuthenticationDataSource
 {
     public String ROLE = AuthenticationDataSource.class.getName();
 
-    public Object getPrincipal();
+    public String getPrincipal();
 }

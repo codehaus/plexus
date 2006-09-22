@@ -31,18 +31,16 @@ import org.codehaus.plexus.util.StringUtils;
 public class PasswordBasedAuthenticationDataSource
     implements AuthenticationDataSource
 {
-    private String username;
-
     private String password;
+    private String principal;
     
     public PasswordBasedAuthenticationDataSource()
     {
         
     }
     
-    public PasswordBasedAuthenticationDataSource(String username, String password)
+    public PasswordBasedAuthenticationDataSource(String principal, String password)
     {
-        this.username = username;
         this.password = password;
     }
     
@@ -51,32 +49,26 @@ public class PasswordBasedAuthenticationDataSource
         return password;
     }
 
-    public String getUsername()
+    public String getPrincipal()
     {
-        return username;
+        return principal;
     }
-    
+
     public void setPassword( String password )
     {
         this.password = password;
     }
 
-    public void setUsername( String username )
+    public void setPrincipal( String principal )
     {
-        this.username = username;
-    }
-
-
-    public Object getPrincipal()
-    {
-        return username;
+        this.principal = principal;
     }
 
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
         sb.append( "PasswordBasedAuthenticationDataSource[" );
-        sb.append( "username=" ).append( username );
+        sb.append( "principal=" ).append( principal );
         sb.append( ",password=" );
         if ( StringUtils.isNotEmpty( password ) )
         {

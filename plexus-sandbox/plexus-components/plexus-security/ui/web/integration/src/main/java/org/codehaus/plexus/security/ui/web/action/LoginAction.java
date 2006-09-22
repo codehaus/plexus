@@ -73,7 +73,7 @@ public class LoginAction
         }
         
         PasswordBasedAuthenticationDataSource authdatasource = new PasswordBasedAuthenticationDataSource();
-        authdatasource.setUsername( username );
+        authdatasource.setPrincipal( username );
         authdatasource.setPassword( password );
         
         return webLogin( securitySystem, authdatasource );

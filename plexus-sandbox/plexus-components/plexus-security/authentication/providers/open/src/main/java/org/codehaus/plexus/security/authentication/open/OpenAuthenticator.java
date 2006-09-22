@@ -43,7 +43,7 @@ public class OpenAuthenticator
         throws AccountLockedException, MustChangePasswordException, AuthenticationException
     {
         PasswordBasedAuthenticationDataSource source = (PasswordBasedAuthenticationDataSource) s;
-        return new AuthenticationResult( true, source.getUsername(), null );
+        return new AuthenticationResult( true, source.getPrincipal(), null );
     }
 
     public String getId()
