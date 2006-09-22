@@ -40,6 +40,8 @@ public interface DynamicRoleProfile
 
     public List getOperations();
 
+    public List getChildRoles();
+
     public Role getRole( String resource ) throws RoleProfileException;
 
 }

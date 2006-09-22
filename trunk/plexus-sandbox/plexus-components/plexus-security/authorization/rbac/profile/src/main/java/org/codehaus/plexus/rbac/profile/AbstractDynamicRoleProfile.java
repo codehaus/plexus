@@ -51,35 +51,48 @@ public abstract class AbstractDynamicRoleProfile
             rbacManager.saveResource( res );
         }
 
-        List operations = getOperations();
-
         Role role = rbacManager.createRole( getRoleName( resource ) );
 
         try
         {
-            for ( Iterator i = operations.iterator(); i.hasNext(); )
+            if ( getOperations() != null )
             {
-                String operationString = (String) i.next();
+                List operations = getOperations();
 
-                if ( !rbacManager.operationExists( operationString ) )
+                for ( Iterator i = operations.iterator(); i.hasNext(); )
                 {
-                    Operation operation = rbacManager.createOperation( operationString );
-                    operation = rbacManager.saveOperation( operation );
-                }
+                    String operationString = (String) i.next();
 
-                if ( !rbacManager.permissionExists( operationString + RoleProfileConstants.DELIMITER + resource ) )
+                    if ( !rbacManager.operationExists( operationString ) )
+                    {
+                        Operation operation = rbacManager.createOperation( operationString );
+                        operation = rbacManager.saveOperation( operation );
+                    }
+
+                    if ( !rbacManager.permissionExists( operationString + RoleProfileConstants.DELIMITER + resource ) )
+                    {
+
+                        Permission permission =
+                            rbacManager.createPermission( operationString + RoleProfileConstants.DELIMITER + resource );
+                        permission.setOperation( rbacManager.getOperation( operationString ) );
+                        permission.setResource( rbacManager.getResource( resource ) );
+                        rbacManager.savePermission( permission );
+
+                    }
+
+                    role.addPermission(
+                        rbacManager.getPermission( operationString + RoleProfileConstants.DELIMITER + resource ) );
+                }
+            }
+
+            if ( getChildRoles() != null )
+            {
+                List childRoles = getChildRoles();
+
+                for ( Iterator i = childRoles.iterator(); i.hasNext(); )
                 {
-
-                    Permission permission =
-                        rbacManager.createPermission( operationString + RoleProfileConstants.DELIMITER + resource );
-                    permission.setOperation( rbacManager.getOperation( operationString ) );
-                    permission.setResource( rbacManager.getResource( resource ) );
-                    rbacManager.savePermission( permission );
-
+                    role.addChildRoleName( (String) i.next() );
                 }
-
-                role.addPermission(
-                    rbacManager.getPermission( operationString + RoleProfileConstants.DELIMITER + resource ) );
             }
         }
         catch ( RbacObjectNotFoundException ne )
@@ -92,6 +105,17 @@ public abstract class AbstractDynamicRoleProfile
         return role;
     }
 
+    /**
+     * by default roles don't have child roles, so the abstract base class for this will just take care of it
+     * and if the implementing role profile has need of it then can just override it.
+     *
+     * @return
+     */
+    public List getChildRoles()
+    {
+        return null;
+    }
+
     public Role getRole( String resource )
         throws RoleProfileException
     {
@@ -99,7 +123,7 @@ public abstract class AbstractDynamicRoleProfile
         {
             if ( rbacManager.roleExists( getRoleName( resource ) ) )
             {
-                return rbacManager.getRole( getRoleName( resource) );
+                return rbacManager.getRole( getRoleName( resource ) );
             }
             else
             {
