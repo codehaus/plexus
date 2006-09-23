@@ -50,9 +50,6 @@ public class RoleProfileTest
     {
         Role bogusRole = roleManager.getRole( "bogus" );
 
-        System.out.println( "test - >" + bogusRole.getName() );
-
-        System.out.println( "rbacmanager1 " + rbacManager.toString());
         assertEquals( 1, rbacManager.getAllRoles().size() );
 
         assertTrue( rbacManager.roleExists( bogusRole.getName() ) );
@@ -63,7 +60,7 @@ public class RoleProfileTest
         throws Exception
     {
         Role bogusRole = roleManager.getDynamicRole( "bogus", "one" );
-System.out.println( "rbacmanager2 " + rbacManager.toString());
+
         assertTrue( rbacManager.roleExists( bogusRole.getName() ) );
 
         Role bogusRole2 = roleManager.getDynamicRole( "bogus", "two" );
