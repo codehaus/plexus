@@ -85,7 +85,16 @@ System.out.println( "rbacmanager2 " + rbacManager.toString());
 
         assertTrue( rbacManager.roleExists( s1.getName() ) );
         assertTrue( rbacManager.roleExists( b1.getName() ) );
+    }
 
-        
+    public void testRoleProfileMerge()
+        throws Exception
+    {
+        Role root = roleManager.mergeRoleProfiles( "bogus", "spiffy" );
+
+        assertTrue( rbacManager.roleExists( root.getName() ) );
+
+        assertEquals( 2, root.getPermissions().size() );
+
     }
 }

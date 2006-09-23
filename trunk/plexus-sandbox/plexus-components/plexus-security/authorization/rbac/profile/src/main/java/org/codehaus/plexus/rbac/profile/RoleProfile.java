@@ -61,4 +61,7 @@ public interface RoleProfile
      */
     public Role getRole()
         throws RoleProfileException;
+
+    public Role mergeWithRoleProfile( String targetRoleHint )
+        throws RoleProfileException;
 }

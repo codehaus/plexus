@@ -1,8 +1,9 @@
 package org.codehaus.plexus.rbac.profile;
 
-import org.codehaus.plexus.security.rbac.Role;
+import java.util.List;
+import java.util.Collections;
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,22 +19,25 @@ import org.codehaus.plexus.security.rbac.Role;
  */
 
 /**
- * RoleProfileManager:
+ * RoleProfileTest:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
+ *
+ * @plexus.component
+ *   role="org.codehaus.plexus.rbac.profile.RoleProfile"
+ *   role-hint="spiffy"
  */
-public interface RoleProfileManager
+public class SpiffyRoleProfile
+    extends AbstractRoleProfile
 {
-    String ROLE = RoleProfileManager.class.getName();
+    public String getRoleName()
+    {
+        return "spiffy-role";
+    }
 
-    public Role getRole( String roleName )
-        throws RoleProfileException;
-
-    public Role getDynamicRole( String roleName, String resource )
-        throws RoleProfileException;
-
-    public Role mergeRoleProfiles( String roleHint, String withRoleHint )
-        throws RoleProfileException;
-
+    public List getOperations()
+    {
+        return Collections.singletonList( "spiffy-operation" );
+    }
 }
