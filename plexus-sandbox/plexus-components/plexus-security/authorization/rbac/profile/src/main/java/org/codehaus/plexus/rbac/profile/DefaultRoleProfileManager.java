@@ -87,6 +87,20 @@ public class DefaultRoleProfileManager
         }
     }
 
+    public Role mergeRoleProfiles( String roleHint, String withRoleHint )
+        throws RoleProfileException
+    {
+        try
+        {
+            RoleProfile roleProfile =  (RoleProfile)container.lookup( RoleProfile.ROLE, roleHint );
+
+            return roleProfile.mergeWithRoleProfile( withRoleHint );
+        }
+        catch ( ComponentLookupException cle )
+        {
+            throw new RoleProfileException( "unable to locate role profile " + roleHint, cle );
+        }
+    }
 
     public List getKnownRoleProfiles()
     {
