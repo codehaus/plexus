@@ -10,6 +10,26 @@
           <role>org.codehaus.plexus.security.rbac.RBACManager</role>
           <role-hint>memory</role-hint>
         </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.PlexusContainer</role>
+          <field-name>container</field-name>
+        </requirement>
+      </requirements>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.rbac.profile.RoleProfile</role>
+      <role-hint>spiffy</role-hint>
+      <implementation>org.codehaus.plexus.rbac.profile.SpiffyRoleProfile</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.rbac.RBACManager</role>
+          <role-hint>memory</role-hint>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.PlexusContainer</role>
+          <field-name>container</field-name>
+        </requirement>
       </requirements>
     </component>
 

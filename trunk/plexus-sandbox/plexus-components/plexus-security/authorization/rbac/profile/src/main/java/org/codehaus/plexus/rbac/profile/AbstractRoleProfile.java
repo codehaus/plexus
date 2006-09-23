@@ -22,6 +22,8 @@ import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.PlexusContainer;
 
 import java.util.Iterator;
 import java.util.List;
@@ -40,6 +42,16 @@ public abstract class AbstractRoleProfile
      */
     protected RBACManager rbacManager;
 
+    /**
+     * @plexus.requirement
+     */
+    protected PlexusContainer container;
+
+    /**
+     *
+     * @return
+     * @throws RoleProfileException
+     */
     private Role generateRole()
         throws RoleProfileException
     {
@@ -99,6 +111,76 @@ public abstract class AbstractRoleProfile
         return role;
     }
 
+    /**
+     * merge this role with a target role profile
+     *
+     * @param targetRoleHint
+     * @throws RoleProfileException
+     */
+    public Role mergeWithRoleProfile( String targetRoleHint )
+        throws RoleProfileException
+    {
+        try
+        {
+           RoleProfile target = (RoleProfile) container.lookup( RoleProfile.ROLE, targetRoleHint );
+
+           Role rootRole = getRole();
+
+           if ( target.getOperations() != null )
+            {
+                List operations = target.getOperations();
+
+                for ( Iterator i = operations.iterator(); i.hasNext(); )
+                {
+                    String operationString = (String) i.next();
+
+                    if ( !rbacManager.operationExists( operationString ) )
+                    {
+                        Operation operation = rbacManager.createOperation( operationString );
+                        operation = rbacManager.saveOperation( operation );
+                    }
+
+                    if ( !rbacManager.permissionExists(
+                        operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL ) )
+                    {
+
+                        Permission permission = rbacManager.createPermission(
+                            operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL );
+                        permission.setOperation( rbacManager.getOperation( operationString ) );
+                        permission.setResource( rbacManager.getGlobalResource() );
+                        rbacManager.savePermission( permission );
+
+                    }
+
+                    rootRole.addPermission( rbacManager.getPermission(
+                        operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL ) );
+                }
+            }
+
+            if ( target.getChildRoles() != null )
+            {
+                List childRoles = target.getChildRoles();
+
+                for ( Iterator i = childRoles.iterator(); i.hasNext(); )
+                {
+                    rootRole.addChildRoleName( (String) i.next() );
+                }
+            }
+
+            rootRole = rbacManager.saveRole( rootRole );
+
+            return rootRole;
+        }
+        catch ( ComponentLookupException cle )
+        {
+            throw new RoleProfileException( "unable to location role profile", cle );
+        }
+        catch ( RbacObjectNotFoundException ne )
+        {
+            throw new RoleProfileException( "error merging role profiles", ne );
+        }
+
+    }
 
     /**
      * by default roles don't have child roles, so the abstract base class for this will just take care of it
