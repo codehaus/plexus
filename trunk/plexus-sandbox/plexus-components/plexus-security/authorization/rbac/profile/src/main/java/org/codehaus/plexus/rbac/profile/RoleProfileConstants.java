@@ -25,4 +25,6 @@ public class RoleProfileConstants
 {
     public static final String DELIMITER = "-";
 
+    public static final String SYSTEM_ADMINISTRATOR_ROLE = "System Administrator";
+
 }
