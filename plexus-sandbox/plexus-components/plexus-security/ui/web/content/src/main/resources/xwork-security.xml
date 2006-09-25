@@ -3,24 +3,24 @@
 
 <!-- ==================================================================
      Plexus Security Tools
-     
+
      This should contain the /security namespaced action configurations.
-     
+
      These configurations will likely not need changing.
-     
+
      These configurations point to the overlaid jspf files.
      ==================================================================  -->
 
 <xwork>
   <include file="webwork-default.xml"/>
-  
+
   <!-- ==================================================================
        Security Tools for Users
-       
+
        All Users should be able to access and use the actions contained
        within this package.
        ==================================================================  -->
-  
+
   <package name="security" extends="webwork-default" namespace="/security">
     <result-types>
       <result-type name="security-external" class="securityExternalResult" />
@@ -42,9 +42,9 @@
         <interceptor-ref name="pssSecureActions"/>
       </interceptor-stack>
     </interceptors>
-    
+
     <default-interceptor-ref name="securedStack"/>
-    
+
     <action name="login" class="pss-login" method="show">
       <result name="input">/WEB-INF/jsp/pss/login.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/login.jsp</result>
@@ -53,19 +53,19 @@
       </result>
       <result name="security-login-success" type="security-external">
         <param name="externalResult">security-login-success</param>
-      </result>      
+      </result>
       <result name="security-login-cancel" type="security-external">
         <param name="externalResult">security-login-cancel</param>
-      </result>      
+      </result>
       <result name="security-login-locked" type="security-external">
         <param name="externalResult">security-login-locked</param>
-      </result>      
+      </result>
     </action>
 
     <action name="logout" class="pss-logout" method="logout">
       <result name="security-logout" type="security-external">
         <param name="externalResult">security-logout</param>
-      </result> 
+      </result>
     </action>
 
     <action name="register" class="pss-register" method="show">
@@ -73,70 +73,70 @@
       <result name="error">/WEB-INF/jsp/pss/register.jsp</result>
       <result name="security-register-success" type="security-external">
         <param name="externalResult">security-register-success</param>
-      </result>      
+      </result>
       <result name="security-register-cancel" type="security-external">
         <param name="externalResult">security-register-cancel</param>
-      </result>      
+      </result>
     </action>
-    
+
     <action name="account" class="pss-account" method="show">
       <result name="input">/WEB-INF/jsp/pss/account.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/account.jsp</result>
       <result name="security-account-success" type="security-external">
         <param name="externalResult">security-account-success</param>
-      </result>      
+      </result>
       <result name="security-account-cancel" type="security-external">
         <param name="externalResult">security-account-cancel</param>
-      </result>      
+      </result>
     </action>
-    
+
     <action name="password" class="pss-password" method="show">
       <result name="input">/WEB-INF/jsp/pss/password.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/password.jsp</result>
       <result name="security-login-success" type="security-external">
         <param name="externalResult">security-login-success</param>
-      </result>      
+      </result>
     </action>
-    
+
   <!-- ==================================================================
        Security Tools for Administrators
-       
+
        Only Administrators should be able to access and use these actions
        ==================================================================  -->
-    
+
     <action name="systeminfo" class="pss-sysinfo" method="show">
       <result>/WEB-INF/jsp/security/admin/systemInformation.jspf</result>
     </action>
-    
+
     <action name="adminConsole" class="pss-admin-console" method="show">
       <result>/WEB-INF/jsp/security/admin/console.jspf</result>
     </action>
-    
+
     <action name="userlist" class="pss-admin-user-list" method="show">
       <result name="input">/WEB-INF/jsp/pss/admin/userList.jsp</result>
       <result name="success">/WEB-INF/jsp/pss/admin/userList.jsp</result>
     </action>
-    
+
     <action name="useredit" class="pss-admin-user-edit" method="edit">
       <result name="input">/WEB-INF/jsp/pss/admin/userEdit.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/admin/userEdit.jsp</result>
       <result name="success" type="redirect-action">userlist</result>
     </action>
-    
+
     <action name="usercreate" class="pss-admin-user-create" method="show">
       <result name="input">/WEB-INF/jsp/pss/admin/userCreate.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/admin/userCreate.jsp</result>
       <result name="success" type="redirect-action">userlist</result>
     </action>
-    
+
     <action name="userdelete" class="pss-admin-user-delete" method="confirm">
       <result name="input">/WEB-INF/jsp/pss/admin/userDelete.jsp</result>
       <result name="error" type="redirect-action">userlist</result>
       <result name="success" type="redirect-action">userlist</result>
     </action>
-    
+
     <!-- ==== RBAC Actions ========================================== -->
-    
+
     <action name="assignments" class="pss-assignments" method="show">
       <result name="input">/WEB-INF/jsp/pss/include/assignments.jspf</result>
       <result name="error">/WEB-INF/jsp/pss/include/error.jspf</result>
@@ -156,11 +156,11 @@
       <result name="error">/WEB-INF/jsp/pss/admin/roleCreate.jsp</result>
       <result name="success" type="redirect-action">userlist</result>
     </action>
-    
+
     <action name="roles" class="pss-roles" method="list">
       <result name="list">/WEB-INF/jsp/pss/admin/roleList.jsp</result>
     </action>
-    
+
     <action name="permissions" class="pss-permissions" method="list">
       <result name="list">/WEB-INF/jsp/pss/admin/permissionList.jsp</result>
     </action>
@@ -168,7 +168,7 @@
     <action name="operations" class="pss-operations" method="list">
       <result name="list">/WEB-INF/jsp/pss/admin/operationList.jsp</result>
     </action>
-    
+
     <action name="resources" class="pss-resources" method="list">
       <result name="list">/WEB-INF/jsp/pss/admin/resourceList.jsp</result>
     </action>
@@ -192,5 +192,5 @@
     </action>
 
   </package>
-  
+
 </xwork>
