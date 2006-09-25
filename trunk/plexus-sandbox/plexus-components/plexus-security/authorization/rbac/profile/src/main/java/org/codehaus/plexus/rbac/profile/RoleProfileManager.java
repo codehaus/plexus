@@ -27,6 +27,9 @@ public interface RoleProfileManager
 {
     String ROLE = RoleProfileManager.class.getName();
 
+    public void initialize()
+        throws RoleProfileException;
+
     public Role getRole( String roleName )
         throws RoleProfileException;
 
@@ -36,4 +39,7 @@ public interface RoleProfileManager
     public Role mergeRoleProfiles( String roleHint, String withRoleHint )
         throws RoleProfileException;
 
+    public boolean isInitialized();
+
+    public void setInitialized( boolean initialized );
 }

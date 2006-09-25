@@ -39,17 +39,22 @@ public class DefaultRoleProfileManager
     /**
      * @plexus.requirement
      */
-    private PlexusContainer container;
+    protected PlexusContainer container;
 
     /**
      * @plexus.requirement role="org.codehaus.plexus.rbac.profile.RoleProfile"
      */
-    List knownRoleProfiles;
+    protected List knownRoleProfiles;
 
     /**
      * @plexus.requirement role="org.codehaus.plexus.rbac.profile.DynamicRoleProfile"
      */
-    List knownDynamicRoleProfiles;
+    protected List knownDynamicRoleProfiles;
+
+    /**
+     * true of this role profile manager has been initialized
+     */
+    protected boolean initialized = false;
 
     /**
      *
@@ -102,6 +107,12 @@ public class DefaultRoleProfileManager
         }
     }
 
+    public void initialize()
+        throws RoleProfileException
+    {
+        initialized = true;
+    }
+
     public List getKnownRoleProfiles()
     {
         return knownRoleProfiles;
@@ -110,5 +121,15 @@ public class DefaultRoleProfileManager
     public List getKnownDynamicRoleProfiles()
     {
         return knownDynamicRoleProfiles;
+    }
+
+    public boolean isInitialized()
+    {
+        return initialized;
+    }
+
+    public void setInitialized( boolean initialized )
+    {
+        this.initialized = initialized;
     }
 }
