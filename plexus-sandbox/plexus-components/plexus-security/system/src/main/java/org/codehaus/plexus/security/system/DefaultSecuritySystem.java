@@ -73,6 +73,17 @@ public class DefaultSecuritySystem
      * @plexus.requirement
      */
     private UserSecurityPolicy policy;
+    
+    /**
+     * @plexus.requirement
+     */
+    private ApplicationDetails applicationDetails;
+    
+    /**
+     * @plexus.requirement
+     */
+    private EmailSettings emailSettings;
+    
 
     // ----------------------------------------------------------------------------
     // Authentication: delegate to the authnManager
@@ -97,7 +108,7 @@ public class DefaultSecuritySystem
      * @throws AccountLockedException 
      */
     public SecuritySession authenticate( AuthenticationDataSource source )
-    throws AuthenticationException, UserNotFoundException, AccountLockedException, MustChangePasswordException
+    throws AuthenticationException, UserNotFoundException, AccountLockedException
     {
         // Perform Authentication.
         AuthenticationResult result = authnManager.authenticate( source );
@@ -113,6 +124,7 @@ public class DefaultSecuritySystem
                 getLogger().debug( "User '" + result.getPrincipal() + "' exists." );
                 User user = userManager.findUser( result.getPrincipal() );
                 getLogger().debug( "User: " + user );
+                
                 return new DefaultSecuritySession( result, user );
             }
             else
@@ -129,7 +141,7 @@ public class DefaultSecuritySystem
     }
     
     public boolean isAuthenticated( AuthenticationDataSource source )
-        throws AuthenticationException, UserNotFoundException, AccountLockedException, MustChangePasswordException
+        throws AuthenticationException, UserNotFoundException, AccountLockedException
     {
         return authenticate( source ).getAuthenticationResult().isAuthenticated();
     }
@@ -231,5 +243,15 @@ public class DefaultSecuritySystem
             return "<null>";
         }
         return policy.getId();
+    }
+
+    public ApplicationDetails getApplicationDetails()
+    {
+        return applicationDetails;
+    }
+
+    public EmailSettings getEmailSettings()
+    {
+        return emailSettings;
     }
 }

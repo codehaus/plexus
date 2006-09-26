@@ -41,18 +41,18 @@ public class DefaultUserValidationSettings
     private int emailValidationTimeout;
 
     /**
-     * @plexus.configuration default-value="http://localhost/"
+     * @plexus.configuration default-value="/security/login!login.action"
      */
-    private String emailValidationUrl;
-
+    private String emailLoginPath;
+    
+    /**
+     * @plexus.configuration default-value="Unconfigured Subject Line"
+     */
+    private String emailSubject;
+    
     public boolean isEmailValidationRequired()
     {
         return emailValidationRequired;
-    }
-
-    public void setEmailValidationRequired( boolean emailValidationRequired )
-    {
-        this.emailValidationRequired = emailValidationRequired;
     }
 
     public int getEmailValidationTimeout()
@@ -60,18 +60,13 @@ public class DefaultUserValidationSettings
         return emailValidationTimeout;
     }
 
-    public void setEmailValidationTimeout( int emailValidationTimeout )
+    public String getEmailLoginPath()
     {
-        this.emailValidationTimeout = emailValidationTimeout;
+        return emailLoginPath;
     }
 
-    public String getEmailValidationUrl()
+    public String getEmailSubject()
     {
-        return emailValidationUrl;
-    }
-
-    public void setEmailValidationUrl( String emailValidationUrl )
-    {
-        this.emailValidationUrl = emailValidationUrl;
+        return emailSubject;
     }
 }

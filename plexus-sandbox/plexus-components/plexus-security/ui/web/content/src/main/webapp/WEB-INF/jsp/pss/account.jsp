@@ -25,13 +25,13 @@
 
 <body>
 
-<c:import url="/WEB-INF/jsp/pss/include/formValidationResults.jspf" />
+<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
 
 <h2>Account Details</h2>
    
 <ww:form action="account!submit" namespace="/security" theme="xhtml"
          id="registerForm" method="post" name="register" cssClass="security register">     
-  <c:import url="/WEB-INF/jsp/pss/include/userCredentials.jspf" />
+  <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jsp" %>
   <ww:submit type="submit" value="Submit"   name="submitButton" />
   <ww:submit type="cancel" value="Cancel"   name="cancelButton"   />
 </ww:form>

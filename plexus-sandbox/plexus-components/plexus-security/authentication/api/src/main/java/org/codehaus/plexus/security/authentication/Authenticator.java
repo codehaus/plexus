@@ -17,7 +17,6 @@ package org.codehaus.plexus.security.authentication;
  */
 
 import org.codehaus.plexus.security.policy.AccountLockedException;
-import org.codehaus.plexus.security.policy.MustChangePasswordException;
 
 /**
  * Authenticator:
@@ -34,5 +33,5 @@ public interface Authenticator
     public boolean supportsDataSource( AuthenticationDataSource source );
 
     public AuthenticationResult authenticate( AuthenticationDataSource source )
-        throws AccountLockedException, MustChangePasswordException, AuthenticationException;
+        throws AccountLockedException, AuthenticationException;
 }

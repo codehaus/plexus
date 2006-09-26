@@ -23,16 +23,16 @@ This account was requested on $requestedOn
 
 Use the following URL to validate your account.
 
-$validationUrl
+$loginUrl?validateMe=$authkey
 
 This url will be valid until $expiresOn
 
-Your account will only have the most basic rights on the system.
+Once validated, your account will only have the most basic rights on the system.
 Please contact the $applicationName administrator to be assigned
 a more appropriate set of Roles and Permissions.
 
 Please keep this email for future reference.
 
-Questions/Comments? $feedbackUrl
+Questions/Comments? $feedback
 
 

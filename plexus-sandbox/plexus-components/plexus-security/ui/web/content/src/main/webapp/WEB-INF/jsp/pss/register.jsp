@@ -25,7 +25,7 @@
 
 <body>
 
-<c:import url="/WEB-INF/jsp/pss/include/formValidationResults.jspf" />
+<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
 
 <h2>Register for an Account</h2>
    

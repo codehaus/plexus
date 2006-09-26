@@ -17,7 +17,13 @@ package org.codehaus.plexus.security.ui.web.action;
  */
 
 import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDataSource;
+import org.codehaus.plexus.security.authentication.TokenBasedAuthenticationDataSource;
+import org.codehaus.plexus.security.keys.AuthenticationKey;
+import org.codehaus.plexus.security.keys.KeyManagerException;
+import org.codehaus.plexus.security.keys.KeyNotFoundException;
 import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -49,6 +55,8 @@ public class LoginAction
     private String password;
     
     private boolean cancelButton;
+    
+    private String validateMe;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
@@ -66,6 +74,12 @@ public class LoginAction
             return LOGIN_CANCEL;
         }
         
+        if ( StringUtils.isNotEmpty( validateMe ))
+        {
+            // Process a login / validate request.
+            return validated();
+        }
+        
         if ( StringUtils.isEmpty(username)  )
         {
             addFieldError( "username", "Username cannot be empty." );
@@ -77,6 +91,50 @@ public class LoginAction
         authdatasource.setPassword( password );
         
         return webLogin( securitySystem, authdatasource );
+    }
+    
+    public String validated()
+    {
+        if ( StringUtils.isEmpty( validateMe ) )
+        {
+            addActionError( "Validation failure key missing." );
+            return ERROR;
+        }
+
+        try
+        {
+            AuthenticationKey authkey = securitySystem.getKeyManager().findKey( validateMe );
+
+            User user = securitySystem.getUserManager().findUser( authkey.getForPrincipal() );
+            
+            user.setValidated( true );
+            user.setLocked( false );
+            user.setPasswordChangeRequired( true );
+            user.setEncodedPassword( "" );
+            
+            TokenBasedAuthenticationDataSource authsource = new TokenBasedAuthenticationDataSource( );
+            authsource.setPrincipal( user.getPrincipal().toString() );
+            authsource.setToken( authkey.getKey() );
+            
+            securitySystem.getUserManager().updateUser( user );
+            
+            return webLogin( securitySystem, authsource );
+        }
+        catch ( KeyNotFoundException e )
+        {
+            addActionError( "Unable to find the key." );
+            return ERROR;
+        }
+        catch ( KeyManagerException e )
+        {
+            addActionError( "Unable to process key at this time.  Please try again later." );
+            return ERROR;
+        }
+        catch ( UserNotFoundException e )
+        {
+            addActionError( "Unable to find user." );
+            return ERROR;
+        }
     }
 
     public String getUsername()
@@ -107,5 +165,15 @@ public class LoginAction
     public void setCancelButton( boolean cancelButton )
     {
         this.cancelButton = cancelButton;
+    }
+
+    public String getValidateMe()
+    {
+        return validateMe;
+    }
+
+    public void setValidateMe( String validateMe )
+    {
+        this.validateMe = validateMe;
     }
 }

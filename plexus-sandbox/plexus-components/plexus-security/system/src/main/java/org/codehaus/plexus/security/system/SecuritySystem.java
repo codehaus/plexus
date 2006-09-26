@@ -43,10 +43,10 @@ public interface SecuritySystem
     // ----------------------------------------------------------------------------
 
     public SecuritySession authenticate( AuthenticationDataSource source )
-        throws AuthenticationException, UserNotFoundException, AccountLockedException, MustChangePasswordException;
+        throws AuthenticationException, UserNotFoundException, AccountLockedException;
 
     public boolean isAuthenticated( AuthenticationDataSource source )
-        throws AuthenticationException, UserNotFoundException, AccountLockedException, MustChangePasswordException;
+        throws AuthenticationException, UserNotFoundException, AccountLockedException;
 
     public String getAuthenticatorId();
 
@@ -88,5 +88,12 @@ public interface SecuritySystem
     
     public UserSecurityPolicy getPolicy();
     String getPolicyId();
+
+    // ----------------------------------------------------------------------------
+    // Configuration and Settings
+    // ----------------------------------------------------------------------------
+    
+    public ApplicationDetails getApplicationDetails();
+    public EmailSettings getEmailSettings();
 }
 

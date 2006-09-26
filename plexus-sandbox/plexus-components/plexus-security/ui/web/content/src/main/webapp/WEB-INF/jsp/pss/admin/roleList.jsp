@@ -26,11 +26,11 @@
 
 <body>
 
-<c:import url="/WEB-INF/jsp/pss/include/rbacListNavigation.jspf" />
+<%@ include file="/WEB-INF/jsp/pss/include/rbacListNavigation.jsp" %>
 
 <h2> [Admin] Role List </h2>
 
-<c:import url="/WEB-INF/jsp/pss/include/formValidationResults.jspf" />
+<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
 
 <ww:form action="roles!remove" method="post" theme="simple">
 

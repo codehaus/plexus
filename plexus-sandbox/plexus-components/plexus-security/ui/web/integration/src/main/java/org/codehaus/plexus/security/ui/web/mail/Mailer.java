@@ -23,6 +23,11 @@ import org.codehaus.plexus.mailsender.MailMessage;
 import org.codehaus.plexus.mailsender.MailSender;
 import org.codehaus.plexus.mailsender.MailSenderException;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
+import org.codehaus.plexus.security.policy.UserSecurityPolicy;
+import org.codehaus.plexus.security.policy.UserValidationSettings;
+import org.codehaus.plexus.security.system.ApplicationDetails;
+import org.codehaus.plexus.security.system.EmailSettings;
+import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.velocity.VelocityComponent;
 
@@ -52,53 +57,38 @@ public class Mailer
     private MailSender mailSender;
 
     /**
-     * @plexus.configuration
+     * @plexus.requirement
      */
-    private String fromMailbox;
-
-    /**
-     * @plexus.configuration default-value="security@unconfigured.com"
-     */
-    private String fromName;
-
-    /**
-     * @plexus.configuration default-value="EEE, d MMM yyyy HH:mm:ss Z"
-     */
-    private String timestampFormat;
-
-    /**
-     * @plexus.configuration default-value="Welcome to Our System"
-     */
-    private String validationSubjectLine;
-
-    /**
-     * @plexus.configuration default-value="Our System"
-     */
-    private String applicationName;
-
-    /**
-     * @plexus.configuration default-value="/security/validate.action?key="
-     */
-    private String validationUrl;
-
-    /**
-     * @plexus.configuration default-value="/feedback.html"
-     */
-    private String feedbackUrl;
-
-    public void sendAccountValidationEmail( Collection recipients, AuthenticationKey authkey, String urlHost )
+    private SecuritySystem securitySystem;
+    
+    public void sendAccountValidationEmail( Collection recipients, AuthenticationKey authkey )
     {
         VelocityContext context = new VelocityContext();
+        ApplicationDetails appdetails = securitySystem.getApplicationDetails();
+        UserSecurityPolicy policy = securitySystem.getPolicy();
+        UserValidationSettings validation = policy.getUserValidationSettings();
+        EmailSettings email = securitySystem.getEmailSettings();
 
-        context.put( "applicationName", applicationName );
+        context.put( "applicationName", appdetails.getApplicationName() );
 
-        context.put( "validationUrl", urlHost + validationUrl );
+        String loginUrl = appdetails.getApplicationUrl() + validation.getEmailLoginPath();
+        
+        context.put( "loginUrl", loginUrl );
 
-        context.put( "fedbackUrl", urlHost + feedbackUrl );
+        String feedback = email.getFeedback();
+        
+        if(feedback.startsWith( "/" ))
+        {
+            feedback = appdetails.getApplicationUrl() + feedback;
+        }
+        
+        context.put( "feedback", feedback );
 
         context.put( "authkey", authkey.getKey() );
+        
+        context.put( "accountId", authkey.getForPrincipal() );
 
-        SimpleDateFormat dateformatter = new SimpleDateFormat( timestampFormat );
+        SimpleDateFormat dateformatter = new SimpleDateFormat( appdetails.getTimestampFormat() );
 
         context.put( "requestedOn", dateformatter.format( authkey.getDateCreated() ) );
 
@@ -111,7 +101,7 @@ public class Mailer
             context.put( "expiresOn", "(does not expire)" );
         }
 
-        sendVelocityEmail( "newAccountValidationEmail", context, recipients, validationSubjectLine );
+        sendVelocityEmail( "newAccountValidationEmail", context, recipients, validation.getEmailSubject() );
     }
 
     public void sendVelocityEmail( String templateName, VelocityContext context, Collection recipients, String subject )
@@ -141,15 +131,17 @@ public class Mailer
 
     public void sendMessage( Collection recipients, String subject, String content )
     {
+        EmailSettings email = securitySystem.getEmailSettings();
+        
         if ( recipients.isEmpty() )
         {
-            getLogger().warn( "No mail recipients for email. subject [" + subject + "]" );
+            getLogger().warn( "Mail Not Sent - No mail recipients for email. subject [" + subject + "]" );
             return;
         }
 
-        if ( StringUtils.isEmpty( fromMailbox ) )
+        if ( StringUtils.isEmpty( email.getFromAddress() ) )
         {
-            getLogger().warn( "No from address for email. subject [" + subject + "]" );
+            getLogger().warn( "Mail Not Sent - No from address for email. subject [" + subject + "]" );
             return;
         }
 
@@ -162,7 +154,7 @@ public class Mailer
             message.setSubject( subject );
             message.setContent( content );
 
-            MailMessage.Address from = new MailMessage.Address( fromMailbox, fromName );
+            MailMessage.Address from = new MailMessage.Address( email.getFromAddress(), email.getFromUsername() );
 
             message.setFrom( from );
 

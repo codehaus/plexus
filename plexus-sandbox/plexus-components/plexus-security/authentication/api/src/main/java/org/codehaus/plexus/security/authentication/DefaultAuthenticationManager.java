@@ -16,11 +16,12 @@ package org.codehaus.plexus.security.authentication;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.policy.MustChangePasswordException;
 
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -39,6 +40,7 @@ import java.util.Iterator;
  *   role-hint="default"
  */
 public class DefaultAuthenticationManager
+    extends AbstractLogEnabled
     implements AuthenticationManager
 {
     /**
@@ -48,11 +50,12 @@ public class DefaultAuthenticationManager
 
     public String getId()
     {
-        return this.getClass().getName() + "\n" + knownAuthenticators();
+        return "Default Authentication Manager - " + this.getClass().getName() + " : managed authenticators - "
+            + knownAuthenticators();
     }
 
     public AuthenticationResult authenticate( AuthenticationDataSource source )
-        throws AccountLockedException, MustChangePasswordException, AuthenticationException
+        throws AccountLockedException, AuthenticationException
     {
         if ( authenticators == null || authenticators.size() == 0 )
         {
@@ -74,9 +77,9 @@ public class DefaultAuthenticationManager
             }
         }
 
-        return( new AuthenticationResult( false, null, new AuthenticationException("authentication failed on authenticators: " + knownAuthenticators() ) ) );
+        return ( new AuthenticationResult( false, null, new AuthenticationException( "authentication failed on authenticators: "
+                                                                                         + knownAuthenticators() ) ) );
     }
-
 
     public List getAuthenticators()
     {
@@ -87,14 +90,12 @@ public class DefaultAuthenticationManager
     {
         StringBuffer strbuf = new StringBuffer();
 
-        strbuf.append("[");
-        for( Iterator i = authenticators.iterator(); i.hasNext(); )
+        Iterator it = authenticators.iterator();
+        while ( it.hasNext() )
         {
-            Authenticator authenticator = (Authenticator) i.next();
-
-            strbuf.append( authenticator.getClass().getName() );
+            Authenticator authn = (Authenticator) it.next();
+            strbuf.append( "(" ).append( authn.getId() ).append( ") " );
         }
-        strbuf.append("]");
 
         return strbuf.toString();
     }

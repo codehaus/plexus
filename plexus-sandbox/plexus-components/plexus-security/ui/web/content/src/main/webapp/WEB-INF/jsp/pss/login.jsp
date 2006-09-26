@@ -27,7 +27,7 @@
 
 <h2>Login</h2>
 
-<c:import url="/WEB-INF/jsp/pss/include/formValidationResults.jspf" />
+<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
 
 <ww:form action="login!login" namespace="/security" theme="xhtml" 
          id="loginForm" method="post" name="login" cssClass="security login">
