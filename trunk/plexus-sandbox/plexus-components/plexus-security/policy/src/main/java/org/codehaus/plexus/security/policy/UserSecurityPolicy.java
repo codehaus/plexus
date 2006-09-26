@@ -30,6 +30,12 @@ import java.util.List;
 public interface UserSecurityPolicy
 {
     public static final String ROLE = UserSecurityPolicy.class.getName();
+    
+    /**
+     * Get identifying string for the User Security Policy implementation.
+     * @return the id for the security policy implementation.
+     */
+    public String getId();
 
     // ----------------------------------------------------------------------
     // Password Management

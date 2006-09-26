@@ -152,4 +152,9 @@ public class JdoKeyManager
         return pm;
     }
 
+    public String getId()
+    {
+        return "JDO Key Manager";
+    }
+
 }

@@ -20,8 +20,10 @@ import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.authorization.AuthorizationResult;
+import org.codehaus.plexus.security.keys.KeyManager;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.policy.MustChangePasswordException;
+import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 
@@ -72,6 +74,19 @@ public interface SecuritySystem
 
     public UserManager getUserManager();
     String getUserManagementId();
+    
+    // ----------------------------------------------------------------------------
+    // Key Management
+    // ----------------------------------------------------------------------------
+    
+    public KeyManager getKeyManager();
+    String getKeyManagementId();
 
+    // ----------------------------------------------------------------------------
+    // Policy Management
+    // ----------------------------------------------------------------------------
+    
+    public UserSecurityPolicy getPolicy();
+    String getPolicyId();
 }
 

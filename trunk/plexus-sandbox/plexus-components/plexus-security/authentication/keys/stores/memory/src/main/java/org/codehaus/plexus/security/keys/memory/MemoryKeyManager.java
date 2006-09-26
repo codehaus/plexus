@@ -97,4 +97,9 @@ public class MemoryKeyManager
             keys.remove( authkey );
         }
     }
+
+    public String getId()
+    {
+        return "Memory Key Manager";
+    }
 }
