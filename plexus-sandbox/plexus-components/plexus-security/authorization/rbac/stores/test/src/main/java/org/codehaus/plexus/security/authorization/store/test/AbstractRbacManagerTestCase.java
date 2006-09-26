@@ -514,6 +514,7 @@ public class AbstractRbacManagerTestCase
         assertEquals( 1, manager.getAllUserAssignments().size() );
         assertEquals( 2, manager.getAllRoles().size() );
         assertEquals( 2, bob.getRoleNames().size() );
+        assertEquals( 0, manager.getUnassignedRoles( bob.getPrincipal() ).size() );
 
         List roles = bob.getRoleNames();
         assertEquals( 2, roles.size() );
@@ -525,6 +526,7 @@ public class AbstractRbacManagerTestCase
         bob = manager.saveUserAssignment( bob );
         assertEquals( "Should only have 1 role under bob now.", 1, bob.getRoleNames().size() );
         assertEquals( "Should have 2 total roles still.", 2, manager.getAllRoles().size() );
+        assertEquals( "Should have 1 assignable role", 1, manager.getUnassignedRoles( bob.getPrincipal() ).size() );
 
         // Fetch bob again. see if role is missing.
         UserAssignment cousin = manager.getUserAssignment( username );
@@ -532,6 +534,12 @@ public class AbstractRbacManagerTestCase
 
         assertEquals( "Should only have 1 role under bob now.", 1, cousin.getRoleNames().size() );
         assertEquals( "Should have 2 total roles still.", 2, manager.getAllRoles().size() );
+
+        // remove the last role
+        roles.remove( developerRole.getName() );
+        bob.setRoleNames( roles );
+        bob = manager.saveUserAssignment( bob );        
+        assertEquals( "Should have 2 assignable roles.", 2, manager.getUnassignedRoles( bob.getPrincipal() ).size() );
         
         /* Assert some event tracker stuff */
         assertNotNull( eventTracker );
