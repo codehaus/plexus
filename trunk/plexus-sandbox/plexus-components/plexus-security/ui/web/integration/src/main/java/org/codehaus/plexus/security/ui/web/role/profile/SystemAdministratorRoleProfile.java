@@ -48,4 +48,10 @@ public class SystemAdministratorRoleProfile
     {
         return Collections.singletonList( RoleConstants.USER_ADMINISTRATOR_ROLE );
     }
+
+
+    public boolean isAssignable()
+    {
+        return true;
+    }
 }

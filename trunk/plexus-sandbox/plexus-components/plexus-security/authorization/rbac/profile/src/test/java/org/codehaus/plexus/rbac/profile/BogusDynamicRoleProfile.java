@@ -40,4 +40,10 @@ public class BogusDynamicRoleProfile
     {
         return Collections.singletonList( "BOGUS-OPERATION" );
     }
+
+
+    public boolean isAssignable()
+    {
+        return true;
+    }
 }
