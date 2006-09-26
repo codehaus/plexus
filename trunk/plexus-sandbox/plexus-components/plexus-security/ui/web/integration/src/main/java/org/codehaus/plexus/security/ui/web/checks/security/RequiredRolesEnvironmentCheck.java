@@ -4,6 +4,7 @@ import org.codehaus.plexus.security.system.check.EnvironmentCheck;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.rbac.profile.RoleProfileException;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.util.List;
 /*
@@ -27,44 +28,53 @@ import java.util.List;
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- *
- * @plexus.component
- *   role="org.codehaus.plexus.security.system.check.EnvironmentCheck"
- *   role-hint="required-roles"
+ * @plexus.component role="org.codehaus.plexus.security.system.check.EnvironmentCheck"
+ * role-hint="required-roles"
  */
 public class RequiredRolesEnvironmentCheck
+    extends AbstractLogEnabled
     implements EnvironmentCheck
 {
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint=default
      */
     private RoleProfileManager roleProfileManager;
 
     /**
-     *
+     * boolean detailing if this environment check has been executed
+     */
+    private boolean checked = false;
+
+    /**
      * @param violations
      */
     public void validateEnvironment( List violations )
     {
-        // we require the User Administrator role to exist
-       try
-       {
-           Role userAdmin = roleProfileManager.getRole( "user-administrator-role" );
-       }
-       catch ( RoleProfileException e )
-       {
-           violations.add("unable to validate user-administrator-role" );
-       }
+        if ( !checked )
+        {
+            getLogger().info( "Checking the existance of required roles." );
+            // we require the User Administrator role to exist
+            try
+            {
+                Role userAdmin = roleProfileManager.getRole( "user-administrator" );
+            }
+            catch ( RoleProfileException e )
+            {
+                violations.add( "unable to validate user-administrator role" );
+            }
 
-       // userAdmin will be a child for sysAdmin so make sure we do that one first
-       try
-       {
-           Role sysAdmin = roleProfileManager.getRole( "system-administrator-role" );
-       }
-       catch ( RoleProfileException e )
-       {
-           violations.add("unable to validate system-administrator-role" );
-       }
+            // userAdmin will be a child for sysAdmin so make sure we do that one first
+            try
+            {
+                Role sysAdmin = roleProfileManager.getRole( "system-administrator" );
+            }
+            catch ( RoleProfileException e )
+            {
+                violations.add( "unable to validate system-administrator role" );
+            }
+
+            checked = true;
+        }
     }
 }

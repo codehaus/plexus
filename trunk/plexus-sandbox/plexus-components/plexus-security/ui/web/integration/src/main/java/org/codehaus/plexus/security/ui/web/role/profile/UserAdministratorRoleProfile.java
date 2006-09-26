@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @plexus.component
  *   role="org.codehaus.plexus.rbac.profile.RoleProfile"
- *   role-hint="user-management-role"
+ *   role-hint="user-administrator"
  */
 public class UserAdministratorRoleProfile
     extends AbstractRoleProfile

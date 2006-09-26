@@ -16,6 +16,7 @@
 
 <%@ taglib prefix="ww" uri="/webwork"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="/plexusSecuritySystem" prefix="pss" %>
 
 <html>
 <head>
@@ -58,10 +59,12 @@
 </table>
 
 <div class="buttonbar">
-  <ww:form action="usercreate!show" namespace="/security" theme="xhtml"
-           id="buttonBar" method="post" name="buttonbar" cssClass="security buttonbar">
-    <ww:submit value="Create User" />
-  </ww:form>
+  <pss:ifAuthorized permission="user-management-create-user">
+    <ww:form action="usercreate!show" namespace="/security" theme="xhtml"
+             id="buttonBar" method="post" name="buttonbar" cssClass="security buttonbar">
+      <ww:submit value="Create User"/>
+    </ww:form>
+  </pss:ifAuthorized>
 </div>
 
 
