@@ -21,9 +21,7 @@ import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
-import org.codehaus.plexus.security.system.SecuritySystemConstants;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
  * AbstractAuthenticationAction 
@@ -31,26 +29,14 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class AbstractAuthenticationAction
-    extends PlexusActionSupport
+public abstract class AbstractAuthenticationAction
+    extends AbstractSecurityAction
 {
     static final String LOGIN_SUCCESS = "security-login-success";
     static final String LOGIN_CANCEL = "security-login-cancel";
     static final String PASSWORD_CHANGE = "must-change-password";
     static final String ACCOUNT_LOCKED = "security-login-locked";
-    protected static final String REQUIRES_AUTHENTICATION = "requires-authentication";
     
-    protected void setAuthTokens( SecuritySession securitySession )
-    {
-        session.put( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
-        this.setSession( session );
-    }
-    
-    protected SecuritySession getSecuritySession()
-    {
-        return (SecuritySession) session.get( SecuritySystemConstants.SECURITY_SESSION_KEY );
-    }
-
     protected String webLogin( SecuritySystem securitySystem, AuthenticationDataSource authdatasource )
     {
         // An attempt should log out your authentication tokens first!

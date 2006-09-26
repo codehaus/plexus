@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.model.EditUserCredentials;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
@@ -186,5 +188,13 @@ public class AccountAction
     public void setCancelButton( boolean cancelButton )
     {
         this.cancelButton = cancelButton;
+    }
+
+    public SecureActionBundle initSecureActionBundle()
+        throws SecureActionException
+    {
+        SecureActionBundle bundle = new SecureActionBundle();
+        bundle.setRequiresAuthentication( true );
+        return null;
     }
 }

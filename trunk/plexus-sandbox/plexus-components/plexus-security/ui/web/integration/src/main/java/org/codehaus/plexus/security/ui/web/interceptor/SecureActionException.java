@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.rbac.web.interceptor;
+package org.codehaus.plexus.security.ui.web.interceptor;
 /*
  * Copyright 2005 The Codehaus.
  *

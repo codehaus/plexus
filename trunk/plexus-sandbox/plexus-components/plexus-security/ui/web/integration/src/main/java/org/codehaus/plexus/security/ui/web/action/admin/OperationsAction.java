@@ -1,27 +1,30 @@
-package org.codehaus.plexus.security.authorization.rbac.web.action.admin;
+package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
-* Copyright 2005 The Apache Software Foundation.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright 2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 import com.opensymphony.xwork.Preparable;
 
-import org.codehaus.plexus.security.authorization.rbac.web.action.RbacActionException;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.security.rbac.Resource;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 import java.util.ArrayList;
@@ -31,7 +34,7 @@ import java.util.List;
  * OperationsAction:
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
- * @version $Id:$
+ * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
  *                   role-hint="pss-operations"
  */
@@ -40,14 +43,14 @@ public class OperationsAction
     implements Preparable
 {
     private static final String LIST = "list";
-    
+
     /**
      * @plexus.requirement
      */
     private RBACManager manager;
 
     private String operationName;
-    
+
     private String description;
 
     private List allOperations;
@@ -55,21 +58,20 @@ public class OperationsAction
     public void prepare()
         throws Exception
     {
-        if(allOperations == null)
+        if ( allOperations == null )
         {
             allOperations = new ArrayList();
         }
     }
-    
+
     public String list()
     {
         allOperations = manager.getAllOperations();
-        
+
         return LIST;
     }
 
     public String save()
-        throws RbacActionException
     {
         Operation temp = manager.createOperation( operationName );
 
@@ -80,7 +82,6 @@ public class OperationsAction
     }
 
     public String remove()
-        throws RbacActionException
     {
         try
         {
@@ -88,7 +89,8 @@ public class OperationsAction
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            throw new RbacActionException( "unable to locate operation to remove " + operationName, ne );
+            addActionError( "Unable to remove operation '" + operationName + "'" );
+            return ERROR;
         }
         return LIST;
     }
@@ -123,4 +125,12 @@ public class OperationsAction
         this.operationName = operationName;
     }
 
+    public SecureActionBundle initSecureActionBundle()
+        throws SecureActionException
+    {
+        SecureActionBundle bundle = new SecureActionBundle();
+        bundle.setRequiresAuthentication( true );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_RBAC_ADMIN_OPERATION, Resource.GLOBAL );
+        return bundle;
+    }
 }

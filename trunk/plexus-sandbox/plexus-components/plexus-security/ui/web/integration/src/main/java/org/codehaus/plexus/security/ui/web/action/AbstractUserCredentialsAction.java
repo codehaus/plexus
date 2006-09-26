@@ -23,7 +23,6 @@ import org.codehaus.plexus.security.ui.web.model.UserCredentials;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 import java.util.Iterator;
 
@@ -34,7 +33,7 @@ import java.util.Iterator;
  * @version $Id$
  */
 public abstract class AbstractUserCredentialsAction
-    extends PlexusActionSupport
+    extends AbstractSecurityAction
 {
     // ------------------------------------------------------------------
     // Plexus Component Requirements

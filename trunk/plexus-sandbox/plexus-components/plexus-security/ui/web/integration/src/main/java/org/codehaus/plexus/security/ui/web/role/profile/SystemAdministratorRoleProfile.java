@@ -1,9 +1,5 @@
 package org.codehaus.plexus.security.ui.web.role.profile;
 
-import org.codehaus.plexus.rbac.profile.AbstractRoleProfile;
-
-import java.util.List;
-import java.util.Collections;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -19,6 +15,12 @@ import java.util.Collections;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import org.codehaus.plexus.rbac.profile.AbstractRoleProfile;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
 
 /**
  * SystemAdministratorRoleProfile:
@@ -40,9 +42,12 @@ public class SystemAdministratorRoleProfile
 
     public List getOperations()
     {
-        return Collections.EMPTY_LIST;
+        List operations = new ArrayList();
+        operations.add( RoleConstants.CONFIGURATION_EDIT_OPERATION );
+        operations.add( RoleConstants.USER_MANAGEMENT_RBAC_ADMIN_OPERATION );
+        
+        return operations;
     }
-
 
     public List getChildRoles()
     {
