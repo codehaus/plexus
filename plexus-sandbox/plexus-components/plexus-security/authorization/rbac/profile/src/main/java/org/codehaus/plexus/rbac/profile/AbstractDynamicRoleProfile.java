@@ -104,6 +104,11 @@ public abstract class AbstractDynamicRoleProfile
                     role.addChildRoleName( (String) i.next() );
                 }
             }
+
+            if ( isAssignable() )
+            {
+                role.setAssignable( true );
+            }
         }
         catch ( RbacObjectNotFoundException ne )
         {

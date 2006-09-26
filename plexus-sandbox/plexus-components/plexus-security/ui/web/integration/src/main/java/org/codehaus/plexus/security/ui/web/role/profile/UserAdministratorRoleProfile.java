@@ -51,4 +51,9 @@ public class UserAdministratorRoleProfile
         return operations;
     }
 
+
+    public boolean isAssignable()
+    {
+        return true;
+    }
 }

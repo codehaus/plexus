@@ -56,6 +56,12 @@ public interface RoleProfile
     public List getChildRoles();
 
     /**
+     * is this role profile assignable
+     * @return
+     */
+    public boolean isAssignable();
+
+    /**
      * return the role, either for the rbacManager should the role exist already, or
      * go through the motions to create it
      */

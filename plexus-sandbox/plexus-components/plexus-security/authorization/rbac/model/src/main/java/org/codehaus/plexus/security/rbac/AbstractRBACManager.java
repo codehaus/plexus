@@ -436,6 +436,9 @@ public abstract class AbstractRBACManager
         Collection assignedRoles = getAssignedRoles( principal );
         List allRoles = getAllAssignableRoles();
 
+        getLogger().info("UR: assigned " + assignedRoles.size() );
+        getLogger().info("UR: available " + allRoles.size() );
+
         return CollectionUtils.subtract( allRoles, assignedRoles );
     }
 
