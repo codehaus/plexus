@@ -1,9 +1,7 @@
-package org.codehaus.plexus.security.authorization.rbac.web.interceptor;
+package org.codehaus.plexus.security.ui.web.interceptor;
 
-import java.util.List;
-import java.util.ArrayList;
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +16,9 @@ import java.util.ArrayList;
  * limitations under the License.
  */
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * SecureActionBundle:
  *
@@ -26,11 +27,20 @@ import java.util.ArrayList;
  */
 public class SecureActionBundle
 {
-    private boolean requiresAuthentication;
+    private boolean requiresAuthentication = false;
 
     private List authorizationTuples = new ArrayList();
-
-
+    
+    public static final SecureActionBundle OPEN;
+    public static final SecureActionBundle AUTHONLY;
+    
+    static
+    {
+        OPEN = new SecureActionBundle();
+        AUTHONLY = new SecureActionBundle();
+        AUTHONLY.setRequiresAuthentication( true );
+    }
+    
     public void addRequiredAuthorization( String operation, String resource )
         throws SecureActionException
     {
@@ -43,7 +53,6 @@ public class SecureActionBundle
             throw new SecureActionException( "operation and resource are required to be non-null" );
         }
     }
-
 
     public List getAuthorizationTuples()
     {
@@ -59,7 +68,6 @@ public class SecureActionBundle
     {
         this.requiresAuthentication = requiresAuthentication;
     }
-
 
     public static class AuthorizationTuple
     {

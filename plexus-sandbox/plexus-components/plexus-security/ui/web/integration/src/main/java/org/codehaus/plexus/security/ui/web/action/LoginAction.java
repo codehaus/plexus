@@ -22,6 +22,8 @@ import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.keys.KeyManagerException;
 import org.codehaus.plexus.security.keys.KeyNotFoundException;
 import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
@@ -175,5 +177,11 @@ public class LoginAction
     public void setValidateMe( String validateMe )
     {
         this.validateMe = validateMe;
+    }
+
+    public SecureActionBundle initSecureActionBundle()
+        throws SecureActionException
+    {
+        return SecureActionBundle.OPEN;
     }
 }

@@ -1,4 +1,5 @@
 package org.codehaus.plexus.security.ui.web.role.profile;
+
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -28,11 +29,19 @@ public class RoleConstants
     public static final String USER_ADMINISTRATOR_ROLE = "User Administrator";
     public static final String GUEST_ROLE = "Guest";
 
-    // operations
-    public static final String USER_MANAGEMENT_REGISTER_OPERATION = "user-management-register";
-    public static final String USER_MANAGEMENT_EDIT_USER_OPERATION = "user-management-edit-user";
-    public static final String USER_MANAGEMENT_CREATE_USER_OPERATION = "user-management-create-user";
-    public static final String USER_MANAGEMENT_GRANT_ROLE_OPERATION = "user-management-grant-role";
-    public static final String USER_MANAGEMENT_REMOVE_ROLE_OPERATION = "user-management-remove-role";
+    // operations against configuration
+    public static final String CONFIGURATION_EDIT_OPERATION = "configuration-edit";
 
+    // operations against user
+    public static final String USER_MANAGEMENT_USER_CREATE_OPERATION = "user-management-user-create";
+    public static final String USER_MANAGEMENT_USER_EDIT_OPERATION = "user-management-user-edit";
+    public static final String USER_MANAGEMENT_USER_DELETE_OPERATION = "user-management-user-delete";
+    public static final String USER_MANAGEMENT_USER_LIST_OPERATION = "user-management-user-list";
+    
+    // operations against user assignment.
+    public static final String USER_MANAGEMENT_ROLE_GRANT_OPERATION = "user-management-role-grant";
+    public static final String USER_MANAGEMENT_ROLE_DROP_OPERATION = "user-management-role-drop";
+    
+    // operations against rbac objects.
+    public static final String USER_MANAGEMENT_RBAC_ADMIN_OPERATION = "user-management-rbac-admin";
 }

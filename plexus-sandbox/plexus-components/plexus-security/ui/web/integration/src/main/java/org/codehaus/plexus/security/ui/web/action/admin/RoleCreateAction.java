@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.rbac.web.action.admin;
+package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
  * Copyright 2001-2006 The Codehaus.
@@ -16,13 +16,17 @@ package org.codehaus.plexus.security.authorization.rbac.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.authorization.rbac.web.model.SimplePermission;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.RbacStoreException;
+import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+import org.codehaus.plexus.security.ui.web.model.SimplePermission;
+import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,7 +43,7 @@ import java.util.List;
  *                   instantiation-strategy="per-lookup"
  */
 public class RoleCreateAction
-    extends PlexusActionSupport
+    extends AbstractSecurityAction
 {
     // ------------------------------------------------------------------
     // Plexus Component Requirements
@@ -202,4 +206,14 @@ public class RoleCreateAction
     {
         this.submitMode = submitMode;
     }
+    
+    public SecureActionBundle initSecureActionBundle()
+        throws SecureActionException
+    {
+        SecureActionBundle bundle = new SecureActionBundle();
+        bundle.setRequiresAuthentication( true );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_RBAC_ADMIN_OPERATION, Resource.GLOBAL );
+        return bundle;
+    }
+
 }

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.rbac.web.action.admin;
+package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -19,14 +19,18 @@ package org.codehaus.plexus.security.authorization.rbac.web.action.admin;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.RbacStoreException;
+import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
+import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * AssignmentsAction
@@ -38,7 +42,7 @@ import java.util.Iterator;
  * instantiation-strategy="per-lookup"
  */
 public class AssignmentsAction
-    extends PlexusActionSupport
+    extends AbstractSecurityAction
 {
     // ------------------------------------------------------------------
     // Plexus Component Requirements
@@ -289,5 +293,17 @@ public class AssignmentsAction
     public void setRemoveSelectedRoles( List removeSelectedRoles )
     {
         this.removeSelectedRoles = removeSelectedRoles;
+    }
+
+    public SecureActionBundle initSecureActionBundle()
+        throws SecureActionException
+    {
+        SecureActionBundle bundle = new SecureActionBundle();
+        bundle.setRequiresAuthentication( true );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_USER_EDIT_OPERATION, Resource.GLOBAL );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_RBAC_ADMIN_OPERATION, Resource.GLOBAL );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_ROLE_GRANT_OPERATION, Resource.GLOBAL );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_ROLE_DROP_OPERATION, Resource.GLOBAL );
+        return bundle;
     }
 }

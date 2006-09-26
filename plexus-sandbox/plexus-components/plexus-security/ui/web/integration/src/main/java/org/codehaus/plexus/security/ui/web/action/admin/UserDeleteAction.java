@@ -16,10 +16,14 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.rbac.Resource;
+import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
  * UserDeleteAction 
@@ -32,7 +36,7 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  *                   instantiation-strategy="per-lookup"
  */
 public class UserDeleteAction
-    extends PlexusActionSupport
+    extends AbstractSecurityAction
 {
     // ------------------------------------------------------------------
     // Plexus Component Requirements
@@ -102,6 +106,15 @@ public class UserDeleteAction
     public void setUsername( String username )
     {
         this.username = username;
+    }
+
+    public SecureActionBundle initSecureActionBundle()
+        throws SecureActionException
+    {
+        SecureActionBundle bundle = new SecureActionBundle();
+        bundle.setRequiresAuthentication( true );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_USER_DELETE_OPERATION, Resource.GLOBAL );
+        return bundle;
     }
 
 }

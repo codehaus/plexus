@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.rbac.web.model;
+package org.codehaus.plexus.security.ui.web.model;
 
 /*
  * Copyright 2001-2006 The Codehaus.

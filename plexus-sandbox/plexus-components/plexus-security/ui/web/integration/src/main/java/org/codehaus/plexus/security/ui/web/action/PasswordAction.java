@@ -5,6 +5,8 @@ import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
@@ -212,5 +214,13 @@ public class PasswordAction
     public void setProvideExisting( boolean provideExisting )
     {
         // Do nothing.
+    }
+
+    public SecureActionBundle initSecureActionBundle()
+        throws SecureActionException
+    {
+        SecureActionBundle bundle = new SecureActionBundle();
+        bundle.setRequiresAuthentication( true );
+        return bundle;
     }
 }

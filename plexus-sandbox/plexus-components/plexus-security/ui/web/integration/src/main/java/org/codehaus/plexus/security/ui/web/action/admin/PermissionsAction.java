@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.rbac.web.action.admin;
+package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -22,6 +22,9 @@ import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.RbacStoreException;
 import org.codehaus.plexus.security.rbac.Resource;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
@@ -41,7 +44,7 @@ public class PermissionsAction
     extends PlexusActionSupport
 {
     private static final String LIST = "list";
-    
+
     // ------------------------------------------------------------------
     // Plexus Component Requirements
     // ------------------------------------------------------------------
@@ -64,17 +67,17 @@ public class PermissionsAction
     private String operationDescription;
 
     private String resourceIdentifier;
-    
+
     private List allPermissions;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
-    
+
     public String list()
     {
         allPermissions = manager.getAllPermissions();
-        
+
         return LIST;
     }
 
@@ -94,7 +97,7 @@ public class PermissionsAction
 
         if ( !manager.permissionExists( name ) )
         {
-            // Means that the role name doesn't exist.
+            // Means that the permission name doesn't exist.
             // We should exit early and not attempt to look up the permission information.
             return LIST;
         }
@@ -256,4 +259,12 @@ public class PermissionsAction
         this.allPermissions = allPermissions;
     }
 
+    public SecureActionBundle initSecureActionBundle()
+        throws SecureActionException
+    {
+        SecureActionBundle bundle = new SecureActionBundle();
+        bundle.setRequiresAuthentication( true );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_RBAC_ADMIN_OPERATION, Resource.GLOBAL );
+        return bundle;
+    }
 }

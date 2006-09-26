@@ -1,9 +1,5 @@
 package org.codehaus.plexus.security.ui.web.role.profile;
 
-import org.codehaus.plexus.rbac.profile.AbstractRoleProfile;
-
-import java.util.ArrayList;
-import java.util.List;
 /*
  * Copyright 2006 The Codehaus.
  *
@@ -19,6 +15,11 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import org.codehaus.plexus.rbac.profile.AbstractRoleProfile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * UserAdministratorRoleProfile:
@@ -42,11 +43,12 @@ public class UserAdministratorRoleProfile
     public List getOperations()
     {
         List operations = new ArrayList();
-        operations.add( RoleConstants.USER_MANAGEMENT_REGISTER_OPERATION );
-        operations.add( RoleConstants.USER_MANAGEMENT_CREATE_USER_OPERATION );
-        operations.add( RoleConstants.USER_MANAGEMENT_EDIT_USER_OPERATION );
-        operations.add( RoleConstants.USER_MANAGEMENT_GRANT_ROLE_OPERATION );
-        operations.add( RoleConstants.USER_MANAGEMENT_REMOVE_ROLE_OPERATION );
+        operations.add( RoleConstants.USER_MANAGEMENT_ROLE_DROP_OPERATION );
+        operations.add( RoleConstants.USER_MANAGEMENT_ROLE_GRANT_OPERATION );
+        operations.add( RoleConstants.USER_MANAGEMENT_USER_CREATE_OPERATION );
+        operations.add( RoleConstants.USER_MANAGEMENT_USER_DELETE_OPERATION );
+        operations.add( RoleConstants.USER_MANAGEMENT_USER_EDIT_OPERATION );
+        operations.add( RoleConstants.USER_MANAGEMENT_USER_LIST_OPERATION );
 
         return operations;
     }

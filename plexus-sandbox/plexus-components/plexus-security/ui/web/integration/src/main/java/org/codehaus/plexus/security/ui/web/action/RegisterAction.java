@@ -19,6 +19,8 @@ package org.codehaus.plexus.security.ui.web.action;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.keys.KeyManagerException;
 import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.mail.Mailer;
 import org.codehaus.plexus.security.ui.web.model.CreateUserCredentials;
 import org.codehaus.plexus.security.user.User;
@@ -198,5 +200,11 @@ public class RegisterAction
     public void setEmailValidationRequired( boolean emailValidationRequired )
     {
         this.emailValidationRequired = emailValidationRequired;
+    }
+
+    public SecureActionBundle initSecureActionBundle()
+        throws SecureActionException
+    {
+        return SecureActionBundle.OPEN;
     }
 }
