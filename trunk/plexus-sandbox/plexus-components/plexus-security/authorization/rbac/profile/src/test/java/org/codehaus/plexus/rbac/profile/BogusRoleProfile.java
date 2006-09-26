@@ -41,4 +41,10 @@ public class BogusRoleProfile
     {
         return Collections.singletonList( "bogus-operation" );
     }
+
+
+    public boolean isAssignable()
+    {
+        return true;
+    }
 }

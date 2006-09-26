@@ -54,4 +54,10 @@ public class MoreBogusDynamicRoleProfile
     {
         return Collections.singletonList( "BOGUS ROLE" + RoleProfileConstants.DELIMITER + resource );
     }
+
+
+    public boolean isAssignable()
+    {
+        return true;
+    }
 }

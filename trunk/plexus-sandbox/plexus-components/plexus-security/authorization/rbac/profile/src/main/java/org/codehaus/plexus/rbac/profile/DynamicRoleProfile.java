@@ -40,6 +40,12 @@ public interface DynamicRoleProfile
 
     public List getOperations();
 
+     /**
+     * is this role profile assignable
+     * @return
+     */
+    public boolean isAssignable();
+
     public List getChildRoles();
 
     public List getDynamicChildRoles( String resource );
