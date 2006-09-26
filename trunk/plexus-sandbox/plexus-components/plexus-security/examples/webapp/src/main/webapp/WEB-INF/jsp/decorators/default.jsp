@@ -17,7 +17,6 @@
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 <%@ taglib uri="/webwork" prefix="ww" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="my" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="pss" uri="plexusSecuritySystem" %>
 <html>
 <head>

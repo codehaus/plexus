@@ -55,7 +55,7 @@
               <ww:url id="roleUrl" action="role-edit">
                 <ww:param name="roleName" value="${role.name}" />
               </ww:url>
-              <ww:a href=""></ww:a>
+              <ww:a href="%{roleUrl}">${role.name}</ww:a>
             </td>
             <td>
               <c:out value="${role.description}" />
