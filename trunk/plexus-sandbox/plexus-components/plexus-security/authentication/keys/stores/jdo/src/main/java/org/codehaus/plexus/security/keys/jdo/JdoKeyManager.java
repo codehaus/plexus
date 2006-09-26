@@ -154,7 +154,7 @@ public class JdoKeyManager
 
     public String getId()
     {
-        return "JDO Key Manager";
+        return "JDO Key Manager - " + this.getClass().getName();
     }
 
 }

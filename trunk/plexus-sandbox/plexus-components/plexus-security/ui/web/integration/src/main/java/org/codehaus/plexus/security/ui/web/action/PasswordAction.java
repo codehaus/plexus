@@ -3,12 +3,10 @@ package org.codehaus.plexus.security.ui.web.action;
 import org.codehaus.plexus.security.policy.PasswordEncoder;
 import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
-import org.codehaus.plexus.security.policy.UserSecurityPolicy;
-import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
-import org.codehaus.plexus.security.system.SecuritySystemConstants;
+import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.Iterator;
@@ -49,12 +47,7 @@ public class PasswordAction
     /**
      * @plexus.requirement
      */
-    private UserManager manager;
-    
-    /**
-     * @plexus.requirement
-     */
-    private UserSecurityPolicy securityPolicy;
+    protected SecuritySystem securitySystem;
     
     // ------------------------------------------------------------------
     // Action Parameters
@@ -65,11 +58,8 @@ public class PasswordAction
     private String newPassword;
 
     private String newPasswordConfirm;
-
-    /**
-     * @plexus.requirement
-     */
-    protected SecuritySystem securitySystem;
+    
+    private boolean provideExisting;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
@@ -77,12 +67,32 @@ public class PasswordAction
     
     public String show()
     {
+        SecuritySession session = getSecuritySession();
+        
+        if ( ( session == null ) || ( session.getUser() == null ) || ( session.isAuthenticated() == false ) )
+        {
+            addActionError( "Change Password only available to authenticated users." );
+            return REQUIRES_AUTHENTICATION;
+        }
+        
+        provideExisting = StringUtils.isNotEmpty( session.getUser().getEncodedPassword() );
+        
         return INPUT;
     }
     
     public String submit()
     {
-        if ( StringUtils.isEmpty( existingPassword ) )
+        SecuritySession session = getSecuritySession();
+        
+        if ( ( session == null ) || ( session.getUser() == null ) || ( session.isAuthenticated() == false ) )
+        {
+            addActionError( "Change Password only available to authenticated users." );
+            return REQUIRES_AUTHENTICATION;
+        }
+        
+        provideExisting = StringUtils.isNotEmpty( session.getUser().getEncodedPassword() );
+        
+        if ( provideExisting && StringUtils.isEmpty( existingPassword ) )
         {
             addFieldError( "existingPassword", "Existing Password cannot be empty." );
         }
@@ -95,15 +105,14 @@ public class PasswordAction
         if ( StringUtils.equals( newPassword, newPasswordConfirm ) )
         {
             addFieldError( "existingPassword", "Password confirmation failed.  Passwords do not match." );
-            newPassword = "";
-            newPasswordConfirm = "";
         }
+
+        User user = session.getUser();
         
-        User user;
+        // Validate the Password.
         try
         {
-            user = getSessionUser();
-            securityPolicy.validatePassword( user );
+            securitySystem.getPolicy().validatePassword( user );
         }
         catch ( PasswordRuleViolationException e )
         {
@@ -118,42 +127,49 @@ public class PasswordAction
                     addFieldError( "password", violation );
                 }
             }
-            return ERROR;
         }
 
-        if ( hasActionErrors() || hasFieldErrors() )
-        {
-            return ERROR;
-        }
+        // Test existing Password.
+        PasswordEncoder encoder = securitySystem.getPolicy().getPasswordEncoder();
         
-        PasswordEncoder encoder = securityPolicy.getPasswordEncoder();
-
-        String encodedPassword = encoder.encodePassword( existingPassword ); 
-        
-        if ( encoder.isPasswordValid( user.getEncodedPassword(), encodedPassword ) )
+        if( provideExisting )
         {
-            // We can save the new password.
-            try
+            String encodedPassword = encoder.encodePassword( existingPassword ); 
+            
+            if ( encoder.isPasswordValid( user.getEncodedPassword(), encodedPassword ) )
             {
-                manager.updateUser( user );
-            }
-            catch ( UserNotFoundException e )
-            {
-                addActionError( "Unable to update user '" + user.getUsername() + "' not found." );
-                addActionError( "Likely occurs because an Administrator deleted your account." );
-                
-                return ERROR;
+                addFieldError( "existingPassword", "Password does not match existing." );
             }
         }
         
-        return SUCCESS;
+        // Toss error (if any exists)
+        if ( hasActionErrors() || hasFieldErrors() || hasActionMessages() )
+        {
+            newPassword = "";
+            newPasswordConfirm = "";
+            existingPassword = "";
+            return ERROR;
+        }
+
+        // We can save the new password.
+        try
+        {
+            String encodedPassword = encoder.encodePassword( newPassword );
+            user.setEncodedPassword( encodedPassword );
+            securitySystem.getUserManager().updateUser( user );
+        }
+        catch ( UserNotFoundException e )
+        {
+            addActionError( "Unable to update user '" + user.getUsername() + "' not found." );
+            addActionError( "Likely occurs because an Administrator deleted your account." );
+            
+            return ERROR;
+        }
+        
+        getLogger().info( "Password Change Request Success." );
+        return LOGIN_SUCCESS;
     }
     
-    private User getSessionUser()
-    {
-        return (User) session.get( SecuritySystemConstants.USER_KEY );
-    }
-
     // ------------------------------------------------------------------
     // Parameter Accessor Methods
     // ------------------------------------------------------------------
@@ -186,5 +202,15 @@ public class PasswordAction
     public void setNewPasswordConfirm( String newPasswordConfirm )
     {
         this.newPasswordConfirm = newPasswordConfirm;
+    }
+
+    public boolean isProvideExisting()
+    {
+        return provideExisting;
+    }
+
+    public void setProvideExisting( boolean provideExisting )
+    {
+        // Do nothing.
     }
 }

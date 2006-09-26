@@ -19,7 +19,6 @@ package org.codehaus.plexus.security.ui.web.action;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.policy.AccountLockedException;
-import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.system.SecuritySystemConstants;
@@ -39,11 +38,17 @@ public class AbstractAuthenticationAction
     static final String LOGIN_CANCEL = "security-login-cancel";
     static final String PASSWORD_CHANGE = "must-change-password";
     static final String ACCOUNT_LOCKED = "security-login-locked";
+    protected static final String REQUIRES_AUTHENTICATION = "requires-authentication";
     
     protected void setAuthTokens( SecuritySession securitySession )
     {
         session.put( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
         this.setSession( session );
+    }
+    
+    protected SecuritySession getSecuritySession()
+    {
+        return (SecuritySession) session.get( SecuritySystemConstants.SECURITY_SESSION_KEY );
     }
 
     protected String webLogin( SecuritySystem securitySystem, AuthenticationDataSource authdatasource )
@@ -61,6 +66,12 @@ public class AbstractAuthenticationAction
             {
                 // Success!  Create tokens.
                 setAuthTokens( securitySession );
+                
+                if( securitySession.getUser().isPasswordChangeRequired() )
+                {
+                    return PASSWORD_CHANGE;
+                }
+                
                 return LOGIN_SUCCESS;
             }
             else
@@ -86,11 +97,6 @@ public class AbstractAuthenticationAction
         {
             addActionError( "Your Account is Locked." );
             return ACCOUNT_LOCKED;
-        }
-        catch ( MustChangePasswordException e )
-        {
-            addActionError( "You must change your password." );
-            return PASSWORD_CHANGE;
         }
     }
 }

@@ -40,7 +40,7 @@ public class OpenAuthenticator
 {
 
     public AuthenticationResult authenticate( AuthenticationDataSource s )
-        throws AccountLockedException, MustChangePasswordException, AuthenticationException
+        throws AccountLockedException, AuthenticationException
     {
         PasswordBasedAuthenticationDataSource source = (PasswordBasedAuthenticationDataSource) s;
         return new AuthenticationResult( true, source.getPrincipal(), null );

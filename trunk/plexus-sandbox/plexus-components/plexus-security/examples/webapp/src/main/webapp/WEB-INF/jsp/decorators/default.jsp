@@ -48,7 +48,7 @@
   </div>
 
   <div class="xleft">
-    <c:import url="/WEB-INF/jsp/pss/include/securityLinks.jspf" />
+    <%@ include file="/WEB-INF/jsp/pss/include/securityLinks.jsp" %>
   </div>
   
   <div class="clear">

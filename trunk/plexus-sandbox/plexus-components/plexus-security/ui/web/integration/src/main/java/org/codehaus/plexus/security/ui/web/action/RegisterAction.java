@@ -17,8 +17,8 @@ package org.codehaus.plexus.security.ui.web.action;
  */
 
 import org.codehaus.plexus.security.keys.AuthenticationKey;
-import org.codehaus.plexus.security.keys.KeyManager;
 import org.codehaus.plexus.security.keys.KeyManagerException;
+import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.ui.web.mail.Mailer;
 import org.codehaus.plexus.security.ui.web.model.CreateUserCredentials;
 import org.codehaus.plexus.security.user.User;
@@ -57,7 +57,7 @@ public class RegisterAction
     /**
      * @plexus.requirement
      */
-    private KeyManager keyManager;
+    private SecuritySystem securitySystem;
 
     private boolean cancelButton;
 
@@ -133,7 +133,7 @@ public class RegisterAction
 
             try
             {
-                AuthenticationKey authkey = keyManager.createKey( u.getPrincipal().toString(),
+                AuthenticationKey authkey = securitySystem.getKeyManager().createKey( u.getPrincipal().toString(),
                                                                   "New User Email Validation", securityPolicy
                                                                       .getUserValidationSettings()
                                                                       .getEmailValidationTimeout() );
@@ -141,7 +141,7 @@ public class RegisterAction
                 List recipients = new ArrayList();
                 recipients.add( u.getEmail() );
 
-                mailer.sendAccountValidationEmail( recipients, authkey, securityPolicy.getUserValidationSettings().getEmailValidationUrl() );
+                mailer.sendAccountValidationEmail( recipients, authkey );
                 
                 securityPolicy.setEnabled( false );
                 manager.addUser( u );

@@ -16,17 +16,20 @@ package org.codehaus.plexus.security.authentication.keystore;
 * limitations under the License.
 */
 
-import org.codehaus.plexus.security.authentication.Authenticator;
-import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.security.authentication.Authenticator;
 import org.codehaus.plexus.security.authentication.TokenBasedAuthenticationDataSource;
-import org.codehaus.plexus.security.policy.AccountLockedException;
-import org.codehaus.plexus.security.policy.MustChangePasswordException;
-import org.codehaus.plexus.security.keys.KeyManager;
-import org.codehaus.plexus.security.keys.KeyNotFoundException;
-import org.codehaus.plexus.security.keys.KeyManagerException;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
+import org.codehaus.plexus.security.keys.KeyManager;
+import org.codehaus.plexus.security.keys.KeyManagerException;
+import org.codehaus.plexus.security.keys.KeyNotFoundException;
+import org.codehaus.plexus.security.policy.AccountLockedException;
+import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.UserNotFoundException;
 
 /**
  * KeyStoreAuthenticator:
@@ -39,12 +42,18 @@ import org.codehaus.plexus.security.keys.AuthenticationKey;
  *   role-hint="keystore"
  */
 public class KeyStoreAuthenticator
+    extends AbstractLogEnabled
     implements Authenticator
 {
     /**
      * @plexus.requirement
      */
     private KeyManager keystore;
+    
+    /**
+     * @plexus.requirement
+     */
+    private UserManager userManager;
 
     public String getId()
     {
@@ -52,7 +61,7 @@ public class KeyStoreAuthenticator
     }
 
     public AuthenticationResult authenticate( AuthenticationDataSource source )
-        throws AccountLockedException, MustChangePasswordException, AuthenticationException
+        throws AccountLockedException, AuthenticationException
     {
         TokenBasedAuthenticationDataSource dataSource = (TokenBasedAuthenticationDataSource) source;
 
@@ -64,6 +73,13 @@ public class KeyStoreAuthenticator
             // if we find a key (exception was probably thrown if not) then we should be authentic
             if ( authKey != null )
             {
+                User user = userManager.findUser( dataSource.getPrincipal() );
+                
+                if (user.isLocked())
+                {
+                    throw new AccountLockedException( "Account " + source.getPrincipal() + " is locked.", user );
+                }
+                
                 return new AuthenticationResult( true, dataSource.getPrincipal(), null );
             }
             else
@@ -78,6 +94,11 @@ public class KeyStoreAuthenticator
         catch ( KeyManagerException ke )
         {
             throw new AuthenticationException( "underlaying keymanager issue", ke );
+        }
+        catch ( UserNotFoundException e )
+        {
+            getLogger().warn( "Login for user " + source.getPrincipal() + " failed. user not found." );
+            return new AuthenticationResult( false, null, e );
         }
     }
 

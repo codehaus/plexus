@@ -27,32 +27,11 @@ public interface UserValidationSettings
     public static final String ROLE = UserValidationSettings.class.getName();
     
     /**
-     * Get the email validation url
-     * 
-     * @return the email validation url 
-     */
-    public String getEmailValidationUrl();
-    
-    /**
-     * Set the email validation url
-     * 
-     * @param url the email validation url.
-     */
-    public void setEmailValidationUrl(String url);
-    
-    /**
      * Get the flag indicating if a new users require email validation or not.
      * 
      * @return
      */
     public boolean isEmailValidationRequired();
-    
-    /**
-     * Sets the flag indicating if new users require email validation or not.
-     * 
-     * @param required
-     */
-    public void setEmailValidationRequired( boolean required );
     
     /**
      * Gets the number of minutes until the email validation message key
@@ -63,10 +42,16 @@ public interface UserValidationSettings
     public int getEmailValidationTimeout();
     
     /**
-     * Sets the number of minutes until the email validation message key
-     * should expire.
+     * Get the login path to submit the validation email to.
      * 
-     * @param minutes number of minutes until the key for the email validation expires.
+     * @return the login path to submit the validation email to.
      */
-    public void setEmailValidationTimeout(int minutes);
+    public String getEmailLoginPath();
+    
+    /**
+     * Get the subject line for the validation email.
+     * 
+     * @return the subject line for the validation email.
+     */
+    public String getEmailSubject();
 }
