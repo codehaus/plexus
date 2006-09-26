@@ -16,8 +16,12 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.action.AbstractUserCredentialsAction;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.model.CreateUserCredentials;
+import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.security.user.User;
 
 /**
@@ -110,4 +114,14 @@ public class UserCreateAction
     {
         this.user = user;
     }
+    
+    public SecureActionBundle initSecureActionBundle()
+        throws SecureActionException
+    {
+        SecureActionBundle bundle = new SecureActionBundle();
+        bundle.setRequiresAuthentication( true );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_USER_CREATE_OPERATION, Resource.GLOBAL );
+        return bundle;
+    }
+
 }

@@ -18,6 +18,9 @@ package org.codehaus.plexus.security.ui.web.action;
 
 import com.opensymphony.webwork.dispatcher.SessionMap;
 
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+
 /**
  * LogoutAction 
  *
@@ -44,5 +47,11 @@ public class LogoutAction
         }
 
         return LOGOUT;
+    }
+
+    public SecureActionBundle initSecureActionBundle()
+        throws SecureActionException
+    {
+        return SecureActionBundle.OPEN;
     }
 }

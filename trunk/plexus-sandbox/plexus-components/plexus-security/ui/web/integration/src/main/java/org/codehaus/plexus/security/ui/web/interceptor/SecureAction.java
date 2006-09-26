@@ -1,6 +1,7 @@
-package org.codehaus.plexus.security.authorization.rbac.web.action;
+package org.codehaus.plexus.security.ui.web.interceptor;
+
 /*
- * Copyright 2005 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +17,19 @@ package org.codehaus.plexus.security.authorization.rbac.web.action;
  */
 
 /**
- * RbacActionException:
+ * SecureAction
  *
- * @author Jesse McConnell <jmcconnell@apache.org>
- * @version $Id:$
+ * @author Jesse McConnell <jesse@codehaus.org>
+ * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
+ * @version $Id: SecureAction.java 4035 2006-09-14 12:59:40Z joakime $
  */
-public class RbacActionException
-    extends Exception
+public interface SecureAction
 {
-    public RbacActionException( Throwable throwable )
-    {
-        super( throwable );
-    }
+    /**
+     * get an authorization bundle to process for authn and authz
+     *
+     */
+    public SecureActionBundle getSecureActionBundle()
+         throws SecureActionException;
 
-    public RbacActionException( String string )
-    {
-        super( string );
-    }
-
-    public RbacActionException( String string, Throwable throwable )
-    {
-        super( string, throwable );
-    }
 }

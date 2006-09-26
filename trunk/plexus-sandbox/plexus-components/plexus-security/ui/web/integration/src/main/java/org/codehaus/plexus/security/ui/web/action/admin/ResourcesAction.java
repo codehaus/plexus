@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.rbac.web.action.admin;
+package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
  * Copyright 2001-2006 The Codehaus.
@@ -18,11 +18,13 @@ package org.codehaus.plexus.security.authorization.rbac.web.action.admin;
 
 import com.opensymphony.xwork.Preparable;
 
-import org.codehaus.plexus.security.authorization.rbac.web.action.RbacActionException;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.Resource;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +33,12 @@ import java.util.List;
  * OperationsAction:
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
- * @version $Id:$
+ * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
  *                   role-hint="pss-resources"
  */
 public class ResourcesAction
-    extends PlexusActionSupport
+    extends AbstractSecurityAction
     implements Preparable
 {
     private static final String LIST = "list";
@@ -74,7 +76,6 @@ public class ResourcesAction
     }
 
     public String save()
-        throws RbacActionException
     {
         // todo figure out if there is anyway to actually have this model driven action work with jdo objects
         Resource temp = manager.createResource( resourceIdentifier );
@@ -88,7 +89,6 @@ public class ResourcesAction
     }
 
     public String remove()
-        throws RbacActionException
     {
         try
         {
@@ -96,7 +96,8 @@ public class ResourcesAction
         }
         catch ( RbacObjectNotFoundException ne )
         {
-            throw new RbacActionException( "unable to locate resource to remove " + resourceIdentifier, ne );
+            addActionError( "unable to locate resource to remove " + resourceIdentifier );
+            return ERROR;
         }
         return LIST;
     }
@@ -129,5 +130,14 @@ public class ResourcesAction
     public void setPattern( boolean isPattern )
     {
         this.isPattern = isPattern;
+    }
+    
+    public SecureActionBundle initSecureActionBundle()
+        throws SecureActionException
+    {
+        SecureActionBundle bundle = new SecureActionBundle();
+        bundle.setRequiresAuthentication( true );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_RBAC_ADMIN_OPERATION, Resource.GLOBAL );
+        return bundle;
     }
 }

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.rbac.web.interceptor;
+package org.codehaus.plexus.security.ui.web.interceptor;
 
 /*
  * Copyright 2001-2006 The Codehaus.
@@ -82,15 +82,29 @@ public class SecureActionInterceptor
             {
                 SecureAction secureAction = (SecureAction) action;
                 SecureActionBundle bundle = secureAction.getSecureActionBundle();
-
+                
+                if ( bundle == null )
+                {
+                    getLogger().info( "Null bundle detected." );
+                    
+                    return invocation.invoke();
+                }
+                
+                if ( bundle == SecureActionBundle.OPEN )
+                {
+                    getLogger().info( "Bundle.OPEN detected." );
+                    
+                    return invocation.invoke();
+                }
+                
                 SecuritySession session = (SecuritySession) context.getSession().get( SecuritySystemConstants.SECURITY_SESSION_KEY );
 
                 // check the authentication requirements
                 if ( bundle.requiresAuthentication() )
                 {
-                    if ( session == null || !session.getAuthenticationResult().isAuthenticated() )
+                    if ( session == null || !session.isAuthenticated() )
                     {
-                        getLogger().debug( "not authenticated, need to authentication for this action" );
+                        getLogger().info( "not authenticated, need to authentication for this action" );
 
                         return REQUIRES_AUTHENTICATION;
                     }
@@ -105,7 +119,7 @@ public class SecureActionInterceptor
                     // authz, even if it is just a guest user
                     if ( session == null )
                     {
-                        getLogger().debug( "session required for authorization to run" );
+                        getLogger().info( "session required for authorization to run" );
                         return REQUIRES_AUTHENTICATION;
                     }
 
@@ -117,7 +131,7 @@ public class SecureActionInterceptor
 
                         if ( authzResult.isAuthorized() )
                         {
-                            getLogger().debug( session.getUser().getPrincipal() + " is authorized for action " +
+                            getLogger().info( session.getUser().getPrincipal() + " is authorized for action " +
                                 secureAction.getClass().getName() + " by " + tuple.toString() );
                             return invocation.invoke();
                         }
@@ -129,11 +143,11 @@ public class SecureActionInterceptor
         }
         catch ( SecureActionException se )
         {
-            getLogger().debug( "can't generate the SecureActionBundle, deny access: " + se.getMessage() );
+            getLogger().info( "can't generate the SecureActionBundle, deny access: " + se.getMessage() );
             return REQUIRES_AUTHENTICATION;
         }
 
-        getLogger().debug( "not a secure action " + action.getClass().getName() );
+        getLogger().info( "not a secure action " + action.getClass().getName() );
         return invocation.invoke();
     }
 }

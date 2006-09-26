@@ -16,7 +16,11 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+import org.codehaus.plexus.security.rbac.Resource;
+import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 
 /**
  * AdminConsoleAction 
@@ -29,10 +33,26 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  *                   instantiation-strategy="per-lookup"
  */
 public class AdminConsoleAction
-    extends PlexusActionSupport
+    extends AbstractSecurityAction
 {
     public String show()
     {
         return INPUT;
+    }
+    
+    public SecureActionBundle initSecureActionBundle()
+        throws SecureActionException
+    {
+        SecureActionBundle bundle = new SecureActionBundle();
+        bundle.setRequiresAuthentication( true );
+        bundle.addRequiredAuthorization( RoleConstants.CONFIGURATION_EDIT_OPERATION, Resource.GLOBAL );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_RBAC_ADMIN_OPERATION, Resource.GLOBAL );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_ROLE_DROP_OPERATION, Resource.GLOBAL );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_ROLE_GRANT_OPERATION, Resource.GLOBAL );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_USER_CREATE_OPERATION, Resource.GLOBAL );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_USER_DELETE_OPERATION, Resource.GLOBAL );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_USER_EDIT_OPERATION, Resource.GLOBAL );
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_USER_LIST_OPERATION, Resource.GLOBAL );
+        return bundle;
     }
 }
