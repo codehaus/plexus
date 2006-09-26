@@ -71,6 +71,7 @@
     <action name="register" class="pss-register" method="show">
       <result name="input">/WEB-INF/jsp/pss/register.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/register.jsp</result>
+      <result name="validation-note">/WEB-INF/jsp/pss/validationNotification.jsp</result>
       <result name="security-register-success" type="security-external">
         <param name="externalResult">security-register-success</param>
       </result>
