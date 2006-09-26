@@ -25,6 +25,12 @@ package org.codehaus.plexus.security.keys;
 public interface KeyManager
 {
     public static final String ROLE = KeyManager.class.getName();
+    
+    /**
+     * String identifying the key manager implementation.
+     * @return the key manager implementation id.
+     */
+    public String getId();
 
     /**
      * Attempt to find a specific key in the store.

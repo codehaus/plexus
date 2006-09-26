@@ -25,8 +25,10 @@ import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
 import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.authorization.AuthorizationResult;
 import org.codehaus.plexus.security.authorization.Authorizer;
+import org.codehaus.plexus.security.keys.KeyManager;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.policy.MustChangePasswordException;
+import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
@@ -61,6 +63,16 @@ public class DefaultSecuritySystem
      * @plexus.requirement
      */
     private UserManager userManager;
+    
+    /**
+     * @plexus.requirement
+     */
+    private KeyManager keyManager;
+    
+    /**
+     * @plexus.requirement
+     */
+    private UserSecurityPolicy policy;
 
     // ----------------------------------------------------------------------------
     // Authentication: delegate to the authnManager
@@ -191,5 +203,33 @@ public class DefaultSecuritySystem
             return "<null>";
         }
         return userManager.getId();
+    }
+
+    public KeyManager getKeyManager()
+    {
+        return keyManager;
+    }
+
+    public String getKeyManagementId()
+    {
+        if ( keyManager == null )
+        {
+            return "<null>";
+        }
+        return keyManager.getId();
+    }
+
+    public UserSecurityPolicy getPolicy()
+    {
+        return policy;
+    }
+
+    public String getPolicyId()
+    {
+        if ( policy == null )
+        {
+            return "<null>";
+        }
+        return policy.getId();
     }
 }

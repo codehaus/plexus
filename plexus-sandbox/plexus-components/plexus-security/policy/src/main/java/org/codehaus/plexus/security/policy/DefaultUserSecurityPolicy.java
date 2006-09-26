@@ -36,10 +36,11 @@ import java.util.List;
 /**
  * User Security Policy. 
  * 
- * @plexus.component role="org.codehaus.plexus.security.policy.UserSecurityPolicy"
- * 
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * 
+ * @plexus.component role="org.codehaus.plexus.security.policy.UserSecurityPolicy"
+ *                   role-hint="default"
  */
 public class DefaultUserSecurityPolicy
     implements UserSecurityPolicy, Initializable, Contextualizable
@@ -77,6 +78,11 @@ public class DefaultUserSecurityPolicy
      * @plexus.requirement role="org.codehaus.plexus.security.policy.PasswordRule"
      */
     private List rules = new ArrayList();
+    
+    public String getId()
+    {
+        return "Default User Security Policy";
+    }
 
     public int getPreviousPasswordsCount()
     {
