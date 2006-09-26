@@ -148,11 +148,13 @@ public class RBACObjectAssertions
             throw new RbacObjectInvalidException( scope, "UserAssignment.roles cannot be null." );
         }
 
+        /*  I don't believe this assertion is valid, a person should be able to be stripped of all roles.
+           -- jesse
         if ( assignment.getRoleNames().isEmpty() )
         {
             throw new RbacObjectInvalidException( scope, "UserAssignment.roles cannot be empty." );
         }
-
+          */
         int i = 0;
         Iterator it = assignment.getRoleNames().iterator();
         while ( it.hasNext() )

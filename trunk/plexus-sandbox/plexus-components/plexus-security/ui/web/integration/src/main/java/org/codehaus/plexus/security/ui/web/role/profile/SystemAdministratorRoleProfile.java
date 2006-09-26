@@ -25,12 +25,14 @@ import java.util.Collections;
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
+ *
+ * @plexus.component
+ *   role="org.codehaus.plexus.rbac.profile.RoleProfile"
+ *   role-hint="system-administrator"
  */
 public class SystemAdministratorRoleProfile
     extends AbstractRoleProfile
 {
-
-
     public String getRoleName()
     {
         return RoleConstants.SYSTEM_ADMINISTRATOR_ROLE;
@@ -38,7 +40,7 @@ public class SystemAdministratorRoleProfile
 
     public List getOperations()
     {
-        return null;
+        return Collections.EMPTY_LIST;
     }
 
 

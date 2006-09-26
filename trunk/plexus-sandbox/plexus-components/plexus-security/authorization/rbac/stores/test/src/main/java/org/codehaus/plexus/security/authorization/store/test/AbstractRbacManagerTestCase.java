@@ -30,6 +30,7 @@ import org.codehaus.plexus.security.rbac.UserAssignment;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.Collections;
 
 /**
  * AbstractRbacManagerTestCase 
@@ -107,6 +108,14 @@ public class AbstractRbacManagerTestCase
         Permission perm = getRbacManager().createPermission( "EDIT_PROJECT", "EDIT", "Project:Foo" );
 
         role.addPermission( perm );
+
+        return role;
+    }
+
+    private Role getSuperDeveloperRole()
+    {
+        Role role = getRbacManager().createRole( "SUPER_DEVELOPER" );
+        role.setAssignable( true );
 
         return role;
     }
@@ -582,6 +591,46 @@ public class AbstractRbacManagerTestCase
         assertTrue( eventTracker.lastDbFreshness.booleanValue() );
         
         assertEquals( 1, eventTracker.addedRoleNames.size() );
+        assertEquals( 0, eventTracker.removedRoleNames.size() );
+        assertEquals( 1, eventTracker.addedPermissionNames.size() );
+        assertEquals( 0, eventTracker.removedPermissionNames.size() );
+    }
+
+    public void testUserAssignmentMultipleRolesWithChildRoles()
+        throws RbacStoreException, RbacObjectNotFoundException
+    {
+        RBACManager manager = getRbacManager();
+        // Setup User / Assignment with 1 role.
+        String username = "bob";
+
+        Role devRole = getDeveloperRole();
+        Role devPlusRole = getSuperDeveloperRole();
+        devPlusRole.setChildRoleNames( Collections.singletonList( devRole.getName() ) );
+        manager.saveRole( devRole );
+        manager.saveRole( devPlusRole );
+
+        UserAssignment assignment = manager.createUserAssignment( username );
+        assignment.addRoleName( devRole );
+        assignment = manager.saveUserAssignment( assignment );
+
+        assertEquals( 1, manager.getAllUserAssignments().size() );
+        assertEquals( "should be only one role assigned", 1, manager.getAssignedRoles( assignment.getPrincipal() ).size() );
+        assertEquals( "should be one role left to assign", 1, manager.getUnassignedRoles( assignment.getPrincipal() ).size() );
+        assertEquals( 2, manager.getAllRoles().size() );
+
+        // assign the same role again to the same user
+        assignment.addRoleName( devRole.getName() );
+        manager.saveUserAssignment( assignment );
+
+        // we certainly shouldn't have 2 roles here now
+        assertEquals( 1, assignment.getRoleNames().size() );
+
+        /* Assert some event tracker stuff */
+        assertNotNull( eventTracker );
+        assertEquals( 1, eventTracker.initCount );
+        assertTrue( eventTracker.lastDbFreshness.booleanValue() );
+
+        assertEquals( 2, eventTracker.addedRoleNames.size() );
         assertEquals( 0, eventTracker.removedRoleNames.size() );
         assertEquals( 1, eventTracker.addedPermissionNames.size() );
         assertEquals( 0, eventTracker.removedPermissionNames.size() );
