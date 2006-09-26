@@ -48,11 +48,21 @@ public class RolesAction
     {
         allRoles = manager.getAllRoles();
         
-        if(allRoles == null)
+        if ( allRoles == null )
         {
             allRoles = new ArrayList();
         }
         
         return LIST;
+    }
+
+    public List getAllRoles()
+    {
+        return allRoles;
+    }
+
+    public void setAllRoles( List allRoles )
+    {
+        this.allRoles = allRoles;
     }
 }
