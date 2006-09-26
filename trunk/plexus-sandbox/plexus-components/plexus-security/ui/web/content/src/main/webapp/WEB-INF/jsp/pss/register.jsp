@@ -31,9 +31,23 @@
    
 <ww:form action="register!register" namespace="/security" theme="xhtml"
          id="registerForm" method="post" name="register" cssClass="security register">     
-  <c:import url="/WEB-INF/jsp/pss/include/userCredentials.jspf" />
-  <ww:submit type="submit" value="Register" name="registerButton" />
-  <ww:submit type="cancel" value="Cancel"   name="cancelButton"   />
+  
+  <ww:textfield label="Username"         name="user.username" size="30" required="true"/>
+  <ww:textfield label="Full Name"        name="user.fullName" size="30" required="true"/>
+  <ww:textfield label="Email Address"    name="user.email" size="50"    required="true"/>
+  
+  <c:choose>
+    <c:when test="${! emailValidationRequired}">
+      <ww:password  label="Password"         name="user.password" size="20" required="true"/>
+      <ww:password  label="Confirm Password" name="user.confirmPassword" size="20" required="true"/>
+      <ww:submit type="input" value="Register" />
+    </c:when>
+    <c:otherwise>
+      <ww:submit type="input" value="Validate Me" />
+    </c:otherwise>
+  </c:choose>
+  
+  <ww:submit type="button" value="Cancel"   name="cancelButton" />
 </ww:form>
 
 </body>

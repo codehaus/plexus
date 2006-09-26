@@ -15,28 +15,29 @@
   --%>
 
 <%@ taglib prefix="ww" uri="/webwork" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
 <head>
-  <title>Registration Page</title>
+  <title>Validation Notification Page</title>
   <ww:head/>
 </head>
 
-<body onload="javascript:document.forms['login'].username.focus();">
+<body>
 
-<div id="contentArea">
-    
-  <h2>Register</h2>
+<c:import url="/WEB-INF/jsp/pss/include/formValidationResults.jspf" />
 
-  <div>
-  <hr/>
-  <ww:action name="register" namespace="/security" executeResult="true" />
-  <hr/>
-  </div>
-      
-</div>
+<h2>Validation Reminder</h2>
+
+<p>
+  A validation email has been sent to the email address you provided (${user.email})
+  Please check for the email validation link sent to you.
+</p>
+
+<p>
+  This account (${user.username}) will remain locked until it is validated.
+</p>
 
 </body>
 
 </html>
-

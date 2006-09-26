@@ -42,6 +42,8 @@ public class RegisterAction
     private static final String REGISTER_SUCCESS = "security-register-success";
 
     private static final String REGISTER_CANCEL = "security-register-cancel";
+    
+    private static final String VALIDATION_NOTE = "validation-note";
 
     // ------------------------------------------------------------------
     // Plexus Component Requirements
@@ -92,10 +94,19 @@ public class RegisterAction
             addActionError( "Invalid user credentials." );
             return ERROR;
         }
+        
+        emailValidationRequired = securityPolicy.getUserValidationSettings().isEmailValidationRequired();
 
         internalUser = user;
 
-        validateCredentialsStrict();
+        if ( securityPolicy.getUserValidationSettings().isEmailValidationRequired() )
+        {
+            validateCredentialsLoose();
+        }
+        else
+        {
+            validateCredentialsStrict();
+        }
 
         // NOTE: Do not perform Password Rules Validation Here.
 
@@ -131,15 +142,26 @@ public class RegisterAction
                 recipients.add( u.getEmail() );
 
                 mailer.sendAccountValidationEmail( recipients, authkey, securityPolicy.getUserValidationSettings().getEmailValidationUrl() );
+                
+                securityPolicy.setEnabled( false );
+                manager.addUser( u );
+                
+                return VALIDATION_NOTE;
             }
             catch ( KeyManagerException e )
             {
                 addActionError( "Unable to process new user registration request." );
                 return ERROR;
             }
+            finally
+            {
+                securityPolicy.setEnabled( true );
+            }
         }
-
-        manager.addUser( u );
+        else
+        {
+            manager.addUser( u );
+        }
 
         return REGISTER_SUCCESS;
     }

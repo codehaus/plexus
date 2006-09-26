@@ -36,6 +36,7 @@ import java.util.Iterator;
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * @plexus.component role="org.codehaus.plexus.security.ui.web.mail.Mailer"
  */
 public class Mailer
     extends AbstractLogEnabled
