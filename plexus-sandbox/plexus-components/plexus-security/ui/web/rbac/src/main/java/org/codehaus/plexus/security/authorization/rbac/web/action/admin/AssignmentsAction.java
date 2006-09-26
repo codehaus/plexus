@@ -116,19 +116,23 @@ public class AssignmentsAction
         {
             if ( manager.userAssignmentExists( principal ) )
             {
+                getLogger().info("1");
                 this.assignedRoles = new ArrayList( manager.getAssignedRoles( principal ) );
             }
             else
             {
+                getLogger().info("2");
                 this.assignedRoles = new ArrayList();
             }
 
             if ( manager.userAssignmentExists( principal ) )
             {
+                getLogger().info("3");
                 this.availableRoles = new ArrayList( manager.getUnassignedRoles( principal ) );
             }
             else
             {
+                getLogger().info("4");
                 this.availableRoles = new ArrayList( manager.getAllRoles() );
             }
         }
@@ -142,6 +146,9 @@ public class AssignmentsAction
             addActionError( e.getMessage() );
             return ERROR;
         }
+
+        getLogger().info("assigned roles:" + assignedRoles.size() ); 
+        getLogger().info("available roles: " + availableRoles.size() );
 
         return SUCCESS;
     }
