@@ -34,7 +34,7 @@
       <result name="security-account-success" type="redirect-action">main</result>
       <result name="security-account-cancel" type="redirect-action">main</result>
       
-      <result name="error">/WEB-INF/jsp/generalError.jsp</result>
+      <result name="error">/WEB-INF/jsp/pss/generalError.jsp</result>
       <result name="admin-account-needed">/WEB-INF/jsp/alert.jsp</result>
       <result name="requires-authentication">/WEB-INF/jsp/alert.jsp</result>
       <result name="requires-authorization">/WEB-INF/jsp/alert.jsp</result>
