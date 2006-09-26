@@ -51,6 +51,10 @@ public class SystemInfoAction
 
     private String userManagement;
     
+    private String keyManagement;
+    
+    private String policy;
+    
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
@@ -60,6 +64,8 @@ public class SystemInfoAction
         authentication = securitySystem.getAuthenticatorId();
         authorization = securitySystem.getAuthorizerId();
         userManagement = securitySystem.getUserManagementId();
+        keyManagement = securitySystem.getKeyManagementId();
+        policy = securitySystem.getPolicyId();
 
         return SUCCESS;
     }
@@ -81,5 +87,15 @@ public class SystemInfoAction
     public String getUserManagement()
     {
         return userManagement;
+    }
+
+    public String getKeyManagement()
+    {
+        return keyManagement;
+    }
+
+    public String getPolicy()
+    {
+        return policy;
     }
 }

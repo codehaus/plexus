@@ -2,6 +2,29 @@
   <components>
 
     <component>
+      <role>org.codehaus.plexus.security.system.ApplicationDetails</role>
+      <implementation>org.codehaus.plexus.security.system.DefaultApplicationDetails</implementation>
+      <description>DefaultApplicationDetails</description>
+      <configuration>
+        <application-name>Unconfigured Application Name</application-name>
+        <!-- Do not include the trailing '/' on the url. -->
+        <application-url>http://localhost:9090</application-url>
+        <timestamp-format>EEE, d MMM yyyy HH:mm:ss Z</timestamp-format>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.security.system.EmailSettings</role>
+      <implementation>org.codehaus.plexus.security.system.DefaultEmailSettings</implementation>
+      <description>DefaultEmailSettings</description>
+      <configuration>
+        <feedback>/feedback.action</feedback>
+        <from-address>security@unconfigured.com</from-address>
+        <from-username>Unconfigured Username</from-username>
+      </configuration>
+    </component>
+
+    <component>
       <role>org.codehaus.plexus.security.system.SecuritySystem</role>
       <implementation>org.codehaus.plexus.security.system.DefaultSecuritySystem</implementation>
       <role-hint>default</role-hint>
@@ -9,22 +32,35 @@
         <requirement>
           <role>org.codehaus.plexus.security.authentication.AuthenticationManager</role>
           <role-hint>default</role-hint>
+          <field-name>authnManager</field-name>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.security.authorization.Authorizer</role>
           <role-hint>rbac</role-hint>
+          <field-name>authorizer</field-name>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.security.user.UserManager</role>
           <role-hint>jdo</role-hint>
+          <field-name>userManager</field-name>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.security.keys.KeyManager</role>
           <role-hint>jdo</role-hint>
+          <field-name>keyManager</field-name>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.security.policy.UserSecurityPolicy</role>
           <role-hint>default</role-hint>
+          <field-name>policy</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.system.ApplicationDetails</role>
+          <field-name>applicationDetails</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.system.EmailSettings</role>
+          <field-name>emailSettings</field-name>
         </requirement>
       </requirements>
     </component>
@@ -56,6 +92,7 @@
         <maximum-characters>8</maximum-characters>
       </configuration>
     </component>
+
     <component>
       <role>org.codehaus.plexus.security.policy.PasswordRule</role>
       <role-hint>reuse</role-hint>
@@ -65,6 +102,7 @@
         <enabled>true</enabled>
       </configuration>
     </component>
+
     <component>
       <role>org.codehaus.plexus.security.policy.PasswordRule</role>
       <role-hint>numerical-count</role-hint>
@@ -75,6 +113,7 @@
         <minimum-count>1</minimum-count>
       </configuration>
     </component>
+
     <component>
       <role>org.codehaus.plexus.security.policy.PasswordRule</role>
       <role-hint>must-have</role-hint>
@@ -84,6 +123,7 @@
         <enabled>true</enabled>
       </configuration>
     </component>
+
     <component>
       <role>org.codehaus.plexus.security.policy.PasswordRule</role>
       <role-hint>alpha-count</role-hint>
@@ -94,6 +134,7 @@
         <minimum-count>1</minimum-count>
       </configuration>
     </component>
+
     <component>
       <role>org.codehaus.plexus.security.policy.UserSecurityPolicy</role>
       <role-hint>default</role-hint>
@@ -120,6 +161,7 @@
         <password-expiration-days>90</password-expiration-days>
       </configuration>
     </component>
+
     <component>
       <role>org.codehaus.plexus.security.policy.UserValidationSettings</role>
       <implementation>org.codehaus.plexus.security.policy.DefaultUserValidationSettings</implementation>
@@ -128,32 +170,8 @@
         <email-validation-required>true</email-validation-required>
         <!-- This is a timeout for the validation url (in minutes) - 2880 = 48 hours -->
         <email-validation-timeout>2880</email-validation-timeout>
-        <!-- This should only be a prefix url with no trailing slash -->
-        <email-validation-url>http://localhost:9090</email-validation-url>
-      </configuration>
-    </component>
-
-    <component>
-      <role>org.codehaus.plexus.security.ui.web.mail.Mailer</role>
-      <implementation>org.codehaus.plexus.security.ui.web.mail.Mailer</implementation>
-      <description>Mailer</description>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.velocity.VelocityComponent</role>
-          <field-name>velocity</field-name>
-        </requirement>
-        <requirement>
-          <role>org.codehaus.plexus.mailsender.MailSender</role>
-          <field-name>mailSender</field-name>
-        </requirement>
-      </requirements>
-      <configuration>
-        <from-name>security@unconfigured.com</from-name>
-        <timestamp-format>EEE, d MMM yyyy HH:mm:ss Z</timestamp-format>
-        <validation-subject-line>Welcome to The Plexus Security Example Webapp</validation-subject-line>
-        <application-name>Plexus Security Example Webapp</application-name>
-        <validation-url>/security/validate.action?key=</validation-url>
-        <feedback-url>/feedback.html</feedback-url>
+        <email-login-path>/security/login!login.action</email-login-path>
+        <email-subject>Unconfigured Subject Line</email-subject>
       </configuration>
     </component>
 

@@ -69,7 +69,6 @@ public class UserEditAction
             return ERROR;
         }
         
-        
         try
         {
             User u = manager.findUser( username );

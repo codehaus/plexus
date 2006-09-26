@@ -1,9 +1,5 @@
 package org.codehaus.plexus.security.authentication;
 
-import org.codehaus.plexus.security.policy.AccountLockedException;
-import org.codehaus.plexus.security.policy.MustChangePasswordException;
-
-import java.util.List;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -20,6 +16,10 @@ import java.util.List;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.policy.AccountLockedException;
+
+import java.util.List;
+
 /**
  * AuthenticationManager:
  *
@@ -35,5 +35,5 @@ public interface AuthenticationManager
     public List getAuthenticators();
 
     public AuthenticationResult authenticate( AuthenticationDataSource source )
-        throws AccountLockedException, MustChangePasswordException, AuthenticationException;
+        throws AccountLockedException, AuthenticationException;
 }

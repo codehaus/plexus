@@ -66,7 +66,7 @@ public class UserManagerAuthenticator
      * @see org.codehaus.plexus.security.authentication.Authenticator#authenticate(org.codehaus.plexus.security.authentication.AuthenticationDataSource)
      */
     public AuthenticationResult authenticate( AuthenticationDataSource ds )
-        throws AuthenticationException, AccountLockedException, MustChangePasswordException
+        throws AuthenticationException, AccountLockedException
     {
         boolean authenticationSuccess = false;
         String username = null;
@@ -84,11 +84,6 @@ public class UserManagerAuthenticator
                 throw new AccountLockedException( "Account " + source.getPrincipal() + " is locked.", user );
             }
             
-            if (user.isPasswordChangeRequired())
-            {
-                throw new MustChangePasswordException( "User " + source.getPrincipal() + " must change their password." );
-            }
-            
             PasswordEncoder encoder = securityPolicy.getPasswordEncoder();
             getLogger().debug( "PasswordEncoder: " + encoder.getClass().getName() );
             
@@ -97,7 +92,14 @@ public class UserManagerAuthenticator
             {
                 getLogger().debug( "User " + source.getPrincipal() + " provided a valid password" );
                 
-                securityPolicy.extensionPasswordExpiration( user );
+                try
+                {
+                    securityPolicy.extensionPasswordExpiration( user );
+                }
+                catch ( MustChangePasswordException e )
+                {
+                    user.setPasswordChangeRequired( true );
+                }
                 
                 authenticationSuccess = true;
                 user.setCountFailedLoginAttempts( 0 );

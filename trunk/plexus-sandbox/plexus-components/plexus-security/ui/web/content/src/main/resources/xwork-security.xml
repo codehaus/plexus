@@ -8,7 +8,7 @@
 
      These configurations will likely not need changing.
 
-     These configurations point to the overlaid jspf files.
+     These configurations point to the overlaid jsp files.
      ==================================================================  -->
 
 <xwork>
@@ -97,6 +97,9 @@
       <result name="security-login-success" type="security-external">
         <param name="externalResult">security-login-success</param>
       </result>
+      <result name="requires-authentication" type="security-external">
+        <param name="externalResult">requires-authentication</param>
+      </result>
     </action>
 
   <!-- ==================================================================
@@ -106,11 +109,11 @@
        ==================================================================  -->
 
     <action name="systeminfo" class="pss-sysinfo" method="show">
-      <result>/WEB-INF/jsp/security/admin/systemInformation.jspf</result>
+      <result>/WEB-INF/jsp/pss/admin/systemInformation.jsp</result>
     </action>
 
     <action name="adminConsole" class="pss-admin-console" method="show">
-      <result>/WEB-INF/jsp/security/admin/console.jspf</result>
+      <result>/WEB-INF/jsp/pss/admin/console.jsp</result>
     </action>
 
     <action name="userlist" class="pss-admin-user-list" method="show">
@@ -138,10 +141,12 @@
 
     <!-- ==== RBAC Actions ========================================== -->
 
+    <!-- This action is meant to be embedded within the User Edit action output jsp.
+         It is injected using the <ww:action> taglib -->
     <action name="assignments" class="pss-assignments" method="show">
-      <result name="input">/WEB-INF/jsp/pss/include/assignments.jspf</result>
-      <result name="error">/WEB-INF/jsp/pss/include/error.jspf</result>
-      <result name="success">/WEB-INF/jsp/pss/include/assignments.jspf</result>
+      <result name="input">/WEB-INF/jsp/pss/include/assignments.jsp</result>
+      <result name="error">/WEB-INF/jsp/pss/include/error.jsp</result>
+      <result name="success">/WEB-INF/jsp/pss/include/assignments.jsp</result>
     </action>
 
     <action name="addRolesToUser" class="pss-assignments" method="edituser">
@@ -172,24 +177,6 @@
 
     <action name="resources" class="pss-resources" method="list">
       <result name="list">/WEB-INF/jsp/pss/admin/resourceList.jsp</result>
-    </action>
-
-    <action name="userRolesToGrant" class="pss-user-assignments" method="availableRoles">
-      <result name="success">/WEB-INF/jsp/pss/include/grantRoles.jspf</result>
-    </action>
-
-    <action name="userRolesToRemove" class="pss-user-assignments" method="assignedRoles">
-      <result name="success">/WEB-INF/jsp/pss/include/removeRoles.jspf</result>
-    </action>
-
-    <action name="grantRole" class="pss-user-assignments" method="grantRole">
-      <result name="error" type="redirect-action">userlist</result>
-      <result name="success" type="redirect-action">userlist</result>
-    </action>
-
-    <action name="removeRole" class="pss-user-assignments" method="removeRole">
-      <result name="error" type="redirect-action">userlist</result>
-      <result name="success" type="redirect-action">userlist</result>
     </action>
 
   </package>
