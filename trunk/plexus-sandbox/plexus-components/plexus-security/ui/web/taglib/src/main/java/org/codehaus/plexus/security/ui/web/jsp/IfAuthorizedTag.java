@@ -60,12 +60,6 @@ public class IfAuthorizedTag
         PlexusContainer container = (PlexusContainer) context.getApplication().get( PlexusLifecycleListener.KEY );
         SecuritySession securitySession = (SecuritySession) context.getSession().get( SecuritySystemConstants.SECURITY_SESSION_KEY );
 
-        // check if securitySession exists, if it doesn't just return false, the user isn't logged in
-        if ( securitySession == null )
-        {
-            return false;
-        }
-
         try
         {
             SecuritySystem securitySystem = (SecuritySystem) container.lookup( SecuritySystem.ROLE );

@@ -27,6 +27,9 @@ import org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvalu
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.user.User;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -52,6 +55,11 @@ public class RbacAuthorizer
     private RBACManager manager;
 
     /**
+     * @plexus.requirement
+     */
+    private UserManager userManager;
+
+    /**
      * @plexus.requirement role-hint="default"
      */
     private PermissionEvaluator evaluator;
@@ -75,33 +83,53 @@ public class RbacAuthorizer
 
         try
         {
-            Set permissions = manager.getAssignedPermissions( principal.toString() );
-
-            for ( Iterator i = permissions.iterator(); i.hasNext(); )
+            if ( principal != null )
             {
-                Permission permission = (Permission)i.next();
+                Set permissions = manager.getAssignedPermissions( principal.toString() );
 
-                //getLogger().debug( "checking permission " + permission.getName() );
-
-                if ( evaluator.evaluate( permission, operation, resource, principal ) )
+                for ( Iterator i = permissions.iterator(); i.hasNext(); )
                 {
-                    getLogger().info( "returning a true from authz" );
-                    return new AuthorizationResult( true, permission, null );
+                    Permission permission = (Permission) i.next();
+
+                    //getLogger().debug( "checking permission " + permission.getName() );
+
+                    if ( evaluator.evaluate( permission, operation, resource, principal ) )
+                    {
+                        return new AuthorizationResult( true, permission, null );
+                    }
                 }
+            }
+            // check if guest user is enabled, if so check the global permissions
+            User guest = userManager.findUser( "guest" );
+            if ( !guest.isLocked() )
+            {
+                Set guestPermissions = manager.getAssignedPermissions( guest.getPrincipal().toString() );
+
+                for ( Iterator i = guestPermissions.iterator(); i.hasNext(); )
+                {
+                    Permission permission = (Permission) i.next();
+
+                    if ( evaluator.evaluate( permission, operation, resource, principal ) )
+                    {
+                        return new AuthorizationResult( true, permission, null );
+                    }
+                }
+
             }
 
             return new AuthorizationResult(false, null, new NotAuthorizedException( "no matching permissions" ) );
         }
         catch ( PermissionEvaluationException pe )
         {
-            pe.printStackTrace();
             return new AuthorizationResult( false, null, pe );
         }
         catch ( RbacObjectNotFoundException nfe)
         {
-            nfe.printStackTrace();
-
             return new AuthorizationResult( false, null, nfe );
+        }
+        catch ( UserNotFoundException ne )
+        {
+            return new AuthorizationResult(false, null, new NotAuthorizedException( "no matching permissions, guest not found" ) );
         }
     }
 }
