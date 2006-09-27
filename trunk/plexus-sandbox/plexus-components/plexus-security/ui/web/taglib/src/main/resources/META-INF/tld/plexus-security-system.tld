@@ -38,4 +38,10 @@
     </attribute>
   </tag>
 
+  <tag>
+    <name>elseAuthorized</name>
+    <tagclass>org.codehaus.plexus.security.ui.web.jsp.ElseAuthorizedTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+  </tag>
+
 </taglib>
