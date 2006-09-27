@@ -19,6 +19,7 @@ package org.codehaus.plexus.security.ui.web.action.admin;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureAction;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.security.ui.web.util.UserSorter;
 import org.codehaus.plexus.security.user.UserManager;
@@ -39,6 +40,7 @@ import java.util.List;
  */
 public class UserListAction
     extends PlexusActionSupport
+    implements SecureAction
 {
     // ------------------------------------------------------------------
     // Plexus Component Requirements
@@ -87,7 +89,7 @@ public class UserListAction
         this.users = users;
     }
 
-    public SecureActionBundle initSecureActionBundle()
+    public SecureActionBundle getSecureActionBundle()
         throws SecureActionException
     {
         SecureActionBundle bundle = new SecureActionBundle();
