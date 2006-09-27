@@ -3,9 +3,8 @@ package org.codehaus.plexus.security.ui.web.interceptor;
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.interceptor.Interceptor;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 /*
  * Copyright 2006 The Apache Software Foundation.
@@ -42,11 +41,6 @@ public class ForceAdminUserInterceptor
      */
     private UserManager userManager;
 
-    /**
-     * We track our own logger, because we test for Plexus too.
-     */
-    private Logger logger;
-
     public void destroy()
     {
         // no-op
@@ -60,6 +54,10 @@ public class ForceAdminUserInterceptor
     public String intercept( ActionInvocation invocation )
         throws Exception
     {
+        if ( checked )
+        {
+            return invocation.invoke();
+        }
 
         try
         {
@@ -69,6 +67,7 @@ public class ForceAdminUserInterceptor
                 getLogger().info( "No admin user configured - forwarding to admin user creation page." );
                 return "security-admin-user-needed";
             }
+            checked = true;
             getLogger().info( "Admin user found. No need to configure admin user." );
         }
         catch ( UserNotFoundException e )
