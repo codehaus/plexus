@@ -167,7 +167,7 @@
       <implementation>org.codehaus.plexus.security.policy.DefaultUserValidationSettings</implementation>
       <description>DefaultUserValidationSettings</description>
       <configuration>
-        <email-validation-required>false</email-validation-required>
+        <email-validation-required>true</email-validation-required>
         <!-- This is a timeout for the validation url (in minutes) - 2880 = 48 hours -->
         <email-validation-timeout>2880</email-validation-timeout>
         <email-login-path>/security/login!login.action</email-login-path>
@@ -179,7 +179,7 @@
       <role>org.codehaus.plexus.mailsender.MailSender</role>
       <implementation>org.codehaus.plexus.mailsender.javamail.JavamailMailSender</implementation>
       <configuration>
-        <smtp-host>192.168.0.5</smtp-host>
+        <smtp-host>localhost</smtp-host>
         <smtp-port>25</smtp-port>
         <sslProvider>com.sun.net.ssl.internal.ssl.Provider</sslProvider>
         <!--
