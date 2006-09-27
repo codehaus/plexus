@@ -15,6 +15,7 @@
   --%>
 
 <%@ taglib prefix="ww" uri="/webwork" %>
+<%@ taglib prefix="pss" uri="/plexusSecuritySystem" %>
 
 <html>
 
@@ -40,8 +41,14 @@
 
 <ol>
 <li>
-  <ww:url id="login" action="login" namespace="/security" />
-  Go Ahead <ww:a href="%{login}">Login.</ww:a>
+  <pss:ifAuthorized permission="user-management-user-edit" resource="${sessionScope.securitySession.user.username}">
+    You are authorized to see this content!
+  </pss:ifAuthorized>
+  <pss:elseAuthorized>
+    <ww:url id="login" action="login" namespace="/security" />
+     Go Ahead <ww:a href="%{login}">Login.</ww:a>
+  </pss:elseAuthorized>
+
 </li>
 </ol>
 
