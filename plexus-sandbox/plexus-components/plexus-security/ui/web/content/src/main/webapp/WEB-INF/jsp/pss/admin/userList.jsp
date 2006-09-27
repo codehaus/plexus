@@ -14,7 +14,7 @@
   ~ limitations under the License.
   --%>
 
-<%@ taglib prefix="ww" uri="/webwork"%>
+<%@ taglib prefix="ww" uri="/webwork" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/plexusSecuritySystem" prefix="pss" %>
 
@@ -45,22 +45,25 @@
     <ww:iterator value="users">
       <tr>
         <td>
-          <ww:url id="usereditUrl" action="useredit">
-            <ww:param name="username">${username}</ww:param>
-          </ww:url>
-          <ww:a href="%{usereditUrl}"><ww:property value="username" /></ww:a>
+          <ww:property value="username"/>
         </td>
-        <td><ww:property value="fullName" /></td>
-        <td><ww:property value="email" /></td>
-        <td><ww:property value="locked" /></td>
+        <td>
+          <ww:property value="fullName"/>
+        </td>
+        <td>
+          <ww:property value="email"/>
+        </td>
+        <td>
+          <ww:property value="locked"/>
+        </td>
         <td>
           <pss:ifAuthorized permission="user-management-user-edit" resource="${username}">
-          <ww:url id="usereditUrl" action="useredit">
-            <ww:param name="username">${username}</ww:param>
-          </ww:url>
-          <ww:a href="%{usereditUrl}"><ww:property value="username" /></ww:a>
+            <ww:url id="usereditUrl" action="useredit">
+              <ww:param name="username">${username}</ww:param>
+            </ww:url>
+            <ww:a href="%{usereditUrl}">Edit</ww:a>
           </pss:ifAuthorized>
-          </td>
+        </td>
       </tr>
     </ww:iterator>
 
