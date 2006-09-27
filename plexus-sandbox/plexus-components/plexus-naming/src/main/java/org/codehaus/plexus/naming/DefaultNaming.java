@@ -8,6 +8,7 @@ import javax.naming.CompositeName;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.Name;
+import javax.naming.NameAlreadyBoundException;
 import javax.naming.NameClassPair;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
@@ -117,9 +118,17 @@ public class DefaultNaming
                 Resource r = (Resource) j.next();
 
                 Name name = new CompositeName( r.getName() );
-                for ( int i = 1; i <= name.size() - 1; i++ )
+
+                try
                 {
-                    envContext.createSubcontext( name.getPrefix( i ) );
+                    for ( int i = 1; i <= name.size() - 1; i++ )
+                    {
+                        envContext.createSubcontext( name.getPrefix( i ) );
+                    }
+                }
+                catch ( NameAlreadyBoundException e )
+                {
+                    // The prefix is already added as a sub context
                 }
 
                 envContext.bind( r.getName(), createResource( r ) );
