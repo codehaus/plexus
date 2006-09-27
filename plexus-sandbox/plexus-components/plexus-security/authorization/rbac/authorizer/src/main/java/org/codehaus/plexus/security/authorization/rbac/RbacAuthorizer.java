@@ -85,6 +85,7 @@ public class RbacAuthorizer
 
                 if ( evaluator.evaluate( permission, operation, resource, principal ) )
                 {
+                    getLogger().info( "returning a true from authz" );
                     return new AuthorizationResult( true, permission, null );
                 }
             }

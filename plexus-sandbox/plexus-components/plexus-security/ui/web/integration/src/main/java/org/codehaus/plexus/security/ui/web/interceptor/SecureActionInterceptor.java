@@ -47,7 +47,7 @@ public class SecureActionInterceptor
     private static final String REQUIRES_AUTHENTICATION = "requires-authentication";
     
     /**
-     * @plexus.requirement
+     * @plexus.requirement 
      */
     private SecuritySystem securitySystem;
 
@@ -126,8 +126,13 @@ public class SecureActionInterceptor
                     for ( Iterator i = authzTuples.iterator(); i.hasNext(); )
                     {
                         SecureActionBundle.AuthorizationTuple tuple = (SecureActionBundle.AuthorizationTuple) i.next();
+
+                        getLogger().info( "checking authz for " + tuple.toString() );
+
                         AuthorizationResult authzResult =
                             securitySystem.authorize( session, tuple.getOperation(), tuple.getResource() );
+
+                        getLogger().info( "checking the interceptor authz " + authzResult.isAuthorized() + " for " + tuple.toString() );
 
                         if ( authzResult.isAuthorized() )
                         {

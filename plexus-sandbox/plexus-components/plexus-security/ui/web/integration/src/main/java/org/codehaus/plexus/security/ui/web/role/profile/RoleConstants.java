@@ -27,6 +27,7 @@ public class RoleConstants
     // roles
     public static final String SYSTEM_ADMINISTRATOR_ROLE = "System Administrator";
     public static final String USER_ADMINISTRATOR_ROLE = "User Administrator";
+    public static final String REGISTERED_USER_ROLE = "Registered User";
     public static final String GUEST_ROLE = "Guest";
 
     // operations against configuration

@@ -24,9 +24,14 @@ import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.mail.Mailer;
 import org.codehaus.plexus.security.ui.web.model.CreateUserCredentials;
 import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.UserAssignment;
+import org.codehaus.plexus.rbac.profile.RoleProfileManager;
+import org.codehaus.plexus.rbac.profile.RoleProfileException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * RegisterAction 
@@ -60,6 +65,16 @@ public class RegisterAction
      * @plexus.requirement
      */
     private SecuritySystem securitySystem;
+
+    /**
+     * @plexus.requirement
+     */
+    private RBACManager rbacManager;
+
+    /**
+     * @plexus.requirement
+     */
+    private RoleProfileManager roleManager;
 
     private boolean cancelButton;
 
@@ -128,6 +143,22 @@ public class RegisterAction
         u.setPassword( user.getPassword() );
         u.setValidated( false );
         u.setLocked( false );
+
+       try
+        {
+            // assign the base role for all users
+            UserAssignment ua = rbacManager.createUserAssignment( u.getPrincipal().toString() );
+            List roles = new ArrayList();
+            roles.add( roleManager.getRole( "registered-user" ).getName() );
+            ua.setRoleNames( roles );
+            rbacManager.saveUserAssignment( ua );
+        }
+        catch ( RoleProfileException rpe )
+        {
+            addActionError( "Unable to assign core register user role to new user" );
+            return ERROR;
+        }
+
 
         if ( securityPolicy.getUserValidationSettings().isEmailValidationRequired() )
         {

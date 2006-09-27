@@ -181,6 +181,7 @@ public class DefaultSecuritySystem
         AuthorizationDataSource source = new AuthorizationDataSource( session.getUser().getPrincipal(), session
             .getUser(), permission, resource );
 
+        getLogger().info( "secsystem returning " + authorizer.isAuthorized( source ).isAuthorized() );
         return authorizer.isAuthorized( source );
     }
 
