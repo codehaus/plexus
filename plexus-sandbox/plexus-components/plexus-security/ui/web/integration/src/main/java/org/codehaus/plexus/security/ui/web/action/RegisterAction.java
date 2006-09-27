@@ -16,22 +16,21 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.rbac.profile.RoleProfileException;
+import org.codehaus.plexus.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.keys.KeyManagerException;
+import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.UserAssignment;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.mail.Mailer;
 import org.codehaus.plexus.security.ui.web.model.CreateUserCredentials;
 import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.security.rbac.UserAssignment;
-import org.codehaus.plexus.rbac.profile.RoleProfileManager;
-import org.codehaus.plexus.rbac.profile.RoleProfileException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collections;
 
 /**
  * RegisterAction 
