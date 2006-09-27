@@ -66,11 +66,15 @@ public class IfAuthorizedTag
 
             if ( resource != null )
             {
-                return securitySystem.isAuthorized( securitySession, permission, resource );
+                boolean authzStatus = securitySystem.isAuthorized( securitySession, permission, resource );
+                pageContext.setAttribute( "ifAuthorizedTag", new Boolean( authzStatus ) );
+                return authzStatus;
             }
             else
             {
-                return securitySystem.isAuthorized( securitySession, permission );
+                boolean authzStatus = securitySystem.isAuthorized( securitySession, permission );
+                pageContext.setAttribute( "ifAuthorizedTag", new Boolean( authzStatus ) );
+                return authzStatus;
             }
         }
         catch ( ComponentLookupException cle )
