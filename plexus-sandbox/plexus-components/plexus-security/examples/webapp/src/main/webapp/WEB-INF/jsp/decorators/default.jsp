@@ -47,7 +47,7 @@
   </div>
 
   <div class="xleft">
-    <%@ include file="/WEB-INF/jsp/pss/include/securityLinks.jsp" %>
+    <%@ include file="/WEB-INF/jsp/pss/include/securityLinks.jspf" %>
   </div>
   
   <div class="clear">
