@@ -1,6 +1,7 @@
 package org.codehaus.plexus.rbac.profile;
 
 import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.security.rbac.Resource;
 
 import java.util.List;
 
@@ -60,6 +61,14 @@ public interface RoleProfile
      * @return
      */
     public boolean isAssignable();
+
+    /**
+     * set to Resource.GLOBAL by default, otherwise set to resource that should be used for the
+     * permissions being granted.
+     * @return
+     */
+    public Resource getResource()
+        throws RoleProfileException;
 
     /**
      * return the role, either for the rbacManager should the role exist already, or
