@@ -36,6 +36,7 @@
       <th>Username</th>
       <th>Full Name</th>
       <th>Email Address</th>
+      <th>Validated</th>
       <th>Locked</th>
       <th>Edit</th>
     </tr>
@@ -52,6 +53,9 @@
         </td>
         <td>
           <ww:property value="email"/>
+        </td>
+        <td>
+          <ww:property value="validated"/>
         </td>
         <td>
           <ww:property value="locked"/>
