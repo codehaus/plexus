@@ -33,6 +33,7 @@
          id="loginForm" method="post" name="login" cssClass="security login">
   <ww:textfield label="Username" name="username" size="30" required="true" />
   <ww:password  label="Password" name="password" size="20" required="true" />
+  <ww:checkbox label="Remember Me" name="rememberMe" value="false" />
   <ww:submit type="submit" value="Login" name="submitButton" />
   <ww:submit type="button" value="Cancel" name="cancelButton" />
 </ww:form>
@@ -46,16 +47,16 @@
      <ww:url id="forgottenAccount" action="findAccount" />
      <ww:a href="%{forgottenAccount}">Email me my account information.</ww:a>
   </li>
-  <li>
-     Forgot your Password? 
-     <ww:url id="forgottenPassword" action="resetPassword" />
-     <ww:a href="%{forgottenPassword}">Request a password reset.</ww:a>
-  </li>
     --%>
   <li>
-    Need an Account?
-    <ww:url id="registerUrl" action="register" />
-    <ww:a href="%{registerUrl}">Register!</ww:a>
+     Need an Account?
+     <ww:url id="registerUrl" action="register" />
+     <ww:a href="%{registerUrl}">Register!</ww:a>
+  </li>
+  <li>
+     Forgot your Password? 
+     <ww:url id="forgottenPassword" action="password!reset" />
+     <ww:a href="%{forgottenPassword}">Request a password reset.</ww:a>
   </li>
 </ul>
 

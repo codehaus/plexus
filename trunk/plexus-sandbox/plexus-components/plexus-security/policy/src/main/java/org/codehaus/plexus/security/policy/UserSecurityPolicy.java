@@ -110,6 +110,34 @@ public interface UserSecurityPolicy
      * @param settings the settings.
      */
     public void setUserValidationSettings(UserValidationSettings settings);
+    
+    /**
+     * Get the Single Sign On Settings.
+     * 
+     * @return the single sign on settings.
+     */
+    public SingleSignOnSettings getSingleSignOnSettings();
+    
+    /**
+     * Set the Single Sign On Settings.
+     * 
+     * @param settings the single sign on settings.
+     */
+    public void setSingleSignOnSettings(SingleSignOnSettings settings);
+    
+    /**
+     * Get the Remember Me Settings.
+     * 
+     * @return the remember me settings.
+     */
+    public RememberMeSettings getRememberMeSettings();
+    
+    /**
+     * Set the Remember Me Settings.
+     * 
+     * @param settings the remember me settings.
+     */
+    public void setRememberMeSettings(RememberMeSettings settings);
 
     /**
      * Enable the policies or not.

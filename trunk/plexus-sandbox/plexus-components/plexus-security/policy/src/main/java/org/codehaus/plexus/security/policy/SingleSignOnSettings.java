@@ -1,7 +1,7 @@
-package org.codehaus.plexus.security.system;
+package org.codehaus.plexus.security.policy;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,25 +17,31 @@ package org.codehaus.plexus.security.system;
  */
 
 /**
- * SecuritySystemConstants - constants for use with contexts that use plexus-security. 
+ * SingleSignOnSettings 
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class SecuritySystemConstants
+public interface SingleSignOnSettings
 {
     /**
-     * Key in the sessionScope for the {@link SecuritySession} object. 
+     * Gets the flag enabled or not for Single Sign On.
+     * 
+     * @return true if single sign on is enabled.
      */
-    public static final String SECURITY_SESSION_KEY = "securitySession";
-
-    /**
-     * Cookie key for the Remember Me functionality.
-     */
-    public static final String REMEMBER_ME_KEY = "securityRememberMe";
+    public boolean isEnabled();
     
     /**
-     * Cookie key for the Single Sign On functionality.
+     * Gets the Cookie Domain for the Single Sign On.
+     *  
+     * @return the domain portion of the cookie for single sign on.
      */
-    public static final String SINGLE_SIGN_ON_KEY = "securitySingleSignOn";
+    public String getCookieDomain();
+    
+    /**
+     * Gets the Cookie timeout (in minutes) for the Single Sign On.
+     * 
+     * @return the cookie timeout (in minutes) for the single sign on.
+     */
+    public int getCookieTimeout();
 }

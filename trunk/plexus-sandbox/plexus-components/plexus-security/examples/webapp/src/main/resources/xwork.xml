@@ -4,26 +4,29 @@
 <xwork>
   <include file="webwork-default.xml"/>
   <include file="xwork-security.xml"/>
-    
+
   <!-- ==================================================================
        Application Webapp Specific Configuration.
        ==================================================================  -->
- 
+
   <package name="root" extends="webwork-default" namespace="/">
     <interceptors>
       <interceptor name="pssForceAdminUser" class="pssForceAdminUserInterceptor"/>
       <interceptor name="pssEnvCheck" class="pssEnvironmentCheckInterceptor"/>
+      <interceptor name="pssAutoLogin" class="pssAutoLoginInterceptor"/>
       <interceptor name="pssSecureActions" class="pssSecureActionInterceptor"/>
       <interceptor-stack name="securedStack">
         <interceptor-ref name="defaultStack"/>
         <interceptor-ref name="pssEnvCheck"/>
         <interceptor-ref name="pssForceAdminUser"/>
+        <interceptor-ref name="pssAutoLogin"/>
         <interceptor-ref name="pssSecureActions"/>
       </interceptor-stack>
       <interceptor-stack name="securedPrepareParamsStack">
         <interceptor-ref name="paramsPrepareParamsStack"/>
         <interceptor-ref name="pssEnvCheck"/>
         <interceptor-ref name="pssForceAdminUser"/>
+        <interceptor-ref name="pssAutoLogin"/>
         <interceptor-ref name="pssSecureActions"/>
       </interceptor-stack>
     </interceptors>
@@ -40,7 +43,7 @@
       <result name="security-account-success" type="redirect-action">main</result>
       <result name="security-account-cancel" type="redirect-action">main</result>
       <result name="security-admin-user-created" type="redirect-action">main</result>
-      
+
       <result name="security-admin-user-needed" type="redirect-action">
         <param name="actionName">addadmin</param>
         <param name="namespace">/security</param>
@@ -50,11 +53,11 @@
       <result name="requires-authentication">/WEB-INF/jsp/requiresAuthentication.jsp</result>
       <result name="requires-authorization">/WEB-INF/jsp/accessDenied.jsp</result>
     </global-results>
-    
+
     <action name="pssRedirect" class="pss-redirect" method="redirect">
       <result type="redirect-action">main</result>
     </action>
-    
+
     <action name="main" class="main" method="show">
       <result name="success">/WEB-INF/jsp/mainpage.jsp</result>
     </action>

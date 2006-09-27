@@ -16,11 +16,18 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import com.opensymphony.webwork.ServletActionContext;
+
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.keys.AuthenticationKey;
+import org.codehaus.plexus.security.keys.KeyManager;
+import org.codehaus.plexus.security.keys.KeyManagerException;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.system.SecuritySystemConstants;
+import org.codehaus.plexus.security.ui.web.util.CookieUtils;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 
 /**
@@ -37,7 +44,7 @@ public abstract class AbstractAuthenticationAction
     static final String PASSWORD_CHANGE = "must-change-password";
     static final String ACCOUNT_LOCKED = "security-login-locked";
     
-    protected String webLogin( SecuritySystem securitySystem, AuthenticationDataSource authdatasource )
+    protected String webLogin( SecuritySystem securitySystem, AuthenticationDataSource authdatasource, boolean rememberMe )
     {
         // An attempt should log out your authentication tokens first!
         setAuthTokens( null );
@@ -52,6 +59,26 @@ public abstract class AbstractAuthenticationAction
             {
                 // Success!  Create tokens.
                 setAuthTokens( securitySession );
+                
+                if ( rememberMe )
+                {
+                    try
+                    {
+                        int timeout = securitySystem.getPolicy().getRememberMeSettings().getCookieTimeout();
+                        KeyManager keyManager = securitySystem.getKeyManager();
+                        AuthenticationKey authkey = keyManager.createKey( authdatasource.getPrincipal(),
+                                                                          "Remember Me Key", timeout );
+                        
+                        CookieUtils.setCookie( ServletActionContext.getResponse(),
+                                               SecuritySystemConstants.REMEMBER_ME_KEY, authkey.getKey(), timeout, "/" );
+                    }
+                    catch ( KeyManagerException e )
+                    {
+                        getLogger().warn( "Unable  " );
+
+                    }
+
+                }
                 
                 if( securitySession.getUser().isPasswordChangeRequired() )
                 {

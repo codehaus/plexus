@@ -29,6 +29,11 @@ public class AdminEditUserCredentials
 {
     private boolean locked;
     private boolean passwordChangeRequired;
+    
+    public AdminEditUserCredentials()
+    {
+        super();
+    }
 
     public AdminEditUserCredentials( User user )
     {
