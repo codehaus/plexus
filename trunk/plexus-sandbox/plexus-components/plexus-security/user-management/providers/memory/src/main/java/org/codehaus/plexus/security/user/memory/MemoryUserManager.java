@@ -18,6 +18,7 @@ package org.codehaus.plexus.security.user.memory;
 
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.AbstractUserManager;
+import org.codehaus.plexus.security.user.PermanentUserException;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
@@ -153,6 +154,12 @@ public class MemoryUserManager
         throws UserNotFoundException
     {
         User user = findUser( username );
+        
+        if ( user.isPermanent() )
+        {
+            throw new PermanentUserException( "Cannot delete permanent user." );
+        }
+        
         users.remove( user.getPrincipal() );
         
         fireUserManagerUserRemoved( user );
