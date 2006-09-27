@@ -27,21 +27,31 @@
     </result-types>
 
     <interceptors>
+      <interceptor name="pssForceAdminUser" class="pssForceAdminUserInterceptor"/>
       <interceptor name="pssEnvCheck" class="pssEnvironmentCheckInterceptor"/>
       <interceptor name="pssSecureActions" class="pssSecureActionInterceptor"/>
       <interceptor-stack name="securedStack">
         <interceptor-ref name="defaultStack"/>
         <interceptor-ref name="pssEnvCheck"/>
+        <interceptor-ref name="pssForceAdminUser"/>
         <interceptor-ref name="pssSecureActions"/>
       </interceptor-stack>
       <interceptor-stack name="securedPrepareParamsStack">
         <interceptor-ref name="paramsPrepareParamsStack"/>
         <interceptor-ref name="pssEnvCheck"/>
+        <interceptor-ref name="pssForceAdminUser"/>
         <interceptor-ref name="pssSecureActions"/>
       </interceptor-stack>
     </interceptors>
 
     <default-interceptor-ref name="securedStack"/>
+
+    <global-results>
+      <result name="security-admin-user-needed" type="redirect-action">
+        <param name="actionName">addadmin</param>
+        <param name="namespace">/security</param>
+      </result>
+    </global-results>
 
     <action name="login" class="pss-login" method="show">
       <result name="input">/WEB-INF/jsp/pss/login.jsp</result>
@@ -97,6 +107,15 @@
       </result>
       <result name="requires-authentication" type="security-external">
         <param name="externalResult">requires-authentication</param>
+      </result>
+    </action>
+
+    <action name="addadmin" class="pss-admin-account" method="show">
+      <interceptor-ref name="defaultStack"/>
+      <result name="input">/WEB-INF/jsp/pss/admin/createAdmin.jsp</result>
+      <result name="error">/WEB-INF/jsp/pss/admin/createAdmin.jsp</result>
+      <result name="security-admin-user-created" type="security-external">
+        <param name="externalResult">security-admin-user-created</param>
       </result>
     </action>
 

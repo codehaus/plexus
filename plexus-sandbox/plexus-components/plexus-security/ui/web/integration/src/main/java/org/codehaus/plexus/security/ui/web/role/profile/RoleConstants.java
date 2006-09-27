@@ -24,6 +24,8 @@ package org.codehaus.plexus.security.ui.web.role.profile;
  */
 public class RoleConstants
 {
+    public static final String ADMINISTRATOR_ACCOUNT_NAME = "admin";
+
     // roles
     public static final String SYSTEM_ADMINISTRATOR_ROLE = "System Administrator";
     public static final String USER_ADMINISTRATOR_ROLE = "User Administrator";
