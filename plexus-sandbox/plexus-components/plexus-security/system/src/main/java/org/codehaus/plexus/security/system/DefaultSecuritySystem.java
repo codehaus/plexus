@@ -162,10 +162,17 @@ public class DefaultSecuritySystem
     public AuthorizationResult authorize( SecuritySession session, Object permission )
         throws AuthorizationException
     {
-        AuthorizationDataSource source = new AuthorizationDataSource( session.getUser().getPrincipal(), session
-            .getUser(), permission );
+        AuthorizationDataSource source;
 
-        return authorizer.isAuthorized( source );
+        if ( session != null )
+        {
+            source = new AuthorizationDataSource( session.getUser().getPrincipal(), session
+                .getUser(), permission );
+        }
+        else
+        {
+            source = new AuthorizationDataSource( null, null, permission );
+        }    return authorizer.isAuthorized( source );
     }
 
     public boolean isAuthorized( SecuritySession session, Object permission )
@@ -178,8 +185,17 @@ public class DefaultSecuritySystem
     public AuthorizationResult authorize( SecuritySession session, Object permission, Object resource )
         throws AuthorizationException
     {
-        AuthorizationDataSource source = new AuthorizationDataSource( session.getUser().getPrincipal(), session
-            .getUser(), permission, resource );
+        AuthorizationDataSource source;
+
+        if ( session != null )
+        {
+            source = new AuthorizationDataSource( session.getUser().getPrincipal(), session
+                .getUser(), permission, resource );
+        }
+        else
+        {
+            source = new AuthorizationDataSource( null, null, permission, resource );
+        }
 
         getLogger().info( "secsystem returning " + authorizer.isAuthorized( source ).isAuthorized() );
         return authorizer.isAuthorized( source );
