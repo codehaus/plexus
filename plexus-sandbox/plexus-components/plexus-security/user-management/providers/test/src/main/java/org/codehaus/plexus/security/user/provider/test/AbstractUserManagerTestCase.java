@@ -18,8 +18,10 @@ package org.codehaus.plexus.security.user.provider.test;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
+import org.codehaus.plexus.security.user.PermanentUserException;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.UserManagerException;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 
 /**
@@ -344,6 +346,46 @@ public class AbstractUserManagerTestCase
         assertEquals( 0, getEventTracker().removedUsernames.size() );
         assertEquals( 1, getEventTracker().updatedUsernames.size() );
     }
+    
+    public void testDeletePermanentUser()
+        throws UserNotFoundException
+    {
+        assertCleanUserManager();
+        securityPolicy.setEnabled( false );
+
+        UserManager um = getUserManager();
+        User user = um.createUser( "admin", "Administrator", "admin@somedomain.com" );
+        user.setPassword( "adminpass" );
+        user.setPermanent( true );
+        user = um.addUser( user );
+
+        assertEquals( 1, um.getUsers().size() );
+
+        try
+        {
+            um.deleteUser( user.getPrincipal() );
+            fail("Deleting permanent user shold throw PermanentUserException.");
+        } catch( PermanentUserException e )
+        {
+            // do nothing, expected route.
+        }
+        
+        assertEquals( 1, um.getUsers().size() );
+
+        // attempt to finding user
+        User admin = um.findUser( "admin" );
+        assertNotNull( admin );
+        assertEquals( user.getEmail(), admin.getEmail() );
+        assertEquals( user.getFullName(), admin.getFullName() );
+        
+        /* Check into the event tracker. */
+        assertEquals( 1, getEventTracker().countInit );
+        assertNotNull( getEventTracker().lastDbFreshness );
+        assertTrue( getEventTracker().lastDbFreshness.booleanValue() );
+        
+        assertEquals( 1, getEventTracker().addedUsernames.size() );
+        assertEquals( 0, getEventTracker().removedUsernames.size() );
+        assertEquals( 0, getEventTracker().updatedUsernames.size() );    }
 
     public UserManagerEventTracker getEventTracker()
     {
