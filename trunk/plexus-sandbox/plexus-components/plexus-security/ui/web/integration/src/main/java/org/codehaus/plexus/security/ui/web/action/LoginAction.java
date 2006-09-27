@@ -59,6 +59,10 @@ public class LoginAction
     private boolean cancelButton;
     
     private String validateMe;
+    
+    private String resetPassword;
+    
+    private boolean rememberMe;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
@@ -82,6 +86,12 @@ public class LoginAction
             return validated();
         }
         
+        if ( StringUtils.isNotEmpty(resetPassword))
+        {
+            // Process a login / reset password request.
+            return resetPassword();
+        }
+        
         if ( StringUtils.isEmpty(username)  )
         {
             addFieldError( "username", "Username cannot be empty." );
@@ -92,7 +102,50 @@ public class LoginAction
         authdatasource.setPrincipal( username );
         authdatasource.setPassword( password );
         
-        return webLogin( securitySystem, authdatasource );
+        return webLogin( securitySystem, authdatasource, rememberMe );
+    }
+    
+    public String resetPassword()
+    {
+        if ( StringUtils.isEmpty( resetPassword ) )
+        {
+            addActionError( "Reset Password key missing." );
+            return ERROR;
+        }
+
+        try
+        {
+            AuthenticationKey authkey = securitySystem.getKeyManager().findKey( validateMe );
+
+            User user = securitySystem.getUserManager().findUser( authkey.getForPrincipal() );
+            
+            user.setPasswordChangeRequired( true );
+            user.setEncodedPassword( "" );
+            
+            TokenBasedAuthenticationDataSource authsource = new TokenBasedAuthenticationDataSource( );
+            authsource.setPrincipal( user.getPrincipal().toString() );
+            authsource.setToken( authkey.getKey() );
+            
+            securitySystem.getUserManager().updateUser( user );
+            
+            return webLogin( securitySystem, authsource, false );
+        }
+        catch ( KeyNotFoundException e )
+        {
+            addActionError( "Unable to find the key." );
+            return ERROR;
+        }
+        catch ( KeyManagerException e )
+        {
+            addActionError( "Unable to process key at this time.  Please try again later." );
+            getLogger().warn( "Key Manager error: ", e );
+            return ERROR;
+        }
+        catch ( UserNotFoundException e )
+        {
+            addActionError( "Unable to find user." );
+            return ERROR;
+        }
     }
     
     public String validated()
@@ -120,7 +173,7 @@ public class LoginAction
             
             securitySystem.getUserManager().updateUser( user );
             
-            return webLogin( securitySystem, authsource );
+            return webLogin( securitySystem, authsource, false );
         }
         catch ( KeyNotFoundException e )
         {
@@ -183,5 +236,25 @@ public class LoginAction
         throws SecureActionException
     {
         return SecureActionBundle.OPEN;
+    }
+
+    public String getResetPassword()
+    {
+        return resetPassword;
+    }
+
+    public void setResetPassword( String resetPassword )
+    {
+        this.resetPassword = resetPassword;
+    }
+
+    public boolean isRememberMe()
+    {
+        return rememberMe;
+    }
+
+    public void setRememberMe( boolean rememberMe )
+    {
+        this.rememberMe = rememberMe;
     }
 }

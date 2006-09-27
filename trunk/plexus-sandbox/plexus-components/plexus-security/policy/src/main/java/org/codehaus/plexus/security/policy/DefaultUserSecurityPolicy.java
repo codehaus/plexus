@@ -73,6 +73,16 @@ public class DefaultUserSecurityPolicy
     private UserValidationSettings userValidationSettings;
     
     /**
+     * @plexus.requirement
+     */
+    private RememberMeSettings rememberMeSettings;
+    
+    /**
+     * @plexus.requirement
+     */
+    private SingleSignOnSettings singleSignOnSettings;
+    
+    /**
      * The List of {@link PasswordRule} objects.
      * 
      * @plexus.requirement role="org.codehaus.plexus.security.policy.PasswordRule"
@@ -329,5 +339,25 @@ public class DefaultUserSecurityPolicy
     public void setUserValidationSettings( UserValidationSettings userValidationSettings )
     {
         this.userValidationSettings = userValidationSettings;
+    }
+
+    public RememberMeSettings getRememberMeSettings()
+    {
+        return rememberMeSettings;
+    }
+
+    public void setRememberMeSettings( RememberMeSettings rememberMeSettings )
+    {
+        this.rememberMeSettings = rememberMeSettings;
+    }
+
+    public SingleSignOnSettings getSingleSignOnSettings()
+    {
+        return singleSignOnSettings;
+    }
+
+    public void setSingleSignOnSettings( SingleSignOnSettings singleSignOnSettings )
+    {
+        this.singleSignOnSettings = singleSignOnSettings;
     }
 }

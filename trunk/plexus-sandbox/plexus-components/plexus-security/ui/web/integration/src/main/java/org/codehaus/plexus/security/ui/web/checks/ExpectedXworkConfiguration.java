@@ -18,7 +18,6 @@ package org.codehaus.plexus.security.ui.web.checks;
 
 import com.opensymphony.xwork.config.Configuration;
 import com.opensymphony.xwork.config.ConfigurationManager;
-import com.opensymphony.xwork.config.providers.XmlConfigurationProvider;
 
 import org.codehaus.plexus.security.system.check.EnvironmentCheck;
 import org.codehaus.plexus.security.ui.web.checks.xwork.XworkPackageConfig;
@@ -58,10 +57,7 @@ public class ExpectedXworkConfiguration
         {
             List internalViolations = new ArrayList();
 
-
             XworkPackageConfig expectedPackage = new XworkPackageConfig( "/security" );
-
-            expectedPackage.addAction( "mainPage", null, null );
 
             expectedPackage.addAction( "account", "pss-account", "show" ).addResult( "input" ).addResult( "error" )
                 .addResult( "success" );
@@ -95,8 +91,6 @@ public class ExpectedXworkConfiguration
 
             expectedPackage.addAction( "userdelete", "pss-admin-user-delete", "confirm" ).addResult( "input" )
                 .addResult( "error" ).addResult( "success" );
-
-            // TODO: Break this into sub-parts.
 
             expectedPackage.addAction( "assignments", "pss-assignments", "show" ).addResult( "input" )
                 .addResult( "error" ).addResult( "success" );

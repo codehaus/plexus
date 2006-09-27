@@ -219,8 +219,6 @@ public class PasswordAction
     public SecureActionBundle initSecureActionBundle()
         throws SecureActionException
     {
-        SecureActionBundle bundle = new SecureActionBundle();
-        bundle.setRequiresAuthentication( true );
-        return bundle;
+        return SecureActionBundle.AUTHONLY;
     }
 }

@@ -17,13 +17,12 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  */
 
 import org.codehaus.plexus.security.rbac.Resource;
+import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
-import org.codehaus.plexus.security.ui.web.interceptor.SecureAction;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.security.ui.web.util.UserSorter;
 import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,8 +38,7 @@ import java.util.List;
  *                   instantiation-strategy="per-lookup"
  */
 public class UserListAction
-    extends PlexusActionSupport
-    implements SecureAction
+    extends AbstractSecurityAction
 {
     // ------------------------------------------------------------------
     // Plexus Component Requirements
@@ -89,7 +87,7 @@ public class UserListAction
         this.users = users;
     }
 
-    public SecureActionBundle getSecureActionBundle()
+    public SecureActionBundle initSecureActionBundle()
         throws SecureActionException
     {
         SecureActionBundle bundle = new SecureActionBundle();

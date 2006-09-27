@@ -103,6 +103,49 @@ public class Mailer
 
         sendVelocityEmail( "newAccountValidationEmail", context, recipients, validation.getEmailSubject() );
     }
+    
+    public void sendPasswordResetEmail( Collection recipients, AuthenticationKey authkey )
+    {
+        VelocityContext context = new VelocityContext();
+        ApplicationDetails appdetails = securitySystem.getApplicationDetails();
+        UserSecurityPolicy policy = securitySystem.getPolicy();
+        UserValidationSettings validation = policy.getUserValidationSettings();
+        EmailSettings email = securitySystem.getEmailSettings();
+
+        context.put( "applicationName", appdetails.getApplicationName() );
+
+        String loginUrl = appdetails.getApplicationUrl() + validation.getEmailLoginPath();
+        
+        context.put( "loginUrl", loginUrl );
+
+        String feedback = email.getFeedback();
+        
+        if(feedback.startsWith( "/" ))
+        {
+            feedback = appdetails.getApplicationUrl() + feedback;
+        }
+        
+        context.put( "feedback", feedback );
+
+        context.put( "authkey", authkey.getKey() );
+        
+        context.put( "accountId", authkey.getForPrincipal() );
+
+        SimpleDateFormat dateformatter = new SimpleDateFormat( appdetails.getTimestampFormat() );
+
+        context.put( "requestedOn", dateformatter.format( authkey.getDateCreated() ) );
+
+        if ( authkey.getDateExpires() != null )
+        {
+            context.put( "expiresOn", dateformatter.format( authkey.getDateExpires() ) );
+        }
+        else
+        {
+            context.put( "expiresOn", "(does not expire)" );
+        }
+
+        sendVelocityEmail( "passwordResetEmail", context, recipients, validation.getEmailSubject() );
+    }    
 
     public void sendVelocityEmail( String templateName, VelocityContext context, Collection recipients, String subject )
     {

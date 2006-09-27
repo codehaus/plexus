@@ -1,12 +1,5 @@
 package org.codehaus.plexus.security.ui.web.checks.security;
 
-import org.codehaus.plexus.security.system.check.EnvironmentCheck;
-import org.codehaus.plexus.security.rbac.Role;
-import org.codehaus.plexus.rbac.profile.RoleProfileManager;
-import org.codehaus.plexus.rbac.profile.RoleProfileException;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-
-import java.util.List;
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -22,6 +15,14 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.rbac.profile.RoleProfileException;
+import org.codehaus.plexus.rbac.profile.RoleProfileManager;
+import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.security.system.check.EnvironmentCheck;
+
+import java.util.List;
 
 /**
  * RequiredRolesEnvironmentCheck:

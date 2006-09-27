@@ -1,7 +1,7 @@
-package org.codehaus.plexus.security.system;
+package org.codehaus.plexus.security.policy;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,25 +17,38 @@ package org.codehaus.plexus.security.system;
  */
 
 /**
- * SecuritySystemConstants - constants for use with contexts that use plexus-security. 
+ * 
+ * DefaultRememberMeSettings 
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * 
+ * @plexus.component role="org.codehaus.plexus.security.policy.RememberMeSettings"
  */
-public class SecuritySystemConstants
+public class DefaultRememberMeSettings
+    implements RememberMeSettings
 {
     /**
-     * Key in the sessionScope for the {@link SecuritySession} object. 
+     * @plexus.configuration default-value="true"
      */
-    public static final String SECURITY_SESSION_KEY = "securitySession";
-
-    /**
-     * Cookie key for the Remember Me functionality.
-     */
-    public static final String REMEMBER_ME_KEY = "securityRememberMe";
+    private boolean enabled;
     
     /**
-     * Cookie key for the Single Sign On functionality.
+     * Timeout (in minutes) for a remember me cookie.
+     * 
+     * NOTE: 525600 minutes == 1 full year.
+     * 
+     * @plexus.configuration default-value="525600"
      */
-    public static final String SINGLE_SIGN_ON_KEY = "securitySingleSignOn";
+    private int cookieTimeout;
+
+    public int getCookieTimeout()
+    {
+        return cookieTimeout;
+    }
+
+    public boolean isEnabled()
+    {
+        return enabled;
+    }
 }

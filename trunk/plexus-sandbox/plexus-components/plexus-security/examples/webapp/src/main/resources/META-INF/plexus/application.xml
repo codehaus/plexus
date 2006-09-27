@@ -151,6 +151,14 @@
           <field-name>userValidationSettings</field-name>
         </requirement>
         <requirement>
+          <role>org.codehaus.plexus.security.policy.RememberMeSettings</role>
+          <field-name>rememberMeSettings</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.policy.SingleSignOnSettings</role>
+          <field-name>singleSignOnSettings</field-name>
+        </requirement>
+        <requirement>
           <role>org.codehaus.plexus.security.policy.PasswordRule</role>
           <field-name>rules</field-name>
         </requirement>
@@ -172,6 +180,27 @@
         <email-validation-timeout>2880</email-validation-timeout>
         <email-login-path>/security/login!login.action</email-login-path>
         <email-subject>Unconfigured Subject Line</email-subject>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.security.policy.RememberMeSettings</role>
+      <implementation>org.codehaus.plexus.security.policy.DefaultRememberMeSettings</implementation>
+      <description>DefaultRememberMeSettings</description>
+      <configuration>
+        <enabled>true</enabled>
+        <cookie-timeout>525600</cookie-timeout>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.security.policy.SingleSignOnSettings</role>
+      <implementation>org.codehaus.plexus.security.policy.DefaultSingleSignOnSettings</implementation>
+      <description>DefaultSingleSignOnSettings</description>
+      <configuration>
+        <enabled>true</enabled>
+        <cookie-timeout>30</cookie-timeout>
+        <cookie-domain>localhost</cookie-domain>
       </configuration>
     </component>
 
