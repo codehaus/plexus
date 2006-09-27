@@ -25,9 +25,11 @@ import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
+import org.codehaus.plexus.security.ui.web.util.PermissionSorter;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -77,6 +79,13 @@ public class PermissionsAction
     public String list()
     {
         allPermissions = manager.getAllPermissions();
+        
+        if(allPermissions == null)
+        {
+            allPermissions = Collections.EMPTY_LIST;
+        }
+        
+        Collections.sort( allPermissions, new PermissionSorter() );
 
         return LIST;
     }

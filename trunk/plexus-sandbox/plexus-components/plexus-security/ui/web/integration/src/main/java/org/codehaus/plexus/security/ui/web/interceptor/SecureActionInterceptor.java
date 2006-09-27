@@ -153,6 +153,8 @@ public class SecureActionInterceptor
         }
 
         getLogger().info( "not a secure action " + action.getClass().getName() );
-        return invocation.invoke();
+        String result = invocation.invoke();
+        getLogger().info( "Passing invocation up, result is [" + result + "] on call " + invocation.getAction().getClass().getName() );
+        return result;
     }
 }
