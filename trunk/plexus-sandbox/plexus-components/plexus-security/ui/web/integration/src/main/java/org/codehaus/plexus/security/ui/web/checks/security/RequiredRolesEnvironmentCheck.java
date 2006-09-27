@@ -57,6 +57,17 @@ public class RequiredRolesEnvironmentCheck
             // we require the User Administrator role to exist
             try
             {
+                Role registeredUser = roleProfileManager.getRole( "registered-user" );
+            }
+            catch ( RoleProfileException e )
+            {
+                e.printStackTrace();
+                violations.add( "unable to validate registered-user role" );
+            }
+
+            // we require the User Administrator role to exist
+            try
+            {
                 Role userAdmin = roleProfileManager.getRole( "user-administrator" );
             }
             catch ( RoleProfileException e )

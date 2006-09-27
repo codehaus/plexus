@@ -37,6 +37,7 @@
       <th>Full Name</th>
       <th>Email Address</th>
       <th>Locked</th>
+      <th>Edit</th>
     </tr>
   </thead>
   <tbody>
@@ -52,6 +53,14 @@
         <td><ww:property value="fullName" /></td>
         <td><ww:property value="email" /></td>
         <td><ww:property value="locked" /></td>
+        <td>
+          <pss:ifAuthorized permission="user-management-user-edit" resource="${username}">
+          <ww:url id="usereditUrl" action="useredit">
+            <ww:param name="username">${username}</ww:param>
+          </ww:url>
+          <ww:a href="%{usereditUrl}"><ww:property value="username" /></ww:a>
+          </pss:ifAuthorized>
+          </td>
       </tr>
     </ww:iterator>
 
@@ -59,7 +68,7 @@
 </table>
 
 <div class="buttonbar">
-  <pss:ifAuthorized permission="user-management-create-user">
+  <pss:ifAuthorized permission="user-management-user-create">
     <ww:form action="usercreate!show" namespace="/security" theme="xhtml"
              id="buttonBar" method="post" name="buttonbar" cssClass="security buttonbar">
       <ww:submit value="Create User"/>
