@@ -83,7 +83,7 @@ public class RbacAuthorizer
 
                 //getLogger().debug( "checking permission " + permission.getName() );
 
-                if ( evaluator.evaluate( permission, operation, resource ) )
+                if ( evaluator.evaluate( permission, operation, resource, principal ) )
                 {
                     return new AuthorizationResult( true, permission, null );
                 }
