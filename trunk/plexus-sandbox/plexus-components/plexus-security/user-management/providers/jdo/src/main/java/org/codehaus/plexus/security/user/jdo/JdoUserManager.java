@@ -24,6 +24,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.AbstractUserManager;
+import org.codehaus.plexus.security.user.PermanentUserException;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserManagerException;
@@ -109,6 +110,11 @@ public class JdoUserManager
         {
             User user = findUser( principal );
             
+            if ( user.isPermanent() )
+            {
+                throw new PermanentUserException( "Cannot delete permanent user [" + user.getUsername() + "]." );
+            }
+            
             fireUserManagerUserRemoved( user );
 
             removeObject( (JdoUser) user );
@@ -124,6 +130,11 @@ public class JdoUserManager
         try
         {
             User user = findUser( username );
+            
+            if ( user.isPermanent() )
+            {
+                throw new PermanentUserException( "Cannot delete permanent user [" + user.getUsername() + "]." );
+            }
             
             fireUserManagerUserRemoved( user );
 
