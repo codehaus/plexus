@@ -20,10 +20,11 @@ import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
+import org.codehaus.plexus.security.ui.web.util.UserSorter;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -60,14 +61,15 @@ public class UserListAction
 
     public String show()
     {
-        List userList = manager.getUsers();
-        if ( userList == null )
+        users = manager.getUsers();
+        
+        if ( users == null )
         {
-            users = new ArrayList();
+            users = Collections.EMPTY_LIST;
         }
 
-        users = userList;
-
+        Collections.sort( users, new UserSorter() );
+        
         return INPUT;
     }
 

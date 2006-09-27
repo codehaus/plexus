@@ -47,8 +47,8 @@
       </result>
 
       <result name="error">/WEB-INF/jsp/pss/generalError.jsp</result>
-      <result name="requires-authentication">/WEB-INF/jsp/alert.jsp</result>
-      <result name="requires-authorization">/WEB-INF/jsp/alert.jsp</result>
+      <result name="requires-authentication">/WEB-INF/jsp/requiresAuthentication.jsp</result>
+      <result name="requires-authorization">/WEB-INF/jsp/accessDenied.jsp</result>
     </global-results>
     
     <action name="pssRedirect" class="pss-redirect" method="redirect">

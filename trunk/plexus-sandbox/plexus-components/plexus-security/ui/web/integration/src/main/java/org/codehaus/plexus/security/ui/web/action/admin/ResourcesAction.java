@@ -16,8 +16,6 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
-import com.opensymphony.xwork.Preparable;
-
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.Resource;
@@ -25,8 +23,9 @@ import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
+import org.codehaus.plexus.security.ui.web.util.ResourceSorter;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,10 +35,10 @@ import java.util.List;
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
  *                   role-hint="pss-resources"
+ *                   instantiation-strategy="per-lookup"
  */
 public class ResourcesAction
     extends AbstractSecurityAction
-    implements Preparable
 {
     private static final String LIST = "list";
     
@@ -54,23 +53,16 @@ public class ResourcesAction
 
     private List allResources;
 
-    public void prepare()
-        throws Exception
-    {
-        if ( allResources == null )
-        {
-            allResources = new ArrayList();
-        }
-    }
-    
     public String list()
     {
         allResources = manager.getAllResources();
         
         if ( allResources == null )
         {
-            allResources = new ArrayList();
+            allResources = Collections.EMPTY_LIST;
         }
+        
+        Collections.sort( allResources, new ResourceSorter() );
         
         return LIST;
     }

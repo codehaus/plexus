@@ -22,8 +22,9 @@ import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
+import org.codehaus.plexus.security.ui.web.util.RoleSorter;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -54,8 +55,10 @@ public class RolesAction
         
         if ( allRoles == null )
         {
-            allRoles = new ArrayList();
+            allRoles = Collections.EMPTY_LIST;
         }
+        
+        Collections.sort( allRoles, new RoleSorter() );
         
         return LIST;
     }
