@@ -75,19 +75,19 @@ public abstract class AbstractRoleProfile
                     }
 
                     if ( !rbacManager.permissionExists(
-                        operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL ) )
+                        operationString + RoleProfileConstants.DELIMITER + getResource().getIdentifier() ) )
                     {
 
                         Permission permission = rbacManager.createPermission(
-                            operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL );
+                            operationString + RoleProfileConstants.DELIMITER + getResource().getIdentifier() );
                         permission.setOperation( rbacManager.getOperation( operationString ) );
-                        permission.setResource( rbacManager.getGlobalResource() );
+                        permission.setResource( getResource() );
                         rbacManager.savePermission( permission );
 
                     }
 
                     role.addPermission( rbacManager.getPermission(
-                        operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL ) );
+                        operationString + RoleProfileConstants.DELIMITER + getResource().getIdentifier() ) );
                 }
             }
 
@@ -146,19 +146,19 @@ public abstract class AbstractRoleProfile
                     }
 
                     if ( !rbacManager.permissionExists(
-                        operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL ) )
+                        operationString + RoleProfileConstants.DELIMITER + getResource().getIdentifier() ) )
                     {
 
                         Permission permission = rbacManager.createPermission(
-                            operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL );
+                            operationString + RoleProfileConstants.DELIMITER + getResource().getIdentifier()  );
                         permission.setOperation( rbacManager.getOperation( operationString ) );
-                        permission.setResource( rbacManager.getGlobalResource() );
+                        permission.setResource( getResource() );
                         rbacManager.savePermission( permission );
 
                     }
 
                     rootRole.addPermission( rbacManager.getPermission(
-                        operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL ) );
+                        operationString + RoleProfileConstants.DELIMITER + getResource().getIdentifier() ) );
                 }
             }
 
@@ -185,6 +185,13 @@ public abstract class AbstractRoleProfile
             throw new RoleProfileException( "error merging role profiles", ne );
         }
 
+    }
+
+
+    public Resource getResource()
+        throws RoleProfileException
+    {
+        return rbacManager.getGlobalResource();
     }
 
     /**
