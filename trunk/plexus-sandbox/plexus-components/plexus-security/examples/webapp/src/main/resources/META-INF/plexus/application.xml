@@ -75,6 +75,11 @@
           <role-hint>jdo</role-hint>
         </requirement>
         <requirement>
+          <role>org.codehaus.plexus.security.user.UserManager</role>
+          <role-hint>jdo</role-hint>
+          <field-name>userManager</field-name>
+        </requirement>
+        <requirement>
           <role>org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvaluator</role>
           <role-hint>default</role-hint>
         </requirement>
