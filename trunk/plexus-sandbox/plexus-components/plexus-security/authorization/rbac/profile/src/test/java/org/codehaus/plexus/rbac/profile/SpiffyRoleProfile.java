@@ -40,4 +40,10 @@ public class SpiffyRoleProfile
     {
         return Collections.singletonList( "spiffy-operation" );
     }
+
+
+    public boolean isAssignable()
+    {
+        return false;
+    }
 }

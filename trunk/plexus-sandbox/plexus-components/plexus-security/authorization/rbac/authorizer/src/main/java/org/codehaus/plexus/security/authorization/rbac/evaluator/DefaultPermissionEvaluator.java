@@ -46,8 +46,6 @@ public class DefaultPermissionEvaluator
     {
         String permissionResource = permission.getResource().getIdentifier();
 
-        getLogger().debug( "checking " + operation.toString() + " vs " + permissionResource );
-
         // expression evaluation checking
         if ( permissionResource.startsWith( "${" ) )
         {
@@ -75,10 +73,15 @@ public class DefaultPermissionEvaluator
                 return true;
             }
 
+            if ( resource != null )
+            {
+                getLogger().info( "matching op checking -> '" + resource.toString() + "' vs '" + permissionResource + "'" );
+            }
             // check if the resource identifier of the permission matches the resource we are checking against
             // if it does then return true
             if ( resource != null && permissionResource.equals( resource.toString() ) )
             {
+                getLogger().info("returning true!!!!!!!!!");
                 return true;
             }
         }

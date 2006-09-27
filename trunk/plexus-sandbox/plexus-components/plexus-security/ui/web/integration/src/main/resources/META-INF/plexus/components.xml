@@ -32,5 +32,21 @@
         </requirement>
       </requirements>
     </component>
+
+    <component>
+      <role>org.codehaus.plexus.rbac.profile.RoleProfile</role>
+      <role-hint>registered-user</role-hint>
+      <implementation>org.codehaus.plexus.security.ui.web.role.profile.RegisteredUserRoleProfile</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.rbac.RBACManager</role>
+          <role-hint>jdo</role-hint>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.PlexusContainer</role>
+          <field-name>container</field-name>
+        </requirement>
+      </requirements>
+    </component>
   </components>
 </plexus>
