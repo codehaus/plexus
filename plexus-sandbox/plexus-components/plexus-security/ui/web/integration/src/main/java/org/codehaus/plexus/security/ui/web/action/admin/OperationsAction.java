@@ -25,9 +25,11 @@ import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
+import org.codehaus.plexus.security.ui.web.util.OperationSorter;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,10 +39,10 @@ import java.util.List;
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
  *                   role-hint="pss-operations"
+ *                   instantiation-strategy="per-lookup"
  */
 public class OperationsAction
     extends PlexusActionSupport
-    implements Preparable
 {
     private static final String LIST = "list";
 
@@ -55,18 +57,16 @@ public class OperationsAction
 
     private List allOperations;
 
-    public void prepare()
-        throws Exception
-    {
-        if ( allOperations == null )
-        {
-            allOperations = new ArrayList();
-        }
-    }
-
     public String list()
     {
         allOperations = manager.getAllOperations();
+        
+        if(allOperations == null)
+        {
+            allOperations = Collections.EMPTY_LIST;
+        }
+        
+        Collections.sort( allOperations, new OperationSorter() );
 
         return LIST;
     }
