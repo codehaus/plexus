@@ -41,6 +41,8 @@ public class GuestRoleProfile
     public List getOperations()
     {
         List operations = new ArrayList();
+        
+        operations.add( RoleConstants.GUEST_ACCESS_OPERATION );
 
         return operations;
     }
