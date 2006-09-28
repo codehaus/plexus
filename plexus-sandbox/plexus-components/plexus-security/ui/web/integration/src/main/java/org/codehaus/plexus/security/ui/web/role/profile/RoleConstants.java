@@ -32,6 +32,9 @@ public class RoleConstants
     public static final String REGISTERED_USER_ROLE = "Registered User";
     public static final String GUEST_ROLE = "Guest";
 
+    // guest access operation
+    public static final String GUEST_ACCESS_OPERATION = "guest-access";
+
     // operations against configuration
     public static final String CONFIGURATION_EDIT_OPERATION = "configuration-edit";
 

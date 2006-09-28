@@ -17,7 +17,7 @@
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 <%@ taglib uri="/webwork" prefix="ww" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="pss" uri="plexusSecuritySystem" %>
+<%@ taglib prefix="pss" uri="/plexusSecuritySystem" %>
 <html>
 <head>
   <title>Plexus Security Example Webapp ::
@@ -53,6 +53,16 @@
   <div class="clear">
   </div>
 </div>
+
+  <p class="note">
+    Guest access is :
+    <pss:ifAuthorized permission="guest-access">
+      <b>Enabled</b>
+    </pss:ifAuthorized>
+    <pss:elseAuthorized>
+      <b>Disabled</b>
+    </pss:elseAuthorized>
+  </p>
 
   <p class="note">The gray content is arriving via the /WEB-INF/jsp/decorators/default.jsp managed by sitemesh.<br/>
   Everything within the white box below is the actual jsp content.</p>
