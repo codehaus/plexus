@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <groupId>openim</groupId>
+  <id>openim-server</id>
+  <name>OpenIM Server</name>
+  <package>net.java.dev.openim</package>
+  <currentVersion>1.2.2</currentVersion>
+
+  <inceptionYear>2003</inceptionYear>
+  <shortDescription>OpenIM Server</shortDescription>
+  <description>
+	OpenIM Server
+  </description>
+
+  <developers>
+    <developer>
+      <name>Alexis Agahi</name>
+      <email>alag@users.sf.net</email>
+      <roles>
+        <role>Release Manager.</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Peter Antman</name>
+      <email>pra@tim.se</email>
+      <roles>
+        <role>Bugfix, Patch, FlashStream, Code enhancements</role>
+      </roles>
+    </developer>
+  </developers>
+    
+  <contributors>
+    <contributor>
+      <name>Stephen McConnell</name>
+      <id>mcconnell</id>
+      <email>mcconnell@apache.org</email>
+      <organization>OSM</organization>
+      <roles>
+        <role>Avalon Merlin integration and advices</role>
+      </roles>
+    </contributor>
+  </contributors>
+  
+
+  <build>
+
+    <nagEmailAddress>alag@users.sf.net</nagEmailAddress>
+    <sourceDirectory>${basedir}/src/java</sourceDirectory>
+    <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+    <integrationUnitTestSourceDirectory/>
+    <aspectSourceDirectory/>
+<!--
+    <unitTest>
+      <includes>
+        <include>**/*TestCase*</include>
+      </includes>
+      <excludes>
+      </excludes>
+      <resources>
+        <resource>
+          <directory>${basedir}/src/test</directory>
+          <includes> 
+            <include>**/*.dtd</include>
+            <include>**/*.properties</include>
+            <include>**/*.xinfo</include>
+            <include>**/*.xtype</include>
+            <include>**/*.xprofile</include>
+            <include>**/*.xconfig</include>
+            <include>**/*.xml</include>
+            <include>**/*.xservice</include>
+            <include>**/*.mf</include>
+            <include>**/*.jar</include>
+          </includes>
+        </resource>
+      </resources>
+    </unitTest>
+-->    
+
+    <resources>
+      <resource>
+        <directory>${basedir}/src/java</directory>
+        <includes>
+          <include>**/*.dtd</include>
+          <include>**/*.properties</include>
+          <include>**/*.xinfo</include>
+          <include>**/*.xtype</include>
+          <include>**/*.xprofile</include>
+          <include>**/*.xconfig</include>
+          <include>**/*.xml</include>
+          <include>**/*.xservice</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${basedir}/conf</directory>
+        <targetPath>BLOCK-INF</targetPath>
+        <includes>
+          <include>block.xml</include>
+        </includes>
+      </resource>
+    </resources>
+    <jars></jars>
+  </build>
+
+</project>

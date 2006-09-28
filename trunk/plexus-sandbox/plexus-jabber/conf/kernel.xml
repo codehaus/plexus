@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<kernel> 
+
+   <logging priority="INFO" name="kernel">
+      <category name="/logger" priority="WARN"/>
+   </logging>
+
+   <repository>
+     <cache>./repository</cache>
+     <hosts>
+       <host path="http://open-im.net/maven/"/>
+       <host path="http://dpml.net/"/>
+       <host path="http://www.ibiblio.org/maven/"/>
+     </hosts>
+   </repository>
+
+</kernel>
+
