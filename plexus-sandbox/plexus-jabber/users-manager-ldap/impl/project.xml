@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <groupId>openim</groupId>
+  <id>openim-users-manager-ldap-impl</id>
+  <name>OpenIM UsersManager LDAP Impl</name>
+  <package>net.java.dev.openim</package>
+  <currentVersion>1.3.1</currentVersion>
+
+  <inceptionYear>2003</inceptionYear>
+  <shortDescription>OpenIM UsersManager LDAP Impl</shortDescription>
+  <description>
+	OpenIM UsersManager LDAP Impl
+  </description>
+
+  <extend>${basedir}/../../project.xml</extend>
+
+  <dependencies>
+  
+    <dependency>
+      <groupId>openim</groupId>
+      <artifactId>openim-users-manager-api</artifactId>
+      <version>1.3.1</version>
+    </dependency>
+ 
+  
+   <!-- avalon dependencies -->
+
+    <dependency>
+      <groupId>avalon-framework</groupId>
+      <artifactId>avalon-framework-api</artifactId>
+      <version>4.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>avalon-framework</groupId>
+      <artifactId>avalon-framework-impl</artifactId>
+      <version>4.2.0</version>
+    </dependency>
+  </dependencies>
+  
+  
+      
+  <build>
+
+    <nagEmailAddress>alag@users.sf.net</nagEmailAddress>
+    <sourceDirectory>${basedir}/src/java</sourceDirectory>
+    <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+    <integrationUnitTestSourceDirectory/>
+    <aspectSourceDirectory/>
+<!--
+    <unitTest>
+      <includes>
+        <include>**/*TestCase*</include>
+      </includes>
+      <excludes>
+      </excludes>
+      <resources>
+        <resource>
+          <directory>${basedir}/src/test</directory>
+          <includes> 
+            <include>**/*.dtd</include>
+            <include>**/*.properties</include>
+            <include>**/*.xinfo</include>
+            <include>**/*.xtype</include>
+            <include>**/*.xprofile</include>
+            <include>**/*.xconfig</include>
+            <include>**/*.xml</include>
+            <include>**/*.xservice</include>
+            <include>**/*.mf</include>
+            <include>**/*.jar</include>
+          </includes>
+        </resource>
+      </resources>
+    </unitTest>
+-->    
+
+    <resources>
+      <resource>
+        <directory>${basedir}/src/java</directory>
+        <includes>
+          <include>**/*.dtd</include>
+          <include>**/*.properties</include>
+          <include>**/*.xinfo</include>
+          <include>**/*.xtype</include>
+          <include>**/*.xprofile</include>
+          <include>**/*.xconfig</include>
+          <include>**/*.xml</include>
+          <include>**/*.xservice</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${basedir}/conf</directory>
+        <targetPath>BLOCK-INF</targetPath>
+        <includes>
+          <include>block.xml</include>
+        </includes>
+      </resource>
+    </resources>
+    <jars></jars>
+  </build>
+
+</project>
