@@ -36,6 +36,11 @@ public class MemoryResource
      * Field pattern
      */
     private boolean pattern = false;
+    
+    /**
+     * Field permanent
+     */
+    private boolean permanent = false;
 
     /**
      * Method equals
@@ -127,5 +132,15 @@ public class MemoryResource
         StringBuffer buf = new StringBuffer();
         buf.append( "identifier = '" ).append( getIdentifier() + "'" );
         return buf.toString();
+    }
+
+    public boolean isPermanent()
+    {
+        return permanent;
+    }
+
+    public void setPermanent( boolean permanent )
+    {
+        this.permanent = permanent;
     }
 }

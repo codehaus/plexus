@@ -17,7 +17,7 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  */
 
 import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
@@ -55,27 +55,44 @@ public class ResourcesAction
 
     public String list()
     {
-        allResources = manager.getAllResources();
-        
-        if ( allResources == null )
+        try
         {
+            allResources = manager.getAllResources();
+
+            if ( allResources == null )
+            {
+                allResources = Collections.EMPTY_LIST;
+            }
+
+            Collections.sort( allResources, new ResourceSorter() );
+        }
+        catch ( RbacManagerException e )
+        {
+            addActionError( "Unable to list all resources: " + e.getMessage() );
+            getLogger().error( "System error:", e );
             allResources = Collections.EMPTY_LIST;
         }
-        
-        Collections.sort( allResources, new ResourceSorter() );
         
         return LIST;
     }
 
     public String save()
     {
-        // todo figure out if there is anyway to actually have this model driven action work with jdo objects
-        Resource temp = manager.createResource( resourceIdentifier );
+        try
+        {
+            Resource temp = manager.createResource( resourceIdentifier );
 
-        temp.setIdentifier( resourceIdentifier );
-        temp.setPattern( isPattern );
+            temp.setIdentifier( resourceIdentifier );
+            temp.setPattern( isPattern );
 
-        manager.saveResource( temp );
+            manager.saveResource( temp );
+        }
+        catch ( RbacManagerException e )
+        {
+            addActionError( "Unable to save resource: " + e.getMessage() );
+            getLogger().error( "System error:", e );
+            allResources = Collections.EMPTY_LIST;
+        }
 
         return LIST;
     }
@@ -86,7 +103,7 @@ public class ResourcesAction
         {
             manager.removeResource( manager.getResource( resourceIdentifier ) );
         }
-        catch ( RbacObjectNotFoundException ne )
+        catch ( RbacManagerException ne )
         {
             addActionError( "unable to locate resource to remove " + resourceIdentifier );
             return ERROR;

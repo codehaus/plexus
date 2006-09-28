@@ -58,6 +58,11 @@ public class MemoryRole
      * Field permissions
      */
     private List permissions = new ArrayList();
+    
+    /**
+     * Field permanent
+     */
+    private boolean permanent = false;
 
     /**
      * Method addPermission
@@ -234,5 +239,15 @@ public class MemoryRole
         {
             this.childRoleNames = names;
         }
+    }
+
+    public boolean isPermanent()
+    {
+        return permanent;
+    }
+
+    public void setPermanent( boolean permanent )
+    {
+        this.permanent = permanent;
     }
 }

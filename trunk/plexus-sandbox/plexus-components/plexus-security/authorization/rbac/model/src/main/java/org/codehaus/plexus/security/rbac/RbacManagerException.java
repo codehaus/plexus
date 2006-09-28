@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.rbac;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2001-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,51 +17,33 @@ package org.codehaus.plexus.security.rbac;
  */
 
 /**
- * RbacObjectNotFoundException used by {@link RBACManager} methods to identify
- * when a RBAC Object Was Not Found. 
+ * RbacManagerException used by {@link RBACManager} methods to indicate
+ * a fundamental persistence or store issue. 
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class RbacObjectNotFoundException
-    extends RbacManagerException
+public class RbacManagerException
+    extends Exception
 {
-    private Object object;
-
-    public RbacObjectNotFoundException()
+    public RbacManagerException()
     {
         super();
     }
 
-    public RbacObjectNotFoundException( String message, Throwable cause )
+    public RbacManagerException( String message, Throwable cause )
     {
         super( message, cause );
     }
 
-    public RbacObjectNotFoundException( String message, Throwable cause, Object object )
-    {
-        super( message, cause );
-        this.object = object;
-    }
-
-    public RbacObjectNotFoundException( String message )
+    public RbacManagerException( String message )
     {
         super( message );
     }
 
-    public RbacObjectNotFoundException( String message, Object object )
-    {
-        super( message );
-        this.object = object;
-    }
-
-    public RbacObjectNotFoundException( Throwable cause )
+    public RbacManagerException( Throwable cause )
     {
         super( cause );
     }
 
-    public Object getObject()
-    {
-        return object;
-    }
 }

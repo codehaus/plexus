@@ -2,6 +2,7 @@ package org.codehaus.plexus.security.ui.web.role.profile;
 
 import org.codehaus.plexus.rbac.profile.AbstractRoleProfile;
 import org.codehaus.plexus.rbac.profile.RoleProfileException;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 
@@ -61,19 +62,29 @@ public class RegisteredUserRoleProfile
 
         if ( !rbacManager.resourceExists( "${username}" ) )
         {
-            username = rbacManager.createResource( "${username}" );
-            rbacManager.saveResource( username );
+            try
+            {
+                username = rbacManager.createResource( "${username}" );
+                rbacManager.saveResource( username );
+            }
+            catch ( RbacManagerException e )
+            {
+                throw new RoleProfileException( "system error with rbac manager", e );
+            }
         }
         else
         {
             try
             {
                 username = rbacManager.getResource( "${username}" );
-
             }
             catch ( RbacObjectNotFoundException ne )
             {
                 throw new RoleProfileException( "unable to return resource" );
+            }
+            catch ( RbacManagerException e )
+            {
+                throw new RoleProfileException( "system error with rbac manager", e );
             }
         }
         

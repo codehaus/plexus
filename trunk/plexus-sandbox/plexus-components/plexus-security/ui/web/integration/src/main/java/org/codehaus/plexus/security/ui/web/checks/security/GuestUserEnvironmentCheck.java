@@ -1,19 +1,5 @@
 package org.codehaus.plexus.security.ui.web.checks.security;
 
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.rbac.profile.RoleProfileManager;
-import org.codehaus.plexus.rbac.profile.RoleProfileException;
-import org.codehaus.plexus.security.system.check.EnvironmentCheck;
-import org.codehaus.plexus.security.system.SecuritySystem;
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.policy.UserSecurityPolicy;
-import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.security.rbac.Role;
-import org.codehaus.plexus.security.rbac.UserAssignment;
-
-import java.util.List;
 /*
  * Copyright 2006 The Apache Software Foundation.
  *
@@ -29,6 +15,22 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.rbac.profile.RoleProfileManager;
+import org.codehaus.plexus.rbac.profile.RoleProfileException;
+import org.codehaus.plexus.security.system.check.EnvironmentCheck;
+import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.policy.UserSecurityPolicy;
+import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
+import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.security.rbac.UserAssignment;
+
+import java.util.List;
 
 /**
  * RequiredRolesEnvironmentCheck:
@@ -101,7 +103,12 @@ public class GuestUserEnvironmentCheck
             }
             catch ( RoleProfileException rpe )
             {
-                violations.add("unable to initialize guest user properly: " + rpe.getMessage() );
+                violations.add( "unable to initialize guest user properly: " + rpe.getMessage() );
+            }
+            catch ( RbacManagerException e )
+            {
+                violations.add( "unable to initialize guest user properly: " + e.getMessage() );
+                getLogger().warn( "System error:", e );
             }
 
             checked = true;

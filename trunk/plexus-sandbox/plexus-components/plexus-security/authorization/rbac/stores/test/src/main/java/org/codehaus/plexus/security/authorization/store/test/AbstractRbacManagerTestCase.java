@@ -20,17 +20,18 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.RbacObjectInvalidException;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.security.rbac.RbacStoreException;
+import org.codehaus.plexus.security.rbac.RbacPermanentException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.Collections;
 
 /**
  * AbstractRbacManagerTestCase 
@@ -76,7 +77,7 @@ public class AbstractRbacManagerTestCase
         super.tearDown();
     }
 
-    private Role getAdminRole()
+    private Role getAdminRole() throws RbacManagerException
     {
         Role role = getRbacManager().createRole( "ADMIN" );
         role.setAssignable( false );
@@ -88,7 +89,7 @@ public class AbstractRbacManagerTestCase
         return role;
     }
 
-    private Role getDeveloperRole()
+    private Role getDeveloperRole() throws RbacManagerException
     {
         Role role = getRbacManager().createRole( "DEVELOPER" );
         role.setAssignable( true );
@@ -100,7 +101,7 @@ public class AbstractRbacManagerTestCase
         return role;
     }
 
-    private Role getProjectAdminRole()
+    private Role getProjectAdminRole() throws RbacManagerException
     {
         Role role = getRbacManager().createRole( "PROJECT_ADMIN" );
         role.setAssignable( true );
@@ -182,8 +183,8 @@ public class AbstractRbacManagerTestCase
         assertEquals( 0, eventTracker.removedPermissionNames.size() );
     }
 
-    public void testAddRemovePermission()
-        throws RbacObjectInvalidException, RbacStoreException, RbacObjectNotFoundException
+    public void testAddGetPermission()
+        throws RbacObjectInvalidException, RbacManagerException, RbacObjectNotFoundException
     {
         assertNotNull( getRbacManager() );
 
@@ -218,7 +219,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public void testAddGetRole()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         assertNotNull( getRbacManager() );
 
@@ -245,7 +246,7 @@ public class AbstractRbacManagerTestCase
     }
     
     public void testAllowRoleWithoutPermissions()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         assertNotNull( getRbacManager() );
         
@@ -276,7 +277,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public void testAddGetChildRole()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         RBACManager manager = getRbacManager();
         assertNotNull( manager );
@@ -311,7 +312,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public void testAddGetChildRoleViaName()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         RBACManager manager = getRbacManager();
         assertNotNull( manager );
@@ -350,7 +351,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public void testUserAssignmentAddRole()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         RBACManager manager = getRbacManager();
         Role adminRole = manager.saveRole( getAdminRole() );
@@ -386,7 +387,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public void testUserAssignmentWithChildRoles()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         RBACManager manager = getRbacManager();
         Role developerRole = manager.saveRole( getDeveloperRole() );
@@ -407,7 +408,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public void testGetAssignedPermissionsNoChildRoles()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         RBACManager manager = getRbacManager();
         Role admin = getAdminRole();
@@ -442,7 +443,7 @@ public class AbstractRbacManagerTestCase
         assertEquals( 0, eventTracker.removedPermissionNames.size() );
     }
 
-    public void testGlobalResource()
+    public void testGlobalResource() throws RbacManagerException
     {
         RBACManager manager = getRbacManager();
         Permission editConfiguration = manager.createPermission( "Edit Configuration" );
@@ -474,11 +475,10 @@ public class AbstractRbacManagerTestCase
         assertEquals( 0, eventTracker.removedPermissionNames.size() );
     }
 
-    public void testGlobalResourceOneLiner()
+    public void testGlobalResourceOneLiner() throws RbacObjectInvalidException, RbacManagerException
     {
         RBACManager manager = getRbacManager();
-        manager
-            .savePermission( manager.createPermission( "Edit Configuration", "edit-configuration", Resource.GLOBAL ) );
+        manager.savePermission( manager.createPermission( "Edit Configuration", "edit-configuration", Resource.GLOBAL ) );
         manager.savePermission( manager.createPermission( "Delete Configuration", "delete-configuration",
                                                           Resource.GLOBAL ) );
         
@@ -494,7 +494,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public void testUserAssignmentAddRemoveSecondRole()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         RBACManager manager = getRbacManager();
         // Setup User / Assignment with 1 role.
@@ -562,7 +562,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public void testUserAssignmentMultipleRoles()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         RBACManager manager = getRbacManager();
         // Setup User / Assignment with 1 role.
@@ -597,7 +597,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public void testUserAssignmentMultipleRolesWithChildRoles()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         RBACManager manager = getRbacManager();
         // Setup User / Assignment with 1 role.
@@ -637,7 +637,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public void testGetAssignedRoles()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         RBACManager manager = getRbacManager();
 
@@ -669,7 +669,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public void testGetAssignedPermissions()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         RBACManager manager = getRbacManager();
         // Setup 3 roles.
@@ -700,7 +700,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public Role getChildRole( RBACManager manager, Role role, String expectedChildRoleName, int childRoleCount )
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         assertTrue( role.hasChildRoles() );
         List childNames = role.getChildRoleNames();
@@ -716,7 +716,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public void testGetRolesDeep()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         RBACManager manager = getArchivaDefaults();
 
@@ -746,7 +746,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public void testGetAssignedPermissionsDeep()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         RBACManager manager = getArchivaDefaults();
 
@@ -769,7 +769,7 @@ public class AbstractRbacManagerTestCase
     }
 
     public void testLargeApplicationInit()
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         RBACManager manager = getArchivaDefaults();
 
@@ -779,7 +779,7 @@ public class AbstractRbacManagerTestCase
     }
 
     private RBACManager getArchivaDefaults()
-        throws RbacObjectNotFoundException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacManagerException
     {
         RBACManager manager = getRbacManager();
 
@@ -935,5 +935,171 @@ public class AbstractRbacManagerTestCase
         }
 
         return manager;
+    }
+    
+    public void testAddRemovePermanentPermission()
+        throws RbacObjectInvalidException, RbacManagerException, RbacObjectNotFoundException
+    {
+        assertNotNull( getRbacManager() );
+
+        Role adminRole = getRbacManager().saveRole( getAdminRole() );
+        getRbacManager().saveRole( getDeveloperRole() );
+
+        assertEquals( 2, getRbacManager().getAllRoles().size() );
+        assertEquals( 2, getRbacManager().getAllPermissions().size() );
+
+        Permission createUserPerm = getRbacManager().createPermission( "CREATE_USER", "CREATE", "User" );
+        createUserPerm.setPermanent( true );
+
+        // perm shouldn't exist in manager (yet)
+        assertEquals( 2, getRbacManager().getAllPermissions().size() );
+
+        adminRole.addPermission( createUserPerm );
+        getRbacManager().saveRole( adminRole );
+
+        // perm should exist in manager now.
+        assertEquals( 3, getRbacManager().getAllPermissions().size() );
+        Permission fetched = getRbacManager().getPermission( "CREATE_USER" );
+        assertNotNull( fetched );
+        
+        // Attempt to remove perm now.
+        try
+        {
+            // Use permission name technique first.
+            getRbacManager().removePermission( "CREATE_USER" );
+        }
+        catch ( RbacPermanentException e )
+        {
+            // expected path.
+        }
+
+        try
+        {
+            // Use permission object technique next.
+            getRbacManager().removePermission( fetched );
+        }
+        catch ( RbacPermanentException e )
+        {
+            // expected path.
+        }
+        
+        // Assert some event tracker stuff
+        assertNotNull( eventTracker );
+        assertEquals( 1, eventTracker.initCount );
+        assertTrue( eventTracker.lastDbFreshness.booleanValue() );
+
+        assertEquals( 2, eventTracker.addedRoleNames.size() );
+        assertEquals( 0, eventTracker.removedRoleNames.size() );
+        assertEquals( 3, eventTracker.addedPermissionNames.size() );
+        assertEquals( 0, eventTracker.removedPermissionNames.size() );
+    }
+    
+    public void testAddRemovePermanentRole()
+        throws RbacManagerException, RbacObjectNotFoundException
+    {
+        assertNotNull( getRbacManager() );
+
+        Role adminRole = getAdminRole();
+        adminRole.setPermanent( true );
+        
+        adminRole = getRbacManager().saveRole( adminRole );
+        Role develRole = getRbacManager().saveRole( getDeveloperRole() );
+
+        assertEquals( 2, getRbacManager().getAllRoles().size() );
+
+        Role actualAdmin = getRbacManager().getRole( adminRole.getName() );
+        Role actualDevel = getRbacManager().getRole( develRole.getName() );
+
+        assertEquals( adminRole, actualAdmin );
+        assertEquals( develRole, actualDevel );
+        
+        // Attempt to remove perm now.
+        try
+        {
+            // Use role name technique first.
+            getRbacManager().removeRole( adminRole.getName() );
+        }
+        catch ( RbacPermanentException e )
+        {
+            // expected path.
+        }
+
+        try
+        {
+            // Use role object technique next.
+            getRbacManager().removeRole( adminRole );
+        }
+        catch ( RbacPermanentException e )
+        {
+            // expected path.
+        }
+
+        /* Assert some event tracker stuff */
+        assertNotNull( eventTracker );
+        assertEquals( 1, eventTracker.initCount );
+        assertTrue( eventTracker.lastDbFreshness.booleanValue() );
+
+        assertEquals( 2, eventTracker.addedRoleNames.size() );
+        assertEquals( 0, eventTracker.removedRoleNames.size() );
+        assertEquals( 2, eventTracker.addedPermissionNames.size() );
+        assertEquals( 0, eventTracker.removedPermissionNames.size() );
+    }
+    
+    public void testAddRemovePermanentOperation()
+    throws RbacManagerException
+    {
+        assertNotNull( getRbacManager() );
+
+        Role adminRole = getRbacManager().saveRole( getAdminRole() );
+        getRbacManager().saveRole( getDeveloperRole() );
+
+        assertEquals( 2, getRbacManager().getAllRoles().size() );
+        assertEquals( 2, getRbacManager().getAllPermissions().size() );
+
+        Permission createUserPerm = getRbacManager().createPermission( "CREATE_USER", "CREATE", "User" );
+        createUserPerm.getOperation().setPermanent( true );
+        
+        // perm shouldn't exist in manager (yet)
+        assertEquals( 2, getRbacManager().getAllPermissions().size() );
+        assertEquals( 1, getRbacManager().getAllOperations().size() );
+
+        adminRole.addPermission( createUserPerm );
+        getRbacManager().saveRole( adminRole );
+
+        // perm should exist in manager now.
+        assertEquals( 2, getRbacManager().getAllOperations().size() );
+        Operation fetched = getRbacManager().getOperation( "CREATE" );
+        assertNotNull( fetched );
+        
+        // Attempt to remove operation now.
+        try
+        {
+            // Use operation name technique first.
+            getRbacManager().removeOperation( "CREATE" );
+        }
+        catch ( RbacPermanentException e )
+        {
+            // expected path.
+        }
+
+        try
+        {
+            // Use operation object technique next.
+            getRbacManager().removeOperation( fetched );
+        }
+        catch ( RbacPermanentException e )
+        {
+            // expected path.
+        }
+        
+        // Assert some event tracker stuff
+        assertNotNull( eventTracker );
+        assertEquals( 1, eventTracker.initCount );
+        assertTrue( eventTracker.lastDbFreshness.booleanValue() );
+
+        assertEquals( 2, eventTracker.addedRoleNames.size() );
+        assertEquals( 0, eventTracker.removedRoleNames.size() );
+        assertEquals( 3, eventTracker.addedPermissionNames.size() );
+        assertEquals( 0, eventTracker.removedPermissionNames.size() );
     }
 }

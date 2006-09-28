@@ -28,9 +28,10 @@ import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManagerListener;
 import org.codehaus.plexus.security.rbac.RBACObjectAssertions;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.RbacObjectInvalidException;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.security.rbac.RbacStoreException;
+import org.codehaus.plexus.security.rbac.RbacPermanentException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
@@ -79,6 +80,7 @@ public class JdoRbacManager
      *
      * @param name the name.
      * @return the new {@link Role} object with an empty (non-null) {@link Role#getChildRoles()} object.
+     * @throws RbacManagerException 
      */
     public Role createRole( String name )
     {
@@ -88,7 +90,7 @@ public class JdoRbacManager
         {
             role = getRole( name );
         }
-        catch ( RbacObjectNotFoundException e )
+        catch ( RbacManagerException e )
         {
             role = new JdoRole();
             role.setName( name );
@@ -103,7 +105,7 @@ public class JdoRbacManager
      * @param role
      */
     public Role saveRole( Role role )
-        throws RbacObjectInvalidException, RbacStoreException
+        throws RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( role );
         
@@ -117,7 +119,14 @@ public class JdoRbacManager
 
     public boolean roleExists( String name )
     {
-        return jdo.objectExistsById( JdoRole.class, name );
+        try
+        {
+            return jdo.objectExistsById( JdoRole.class, name );
+        }
+        catch ( RbacManagerException e )
+        {
+            return false;
+        }
     }
 
     /**
@@ -126,10 +135,10 @@ public class JdoRbacManager
      * @param roleName
      * @return
      * @throws RbacObjectNotFoundException
-     * @throws RbacStoreException
+     * @throws RbacManagerException
      */
     public Role getRole( String roleName )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         return (Role) jdo.getObjectById( JdoRole.class, roleName, ROLE_DETAIL );
     }
@@ -138,20 +147,26 @@ public class JdoRbacManager
      * Method getRoles
      */
     public List getAllRoles()
-        throws RbacStoreException
+        throws RbacManagerException
     {
         return jdo.getAllObjects( JdoRole.class );
     }
 
     public void removeRole( Role role )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( role );
+        
+        if ( role.isPermanent() )
+        {
+            throw new RbacPermanentException( "Unable to delete permanent role [" + role.getName() + "]" );
+        }
+        
         jdo.removeObject( role );
     }
     
     public void saveRoles( Collection roles )
-        throws RbacObjectInvalidException, RbacStoreException
+        throws RbacObjectInvalidException, RbacManagerException
     {
         if ( roles == null )
         {
@@ -178,7 +193,7 @@ public class JdoRbacManager
                 {
                     // This is a fatal error that means we need to fix our code.
                     // Leave it as a JDOUserException, it's intentional.
-                    throw new RbacStoreException( "Existing Role is not detached: " + role );
+                    throw new RbacManagerException( "Existing Role is not detached: " + role );
                 }
 
                 RBACObjectAssertions.assertValid( role );
@@ -208,8 +223,9 @@ public class JdoRbacManager
      *
      * @param name the name.
      * @return the new Permission.
+     * @throws RbacManagerException 
      */
-    public Permission createPermission( String name )
+    public Permission createPermission( String name ) throws RbacManagerException
     {
         Permission permission;
         
@@ -240,8 +256,9 @@ public class JdoRbacManager
      * @param operationName the {@link Operation#setName(String)} value
      * @param resourceIdentifier the {@link Resource#setIdentifier(String)} value
      * @return the new Permission.
+     * @throws RbacManagerException 
      */
-    public Permission createPermission( String name, String operationName, String resourceIdentifier )
+    public Permission createPermission( String name, String operationName, String resourceIdentifier ) throws RbacManagerException
     {
         Permission permission = new JdoPermission();
         permission.setName( name );
@@ -274,7 +291,7 @@ public class JdoRbacManager
     }
 
     public Permission savePermission( Permission permission )
-        throws RbacObjectInvalidException, RbacStoreException
+        throws RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( permission );
         
@@ -288,25 +305,38 @@ public class JdoRbacManager
 
     public boolean permissionExists( String name )
     {
-        return jdo.objectExistsById( JdoPermission.class, name );
+        try
+        {
+            return jdo.objectExistsById( JdoPermission.class, name );
+        }
+        catch ( RbacManagerException e )
+        {
+            return false;
+        }
     }
 
     public Permission getPermission( String permissionName )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         return (Permission) jdo.getObjectById( JdoPermission.class, permissionName, null );
     }
 
     public List getAllPermissions()
-        throws RbacStoreException
+        throws RbacManagerException
     {
         return jdo.getAllObjects( JdoPermission.class );
     }
 
     public void removePermission( Permission permission )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( permission );
+
+        if ( permission.isPermanent() )
+        {
+            throw new RbacPermanentException( "Unable to delete permanent permission [" + permission.getName() + "]" );
+        }
+
         jdo.removeObject( permission );
     }
 
@@ -322,8 +352,9 @@ public class JdoRbacManager
      *
      * @param name the name.
      * @return the new Operation.
+     * @throws RbacManagerException 
      */
-    public Operation createOperation( String name )
+    public Operation createOperation( String name ) throws RbacManagerException
     {
         Operation operation;
         
@@ -341,7 +372,7 @@ public class JdoRbacManager
     }
 
     public Operation saveOperation( Operation operation )
-        throws RbacObjectInvalidException, RbacStoreException
+        throws RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( operation );
         return (Operation) jdo.saveObject( operation, null );
@@ -354,25 +385,38 @@ public class JdoRbacManager
 
     public boolean operationExists( String name )
     {
-        return jdo.objectExistsById( JdoOperation.class, name );
+        try
+        {
+            return jdo.objectExistsById( JdoOperation.class, name );
+        }
+        catch ( RbacManagerException e )
+        {
+            return false;
+        }
     }
 
     public Operation getOperation( String operationName )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         return (Operation) jdo.getObjectById( JdoOperation.class, operationName, null );
     }
 
     public List getAllOperations()
-        throws RbacStoreException
+        throws RbacManagerException
     {
         return jdo.getAllObjects( JdoOperation.class );
     }
 
     public void removeOperation( Operation operation )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( operation );
+        
+        if ( operation.isPermanent() )
+        {
+            throw new RbacPermanentException( "Unable to delete permanent operation [" + operation.getName() + "]" );
+        }
+        
         jdo.removeObject( operation );
     }
 
@@ -388,8 +432,9 @@ public class JdoRbacManager
      *
      * @param identifier the identifier.
      * @return the new Resource.
+     * @throws RbacManagerException 
      */
-    public Resource createResource( String identifier )
+    public Resource createResource( String identifier ) throws RbacManagerException
     {
         Resource resource;
         
@@ -409,7 +454,7 @@ public class JdoRbacManager
     }
 
     public Resource saveResource( Resource resource )
-        throws RbacObjectInvalidException, RbacStoreException
+        throws RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( resource );
         return (Resource) jdo.saveObject( resource, null );
@@ -422,25 +467,38 @@ public class JdoRbacManager
 
     public boolean resourceExists( String identifier )
     {
-        return jdo.objectExistsById( JdoResource.class, identifier );
+        try
+        {
+            return jdo.objectExistsById( JdoResource.class, identifier );
+        }
+        catch ( RbacManagerException e )
+        {
+            return false;
+        }
     }
 
     public Resource getResource( String resourceIdentifier )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         return (Resource) jdo.getObjectById( JdoResource.class, resourceIdentifier, null );
     }
 
     public List getAllResources()
-        throws RbacStoreException
+        throws RbacManagerException
     {
         return jdo.getAllObjects( JdoResource.class );
     }
 
     public void removeResource( Resource resource )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( resource );
+        
+        if ( resource.isPermanent() )
+        {
+            throw new RbacPermanentException( "Unable to delete permanent resource [" + resource.getIdentifier() + "]" );
+        }
+        
         jdo.removeObject( resource );
     }
 
@@ -457,6 +515,7 @@ public class JdoRbacManager
      *
      * @param principal the principal reference to the user.
      * @return the new UserAssignment with an empty (non-null) {@link UserAssignment#getRoles()} object.
+     * @throws RbacManagerException 
      */
     public UserAssignment createUserAssignment( String principal )
     {
@@ -466,7 +525,7 @@ public class JdoRbacManager
         {
             ua = getUserAssignment( principal );
         }
-        catch ( RbacObjectNotFoundException e )
+        catch ( RbacManagerException e )
         {
             ua = new JdoUserAssignment();
             ua.setPrincipal( principal );
@@ -481,7 +540,7 @@ public class JdoRbacManager
      * @param userAssignment
      */
     public UserAssignment saveUserAssignment( UserAssignment userAssignment )
-        throws RbacObjectInvalidException, RbacStoreException
+        throws RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( "Save User Assignment", userAssignment );
         
@@ -490,7 +549,14 @@ public class JdoRbacManager
     
     public boolean userAssignmentExists( String principal )
     {
-        return jdo.objectExistsById( JdoUserAssignment.class, principal );
+        try
+        {
+            return jdo.objectExistsById( JdoUserAssignment.class, principal );
+        }
+        catch ( RbacManagerException e )
+        {
+            return false;
+        }
     }
 
     public boolean userAssignmentExists( UserAssignment assignment )
@@ -499,7 +565,7 @@ public class JdoRbacManager
     }
 
     public UserAssignment getUserAssignment( String principal )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         return (UserAssignment) jdo.getObjectById( JdoUserAssignment.class, principal, ROLE_DETAIL );
     }
@@ -508,7 +574,7 @@ public class JdoRbacManager
      * Method getAssignments
      */
     public List getAllUserAssignments()
-        throws RbacStoreException
+        throws RbacManagerException
     {
         return jdo.getAllObjects( JdoUserAssignment.class );
     }
@@ -519,9 +585,15 @@ public class JdoRbacManager
      * @param userAssignment
      */
     public void removeUserAssignment( UserAssignment userAssignment )
-        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( userAssignment );
+        
+        if ( userAssignment.isPermanent() )
+        {
+            throw new RbacPermanentException( "Unable to delete permanent user assignment [" + userAssignment.getPrincipal() + "]" );
+        }
+        
         jdo.removeObject( userAssignment );
     }
 

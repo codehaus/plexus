@@ -49,6 +49,11 @@ public class MemoryPermission
      * Field resource
      */
     private MemoryResource resource;
+    
+    /**
+     * Field permanent
+     */
+    private boolean permanent = false;
 
     /**
      * Method equals
@@ -174,5 +179,15 @@ public class MemoryPermission
         buf.append( "name = '" );
         buf.append( getName() + "'" );
         return buf.toString();
+    }
+
+    public boolean isPermanent()
+    {
+        return permanent;
+    }
+
+    public void setPermanent( boolean permanent )
+    {
+        this.permanent = permanent;
     }
 }

@@ -17,8 +17,7 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  */
 
 import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.security.rbac.RbacStoreException;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
@@ -129,12 +128,7 @@ public class AssignmentsAction
 
             this.availableRoles = new ArrayList( manager.getAllAssignableRoles() );
         }
-        catch ( RbacStoreException e )
-        {
-            addActionError( e.getMessage() );
-            return ERROR;
-        }
-        catch ( RbacObjectNotFoundException e )
+        catch ( RbacManagerException e )
         {
             addActionError( e.getMessage() );
             return ERROR;
@@ -179,7 +173,7 @@ public class AssignmentsAction
 
                     manager.saveUserAssignment( assignment );
                 }
-                catch ( RbacObjectNotFoundException ne )
+                catch ( RbacManagerException ne )
                 {
                     addActionError( "error adding the selected roles: " + ne.getMessage() );
                     return ERROR;
@@ -208,7 +202,7 @@ public class AssignmentsAction
                     assignment.setRoleNames( roles );
                     manager.saveUserAssignment( assignment );
                 }
-                catch ( RbacObjectNotFoundException ne )
+                catch ( RbacManagerException ne )
                 {
                     addActionError( "error removing the selected roles: " + ne.getMessage() );
                     return ERROR;

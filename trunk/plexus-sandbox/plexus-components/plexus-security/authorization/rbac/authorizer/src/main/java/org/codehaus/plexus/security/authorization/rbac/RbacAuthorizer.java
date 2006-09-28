@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.authorization.rbac;
 
 /*
- * Copyright 2005 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvalu
 import org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvaluator;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
@@ -63,7 +64,7 @@ public class RbacAuthorizer
      * @plexus.requirement role-hint="default"
      */
     private PermissionEvaluator evaluator;
-    
+
     public String getId()
     {
         return "RBAC Authorizer - " + this.getClass().getName();
@@ -117,19 +118,24 @@ public class RbacAuthorizer
 
             }
 
-            return new AuthorizationResult(false, null, new NotAuthorizedException( "no matching permissions" ) );
+            return new AuthorizationResult( false, null, new NotAuthorizedException( "no matching permissions" ) );
         }
         catch ( PermissionEvaluationException pe )
         {
             return new AuthorizationResult( false, null, pe );
         }
-        catch ( RbacObjectNotFoundException nfe)
+        catch ( RbacObjectNotFoundException nfe )
         {
             return new AuthorizationResult( false, null, nfe );
         }
         catch ( UserNotFoundException ne )
         {
-            return new AuthorizationResult(false, null, new NotAuthorizedException( "no matching permissions, guest not found" ) );
+            return new AuthorizationResult( false, null,
+                                            new NotAuthorizedException( "no matching permissions, guest not found" ) );
+        }
+        catch ( RbacManagerException rme )
+        {
+            return new AuthorizationResult( false, null, rme );
         }
     }
 }

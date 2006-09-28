@@ -95,4 +95,18 @@ public interface UserAssignment
      * @param roles the List of &lt;{@link String}&gt; objects representing the Role Names.
      */
     public void setRoleNames( List roles );
+    
+    /**
+     * Test to see if the object is a permanent object or not.
+     * 
+     * @return true if the object is permanent.
+     */
+    public boolean isPermanent();
+
+    /**
+     * Set flag indicating if the object is a permanent object or not.
+     * 
+     * @param permanent true if the object is permanent.
+     */
+    public void setPermanent( boolean permanent );
 }
