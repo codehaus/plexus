@@ -83,6 +83,56 @@ public class AbstractUserManagerTestCase
 
         assertEquals( "New UserManager should contain no users.", 0, userManager.getUsers().size() );
     }
+    
+    public void testFindUserByNullPrincipal()
+    {
+        try
+        {
+            Object obj = null;
+            getUserManager().findUser( obj );
+            fail( "findUser() with null Object Should have thrown a UserNotFoundException." );
+        }
+        catch ( UserNotFoundException e )
+        {
+            // Expected Path.
+        }
+    }
+    
+    public void testFindUserByEmptyUsername()
+    {
+        try
+        {
+            String username = null;
+            getUserManager().findUser( username );
+            fail( "findUser() with null username Should have thrown a UserNotFoundException." );
+        }
+        catch ( UserNotFoundException e )
+        {
+            // Expected Path.
+        }
+        
+        try
+        {
+            String username = "";
+            getUserManager().findUser( username );
+            fail( "findUser() with empty username Should have thrown a UserNotFoundException." );
+        }
+        catch ( UserNotFoundException e )
+        {
+            // Expected Path.
+        }
+        
+        try
+        {
+            String username = "   ";
+            getUserManager().findUser( username );
+            fail( "findUser() with all whitespace username Should have thrown a UserNotFoundException." );
+        }
+        catch ( UserNotFoundException e )
+        {
+            // Expected Path.
+        }
+    }
 
     public void testAddFindUserByPrincipal()
         throws UserNotFoundException
