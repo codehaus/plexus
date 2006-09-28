@@ -90,4 +90,10 @@ public class RegisteredUserRoleProfile
         
         return username;
     }
+
+
+    public boolean isPermanent()
+    {
+        return true;
+    }
 }

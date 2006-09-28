@@ -49,4 +49,10 @@ public class GuestRoleProfile
     {
         return false;
     }
+
+
+    public boolean isPermanent()
+    {
+        return true;
+    }
 }
