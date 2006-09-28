@@ -58,4 +58,10 @@ public class UserAdministratorRoleProfile
     {
         return true;
     }
+
+
+    public boolean isPermanent()
+    {
+        return true;
+    }
 }

@@ -59,4 +59,10 @@ public class SystemAdministratorRoleProfile
     {
         return true;
     }
+
+
+    public boolean isPermanent()
+    {
+        return true;
+    }
 }
