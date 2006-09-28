@@ -46,6 +46,11 @@ public interface DynamicRoleProfile
      */
     public boolean isAssignable();
 
+    /**
+     * are roles based on this role profile permanent
+     */
+    public boolean isPermanent();
+
     public List getChildRoles();
 
     public List getDynamicChildRoles( String resource );
