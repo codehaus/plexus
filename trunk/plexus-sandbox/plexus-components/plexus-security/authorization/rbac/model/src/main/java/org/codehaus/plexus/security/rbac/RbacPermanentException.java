@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.rbac;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2001-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,34 +17,31 @@ package org.codehaus.plexus.security.rbac;
  */
 
 /**
- * RbacStoreException used by {@link RBACManager} methods to indicate
- * a fundamental persistence or store issue. 
+ * RbacPermanentException - tossed when a forbidden action against a permanent RBAC Object occurs.  
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class RbacStoreException
-    extends RuntimeException
+public class RbacPermanentException
+    extends RbacManagerException
 {
-
-    public RbacStoreException()
+    public RbacPermanentException()
     {
         super();
     }
 
-    public RbacStoreException( String message, Throwable cause )
+    public RbacPermanentException( String message, Throwable cause )
     {
         super( message, cause );
     }
 
-    public RbacStoreException( String message )
+    public RbacPermanentException( String message )
     {
         super( message );
     }
 
-    public RbacStoreException( Throwable cause )
+    public RbacPermanentException( Throwable cause )
     {
         super( cause );
     }
-
 }

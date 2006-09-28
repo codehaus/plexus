@@ -17,8 +17,7 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  */
 
 import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.security.rbac.RbacStoreException;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
@@ -102,14 +101,9 @@ public class EditRoleAction
             childRoleNames = role.getChildRoleNames();
             permissions = role.getPermissions();
         }
-        catch ( RbacStoreException e )
+        catch ( RbacManagerException e )
         {
             addActionError( "Unable to get Role '" + name + "': " + e.getMessage() );
-            return ERROR;
-        }
-        catch ( RbacObjectNotFoundException e )
-        {
-            addActionError( "Unable to get Role '" + name + "': Role not found." );
             return ERROR;
         }
 
@@ -150,17 +144,12 @@ public class EditRoleAction
             
             addActionMessage( "Successfully Saved Role '" + name + "'" );
         }
-        catch ( RbacStoreException e )
+        catch ( RbacManagerException e )
         {
             addActionError( "Unable to get Role '" + name + "': " + e.getMessage() );
             return ERROR;
         }
-        catch ( RbacObjectNotFoundException e )
-        {
-            addActionError( "Unable to get Role '" + name + "': Role not found." );
-            return ERROR;
-        }        
-        
+                
         return SUCCESS;
     }
 

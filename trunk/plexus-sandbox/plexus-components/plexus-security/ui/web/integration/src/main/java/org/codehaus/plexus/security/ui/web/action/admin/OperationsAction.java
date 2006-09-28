@@ -16,11 +16,9 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
-import com.opensymphony.xwork.Preparable;
-
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
@@ -28,7 +26,6 @@ import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.security.ui.web.util.OperationSorter;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,25 +56,44 @@ public class OperationsAction
 
     public String list()
     {
-        allOperations = manager.getAllOperations();
-        
-        if(allOperations == null)
+        try
         {
+            allOperations = manager.getAllOperations();
+
+            if ( allOperations == null )
+            {
+                allOperations = Collections.EMPTY_LIST;
+            }
+
+            Collections.sort( allOperations, new OperationSorter() );
+        }
+        catch ( RbacManagerException e )
+        {
+            addActionError( "Unable to list all operations: " + e.getMessage() );
+            getLogger().error( "System error:", e );
             allOperations = Collections.EMPTY_LIST;
         }
-        
-        Collections.sort( allOperations, new OperationSorter() );
 
         return LIST;
     }
 
     public String save()
     {
-        Operation temp = manager.createOperation( operationName );
+        try
+        {
+            Operation temp = manager.createOperation( operationName );
 
-        temp.setDescription( description );
+            temp.setDescription( description );
 
-        manager.saveOperation( temp );
+            manager.saveOperation( temp );
+        }
+        catch ( RbacManagerException e )
+        {
+            addActionError( "Unable to save operation: " + e.getMessage() );
+            getLogger().error( "System error:", e );
+            allOperations = Collections.EMPTY_LIST;
+        }
+
         return LIST;
     }
 
@@ -87,7 +103,7 @@ public class OperationsAction
         {
             manager.removeOperation( manager.getOperation( operationName ) );
         }
-        catch ( RbacObjectNotFoundException ne )
+        catch ( RbacManagerException ne )
         {
             addActionError( "Unable to remove operation '" + operationName + "'" );
             return ERROR;

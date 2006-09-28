@@ -24,6 +24,7 @@ import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.rbac.profile.RoleProfileManager;
@@ -130,6 +131,12 @@ public class AddAdminUserAction
         catch ( RoleProfileException rpe )
         {
             addActionError( "Unable to assign system administrator role" );
+            return ERROR;
+        }
+        catch ( RbacManagerException e )
+        {
+            addActionError( "Unable to assign system administrator role" );
+            getLogger().error( "System error:", e );
             return ERROR;
         }
 

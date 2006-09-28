@@ -23,7 +23,7 @@ package org.codehaus.plexus.security.rbac;
  * @version $Id$
  */
 public class RbacObjectInvalidException
-    extends RbacStoreException
+    extends RbacManagerException
 {
 
     public RbacObjectInvalidException()

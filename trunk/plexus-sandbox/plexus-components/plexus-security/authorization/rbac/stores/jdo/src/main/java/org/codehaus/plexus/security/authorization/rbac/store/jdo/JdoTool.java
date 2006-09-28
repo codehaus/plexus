@@ -23,7 +23,7 @@ import org.codehaus.plexus.security.authorization.rbac.jdo.JdoRole;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManagerListener;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.security.rbac.RbacStoreException;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -225,7 +225,7 @@ public class JdoTool
     }
 
     public Object getObjectById( Class clazz, String id, String fetchGroup )
-        throws RbacObjectNotFoundException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         if ( StringUtils.isEmpty( id ) )
         {
@@ -262,7 +262,7 @@ public class JdoTool
         }
         catch ( JDOException e )
         {
-            throw new RbacStoreException( "Error in JDO during get of RBAC object id '" + id + "' of type "
+            throw new RbacManagerException( "Error in JDO during get of RBAC object id '" + id + "' of type "
                 + clazz.getName() + " using fetch-group '" + fetchGroup + "'", e );
         }
         finally
@@ -276,7 +276,7 @@ public class JdoTool
         return ( JDOHelper.getObjectId( object ) != null );
     }
 
-    public boolean objectExistsById( Class clazz, String id )
+    public boolean objectExistsById( Class clazz, String id ) throws RbacManagerException
     {
         try
         {
@@ -289,11 +289,11 @@ public class JdoTool
         }
     }
 
-    public Object removeObject( Object o )
+    public Object removeObject( Object o ) throws RbacManagerException
     {
         if ( o == null )
         {
-            throw new RbacStoreException( "Unable to remove null object '" + o.getClass().getName() + "'" );
+            throw new RbacManagerException( "Unable to remove null object '" + o.getClass().getName() + "'" );
         }
 
         PersistenceManager pm = getPersistenceManager();

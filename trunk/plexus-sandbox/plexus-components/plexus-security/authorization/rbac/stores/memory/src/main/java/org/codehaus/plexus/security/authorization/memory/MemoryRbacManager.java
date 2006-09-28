@@ -23,7 +23,8 @@ import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RBACObjectAssertions;
 import org.codehaus.plexus.security.rbac.RbacObjectInvalidException;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.security.rbac.RbacStoreException;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
+import org.codehaus.plexus.security.rbac.RbacPermanentException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
@@ -69,7 +70,7 @@ public class MemoryRbacManager
     // ----------------------------------------------------------------------
 
     public Role saveRole( Role role )
-        throws RbacStoreException
+        throws RbacManagerException
     {
         RBACObjectAssertions.assertValid( "Save Role", role );
 
@@ -92,7 +93,7 @@ public class MemoryRbacManager
     }
 
     public void saveRoles( Collection roles )
-        throws RbacObjectInvalidException, RbacStoreException
+        throws RbacObjectInvalidException, RbacManagerException
     {
         if ( roles == null )
         {
@@ -128,9 +129,14 @@ public class MemoryRbacManager
     }
 
     public void removeRole( Role role )
-        throws RbacStoreException, RbacObjectNotFoundException
+        throws RbacManagerException, RbacObjectNotFoundException
     {
         RBACObjectAssertions.assertValid( "Remove Role", role );
+        
+        if ( role.isPermanent() )
+        {
+            throw new RbacPermanentException( "Unable to delete permanent role [" + role.getName() + "]" );
+        }
 
         assertRoleExists( role.getName() );
         
@@ -140,7 +146,7 @@ public class MemoryRbacManager
     }
 
     public List getAllRoles()
-        throws RbacStoreException
+        throws RbacManagerException
     {
         triggerInit();
         
@@ -152,7 +158,7 @@ public class MemoryRbacManager
     // ----------------------------------------------------------------------
 
     public Operation saveOperation( Operation operation )
-        throws RbacStoreException
+        throws RbacManagerException
     {
         triggerInit();
         
@@ -163,7 +169,7 @@ public class MemoryRbacManager
     }
 
     public Permission savePermission( Permission permission )
-        throws RbacStoreException
+        throws RbacManagerException
     {
         triggerInit();
         
@@ -179,7 +185,7 @@ public class MemoryRbacManager
     }
 
     public Resource saveResource( Resource resource )
-        throws RbacStoreException
+        throws RbacManagerException
     {
         triggerInit();
         
@@ -190,7 +196,7 @@ public class MemoryRbacManager
     }
 
     public UserAssignment saveUserAssignment( UserAssignment userAssignment )
-        throws RbacStoreException
+        throws RbacManagerException
     {
         triggerInit();
         
@@ -200,7 +206,7 @@ public class MemoryRbacManager
         return userAssignment;
     }
 
-    public Operation createOperation( String name )
+    public Operation createOperation( String name ) throws RbacManagerException
     {
         Operation operation;
         
@@ -217,7 +223,7 @@ public class MemoryRbacManager
         return operation;
     }
 
-    public Permission createPermission( String name )
+    public Permission createPermission( String name ) throws RbacManagerException
     {
         Permission permission;
         
@@ -234,7 +240,7 @@ public class MemoryRbacManager
         return permission;
     }
 
-    public Permission createPermission( String name, String operationName, String resourceIdentifier )
+    public Permission createPermission( String name, String operationName, String resourceIdentifier ) throws RbacManagerException
     {
         Permission permission;
         
@@ -244,7 +250,7 @@ public class MemoryRbacManager
             
             if ( StringUtils.equals( operationName, permission.getOperation().getName() ) )
             {
-                throw new RbacStoreException( "Attempted to create a permission named '" + name + 
+                throw new RbacManagerException( "Attempted to create a permission named '" + name + 
                                               "' with an operation named '" + operationName + 
                                               "', but that overides the existing '" + name + 
                                               "' permission with operation '" + 
@@ -264,7 +270,7 @@ public class MemoryRbacManager
         return permission;
     }
 
-    public Resource createResource( String identifier )
+    public Resource createResource( String identifier ) throws RbacManagerException
     {
         Resource resource;
         
@@ -299,7 +305,7 @@ public class MemoryRbacManager
     }
 
     public Permission getPermission( String permissionName )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         triggerInit();
         
@@ -309,7 +315,7 @@ public class MemoryRbacManager
     }
 
     public List getResources()
-        throws RbacStoreException
+        throws RbacManagerException
     {
         triggerInit();
         
@@ -317,9 +323,14 @@ public class MemoryRbacManager
     }
 
     public void removeOperation( Operation operation )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( "Remove Operation", operation );
+        
+        if ( operation.isPermanent() )
+        {
+            throw new RbacPermanentException( "Unable to delete permanent operation [" + operation.getName() + "]" );
+        }
 
         assertOpertionExists( operation.getName() );
 
@@ -336,9 +347,14 @@ public class MemoryRbacManager
     }
 
     public void removePermission( Permission permission )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( "Remove Permission", permission );
+        
+        if ( permission.isPermanent() )
+        {
+            throw new RbacPermanentException( "Unable to delete permanent permission [" + permission.getName() + "]" );
+        }
         
         assertPermissionExists( permission.getName() );
 
@@ -348,9 +364,14 @@ public class MemoryRbacManager
     }
 
     public void removeResource( Resource resource )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( "Remove Resource", resource );
+        
+        if ( resource.isPermanent() )
+        {
+            throw new RbacPermanentException( "Unable to delete permanent resource [" + resource.getIdentifier() + "]" );
+        }
 
         assertResourceExists( resource.getIdentifier() );
 
@@ -376,16 +397,21 @@ public class MemoryRbacManager
     }
 
     public void removeUserAssignment( UserAssignment userAssignment )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( "Remove User Assignment", userAssignment );
+        
+        if ( userAssignment.isPermanent() )
+        {
+            throw new RbacPermanentException( "Unable to delete permanent user assignment [" + userAssignment.getPrincipal() + "]" );
+        }
 
         assertUserAssignmentExists( userAssignment.getPrincipal() );
 
         userAssignments.remove( userAssignment.getPrincipal() );
     }
 
-    public UserAssignment createUserAssignment( String principal )
+    public UserAssignment createUserAssignment( String principal ) throws RbacManagerException
     {
         try
         {
@@ -401,7 +427,7 @@ public class MemoryRbacManager
     }
 
     public List getAllOperations()
-        throws RbacStoreException
+        throws RbacManagerException
     {
         triggerInit();
         
@@ -409,7 +435,7 @@ public class MemoryRbacManager
     }
 
     public List getAllPermissions()
-        throws RbacStoreException
+        throws RbacManagerException
     {
         triggerInit();
         
@@ -417,7 +443,7 @@ public class MemoryRbacManager
     }
 
     public List getAllResources()
-        throws RbacStoreException
+        throws RbacManagerException
     {
         triggerInit();
         
@@ -425,7 +451,7 @@ public class MemoryRbacManager
     }
 
     public List getAllUserAssignments()
-        throws RbacStoreException
+        throws RbacManagerException
     {
         triggerInit();
         
@@ -433,7 +459,7 @@ public class MemoryRbacManager
     }
 
     public UserAssignment getUserAssignment( String principal )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         triggerInit();
         
@@ -443,7 +469,7 @@ public class MemoryRbacManager
     }
 
     public Operation getOperation( String operationName )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         triggerInit();
         
@@ -453,7 +479,7 @@ public class MemoryRbacManager
     }
 
     public Resource getResource( String resourceIdentifier )
-        throws RbacObjectNotFoundException, RbacStoreException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         triggerInit();
         
