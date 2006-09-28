@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.ui.web.interceptor;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.rbac.Resource;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -40,7 +42,14 @@ public class SecureActionBundle
         AUTHONLY = new SecureActionBundle();
         AUTHONLY.setRequiresAuthentication( true );
     }
-    
+
+    /**
+     * Add an authorization tuple
+     *
+     * @param operation
+     * @param resource
+     * @throws SecureActionException
+     */
     public void addRequiredAuthorization( String operation, String resource )
         throws SecureActionException
     {
@@ -51,6 +60,25 @@ public class SecureActionBundle
         else
         {
             throw new SecureActionException( "operation and resource are required to be non-null" );
+        }
+    }
+
+    /**
+     * add an authorization tuple, assuming the resource part of it is Resource.GLOBAL
+     *
+     * @param operation
+     * @throws SecureActionException
+     */
+    public void addRequiredAuthorization( String operation )
+        throws SecureActionException
+    {
+        if ( operation != null )
+        {
+            authorizationTuples.add( new AuthorizationTuple( operation, Resource.GLOBAL ) );
+        }
+        else
+        {
+            throw new SecureActionException( "operation is required to be non-null" );
         }
     }
 
