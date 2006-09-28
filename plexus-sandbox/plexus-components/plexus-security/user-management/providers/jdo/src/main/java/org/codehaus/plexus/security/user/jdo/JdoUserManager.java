@@ -151,7 +151,7 @@ public class JdoUserManager
     {
         if ( principal == null )
         {
-            throw new UserManagerException( "Unable to find user based on null principal." );
+            throw new UserNotFoundException( "Unable to find user based on null principal." );
         }
 
         try
@@ -171,6 +171,11 @@ public class JdoUserManager
     public User findUser( String username )
         throws UserNotFoundException
     {
+        if ( StringUtils.isEmpty( username ) )
+        {
+            throw new UserNotFoundException( "User with empty username not found." );
+        }
+        
         return (User) getObjectById( JdoUser.class, username );
     }
 
