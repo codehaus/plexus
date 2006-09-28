@@ -70,7 +70,7 @@ public abstract class AbstractAuthenticationAction
                                                                           "Remember Me Key", timeout );
                         
                         CookieUtils.setCookie( ServletActionContext.getResponse(),
-                                               SecuritySystemConstants.REMEMBER_ME_KEY, authkey.getKey(), timeout, "/" );
+                                               SecuritySystemConstants.REMEMBER_ME_KEY, authkey.getKey(), timeout );
                     }
                     catch ( KeyManagerException e )
                     {
