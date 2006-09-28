@@ -157,7 +157,7 @@ public class AutoLoginInterceptor
                 getLogger().info( "Authkey not found - " + providedKey );
 
                 // Invalid Cookie.  Remove it.
-                CookieUtils.invalidateCookie( ServletActionContext.getRequest(), ServletActionContext.getResponse(),
+                CookieUtils.removeCookie( ServletActionContext.getRequest(), ServletActionContext.getResponse(),
                                               cookieName );
             }
             else

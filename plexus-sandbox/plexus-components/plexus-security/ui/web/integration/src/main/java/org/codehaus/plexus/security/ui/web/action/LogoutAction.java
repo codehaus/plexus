@@ -17,9 +17,16 @@ package org.codehaus.plexus.security.ui.web.action;
  */
 
 import com.opensymphony.webwork.dispatcher.SessionMap;
+import com.opensymphony.webwork.interceptor.ServletRequestAware;
+import com.opensymphony.webwork.interceptor.ServletResponseAware;
 
+import org.codehaus.plexus.security.system.SecuritySystemConstants;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+import org.codehaus.plexus.security.ui.web.util.CookieUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * LogoutAction 
@@ -33,17 +40,29 @@ import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
  */
 public class LogoutAction
     extends AbstractAuthenticationAction
+    implements ServletRequestAware, ServletResponseAware
 {
     // Result Names.
     private static final String LOGOUT = "security-logout";
 
+    private HttpServletRequest request;
+
+    private HttpServletResponse response;
+
     public String logout()
     {
+        // Invalidate session tokens.
         setAuthTokens( null );
+
+        // Invalidate remember me cookie.
+        CookieUtils.removeCookie( request, response, SecuritySystemConstants.REMEMBER_ME_KEY );
+
+        // Invalidate sso cookie.
+        CookieUtils.removeCookie( request, response, SecuritySystemConstants.SINGLE_SIGN_ON_KEY );
 
         if ( session != null )
         {
-            ( ( SessionMap ) session ).invalidate();
+            ( (SessionMap) session ).invalidate();
         }
 
         return LOGOUT;
@@ -53,5 +72,15 @@ public class LogoutAction
         throws SecureActionException
     {
         return SecureActionBundle.OPEN;
+    }
+
+    public void setServletRequest( HttpServletRequest request )
+    {
+        this.request = request;
+    }
+
+    public void setServletResponse( HttpServletResponse response )
+    {
+        this.response = response;
     }
 }
