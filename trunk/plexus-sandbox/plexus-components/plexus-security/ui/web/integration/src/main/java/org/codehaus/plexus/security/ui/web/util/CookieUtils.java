@@ -30,20 +30,19 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CookieUtils
 {
-    public static void invalidateCookie( HttpServletRequest request, HttpServletResponse response, String name )
+    public static void removeCookie( HttpServletRequest request, HttpServletResponse response, String name )
     {
         Cookie cookie = getCookie( request, name );
         if ( cookie != null )
         {
-            setCookie( response, name, null, 0, cookie.getPath() );
+            setCookie( response, name, null, 0 );
         }
     }
 
-    public static Cookie setCookie( HttpServletResponse response, String name, String value, int maxAge, String path )
+    public static Cookie setCookie( HttpServletResponse response, String name, String value, int maxAge )
     {
         Cookie cookie = new Cookie( name, value );
         cookie.setMaxAge( maxAge );
-        cookie.setPath( path );
         response.addCookie( cookie );
 
         return cookie;
