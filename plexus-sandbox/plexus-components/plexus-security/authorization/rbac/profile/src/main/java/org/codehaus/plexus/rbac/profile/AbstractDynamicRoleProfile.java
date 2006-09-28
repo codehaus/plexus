@@ -68,6 +68,7 @@ public abstract class AbstractDynamicRoleProfile
                     if ( !rbacManager.operationExists( operationString ) )
                     {
                         Operation operation = rbacManager.createOperation( operationString );
+                        operation.setPermanent( isPermanent() );
                         operation = rbacManager.saveOperation( operation );
                     }
 
@@ -78,6 +79,7 @@ public abstract class AbstractDynamicRoleProfile
                             rbacManager.createPermission( operationString + RoleProfileConstants.DELIMITER + resource );
                         permission.setOperation( rbacManager.getOperation( operationString ) );
                         permission.setResource( rbacManager.getResource( resource ) );
+                        permission.setPermanent( isPermanent() );
                         rbacManager.savePermission( permission );
 
                     }
@@ -107,11 +109,9 @@ public abstract class AbstractDynamicRoleProfile
                 }
             }
 
-            if ( isAssignable() )
-            {
-                role.setAssignable( true );
-            }
-            
+            role.setAssignable( isAssignable() );
+            role.setPermanent( isPermanent() );
+
             role = rbacManager.saveRole( role );
         }
         catch ( RbacObjectNotFoundException ne )
@@ -148,6 +148,12 @@ public abstract class AbstractDynamicRoleProfile
     public List getDynamicChildRoles( String resource )
     {
         return null;
+    }
+
+
+    public boolean isPermanent()
+    {
+        return false;
     }
 
     public Role getRole( String resource )
