@@ -17,6 +17,7 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  */
 
 import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
@@ -51,14 +52,23 @@ public class RolesAction
     
     public String list()
     {
-        allRoles = manager.getAllRoles();
-        
-        if ( allRoles == null )
+        try
         {
+            allRoles = manager.getAllRoles();
+
+            if ( allRoles == null )
+            {
+                allRoles = Collections.EMPTY_LIST;
+            }
+
+            Collections.sort( allRoles, new RoleSorter() );
+        }
+        catch ( RbacManagerException e )
+        {
+            addActionError( "Unable to list all roles: " + e.getMessage() );
+            getLogger().error( "System error:", e );
             allRoles = Collections.EMPTY_LIST;
         }
-        
-        Collections.sort( allRoles, new RoleSorter() );
         
         return LIST;
     }

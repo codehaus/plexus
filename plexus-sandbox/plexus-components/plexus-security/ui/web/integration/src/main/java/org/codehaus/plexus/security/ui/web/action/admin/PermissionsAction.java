@@ -19,8 +19,7 @@ package org.codehaus.plexus.security.ui.web.action.admin;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.security.rbac.RbacStoreException;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
@@ -78,14 +77,23 @@ public class PermissionsAction
 
     public String list()
     {
-        allPermissions = manager.getAllPermissions();
-        
-        if(allPermissions == null)
+        try
         {
+            allPermissions = manager.getAllPermissions();
+
+            if ( allPermissions == null )
+            {
+                allPermissions = Collections.EMPTY_LIST;
+            }
+
+            Collections.sort( allPermissions, new PermissionSorter() );
+        }
+        catch ( RbacManagerException e )
+        {
+            addActionError( "Unable to list all permissions: " + e.getMessage() );
+            getLogger().error( "System error:", e );
             allPermissions = Collections.EMPTY_LIST;
         }
-        
-        Collections.sort( allPermissions, new PermissionSorter() );
 
         return LIST;
     }
@@ -134,14 +142,9 @@ public class PermissionsAction
                 resourceIdentifier = resource.getIdentifier();
             }
         }
-        catch ( RbacStoreException e )
+        catch ( RbacManagerException e )
         {
             addActionError( "Unable to get Permission '" + name + "': " + e.getMessage() );
-            return ERROR;
-        }
-        catch ( RbacObjectNotFoundException e )
-        {
-            addActionError( "Unable to get Permission '" + name + "': Permission not found." );
             return ERROR;
         }
 
@@ -190,14 +193,9 @@ public class PermissionsAction
 
             addActionMessage( "Successfully Saved Permission '" + name + "'" );
         }
-        catch ( RbacStoreException e )
+        catch ( RbacManagerException e )
         {
             addActionError( "Unable to get Permission '" + name + "': " + e.getMessage() );
-            return ERROR;
-        }
-        catch ( RbacObjectNotFoundException e )
-        {
-            addActionError( "Unable to get Permission '" + name + "': Permission not found." );
             return ERROR;
         }
 

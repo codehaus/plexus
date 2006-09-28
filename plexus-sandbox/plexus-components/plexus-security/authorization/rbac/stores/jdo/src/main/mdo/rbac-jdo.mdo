@@ -40,6 +40,14 @@
             true if this role is available to be assigned to a user
           </description>
         </field>
+        <field>
+          <name>permanent</name>
+          <version>1.0.0</version>
+          <type>boolean</type>
+          <description>
+            true if this object is permanent.
+          </description>
+        </field>
         <field jpox.persistence-modifier="persistent" 
                jpox.fetchGroupNames="role-child-detail"
                jpox.join-table="ROLE_CHILDROLE_MAP">
@@ -48,6 +56,7 @@
           <association stash.part="true" 
                        jpox.join="true"
                        java.init="field" 
+                       jpox.dependent="false"
                        java.generate-break="false" 
                        java.generate-create="false"
                        zjava.use-interface="org.codehaus.plexus.security.rbac.Role">
@@ -96,6 +105,14 @@
           <version>1.0.0</version>
           <type>String</type>
         </field>
+        <field>
+          <name>permanent</name>
+          <version>1.0.0</version>
+          <type>boolean</type>
+          <description>
+            true if this object is permanent.
+          </description>
+        </field>
         <field jpox.indexed="true">
           <name>operation</name>
           <version>1.0.0</version>
@@ -140,6 +157,14 @@
           <type>String</type>
         </field>
         <field>
+          <name>permanent</name>
+          <version>1.0.0</version>
+          <type>boolean</type>
+          <description>
+            true if this object is permanent.
+          </description>
+        </field>
+        <field>
           <name>resourceRequired</name>
           <version>1.0.0</version>
           <type>boolean</type>
@@ -180,6 +205,14 @@
             could match x.foo
           </description>
         </field>
+        <field>
+          <name>permanent</name>
+          <version>1.0.0</version>
+          <type>boolean</type>
+          <description>
+            true if this object is permanent.
+          </description>
+        </field>
       </fields>
     </class>
 
@@ -204,6 +237,14 @@
           <name>timestamp</name>
           <version>1.0.0</version>
           <type>Date</type>
+        </field>
+        <field>
+          <name>permanent</name>
+          <version>1.0.0</version>
+          <type>boolean</type>
+          <description>
+            true if this object is permanent.
+          </description>
         </field>
         <field java.adder="false"
                jpox.persistence-modifier="persistent" 

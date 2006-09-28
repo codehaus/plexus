@@ -21,6 +21,7 @@ import org.codehaus.plexus.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.keys.KeyManagerException;
 import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
@@ -155,6 +156,12 @@ public class RegisterAction
         catch ( RoleProfileException rpe )
         {
             addActionError( "Unable to assign core register user role to new user" );
+            return ERROR;
+        }
+        catch ( RbacManagerException e )
+        {
+            addActionError( "Unable to assign core register user role to new user" );
+            getLogger().error( "System error:", e );
             return ERROR;
         }
 

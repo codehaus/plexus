@@ -16,9 +16,11 @@ package org.codehaus.plexus.rbac.profile;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
@@ -35,6 +37,7 @@ import java.util.List;
  * @version: $ID:$
  */
 public abstract class AbstractRoleProfile
+    extends AbstractLogEnabled
     implements RoleProfile
 {
     /**
@@ -77,13 +80,11 @@ public abstract class AbstractRoleProfile
                     if ( !rbacManager.permissionExists(
                         operationString + RoleProfileConstants.DELIMITER + getResource().getIdentifier() ) )
                     {
-
                         Permission permission = rbacManager.createPermission(
                             operationString + RoleProfileConstants.DELIMITER + getResource().getIdentifier() );
                         permission.setOperation( rbacManager.getOperation( operationString ) );
                         permission.setResource( getResource() );
                         rbacManager.savePermission( permission );
-
                     }
 
                     role.addPermission( rbacManager.getPermission(
@@ -105,13 +106,17 @@ public abstract class AbstractRoleProfile
             {
                 role.setAssignable( true );
             }
+            
+            role = rbacManager.saveRole( role );
         }
         catch ( RbacObjectNotFoundException ne )
         {
             throw new RoleProfileException( "error initializing role components", ne );
         }
-
-        role = rbacManager.saveRole( role );
+        catch ( RbacManagerException e )
+        {
+            throw new RoleProfileException( "system error with rbac manager", e );
+        }
 
         return role;
     }
@@ -184,14 +189,24 @@ public abstract class AbstractRoleProfile
         {
             throw new RoleProfileException( "error merging role profiles", ne );
         }
-
+        catch ( RbacManagerException e )
+        {
+            throw new RoleProfileException( "system error with rbac manager", e );
+        }
     }
 
 
     public Resource getResource()
         throws RoleProfileException
     {
-        return rbacManager.getGlobalResource();
+        try
+        {
+            return rbacManager.getGlobalResource();
+        }
+        catch ( RbacManagerException e )
+        {
+            throw new RoleProfileException( "system error with rbac manager", e );
+        }
     }
 
     /**
@@ -223,6 +238,10 @@ public abstract class AbstractRoleProfile
         catch ( RbacObjectNotFoundException ne )
         {
             throw new RoleProfileException( "unable to get role", ne );
+        }
+        catch ( RbacManagerException e )
+        {
+            throw new RoleProfileException( "system error with rbac manager", e );
         }
     }
 }

@@ -17,7 +17,6 @@ package org.codehaus.plexus.security.authorization.memory;
  */
 
 import org.codehaus.plexus.security.rbac.AbstractUserAssignment;
-import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
 import java.util.ArrayList;
@@ -43,6 +42,11 @@ public class MemoryUserAssignment
      * Field roles
      */
     private List roles = new ArrayList();
+    
+    /**
+     * Field permanent
+     */
+    private boolean permanent = false;
 
     /**
      * Method equals
@@ -128,5 +132,15 @@ public class MemoryUserAssignment
         buf.append( "principal = '" );
         buf.append( getPrincipal() + "'" );
         return buf.toString();
+    }
+
+    public boolean isPermanent()
+    {
+        return permanent;
+    }
+
+    public void setPermanent( boolean permanent )
+    {
+        this.permanent = permanent;
     }
 }

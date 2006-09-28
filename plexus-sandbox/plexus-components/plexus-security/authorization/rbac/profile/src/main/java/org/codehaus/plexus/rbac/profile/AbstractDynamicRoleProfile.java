@@ -1,6 +1,7 @@
 package org.codehaus.plexus.rbac.profile;
 
 import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Resource;
@@ -43,18 +44,19 @@ public abstract class AbstractDynamicRoleProfile
     private Role generateRole( String resource )
         throws RoleProfileException
     {
-
-        // make sure the resource exists
-        if ( !rbacManager.resourceExists( resource ) )
-        {
-            Resource res = rbacManager.createResource( resource );
-            rbacManager.saveResource( res );
-        }
-
-        Role role = rbacManager.createRole( getRoleName( resource ) );
-
+        Role role = null;
+        
         try
         {
+            // make sure the resource exists
+            if ( !rbacManager.resourceExists( resource ) )
+            {
+                Resource res = rbacManager.createResource( resource );
+                rbacManager.saveResource( res );
+            }
+
+            role = rbacManager.createRole( getRoleName( resource ) );
+            
             if ( getOperations() != null )
             {
                 List operations = getOperations();
@@ -109,13 +111,17 @@ public abstract class AbstractDynamicRoleProfile
             {
                 role.setAssignable( true );
             }
+            
+            role = rbacManager.saveRole( role );
         }
         catch ( RbacObjectNotFoundException ne )
         {
             throw new RoleProfileException( "error initializing role components", ne );
         }
-
-        role = rbacManager.saveRole( role );
+        catch ( RbacManagerException e )
+        {
+            throw new RoleProfileException( "system error with rbac manager", e );
+        }
 
         return role;
     }
@@ -161,6 +167,10 @@ public abstract class AbstractDynamicRoleProfile
         catch ( RbacObjectNotFoundException ne )
         {
             throw new RoleProfileException( "unable to get role", ne );
+        }
+        catch ( RbacManagerException e )
+        {
+            throw new RoleProfileException( "system error with rbac manager", e );
         }
     }
 }

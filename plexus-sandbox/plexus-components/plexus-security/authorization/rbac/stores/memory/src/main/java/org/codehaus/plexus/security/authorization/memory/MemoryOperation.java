@@ -42,6 +42,11 @@ public class MemoryOperation
      * Field resourceRequired
      */
     private boolean resourceRequired = false;
+    
+    /**
+     * Field permanent
+     */
+    private boolean permanent = false;
 
     /**
      * Method equals
@@ -145,5 +150,15 @@ public class MemoryOperation
         buf.append( "name = '" );
         buf.append( getName() + "'" );
         return buf.toString();
+    }
+
+    public boolean isPermanent()
+    {
+        return permanent;
+    }
+
+    public void setPermanent( boolean permanent )
+    {
+        this.permanent = permanent;
     }
 }
