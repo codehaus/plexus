@@ -63,6 +63,11 @@ public interface RoleProfile
     public boolean isAssignable();
 
     /**
+     * are roles based on this role profile permanent
+     */
+    public boolean isPermanent();
+
+    /**
      * set to Resource.GLOBAL by default, otherwise set to resource that should be used for the
      * permissions being granted.
      * @return

@@ -74,6 +74,7 @@ public abstract class AbstractRoleProfile
                     if ( !rbacManager.operationExists( operationString ) )
                     {
                         Operation operation = rbacManager.createOperation( operationString );
+                        operation.setPermanent( isPermanent() );
                         operation = rbacManager.saveOperation( operation );
                     }
 
@@ -84,6 +85,7 @@ public abstract class AbstractRoleProfile
                             operationString + RoleProfileConstants.DELIMITER + getResource().getIdentifier() );
                         permission.setOperation( rbacManager.getOperation( operationString ) );
                         permission.setResource( getResource() );
+                        permission.setPermanent( isPermanent() );
                         rbacManager.savePermission( permission );
                     }
 
@@ -102,10 +104,9 @@ public abstract class AbstractRoleProfile
                 }
             }
 
-            if ( isAssignable() )
-            {
-                role.setAssignable( true );
-            }
+
+            role.setAssignable( isAssignable() );
+            role.setPermanent( isPermanent() );
             
             role = rbacManager.saveRole( role );
         }
@@ -207,6 +208,12 @@ public abstract class AbstractRoleProfile
         {
             throw new RoleProfileException( "system error with rbac manager", e );
         }
+    }
+
+
+    public boolean isPermanent()
+    {
+        return false;
     }
 
     /**
