@@ -25,10 +25,13 @@ import org.codehaus.plexus.security.system.check.EnvironmentCheck;
 import java.util.List;
 
 /**
- * RequiredRolesEnvironmentCheck:
+ * RequiredRolesEnvironmentCheck: this environment check will check that the
+ * required roles of the plexus-security-integration artifact exist to be
+ * assigned.
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
- * @version: $ID:$
+ * @version: $Id:$
+ *
  * @plexus.component role="org.codehaus.plexus.security.system.check.EnvironmentCheck"
  * role-hint="required-roles"
  */
