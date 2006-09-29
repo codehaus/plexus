@@ -3,10 +3,10 @@
   <parent>
     <artifactId>plexus</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0.8-SNAPSHOT</version>
+    <version>1.0.8</version>
   </parent>
   <artifactId>plexus-component-factories</artifactId>
-  <version>1.0-alpha-8-SNAPSHOT</version>
+  <version>1.0-alpha-8</version>
   <name>Plexus Component Factories</name>
   <inceptionYear>2001</inceptionYear>
   <packaging>pom</packaging>
