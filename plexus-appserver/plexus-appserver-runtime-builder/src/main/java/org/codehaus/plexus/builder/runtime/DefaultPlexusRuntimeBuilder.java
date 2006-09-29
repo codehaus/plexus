@@ -173,6 +173,9 @@ public class DefaultPlexusRuntimeBuilder
 
             configurationProperties.setProperty( PROPERTY_CLASSWORLDS_VERSION, classworldsVersion );
 
+            // add defaults
+            configurationProperties.setProperty( "app.max.memory", configurationProperties.getProperty( "app.max.memory", "128m" ) );
+
             // ----------------------------------------------------------------------
             // Build the runtime
             // ----------------------------------------------------------------------
