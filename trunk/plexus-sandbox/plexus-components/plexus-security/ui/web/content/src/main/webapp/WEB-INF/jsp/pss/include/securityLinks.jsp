@@ -42,23 +42,6 @@
     </c:choose>
      -
     <ww:a href="%{logoutUrl}">Logout</ww:a>
-
-    <%-- Admin Functions --%>    
-    <span class="admin">
-    [ <em>ADMIN</em>
-    <ww:url id="userListUrl" action="userlist" namespace="/security" includeParams="none"/>
-    <ww:a href="%{userListUrl}">User List</ww:a>
-<%--
-    |
-    <ww:url id="roleListUrl" action="roles!list" namespace="/security" includeParams="none"/>
-    <ww:a href="%{roleListUrl}">Role List</ww:a>
-    |
-    <ww:url id="roleCreateUrl" action="rolecreate" namespace="/security" includeParams="none"/>
-    <ww:a href="%{roleCreateUrl}">Role Create</ww:a>
-    --%>
-    ]
-    </span>
-    
   </c:otherwise>
 </c:choose>
 
