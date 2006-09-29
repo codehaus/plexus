@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-ant-factory</artifactId>
   <name>Plexus Ant Factory</name>
-  <version>1.0-alpha-2</version>
+  <version>1.0-alpha-3-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>ant</groupId>
@@ -30,9 +30,4 @@
       <version>1.0-alpha-9</version>
     </dependency>
   </dependencies>
-
-  <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-ant-factory-1.0-alpha-2</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-ant-factory-1.0-alpha-2</developerConnection>
-  </scm>
 </project>
