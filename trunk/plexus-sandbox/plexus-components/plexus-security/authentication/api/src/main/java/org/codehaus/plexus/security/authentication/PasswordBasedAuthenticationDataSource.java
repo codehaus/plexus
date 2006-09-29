@@ -32,18 +32,20 @@ public class PasswordBasedAuthenticationDataSource
     implements AuthenticationDataSource
 {
     private String password;
+
     private String principal;
-    
+
     public PasswordBasedAuthenticationDataSource()
     {
-        
+
     }
-    
-    public PasswordBasedAuthenticationDataSource(String principal, String password)
+
+    public PasswordBasedAuthenticationDataSource( String principal, String password )
     {
+        this.principal = principal;
         this.password = password;
     }
-    
+
     public String getPassword()
     {
         return password;
