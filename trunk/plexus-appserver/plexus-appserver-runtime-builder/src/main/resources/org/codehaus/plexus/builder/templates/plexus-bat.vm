@@ -100,7 +100,7 @@ goto Win9xApp
 
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
-if "%PLEXUS_OPTS%"=="" SET PLEXUS_OPTS="-Xmx128m"
+if "%PLEXUS_OPTS%"=="" SET PLEXUS_OPTS="-Xmx@{app.max.memory}@"
 SET PLEXUS_JAVA_EXE="%JAVA_HOME%\bin\java.exe"
 SET PLEXUS_CORE="%PLEXUS_HOME%\core"
 SET PLEXUS_TMPDIR="%PLEXUS_HOME%\temp"
