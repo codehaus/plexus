@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>plexus-tools</artifactId>
     <groupId>org.codehaus.plexus</groupId>
@@ -9,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-cdc</artifactId>
   <name>Plexus Component Descriptor Creator</name>
-  <version>1.0-alpha-5-SNAPSHOT</version>
+  <version>1.0-alpha-5</version>
   <dependencies>
     <dependency>
       <groupId>qdox</groupId>
@@ -27,4 +26,9 @@
       <version>1.0.4</version>
     </dependency>
   </dependencies>
+
+  <scm>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-cdc-1.0-alpha-5</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-cdc-1.0-alpha-5</developerConnection>
+  </scm>
 </project>
