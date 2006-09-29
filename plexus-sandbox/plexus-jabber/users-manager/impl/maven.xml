@@ -1,7 +1,0 @@
-<project default="jar:jar" xmlns:maven="jelly:maven" xmlns:j="jelly:core" xmlns:util="jelly:util">
-
-  <preGoal name="java:compile">
-    <attainGoal name="avalon:meta"/>
-  </preGoal>
-
-</project>
