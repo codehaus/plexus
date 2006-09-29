@@ -2,6 +2,7 @@
   <components>
     <component>
       <role>org.codehaus.plexus.jdo.JdoFactory</role>
+      <role-hint>users</role-hint>
       <implementation>org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory</implementation>
       <configuration>
         <persistenceManagerFactoryClass>org.jpox.PersistenceManagerFactoryImpl</persistenceManagerFactoryClass>

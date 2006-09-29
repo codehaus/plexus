@@ -51,7 +51,7 @@ public class JdoUserManager
     implements UserManager, Initializable
 {
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="users"
      */
     private JdoFactory jdoFactory;
     

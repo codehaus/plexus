@@ -16,8 +16,6 @@ package org.codehaus.plexus.security.authorization.rbac.store.jdo;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.jdo.AbstractConfigurableJdoFactory;
-import org.codehaus.plexus.jdo.ConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.JdoFactory;
 import org.codehaus.plexus.security.authorization.store.test.AbstractRbacManagerTestCase;
@@ -52,7 +50,7 @@ public class JdoRbacManagerTest
     {
         super.setUp();
 
-        DefaultConfigurableJdoFactory jdoFactory = (DefaultConfigurableJdoFactory) lookup( JdoFactory.ROLE );
+        DefaultConfigurableJdoFactory jdoFactory = (DefaultConfigurableJdoFactory) lookup( JdoFactory.ROLE, "users" );
         assertEquals( DefaultConfigurableJdoFactory.class.getName(), jdoFactory.getClass().getName() );
 
         jdoFactory.setPersistenceManagerFactoryClass( "org.jpox.PersistenceManagerFactoryImpl" ); //$NON-NLS-1$
