@@ -33,11 +33,11 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-cdc</artifactId>
-      <!-- Version is fixed to a release prior to revision 4166
+      <!-- we don't use 1.0-alpha-6-SNAPSHOT
            which introduced qdox 1.6 and JDK 1.5 requirement. 
            See http://fisheye.codehaus.org/changelog/plexus/?cs=4166
            -->
-      <version>1.0-alpha-5-20060915.135245-9</version>
+      <version>1.0-alpha-5</version>
     </dependency>
   </dependencies>
 </project>
