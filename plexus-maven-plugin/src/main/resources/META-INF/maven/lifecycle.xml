@@ -31,7 +31,7 @@
           <execution>
             <goals>
               <goal>descriptor</goal>
-              <goal>merge</goal>
+              <goal>merge-descriptors</goal>
             </goals>
           </execution>
         </executions>
