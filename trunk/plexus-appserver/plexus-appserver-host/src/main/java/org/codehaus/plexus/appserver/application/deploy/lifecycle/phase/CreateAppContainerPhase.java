@@ -24,7 +24,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
@@ -49,8 +48,8 @@ public class CreateAppContainerPhase
 
         try
         {
-            applicationContainer = ( DefaultPlexusContainer )
-                appServerContainer.createChildContainer( name, Collections.EMPTY_LIST, Collections.EMPTY_MAP );
+            applicationContainer =
+                new DefaultPlexusContainer( name, appServerContainer.getClassWorld(), appServerContainer );
         }
         catch ( PlexusContainerException e )
         {

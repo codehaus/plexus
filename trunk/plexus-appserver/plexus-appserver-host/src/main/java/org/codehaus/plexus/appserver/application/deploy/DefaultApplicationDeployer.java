@@ -154,6 +154,7 @@ public class DefaultApplicationDeployer
 
         app.dispose();
 
+/* Don't dispose since the appserver container realm = the app container realm at present
         ClassRealm realm = app.getContainerRealm();
 
         try
@@ -164,6 +165,7 @@ public class DefaultApplicationDeployer
         {
             getLogger().warn( "Error while disposing appserver realm '" + realm.getId() + "'" );
         }
+*/
 
         DefaultDeployEvent event = createDeployEvent( profile );
 
