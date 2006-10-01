@@ -15,7 +15,6 @@
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-appserver-maven-plugin</artifactId>
-        <version>2.0-alpha-3-SNAPSHOT</version>
         <extensions>true</extensions>
         <configuration>
           <serviceName>xmlrpc</serviceName>
