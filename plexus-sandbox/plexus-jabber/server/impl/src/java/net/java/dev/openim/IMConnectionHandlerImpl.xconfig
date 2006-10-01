@@ -1,4 +1,0 @@
-<configuration>
-  <map name="http://etherx.jabber.org/streams:stream" key="Streams"/>
-  <map name="http://www.jabber.com/streams/flash:stream" key="FlashStreams"/>
-</configuration>
