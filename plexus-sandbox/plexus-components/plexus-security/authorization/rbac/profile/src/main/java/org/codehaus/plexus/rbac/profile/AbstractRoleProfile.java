@@ -55,7 +55,7 @@ public abstract class AbstractRoleProfile
      * @return
      * @throws RoleProfileException
      */
-    private Role generateRole()
+    protected Role generateRole()
         throws RoleProfileException
     {
 
