@@ -23,7 +23,7 @@ public class ApacheVirtualHostManagerTest
 {
 
     /**
-     * Tests of the component can be looked up properly
+     * Tests of the component can be looked up properly.
      * 
      * @throws Exception
      */
