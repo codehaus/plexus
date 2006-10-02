@@ -24,7 +24,7 @@ public class DeployedProject
     /**
      * Project that is deployed to the deployment workspace
      */
-    private DeployableProject project;
+    private DeployerResource project;
 
     private String state = "UNKNOWN";
 
@@ -47,7 +47,7 @@ public class DeployedProject
     /**
      * @return the project
      */
-    public DeployableProject getProject()
+    public DeployerResource getProject()
     {
         return project;
     }
@@ -55,7 +55,7 @@ public class DeployedProject
     /**
      * @param project the project to set
      */
-    public void setProject( DeployableProject project )
+    public void setProject( DeployerResource project )
     {
         this.project = project;
     }

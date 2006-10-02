@@ -11,6 +11,7 @@ package org.codehaus.plexus.xsiter.deployer.model;
  * @dated: 14/09/2006, 3:54:43 PM
  */
 public class DeploymentWorkspace
+    extends DeployerResource
 {
 
     /**
@@ -40,26 +41,6 @@ public class DeploymentWorkspace
      * Working directory under the workspace for checkouts.
      */
     private String workingDirectory = "working";
-
-    /**
-     * SCM URL of the project that this workspace was created for.
-     */
-    private String scmURL = null;
-
-    /**
-     * SCM Username to use to log in to the Source control repo.
-     */
-    private String scmUsername = null;
-
-    /**
-     * SCM Passwor 
-     */
-    private String scmPassword = null;
-
-    /**
-     * Workspace Id, same as label of the project.
-     */
-    private String id = null;
 
     /**
      * @return the rootDir
@@ -142,67 +123,19 @@ public class DeploymentWorkspace
     }
 
     /**
-     * @return the id
+     * @return the label
      */
     public String getId()
     {
-        return id;
+        return super.getLabel();
     }
 
     /**
-     * @param id the id to set
+     * @param label the label to set
      */
-    public void setId( String id )
+    public void setid( String id )
     {
-        this.id = id;
-    }
-
-    /**
-     * @return the scmURL
-     */
-    public String getScmURL()
-    {
-        return scmURL;
-    }
-
-    /**
-     * @param scmURL the scmURL to set
-     */
-    public void setScmURL( String scmURL )
-    {
-        this.scmURL = scmURL;
-    }
-
-    /**
-     * @return the scmPassword
-     */
-    public String getScmPassword()
-    {
-        return scmPassword;
-    }
-
-    /**
-     * @param scmPassword the scmPassword to set
-     */
-    public void setScmPassword( String scmPassword )
-    {
-        this.scmPassword = scmPassword;
-    }
-
-    /**
-     * @return the scmUsername
-     */
-    public String getScmUsername()
-    {
-        return scmUsername;
-    }
-
-    /**
-     * @param scmUsername the scmUsername to set
-     */
-    public void setScmUsername( String scmUsername )
-    {
-        this.scmUsername = scmUsername;
+        super.setLabel( id );
     }
 
 }
