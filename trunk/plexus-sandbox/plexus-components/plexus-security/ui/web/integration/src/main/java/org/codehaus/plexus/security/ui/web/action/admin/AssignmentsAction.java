@@ -128,7 +128,7 @@ public class AssignmentsAction
 
             if ( manager.userAssignmentExists( principal ) )
             {
-                this.availableRoles = new ArrayList( manager.getUnassignedRoles( principal ) );
+                this.availableRoles = new ArrayList( manager.getEffectivelyUnassignedRoles( principal ) );
             }
             else
             {

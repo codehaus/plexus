@@ -326,6 +326,18 @@ public interface RBACManager
     public Collection getAssignedRoles( UserAssignment userAssignment )
         throws RbacObjectNotFoundException, RbacManagerException;
 
+     /**
+     * Get a list of all assignable roles that are currently not effectively assigned to the specific user,
+     * meaning, not a child of any already granted role
+     *
+     * @param principal
+     * @return
+     * @throws RbacManagerException
+     * @throws RbacObjectNotFoundException
+     */
+    public Collection getEffectivelyUnassignedRoles( String principal )
+        throws RbacManagerException, RbacObjectNotFoundException;
+
     /**
      * Get a list of all assignable roles that are currently not assigned to the specific user.
      * 
