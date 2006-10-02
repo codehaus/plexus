@@ -7,7 +7,7 @@ import org.codehaus.plexus.xsiter.deployer.model.DeployedProject;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
 
 /**
- * Deploymen Manager Role.
+ * Deployment Manager Role.
  * 
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $$Id$$
@@ -96,7 +96,7 @@ public interface DeploymentManager
      * 
      * @param project
      * @return
-     * @throws Exception if workpace not found for the specified project.
+     * @throws Exception if workspace not found for the specified project.
      */
     public DeploymentWorkspace getDeploymentWorkspace( DeployableProject project )
         throws Exception;
