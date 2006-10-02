@@ -1,0 +1,7 @@
+<VirtualHost $vhostIP>
+  ServerName $vhostName
+  ErrorLog $vhostLogDirectory/apache_error.log
+  CustomLog $vhostLogDirectory/apache_access.log combined
+  ProxyPass         /  $vhostConnectorProtocol://localhost:$vhostConnectorPort/
+  ProxyPassReverse  /  $vhostConnectorProtocol://localhost:$vhostConnectorPort/
+</VirtualHost>
