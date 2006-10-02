@@ -43,6 +43,14 @@
 <li>
   <pss:ifAuthorized permission="user-management-user-edit" resource="${sessionScope.securitySession.user.username}">
     You are authorized to see this content!
+    <p/>
+
+    <ww:url id="userlistUrl" action="userlist" namespace="/security"/>
+    <ul>
+      <li>Go see the <ww:a href="%{userlistUrl}">userlist</ww:a>.</li>
+    </ul>
+
+
   </pss:ifAuthorized>
   <pss:elseAuthorized>
     <ww:url id="login" action="login" namespace="/security" />
