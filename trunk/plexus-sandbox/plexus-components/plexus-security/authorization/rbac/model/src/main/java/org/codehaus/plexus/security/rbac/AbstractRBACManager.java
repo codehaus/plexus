@@ -502,14 +502,114 @@ public abstract class AbstractRBACManager
         return roleSet;
     }
 
+    /**
+     * get all of the roles that the give role has as a child into a set
+     *
+     * @param role
+     * @param roleSet
+     * @throws RbacObjectNotFoundException
+     * @throws RbacManagerException
+     */
+    private void gatherEffectiveRoles( Role role, Set roleSet   )
+        throws RbacObjectNotFoundException, RbacManagerException
+    {
+
+        if ( role.hasChildRoles() )
+        {
+            Iterator it = role.getChildRoleNames().listIterator();
+
+            while ( it.hasNext() )
+            {
+                String roleName = (String) it.next();
+                Role crole = getRole( roleName );
+
+                gatherEffectiveRoles( crole, roleSet );
+            }
+
+        }
+
+        roleSet.add( role );
+    }
+
+    public Collection getEffectivelyAssignedRoles( String principal )
+        throws RbacObjectNotFoundException, RbacManagerException
+    {
+        UserAssignment ua = getUserAssignment( principal );
+
+        return getEffectivelyAssignedRoles( ua );
+    }
+
+    public Collection getEffectivelyAssignedRoles( UserAssignment ua )
+        throws RbacObjectNotFoundException, RbacManagerException
+    {
+        Set roleSet = new HashSet();
+
+        if ( ua != null && ua.getRoleNames() != null )
+        {
+            boolean childRoleNamesUpdated = false;
+
+            Iterator it = ua.getRoleNames().listIterator();
+            while ( it.hasNext() )
+            {
+                String roleName = (String) it.next();
+                try
+                {
+                    Role role = getRole( roleName );
+
+                    gatherEffectiveRoles( role, roleSet );
+                }
+                catch ( RbacObjectNotFoundException e )
+                {
+                    // Found a bad role name. remove it!
+                    it.remove();
+                    childRoleNamesUpdated = true;
+                }
+            }
+
+            if ( childRoleNamesUpdated )
+            {
+                saveUserAssignment( ua );
+            }
+        }
+        return roleSet;
+    }
+    /**
+     *
+     *
+     * @param principal
+     * @return
+     * @throws RbacManagerException
+     * @throws RbacObjectNotFoundException
+     */
+    public Collection getEffectivelyUnassignedRoles( String principal )
+        throws RbacManagerException, RbacObjectNotFoundException
+    {
+        Collection assignedRoles = getEffectivelyAssignedRoles( principal );
+        List allRoles = getAllAssignableRoles();
+
+        getLogger().debug("UR: assigned " + assignedRoles.size() );
+        getLogger().debug("UR: available " + allRoles.size() );
+
+        return CollectionUtils.subtract( allRoles, assignedRoles );
+    }
+
+
+    /**
+     *
+     *
+     * @param principal
+     * @return
+     * @throws RbacManagerException
+     * @throws RbacObjectNotFoundException
+     */
     public Collection getUnassignedRoles( String principal )
         throws RbacManagerException, RbacObjectNotFoundException
     {
         Collection assignedRoles = getAssignedRoles( principal );
         List allRoles = getAllAssignableRoles();
 
-        getLogger().info("UR: assigned " + assignedRoles.size() );
-        getLogger().info("UR: available " + allRoles.size() );
+        getLogger().debug("UR: assigned " + assignedRoles.size() );
+        getLogger().debug("UR: available " + allRoles.size() );
 
         return CollectionUtils.subtract( allRoles, assignedRoles );
     }
