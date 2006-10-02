@@ -170,11 +170,19 @@
     </action>
 
     <action name="addRolesToUser" class="pss-assignments" method="edituser">
-      <result name="success" type="redirect-action">userlist</result>
+      <result name="success" type="redirect-action">
+        <param name="actionName">useredit</param>
+        <param name="namespace">/security</param>
+        <param name="username">${principal}</param>
+      </result>
     </action>
 
     <action name="removeRolesFromUser" class="pss-assignments" method="edituser">
-      <result name="success" type="redirect-action">userlist</result>
+      <result name="success" type="redirect-action">
+        <param name="actionName">useredit</param>
+        <param name="namespace">/security</param>
+        <param name="username">${principal}</param>
+      </result>
     </action>
 
     <action name="rolecreate" class="pss-role-create" method="show">
