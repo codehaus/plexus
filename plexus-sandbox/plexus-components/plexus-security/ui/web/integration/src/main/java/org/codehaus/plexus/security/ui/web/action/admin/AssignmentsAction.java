@@ -126,7 +126,14 @@ public class AssignmentsAction
                 this.assignedRoles = new ArrayList();
             }
 
-            this.availableRoles = new ArrayList( manager.getAllAssignableRoles() );
+            if ( manager.userAssignmentExists( principal ) )
+            {
+                this.availableRoles = new ArrayList( manager.getUnassignedRoles( principal ) );
+            }
+            else
+            {
+                this.availableRoles = new ArrayList( manager.getAllAssignableRoles() );
+            }
         }
         catch ( RbacManagerException e )
         {
