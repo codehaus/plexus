@@ -7,6 +7,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.xsiter.deployer.model.DeployableProject;
+import org.codehaus.plexus.xsiter.deployer.model.DeployerResource;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
 
 /**

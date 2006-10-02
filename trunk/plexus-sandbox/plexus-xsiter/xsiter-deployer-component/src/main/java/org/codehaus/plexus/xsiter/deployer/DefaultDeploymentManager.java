@@ -40,6 +40,7 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.xsiter.deployer.model.DeployableProject;
 import org.codehaus.plexus.xsiter.deployer.model.DeployedProject;
+import org.codehaus.plexus.xsiter.deployer.model.DeployerResource;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
 import org.codehaus.plexus.xsiter.deployer.model.DeployableProject.ProjectProperties;
 
@@ -140,7 +141,7 @@ public class DefaultDeploymentManager
 
     public void start()
     {
-        getLogger().info( "Starting Effacy Deployer component..." );
+        getLogger().info( "Starting XSiter Deployer component..." );
         if ( !FileUtils.fileExists( workingDirectory ) )
         {
             getLogger().debug( "Creating working directory: " + workingDirectory );
@@ -150,7 +151,7 @@ public class DefaultDeploymentManager
 
     public void stop()
     {
-        getLogger().info( "...stopping Effacy Deployer component." );
+        getLogger().info( "...stopping XSiter Deployer component." );
     }
 
     /**
@@ -196,7 +197,7 @@ public class DefaultDeploymentManager
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#addProject(org.codehaus.plexus.xsiter.deployer.model.DeployableProject)
+     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#addProject(DeployableProject)
      */
     public void addProject( DeployableProject project )
         throws Exception
@@ -207,7 +208,7 @@ public class DefaultDeploymentManager
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#removeProject(org.codehaus.plexus.xsiter.deployer.model.DeployableProject)
+     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#removeProject(DeployableProject)
      */
     public void removeProject( DeployableProject project )
         throws Exception
@@ -224,7 +225,7 @@ public class DefaultDeploymentManager
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#getDeploymentWorkspace(org.codehaus.plexus.xsiter.deployer.model.DeployableProject)
+     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#getDeploymentWorkspace(DeployableProject)
      */
     public DeploymentWorkspace getDeploymentWorkspace( DeployableProject project )
         throws Exception
@@ -265,11 +266,12 @@ public class DefaultDeploymentManager
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#addVirtualHost(org.codehaus.plexus.xsiter.deployer.model.DeployableProject)
+     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#addVirtualHost(DeployableProject)
      */
     public void addVirtualHost( DeployableProject project )
         throws Exception
     {
+        createDeploymentWorkspaceIfRequired( project );
         // Updated Implementation, use configuration from pom.xml
         MavenProject mavenProject = getMavenProjectForCheckedoutProject( project );
         Properties props = mavenProject.getProperties();
@@ -300,11 +302,12 @@ public class DefaultDeploymentManager
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#checkoutProject(org.codehaus.plexus.xsiter.deployer.model.DeployableProject)
+     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#checkoutProject(DeployableProject)
      */
     public void checkoutProject( DeployableProject project )
         throws Exception
     {
+        createDeploymentWorkspaceIfRequired( project );
         getLogger().info( "Checking out Project: " + project.getLabel() + ", Version: " + project.getScmTag() );
         DeploymentWorkspace workspace = loadWorkspaceFromDescriptor( project.getLabel() );
 
@@ -371,12 +374,13 @@ public class DefaultDeploymentManager
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#deployProject(org.codehaus.plexus.xsiter.deployer.model.DeployableProject,
+     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#deployProject(DeployableProject,
      *      java.lang.String)
      */
     public DeployedProject deployProject( DeployableProject project, String goals )
         throws Exception
     {
+        createDeploymentWorkspaceIfRequired( project );
         // Deploy the checked out Project to Appserver/Webserver
         if ( isCargoPluginConfigurationInPOM( project ) )
         {
@@ -394,12 +398,13 @@ public class DefaultDeploymentManager
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#buildProject(org.codehaus.plexus.xsiter.deployer.model.DeployableProject,
+     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#buildProject(DeployableProject,
      *      java.lang.String)
      */
     public void buildProject( DeployableProject project, String goals )
         throws Exception
     {
+        createDeploymentWorkspaceIfRequired( project );
         checkoutProjectIfRequired( project );
         // obtain the Deployment workspace
         DeploymentWorkspace workspace = loadWorkspaceFromDescriptor( project.getLabel() );
@@ -450,17 +455,27 @@ public class DefaultDeploymentManager
     }
 
     // Service methods
+
+    /**
+     * Creates a deployment workspace if none exists for the specified DeployableProject.
+     */
+    private void createDeploymentWorkspaceIfRequired( DeployerResource project )
+    {
+        if ( !new File( workingDirectory, project.getLabel() ).exists() )
+            createDeploymentWorkspace( project );
+    }
+
     /**
      * Creates a {@link DeploymentWorkspace} for the specified Project.
      * 
      * @param project
      * @param workspaceID
      */
-    private void createDeploymentWorkspace( DeployableProject project )
+    private void createDeploymentWorkspace( DeployerResource project )
     {
         DeploymentWorkspace workspace = new DeploymentWorkspace();
         String id = project.getLabel();
-        workspace.setId( id );
+        workspace.setLabel( id );
         workspace.setRootDirectory( id );
         File rootDir = new File( workingDirectory, workspace.getRootDirectory() );
         // set absolute path for the workspace root directory.
@@ -490,7 +505,7 @@ public class DefaultDeploymentManager
      * 
      * @param workspace
      */
-    private void persistWorkspaceDescriptor( DeployableProject project, DeploymentWorkspace workspace )
+    private void persistWorkspaceDescriptor( DeployerResource project, DeploymentWorkspace workspace )
     {
         String LS = System.getProperty( "line.separator" );
 
@@ -581,7 +596,7 @@ public class DefaultDeploymentManager
         String workingDir = eltWorkSpace.getChild( ELT_WORKING_DIRECTORY ).getValue();
 
         DeploymentWorkspace workspace = new DeploymentWorkspace();
-        workspace.setId( id );
+        workspace.setLabel( id );
         workspace.setScmURL( scmURL );
         workspace.setScmUsername( scmUsername );
         workspace.setScmPassword( scmPassword );
@@ -603,7 +618,7 @@ public class DefaultDeploymentManager
      * @throws ScmRepositoryException
      * @throws NoSuchScmProviderException
      */
-    private ScmRepository getScmRepository( DeployableProject project )
+    private ScmRepository getScmRepository( DeployerResource project )
         throws ScmRepositoryException, NoSuchScmProviderException
     {
         ScmRepository repository = scmManager.makeScmRepository( project.getScmURL().trim() );
@@ -785,7 +800,7 @@ public class DefaultDeploymentManager
      * @param property
      * @param value
      */
-    private void assignProjectProperty( DeployableProject project, ProjectProperties property, String value )
+    private void assignProjectProperty( DeployerResource project, ProjectProperties property, String value )
     {
         if ( property == ProjectProperties.PROP_LABEL )
             project.setLabel( value );
