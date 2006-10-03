@@ -24,7 +24,6 @@ import org.apache.maven.scm.manager.NoSuchScmProviderException;
 import org.apache.maven.scm.manager.ScmManager;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.apache.maven.scm.repository.ScmRepositoryException;
-import org.apache.velocity.app.Velocity;
 import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
@@ -43,9 +42,8 @@ import org.codehaus.plexus.xsiter.deployer.model.DeployedProject;
 import org.codehaus.plexus.xsiter.deployer.model.DeployerResource;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
 import org.codehaus.plexus.xsiter.deployer.model.DeployableProject.ProjectProperties;
-
-import com.effacy.plexus.vhost.VirtualHostConfiguration;
-import com.effacy.plexus.vhost.VirtualHostManager;
+import org.codehaus.plexus.xsiter.vhost.VirtualHostConfiguration;
+import org.codehaus.plexus.xsiter.vhost.VirtualHostManager;
 
 /**
  * Concrete implementation of a {@link DeploymentManager} Role.
@@ -69,33 +67,6 @@ public class DefaultDeploymentManager
      * Cargo group ID.
      */
     private static final String GROUP_ID_ORG_CODEHAUS_CARGO = "org.codehaus.cargo";
-
-    // Workspace descriptor constants
-    private static final String ELT_WORKING_DIRECTORY = "workingDirectory";
-
-    private static final String ELT_WEBSERVER_DIRECTORY = "webserverDirectory";
-
-    private static final String ELT_WEBAPP_DIRECTORY = "webappDirectory";
-
-    private static final String ELT_TEMP_DIRECTORY = "tempDirectory";
-
-    private static final String ELT_ROOT_DIRECTORY = "rootDirectory";
-
-    private static final String ELT_SCM_URL = "scmURL";
-
-    private static final String ELT_SCM_PASSWORD = "scmPassword";
-
-    private static final String ELT_SCM_USERNAME = "scmUsername";
-
-    private static final String ELT_ID = "id";
-
-    private static final String ELT_WORKSPACE = "workspace";
-
-    /**
-     * Maven 2.x executable name that we expect to find to be able to build and
-     * deploy projects.
-     */
-    private static final String MAVEN_EXECUTABLE = "mvn";
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat( "dd-MM-yyyy, HH:mm:ss" );
 
@@ -307,9 +278,8 @@ public class DefaultDeploymentManager
     public void checkoutProject( DeployableProject project )
         throws Exception
     {
-        createDeploymentWorkspaceIfRequired( project );
+        DeploymentWorkspace workspace = createDeploymentWorkspaceIfRequired( project );
         getLogger().info( "Checking out Project: " + project.getLabel() + ", Version: " + project.getScmTag() );
-        DeploymentWorkspace workspace = loadWorkspaceFromDescriptor( project.getLabel() );
 
         // TODO: refactor/add a method that creates a Deployable Project
         // instance from a Workspace descriptor
@@ -404,10 +374,8 @@ public class DefaultDeploymentManager
     public void buildProject( DeployableProject project, String goals )
         throws Exception
     {
-        createDeploymentWorkspaceIfRequired( project );
+        DeploymentWorkspace workspace = createDeploymentWorkspaceIfRequired( project );
         checkoutProjectIfRequired( project );
-        // obtain the Deployment workspace
-        DeploymentWorkspace workspace = loadWorkspaceFromDescriptor( project.getLabel() );
         File workspaceWorkingDir = new File( workspace.getRootDirectory(), workspace.getWorkingDirectory() );
         File checkoutDir = new File( workspaceWorkingDir, project.getScmTag() );
 
@@ -458,11 +426,16 @@ public class DefaultDeploymentManager
 
     /**
      * Creates a deployment workspace if none exists for the specified DeployableProject.
+     * @return TODO
+     * @throws Exception 
      */
-    private void createDeploymentWorkspaceIfRequired( DeployerResource project )
+    private DeploymentWorkspace createDeploymentWorkspaceIfRequired( DeployerResource project )
+        throws Exception
     {
         if ( !new File( workingDirectory, project.getLabel() ).exists() )
-            createDeploymentWorkspace( project );
+            return createDeploymentWorkspace( project );
+        else
+            return loadWorkspaceFromDescriptor( project.getLabel() );
     }
 
     /**
@@ -470,8 +443,9 @@ public class DefaultDeploymentManager
      * 
      * @param project
      * @param workspaceID
+     * @return TODO
      */
-    private void createDeploymentWorkspace( DeployerResource project )
+    private DeploymentWorkspace createDeploymentWorkspace( DeployerResource project )
     {
         DeploymentWorkspace workspace = new DeploymentWorkspace();
         String id = project.getLabel();
@@ -486,6 +460,7 @@ public class DefaultDeploymentManager
         createIfNonExistent( new File( workspace.getRootDirectory(), workspace.getWebserverDirectory() ) );
         createIfNonExistent( new File( workspace.getRootDirectory(), workspace.getWorkingDirectory() ) );
         persistWorkspaceDescriptor( project, workspace );
+        return workspace;
     }
 
     /**
