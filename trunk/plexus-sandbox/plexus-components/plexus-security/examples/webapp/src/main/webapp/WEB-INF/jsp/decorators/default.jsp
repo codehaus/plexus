@@ -40,7 +40,6 @@
 </div>
 
 <div id="breadcrumbs">
-  , named Shajarat!
   <div class="xright">
     <a href="http://www.codehaus.org/">Codehaus</a> |
     <a href="http://plexus.codehaus.org/">Plexus</a> 
