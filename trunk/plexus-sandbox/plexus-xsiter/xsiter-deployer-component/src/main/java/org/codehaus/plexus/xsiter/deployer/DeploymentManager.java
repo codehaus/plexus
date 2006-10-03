@@ -14,9 +14,37 @@ import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
  */
 public interface DeploymentManager
 {
+    /** 
+     * The role associated with the component. 
+     */
+    public static final String ROLE = DeploymentManager.class.getName();
 
-    /** The role associated with the component. */
-    String ROLE = DeploymentManager.class.getName();
+    // workspace descriptor elements
+    public static final String ELT_WORKING_DIRECTORY = "workingDirectory";
+
+    public static final String ELT_WEBSERVER_DIRECTORY = "webserverDirectory";
+
+    public static final String ELT_WEBAPP_DIRECTORY = "webappDirectory";
+
+    public static final String ELT_TEMP_DIRECTORY = "tempDirectory";
+
+    public static final String ELT_ROOT_DIRECTORY = "rootDirectory";
+
+    public static final String ELT_SCM_URL = "scmURL";
+
+    public static final String ELT_SCM_PASSWORD = "scmPassword";
+
+    public static final String ELT_SCM_USERNAME = "scmUsername";
+
+    public static final String ELT_ID = "id";
+
+    public static final String ELT_WORKSPACE = "workspace";
+
+    /**
+     * Maven 2.x executable name that we expect to find to be able to build and
+     * deploy projects.
+     */
+    public static final String MAVEN_EXECUTABLE = "mvn";
 
     /**
      * Deploys a Project to associated Deployment Workspace using the default

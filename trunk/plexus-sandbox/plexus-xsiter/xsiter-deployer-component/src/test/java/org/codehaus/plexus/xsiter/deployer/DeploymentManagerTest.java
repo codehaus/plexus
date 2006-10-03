@@ -4,10 +4,12 @@ import java.io.File;
 import java.util.Properties;
 
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.PlexusTestCase;
+import org.apache.maven.scm.ScmTestCase;
+import org.apache.maven.scm.provider.ScmProviderRepository;
+import org.apache.maven.scm.provider.local.repository.LocalScmProviderRepository;
+import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.xsiter.deployer.model.DeployableProject;
-import org.codehaus.plexus.xsiter.deployer.model.DeployerResource;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
 
 /**
@@ -17,7 +19,7 @@ import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
  * @version $Id$
  */
 public class DeploymentManagerTest
-    extends PlexusTestCase
+    extends ScmTestCase
 {
 
     private static final String PROJECT_LABEL_BARE_VHOST_COMPONENT = "vhost-component";
@@ -33,6 +35,38 @@ public class DeploymentManagerTest
      */
     // private static final String TAG_BUILD_20060920 = "Build_20060920";
     private static final String TAG_TO_CHECKOUT = "HEAD";
+
+    public void setUp()
+        throws Exception
+    {
+        super.setUp();
+
+        FileUtils.mkdir( getWorkingDirectory().getAbsolutePath() );
+    }
+
+    public void testExistingRepository()
+        throws Exception
+    {
+        ScmRepository repository = getScmManager().makeScmRepository( "scm:local:src/test/repository:test-repo" );
+
+        assertNotNull( repository );
+
+        assertEquals( "local", repository.getProvider() );
+
+        //    assertEquals( "src/test/repositories:test-repo", repository.getScmSpecificUrl() );
+
+        ScmProviderRepository providerRepository = repository.getProviderRepository();
+
+        assertNotNull( providerRepository );
+
+        assertTrue( providerRepository instanceof LocalScmProviderRepository );
+
+        LocalScmProviderRepository local = (LocalScmProviderRepository) providerRepository;
+
+        assertEquals( getTestFile( "src/test/repository" ).getAbsolutePath(), local.getRoot() );
+
+        assertEquals( "test-repo", local.getModule() );
+    }
 
     public void testLookup()
         throws Exception
@@ -167,7 +201,7 @@ public class DeploymentManagerTest
         throws Exception
     {
         DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
-        DefaultDeploymentManager mgr = (DefaultDeploymentManager) component;
+        DeploymentManager mgr = (DeploymentManager) component;
         DeployableProject project = new DeployableProject();
         project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
         project.setScmURL( SCM_SAMPLE_WEB );
@@ -188,7 +222,7 @@ public class DeploymentManagerTest
         throws Exception
     {
         DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
-        DefaultDeploymentManager mgr = (DefaultDeploymentManager) component;
+        DeploymentManager mgr = (DeploymentManager) component;
         DeployableProject project = new DeployableProject();
         project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
         project.setScmURL( SCM_SAMPLE_WEB );
@@ -209,7 +243,7 @@ public class DeploymentManagerTest
         throws Exception
     {
         DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
-        DefaultDeploymentManager mgr = (DefaultDeploymentManager) component;
+        DeploymentManager mgr = (DeploymentManager) component;
         DeployableProject project = new DeployableProject();
         project.setLabel( "ghost-vhost-component" );
         project.setScmURL( "scm:cvs:pserver:rahul@localhost:/home/cvs/local:projects/plexus/vhost-component" );
@@ -242,7 +276,7 @@ public class DeploymentManagerTest
             return;
         }
         DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
-        DefaultDeploymentManager mgr = (DefaultDeploymentManager) component;
+        DeploymentManager mgr = (DeploymentManager) component;
         DeployableProject project = new DeployableProject();
         project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
         project.setScmURL( SCM_SAMPLE_WEB );
