@@ -39,6 +39,7 @@
       <th>Validated</th>
       <th>Locked</th>
       <th>Edit</th>
+      <th>Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -66,6 +67,14 @@
               <ww:param name="username">${username}</ww:param>
             </ww:url>
             <ww:a href="%{usereditUrl}">Edit</ww:a>
+          </pss:ifAuthorized>
+        </td>
+        <td>
+          <pss:ifAuthorized permission="user-management-user-delete" resource="${username}">
+            <ww:url id="userDeleteUrl" action="userdelete">
+              <ww:param name="username">${username}</ww:param>
+            </ww:url>
+            <ww:a href="%{userDeleteUrl}">Delete</ww:a>
           </pss:ifAuthorized>
         </td>
       </tr>
