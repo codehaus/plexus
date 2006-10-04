@@ -55,6 +55,15 @@ public class IfAuthorizedTag
     protected boolean condition()
         throws JspTagException
     {
+
+        Boolean authzStatusBool = (Boolean)pageContext.getAttribute( "pssCache" + permission + resource );
+
+        if ( authzStatusBool != null )
+        {
+            pageContext.setAttribute( "ifAuthorizedTag", authzStatusBool );
+            return authzStatusBool.booleanValue();
+        }
+
         ActionContext context = ActionContext.getContext();
 
         PlexusContainer container = (PlexusContainer) context.getApplication().get( PlexusLifecycleListener.KEY );
@@ -68,12 +77,14 @@ public class IfAuthorizedTag
             {
                 boolean authzStatus = securitySystem.isAuthorized( securitySession, permission, resource );
                 pageContext.setAttribute( "ifAuthorizedTag", new Boolean( authzStatus ) );
+                pageContext.setAttribute( "pssCache" + permission + resource, new Boolean( authzStatus ) );
                 return authzStatus;
             }
             else
             {
                 boolean authzStatus = securitySystem.isAuthorized( securitySession, permission );
                 pageContext.setAttribute( "ifAuthorizedTag", new Boolean( authzStatus ) );
+                pageContext.setAttribute( "pssCache" + permission + resource, new Boolean( authzStatus ) );
                 return authzStatus;
             }
         }
