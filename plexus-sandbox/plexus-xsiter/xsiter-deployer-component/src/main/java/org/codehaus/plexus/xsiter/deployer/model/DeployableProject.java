@@ -3,18 +3,19 @@ package org.codehaus.plexus.xsiter.deployer.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.plexus.xsiter.deployer.DeploymentManager;
+import org.codehaus.plexus.xsiter.deployer.Deployer;
 
 /**
  * Deployable Project entity.
  * <p>
- * This wraps the Project details required by the {@link DeploymentManager} to
+ * This wraps the Project details required by the {@link Deployer} to
  * deploy it.
  * 
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @dated: 14/09/2006, 3:43:05 PM
  */
-public class DeployableProject extends DeployerResource
+public class DeployableProject
+    extends DeployerResource
 {
 
     // Required Project creation properties

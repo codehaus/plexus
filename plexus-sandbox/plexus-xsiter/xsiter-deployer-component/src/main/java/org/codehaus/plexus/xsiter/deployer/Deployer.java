@@ -1,7 +1,5 @@
 package org.codehaus.plexus.xsiter.deployer;
 
-import java.util.Properties;
-
 import org.codehaus.plexus.xsiter.deployer.model.DeployableProject;
 import org.codehaus.plexus.xsiter.deployer.model.DeployedProject;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
@@ -12,12 +10,12 @@ import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $$Id$$
  */
-public interface DeploymentManager
+public interface Deployer
 {
     /** 
      * The role associated with the component. 
      */
-    public static final String ROLE = DeploymentManager.class.getName();
+    public static final String ROLE = Deployer.class.getName();
 
     // workspace descriptor elements
     public static final String ELT_WORKING_DIRECTORY = "workingDirectory";
@@ -82,17 +80,6 @@ public interface DeploymentManager
         throws Exception;
 
     /**
-     * Sets up a Deployment Workspace by creating a {@link DeployableProject}
-     * instance from the passed in properties and calling
-     * {@link #addProject(DeployableProject)}.
-     * 
-     * @param properties
-     * @throws Exception
-     */
-    public void addProject( Properties properties )
-        throws Exception;
-
-    /**
      * Sets up a Deployment Workspace for the specified Project
      * 
      * @param project project to setup a Deployment Workspace for.
@@ -111,12 +98,21 @@ public interface DeploymentManager
         throws Exception;
 
     /**
-     * Checks out, or, updates an existing checkout for the specified project.
+     * Checks out the specified project.
      * 
      * @param project Project to check out
      * @throws Exception
      */
     public void checkoutProject( DeployableProject project )
+        throws Exception;
+
+    /**
+     * Updates an existing project.<p>
+     *  
+     * @param project
+     * @throws Exception
+     */
+    public void updateProject( DeployableProject project )
         throws Exception;
 
     /**
