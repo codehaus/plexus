@@ -20,7 +20,6 @@
 <html>
 <head>
   <title>[Admin] Operation List</title>
-  <ww:head/>
 </head>
 
 <body>

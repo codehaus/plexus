@@ -20,7 +20,6 @@
 <html>
 <head>
   <title>[Admin] User Create</title>
-  <ww:head/>
 </head>
 
 <body>

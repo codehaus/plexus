@@ -20,7 +20,6 @@
 <html>
 <head>
   <title>Login Page</title>
-  <ww:head/>
 </head>
 
 <body onload="javascript:document.forms['login'].username.focus();">

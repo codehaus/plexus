@@ -20,7 +20,6 @@
 <html>
 <head>
   <title>Change Password</title>
-  <ww:head/>
 </head>
 
 <body onload="javascript:document.forms['password'].existingPassword.focus();">

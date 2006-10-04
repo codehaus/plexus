@@ -21,7 +21,6 @@
 <html>
 <head>
   <title>[Admin] Role List</title>
-  <ww:head/>
 </head>
 
 <body>

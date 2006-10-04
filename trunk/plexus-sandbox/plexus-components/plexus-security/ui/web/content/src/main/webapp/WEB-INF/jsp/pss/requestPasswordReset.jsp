@@ -20,7 +20,6 @@
 <html>
 <head>
   <title>Request Password Reset</title>
-  <ww:head/>
 </head>
 
 <body onload="javascript:document.forms['passwordReset'].username.focus();">

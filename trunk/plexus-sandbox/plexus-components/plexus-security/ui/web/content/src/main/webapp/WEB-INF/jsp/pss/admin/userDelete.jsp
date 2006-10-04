@@ -19,7 +19,6 @@
 <html>
 <head>
   <title>[Admin] User Delete</title>
-  <ww:head/>
 </head>
 
 <body>

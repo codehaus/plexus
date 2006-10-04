@@ -20,7 +20,6 @@
 <html>
 <head>
   <title>Security Alert Page</title>
-  <ww:head/>
 </head>
 
 <body>

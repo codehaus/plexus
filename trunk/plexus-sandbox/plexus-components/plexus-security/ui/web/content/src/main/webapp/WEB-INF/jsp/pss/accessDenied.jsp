@@ -20,7 +20,6 @@
 
 <head>
   <title>Security Alert - Access Denied</title>
-  <ww:head />
 </head>
 
 <body>
