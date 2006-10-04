@@ -7,14 +7,14 @@
       </implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.xsiter.deployer.DeploymentManager</role>
+          <role>org.codehaus.plexus.xsiter.deployer.Deployer</role>
         </requirement>
       </requirements>
     </component>
     <component>
-      <role>org.codehaus.plexus.xsiter.deployer.DeploymentManager</role>
+      <role>org.codehaus.plexus.xsiter.deployer.Deployer</role>
       <implementation>
-        org.codehaus.plexus.xsiter.deployer.DefaultDeploymentManager
+        org.codehaus.plexus.xsiter.deployer.DefaultDeployer
       </implementation>
       <role-hint>default</role-hint>
       <requirements>

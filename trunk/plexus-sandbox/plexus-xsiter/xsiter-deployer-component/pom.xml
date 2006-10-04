@@ -29,11 +29,6 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-interactivity-api</artifactId>
-      <version>1.0-alpha-5</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
       <version>1.0-alpha-9</version>
       <exclusions>
@@ -109,11 +104,20 @@
       <artifactId>maven-scm-provider-svnexe</artifactId>
       <version>${maven-scm.version}</version>
     </dependency>
+    <!-- For unit test that require SCM support -->
     <dependency>
       <groupId>org.apache.maven.scm</groupId>
       <artifactId>maven-scm-test</artifactId>
       <version>${maven-scm.version}</version>
+      <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.maven.scm</groupId>
+      <artifactId>maven-scm-provider-svntest</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+
     <!-- Maven deps -->
     <dependency>
       <groupId>org.apache.maven</groupId>

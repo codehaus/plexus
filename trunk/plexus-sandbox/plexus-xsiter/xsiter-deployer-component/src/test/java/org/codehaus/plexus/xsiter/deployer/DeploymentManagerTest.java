@@ -1,19 +1,21 @@
 package org.codehaus.plexus.xsiter.deployer;
 
 import java.io.File;
-import java.util.Properties;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.scm.ScmFileSet;
 import org.apache.maven.scm.ScmTestCase;
-import org.apache.maven.scm.provider.ScmProviderRepository;
-import org.apache.maven.scm.provider.local.repository.LocalScmProviderRepository;
+import org.apache.maven.scm.command.add.AddScmResult;
+import org.apache.maven.scm.provider.svn.SvnScmTestUtils;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.xsiter.deployer.model.DeployableProject;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
 
 /**
- * Tests for the {@link DeploymentManager}
+ * Tests for the {@link Deployer}
  * 
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
@@ -24,11 +26,11 @@ public class DeploymentManagerTest
 
     private static final String PROJECT_LABEL_BARE_VHOST_COMPONENT = "vhost-component";
 
-    private static final String SCM_EFFACY_VHOST_COMPONENT = "scm:cvs:pserver:rahul@localhost:/home/cvs/local:projects/plexus/vhost-component";
+    private static final String SCM_VHOST_COMPONENT = "scm:cvs:pserver:rahul@localhost:/home/cvs/local:projects/plexus/vhost-component";
 
     private static final String PROJECT_LABEL_SAMPLE_WEB = "sample-web";
 
-    private static final String SCM_SAMPLE_WEB = "scm:cvs:pserver:rahul@localhost:/home/cvs/excibir:projects/example/sample/web-project";
+    private static final String SCM_SAMPLE_WEB = "scm:cvs:pserver:rahul@localhost:/home/cvs/local:projects/example/sample/web-project";
 
     /**
      * Target CVS tag to test against.
@@ -41,58 +43,40 @@ public class DeploymentManagerTest
     {
         super.setUp();
 
+        FileUtils.forceDelete( getRepositoryRoot().getAbsolutePath() );
+        SvnScmTestUtils.initializeRepository( getRepositoryRoot() );
         FileUtils.mkdir( getWorkingDirectory().getAbsolutePath() );
-    }
 
-    public void testExistingRepository()
-        throws Exception
-    {
-        ScmRepository repository = getScmManager().makeScmRepository( "scm:local:src/test/repository:test-repo" );
+        //      Make sure that the correct files was checked out        
+        File fooJava = new File( getWorkingCopy(), "Foo.java" );
+        File barJava = new File( getWorkingCopy(), "Bar.java" );
+        File readmeTxt = new File( getWorkingCopy(), "readme.txt" );
 
-        assertNotNull( repository );
+        assertFalse( "check Foo.java doesn't yet exist", fooJava.canRead() );
+        assertFalse( "check Bar.java doesn't yet exist", barJava.canRead() );
+        assertFalse( "check readme.txt doesn't yet exist", readmeTxt.canRead() );
 
-        assertEquals( "local", repository.getProvider() );
+        // Change the files
+        createFooJava( fooJava );
+        createBarJava( barJava );
+        createReadmeText( readmeTxt );
 
-        //    assertEquals( "src/test/repositories:test-repo", repository.getScmSpecificUrl() );
+        AddScmResult addResult = getScmManager().getProviderByUrl( getScmUrl() )
+            .add( getScmRepository(), new ScmFileSet( getWorkingCopy(), "Foo.java", null ) );
 
-        ScmProviderRepository providerRepository = repository.getProviderRepository();
+        if ( !addResult.isSuccess() )
+        {
+            System.out.println( "SCM Add result: " + addResult.getProviderMessage() );
+        }
 
-        assertNotNull( providerRepository );
-
-        assertTrue( providerRepository instanceof LocalScmProviderRepository );
-
-        LocalScmProviderRepository local = (LocalScmProviderRepository) providerRepository;
-
-        assertEquals( getTestFile( "src/test/repository" ).getAbsolutePath(), local.getRoot() );
-
-        assertEquals( "test-repo", local.getModule() );
+        assertResultIsSuccess( addResult );
     }
 
     public void testLookup()
         throws Exception
     {
-        DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
         assertNotNull( component );
-    }
-
-    /**
-     * Tests if CLI interaaction behaves as expected.
-     * 
-     * @throws Exception
-     */
-    public void testAddProjectFromCli()
-        throws Exception
-    {
-        boolean bSkip = true;
-        if ( bSkip )
-        {
-            System.out.println( "Skipping CLI Project creation test (this requires interaction!).... " );
-            return;
-        }
-        DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
-        Properties props = new Properties();
-        props.setProperty( "label", "test-project" );
-        component.addProject( props );
     }
 
     public void testAddProject()
@@ -100,7 +84,7 @@ public class DeploymentManagerTest
     {
         FileUtils.forceDelete( new File( "target/deployments", PROJECT_LABEL_SAMPLE_WEB ) );
 
-        DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
         DeployableProject project = new DeployableProject();
         project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
         project.setScmURL( SCM_SAMPLE_WEB );
@@ -108,7 +92,7 @@ public class DeploymentManagerTest
         project.setScmPassword( "rahul" );
         component.addProject( project );
 
-        DefaultDeploymentManager mgr = (DefaultDeploymentManager) component;
+        DefaultDeployer mgr = (DefaultDeployer) component;
         DeploymentWorkspace workspace = mgr.getDeploymentWorkspace( project );
         assertNotNull( workspace );
 
@@ -131,7 +115,7 @@ public class DeploymentManagerTest
         DeployableProject project = new DeployableProject();
         project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
         project.setScmURL( SCM_SAMPLE_WEB );
-        DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
         // XXX: Just removed for testing, Re-enable it when done!
         // component.removeProject (project);
         project.setLabel( "non-existent-component" );
@@ -149,10 +133,10 @@ public class DeploymentManagerTest
         project.setScmPassword( "rahul" );
         project.setScmTag( TAG_TO_CHECKOUT );
 
-        DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
         component.checkoutProject( project );
 
-        DefaultDeploymentManager mgr = (DefaultDeploymentManager) component;
+        DefaultDeployer mgr = (DefaultDeployer) component;
         String deployerWorkingDir = mgr.getWorkingDirectory();
         assertTrue( FileUtils.fileExists( deployerWorkingDir ) );
         DeploymentWorkspace workspace = mgr.getDeploymentWorkspace( project );
@@ -174,8 +158,8 @@ public class DeploymentManagerTest
     public void testGetMavenProjectForCheckedoutProject()
         throws Exception
     {
-        DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
-        DefaultDeploymentManager mgr = (DefaultDeploymentManager) component;
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
+        DefaultDeployer mgr = (DefaultDeployer) component;
         DeployableProject project = new DeployableProject();
         project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
         project.setScmURL( SCM_SAMPLE_WEB );
@@ -200,8 +184,7 @@ public class DeploymentManagerTest
     public void testAddVirtualHostForCheckedoutproject()
         throws Exception
     {
-        DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
-        DeploymentManager mgr = (DeploymentManager) component;
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
         DeployableProject project = new DeployableProject();
         project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
         project.setScmURL( SCM_SAMPLE_WEB );
@@ -221,8 +204,7 @@ public class DeploymentManagerTest
     public void testBuildProject()
         throws Exception
     {
-        DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
-        DeploymentManager mgr = (DeploymentManager) component;
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
         DeployableProject project = new DeployableProject();
         project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
         project.setScmURL( SCM_SAMPLE_WEB );
@@ -231,7 +213,6 @@ public class DeploymentManagerTest
         project.setScmTag( TAG_TO_CHECKOUT );
 
         component.buildProject( project, "clean compile" );
-
     }
 
     /**
@@ -242,8 +223,7 @@ public class DeploymentManagerTest
     public void testBuildNonExistentProject()
         throws Exception
     {
-        DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
-        DeploymentManager mgr = (DeploymentManager) component;
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
         DeployableProject project = new DeployableProject();
         project.setLabel( "ghost-vhost-component" );
         project.setScmURL( "scm:cvs:pserver:rahul@localhost:/home/cvs/local:projects/plexus/vhost-component" );
@@ -268,15 +248,7 @@ public class DeploymentManagerTest
     public void testBuildProjectWithIncorrectGoal()
         throws Exception
     {
-        boolean bSkipped = true;
-        if ( bSkipped )
-        {
-            // for some reason fails on Linux
-            System.out.println( "Test skipped!" );
-            return;
-        }
-        DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
-        DeploymentManager mgr = (DeploymentManager) component;
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
         DeployableProject project = new DeployableProject();
         project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
         project.setScmURL( SCM_SAMPLE_WEB );
@@ -301,7 +273,7 @@ public class DeploymentManagerTest
             System.out.println( "Deployment test skipped! This will else result lot of Tomcat instances to start up" );
             return;
         }
-        DeploymentManager component = (DeploymentManager) lookup( DeploymentManager.ROLE );
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
         DeployableProject project = new DeployableProject();
         project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
         project.setScmURL( SCM_SAMPLE_WEB );
@@ -313,4 +285,70 @@ public class DeploymentManagerTest
         component.deployProject( project );
     }
 
+    // Service methods 
+    /**
+     * Creates a Foo.java resource in working copy location.
+     */
+    private void createFooJava( File fooJava )
+        throws Exception
+    {
+        FileWriter output = new FileWriter( fooJava );
+        PrintWriter printer = new PrintWriter( output );
+        printer.println( "public class Foo" );
+        printer.println( "{" );
+        printer.println( "    public void foo()" );
+        printer.println( "    {" );
+        printer.println( "        int i = 10;" );
+        printer.println( "    }" );
+        printer.println( "}" );
+        printer.close();
+
+        output.close();
+    }
+
+    /**
+     * Creates a Bar.java resource in working copy location.
+     */
+    private void createBarJava( File barJava )
+        throws Exception
+    {
+        FileWriter output = new FileWriter( barJava );
+        PrintWriter printer = new PrintWriter( output );
+        printer.println( "public class Bar" );
+        printer.println( "{" );
+        printer.println( "    public int bar()" );
+        printer.println( "    {" );
+        printer.println( "        return 20;" );
+        printer.println( "    }" );
+        printer.println( "}" );
+        printer.close();
+
+        output.close();
+    }
+
+    /**
+     * Creates a readme.txt resource in working copy location.
+     */
+    private void createReadmeText( File readmeTxt )
+        throws Exception
+    {
+        FileWriter output = new FileWriter( readmeTxt );
+        PrintWriter printer = new PrintWriter( output );
+        printer.println( " Test Readme text." );
+        printer.close();
+
+        output.close();
+    }
+
+    private String getScmUrl()
+        throws Exception
+    {
+        return SvnScmTestUtils.getScmUrl( new File( getRepositoryRoot(), "trunk" ) );
+    }
+
+    private ScmRepository getScmRepository()
+        throws Exception
+    {
+        return getScmManager().makeScmRepository( getScmUrl() );
+    }
 }

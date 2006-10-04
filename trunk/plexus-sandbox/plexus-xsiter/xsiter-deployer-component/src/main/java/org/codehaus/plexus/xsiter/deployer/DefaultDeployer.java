@@ -7,12 +7,10 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
@@ -24,7 +22,7 @@ import org.apache.maven.scm.manager.NoSuchScmProviderException;
 import org.apache.maven.scm.manager.ScmManager;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.apache.maven.scm.repository.ScmRepositoryException;
-import org.codehaus.plexus.components.interactivity.Prompter;
+import org.apache.velocity.app.Velocity;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.util.FileUtils;
@@ -46,16 +44,16 @@ import org.codehaus.plexus.xsiter.vhost.VirtualHostConfiguration;
 import org.codehaus.plexus.xsiter.vhost.VirtualHostManager;
 
 /**
- * Concrete implementation of a {@link DeploymentManager} Role.
+ * Concrete implementation of a {@link Deployer} Role.
  * 
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
- * @version $Id: DefaultDeploymentManager.java,v 1.1 2006/09/14 05:11:37 rahul
+ * @version $Id: DefaultDeployer.java,v 1.1 2006/09/14 05:11:37 rahul
  *          Exp $
  * @plexus.component
  */
-public class DefaultDeploymentManager
+public class DefaultDeployer
     extends AbstractLogEnabled
-    implements DeploymentManager, Startable
+    implements Deployer, Startable
 {
 
     /**
@@ -83,14 +81,6 @@ public class DefaultDeploymentManager
      * @plexus.requirement
      */
     private VirtualHostManager virtualHostManager;
-
-    /**
-     * Component to prompt the user from command line to capture application
-     * arguments.
-     * 
-     * @plexus.requirement
-     */
-    private Prompter prompter;
 
     /**
      * Directory where all the Project deployment workspaces are created.
@@ -126,49 +116,7 @@ public class DefaultDeploymentManager
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#addProject(java.util.Properties)
-     */
-    public void addProject( Properties properties )
-        throws Exception
-    {
-        // List list = ProjectProperties.getRequiredProjectProperties ();
-        List list = Arrays.asList( ProjectProperties.values() );
-        Vector v = new Vector( list );
-        // track required properties not found
-        Vector v2 = (Vector) v.clone();
-        DeployableProject project = new DeployableProject();
-
-        // check if we have all required properties
-        for ( Iterator it = v.iterator(); it.hasNext(); )
-        {
-            ProjectProperties p = (ProjectProperties) it.next();
-            String val = (String) properties.get( p.getName() );
-            if ( null != val )
-            {
-                v2.remove( p );
-            }
-            assignProjectProperty( project, p, val );
-        }
-
-        // Prompt for missing properties
-        if ( v2.size() > 0 )
-        {
-            prompter.showMessage( "Please provide the following properties for Deployment workspace setup." );
-            for ( Iterator it = v2.iterator(); it.hasNext(); )
-            {
-                ProjectProperties p = (ProjectProperties) it.next();
-                String val = null;
-                while ( null == val || val.trim().equals( "" ) )
-                    val = prompter.prompt( "Enter a value for " + p.getName() );
-                assignProjectProperty( project, p, val );
-            }
-        }
-        getLogger().debug( "adding project '" + project.getLabel() + "'" );
-        addProject( project );
-    }
-
-    /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#addProject(DeployableProject)
+     * @see org.codehaus.plexus.xsiter.deployer.Deployer#addProject(DeployableProject)
      */
     public void addProject( DeployableProject project )
         throws Exception
@@ -179,7 +127,7 @@ public class DefaultDeploymentManager
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#removeProject(DeployableProject)
+     * @see org.codehaus.plexus.xsiter.deployer.Deployer#removeProject(DeployableProject)
      */
     public void removeProject( DeployableProject project )
         throws Exception
@@ -196,7 +144,7 @@ public class DefaultDeploymentManager
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#getDeploymentWorkspace(DeployableProject)
+     * @see org.codehaus.plexus.xsiter.deployer.Deployer#getDeploymentWorkspace(DeployableProject)
      */
     public DeploymentWorkspace getDeploymentWorkspace( DeployableProject project )
         throws Exception
@@ -237,7 +185,7 @@ public class DefaultDeploymentManager
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#addVirtualHost(DeployableProject)
+     * @see org.codehaus.plexus.xsiter.deployer.Deployer#addVirtualHost(DeployableProject)
      */
     public void addVirtualHost( DeployableProject project )
         throws Exception
@@ -273,7 +221,7 @@ public class DefaultDeploymentManager
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#checkoutProject(DeployableProject)
+     * @see org.codehaus.plexus.xsiter.deployer.Deployer#checkoutProject(DeployableProject)
      */
     public void checkoutProject( DeployableProject project )
         throws Exception
@@ -331,20 +279,18 @@ public class DefaultDeploymentManager
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#deployProject(DeployableProject)
+     * @see org.codehaus.plexus.xsiter.deployer.Deployer#deployProject(DeployableProject)
      */
     public DeployedProject deployProject( DeployableProject project )
         throws Exception
     {
         getLogger().info( "Using default deployment goals: " + defaultDeploymentGoals );
         // Deploy the checked out Project to Appserver/Webserver
-        deployProject( project, defaultDeploymentGoals );
-        // TODO: Add more stuff to DeployedProject
-        return new DeployedProject();
+        return deployProject( project, defaultDeploymentGoals );
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#deployProject(DeployableProject,
+     * @see org.codehaus.plexus.xsiter.deployer.Deployer#deployProject(DeployableProject,
      *      java.lang.String)
      */
     public DeployedProject deployProject( DeployableProject project, String goals )
@@ -368,7 +314,7 @@ public class DefaultDeploymentManager
     }
 
     /**
-     * @see org.codehaus.plexus.xsiter.deployer.DeploymentManager#buildProject(DeployableProject,
+     * @see org.codehaus.plexus.xsiter.deployer.Deployer#buildProject(DeployableProject,
      *      java.lang.String)
      */
     public void buildProject( DeployableProject project, String goals )
@@ -405,16 +351,13 @@ public class DefaultDeploymentManager
                 getLogger().error( "Unable to execute command: '" + goals + "'" );
                 throw new Exception( "Unable to execute command: '" + goals + "'" );
             }
-            // TODO: Disabled logging the Command PID to a file, breaks on Hegel
-            boolean enabled = false;
-            if ( enabled )
-            {
-                getLogger().info( "Process ID : " + cmd.getPid() );
-                FileWriter fw = new FileWriter( new File( workspaceWorkingDir, "pid.txt" ), true );
-                fw.append( "# PID for goal(s): '" + goals + "' run on " + sdf.format( new Date() ) );
-                fw.write( "\n" + cmd.getPid() );
-                fw.close();
-            }
+
+            getLogger().debug( "Process ID : " + cmd.getPid() );
+            FileWriter fw = new FileWriter( new File( workspaceWorkingDir, "pid.txt" ), true );
+            fw.append( "# PID for goal(s): '" + goals + "' run on " + sdf.format( new Date() ) );
+            fw.write( "\n" + cmd.getPid() );
+            fw.close();
+
         }
         catch ( CommandLineException e )
         {
@@ -422,11 +365,68 @@ public class DefaultDeploymentManager
         }
     }
 
-    // Service methods
+    /**
+     * @see org.codehaus.plexus.xsiter.deployer.Deployer#updateProject(org.codehaus.plexus.xsiter.deployer.model.DeployableProject)
+     */
+    public void updateProject( DeployableProject project )
+        throws Exception
+    {
+        DeploymentWorkspace workspace = createDeploymentWorkspaceIfRequired( project );
+        getLogger().info( "Updating Project: " + project.getLabel() + ", Version: " + project.getScmTag() );
 
+        // TODO: refactor/add a method that creates a Deployable Project
+        // instance from a Workspace descriptor
+
+        // sanity for SCM info, source from workspace
+        project.setScmURL( workspace.getScmURL() );
+        project.setScmUsername( workspace.getScmUsername() );
+        project.setScmPassword( workspace.getScmPassword() );
+
+        try
+        {
+            ScmRepository repository = getScmRepository( project );
+            ScmResult result;
+            synchronized ( this )
+            {
+                File checkoutDir = new File( workspace.getRootDirectory(), workspace.getWorkingDirectory() );
+                try
+                {
+                    if ( checkoutDir.exists() )
+                        FileUtils.cleanDirectory( checkoutDir );
+                }
+                catch ( IOException e )
+                {
+                    throw new Exception( "Could not clean directory : " + workspace.getWorkingDirectory(), e );
+                }
+
+                // check out to a tagged directory
+                ScmFileSet fileSet = new ScmFileSet( new File( checkoutDir, project.getScmTag() ) );
+                result = scmManager.getProviderByRepository( repository ).update( repository, fileSet,
+                                                                                  project.getScmTag() );
+            }
+
+            if ( !result.isSuccess() )
+            {
+                getLogger().warn( "Command output: " + result.getCommandOutput() );
+                getLogger().warn( "Provider message: " + result.getProviderMessage() );
+            }
+            else
+            {
+                getLogger().info( "Project checked out successfully." );
+            }
+
+            // return result;
+        }
+        catch ( Exception e )
+        {
+            throw new Exception( "Cannot checkout sources.", e );
+        }
+    }
+
+    // Service methods
     /**
      * Creates a deployment workspace if none exists for the specified DeployableProject.
-     * @return TODO
+     * @return {@link DeploymentWorkspace} instance 
      * @throws Exception 
      */
     private DeploymentWorkspace createDeploymentWorkspaceIfRequired( DeployerResource project )
@@ -443,7 +443,7 @@ public class DefaultDeploymentManager
      * 
      * @param project
      * @param workspaceID
-     * @return TODO
+     * @return created {@link DeploymentWorkspace} instance 
      */
     private DeploymentWorkspace createDeploymentWorkspace( DeployerResource project )
     {
