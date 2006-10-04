@@ -24,6 +24,7 @@ import org.codehaus.plexus.security.ui.web.model.AdminEditUserCredentials;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -146,6 +147,11 @@ public class UserEditAction
         catch ( UserNotFoundException e )
         {
             addActionError( "Unable to find User '" + username + "': " + e.getMessage() );
+            return ERROR;
+        }
+        catch ( PasswordRuleViolationException pe )
+        {
+            processPasswordRuleViolations( pe );
             return ERROR;
         }
 
