@@ -197,7 +197,6 @@ public class DefaultSecuritySystem
             source = new AuthorizationDataSource( null, null, permission, resource );
         }
 
-        getLogger().info( "secsystem returning " + authorizer.isAuthorized( source ).isAuthorized() );
         return authorizer.isAuthorized( source );
     }
 
