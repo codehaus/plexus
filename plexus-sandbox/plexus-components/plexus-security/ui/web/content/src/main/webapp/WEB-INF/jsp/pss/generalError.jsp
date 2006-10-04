@@ -20,7 +20,6 @@
 <html>
 <head>
   <title>Error Occurred</title>
-  <ww:head />
 </head>
 
 <body>

@@ -21,7 +21,6 @@
 <html>
 <head>
   <title>[Admin] Create Role</title>
-  <ww:head/>
 </head>
 
 <body>

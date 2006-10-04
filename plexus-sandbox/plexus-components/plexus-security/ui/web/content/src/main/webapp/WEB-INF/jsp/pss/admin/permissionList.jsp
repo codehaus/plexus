@@ -20,7 +20,6 @@
 <html>
 <head>
   <title>[Admin] Permission List</title>
-  <ww:head/>
 </head>
 
 <body>

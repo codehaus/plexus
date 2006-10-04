@@ -20,7 +20,6 @@
 <html>
 <head>
   <title>[Admin] System Information</title>
-  <ww:head/>
 </head>
 
 <body>

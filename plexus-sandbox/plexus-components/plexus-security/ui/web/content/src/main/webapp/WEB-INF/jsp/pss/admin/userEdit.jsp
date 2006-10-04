@@ -21,7 +21,6 @@
 <html>
 <head>
   <title>[Admin] User Edit</title>
-  <ww:head/>
 </head>
 
 <body>

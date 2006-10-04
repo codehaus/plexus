@@ -20,7 +20,6 @@
 
 <head>
   <title>Security Alert - Action Requires Authentication</title>
-  <ww:head />
 </head>
 
 <body>

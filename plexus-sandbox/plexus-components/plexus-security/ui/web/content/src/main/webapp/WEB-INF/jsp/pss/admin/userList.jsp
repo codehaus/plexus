@@ -21,7 +21,6 @@
 <html>
 <head>
   <title>[Admin] User List</title>
-  <ww:head/>
 </head>
 
 <body>

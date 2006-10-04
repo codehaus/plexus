@@ -20,7 +20,6 @@
 <html>
 <head>
   <title>Validation Notification Page</title>
-  <ww:head/>
 </head>
 
 <body>
