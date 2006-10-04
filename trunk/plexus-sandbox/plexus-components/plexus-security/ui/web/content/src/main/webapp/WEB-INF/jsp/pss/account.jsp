@@ -20,7 +20,6 @@
 <html>
 <head>
   <title>Account Details</title>
-  <ww:head/>
 </head>
 
 <body>

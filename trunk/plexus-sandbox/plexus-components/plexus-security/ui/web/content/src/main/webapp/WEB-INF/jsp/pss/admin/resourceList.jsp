@@ -20,7 +20,6 @@
 <html>
 <head>
   <title>[Admin] Resource List</title>
-  <ww:head/>
 </head>
 
 <body>

@@ -20,7 +20,6 @@
 <html>
 <head>
   <title>Registration Page</title>
-  <ww:head/>
 </head>
 
 <body>
