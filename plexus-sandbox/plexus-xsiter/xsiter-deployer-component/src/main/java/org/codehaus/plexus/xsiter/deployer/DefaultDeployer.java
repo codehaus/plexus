@@ -53,7 +53,7 @@ import org.codehaus.plexus.xsiter.vhost.VirtualHostManager;
  */
 public class DefaultDeployer
     extends AbstractLogEnabled
-    implements Deployer, Startable
+    implements Deployer
 {
 
     /**
@@ -66,6 +66,9 @@ public class DefaultDeployer
      */
     private static final String GROUP_ID_ORG_CODEHAUS_CARGO = "org.codehaus.cargo";
 
+    /**
+     * Date Formatter.
+     */
     private static final SimpleDateFormat sdf = new SimpleDateFormat( "dd-MM-yyyy, HH:mm:ss" );
 
     /**
@@ -95,25 +98,6 @@ public class DefaultDeployer
      * @plexus.configuration default-value="clean compile war:war cargo:start"
      */
     private String defaultDeploymentGoals;
-
-    // ----------------------------------------------------------------------
-    // Component Lifecycle
-    // ----------------------------------------------------------------------
-
-    public void start()
-    {
-        getLogger().info( "Starting XSiter Deployer component..." );
-        if ( !FileUtils.fileExists( workingDirectory ) )
-        {
-            getLogger().debug( "Creating working directory: " + workingDirectory );
-            FileUtils.mkdir( workingDirectory );
-        }
-    }
-
-    public void stop()
-    {
-        getLogger().info( "...stopping XSiter Deployer component." );
-    }
 
     /**
      * @see org.codehaus.plexus.xsiter.deployer.Deployer#addProject(DeployableProject)
