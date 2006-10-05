@@ -21,6 +21,14 @@
       <artifactId>plexus-security-keys-api</artifactId>
     </dependency>
   </dependencies>
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/providers/keystore
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/providers/keystore
+    </developerConnection>
+  </scm>
   <build>
     <plugins>
       <plugin>

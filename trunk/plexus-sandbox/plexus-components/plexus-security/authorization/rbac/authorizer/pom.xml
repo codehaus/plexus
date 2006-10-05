@@ -8,11 +8,11 @@
   <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
   <name>Plexus Security :: RBAC Authorizer</name>
   <packaging>jar</packaging>
-  <dependencies>    
+  <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-user-management-api</artifactId>
-    </dependency> 
+    </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-api</artifactId>
@@ -22,6 +22,14 @@
       <artifactId>plexus-security-authorization-rbac-model</artifactId>
     </dependency>
   </dependencies>
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/authorizer
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/authorizer
+    </developerConnection>
+  </scm>
   <build>
     <plugins>
       <plugin>

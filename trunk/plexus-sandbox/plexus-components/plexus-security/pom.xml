@@ -155,6 +155,16 @@
       <artifactId>plexus-container-default</artifactId>
     </dependency>
   </dependencies>
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security
+    </developerConnection>
+  </scm>
+
   <build>
     <plugins>
       <plugin>

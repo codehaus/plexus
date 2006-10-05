@@ -81,6 +81,14 @@
       </exclusions>
     </dependency>
   </dependencies>
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/stores/jdo
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/stores/jdo
+    </developerConnection>
+  </scm>
   <build>
     <plugins>
       <plugin>

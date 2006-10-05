@@ -13,6 +13,14 @@
       <artifactId>plexus-security-authentication-api</artifactId>
     </dependency>
   </dependencies>
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/providers/memory
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/providers/memory
+    </developerConnection>
+  </scm>
   <build>
     <plugins>
       <plugin>

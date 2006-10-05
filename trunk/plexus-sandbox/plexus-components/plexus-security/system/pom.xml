@@ -30,6 +30,14 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/system
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/system
+    </developerConnection>
+  </scm>
   <build>
     <plugins>
       <plugin>

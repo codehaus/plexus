@@ -44,4 +44,12 @@
       <version>3.8.1</version>
     </dependency>
   </dependencies>
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/stores/test
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/stores/test
+    </developerConnection>
+  </scm>
 </project>
