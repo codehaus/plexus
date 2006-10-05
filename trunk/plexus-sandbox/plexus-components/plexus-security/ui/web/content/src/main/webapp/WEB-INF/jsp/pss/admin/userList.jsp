@@ -29,7 +29,7 @@
 
 <h2>[Admin] User List</h2>
 
-<table border="1" cellspacing="0" cellpadding="2" width="80%">
+<table class="securityTable" border="1" cellspacing="0" cellpadding="2" width="80%">
   <thead>
     <tr>
       <th>Username</th>
