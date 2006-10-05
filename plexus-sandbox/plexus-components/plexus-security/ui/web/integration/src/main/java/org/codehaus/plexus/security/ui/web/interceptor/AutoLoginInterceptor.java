@@ -19,13 +19,13 @@ package org.codehaus.plexus.security.ui.web.interceptor;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.interceptor.Interceptor;
-
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.TokenBasedAuthenticationDataSource;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.keys.KeyManagerException;
 import org.codehaus.plexus.security.keys.KeyNotFoundException;
+import org.codehaus.plexus.security.keys.KeyManager;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
@@ -220,6 +220,26 @@ public class AutoLoginInterceptor
         HttpSession session = ServletActionContext.getRequest().getSession( true );
         session.setAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
         getLogger().debug( "Setting session:" + SecuritySystemConstants.SECURITY_SESSION_KEY + " to " + securitySession );
+
+        if ( isSingleSignOnEnabled )
+        {
+            try
+            {
+                int timeout = securitySystem.getPolicy().getSingleSignOnSettings().getCookieTimeout();
+                KeyManager keyManager = securitySystem.getKeyManager();
+                AuthenticationKey authkey =
+                    keyManager.createKey( securitySession.getUser().getPrincipal().toString(), "Single Sign On Key", timeout );
+
+                CookieUtils.setCookie( ServletActionContext.getResponse(), SecuritySystemConstants.SINGLE_SIGN_ON_KEY,
+                                       authkey.getKey(), timeout );
+            }
+            catch ( KeyManagerException e )
+            {
+                getLogger().warn( "Unable  " );
+
+            }
+        }
+
     }
 
     private SecuritySession getSecuritySession()
