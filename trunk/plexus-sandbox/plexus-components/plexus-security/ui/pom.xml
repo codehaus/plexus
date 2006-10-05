@@ -45,6 +45,14 @@
     </dependency>
     </dependencies>
   </dependencyManagement>
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/ui
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/ui
+    </developerConnection>
+  </scm>
   <modules>
     <module>web</module>
     <module>swing</module>

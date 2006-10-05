@@ -8,6 +8,15 @@
   <artifactId>plexus-security-user-management-api</artifactId>
   <name>Plexus Security :: User Management API</name>
 
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/user-management/api
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/user-management/api
+    </developerConnection>
+  </scm>
+
   <build>
     <plugins>
       <plugin>

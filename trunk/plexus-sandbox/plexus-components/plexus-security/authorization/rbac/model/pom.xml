@@ -25,4 +25,13 @@
   </parent>
   <artifactId>plexus-security-authorization-rbac-model</artifactId>
   <name>Plexus Security :: RBAC Authorization Model</name>
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/model
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/model
+    </developerConnection>
+  </scm>
 </project>

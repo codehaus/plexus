@@ -8,6 +8,14 @@
   <artifactId>plexus-security-examples</artifactId>
   <name>Plexus Security :: Examples</name>
   <packaging>pom</packaging>
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/examples
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/examples
+    </developerConnection>
+  </scm>
   <modules>
     <module>webapp</module>
   </modules>

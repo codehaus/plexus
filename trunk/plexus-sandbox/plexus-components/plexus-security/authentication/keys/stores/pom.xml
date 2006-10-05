@@ -8,6 +8,14 @@
   <artifactId>plexus-security-keys-stores</artifactId>
   <name>Plexus Security :: Key Management Stores Parent</name>
   <packaging>pom</packaging>
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/keys/stores
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/keys/stores
+    </developerConnection>
+  </scm>
   <dependencies>
   </dependencies>
   <modules>
