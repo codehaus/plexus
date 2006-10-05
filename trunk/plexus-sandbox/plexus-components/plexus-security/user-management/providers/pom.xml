@@ -19,7 +19,7 @@
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-provider-test</artifactId>
-        <version>${project.version}</version>
+        <version>1.0-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
