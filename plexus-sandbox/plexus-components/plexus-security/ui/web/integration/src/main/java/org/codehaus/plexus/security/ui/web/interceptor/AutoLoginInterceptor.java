@@ -227,11 +227,15 @@ public class AutoLoginInterceptor
             {
                 int timeout = securitySystem.getPolicy().getSingleSignOnSettings().getCookieTimeout();
                 KeyManager keyManager = securitySystem.getKeyManager();
-                AuthenticationKey authkey =
-                    keyManager.createKey( securitySession.getUser().getPrincipal().toString(), "Single Sign On Key", timeout );
 
-                CookieUtils.setCookie( ServletActionContext.getResponse(), SecuritySystemConstants.SINGLE_SIGN_ON_KEY,
-                                       authkey.getKey(), timeout );
+                if ( securitySession != null )
+                {
+                    AuthenticationKey authkey =
+                        keyManager.createKey( securitySession.getUser().getPrincipal().toString(), "Single Sign On Key", timeout );
+
+                    CookieUtils.setCookie( ServletActionContext.getResponse(), SecuritySystemConstants.SINGLE_SIGN_ON_KEY,
+                                           authkey.getKey(), timeout );
+                }
             }
             catch ( KeyManagerException e )
             {
