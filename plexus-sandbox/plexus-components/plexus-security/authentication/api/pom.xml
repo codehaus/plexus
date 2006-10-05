@@ -14,6 +14,14 @@
       <artifactId>plexus-security-policy</artifactId>
     </dependency>
   </dependencies>
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/api
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/api
+    </developerConnection>
+  </scm>
   <build>
     <plugins>
       <plugin>

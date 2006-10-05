@@ -23,6 +23,14 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/user-management/providers
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/user-management/providers
+    </developerConnection>
+  </scm>
   <modules>
     <module>test</module>
     <module>memory</module>

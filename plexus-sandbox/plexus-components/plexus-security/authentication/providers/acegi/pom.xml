@@ -29,7 +29,15 @@
       <version>1.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
-   <build>
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/providers/acegi
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/providers/acegi
+    </developerConnection>
+  </scm>
+  <build>
     <plugins>
       <plugin>
         <groupId>org.codehaus.plexus</groupId>

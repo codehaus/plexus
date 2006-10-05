@@ -14,7 +14,7 @@
       <artifactId>plexus-security-keys-api</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-jdo2</artifactId>
@@ -30,7 +30,7 @@
         </exclusion>
       </exclusions>
     </dependency>
-    
+
     <dependency>
       <groupId>jpox</groupId>
       <artifactId>jpox</artifactId>
@@ -44,23 +44,31 @@
         </exclusion>
       </exclusions>
     </dependency>
-    
+
     <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>1.7.3.3</version>
       <scope>test</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-keys-test</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
-    
+
   </dependencies>
-  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/keys/stores/jdo
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/keys/stores/jdo
+    </developerConnection>
+  </scm>
   <build>
     <plugins>
       <plugin>
