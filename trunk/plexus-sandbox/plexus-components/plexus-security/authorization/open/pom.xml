@@ -11,7 +11,7 @@
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-api</artifactId>
-      <version>${project.version}</version>
+      <version>1.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
