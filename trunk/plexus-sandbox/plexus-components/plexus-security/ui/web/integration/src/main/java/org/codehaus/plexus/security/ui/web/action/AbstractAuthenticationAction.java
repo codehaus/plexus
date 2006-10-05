@@ -43,7 +43,8 @@ public abstract class AbstractAuthenticationAction
     static final String LOGIN_CANCEL = "security-login-cancel";
     static final String PASSWORD_CHANGE = "must-change-password";
     static final String ACCOUNT_LOCKED = "security-login-locked";
-    
+
+
     protected String webLogin( SecuritySystem securitySystem, AuthenticationDataSource authdatasource, boolean rememberMe )
     {
         // An attempt should log out your authentication tokens first!
@@ -68,18 +69,38 @@ public abstract class AbstractAuthenticationAction
                         KeyManager keyManager = securitySystem.getKeyManager();
                         AuthenticationKey authkey = keyManager.createKey( authdatasource.getPrincipal(),
                                                                           "Remember Me Key", timeout );
-                        
+
                         CookieUtils.setCookie( ServletActionContext.getResponse(),
                                                SecuritySystemConstants.REMEMBER_ME_KEY, authkey.getKey(), timeout );
                     }
                     catch ( KeyManagerException e )
                     {
-                        getLogger().warn( "Unable  " );
+                        getLogger().warn( "Unable to set remember me cookie." );
 
                     }
 
                 }
-                
+
+                if ( securitySystem.getPolicy().getSingleSignOnSettings().isEnabled() )
+                {
+                    try
+                    {
+                        int timeout = securitySystem.getPolicy().getSingleSignOnSettings().getCookieTimeout();
+                        KeyManager keyManager = securitySystem.getKeyManager();
+                        AuthenticationKey authkey = keyManager.createKey( authdatasource.getPrincipal(),
+                                                                          "Single Sign On Key", timeout );
+
+                        CookieUtils.setCookie( ServletActionContext.getResponse(),
+                                               SecuritySystemConstants.SINGLE_SIGN_ON_KEY, authkey.getKey(), timeout );
+                    }
+                    catch ( KeyManagerException e )
+                    {
+                        getLogger().warn( "Unable to set single sign on cookie." );
+
+                    }
+
+                }
+
                 if( securitySession.getUser().isPasswordChangeRequired() )
                 {
                     return PASSWORD_CHANGE;
