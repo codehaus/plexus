@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <project>
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.plexus.xsiter</groupId>
+    <artifactId>xsiter-parent</artifactId>
+    <version>1-SNAPSHOT</version>
+  </parent>
   <groupId>org.codehaus.plexus.xsiter</groupId>
   <artifactId>xsiter-deployer-component</artifactId>
   <name>XSiter :: Project Deployer Component</name>
