@@ -1,7 +1,9 @@
 <component-set>
   <components>
     <component>
-      <role>org.codehaus.plexus.xsiter.deployer.DeployerApplication</role>
+      <role>
+        org.codehaus.plexus.xsiter.deployer.DeployerApplication
+      </role>
       <implementation>
         org.codehaus.plexus.xsiter.deployer.DefaultDeployerApplication
       </implementation>
@@ -22,11 +24,8 @@
           <role>org.apache.maven.scm.manager.ScmManager</role>
         </requirement>
         <requirement>
-          <role>org.codehaus.plexus.xsiter.vhost.VirtualHostManager</role>
-        </requirement>
-        <requirement>
           <role>
-            org.codehaus.plexus.components.interactivity.Prompter
+            org.codehaus.plexus.xsiter.vhost.VirtualHostManager
           </role>
         </requirement>
       </requirements>
