@@ -19,22 +19,19 @@ package org.codehaus.plexus.security.ui.web.interceptor;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.interceptor.Interceptor;
+
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.TokenBasedAuthenticationDataSource;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
-import org.codehaus.plexus.security.keys.KeyManagerException;
-import org.codehaus.plexus.security.keys.KeyNotFoundException;
-import org.codehaus.plexus.security.keys.KeyManager;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.system.SecuritySystemConstants;
-import org.codehaus.plexus.security.ui.web.util.CookieUtils;
+import org.codehaus.plexus.security.ui.web.util.AutoLoginCookies;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -58,10 +55,11 @@ public class AutoLoginInterceptor
      * @plexus.requirement
      */
     private SecuritySystem securitySystem;
-
-    private boolean isRememberMeEnabled = false;
-
-    private boolean isSingleSignOnEnabled = false;
+    
+    /**
+     * @plexus.requirement
+     */
+    private AutoLoginCookies autologinCookies;
 
     public void destroy()
     {
@@ -70,11 +68,7 @@ public class AutoLoginInterceptor
 
     public void init()
     {
-        isRememberMeEnabled = securitySystem.getPolicy().getRememberMeSettings().isEnabled();
-        isSingleSignOnEnabled = securitySystem.getPolicy().getSingleSignOnSettings().isEnabled();
-
-        getLogger().info( "Remember Me (enabled) : " + isRememberMeEnabled );
-        getLogger().info( "Single Sign On (enabled) : " + isSingleSignOnEnabled );
+        
     }
 
     public String intercept( ActionInvocation invocation )
@@ -89,114 +83,69 @@ public class AutoLoginInterceptor
             return invocation.invoke();
         }
 
-        if ( isRememberMeEnabled )
+        if( autologinCookies.isRememberMeEnabled() )
         {
-            Cookie rememberMeCookie = CookieUtils.getCookie( ServletActionContext.getRequest(),
-                                                             SecuritySystemConstants.REMEMBER_ME_KEY );
+            AuthenticationKey authkey = autologinCookies.getRememberMeKey( );
 
-            if ( rememberMeCookie != null )
+            if( authkey != null )
             {
-                // Found user with a remember me key.
-                String providedKey = rememberMeCookie.getValue();
-
-                getLogger().info( "Found remember me cookie : " + providedKey );
-
-                String result = populateAuthTokens( SecuritySystemConstants.REMEMBER_ME_KEY, providedKey );
-
-                if ( StringUtils.isNotEmpty( result ) )
+                String result = performLogin(authkey);
+                
+                if(StringUtils.isNotEmpty( result ))
                 {
                     return result;
                 }
-            }
-            else
-            {
-                getLogger().info( "Cookie Not Found: Remember Me Cookie: " + SecuritySystemConstants.REMEMBER_ME_KEY );
             }
         }
-
-        if ( isSingleSignOnEnabled )
+        
+        if ( autologinCookies.isSingleSignonEnabled() )
         {
-            Cookie ssoCookie = CookieUtils.getCookie( ServletActionContext.getRequest(),
-                                                      SecuritySystemConstants.SINGLE_SIGN_ON_KEY );
-
-            if ( ssoCookie != null )
+            AuthenticationKey authkey = autologinCookies.getSingleSignonKey();
+            
+            if( authkey != null )
             {
-                // Found user with a single sign on key.
-
-                String providedKey = ssoCookie.getValue();
-
-                getLogger().info( "Found sso cookie : " + providedKey );
-
-                String result = populateAuthTokens( SecuritySystemConstants.SINGLE_SIGN_ON_KEY, providedKey );
-
-                if ( StringUtils.isNotEmpty( result ) )
+                String result = performLogin(authkey);
+                
+                if(StringUtils.isNotEmpty( result ))
                 {
                     return result;
                 }
-            }
-            else
-            {
-                getLogger().info(
-                                  "Cookie Not Found: Single Sign On Cookie: "
-                                      + SecuritySystemConstants.SINGLE_SIGN_ON_KEY );
             }
         }
 
         return invocation.invoke();
     }
 
-    private String populateAuthTokens( String cookieName, String providedKey )
+    private String performLogin( AuthenticationKey authkey )
     {
         setAuthTokens( null );
 
         try
         {
-            AuthenticationKey authkey = securitySystem.getKeyManager().findKey( providedKey );
-            if ( authkey == null )
-            {
-                getLogger().info( "Authkey not found - " + providedKey );
+            getLogger().info( "Performing Login." );
+            TokenBasedAuthenticationDataSource authsource = new TokenBasedAuthenticationDataSource();
+            authsource.setPrincipal( authkey.getForPrincipal() );
+            authsource.setToken( authkey.getKey() );
 
-                // Invalid Cookie.  Remove it.
-                CookieUtils.removeCookie( ServletActionContext.getRequest(), ServletActionContext.getResponse(),
-                                              cookieName );
+            SecuritySession securitySession = securitySystem.authenticate( authsource );
+
+            if ( securitySession.getAuthenticationResult().isAuthenticated() )
+            {
+                getLogger().info( "Login success." );
+                // Success!  Create tokens.
+                setAuthTokens( securitySession );
+
+                if ( securitySession.getUser().isPasswordChangeRequired() )
+                {
+                    return PASSWORD_CHANGE;
+                }
             }
             else
             {
-                getLogger().info( "Performing Login." );
-                TokenBasedAuthenticationDataSource authsource = new TokenBasedAuthenticationDataSource();
-                authsource.setPrincipal( authkey.getForPrincipal() );
-                authsource.setToken( authkey.getKey() );
-
-                SecuritySession securitySession = securitySystem.authenticate( authsource );
-
-                if ( securitySession.getAuthenticationResult().isAuthenticated() )
-                {
-                    getLogger().info( "Login success." );
-                    // Success!  Create tokens.
-                    setAuthTokens( securitySession );
-
-                    if ( securitySession.getUser().isPasswordChangeRequired() )
-                    {
-                        return PASSWORD_CHANGE;
-                    }
-                }
-                else
-                {
-                    getLogger().info(
-                                      "Login Action failed against principal : "
-                                          + securitySession.getAuthenticationResult().getPrincipal(),
-                                      securitySession.getAuthenticationResult().getException() );
-                }
+                getLogger().info( "Login Action failed against principal : "
+                                      + securitySession.getAuthenticationResult().getPrincipal(),
+                                  securitySession.getAuthenticationResult().getException() );
             }
-
-        }
-        catch ( KeyNotFoundException e )
-        {
-            getLogger().info( "Key " + providedKey + " not found." );
-        }
-        catch ( KeyManagerException e )
-        {
-            getLogger().warn( "KeyManager error on " + providedKey + ".", e );
         }
         catch ( AccountLockedException e )
         {
@@ -220,30 +169,8 @@ public class AutoLoginInterceptor
         HttpSession session = ServletActionContext.getRequest().getSession( true );
         session.setAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
         getLogger().debug( "Setting session:" + SecuritySystemConstants.SECURITY_SESSION_KEY + " to " + securitySession );
-
-        if ( isSingleSignOnEnabled )
-        {
-            try
-            {
-                int timeout = securitySystem.getPolicy().getSingleSignOnSettings().getCookieTimeout();
-                KeyManager keyManager = securitySystem.getKeyManager();
-
-                if ( securitySession != null )
-                {
-                    AuthenticationKey authkey =
-                        keyManager.createKey( securitySession.getUser().getPrincipal().toString(), "Single Sign On Key", timeout );
-
-                    CookieUtils.setCookie( ServletActionContext.getResponse(), SecuritySystemConstants.SINGLE_SIGN_ON_KEY,
-                                           authkey.getKey(), timeout );
-                }
-            }
-            catch ( KeyManagerException e )
-            {
-                getLogger().warn( "Unable  " );
-
-            }
-        }
-
+        
+        autologinCookies.setSingleSignon( securitySession.getUser().getPrincipal().toString() );
     }
 
     private SecuritySession getSecuritySession()

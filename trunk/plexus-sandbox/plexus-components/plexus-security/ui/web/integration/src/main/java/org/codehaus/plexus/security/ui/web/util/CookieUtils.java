@@ -37,20 +37,11 @@ public class CookieUtils
         Cookie cookie = getCookie( request, name );
         if ( cookie != null )
         {
-            setCookie( response, name, null, 0 );
+            cookie.setMaxAge( 0 );
+            response.addCookie( cookie );
         }
     }
 
-    public static Cookie setCookie( HttpServletResponse response, String name, String value, int maxAge )
-    {
-        Cookie cookie = new Cookie( name, value );
-        cookie.setMaxAge( maxAge );
-        cookie.setPath( "/" );
-        response.addCookie( cookie );
-
-        return cookie;
-    }
-    
     public static Cookie setCookie( HttpServletResponse response, String domain, String name, String value, String path, int maxAge )
     {
         Cookie cookie = new Cookie( name, value );

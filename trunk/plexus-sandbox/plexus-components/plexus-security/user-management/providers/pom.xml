@@ -30,15 +30,6 @@
       <artifactId>plexus-security-user-management-api</artifactId>
     </dependency>
   </dependencies>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.codehaus.plexus.security</groupId>
-        <artifactId>plexus-security-user-management-provider-test</artifactId>
-        <version>1.0-alpha-4</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/user-management/providers</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/user-management/providers</developerConnection>
