@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CookieUtils
 {
+    public static final int SESSION_COOKIE = (-1);
+    
     public static void removeCookie( HttpServletRequest request, HttpServletResponse response, String name )
     {
         Cookie cookie = getCookie( request, name );
@@ -44,6 +46,20 @@ public class CookieUtils
         Cookie cookie = new Cookie( name, value );
         cookie.setMaxAge( maxAge );
         cookie.setPath( "/" );
+        response.addCookie( cookie );
+
+        return cookie;
+    }
+    
+    public static Cookie setCookie( HttpServletResponse response, String domain, String name, String value, String path, int maxAge )
+    {
+        Cookie cookie = new Cookie( name, value );
+        if ( maxAge > 0 )
+        {
+            cookie.setMaxAge( maxAge );
+        }
+        cookie.setDomain( domain );
+        cookie.setPath( path );
         response.addCookie( cookie );
 
         return cookie;
