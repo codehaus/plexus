@@ -23,7 +23,7 @@
   </parent>
   <groupId>org.codehaus.plexus.security</groupId>
   <artifactId>plexus-security</artifactId>
-  <version>1.0-alpha-5-SNAPSHOT</version>
+  <version>1.0-alpha-5</version>
   <name>Plexus Security</name>
   <packaging>pom</packaging>
 
@@ -58,119 +58,119 @@
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-system</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-policy</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authentication-api</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-keys-api</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-keys-test</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-keys-jdo</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authentication-provider-user-manager</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authentication-provider-keystore</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authentication-provider-memory</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-api</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-api</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-provider-jdo</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-provider-memory</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-provider-test</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-model</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-store-test</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-store-memory</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-rbac-profile</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-ui-web-integration</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-ui-web-taglib</artifactId>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-ui-web</artifactId>
         <type>war</type>
-        <version>1.0-alpha-5-SNAPSHOT</version>
+        <version>1.0-alpha-5</version>
       </dependency>
       <!-- Plexus -->
       <dependency>
@@ -208,8 +208,8 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security</developerConnection>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-5</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-5</developerConnection>
   </scm>
 
   <build>
