@@ -17,7 +17,18 @@
 <%@ taglib prefix="ww" uri="/webwork"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<h2>Currently Assigned Roles</h2>
+<c:if test="${!empty effectivelyAssignedRoles}">
+<h3>Effective Roles</h3>
+
+  <ul>
+    <ww:iterator id="role" value="effectivelyAssignedRoles">
+      <li>${role.name}</li>
+    </ww:iterator>
+  </ul>
+
+</c:if>
+
+<h3>Assigned Roles</h3>
 
 <c:choose>
   <c:when test="${!empty assignedRoles}">
@@ -35,12 +46,9 @@
   </c:otherwise>
 </c:choose>
 
-<%--<pss:ifAnyAuthorized permissions="grant-roles,remove-roles">--%>
-  <h2>Role Management</h2>
 
-<%--  <pss:ifAuthorized permission="grant-roles">--%>
 
-  <h3>Grant</h3>
+<h3>Available Roles</h3>
 
 <c:choose>
   <c:when test="${!empty availableRoles}">
@@ -56,7 +64,3 @@
     <p><em>No Roles Available to Grant</em></p>
   </c:otherwise>
 </c:choose>
-
-<%--  </pss:ifAuthorized> --%>
-
-<%--</pss:ifAnyAuthorized>--%>
