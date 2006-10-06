@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
+import org.apache.maven.scm.ScmFileSet;
 import org.apache.maven.scm.ScmTestCase;
+import org.apache.maven.scm.command.add.AddScmResult;
 import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.provider.svn.SvnScmTestUtils;
 import org.apache.maven.scm.repository.ScmRepository;
@@ -19,6 +21,11 @@ import org.codehaus.plexus.util.FileUtils;
 public class DeployerTest
     extends ScmTestCase
 {
+
+    /**
+     * Sample webapp to test against.
+     */
+    private static final String SAMPLE_WEBAPP = "sample-webapp";
 
     public void setUp()
         throws Exception
@@ -35,19 +42,12 @@ public class DeployerTest
         getWorkingCopy().mkdir();
         scmRepo.checkOut( getScmRepository(), getScmFileSet(), "HEAD" );
 
-        //      Make sure that the correct files was checked out        
-        File fooJava = new File( getWorkingCopy(), "Foo.java" );
-        File barJava = new File( getWorkingCopy(), "Bar.java" );
-        File readmeTxt = new File( getWorkingCopy(), "readme.txt" );
+        setupDeployableWebApp();
 
-        assertFalse( "check Foo.java doesn't yet exist", fooJava.canRead() );
-        assertFalse( "check Bar.java doesn't yet exist", barJava.canRead() );
-        assertFalse( "check readme.txt doesn't yet exist", readmeTxt.canRead() );
-
-        // Change the files
-        createFooJava( fooJava );
-        createBarJava( barJava );
-        createReadmeText( readmeTxt );
+        File module = new File( getWorkingCopy(), SAMPLE_WEBAPP );
+        ScmFileSet fileSet = new ScmFileSet( module, module.listFiles() );
+        AddScmResult addScmResult = scmRepo.add( getScmRepository(), fileSet );
+        assertTrue( addScmResult.isSuccess() );
     }
 
     public void testLookup()
@@ -57,69 +57,49 @@ public class DeployerTest
         assertNotNull( component );
     }
 
-    /**
-     * Creates a Foo.java resource in working copy location.
-     */
-    private void createFooJava( File fooJava )
-        throws Exception
-    {
-        FileWriter output = new FileWriter( fooJava );
-        PrintWriter printer = new PrintWriter( output );
-        printer.println( "public class Foo" );
-        printer.println( "{" );
-        printer.println( "    public void foo()" );
-        printer.println( "    {" );
-        printer.println( "        int i = 10;" );
-        printer.println( "    }" );
-        printer.println( "}" );
-        printer.close();
-
-        output.close();
-    }
-
-    /**
-     * Creates a Bar.java resource in working copy location.
-     */
-    private void createBarJava( File barJava )
-        throws Exception
-    {
-        FileWriter output = new FileWriter( barJava );
-        PrintWriter printer = new PrintWriter( output );
-        printer.println( "public class Bar" );
-        printer.println( "{" );
-        printer.println( "    public int bar()" );
-        printer.println( "    {" );
-        printer.println( "        return 20;" );
-        printer.println( "    }" );
-        printer.println( "}" );
-        printer.close();
-
-        output.close();
-    }
-
-    /**
-     * Creates a readme.txt resource in working copy location.
-     */
-    private void createReadmeText( File readmeTxt )
-        throws Exception
-    {
-        FileWriter output = new FileWriter( readmeTxt );
-        PrintWriter printer = new PrintWriter( output );
-        printer.println( " Test Readme text." );
-        printer.close();
-
-        output.close();
-    }
-
     private String getScmUrl()
         throws Exception
     {
-        return SvnScmTestUtils.getScmUrl( new File( getRepositoryRoot(), "trunk" ) );
+        return SvnScmTestUtils.getScmUrl( getRepositoryRoot() );
     }
 
     private ScmRepository getScmRepository()
         throws Exception
     {
         return getScmManager().makeScmRepository( getScmUrl() );
+    }
+
+    /**
+     * Sets up minimal set of resources that constitute a web app.
+     */
+    private void setupDeployableWebApp()
+        throws Exception
+    {
+        String webAppDir = getWorkingCopy().getAbsolutePath() + "/" + SAMPLE_WEBAPP + "/src/webapp/";
+        FileUtils.mkdir( webAppDir );
+        String webInfDir = webAppDir + "/WEB-INF";
+        FileUtils.mkdir( webInfDir );
+
+        FileWriter webXml = new FileWriter( new File( webInfDir, "web.xml" ) );
+        PrintWriter printer = new PrintWriter( webXml );
+        printer.println( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
+        printer
+            .println( "<web-app id=\"WebApp_ID\" version=\"2.4\" xmlns=\"http://java.sun.com/xml/ns/j2ee\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd\">" );
+        printer.println( "    <display-name>Sample Web app </display-name>" );
+        printer.println( "    <welcome-file-list>" );
+        printer.println( "        <welcome-file>index.html</welcome-file>" );
+        printer.println( "        <welcome-file>index.jsp</welcome-file>" );
+        printer.println( "    </welcome-file-list>" );
+        printer.println( "</web-app>" );
+
+        printer.close();
+        webXml.close();
+
+        FileWriter indexJsp = new FileWriter( new File( webAppDir, "index.jsp" ) );
+        printer = new PrintWriter( indexJsp );
+        printer.println( " Hello World! " );
+
+        printer.close();
+        indexJsp.close();
     }
 }
