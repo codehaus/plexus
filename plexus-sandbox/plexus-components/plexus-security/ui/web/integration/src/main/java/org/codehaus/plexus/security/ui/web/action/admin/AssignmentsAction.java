@@ -68,6 +68,9 @@ public class AssignmentsAction
      */
     private List availableRoles;
 
+
+    private List effectivelyAssignedRoles;
+    
     /**
      * List of names (recieved from client) of roles to add.
      */
@@ -114,12 +117,26 @@ public class AssignmentsAction
         // Empty any selected options ...
         this.addSelectedRoles = new ArrayList();
         this.removeSelectedRoles = new ArrayList();
+        this.effectivelyAssignedRoles = new ArrayList();
 
         try
         {
             if ( manager.userAssignmentExists( principal ) )
             {
                 this.assignedRoles = new ArrayList( manager.getAssignedRoles( principal ) );
+
+                // get effectively assigned roles
+                List tmpList = new ArrayList( manager.getEffectivelyAssignedRoles( principal ) );
+
+                // drop ones that can't be assigned
+                for ( Iterator i = tmpList.iterator(); i.hasNext(); )
+                {
+                    Role role = (Role) i.next();
+                    if ( role.isAssignable() )
+                    {
+                        effectivelyAssignedRoles.add( role );       
+                    }
+                }
             }
             else
             {
@@ -254,6 +271,16 @@ public class AssignmentsAction
     public void setAvailableRoles( List availableRoles )
     {
         this.availableRoles = availableRoles;
+    }
+
+    public List getEffectivelyAssignedRoles()
+    {
+        return effectivelyAssignedRoles;
+    }
+
+    public void setEffectivelyAssignedRoles( List effectivelyAssignedRoles )
+    {
+        this.effectivelyAssignedRoles = effectivelyAssignedRoles;
     }
 
     public boolean isRemoveRolesButton()
