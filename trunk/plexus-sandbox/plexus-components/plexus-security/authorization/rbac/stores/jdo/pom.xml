@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-authorization-rbac-stores</artifactId>
-    <version>1.0-alpha-4</version>
+    <version>1.0-alpha-5-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
   <name>Plexus Security :: RBAC Authorization Store :: JDO</name>
@@ -80,8 +80,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-4</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-4</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/stores/jdo</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/stores/jdo</developerConnection>
   </scm>
   <build>
     <plugins>

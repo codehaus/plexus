@@ -23,7 +23,7 @@
   </parent>
   <groupId>org.codehaus.plexus.security</groupId>
   <artifactId>plexus-security</artifactId>
-  <version>1.0-alpha-4</version>
+  <version>1.0-alpha-5-SNAPSHOT</version>
   <name>Plexus Security</name>
   <packaging>pom</packaging>
 
@@ -162,8 +162,8 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-4</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-4</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security</developerConnection>
   </scm>
 
   <build>
