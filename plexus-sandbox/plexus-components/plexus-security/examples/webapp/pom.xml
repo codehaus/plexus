@@ -223,7 +223,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-jdo2</artifactId>
-      <version>1.0-alpha-7-SNAPSHOT</version>
+      <version>1.0-alpha-7</version>
       <exclusions>
         <exclusion>
           <artifactId>xercesImpl</artifactId>
