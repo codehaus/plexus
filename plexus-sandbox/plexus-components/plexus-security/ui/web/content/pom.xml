@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-ui-web-parent</artifactId>
-    <version>1.0-alpha-5</version>
+    <version>1.0-alpha-6-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-ui-web</artifactId>
   <name>Plexus Security :: UI Web :: Content War</name>
@@ -35,7 +35,7 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-5</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-5</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/ui/web/content</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/ui/web/content</developerConnection>
   </scm>
 </project>
