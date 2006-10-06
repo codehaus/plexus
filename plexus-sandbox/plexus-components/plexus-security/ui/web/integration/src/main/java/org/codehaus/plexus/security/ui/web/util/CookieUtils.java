@@ -32,16 +32,6 @@ public class CookieUtils
 {
     public static final int SESSION_COOKIE = (-1);
     
-    public static void removeCookie( HttpServletRequest request, HttpServletResponse response, String name )
-    {
-        Cookie cookie = getCookie( request, name );
-        if ( cookie != null )
-        {
-            cookie.setMaxAge( 0 );
-            response.addCookie( cookie );
-        }
-    }
-
     public static Cookie setCookie( HttpServletResponse response, String domain, String name, String value, String path, int maxAge )
     {
         Cookie cookie = new Cookie( name, value );

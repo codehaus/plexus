@@ -84,7 +84,7 @@ public class AutoLoginCookies
 
         getLogger().info( "Found remember me cookie : " + providedKey );
 
-        return findAuthKey( SecuritySystemConstants.REMEMBER_ME_KEY, providedKey );
+        return findAuthKey( SecuritySystemConstants.REMEMBER_ME_KEY, providedKey, getDomain(), getWebappContext() );
     }
 
     public void setRememberMe( String principal )
@@ -109,6 +109,12 @@ public class AutoLoginCookies
             getLogger().warn( "Unable to set remember me cookie." );
         }
     }
+    
+    public void removeRememberMe()
+    {
+        CookieUtils.setCookie( ServletActionContext.getResponse(), getDomain(),
+                               SecuritySystemConstants.REMEMBER_ME_KEY, "-", getWebappContext(), 0 );
+    }
 
     public AuthenticationKey getSingleSignonKey()
     {
@@ -132,35 +138,7 @@ public class AutoLoginCookies
 
         getLogger().info( "Found sso cookie : " + providedKey );
 
-        return findAuthKey( SecuritySystemConstants.SINGLE_SIGN_ON_KEY, providedKey );
-    }
-
-    private AuthenticationKey findAuthKey( String cookieName, String providedKey )
-    {
-        try
-        {
-            AuthenticationKey authkey = securitySystem.getKeyManager().findKey( providedKey );
-            if ( authkey == null )
-            {
-                getLogger().info( "Authkey not found - " + providedKey );
-
-                // Invalid Cookie.  Remove it.
-                CookieUtils.removeCookie( ServletActionContext.getRequest(), ServletActionContext.getResponse(),
-                                          cookieName );
-            }
-
-            return authkey;
-        }
-        catch ( KeyNotFoundException e )
-        {
-            getLogger().info( "Invalid AuthenticationKey " + providedKey + " submitted." );
-        }
-        catch ( KeyManagerException e )
-        {
-            getLogger().error( "KeyManagerException: " + e.getMessage(), e );
-        }
-
-        return null;
+        return findAuthKey( SecuritySystemConstants.SINGLE_SIGN_ON_KEY, providedKey, getDomain(), "/" );
     }
 
     public void setSingleSignon( String principal )
@@ -189,6 +167,12 @@ public class AutoLoginCookies
             getLogger().warn( "Unable to set single sign on cookie." );
 
         }
+    }
+    
+    public void removeSingleSignon()
+    {
+        CookieUtils.setCookie( ServletActionContext.getResponse(), getDomain(),
+                               SecuritySystemConstants.SINGLE_SIGN_ON_KEY, "-", "/", 0 );
     }
 
     /**
@@ -295,4 +279,28 @@ public class AutoLoginCookies
         return singleSignonEnabled;
     }
 
+    private AuthenticationKey findAuthKey( String cookieName, String providedKey, String domain, String webcontext )
+    {
+        try
+        {
+            AuthenticationKey authkey = securitySystem.getKeyManager().findKey( providedKey );
+            
+            getLogger().debug( "Found AuthKey: " + authkey );
+
+            return authkey;
+        }
+        catch ( KeyNotFoundException e )
+        {
+            getLogger().info( "Invalid AuthenticationKey " + providedKey + " submitted. Invalidating cookie." );
+            
+            // Invalid Cookie.  Remove it.
+            CookieUtils.setCookie( ServletActionContext.getResponse(), domain, cookieName, "-", webcontext, 0 );
+        }
+        catch ( KeyManagerException e )
+        {
+            getLogger().error( "KeyManagerException: " + e.getMessage(), e );
+        }
+
+        return null;
+    }
 }
