@@ -32,13 +32,6 @@ public interface SingleSignOnSettings
     public boolean isEnabled();
     
     /**
-     * Gets the Cookie Domain for the Single Sign On.
-     *  
-     * @return the domain portion of the cookie for single sign on.
-     */
-    public String getCookieDomain();
-    
-    /**
      * Gets the Cookie timeout (in minutes) for the Single Sign On.
      * 
      * @return the cookie timeout (in minutes) for the single sign on.
