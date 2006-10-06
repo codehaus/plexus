@@ -39,18 +39,6 @@ public class DefaultSingleSignOnSettings
      */
     private int cookieTimeout;
 
-    /**
-     * Cookie domain for the single sign on cookie.
-     * 
-     * @plexus.configuration default-value="localhost"
-     */
-    private String cookieDomain;
-
-    public String getCookieDomain()
-    {
-        return cookieDomain;
-    }
-
     public int getCookieTimeout()
     {
         return cookieTimeout;
