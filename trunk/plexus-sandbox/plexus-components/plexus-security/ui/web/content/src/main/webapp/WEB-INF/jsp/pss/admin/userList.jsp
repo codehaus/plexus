@@ -37,8 +37,8 @@
       <th>Email Address</th>
       <th>Validated</th>
       <th>Locked</th>
-      <th>Edit</th>
-      <th>Delete</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
     </tr>
   </thead>
   <tbody>
