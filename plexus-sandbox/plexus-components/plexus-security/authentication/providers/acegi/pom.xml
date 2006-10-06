@@ -42,7 +42,6 @@
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authentication-api</artifactId>
-      <version>1.0-alpha-4</version>
     </dependency>
   </dependencies>
   <scm>

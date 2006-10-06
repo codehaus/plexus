@@ -28,7 +28,6 @@
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-keys-api</artifactId>
-      <version>1.0-alpha-4</version>
     </dependency>
 
     <dependency>
@@ -71,7 +70,6 @@
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-keys-test</artifactId>
-      <version>1.0-alpha-4</version>
       <scope>test</scope>
     </dependency>
 
