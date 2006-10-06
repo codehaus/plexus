@@ -19,13 +19,13 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-authorization</artifactId>
-    <version>1.0-alpha-5-SNAPSHOT</version>
+    <version>1.0-alpha-5</version>
   </parent>
   <artifactId>plexus-security-authorization-api</artifactId>
   <name>Plexus Security :: Authorization API</name>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/api</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/api</developerConnection>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-5</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-5</developerConnection>
   </scm>
   <build>
     <plugins>
