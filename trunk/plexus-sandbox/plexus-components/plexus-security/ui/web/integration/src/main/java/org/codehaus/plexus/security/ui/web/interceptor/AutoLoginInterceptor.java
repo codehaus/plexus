@@ -68,7 +68,7 @@ public class AutoLoginInterceptor
 
     public void init()
     {
-        
+        // Ignore
     }
 
     public String intercept( ActionInvocation invocation )
@@ -170,7 +170,14 @@ public class AutoLoginInterceptor
         session.setAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
         getLogger().debug( "Setting session:" + SecuritySystemConstants.SECURITY_SESSION_KEY + " to " + securitySession );
         
-        autologinCookies.setSingleSignon( securitySession.getUser().getPrincipal().toString() );
+        if ( ( securitySession != null ) && ( securitySession.getUser() != null ) )
+        {
+            Object principal = securitySession.getUser().getPrincipal();
+            if ( principal != null )
+            {
+                autologinCookies.setSingleSignon( principal.toString() );
+            }
+        }
     }
 
     private SecuritySession getSecuritySession()
