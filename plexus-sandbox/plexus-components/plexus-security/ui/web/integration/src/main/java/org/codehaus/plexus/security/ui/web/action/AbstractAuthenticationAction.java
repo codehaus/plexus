@@ -41,39 +41,62 @@ public abstract class AbstractAuthenticationAction
     extends AbstractSecurityAction
 {
     static final String LOGIN_SUCCESS = "security-login-success";
+
     static final String LOGIN_CANCEL = "security-login-cancel";
+
     static final String PASSWORD_CHANGE = "must-change-password";
+
     static final String ACCOUNT_LOCKED = "security-login-locked";
 
     private String domain;
+
     private String webappContext;
 
-    protected String webLogin( SecuritySystem securitySystem, AuthenticationDataSource authdatasource, boolean rememberMe )
+    protected String webLogin( SecuritySystem securitySystem, AuthenticationDataSource authdatasource,
+                               boolean rememberMe )
     {
         // An attempt should log out your authentication tokens first!
         setAuthTokens( null );
-    
+
         clearErrorsAndMessages();
-        
+
         if ( StringUtils.isEmpty( domain ) )
         {
-            domain = ServletActionContext.getRequest().getServerName();
+            domain = "." + ServletActionContext.getRequest().getServerName();
+
+            int idx = domain.lastIndexOf( '.' );
+            if ( idx > 0 )
+            {
+                // domain has a dot.
+                idx = domain.lastIndexOf( '.', idx - 1 );
+                if ( idx > 0 )
+                {
+                    // domain has second dot. trim it.
+                    domain = domain.substring( idx );
+                }
+            }
         }
 
         if ( StringUtils.isEmpty( webappContext ) )
         {
             webappContext = ServletActionContext.getRequest().getContextPath();
+
+            if ( StringUtils.isEmpty( webappContext ) )
+            {
+                // Still empty?  means you are a root context.
+                webappContext = "/";
+            }
         }
-    
+
         try
         {
             SecuritySession securitySession = securitySystem.authenticate( authdatasource );
-    
+
             if ( securitySession.getAuthenticationResult().isAuthenticated() )
             {
                 // Success!  Create tokens.
                 setAuthTokens( securitySession );
-                
+
                 if ( rememberMe )
                 {
                     try
@@ -84,7 +107,7 @@ public abstract class AbstractAuthenticationAction
                                                                           "Remember Me Key", timeout );
 
                         CookieUtils.setCookie( ServletActionContext.getResponse(), domain,
-                                               SecuritySystemConstants.REMEMBER_ME_KEY, authkey.getKey(), 
+                                               SecuritySystemConstants.REMEMBER_ME_KEY, authkey.getKey(),
                                                webappContext, timeout );
                     }
                     catch ( KeyManagerException e )
@@ -99,14 +122,14 @@ public abstract class AbstractAuthenticationAction
                     try
                     {
                         int timeout = securitySystem.getPolicy().getSingleSignOnSettings().getCookieTimeout();
-                        String ssoDomain = securitySystem.getPolicy().getSingleSignOnSettings().getCookieDomain();
+                        // String ssoDomain = securitySystem.getPolicy().getSingleSignOnSettings().getCookieDomain();
                         KeyManager keyManager = securitySystem.getKeyManager();
                         AuthenticationKey authkey = keyManager.createKey( authdatasource.getPrincipal(),
                                                                           "Single Sign On Key", timeout );
 
-                        CookieUtils.setCookie( ServletActionContext.getResponse(), ssoDomain,
-                                               SecuritySystemConstants.SINGLE_SIGN_ON_KEY, authkey.getKey(), 
-                                               "/", CookieUtils.SESSION_COOKIE );
+                        CookieUtils.setCookie( ServletActionContext.getResponse(), domain,
+                                               SecuritySystemConstants.SINGLE_SIGN_ON_KEY, authkey.getKey(), "/",
+                                               CookieUtils.SESSION_COOKIE );
                     }
                     catch ( KeyManagerException e )
                     {
@@ -116,16 +139,17 @@ public abstract class AbstractAuthenticationAction
 
                 }
 
-                if( securitySession.getUser().isPasswordChangeRequired() )
+                if ( securitySession.getUser().isPasswordChangeRequired() )
                 {
                     return PASSWORD_CHANGE;
                 }
-                
+
                 return LOGIN_SUCCESS;
             }
             else
             {
-                getLogger().debug( "Login Action failed against principal : "
+                getLogger().debug(
+                                   "Login Action failed against principal : "
                                        + securitySession.getAuthenticationResult().getPrincipal(),
                                    securitySession.getAuthenticationResult().getException() );
                 addActionError( "Authentication failed" );
