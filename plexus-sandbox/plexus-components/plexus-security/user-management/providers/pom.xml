@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-user-management</artifactId>
-    <version>1.0-alpha-1</version>
+    <version>1.0-alpha-2-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-user-management-providers</artifactId>
   <name>Plexus Security :: User Management Providers Parent</name>
@@ -40,8 +40,8 @@
     </dependencies>
   </dependencyManagement>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/1.0-alpha-1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/1.0-alpha-1</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/user-management/providers</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/user-management/providers</developerConnection>
   </scm>
   <modules>
     <module>test</module>
