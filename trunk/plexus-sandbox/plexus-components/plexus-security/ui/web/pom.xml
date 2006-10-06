@@ -14,24 +14,20 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-ui</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-alpha-4</version>
   </parent>
   <artifactId>plexus-security-ui-web-parent</artifactId>
   <name>Plexus Security :: UI Web Parent</name>
   <packaging>pom</packaging>
 
   <scm>
-    <connection>
-      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/ui/web
-    </connection>
-    <developerConnection>
-      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/ui/web
-    </developerConnection>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-4</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-4</developerConnection>
   </scm>
 
   <modules>
