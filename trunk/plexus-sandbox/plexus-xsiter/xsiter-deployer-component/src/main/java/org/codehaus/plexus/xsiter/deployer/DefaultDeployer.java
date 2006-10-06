@@ -239,7 +239,8 @@ public class DefaultDeployer
                 }
 
                 // check out to a tagged directory
-                ScmFileSet fileSet = new ScmFileSet( new File( checkoutDir, project.getScmTag() ) );
+                String tagDir = null != project.getScmTag() ? project.getScmTag() : "Head";
+                ScmFileSet fileSet = new ScmFileSet( new File( checkoutDir, tagDir ) );
                 result = scmManager.getProviderByRepository( repository ).checkOut( repository, fileSet,
                                                                                     project.getScmTag() );
             }
@@ -428,14 +429,14 @@ public class DefaultDeployer
      * @param project
      * @param workspaceID
      * @return created {@link DeploymentWorkspace} instance 
+     * @throws Exception 
      */
     private DeploymentWorkspace createDeploymentWorkspace( DeployerResource project )
+        throws Exception
     {
         DeploymentWorkspace workspace = new DeploymentWorkspace();
         String id = project.getLabel();
-        workspace.setLabel( id );
-        workspace.setRootDirectory( id );
-        File rootDir = new File( workingDirectory, workspace.getRootDirectory() );
+        File rootDir = new File( workingDirectory, project.getLabel() );
         // set absolute path for the workspace root directory.
         workspace.setRootDirectory( rootDir.getAbsolutePath() );
         createIfNonExistent( rootDir );
@@ -444,6 +445,8 @@ public class DefaultDeployer
         createIfNonExistent( new File( workspace.getRootDirectory(), workspace.getWebserverDirectory() ) );
         createIfNonExistent( new File( workspace.getRootDirectory(), workspace.getWorkingDirectory() ) );
         persistWorkspaceDescriptor( project, workspace );
+        // setup other properties for workspace;
+        workspace = loadWorkspaceFromDescriptor( id );
         return workspace;
     }
 
