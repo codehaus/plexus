@@ -19,15 +19,15 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-ui</artifactId>
-    <version>1.0-alpha-1</version>
+    <version>1.0-alpha-2-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-ui-web-parent</artifactId>
   <name>Plexus Security :: UI Web Parent</name>
   <packaging>pom</packaging>
 
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/1.0-alpha-1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/1.0-alpha-1</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/ui/web</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/ui/web</developerConnection>
   </scm>
 
   <modules>

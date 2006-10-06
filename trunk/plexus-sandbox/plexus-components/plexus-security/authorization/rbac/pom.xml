@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-authorization</artifactId>
-    <version>1.0-alpha-1</version>
+    <version>1.0-alpha-2-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-authorization-rbac</artifactId>
   <name>Plexus Security :: RBAC Authorization</name>
@@ -54,8 +54,8 @@
     </dependencies>
   </dependencyManagement>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/1.0-alpha-1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/1.0-alpha-1</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac</developerConnection>
   </scm>
   <modules>
     <module>model</module>

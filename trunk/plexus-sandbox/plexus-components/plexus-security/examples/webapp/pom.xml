@@ -18,7 +18,7 @@
   <parent>
     <artifactId>plexus-security-examples</artifactId>
     <groupId>org.codehaus.plexus.security</groupId>
-    <version>1.0-alpha-1</version>
+    <version>1.0-alpha-2-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-security-example-webapp</artifactId>
@@ -266,7 +266,7 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/1.0-alpha-1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/1.0-alpha-1</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/examples/webapp</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/examples/webapp</developerConnection>
   </scm>
 </project>
