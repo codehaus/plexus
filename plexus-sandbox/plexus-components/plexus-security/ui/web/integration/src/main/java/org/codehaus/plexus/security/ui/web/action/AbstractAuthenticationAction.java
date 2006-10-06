@@ -29,6 +29,7 @@ import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.system.SecuritySystemConstants;
 import org.codehaus.plexus.security.ui.web.util.CookieUtils;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * AbstractAuthenticationAction 
@@ -44,6 +45,8 @@ public abstract class AbstractAuthenticationAction
     static final String PASSWORD_CHANGE = "must-change-password";
     static final String ACCOUNT_LOCKED = "security-login-locked";
 
+    private String domain;
+    private String webappContext;
 
     protected String webLogin( SecuritySystem securitySystem, AuthenticationDataSource authdatasource, boolean rememberMe )
     {
@@ -51,6 +54,16 @@ public abstract class AbstractAuthenticationAction
         setAuthTokens( null );
     
         clearErrorsAndMessages();
+        
+        if ( StringUtils.isEmpty( domain ) )
+        {
+            domain = ServletActionContext.getRequest().getServerName();
+        }
+
+        if ( StringUtils.isEmpty( webappContext ) )
+        {
+            webappContext = ServletActionContext.getRequest().getContextPath();
+        }
     
         try
         {
@@ -70,15 +83,15 @@ public abstract class AbstractAuthenticationAction
                         AuthenticationKey authkey = keyManager.createKey( authdatasource.getPrincipal(),
                                                                           "Remember Me Key", timeout );
 
-                        CookieUtils.setCookie( ServletActionContext.getResponse(),
-                                               SecuritySystemConstants.REMEMBER_ME_KEY, authkey.getKey(), timeout );
+                        CookieUtils.setCookie( ServletActionContext.getResponse(), domain,
+                                               SecuritySystemConstants.REMEMBER_ME_KEY, authkey.getKey(), 
+                                               webappContext, timeout );
                     }
                     catch ( KeyManagerException e )
                     {
                         getLogger().warn( "Unable to set remember me cookie." );
 
                     }
-
                 }
 
                 if ( securitySystem.getPolicy().getSingleSignOnSettings().isEnabled() )
@@ -86,12 +99,14 @@ public abstract class AbstractAuthenticationAction
                     try
                     {
                         int timeout = securitySystem.getPolicy().getSingleSignOnSettings().getCookieTimeout();
+                        String ssoDomain = securitySystem.getPolicy().getSingleSignOnSettings().getCookieDomain();
                         KeyManager keyManager = securitySystem.getKeyManager();
                         AuthenticationKey authkey = keyManager.createKey( authdatasource.getPrincipal(),
                                                                           "Single Sign On Key", timeout );
 
-                        CookieUtils.setCookie( ServletActionContext.getResponse(),
-                                               SecuritySystemConstants.SINGLE_SIGN_ON_KEY, authkey.getKey(), timeout );
+                        CookieUtils.setCookie( ServletActionContext.getResponse(), ssoDomain,
+                                               SecuritySystemConstants.SINGLE_SIGN_ON_KEY, authkey.getKey(), 
+                                               "/", CookieUtils.SESSION_COOKIE );
                     }
                     catch ( KeyManagerException e )
                     {
