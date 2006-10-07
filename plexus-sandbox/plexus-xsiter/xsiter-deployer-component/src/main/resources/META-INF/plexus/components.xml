@@ -11,6 +11,11 @@
         <requirement>
           <role>org.codehaus.plexus.xsiter.deployer.Deployer</role>
         </requirement>
+        <requirement>
+          <role>
+            org.codehaus.plexus.components.interactivity.Prompter
+          </role>
+        </requirement>
       </requirements>
     </component>
     <component>
