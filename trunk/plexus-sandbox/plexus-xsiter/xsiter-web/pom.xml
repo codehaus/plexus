@@ -6,11 +6,11 @@
   <packaging>war</packaging>
   <dependencies>
     <!--
-    <dependency>
+      <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-xwork-integration</artifactId>
       <version>1.0-alpha-2-SNAPSHOT</version>
-    </dependency>
+      </dependency>
     -->
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -27,25 +27,25 @@
   <build>
     <plugins>
       <!--
-      <plugin>
+        <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-maven-plugin</artifactId>
         <configuration>
-          <roleDefaults>
-            <roleDefault>
-              <role>com.opensymphony.xwork.Action</role>
-              <instantiation-strategy>per-lookup</instantiation-strategy>
-            </roleDefault>
-          </roleDefaults>
+        <roleDefaults>
+        <roleDefault>
+        <role>com.opensymphony.xwork.Action</role>
+        <instantiation-strategy>per-lookup</instantiation-strategy>
+        </roleDefault>
+        </roleDefaults>
         </configuration>
         <executions>
-          <execution>
-            <goals>
-              <goal>descriptor</goal>
-            </goals>
-          </execution>
+        <execution>
+        <goals>
+        <goal>descriptor</goal>
+        </goals>
+        </execution>
         </executions>
-      </plugin>
+        </plugin>
       -->
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
@@ -54,7 +54,8 @@
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <contextPath>/</contextPath>
           <connectors>
-            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+            <connector
+              implementation="org.mortbay.jetty.nio.SelectChannelConnector">
               <port>9090</port>
               <maxIdleTime>60000</maxIdleTime>
             </connector>
@@ -62,5 +63,59 @@
         </configuration>
       </plugin>
     </plugins>
+    <!-- Cargo Maven2 Mojo config -->
+    <plugin>
+      <groupId>org.codehaus.cargo</groupId>
+      <artifactId>cargo-maven2-plugin</artifactId>
+      <configuration>
+        <!-- wait>false</wait -->
+        <container>
+          <containerId>tomcat5x</containerId>
+          <zipUrlInstaller>
+            <url>
+              http://mirrors.ccs.neu.edu/Apache/dist/tomcat/tomcat-5/v5.5.16/bin/apache-tomcat-5.5.16.zip
+            </url>
+            <installDir>${installDir}</installDir>
+          </zipUrlInstaller>
+          <output>${basedir}/tomcat5x.log</output>
+          <log>${basedir}/cargo.log</log>
+        </container>
+        <configuration>
+          <home>
+            ${basedir}/../../deploy/webapp/${artifactId}/tomcat5x/
+          </home>
+          <properties>
+            <!-- This is the SHUTDOWN port for Tomcat -->
+            <!-- Tomcat admin and servlet ports -->
+            <cargo.rmi.port>9191</cargo.rmi.port>
+            <cargo.servlet.port>9192</cargo.servlet.port>            
+          </properties>
+          <deployables>
+            <deployable>
+              <properties>
+                <context>ROOT</context>
+              </properties>
+            </deployable>
+          </deployables>
+        </configuration>
+      </configuration>
+    </plugin>
   </build>
+  <properties>
+    <installDir>/opt/tools/cargo</installDir>
+    <vhosts.configuration>
+      <![CDATA[<vhosts>
+        <vhost>
+          <id>integration</id>
+          <vhostTemplate>src/conf/vhosts.vm</vhostTemplate>
+          <vhostDirectory>deploy/apache</vhostDirectory>
+          <vhostIP>127.0.0.1</vhostIP>
+          <vhostName>xsiter.localhost</vhostName>
+          <vhostLogDirectory>deploy/apache/logs</vhostLogDirectory>
+          <vhostConnectorProtocol>http</vhostConnectorProtocol>
+          <vhostConnectorPort>9192</vhostConnectorPort>          
+        </vhost>
+      </vhosts>]]>
+    </vhosts.configuration>
+  </properties>
 </project>
