@@ -97,7 +97,7 @@
             <program>
               <name>deployer</name>
               <mainClass>
-                org.codehaus.plexus.xsiter.deployer.Main
+                org.codehaus.plexus.xsiter.Main
               </mainClass>
             </program>
           </programs>
