@@ -10,6 +10,7 @@ import org.apache.maven.scm.ScmTestCase;
 import org.apache.maven.scm.command.add.AddScmResult;
 import org.apache.maven.scm.command.checkin.CheckInScmResult;
 import org.apache.maven.scm.command.checkout.CheckOutScmResult;
+import org.apache.maven.scm.command.tag.TagScmResult;
 import org.apache.maven.scm.provider.ScmProvider;
 import org.apache.maven.scm.provider.svn.SvnScmTestUtils;
 import org.apache.maven.scm.repository.ScmRepository;
@@ -23,6 +24,11 @@ import org.codehaus.plexus.util.FileUtils;
 public abstract class AbstractDeployerTest
     extends ScmTestCase
 {
+
+    /**
+     * SCM tag to test against.
+     */
+    protected static final String TAG_VERSION_1_0_0 = "Version-1_0_0";
 
     public void setUp()
         throws Exception
@@ -44,6 +50,8 @@ public abstract class AbstractDeployerTest
         createDeployableWebApp();
 
         addWebAppToSVNRepo();
+
+        tagWebAppInSVNRepo();
     }
 
     /**
@@ -77,6 +85,10 @@ public abstract class AbstractDeployerTest
     {
         String webAppDir = getWorkingCopy().getAbsolutePath() + "/trunk/src/webapp/";
         FileUtils.mkdir( webAppDir );
+        // create conf dir
+        String confDir = getWorkingDirectory().getAbsolutePath() + "/trunk/src/conf";
+        FileUtils.mkdir( confDir );
+        // create WEB-INF dir
         String webInfDir = webAppDir + "/WEB-INF";
         FileUtils.mkdir( webInfDir );
 
@@ -103,6 +115,28 @@ public abstract class AbstractDeployerTest
         indexJsp.close();
 
         createPomXml( new File( getWorkingDirectory().getAbsolutePath() + "/trunk/", "pom.xml" ) );
+
+        createVirtualHostTemplate( new File( confDir, "vhosts.vm" ) );
+
+    }
+
+    private void createVirtualHostTemplate( File vhostTemplate )
+        throws Exception
+    {
+
+        FileWriter vhostVm = new FileWriter( vhostTemplate );
+        PrintWriter printer = new PrintWriter( vhostVm );
+
+        printer.println( "<VirtualHost $vhostIP>" );
+        printer.println( "  ServerName $vhostName" );
+        printer.println( "  ErrorLog $vhostLogDirectory/apache_error.log" );
+        printer.println( "  CustomLog $vhostLogDirectory/apache_access.log combined" );
+        printer.println( "  ProxyPass         /  $vhostConnectorProtocol://localhost:$vhostConnectorPort/" );
+        printer.println( "  ProxyPassReverse  /  $vhostConnectorProtocol://localhost:$vhostConnectorPort/" );
+        printer.println( "</VirtualHost>" );
+
+        printer.close();
+        vhostVm.close();
     }
 
     /**
@@ -124,10 +158,12 @@ public abstract class AbstractDeployerTest
         printer.println( "  <packaging>war</packaging>" );
         printer.println( "  <scm>" );
         printer.println( "    <connection>" );
-        printer.println( "      scm:svn:file:///" + getBasedir() + "/target/scm-test/repository" );
+        printer.println( "      scm:svn:file:///" + getBasedir().replace( '\\', '/' )
+            + "/target/scm-test/repository/trunk" );
         printer.println( "    </connection>" );
         printer.println( "    <developerConnection>" );
-        printer.println( "      scm:svn:file:///" + getBasedir() + "/target/scm-test/repository" );
+        printer.println( "      scm:svn:file:///" + getBasedir().replace( '\\', '/' )
+            + "/target/scm-test/repository/trunk" );
         printer.println( "    </developerConnection>" );
         printer.println( "  </scm>" );
         printer.println( "  <build>" );
@@ -157,7 +193,7 @@ public abstract class AbstractDeployerTest
         printer.println( "              <!-- This is the SHUTDOWN port for Tomcat -->" );
         printer.println( "              <!-- Tomcat admin and servlet ports -->" );
         printer.println( "              <cargo.rmi.port>9191</cargo.rmi.port>" );
-        printer.println( "              <cargo.servlet.port>9192</cargo.servlet.port>" );
+        printer.println( "              <cargo.servlet.port>9090</cargo.servlet.port>" );
         printer.println( "              <cargo.jvmargs>-Xmx256m -Xms256m</cargo.jvmargs>" );
         printer.println( "            </properties>" );
         printer.println( "            <deployables>" );
@@ -180,11 +216,11 @@ public abstract class AbstractDeployerTest
         printer.println( "          <id>integration</id>" );
         printer.println( "          <vhostTemplate>src/conf/vhosts.vm</vhostTemplate>" );
         printer.println( "          <vhostDirectory>deploy/apache</vhostDirectory>" );
-        printer.println( "          <vhostIP>202.135.38.35</vhostIP>" );
-        printer.println( "          <vhostName>bnb.staging.effacy.com</vhostName>" );
+        printer.println( "          <vhostIP>127.0.0.1</vhostIP>" );
+        printer.println( "          <vhostName>staging.localhost.com</vhostName>" );
         printer.println( "          <vhostLogDirectory>deploy/apache/logs</vhostLogDirectory>" );
         printer.println( "          <vhostConnectorProtocol>http</vhostConnectorProtocol>" );
-        printer.println( "          <vhostConnectorPort>9192</vhostConnectorPort>          " );
+        printer.println( "          <vhostConnectorPort>9090</vhostConnectorPort>          " );
         printer.println( "        </vhost>" );
         printer.println( "      </vhosts>]]>" );
         printer.println( "    </vhosts.configuration> " );
@@ -221,12 +257,39 @@ public abstract class AbstractDeployerTest
             .listFiles() ) );
         assertTrue( "Check result was successful, output: " + addScmResult.getCommandOutput(), addScmResult.isSuccess() );
 
+        // add src/conf dir
+        File confDir = new File( getWorkingDirectory().getAbsolutePath() + "/trunk/src", "conf" );
+        addScmResult = scmProvider.add( getScmRepository(), new ScmFileSet( getWorkingDirectory(), confDir ) );
+        assertTrue( "Check result was successful, output: " + addScmResult.getCommandOutput(), addScmResult.isSuccess() );
+
+        // add files under src/conf dir
+        addScmResult = scmProvider
+            .add( getScmRepository(), new ScmFileSet( getWorkingDirectory(), confDir.listFiles() ) );
+        assertTrue( "Check result was successful, output: " + addScmResult.getCommandOutput(), addScmResult.isSuccess() );
+
         // Commit all added files for the webapp. 
         CheckInScmResult checkInScmResult = scmProvider.checkIn( getScmRepository(),
                                                                  new ScmFileSet( getWorkingDirectory() ), null,
                                                                  "Added webapp" );
         assertTrue( "Check if result was successful, output: " + checkInScmResult.getCommandOutput(), checkInScmResult
             .isSuccess() );
+    }
+
+    /**
+     * Create a Tag to test against.
+     *  
+     * @throws ScmException
+     * @throws Exception
+     */
+    private void tagWebAppInSVNRepo()
+        throws ScmException, Exception
+    {
+        ScmProvider scmProvider = getScmManager().getProviderByRepository( getScmRepository() );
+        File sourcesToTag = new File( getWorkingDirectory(), "trunk" );
+        TagScmResult tagScmResult = scmProvider.tag( getScmRepository(), new ScmFileSet( sourcesToTag ),
+                                                     TAG_VERSION_1_0_0 );
+
+        assertTrue( tagScmResult.isSuccess() );
     }
 
 }
