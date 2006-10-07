@@ -1,0 +1,24 @@
+
+Running the XSiter Deployer application
+---------------------------------------
+
+1)  On the checked out XSiter application source, run the following Maven goal
+    from command prompt 
+    
+    >  mvn clean package
+    
+    This will assemble the XSiter application along with all the requisite 
+    dependencies.
+    
+2)  Copy the assembled XSiter application under target/xsiter-deployer to a 
+    location of choice.
+    
+3)  Change directory to the new 'xsiter-deployer' location and run the 
+    following command to invoke the deployer application. 
+    
+    >  ./bin/deployer 
+    
+4)  Follow the prompts to invoke the operations on the deployer app. 
+
+NOTE that the SCM url requested while setting up a deployment workspace is 
+expected to be entered in the same format as it appears inside a pom.xml
