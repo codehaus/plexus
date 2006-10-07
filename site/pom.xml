@@ -30,7 +30,7 @@
           <books>
             <book>
               <directory>src/site</directory>
-              <descriptor>src/books/writing-components-trial.xml</descriptor>
+              <descriptor>src/books/writing-components-trail.xml</descriptor>
               <formats>
                 <format>
                   <id>pdf</id>
