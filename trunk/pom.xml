@@ -29,10 +29,28 @@
   <inceptionYear>2001</inceptionYear>
   <mailingLists>
     <mailingList>
+      <name>Plexus User List</name>
+      <subscribe>http://xircles.codehaus.org/manage_email/user%40plexus.codehaus.org</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/manage_email/user%40plexus.codehaus.org</unsubscribe>
+      <archive>http://archive.plexus.codehaus.org/user</archive>
+    </mailingList>
+    <mailingList>
       <name>Plexus Developer List</name>
-      <subscribe>http://lists.codehaus.org/mailman/listinfo/plexus-dev</subscribe>
-      <unsubscribe>http://lists.codehaus.org/mailman/listinfo/plexus-dev</unsubscribe>
-      <archive>http://lists.codehaus.org/pipermail/plexus-dev/</archive>
+      <subscribe>http://xircles.codehaus.org/manage_email/dev%40plexus.codehaus.org</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/manage_email/dev%40plexus.codehaus.org</unsubscribe>
+      <archive>http://archive.plexus.codehaus.org/dev</archive>
+    </mailingList>
+    <mailingList>
+      <name>Plexus Announce List</name>
+      <subscribe>http://xircles.codehaus.org/manage_email/announce%40plexus.codehaus.org</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/manage_email/announce%40plexus.codehaus.org</unsubscribe>
+      <archive>http://archive.plexus.codehaus.org/announce</archive>
+    </mailingList>
+    <mailingList>
+      <name>Plexus Commit List</name>
+      <subscribe>http://xircles.codehaus.org/manage_email/scm%40plexus.codehaus.org</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/manage_email/scm%40plexus.codehaus.org</unsubscribe>
+      <archive>http://archive.plexus.codehaus.org/scm</archive>
     </mailingList>
   </mailingLists>
   <issueManagement>
