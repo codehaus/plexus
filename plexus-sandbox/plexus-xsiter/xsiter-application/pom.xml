@@ -44,15 +44,20 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-interactivity-api</artifactId>
+      <version>1.0-alpha-5</version>
+    </dependency>
+    <dependency>
       <groupId>org.codehaus.plexus.xsiter</groupId>
       <artifactId>xsiter-deployer-component</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <!-- This is actually a transitive dep but the appassembler plugin seems to skip this  -->
     <dependency>
       <groupId>org.codehaus.plexus.xsiter</groupId>
       <artifactId>xsiter-vhost-component</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>
