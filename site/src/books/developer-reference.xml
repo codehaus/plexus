@@ -8,7 +8,10 @@
       <title>Introduction</title>
       <sections>
         <section>
-          <id>index</id>
+          <id>introduction</id>
+        </section>
+        <section>
+          <id>introduction-to-components</id>
         </section>
       </sections>
     </chapter>   
