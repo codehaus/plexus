@@ -38,23 +38,24 @@
 
     <menu name="Books">
       <item name="Writing Components" href="/writing-components-trial" />
+      <!-- this is not really ready for publishing yet !
       <item name="Developer Guide" href="/Plexus_developer_reference" />
+-->
     </menu>
     
     <menu name="Guides">
       <!-- 5 minute tutorial -->
       <item name="Quick Start" href="/guides/quick-start/getting-started.html" />
-      <item name="Trails" href="/guides/trails/index.html" >        
-        <!-- Guide to writing components, touches upon basic plexus concepts to get started -->
-        <item name="Writing Plexus Components" href="/guides/trails/writing-components/index.html" />
-        <!-- Guide to writing applications that use Plexus container -->
-        <item name="Writing Plexus Applications" href="/ref/developer-guide/building-applications/index.html" />        
-      </item>
+      <!-- Guide to writing components, touches upon basic plexus concepts to get started -->
+      <item name="Writing Plexus Components" href="/guides/writing-components/00_index.html" />
+      <!-- Guide to writing applications that use Plexus container
+      <item name="Plexus in Web Applications" href="/guides/plexus-web-applications/index.html" />-->
+
+      <!-- Detailed Plexus manual -->
+      <item name="Developer Guide" href="/guides/developer-guide/index.html" />    
     </menu>
 
     <menu name="Reference">
-      <!-- Detailed Plexus manual -->
-      <item name="Developer Guide" href="/ref/developer-guide/index.html" />      
       <!-- A background on Component oriented programming -->
       <item name="Why Use Components?" href="/ref/why-use-components.html" />
       <!-- Discuss elements for plexus.xml and components.xml and differences -->
