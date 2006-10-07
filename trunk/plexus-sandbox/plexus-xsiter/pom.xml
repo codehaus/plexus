@@ -11,9 +11,9 @@
   <version>1-SNAPSHOT</version>
   <name>XSiter :: Parent</name>
   <packaging>pom</packaging>
-
   <modules>    
-    <module>xsiter-deployer-component</module>
     <module>xsiter-vhost-component</module>
+    <module>xsiter-deployer-component</module>    
+    <module>xsiter-application</module>
   </modules>
 </project>  
