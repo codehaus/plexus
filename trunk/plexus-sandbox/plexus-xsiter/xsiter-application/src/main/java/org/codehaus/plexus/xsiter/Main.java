@@ -77,14 +77,14 @@ public class Main
             }
             String tag = prompter.prompt( "Enter SCM tag to checkout" );
             if ( null == tag || tag.trim().equals( "" ) )
-                tag = "HEAD";
+                tag = null;
             deployer.deployProject( projectID, goals, tag );
         }
         else if ( choice.equals( "checkout" ) )
         {
             String tag = prompter.prompt( "Enter SCM tag to checkout" );
             if ( null == tag || tag.trim().equals( "" ) )
-                tag = "HEAD";
+                tag = null;
             deployer.checkoutProject( projectID, tag );
         }
         else if ( choice.equals( "remove" ) )
