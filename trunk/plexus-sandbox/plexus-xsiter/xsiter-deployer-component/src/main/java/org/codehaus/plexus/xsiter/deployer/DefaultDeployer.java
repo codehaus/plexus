@@ -239,10 +239,12 @@ public class DefaultDeployer
                 }
 
                 // check out to a tagged directory
-                String tagDir = null != project.getScmTag() ? project.getScmTag() : "Head";
-                ScmFileSet fileSet = new ScmFileSet( new File( checkoutDir, tagDir ) );
+                String scmTag = null != project.getScmTag() ? project.getScmTag() : "HEAD";
+                ScmFileSet fileSet = new ScmFileSet( new File( checkoutDir, scmTag ) );
                 result = scmManager.getProviderByRepository( repository ).checkOut( repository, fileSet,
                                                                                     project.getScmTag() );
+                getLogger().info( result.getCommandOutput() );
+                getLogger().info( result.getProviderMessage() );
             }
 
             if ( !result.isSuccess() )
@@ -308,7 +310,8 @@ public class DefaultDeployer
         DeploymentWorkspace workspace = createDeploymentWorkspaceIfRequired( project );
         checkoutProjectIfRequired( project );
         File workspaceWorkingDir = new File( workspace.getRootDirectory(), workspace.getWorkingDirectory() );
-        File checkoutDir = new File( workspaceWorkingDir, project.getScmTag() );
+        String scmTag = null != project.getScmTag() ? project.getScmTag() : "HEAD";
+        File checkoutDir = new File( workspaceWorkingDir, scmTag );
 
         if ( !checkoutDir.exists() )
             throw new Exception( "No check out directory exists, nothing to build" );
@@ -337,11 +340,13 @@ public class DefaultDeployer
                 throw new Exception( "Unable to execute command: '" + goals + "'" );
             }
 
-            getLogger().debug( "Process ID : " + cmd.getPid() );
-            FileWriter fw = new FileWriter( new File( workspaceWorkingDir, "pid.txt" ), true );
-            fw.append( "# PID for goal(s): '" + goals + "' run on " + sdf.format( new Date() ) );
-            fw.write( "\n" + cmd.getPid() );
-            fw.close();
+            // For some reason Plexus-Utils being pulled from transitive deps 
+            // complains about getPid() method not present
+            //getLogger().debug( "Process ID : " + cmd.getPid() );
+            //FileWriter fw = new FileWriter( new File( workspaceWorkingDir, "pid.txt" ), true );
+            //fw.append( "# PID for goal(s): '" + goals + "' run on " + sdf.format( new Date() ) );
+            //fw.write( "\n" + cmd.getPid() );
+            //fw.close();
 
         }
         catch ( CommandLineException e )
@@ -357,7 +362,8 @@ public class DefaultDeployer
         throws Exception
     {
         DeploymentWorkspace workspace = createDeploymentWorkspaceIfRequired( project );
-        getLogger().info( "Updating Project: " + project.getLabel() + ", Version: " + project.getScmTag() );
+        String scmTag = null != project.getScmTag() ? project.getScmTag() : "HEAD";
+        getLogger().info( "Updating Project: " + project.getLabel() + ", Version: " + scmTag );
 
         // TODO: refactor/add a method that creates a Deployable Project
         // instance from a Workspace descriptor
@@ -385,9 +391,8 @@ public class DefaultDeployer
                 }
 
                 // check out to a tagged directory
-                ScmFileSet fileSet = new ScmFileSet( new File( checkoutDir, project.getScmTag() ) );
-                result = scmManager.getProviderByRepository( repository ).update( repository, fileSet,
-                                                                                  project.getScmTag() );
+                ScmFileSet fileSet = new ScmFileSet( new File( checkoutDir, scmTag ) );
+                result = scmManager.getProviderByRepository( repository ).update( repository, fileSet, scmTag );
             }
 
             if ( !result.isSuccess() )
@@ -688,14 +693,13 @@ public class DefaultDeployer
         project.setScmURL( workspace.getScmURL() );
 
         File workspaceWorkingDir = new File( workspace.getRootDirectory(), workspace.getWorkingDirectory() );
-        File checkoutDir = new File( workspaceWorkingDir, project.getScmTag() );
+        String scmTag = null != project.getScmTag() ? project.getScmTag() : "HEAD";
+        File checkoutDir = new File( workspaceWorkingDir, scmTag );
 
         // check out project if it is not checked out yet
         if ( !checkoutDir.exists() )
         {
-            getLogger().info(
-                              "No checked out dir found for Project: " + project.getLabel() + " , version: "
-                                  + project.getScmTag() );
+            getLogger().info( "No checked out dir found for Project: " + project.getLabel() + " , version: " + scmTag );
             checkoutProject( project );
         }
         return checkoutDir;

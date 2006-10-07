@@ -1,7 +1,10 @@
 package org.codehaus.plexus.xsiter.deployer;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Properties;
 
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.xsiter.deployer.model.DeployableProject;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
@@ -16,9 +19,16 @@ public class DeployerTest
     extends AbstractDeployerTest
 {
 
+    /**
+     * Workspace/Deployable Project label.
+     */
     private static final String PROJECT_LABEL_SAMPLE_WEB = "sample-web";
 
-    private static final String SCM_SAMPLE_WEB = "scm:svn:file:///" + getBasedir() + "/target/scm-test/repository/";
+    /**
+     * SCM repository URL.
+     */
+    private static final String SCM_SAMPLE_WEB = "scm:svn:file:///" + getBasedir().replace( '\\', '/' )
+        + "/target/scm-test/repository/trunk";
 
     public void testLookup()
         throws Exception
@@ -68,7 +78,7 @@ public class DeployerTest
         component.removeProject( project );
     }
 
-    public void testCheckoutProject()
+    public void testCheckoutProjectWithoutTag()
         throws Exception
     {
         DeployableProject project = new DeployableProject();
@@ -78,22 +88,165 @@ public class DeployerTest
         project.setScmPassword( "" );
         project.setScmTag( null );
 
-        Deployer component = (Deployer) lookup( Deployer.ROLE );
-        component.checkoutProject( project );
+        checkoutProject( project );
+    }
 
+    public void testCheckoutProjectWithTag()
+        throws Exception
+    {
+        DeployableProject project = new DeployableProject();
+        project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
+        project.setScmURL( SCM_SAMPLE_WEB );
+        project.setScmUsername( "" );
+        project.setScmPassword( "" );
+        project.setScmTag( TAG_VERSION_1_0_0 );
+
+        checkoutProject( project );
+    }
+
+    /**
+     * Tests if a {@link MavenProject} instance can be obtained for a checked
+     * out project.
+     */
+    public void testGetMavenProjectForCheckedoutProject()
+        throws Exception
+    {
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
+        DefaultDeployer mgr = (DefaultDeployer) component;
+        DeployableProject project = new DeployableProject();
+        project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
+        project.setScmURL( SCM_SAMPLE_WEB );
+        project.setScmUsername( "" );
+        project.setScmPassword( "" );
+        project.setScmTag( TAG_VERSION_1_0_0 );
+
+        MavenProject mavenProject = mgr.getMavenProjectForCheckedoutProject( project );
+        assertNotNull( mavenProject );
+        Properties props = mavenProject.getProperties();
+        assertEquals( 2, props.size() );
+    }
+
+    /**
+     * Tests the Virtual Host set up for a checked out project constructing and
+     * then using the Virtual Host config from the Project's pom.xml
+     * 
+     * @throws Exception
+     */
+    public void testAddVirtualHostForCheckedoutproject()
+        throws Exception
+    {
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
+        DeployableProject project = new DeployableProject();
+        project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
+        project.setScmURL( SCM_SAMPLE_WEB );
+        project.setScmUsername( "" );
+        project.setScmPassword( "" );
+        project.setScmTag( TAG_VERSION_1_0_0 );
+
+        component.addVirtualHost( project );
+    }
+
+    /**
+     * Helper for checking out a {@link DeployableProject}.
+     * 
+     * @param project
+     * @throws Exception
+     * @throws IOException
+     */
+    private void checkoutProject( DeployableProject project )
+        throws Exception, IOException
+    {
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
         DefaultDeployer mgr = (DefaultDeployer) component;
         String deployerWorkingDir = mgr.getWorkingDirectory();
+        //start clean 
+        FileUtils.forceDelete( deployerWorkingDir );
+
+        component.checkoutProject( project );
         assertTrue( FileUtils.fileExists( deployerWorkingDir ) );
         DeploymentWorkspace workspace = mgr.getDeploymentWorkspace( project );
         assertNotNull( workspace );
+
         // verify the workspace structure was created as we expected
         File projectDir = new File( workspace.getRootDirectory() );
         assertTrue( projectDir.exists() );
+
         File workingDir = new File( projectDir, workspace.getWorkingDirectory() );
         assertTrue( workingDir.exists() );
-        File checkoutDir = new File( workingDir, "Head" );
+
+        File checkoutDir = new File( workingDir, ( null == project.getScmTag() ? "HEAD" : project.getScmTag() ) );
         assertTrue( checkoutDir.exists() );
-        //assertTrue( checkoutDir.list().length > 3 );
     }
 
+    /**
+     * Tests if the Deployer Component can delegate build goals to the checked
+     * out project.
+     * 
+     * @throws Exception
+     */
+    public void testBuildProject()
+        throws Exception
+    {
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
+        DeployableProject project = new DeployableProject();
+        project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
+        project.setScmURL( SCM_SAMPLE_WEB );
+        project.setScmUsername( "" );
+        project.setScmPassword( "" );
+        project.setScmTag( null );
+
+        component.buildProject( project, "clean" );
+    }
+
+    /**
+     * Tests the case of a non-existent project to build
+     * 
+     * @throws Exception
+     */
+    public void testBuildNonExistentProject()
+        throws Exception
+    {
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
+        DeployableProject project = new DeployableProject();
+        project.setLabel( "ghost-vhost-component" );
+        project.setScmURL( SCM_SAMPLE_WEB + "/ghost-module" );
+        project.setScmUsername( "" );
+        project.setScmPassword( "" );
+
+        try
+        {
+            component.buildProject( project, "clean compile" );
+            fail( "Expected Exception" );
+        }
+        catch ( Exception e )
+        {
+            // expected!
+        }
+    }
+
+    /**
+     * Tests a deployment to an application server.
+     * 
+     * @throws Exception
+     */
+    public void testDeployProject()
+        throws Exception
+    {
+        boolean bSkipped = false;
+        if ( bSkipped )
+        {
+            System.out.println( "Deployment test skipped! This will else result lot of Tomcat instances to start up" );
+            return;
+        }
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
+        DeployableProject project = new DeployableProject();
+        project.setLabel( PROJECT_LABEL_SAMPLE_WEB );
+        project.setScmURL( SCM_SAMPLE_WEB );
+        project.setScmUsername( "" );
+        project.setScmPassword( "" );
+        project.setScmTag( null );
+
+        // should deploy successfully
+        component.deployProject( project );
+    }
 }
