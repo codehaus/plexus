@@ -11,6 +11,10 @@
   <version>1-SNAPSHOT</version>
   <name>XSiter :: Parent</name>
   <packaging>pom</packaging>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-xsiter</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-xsiter</developerConnection>
+  </scm>
   <modules>    
     <module>xsiter-vhost-component</module>
     <module>xsiter-deployer-component</module>    
