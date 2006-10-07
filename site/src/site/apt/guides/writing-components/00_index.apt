@@ -28,13 +28,13 @@ About this trail
  
   * {{{07_01_from_a_maven_mojo.html}From a Maven Mojo}}
 
-  * {{From a Plexus application}}
+  * {{{07_02_from_a_plexus_application.html}From a Plexus application}}
     
-  * {{From a Web application}}
+  * {{{07_03_from_a_web_application.html}From a Web application}}
     
-  * {{From a SOAP Web Service}}
+  * {{{07_04_from_a_soap_webservice.html}From a SOAP Web Service}}
     
-  * {{From an XMLRPC Service}}
+  * {{{07_05_from_an_xmlrpc_service.html}From an XMLRPC Service}}
     
  * {{{08_packaging_up.html}Packaging}}
 
@@ -42,4 +42,4 @@ About this trail
 
   []
 
- You can also refer to the {{{../../../../ref/developer-guide/index.html}Plexus Developer's Guide}} if you are interested in an in-depth understanding of Plexus internals and workings.
+ You can also refer to the {{{/guides/developer-guide/index.html}Plexus Developer's Guide}} if you are interested in an in-depth understanding of Plexus internals and workings.
