@@ -1,5 +1,7 @@
 package org.codehaus.plexus.xsiter.deployer;
 
+import java.util.List;
+
 import org.codehaus.plexus.xsiter.deployer.model.DeployableProject;
 import org.codehaus.plexus.xsiter.deployer.model.DeployedProject;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
@@ -133,5 +135,14 @@ public interface Deployer
      * @throws Exception
      */
     public void addVirtualHost( DeployableProject project )
+        throws Exception;
+
+    /**
+     * Lists all the Deployment workspaces under the Deployer's working directory.
+     * 
+     * @return list of all {@link DeploymentWorkspace} being managed by Deployer.
+     * @throws Exception if there was an error obtaining list of workspaces.
+     */
+    public List getAllDeploymentWorkspaces()
         throws Exception;
 }

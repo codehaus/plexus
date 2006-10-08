@@ -51,6 +51,11 @@ public abstract class AbstractDeployer
     static final String GROUP_ID_ORG_CODEHAUS_CARGO = "org.codehaus.cargo";
 
     /**
+     * Name of the deployment workspace descriptor.
+     */
+    protected static final String DESCRIPTOR_WORKSPACE_XML = "workspace.xml";
+
+    /**
      * Source Control Manager.
      * 
      * @plexus.requirement
@@ -363,6 +368,7 @@ public abstract class AbstractDeployer
 
         File workspaceWorkingDir = new File( workspace.getRootDirectory(), workspace.getWorkingDirectory() );
         String scmTag = null != project.getScmTag() ? project.getScmTag() : "HEAD";
+
         File checkoutDir = new File( workspaceWorkingDir, scmTag );
 
         // check out project if it is not checked out yet

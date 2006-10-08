@@ -35,7 +35,7 @@ public abstract class DeployerResource
     /**
      * Source control repository tag to be used for checking out a project.
      */
-    private String scmTag = "HEAD";
+    private String scmTag = null;
 
     /**
      * @return the scmURL
