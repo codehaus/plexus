@@ -62,44 +62,44 @@
           </connectors>
         </configuration>
       </plugin>
-    </plugins>
-    <!-- Cargo Maven2 Mojo config -->
-    <plugin>
-      <groupId>org.codehaus.cargo</groupId>
-      <artifactId>cargo-maven2-plugin</artifactId>
-      <configuration>
-        <!-- wait>false</wait -->
-        <container>
-          <containerId>tomcat5x</containerId>
-          <zipUrlInstaller>
-            <url>
-              http://mirrors.ccs.neu.edu/Apache/dist/tomcat/tomcat-5/v5.5.16/bin/apache-tomcat-5.5.16.zip
-            </url>
-            <installDir>${installDir}</installDir>
-          </zipUrlInstaller>
-          <output>${basedir}/tomcat5x.log</output>
-          <log>${basedir}/cargo.log</log>
-        </container>
+      <!-- Cargo Maven2 Mojo config -->
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
         <configuration>
-          <home>
-            ${basedir}/../../deploy/webapp/${artifactId}/tomcat5x/
-          </home>
-          <properties>
-            <!-- This is the SHUTDOWN port for Tomcat -->
-            <!-- Tomcat admin and servlet ports -->
-            <cargo.rmi.port>9191</cargo.rmi.port>
-            <cargo.servlet.port>9192</cargo.servlet.port>            
-          </properties>
-          <deployables>
-            <deployable>
-              <properties>
-                <context>ROOT</context>
-              </properties>
-            </deployable>
-          </deployables>
+          <!-- wait>false</wait -->
+          <container>
+            <containerId>tomcat5x</containerId>
+            <zipUrlInstaller>
+              <url>
+                http://mirrors.ccs.neu.edu/Apache/dist/tomcat/tomcat-5/v5.5.16/bin/apache-tomcat-5.5.16.zip
+              </url>
+              <installDir>${installDir}</installDir>
+            </zipUrlInstaller>
+            <output>${basedir}/tomcat5x.log</output>
+            <log>${basedir}/cargo.log</log>
+          </container>
+          <configuration>
+            <home>
+              ${basedir}/../../deploy/webapp/${artifactId}/tomcat5x/
+            </home>
+            <properties>
+              <!-- This is the SHUTDOWN port for Tomcat -->
+              <!-- Tomcat admin and servlet ports -->
+              <cargo.rmi.port>9191</cargo.rmi.port>
+              <cargo.servlet.port>9192</cargo.servlet.port>
+            </properties>
+            <deployables>
+              <deployable>
+                <properties>
+                  <context>ROOT</context>
+                </properties>
+              </deployable>
+            </deployables>
+          </configuration>
         </configuration>
-      </configuration>
-    </plugin>
+      </plugin>
+    </plugins>
   </build>
   <properties>
     <installDir>/opt/tools/cargo</installDir>
