@@ -6,12 +6,11 @@
 
 <web-app>
 
-  <display-name>Plexus XSiter Deployer App</display-name>
-
+  <display-name>Plexus XSiter</display-name>
 
   <listener>
     <listener-class>
-      org.codehaus.plexus.servlet.PlexusServletContextListener
+      org.codehaus.plexus.xwork.PlexusLifecycleListener
     </listener-class>
   </listener>
 
