@@ -74,7 +74,8 @@ public class DefaultDeployerApplication
             {
                 ProjectProperties p = (ProjectProperties) it.next();
                 String val = null;
-                while ( null == val || val.trim().equals( "" ) )
+                //check if a valid input was obtained from the user
+                while ( null == val || ( p.isRequired() && val.trim().equals( "" ) ) )
                     val = prompter.prompt( "Enter a value for " + p.getName() );
                 assignProjectProperty( project, p, val );
             }

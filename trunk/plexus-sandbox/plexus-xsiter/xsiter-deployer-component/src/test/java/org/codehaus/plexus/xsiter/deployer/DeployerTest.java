@@ -2,6 +2,7 @@ package org.codehaus.plexus.xsiter.deployer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.maven.project.MavenProject;
@@ -207,6 +208,7 @@ public class DeployerTest
         throws Exception
     {
         Deployer component = (Deployer) lookup( Deployer.ROLE );
+        DefaultDeployer mgr = (DefaultDeployer) component;
         DeployableProject project = new DeployableProject();
         project.setLabel( "ghost-vhost-component" );
         project.setScmURL( SCM_SAMPLE_WEB + "/ghost-module" );
@@ -222,6 +224,11 @@ public class DeployerTest
         {
             // expected!
         }
+        finally
+        {
+            // cleanup 
+            FileUtils.deleteDirectory( new File( mgr.getWorkingDirectory(), project.getLabel() ) );
+        }
     }
 
     /**
@@ -232,7 +239,7 @@ public class DeployerTest
     public void testDeployProject()
         throws Exception
     {
-        boolean bSkipped = false;
+        boolean bSkipped = true;
         if ( bSkipped )
         {
             System.out.println( "Deployment test skipped! This will else result lot of Tomcat instances to start up" );
@@ -248,5 +255,14 @@ public class DeployerTest
 
         // should deploy successfully
         component.deployProject( project );
+    }
+
+    public void testGetAllDeploymentWorkspaces()
+        throws Exception
+    {
+        Deployer component = (Deployer) lookup( Deployer.ROLE );
+        DefaultDeployer mgr = (DefaultDeployer) component;
+        List workspaces = mgr.getAllDeploymentWorkspaces();
+        assertEquals( 1, workspaces.size() );
     }
 }

@@ -20,8 +20,8 @@ public class DeployableProject
 
     // Required Project creation properties
     public static enum ProjectProperties {
-        PROP_SCM_URL("scmURL", true), PROP_SCM_USER("scmUsername", true), PROP_SCM_PASSWORD("scmPassword", true), PROP_SCM_TAG(
-            "scmTag", true), PROP_LABEL("label", true);
+        PROP_SCM_URL("scmURL", true), PROP_SCM_USER("scmUsername", false), PROP_SCM_PASSWORD("scmPassword", false), PROP_SCM_TAG(
+            "scmTag", false), PROP_LABEL("label", true);
 
         /**
          * Property name
