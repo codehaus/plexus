@@ -106,7 +106,7 @@
     <vhosts.configuration>
       <![CDATA[<vhosts>
         <vhost>
-          <id>integration</id>
+          <id>staging</id>
           <vhostTemplate>src/conf/vhosts.vm</vhostTemplate>
           <vhostDirectory>deploy/apache</vhostDirectory>
           <vhostIP>127.0.0.1</vhostIP>
