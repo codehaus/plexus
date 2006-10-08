@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -132,7 +133,8 @@ public class DefaultDeployer
             VirtualHostConfiguration config = (VirtualHostConfiguration) it.next();
             DeploymentWorkspace workspace = loadWorkspaceFromDescriptor( project.getLabel() );
             File workspaceWorkingDir = new File( workspace.getRootDirectory(), workspace.getWorkingDirectory() );
-            File checkoutDir = new File( workspaceWorkingDir, project.getScmTag() );
+            String scmTag = null != project.getScmTag() ? project.getScmTag() : "HEAD";
+            File checkoutDir = new File( workspaceWorkingDir, scmTag );
             getLogger().info( "Adding Virtual Host for config ID: " + config.getId() );
             // Adjust the Velocity 'file.resource.loader.path' property to the
             // checkout directory, so the Vhosts template could be found.
@@ -354,6 +356,39 @@ public class DefaultDeployer
         {
             throw new Exception( "Cannot checkout sources.", e );
         }
+    }
+
+    /**
+     * @see org.codehaus.plexus.xsiter.deployer.Deployer#getAllDeploymentWorkspaces()
+     */
+    public List getAllDeploymentWorkspaces()
+        throws Exception
+    {
+        List list = new ArrayList();
+
+        File workingDir = new File( workingDirectory );
+        File[] files = workingDir.listFiles();
+        for ( int i = 0; i < files.length; i++ )
+        {
+            File dir = files[i];
+            if ( hasWorkspaceDescriptor( dir ) )
+                list.add( loadWorkspaceFromDescriptor( dir.getName() ) );
+            else if ( getLogger().isWarnEnabled() )
+                getLogger().warn( "No workspace descriptor found under directory: " + dir.getName() );
+        }
+
+        return list;
+    }
+
+    /**
+     * Tests if a directory under the Deployer working directory is a Deployment workspace.
+     * 
+     * @param dir Directory to test if its a deployment workspace.
+     * @return <code>true</code> if the deployment workspace descriptor is found under specified directory.
+     */
+    private boolean hasWorkspaceDescriptor( File dir )
+    {
+        return new File( dir, DESCRIPTOR_WORKSPACE_XML ).exists();
     }
 
 }
