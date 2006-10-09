@@ -160,6 +160,8 @@ public class AntScriptInvoker
         {
             this.messageLevel = String.valueOf( messageLevelInput );
         }
+        
+        initializeProject();
     }
 
     public void invoke()
@@ -171,8 +173,6 @@ public class AntScriptInvoker
 
         try
         {
-            initializeProject();
-
             project.setDefaultInputStream( System.in );
 
             System.setIn( new DemuxInputStream( project ) );
@@ -273,7 +273,12 @@ public class AntScriptInvoker
 
     protected int convertMsgLevel( String msgLevel )
     {
-        int level = Project.MSG_ERR;
+        int level;
+
+        if ( msgLevel == null )
+        {
+            return Project.MSG_ERR;
+        }
 
         msgLevel = msgLevel.toLowerCase();
 
