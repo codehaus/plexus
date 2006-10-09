@@ -160,7 +160,15 @@ public class AntScriptInvoker
         {
             this.messageLevel = String.valueOf( messageLevelInput );
         }
-        
+
+        // ----------------------------------------------------------------------------
+        // We need things like the basedir in order to initialize the ant project and
+        // we need to initialize the project here so that it can be augmented with
+        // classpath references and other properties before the ant task execution.
+        // This is a little brittle as we're relying on a call for configuration
+        // to signal ant project initialization ... jvz.
+        // ----------------------------------------------------------------------------
+
         initializeProject();
     }
 
