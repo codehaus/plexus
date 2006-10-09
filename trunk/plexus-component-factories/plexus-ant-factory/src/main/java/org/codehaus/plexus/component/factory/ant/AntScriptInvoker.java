@@ -311,4 +311,8 @@ public class AntScriptInvoker
         return level;
     }
 
+    public Project getProject()
+    {
+        return project;
+    }
 }
