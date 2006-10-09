@@ -119,7 +119,7 @@ public class PlexusDefaultComponentGleaner
             if ( role == null )
             {
                 getLogger().warn( "Could not figure out a role for the component '" + fqn + "'. " +
-                    "Please specify a role with a parameter '" + PLEXUS_ROLE_PARAMETER + " " + "on the @" +
+                    "Please specify a role with a parameter '" + PLEXUS_ROLE_PARAMETER + "' " + "on the @" +
                     PLEXUS_COMPONENT_TAG + " tag." );
 
                 return null;
