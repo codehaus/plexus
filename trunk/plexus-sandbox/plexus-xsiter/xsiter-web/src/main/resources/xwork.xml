@@ -1,30 +1,26 @@
 <!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
 
 <xwork>
+  <include file="webwork-default.xml" />
+  <include file="xwork-security.xml" />
 
-    <include file="webwork-default.xml"/>
+  <package name="default" extends="webwork-default">
+    <interceptors>
+      <interceptor-stack name="defaultComponentStack">
+        <interceptor-ref name="component" />
+        <interceptor-ref name="defaultStack" />
+      </interceptor-stack>
+    </interceptors>
+    <default-interceptor-ref name="defaultStack" />
+  </package>
 
-    <package name="default" extends="webwork-default">
+  <package name="admin" extends="default">
+    <action name="DisplayWorkspaces" class="displayWorkspaces"
+      method="listWorkspaces">
+      <result name="success" type="dispatcher">
+        <param name="location">/success.jsp</param>
+      </result>
+    </action>
+  </package>
 
-        <interceptors>
-            <interceptor-stack name="defaultComponentStack">
-                <interceptor-ref name="component"/>
-                <interceptor-ref name="defaultStack"/>
-            </interceptor-stack>
-        </interceptors>
-
-        <default-interceptor-ref name="defaultStack"/>
-
-    </package>
-
-    <package name="examples" extends="default">
-
-        <action name="Hello" class="helloAction">
-            <result name="success" type="dispatcher">
-                <param name="location">/success.jsp</param>
-            </result>
-            <interceptor-ref name="defaultComponentStack"/>
-        </action>
-
-    </package>
 </xwork>
