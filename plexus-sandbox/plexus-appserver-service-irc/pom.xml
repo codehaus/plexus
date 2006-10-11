@@ -6,7 +6,7 @@
     <version>2.0-alpha-3</version>
   </parent>
   <artifactId>plexus-appserver-service-irc</artifactId>
-  <version>1.0-alpha-1</version>
+  <version>1.0-alpha-2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Plexus Appserver IRC Service</name>
   <modules>
@@ -14,9 +14,4 @@
     <module>plexus-appserver-service-irc-core</module>
     <module>plexus-appserver-service-irc-service</module>
   </modules>
-
-  <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-appserver-service-irc-1.0-alpha-1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-appserver-service-irc-1.0-alpha-1</developerConnection>
-  </scm>
 </project>
