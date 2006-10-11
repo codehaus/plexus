@@ -63,11 +63,17 @@ Component Configuration
 
  Then, there is the instantiation strategy.  This controls how often plexus creates your components.  There are the following options:
 
- ||Strategy||Description||
- |per-lookup|Every time you lookup a component one will be created.|
- |singleton|Only one instance of your component will ever be created.|
- |keep-alive|This ensures a component is only used as a singleton, and is only shutdown when the container shuts down.|
- |poolable|Pools several component instances.|
+*-----+------+------+
+|<<Strategy>>|<<Description>>|
+*-----+------+------+
+|per-lookup|Every time you lookup a component one will be created.|
+*-----+------+------+
+|singleton|Only one instance of your component will ever be created.|
+*-----+------+------+
+|keep-alive|This ensures a component is only used as a singleton, and is only shutdown when the container shuts down.|
+*-----+------+------+
+|poolable|Pools several component instances.|
+*-----+------+------+
 
  The default is singleton and you can change the strategy like this:
 

@@ -16,7 +16,7 @@ Javadoc Tags used by Plexus tools
  to generate Component Descriptors.
 
 *-----+------+------+------+
-| Tag/Annotation | Available on | Required | Descriptor Element |
+|<<Tag/Annotation>>|<<Available on>>|<<Required>>|<<Descriptor Element>>|
 *-----*------*------*------*
 | {{{#@plexus.component}@plexus.component}} | Class | Yes | Indicate to Plexus CDC that the class is a component |
 *-----*------*------*------*
@@ -35,7 +35,7 @@ but remember the <<<role>>> is required.
 component's <<<<description>>>> tag.
 
 *-----+------+------+
-| Parameter | Required | Description |
+|<<Parameter>>|<<Required>>|<<Description>>|
 *-----*------*------*
 | role | Yes | The role that this class provides an implementation for (usually the class name of an implemented Interface |
 *-----*------*------*
@@ -50,7 +50,7 @@ component's <<<<description>>>> tag.
 configuration through the <<<components.xml>>>.
 
 *-----+------+------+
-| Parameter | Required | Description |
+|<<Parameter>>|<<Required>>|<<Description>>|
 *-----*------*------*
 | default-value | Currently | The default values are currently required for the <<<<configuration>>>> tag to be written to <<<components.xml>>>.
 *-----*------*------*
@@ -68,7 +68,7 @@ whereas a field of type <<<java.lang.Map>>> will have a mapping in the form of
 <<<List>>> or <<<Map>>> whereas a role-hint is not allowed.
 
 *-----+------+------+
-| Parameter | Required | Description |
+|<<Parameter>>|<<Required>>|<<Description>>|
 *-----*------*------*
 | role | No. Yes if the field is a <<<List>>> or a <<<Map>>> | The role parameter is used to tell plexus what Component role you are interested in. For singleton fields their type is used as a default.
 *-----*------*------*
