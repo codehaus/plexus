@@ -1,9 +1,0 @@
-<component-set>
-  <components>
-    <component>
-      <role>org.codehaus.plexus.security.Authenticator</role>
-      <role-hint>osuser</role-hint>
-      <implementation>org.codehaus.plexus.security.osuser.OSUserAuthenticator</implementation>
-    </component>
-  </components>
-</component-set>
