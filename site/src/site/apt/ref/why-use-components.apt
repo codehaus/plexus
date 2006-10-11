@@ -47,8 +47,9 @@ Introduction
   of container functionality can facilitate other design patterns in a simple, consistent manner.
 
   For example, the chain of command pattern is very useful in defining a series of actions, and can be achieved by
-  declaring a requirement on a list of component instances. This example is demonstrated in the
-  {{{component-requirements.html} Component Requirements Tutorial}}.
+  declaring a requirement on a list of component instances.
+~~ This example is demonstrated in the
+~~  {{{component-requirements.html} Component Requirements Tutorial}}.
 
   <<Components are easier to construct and configure>>
 
@@ -85,8 +86,9 @@ Introduction
   set up and clean up, and also to easily apply some design patterns to a component without having to recode
   the component state handling.
 
-  Component lifecycles in Plexus are discussed in the {{{components.html} Components Tutorial}} as well as the
-  {{{../documentation/component-lifecycle.html} Component Lifecycle}} documentation.
+  Component lifecycles in Plexus are discussed in the {{{components.html} Components Tutorial}}.
+~~ as well as the
+~~  {{{../documentation/component-lifecycle.html} Component Lifecycle}} documentation.
 
   <<Components are implicitly easier to unit test>>
 
@@ -108,7 +110,7 @@ Introduction
 
   While components can usually be tested by conventional means, Plexus comes with a testing harness that simplifies
   the process of performing the regular component construction and lifecycle, running them in-container. This is
-  discussed in the {{{component-testing.html} Component Testing Tutorial}}.
+  discussed in the {{{/guides/developer-guide/building-components/component-testing.html} Component Testing}} section of the developer guide.
 
   <<Components facilitate advanced application architectures without modifying code>>
 
@@ -116,7 +118,7 @@ Introduction
   implementations. This can facilitate advanced application architectures without code modifications.
 
   An example of this can be seen in Apache Geronimo's GBuild, which is built on
-  {{{http://maven.apache.org/continuum} Apache Continuum}}, a Plexus application. By replacing some components with
+  {{{http://maven.apache.org/continuum/} Apache Continuum}}, a Plexus application. By replacing some components with
   identical functionality that works with ActiveMQ, a distributed countinuous integration server was built.
 
   Additionally, the container can provide features that can be applied to all components consistently without code
@@ -129,7 +131,7 @@ What are Components?
 
   Other projects have also offered what a component may be:
 
-    * {{{http://picocontainer.codehaus.org/Components} PicoContainer}}
+    * {{{http://picocontainer.codehaus.org/Inversion+of+Control} PicoContainer}}
 
     * {{{http://avalon.apache.org/central/cop/index.html} Avalon}}
 

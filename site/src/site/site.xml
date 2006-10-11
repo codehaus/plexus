@@ -7,7 +7,7 @@
   </bannerLeft>
   <!-- bannerRight>
     <name>The Codehaus</name>
-    <href>http://www.codehaus.org</href>
+    <href>http://codehaus.org</href>
     <src>http://media.codehaus.org/images/unity-codehaus-logo.png</src>
   </bannerRight -->
   <skin>
@@ -23,7 +23,7 @@
     
     <links>
       <item name="Plexus" href="http://plexus.codehaus.org" />
-      <item name="The Codehaus" href="http://www.codehaus.org" />
+      <item name="The Codehaus" href="http://codehaus.org" />
     </links>
     
     <menu name="Plexus">
@@ -37,7 +37,7 @@
     </menu>
 
     <menu name="Books">
-      <item name="Writing Components" href="/writing-components-trial" />
+      <item name="Writing Components" href="/writing-components-trail/index.html" />
       <!-- this is not really ready for publishing yet !
       <item name="Developer Guide" href="/Plexus_developer_reference" />
 -->
@@ -61,6 +61,7 @@
       <!-- Discuss elements for plexus.xml and components.xml and differences -->
       <item name="Plexus Descriptor" href="/ref/plexus-descriptor.html" />
       <item name="Component Descriptor" href="/ref/component-descriptor.html" />      
+      <item name="Component Configuration" href="/ref/component-configuration.html" />
       <item name="Technical Articles" href="/ref/technical-articles.html" />
       <item name="Available Components" href="/ref/available-components.html" />
       <item name="FAQs" href="/faq.html" />
