@@ -27,7 +27,8 @@ public class PlexusIRCService implements PlexusService {
   private String nick;
 
   /**
-   * @plexus.configuration default-value=""
+   * FIXME - this should default to "" but the CDC cannot parse that yet...
+   * @plexus.configuration default-value="none"
    */
   private String pass;
 
@@ -49,7 +50,7 @@ public class PlexusIRCService implements PlexusService {
   /**
    * @plexus.requirement
    */
-  private IRCServiceManager manager;
+  private org.codehaus.plexus.service.irc.IRCServiceManager manager;
 
   public void beforeApplicationStart(AppRuntimeProfile applicationRuntimeProfile, PlexusConfiguration plexusConfiguration) throws Exception {
     manager.connect(host, nick, pass, username, realname);
