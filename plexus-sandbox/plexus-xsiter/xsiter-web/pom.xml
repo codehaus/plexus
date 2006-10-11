@@ -175,6 +175,12 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <!-- Plexus XSiter Deployer deps -->
+    <dependency>
+      <groupId>org.codehaus.plexus.xsiter</groupId>
+      <artifactId>xsiter-deployer-component</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -294,7 +300,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>     
+      </plugin>
       <!-- Cargo Maven2 Mojo config -->
       <plugin>
         <groupId>org.codehaus.cargo</groupId>
