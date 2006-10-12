@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# How to execute
+#   export PSEC_HOME=`pwd`
+#   find . -name "pom.xml" -print -exec $PSEC_HOME/fixscm.sh {} \;
+
 POM=$1
 
 if [ ! -f $POM ] ; then
@@ -19,7 +23,9 @@ SVNURL=`svn info | grep URL | sed -e "s@URL: http[s]://@@"`
 
 BACKUP=pom.xml-${NOW}~
 
-cp $POM $BACKUP
+POMFILE=`basename $POM`
+
+cp $POMFILE $BACKUP
 
 SCRIPTHOME=`dirname $SCRIPTHOME`
 POMREL=`pwd | sed -e "s@$SCRIPTHOME@@"`

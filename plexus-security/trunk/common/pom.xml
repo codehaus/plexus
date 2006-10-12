@@ -9,10 +9,10 @@
   <name>Plexus Security :: Common</name>
   <scm>
     <connection>
-      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/common
+      scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/common
     </connection>
     <developerConnection>
-      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/common
+      scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/common
     </developerConnection>
   </scm>
 </project>
