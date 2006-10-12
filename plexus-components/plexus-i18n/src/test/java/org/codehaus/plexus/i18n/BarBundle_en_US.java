@@ -10,10 +10,10 @@ public class BarBundle_en_US
 {
     private static final Object[][] CONTENTS =
     {
-        { "key1", "value1" },
-        { "key2", "value2" },
-        { "key3", "value3" },
-        { "key4", "value4" }
+        { "key1", "[en_US] value1" },
+        { "key2", "[en_US] value2" },
+        { "key3", "[en_US] value3" },
+        { "key4", "[en_US] value4" }
     };
     
     protected Object[][] getContents()
