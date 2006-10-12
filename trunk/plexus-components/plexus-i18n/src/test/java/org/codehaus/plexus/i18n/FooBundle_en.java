@@ -9,10 +9,10 @@ public class FooBundle_en extends ListResourceBundle
 {
     private static final Object[][] CONTENTS =
     {
-        { "key1", "value1" },
-        { "key2", "value2" },
-        { "key3", "value3" },
-        { "key4", "value4" }
+        { "key1", "[en] value1" },
+        { "key2", "[en] value2" },
+        { "key3", "[en] value3" },
+        { "key4", "[en] value4" }
     };
     
     protected Object[][] getContents()

@@ -83,23 +83,47 @@ public class DefaultI18NTest
     {
         String s0 = i18n.getString( null, null, "key1" );
 
-        assertEquals( "Unable to retrieve localized text for locale: default", s0, "value1" );
+        assertEquals( "Unable to retrieve localized text for locale: default", s0, "[] value1" );
 
         String s1 = i18n.getString( null, new Locale( "en", "US" ), "key2" );
 
-        assertEquals( "Unable to retrieve localized text for locale: en-US", s1, "value2" );
+        assertEquals( "Unable to retrieve localized text for locale: en-US", s1, "[en_US] value2" );
 
         String s2 = i18n.getString( "org.codehaus.plexus.i18n.BarBundle", new Locale( "ko", "KR" ), "key3" );
 
         assertEquals( "Unable to retrieve localized text for locale: ko-KR", s2, "[ko] value3" );
 
+        String s3 = i18n.getString( "org.codehaus.plexus.i18n.BarBundle", new Locale( "ja" ), "key1" );
+
+        assertEquals( "Unable to fall back from non-existant locale: jp", "[] value1", s3 );
+
         String s4 = i18n.getString( "org.codehaus.plexus.i18n.FooBundle", new Locale( "fr" ), "key3" );
 
-        assertEquals( "Unable to retrieve localized text for locale: fr-US", s4, "[fr] value3" );
+        assertEquals( "Unable to retrieve localized text for locale: fr", s4, "[fr] value3" );
 
-        String s5 = i18n.getString( "org.codehaus.plexus.i18n.i18n", null, "key1" );
+        String s5 = i18n.getString( "org.codehaus.plexus.i18n.FooBundle", new Locale( "fr", "FR" ), "key3" );
 
-        assertEquals( "value1", s5 );
+        assertEquals( "Unable to retrieve localized text for locale: fr-FR", s5, "[fr] value3" );
+
+        String s6 = i18n.getString( "org.codehaus.plexus.i18n.i18n", null, "key1" );
+
+        assertEquals( "Unable to retrieve localized properties for locale: default", "[] value1", s6 );
+
+        Locale old = Locale.getDefault();
+        Locale.setDefault(Locale.FRENCH);
+        try
+        {
+            String s7 = i18n.getString( "org.codehaus.plexus.i18n.i18n", Locale.ENGLISH, "key1" );
+
+            assertEquals( "Not picking up new default locale: fr", "[fr] value1", s7 );
+
+            String s8 = i18n.getString( "org.codehaus.plexus.i18n.i18n", Locale.ITALIAN, "key1" );
+
+            assertEquals( "Unable to retrieve localized properties for locale: it", "[it] value1", s8 );
+
+        } finally {
+            Locale.setDefault(old);
+        }
     }
 
     public void testLocalizedMessagesWithFormatting()
