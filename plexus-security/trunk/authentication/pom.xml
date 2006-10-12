@@ -31,8 +31,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authentication</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authentication</developerConnection>
   </scm>
   <modules>
     <module>api</module>

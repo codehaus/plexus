@@ -36,8 +36,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/profile</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/profile</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authorization/rbac/profile</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authorization/rbac/profile</developerConnection>
   </scm>
   <build>
     <plugins>

@@ -30,8 +30,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/api</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/api</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authentication/api</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authentication/api</developerConnection>
   </scm>
   <build>
     <plugins>

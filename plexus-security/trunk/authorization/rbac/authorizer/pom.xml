@@ -39,8 +39,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/authorizer</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/authorizer</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authorization/rbac/authorizer</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authorization/rbac/authorizer</developerConnection>
   </scm>
   <build>
     <plugins>

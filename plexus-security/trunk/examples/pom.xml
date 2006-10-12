@@ -25,8 +25,8 @@
   <name>Plexus Security :: Examples</name>
   <packaging>pom</packaging>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/examples</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/examples</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/examples</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/examples</developerConnection>
   </scm>
   <modules>
     <module>webapp</module>

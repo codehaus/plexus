@@ -25,8 +25,8 @@
   <name>Plexus Security :: Key Management Stores Parent</name>
   <packaging>pom</packaging>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/keys/stores</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/keys/stores</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/stores</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/stores</developerConnection>
   </scm>
   <modules>
     <module>test</module>

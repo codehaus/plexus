@@ -25,8 +25,8 @@
   <name>Plexus Security :: User Management Parent</name>
   <packaging>pom</packaging>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/user-management</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/user-management</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/user-management</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/user-management</developerConnection>
   </scm>
   <modules>
     <module>api</module>

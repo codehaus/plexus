@@ -9,10 +9,10 @@
   <packaging>pom</packaging>
   <scm>
     <connection>
-      scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/stores/xstream
+      scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authorization/rbac/stores/xstream
     </connection>
     <developerConnection>
-      scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authorization/rbac/stores/xstream
+      scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authorization/rbac/stores/xstream
     </developerConnection>
   </scm>
 </project>

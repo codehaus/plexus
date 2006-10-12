@@ -25,8 +25,8 @@
   <name>Plexus Security :: Key Management API</name>
   <packaging>jar</packaging>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/keys/api</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk/plexus-sandbox/plexus-components/plexus-security/authentication/keys/api</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/api</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/api</developerConnection>
   </scm>
   <dependencies>
   </dependencies>
