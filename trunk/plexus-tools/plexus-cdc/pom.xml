@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-cdc</artifactId>
   <name>Plexus Component Descriptor Creator</name>
-  <version>1.0-alpha-6</version>
+  <version>1.0-alpha-7-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>qdox</groupId>
@@ -26,9 +26,4 @@
       <version>1.0.4</version>
     </dependency>
   </dependencies>
-
-  <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-cdc-1.0-alpha-6</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-cdc-1.0-alpha-6</developerConnection>
-  </scm>
 </project>
