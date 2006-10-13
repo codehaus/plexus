@@ -1,1 +1,0 @@
-the file "/images/px" is a gif image of a single pixek to use as a shim/spacer image for JasperReports.
