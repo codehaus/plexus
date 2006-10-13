@@ -27,8 +27,7 @@ public class PlexusIRCService implements PlexusService {
   private String nick;
 
   /**
-   * FIXME - this should default to "" but the CDC cannot parse that yet...
-   * @plexus.configuration default-value="none"
+   * @plexus.configuration default-value=""
    */
   private String pass;
 
