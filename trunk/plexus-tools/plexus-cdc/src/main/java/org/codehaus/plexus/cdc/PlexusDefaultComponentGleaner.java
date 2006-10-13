@@ -426,7 +426,8 @@ public class PlexusDefaultComponentGleaner
 
             Map parameters = new HashMap( tag.getNamedParameterMap() );
 
-            String defaultValue = getParameter( parameters, PLEXUS_DEFAULT_VALUE_PARAMETER );
+            /* don't use the getParameter helper as we like empty strings */
+            String defaultValue = (String) parameters.remove( PLEXUS_DEFAULT_VALUE_PARAMETER );
 
             if ( defaultValue == null )
             {
