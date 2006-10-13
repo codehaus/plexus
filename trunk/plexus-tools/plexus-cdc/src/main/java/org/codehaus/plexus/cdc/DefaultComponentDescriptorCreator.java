@@ -456,7 +456,7 @@ public class DefaultComponentDescriptorCreator
     private void writePlexusConfiguration( XMLWriter xmlWriter, PlexusConfiguration c )
         throws PlexusConfigurationException
     {
-        if ( c.getAttributeNames().length == 0 && c.getChildCount() == 0 && StringUtils.isEmpty( c.getValue() ) )
+        if ( c.getAttributeNames().length == 0 && c.getChildCount() == 0 && c.getValue() == null )
         {
             return;
         }
