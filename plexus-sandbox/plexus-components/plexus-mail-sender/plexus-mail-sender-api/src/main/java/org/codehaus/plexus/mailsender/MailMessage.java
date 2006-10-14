@@ -268,6 +268,24 @@ public class MailMessage
 
     public void addHeader( String headerName, String headerValue )
     {
-        headers.put( headerName, headerValue );
+        List header = (List) headers.get( headerName );
+        if (header == null)
+            header = new ArrayList();
+
+        header.add( headerValue );
+
+        headers.put( headerName, header );
+    }
+
+    public List setHeader( String headerName, String headerValue )
+    {
+        List oldHeader = (List) headers.get( headerName );
+
+        List header = new ArrayList();
+        header.add( headerValue );
+
+        headers.put( headerName, header );
+
+        return oldHeader;
     }
 }

@@ -27,6 +27,7 @@ package org.codehaus.plexus.mailsender;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.List;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
@@ -138,7 +139,20 @@ public abstract class AbstractMailSender
         {
             String key = (String) iter.next();
 
-            message.addHeader( key, (String) headers.get( key ) );
+            Object header = headers.get( key );
+
+            if (header instanceof List)
+            {
+                for ( Iterator headerVals = ((List) header).iterator(); iter.hasNext(); )
+                {
+                    message.addHeader( key, (String) headerVals.next() );
+                }
+
+            }
+            else
+            {
+                message.addHeader( key, (String) headers.get( key ) );
+            }
         }
 
         send( message );
