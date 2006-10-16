@@ -1,0 +1,8 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.tomcat.PlexusTomcat</role>
+      <implementation>org.codehaus.plexus.tomcat.DefaultPlexusTomcat</implementation>
+    </component>
+  </components>
+</component-set>

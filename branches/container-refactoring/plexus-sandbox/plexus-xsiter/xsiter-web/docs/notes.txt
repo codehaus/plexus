@@ -1,0 +1,62 @@
+
+[This document is in no way defintive. Will evolve as we go!]
+
+Webwork n00b notes
+==================
+
+1)  Setting up a Plexus WW webapp
+
+  1-1)  see the following resources under 
+        'plexus-security-webapp-example'
+
+      src/main/resources/webwork.properties 
+        (TODO: expand on setting theme and devMode)
+      src/main/resources/xwork.xml          
+        (TODO: expand on using the interceptors from pss module)
+      src/webapp/WEB-INF/web.xml
+        (This can be copied verbatim to get started)
+
+  1-2)  Setup Sitemesh resources
+        
+        See following resources and corresponding sitemesh config under 
+        'plexus-security-webapp-example'
+          http://www.opensymphony.com/sitemesh/index.html
+          http://www.opensymphony.com/sitemesh/install.html
+          http://www.opensymphony.com/sitemesh/decorators.html
+
+
+  1-3)  Add following resources from the example app to your app
+        
+        src/main/webapp/css/main.css
+          (This is referenced in the sitemesh layout template)
+        src/main/webapp/WEB-INF/jsp/decorators/default.jsp
+          (This is the sitemesh layout template. We will modify this later to 
+            suit our needs.)
+
+2)  Setting up xwork.xml
+    
+  2-1)  Create a simple action under 'src/main/java'. 
+        (See org.codehaus.plexus.security.example.web.action.MainAction under 
+          example app. Note how 'role' and 'role-hint' in particular are setup
+          in javadoc annotations.)
+
+  2-2)  Update and replace references to 'main' in your 'xwork.xml' with the 
+        'role-hint' value of your simple action created in (2-1).
+        
+
+
+10) Running the webapp
+======================
+
+  10-1) To run your application
+
+    10-1-1) from command prompt change directory to the root of the web 
+            application. 
+
+    10-1-2) Run the following Maven goal.
+            >   mvn clean war:inplace jetty:run
+
+            NOTE: that this depends on the requisite Plugin configuration(s) to
+            be setup in your web application's pom.xml. (See pom.xml for the 
+            'plexus-security-webapp-example' webapp)
+

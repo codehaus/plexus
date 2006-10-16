@@ -1,0 +1,22 @@
+<process>
+  <id>exception-throwing-process</id>
+  <defaultExecutorId>plexus-action</defaultExecutorId>
+  <steps>
+    <step>
+      <executorConfiguration>
+        <actionId>echo-message</actionId>
+      </executorConfiguration>
+      <configuration>
+        <message>Configuration Hello World!</message>
+      </configuration>
+    </step>
+    <step>
+      <executorConfiguration>
+        <actionId>throw-exception</actionId>
+      </executorConfiguration>
+      <configuration>
+        <runtime>false</runtime>
+      </configuration>
+    </step>
+  </steps>
+</process>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>plexus-component-factories</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0-alpha-6</version>
+  </parent>
+  <artifactId>plexus-jruby-factory</artifactId>
+  <version>1.0-alpha-2-SNAPSHOT</version>
+  <name>Plexus JRuby Factory</name>
+
+  <repositories>
+    <repository>
+      <id>codehaus-snap</id>
+      <url>http://snapshots.repository.codehaus.org/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <!-- dependency>
+      <groupId>org.jruby</groupId>
+      <artifactId>jruby</artifactId>
+      <version>0.8.3</version>
+    </dependency -->
+    <dependency>
+      <groupId>org.jruby</groupId>
+      <artifactId>jruby</artifactId>
+      <version>0.9.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>bsf</groupId>
+      <artifactId>bsf</artifactId>
+      <version>2.3.0</version>
+    </dependency>
+  </dependencies>
+</project>

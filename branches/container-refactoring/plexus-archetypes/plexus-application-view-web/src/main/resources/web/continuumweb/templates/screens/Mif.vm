@@ -1,0 +1,13 @@
+<div class="app">
+  <h3>Maven book</h3>
+  <form action="$link.setPage('Index.vm').addQueryData('action','store-apt').addQueryData('apt',$apt)" method="post">
+    <div class="axial">
+      <p>
+        <textarea name="text" rows="20" cols="100">$docorama.getMifText($apt)</textarea>
+      </p>
+    </div>
+    <div class="functnbar3">
+      <input type="submit" name="f" value="Update"/>
+    </div>
+  </form>
+</div>

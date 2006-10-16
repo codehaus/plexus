@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Building</title>
+    <author email="dan@envoisolutions.com">Dan Diephouse</author>
+  </properties>
+
+  <body>
+
+  <section name="Building">
+    <p>
+      Maven makes building easy just do "maven java:compile"!  
+      Except, you must download 
+      <a href="http://jakarta.apache.org/commons/sandbox/attributes/">Commons Attributes</a>
+      from cvs.  Make sure to install the jar via "maven jar:install" and the maven plugin
+      that comes with it.
+    </p>
+  </section>
+
+</body>
+</document>

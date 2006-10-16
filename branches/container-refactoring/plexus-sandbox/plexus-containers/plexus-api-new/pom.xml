@@ -1,0 +1,52 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.bacon</groupId>
+  <artifactId>bacon-root</artifactId>
+  <version>1.0-alpha-1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  
+  <name>BaCon Root POM</name>
+
+  <modules>
+    <module>bacon-utils</module>
+    <module>bacon-api</module>
+    <module>bacon-base-container</module>
+    <module>bacon-basic-component-info</module>
+    <module>bacon-component-factories</module>
+    <module>bacon-language-support</module>
+  </modules>
+
+  <distributionManagement>
+    <repository>
+      <id>commonjava-deploy</id>
+      <url>scp://maven.commonjava.org/opt/web/sites/maven.commonjava.org</url>
+    </repository>
+  </distributionManagement>
+
+  <repositories>
+    <repository>
+      <id>commonjava</id>
+      <url>http://maven.commonjava.org</url>
+    </repository>
+  </repositories>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>${groupId}</groupId>
+        <artifactId>bacon-api</artifactId>
+        <version>${version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${groupId}</groupId>
+        <artifactId>bacon-utils</artifactId>
+        <version>${version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ognl</groupId>
+        <artifactId>ognl</artifactId>
+        <version>2.6.7</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

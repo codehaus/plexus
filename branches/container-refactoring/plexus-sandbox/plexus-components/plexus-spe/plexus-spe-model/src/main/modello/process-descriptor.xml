@@ -1,0 +1,63 @@
+<model>
+  <id>process-descriptor</id>
+  <name>ProcessDescriptor</name>
+  <description>Plexus Simple Process Engines's process descriptor object model.</description>
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>org.codehaus.plexus.spe.model</value>
+    </default>
+  </defaults>
+
+  <classes>
+    <class rootElement="true">
+      <name>ProcessDescriptor</name>
+      <version>1.0.0+</version>
+      <fields>
+        <field>
+          <name>id</name>
+          <type>String</type>
+          <identifier>true</identifier>
+          <version>1.0.0+</version>
+        </field>
+        <field>
+          <name>defaultExecutorId</name>
+          <type>String</type>
+          <identifier>true</identifier>
+          <version>1.0.0+</version>
+        </field>
+        <field>
+          <name>steps</name>
+          <type>List</type>
+          <version>1.0.0+</version>
+          <association xml.mapStyle="inline" stash.part="true" stash.keyType="java.lang.String">
+            <type>StepDescriptor</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+
+    <class>
+      <name>StepDescriptor</name>
+      <version>1.0.0+</version>
+      <fields>
+        <field>
+          <name>executorId</name>
+          <type>String</type>
+          <version>1.0.0+</version>
+        </field>
+        <field>
+          <name>executorConfiguration</name>
+          <type>DOM</type>
+          <version>1.0.0+</version>
+        </field>
+        <field>
+          <name>configuration</name>
+          <type>DOM</type>
+          <version>1.0.0+</version>
+        </field>
+      </fields>
+    </class>
+  </classes>
+</model>

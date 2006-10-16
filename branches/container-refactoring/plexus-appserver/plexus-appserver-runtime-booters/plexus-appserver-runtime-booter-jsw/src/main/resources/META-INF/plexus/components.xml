@@ -1,0 +1,9 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGenerator</role>
+      <role-hint>jsw</role-hint>
+      <implementation>org.codehaus.plexus.builder.runtime.JswPlexusRuntimeBootloaderGenerator</implementation>
+    </component>
+  </components>
+</component-set>

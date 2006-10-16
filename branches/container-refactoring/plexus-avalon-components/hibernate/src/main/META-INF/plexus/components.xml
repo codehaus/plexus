@@ -1,0 +1,61 @@
+<plexus>
+
+  <component-repository implementation="org.codehaus.plexus.personality.avalon.AvalonComponentRepository">
+    <composition-resolver implementation="org.codehaus.plexus.component.composition.DefaultCompositionResolver"/>
+  </component-repository>
+
+  <!--
+   |
+   | Lifecycle handler Manager.
+   |
+   -->
+  <lifecycle-handler-manager implementation='org.codehaus.plexus.lifecycle.DefaultLifecycleHandlerManager'>
+    <lifecycle-handlers>
+      <lifecycle-handler implementation='org.codehaus.plexus.personality.avalon.AvalonLifecycleHandler'>
+        <id>avalon</id>
+        <name>Avalon Lifecycle Handler</name>
+        <begin-segment>
+          <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.LogEnablePhase'/>
+          <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.ContextualizePhase'/>
+          <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.ServicePhase'/>
+          <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.ComposePhase'/>
+          <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.ConfigurePhase'/>
+          <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.InitializePhase'/>
+          <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.StartPhase'/>
+        </begin-segment>
+        <suspend-segment>
+          <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.SuspendPhase'/>
+        </suspend-segment>
+        <resume-segment>
+          <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.ResumePhase'/>
+          <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.RecontextualizePhase'/>
+          <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.ReconfigurePhase'/>
+        </resume-segment>
+        <end-segment>
+          <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.StopPhase'/>
+          <phase implementation='org.codehaus.plexus.personality.avalon.lifecycle.phase.DisposePhase'/>
+        </end-segment>
+      </lifecycle-handler>
+    </lifecycle-handlers>
+  </lifecycle-handler-manager>
+
+  <components>
+
+    <component>
+      <role>wasabi.service.Persister</role>
+      <implementation>wasabi.service.impl.DefaultPersister</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+      <lifecycle-handler>avalon</lifecycle-handler>
+      <configuration/>            
+    </component>
+        
+    <component>
+      <role>org.codehaus.plexus.hibernate.HibernateSessionService</role>
+      <implementation>org.codehaus.plexus.hibernate.DefaultHibernateSessionService</implementation>
+      <instantiation-strategy>singleton</instantiation-strategy>
+      <lifecycle-handler>avalon</lifecycle-handler>
+      <configuration/>
+    </component>
+
+  </components>
+</plexus>

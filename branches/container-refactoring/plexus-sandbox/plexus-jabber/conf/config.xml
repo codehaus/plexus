@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE configdtd[
+    <!ENTITY hostname 'home.open-im.net'>
+    <!ENTITY server-port '5269'>
+    <!ENTITY ssl-server-port '5270'>
+    <!ENTITY client-port '5222'>
+    <!ENTITY ssl-client-port '5223'>    
+]>
+
+<targets>
+  
+  <target path="/openim/IMServer">
+    <configuration>
+        <listen-backlog>5</listen-backlog>
+        <!-- <bind>127.0.0.1</bind> -->        
+    </configuration>    
+  </target>
+
+  
+  <target path="/openim/ServerParameters">
+    <configuration>
+        <local-client-port>&client-port;</local-client-port>
+        <local-ssl-client-port>&ssl-client-port;</local-ssl-client-port>
+        <local-server-port>&server-port;</local-server-port>    
+        <local-ssl-server-port>&ssl-server-port;</local-ssl-server-port>    
+        <remote-server-port>&server-port;</remote-server-port>    
+        <hostname>&hostname;</hostname>
+        <hostname>localhost</hostname>
+    </configuration>    
+  </target>
+  
+  <target path="/openim/threads/manager">
+    <configuration>
+          <thread-group>
+            <name>default</name>
+
+            <!-- normal priority == 5, max-priority = 10 -->
+            <priority>5</priority>
+
+            <!-- are threads deamon threads ? -->
+            <is-daemon>false</is-daemon>
+
+            <min-threads>5</min-threads>
+            <max-threads>1000</max-threads>
+
+            <min-spare-threads>5</min-spare-threads>
+        </thread-group>
+    </configuration>
+  </target>
+
+  <target path="/openim/IMConnectionHandler">
+    <categories priority="INFO"/>
+  </target>
+  
+  <target path="/openim/IMRouter">
+    <categories priority="INFO"/>
+    <configuration>
+        <delivery-max-retry>3</delivery-max-retry>
+        <delivery-retry-delay>500</delivery-retry-delay> <!-- time in ms -->
+        <delivery-message-queue-timeout>3600000</delivery-message-queue-timeout> <!-- time in ms -->
+    </configuration>    
+  </target>
+
+  <target path="/openim/S2SConnector">
+    <categories priority="DEBUG"/>
+    <configuration>
+        <delivery-connection-timeout>60000</delivery-connection-timeout> <!-- time in ms -->
+    </configuration>    
+  </target>
+
+
+  <target path="/openim/IMClientSession">
+    <categories priority="WARN"/>
+    <configuration>
+        <default-encoding>UTF-8</default-encoding> <!-- could be US-ASCII ISO-8859-1 UTF-8 UTF-16BE UTF-16LE UTF-16 -->
+    </configuration>    
+  </target>
+  
+  <target path="/openim/IMServerSession">
+    <categories priority="WARN"/>
+    <configuration>
+        <default-encoding>UTF-8</default-encoding> <!-- could be US-ASCII ISO-8859-1 UTF-8 UTF-16BE UTF-16LE UTF-16 -->
+    </configuration>    
+  </target>
+
+  <target path="/openim/users-manager/AccountRepositoryHolder">
+    <categories priority="DEBUG"/>
+    <!-- users-manager-ldap -->
+    <!--
+	<configuration>
+   		<initial-context-factory>com.sun.jndi.ldap.LdapCtxFactory</initial-context-factory>
+   		<security-authentication>simple</security-authentication>
+   		<provider-url>ldap://localhost</provider-url>
+   		<security-principal>cn=Manager,o=stooges</security-principal>
+   		<security-credentials>secret</security-credentials>
+   		
+   		<ldap-lookup-directory>ou=MemberGroupA, o=stooges</ldap-lookup-directory>
+   		<ldap-attribute-search>uid</ldap-attribute-search>
+   		<ldap-password-attribute>userPassword</ldap-password-attribute>
+	</configuration>
+	-->
+	
+    <!-- users-manager -->
+    <configuration>
+        <regexp-search>false</regexp-search>
+    </configuration>    
+
+  </target>
+
+
+  <target path="/openim/storage/DeferrableListRepositoryHolder">
+    <categories priority="INFO"/>
+  </target>
+
+  <target path="/openim/storage/PrivateRepositoryHolder">
+    <categories priority="INFO"/>
+  </target>
+
+  <target path="/openim/storage/RosterListRepositoryHolder">
+    <categories priority="INFO"/>
+    <configuration>
+        <encoding>iso-8859-1</encoding>
+    </configuration>    
+  </target>
+  
+  <target path="/openim/SessionsManager">
+    <categories priority="INFO"/>
+  </target>
+
+
+  <!-- #############################################################################
+       #############################################################################
+        Logger/Recorder setting
+      #############################################################################  
+      #############################################################################
+      
+      You should edit $MERLIN_HOME/config/kernel.xml file and define logger such as:
+       
+      <logging priority="INFO" name="kernel">
+      <category name="/logger" priority="WARN"/>
+
+      <target name="MessageLogger">
+         <file location="log/messageLogger.log" />
+      </target>
+      <target name="MessageRecorder">
+         <file location="log/messageRecorder.log" />
+      </target>
+   </logging>
+   -->
+  <!--  categories to WARN if you dont want to have any output -->
+  <target path="/openim/MessageLogger">
+    <categories priority="INFO" target="MessageLogger"/>
+  </target>
+    
+  <target path="/openim/MessageRecorder">
+    <categories priority="INFO" target="MessageRecorder"/>
+  </target>
+
+    
+</targets>

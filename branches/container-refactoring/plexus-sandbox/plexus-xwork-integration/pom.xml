@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>plexus-components</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.1.6</version>
+    <relativePath>../../plexus-components/pom.xml</relativePath>
+  </parent>
+  <groupId>org.codehaus.plexus</groupId>
+  <artifactId>plexus-xwork-integration</artifactId>
+  <version>1.0-alpha-3-SNAPSHOT</version>
+  <name>Plexus XWork Integration</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
+      <version>2.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-10</version>
+    </dependency>
+    <dependency>
+      <groupId>opensymphony</groupId>
+      <artifactId>xwork</artifactId>
+      <version>1.2.1</version>
+    </dependency>
+    <!-- TODO: shouldn't be needed, just for the OFact interface -->
+    <dependency>
+      <groupId>opensymphony</groupId>
+      <artifactId>webwork</artifactId>
+      <version>2.2.4</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.4</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.4</source>
+          <target>1.4</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

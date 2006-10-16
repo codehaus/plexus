@@ -1,0 +1,34 @@
+<process>
+  <id>ant-based-process</id>
+  <defaultExecutorId>plexus-action</defaultExecutorId>
+  <steps>
+    <step>
+      <executorConfiguration>
+        <actionId>echo-message</actionId>
+      </executorConfiguration>
+      <configuration>
+        <message>Doing!</message>
+      </configuration>
+    </step>
+    <step>
+      <executorConfiguration>
+        <actionId>ant</actionId>
+        <configuratorId>ant</configuratorId>
+      </executorConfiguration>
+      <configuration>
+        <target>
+          <touch file="/tmp/heyyo"/>
+          <echo>Hello World!</echo>
+        </target>
+      </configuration>
+    </step>
+    <step>
+      <executorConfiguration>
+        <actionId>echo-message</actionId>
+      </executorConfiguration>
+      <configuration>
+        <message>Done!</message>
+      </configuration>
+    </step>
+  </steps>
+</process>

@@ -1,0 +1,15 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.workflow.WorkflowEngine</role>
+      <implementation>org.codehaus.plexus.workflow.DefaultWorkflowEngine</implementation>
+      <configuration>
+        <werkflowDirectory>${plexus.home}/werkflows/</werkflowDirectory>
+      </configuration>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.workflow.WorkflowActionManager</role>
+      <implementation>org.codehaus.plexus.workflow.DefaultWorkflowActionManager</implementation>
+    </component>
+  </components>
+</component-set>

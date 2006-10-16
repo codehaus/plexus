@@ -1,0 +1,18 @@
+<div class="app">
+
+  <h3>Login</h3>
+  <form action="$link.setPage('Index.vm')" method="post" name="login">
+    <input type="hidden" name="action" value="login"/>
+    <div class="axial">
+    <table cellpadding="3" cellspacing="2" border="0">
+      #field( "Login" "login" "" "Enter your user name" )
+      #field( "Password" "password" "" "Enter your password" )
+    </table>
+    </div>
+
+    <div class="functnbar2">
+      <input type="submit" value="Submit"/>
+    </div>
+  </form>
+
+</div>

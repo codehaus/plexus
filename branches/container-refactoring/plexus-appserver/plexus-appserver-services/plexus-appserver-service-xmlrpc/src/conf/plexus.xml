@@ -1,0 +1,8 @@
+<plexus>
+  <load-on-start>
+    <component>
+      <role>org.codehaus.plexus.appserver.service.PlexusService</role>
+      <role-hint>xml-rpc</role-hint>
+    </component>
+  </load-on-start>
+</plexus>

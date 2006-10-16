@@ -1,0 +1,13 @@
+<configuration>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.appserver.apacheds.ApacheDSApplication</role>
+      <implementation>org.codehaus.plexus.appserver.apacheds.DefaultApacheDSApplication</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.server.apacheds.ApacheDS</role>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+</configuration>

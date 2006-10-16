@@ -1,0 +1,10 @@
+<component-set>
+  <components>
+
+    <component>
+      <role>org.codehaus.plexus.xmlrpc.XmlRpcServer</role>
+      <implementation>org.codehaus.plexus.xmlrpc.DefaultXmlRpcServer</implementation>
+    </component>
+
+  </components>
+</component-set>

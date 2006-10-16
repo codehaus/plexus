@@ -1,0 +1,7 @@
+<archetype>
+  <id>plexus-archetype-component-simple</id>
+  <resources>
+    <resource>src/conf/application.xml</resource>
+    <resource>src/plexus.properties</resource>
+  </resources>
+</archetype>
