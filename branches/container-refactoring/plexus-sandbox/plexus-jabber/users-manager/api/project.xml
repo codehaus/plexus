@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project>
+
+  <groupId>openim</groupId>
+  <id>openim-users-manager-api</id>
+  <name>OpenIM UsersManager API</name>
+  <package>net.java.dev.openim</package>
+  <currentVersion>1.3.1</currentVersion>
+
+  <inceptionYear>2003</inceptionYear>
+  <shortDescription>OpenIM UsersManager API</shortDescription>
+  <description>
+	OpenIM UsersManager API
+  </description>
+  
+  <extend>${basedir}/../../project.xml</extend>
+  
+  <dependencies>
+  
+
+ 
+  
+   <!-- avalon dependencies -->
+
+    <dependency>
+      <groupId>avalon-framework</groupId>
+      <artifactId>avalon-framework-api</artifactId>
+      <version>4.2.0</version>
+    </dependency>
+
+
+
+  </dependencies>
+
+  <build>
+
+    <nagEmailAddress>alag@users.sf.net</nagEmailAddress>
+    <sourceDirectory>${basedir}/src/java</sourceDirectory>
+    <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+    <integrationUnitTestSourceDirectory/>
+    <aspectSourceDirectory/>
+
+    <resources>
+      <resource>
+        <directory>${basedir}/src/java</directory>
+        <includes>
+          <include>**/*.dtd</include>
+          <include>**/*.properties</include>
+          <include>**/*.xinfo</include>
+          <include>**/*.xtype</include>
+          <include>**/*.xprofile</include>
+          <include>**/*.xconfig</include>
+          <include>**/*.xml</include>
+          <include>**/*.xservice</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${basedir}/conf</directory>
+        <targetPath>BLOCK-INF</targetPath>
+        <includes>
+          <include>block.xml</include>
+        </includes>
+      </resource>
+    </resources>
+    <jars></jars>
+  </build>
+
+</project>

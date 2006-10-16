@@ -1,0 +1,52 @@
+<project>
+  <groupId>org.codehaus.plexus</groupId>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>plexus-compiler-groovyc</artifactId>
+  <name>Plexus Groovyc Component</name>
+  <version>1.5.1</version>
+  <description>This is a plexus extension that add groovy support to plexus-compilers.</description>
+  <scm>
+    <connection>scm:svn:https://tagloo.no-ip.info.com/svn/public/plexus-compiler-groovyc</connection>
+    <url>https://tagloo.no-ip.info.com/svn/public/plexus-compiler-groovyc</url>
+  </scm>
+  <developers>
+    <developer>
+      <name>Eric BURGHARD</name>
+      <id>burghard</id>
+      <url>http://eburghar.free.fr</url>
+      <email>eburghar@free.fr</email>
+    </developer>
+  </developers>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-compiler-api</artifactId>
+      <version>1.5.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-compiler-test</artifactId>
+      <version>1.5.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>groovy</groupId>
+      <artifactId>groovy-1.0-jsr</artifactId>
+      <version>03-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>

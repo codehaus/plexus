@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>
+$action.getText('main.title')
+</title>
+</head>
+<body bgcolor="#$action.getText('main.bgcolor')">
+<font face="Arial,Times New Roman,Times" size=+3>
+$action.getText('main.title')
+</font>
+<hr>
+<p>
+Please select a language:
+<form action="i18n.Language.action" method="post">
+<table>
+<tr><td colspan="2">Languages:</td></tr> 
+#tag( Action "name='i18n.LanguageList'" "id=lang")
+#bodytag( Push "value=#lang" )
+#foreach($key in $languages.keys())
+<tr><td>$languages.get($key)</td><td><input type="radio" name="language" value="$key"></td></tr>
+#end
+#end</table>
+<input type=submit value=Continue >
+</form>
+
+</body>
+</html>
+

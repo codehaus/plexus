@@ -1,0 +1,34 @@
+<project>
+  <parent>
+    <artifactId>plexus-logging</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0.4-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>plexus-log4j-logging</artifactId>
+  <name>Plexus Log4J Logger</name>
+  <version>1.1-alpha-3-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.8</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-logging-api</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-logging-provider-test</artifactId>
+      <version>1.0-alpha-2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-10</version>
+    </dependency>
+  </dependencies>
+</project>

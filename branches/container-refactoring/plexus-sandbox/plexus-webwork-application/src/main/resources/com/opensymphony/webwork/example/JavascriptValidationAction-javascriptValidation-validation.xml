@@ -1,0 +1,43 @@
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0//EN" "http://www.opensymphony.com/xwork/xwork-validator-1.0.dtd">
+<validators>
+    <field name="requiredString">
+        <field-validator type="requiredstring">
+            <message>You must enter a string.</message>
+        </field-validator>
+    </field>
+
+    <field name="intRange">
+        <field-validator type="int">
+            <param name="min">1</param>
+            <param name="max">10</param>
+            <message>You must select a number between 1 and 10</message>
+        </field-validator>
+    </field>
+
+    <field name="email">
+        <field-validator type="email">
+            <message>You must enter a valid email address.</message>
+        </field-validator>
+    </field>
+
+    <field name="url">
+        <field-validator type="url">
+            <message>You must enter a valid URL.</message>
+        </field-validator>
+    </field>
+
+    <field name="date">
+        <field-validator type="date">
+            <param name="min">2/12/1982</param>
+            <param name="max">2/12/2004</param>
+            <message>You must select a date between 2/12/1982 and 2/12/2004</message>
+        </field-validator>
+    </field>
+
+    <field name="bean">
+        <field-validator type="visitor">
+            <message>bean: </message>
+        </field-validator>
+    </field>
+
+</validators>

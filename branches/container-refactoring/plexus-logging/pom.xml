@@ -1,0 +1,19 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>plexus</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0.8-SNAPSHOT</version>
+  </parent>
+  <artifactId>plexus-logging</artifactId>
+  <version>1.0.4-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Plexus Logging Parent</name>
+  <modules>
+    <module>plexus-logging-api</module>
+    <module>plexus-logging-provider-test</module>  
+    <module>plexus-console-logging</module>
+    <module>plexus-jdk-logging</module>
+    <module>plexus-log4j-logging</module>
+  </modules>  
+</project>

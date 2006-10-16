@@ -1,0 +1,136 @@
+@REM ----------------------------------------------------------------------------
+@REM Plexus Start Up Batch script
+@REM
+@REM Required ENV vars:
+@REM JAVA_HOME - location of a JDK home dir
+@REM PLEXUS_HOME - location of Plexus installed home dir
+@REM
+@REM Optional ENV vars
+@REM PLEXUS_BATCH_ECHO - set to 'on' to enable the echoing of the batch commands
+@REM PLEXUS_BATCH_PAUSE - set to 'on' to wait for a key stroke before ending
+@REM PLEXUS_OPTS - parameters passed to the Java VM when running Plexus
+@REM     e.g. to debug Plexus itself, use
+@REM set PLEXUS_OPTS=-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000
+@REM ----------------------------------------------------------------------------
+
+@echo off
+@REM Begin all REM lines with '@' in case PLEXUS_BATCH_ECHO is 'on'
+@REM enable echoing my setting PLEXUS_BATCH_ECHO to 'on'
+@if "%PLEXUS_BATCH_ECHO%" == "on"  echo %PLEXUS_BATCH_ECHO%
+
+@REM Execute a user defined script before this one
+if exist "%HOME%\plexusrc_pre.bat" call "%HOME%\plexusrc_pre.bat"
+
+@REM set local scope for the variables with windows NT shell
+if "%OS%"=="Windows_NT" @setlocal
+
+@REM ==== START VALIDATION ====
+if not "%JAVA_HOME%" == "" goto OkJHome
+
+echo.
+echo ERROR: JAVA_HOME not found in your environment.
+echo Please set the JAVA_HOME variable in your environment to match the
+echo location of your Java installation
+echo.
+goto end
+
+:OkJHome
+if exist "%JAVA_HOME%\bin\java.exe" goto chkMHome
+
+echo.
+echo ERROR: JAVA_HOME is set to an invalid directory.
+echo JAVA_HOME = %JAVA_HOME%
+echo Please set the JAVA_HOME variable in your environment to match the
+echo location of your Java installation
+echo.
+goto end
+
+:chkMHome
+if not "%PLEXUS_HOME%"=="" goto valMHome
+
+if "%OS%"=="Windows_NT" SET PLEXUS_HOME=%~dp0..
+if not "%PLEXUS_HOME%"=="" goto valMHome
+
+echo.
+echo ERROR: PLEXUS_HOME not found in your environment.
+echo Please set the PLEXUS_HOME variable in your environment to match the
+echo location of the PLEXUS installation
+echo.
+goto end
+
+:valMHome
+if exist "%PLEXUS_HOME%\bin\plexus.bat" goto init
+
+echo.
+echo ERROR: PLEXUS_HOME is set to an invalid directory.
+echo PLEXUS_HOME = %PLEXUS_HOME%
+echo Please set the PLEXUS_HOME variable in your environment to match the
+echo location of the PLEXUS installation
+echo.
+goto end
+@REM ==== END VALIDATION ====
+
+:init
+@REM Decide how to startup depending on the version of windows
+
+@REM -- Win98ME
+if NOT "%OS%"=="Windows_NT" goto Win9xArg
+
+@REM -- 4NT shell
+if "%eval[2+2]" == "4" goto 4NTArgs
+
+@REM -- Regular WinNT shell
+set PLEXUS_CMD_LINE_ARGS=%*
+goto endInit
+
+@REM The 4NT Shell from jp software
+:4NTArgs
+set PLEXUS_CMD_LINE_ARGS=%$
+goto endInit
+
+:Win9xArg
+@REM Slurp the command line arguments.  This loop allows for an unlimited number
+@REM of agruments (up to the command line limit, anyway).
+set PLEXUS_CMD_LINE_ARGS=
+:Win9xApp
+if %1a==a goto endInit
+set PLEXUS_CMD_LINE_ARGS=%PLEXUS_CMD_LINE_ARGS% %1
+shift
+goto Win9xApp
+
+@REM Reaching here means variables are defined and arguments have been captured
+:endInit
+if "%PLEXUS_OPTS%"=="" SET PLEXUS_OPTS="-Xmx@{app.max.memory}@"
+SET PLEXUS_JAVA_EXE="%JAVA_HOME%\bin\java.exe"
+SET PLEXUS_CORE="%PLEXUS_HOME%\core"
+SET PLEXUS_TMPDIR="%PLEXUS_HOME%\temp"
+SET PLEXUS_CONF=%PLEXUS_HOME%\conf
+SET CONF="%PLEXUS_CONF%\plexus.xml"
+SET PLEXUS_CMD_LINE_ARGS=%CONF% %PLEXUS_CMD_LINE_ARGS%
+if exist %PLEXUS_TMPDIR% goto run
+mkdir "%PLEXUS_TMPDIR%"
+
+:run
+@REM Start Plexus
+%PLEXUS_JAVA_EXE% %PLEXUS_OPTS% -classpath "%PLEXUS_HOME%\core\boot\classworlds-@{classworlds.version}@.jar" -Dclassworlds.conf="%PLEXUS_HOME%\conf\classworlds.conf" -Dplexus.core=%PLEXUS_CORE% -Dplexus.system.path="%PATH%" -Djava.io.tmpdir=%PLEXUS_TMPDIR% -Dplexus.home="%PLEXUS_HOME%" org.codehaus.classworlds.Launcher %PLEXUS_CMD_LINE_ARGS%
+goto end
+
+:end
+@REM set local scope for the variables with windows NT shell
+if "%OS%"=="Windows_NT" goto endNT
+
+@REM For old DOS remove the set variables from ENV - we assume they were not set
+@REM before we started - at least we don't leave any baggage around
+set PLEXUS_JAVA_EXE=
+SET PLEXUS_CORE=
+set PLEXUS_CMD_LINE_ARGS=
+SET PLEXUS_TMPDIR=
+goto postExec
+
+:endNT
+@endlocal
+
+:postExec
+if exist "%HOME%\plexusrc_post.bat" call "%HOME%\plexusrc_post.bat"
+@REM pause the batch file if PLEXUS_BATCH_PAUSE is set to 'on'
+if "%PLEXUS_BATCH_PAUSE%" == "on" pause

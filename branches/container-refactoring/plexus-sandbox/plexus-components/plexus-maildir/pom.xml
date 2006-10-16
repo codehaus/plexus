@@ -1,0 +1,34 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>plexus-components</artifactId>
+    <groupId>plexus</groupId>
+    <version>1.0</version>
+  </parent>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-maildir</artifactId>
+  <version>2.0-alpha-2</version>
+  <name>Plexus Maildir Component</name>
+  <developers>
+    <developer>
+      <id>edaugherty</id>
+      <name>Eric Daugherty</name>
+      <email>java@ericdaugherty.com</email>
+      <url>http://www.ericdaugherty.com</url>
+      <organization></organization>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Siegfried Goeschl</name>
+      <email>siegfried.goeschl@it20one.at</email>
+    </contributor>
+  </contributors>
+  <dependencies>
+    <dependency>
+      <groupId>javamail</groupId>
+      <artifactId>javamail</artifactId>
+      <version>1.3.1</version>
+    </dependency>
+  </dependencies>
+</project>

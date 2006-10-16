@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>plexus</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0.8</version>
+  </parent>
+  <artifactId>plexus-appserver</artifactId>
+  <version>2.0-alpha-4-SNAPSHOT</version>
+  <name>Plexus Application Server</name>
+  <packaging>pom</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-10</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.3</version>
+    </dependency>
+  </dependencies>
+  <modules>
+    <module>plexus-appserver-host</module>
+    <module>plexus-appserver-maven-plugin</module>
+    <module>plexus-appserver-services</module>
+    <module>plexus-appserver-runtime-builder</module>
+  </modules>
+</project>

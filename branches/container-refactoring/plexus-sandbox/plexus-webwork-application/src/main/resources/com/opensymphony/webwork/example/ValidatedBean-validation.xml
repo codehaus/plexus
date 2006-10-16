@@ -1,0 +1,21 @@
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0//EN" "http://www.opensymphony.com/xwork/xwork-validator-1.0.dtd">
+<validators>
+    <field name="text">
+        <field-validator type="requiredstring">
+            <message key="invalid.text">Empty Text!</message>
+        </field-validator>
+    </field>
+    <field name="date">
+        <field-validator type="date">
+            <param name="min">01/01/1970</param>
+            <message key="invalid.date">Invalid Date!</message>
+        </field-validator>
+    </field>
+    <field name="number">
+        <field-validator type="int">
+            <param name="min">1</param>
+            <param name="max">10</param>
+            <message key="invalid.number">Invalid Number!</message>
+        </field-validator>
+    </field>
+</validators>

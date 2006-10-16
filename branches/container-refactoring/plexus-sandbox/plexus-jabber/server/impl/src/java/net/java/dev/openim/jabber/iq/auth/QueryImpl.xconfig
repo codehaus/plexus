@@ -1,0 +1,6 @@
+<configuration>
+    <map name="jabber:iq:auth:username" key="iq.auth.Username"/>
+    <map name="jabber:iq:auth:password" key="iq.auth.Password"/>
+    <map name="jabber:iq:auth:digest" key="iq.auth.Digest"/>
+    <map name="jabber:iq:auth:resource" key="iq.auth.Resource"/>
+</configuration>

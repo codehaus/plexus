@@ -1,0 +1,112 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.formica.web.FormRendererManager</role>
+      <implementation>org.codehaus.plexus.formica.web.DefaultFormRendererManager</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.formica.web.FormRenderer</role>
+          <field-name>formRenderers</field-name>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.summit.renderer.Renderer</role>
+      <role-hint>form</role-hint>
+      <implementation>org.codehaus.plexus.formica.web.SummitFormRenderer</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.i18n.I18N</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.formica.FormManager</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.formica.web.FormRendererManager</role>
+        </requirement>
+      </requirements>
+    </component>
+
+    <!--
+     |
+     | Form Renderers
+     |
+     | These need to be replaced with Velocity or inert templates.
+     |
+     -->
+
+    <component>
+      <role>org.codehaus.plexus.formica.web.FormRenderer</role>
+      <implementation>org.codehaus.plexus.formica.web.add.AddFormRenderer</implementation>
+      <role-hint>add</role-hint>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.formica.web.FormRenderer</role>
+      <implementation>org.codehaus.plexus.formica.web.summary.SummaryFormRenderer</implementation>
+      <role-hint>summary</role-hint>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.formica.web.FormRenderer</role>
+      <implementation>org.codehaus.plexus.formica.web.update.UpdateFormRenderer</implementation>
+      <role-hint>update</role-hint>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.formica.web.FormRenderer</role>
+      <implementation>org.codehaus.plexus.formica.web.view.ViewFormRenderer</implementation>
+      <role-hint>view</role-hint>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.formica.web.FormRenderer</role>
+      <implementation>org.codehaus.plexus.formica.web.view.DeleteFormRenderer</implementation>
+      <role-hint>delete</role-hint>
+    </component>
+
+    <!--
+     |
+     | Entity actions
+     |
+     -->
+
+    <component>
+      <role>org.codehaus.plexus.action.Action</role>
+      <role-hint>addEntity</role-hint>
+      <implementation>org.codehaus.plexus.formica.action.AddEntity</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.formica.FormManager</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.action.Action</role>
+      <role-hint>updateEntity</role-hint>
+      <implementation>org.codehaus.plexus.formica.action.UpdateEntity</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.formica.FormManager</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.action.Action</role>
+      <role-hint>deleteEntity</role-hint>
+      <implementation>org.codehaus.plexus.formica.action.DeleteEntity</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.formica.FormManager</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.action.Action</role>
+      <role-hint>callMethod</role-hint>
+      <implementation>org.codehaus.plexus.formica.action.CallMethod</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.formica.FormManager</role>
+        </requirement>
+      </requirements>
+    </component>
+
+  </components>
+</component-set>

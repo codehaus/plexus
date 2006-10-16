@@ -1,0 +1,35 @@
+
+<container name="openim">
+
+   <services>
+     <service type="net.java.dev.openim.data.storage.AccountRepositoryHolder">
+       <source>AccountRepositoryHolder</source>
+     </service>
+   </services>
+
+   
+   
+   <!--
+   Block implementation.
+   -->
+   <classloader>
+     <classpath>
+       <repository>
+           <!-- OpenIM -->
+           <resource id="openim:openim-users-manager-api" version="1.3.1"/>
+
+
+           <!-- Avalon -->
+           <resource id="avalon-framework:avalon-framework-api" version="4.2.0"/>
+           <resource id="avalon-framework:avalon-framework-impl" version="4.2.0"/>
+
+        </repository>
+     </classpath>
+   </classloader>
+
+
+   <component name="AccountRepositoryHolder" class="net.java.dev.openim.data.storage.AccountRepositoryHolderImpl" activation="lazy"/>
+   <component name="Account" class="net.java.dev.openim.data.AccountImpl" activation="lazy"/>
+   
+   
+</container>

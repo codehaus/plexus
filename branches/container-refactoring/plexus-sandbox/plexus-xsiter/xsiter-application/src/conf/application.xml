@@ -1,0 +1,41 @@
+<application>
+
+  <load-on-start>
+    <component>
+      <role>org.codehaus.plexus.xsiter.deployer.DeployerApplication</role>
+    </component>
+  </load-on-start>
+
+  <resources>
+    <jar-repository>${plexus.home}/lib</jar-repository>
+  </resources>
+
+  <services>
+    <service>
+      <id>jetty</id>
+      <configuration>
+        <webapps>
+          <webapp>
+            <file>${plexus.home}/lib/xsiter-deployer-webapp.war</file>
+            <context>/</context>
+            <extraction-path>${plexus.home}/webapp</extraction-path>
+            <standardWebappClassloader>true</standardWebappClassloader>
+            <listeners>
+              <http-listener>
+                <port>8080</port>
+              </http-listener>
+              <!--
+                <proxy-http-listener>
+                <port>8090</port>
+                <proxy-host>localhost</proxy-host>
+                <proxy-port>80</proxy-port>
+                </proxy-http-listener>
+              -->
+            </listeners>
+          </webapp>
+        </webapps>
+      </configuration>
+    </service>
+  </services>
+
+</application>

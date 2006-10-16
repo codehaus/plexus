@@ -1,0 +1,43 @@
+#if($cart.items)
+	 <center>
+ 	 <table border="0" cellpadding="0" width="100%" bgcolor='$action.getText('cart.bgcolor')'>
+	 <tr>
+		<td><b>$action.getText('cd.albumLabel')</b></td>
+		<td><b>$action.getText('cd.artistLabel')</b></td>
+		<td><b>$action.getText('cd.countryLabel')</b></td>
+		<td><b>$action.getText('cd.priceLabel')</b></td>
+      <td><b>$action.getText('cd.quantityLabel')</b></td>
+		<td></td>
+	</tr>
+#tag( Action "name='i18n.ComputePrice'" "id=pricer")
+#bodytag( Push "value=#pricer")
+#set($pricer = $stack.peek())
+
+#foreach($item in $cart.items)
+	<tr>
+
+        #set ($price = $pricer.computePrice($item.cd.price)))
+		<td><b>$item.cd.album<webwork:property value="album"/></b></td>
+		<td><b>$item.cd.artist</b></td>
+		<td><b>$item.cd.country</b></td>
+		<td><b>$stack.findValue("getText('price', { $price } )")</b></td>
+
+
+		<td><b>$item.quantity</b></td>
+		<td>
+			<form action="i18n.Delete.action" method="post">
+			  <input type=submit value='$action.getText('cart.delLabel')'>
+			  <input type=hidden name="album" value='$item.cd.album'>
+			</form>
+		</td>
+	</tr>
+#end
+   </table>
+	<p>
+	<p>
+	<form action="i18n.Checkout.action"  method="post">
+        <input type="submit" value="$action.getText('cart.checkoutLabel')">
+   </form>
+  </center>
+#end
+#end

@@ -1,0 +1,92 @@
+
+Get last CVS stable source
+
+cvs -z3 update -P -d -r V1_2_1
+
+
+#############################
+Prerequisite
+#############################
+
+- Get last maven binary version
+http://maven.apache.org/
+(current OpenIM uses rc1)
+
+- Get Merlin 3.2.1 binary version
+http://avalon.apache.org/
+http://www.dpml.net/merlin/distributions/3.2.4/
+Unzip and notice the 2 *plugin*jar file in current folder
+
+#############################
+Setup
+#############################
+
+Set your env variable
+JAVA_HOME to jdk folder
+MAVEN_HOME to Maven folder
+MERLIN_HOME to Merlin folder
+OPENIM_HOME to OpenIM folder
+
+Move $MERLIN_HOME/../*plugin*jar to $MAVEN_HOME/plugins folder
+
+
+If you are behind a firewall (using http proxy) configure merlin 
+$MERLIN_HOME/config/kernel.xml
+For example:
+
+<repository>
+<proxy>
+<host>proxy.dot.com</host>
+<port>8080</port>
+</proxy>
+...
+</repository>
+
+see http://avalon.apache.org/merlin/meta/kernel/repository/index.html
+for more info
+
+
+#############################
+Build
+#############################
+
+Type 'maven build' in openim folder
+
+
+#############################
+Config
+#############################
+
+Edit conf/config.xml 
+and set you hostname (shoud be the name as viewed from outside the network)
+
+
+#############################
+Run
+#############################
+
+Use the script shell: openim.sh
+OR
+(windows not tested)
+merlin.bat %MERLIN_HOME\repository\openim\jars\openim-server-1.1*.jar -config conf\config.xml
+
+
+
+#############################
+Use SSL
+#############################
+
+Go to keystore folder
+ # cd openim/sockets/manager/conf/
+
+Use keytool to generate a keystore file (default password is set to "openim" in impl/conf/block.xml file)
+ # keytool -genkey -keyalg RSA -alias openimRSA -keystore keystore
+
+
+#############################
+Avaible Servers
+#############################
+
+"jabber.open-im.net" is running last tagged cvs snapshot and available for
+testing purpose.
+(contact me if you want your server to be added here)

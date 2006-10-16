@@ -1,0 +1,4 @@
+Perform
+cvs -z3 update -P -d -r V1_2_1rc1
+to get last stable source
+

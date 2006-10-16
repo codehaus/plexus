@@ -1,0 +1,27 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>plexus</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0.8</version>
+  </parent>
+  <artifactId>plexus-component-factories</artifactId>
+  <version>1.0-alpha-8</version>
+  <name>Plexus Component Factories</name>
+  <inceptionYear>2001</inceptionYear>
+  <packaging>pom</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-8</version>
+    </dependency>
+  </dependencies>
+  <modules>
+    <module>plexus-bsh-factory</module>
+    <module>plexus-ant-factory</module>
+    <!-- module>plexus-groovy-factory</module -->
+    <!-- module>plexus-jython-factory</module -->
+    <!--<module>plexus-marmalade-factory</module>-->
+  </modules>
+</project>

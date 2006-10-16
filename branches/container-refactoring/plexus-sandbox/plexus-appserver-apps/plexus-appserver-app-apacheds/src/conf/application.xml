@@ -1,0 +1,13 @@
+<application>
+
+  <load-on-start>
+    <component>
+      <role>org.codehaus.plexus.appserver.apacheds.ApacheDSApplication</role>
+    </component>
+  </load-on-start>
+
+  <resources>
+    <jar-repository>${plexus.home}/lib</jar-repository>
+  </resources>
+
+</application>

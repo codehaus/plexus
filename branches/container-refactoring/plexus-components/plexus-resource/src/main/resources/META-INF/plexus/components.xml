@@ -1,0 +1,26 @@
+<component-set>
+  <components>
+
+    <component>
+      <role>org.codehaus.plexus.resource.ResourceManager</role>
+      <implementation>org.codehaus.plexus.resource.DefaultResourceManager</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.resource.manager.ResourceLoaderManager</role>
+        </requirement>
+      </requirements>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.resource.manager.ResourceLoaderManager</role>
+      <implementation>org.codehaus.plexus.resource.manager.DefaultResourceLoaderManager</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.resource.loader.ResourceLoader</role>
+          <field-name>resourceLoaders</field-name>
+        </requirement>
+      </requirements>
+    </component>
+
+  </components>
+</component-set>

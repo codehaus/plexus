@@ -1,0 +1,8 @@
+<plexus>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.resource.loader.ResourceLoader</role>
+      <implementation>org.codehaus.plexus.resource.loader.classpath.ThreadContextClasspathResourceLoader</implementation>
+    </component>
+  </components>
+</plexus>

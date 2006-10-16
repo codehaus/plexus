@@ -1,0 +1,37 @@
+BODY { font-size : 100%; }
+BODY, TD, TH, DIV, P {
+    font-family : verdana, arial, helvetica, sans-serif;
+    font-size : 9pt;
+}
+H1 {
+    font-size : 14pt;
+    border-bottom : 1px #ccc solid;
+}
+TABLE {
+    border : 1px #ccc solid;
+}
+TH {
+    text-align : left;
+    background-color : #ddd;
+}
+UL {
+    padding-bottom : 0.5em;
+}
+LI {
+    margin-bottom : 0.5em;
+}
+.title {
+    font-weight : bold;
+    font-size : 11pt;
+}
+.msg {
+    color : #f00;
+}
+
+.wwFormTable {}
+.label {font-style:italic; }
+.errorLabel {font-style:italic; color:red; }
+.errorMessage {font-weight:bold; text-align: center; color:red; }
+.checkboxLabel {}
+.checkboxErrorLabel {color:red; }
+.required {color:red;}
