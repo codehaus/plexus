@@ -1,5 +1,5 @@
 
-[This document is in no way defintive or correct. Will evolve as we go!]
+[This document is in no way defintive. Will evolve as we go!]
 
 Webwork n00b notes
 ==================
