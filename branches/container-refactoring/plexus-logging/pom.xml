@@ -13,7 +13,6 @@
     <module>plexus-logging-api</module>
     <module>plexus-logging-common</module>
     <module>plexus-logging-provider-test</module>
-    <module>plexus-console-logging</module>
     <module>plexus-jdk-logging</module>
     <module>plexus-log4j-logging</module>
   </modules>  
