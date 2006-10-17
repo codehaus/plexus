@@ -37,13 +37,13 @@
 </div>
 -->
 <div id="breadcrumbs">
+ <div class="xleft">
+    <c:import url="/WEB-INF/jsp/pss/include/securityLinks.jsp"/>
+  </div>
+  
   <div class="xright">
     <a href="http://www.codehaus.org/">Codehaus</a> |
     <a href="http://plexus.codehaus.org/">Plexus</a> 
-  </div>
-
-  <div class="xleft">
-    <c:import url="/WEB-INF/jsp/pss/include/securityLinks.jsp"/>
   </div>
   
   <div class="clear">
