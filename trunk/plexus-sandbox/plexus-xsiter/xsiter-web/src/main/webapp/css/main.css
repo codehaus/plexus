@@ -1,5 +1,5 @@
 body {
-  background-color: #dddddd;
+  /*background-color: #dddddd;*/
   color: #777777;
 }
 
@@ -21,7 +21,7 @@ body {
   color: #888888;
   text-decoration: none;
 }
-
+/*
 #breadcrumbs {
   background-color: #cccccc;
   margin: 0px;
@@ -37,6 +37,7 @@ body {
 #breadcrumbs .xright {
   float:right;
 }
+*/
 
 .securityLinks {
   background-color: white;
