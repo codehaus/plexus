@@ -351,9 +351,9 @@ public class GraphvizRenderer
 
         switch ( decorator.getOrientation() )
         {
-            case GraphDecorator.WIDE:
+            case GraphDecorator.LEFT_TO_RIGHT:
                 dot.println( "    rankdir=\"LR\"" );
-            case GraphDecorator.TALL:
+            case GraphDecorator.TOP_TO_BOTTOM:
             default:
                 dot.println( "    rankdir=\"TB\"" );
                 break;
