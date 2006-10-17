@@ -34,15 +34,15 @@
     <default-interceptor-ref name="securedStack" />
 
     <global-results>
-      <result name="security-login-success" type="redirect-action">displayWorkspaces</result>
-      <result name="security-login-cancel" type="redirect-action">displayWorkspaces</result>
-      <result name="security-login-locked" type="redirect-action">displayWorkspaces</result>
-      <result name="security-logout" type="redirect-action">displayWorkspaces</result>
-      <result name="security-register-success" type="redirect-action">displayWorkspaces</result>
-      <result name="security-register-cancel" type="redirect-action">displayWorkspaces</result>
-      <result name="security-account-success" type="redirect-action">displayWorkspaces</result>
-      <result name="security-account-cancel" type="redirect-action">displayWorkspaces</result>
-      <result name="security-admin-user-created" type="redirect-action">displayWorkspaces</result>
+      <result name="security-login-success" type="redirect-action">listWorkspaces</result>
+      <result name="security-login-cancel" type="redirect-action">listWorkspaces</result>
+      <result name="security-login-locked" type="redirect-action">listWorkspaces</result>
+      <result name="security-logout" type="redirect-action">listWorkspaces</result>
+      <result name="security-register-success" type="redirect-action">listWorkspaces</result>
+      <result name="security-register-cancel" type="redirect-action">listWorkspaces</result>
+      <result name="security-account-success" type="redirect-action">listWorkspaces</result>
+      <result name="security-account-cancel" type="redirect-action">listWorkspaces</result>
+      <result name="security-admin-user-created" type="redirect-action">listWorkspaces</result>
 
       <result name="security-admin-user-needed" type="redirect-action">
         <param name="actionName">addadmin</param>
@@ -55,10 +55,10 @@
     </global-results>
 
     <action name="pssRedirect" class="pss-redirect" method="redirect">
-      <result type="redirect-action">displayWorkspaces</result>
+      <result type="redirect-action">listWorkspaces</result>
     </action>
 
-    <action name="displayWorkspaces" class="displayWorkspaces" method="listWorkspaces">
+    <action name="listWorkspaces" class="listWorkspaces" method="listWorkspaces">
       <result name="success">/WEB-INF/jsp/mainpage.jsp</result>
     </action>
   </package>

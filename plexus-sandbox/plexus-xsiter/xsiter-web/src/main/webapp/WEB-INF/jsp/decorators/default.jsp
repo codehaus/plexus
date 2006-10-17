@@ -13,32 +13,29 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 <%@ taglib uri="/webwork" prefix="ww" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="pss" uri="/plexusSecuritySystem" %>
 <html>
 <head>
-  <title>Plexus Security Example Webapp ::
-    <decorator:title default="Plexus Security Example Webapp"/>
-  </title>
-
+  <title>Plexus xSiter&nbsp;::&nbsp;<decorator:title default="Management Console"/> </title>
   <style type="text/css" media="all">
     @IMPORT url("/css/main.css");
+    @IMPORT url("/css/xsiter.css");
   </style>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 </head>
 
 <body onload="<decorator:getProperty property="body.onload" />" class="composite">
-
+<!-- // commented
 <div id="banner">
   <ww:url id="main" action="main" namespace="/" includeParams="none"/>
-  <h1><ww:a href="%{main}">Plexus Security Example Webapp</ww:a></h1>
+  <h1><ww:a href="%{main}">Plexus xSiter&nbsp;::&nbsp;<decorator:title default="Management Console"/></ww:a></h1>
   <div class="clear">
   </div>
 </div>
-
+-->
 <div id="breadcrumbs">
   <div class="xright">
     <a href="http://www.codehaus.org/">Codehaus</a> |
@@ -53,6 +50,7 @@
   </div>
 </div>
 
+<!-- // commented
   <p class="note">
     Guest access is :
     <pss:ifAuthorized permission="guest-access">
@@ -62,41 +60,15 @@
       <b>Disabled</b>
     </pss:elseAuthorized>
   </p>
-
-  <p class="note">The gray content is arriving via the /WEB-INF/jsp/decorators/default.jsp managed by sitemesh.<br/>
-  Everything within the white box below is the actual jsp content.</p>
-  <div id="nestedContent">
+   -->
+  
+  <!-- Main Content -->
+  <div id="content">
     <decorator:body/>
   </div>
 
+  <!--  This block only to spit out xWork info -->
   <div id="xworkinfo">
-  
-    <%--
-    <strong>application scope:</strong>
-    <ul>
-    <c:choose>
-      <c:when test="${!empty applicationScope}">
-        <c:forEach var="ss" items="${applicationScope}">
-          <li>
-            <em><c:out value="${ss.key}" /></em> :
-              <c:choose>
-                <c:when test="${ss != null}">
-                  (<c:out value="${ss.value.class.name}" /> ) <br />
-                  &nbsp; &nbsp; &nbsp; <c:out value="${ss.value}" />
-                </c:when>
-                <c:otherwise>
-                  &lt;null&gt;
-                </c:otherwise>
-              </c:choose>
-          </li>
-        </c:forEach>
-      </c:when>
-      <c:otherwise>
-        <li>[ empty ]</li>
-      </c:otherwise>
-    </c:choose>
-    </ul>
-      --%>
   
     <strong>session scope:</strong>
     <ul>
@@ -150,9 +122,11 @@
           </c:choose>
       </li>
     </c:forEach>
-    </ul>
-     
+    </ul>     
+    
   </div>
+  <!-- End of xwork info -->
+  
 
 <div class="clear">
 </div>
