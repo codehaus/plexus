@@ -8,9 +8,9 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
- * @plexus.component role="com.opensymphony.xwork.Action" role-hint="displayWorkspaces"
+ * @plexus.component role="com.opensymphony.xwork.Action" role-hint="listWorkspaces"
  */
-public class DisplayWorkspacesAction
+public class ListWorkspacesAction
     extends PlexusActionSupport
 {
 

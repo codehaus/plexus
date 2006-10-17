@@ -14,4 +14,4 @@
   ~ limitations under the License.
   --%>
 
-<%response.sendRedirect( request.getContextPath() + "/displayWorkspaces.action" );%>
+<%response.sendRedirect( request.getContextPath() + "/listWorkspaces.action" );%>
