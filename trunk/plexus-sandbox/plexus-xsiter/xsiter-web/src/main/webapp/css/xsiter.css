@@ -73,6 +73,10 @@ p {
   float: right;
 }
 
+#breadcrumbs .xleft {
+  float: left;
+}
+
 #content {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
