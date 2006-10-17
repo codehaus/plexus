@@ -91,3 +91,15 @@ p {
   color: #858500;
   margin-top: 5px;
 }
+
+#navigation {
+  float: left;
+  padding: 25px 25px 0px 5px;
+}
+
+#navigation .menuItem {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  color: #637F0E;
+  padding-top: 5px;
+}
