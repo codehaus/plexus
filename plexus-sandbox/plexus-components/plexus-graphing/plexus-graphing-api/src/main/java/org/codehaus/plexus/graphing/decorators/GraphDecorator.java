@@ -27,9 +27,9 @@ import java.awt.Color;
 public class GraphDecorator
 {
     // Orientation
-    public static final int WIDE = 1;
+    public static final int LEFT_TO_RIGHT = 1;
 
-    public static final int TALL = 2;
+    public static final int TOP_TO_BOTTOM = 2;
 
     private Color backgroundColor;
 
