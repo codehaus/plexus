@@ -36,6 +36,8 @@
   </div>
 </div>
 -->
+
+
 <div id="breadcrumbs">
  <div class="xleft">
     <c:import url="/WEB-INF/jsp/pss/include/securityLinks.jsp"/>
@@ -63,7 +65,10 @@
    -->
   
   <!-- Main Content -->
-  <div id="content">
+  <div id="content">  
+    <div id="navigation">
+      <c:import url="/WEB-INF/jsp/includes/navigation.jsp"/>
+    </div>
     <decorator:body/>
   </div>
 
