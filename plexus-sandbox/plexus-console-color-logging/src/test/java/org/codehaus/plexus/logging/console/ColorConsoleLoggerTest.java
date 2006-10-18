@@ -142,8 +142,11 @@ public class ColorConsoleLoggerTest
 
         logger.debug( "Errors " +
             ColorConsoleLogger.setColor( ColorConsoleLogger.COLOR_GREEN ) +
-            "CAN" + ColorConsoleLogger.setColor( ColorConsoleLogger.COLOR_NONE ) +
-            " have color :)" );
+            "CAN " +
+            ColorConsoleLogger.setColor( ColorConsoleLogger.BACKGROUND_WHITE ) +
+            "have color :)" +
+            ColorConsoleLogger.setColor( ColorConsoleLogger.BACKGROUND_DEFAULT ) +
+            ColorConsoleLogger.setColor( ColorConsoleLogger.COLOR_DEFAULT ) );
     }
 
     private String getMessage( PrintStream consoleStream, ByteArrayOutputStream os )

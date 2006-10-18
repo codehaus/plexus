@@ -13,12 +13,29 @@ import org.codehaus.plexus.logging.Logger;
 public final class ColorConsoleLogger
     extends AbstractLogger
 {
-    public static final int COLOR_NONE = 0;
+    public static final int ANSI_RESET = 0;
+
     public static final int COLOR_BLACK = 30;
     public static final int COLOR_RED = 31;
     public static final int COLOR_GREEN = 32;
     public static final int COLOR_YELLOW = 33;
     public static final int COLOR_BLUE = 34;
+    public static final int COLOR_MAGENTA = 35;
+    public static final int COLOR_CYAN = 36;
+    public static final int COLOR_WHITE = 37;
+    public static final int COLOR_DEFAULT = 39;
+
+    public static final int BACKGROUND_BLACK = 40;
+    public static final int BACKGROUND_RED = 41;
+    public static final int BACKGROUND_GREEN = 42;
+    public static final int BACKGROUND_YELLOW = 43;
+    public static final int BACKGROUND_BLUE = 44;
+    public static final int BACKGROUND_MAGENTA = 45;
+    public static final int BACKGROUND_CYAN = 46;
+    public static final int BACKGROUND_WHITE = 47;
+    public static final int BACKGROUND_DEFAULT = 49;
+
+    public static final char ESCAPE = '\u001b';
 
     boolean colorWholeLine = false;
 
@@ -29,7 +46,7 @@ public final class ColorConsoleLogger
 
     public static String setColor(int color)
     {
-        return "\u001b[" + color + "m";
+        return ESCAPE + "[" + color + "m";
     }
 
     public void printColor(int color)
@@ -58,11 +75,11 @@ public final class ColorConsoleLogger
             printColor( COLOR_BLUE );
             System.out.print( "[INFO] " );
             if (!colorWholeLine)
-                printColor( COLOR_NONE );
+                printColor( COLOR_DEFAULT );
 
             System.out.println( message );
             if (colorWholeLine)
-                printColor( COLOR_NONE );
+                printColor( COLOR_DEFAULT );
 
             if ( null != throwable )
             {
@@ -78,11 +95,11 @@ public final class ColorConsoleLogger
             printColor(COLOR_YELLOW);
             System.out.print( "[WARNING] " );
             if (!colorWholeLine)
-                printColor( COLOR_NONE );
+                printColor( COLOR_DEFAULT );
 
             System.out.println( message );
             if (colorWholeLine)
-                printColor( COLOR_NONE );
+                printColor( COLOR_DEFAULT );
 
             if ( null != throwable )
             {
@@ -98,11 +115,11 @@ public final class ColorConsoleLogger
             printColor(COLOR_RED);
             System.out.print( "[ERROR] " );
             if (!colorWholeLine)
-                printColor( COLOR_NONE );
+                printColor( COLOR_DEFAULT );
 
             System.out.println( message );
             if (colorWholeLine)
-                printColor( COLOR_NONE );
+                printColor( COLOR_DEFAULT );
 
             if ( null != throwable )
             {
@@ -118,11 +135,11 @@ public final class ColorConsoleLogger
             printColor(COLOR_RED);
             System.out.print( "[FATAL ERROR] " );
             if (!colorWholeLine)
-                printColor( COLOR_NONE );
+                printColor( COLOR_DEFAULT );
 
             System.out.println( message );
             if (colorWholeLine)
-                printColor( COLOR_NONE );
+                printColor( COLOR_DEFAULT );
 
             if ( null != throwable )
             {
