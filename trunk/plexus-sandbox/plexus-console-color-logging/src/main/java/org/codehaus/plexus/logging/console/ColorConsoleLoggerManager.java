@@ -1,9 +1,6 @@
 package org.codehaus.plexus.logging.console;
 
-import org.codehaus.plexus.logging.AbstractLoggerManager;
 import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.logging.LoggerManager;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 
 import java.util.HashMap;
 import java.util.Map;
