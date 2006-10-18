@@ -18,11 +18,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
-    <artifactId>plexus-security-authentication-providers</artifactId>
+    <artifactId>plexus-security</artifactId>
     <version>1.0-alpha-6-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-authentication-provider-acegi</artifactId>
-  <name>Plexus Security :: Authentication Provider :: Acegi</name>
+  <artifactId>plexus-security-acegi-integration</artifactId>
+  <name>Plexus Security :: Acegi Integration</name>
   <repositories>
    <repository>
       <id>acegi-snapshot</id>
@@ -45,8 +45,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authentication/providers/acegi</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authentication/providers/acegi</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/acegi-integration</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/acegi-integration</developerConnection>
   </scm>
   <build>
     <plugins>

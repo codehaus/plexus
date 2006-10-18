@@ -35,7 +35,6 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authentication/providers</developerConnection>
   </scm>
   <modules>
-    <module>acegi</module>
     <module>open</module>
     <module>memory</module>
     <module>user-manager</module>

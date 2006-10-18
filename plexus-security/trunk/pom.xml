@@ -243,6 +243,7 @@
     <module>authorization</module>
     <module>user-management</module>
     <module>ui</module>
+    <module>acegi-integration</module>
     <module>examples</module>
   </modules>
 </project>
