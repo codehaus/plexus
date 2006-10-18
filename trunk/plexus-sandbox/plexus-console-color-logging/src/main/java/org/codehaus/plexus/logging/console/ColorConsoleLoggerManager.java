@@ -35,6 +35,7 @@ public class ColorConsoleLoggerManager extends ConsoleLoggerManager
      */
     public ColorConsoleLoggerManager()
     {
+        this( "debug" );
     }
 
     /**
