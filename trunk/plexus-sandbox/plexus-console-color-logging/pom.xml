@@ -11,7 +11,7 @@
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-component-api</artifactId>
+      <artifactId>plexus-logging-api</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
