@@ -252,6 +252,11 @@ public class Node
 
     public NodeDecorator getDecorator()
     {
+        // Lazy Init of decorator.
+        if ( decorator == null )
+        {
+            decorator = new NodeDecorator();
+        }
         return decorator;
     }
 

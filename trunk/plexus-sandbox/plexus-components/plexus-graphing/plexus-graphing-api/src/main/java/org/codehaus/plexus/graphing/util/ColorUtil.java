@@ -16,6 +16,8 @@ package org.codehaus.plexus.graphing.util;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.util.StringUtils;
+
 import java.awt.Color;
 
 /**
@@ -26,6 +28,31 @@ import java.awt.Color;
  */
 public class ColorUtil
 {
+    public static Color toColor( String hexcolor )
+    {
+        if ( StringUtils.isEmpty( hexcolor ) )
+        {
+            return null;
+        }
+
+        if ( !hexcolor.startsWith( "#" ) )
+        {
+            return null;
+        }
+
+        hexcolor = hexcolor.substring( 1 );
+
+        try
+        {
+            int colorvalue = Integer.parseInt( hexcolor, 16 );
+            return new Color( colorvalue );
+        }
+        catch ( NumberFormatException e )
+        {
+            return null;
+        }
+    }
+
     public static String toCssDeclaration( Color color )
     {
         if ( color == null )

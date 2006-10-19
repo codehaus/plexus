@@ -33,6 +33,8 @@ public class NodeDecorator
     private Color labelColor;
 
     private String groupName;
+    
+    private int fontSize = 8;
 
     public Color getBackgroundColor()
     {
@@ -72,6 +74,16 @@ public class NodeDecorator
     public void setLabelColor( Color labelColor )
     {
         this.labelColor = labelColor;
+    }
+
+    public int getFontSize()
+    {
+        return fontSize;
+    }
+
+    public void setFontSize( int fontSize )
+    {
+        this.fontSize = fontSize;
     }
 
 }

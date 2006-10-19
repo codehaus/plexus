@@ -31,19 +31,19 @@ public class GraphingException
         super();
     }
 
-    public GraphingException( String arg0, Throwable arg1 )
+    public GraphingException( String message, Throwable cause )
     {
-        super( arg0, arg1 );
+        super( message, cause );
     }
 
-    public GraphingException( String arg0 )
+    public GraphingException( String message )
     {
-        super( arg0 );
+        super( message );
     }
 
-    public GraphingException( Throwable arg0 )
+    public GraphingException( Throwable cause )
     {
-        super( arg0 );
+        super( cause );
     }
 
 }

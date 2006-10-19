@@ -53,6 +53,11 @@ public class Edge
 
     public EdgeDecorator getDecorator()
     {
+        // Lazy init of decorator.
+        if ( decorator == null )
+        {
+            decorator = new EdgeDecorator();
+        }
         return decorator;
     }
 
