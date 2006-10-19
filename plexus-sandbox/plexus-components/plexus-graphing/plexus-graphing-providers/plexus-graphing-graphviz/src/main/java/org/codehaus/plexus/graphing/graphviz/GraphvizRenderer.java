@@ -216,23 +216,32 @@ public class GraphvizRenderer
         {
             dot.println( "    label=\"" + StringUtils.escape( node.getLabel() ) + "\"," );
         }
-        
+
         NodeDecorator decorator = node.getDecorator();
 
-        if(decorator != null)
+        if ( decorator != null )
         {
             if ( decorator.getBorderColor() != null )
             {
-                dot.println( "    color=\"" + ColorUtil.toCssDeclaration( decorator.getBorderColor() ) + "\"" );
+                dot.println( "    color=\"" + ColorUtil.toCssDeclaration( decorator.getBorderColor() ) + "\"," );
             }
             if ( decorator.getBackgroundColor() != null )
             {
                 dot.println( "    style=filled," );
-                dot.println( "    fillcolor=\"" + ColorUtil.toCssDeclaration( decorator.getBackgroundColor() ) + "\"" );
+                dot.println( "    fillcolor=\"" + ColorUtil.toCssDeclaration( decorator.getBackgroundColor() ) + "\"," );
             }
             if ( decorator.getLabelColor() != null )
             {
-                dot.println( "    fontcolor=\"" + ColorUtil.toCssDeclaration( decorator.getLabelColor() ) + "\"" );
+                dot.println( "    fontcolor=\"" + ColorUtil.toCssDeclaration( decorator.getLabelColor() ) + "\"," );
+            }
+            if ( decorator.getFontSize() > 0 )
+            {
+                dot.println( "    fontsize=\"" + decorator.getFontSize() + "\"," );
+            }
+            
+            if ( StringUtils.isNotEmpty( decorator.getGroupName() ) )
+            {
+                dot.println( "    group=\"" + StringUtils.escape( decorator.getGroupName() ) + "\"," );
             }
         }
 
@@ -268,7 +277,10 @@ public class GraphvizRenderer
             {
                 dot.println( "    label=\"" + StringUtils.escape( decorator.getLineLabel() ) + "\"," );
                 dot.println( "    fontname=\"Helvetica\"," );
-                dot.println( "    fontsize=\"8\"," );
+                if ( decorator.getFontSize() > 0 )
+                {
+                    dot.println( "    fontsize=\"" + decorator.getFontSize() + "\"," );
+                }
             }
 
             dot.println( "    arrowtail=" + getLineEndingName( decorator.getLineTail() ) + "," );
@@ -325,7 +337,7 @@ public class GraphvizRenderer
     private void prepareDefaults( Graph graphModel, PrintWriter dot )
     {
         // Graph Defaults.
-        
+
         GraphDecorator decorator = graphModel.getDecorator();
 
         dot.println( "  // Graph Defaults" );
@@ -339,7 +351,7 @@ public class GraphvizRenderer
         if ( StringUtils.isNotEmpty( decorator.getTitle() ) )
         {
             dot.println( "    fontname=\"Helvetica\"," );
-            dot.println( "    fontsize=\"14\"," );
+            dot.println( "    fontsize=\"" + decorator.getFontSize() + "\"," );
             dot.println( "    label=\"" + StringUtils.escape( decorator.getTitle() ) + "\"," );
             dot.println( "    labeljust=\"l\"" );
         }
@@ -353,6 +365,7 @@ public class GraphvizRenderer
         {
             case GraphDecorator.LEFT_TO_RIGHT:
                 dot.println( "    rankdir=\"LR\"" );
+                break;
             case GraphDecorator.TOP_TO_BOTTOM:
             default:
                 dot.println( "    rankdir=\"TB\"" );
@@ -363,20 +376,25 @@ public class GraphvizRenderer
 
         // Node Defaults.
 
+        NodeDecorator nodeDecorator = new NodeDecorator();
+
         dot.println( "" );
         dot.println( "  // Node Defaults." );
         dot.println( "  node [" );
         dot.println( "    fontname=\"Helvetica\"," );
-        dot.println( "    fontsize=\"11\"," );
-        dot.println( "    shape=\"plaintext\"" );
+        dot.println( "    fontsize=\"" + nodeDecorator.getFontSize() + "\"," );
+        dot.println( "    shape=\"box\"" );
         dot.println( "  ];" );
 
         // Edge Defaults.
+
+        EdgeDecorator edgeDecorator = new EdgeDecorator();
 
         dot.println( "" );
         dot.println( "  // Edge Defaults." );
         dot.println( "  edge [" );
         dot.println( "    arrowsize=\"0.8\"" );
+        dot.println( "    fontsize=\"" + edgeDecorator.getFontSize() + "\"," );
         dot.println( "  ];" );
     }
 

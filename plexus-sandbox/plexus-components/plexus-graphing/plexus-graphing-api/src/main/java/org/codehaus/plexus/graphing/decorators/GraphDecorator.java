@@ -38,6 +38,8 @@ public class GraphDecorator
     private int orientation;
 
     private String title;
+    
+    private int fontSize = 11;
 
     public Color getBackgroundColor()
     {
@@ -77,6 +79,16 @@ public class GraphDecorator
     public void setTitleColor( Color titleColor )
     {
         this.titleColor = titleColor;
+    }
+
+    public int getFontSize()
+    {
+        return fontSize;
+    }
+
+    public void setFontSize( int fontSize )
+    {
+        this.fontSize = fontSize;
     }
 
 }
