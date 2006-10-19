@@ -38,6 +38,11 @@ public class Graph
 
     public GraphDecorator getDecorator()
     {
+        // Lazy Init of decorator.
+        if ( decorator == null )
+        {
+            decorator = new GraphDecorator();
+        }
         return decorator;
     }
 

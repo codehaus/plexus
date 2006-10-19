@@ -44,6 +44,8 @@ public class EdgeDecorator
     private String lineLabel;
 
     private int style;
+    
+    private int fontSize = 8;
 
     public Color getLineColor()
     {
@@ -93,6 +95,16 @@ public class EdgeDecorator
     public void setStyle( int style )
     {
         this.style = style;
+    }
+
+    public int getFontSize()
+    {
+        return fontSize;
+    }
+
+    public void setFontSize( int fontSize )
+    {
+        this.fontSize = fontSize;
     }
 
 }
