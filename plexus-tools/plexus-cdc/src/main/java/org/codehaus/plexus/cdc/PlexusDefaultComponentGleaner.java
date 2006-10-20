@@ -221,9 +221,15 @@ public class PlexusDefaultComponentGleaner
     // ----------------------------------------------------------------------
 
     private final static List IGNORED_INTERFACES = Collections.unmodifiableList( Arrays.asList( new String[]{
-        LogEnabled.class.getName(), Initializable.class.getName(), Configurable.class.getName(),
-        Contextualizable.class.getName(), Disposable.class.getName(), Startable.class.getName(),
-        Suspendable.class.getName(), Serviceable.class.getName(),} ) );
+        LogEnabled.class.getName(),
+        Initializable.class.getName(),
+        Configurable.class.getName(),
+        Contextualizable.class.getName(),
+        Disposable.class.getName(),
+        Startable.class.getName(),
+        Suspendable.class.getName(),
+        Serviceable.class.getName(),
+    } ) );
 
     private String findRole( JavaClass javaClass )
     {
@@ -244,7 +250,8 @@ public class PlexusDefaultComponentGleaner
         }
 
         // ----------------------------------------------------------------------
-        //
+        // For each implemented interface, check to see if it's a candiate
+        // interface
         // ----------------------------------------------------------------------
 
         String role = null;
@@ -261,7 +268,28 @@ public class PlexusDefaultComponentGleaner
 
             if ( pkg == null )
             {
-                pkg = fqn.substring( 0, fqn.lastIndexOf( '.' ) );
+                int index = fqn.lastIndexOf( '.' );
+
+                if ( index == -1 )
+                {
+                    // -----------------------------------------------------------------------
+                    // This is a special case which will happen in two cases:
+                    // 1) The component is in the default/root package
+                    // 2) The interface is in another build, typically in an -api package
+                    // while the code beeing gleaned in in the -impl build.
+                    //
+                    // Since it's most likely in another package than in the default package
+                    // prepend the gleaned class' package
+                    // -----------------------------------------------------------------------
+
+                    pkg = javaClass.getPackage();
+
+                    fqn = pkg + "." + fqn;
+                }
+                else
+                {
+                    pkg = fqn.substring( 0, index );
+                }
             }
 
             if ( fqn == null )
@@ -280,7 +308,7 @@ public class PlexusDefaultComponentGleaner
                         "." );
                 }
 
-                role = ifc.getFullyQualifiedName();
+                role = fqn;
             }
         }
 
@@ -346,7 +374,7 @@ public class PlexusDefaultComponentGleaner
             {
                 cr.setRole( role );
             }
-            
+
             cr.setRoleHint( getParameter( parameters, PLEXUS_ROLE_HINT_PARAMETER ) );
 
             cr.setFieldName( field.getName() );

@@ -3,7 +3,7 @@ package org.codehaus.plexus.cdc;
 /*
  * The MIT License
  *
- * Copyright (c) 2004, The Codehaus
+ * Copyright (c) 2004-2006, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -42,15 +42,22 @@ import java.util.Iterator;
 public class ComponentDescriptorCreatorTest
     extends PlexusTestCase
 {
-
     public void testBasic()
         throws Exception
     {
         ComponentSetDescriptor csd = buildCsd( 1 );
 
-        assertEquals( 1, csd.getComponents().size() );
+        assertEquals( 2, csd.getComponents().size() );
 
         ComponentDescriptor cd = (ComponentDescriptor) csd.getComponents().get( 0 );
+
+        assertNull( cd.getRoleHint() );
+
+        assertEquals( "org.codehaus.plexus.cdc.component.Service", cd.getRole() );
+
+        assertEquals( "org.codehaus.plexus.cdc.component.AnotherService", cd.getImplementation() );
+
+        cd = (ComponentDescriptor) csd.getComponents().get( 1 );
 
         assertEquals( "My super component.", cd.getDescription() );
 
@@ -69,13 +76,13 @@ public class ComponentDescriptorCreatorTest
         assertEquals( 2, csd.getComponents().size() );
 
         Iterator it = csd.getComponents().iterator();
-        
+
         int i = 0;
 
         while ( it.hasNext() )
         {
             ComponentDescriptor cd = (ComponentDescriptor) it.next();
-            
+
             if ( cd.getRole().indexOf( "Child" ) >= 0 )
             {
                 ComponentRequirement requirement = (ComponentRequirement) cd.getRequirements().get( 0 );
@@ -84,7 +91,7 @@ public class ComponentDescriptorCreatorTest
                 i++;
             }
         }
-        
+
         assertEquals( "Expected 2 components with role *Child*", 2, i );
     }
 
