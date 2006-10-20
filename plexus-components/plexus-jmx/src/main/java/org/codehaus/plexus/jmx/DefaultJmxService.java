@@ -56,6 +56,11 @@ public class DefaultJmxService
         connectorServerUrls = new ArrayList();
         connectorServerInstances = new ArrayList();
 
+        if ( connectorServers == null )
+        {
+            connectorServers = new ArrayList();
+        }
+        
         for ( Iterator it = connectorServers.iterator(); it.hasNext(); )
         {
             String string = (String) it.next();
