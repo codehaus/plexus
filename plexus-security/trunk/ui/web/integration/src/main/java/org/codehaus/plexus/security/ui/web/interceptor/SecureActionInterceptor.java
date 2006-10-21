@@ -85,14 +85,14 @@ public class SecureActionInterceptor
                 
                 if ( bundle == null )
                 {
-                    getLogger().info( "Null bundle detected." );
+                    getLogger().debug( "Null bundle detected." );
                     
                     return invocation.invoke();
                 }
                 
                 if ( bundle == SecureActionBundle.OPEN )
                 {
-                    getLogger().info( "Bundle.OPEN detected." );
+                    getLogger().debug( "Bundle.OPEN detected." );
                     
                     return invocation.invoke();
                 }
@@ -104,7 +104,7 @@ public class SecureActionInterceptor
                 {
                     if ( session == null || !session.isAuthenticated() )
                     {
-                        getLogger().info( "not authenticated, need to authentication for this action" );
+                        getLogger().debug( "not authenticated, need to authentication for this action" );
 
                         return REQUIRES_AUTHENTICATION;
                     }
@@ -119,7 +119,7 @@ public class SecureActionInterceptor
                     // authz, even if it is just a guest user
                     if ( session == null )
                     {
-                        getLogger().info( "session required for authorization to run" );
+                        getLogger().debug( "session required for authorization to run" );
                         return REQUIRES_AUTHENTICATION;
                     }
 
@@ -127,16 +127,16 @@ public class SecureActionInterceptor
                     {
                         SecureActionBundle.AuthorizationTuple tuple = (SecureActionBundle.AuthorizationTuple) i.next();
 
-                        getLogger().info( "checking authz for " + tuple.toString() );
+                        getLogger().debug( "checking authz for " + tuple.toString() );
 
                         AuthorizationResult authzResult =
                             securitySystem.authorize( session, tuple.getOperation(), tuple.getResource() );
 
-                        getLogger().info( "checking the interceptor authz " + authzResult.isAuthorized() + " for " + tuple.toString() );
+                        getLogger().debug( "checking the interceptor authz " + authzResult.isAuthorized() + " for " + tuple.toString() );
 
                         if ( authzResult.isAuthorized() )
                         {
-                            getLogger().info( session.getUser().getPrincipal() + " is authorized for action " +
+                            getLogger().debug( session.getUser().getPrincipal() + " is authorized for action " +
                                 secureAction.getClass().getName() + " by " + tuple.toString() );
                             return invocation.invoke();
                         }
@@ -148,13 +148,13 @@ public class SecureActionInterceptor
         }
         catch ( SecureActionException se )
         {
-            getLogger().info( "can't generate the SecureActionBundle, deny access: " + se.getMessage() );
+            getLogger().debug( "can't generate the SecureActionBundle, deny access: " + se.getMessage() );
             return REQUIRES_AUTHENTICATION;
         }
 
-        getLogger().info( "not a secure action " + action.getClass().getName() );
+        getLogger().debug( "not a secure action " + action.getClass().getName() );
         String result = invocation.invoke();
-        getLogger().info( "Passing invocation up, result is [" + result + "] on call " + invocation.getAction().getClass().getName() );
+        getLogger().debug( "Passing invocation up, result is [" + result + "] on call " + invocation.getAction().getClass().getName() );
         return result;
     }
 }
