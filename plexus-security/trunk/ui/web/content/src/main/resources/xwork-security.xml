@@ -195,6 +195,10 @@
       <result name="success" type="redirect-action">userlist</result>
     </action>
 
+    <action name="roleSummary" class="pss-roles" method="list">
+       <result name="list">/WEB-INF/jsp/pss/admin/roleSummary.jsp</result>
+    </action>
+
     <action name="roles" class="pss-roles" method="list">
       <result name="list">/WEB-INF/jsp/pss/admin/roleList.jsp</result>
     </action>
