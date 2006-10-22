@@ -23,5 +23,3 @@ http://www.daniweb.com/code/snippet134.html
 - Code snippet coloring text in Console 
 http://www.rgagnon.com/javadetails/java-0469.html
  
-- Programming with curses 
-http://www.oreilly.com/catalog/curses/ 
