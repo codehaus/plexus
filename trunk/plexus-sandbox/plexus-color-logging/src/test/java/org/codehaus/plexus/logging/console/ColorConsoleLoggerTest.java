@@ -140,13 +140,11 @@ public class ColorConsoleLoggerTest
         logger.warn( "not as bad" );
         logger.info( "nothing here" );
 
-        logger.debug( "Errors " +
-            ColorConsoleLogger.setColor( ColorConsoleLogger.COLOR_GREEN ) +
-            "CAN " +
-            ColorConsoleLogger.setColor( ColorConsoleLogger.BACKGROUND_WHITE ) +
-            "have color :)" +
-            ColorConsoleLogger.setColor( ColorConsoleLogger.BACKGROUND_DEFAULT ) +
-            ColorConsoleLogger.setColor( ColorConsoleLogger.COLOR_DEFAULT ) );
+        ANSIColoredString log = new ANSIColoredString();
+        log.append( "Errors " );
+        log.appendColored( ANSIColoredString.COLOR_GREEN, "CAN " );
+        log.append( "have color :)" );
+        logger.debug( log.toString() );
     }
 
     private String getMessage( PrintStream consoleStream, ByteArrayOutputStream os )
