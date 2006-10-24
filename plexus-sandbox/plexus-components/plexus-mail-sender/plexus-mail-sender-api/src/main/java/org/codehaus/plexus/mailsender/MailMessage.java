@@ -266,6 +266,14 @@ public class MailMessage
         return headers;
     }
 
+   /**
+    * Adds the given value to the headers identified by headerName.
+    * RFC 822 provides the rules for what text may constitute a header name and
+    * value.
+    *
+    * @param headerName  the name of the header to append this value to
+    * @param headerValue the value to append
+    */
     public void addHeader( String headerName, String headerValue )
     {
         List header = (List) headers.get( headerName );
@@ -277,6 +285,14 @@ public class MailMessage
         headers.put( headerName, header );
     }
 
+   /**
+    * Sets the named header to the given value.  RFC 822 provides the rules for
+    * what text may constitute a header name and value.
+    *
+    * @param headerName  the named header to set
+    * @param headerValue the value to set
+    * @return the List of values that was previously set under this headerName
+    */
     public List setHeader( String headerName, String headerValue )
     {
         List oldHeader = (List) headers.get( headerName );

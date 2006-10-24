@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.List;
 
 import org.codehaus.plexus.mailsender.AbstractMailSender;
 import org.codehaus.plexus.mailsender.MailMessage;
@@ -100,9 +101,20 @@ public class SimpleMailSender
             {
                 Map.Entry entry = (Map.Entry) it.next();
 
-                String value = (String) entry.getValue();
-
-                message.setHeader( entry.getKey().toString(), StringUtils.clean( value ) );
+                Object value = entry.getValue();
+                if (value instanceof List)
+                {
+                    for (Iterator values = ((List) value).iterator(); values.hasNext();)
+                    {
+                        String content = (String) values.next();
+                        message.setHeader( entry.getKey().toString(), StringUtils.clean( content ) );
+                    }
+                }
+                else
+                {
+                    String content = (String) value;
+                    message.setHeader( entry.getKey().toString(), StringUtils.clean( content ) );
+                }
             }
 
             if ( mail.getSendDate() != null )
