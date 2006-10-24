@@ -82,12 +82,12 @@ public class ColorConsoleLoggerTest
 
         logger.info( "info" );
 
-        assertEquals( logger.color( ANSIColoredString.COLOR_BLUE, "[INFO] " )
+        assertEquals( logger.color( AbstractColorConsoleLogger.COLOR_INFO, "[INFO] " )
             + "info", getMessage( consoleStream, os ) );
 
         logger.info( "info", t );
 
-        assertEquals( logger.color( ANSIColoredString.COLOR_BLUE, "[INFO] " )
+        assertEquals( logger.color( AbstractColorConsoleLogger.COLOR_INFO, "[INFO] " )
             + "info", getMessage( consoleStream, os ) );
 
 /*
