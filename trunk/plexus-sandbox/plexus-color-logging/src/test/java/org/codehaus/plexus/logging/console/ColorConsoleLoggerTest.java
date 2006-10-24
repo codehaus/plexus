@@ -39,8 +39,19 @@ import org.codehaus.plexus.util.StringUtils;
 public class ColorConsoleLoggerTest
     extends TestCase
 {
-    public void testConsoleLogger()
+    ByteArrayOutputStream os;
+    PrintStream consoleStream;
+
+    private void resetStream()
     {
+        os = new ByteArrayOutputStream();
+
+        consoleStream = new PrintStream( os );
+
+        System.setOut( consoleStream );
+    }
+
+    public void testConsoleLogger() {
         AbstractColorConsoleLogger logger = new ANSIColorConsoleLogger( AbstractColorConsoleLogger.LEVEL_DEBUG, "test" );
 
         assertTrue( logger.isDebugEnabled() );
@@ -58,12 +69,7 @@ public class ColorConsoleLoggerTest
 
         Throwable t = new Throwable( "throwable" );
 
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-
-        PrintStream consoleStream = new PrintStream( os );
-
-        System.setOut( consoleStream );
-
+        resetStream();
 
         logger.debug( "debug" );
 
@@ -73,22 +79,25 @@ public class ColorConsoleLoggerTest
 
         assertEquals( "[DEBUG] debug", getMessage( consoleStream, os ) );
 
-
-        os = new ByteArrayOutputStream();
-
-        consoleStream = new PrintStream( os );
-
-        System.setOut( consoleStream );
-
+        resetStream();
         logger.info( "info" );
 
         assertEquals( logger.color( AbstractColorConsoleLogger.COLOR_INFO, "[INFO] " )
             + "info", getMessage( consoleStream, os ) );
 
+        logger.setWholeLineColored( false );
         logger.info( "info", t );
 
         assertEquals( logger.color( AbstractColorConsoleLogger.COLOR_INFO, "[INFO] " )
             + "info", getMessage( consoleStream, os ) );
+
+        resetStream();
+        logger.setWholeLineColored( true );
+        logger.info( "info" );
+
+        assertEquals( logger.color( AbstractColorConsoleLogger.COLOR_INFO, "[INFO] " )
+            + logger.color( AbstractColorConsoleLogger.COLOR_INFO, "info\n" ),
+            getMessage( consoleStream, os ) );
 
 /*
         os = new ByteArrayOutputStream();

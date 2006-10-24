@@ -130,7 +130,7 @@ public abstract class AbstractColorConsoleLogger extends AbstractLogger
         return wholeLineColored;
     }
 
-    public void setWholeLineColored(boolean wholeLineColored)
+    public void setWholeLineColored( boolean wholeLineColored )
     {
         this.wholeLineColored = wholeLineColored;
     }
