@@ -68,11 +68,13 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Iterator;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Vector;
+import java.util.List;
 
 import org.codehaus.plexus.mailsender.MailSender;
+import org.codehaus.plexus.mailsender.MailMessage;
 
 /**
  * A class to help send SMTP email.
@@ -131,7 +133,7 @@ import org.codehaus.plexus.mailsender.MailSender;
  * @version 1.1, 2000/03/19, added angle brackets to address, helps some servers
  * version 1.0, 1999/12/29
  */
-public class SimpleMailMessage
+public class SimpleMailMessage extends MailMessage
 {
     /** default port for SMTP: 25 */
     public static final int DEFAULT_PORT = 25;
@@ -150,9 +152,6 @@ public class SimpleMailMessage
 
     /** list of email addresses to cc to */
     private Vector cc;
-
-    /** headers to send in the mail */
-    private Hashtable headers;
 
     private MailPrintStream out;
 
@@ -197,8 +196,7 @@ public class SimpleMailMessage
         this.host = host;
         to = new Vector();
         cc = new Vector();
-        headers = new Hashtable();
-        setHeader( "X-Mailer", MailSender.class.getName() + " (plexus.codehaus.org)" );
+        addHeader( "X-Mailer", MailSender.class.getName() + " (plexus.codehaus.org)" );
         connect();
         sendHelo();
     }
@@ -268,17 +266,7 @@ public class SimpleMailMessage
      */
     public void setSubject( String subj )
     {
-        headers.put( "Subject", subj );
-    }
-
-    /**
-     * Sets the named header to the given value.  RFC 822 provides the rules for
-     * what text may constitute a header name and value.
-     */
-    public void setHeader( String name, String value )
-    {
-        // Blindly trust the user doesn't set any invalid headers
-        headers.put( name, value );
+        addHeader( "Subject", subj );
     }
 
     /**
@@ -307,7 +295,7 @@ public class SimpleMailMessage
     {
         if ( to.size() > 0 )
         {
-            setHeader( "To", vectorToList( to ) );
+            addHeader( "To", vectorToList( to ) );
         }
     }
 
@@ -315,7 +303,7 @@ public class SimpleMailMessage
     {
         if ( cc.size() > 0 )
         {
-            setHeader( "Cc", vectorToList( cc ) );
+            addHeader( "Cc", vectorToList( cc ) );
         }
     }
 
@@ -337,12 +325,21 @@ public class SimpleMailMessage
     private void flushHeaders() throws IOException
     {
         // XXX Should I care about order here?
-        Enumeration e = headers.keys();
-        while ( e.hasMoreElements() )
+        Iterator i = getHeaders().keySet().iterator();
+        while ( i.hasNext() )
         {
-            String name = (String) e.nextElement();
-            String value = (String) headers.get( name );
-            out.println( name + ": " + value );
+            String name = (String) i.next();
+
+            List headerList = ((List) getHeaders().get( name ));
+            if ( headerList == null )
+                continue;
+
+            Iterator headerValues = headerList.iterator();
+            while ( headerValues.hasNext() )
+            {
+                String value = (String) headerValues.next();
+                out.println( name + ": " + value );
+            }
         }
         out.println();
         out.flush();
