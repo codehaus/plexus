@@ -13,14 +13,26 @@ import java.awt.Color;
 public abstract class AbstractColoredString
 {
     private String internal;
+    private Color defaultColor = null;
 
     public AbstractColoredString()
     {
         this( "" );
     }
 
+    public AbstractColoredString( Color color )
+    {
+        this( color, "" );
+    }
+
     public AbstractColoredString( String start )
     {
+        this( null, start );
+    }
+
+    public AbstractColoredString( Color color, String start )
+    {
+        defaultColor = color;
         internal = start;
     }
 
@@ -31,13 +43,22 @@ public abstract class AbstractColoredString
 
     public void appendColored( Color color, String text )
     {
-      internal = internal.concat( convertColorStart(color) + text +
-          convertColorEnd( color ) );
+        internal = internal.concat( convertColorStart(color) + text +
+            convertColorEnd( color ) );
     }
 
     public String toString()
     {
-        return internal;
+        if ( defaultColor == null )
+            return internal;
+
+        return convertColorStart( defaultColor ) + internal +
+            convertColorEnd( defaultColor );
+    }
+
+    public Color getDefaultColor()
+    {
+        return defaultColor;
     }
 
     public abstract String convertColorStart( Color color );

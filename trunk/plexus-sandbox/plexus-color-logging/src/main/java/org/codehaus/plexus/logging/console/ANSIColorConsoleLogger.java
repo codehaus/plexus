@@ -18,10 +18,7 @@ public class ANSIColorConsoleLogger extends AbstractColorConsoleLogger
 
     public String color( Color color, String text )
     {
-        ANSIColoredString string = new ANSIColoredString();
-        string.appendColored( color, text );
-
-        return string.toString();
+        return new ANSIColoredString( color, text ).toString();
     }
 
 }
