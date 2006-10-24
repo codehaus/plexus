@@ -1,9 +1,0 @@
-<component-set>
-  <components>
-    <component>
-      <role>org.codehaus.plexus.compiler.Compiler</role>
-      <role-hint>groovyc</role-hint>
-      <implementation>org.codehaus.plexus.compiler.groovyc.GroovycCompiler</implementation>
-    </component>
-  </components>
-</component-set>

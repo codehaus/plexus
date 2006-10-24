@@ -1,5 +1,0 @@
-<configuration>
-    <map name="jabber:iq:register:username" key="iq.register.Username"/>
-    <map name="jabber:iq:register:password" key="iq.register.Password"/>
-    <map name="jabber:iq:register:remove" key="iq.register.Remove"/>
-</configuration>
