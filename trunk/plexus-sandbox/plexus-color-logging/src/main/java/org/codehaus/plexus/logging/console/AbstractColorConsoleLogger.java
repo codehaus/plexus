@@ -10,22 +10,20 @@ import org.codehaus.plexus.logging.Logger;
  * @author <a href="mailto:andy@handyande.co.uk">Andrew Williams</a>
  * @version $Id:$
  */
-public final class ColorConsoleLogger
-    extends AbstractLogger
+public abstract class AbstractColorConsoleLogger extends AbstractLogger
 {
-    boolean colorWholeLine = false;
+    boolean wholeLineColored = false;
 
-    public ColorConsoleLogger( int threshold, String name )
+    public AbstractColorConsoleLogger( int threshold, String name )
     {
         super( threshold, name );
     }
 
-    public void printColor(int color, String text)
-    {
-        ANSIColoredString string = new ANSIColoredString();
-        string.appendColored(color, text);
+    public abstract String color( int color, String text );
 
-        System.out.print( string.toString() );
+    public void printColor( int color, String text )
+    {
+        System.out.print( color( color, text ) );
     }
 
     public void debug( String message, Throwable throwable )
@@ -48,7 +46,7 @@ public final class ColorConsoleLogger
         {
             printColor( ANSIColoredString.COLOR_BLUE, "[INFO] " );
 
-            if (colorWholeLine)
+            if (wholeLineColored)
                 printColor( ANSIColoredString.COLOR_BLUE, message + "\n" );
             else
                 System.out.println( message );
@@ -66,7 +64,7 @@ public final class ColorConsoleLogger
         {
             printColor( ANSIColoredString.COLOR_YELLOW, "[WARNING] " );
 
-            if (colorWholeLine)
+            if (wholeLineColored)
                 printColor( ANSIColoredString.COLOR_YELLOW, message + "\n" );
             else
                 System.out.println( message );
@@ -84,7 +82,7 @@ public final class ColorConsoleLogger
         {
             printColor( ANSIColoredString.COLOR_RED, "[ERROR] " );
 
-            if (colorWholeLine)
+            if (wholeLineColored)
                 printColor( ANSIColoredString.COLOR_RED, message + "\n" );
             else
                 System.out.println( message );
@@ -102,7 +100,7 @@ public final class ColorConsoleLogger
         {
             printColor( ANSIColoredString.COLOR_RED, "[FATAL_ERROR] " );
 
-            if (colorWholeLine)
+            if (wholeLineColored)
                 printColor( ANSIColoredString.COLOR_RED, message + "\n" );
             else
                 System.out.println( message );
@@ -117,5 +115,16 @@ public final class ColorConsoleLogger
     public Logger getChildLogger( String name )
     {
         return this;
+    }
+
+
+    public boolean isWholeLineColored()
+    {
+        return wholeLineColored;
+    }
+
+    public void setWholeLineColored(boolean wholeLineColored)
+    {
+        this.wholeLineColored = wholeLineColored;
     }
 }

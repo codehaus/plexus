@@ -39,6 +39,6 @@ public class ColorConsoleLoggerManager extends ConsoleLoggerManager
 
     public Logger createLogger( int threshold, String name )
     {
-        return new ColorConsoleLogger( getThreshold(), name );
+        return new ANSIColorConsoleLogger( getThreshold(), name );
     }
 }
