@@ -8,14 +8,9 @@
   <artifactId>plexus-mail-sender</artifactId>
   <packaging>pom</packaging>
   <name>Plexus Mail Sender</name>
-  <version>1.0-alpha-4</version>
+  <version>1.0-alpha-5-SNAPSHOT</version>
   <modules>
     <module>plexus-mail-sender-api</module>
     <module>plexus-mail-senders</module>
   </modules>
-
-  <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-mail-sender-1.0-alpha-4</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-mail-sender-1.0-alpha-4</developerConnection>
-  </scm>
 </project>
