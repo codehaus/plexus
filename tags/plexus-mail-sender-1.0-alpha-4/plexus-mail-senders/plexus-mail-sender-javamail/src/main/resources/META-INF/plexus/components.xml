@@ -1,0 +1,13 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.mailsender.MailSender</role>
+      <implementation>org.codehaus.plexus.mailsender.javamail.JavamailMailSender</implementation>
+      <configuration>
+        <smtp-host>localhost</smtp-host>
+        <smtp-port>25</smtp-port>
+        <sslProvider>com.sun.net.ssl.internal.ssl.Provider</sslProvider>
+      </configuration>
+    </component>
+  </components>
+</component-set>
