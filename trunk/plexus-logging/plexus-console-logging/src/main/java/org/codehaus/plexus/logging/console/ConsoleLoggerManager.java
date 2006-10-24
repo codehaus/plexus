@@ -137,7 +137,12 @@ public class ConsoleLoggerManager
         return logger.getThreshold();
     }
 
-    public Logger getLoggerForComponent( String role, String roleHint ) 
+    public Logger createLogger(int threshold, String name)
+    {
+        return new ConsoleLogger( threshold, name );
+    }
+
+    public Logger getLoggerForComponent( String role, String roleHint )
     {
         Logger logger;
         String name;
@@ -149,7 +154,7 @@ public class ConsoleLoggerManager
             return logger;
 
         debug( "Creating logger '" + name + "' " + this.hashCode() + "." );
-        logger = new ConsoleLogger( getThreshold(), name );
+        logger = createLogger( getThreshold(), name );
         loggers.put( name, logger );
 
         return logger;
