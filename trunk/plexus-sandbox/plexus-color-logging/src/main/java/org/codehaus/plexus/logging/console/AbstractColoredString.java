@@ -1,7 +1,11 @@
 package org.codehaus.plexus.logging.console;
 
+import java.awt.Color;
+
 /**
- * TODO: Document Me
+ * A generic coloured string. Base support for colouring portions of a string.
+ * Should be overridden to provide the actual implementation of colour
+ * conversion.
  *
  * @author Andrew Williams <andy@handyande.co.uk>
  * @since 22-Oct-2006
@@ -25,7 +29,7 @@ public abstract class AbstractColoredString
         internal = internal.concat( text );
     }
 
-    public void appendColored( int color, String text )
+    public void appendColored( Color color, String text )
     {
       internal = internal.concat( convertColorStart(color) + text +
           convertColorEnd( color ) );
@@ -36,7 +40,7 @@ public abstract class AbstractColoredString
         return internal;
     }
 
-    public abstract String convertColorStart( int color );
+    public abstract String convertColorStart( Color color );
 
-    public abstract String convertColorEnd( int color );
+    public abstract String convertColorEnd( Color color );
 }

@@ -1,5 +1,7 @@
 package org.codehaus.plexus.logging.console;
 
+import java.awt.Color;
+
 /**
  * TODO: Document Me
  *
@@ -14,7 +16,7 @@ public class ANSIColorConsoleLogger extends AbstractColorConsoleLogger
         super( threshold, name );
     }
 
-    public String color(int color, String text)
+    public String color( Color color, String text )
     {
         ANSIColoredString string = new ANSIColoredString();
         string.appendColored( color, text );

@@ -3,6 +3,8 @@ package org.codehaus.plexus.logging.console;
 import org.codehaus.plexus.logging.AbstractLogger;
 import org.codehaus.plexus.logging.Logger;
 
+import java.awt.Color;
+
 /**
  * A color console logger. Extends the default console logger to use ANSI colour
  * codes.
@@ -14,14 +16,19 @@ public abstract class AbstractColorConsoleLogger extends AbstractLogger
 {
     boolean wholeLineColored = false;
 
+    public static Color COLOR_INFO = Color.BLUE;
+    public static Color COLOR_WARNING = Color.YELLOW;
+    public static Color COLOR_ERROR = Color.RED;
+    public static Color COLOR_FATAL = Color.RED;
+
     public AbstractColorConsoleLogger( int threshold, String name )
     {
         super( threshold, name );
     }
 
-    public abstract String color( int color, String text );
+    public abstract String color( Color color, String text );
 
-    public void printColor( int color, String text )
+    public void printColor( Color color, String text )
     {
         System.out.print( color( color, text ) );
     }
@@ -44,10 +51,10 @@ public abstract class AbstractColorConsoleLogger extends AbstractLogger
     {
         if ( isInfoEnabled() )
         {
-            printColor( ANSIColoredString.COLOR_BLUE, "[INFO] " );
+            printColor( COLOR_INFO, "[INFO] " );
 
             if (wholeLineColored)
-                printColor( ANSIColoredString.COLOR_BLUE, message + "\n" );
+                printColor( COLOR_INFO, message + "\n" );
             else
                 System.out.println( message );
 
@@ -62,10 +69,10 @@ public abstract class AbstractColorConsoleLogger extends AbstractLogger
     {
         if ( isWarnEnabled() )
         {
-            printColor( ANSIColoredString.COLOR_YELLOW, "[WARNING] " );
+            printColor( COLOR_WARNING, "[WARNING] " );
 
             if (wholeLineColored)
-                printColor( ANSIColoredString.COLOR_YELLOW, message + "\n" );
+                printColor( COLOR_WARNING, message + "\n" );
             else
                 System.out.println( message );
 
@@ -80,10 +87,10 @@ public abstract class AbstractColorConsoleLogger extends AbstractLogger
     {
         if ( isErrorEnabled() )
         {
-            printColor( ANSIColoredString.COLOR_RED, "[ERROR] " );
+            printColor( COLOR_ERROR, "[ERROR] " );
 
             if (wholeLineColored)
-                printColor( ANSIColoredString.COLOR_RED, message + "\n" );
+                printColor( COLOR_ERROR, message + "\n" );
             else
                 System.out.println( message );
 
@@ -98,10 +105,10 @@ public abstract class AbstractColorConsoleLogger extends AbstractLogger
     {
         if ( isFatalErrorEnabled() )
         {
-            printColor( ANSIColoredString.COLOR_RED, "[FATAL_ERROR] " );
+            printColor( COLOR_FATAL, "[FATAL_ERROR] " );
 
             if (wholeLineColored)
-                printColor( ANSIColoredString.COLOR_RED, message + "\n" );
+                printColor( COLOR_FATAL, message + "\n" );
             else
                 System.out.println( message );
 

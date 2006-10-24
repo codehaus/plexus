@@ -1,5 +1,9 @@
 package org.codehaus.plexus.logging.console;
 
+import java.util.Map;
+import java.util.HashMap;
+import java.awt.Color;
+
 /**
  * TODO: Document Me
  *
@@ -10,35 +14,45 @@ public class ANSIColoredString extends AbstractColoredString
 {
     public static final int ANSI_RESET = 0;
 
-    public static final int COLOR_BLACK = 30;
-    public static final int COLOR_RED = 31;
-    public static final int COLOR_GREEN = 32;
-    public static final int COLOR_YELLOW = 33;
-    public static final int COLOR_BLUE = 34;
-    public static final int COLOR_MAGENTA = 35;
-    public static final int COLOR_CYAN = 36;
-    public static final int COLOR_WHITE = 37;
-    public static final int COLOR_DEFAULT = 39;
+    public static final int ANSI_COLOR_DEFAULT = 39;
 
-    public static final int BACKGROUND_BLACK = 40;
-    public static final int BACKGROUND_RED = 41;
-    public static final int BACKGROUND_GREEN = 42;
-    public static final int BACKGROUND_YELLOW = 43;
-    public static final int BACKGROUND_BLUE = 44;
-    public static final int BACKGROUND_MAGENTA = 45;
-    public static final int BACKGROUND_CYAN = 46;
-    public static final int BACKGROUND_WHITE = 47;
-    public static final int BACKGROUND_DEFAULT = 49;
+    public static final Color COLOR_BLACK = Color.BLACK;
+    public static final Color COLOR_RED = Color.RED;
+    public static final Color COLOR_GREEN = Color.GREEN;
+    public static final Color COLOR_YELLOW = Color.YELLOW;
+    public static final Color COLOR_BLUE = Color.BLUE;
+    public static final Color COLOR_MAGENTA = Color.MAGENTA;
+    public static final Color COLOR_CYAN = Color.CYAN;
+    public static final Color COLOR_WHITE = Color.WHITE;
 
     public static final char ESCAPE = '\u001b';
 
-    public String convertColorStart(int color)
+    private static Map colors;
+    static
     {
-        return ESCAPE + "[" + color + "m";
+        colors = new HashMap();
+        colors.put( COLOR_BLACK, new Integer( 30 ) );
+        colors.put( COLOR_RED, new Integer( 31 ) );
+        colors.put( COLOR_GREEN, new Integer( 32 ) );
+        colors.put( COLOR_YELLOW, new Integer( 33 ) );
+        colors.put( COLOR_BLUE, new Integer( 34 ) );
+        colors.put( COLOR_MAGENTA, new Integer( 35 ) );
+        colors.put( COLOR_CYAN, new Integer( 36 ) );
+        colors.put( COLOR_WHITE, new Integer( 37 ) );
     }
 
-    public String convertColorEnd(int color)
+    public String convertColorStart( Color color )
     {
-        return ESCAPE + "[" + COLOR_DEFAULT + "m";
+        if ( !colors.containsKey( color ) )
+            return "";
+        return ESCAPE + "[" + ( (Integer) colors.get( color ) ).intValue() + "m";
+    }
+
+    public String convertColorEnd( Color color )
+    {
+        if ( !colors.containsKey( color ) )
+            return "";
+
+        return ESCAPE + "[" + ANSI_COLOR_DEFAULT + "m";
     }
 }
