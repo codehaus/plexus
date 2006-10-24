@@ -41,6 +41,26 @@ public class ANSIColoredString extends AbstractColoredString
         colors.put( COLOR_WHITE, new Integer( 37 ) );
     }
 
+    public ANSIColoredString()
+    {
+        super();
+    }
+
+    public ANSIColoredString( Color color )
+    {
+        super( color );
+    }
+
+    public ANSIColoredString( String start )
+    {
+        super( start );
+    }
+
+    public ANSIColoredString( Color color, String start )
+    {
+        super( color, start );
+    }
+
     public String convertColorStart( Color color )
     {
         if ( !colors.containsKey( color ) )
