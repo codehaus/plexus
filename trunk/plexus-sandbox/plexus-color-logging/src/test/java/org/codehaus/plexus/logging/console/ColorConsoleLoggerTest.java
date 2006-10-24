@@ -41,8 +41,8 @@ public class ColorConsoleLoggerTest
 {
     public void testConsoleLogger()
     {
-        ColorConsoleLogger logger = new ColorConsoleLogger( ColorConsoleLogger.LEVEL_DEBUG, "test" );
-/*
+        AbstractColorConsoleLogger logger = new ANSIColorConsoleLogger( AbstractColorConsoleLogger.LEVEL_DEBUG, "test" );
+
         assertTrue( logger.isDebugEnabled() );
 
         assertTrue( logger.isInfoEnabled() );
@@ -82,13 +82,15 @@ public class ColorConsoleLoggerTest
 
         logger.info( "info" );
 
-        assertEquals( "[INFO] info", getMessage( consoleStream, os ) );
+        assertEquals( logger.color( ANSIColoredString.COLOR_BLUE, "[INFO] " )
+            + "info", getMessage( consoleStream, os ) );
 
         logger.info( "info", t );
 
-        assertEquals( "[INFO] info", getMessage( consoleStream, os ) );
+        assertEquals( logger.color( ANSIColoredString.COLOR_BLUE, "[INFO] " )
+            + "info", getMessage( consoleStream, os ) );
 
-
+/*
         os = new ByteArrayOutputStream();
 
         consoleStream = new PrintStream( os );
@@ -132,19 +134,10 @@ public class ColorConsoleLoggerTest
         logger.fatalError( "error", t );
 
         assertEquals( "[FATAL ERROR] error", getMessage( consoleStream, os ) );
-
+*/
         // Set the original print stream.
         System.setOut( original );
-*/
-        logger.error( "ARGH..." );
-        logger.warn( "not as bad" );
-        logger.info( "nothing here" );
 
-        ANSIColoredString log = new ANSIColoredString();
-        log.append( "Errors " );
-        log.appendColored( ANSIColoredString.COLOR_GREEN, "CAN " );
-        log.append( "have color :)" );
-        logger.debug( log.toString() );
     }
 
     private String getMessage( PrintStream consoleStream, ByteArrayOutputStream os )

@@ -30,7 +30,7 @@ import org.codehaus.plexus.logging.Logger;
 
 /**
  * Test for {@link org.codehaus.plexus.logging.console.ColorConsoleLoggerManager} and
- * {@link org.codehaus.plexus.logging.console.ColorConsoleLogger}.
+ * {@link org.codehaus.plexus.logging.console.AbstractColorConsoleLogger}.
  *
  * @author Mark H. Wilkinson
  * @version $Revision: 4466 $
