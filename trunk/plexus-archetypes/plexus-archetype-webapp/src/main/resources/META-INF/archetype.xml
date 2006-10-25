@@ -1,0 +1,17 @@
+<archetype>
+  <id>plexus-archetype-webapp</id>
+  <sources>
+    <source>src/main/java/HelloWorld.java</source>
+    <source>src/main/java/Component.java</source>
+    <source>src/main/java/DefaultComponent.java</source>
+  </sources>
+  <resources>
+    <!-- 
+    <resource>src/main/resources/log4j.properties</resource>
+    -->
+    <resource>src/main/resources/META-INF/plexus/application.xml</resource>
+    <resource>src/main/webapp/index.jsp</resource>
+    <resource>src/main/webapp/WEB-INF/plexus.xml</resource>
+    <resource>src/main/webapp/WEB-INF/web.xml</resource>
+  </resources>
+</archetype>
