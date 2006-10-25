@@ -27,6 +27,7 @@ package org.codehaus.plexus.servlet;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.embed.Embedder;
+import org.codehaus.plexus.embed.EmbedderException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -69,6 +70,10 @@ public class PlexusServletContextListener
         try
         {
             embedder = ServletContextUtils.createContainer( context, configName );
+        }
+        catch ( EmbedderException e )
+        {
+            throw new RuntimeException( "Could not start the Plexus container.", e );
         }
         catch ( IOException e )
         {
