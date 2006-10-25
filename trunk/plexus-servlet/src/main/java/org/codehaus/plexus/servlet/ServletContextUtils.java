@@ -28,6 +28,7 @@ import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.embed.Embedder;
+import org.codehaus.plexus.embed.EmbedderException;
 import org.codehaus.plexus.util.PropertyUtils;
 
 import javax.servlet.ServletContext;
@@ -150,7 +151,7 @@ final class ServletContextUtils
      * @throws RuntimeException If the Plexus container could not be started.
      */
     static Embedder createContainer( ServletContext context, String plexusConf )
-        throws IOException, PlexusContainerException
+        throws IOException, PlexusContainerException, EmbedderException
     {
         Embedder embedder = new Embedder();
 
