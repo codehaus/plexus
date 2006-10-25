@@ -49,6 +49,7 @@
     <module>plexus-jetty-httpd</module>    
     <module>plexus-jetty</module>
     <module>plexus-mimetyper</module>    
+    <module>plexus-mail-sender</module>
     <module>plexus-notification</module>
     <module>plexus-resource</module>
     <module>plexus-security</module>
