@@ -16,8 +16,6 @@ package org.codehaus.plexus.digest;
  * limitations under the License.
  */
 
-import java.security.NoSuchAlgorithmException;
-
 /**
  * Digester that does SHA1 Message Digesting Only.
  *
@@ -27,7 +25,6 @@ public class Sha1Digester
     extends AbstractDigester
 {
     public Sha1Digester()
-        throws NoSuchAlgorithmException
     {
         super( new StreamingSha1Digester() );
     }
