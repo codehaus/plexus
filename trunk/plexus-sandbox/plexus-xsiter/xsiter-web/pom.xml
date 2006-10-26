@@ -67,58 +67,60 @@
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-system</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${plexus.security.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-ui-web</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${plexus.security.version}</version>
       <type>war</type>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-ui-web-integration</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${plexus.security.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-ui-web-taglib</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${plexus.security.version}</version>
     </dependency>
+    <!--  Where is this module now?
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-ui-web-rbac</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${plexus.security.version}</version>
     </dependency>
+    -->
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authentication-provider-user-manager</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${plexus.security.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-user-management-api</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${plexus.security.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-user-management-provider-jdo</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${plexus.security.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${plexus.security.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-api</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${plexus.security.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${plexus.security.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -138,7 +140,7 @@
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-keys-jdo</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${plexus.security.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -297,6 +299,7 @@
   <!-- Properties used by Deployer as well -->
   <properties>
     <maven.version>2.0.4</maven.version>
+    <plexus.security.version>1.0-alpha-6-SNAPSHOT</plexus.security.version>
     <installDir>D:\cargo-installs</installDir>
     <vhosts.configuration>
       <![CDATA[<vhosts>

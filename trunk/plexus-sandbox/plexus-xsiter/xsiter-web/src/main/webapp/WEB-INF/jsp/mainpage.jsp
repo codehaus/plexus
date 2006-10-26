@@ -17,16 +17,6 @@
 <%@ taglib prefix="ww" uri="/webwork" %>
 <%@ taglib prefix="pss" uri="/plexusSecuritySystem" %>
 
-<html>
-
-<head>
-  <title>Plexus XSiter</title>
-  <ww:head />
-</head>
-
-<body>
-
-<h4>This is the example mainpage</h4>
 
 <div id="results">
   <%-- This is where the "Account Created Successfully" type message goes. --%>
@@ -49,17 +39,11 @@
     <ul>
       <li>Go see the <ww:a href="%{userlistUrl}">userlist</ww:a>.</li>
     </ul>
-
-
+    
   </pss:ifAuthorized>
   <pss:elseAuthorized>
     <ww:url id="login" action="login" namespace="/security" />
      Go Ahead <ww:a href="%{login}">Login.</ww:a>
   </pss:elseAuthorized>
-
 </li>
 </ol>
-
-</body>
-
-</html>
