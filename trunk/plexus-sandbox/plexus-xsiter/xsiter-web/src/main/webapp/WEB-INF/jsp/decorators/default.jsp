@@ -21,22 +21,12 @@
 <head>
   <title>Plexus xSiter&nbsp;::&nbsp;<decorator:title default="Management Console"/> </title>
   <style type="text/css" media="all">
-    @IMPORT url("/css/main.css");
     @IMPORT url("/css/xsiter.css");
   </style>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 </head>
 
-<body onload="<decorator:getProperty property="body.onload" />" class="composite">
-<!-- // commented
-<div id="banner">
-  <ww:url id="main" action="main" namespace="/" includeParams="none"/>
-  <h1><ww:a href="%{main}">Plexus xSiter&nbsp;::&nbsp;<decorator:title default="Management Console"/></ww:a></h1>
-  <div class="clear">
-  </div>
-</div>
--->
-
+<body onload="<decorator:getProperty property="body.onload" />">
 
 <div id="breadcrumbs">
  <div class="xleft">
@@ -52,86 +42,75 @@
   </div>
 </div>
 
-<!-- // commented
-  <p class="note">
-    Guest access is :
-    <pss:ifAuthorized permission="guest-access">
-      <b>Enabled</b>
-    </pss:ifAuthorized>
-    <pss:elseAuthorized>
-      <b>Disabled</b>
-    </pss:elseAuthorized>
-  </p>
-   -->
-  
-  <!-- Main Content -->
-  <div id="content">  
-    <div id="navigation">
-      <c:import url="/WEB-INF/jsp/includes/navigation.jsp"/>
-    </div>
-    <decorator:body/>
+<!-- Main Content -->
+<div id="content">  
+  <div id="navigation">
+    <c:import url="/WEB-INF/jsp/includes/navigation.jsp"/>
   </div>
+  <decorator:body/>
+  <div class="clear">
+  </div>
+</div>
 
-  <!--  This block only to spit out xWork info -->
-  <div id="xworkinfo">
+<!--  This block only to spit out xWork info -->
+<div id="xworkinfo">
+
+  <strong>session scope:</strong>
+  <ul>
+  <c:forEach var="ss" items="${sessionScope}">
+    <li>
+      <em><c:out value="${ss.key}" /></em> : 
+        <c:choose>
+          <c:when test="${ss.value != null}">
+            (<c:out value="${ss.value.class.name}" /> ) <br />
+            &nbsp; &nbsp; &nbsp; <c:out value="${ss.value}" />
+          </c:when>
+          <c:otherwise>
+            &lt;null&gt;
+          </c:otherwise>
+        </c:choose>
+    </li>
+  </c:forEach>
+  </ul>
   
-    <strong>session scope:</strong>
-    <ul>
-    <c:forEach var="ss" items="${sessionScope}">
-      <li>
-        <em><c:out value="${ss.key}" /></em> : 
-          <c:choose>
-            <c:when test="${ss.value != null}">
-              (<c:out value="${ss.value.class.name}" /> ) <br />
-              &nbsp; &nbsp; &nbsp; <c:out value="${ss.value}" />
-            </c:when>
-            <c:otherwise>
-              &lt;null&gt;
-            </c:otherwise>
-          </c:choose>
-      </li>
-    </c:forEach>
-    </ul>
-    
-    <strong>request scope:</strong>
-    <ul>
-    <c:forEach var="rs" items="${requestScope}">
-      <li>
-        <em><c:out value="${rs.key}" /></em> : 
-          <c:choose>
-            <c:when test="${rs.value != null}">
-              (<c:out value="${rs.value.class.name}" /> ) <br />
-              &nbsp; &nbsp; &nbsp; <c:out value="${rs.value}" />
-            </c:when>
-            <c:otherwise>
-              &lt;null&gt;
-            </c:otherwise>
-          </c:choose>
-      </li>
-    </c:forEach>
-    </ul>
-    
-    <strong>page scope:</strong>
-    <ul>
-    <c:forEach var="ps" items="${requestScope}">
-      <li>
-        <em><c:out value="${ps.key}" /></em> : 
-          <c:choose>
-            <c:when test="${ps.value != null}">
-              (<c:out value="${ps.value.class.name}" /> ) <br />
-              &nbsp; &nbsp; &nbsp; <c:out value="${ps.value}" />
-            </c:when>
-            <c:otherwise>
-              &lt;null&gt;
-            </c:otherwise>
-          </c:choose>
-      </li>
-    </c:forEach>
-    </ul>     
-    
-  </div>
-  <!-- End of xwork info -->
+  <strong>request scope:</strong>
+  <ul>
+  <c:forEach var="rs" items="${requestScope}">
+    <li>
+      <em><c:out value="${rs.key}" /></em> : 
+        <c:choose>
+          <c:when test="${rs.value != null}">
+            (<c:out value="${rs.value.class.name}" /> ) <br />
+            &nbsp; &nbsp; &nbsp; <c:out value="${rs.value}" />
+          </c:when>
+          <c:otherwise>
+            &lt;null&gt;
+          </c:otherwise>
+        </c:choose>
+    </li>
+  </c:forEach>
+  </ul>
   
+  <strong>page scope:</strong>
+  <ul>
+  <c:forEach var="ps" items="${requestScope}">
+    <li>
+      <em><c:out value="${ps.key}" /></em> : 
+        <c:choose>
+          <c:when test="${ps.value != null}">
+            (<c:out value="${ps.value.class.name}" /> ) <br />
+            &nbsp; &nbsp; &nbsp; <c:out value="${ps.value}" />
+          </c:when>
+          <c:otherwise>
+            &lt;null&gt;
+          </c:otherwise>
+        </c:choose>
+    </li>
+  </c:forEach>
+  </ul>     
+  
+</div>
+<!-- End of xwork info -->
 
 <div class="clear">
 </div>
