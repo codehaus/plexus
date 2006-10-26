@@ -22,7 +22,6 @@ import org.codehaus.plexus.util.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Create a digest for a file.
@@ -35,7 +34,6 @@ public abstract class AbstractDigester
     private final StreamingDigester streamingDigester;
 
     protected AbstractDigester( StreamingDigester streamingDigester )
-        throws NoSuchAlgorithmException
     {
         this.streamingDigester = streamingDigester;
     }

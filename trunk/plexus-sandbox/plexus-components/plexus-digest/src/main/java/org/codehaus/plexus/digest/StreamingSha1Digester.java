@@ -16,8 +16,6 @@ package org.codehaus.plexus.digest;
  * limitations under the License.
  */
 
-import java.security.NoSuchAlgorithmException;
-
 /**
  * An SHA-1 implementation of the streaming digester.
  *
@@ -28,7 +26,6 @@ public class StreamingSha1Digester
     extends AbstractStreamingDigester
 {
     public StreamingSha1Digester()
-        throws NoSuchAlgorithmException
     {
         super( "SHA-1" );
     }

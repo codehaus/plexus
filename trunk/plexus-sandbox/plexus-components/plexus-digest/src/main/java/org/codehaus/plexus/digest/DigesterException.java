@@ -22,6 +22,11 @@ package org.codehaus.plexus.digest;
 public class DigesterException
     extends Exception
 {
+    public DigesterException()
+    {
+        super();
+    }
+
     public DigesterException( String message )
     {
         super( message );
@@ -30,5 +35,10 @@ public class DigesterException
     public DigesterException( String message, Throwable cause )
     {
         super( message, cause );
+    }
+
+    public DigesterException( Throwable cause )
+    {
+        super( cause );
     }
 }

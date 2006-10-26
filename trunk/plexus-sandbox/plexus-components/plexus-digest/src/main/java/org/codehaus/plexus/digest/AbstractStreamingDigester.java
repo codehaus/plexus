@@ -34,9 +34,16 @@ public abstract class AbstractStreamingDigester
     private static final int BUFFER_SIZE = 32768;
 
     protected AbstractStreamingDigester( String algorithm )
-        throws NoSuchAlgorithmException
     {
-        md = MessageDigest.getInstance( algorithm );
+        try
+        {
+            md = MessageDigest.getInstance( algorithm );
+        }
+        catch ( NoSuchAlgorithmException e )
+        {
+            throw new IllegalStateException( "Unable to initialize digest algorithm " + algorithm + " : "
+                + e.getMessage() );
+        }
     }
 
     public String getAlgorithm()
@@ -66,7 +73,7 @@ public abstract class AbstractStreamingDigester
     {
         return Hex.encode( md.digest() );
     }
-    
+
     protected static void update( InputStream is, MessageDigest digest )
         throws DigesterException
     {

@@ -16,8 +16,6 @@ package org.codehaus.plexus.digest;
  * limitations under the License.
  */
 
-import java.security.NoSuchAlgorithmException;
-
 /**
  * An MD5 implementation of the streaming digester.
  *
@@ -28,7 +26,6 @@ public class StreamingMd5Digester
     extends AbstractStreamingDigester
 {
     public StreamingMd5Digester()
-        throws NoSuchAlgorithmException
     {
         super( "MD5" );
     }

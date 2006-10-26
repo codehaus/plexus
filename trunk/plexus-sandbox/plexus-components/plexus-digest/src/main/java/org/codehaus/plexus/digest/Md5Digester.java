@@ -16,8 +16,6 @@ package org.codehaus.plexus.digest;
  * limitations under the License.
  */
 
-import java.security.NoSuchAlgorithmException;
-
 /**
  * Digester that does MD5 Message Digesting Only.
  * 
@@ -27,7 +25,6 @@ public class Md5Digester
     extends AbstractDigester
 {
     public Md5Digester()
-        throws NoSuchAlgorithmException
     {
         super( new StreamingMd5Digester() );
     }
