@@ -43,6 +43,7 @@ import org.codehaus.plexus.util.FileUtils;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -67,6 +68,7 @@ public class JettyPlexusService
 
     /**
      * Set of ports to be activated. The port can only be used once.
+     * @deprecated
      */
     private Set activePorts = new HashSet();
 
@@ -81,6 +83,9 @@ public class JettyPlexusService
 
         ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration,
                                                                                       runtimeProfile.getApplicationServerContainer().getContainerRealm() );
+        
+        runtimeProfile.addServiceConfiguration( this, configuration );
+        
         for ( Iterator it = configuration.getWebapps().iterator(); it.hasNext(); )
         {
             Webapp webapp = (Webapp) it.next();
@@ -221,45 +226,30 @@ public class JettyPlexusService
                 context.getVirtualHost() + "'." );
         }
 
+        HttpListener httpListener;
+        
+        String port;
+        
+        String listener;
+        
         for ( Iterator j = context.getListeners().iterator(); j.hasNext(); )
         {
-            HttpListener httpListener = (HttpListener) j.next();
+            httpListener = (HttpListener) j.next();
+            
+            port = Integer.toString( httpListener.getPort() );
+            
+            listener = ( httpListener.getHost() != null ) ? httpListener.getHost() : "*";
 
-            String port = Integer.toString( httpListener.getPort() );
-
-            if ( activePorts.contains( port ) )
-            {
-                continue;
-            }
-
-            activePorts.add( port );
-
-            String listener;
-
-            if ( httpListener.getHost() != null )
-            {
-                listener = httpListener.getHost() + ":" + httpListener.getPort();
-            }
-            else
-            {
-                listener = "*:" + httpListener.getPort();
-            }
-
+            listener += port;
+            
             if ( httpListener instanceof ProxyHttpListener )
             {
                 ProxyHttpListener proxyHttpListener = (ProxyHttpListener) httpListener;
 
-                String proxyListener;
+                String proxyListener = ( proxyHttpListener.getHost() != null ) ? proxyHttpListener.getHost() : "*";
 
-                if ( proxyHttpListener.getHost() != null )
-                {
-                    proxyListener = proxyHttpListener.getHost() + ":" + proxyHttpListener.getPort();
-                }
-                else
-                {
-                    proxyListener = "*:" + proxyHttpListener.getPort();
-                }
-
+                proxyListener += port;
+                
                 getLogger().info( "Adding HTTP proxy listener on " + listener + " for " + proxyListener );
 
                 servletContainer.addProxyListener( proxyHttpListener );
@@ -273,6 +263,55 @@ public class JettyPlexusService
         }
     }
 
+    public void applicationStop( AppRuntimeProfile runtimeProfile )
+        throws Exception
+    {
+        ServiceConfiguration configuration = (ServiceConfiguration) runtimeProfile.getServiceConfiguration( this );        
+       
+        removeContexts( configuration.getWebContexts() );        
+    
+        removeContexts( configuration.getServletContexts() );
+                
+        Webapp webapp;        
+        
+        for ( Iterator iterator = configuration.getWebapps().iterator(); iterator.hasNext(); )
+        {       
+            webapp = (Webapp) iterator.next();
+            
+            if ( servletContainer.hasContext( webapp.getContext() ) )
+            {    
+                removeListeners( webapp.getListeners() );
+                servletContainer.stopApplication( webapp.getContext() );                
+            }    
+        }            
+    }
+    
+    
+    private void removeContexts( List contexts )
+        throws Exception
+    {
+        WebContext context;
+        
+        for (Iterator iterator = contexts.iterator(); iterator.hasNext(); )
+        {
+            context = (WebContext) iterator.next();            
+            removeListeners( context.getListeners() );    
+        }        
+    }
+
+    private void removeListeners( List listeners )
+        throws Exception
+    {
+        HttpListener listener;
+        
+        for (Iterator listenerIterator = listeners.iterator(); listenerIterator.hasNext(); )
+        {
+            listener = ( HttpListener ) listenerIterator.next();
+            
+            servletContainer.removeListener( listener );
+        }        
+    }
+        
     private File getFile( String path )
     {
         return FileUtils.resolveFile( new File( "." ), path );

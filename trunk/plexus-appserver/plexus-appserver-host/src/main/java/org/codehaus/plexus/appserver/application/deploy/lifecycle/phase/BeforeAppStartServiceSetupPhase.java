@@ -40,11 +40,9 @@ public class BeforeAppStartServiceSetupPhase
                 throw new AppDeploymentException( "Error looking up service for pre app init call.", e );
             }
 
-            context.getAppRuntimeProfile().getServices().add( service );
-
             PlexusConfiguration conf = serviceConfiguration.getChild( "configuration" );
 
-            context.getAppRuntimeProfile().getServiceConfigurations().add( conf );
+            context.getAppRuntimeProfile().addService( id, service, conf );
 
             try
             {
