@@ -16,9 +16,18 @@ Plexus Security Webwork Integration
 
  To get started using the war overlay, you'll need to add some dependencies into your project's pom.  The examples
  below were pulled from plexus-security-example-webapp.  Choosing the right set of dependencies will be one
- of the harder tasks involved here so I'll try and break this up by dependency followed by its associated
- component configuration.
+ of the harder tasks involved here so this should be broken up by dependency followed by its associated
+ component configuration.  Many of these are brought in transitively by the integration dependency, but we'll list
+ thos and their associated configuration as well.
 
+
+* Important Files
+
+ * http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/ui/web/content/src/main/resources/xwork-security.xml?r=HEAD
+
+ * http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/examples/webapp/src/main/resources/META-INF/plexus/application.xml?r=HEAD
+ 
+ * http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/examples/webapp/pom.xml 
 
 * Plexus Security System
 
@@ -162,6 +171,142 @@ Plexus Security Webwork Integration
     </dependency>
 +--------------------------------------+
 
+
+* Plexus Security Policy
+
+ This is definitely the most extensive component in terms of configuration as it allows for a large degree
+ of the flexibility of plexus-security.  You can configure the password rules to be used, the options for Single
+ Sign On and Remember Me functionalities, emailing account verification keys and welcome emails to new accounts.
+
++--------------------------------------+
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-policy</artifactId>
+    </dependency>
+
+
+    <component>
+      <role>org.codehaus.plexus.security.policy.PasswordRule</role>
+      <role-hint>character-length</role-hint>
+      <implementation>org.codehaus.plexus.security.policy.rules.CharacterLengthPasswordRule</implementation>
+      <description>Basic Password Rule, Checks for non-empty passwords that have between {@link #setMinimumCharacters(int)} and {@link #setMaximumCharacters(int)} characters in length.</description>
+      <configuration>
+        <enabled>true</enabled>
+        <minimum-characters>1</minimum-characters>
+        <maximum-characters>8</maximum-characters>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.security.policy.PasswordRule</role>
+      <role-hint>reuse</role-hint>
+      <implementation>org.codehaus.plexus.security.policy.rules.ReusePasswordRule</implementation>
+      <description>Password Rule, Checks supplied password found at {@link User#getPassword()} against the {@link User#getPreviousEncodedPasswords()} to ensure that a password is not reused.</description>
+      <configuration>
+        <enabled>true</enabled>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.security.policy.PasswordRule</role>
+      <role-hint>numerical-count</role-hint>
+      <implementation>org.codehaus.plexus.security.policy.rules.NumericalPasswordRule</implementation>
+      <description>Basic Password Rule, Checks for non-empty passwords that have at least {@link #setMinimumCount(int)} of numerical characters contained within.</description>
+      <configuration>
+        <enabled>true</enabled>
+        <minimum-count>1</minimum-count>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.security.policy.PasswordRule</role>
+      <role-hint>must-have</role-hint>
+      <implementation>org.codehaus.plexus.security.policy.rules.MustHavePasswordRule</implementation>
+      <description>Basic Password Rule, Checks for non-empty Passwords in non guest users.</description>
+      <configuration>
+        <enabled>true</enabled>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.security.policy.PasswordRule</role>
+      <role-hint>alpha-count</role-hint>
+      <implementation>org.codehaus.plexus.security.policy.rules.AlphaPasswordRule</implementation>
+      <description>Basic Password Rule, Checks for non-empty passwords that have at least {@link #setMinimumCount(int)} of alpha characters contained within.</description>
+      <configuration>
+        <enabled>true</enabled>
+        <minimum-count>1</minimum-count>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.security.policy.UserSecurityPolicy</role>
+      <role-hint>default</role-hint>
+      <implementation>org.codehaus.plexus.security.policy.DefaultUserSecurityPolicy</implementation>
+      <description>User Security Policy.</description>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.policy.PasswordEncoder</role>
+          <role-hint>sha256</role-hint>
+          <field-name>passwordEncoder</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.policy.UserValidationSettings</role>
+          <field-name>userValidationSettings</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.policy.RememberMeSettings</role>
+          <field-name>rememberMeSettings</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.policy.SingleSignOnSettings</role>
+          <field-name>singleSignOnSettings</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.policy.PasswordRule</role>
+          <field-name>rules</field-name>
+        </requirement>
+      </requirements>
+      <configuration>
+        <previous-passwords-count>6</previous-passwords-count>
+        <login-attempt-count>3</login-attempt-count>
+        <password-expiration-days>90</password-expiration-days>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.security.policy.UserValidationSettings</role>
+      <implementation>org.codehaus.plexus.security.policy.DefaultUserValidationSettings</implementation>
+      <description>DefaultUserValidationSettings</description>
+      <configuration>
+        <email-validation-required>true</email-validation-required>
+        <!-- This is a timeout for the validation url (in minutes) - 2880 = 48 hours -->
+        <email-validation-timeout>2880</email-validation-timeout>
+        <email-login-path>/security/login!login.action</email-login-path>
+        <email-subject>Unconfigured Subject Line</email-subject>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.security.policy.RememberMeSettings</role>
+      <implementation>org.codehaus.plexus.security.policy.DefaultRememberMeSettings</implementation>
+      <description>DefaultRememberMeSettings</description>
+      <configuration>
+        <enabled>true</enabled>
+        <cookie-timeout>525600</cookie-timeout>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.security.policy.SingleSignOnSettings</role>
+      <implementation>org.codehaus.plexus.security.policy.DefaultSingleSignOnSettings</implementation>
+      <description>DefaultSingleSignOnSettings</description>
+      <configuration>
+        <enabled>true</enabled>
+        <cookie-timeout>30</cookie-timeout>
+      </configuration>
+    </component>
++--------------------------------------+
 
 * Plugin Configuration
 
