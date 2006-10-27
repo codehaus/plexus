@@ -75,14 +75,12 @@ public class HttpBasicAuthentication
             }
 
             authDataSource = new PasswordBasedAuthenticationDataSource( username, password );
+            return super.authenticate( authDataSource );
         }
         else
         {
-            // Default Empty Source.
-            authDataSource = new PasswordBasedAuthenticationDataSource();
+            return null;
         }
-
-        return super.authenticate( authDataSource );
     }
 
     /**

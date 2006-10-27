@@ -105,17 +105,17 @@ public class RbacAuthorizer
             if ( !guest.isLocked() )
             {
                 Set guestPermissions = manager.getAssignedPermissions( guest.getPrincipal().toString() );
-
+                Object guestPrincipal = guest.getPrincipal();
+                
                 for ( Iterator i = guestPermissions.iterator(); i.hasNext(); )
                 {
                     Permission permission = (Permission) i.next();
 
-                    if ( evaluator.evaluate( permission, operation, resource, principal ) )
+                    if ( evaluator.evaluate( permission, operation, resource, guestPrincipal ) )
                     {
                         return new AuthorizationResult( true, permission, null );
                     }
                 }
-
             }
 
             return new AuthorizationResult( false, null, new NotAuthorizedException( "no matching permissions" ) );
