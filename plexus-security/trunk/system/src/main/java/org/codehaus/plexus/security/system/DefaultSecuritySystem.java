@@ -166,13 +166,23 @@ public class DefaultSecuritySystem
 
         if ( session != null )
         {
-            source = new AuthorizationDataSource( session.getUser().getPrincipal(), session
-                .getUser(), permission );
+            // its possible someone could pass in a session with a null user so treat it accordingly
+            if ( session.getUser() != null )
+            {
+                source = new AuthorizationDataSource( session.getUser().getPrincipal(), session
+                    .getUser(), permission );
+            }
+            else
+            {
+                source = new AuthorizationDataSource( null, null, permission );
+            }
         }
         else
         {
             source = new AuthorizationDataSource( null, null, permission );
-        }    return authorizer.isAuthorized( source );
+        }
+
+        return authorizer.isAuthorized( source );
     }
 
     public boolean isAuthorized( SecuritySession session, Object permission )
@@ -189,8 +199,16 @@ public class DefaultSecuritySystem
 
         if ( session != null )
         {
-            source = new AuthorizationDataSource( session.getUser().getPrincipal(), session
-                .getUser(), permission, resource );
+            // its possible someone could pass in a session with a null user so treat it accordingly
+            if ( session.getUser() != null )
+            {
+                source = new AuthorizationDataSource( session.getUser().getPrincipal(), session
+                    .getUser(), permission, resource );
+            }
+            else
+            {
+                source = new AuthorizationDataSource( null, null, permission, resource );
+            }
         }
         else
         {
