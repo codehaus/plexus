@@ -26,7 +26,6 @@ package org.codehaus.plexus.jetty;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.jetty.configuration.ProxyHttpListener;
 import org.codehaus.plexus.jetty.configuration.Webapp;
 import org.codehaus.plexus.jetty.configuration.WebContext;
@@ -45,12 +44,12 @@ import org.mortbay.jetty.servlet.ServletHolder;
 import org.mortbay.jetty.servlet.WebApplicationContext;
 import org.mortbay.jetty.Server;
 
-import java.net.UnknownHostException;
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -64,6 +63,8 @@ public abstract class AbstractJettyServletContainer
     implements ServletContainer, Startable
 {
     protected Server server;
+    
+    protected Map httpListeners = new HashMap();
 
     private Map classLoaders = new HashMap();
 
@@ -90,56 +91,94 @@ public abstract class AbstractJettyServletContainer
 
     public void addListener( org.codehaus.plexus.jetty.configuration.HttpListener listener )
         throws ServletContainerException, UnknownHostException
-    {
-        InetAddrPort addrPort = new InetAddrPort( listener.getHost(), listener.getPort() );
-
-        HttpListener httpListener;
-
-        try
+    {       
+        if ( isPortRegistered( listener ) )
         {
-            httpListener = server.addListener( addrPort );
-
-            httpListener.start();
-
+            updatePort( listener );
         }
-        catch ( IOException e )
+        else
         {
-            throw new ServletContainerException( "Error while adding httpListener on address: '" + listener.getHost() +
-                "', port: " + listener.getPort() + ".", e );
-        }
-        catch ( Exception e )
-        {
-            throw new ServletContainerException( "Error while starting httpListener on address: '" +
-                listener.getHost() + "', port: " + listener.getPort() + ".", e );
-        }
-    }
+            InetAddrPort addrPort = new InetAddrPort( listener.getHost(), listener.getPort() );
+                        
+            try
+            {
+                HttpListener httpListener = server.addListener( addrPort );
 
-    public void removeListener()
-    {
+                registerPort( listener, httpListener );                
+                
+                httpListener.start();            
+            }
+            catch ( IOException e )
+            {
+                throw new ServletContainerException( "Error while adding httpListener on address: '" + listener.getHost() +
+                    "', port: " + listener.getPort() + ".", e );
+            }
+            catch ( Exception e )
+            {
+                throw new ServletContainerException( "Error while starting httpListener on address: '" +
+                    listener.getHost() + "', port: " + listener.getPort() + ".", e );
+            }
+        }                
     }
 
     public void addProxyListener( ProxyHttpListener listener )
         throws ServletContainerException, UnknownHostException
     {
-        InetAddrPort addrPort = new InetAddrPort( listener.getHost(), listener.getPort() );
-
-        JettyProxyHttpListener proxyListener = new JettyProxyHttpListener( addrPort );
-
-        proxyListener.setForcedHost( listener.getProxyHost() + ":" + listener.getProxyPort() );
-
-        server.addListener( proxyListener );
-
-        try
+        if ( isPortRegistered( listener ) )
         {
-            proxyListener.start();
+            updatePort( listener );
         }
-        catch ( Exception e )
+        else
         {
-            throw new ServletContainerException( "Error while starting proxyListener on address: '" +
-                listener.getHost() + "', port: " + listener.getPort() + ".", e );
-        }
+            InetAddrPort addrPort = new InetAddrPort( listener.getHost(), listener.getPort() );
+            
+            JettyProxyHttpListener proxyListener = new JettyProxyHttpListener( addrPort );
+    
+            proxyListener.setForcedHost( listener.getProxyHost() + ":" + listener.getProxyPort() );
+    
+            server.addListener( proxyListener );
+            
+            registerPort( listener, proxyListener );
+    
+            try
+            {
+                proxyListener.start();
+            }
+            catch ( Exception e )
+            {
+                throw new ServletContainerException( "Error while starting proxyListener on address: '" +
+                    listener.getHost() + "', port: " + listener.getPort() + ".", e );
+            }        
+        }            
     }
-
+        
+    public void removeListener( org.codehaus.plexus.jetty.configuration.HttpListener listener )
+        throws ServletContainerException
+    {        
+        String port = Integer.toString( listener.getPort() );
+        
+        if ( httpListeners.containsKey( port ) )
+        {    
+            HttpListenerReference httpListenerReference = ( HttpListenerReference ) httpListeners.get( port );
+                        
+            if ( httpListenerReference.decrement().getRefCount() <= 0 )
+            {    
+                ListenerStopThread stopThread = new ListenerStopThread( server, 
+                                                                        httpListenerReference.getListener() );                                
+                  
+                try
+                {
+                    httpListeners.remove( port );
+                    stopThread.start();
+                }
+                catch ( Exception ex )
+                {
+                    getLogger().info( "Error Stopping Http Listener", ex );
+                }                        
+            }    
+        }                   
+    }
+    
     public void deployWarDirectory( File directory, DefaultPlexusContainer container, Webapp webapp )
         throws ServletContainerException
     {
@@ -450,6 +489,61 @@ public abstract class AbstractJettyServletContainer
             }
 
             server.destroy();
+        }
+    }
+
+    public boolean isPortRegistered( org.codehaus.plexus.jetty.configuration.HttpListener config )
+    {
+        return httpListeners.containsKey( Integer.toString( config.getPort() ) );
+    }    
+    
+    private void registerPort( org.codehaus.plexus.jetty.configuration.HttpListener config, HttpListener httpListener )
+    {
+        String port = Integer.toString( config.getPort() );
+                    
+        if ( !httpListeners.containsKey( port ) )
+        {
+            HttpListenerReference httpRef = new HttpListenerReference( httpListener );
+                        
+            httpListeners.put( port, httpRef );            
+        }        
+    }    
+    
+    private void updatePort( org.codehaus.plexus.jetty.configuration.HttpListener config )
+    {
+        String port = Integer.toString( config.getPort() );
+                     
+        if ( httpListeners.containsKey( port ) )
+        {
+            HttpListenerReference httpRef = (HttpListenerReference) httpListeners.get( port );
+            
+            httpRef.increment();
+        }                
+    }
+    
+    class ListenerStopThread extends Thread
+    {
+        Server server;
+        
+        HttpListener listener;
+        
+        public ListenerStopThread( Server _server, HttpListener _listener )
+        {
+            server = _server;    
+            listener = _listener;
+        }
+        
+        public void run()
+        {
+            try
+            {
+                Thread.sleep( 20000 );
+                server.removeListener( listener );
+            }
+            catch (Exception ex)
+            {
+                //TODO:
+            }
         }
     }
 }

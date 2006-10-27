@@ -183,4 +183,11 @@ public class XmlRpcPlexusService
             xmlRpcServer.addHandler( null, name, port, component );
         }
     }
+    
+    public void applicationStop( AppRuntimeProfile runtimeProfile )
+        throws Exception
+    {
+        
+    }
+    
 }

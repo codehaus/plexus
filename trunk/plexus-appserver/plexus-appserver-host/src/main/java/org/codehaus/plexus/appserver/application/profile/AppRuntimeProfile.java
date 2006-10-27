@@ -26,11 +26,15 @@ package org.codehaus.plexus.appserver.application.profile;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.appserver.service.PlexusService;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -50,9 +54,21 @@ public class AppRuntimeProfile
 
     private PlexusConfiguration applicationConfiguration;
 
+    /**
+     * @deprecated
+     */
     private List services;
 
+    /**
+     * @deprecated
+     */
     private List serviceConfigurations;
+    
+    private Map serviceMap;
+    
+    private Map plexusConfigurationMap;
+    
+    private Map serviceConfigurationMap;
 
     // ----------------------------------------------------------------------
     //
@@ -76,6 +92,12 @@ public class AppRuntimeProfile
         this.services = new ArrayList();
 
         this.serviceConfigurations = new ArrayList();
+        
+        serviceMap = new HashMap();
+        
+        plexusConfigurationMap = new HashMap();
+        
+        serviceConfigurationMap = new HashMap();
     }
 
     public String getName()
@@ -110,11 +132,38 @@ public class AppRuntimeProfile
 
     public List getServices()
     {
-        return services;
+        return Collections.unmodifiableList( new ArrayList( plexusConfigurationMap.keySet() ) );
     }
 
     public List getServiceConfigurations()
     {
-        return serviceConfigurations;
+        return Collections.unmodifiableList( new ArrayList ( plexusConfigurationMap.values() ) );
+    }
+    
+    public PlexusService getService( String id )
+    {
+        return (PlexusService) serviceMap.get( id );
+    }
+    
+    public PlexusConfiguration getPlexusConfiguration( PlexusService service )
+    {
+        return (PlexusConfiguration) plexusConfigurationMap.get( service );
+    }
+    
+    public void addService( String id, PlexusService service, PlexusConfiguration configuration )
+    {
+        plexusConfigurationMap.put( service, configuration );
+        
+        serviceMap.put( id, service );
+    }
+    
+    public Object getServiceConfiguration( PlexusService service )
+    {
+        return serviceConfigurationMap.get( service );
+    }
+    
+    public void addServiceConfiguration( PlexusService service, Object configuration )
+    {
+        serviceConfigurationMap.put( service, configuration );    
     }
 }

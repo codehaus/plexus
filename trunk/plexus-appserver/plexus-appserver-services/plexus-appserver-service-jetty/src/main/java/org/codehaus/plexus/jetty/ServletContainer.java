@@ -48,6 +48,9 @@ public interface ServletContainer
     void addListener( HttpListener listener )
         throws ServletContainerException, UnknownHostException;
 
+    void removeListener( HttpListener listener )
+    throws ServletContainerException;
+        
     void addProxyListener( ProxyHttpListener listener )
         throws ServletContainerException, UnknownHostException;
 
@@ -71,4 +74,6 @@ public interface ServletContainer
         throws ServletContainerException;
 
     void clearContexts();
+    
+    boolean isPortRegistered( HttpListener listener );
 }

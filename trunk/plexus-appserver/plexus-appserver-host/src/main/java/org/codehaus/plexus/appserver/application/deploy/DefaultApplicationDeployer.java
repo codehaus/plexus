@@ -35,6 +35,7 @@ import org.codehaus.plexus.appserver.application.event.ApplicationListener;
 import org.codehaus.plexus.appserver.application.event.DefaultDeployEvent;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.appserver.deploy.AbstractDeployer;
+import org.codehaus.plexus.appserver.service.PlexusService;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
@@ -152,6 +153,15 @@ public class DefaultApplicationDeployer
 
         DefaultPlexusContainer app = profile.getApplicationContainer();
 
+        try
+        {
+            stopApplicationServices( profile );
+        }
+        catch (Exception ex)
+        {
+            getLogger().info( "Can not stop services attached to application ", ex );
+        }
+        
         app.dispose();
 
 /* Don't dispose since the appserver container realm = the app container realm at present
@@ -177,6 +187,21 @@ public class DefaultApplicationDeployer
         }
     }
 
+    private void stopApplicationServices( AppRuntimeProfile runtimeProfile )
+        throws Exception
+    {
+        if (runtimeProfile.getServices() != null)
+        {            
+            PlexusService service;
+            
+            for (Iterator serviceIterator =  runtimeProfile.getServices().iterator(); serviceIterator.hasNext();)
+            {
+                service = (PlexusService) serviceIterator.next();
+                service.applicationStop( runtimeProfile );
+            }
+        }
+    }
+    
     // ----------------------------------------------------------------------
     // Events
     // ----------------------------------------------------------------------

@@ -1,9 +1,9 @@
-package org.codehaus.plexus.appserver.service;
+package org.codehaus.plexus.jetty;
 
 /*
  * The MIT License
  *
- * Copyright (c) 2004, The Codehaus
+ * Copyright (c) 2006, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,23 +24,40 @@ package org.codehaus.plexus.appserver.service;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.mortbay.http.HttpListener;
 
-/**
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
- */
-public interface PlexusService 
+public class HttpListenerReference
 {
-    String ROLE = PlexusService.class.getName();
-
-    void beforeApplicationStart( AppRuntimeProfile appRuntimeProfile, PlexusConfiguration serviceConfiguration )
-        throws Exception;
-
-    void afterApplicationStart( AppRuntimeProfile appRuntimeProfile, PlexusConfiguration serviceConfiguration )
-        throws Exception;
+    private HttpListener listener;
     
-    void applicationStop( AppRuntimeProfile runtimeProfile )
-        throws Exception;
+    private int references = 1;
+    
+    public HttpListenerReference( HttpListener _listener)
+    {
+        listener = _listener;
+    }
+    
+    synchronized public HttpListenerReference increment()
+    {
+        references++;
+        
+        return this;
+    }
+    
+    synchronized public HttpListenerReference decrement()
+    {
+        references--;
+        
+        return this;
+    }
+    
+    synchronized public int getRefCount()
+    {
+        return references;
+    }
+    
+    public HttpListener getListener()
+    {
+        return listener;
+    }
 }
