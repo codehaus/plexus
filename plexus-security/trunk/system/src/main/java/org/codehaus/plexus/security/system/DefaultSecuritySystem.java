@@ -162,55 +162,46 @@ public class DefaultSecuritySystem
     public AuthorizationResult authorize( SecuritySession session, Object permission )
         throws AuthorizationException
     {
-        AuthorizationDataSource source;
+        AuthorizationDataSource source = null;
 
         if ( session != null )
         {
-            // its possible someone could pass in a session with a null user so treat it accordingly
-            if ( session.getUser() != null )
+            User user = session.getUser();
+            if ( user != null )
             {
-                source = new AuthorizationDataSource( session.getUser().getPrincipal(), session
-                    .getUser(), permission );
-            }
-            else
-            {
-                source = new AuthorizationDataSource( null, null, permission );
+                source = new AuthorizationDataSource( user.getPrincipal(), user, permission );
             }
         }
-        else
+
+        if ( source == null )
         {
             source = new AuthorizationDataSource( null, null, permission );
         }
-
+        
         return authorizer.isAuthorized( source );
     }
 
     public boolean isAuthorized( SecuritySession session, Object permission )
         throws AuthorizationException
     {
-
         return authorize( session, permission ).isAuthorized();
     }
 
     public AuthorizationResult authorize( SecuritySession session, Object permission, Object resource )
         throws AuthorizationException
     {
-        AuthorizationDataSource source;
+        AuthorizationDataSource source = null;
 
         if ( session != null )
         {
-            // its possible someone could pass in a session with a null user so treat it accordingly
-            if ( session.getUser() != null )
+            User user = session.getUser();
+            if ( user != null )
             {
-                source = new AuthorizationDataSource( session.getUser().getPrincipal(), session
-                    .getUser(), permission, resource );
-            }
-            else
-            {
-                source = new AuthorizationDataSource( null, null, permission, resource );
+                source = new AuthorizationDataSource( user.getPrincipal(), user, permission, resource );
             }
         }
-        else
+
+        if ( source == null )
         {
             source = new AuthorizationDataSource( null, null, permission, resource );
         }
