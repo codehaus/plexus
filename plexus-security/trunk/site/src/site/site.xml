@@ -34,8 +34,14 @@
 
     <menu name="Overview">
       <item name="Introduction" href="rbac-introduction.html"/>
-      <item name="How to Use" href="howto.html"/>
+      <item name="Webapp Integration" href="integration.html"/>
     </menu>
+    
+    <menu name="Integration">
+      <item name="General" href="integration/general.html"/>
+      <item name="Webwork" href="integration/webwork.html"/>
+    </menu>
+    
     ${reports}
   </body>
 </project>
