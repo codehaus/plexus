@@ -33,13 +33,19 @@
     </links>
 
     <menu name="Overview">
-      <item name="Introduction" href="rbac-introduction.html"/>
+      <item name="Introduction" href="introduction.html"/>
       <item name="Webapp Integration" href="integration.html"/>
     </menu>
     
     <menu name="Integration">
       <item name="General" href="integration/general.html"/>
       <item name="Webwork" href="integration/webwork.html"/>
+      <item name="Plugins" href="integration/plugins.html"/>
+    </menu>
+
+    <menu name="RBAC">
+      <item name="Introduction" href="rbac/introduction.html"/>
+      <item name="Profiles" href="rbac/profiles.html"/>
     </menu>
     
     ${reports}
