@@ -15,5 +15,6 @@
     <module>plexus-archetype-component-simple</module>
     <module>plexus-archetype-runtime</module>
     <module>plexus-archetype-webwork-application</module>
+    <module>plexus-archetype-webapp</module>
   </modules>
 </project>
