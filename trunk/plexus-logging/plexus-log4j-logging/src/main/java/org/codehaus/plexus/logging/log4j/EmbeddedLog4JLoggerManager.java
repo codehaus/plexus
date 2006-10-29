@@ -34,6 +34,10 @@ public class EmbeddedLog4JLoggerManager
     {
     }
 
+    public void setThresholds( int threshold )
+    {
+    }
+
     public int getThreshold()
     {
         return 0;
