@@ -92,4 +92,9 @@ class EmbeddedLog4JLogger
     {
         return 0;
     }
+
+    public void setThreshold( int threshold )
+    {
+       throw new UnsupportedOperationException( );
+    }
 }
