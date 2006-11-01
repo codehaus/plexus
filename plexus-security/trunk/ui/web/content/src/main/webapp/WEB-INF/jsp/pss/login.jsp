@@ -33,7 +33,7 @@
   <ww:textfield label="Username" name="username" size="30" required="true" />
   <ww:password  label="Password" name="password" size="20" required="true" />
   <ww:checkbox label="Remember Me" name="rememberMe" value="false" />
-  <ww:submit type="submit" value="Login" name="submitButton" />
+  <ww:submit type="button" value="Login" name="submitButton" />
   <ww:submit type="button" value="Cancel" name="cancelButton" />
 </ww:form>
 
