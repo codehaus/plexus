@@ -32,7 +32,6 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.io.IOException;
 import java.security.Provider;
 import java.security.Security;
 import java.util.Date;
@@ -48,6 +47,11 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+/**
+ * JavamailMailSender 
+ *
+ * @version $Id$
+ */
 public class JavamailMailSender
 	extends AbstractMailSender
     implements Initializable
@@ -216,5 +220,25 @@ public class JavamailMailSender
         {
             throw new MailSenderException( "Error while sending mail.", e );
         }
+    }
+
+    public String getSslProvider()
+    {
+        return sslProvider;
+    }
+
+    public void setSslProvider( String sslProvider )
+    {
+        this.sslProvider = sslProvider;
+    }
+
+    public Properties getUserProperties()
+    {
+        return userProperties;
+    }
+
+    public void setUserProperties( Properties userProperties )
+    {
+        this.userProperties = userProperties;
     }
 }

@@ -34,6 +34,26 @@ import java.util.Map;
 public interface MailSender
 {
     String ROLE = MailSender.class.getName();
+    
+    public String getSmtpHost();
+
+    public void setSmtpHost( String host );
+
+    public int getSmtpPort();
+
+    public void setSmtpPort( int port );
+
+    public String getUsername();
+
+    public void setUsername( String username );
+
+    public String getPassword();
+
+    public void setPassword( String password );
+
+    public boolean isSslMode();
+
+    public void setSslMode( boolean sslMode );
 
     /**
      * Send a mail.
