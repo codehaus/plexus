@@ -139,4 +139,24 @@ public class DefaultConfigurableJdoFactory
             }
         }
     }
+
+    public String getDriverName()
+    {
+        return driverName;
+    }
+
+    public String getPassword()
+    {
+        return password;
+    }
+
+    public String getUrl()
+    {
+        return url;
+    }
+
+    public String getUserName()
+    {
+        return userName;
+    }
 }
