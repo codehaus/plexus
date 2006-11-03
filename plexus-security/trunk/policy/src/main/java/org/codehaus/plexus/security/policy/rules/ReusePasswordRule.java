@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.policy.rules;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.security.policy.PasswordRule;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
@@ -35,7 +37,7 @@ import java.util.Iterator;
  */
 public class ReusePasswordRule
     extends AbstractPasswordRule
-    implements PasswordRule
+    implements PasswordRule, Initializable
 {
     private UserSecurityPolicy securityPolicy;
 
@@ -98,5 +100,11 @@ public class ReusePasswordRule
             violations.addViolation( "user.password.violation.reuse",
                                      new Object[] { new Integer( getPreviousPasswordCount() ) } ); //$NON-NLS-1$
         }
+    }
+
+    public void initialize()
+        throws InitializationException
+    {
+        super.configure( config, PASSWORD_RULE_CONFIGKEY + ".reuse" );
     }
 }

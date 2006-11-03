@@ -27,27 +27,10 @@ package org.codehaus.plexus.security.policy;
 public class DefaultUserValidationSettings
     implements UserValidationSettings
 {
-    /**
-     * @plexus.configuration default-value="true"
-     */
     private boolean emailValidationRequired;
 
-    /**
-     * Timeout (in minutes) for the key generated for an email validation to remain valid.
-     * Default value is equivalent to 48 hours
-     * 
-     * @plexus.configuration default-value="2880"
-     */
     private int emailValidationTimeout;
 
-    /**
-     * @plexus.configuration default-value="/security/login!login.action"
-     */
-    private String emailLoginPath;
-    
-    /**
-     * @plexus.configuration default-value="Unconfigured Subject Line"
-     */
     private String emailSubject;
     
     public boolean isEmailValidationRequired()
@@ -58,11 +41,6 @@ public class DefaultUserValidationSettings
     public int getEmailValidationTimeout()
     {
         return emailValidationTimeout;
-    }
-
-    public String getEmailLoginPath()
-    {
-        return emailLoginPath;
     }
 
     public String getEmailSubject()

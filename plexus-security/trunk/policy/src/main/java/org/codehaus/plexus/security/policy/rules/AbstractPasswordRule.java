@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.policy.rules;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.security.configuration.UserConfiguration;
 import org.codehaus.plexus.security.policy.PasswordRule;
 
 /**
@@ -25,15 +27,24 @@ import org.codehaus.plexus.security.policy.PasswordRule;
  * @version $Id$
  */
 public abstract class AbstractPasswordRule
-    implements PasswordRule
+    implements PasswordRule, Initializable
 {
+    protected static final String PASSWORD_RULE_CONFIGKEY = "security.policy.password.rule";
+
+    protected boolean enabled = true;
+
     /**
-     * @plexus.configuration default-value="true"
+     * @plexus.requirement
      */
-    private boolean enabled = true;
+    protected UserConfiguration config;
 
     public boolean isEnabled()
     {
         return enabled;
+    }
+
+    protected void configure( UserConfiguration config, String configPrefix )
+    {
+        enabled = config.getBoolean( configPrefix + ".enabled", true );
     }
 }

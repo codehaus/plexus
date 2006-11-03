@@ -24,6 +24,7 @@ import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.security.configuration.UserConfiguration;
 import org.codehaus.plexus.security.policy.rules.MustHavePasswordRule;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.util.StringUtils;
@@ -46,25 +47,21 @@ public class DefaultUserSecurityPolicy
     implements UserSecurityPolicy, Initializable, Contextualizable
 {
     private static final String ENABLEMENT_KEY = DefaultUserSecurityPolicy.ROLE + ":ENABLED";
+    
+    /**
+     * @plexus.requirement
+     */
+    private UserConfiguration config;
 
     /**
      * @plexus.requirement role-hint="sha256"
      */
     private PasswordEncoder passwordEncoder;
     
-    /**
-     * @plexus.configuration default-value="6"
-     */
     private int previousPasswordsCount;
 
-    /**
-     * @plexus.configuration default-value="3"
-     */
     private int loginAttemptCount;
 
-    /**
-     * @plexus.configuration default-value="90"
-     */
     private int passwordExpirationDays;
     
     /**
@@ -275,6 +272,11 @@ public class DefaultUserSecurityPolicy
     public void initialize()
         throws InitializationException
     {
+        final String CONFIG_PREFIX = "security.policy";
+        this.previousPasswordsCount = config.getInt( CONFIG_PREFIX + ".password.previous.count", 6 );
+        this.loginAttemptCount = config.getInt( CONFIG_PREFIX + ".allowed.login.attempt", 3 );
+        this.passwordExpirationDays = config.getInt( CONFIG_PREFIX + ".password.expiration.days", 90 );
+        
         rules = new ArrayList();
 
         try

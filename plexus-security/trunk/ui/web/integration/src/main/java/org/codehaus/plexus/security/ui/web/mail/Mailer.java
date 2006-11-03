@@ -22,11 +22,11 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.mailsender.MailMessage;
 import org.codehaus.plexus.mailsender.MailSender;
 import org.codehaus.plexus.mailsender.MailSenderException;
+import org.codehaus.plexus.mailsender.javamail.JavamailMailSender;
+import org.codehaus.plexus.security.configuration.UserConfiguration;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.policy.UserValidationSettings;
-import org.codehaus.plexus.security.system.ApplicationDetails;
-import org.codehaus.plexus.security.system.EmailSettings;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.velocity.VelocityComponent;
@@ -49,6 +49,11 @@ public class Mailer
     /**
      * @plexus.requirement
      */
+    private UserConfiguration config;
+
+    /**
+     * @plexus.requirement
+     */
     private VelocityComponent velocity;
 
     /**
@@ -60,35 +65,33 @@ public class Mailer
      * @plexus.requirement
      */
     private SecuritySystem securitySystem;
-    
+
     public void sendAccountValidationEmail( Collection recipients, AuthenticationKey authkey )
     {
         VelocityContext context = new VelocityContext();
-        ApplicationDetails appdetails = securitySystem.getApplicationDetails();
         UserSecurityPolicy policy = securitySystem.getPolicy();
         UserValidationSettings validation = policy.getUserValidationSettings();
-        EmailSettings email = securitySystem.getEmailSettings();
 
-        context.put( "applicationName", appdetails.getApplicationName() );
-
-        String loginUrl = appdetails.getApplicationUrl() + validation.getEmailLoginPath();
+        context.put( "applicationName", config.getString("application.name", "Unconfigured Application") );
         
-        context.put( "loginUrl", loginUrl );
+        String appUrl = config.getString( "application.url", "http://localhost/unconfigured/application/url" );
 
-        String feedback = email.getFeedback();
-        
-        if(feedback.startsWith( "/" ))
+        context.put( "applicationUrl", appUrl );
+
+        String feedback = config.getString( "email.feedback.path", "/feedback.action" );
+
+        if ( feedback.startsWith( "/" ) )
         {
-            feedback = appdetails.getApplicationUrl() + feedback;
+            feedback = appUrl + feedback;
         }
-        
+
         context.put( "feedback", feedback );
 
         context.put( "authkey", authkey.getKey() );
-        
+
         context.put( "accountId", authkey.getForPrincipal() );
 
-        SimpleDateFormat dateformatter = new SimpleDateFormat( appdetails.getTimestampFormat() );
+        SimpleDateFormat dateformatter = new SimpleDateFormat( config.getString("applicaiton.timestamp", "EEE, d MMM yyyy HH:mm:ss Z") );
 
         context.put( "requestedOn", dateformatter.format( authkey.getDateCreated() ) );
 
@@ -103,35 +106,33 @@ public class Mailer
 
         sendVelocityEmail( "newAccountValidationEmail", context, recipients, validation.getEmailSubject() );
     }
-    
+
     public void sendPasswordResetEmail( Collection recipients, AuthenticationKey authkey )
     {
         VelocityContext context = new VelocityContext();
-        ApplicationDetails appdetails = securitySystem.getApplicationDetails();
         UserSecurityPolicy policy = securitySystem.getPolicy();
         UserValidationSettings validation = policy.getUserValidationSettings();
-        EmailSettings email = securitySystem.getEmailSettings();
 
-        context.put( "applicationName", appdetails.getApplicationName() );
-
-        String loginUrl = appdetails.getApplicationUrl() + validation.getEmailLoginPath();
+        context.put( "applicationName", config.getString("application.name", "Unconfigured Application") );
         
-        context.put( "loginUrl", loginUrl );
+        String appUrl = config.getString( "application.url", "http://localhost/unconfigured/application/url" );
 
-        String feedback = email.getFeedback();
-        
-        if(feedback.startsWith( "/" ))
+        context.put( "applicationUrl", appUrl );
+
+        String feedback = config.getString( "email.feedback.path", "/feedback.action" );
+
+        if ( feedback.startsWith( "/" ) )
         {
-            feedback = appdetails.getApplicationUrl() + feedback;
+            feedback = appUrl + feedback;
         }
-        
+
         context.put( "feedback", feedback );
 
         context.put( "authkey", authkey.getKey() );
-        
+
         context.put( "accountId", authkey.getForPrincipal() );
 
-        SimpleDateFormat dateformatter = new SimpleDateFormat( appdetails.getTimestampFormat() );
+        SimpleDateFormat dateformatter = new SimpleDateFormat( config.getString("applicaiton.timestamp", "EEE, d MMM yyyy HH:mm:ss Z") );
 
         context.put( "requestedOn", dateformatter.format( authkey.getDateCreated() ) );
 
@@ -145,7 +146,7 @@ public class Mailer
         }
 
         sendVelocityEmail( "passwordResetEmail", context, recipients, validation.getEmailSubject() );
-    }    
+    }
 
     public void sendVelocityEmail( String templateName, VelocityContext context, Collection recipients, String subject )
     {
@@ -174,15 +175,16 @@ public class Mailer
 
     public void sendMessage( Collection recipients, String subject, String content )
     {
-        EmailSettings email = securitySystem.getEmailSettings();
-        
         if ( recipients.isEmpty() )
         {
             getLogger().warn( "Mail Not Sent - No mail recipients for email. subject [" + subject + "]" );
             return;
         }
+        
+        String fromAddress = config.getString( "email.from.address", "security@unconfigured.com" );
+        String fromName = config.getString( "email.from.name", "Unconfigured Username" );
 
-        if ( StringUtils.isEmpty( email.getFromAddress() ) )
+        if ( StringUtils.isEmpty( fromAddress ) )
         {
             getLogger().warn( "Mail Not Sent - No from address for email. subject [" + subject + "]" );
             return;
@@ -197,7 +199,7 @@ public class Mailer
             message.setSubject( subject );
             message.setContent( content );
 
-            MailMessage.Address from = new MailMessage.Address( email.getFromAddress(), email.getFromUsername() );
+            MailMessage.Address from = new MailMessage.Address( fromAddress, fromName );
 
             message.setFrom( from );
 
@@ -208,6 +210,16 @@ public class Mailer
 
                 MailMessage.Address to = new MailMessage.Address( mailbox );
                 message.addTo( to );
+            }
+
+            mailSender.setSmtpHost( config.getString( "email.smtp.host" ) );
+            mailSender.setSmtpPort( config.getInt( "email.smtp.port" ) );
+            mailSender.setUsername( config.getString( "email.smtp.username" ) );
+            mailSender.setPassword( config.getString( "email.smtp.password" ) );
+            mailSender.setSslMode( config.getBoolean( "email.smtp.ssl.enabled" ) );
+            if ( mailSender.isSslMode() && ( mailSender instanceof JavamailMailSender ) )
+            {
+                ( (JavamailMailSender) mailSender ).setSslProvider( config.getString( "email.smtp.ssl.provider" ) );
             }
 
             mailSender.send( message );

@@ -23,7 +23,7 @@ This account was requested on $requestedOn
 
 Use the following URL to validate your account.
 
-$loginUrl?validateMe=$authkey
+$applicationUrl/security/login!login.action?validateMe=$authkey
 
 This url will be valid until $expiresOn
 

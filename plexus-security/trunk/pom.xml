@@ -57,120 +57,130 @@
     <dependencies>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
+        <artifactId>plexus-security-configuration</artifactId>
+        <version>${security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-system</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-policy</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.security</groupId>
+        <artifactId>plexus-security-common-jdo</artifactId>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authentication-api</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-keys-api</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-keys-test</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-keys-jdo</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authentication-provider-user-manager</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authentication-provider-keystore</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authentication-provider-memory</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-api</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-api</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-provider-jdo</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-provider-memory</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-provider-test</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-model</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-store-test</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-store-memory</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-rbac-profile</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-ui-web-integration</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-ui-web-taglib</artifactId>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-ui-web</artifactId>
         <type>war</type>
-        <version>1.0-alpha-6-SNAPSHOT</version>
+        <version>${security.version}</version>
       </dependency>
       <!-- Plexus -->
       <dependency>
@@ -180,23 +190,53 @@
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-utils</artifactId>
+        <version>1.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-mail-sender-api</artifactId>
-        <version>1.0-alpha-3</version>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-mail-sender-simple</artifactId>
-        <version>1.0-alpha-3</version>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-mail-sender-test</artifactId>
-        <version>1.0-alpha-3</version>
+        <version>1.0-alpha-5-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-mail-sender-javamail</artifactId>
-        <version>1.0-alpha-3</version>
+        <version>1.0-alpha-5-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-xwork-integration</artifactId>
+        <version>1.0-alpha-2</version>
+      </dependency>
+      <!-- Other -->
+      <dependency>
+        <groupId>xalan</groupId>
+        <artifactId>xalan</artifactId>
+        <!-- must run at xalan 2.7.0, as ealier versions embed an ancient version 
+             of bcel, which iterferes with the ability of jpox/jdo to run -->
+        <version>2.7.0</version>
+      </dependency>
+      <dependency>
+        <groupId>xml-apis</groupId>
+        <artifactId>xml-apis</artifactId>
+        <!-- Xalan 2.7.0 requires xml-apis version 1.3.02+ -->
+        <version>1.3.03</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <!-- commons-configuration requires this version. -->
+        <version>3.2</version>
+      </dependency>
+      <dependency>
+        <groupId>hsqldb</groupId>
+        <artifactId>hsqldb</artifactId>
+        <version>1.8.0.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.derby</groupId>
+        <artifactId>derby</artifactId>
+        <version>10.1.2.1</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -236,7 +276,8 @@
     </plugins>
   </build>
   <modules>
-    <!-- <module>common</module> -->
+    <module>configuration</module>
+    <module>common</module>
     <module>system</module>
     <module>policy</module>
     <module>authentication</module>
@@ -246,4 +287,7 @@
     <module>acegi-integration</module>
     <module>examples</module>
   </modules>
+  <properties>
+    <security.version>1.0-alpha-6-SNAPSHOT</security.version>
+  </properties>
 </project>

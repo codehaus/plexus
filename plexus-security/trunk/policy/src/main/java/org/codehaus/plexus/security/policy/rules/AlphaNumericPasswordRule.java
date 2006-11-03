@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.policy.rules;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
@@ -29,6 +31,7 @@ import org.codehaus.plexus.security.user.User;
  */
 public class AlphaNumericPasswordRule
     extends AbstractPasswordRule
+    implements Initializable
 {
     public void setUserSecurityPolicy( UserSecurityPolicy policy )
     {
@@ -49,4 +52,9 @@ public class AlphaNumericPasswordRule
         }
     }
 
+    public void initialize()
+        throws InitializationException
+    {
+        super.configure( config, PASSWORD_RULE_CONFIGKEY + ".alphanumeric" );
+    }
 }

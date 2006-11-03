@@ -74,17 +74,6 @@ public class DefaultSecuritySystem
      */
     private UserSecurityPolicy policy;
     
-    /**
-     * @plexus.requirement
-     */
-    private ApplicationDetails applicationDetails;
-    
-    /**
-     * @plexus.requirement
-     */
-    private EmailSettings emailSettings;
-    
-
     // ----------------------------------------------------------------------------
     // Authentication: delegate to the authnManager
     // ----------------------------------------------------------------------------
@@ -268,15 +257,5 @@ public class DefaultSecuritySystem
             return "<null>";
         }
         return policy.getId();
-    }
-
-    public ApplicationDetails getApplicationDetails()
-    {
-        return applicationDetails;
-    }
-
-    public EmailSettings getEmailSettings()
-    {
-        return emailSettings;
     }
 }

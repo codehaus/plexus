@@ -108,7 +108,7 @@
         <param name="externalResult">security-login-success</param>
       </result>
       <result name="success" type="redirect-action">
-        <param name="actionName">account</param>        
+        <param name="actionName">account</param>
         <param name="username">${principal}</param>
       </result>
     </action>

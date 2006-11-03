@@ -13,8 +13,9 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
@@ -25,6 +26,10 @@
   <name>Plexus Security :: UI Web :: XWork Integration</name>
   <packaging>jar</packaging>
   <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-configuration</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-system</artifactId>
@@ -51,6 +56,10 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-mail-sender-javamail</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-velocity</artifactId>
       <version>1.1.2</version>
       <exclusions>
@@ -67,7 +76,9 @@
   </dependencies>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/ui/web/integration</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/ui/web/integration</developerConnection>
+    <developerConnection>
+      scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/ui/web/integration
+    </developerConnection>
   </scm>
   <build>
     <plugins>
@@ -86,7 +97,8 @@
               </roleDefaults>
               <descriptors>
                 <descriptor>${basedir}/src/main/resources/META-INF/plexus/components.xml</descriptor>
-                <descriptor>${project.build.directory}/generated-resources/plexus/META-INF/plexus/components.xml
+                <descriptor>
+                  ${project.build.directory}/generated-resources/plexus/META-INF/plexus/components.xml
                 </descriptor>
               </descriptors>
             </configuration>
