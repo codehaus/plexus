@@ -93,6 +93,11 @@ public class JdoRbacManagerTest
         URL jdoFileUrls[] = new URL[] { getClass()
             .getResource( "/org/codehaus/plexus/security/authorization/rbac/jdo/package.jdo" ) }; //$NON-NLS-1$
         
+        if ( ( jdoFileUrls == null ) || ( jdoFileUrls[0] == null ) )
+        {
+            fail( "Unable to process test " + getName() + " - missing package.jdo." );
+        }
+        
         File propsFile = null; // intentional
         boolean verbose = true;
 

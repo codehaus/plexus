@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.policy.rules;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.security.policy.PasswordRule;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
@@ -33,16 +35,10 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class CharacterLengthPasswordRule
     extends AbstractPasswordRule
-    implements PasswordRule
+    implements PasswordRule, Initializable
 {
-    /**
-     * @plexus.configuration default-value="1"
-     */
     private int minimumCharacters;
 
-    /**
-     * @plexus.configuration default-value="8"
-     */
     private int maximumCharacters;
 
     public CharacterLengthPasswordRule()
@@ -96,5 +92,14 @@ public class CharacterLengthPasswordRule
                 new Integer( minimumCharacters ),
                 new Integer( maximumCharacters ) } ); //$NON-NLS-1$
         }
+    }
+
+    public void initialize()
+        throws InitializationException
+    {
+        final String PREFIX = PASSWORD_RULE_CONFIGKEY + "characterlength";
+        super.configure( config, PREFIX );
+        this.minimumCharacters = config.getInt( PREFIX + ".minimum", 1 );
+        this.maximumCharacters = config.getInt( PREFIX + ".maximum", 8 );
     }
 }

@@ -42,13 +42,6 @@ public interface UserValidationSettings
     public int getEmailValidationTimeout();
     
     /**
-     * Get the login path to submit the validation email to.
-     * 
-     * @return the login path to submit the validation email to.
-     */
-    public String getEmailLoginPath();
-    
-    /**
      * Get the subject line for the validation email.
      * 
      * @return the subject line for the validation email.

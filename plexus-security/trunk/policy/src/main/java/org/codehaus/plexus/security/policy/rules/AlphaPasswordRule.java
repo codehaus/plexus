@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.policy.rules;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.security.policy.PasswordRule;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
@@ -33,11 +35,8 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class AlphaPasswordRule
     extends AbstractPasswordRule
-    implements PasswordRule
+    implements PasswordRule, Initializable
 {
-    /**
-     * @plexus.configuration default-value="1"
-     */
     private int minimumCount;
 
     public AlphaPasswordRule()
@@ -101,5 +100,14 @@ public class AlphaPasswordRule
         {
             violations.addViolation( "user.password.violation.alpha", new Object[] { new Integer( minimumCount ) } ); //$NON-NLS-1$
         }
+    }
+
+    public void initialize()
+        throws InitializationException
+    {
+        final String PREFIX = PASSWORD_RULE_CONFIGKEY + ".alphacount";
+        super.configure( config, PREFIX );
+        this.minimumCount = config.getInt( PREFIX + "minimum", 1 );
+        
     }
 }

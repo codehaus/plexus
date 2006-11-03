@@ -16,6 +16,10 @@ package org.codehaus.plexus.security.policy;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.security.configuration.UserConfiguration;
+
 /**
  * DefaultSingleSignOnSettings 
  *
@@ -25,17 +29,17 @@ package org.codehaus.plexus.security.policy;
  * @plexus.component role="org.codehaus.plexus.security.policy.SingleSignOnSettings"
  */
 public class DefaultSingleSignOnSettings
-    implements SingleSignOnSettings
+    implements SingleSignOnSettings, Initializable
 {
     /**
-     * @plexus.configuration default-value="true"
+     * @plexus.requirement
      */
+    private UserConfiguration config;
+
     private boolean enabled;
 
     /**
      * Timeout (in minutes) for the single sign on cookie.
-     * 
-     * @plexus.configuration default-value="30"
      */
     private int cookieTimeout;
 
@@ -47,5 +51,13 @@ public class DefaultSingleSignOnSettings
     public boolean isEnabled()
     {
         return enabled;
+    }
+
+    public void initialize()
+        throws InitializationException
+    {
+        final String PREFIX = "security.sso";
+        this.enabled = config.getBoolean( PREFIX + ".enabled", true );
+        this.cookieTimeout = config.getInt( PREFIX + ".timeout", 525600 );
     }
 }

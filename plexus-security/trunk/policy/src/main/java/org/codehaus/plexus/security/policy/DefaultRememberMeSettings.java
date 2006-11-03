@@ -16,6 +16,11 @@ package org.codehaus.plexus.security.policy;
  * limitations under the License.
  */
 
+
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.security.configuration.UserConfiguration;
+
 /**
  * 
  * DefaultRememberMeSettings 
@@ -26,19 +31,17 @@ package org.codehaus.plexus.security.policy;
  * @plexus.component role="org.codehaus.plexus.security.policy.RememberMeSettings"
  */
 public class DefaultRememberMeSettings
-    implements RememberMeSettings
+    implements RememberMeSettings, Initializable
 {
     /**
-     * @plexus.configuration default-value="true"
+     * @plexus.requirement
      */
+    private UserConfiguration config;
+    
     private boolean enabled;
     
     /**
      * Timeout (in minutes) for a remember me cookie.
-     * 
-     * NOTE: 525600 minutes == 1 full year.
-     * 
-     * @plexus.configuration default-value="525600"
      */
     private int cookieTimeout;
 
@@ -50,5 +53,13 @@ public class DefaultRememberMeSettings
     public boolean isEnabled()
     {
         return enabled;
+    }
+
+    public void initialize()
+        throws InitializationException
+    {
+        final String PREFIX = "security.rememberme";
+        this.enabled = config.getBoolean( PREFIX + ".enabled", true );
+        this.cookieTimeout = config.getInt( PREFIX + ".timeout", 525600 );
     }
 }

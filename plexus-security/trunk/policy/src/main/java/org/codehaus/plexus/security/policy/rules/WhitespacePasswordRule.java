@@ -16,6 +16,9 @@ package org.codehaus.plexus.security.policy.rules;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.security.policy.PasswordRule;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
@@ -27,8 +30,9 @@ import org.codehaus.plexus.security.user.User;
  * 
  * $Id$
  */
-public class WhitespacePasswordRule 
+public class WhitespacePasswordRule
     extends AbstractPasswordRule
+    implements PasswordRule, Initializable
 {
     public void setUserSecurityPolicy( UserSecurityPolicy policy )
     {
@@ -38,7 +42,7 @@ public class WhitespacePasswordRule
     public void testPassword( PasswordRuleViolations violations, User user )
     {
         char[] password = user.getPassword().toCharArray();
-        
+
         for ( int i = 0; i < password.length; i++ )
         {
             if ( Character.isWhitespace( password[i] ) )
@@ -49,4 +53,9 @@ public class WhitespacePasswordRule
         }
     }
 
+    public void initialize()
+        throws InitializationException
+    {
+        super.configure( config, PASSWORD_RULE_CONFIGKEY + ".nowhitespace" );
+    }
 }
