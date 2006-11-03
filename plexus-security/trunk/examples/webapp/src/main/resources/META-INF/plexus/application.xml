@@ -73,6 +73,10 @@
       <description>User Security Policy.</description>
       <requirements>
         <requirement>
+          <role>org.codehaus.plexus.security.configuration.UserConfiguration</role>
+          <field-name>config</field-name>
+        </requirement>
+        <requirement>
           <role>org.codehaus.plexus.security.policy.PasswordEncoder</role>
           <role-hint>sha256</role-hint>
           <field-name>passwordEncoder</field-name>
