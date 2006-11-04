@@ -239,23 +239,6 @@
     <name>Codehaus</name>
     <url>http://www.codehaus.org/</url>
   </organization>
-  <modules>
-    <!--
-    
-    Until the bug is fixed in Maven which is pulling in the trunk to the
-    appserver build.
-    <module>plexus-appserver</module>
-    -->
-    <module>plexus-archetypes</module>
-    <module>plexus-examples</module>
-    <module>plexus-components</module>
-    <module>plexus-component-factories</module>
-    <module>plexus-containers</module>
-    <module>plexus-logging</module>
-    <module>plexus-maven-plugin</module>
-    <module>plexus-tools</module>
-    <module>plexus-utils</module>
-  </modules>
   <build>
     <extensions>
       <extension>
