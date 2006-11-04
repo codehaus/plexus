@@ -49,7 +49,7 @@ public class ComponentDescriptorCreatorTest
 
         assertEquals( 2, csd.getComponents().size() );
 
-        ComponentDescriptor cd = (ComponentDescriptor) csd.getComponents().get( 0 );
+        ComponentDescriptor cd = getComponentDescriptor( csd, "org.codehaus.plexus.cdc.component.Service" );
 
         assertNull( cd.getRoleHint() );
 
@@ -57,7 +57,7 @@ public class ComponentDescriptorCreatorTest
 
         assertEquals( "org.codehaus.plexus.cdc.component.AnotherService", cd.getImplementation() );
 
-        cd = (ComponentDescriptor) csd.getComponents().get( 1 );
+        cd = getComponentDescriptor( csd, "org.codehaus.plexus.cdc.component.Component");
 
         assertEquals( "My super component.", cd.getDescription() );
 
@@ -93,6 +93,27 @@ public class ComponentDescriptorCreatorTest
         }
 
         assertEquals( "Expected 2 components with role *Child*", 2, i );
+    }
+
+    // ----------------------------------------------------------------------
+    // Private
+    // ----------------------------------------------------------------------
+
+    private ComponentDescriptor getComponentDescriptor( ComponentSetDescriptor csd, String role )
+    {
+        for (Iterator it = csd.getComponents().iterator(); it.hasNext();)
+        {
+            ComponentDescriptor componentDescriptor = (ComponentDescriptor) it.next();
+
+            if ( componentDescriptor.getRole().equals( role) )
+            {
+                return componentDescriptor;
+            }
+        }
+
+        fail( "Could not find role '" + role + "' in component set descriptor." );
+
+        return null;
     }
 
     private ComponentSetDescriptor buildCsd( int testNumber )
