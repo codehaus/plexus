@@ -222,6 +222,14 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Andrew Williams</name>
+      <id>handyande</id>
+      <email>andy@handyande.co.uk</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
   <dependencies>
     <dependency>
