@@ -24,7 +24,7 @@ package org.codehaus.plexus.tutorial;
  * 
  * @deprecated <em>Experimental</em>.
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
- * @version $Id:$
+ * @version $Id$
  */
 public class MonitorExecutionResult
 {
