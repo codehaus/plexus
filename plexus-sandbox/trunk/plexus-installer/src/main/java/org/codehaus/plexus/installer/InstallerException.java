@@ -23,7 +23,7 @@ import org.codehaus.plexus.archiver.ArchiverException;
  * An installer exception
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id:$
+ * @version $Id$
  */
 public class InstallerException
     extends ArchiverException
