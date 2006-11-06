@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -89,6 +90,16 @@ public class UserConfiguration
 
         evaluator.addExpressionSource( this );
         evaluator.addExpressionSource( new SystemPropertyExpressionSource() );
+
+        if ( configs == null )
+        {
+            configs = new ArrayList();
+        }
+
+        if ( configs.isEmpty() )
+        {
+            configs.add( DEFAULT_CONFIG_RESOURCE );
+        }
 
         try
         {
