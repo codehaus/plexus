@@ -108,6 +108,8 @@ public class UserConfiguration
             {
                 String configName = (String) it.next();
                 String resolvedConfigName = resolveName( configName );
+                getLog().info( "Attempting to find configuration [" + configName + "] (resolved to [" + resolvedConfigName + "])" );
+                
                 InputStream is = findConfig( resolvedConfigName );
                 if ( is != null )
                 {
@@ -118,6 +120,10 @@ public class UserConfiguration
                     IOUtil.close( is );
 
                     super.addConfiguration( userConfig );
+                }
+                else
+                {
+                    getLog().info("Non-existant configuration [" + resolvedConfigName + "] not loaded.");
                 }
             }
         }
