@@ -9,7 +9,6 @@
         <configs>
           <config>src/test/resources/props/test-another.properties</config>
           <config>src/test/resources/props/test-overlaid.properties</config>
-          <config>${config.default}</config>
         </configs>
       </configuration>
     </component>
