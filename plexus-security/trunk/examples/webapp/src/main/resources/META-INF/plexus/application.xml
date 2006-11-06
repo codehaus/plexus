@@ -6,8 +6,10 @@
         <role>org.codehaus.plexus.security.configuration.UserConfiguration</role>
         <implementation>org.codehaus.plexus.security.configuration.UserConfiguration</implementation>
         <configuration>
-          <base-path>${user.home}/.m2</base-path>
-          <config-filename>security-example.properties</config-filename>
+          <configs>
+            <config>${user.home}/.m2/security-example.properties</config>
+            <config>${config.default}</config>
+          </configs>
         </configuration>
       </component>
     </components>
