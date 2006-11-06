@@ -38,8 +38,9 @@ public interface ExpressionEvaluator
     /**
      * Evaluate a string, and expand expressions as needed.
      *
-     * @param expression the expression
+     * @param str the expression
      * @return the value of the expression
+     * @throws EvaluatorException if a problem occurs whilst evaluating
      */
     String expand( String str )
         throws EvaluatorException;
