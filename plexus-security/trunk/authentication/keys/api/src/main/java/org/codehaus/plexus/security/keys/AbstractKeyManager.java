@@ -16,8 +16,8 @@ package org.codehaus.plexus.security.keys;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.digest.Hex;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.security.keys.utils.Hex;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
