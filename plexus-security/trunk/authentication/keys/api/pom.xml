@@ -29,5 +29,10 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/api</developerConnection>
   </scm>
   <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-digest</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>
