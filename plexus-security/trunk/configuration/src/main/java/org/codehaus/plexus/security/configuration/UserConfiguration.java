@@ -96,7 +96,7 @@ public class UserConfiguration
             configs = new ArrayList();
         }
 
-        if ( configs.isEmpty() )
+        if ( !configs.contains( DEFAULT_CONFIG_RESOURCE ) )
         {
             configs.add( DEFAULT_CONFIG_RESOURCE );
         }
@@ -108,8 +108,10 @@ public class UserConfiguration
             {
                 String configName = (String) it.next();
                 String resolvedConfigName = resolveName( configName );
-                getLog().info( "Attempting to find configuration [" + configName + "] (resolved to [" + resolvedConfigName + "])" );
-                
+                getLog().info(
+                               "Attempting to find configuration [" + configName + "] (resolved to ["
+                                   + resolvedConfigName + "])" );
+
                 InputStream is = findConfig( resolvedConfigName );
                 if ( is != null )
                 {
@@ -123,7 +125,7 @@ public class UserConfiguration
                 }
                 else
                 {
-                    getLog().info("Non-existant configuration [" + resolvedConfigName + "] not loaded.");
+                    getLog().info( "Non-existant configuration [" + resolvedConfigName + "] not loaded." );
                 }
             }
         }
@@ -173,6 +175,12 @@ public class UserConfiguration
 
     private InputStream findConfig( String name )
     {
+        if ( StringUtils.isEmpty( name ) )
+        {
+            getLog().warn( "Unable to find empty config." );
+            return null;
+        }
+
         // Test for name as resource
         getLog().debug( "Testing [" + name + "] as resource" );
         URL resourceUrl = this.getClass().getResource( name );
