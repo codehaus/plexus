@@ -17,6 +17,7 @@ package org.codehaus.plexus.security.configuration;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * UserConfigurationTest 
@@ -27,6 +28,14 @@ import org.codehaus.plexus.PlexusTestCase;
 public class UserConfigurationTest
     extends PlexusTestCase
 {
+    private void assertEmpty( String str )
+    {
+        if ( StringUtils.isNotEmpty( str ) )
+        {
+            fail( "Expected String to be empty." );
+        }
+    }
+
     public void testLoad()
         throws Exception
     {
@@ -38,8 +47,14 @@ public class UserConfigurationTest
         throws Exception
     {
         UserConfiguration config = (UserConfiguration) lookup( UserConfiguration.ROLE );
-        assertEquals( "localhost", config.getString( "email.smtp.host" ) );
+        // Test default configuration entry
+        assertEquals( "Unconfigured Username", config.getString( "email.from.name" ) );
+        // Test overlaid configuration entry
+        assertEquals( "127.0.2.2", config.getString( "email.smtp.host" ) );
+        // Test default value
         assertEquals( "127.0.0.1", config.getString( "email.smtp.host.bad", "127.0.0.1" ) );
+
+        assertEmpty( config.getString( "email.smtp.foo.foo" ) );
     }
 
     public void testGetBoolean()

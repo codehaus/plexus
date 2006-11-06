@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<plexus>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.security.configuration.UserConfiguration</role>
+      <implementation>org.codehaus.plexus.security.configuration.UserConfiguration</implementation>
+      <description>ConfigurationFactory</description>
+      <configuration>
+        <configs>
+          <config>src/test/resources/props/test-another.properties</config>
+          <config>src/test/resources/props/test-overlaid.properties</config>
+          <config>${config.default}</config>
+        </configs>
+      </configuration>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.logging.LoggerManager</role>
+      <implementation>org.codehaus.plexus.logging.log4j.Log4JLoggerManager</implementation>
+      <lifecycle-handler>basic</lifecycle-handler>
+
+      <configuration>
+        <threshold>DEBUG</threshold>
+        <default-appender>console</default-appender>
+        <appenders>
+          <appender>
+            <id>console</id>
+            <threshold>DEBUG</threshold>
+            <type>org.apache.log4j.ConsoleAppender</type>
+            <conversion-pattern>%d [%t] %-5p %-30c{1} - %m%n</conversion-pattern>
+          </appender>
+        </appenders>
+        <levels>
+          <level>
+            <hierarchy>org.codehaus.plexus.security</hierarchy>
+            <level>DEBUG</level>
+          </level>
+        </levels>
+      </configuration>
+      
+    </component>
+  </components>
+</plexus>
