@@ -163,6 +163,9 @@ public class DeployerTest
         //start clean 
         FileUtils.forceDelete( deployerWorkingDir );
 
+        // create deployment workspace 
+        component.addProject( project );
+
         component.checkoutProject( project );
         assertTrue( FileUtils.fileExists( deployerWorkingDir ) );
         DeploymentWorkspace workspace = mgr.getDeploymentWorkspace( project );

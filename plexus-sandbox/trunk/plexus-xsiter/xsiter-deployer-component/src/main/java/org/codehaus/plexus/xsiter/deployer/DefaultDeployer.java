@@ -39,7 +39,8 @@ public class DefaultDeployer
 {
 
     /**
-     * Property in that specifies the default deployment goals to be used by the Deployer. 
+     * Property that specifies the default deployment goals 
+     * to be used by the Deployer. 
      */
     private static final String PROP_DEPLOYER_DEFAULT_GOALS = "deployer.default.goals";
 
@@ -107,6 +108,11 @@ public class DefaultDeployer
     public void addVirtualHost( DeployableProject project )
         throws Exception
     {
+        if ( !isValidWorkspace( project.getLabel() ) )
+        {
+            throw new Exception( "Invalid workspace ID: '" + project.getLabel() + "'" );
+        }
+
         createDeploymentWorkspaceIfRequired( project );
         // Updated Implementation, use configuration from pom.xml
         MavenProject mavenProject = getMavenProjectForCheckedoutProject( project );
@@ -144,6 +150,10 @@ public class DefaultDeployer
     public void checkoutProject( DeployableProject project )
         throws Exception
     {
+        if ( !isValidWorkspace( project.getLabel() ) )
+        {
+            throw new Exception( "Invalid workspace ID: '" + project.getLabel() + "'" );
+        }
         DeploymentWorkspace workspace = createDeploymentWorkspaceIfRequired( project );
         getLogger().info( "Checking out Project: " + project.getLabel() + ", Version: " + project.getScmTag() );
 
@@ -205,6 +215,10 @@ public class DefaultDeployer
     public DeployedProject deployProject( DeployableProject project )
         throws Exception
     {
+        if ( !isValidWorkspace( project.getLabel() ) )
+        {
+            throw new Exception( "Invalid workspace ID: '" + project.getLabel() + "'" );
+        }
         MavenProject mavenProject = getMavenProjectForCheckedoutProject( project );
         String defaultDeploymentGoals = (String) mavenProject.getProperties().get( PROP_DEPLOYER_DEFAULT_GOALS );
         getLogger().info( "Using default deployment goals: " + defaultDeploymentGoals );
@@ -219,6 +233,10 @@ public class DefaultDeployer
     public DeployedProject deployProject( DeployableProject project, String goals )
         throws Exception
     {
+        if ( !isValidWorkspace( project.getLabel() ) )
+        {
+            throw new Exception( "Invalid workspace ID: '" + project.getLabel() + "'" );
+        }
         createDeploymentWorkspaceIfRequired( project );
         // Deploy the checked out Project to Appserver/Webserver
         if ( isCargoPluginConfigurationInPOM( project ) )
@@ -243,6 +261,10 @@ public class DefaultDeployer
     public void buildProject( DeployableProject project, String goals )
         throws Exception
     {
+        if ( !isValidWorkspace( project.getLabel() ) )
+        {
+            throw new Exception( "Invalid workspace ID: '" + project.getLabel() + "'" );
+        }
         DeploymentWorkspace workspace = createDeploymentWorkspaceIfRequired( project );
         checkoutProjectIfRequired( project );
         File workspaceWorkingDir = new File( workspace.getRootDirectory(), workspace.getWorkingDirectory() );
@@ -297,6 +319,10 @@ public class DefaultDeployer
     public void updateProject( DeployableProject project )
         throws Exception
     {
+        if ( !isValidWorkspace( project.getLabel() ) )
+        {
+            throw new Exception( "Invalid workspace ID: '" + project.getLabel() + "'" );
+        }
         DeploymentWorkspace workspace = createDeploymentWorkspaceIfRequired( project );
         String scmTag = null != project.getScmTag() ? project.getScmTag() : "HEAD";
         getLogger().info( "Updating Project: " + project.getLabel() + ", Version: " + scmTag );
@@ -362,7 +388,7 @@ public class DefaultDeployer
         for ( int i = 0; i < files.length; i++ )
         {
             File dir = files[i];
-            if ( hasWorkspaceDescriptor( dir ) )
+            if ( isWorkspaceDescriptorExistent( dir ) )
                 list.add( loadWorkspaceFromDescriptor( dir.getName() ) );
             else if ( getLogger().isWarnEnabled() )
                 getLogger().warn( "No workspace descriptor found under directory: " + dir.getName() );
@@ -377,9 +403,33 @@ public class DefaultDeployer
      * @param dir Directory to test if its a deployment workspace.
      * @return <code>true</code> if the deployment workspace descriptor is found under specified directory.
      */
-    private boolean hasWorkspaceDescriptor( File dir )
+    private boolean isWorkspaceDescriptorExistent( File dir )
     {
         return new File( dir, DESCRIPTOR_WORKSPACE_XML ).exists();
+    }
+
+    /**
+     * Tests if a workspace directory exists for the specified workspace/project Id.
+     * @param pid workspace id to test for existence.
+     * @return <code>true</code> if the workspace directory exists
+     */
+    private boolean isWorkspaceDirectoryExistent( String pid )
+    {
+        return new File( workingDirectory, pid ).exists();
+    }
+
+    /**
+     * Tests if:<br>
+     * <ul>
+     * <li>a Deployment workspace directory exists, and </li>
+     * <li>a Deployment descriptor exists</li>
+     * </ul>
+     * @param pid workspace Id to test for validity.
+     * @return <code>true</code> if all of the above conditions are met, else <code>false</code>.
+     */
+    private boolean isValidWorkspace( String pid )
+    {
+        return ( isWorkspaceDirectoryExistent( pid ) && isWorkspaceDescriptorExistent( new File( workingDirectory, pid ) ) );
     }
 
 }
