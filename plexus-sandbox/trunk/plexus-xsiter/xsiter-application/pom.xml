@@ -9,12 +9,12 @@
   <artifactId>xsiter-deployer-application</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>XSiter :: Deployer Application</name>
-  <!-- Enable to build a Plexus Application -->
+  <!-- Enable to build a Plexus Application 
     <packaging>plexus-application</packaging>
-  
-  <!-- Enable to build a JAR and generate Eclipse Project
+  -->  
+  <!-- Enable to build a JAR and generate Eclipse Project -->
   <packaging>jar</packaging>
-  -->
+  
   <ciManagement>
     <notifiers>
       <notifier>
