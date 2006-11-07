@@ -68,6 +68,8 @@ public class UserConfiguration
      */
     private List configs;
 
+    private boolean dumpState;
+
     private Logger logger;
 
     public void enableLogging( Logger logger )
@@ -133,6 +135,19 @@ public class UserConfiguration
         {
             throw new InitializationException( "Unable to load configuration " + configs + " : " + e.getMessage(), e );
         }
+    }
+
+    public void dumpState()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append( "Configuration Dump." );
+        Iterator it = getKeys();
+        while ( it.hasNext() )
+        {
+            String key = (String) it.next();
+            sb.append( "\n\"" ).append( key ).append( "\" = \"" ).append( getProperty( key ) ).append( "\"" );
+        }
+        getLog().info( sb.toString() );
     }
 
     public Object getProperty( String key )

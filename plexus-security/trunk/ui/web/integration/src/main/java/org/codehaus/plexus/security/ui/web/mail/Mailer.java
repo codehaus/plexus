@@ -212,14 +212,19 @@ public class Mailer
                 message.addTo( to );
             }
 
-            mailSender.setSmtpHost( config.getString( "email.smtp.host" ) );
-            mailSender.setSmtpPort( config.getInt( "email.smtp.port" ) );
-            mailSender.setUsername( config.getString( "email.smtp.username" ) );
-            mailSender.setPassword( config.getString( "email.smtp.password" ) );
-            mailSender.setSslMode( config.getBoolean( "email.smtp.ssl.enabled" ) );
+            config.dumpState();
+            
+            mailSender.setSmtpHost( config.getString( "email.smtp.host", "localhost" ) );
+            mailSender.setSmtpPort( config.getInt( "email.smtp.port", 25 ) );
+            mailSender.setUsername( config.getString( "email.smtp.username", "" ) );
+            mailSender.setPassword( config.getString( "email.smtp.password", "" ) );
+            mailSender.setSslMode( config.getBoolean( "email.smtp.ssl.enabled", false ) );
+            
             if ( mailSender.isSslMode() && ( mailSender instanceof JavamailMailSender ) )
             {
-                ( (JavamailMailSender) mailSender ).setSslProvider( config.getString( "email.smtp.ssl.provider" ) );
+                JavamailMailSender jmsender = (JavamailMailSender) mailSender;
+                jmsender.updateProps();
+                jmsender.setSslProvider( config.getString( "email.smtp.ssl.provider" ) );
             }
 
             mailSender.send( message );

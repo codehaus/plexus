@@ -16,19 +16,17 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.policy.UserSecurityPolicy;
-import org.codehaus.plexus.security.ui.web.action.AbstractUserCredentialsAction;
-import org.codehaus.plexus.security.ui.web.model.EditUserCredentials;
+import org.codehaus.plexus.rbac.profile.RoleProfileException;
+import org.codehaus.plexus.rbac.profile.RoleProfileManager;
+import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
+import org.codehaus.plexus.security.rbac.UserAssignment;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+import org.codehaus.plexus.security.ui.web.model.EditUserCredentials;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.rbac.RbacManagerException;
-import org.codehaus.plexus.security.rbac.UserAssignment;
-import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.rbac.profile.RoleProfileManager;
-import org.codehaus.plexus.rbac.profile.RoleProfileException;
 
 /**
  * AddAdminUserAction 
@@ -41,7 +39,7 @@ import org.codehaus.plexus.rbac.profile.RoleProfileException;
  *                   instantiation-strategy="per-lookup"
  */
 public class AddAdminUserAction
-    extends AbstractUserCredentialsAction
+    extends AbstractAdminUserCredentialsAction
 {
     /**
      * @plexus.requirement
@@ -53,16 +51,6 @@ public class AddAdminUserAction
      */
     private RBACManager rbacManager;
 
-    /**
-     * @plexus.requirement
-     */
-    private UserManager userManager;
-    
-    /**
-     * @plexus.requirement
-     */
-    private UserSecurityPolicy userSecurityPolicy;
-    
     private EditUserCredentials user;
     
     public String show()
@@ -86,14 +74,11 @@ public class AddAdminUserAction
         
         getLogger().info( "user = " + user );
         
-        // ugly hack to get around lack of cross module plexus-cdc efforts.
-        super.manager = userManager;
-        super.securityPolicy = userSecurityPolicy;
-        // TODO: Fix plexus-cdc to operate properly for cross-module creation efforts.
-        
         internalUser = user;
         
         validateCredentialsStrict();
+        
+        UserManager userManager = super.securitySystem.getUserManager();
         
         if ( userManager.userExists( RoleConstants.ADMINISTRATOR_ACCOUNT_NAME ) )
         {

@@ -16,15 +16,15 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.security.rbac.Resource;
-import org.codehaus.plexus.security.ui.web.action.AbstractUserCredentialsAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.model.AdminEditUserCredentials;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -38,14 +38,12 @@ import org.codehaus.plexus.util.StringUtils;
  *                   instantiation-strategy="per-lookup"
  */
 public class UserEditAction
-    extends AbstractUserCredentialsAction
+    extends AbstractAdminUserCredentialsAction
 {
     // ------------------------------------------------------------------
     // Action Parameters
     // ------------------------------------------------------------------
 
-    private String username;
-    
     private AdminEditUserCredentials user;
 
     // ------------------------------------------------------------------
@@ -54,29 +52,31 @@ public class UserEditAction
     
     public String edit()
     {
-        if ( username == null )
+        if ( getUsername() == null )
         {
             addActionError( "Unable to edit user with null username." );
             return ERROR;
         }
 
-        if ( StringUtils.isEmpty( username ) )
+        if ( StringUtils.isEmpty( getUsername() ) )
         {
             addActionError( "Unable to edit user with empty username." );
             return ERROR;
         }
+        
+        UserManager manager = super.securitySystem.getUserManager();
 
-        if ( !manager.userExists( username ) )
+        if ( !manager.userExists( getUsername() ) )
         {
             // Means that the role name doesn't exist.
             // We need to fail fast and return to the previous page.
-            addActionError( "User '" + username + "' does not exist." );
+            addActionError( "User '" + getUsername() + "' does not exist." );
             return ERROR;
         }
         
         try
         {
-            User u = manager.findUser( username );
+            User u = manager.findUser( getUsername() );
             
             if ( u == null )
             {
@@ -88,7 +88,7 @@ public class UserEditAction
         }
         catch ( UserNotFoundException e )
         {
-            addActionError( "Unable to get User '" + username + "': " + e.getMessage() );
+            addActionError( "Unable to get User '" + getUsername() + "': " + e.getMessage() );
             return ERROR;
         }
 
@@ -97,13 +97,13 @@ public class UserEditAction
 
     public String submit()
     {
-        if ( username == null )
+        if ( getUsername() == null )
         {
             addActionError( "Unable to edit user with null username." );
             return ERROR;
         }
 
-        if ( StringUtils.isEmpty( username ) )
+        if ( StringUtils.isEmpty( getUsername() ) )
         {
             addActionError( "Unable to edit user with empty username." );
             return ERROR;
@@ -118,18 +118,20 @@ public class UserEditAction
         internalUser = user;
         
         validateCredentialsLoose();
+        
+        UserManager manager = super.securitySystem.getUserManager();
 
-        if ( !manager.userExists( username ) )
+        if ( !manager.userExists( getUsername() ) )
         {
             // Means that the role name doesn't exist.
             // We need to fail fast and return to the previous page.
-            addActionError( "User '" + username + "' does not exist." );
+            addActionError( "User '" + getUsername() + "' does not exist." );
             return ERROR;
         }
 
         try
         {
-            User u = manager.findUser( username );
+            User u = manager.findUser( getUsername() );
             if ( u == null )
             {
                 addActionError( "Unable to operate on null user." );
@@ -146,7 +148,7 @@ public class UserEditAction
         }
         catch ( UserNotFoundException e )
         {
-            addActionError( "Unable to find User '" + username + "': " + e.getMessage() );
+            addActionError( "Unable to find User '" + getUsername() + "': " + e.getMessage() );
             return ERROR;
         }
         catch ( PasswordRuleViolationException pe )
@@ -161,16 +163,6 @@ public class UserEditAction
     // ------------------------------------------------------------------
     // Parameter Accessor Methods
     // ------------------------------------------------------------------
-
-    public String getUsername()
-    {
-        return username;
-    }
-
-    public void setUsername( String username )
-    {
-        this.username = username;
-    }
 
     public AdminEditUserCredentials getUser()
     {
@@ -188,7 +180,7 @@ public class UserEditAction
         SecureActionBundle bundle = new SecureActionBundle();
         bundle.setRequiresAuthentication( true );
         bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_USER_EDIT_OPERATION, Resource.GLOBAL );
-        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_USER_EDIT_OPERATION, username );               
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_USER_EDIT_OPERATION, getUsername() );               
 
         return bundle;
     }
