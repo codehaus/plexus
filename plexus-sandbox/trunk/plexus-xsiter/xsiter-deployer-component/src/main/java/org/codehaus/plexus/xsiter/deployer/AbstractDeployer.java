@@ -77,18 +77,6 @@ public abstract class AbstractDeployer
     protected String workingDirectory;
 
     /**
-     * Default deplyment goal(s) to use in absence of any goal being specified
-     * 
-     * @plexus.configuration default-value="clean compile war:war cargo:start"
-     */
-    protected String defaultDeploymentGoals;
-
-    public AbstractDeployer()
-    {
-        super();
-    }
-
-    /**
      * Creates a deployment workspace if none exists for the specified DeployableProject.
      * @return {@link DeploymentWorkspace} instance 
      * @throws Exception 
