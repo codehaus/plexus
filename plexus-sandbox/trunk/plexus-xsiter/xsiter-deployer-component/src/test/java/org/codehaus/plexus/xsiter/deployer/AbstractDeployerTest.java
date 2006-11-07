@@ -210,6 +210,7 @@ public abstract class AbstractDeployerTest
         printer.println( "  </build> " );
         printer.println( "  <properties>" );
         printer.println( "    <installDir>/opt/tools/cargo</installDir>" );
+        printer.println( "    <deployer.default.goals>clean compile war:war -P integration</deployer.default.goals>" );
         printer.println( "    <vhosts.configuration>" );
         printer.println( "      <![CDATA[<vhosts>" );
         printer.println( "        <vhost>" );

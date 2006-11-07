@@ -124,7 +124,7 @@ public class DeployerTest
         MavenProject mavenProject = mgr.getMavenProjectForCheckedoutProject( project );
         assertNotNull( mavenProject );
         Properties props = mavenProject.getProperties();
-        assertEquals( 2, props.size() );
+        assertEquals( 3, props.size() );
     }
 
     /**
@@ -265,4 +265,5 @@ public class DeployerTest
         List workspaces = mgr.getAllDeploymentWorkspaces();
         assertEquals( 1, workspaces.size() );
     }
+
 }

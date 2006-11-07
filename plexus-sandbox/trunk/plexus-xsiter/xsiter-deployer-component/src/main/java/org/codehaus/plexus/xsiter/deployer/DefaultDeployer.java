@@ -39,6 +39,11 @@ public class DefaultDeployer
 {
 
     /**
+     * Property in that specifies the default deployment goals to be used by the Deployer. 
+     */
+    private static final String PROP_DEPLOYER_DEFAULT_GOALS = "deployer.default.goals";
+
+    /**
      * Date Formatter.
      */
     private static final SimpleDateFormat sdf = new SimpleDateFormat( "dd-MM-yyyy, HH:mm:ss" );
@@ -94,22 +99,6 @@ public class DefaultDeployer
     public void setWorkingDirectory( String workingDirectory )
     {
         this.workingDirectory = workingDirectory;
-    }
-
-    /**
-     * @return the defaultDeploymentGoals
-     */
-    public String getDefaultDeploymentGoals()
-    {
-        return defaultDeploymentGoals;
-    }
-
-    /**
-     * @param defaultDeploymentGoals the defaultDeploymentGoals to set
-     */
-    public void setDefaultDeploymentGoals( String defaultDeploymentGoals )
-    {
-        this.defaultDeploymentGoals = defaultDeploymentGoals;
     }
 
     /**
@@ -216,6 +205,8 @@ public class DefaultDeployer
     public DeployedProject deployProject( DeployableProject project )
         throws Exception
     {
+        MavenProject mavenProject = getMavenProjectForCheckedoutProject( project );
+        String defaultDeploymentGoals = (String) mavenProject.getProperties().get( PROP_DEPLOYER_DEFAULT_GOALS );
         getLogger().info( "Using default deployment goals: " + defaultDeploymentGoals );
         // Deploy the checked out Project to Appserver/Webserver
         return deployProject( project, defaultDeploymentGoals );

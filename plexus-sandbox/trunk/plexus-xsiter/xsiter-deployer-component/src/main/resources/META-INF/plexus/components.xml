@@ -35,10 +35,7 @@
         </requirement>
       </requirements>
       <configuration>
-        <workingDirectory>target/deployments</workingDirectory>
-        <defaultDeploymentGoals>
-          clean compile war:war cargo:start
-        </defaultDeploymentGoals>
+        <workingDirectory>target/deployments</workingDirectory>        
       </configuration>
     </component>
   </components>
