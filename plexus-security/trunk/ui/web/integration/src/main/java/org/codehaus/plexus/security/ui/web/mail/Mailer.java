@@ -212,8 +212,6 @@ public class Mailer
                 message.addTo( to );
             }
 
-            config.dumpState();
-            
             mailSender.setSmtpHost( config.getString( "email.smtp.host", "localhost" ) );
             mailSender.setSmtpPort( config.getInt( "email.smtp.port", 25 ) );
             mailSender.setUsername( config.getString( "email.smtp.username", "" ) );
