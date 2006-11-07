@@ -73,6 +73,14 @@ public class ANSIColoredString extends AbstractColoredString
         if ( !colors.containsKey( color ) )
             return "";
 
+        if ( getDefaultColor() != null && colors.containsKey( getDefaultColor() ) )
+            return ESCAPE + "[" + ( (Integer) colors.get( getDefaultColor() ) ).intValue() + "m";
+
         return ESCAPE + "[" + ANSI_COLOR_DEFAULT + "m";
+    }
+
+    public String toString()
+    {
+        return super.toString() + ESCAPE + "[" + ANSI_COLOR_DEFAULT + "m";
     }
 }

@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.awt.*;
 
 import org.codehaus.plexus.util.StringUtils;
 
@@ -147,6 +148,10 @@ public class ColorConsoleLoggerTest
         // Set the original print stream.
         System.setOut( original );
 
+        ANSIColoredString str = new ANSIColoredString(Color.RED, "this ");
+        str.appendColored(Color.BLUE, "is a");
+        str.append(" test");
+        logger.warn(str.toString());
     }
 
     private String getMessage( PrintStream consoleStream, ByteArrayOutputStream os )
