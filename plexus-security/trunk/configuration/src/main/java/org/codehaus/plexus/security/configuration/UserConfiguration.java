@@ -68,8 +68,6 @@ public class UserConfiguration
      */
     private List configs;
 
-    private boolean dumpState;
-
     private Logger logger;
 
     public void enableLogging( Logger logger )
@@ -134,6 +132,11 @@ public class UserConfiguration
         catch ( ConfigurationException e )
         {
             throw new InitializationException( "Unable to load configuration " + configs + " : " + e.getMessage(), e );
+        }
+
+        if ( getLog().isDebugEnabled() )
+        {
+            dumpState();
         }
     }
 
