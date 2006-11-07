@@ -24,86 +24,6 @@
   <artifactId>plexus-security-example-webapp</artifactId>
   <packaging>war</packaging>
   <name>Plexus Security :: Example Webapp</name>
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <version>2.1</version>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>${basedir}/</directory>
-              <includes>
-                <include>derby.log</include>
-              </includes>
-            </fileset>
-            <fileset>
-              <directory>${basedir}/src/main/webapp</directory>
-              <includes>
-                <include>META-INF</include>
-                <include>WEB-INF/classes</include>
-                <include>WEB-INF/lib</include>
-                <include>WEB-INF/database</include>
-                <include>WEB-INF/logs</include>
-                <include>WEB-INF/temp</include>
-              </includes>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>2.0.1</version>
-        <executions>
-          <execution>
-            <phase>compile</phase>
-            <goals>
-              <goal>inplace</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <archiveClasses>false</archiveClasses>
-          <dependentWarExcludes>WEB-INF/web.xml</dependentWarExcludes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>generate</id>
-            <goals>
-              <goal>descriptor</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <roleDefaults>
-            <roleDefault>
-              <role>com.opensymphony.xwork.Action</role>
-              <instantiation-strategy>per-lookup</instantiation-strategy>
-            </roleDefault>
-          </roleDefaults>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>maven-jetty-plugin</artifactId>
-        <version>6.0.0rc1</version>
-        <configuration>
-          <scanIntervalSeconds>10</scanIntervalSeconds>
-          <contextPath>/</contextPath>
-          <connectors>
-            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-              <port>9090</port>
-              <maxIdleTime>60000</maxIdleTime>
-            </connector>
-          </connectors>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
   <pluginRepositories>
     <pluginRepository>
       <releases>
@@ -216,16 +136,6 @@
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
     </dependency>
-    <!--
-    <dependency>
-      <groupId>xalan</groupId>
-      <artifactId>xalan</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>xml-apis</groupId>
-      <artifactId>xml-apis</artifactId>
-    </dependency>
-     -->
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
@@ -239,6 +149,98 @@
       <artifactId>derby</artifactId>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}/</directory>
+              <includes>
+                <include>derby.log</include>
+              </includes>
+            </fileset>
+            <fileset>
+              <directory>${basedir}/src/main/webapp</directory>
+              <includes>
+                <include>META-INF</include>
+                <include>WEB-INF/classes</include>
+                <include>WEB-INF/lib</include>
+                <include>WEB-INF/database</include>
+                <include>WEB-INF/logs</include>
+                <include>WEB-INF/temp</include>
+                <include>template</include>
+                <include>WEB-INF/jsp/pss</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <roleDefaults>
+            <roleDefault>
+              <role>com.opensymphony.xwork.Action</role>
+              <instantiation-strategy>per-lookup</instantiation-strategy>
+            </roleDefault>
+          </roleDefaults>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>jetty</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>2.0.1</version>
+            <executions>
+              <execution>
+                <phase>compile</phase>
+                <goals>
+                  <goal>inplace</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <archiveClasses>false</archiveClasses>
+              <dependentWarExcludes>WEB-INF/web.xml</dependentWarExcludes>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>maven-jetty-plugin</artifactId>
+            <version>6.0.0rc1</version>
+            <configuration>
+              <scanIntervalSeconds>10</scanIntervalSeconds>
+              <contextPath>/</contextPath>
+              <connectors>
+                <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                  <port>9090</port>
+                  <maxIdleTime>60000</maxIdleTime>
+                </connector>
+              </connectors>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/examples/webapp</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/examples/webapp</developerConnection>

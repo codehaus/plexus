@@ -8,7 +8,7 @@ To run, open a command prompt/terminal.
 
 2)  Run the following Maven goals on the project
 
-    >   mvn war:inplace jetty:run
+    >   mvn -Pjetty jetty:run
     
     This is ensure that the requisite resources are overlaid for example webapp
     before it is deployed to a Jetty instance.
