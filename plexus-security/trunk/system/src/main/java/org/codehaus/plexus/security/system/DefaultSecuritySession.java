@@ -64,6 +64,6 @@ public class DefaultSecuritySession
 
     public boolean isAuthenticated()
     {
-        return authenticated;
+        return ( ( user != null ) && authenticated );
     }
 }

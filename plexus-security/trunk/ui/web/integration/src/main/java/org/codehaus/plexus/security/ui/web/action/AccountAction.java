@@ -16,10 +16,12 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.model.EditUserCredentials;
 import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -45,8 +47,6 @@ public class AccountAction
 
     private boolean cancelButton;
     
-    private String username;
-    
     private EditUserCredentials user;
 
     // ------------------------------------------------------------------
@@ -55,6 +55,16 @@ public class AccountAction
 
     public String show()
     {
+        SecuritySession session = getSecuritySession();
+        
+        if ( ! session.isAuthenticated() )
+        {
+            addActionError( "Unable to show your account. Not logged in." );
+            return REQUIRES_AUTHENTICATION;
+        }
+        
+        String username = session.getUser().getUsername();
+        
         if ( username == null )
         {
             addActionError( "Unable to edit user with null username." );
@@ -67,6 +77,8 @@ public class AccountAction
             return ERROR;
         }
 
+        UserManager manager = super.securitySystem.getUserManager();
+        
         if ( !manager.userExists( username ) )
         {
             // Means that the role name doesn't exist.
@@ -104,6 +116,16 @@ public class AccountAction
             return ACCOUNT_CANCEL;
         }
         
+        SecuritySession session = getSecuritySession();
+        
+        if ( ! session.isAuthenticated() )
+        {
+            addActionError( "Unable to show your account. Not logged in." );
+            return REQUIRES_AUTHENTICATION;
+        }
+        
+        String username = session.getUser().getUsername();
+        
         if ( username == null )
         {
             addActionError( "Unable to edit user with null username." );
@@ -122,6 +144,8 @@ public class AccountAction
             return ERROR;
         }
 
+        UserManager manager = super.securitySystem.getUserManager();
+        
         if ( !manager.userExists( username ) )
         {
             // Means that the role name doesn't exist.
@@ -159,16 +183,6 @@ public class AccountAction
     // ------------------------------------------------------------------
     // Parameter Accessor Methods
     // ------------------------------------------------------------------
-
-    public String getUsername()
-    {
-        return username;
-    }
-
-    public void setUsername( String username )
-    {
-        this.username = username;
-    }
 
     public EditUserCredentials getUser()
     {

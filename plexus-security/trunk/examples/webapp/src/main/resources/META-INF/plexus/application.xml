@@ -1,18 +1,15 @@
 <plexus>
   <components>
-  
-    <components>
-      <component>
-        <role>org.codehaus.plexus.security.configuration.UserConfiguration</role>
-        <implementation>org.codehaus.plexus.security.configuration.UserConfiguration</implementation>
-        <configuration>
-          <configs>
-            <config>${user.home}/.m2/security-example.properties</config>
-            <config>${config.default}</config>
-          </configs>
-        </configuration>
-      </component>
-    </components>
+
+    <component>
+      <role>org.codehaus.plexus.security.configuration.UserConfiguration</role>
+      <implementation>org.codehaus.plexus.security.configuration.UserConfiguration</implementation>
+      <configuration>
+        <configs>
+          <config>${user.home}/.m2/security-example.properties</config>
+        </configs>
+      </configuration>
+    </component>
 
     <component>
       <role>org.codehaus.plexus.security.system.SecuritySystem</role>
@@ -116,12 +113,15 @@
         <appenders>
           <appender>
             <id>console</id>
-            <threshold>INFO</threshold>
             <type>org.apache.log4j.ConsoleAppender</type>
-            <conversion-pattern>%d [%t] %-5p %-30c{1} - %m%n</conversion-pattern>
+            <conversion-pattern>%d [%t] %-5p %-30c - %m%n</conversion-pattern>
           </appender>
         </appenders>
         <levels>
+          <level>
+            <hierarchy>org.codehaus.plexus.PlexusContainer</hierarchy>
+            <level>INFO</level>
+          </level>
           <level>
             <hierarchy>org.codehaus.plexus.security</hierarchy>
             <level>DEBUG</level>
@@ -136,6 +136,14 @@
           </level>
           <level>
             <hierarchy>com.opensymphony.webwork</hierarchy>
+            <level>INFO</level>
+          </level>
+          <level>
+            <hierarchy>freemarker</hierarchy>
+            <level>INFO</level>
+          </level>
+          <level>
+            <hierarchy>JPOX</hierarchy>
             <level>INFO</level>
           </level>
         </levels>

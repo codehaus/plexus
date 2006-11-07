@@ -18,10 +18,9 @@ package org.codehaus.plexus.security.ui.web.action;
 
 import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
-import org.codehaus.plexus.security.policy.UserSecurityPolicy;
+import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.ui.web.model.UserCredentials;
 import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.Iterator;
@@ -42,12 +41,7 @@ public abstract class AbstractUserCredentialsAction
     /**
      * @plexus.requirement
      */
-    protected UserManager manager;
-
-    /**
-     * @plexus.requirement
-     */
-    protected UserSecurityPolicy securityPolicy;
+    protected SecuritySystem securitySystem;
     
     // ------------------------------------------------------------------
     // Action Parameters
@@ -91,11 +85,11 @@ public abstract class AbstractUserCredentialsAction
         // emailvalidator.setFieldName( "user.email" );
         // emailvalidator.validate( internalUser.getEmail() );
 
-        User tmpuser = internalUser.createUser( manager );
+        User tmpuser = internalUser.createUser( securitySystem.getUserManager() );
 
         try
         {
-            securityPolicy.validatePassword( tmpuser );
+            securitySystem.getPolicy().validatePassword( tmpuser );
         }
         catch ( PasswordRuleViolationException e )
         {

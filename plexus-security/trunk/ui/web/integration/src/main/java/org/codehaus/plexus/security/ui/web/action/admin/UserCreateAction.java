@@ -16,6 +16,7 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.action.AbstractUserCredentialsAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
@@ -23,6 +24,7 @@ import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.model.CreateUserCredentials;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserManager;
 
 /**
  * UserCreateAction 
@@ -71,6 +73,8 @@ public class UserCreateAction
         validateCredentialsLoose();
 
         // NOTE: Do not perform Password Rules Validation Here.
+        
+        UserManager manager = super.securitySystem.getUserManager();
 
         if ( manager.userExists( user.getUsername() ) )
         {
@@ -88,6 +92,7 @@ public class UserCreateAction
         u.setPassword( user.getPassword() );
 
         // Disable Password Rules for this creation.
+        UserSecurityPolicy securityPolicy = securitySystem.getPolicy();
         securityPolicy.setEnabled( false );
         try
         {

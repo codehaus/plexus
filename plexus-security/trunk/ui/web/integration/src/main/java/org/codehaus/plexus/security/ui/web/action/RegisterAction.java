@@ -20,15 +20,16 @@ import org.codehaus.plexus.rbac.profile.RoleProfileException;
 import org.codehaus.plexus.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.keys.KeyManagerException;
+import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.UserAssignment;
-import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.mail.Mailer;
 import org.codehaus.plexus.security.ui.web.model.CreateUserCredentials;
 import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,11 +65,6 @@ public class RegisterAction
     /**
      * @plexus.requirement
      */
-    private SecuritySystem securitySystem;
-
-    /**
-     * @plexus.requirement
-     */
     private RBACManager rbacManager;
 
     /**
@@ -93,7 +89,7 @@ public class RegisterAction
             user = new CreateUserCredentials();
         }
 
-        emailValidationRequired = securityPolicy.getUserValidationSettings().isEmailValidationRequired();
+        emailValidationRequired = securitySystem.getPolicy().getUserValidationSettings().isEmailValidationRequired();
 
         return INPUT;
     }
@@ -112,6 +108,8 @@ public class RegisterAction
             return ERROR;
         }
         
+        UserSecurityPolicy securityPolicy = securitySystem.getPolicy(); 
+        
         emailValidationRequired = securityPolicy.getUserValidationSettings().isEmailValidationRequired();
 
         internalUser = user;
@@ -126,6 +124,7 @@ public class RegisterAction
         }
 
         // NOTE: Do not perform Password Rules Validation Here.
+        UserManager manager = super.securitySystem.getUserManager();
 
         if ( manager.userExists( user.getUsername() ) )
         {
