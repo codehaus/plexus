@@ -69,9 +69,9 @@ public abstract class AbstractMailSender
         return smtpHost;
     }
 
-    public void setSmtpHost( String smtpHost )
+    public void setSmtpHost( String host )
     {
-        this.smtpHost = smtpHost;
+        this.smtpHost = host;
     }
 
     public int getSmtpPort()
@@ -79,9 +79,9 @@ public abstract class AbstractMailSender
         return smtpPort;
     }
 
-    public void setSmtpPort( int smtpPort )
+    public void setSmtpPort( int port )
     {
-        this.smtpPort = smtpPort;
+        this.smtpPort = port;
     }
 
     public String getUsername()
@@ -89,9 +89,9 @@ public abstract class AbstractMailSender
         return username;
     }
 
-    public void setUsername( String username )
+    public void setUsername( String name )
     {
-        this.username = username;
+        this.username = name;
     }
 
     public String getPassword()
@@ -99,9 +99,9 @@ public abstract class AbstractMailSender
         return password;
     }
 
-    public void setPassword( String password )
+    public void setPassword( String pass )
     {
-        this.password = password;
+        this.password = pass;
     }
 
     public boolean isSslMode()
@@ -109,9 +109,9 @@ public abstract class AbstractMailSender
         return sslMode;
     }
 
-    public void setSslMode( boolean sslMode )
+    public void setSslMode( boolean sslEnabled )
     {
-        this.sslMode = sslMode;
+        this.sslMode = sslEnabled;
     }
 
     public void send( String subject, String content, String toMailbox, String toName, String fromMailbox,
