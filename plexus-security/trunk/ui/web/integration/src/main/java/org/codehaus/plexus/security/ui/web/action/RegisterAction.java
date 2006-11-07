@@ -155,6 +155,7 @@ public class RegisterAction
         catch ( RoleProfileException rpe )
         {
             addActionError( "Unable to assign core register user role to new user" );
+            getLogger().error( "RoleProfile Error: " + rpe.getMessage(), rpe );
             return ERROR;
         }
         catch ( RbacManagerException e )
@@ -189,6 +190,7 @@ public class RegisterAction
             catch ( KeyManagerException e )
             {
                 addActionError( "Unable to process new user registration request." );
+                getLogger().error( "Unable to register a new user.", e );
                 return ERROR;
             }
             finally
