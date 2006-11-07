@@ -33,6 +33,10 @@
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-ui-web-taglib</artifactId>
     </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+    </dependency>
   </dependencies>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/ui/web/content</connection>
