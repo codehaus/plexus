@@ -49,8 +49,6 @@ public interface Deployer
     /**
      * Deploys a Project to associated Deployment Workspace using the default
      * goal(s).
-     * <p>
-     * This will create a deployment workspace if one does not exists.
      * 
      * @param project project to deploy.
      * @return an instance of {@link DeployedProject}.
