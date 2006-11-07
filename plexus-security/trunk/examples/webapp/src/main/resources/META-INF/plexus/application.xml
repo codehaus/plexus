@@ -6,6 +6,7 @@
       <implementation>org.codehaus.plexus.security.configuration.UserConfiguration</implementation>
       <configuration>
         <configs>
+          <config>${user.home}/.m2/security.properties</config>
           <config>${user.home}/.m2/security-example.properties</config>
         </configs>
       </configuration>
