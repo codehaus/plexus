@@ -106,10 +106,15 @@ public class DeployerTest
     }
 
     /**
-     * Tests if a {@link MavenProject} instance can be obtained for a checked
-     * out project.
+     * Tests if:
+     * <ul>
+     * <li>a {@link MavenProject} instance can be obtained for a 
+     * checked out project.</li>
+     * <li>Default deployment goals can be obtained for the checked 
+     * out project.</li>
+     * </ul>
      */
-    public void testGetMavenProjectForCheckedoutProject()
+    public void testGetMavenProjectForCheckedoutProjectAndVerifyProperties()
         throws Exception
     {
         Deployer component = (Deployer) lookup( Deployer.ROLE );
@@ -125,6 +130,8 @@ public class DeployerTest
         assertNotNull( mavenProject );
         Properties props = mavenProject.getProperties();
         assertEquals( 3, props.size() );
+        assertTrue( props.containsKey( "deployer.default.goals" ) );
+        assertEquals( "clean compile war:war -P integration", ( (String) props.getProperty( "deployer.default.goals" ) ) );
     }
 
     /**
@@ -145,6 +152,14 @@ public class DeployerTest
         project.setScmTag( TAG_VERSION_1_0_0 );
 
         component.addVirtualHost( project );
+        DefaultDeployer mgr = (DefaultDeployer) component;
+        File projectWorkspace = new File( mgr.getWorkingDirectory(), PROJECT_LABEL_SAMPLE_WEB );
+        assertTrue( projectWorkspace.exists() );
+        File apacheDir = new File( projectWorkspace, "deploy/apache" );
+        assertTrue( apacheDir.exists() );
+        File vhostConf = new File( apacheDir, "vhosts.conf" );
+        assertTrue( vhostConf.exists() );
+        //TODO: verify vhost.conf content. 
     }
 
     /**
