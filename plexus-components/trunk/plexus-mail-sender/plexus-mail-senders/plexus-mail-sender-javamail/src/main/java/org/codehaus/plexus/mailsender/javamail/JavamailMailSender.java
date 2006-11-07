@@ -86,7 +86,12 @@ public class JavamailMailSender
         }
 
         props = new Properties();
-
+        
+        updateProps();
+    }
+    
+    public void updateProps()
+    {
         props.put( "mail.smtp.host", getSmtpHost() );
 
         props.put( "mail.smtp.port", String.valueOf( getSmtpPort() ) );
@@ -108,7 +113,7 @@ public class JavamailMailSender
             }
             catch ( Exception e )
             {
-                throw new InitializationException( "could not instantiate ssl security provider, check that "
+                throw new IllegalStateException( "could not instantiate ssl security provider, check that "
                     + "you have JSSE in your classpath" );
             }
 
@@ -145,7 +150,7 @@ public class JavamailMailSender
         {
             Authenticator auth = null;
 
-            if ( getUsername() != null )
+            if ( StringUtils.isNotEmpty( getUsername() ) )
             {
                 auth = new Authenticator()
                     {
@@ -156,7 +161,7 @@ public class JavamailMailSender
                     };
             }
 
-            Session session = Session.getDefaultInstance(props, auth );
+            Session session = Session.getDefaultInstance( props, auth );
 
             session.setDebug( getLogger().isDebugEnabled() );
 
