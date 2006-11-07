@@ -63,8 +63,6 @@ public class PasswordAction
     
     private boolean provideExisting;
 
-    private String principal;
-
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
@@ -107,8 +105,6 @@ public class PasswordAction
 
         if ( provideExisting )
         {
-
-
             if ( !encoder.isPasswordValid( user.getEncodedPassword(), existingPassword ) )
             {
                 addFieldError( "existingPassword", "Password does not match existing." );
@@ -166,13 +162,11 @@ public class PasswordAction
 
         if ( !session.isAuthenticated() )
         {
+            getLogger().debug( "User is not authenticated." );
             return REQUIRES_AUTHENTICATION;
         }
-        else
-        {
-            principal = user.getPrincipal().toString();
-            return SUCCESS;
-        }
+        
+        return SUCCESS;
     }
     
     // ------------------------------------------------------------------
@@ -217,16 +211,6 @@ public class PasswordAction
     public void setProvideExisting( boolean provideExisting )
     {
         // Do nothing.
-    }
-
-    public String getPrincipal()
-    {
-        return principal;
-    }
-
-    public void setPrincipal( String principal )
-    {
-        this.principal = principal;
     }
 
     public SecureActionBundle initSecureActionBundle()

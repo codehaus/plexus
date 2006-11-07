@@ -109,6 +109,7 @@
       </result>
       <result name="success" type="redirect-action">
         <param name="actionName">account</param>
+        <param name="namespace">/security</param>
       </result>
     </action>
 
