@@ -9,6 +9,10 @@
   <version>2.0-alpha-4-SNAPSHOT</version>
   <name>Plexus Application Server</name>
   <packaging>pom</packaging>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-appserver/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-appserver/trunk</developerConnection>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>

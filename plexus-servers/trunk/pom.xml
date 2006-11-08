@@ -6,9 +6,13 @@
     <version>1.0.5</version>
   </parent>
   <artifactId>plexus-servers</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Plexus Servers Parent Project</name>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-servers/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-servers/trunk</developerConnection>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>

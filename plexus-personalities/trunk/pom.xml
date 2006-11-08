@@ -6,9 +6,13 @@
     <version>1.0.5</version>
   </parent>
   <artifactId>plexus-personalities</artifactId>
-  <version>1.1.2</version>
+  <version>1.1.3-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Plexus Personalities Parent Project</name>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-personalities/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-personalities/trunk</developerConnection>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>

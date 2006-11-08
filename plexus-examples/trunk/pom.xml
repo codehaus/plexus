@@ -11,6 +11,10 @@
   <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Plexus Examples</name>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-examples/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-examples/trunk</developerConnection>
+  </scm>
   <modules>
     <module>plexus-examples-tutorial</module>
     <module>plexus-example-hello-world</module>

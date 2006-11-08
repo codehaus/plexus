@@ -9,6 +9,10 @@
   <artifactId>plexus-components-avalon</artifactId>
   <version>1.0.1-SNAPSHOT</version>
   <name>Plexus Avalon Components</name>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-avalon-components/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-avalon-components/trunk</developerConnection>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
