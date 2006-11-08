@@ -79,7 +79,7 @@ public class AutoLoginInterceptor
         if ( ( securitySession != null ) && securitySession.isAuthenticated() )
         {
             // User already authenticated.
-            getLogger().info( "User already authenticated." );
+            getLogger().debug( "User already authenticated." );
             return invocation.invoke();
         }
 
