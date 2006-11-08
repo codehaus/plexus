@@ -9,6 +9,10 @@
   <packaging>maven-plugin</packaging>
   <name>Plexus Maven Plugin</name>
   <version>1.4-SNAPSHOT</version>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-maven-plugin/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-maven-plugin/trunk</developerConnection>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>

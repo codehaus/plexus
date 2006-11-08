@@ -6,10 +6,14 @@
     <version>1.0.8</version>
   </parent>
   <artifactId>plexus-component-factories</artifactId>
-  <version>1.0-alpha-8</version>
+  <version>1.0-alpha-9-SNAPSHOT</version>
   <name>Plexus Component Factories</name>
   <inceptionYear>2001</inceptionYear>
   <packaging>pom</packaging>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-component-factories/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-component-factories/trunk</developerConnection>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>

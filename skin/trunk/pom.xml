@@ -9,5 +9,9 @@
   <version>1.0-SNAPSHOT</version>
   <name>Plexus Site Skin</name>
   <description>Plexus Site Skin</description>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/skin/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/skin/trunk</developerConnection>
+  </scm>
 </project>
 

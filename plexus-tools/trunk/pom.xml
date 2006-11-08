@@ -8,7 +8,11 @@
   <artifactId>plexus-tools</artifactId>
   <packaging>pom</packaging>
   <name>Plexus Tools Parent Project</name>
-  <version>1.0.6</version>
+  <version>1.0.7-SNAPSHOT</version>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-tools/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-tools/trunk</developerConnection>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>

@@ -240,8 +240,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunk</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/pom/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/pom/trunk</developerConnection>
   </scm>
   <organization>
     <name>Codehaus</name>

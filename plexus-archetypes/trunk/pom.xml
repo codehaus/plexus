@@ -9,6 +9,10 @@
   <artifactId>plexus-archetypes</artifactId>
   <version>1.0-alpha-1-SNAPSHOT</version>
   <name>Plexus Archetype</name>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-archetypes/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-archetypes/trunk</developerConnection>
+  </scm>
   <modules>
     <module>plexus-application-view-web</module>
     <module>plexus-archetype-application</module>

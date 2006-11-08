@@ -8,6 +8,10 @@
   <artifactId>plexus-servlet</artifactId>
   <name>Plexus Servlet</name>
   <version>1.0-beta-6-SNAPSHOT</version>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-servlet/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-servlet/trunk</developerConnection>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
