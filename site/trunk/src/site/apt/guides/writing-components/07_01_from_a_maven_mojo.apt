@@ -6,15 +6,13 @@ Rahul Thakur
 08th June 2006 
  ------
 
- <<<The contents of this document are a work in progress>>>
-
 Website Monitor Plugin 
 
  This section will show how to use a Plexus component from within a Maven mojo.
 
 * Setting up a Maven Plugin Project
 
-** Creating a Maven plugin Project using a archetype
+** Creating a Maven plugin Project using an archetype
 
   Maven Archetypes are discussed in detail {{{http://maven.apache.org/guides/mini/guide-creating-archetypes.html}here}}.
 
