@@ -8,4 +8,28 @@ Rahul Thakur
 
  <<<The contents of this document are a work in progress>>>
 
-~~TODO:  
+Plexus Website Monitor Application
+
+ This section will show how to use a Plexus component in a Plexus application.
+
+* Setting up a Plexus Application project
+
+** Creating a Plexus application project using an archetype
+
+  Maven Archetypes are discussed in detail {{{http://maven.apache.org/guides/mini/guide-creating-archetypes.html}here}}.
+
+  [[1]] From the command prompt, change directory to the location where you 
+  want to setup the Plexus application project.
+
+  [[1]] Run the following command to set up a skeleton Plexus Application project.  
+
+
++------------------------------------------+
+
+ mvn archetype:create -DarchetypeGroupId=org.codehaus.plexus -DarchetypeArtifactId=plexus-archetype-application \
+     -DarchetypeVersion=1.0-alpha-1-SNAPSHOT -DgroupId=org.codehaus.plexus -DartifactId=plexus-website-monitor-application \
+     -DremoteRepositories=http://snapshots.repository.codehaus.org/
+
++------------------------------------------+
+
+
