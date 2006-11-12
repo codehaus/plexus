@@ -64,4 +64,6 @@ Table of Contents
   * Appendices 
  
     * {{{appendices/javadoc-tags-reference.html}Appendix I: Javadoc tags reference for CDC}}
+    
+    * {{{appendices/plexus-maven-plugin-reference.html}Appendix II: Plexus Maven Plugin}}
 
