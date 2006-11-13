@@ -2,7 +2,7 @@
   <parent>
     <artifactId>plexus-servers</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0.3</version>
+    <version>1.0.4-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-ftpd</artifactId>
