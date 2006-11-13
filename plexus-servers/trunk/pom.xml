@@ -3,7 +3,7 @@
   <parent>
     <artifactId>plexus</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0.5</version>
+    <version>1.0.9-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-servers</artifactId>
   <version>1.0.4-SNAPSHOT</version>
@@ -11,7 +11,7 @@
   <name>Plexus Servers Parent Project</name>
   <dependencies>
     <dependency>
-      <groupId>plexus</groupId>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
       <version>1.0-alpha-9</version>
     </dependency>
