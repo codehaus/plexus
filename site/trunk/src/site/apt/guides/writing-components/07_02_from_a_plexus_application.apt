@@ -32,4 +32,65 @@ Plexus Website Monitor Application
 
 +------------------------------------------+
 
+ The <<<maven-archetype-mojo>>> sets up a skeleton Maven plugin project '<<<plexus-website-monitor-application>>>' for 
+ us with reasonable defaults.
+
+ 
+** Updating pom.xml dependencies
+
+  [[1]] Locate pom.xml under the '<<<plexus-website-monitor-application>>>' folder. 
+
+  [[1]] Edit it and add a <<<dependency>>> to the 
+  plexus-website-monitor-component that we have developed in earlier chapters.
+
+  [[1]] We also configure a 
+
+    The pom.xml should look like this now:
+
++------------------------------------------+
+
+<?xml version="1.0"?><project>
+  <parent>
+    <artifactId>plexus-examples</artifactId>
+    <groupId>org.codehaus.plexus.examples</groupId>
+    <version>1-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.plexus</groupId>
+  <artifactId>plexus-website-monitor-application</artifactId>
+  <packaging>plexus-application</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-appserver-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <configurationDirectory>src/conf</configurationDirectory>
+          <applicationName>foo</applicationName>
+          <applicationConfiguration>src/conf/application.xml</applicationConfiguration>
+          <configurationProperties>src/plexus.properties</configurationProperties>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-website-monitor-component</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>    
+  </dependencies>
+</project>
+
++------------------------------------------+
+
+
   ~~TODO: Add and explain 'appassembler' mojo config for a Plexus application.
