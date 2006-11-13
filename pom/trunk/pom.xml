@@ -242,6 +242,7 @@
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/pom/trunk/</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/pom/trunk</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/pom/trunk</url>
   </scm>
   <organization>
     <name>Codehaus</name>

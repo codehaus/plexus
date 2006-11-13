@@ -9,10 +9,6 @@
   <packaging>pom</packaging>
   <name>Plexus Tools Parent Project</name>
   <version>1.0.7-SNAPSHOT</version>
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-tools/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-tools/trunk</developerConnection>
-  </scm>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -23,4 +19,9 @@
   <modules>
     <module>plexus-cdc</module>
   </modules>
+  <scm> 
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-tools/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-tools/trunk</developerConnection> 
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-tools/trunk/</url>
+  </scm>
 </project>

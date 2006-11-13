@@ -87,9 +87,9 @@
   </reporting>  
   <!-- repeated here so that plexus-site is not appended -->
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/trunks/</connection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/trunks/</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/trunks/</developerConnection>
-    <url>http://svn.codehaus.org/plexus/</url>
+    <url>http://fisheye.codehaus.org/browse/plexus/</url>
   </scm>
   <distributionManagement>
    <site>

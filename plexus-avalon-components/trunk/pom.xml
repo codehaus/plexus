@@ -12,6 +12,7 @@
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-avalon-components/trunk/</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-avalon-components/trunk</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-avalon-components/trunk</url>
   </scm>
   <dependencies>
     <dependency>

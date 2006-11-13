@@ -10,10 +10,6 @@
   <name>Plexus Component Factories</name>
   <inceptionYear>2001</inceptionYear>
   <packaging>pom</packaging>
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-component-factories/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-component-factories/trunk</developerConnection>
-  </scm>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -28,4 +24,9 @@
     <!-- module>plexus-jython-factory</module -->
     <!--<module>plexus-marmalade-factory</module>-->
   </modules>
+  <scm> 
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-component-factories/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-component-factories/trunk</developerConnection> 
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-component-factories/trunk/</url>
+  </scm>
 </project>
