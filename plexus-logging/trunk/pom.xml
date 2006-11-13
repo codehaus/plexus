@@ -9,13 +9,14 @@
   <version>1.0.4-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Plexus Logging Parent</name>
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-logging/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-logging/trunk</developerConnection>
-  </scm>
   <modules>
     <module>plexus-logging-provider-test</module>  
     <module>plexus-jdk-logging</module>
     <module>plexus-log4j-logging</module>
   </modules>  
+  <scm> 
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-logging/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-logging/trunk</developerConnection> 
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-logging/trunk/</url>
+  </scm>
 </project>

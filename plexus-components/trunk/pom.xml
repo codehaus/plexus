@@ -21,10 +21,6 @@
   <packaging>pom</packaging>
   <version>1.1.7-SNAPSHOT</version>
   <name>Plexus Components Parent Project</name>
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/trunk</developerConnection>
-  </scm>
   <!-- 
     TODO: should this be pushed down to all the dependencies?
       - a more stable API JAR may be useful, for the interfaces and classes such as AbstractLogEnabled
@@ -62,4 +58,9 @@
     <module>plexus-velocity</module>
     <module>plexus-xmlrpc</module>
   </modules>
+  <scm> 
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/trunk</developerConnection> 
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/trunk/</url>
+  </scm>
 </project>

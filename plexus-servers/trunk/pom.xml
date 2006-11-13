@@ -9,10 +9,6 @@
   <version>1.0.4-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Plexus Servers Parent Project</name>
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-servers/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-servers/trunk</developerConnection>
-  </scm>
   <dependencies>
     <dependency>
       <groupId>plexus</groupId>
@@ -24,4 +20,9 @@
     <module>plexus-ftpd</module>
     <module>plexus-server-apacheds</module>
   </modules>
+  <scm> 
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-servers/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-servers/trunk</developerConnection> 
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-servers/trunk/</url>
+  </scm>
 </project>
