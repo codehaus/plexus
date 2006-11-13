@@ -19,6 +19,7 @@
     <module>plexus-examples-tutorial</module>
     <module>plexus-example-hello-world</module>
     <module>plexus-example-website-monitor</module>
-    <module>plexus-website-monitor-plugin</module> 
+    <module>plexus-website-monitor-plugin</module>
+    <module>plexus-website-monitor-application</module>
   </modules>
 </project>
