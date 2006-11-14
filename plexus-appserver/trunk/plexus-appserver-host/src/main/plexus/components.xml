@@ -17,8 +17,6 @@
           <phase>deploy-services</phase>
           <phase>deploy-apps</phase>
         </phases>
-        <appServerHome>${plexus.home}</appServerHome>
-        <appServerBase>${plexus.home}</appServerBase>
       </configuration>
     </component>
 

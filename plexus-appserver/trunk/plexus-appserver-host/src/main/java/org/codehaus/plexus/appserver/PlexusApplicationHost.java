@@ -159,8 +159,6 @@ public class PlexusApplicationHost
         // ----------------------------------------------------------------------
 
         applicationServer = (ApplicationServer) container.lookup( ApplicationServer.ROLE );
-        applicationServer.setAppServerHome( appserverHome );
-        applicationServer.setAppServerBase( appserverBase );
 
         // ----------------------------------------------------------------------
         //

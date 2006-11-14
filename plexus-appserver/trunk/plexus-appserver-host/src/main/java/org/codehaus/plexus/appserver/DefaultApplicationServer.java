@@ -154,6 +154,24 @@ public class DefaultApplicationServer
         container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
 
         container.addContextValue( "plexus.appserver", this );
+
+        if ( context.contains( "appserver.home" ) )
+        {
+            appServerHome = new File( (String) context.get( "appserver.home" ) );
+        }
+        else if ( context.contains( "plexus.home" ) )
+        {
+            appServerHome = new File( (String) context.get( "plexus.home" ) );
+        }
+
+        if ( context.contains( "appserver.base" ) )
+        {
+            appServerBase = new File( (String) context.get( "appserver.base" ) );
+        }
+        else
+        {
+            appServerBase = appServerHome;
+        }
     }
 
     public void initialize()
