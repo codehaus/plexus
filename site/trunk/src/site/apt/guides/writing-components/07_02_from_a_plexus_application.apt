@@ -103,7 +103,7 @@ Plexus Website Monitor Application
 
 +-------------------------------------------+  
 
->  mvn eclipse:clean eclipse:eclipse 
+  mvn eclipse:clean eclipse:eclipse 
 
 +-------------------------------------------+
 
@@ -136,6 +136,73 @@ public class Main
 +-------------------------------------------+
 
   Having imported the project and added a main class, we now revert the <<<packaging>>> back to value <<<plexus-application>>>.
+
+
+** Setting up packaging configuration
+ 
+ Next we set up an application assembler plugin for our Plexus application project. To do this, 
+ 
+  [[1]] Locate the pom.xml for the plexus application project 
+
+  [[1]] update the <<<<build>>>> element configuration such that it is reflected as below
+
++--------------------------------------------+
+
+...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-appserver-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <configurationDirectory>src/conf</configurationDirectory>
+          <applicationName>foo</applicationName>
+          <applicationConfiguration>src/conf/application.xml</applicationConfiguration>
+          <configurationProperties>src/plexus.properties</configurationProperties>
+        </configuration>
+      </plugin>
+      <!-- Application Assembler plugin config -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>assemble</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <assembleDirectory>target/site-monitor-app</assembleDirectory>
+          <includeConfigurationDirectoryInClasspath>
+            true
+          </includeConfigurationDirectoryInClasspath>
+          <programs>
+            <program>
+              <name>deployer</name>
+              <mainClass>
+                org.codehaus.plexus.site.monitor.Main
+              </mainClass>
+            </program>
+          </programs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+...
+
++--------------------------------------------+
+
+ Note how the assembly directory is specified in the <<<appassembler>>> plugin configuration - this is where our Plexus application will be packaged up when the Maven plugin is invoked. 
+
+
+ The discussion on Plugin configuration is beyond the scope of this tutorial, you can refer to book 'Better builds with Maven' or other resources available at:
+
+  [[1]] {{{http://maven.apache.org/articles.html}Maven Books and Articles}}.
+
+
 
 
 
