@@ -77,18 +77,21 @@ public class PlexusApplicationHost
     //
     // ----------------------------------------------------------------------
 
+
+    public void start( ClassWorld classWorld )
+        throws Exception
+    {
+        start( classWorld, null );
+    }
+
     public void start( ClassWorld classWorld, String configurationResource )
         throws Exception
     {
         this.classWorld = classWorld;
 
-        this.configurationResource = configurationResource;
-
         container = new DefaultPlexusContainer();
 
         container.setClassWorld( classWorld );
-
-        container.setConfigurationResource( new FileReader( configurationResource ) );
 
         String plexusHome = System.getProperty( "plexus.home" );
         plexusHome = new File( plexusHome ).getAbsolutePath();
@@ -119,6 +122,27 @@ public class PlexusApplicationHost
         {
             plexusTemp.mkdirs();
         }
+
+        if ( configurationResource == null )
+        {
+            File conf = new File( new File( appserverBase, PlexusRuntimeConstants.CONF_DIRECTORY ),
+                                  PlexusRuntimeConstants.CONFIGURATION_FILE );
+            if ( !conf.exists() )
+            {
+                conf = new File( new File( appserverHome, PlexusRuntimeConstants.CONF_DIRECTORY ),
+                                 PlexusRuntimeConstants.CONFIGURATION_FILE );
+
+                if ( !conf.exists() )
+                {
+                    throw new Exception( "Unable to find a default configuration file" );
+                }
+            }
+            configurationResource = conf.getAbsolutePath();
+        }
+
+        this.configurationResource = configurationResource;
+
+        container.setConfigurationResource( new FileReader( configurationResource ) );
 
         container.initialize();
 
@@ -260,18 +284,18 @@ public class PlexusApplicationHost
 
     public static void main( String[] args, ClassWorld classWorld )
     {
-        if ( args.length != 1 )
-        {
-            System.err.println( "usage: plexus <plexus.xml>" );
-
-            System.exit( 1 );
-        }
-
         try
         {
             PlexusApplicationHost host = new PlexusApplicationHost();
 
-            host.start( classWorld, args[0] );
+            if ( args.length > 0 )
+            {
+                host.start( classWorld, args[0] );
+            }
+            else
+            {
+                host.start( classWorld );
+            }
 
             while ( !host.isStopped() )
             {
@@ -293,5 +317,10 @@ public class PlexusApplicationHost
 
             System.exit( 2 );
         }
+    }
+
+    public String getConfigurationResource()
+    {
+        return configurationResource;
     }
 }
