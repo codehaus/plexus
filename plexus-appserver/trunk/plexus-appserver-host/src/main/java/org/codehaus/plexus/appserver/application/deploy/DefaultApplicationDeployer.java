@@ -1,7 +1,7 @@
 package org.codehaus.plexus.appserver.application.deploy;
 
 /*
- * Copyright (c) 2004, Codehausv.org
+ * Copyright (c) 2004, Codehaus.org
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,8 +22,6 @@ package org.codehaus.plexus.appserver.application.deploy;
  * SOFTWARE.
  */
 
-import org.codehaus.classworlds.ClassRealm;
-import org.codehaus.classworlds.NoSuchRealmException;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.appserver.ApplicationServer;
@@ -36,6 +34,7 @@ import org.codehaus.plexus.appserver.application.event.DefaultDeployEvent;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.appserver.deploy.AbstractDeployer;
 import org.codehaus.plexus.appserver.service.PlexusService;
+import org.codehaus.plexus.appserver.service.PlexusServiceException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
@@ -78,13 +77,13 @@ public class DefaultApplicationDeployer
     // Deployment
     // ----------------------------------------------------------------------
 
-    public void deploy( String appId, File par )
+    public void deploy( String id, File location )
         throws ApplicationServerException
     {
-        deployJar( appId, par, true );
+        deployJar( location, true );
     }
 
-    private void deployJar( String appId, File file, boolean expandPar )
+    private void deployJar( File file, boolean expandPar )
         throws ApplicationServerException
     {
         AppDeploymentContext context = new AppDeploymentContext( file, applicationsDirectory, deployments,
@@ -126,7 +125,7 @@ public class DefaultApplicationDeployer
 
         File file = getAppServer().getAppDescriptor( id ).getPar();
 
-        deployJar( id, file, false );
+        deployJar( file, false );
 
         DefaultDeployEvent event = createDeployEvent( profile );
 
@@ -142,14 +141,14 @@ public class DefaultApplicationDeployer
     // Undeploy
     // ----------------------------------------------------------------------
 
-    public void undeploy( String name )
+    public void undeploy( String id )
         throws ApplicationServerException
     {
-        getLogger().info( "Undeploying '" + name + "'." );
+        getLogger().info( "Undeploying '" + id + "'." );
 
-        AppRuntimeProfile profile = getApplicationRuntimeProfile( name );
+        AppRuntimeProfile profile = getApplicationRuntimeProfile( id );
 
-        deployments.remove( name );
+        deployments.remove( id );
 
         DefaultPlexusContainer app = profile.getApplicationContainer();
 
@@ -157,11 +156,11 @@ public class DefaultApplicationDeployer
         {
             stopApplicationServices( profile );
         }
-        catch (Exception ex)
+        catch ( PlexusServiceException e )
         {
-            getLogger().info( "Can not stop services attached to application ", ex );
+            getLogger().info( "Can not stop services attached to application ", e );
         }
-        
+
         app.dispose();
 
 /* Don't dispose since the appserver container realm = the app container realm at present
@@ -188,20 +187,18 @@ public class DefaultApplicationDeployer
     }
 
     private void stopApplicationServices( AppRuntimeProfile runtimeProfile )
-        throws Exception
+        throws PlexusServiceException
     {
-        if (runtimeProfile.getServices() != null)
-        {            
-            PlexusService service;
-            
-            for (Iterator serviceIterator =  runtimeProfile.getServices().iterator(); serviceIterator.hasNext();)
+        if ( runtimeProfile.getServices() != null )
+        {
+            for ( Iterator serviceIterator = runtimeProfile.getServices().iterator(); serviceIterator.hasNext(); )
             {
-                service = (PlexusService) serviceIterator.next();
+                PlexusService service = (PlexusService) serviceIterator.next();
                 service.applicationStop( runtimeProfile );
             }
         }
     }
-    
+
     // ----------------------------------------------------------------------
     // Events
     // ----------------------------------------------------------------------
@@ -266,7 +263,7 @@ public class DefaultApplicationDeployer
             {
                 undeploy( name );
             }
-            catch ( Exception e )
+            catch ( ApplicationServerException e )
             {
                 getLogger().warn( "Error while undeploying appserver '" + name + "'.", e );
             }

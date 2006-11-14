@@ -101,10 +101,11 @@ goto Win9xApp
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 if "%PLEXUS_OPTS%"=="" SET PLEXUS_OPTS="-Xmx128m"
+if "%PLEXUS_BASE%"=="" SET PLEXUS_BASE=%PLEXUS_HOME%
 SET PLEXUS_JAVA_EXE="%JAVA_HOME%\bin\java.exe"
 SET PLEXUS_CORE="%PLEXUS_HOME%\core"
-SET PLEXUS_TMPDIR="%PLEXUS_HOME%\temp"
-SET PLEXUS_CONF=%PLEXUS_HOME%\conf
+SET PLEXUS_TMPDIR="%PLEXUS_BASE%\temp"
+SET PLEXUS_CONF=%PLEXUS_BASE%\conf
 SET CONF=%PLEXUS_CONF%\plexus.xml
 SET PLEXUS_CMD_LINE_ARGS=%CONF% %PLEXUS_CMD_LINE_ARGS%
 if exist %PLEXUS_TMPDIR% goto run
@@ -112,7 +113,7 @@ mkdir "%PLEXUS_TMPDIR%"
 
 :run
 @REM Start Plexus
-%PLEXUS_JAVA_EXE% %PLEXUS_OPTS% -classpath %PLEXUS_HOME%\core\boot\classworlds-*.jar "-Dclassworlds.conf=%PLEXUS_HOME%\conf\classworlds.conf" -Dplexus.core=%PLEXUS_CORE% -Dplexus.system.path="%PATH%" -Djava.io.tmpdir=%PLEXUS_TMPDIR% -Dplexus.home=%PLEXUS_HOME% org.codehaus.classworlds.Launcher %PLEXUS_CMD_LINE_ARGS%
+%PLEXUS_JAVA_EXE% %PLEXUS_OPTS% -classpath %PLEXUS_HOME%\core\boot\classworlds-*.jar "-Dclassworlds.conf=%PLEXUS_HOME%\conf\classworlds.conf" -Dplexus.core=%PLEXUS_CORE% -Dplexus.system.path="%PATH%" -Djava.io.tmpdir=%PLEXUS_TMPDIR% -Dplexus.home=%PLEXUS_HOME% -Dappserver.base=%PLEXUS_BASE% org.codehaus.classworlds.Launcher %PLEXUS_CMD_LINE_ARGS%
 goto end
 
 :end

@@ -7,7 +7,7 @@ cygwin=false
 darwin=false;
 case "`uname`" in
 CYGWIN*) cygwin=true;;
-Darwin*) darwin=true ;;
+Darwin*) darwin=true;;
 esac
 
 # resolve links - $0 may be a softlink
@@ -26,8 +26,16 @@ done
 # Get standard environment variables
 PRGDIR=`dirname "$THIS_PROG"`
 PLEXUS_HOME=`cd "$PRGDIR/.." ; pwd`
-PLEXUS_CONF=`cd "$PLEXUS_HOME/conf" ; pwd`
+
+if [ -z "$PLEXUS_BASE" ]; then
+  PLEXUS_BASE=$PLEXUS_HOME
+fi
+PLEXUS_CONF=`cd "$PLEXUS_BASE/conf" ; pwd`
 unset THIS_PROG
+
+if [ -z "$PLEXUS_TMPDIR" ] ; then
+  PLEXUS_TMPDIR="$PLEXUS_BASE"/temp
+fi
 
 if [ -z "$JAVA_HOME" ] ; then
   if [ -e /etc/gentoo-release ] ; then
@@ -50,15 +58,14 @@ fi
 if $cygwin ; then
   [ -n "$PLEXUS_HOME" ] &&
     PLEXUS_HOME=`cygpath --unix "$PLEXUS_HOME"`
+  [ -n "$PLEXUS_BASE" ] &&
+    PLEXUS_BASE=`cygpath --unix "$PLEXUS_BASE"`
+  [ -n "$PLEXUS_TMPDIR" ] &&
+    PLEXUS_BASE=`cygpath --unix "$PLEXUS_TMPDIR"`
   [ -n "$JAVA_HOME" ] &&
     JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
   [ -n "$CLASSPATH" ] &&
     CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
-fi
-
-if [ -z "$PLEXUS_TMPDIR" ] ; then
-  PLEXUS_TMPDIR="$PLEXUS_HOME"/temp
-  mkdir -p "$PLEXUS_TMPDIR"
 fi
 
 if [ -z "$JAVACMD" ] ; then
@@ -87,14 +94,6 @@ if [ -z "$JAVA_HOME" ] ; then
   echo "  to the installation directory of java."
 fi
 
-# For Cygwin, switch paths to Windows format before running java
-if $cygwin; then
-  PLEXUS_HOME=`cygpath --path --windows "$PLEXUS_HOME"`
-  PLEXUS_CONF=`cygpath --path --windows "$PLEXUS_CONF"`
-  PLEXUS_TMPDIR=`cygpath --path --windows "$PLEXUS_TMPDIR"`
-  JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
-fi
-
 # For Darwin, use classes.jar for TOOLS_JAR
 TOOLS_JAR="${JAVA_HOME}/lib/tools.jar"
 if $darwin; then
@@ -104,6 +103,7 @@ fi
 # ----- Execute The Requested Command -----------------------------------------
 
 echo "Using PLEXUS_HOME:   $PLEXUS_HOME"
+echo "Using PLEXUS_BASE:   $PLEXUS_BASE"
 echo "Using PLEXUS_CONF:   $PLEXUS_CONF"
 echo "Using PLEXUS_TMPDIR: $PLEXUS_TMPDIR"
 echo "Using JAVA_HOME:     $JAVA_HOME"
@@ -126,4 +126,5 @@ exec "$JAVACMD" \
   -Djava.io.tmpdir="${PLEXUS_TMPDIR}" \
   -Dtools.jar="$TOOLS_JAR" \
   -Dplexus.home="${PLEXUS_HOME}" \
+  -Dappserver.base="${PLEXUS_BASE}" \
   $MAIN_CLASS ${CONF}

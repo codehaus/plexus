@@ -27,7 +27,10 @@ package org.codehaus.plexus.service.xmlrpc;
 import org.apache.xmlrpc.XmlRpcException;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.appserver.service.PlexusService;
+import org.codehaus.plexus.appserver.service.PlexusServiceException;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
@@ -63,7 +66,7 @@ public class XmlRpcPlexusService
     /**
      * port activity flag
      */
-    int port = -1;
+    private int port = -1;
 
     /**
      * Set of ports to be activated. The port can only be used once.
@@ -104,7 +107,7 @@ public class XmlRpcPlexusService
     // ----------------------------------------------------------------------
 
     public void beforeApplicationStart( AppRuntimeProfile appRuntimeProfile, PlexusConfiguration serviceConfiguration )
-        throws Exception
+        throws PlexusServiceException
     {
         ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration );
 
@@ -116,29 +119,27 @@ public class XmlRpcPlexusService
             {
                 String activePort = Integer.toString( service.getPort() );
 
-                if ( activePorts.contains( activePort ) )
+                if ( !activePorts.contains( activePort ) )
                 {
-                    continue;
+                    activePorts.add( activePort );
+
+                    xmlRpcServer.addListener( null, service.getPort(), false );
+
+                    xmlRpcServer.startListener( null, service.getPort() );
+
+                    port = service.getPort();
                 }
-
-                activePorts.add( activePort );
-
-                xmlRpcServer.addListener( null, service.getPort(), false );
-
-                xmlRpcServer.startListener( null, service.getPort() );
-
-                port = service.getPort();
             }
             catch ( XmlRpcException e )
             {
-                throw new StartingException( "Error while starting XML-RPC server on port " + service.getPort() + ".",
-                                             e );
+                throw new PlexusServiceException(
+                    "Error while starting XML-RPC server on port " + service.getPort() + ".", e );
             }
         }
     }
 
     public void afterApplicationStart( AppRuntimeProfile appRuntimeProfile, PlexusConfiguration serviceConfiguration )
-        throws Exception
+        throws PlexusServiceException
     {
         if ( port == -1 )
         {
@@ -151,43 +152,56 @@ public class XmlRpcPlexusService
         {
             PlexusConfiguration handler = handlers[i];
 
-            String role = handler.getChild( "role" ).getValue();
-
-            String name = handler.getChild( "name" ).getValue();
-
-            if ( StringUtils.isEmpty( role ) )
+            try
             {
-                getLogger().error( "Error in configurator: Missing 'role' child element of 'handler' element." );
+                String role = handler.getChild( "role" ).getValue();
 
-                break;
+                String name = handler.getChild( "name" ).getValue();
+
+                if ( StringUtils.isEmpty( role ) )
+                {
+                    getLogger().error( "Error in configurator: Missing 'role' child element of 'handler' element." );
+
+                    break;
+                }
+
+                if ( StringUtils.isEmpty( name ) )
+                {
+                    getLogger().error( "Error in configurator: Missing 'name' child element of 'handler' element." );
+
+                    break;
+                }
+
+                if ( !appRuntimeProfile.getApplicationServerContainer().hasComponent( role ) )
+                {
+                    getLogger().error( "No component with the role '" + role + "' available." );
+
+                    break;
+                }
+
+                Object component = appRuntimeProfile.getApplicationServerContainer().lookup( role );
+
+                getLogger().info( "Adding XML-RPC handler for role '" + role + " to name '" + name + "'." );
+
+                xmlRpcServer.addHandler( null, name, port, component );
             }
-
-            if ( StringUtils.isEmpty( name ) )
+            catch ( PlexusConfigurationException e )
             {
-                getLogger().error( "Error in configurator: Missing 'name' child element of 'handler' element." );
-
-                break;
+                throw new PlexusServiceException( e.getMessage(), e );
             }
-
-            if ( !appRuntimeProfile.getApplicationServerContainer().hasComponent( role ) )
+            catch ( ComponentLookupException e )
             {
-                getLogger().error( "No component with the role '" + role + "' available." );
-
-                break;
+                throw new PlexusServiceException( e.getMessage(), e );
             }
-
-            Object component = appRuntimeProfile.getApplicationServerContainer().lookup( role );
-
-            getLogger().info( "Adding XML-RPC handler for role '" + role + " to name '" + name + "'." );
-
-            xmlRpcServer.addHandler( null, name, port, component );
+            catch ( XmlRpcException e )
+            {
+                throw new PlexusServiceException( e.getMessage(), e );
+            }
         }
     }
-    
+
     public void applicationStop( AppRuntimeProfile runtimeProfile )
-        throws Exception
     {
-        
     }
-    
+
 }

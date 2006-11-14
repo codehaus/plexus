@@ -39,7 +39,7 @@ public interface ApplicationBuilder
     String ROLE = ApplicationBuilder.class.getName();
 
     void assemble( String applicationName, File workingDirectory, List remoteRepositories,
-                   ArtifactRepository localRespository, Set projectArtifacts, Set additionalCoreArtifacts,
+                   ArtifactRepository localRepository, Set projectArtifacts, Set additionalCoreArtifacts,
                    Set serviceArtifacts, File applicationConfiguration, File configurationsDirectory,
                    Properties configurationProperties )
         throws ApplicationBuilderException;

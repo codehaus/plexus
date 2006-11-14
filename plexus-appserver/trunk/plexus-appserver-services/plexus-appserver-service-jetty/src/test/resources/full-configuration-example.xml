@@ -1,10 +1,10 @@
 <configuration>
   <webapps>
     <webapp>
-      <file>${plexus.home}/lib/continuum-web-1.0-alpha-3-SNAPSHOT.jar</file>
+      <file>${app.home}/lib/continuum-web-1.0-alpha-3-SNAPSHOT.jar</file>
       <context>/continuum</context>
       <standardWebappClassloader>true</standardWebappClassloader>
-      <extraction-path>${plexus.home}/webapp</extraction-path>
+      <extraction-path>${app.home}/webapp</extraction-path>
       <virtual-host>www.foo.com</virtual-host>
       <listeners>
         <http-listener>

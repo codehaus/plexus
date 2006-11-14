@@ -27,7 +27,6 @@ import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
-import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.io.FileReader;
@@ -91,23 +90,34 @@ public class PlexusApplicationHost
 
         container.setConfigurationResource( new FileReader( configurationResource ) );
 
-        container.addContextValue( "plexus.home", System.getProperty( "plexus.home" ) );
+        String plexusHome = System.getProperty( "plexus.home" );
+        plexusHome = new File( plexusHome ).getAbsolutePath();
+
+        container.addContextValue( "plexus.home", plexusHome );
+
+        File appserverHome = new File( System.getProperty( "appserver.home", plexusHome ) );
+        container.addContextValue( "appserver.home", appserverHome.getAbsolutePath() );
+
+        File appserverBase = new File( System.getProperty( "appserver.base", appserverHome.getAbsolutePath() ) );
+        container.addContextValue( "appserver.base", appserverBase.getAbsolutePath() );
 
         container.addContextValue( "plexus.work",
-                                   System.getProperty( "plexus.home" ) + "/" + PlexusRuntimeConstants.WORK_DIRECTORY );
+                                   new File( appserverBase, PlexusRuntimeConstants.WORK_DIRECTORY ).getAbsolutePath() );
 
-        container.addContextValue( "plexus.temp",
-                                   System.getProperty( "plexus.home" ) + "/" + PlexusRuntimeConstants.TEMP_DIRECTORY );
+        File plexusTemp = new File( appserverBase, PlexusRuntimeConstants.TEMP_DIRECTORY );
+        container.addContextValue( "plexus.temp", plexusTemp.getAbsolutePath() );
 
-        container.addContextValue( "plexus.logs",
-                                   System.getProperty( "plexus.home" ) + "/" + PlexusRuntimeConstants.LOGS_DIRECTORY );
-
-        File plexusLogs = FileUtils.resolveFile( new File( "." ), System.getProperty( "plexus.home" ) + "/" +
-            PlexusRuntimeConstants.LOGS_DIRECTORY );
+        File plexusLogs = new File( appserverBase, PlexusRuntimeConstants.LOGS_DIRECTORY );
+        container.addContextValue( "plexus.logs", plexusLogs.getAbsolutePath() );
 
         if ( !plexusLogs.exists() )
         {
             plexusLogs.mkdirs();
+        }
+
+        if ( !plexusTemp.exists() )
+        {
+            plexusTemp.mkdirs();
         }
 
         container.initialize();
@@ -125,6 +135,8 @@ public class PlexusApplicationHost
         // ----------------------------------------------------------------------
 
         applicationServer = (ApplicationServer) container.lookup( ApplicationServer.ROLE );
+        applicationServer.setAppServerHome( appserverHome );
+        applicationServer.setAppServerBase( appserverBase );
 
         // ----------------------------------------------------------------------
         //

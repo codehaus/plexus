@@ -73,9 +73,9 @@ public class DefaultServiceConfigurationBuilderTest
 
         assertEquals( "/continuum", webapp.getContext() );
 
-        assertEquals( "${plexus.home}/webapp", webapp.getExtractionPath() );
+        assertEquals( "${app.home}/webapp", webapp.getExtractionPath() );
 
-        assertEquals( "${plexus.home}/lib/continuum-web-1.0-alpha-3-SNAPSHOT.jar", webapp.getFile() );
+        assertEquals( "${app.home}/lib/continuum-web-1.0-alpha-3-SNAPSHOT.jar", webapp.getFile() );
 
         assertNull( webapp.getPath() );
 

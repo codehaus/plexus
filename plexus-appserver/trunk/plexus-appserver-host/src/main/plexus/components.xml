@@ -17,6 +17,8 @@
           <phase>deploy-services</phase>
           <phase>deploy-apps</phase>
         </phases>
+        <appServerHome>${plexus.home}</appServerHome>
+        <appServerBase>${plexus.home}</appServerBase>
       </configuration>
     </component>
 
@@ -57,7 +59,7 @@
       <role>org.codehaus.plexus.appserver.application.deploy.ApplicationDeployer</role>
       <implementation>org.codehaus.plexus.appserver.application.deploy.DefaultApplicationDeployer</implementation>
       <configuration>
-        <applicationsDirectory>${plexus.home}/apps</applicationsDirectory>
+        <applicationsDirectory>${appserver.home}/apps</applicationsDirectory>
         <phases>
           <phase>process-app-metadata</phase>
           <phase>expand-app</phase>
@@ -134,7 +136,7 @@
       <role>org.codehaus.plexus.appserver.service.deploy.ServiceDeployer</role>
       <implementation>org.codehaus.plexus.appserver.service.deploy.DefaultServiceDeployer</implementation>
       <configuration>
-        <servicesDirectory>${plexus.home}/services</servicesDirectory>
+        <servicesDirectory>${appserver.home}/services</servicesDirectory>
         <phases>
           <phase>expand-service</phase>
           <phase>add-service-libraries</phase>
