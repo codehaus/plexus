@@ -104,6 +104,9 @@ public class PlexusApplicationHostTest
 
     public void testMissingConfigFile()
     {
+        System.setProperty( "appserver.home", "" );
+        System.setProperty( "appserver.base", "" );
+
         PlexusApplicationHost host = new PlexusApplicationHost();
         try
         {
