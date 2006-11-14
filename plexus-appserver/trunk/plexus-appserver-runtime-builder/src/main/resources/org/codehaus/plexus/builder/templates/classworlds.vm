@@ -2,4 +2,4 @@ main is org.codehaus.plexus.appserver.PlexusApplicationHost from plexus.core
 
 [plexus.core]
 load ${plexus.core}/*.jar
-load ${java.home}/../lib/tools.jar
+load ${tools.jar}

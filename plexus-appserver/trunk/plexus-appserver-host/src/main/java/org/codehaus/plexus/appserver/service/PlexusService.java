@@ -36,11 +36,11 @@ public interface PlexusService
     String ROLE = PlexusService.class.getName();
 
     void beforeApplicationStart( AppRuntimeProfile appRuntimeProfile, PlexusConfiguration serviceConfiguration )
-        throws Exception;
+        throws PlexusServiceException;
 
     void afterApplicationStart( AppRuntimeProfile appRuntimeProfile, PlexusConfiguration serviceConfiguration )
-        throws Exception;
-    
+        throws PlexusServiceException;
+
     void applicationStop( AppRuntimeProfile runtimeProfile )
-        throws Exception;
+        throws PlexusServiceException;
 }

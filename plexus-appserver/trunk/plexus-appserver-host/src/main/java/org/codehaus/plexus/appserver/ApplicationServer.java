@@ -52,4 +52,12 @@ public interface ApplicationServer
     void addAppDescriptor( AppDescriptor appDescriptor );
 
     AppDescriptor getAppDescriptor( String appName );
+
+    File getAppServerHome();
+
+    File getAppServerBase();
+
+    void setAppServerHome( File appServerHome );
+
+    void setAppServerBase( File appServerBase );
 }

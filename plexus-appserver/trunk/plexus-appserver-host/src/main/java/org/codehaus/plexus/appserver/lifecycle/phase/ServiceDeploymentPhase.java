@@ -1,6 +1,8 @@
 package org.codehaus.plexus.appserver.lifecycle.phase;
 
-import org.codehaus.plexus.appserver.lifecycle.AppServerContext;
+import org.codehaus.plexus.appserver.ApplicationServer;
+import org.codehaus.plexus.appserver.ApplicationServerException;
+import org.codehaus.plexus.appserver.PlexusRuntimeConstants;
 import org.codehaus.plexus.appserver.lifecycle.AppServerLifecycleException;
 import org.codehaus.plexus.appserver.service.deploy.ServiceDeployer;
 import org.codehaus.plexus.appserver.supervisor.Supervisor;
@@ -19,31 +21,40 @@ public class ServiceDeploymentPhase
 
     private Supervisor serviceSupervisor;
 
-    public void execute( AppServerContext context )
+    public void execute( ApplicationServer appServer )
         throws AppServerLifecycleException
     {
         try
         {
-            serviceSupervisor.addDirectory( new File( context.getAppServerHome(), "services" ), new SupervisorListener()
+            File servicesDirectory =
+                new File( appServer.getAppServerHome(), PlexusRuntimeConstants.SERVICES_DIRECTORY );
+            if ( servicesDirectory.exists() && servicesDirectory.isDirectory() )
             {
-                public void onJarDiscovered( File jar )
+                serviceSupervisor.addDirectory( servicesDirectory, new SupervisorListener()
                 {
-                    String name = jar.getName();
-
-                    try
+                    public void onJarDiscovered( File jar )
                     {
-                        String serviceName = name.substring( 0, name.length() - 4 );
+                        String name = jar.getName();
 
-                        getLogger().info( serviceSupervisor.getName() + " is deploying " + serviceName + "." );
+                        try
+                        {
+                            String serviceName = name.substring( 0, name.length() - 4 );
 
-                        serviceDeployer.deploy( serviceName, jar );
+                            getLogger().info( serviceSupervisor.getName() + " is deploying " + serviceName + "." );
+
+                            serviceDeployer.deploy( serviceName, jar );
+                        }
+                        catch ( ApplicationServerException e )
+                        {
+                            getLogger().error( "Error while deploying service " + name + ".", e );
+                        }
                     }
-                    catch ( Exception e )
-                    {
-                        getLogger().error( "Error while deploying service " + name + ".", e );
-                    }
-                }
-            } );
+                } );
+            }
+            else
+            {
+                getLogger().info( "No services directory exists - not adding to scanner" );
+            }
 
             serviceSupervisor.scan();
         }

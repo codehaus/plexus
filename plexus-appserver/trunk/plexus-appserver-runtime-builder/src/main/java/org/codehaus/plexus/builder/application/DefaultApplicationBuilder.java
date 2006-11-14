@@ -95,6 +95,7 @@ public class DefaultApplicationBuilder
 
             libDir = mkdirs( new File( workingDirectory, PlexusApplicationConstants.LIB_DIRECTORY ) );
 
+            // TODO: why does the application have a logs directory?
             File logsDir = mkdirs( new File( workingDirectory, "logs" ) );
 
             mkdirs( new File( workingDirectory, "META-INF/plexus" ) );

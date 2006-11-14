@@ -27,8 +27,13 @@ package org.codehaus.plexus.service.jetty;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
+import org.codehaus.plexus.appserver.deploy.DeploymentException;
 import org.codehaus.plexus.appserver.service.AbstractPlexusService;
+import org.codehaus.plexus.appserver.service.PlexusServiceException;
+import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.codehaus.plexus.component.repository.exception.ComponentRepositoryException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.jetty.ServletContainer;
 import org.codehaus.plexus.jetty.ServletContainerException;
 import org.codehaus.plexus.jetty.configuration.HttpListener;
@@ -41,6 +46,7 @@ import org.codehaus.plexus.jetty.configuration.builder.ServiceConfigurationBuild
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
+import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -68,6 +74,7 @@ public class JettyPlexusService
 
     /**
      * Set of ports to be activated. The port can only be used once.
+     *
      * @deprecated
      */
     private Set activePorts = new HashSet();
@@ -76,16 +83,24 @@ public class JettyPlexusService
     // PlexusService Implementation
     // ----------------------------------------------------------------------
 
-    public void beforeApplicationStart( AppRuntimeProfile runtimeProfile, PlexusConfiguration serviceConfiguration )
-        throws Exception
+    public void beforeApplicationStart( AppRuntimeProfile appRuntimeProfile, PlexusConfiguration serviceConfiguration )
+        throws PlexusServiceException
     {
         // We probably need to stop running contexts here ...
 
-        ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration,
-                                                                                      runtimeProfile.getApplicationServerContainer().getContainerRealm() );
-        
-        runtimeProfile.addServiceConfiguration( this, configuration );
-        
+        ServiceConfiguration configuration;
+        try
+        {
+            configuration = configurationBuilder.buildConfiguration( serviceConfiguration,
+                                                                     appRuntimeProfile.getApplicationServerContainer().getContainerRealm() );
+        }
+        catch ( ComponentConfigurationException e )
+        {
+            throw new PlexusServiceException( e.getMessage(), e );
+        }
+
+        appRuntimeProfile.addServiceConfiguration( this, configuration );
+
         for ( Iterator it = configuration.getWebapps().iterator(); it.hasNext(); )
         {
             Webapp webapp = (Webapp) it.next();
@@ -94,7 +109,14 @@ public class JettyPlexusService
 
             if ( servletContainer.hasContext( webapp.getContext() ) )
             {
-                servletContainer.stopApplication( webapp.getContext() );
+                try
+                {
+                    servletContainer.stopApplication( webapp.getContext() );
+                }
+                catch ( ServletContainerException e )
+                {
+                    throw new PlexusServiceException( e.getMessage(), e );
+                }
             }
 
             File webAppDir;
@@ -105,7 +127,14 @@ public class JettyPlexusService
                 // Extract the jar
                 // ----------------------------------------------------------------------
 
-                expand( getFile( webapp.getFile() ), getFile( webapp.getExtractionPath() ), false );
+                try
+                {
+                    expand( getFile( webapp.getFile() ), getFile( webapp.getExtractionPath() ), false );
+                }
+                catch ( DeploymentException e )
+                {
+                    throw new PlexusServiceException( e.getMessage(), e );
+                }
 
                 webAppDir = getFile( webapp.getExtractionPath() );
             }
@@ -116,14 +145,15 @@ public class JettyPlexusService
 
             if ( !webAppDir.isDirectory() )
             {
-                throw new Exception( "The webapp isn't a directory: '" + webAppDir.getAbsolutePath() + "'." );
+                throw new PlexusServiceException(
+                    "The webapp isn't a directory: '" + webAppDir.getAbsolutePath() + "'." );
             }
 
             try
             {
                 getLogger().info( "Deploying " + webAppDir + " with context path of " + webapp.getContext() );
 
-                servletContainer.deployWarDirectory( webAppDir, runtimeProfile.getApplicationContainer(), webapp );
+                servletContainer.deployWarDirectory( webAppDir, appRuntimeProfile.getApplicationContainer(), webapp );
             }
             catch ( ServletContainerException e )
             {
@@ -142,7 +172,14 @@ public class JettyPlexusService
             getLogger().info(
                 "Deploying " + webContext.getPath() + " with context path of " + webContext.getContext() );
 
-            servletContainer.deployContext( webContext );
+            try
+            {
+                servletContainer.deployContext( webContext );
+            }
+            catch ( ServletContainerException e )
+            {
+                throw new PlexusServiceException( e.getMessage(), e );
+            }
         }
 
         // ----------------------------------------------------------------------------
@@ -156,15 +193,30 @@ public class JettyPlexusService
             getLogger().info( "Deploying servlet " + servletContext.getName() + " with context path of " +
                 servletContext.getContext() );
 
-            servletContainer.deployServletContext( servletContext );
+            try
+            {
+                servletContainer.deployServletContext( servletContext );
+            }
+            catch ( ServletContainerException e )
+            {
+                throw new PlexusServiceException( e.getMessage(), e );
+            }
         }
     }
 
     public void afterApplicationStart( AppRuntimeProfile appRuntimeProfile, PlexusConfiguration serviceConfiguration )
-        throws Exception
+        throws PlexusServiceException
     {
-        ServiceConfiguration configuration = configurationBuilder.buildConfiguration( serviceConfiguration,
-                                                                                      appRuntimeProfile.getApplicationServerContainer().getContainerRealm() );
+        ServiceConfiguration configuration;
+        try
+        {
+            configuration = configurationBuilder.buildConfiguration( serviceConfiguration,
+                                                                     appRuntimeProfile.getApplicationServerContainer().getContainerRealm() );
+        }
+        catch ( ComponentConfigurationException e )
+        {
+            throw new PlexusServiceException( e.getMessage(), e );
+        }
 
         for ( Iterator it = configuration.getWebapps().iterator(); it.hasNext(); )
         {
@@ -184,10 +236,28 @@ public class JettyPlexusService
 
             ClassRealm realm = c.getContainerRealm();
 
-            c.discoverComponents( realm );
+            try
+            {
+                c.discoverComponents( realm );
+            }
+            catch ( PlexusConfigurationException e )
+            {
+                throw new PlexusServiceException( e.getMessage(), e );
+            }
+            catch ( ComponentRepositoryException e )
+            {
+                throw new PlexusServiceException( e.getMessage(), e );
+            }
             //}
 
-            servletContainer.startApplication( application.getContext() );
+            try
+            {
+                servletContainer.startApplication( application.getContext() );
+            }
+            catch ( ServletContainerException e )
+            {
+                throw new PlexusServiceException( e.getMessage(), e );
+            }
         }
 
         for ( Iterator i = configuration.getWebContexts().iterator(); i.hasNext(); )
@@ -196,7 +266,14 @@ public class JettyPlexusService
 
             processWebContextConfiguration( webContext, appRuntimeProfile );
 
-            servletContainer.startApplication( webContext.getContext() );
+            try
+            {
+                servletContainer.startApplication( webContext.getContext() );
+            }
+            catch ( ServletContainerException e )
+            {
+                throw new PlexusServiceException( e.getMessage(), e );
+            }
         }
 
         for ( Iterator i = configuration.getServletContexts().iterator(); i.hasNext(); )
@@ -205,7 +282,14 @@ public class JettyPlexusService
 
             processWebContextConfiguration( servletContext, appRuntimeProfile );
 
-            servletContainer.startApplication( servletContext.getContext() );
+            try
+            {
+                servletContainer.startApplication( servletContext.getContext() );
+            }
+            catch ( ServletContainerException e )
+            {
+                throw new PlexusServiceException( e.getMessage(), e );
+            }
         }
     }
 
@@ -214,7 +298,7 @@ public class JettyPlexusService
     // ----------------------------------------------------------------------------
 
     private void processWebContextConfiguration( WebContext context, AppRuntimeProfile profile )
-        throws Exception
+        throws PlexusServiceException
     {
         if ( context.getVirtualHost() == null )
         {
@@ -226,92 +310,116 @@ public class JettyPlexusService
                 context.getVirtualHost() + "'." );
         }
 
-        HttpListener httpListener;
-        
-        String port;
-        
-        String listener;
-        
         for ( Iterator j = context.getListeners().iterator(); j.hasNext(); )
         {
-            httpListener = (HttpListener) j.next();
-            
-            port = Integer.toString( httpListener.getPort() );
-            
-            listener = ( httpListener.getHost() != null ) ? httpListener.getHost() : "*";
+            HttpListener httpListener = (HttpListener) j.next();
+
+            String port = Integer.toString( httpListener.getPort() );
+
+            String listener = httpListener.getHost() != null ? httpListener.getHost() : "*";
 
             listener += port;
-            
+
             if ( httpListener instanceof ProxyHttpListener )
             {
                 ProxyHttpListener proxyHttpListener = (ProxyHttpListener) httpListener;
 
-                String proxyListener = ( proxyHttpListener.getHost() != null ) ? proxyHttpListener.getHost() : "*";
+                String proxyListener = proxyHttpListener.getHost() != null ? proxyHttpListener.getHost() : "*";
 
                 proxyListener += port;
-                
+
                 getLogger().info( "Adding HTTP proxy listener on " + listener + " for " + proxyListener );
 
-                servletContainer.addProxyListener( proxyHttpListener );
+                try
+                {
+                    servletContainer.addProxyListener( proxyHttpListener );
+                }
+                catch ( ServletContainerException e )
+                {
+                    throw new PlexusServiceException( e.getMessage(), e );
+                }
+                catch ( UnknownHostException e )
+                {
+                    throw new PlexusServiceException( e.getMessage(), e );
+                }
             }
             else
             {
                 getLogger().info( "Adding HTTP listener on " + listener );
 
-                servletContainer.addListener( httpListener );
+                try
+                {
+                    servletContainer.addListener( httpListener );
+                }
+                catch ( ServletContainerException e )
+                {
+                    throw new PlexusServiceException( e.getMessage(), e );
+                }
+                catch ( UnknownHostException e )
+                {
+                    throw new PlexusServiceException( e.getMessage(), e );
+                }
             }
         }
     }
 
     public void applicationStop( AppRuntimeProfile runtimeProfile )
-        throws Exception
+        throws PlexusServiceException
     {
-        ServiceConfiguration configuration = (ServiceConfiguration) runtimeProfile.getServiceConfiguration( this );        
-       
-        removeContexts( configuration.getWebContexts() );        
-    
+        ServiceConfiguration configuration = (ServiceConfiguration) runtimeProfile.getServiceConfiguration( this );
+
+        removeContexts( configuration.getWebContexts() );
+
         removeContexts( configuration.getServletContexts() );
-                
-        Webapp webapp;        
-        
+
         for ( Iterator iterator = configuration.getWebapps().iterator(); iterator.hasNext(); )
-        {       
-            webapp = (Webapp) iterator.next();
-            
-            if ( servletContainer.hasContext( webapp.getContext() ) )
-            {    
-                removeListeners( webapp.getListeners() );
-                servletContainer.stopApplication( webapp.getContext() );                
-            }    
-        }            
-    }
-    
-    
-    private void removeContexts( List contexts )
-        throws Exception
-    {
-        WebContext context;
-        
-        for (Iterator iterator = contexts.iterator(); iterator.hasNext(); )
         {
-            context = (WebContext) iterator.next();            
-            removeListeners( context.getListeners() );    
-        }        
+            Webapp webapp = (Webapp) iterator.next();
+
+            if ( servletContainer.hasContext( webapp.getContext() ) )
+            {
+                removeListeners( webapp.getListeners() );
+                try
+                {
+                    servletContainer.stopApplication( webapp.getContext() );
+                }
+                catch ( ServletContainerException e )
+                {
+                    throw new PlexusServiceException( e.getMessage(), e );
+                }
+            }
+        }
+    }
+
+
+    private void removeContexts( List contexts )
+        throws PlexusServiceException
+    {
+        for ( Iterator iterator = contexts.iterator(); iterator.hasNext(); )
+        {
+            WebContext context = (WebContext) iterator.next();
+            removeListeners( context.getListeners() );
+        }
     }
 
     private void removeListeners( List listeners )
-        throws Exception
+        throws PlexusServiceException
     {
-        HttpListener listener;
-        
-        for (Iterator listenerIterator = listeners.iterator(); listenerIterator.hasNext(); )
+        for ( Iterator listenerIterator = listeners.iterator(); listenerIterator.hasNext(); )
         {
-            listener = ( HttpListener ) listenerIterator.next();
-            
-            servletContainer.removeListener( listener );
-        }        
+            HttpListener listener = (HttpListener) listenerIterator.next();
+
+            try
+            {
+                servletContainer.removeListener( listener );
+            }
+            catch ( ServletContainerException e )
+            {
+                throw new PlexusServiceException( e.getMessage(), e );
+            }
+        }
     }
-        
+
     private File getFile( String path )
     {
         return FileUtils.resolveFile( new File( "." ), path );

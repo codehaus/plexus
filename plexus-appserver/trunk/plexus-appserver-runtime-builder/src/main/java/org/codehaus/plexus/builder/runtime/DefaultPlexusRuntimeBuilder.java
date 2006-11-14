@@ -188,6 +188,7 @@ public class DefaultPlexusRuntimeBuilder
             // Set up the directory structure
             // ----------------------------------------------------------------------
 
+            // TODO: should we set up .base separately?
             mkdirs( getAppsDirectory( workingDirectory ) );
 
             File binDir = mkdirs( new File( workingDirectory, PlexusRuntimeConstants.BIN_DIRECTORY ) );

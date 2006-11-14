@@ -1,9 +1,9 @@
-package org.codehaus.plexus.appserver;
+package org.codehaus.plexus.appserver.service;
 
 /*
  * The MIT License
  *
- * Copyright (c) 2004, The Codehaus
+ * Copyright (c) 2006, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,35 +24,16 @@ package org.codehaus.plexus.appserver;
  * SOFTWARE.
  */
 
-/**
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
- */
-public class PlexusRuntimeConstants
+public class PlexusServiceException
+    extends Exception
 {
-    public static final String APPLICATIONS_DIRECTORY = "apps";
-
-    public static final String BIN_DIRECTORY = "bin";
-
-    public static final String BOOT_DIRECTORY = "core/boot";
-
-    public static final String CONF_DIRECTORY = "conf";
-
-    public static final String CORE_DIRECTORY = "core";
-
-    public static final String LOGS_DIRECTORY = "logs";
-
-    public static final String LIB_DIRECTORY = "lib";
-
-    public static final String TEMP_DIRECTORY = "temp";
-
-    public static final String WORK_DIRECTORY = "work";
-
-    public static final String SERVICES_DIRECTORY = "services";
-
-    public static final String CONFIGURATION_FILE = "plexus.xml";
-
-    private PlexusRuntimeConstants()
+    public PlexusServiceException( String message, Exception e )
     {
+        super( message, e );
+    }
+
+    public PlexusServiceException( String message )
+    {
+        super( message );
     }
 }

@@ -28,7 +28,6 @@ import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.appserver.application.deploy.ApplicationDeployer;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
-import org.codehaus.plexus.appserver.lifecycle.AppServerContext;
 import org.codehaus.plexus.appserver.lifecycle.AppServerLifecycleException;
 import org.codehaus.plexus.appserver.lifecycle.phase.AppServerPhase;
 import org.codehaus.plexus.appserver.service.deploy.ServiceDeployer;
@@ -41,7 +40,6 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
-import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.util.Collection;
@@ -74,6 +72,10 @@ public class DefaultApplicationServer
     private List phases;
 
     private Map appDescriptors;
+
+    private File appServerHome;
+
+    private File appServerBase;
 
     // ----------------------------------------------------------------------
     // Application Facade
@@ -112,9 +114,29 @@ public class DefaultApplicationServer
         appDescriptors.put( appDescriptor.getId(), appDescriptor );
     }
 
-    public AppDescriptor getAppDescriptor( String appId )
+    public AppDescriptor getAppDescriptor( String appName )
     {
-        return (AppDescriptor) appDescriptors.get( appId );
+        return (AppDescriptor) appDescriptors.get( appName );
+    }
+
+    public File getAppServerHome()
+    {
+        return appServerHome;
+    }
+
+    public File getAppServerBase()
+    {
+        return appServerBase;
+    }
+
+    public void setAppServerHome( File appServerHome )
+    {
+        this.appServerHome = appServerHome;
+    }
+
+    public void setAppServerBase( File appServerBase )
+    {
+        this.appServerBase = appServerBase;
     }
 
     public Collection getAppDescriptors()
@@ -148,10 +170,6 @@ public class DefaultApplicationServer
         // and services will be deployed.
         // ----------------------------------------------------------------------
 
-        File appServerHome = FileUtils.resolveFile( new File( "." ), System.getProperty( "plexus.home" ) );
-
-        AppServerContext appServerContext = new AppServerContext( this, appServerHome );
-
         for ( Iterator i = phases.iterator(); i.hasNext(); )
         {
             String appServerPhaseId = (String) i.next();
@@ -161,7 +179,7 @@ public class DefaultApplicationServer
                 AppServerPhase appServerPhase =
                     (AppServerPhase) container.lookup( AppServerPhase.ROLE, appServerPhaseId );
 
-                appServerPhase.execute( appServerContext );
+                appServerPhase.execute( this );
             }
             catch ( ComponentLookupException e )
             {

@@ -1,6 +1,7 @@
 package org.codehaus.plexus.appserver.application.deploy.lifecycle.phase;
 
 import org.codehaus.plexus.appserver.PlexusApplicationConstants;
+import org.codehaus.plexus.appserver.PlexusRuntimeConstants;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 
@@ -28,8 +29,18 @@ public class ValidateAppPhase
 
         String appId = context.getApplicationId();
 
-        File applicationConfigurationFile = new File( new File( appDir, PlexusApplicationConstants.CONF_DIRECTORY ),
-                                                      PlexusApplicationConstants.CONFIGURATION_FILE );
+        // first, look in ${appserver.base}/conf/APP_ID/application.xml for an override
+        File serverAppConfigDir =
+            new File( context.getAppServer().getAppServerBase(), PlexusRuntimeConstants.CONF_DIRECTORY );
+        File appConfigDir = new File( serverAppConfigDir, appId );
+        File applicationConfigurationFile = new File( appConfigDir, PlexusApplicationConstants.CONFIGURATION_FILE );
+
+        if ( !applicationConfigurationFile.exists() )
+        {
+            // otherwise, fallback to the deployed application's conf/application.xml
+            appConfigDir = new File( appDir, PlexusApplicationConstants.CONF_DIRECTORY );
+            applicationConfigurationFile = new File( appConfigDir, PlexusApplicationConstants.CONFIGURATION_FILE );
+        }
 
         if ( !applicationConfigurationFile.exists() )
         {
@@ -43,9 +54,9 @@ public class ValidateAppPhase
 
         File applicationLibrary = new File( appDir, PlexusApplicationConstants.LIB_DIRECTORY );
 
-        if ( !applicationLibrary.exists() )
+        if ( !applicationLibrary.exists() || !applicationLibrary.isDirectory() )
         {
-            throw new AppDeploymentException( "The appication '" + appId + "' does not have a valid library: " +
+            throw new AppDeploymentException( "The application '" + appId + "' does not have a valid library: " +
                 applicationLibrary + " does not exist!" );
         }
 

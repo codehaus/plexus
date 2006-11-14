@@ -1,30 +1,26 @@
 package org.codehaus.plexus.appserver.application.deploy.lifecycle.phase;
 
-import org.codehaus.classworlds.ClassRealm;
-import org.codehaus.classworlds.ClassWorld;
-import org.codehaus.classworlds.DuplicateRealmException;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.context.ContextMapAdapter;
 import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
-import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -38,18 +34,17 @@ public class CreateAppContainerPhase
     public void execute( AppDeploymentContext context )
         throws AppDeploymentException
     {
-        DefaultPlexusContainer appServerContainer = context.getAppServerContainer();
+        DefaultPlexusContainer serverContainer = context.getAppServerContainer();
 
         String name = "plexus.application." + context.getApplicationId();
 
         getLogger().info( "Using appDir = " + context.getAppDir() );
 
-        DefaultPlexusContainer applicationContainer = null;
+        DefaultPlexusContainer applicationContainer;
 
         try
         {
-            applicationContainer =
-                new DefaultPlexusContainer( name, appServerContainer.getClassWorld(), appServerContainer );
+            applicationContainer = new DefaultPlexusContainer( name, serverContainer.getClassWorld(), serverContainer );
         }
         catch ( PlexusContainerException e )
         {
@@ -60,13 +55,18 @@ public class CreateAppContainerPhase
         {
             InputStream stream = new FileInputStream( context.getAppConfigurationFile() );
 
+            //noinspection IOResourceOpenedButNotSafelyClosed
             Reader r = new InputStreamReader( stream );
 
             applicationContainer.setConfigurationResource( r );
         }
-        catch ( Exception e )
+        catch ( PlexusConfigurationResourceException e )
         {
             throw new AppDeploymentException( "Error processing application configurator.", e );
+        }
+        catch ( FileNotFoundException e )
+        {
+            getLogger().info( "Application has no configuration file: skipping configuration" );
         }
 
         Properties contextValues = context.getContext();
@@ -89,11 +89,22 @@ public class CreateAppContainerPhase
 
         try
         {
-            String plexusHome = (String) context.getAppServerContainer().getContext().get( "plexus.home" );
+            if ( !applicationContainer.getContext().contains( "appserver.home" ) )
+            {
+                applicationContainer.addContextValue( "appserver.home",
+                                                      context.getAppServer().getAppServerHome().getAbsolutePath() );
+            }
 
-            applicationContainer.addContextValue( "appserver.home", new File( plexusHome ).getCanonicalPath() );
+            if ( !applicationContainer.getContext().contains( "appserver.base" ) )
+            {
+                applicationContainer.addContextValue( "appserver.base",
+                                                      context.getAppServer().getAppServerBase().getAbsolutePath() );
+            }
+
+            getLogger().debug( "appserver.home = " + applicationContainer.getContext().get( "appserver.home" ) );
+            getLogger().debug( "appserver.base = " + applicationContainer.getContext().get( "appserver.base" ) );
         }
-        catch ( Exception e )
+        catch ( ContextException e )
         {
             // Won't happen
         }
@@ -108,13 +119,14 @@ public class CreateAppContainerPhase
         // ----------------------------------------------------------------------------
         // Make the user's home directory available in the context
         // ----------------------------------------------------------------------------
+        //noinspection AccessOfSystemProperties
         applicationContainer.addContextValue( "user.home", System.getProperty( "user.home" ) );
 
         Object appserver = null;
 
         try
         {
-            appserver = appServerContainer.getContext().get( "plexus.appserver" );
+            appserver = serverContainer.getContext().get( "plexus.appserver" );
         }
         catch ( ContextException e )
         {
@@ -129,148 +141,37 @@ public class CreateAppContainerPhase
 
         Map ctx = new ContextMapAdapter( applicationContainer.getContext() );
 
-        Xpp3Dom dom;
+        Xpp3Dom dom = null;
 
         try
         {
+            //noinspection IOResourceOpenedButNotSafelyClosed
             Reader configurationReader =
                 new InterpolationFilterReader( new FileReader( context.getAppConfigurationFile() ), ctx );
 
             dom = Xpp3DomBuilder.build( configurationReader );
         }
-        catch ( Exception e )
+        catch ( FileNotFoundException e )
+        {
+            // we skipped this once already, ignore it this time.
+            // Would be better to preload it instead.
+        }
+        catch ( IOException e )
+        {
+            throw new AppDeploymentException( "Error processing application configurator.", e );
+        }
+        catch ( XmlPullParserException e )
         {
             throw new AppDeploymentException( "Error processing application configurator.", e );
         }
 
-        PlexusConfiguration applicationConfiguration = new XmlPlexusConfiguration( dom );
+        if ( dom != null )
+        {
+            PlexusConfiguration applicationConfiguration = new XmlPlexusConfiguration( dom );
 
-        context.setAppConfiguration( applicationConfiguration );
+            context.setAppConfiguration( applicationConfiguration );
+        }
 
         context.setApplicationContainer( applicationContainer );
-    }
-
-    // ----------------------------------------------------------------------------
-    // These were specifically made so that a WAR file deploy with Jetty in a
-    // standard way would work properly. The relationship that ClassWorlds sets
-    // up among classloaders doesn't appear to work in standard situations
-    // which is bad.
-    // ----------------------------------------------------------------------------
-
-    class SimpleClassLoader
-        extends URLClassLoader
-    {
-        public SimpleClassLoader( ClassLoader classLoader )
-        {
-            super( new URL[0], classLoader );
-        }
-
-        public void addURL( URL url )
-        {
-            super.addURL( url );
-        }
-    }
-
-    class SimpleClassRealm
-        implements ClassRealm
-    {
-        private String id;
-
-        private ClassWorld world;
-
-        SimpleClassLoader classLoader;
-
-        public SimpleClassRealm( String id, SimpleClassLoader classLoader, ClassWorld world )
-        {
-            this.id = id;
-            this.classLoader = classLoader;
-            this.world = world;
-        }
-
-        public String getId()
-        {
-            return id;
-        }
-
-        public void addConstituent( URL url )
-        {
-            classLoader.addURL( url );
-        }
-
-        public ClassRealm locateSourceRealm( String a )
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public ClassLoader getClassLoader()
-        {
-            return classLoader;
-        }
-
-        public URL[] getConstituents()
-        {
-            return classLoader.getURLs();
-        }
-
-        public Class loadClass( String name )
-            throws ClassNotFoundException
-        {
-            return classLoader.loadClass( name );
-        }
-
-        public URL getResource( String name )
-        {
-            return classLoader.getResource( name );
-        }
-
-        public Enumeration findResources( String name )
-            throws IOException
-        {
-            return classLoader.findResources( name );
-        }
-
-        // ----------------------------------------------------------------------------
-        // Things we don't care about, we'll use normal classloader semantics.
-        // ----------------------------------------------------------------------------
-
-        public ClassWorld getWorld()
-        {
-            return world;
-        }
-
-        public void importFrom( String a, String b )
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public void setParent( ClassRealm c )
-        {
-        }
-
-        public InputStream getResourceAsStream( String name )
-        {
-            return classLoader.getResourceAsStream( name );
-        }
-
-        public ClassRealm getParent()
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public ClassRealm createChildRealm( String id )
-            throws DuplicateRealmException
-        {
-            throw new UnsupportedOperationException();
-        }
-
-        public void display()
-        {
-            URL[] urls = classLoader.getURLs();
-
-            for ( int i = 0; i < urls.length; i++ )
-            {
-                System.out.println( "url = " + urls[i] );
-            }
-        }
     }
 }

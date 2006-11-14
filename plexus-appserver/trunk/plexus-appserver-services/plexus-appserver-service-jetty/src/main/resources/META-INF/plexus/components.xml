@@ -19,7 +19,7 @@
       <role-hint>jetty-plus</role-hint>
       <implementation>org.codehaus.plexus.jetty.JettyPlusServletContainer</implementation>
       <configuration>
-        <jettyXmlFile>${plexus.home}/conf/jetty.xml</jettyXmlFile>
+        <jettyXmlFile>${appserver.base}/conf/jetty.xml</jettyXmlFile>
       </configuration>
     </component>
     <component>
