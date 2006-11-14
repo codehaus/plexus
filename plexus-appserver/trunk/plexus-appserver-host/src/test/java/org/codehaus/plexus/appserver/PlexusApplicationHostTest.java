@@ -102,13 +102,73 @@ public class PlexusApplicationHostTest
         assertBase( appserverBase, host.getContainer().getContext() );
     }
 
+    public void testMissingConfigFile()
+    {
+        PlexusApplicationHost host = new PlexusApplicationHost();
+        try
+        {
+            host.start( getClassWorld() );
+            fail( "Shouldn't find a config file" );
+        }
+        catch ( Exception e )
+        {
+            assertEquals( "Unable to find a default configuration file", e.getMessage() );
+        }
+    }
+
+    public void testBaseConfigFile()
+        throws Exception
+    {
+        File appserverBase = new File( "target/appserver-base" );
+        File confDir = new File( appserverBase, "conf" );
+        confDir.mkdirs();
+        File confFile = new File( confDir, "plexus.xml" );
+        FileUtils.copyFile( new File( getResourceFile( "/plexus.xml" ) ), confFile );
+        System.setProperty( "appserver.base", appserverBase.getAbsolutePath() );
+
+        File appserverHome = new File( "target/appserver-home" );
+        confDir = new File( appserverHome, "conf" );
+        confDir.mkdirs();
+        FileUtils.copyFile( new File( getResourceFile( "/plexus.xml" ) ), new File( confDir, "plexus.xml" ) );
+        System.setProperty( "appserver.home", appserverHome.getAbsolutePath() );
+
+        PlexusApplicationHost host = new PlexusApplicationHost();
+        host.start( getClassWorld() );
+
+        assertEquals( "Check config file used is in base", confFile.getAbsolutePath(), host.getConfigurationResource() );
+    }
+
+    public void testHomeConfigFile()
+        throws Exception
+    {
+        File appserverBase = new File( "target/clean-appserver-base" );
+        System.setProperty( "appserver.base", appserverBase.getAbsolutePath() );
+
+        File appserverHome = new File( "target/appserver-home" );
+        File confDir = new File( appserverHome, "conf" );
+        confDir.mkdirs();
+        File confFile = new File( confDir, "plexus.xml" );
+        FileUtils.copyFile( new File( getResourceFile( "/plexus.xml" ) ), confFile );
+        System.setProperty( "appserver.home", appserverHome.getAbsolutePath() );
+
+        PlexusApplicationHost host = new PlexusApplicationHost();
+        host.start( getClassWorld() );
+
+        assertEquals( "Check config file used is in base", confFile.getAbsolutePath(), host.getConfigurationResource() );
+    }
+
     private PlexusApplicationHost startHost()
         throws Exception
     {
         PlexusApplicationHost host = new PlexusApplicationHost();
-        ClassWorld world = new ClassWorld( "plexus.core", getClass().getClassLoader() );
-        host.start( world, getResourceFile( "/plexus.xml" ) );
+        host.start( getClassWorld(), getResourceFile( "/plexus.xml" ) );
         return host;
+    }
+
+    private ClassWorld getClassWorld()
+    {
+        ClassWorld world = new ClassWorld( "plexus.core", getClass().getClassLoader() );
+        return world;
     }
 
     private void assertBase( String plexusBase, Context context )
