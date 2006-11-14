@@ -23,6 +23,33 @@
           <configurationProperties>src/plexus.properties</configurationProperties>
         </configuration>
       </plugin>
+	  <!-- Application Assembler plugin config -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>assemble</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <assembleDirectory>target/site-monitor-app</assembleDirectory>
+          <includeConfigurationDirectoryInClasspath>
+            true
+          </includeConfigurationDirectoryInClasspath>
+          <programs>
+            <program>
+              <name>deployer</name>
+              <mainClass>
+                org.codehaus.plexus.site.monitor.Main
+              </mainClass>
+            </program>
+          </programs>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
