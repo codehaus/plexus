@@ -111,8 +111,8 @@ public class DefaultComponentDescriptorCreator
 
             if ( !sourceDirectory.isDirectory() )
             {
-                getLogger().warn(
-                    "Specified source directory isn't a directory: " + "'" + sourceDirectory.getAbsolutePath() + "'." );
+                getLogger().debug( "Specified source directory isn't a directory: " +
+                    "'" + sourceDirectory.getAbsolutePath() + "'." );
             }
 
             getLogger().debug( " - " + sourceDirectory.getAbsolutePath() );
@@ -150,7 +150,7 @@ public class DefaultComponentDescriptorCreator
                 if ( defaultsByRole.containsKey( componentDescriptor.getRole() ) )
                 {
                     ComponentDescriptor desc = (ComponentDescriptor) defaultsByRole.get( componentDescriptor.getRole() );
-                    
+
                     if ( componentDescriptor.getInstantiationStrategy() == null )
                     {
                         componentDescriptor.setInstantiationStrategy( desc.getInstantiationStrategy() );
