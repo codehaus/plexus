@@ -92,9 +92,10 @@ Plexus Website Monitor Application
 
 +------------------------------------------+
 
+
 ** Setting up an IDE project
 
-Before we proceed further let us set up an Eclipse project for our Plexus application project. To do so currently, and as a workaround we comment out the generated <<<<packaging>>>> element in the <<<pom.xml>>> and add a <<<<<packaging>>>><<<jar>>><<<</packaging>>>>. To generate an Eclipse project: 
+  Before we proceed further let us set up an Eclipse project for our Plexus application project. To do so currently, and as a workaround we comment out the generated <<<<packaging>>>> element in the <<<pom.xml>>> and add a <<<<packaging>>>><<<jar>>><<<</packaging>>>>. To generate an Eclipse project: 
 
   [[1]] Open up a command prompt/terminal, and
 
@@ -106,17 +107,18 @@ Before we proceed further let us set up an Eclipse project for our Plexus applic
 
 +-------------------------------------------+
 
-Import the generated project under an Eclipse Project. Having imported the project, we now revert the <<<packaging>>> back to value <<<plexus-application>>>
+ Import the generated project under an Eclipse Project. 
+
 
 
 ** Adding an Application Entry Class 
 
-For any standalone Java application, we need a Class that defines a <<<main>>> method; the case of Plexus application is no different. We add a Application main class for our application (don't worry about the implementation details yet). 
+ For any standalone Java application, we need a Class that defines a <<<main>>> method; the case of Plexus application is no different. We add a Application main class for our application (don't worry about the implementation details yet). 
 
 
-We create a folder for Java sources <<<src/main/java>>> and add a sensible package for the main class. For this trail, we have created the package <<<org.codehaus.plexus.site.monitor>>> and create a main class <<<Main.java>>> under it. 
+ We create a folder for Java sources <<<src/main/java>>> and add a sensible package for the main class. For this trail, we have created the package <<<org.codehaus.plexus.site.monitor>>> and create a main class <<<Main.java>>> under it. 
 
-The generated source with a <<<System.out.println()>>> looks like below: 
+ The generated source with a <<<System.out.println()>>> looks like below: 
 
 +-------------------------------------------+
 
@@ -133,7 +135,7 @@ public class Main
 
 +-------------------------------------------+
 
-
+  Having imported the project and added a main class, we now revert the <<<packaging>>> back to value <<<plexus-application>>>.
 
 
 
