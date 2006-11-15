@@ -203,7 +203,7 @@ public class Main
   [[1]] {{{http://maven.apache.org/articles.html}Maven Books and Articles}}.
 
 
-** Added <<<<pluginRepositories>>>> for Plugin download 
+** Adding <<<<pluginRepositories>>>> for Appassembler plugin download 
 
  As of this writing the Appassembler pluging is available from the Codehaus snapshots repository. To have Maven download the latest version (snapshot), we add the <<<pluginRepositories>>> information to the <<<pom.xml>>>
 
@@ -234,7 +234,7 @@ public class Main
   [[1]]   Run the following Maven command 
 
 +--------------------------------------------+
-mvn clean  package 
+mvn clean package 
 +--------------------------------------------+
 
  If you look under <<<target>>> directory you will see that the Site Monitor application is assembled under <<<site-monitor-app>>> directory. The contents under that directory consist of executable scripts (Shell and batch script by default). 
@@ -254,5 +254,7 @@ Hello Plexus application!
 
 
  At this point we are ready to play with Plexus Embedder and hook our Website monitor component into our Plexus application.
+
+ {{{07_02_plexus_embedder_and_component_integration.html}Next: Plexus Embedder Intro & Site Monitor component integration into the application }} 
 
 

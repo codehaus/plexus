@@ -1,4 +1,6 @@
  -----
+Writing your first Plexus Component
+ -----
 Rahul Thakur
  ----
 11th June 2006 
@@ -23,7 +25,7 @@ Creating a Component 'Role'
 
  [[2]]  the configuration for the component implementation.
 
- When Plexus Container starts up, it uses Classworlds (the library that handles the classloading) to discover any Plexus components. It does this by looking for component descriptors (TODO: link to Concepts: Component Descriptor) under standard location - META-INF/plexus.
+ When Plexus Container starts up, it uses Classworlds (the library that handles the classloading) to discover any Plexus components. It does this by looking for component descriptors ({{{/guides/developer-guide/configuration/component-descriptor.html}More on Component Descriptor here }}) under standard location - META-INF/plexus.
 
  That's enough to start tinkering with your website monitor component, so let's get our hands dirty!
 Identify a Component Role
