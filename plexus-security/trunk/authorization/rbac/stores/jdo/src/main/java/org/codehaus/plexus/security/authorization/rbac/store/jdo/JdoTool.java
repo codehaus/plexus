@@ -39,6 +39,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
+import javax.jdo.datastore.DataStoreCache;
 import javax.jdo.listener.DeleteLifecycleListener;
 import javax.jdo.listener.InstanceLifecycleEvent;
 import javax.jdo.listener.StoreLifecycleListener;
@@ -132,6 +133,12 @@ public class JdoTool
 
             listener.rbacInit( roles.isEmpty() );
         }
+    }
+
+    public void enableCache( Class clazz )
+    {
+        DataStoreCache cache = pmf.getDataStoreCache();
+        cache.pinAll( clazz, false ); // Pin all objects of type clazz from now on
     }
 
     public Object saveObject( Object object )
@@ -400,4 +407,5 @@ public class JdoTool
     {
         // ignore
     }
+
 }
