@@ -1110,22 +1110,36 @@ public class AbstractRbacManagerTestCase
         assertEquals( 3, eventTracker.addedPermissionNames.size() );
         assertEquals( 0, eventTracker.removedPermissionNames.size() );
     }
-    
+
     private final static int ITERATIONS = 10000;
+
     private final static int ONESECOND = 1000;
-    
-    private double calculateOperationsPerSecond(long startTime, long endTime, int iterations)
+
+    public void assertPerformance( String msg, long startTime, long endTime, int iterations, double threshold )
     {
-        System.out.println( "Start Time (ms): " + startTime );
-        System.out.println( "End Time (ms)  : " + endTime );
         long elapsed = endTime - startTime;
-        System.out.println( "elapsed (ms)   : " + elapsed );
         double ratio = (double) elapsed / (double) ONESECOND; // ratio of time to 1 second.
-        System.out.println( "Ratio          : " + ratio );
         double opsPerSecond = (double) iterations / ratio;
-        System.out.println( "Ops per second : " + opsPerSecond );
+
+        System.out.println( "Performance " + msg + ": " + opsPerSecond + " operations per second. (effective)" );
         
-        return opsPerSecond;
+        if ( opsPerSecond < threshold )
+        {
+            // Failure
+
+            StringBuffer stats = new StringBuffer();
+
+            stats.append( "Stats on " ).append( msg );
+            stats.append( "\nStart Time (ms): " ).append( Long.toString( startTime ) );
+            stats.append( "\nEnd Time (ms)  : " ).append( Long.toString( endTime ) );
+            stats.append( "\nElapsed (ms)   : " ).append( Long.toString( elapsed ) );
+            stats.append( "\nRatio          : " ).append( Double.toString( ratio ) );
+            stats.append( "\nOps per second : " ).append( Double.toString( opsPerSecond ) );
+
+            System.out.println( stats.toString() );
+
+            fail( "Performance Error: " + msg + " expecting greater than [" + threshold + "], actual [" + opsPerSecond + "]" );
+        }
     }
 
     public void testPerformanceResource()
@@ -1162,12 +1176,12 @@ public class AbstractRbacManagerTestCase
         }
 
         long endTime = System.currentTimeMillis();
-        double opsPerSecond = calculateOperationsPerSecond( startTime, endTime, ITERATIONS );
-        
-        assertTrue("Resource Performance.", (opsPerSecond > 500.0) );
+
+        assertPerformance( "Resource", startTime, endTime, ITERATIONS, 500.0 );
     }
-    
-    public void testPerformanceUserAssignment() throws RbacManagerException
+
+    public void testPerformanceUserAssignment()
+        throws RbacManagerException
     {
         RBACManager manager = getRbacManager();
 
@@ -1241,9 +1255,87 @@ public class AbstractRbacManagerTestCase
         }
 
         long endTime = System.currentTimeMillis();
-        double opsPerSecond = calculateOperationsPerSecond( startTime, endTime, ITERATIONS );
+        assertPerformance( "UserAssignment", startTime, endTime, ITERATIONS, 350.0 );
+    }
 
-        assertTrue( "UserAssignment Performance (expected more than 500 per second, actual " + opsPerSecond + ").",
-                    ( opsPerSecond > 350.0 ) );
+    public void testPerformanceRoles()
+        throws RbacManagerException
+    {
+        RBACManager manager = getArchivaDefaults();
+
+        String roleIdSysAdmin = "System Administrator";
+        String roleIdUserAdmin = "User Administrator";
+
+        long startTime = System.currentTimeMillis();
+
+        for ( int i = 0; i <= ITERATIONS; i++ )
+        {
+            Role roleSysAdmin = manager.getRole( roleIdSysAdmin );
+            Role roleUserAdmin = manager.getRole( roleIdUserAdmin );
+
+            assertNotNull( roleSysAdmin );
+            assertNotNull( roleUserAdmin );
+
+            assertEquals( roleIdSysAdmin, roleSysAdmin.getName() );
+            assertEquals( roleIdUserAdmin, roleUserAdmin.getName() );
+        }
+
+        long endTime = System.currentTimeMillis();
+
+        assertPerformance( "Roles", startTime, endTime, ITERATIONS, 130 );
+    }
+
+    public void testPerformancePermissions()
+        throws RbacManagerException
+    {
+        RBACManager manager = getArchivaDefaults();
+
+        String permIdRunIndexer = "Run Indexer";
+        String permIdAddRepo = "Add Repository";
+
+        long startTime = System.currentTimeMillis();
+
+        for ( int i = 0; i <= ITERATIONS; i++ )
+        {
+            Permission permRunIndex = manager.getPermission( permIdRunIndexer );
+            Permission permAddRepo = manager.getPermission( permIdAddRepo );
+
+            assertNotNull( permRunIndex );
+            assertNotNull( permAddRepo );
+
+            assertEquals( permIdRunIndexer, permRunIndex.getName() );
+            assertEquals( permIdAddRepo, permAddRepo.getName() );
+        }
+
+        long endTime = System.currentTimeMillis();
+
+        assertPerformance( "Permissions", startTime, endTime, ITERATIONS, 350 );
+    }
+    
+    public void testPerformanceOperations()
+        throws RbacManagerException
+    {
+        RBACManager manager = getArchivaDefaults();
+
+        String operIdEditRepo = "edit-repository";
+        String operIdDelRepo = "delete-repository";
+
+        long startTime = System.currentTimeMillis();
+
+        for ( int i = 0; i <= ITERATIONS; i++ )
+        {
+            Operation operEditRepo = manager.getOperation( operIdEditRepo );
+            Operation operDelRepo = manager.getOperation( operIdDelRepo );
+
+            assertNotNull( operEditRepo );
+            assertNotNull( operDelRepo );
+
+            assertEquals( operIdEditRepo, operEditRepo.getName() );
+            assertEquals( operIdDelRepo, operDelRepo.getName() );
+        }
+
+        long endTime = System.currentTimeMillis();
+
+        assertPerformance( "Operations", startTime, endTime, ITERATIONS, 500 );
     }
 }

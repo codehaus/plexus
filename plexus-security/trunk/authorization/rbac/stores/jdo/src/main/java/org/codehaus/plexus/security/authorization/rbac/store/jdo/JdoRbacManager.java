@@ -604,6 +604,7 @@ public class JdoRbacManager
         jdo.enableCache( JdoOperation.class );
         jdo.enableCache( JdoResource.class );
         jdo.enableCache( JdoUserAssignment.class );
+        jdo.enableCache( JdoPermission.class );
     }
 
     public void rbacInit( boolean freshdb )
