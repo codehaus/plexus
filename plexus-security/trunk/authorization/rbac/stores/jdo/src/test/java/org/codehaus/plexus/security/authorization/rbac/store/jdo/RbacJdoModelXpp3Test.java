@@ -32,6 +32,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -147,7 +148,11 @@ public class RbacJdoModelXpp3Test
 
     private void assertUserAssignment( JdoUserAssignment expectedAssignment, JdoUserAssignment assignment )
     {
-        assertEquals( expectedAssignment.getTimestamp(), assignment.getTimestamp() );
+        SimpleDateFormat sdf = new SimpleDateFormat( "EEE, d MMM yyyy HH:mm:ss Z" );
+        assertNotNull( expectedAssignment.getTimestamp() );
+        assertNotNull( assignment.getTimestamp() );
+
+        assertEquals( sdf.format( expectedAssignment.getTimestamp() ), sdf.format( assignment.getTimestamp() ) );
         assertEquals( expectedAssignment.getRoleNames(), assignment.getRoleNames() );
     }
 

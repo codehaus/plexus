@@ -83,6 +83,7 @@
             <id>modello-java</id>
             <goals>
               <goal>java</goal>
+              <!-- TODO: Move these to plexus-security-authorization-rbac-model -->
               <goal>xpp3-reader</goal>
               <goal>xpp3-writer</goal>
             </goals>
