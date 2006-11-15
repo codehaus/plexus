@@ -181,7 +181,7 @@ public class Main
           </includeConfigurationDirectoryInClasspath>
           <programs>
             <program>
-              <name>deployer</name>
+              <name>monitor`</name>
               <mainClass>
                 org.codehaus.plexus.site.monitor.Main
               </mainClass>
@@ -248,9 +248,10 @@ mvn clean  package
  You should an output similar to as below on the console:
 
 +--------------------------------------------+
-E:\plexus\plexus-examples\plexus-website-monitor-application\target\site-monitor-app\bin>deployer.bat
+E:\plexus\plexus-examples\plexus-website-monitor-application\target\site-monitor-app\bin>monitor.bat
 Hello Plexus application!
 +--------------------------------------------+
+
 
  At this point we are ready to play with Plexus Embedder and hook our Website monitor component into our Plexus application.
 
