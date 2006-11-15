@@ -29,6 +29,11 @@
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-rbac-model</artifactId>
     </dependency>
+    <!-- TODO: this is a temporary dependency. We should be lining these providers up more -->
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authorization-rbac-store-memory</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-rbac-store-test</artifactId>
@@ -67,9 +72,9 @@
       <plugin>
         <groupId>org.codehaus.modello</groupId>
         <artifactId>modello-maven-plugin</artifactId>
-        <version>1.0-alpha-11</version>
+        <version>1.0-alpha-12-SNAPSHOT</version>
         <configuration>
-          <version>1.0.0</version>
+          <version>1.0.1</version>
           <packageWithVersion>false</packageWithVersion>
           <model>src/main/mdo/rbac-jdo.mdo</model>
         </configuration>
@@ -78,6 +83,8 @@
             <id>modello-java</id>
             <goals>
               <goal>java</goal>
+              <goal>xpp3-reader</goal>
+              <goal>xpp3-writer</goal>
             </goals>
            </execution>
           <execution>
