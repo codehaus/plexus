@@ -1,0 +1,127 @@
+ -----
+Plexus Embedder and Component lookups
+ -----
+Rahul Thakur
+ ----
+15th Nov 2006
+ ------
+ 
+ <<<The contents of this document are a work in progress>>>
+
+Plexus Embedder
+
+  The Plexus Embedder allows us to set up and start a Plexus Container container from within a Standalone application. The components can then be looked up in usual manner (we will see demonstrate in bit, if you don't know). 
+
+* Making Embedder available to the application 
+ 
+  First thing, we need to make the Embedder available to our application by adding a dependency on it in the <<<pom.xml>>>. Follow snippet shows the relevant <<<<dependency>>>> section of the application project's <<<pom.xml>>>.
+
++-------------------------------+ 
+
+<project>
+  ...
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-website-monitor-component</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>    
+    <!-- Dependency to fetch Plexus Container implementation -->
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-9</version>     
+    </dependency>
+  </dependencies>
+  ...
+</project>
+
++-------------------------------+
+
+  Regenerate the IDE project again as discussed in the previous section.
+
+
+* Starting up an embedded Plexus Container instance
+
+  Lets add some code to our Site Monitor application entry class that:
+  
+  [[1]] creates and starts an Embedder instance
+
+  [[1]] Obtains <<<PlexusContainer>>> instance, and
+
+  [[1]] performs a lookup for <<<WebsiteMonitor>>> component
+
+  Our updated code looks as below:
+
++-------------------------------+
+public class Main
+{
+
+    /**
+     * @param args
+     */
+    public static void main( String[] args )
+    {
+        Embedder embedder = new Embedder();
+        try
+        {
+            embedder.start();
+            PlexusContainer container = embedder.getContainer();
+            WebsiteMonitor monitor = (WebsiteMonitor) container.lookup( WebsiteMonitor.ROLE );
+            try
+            {
+                monitor.monitor();
+            }
+            catch ( Exception e )
+            {             
+                e.printStackTrace();
+            }
+
+        }
+        catch ( PlexusContainerException e )
+        {
+            e.printStackTrace();
+        }
+        catch ( ComponentLookupException e )
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+}
++-------------------------------+
+
+  At this point you can try running the above <<<Main>>> class from your 
+  favorite IDE. For demonstration purposes the <<<WebsiteMonitor>>> is by
+  default configured to monitor <<<http://plexus.codehaus.org>>>. You should
+  see it output the HTTP status for the monitoring request issued. 
+
+  Something like this:
+
++--------------------------------+
+[INFO] HTTP request returned HTTP status code: 200 for website: http://plexus.codehaus.org/
++--------------------------------+
+
+* How does Plexus Embedder works?
+
+  Plexus Embedder creates an instance of Plexus Container, which then loads and
+  parses all available dependencies to discover any Plexus Components and registers 
+  them internally to make them available for look-ups. 
+
+  To recapture again, the container looks for a Component descriptor under:
+
+  [[1]] META-INF/plexus/components.xml
+
+  This is exactly what those few lines of code achieve in the above snippet. 
+  You can, of course, use the Embedder to do fancier stuff.
+
+  Great! we have just finished integrating our site monitor component into our 
+  site monitor application.
+
