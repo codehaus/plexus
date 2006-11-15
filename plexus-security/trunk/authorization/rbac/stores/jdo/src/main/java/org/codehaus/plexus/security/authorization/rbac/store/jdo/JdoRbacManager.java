@@ -36,13 +36,12 @@ import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * JdoRbacManager:
@@ -75,11 +74,11 @@ public class JdoRbacManager
      * Creates an implementation specific {@link Role}.
      *
      * Note: this method does not add the {@link Role} to the underlying store.
-     *       a call to {@link #addRole(Role)} is required to track the role created with this
+     *       a call to {@link #saveRole(Role)} is required to track the role created with this
      *       method call.
      *
      * @param name the name.
-     * @return the new {@link Role} object with an empty (non-null) {@link Role#getChildRoles()} object.
+     * @return the new {@link Role} object with an empty (non-null) {@link Role#getChildRoleNames()} object.
      * @throws RbacManagerException 
      */
     public Role createRole( String name )
@@ -218,7 +217,7 @@ public class JdoRbacManager
      * Creates an implementation specific {@link Permission}.
      *
      * Note: this method does not add the {@link Permission} to the underlying store.
-     *       a call to {@link #addPermission(Permission)} is required to track the permission created
+     *       a call to {@link #savePermission(Permission)} is required to track the permission created
      *       with this method call.
      *
      * @param name the name.
@@ -249,7 +248,7 @@ public class JdoRbacManager
      * and {@link Resource} identifiers.
      *
      * Note: this method does not add the Permission, Operation, or Resource to the underlying store.
-     *       a call to {@link #addPermission(Permission)} is required to track the permission, operation,
+     *       a call to {@link #savePermission(Permission)} is required to track the permission, operation,
      *       or resource created with this method call.
      *
      * @param name the name.
@@ -347,7 +346,7 @@ public class JdoRbacManager
      * Creates an implementation specific {@link Operation}.
      *
      * Note: this method does not add the {@link Operation} to the underlying store.
-     *       a call to {@link #addOperation(Operation)} is required to track the operation created
+     *       a call to {@link #saveOperation(Operation)} is required to track the operation created
      *       with this method call.
      *
      * @param name the name.
@@ -427,7 +426,7 @@ public class JdoRbacManager
      * Creates an implementation specific {@link Resource}.
      *
      * Note: this method does not add the {@link Resource} to the underlying store.
-     *       a call to {@link #addResource(Resource)} is required to track the resource created
+     *       a call to {@link #saveResource(Resource)} is required to track the resource created
      *       with this method call.
      *
      * @param identifier the identifier.
@@ -510,11 +509,11 @@ public class JdoRbacManager
      * Creates an implementation specific {@link UserAssignment}.
      *
      * Note: this method does not add the {@link UserAssignment} to the underlying store.
-     *       a call to {@link #addUserAssignment(UserAssignment)} is required to track the user
+     *       a call to {@link #saveUserAssignment(UserAssignment)} is required to track the user
      *       assignment created with this method call.
      *
      * @param principal the principal reference to the user.
-     * @return the new UserAssignment with an empty (non-null) {@link UserAssignment#getRoles()} object.
+     * @return the new UserAssignment with an empty (non-null) {@link UserAssignment#getRoleNames()} object.
      * @throws RbacManagerException 
      */
     public UserAssignment createUserAssignment( String principal )
