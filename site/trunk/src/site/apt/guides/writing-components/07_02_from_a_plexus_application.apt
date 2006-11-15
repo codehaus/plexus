@@ -181,7 +181,7 @@ public class Main
           </includeConfigurationDirectoryInClasspath>
           <programs>
             <program>
-              <name>monitor`</name>
+              <name>monitor</name>
               <mainClass>
                 org.codehaus.plexus.site.monitor.Main
               </mainClass>
