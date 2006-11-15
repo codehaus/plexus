@@ -42,7 +42,7 @@
           </includeConfigurationDirectoryInClasspath>
           <programs>
             <program>
-              <name>deployer</name>
+              <name>monitor</name>
               <mainClass>
                 org.codehaus.plexus.site.monitor.Main
               </mainClass>
