@@ -600,6 +600,10 @@ public class JdoRbacManager
         throws InitializationException
     {
         jdo.setListener( this );
+        jdo.enableCache( JdoRole.class );
+        jdo.enableCache( JdoOperation.class );
+        jdo.enableCache( JdoResource.class );
+        jdo.enableCache( JdoUserAssignment.class );
     }
 
     public void rbacInit( boolean freshdb )

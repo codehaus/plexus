@@ -77,7 +77,8 @@ public class AbstractRbacManagerTestCase
         super.tearDown();
     }
 
-    private Role getAdminRole() throws RbacManagerException
+    private Role getAdminRole()
+        throws RbacManagerException
     {
         Role role = getRbacManager().createRole( "ADMIN" );
         role.setAssignable( false );
@@ -89,7 +90,8 @@ public class AbstractRbacManagerTestCase
         return role;
     }
 
-    private Role getDeveloperRole() throws RbacManagerException
+    private Role getDeveloperRole()
+        throws RbacManagerException
     {
         Role role = getRbacManager().createRole( "DEVELOPER" );
         role.setAssignable( true );
@@ -101,7 +103,8 @@ public class AbstractRbacManagerTestCase
         return role;
     }
 
-    private Role getProjectAdminRole() throws RbacManagerException
+    private Role getProjectAdminRole()
+        throws RbacManagerException
     {
         Role role = getRbacManager().createRole( "PROJECT_ADMIN" );
         role.setAssignable( true );
@@ -144,7 +147,7 @@ public class AbstractRbacManagerTestCase
         assertNotNull( eventTracker );
         assertEquals( 1, eventTracker.initCount );
         assertTrue( eventTracker.lastDbFreshness.booleanValue() );
-        
+
         assertEquals( 1, eventTracker.addedRoleNames.size() );
         assertEquals( 1, eventTracker.removedRoleNames.size() );
         assertEquals( 1, eventTracker.addedPermissionNames.size() );
@@ -171,12 +174,12 @@ public class AbstractRbacManagerTestCase
         getRbacManager().removeResource( added );
 
         assertEquals( 1, getRbacManager().getAllResources().size() );
-        
+
         /* Assert some event tracker stuff */
         assertNotNull( eventTracker );
         assertEquals( 1, eventTracker.initCount );
         assertTrue( eventTracker.lastDbFreshness.booleanValue() );
-        
+
         assertEquals( 0, eventTracker.addedRoleNames.size() );
         assertEquals( 0, eventTracker.removedRoleNames.size() );
         assertEquals( 0, eventTracker.addedPermissionNames.size() );
@@ -206,12 +209,12 @@ public class AbstractRbacManagerTestCase
         assertEquals( 3, getRbacManager().getAllPermissions().size() );
         Permission fetched = getRbacManager().getPermission( "CREATE_USER" );
         assertNotNull( fetched );
-        
+
         /* Assert some event tracker stuff */
         assertNotNull( eventTracker );
         assertEquals( 1, eventTracker.initCount );
         assertTrue( eventTracker.lastDbFreshness.booleanValue() );
-        
+
         assertEquals( 2, eventTracker.addedRoleNames.size() );
         assertEquals( 0, eventTracker.removedRoleNames.size() );
         assertEquals( 3, eventTracker.addedPermissionNames.size() );
@@ -233,32 +236,32 @@ public class AbstractRbacManagerTestCase
 
         assertEquals( adminRole, actualAdmin );
         assertEquals( develRole, actualDevel );
-        
+
         /* Assert some event tracker stuff */
         assertNotNull( eventTracker );
         assertEquals( 1, eventTracker.initCount );
         assertTrue( eventTracker.lastDbFreshness.booleanValue() );
-        
+
         assertEquals( 2, eventTracker.addedRoleNames.size() );
         assertEquals( 0, eventTracker.removedRoleNames.size() );
         assertEquals( 2, eventTracker.addedPermissionNames.size() );
         assertEquals( 0, eventTracker.removedPermissionNames.size() );
     }
-    
+
     public void testAllowRoleWithoutPermissions()
         throws RbacManagerException, RbacObjectNotFoundException
     {
         assertNotNull( getRbacManager() );
-        
+
         String rolename = "Test Role";
-        
+
         Role testRole = getRbacManager().createRole( rolename );
         testRole = getRbacManager().saveRole( testRole );
-        
+
         assertNotNull( testRole );
         assertEquals( 1, getRbacManager().getAllRoles().size() );
         assertEquals( 0, getRbacManager().getAllPermissions().size() );
-        
+
         Role actualRole = getRbacManager().getRole( rolename );
 
         assertEquals( testRole, actualRole );
@@ -299,12 +302,12 @@ public class AbstractRbacManagerTestCase
         manager.saveRole( develRole );
 
         assertEquals( 3, manager.getAllRoles().size() );
-        
+
         /* Assert some event tracker stuff */
         assertNotNull( eventTracker );
         assertEquals( 1, eventTracker.initCount );
         assertTrue( eventTracker.lastDbFreshness.booleanValue() );
-        
+
         assertEquals( 3, eventTracker.addedRoleNames.size() );
         assertEquals( 0, eventTracker.removedRoleNames.size() );
         assertEquals( 3, eventTracker.addedPermissionNames.size() );
@@ -338,12 +341,12 @@ public class AbstractRbacManagerTestCase
         manager.saveRole( develRole );
 
         assertEquals( 3, manager.getAllRoles().size() );
-        
+
         /* Assert some event tracker stuff */
         assertNotNull( eventTracker );
         assertEquals( 1, eventTracker.initCount );
         assertTrue( eventTracker.lastDbFreshness.booleanValue() );
-        
+
         assertEquals( 3, eventTracker.addedRoleNames.size() );
         assertEquals( 0, eventTracker.removedRoleNames.size() );
         assertEquals( 3, eventTracker.addedPermissionNames.size() );
@@ -374,12 +377,12 @@ public class AbstractRbacManagerTestCase
 
         Role fetched = (Role) manager.getRole( "ADMIN" );
         assertNotNull( fetched );
-        
+
         /* Assert some event tracker stuff */
         assertNotNull( eventTracker );
         assertEquals( 1, eventTracker.initCount );
         assertTrue( eventTracker.lastDbFreshness.booleanValue() );
-        
+
         assertEquals( 1, eventTracker.addedRoleNames.size() );
         assertEquals( 0, eventTracker.removedRoleNames.size() );
         assertEquals( 1, eventTracker.addedPermissionNames.size() );
@@ -431,19 +434,20 @@ public class AbstractRbacManagerTestCase
 
         assertNotNull( assignedPermissions );
         assertEquals( 1, assignedPermissions.size() );
-        
+
         /* Assert some event tracker stuff */
         assertNotNull( eventTracker );
         assertEquals( 1, eventTracker.initCount );
         assertTrue( eventTracker.lastDbFreshness.booleanValue() );
-        
+
         assertEquals( 1, eventTracker.addedRoleNames.size() );
         assertEquals( 0, eventTracker.removedRoleNames.size() );
         assertEquals( 1, eventTracker.addedPermissionNames.size() );
         assertEquals( 0, eventTracker.removedPermissionNames.size() );
     }
 
-    public void testGlobalResource() throws RbacManagerException
+    public void testGlobalResource()
+        throws RbacManagerException
     {
         RBACManager manager = getRbacManager();
         Permission editConfiguration = manager.createPermission( "Edit Configuration" );
@@ -463,30 +467,32 @@ public class AbstractRbacManagerTestCase
         assertEquals( 2, manager.getAllPermissions().size() );
         assertEquals( 2, manager.getAllOperations().size() );
         assertEquals( 1, manager.getAllResources().size() );
-        
+
         /* Assert some event tracker stuff */
         assertNotNull( eventTracker );
         assertEquals( 1, eventTracker.initCount );
         assertTrue( eventTracker.lastDbFreshness.booleanValue() );
-        
+
         assertEquals( 0, eventTracker.addedRoleNames.size() );
         assertEquals( 0, eventTracker.removedRoleNames.size() );
         assertEquals( 2, eventTracker.addedPermissionNames.size() );
         assertEquals( 0, eventTracker.removedPermissionNames.size() );
     }
 
-    public void testGlobalResourceOneLiner() throws RbacObjectInvalidException, RbacManagerException
+    public void testGlobalResourceOneLiner()
+        throws RbacObjectInvalidException, RbacManagerException
     {
         RBACManager manager = getRbacManager();
-        manager.savePermission( manager.createPermission( "Edit Configuration", "edit-configuration", Resource.GLOBAL ) );
+        manager
+            .savePermission( manager.createPermission( "Edit Configuration", "edit-configuration", Resource.GLOBAL ) );
         manager.savePermission( manager.createPermission( "Delete Configuration", "delete-configuration",
                                                           Resource.GLOBAL ) );
-        
+
         /* Assert some event tracker stuff */
         assertNotNull( eventTracker );
         assertEquals( 1, eventTracker.initCount );
         assertTrue( eventTracker.lastDbFreshness.booleanValue() );
-        
+
         assertEquals( 0, eventTracker.addedRoleNames.size() );
         assertEquals( 0, eventTracker.removedRoleNames.size() );
         assertEquals( 2, eventTracker.addedPermissionNames.size() );
@@ -547,14 +553,14 @@ public class AbstractRbacManagerTestCase
         // remove the last role
         roles.remove( developerRole.getName() );
         bob.setRoleNames( roles );
-        bob = manager.saveUserAssignment( bob );        
+        bob = manager.saveUserAssignment( bob );
         assertEquals( "Should have 2 assignable roles.", 2, manager.getUnassignedRoles( bob.getPrincipal() ).size() );
-        
+
         /* Assert some event tracker stuff */
         assertNotNull( eventTracker );
         assertEquals( 1, eventTracker.initCount );
         assertTrue( eventTracker.lastDbFreshness.booleanValue() );
-        
+
         assertEquals( 2, eventTracker.addedRoleNames.size() );
         assertEquals( 0, eventTracker.removedRoleNames.size() );
         assertEquals( 2, eventTracker.addedPermissionNames.size() );
@@ -584,12 +590,12 @@ public class AbstractRbacManagerTestCase
 
         // we certainly shouldn't have 2 roles here now
         assertEquals( 1, assignment.getRoleNames().size() );
-        
+
         /* Assert some event tracker stuff */
         assertNotNull( eventTracker );
         assertEquals( 1, eventTracker.initCount );
         assertTrue( eventTracker.lastDbFreshness.booleanValue() );
-        
+
         assertEquals( 1, eventTracker.addedRoleNames.size() );
         assertEquals( 0, eventTracker.removedRoleNames.size() );
         assertEquals( 1, eventTracker.addedPermissionNames.size() );
@@ -614,8 +620,10 @@ public class AbstractRbacManagerTestCase
         assignment = manager.saveUserAssignment( assignment );
 
         assertEquals( 1, manager.getAllUserAssignments().size() );
-        assertEquals( "should be only one role assigned", 1, manager.getAssignedRoles( assignment.getPrincipal() ).size() );
-        assertEquals( "should be one role left to assign", 1, manager.getUnassignedRoles( assignment.getPrincipal() ).size() );
+        assertEquals( "should be only one role assigned", 1, manager.getAssignedRoles( assignment.getPrincipal() )
+            .size() );
+        assertEquals( "should be one role left to assign", 1, manager.getUnassignedRoles( assignment.getPrincipal() )
+            .size() );
         assertEquals( 2, manager.getAllRoles().size() );
 
         // assign the same role again to the same user
@@ -936,7 +944,7 @@ public class AbstractRbacManagerTestCase
 
         return manager;
     }
-    
+
     public void testAddRemovePermanentPermission()
         throws RbacObjectInvalidException, RbacManagerException, RbacObjectNotFoundException
     {
@@ -961,7 +969,7 @@ public class AbstractRbacManagerTestCase
         assertEquals( 3, getRbacManager().getAllPermissions().size() );
         Permission fetched = getRbacManager().getPermission( "CREATE_USER" );
         assertNotNull( fetched );
-        
+
         // Attempt to remove perm now.
         try
         {
@@ -982,7 +990,7 @@ public class AbstractRbacManagerTestCase
         {
             // expected path.
         }
-        
+
         // Assert some event tracker stuff
         assertNotNull( eventTracker );
         assertEquals( 1, eventTracker.initCount );
@@ -993,7 +1001,7 @@ public class AbstractRbacManagerTestCase
         assertEquals( 3, eventTracker.addedPermissionNames.size() );
         assertEquals( 0, eventTracker.removedPermissionNames.size() );
     }
-    
+
     public void testAddRemovePermanentRole()
         throws RbacManagerException, RbacObjectNotFoundException
     {
@@ -1001,7 +1009,7 @@ public class AbstractRbacManagerTestCase
 
         Role adminRole = getAdminRole();
         adminRole.setPermanent( true );
-        
+
         adminRole = getRbacManager().saveRole( adminRole );
         Role develRole = getRbacManager().saveRole( getDeveloperRole() );
 
@@ -1012,7 +1020,7 @@ public class AbstractRbacManagerTestCase
 
         assertEquals( adminRole, actualAdmin );
         assertEquals( develRole, actualDevel );
-        
+
         // Attempt to remove perm now.
         try
         {
@@ -1044,9 +1052,9 @@ public class AbstractRbacManagerTestCase
         assertEquals( 2, eventTracker.addedPermissionNames.size() );
         assertEquals( 0, eventTracker.removedPermissionNames.size() );
     }
-    
+
     public void testAddRemovePermanentOperation()
-    throws RbacManagerException
+        throws RbacManagerException
     {
         assertNotNull( getRbacManager() );
 
@@ -1058,7 +1066,7 @@ public class AbstractRbacManagerTestCase
 
         Permission createUserPerm = getRbacManager().createPermission( "CREATE_USER", "CREATE", "User" );
         createUserPerm.getOperation().setPermanent( true );
-        
+
         // perm shouldn't exist in manager (yet)
         assertEquals( 2, getRbacManager().getAllPermissions().size() );
         assertEquals( 1, getRbacManager().getAllOperations().size() );
@@ -1070,7 +1078,7 @@ public class AbstractRbacManagerTestCase
         assertEquals( 2, getRbacManager().getAllOperations().size() );
         Operation fetched = getRbacManager().getOperation( "CREATE" );
         assertNotNull( fetched );
-        
+
         // Attempt to remove operation now.
         try
         {
@@ -1091,7 +1099,7 @@ public class AbstractRbacManagerTestCase
         {
             // expected path.
         }
-        
+
         // Assert some event tracker stuff
         assertNotNull( eventTracker );
         assertEquals( 1, eventTracker.initCount );
@@ -1101,5 +1109,141 @@ public class AbstractRbacManagerTestCase
         assertEquals( 0, eventTracker.removedRoleNames.size() );
         assertEquals( 3, eventTracker.addedPermissionNames.size() );
         assertEquals( 0, eventTracker.removedPermissionNames.size() );
+    }
+    
+    private final static int ITERATIONS = 10000;
+    private final static int ONESECOND = 1000;
+    
+    private double calculateOperationsPerSecond(long startTime, long endTime, int iterations)
+    {
+        System.out.println( "Start Time (ms): " + startTime );
+        System.out.println( "End Time (ms)  : " + endTime );
+        long elapsed = endTime - startTime;
+        System.out.println( "elapsed (ms)   : " + elapsed );
+        double ratio = (double) elapsed / (double) ONESECOND; // ratio of time to 1 second.
+        System.out.println( "Ratio          : " + ratio );
+        double opsPerSecond = (double) iterations / ratio;
+        System.out.println( "Ops per second : " + opsPerSecond );
+        
+        return opsPerSecond;
+    }
+
+    public void testPerformanceResource()
+        throws RbacManagerException
+    {
+        assertNotNull( getRbacManager() );
+
+        Resource resource = getRbacManager().createResource( "foo" );
+        Resource resource2 = getRbacManager().createResource( "bar" );
+
+        assertNotNull( resource );
+
+        Resource added = getRbacManager().saveResource( resource );
+        assertNotNull( added );
+        Resource added2 = getRbacManager().saveResource( resource2 );
+        assertNotNull( added2 );
+
+        assertEquals( 2, getRbacManager().getAllResources().size() );
+
+        String resFooId = resource.getIdentifier();
+        String resBarId = resource2.getIdentifier();
+        long startTime = System.currentTimeMillis();
+
+        for ( int i = 0; i <= ITERATIONS; i++ )
+        {
+            Resource resFoo = getRbacManager().getResource( resFooId );
+            Resource resBar = getRbacManager().getResource( resBarId );
+
+            assertNotNull( resFoo );
+            assertNotNull( resBar );
+
+            assertEquals( "foo", resFoo.getIdentifier() );
+            assertEquals( "bar", resBar.getIdentifier() );
+        }
+
+        long endTime = System.currentTimeMillis();
+        double opsPerSecond = calculateOperationsPerSecond( startTime, endTime, ITERATIONS );
+        
+        assertTrue("Resource Performance.", (opsPerSecond > 500.0) );
+    }
+    
+    public void testPerformanceUserAssignment() throws RbacManagerException
+    {
+        RBACManager manager = getRbacManager();
+
+        // Setup User / Assignment with 1 role.
+        String username = "bob";
+
+        Role devRole = getDeveloperRole();
+        Role devPlusRole = getSuperDeveloperRole();
+        devPlusRole.setChildRoleNames( Collections.singletonList( devRole.getName() ) );
+        devRole = manager.saveRole( devRole );
+        devPlusRole = manager.saveRole( devPlusRole );
+
+        UserAssignment assignment = manager.createUserAssignment( username );
+        assignment.addRoleName( devRole );
+        assignment = manager.saveUserAssignment( assignment );
+
+        assertEquals( 1, manager.getAllUserAssignments().size() );
+        assertEquals( "should be only one role assigned", 1, manager.getAssignedRoles( assignment.getPrincipal() )
+            .size() );
+        assertEquals( "should be one role left to assign", 1, manager.getUnassignedRoles( assignment.getPrincipal() )
+            .size() );
+        assertEquals( 2, manager.getAllRoles().size() );
+
+        // assign the same role again to the same user
+        assignment.addRoleName( devRole.getName() );
+        manager.saveUserAssignment( assignment );
+
+        // we certainly shouldn't have 2 roles here now
+        assertEquals( 1, assignment.getRoleNames().size() );
+
+        String bobId = assignment.getPrincipal();
+
+        username = "janet";
+
+        devPlusRole.setChildRoleNames( Collections.singletonList( devRole.getName() ) );
+        devRole = manager.saveRole( devRole );
+        devPlusRole = manager.saveRole( devPlusRole );
+
+        assignment = manager.createUserAssignment( username );
+        assignment.addRoleName( devRole );
+        assignment = manager.saveUserAssignment( assignment );
+
+        assertEquals( 2, manager.getAllUserAssignments().size() );
+        assertEquals( "should be only one role assigned", 1, manager.getAssignedRoles( assignment.getPrincipal() )
+            .size() );
+        assertEquals( "should be one role left to assign", 1, manager.getUnassignedRoles( assignment.getPrincipal() )
+            .size() );
+        assertEquals( 2, manager.getAllRoles().size() );
+
+        // assign the same role again to the same user
+        assignment.addRoleName( devRole.getName() );
+        manager.saveUserAssignment( assignment );
+
+        // we certainly shouldn't have 2 roles here now
+        assertEquals( 1, assignment.getRoleNames().size() );
+
+        String janetId = assignment.getPrincipal();
+
+        long startTime = System.currentTimeMillis();
+
+        for ( int i = 0; i <= ITERATIONS; i++ )
+        {
+            UserAssignment uaBob = getRbacManager().getUserAssignment( bobId );
+            UserAssignment uaJanet = getRbacManager().getUserAssignment( janetId );
+
+            assertNotNull( uaBob );
+            assertNotNull( uaJanet );
+
+            assertEquals( "bob", uaBob.getPrincipal() );
+            assertEquals( "janet", uaJanet.getPrincipal() );
+        }
+
+        long endTime = System.currentTimeMillis();
+        double opsPerSecond = calculateOperationsPerSecond( startTime, endTime, ITERATIONS );
+
+        assertTrue( "UserAssignment Performance (expected more than 500 per second, actual " + opsPerSecond + ").",
+                    ( opsPerSecond > 350.0 ) );
     }
 }
