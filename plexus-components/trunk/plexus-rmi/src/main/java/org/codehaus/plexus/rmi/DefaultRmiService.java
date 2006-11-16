@@ -5,9 +5,12 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
 
-import java.rmi.registry.LocateRegistry;
+import java.rmi.AlreadyBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -18,9 +21,14 @@ public class DefaultRmiService
     implements RmiService, Startable
 {
     /**
-     * @plexus.configuration
+     * @plexus.configuration default-value = "1051"
      */
     private int rmiRegistryPort = 1051;
+
+    /**
+     * @plexus.configuration default-value = "9999"
+     */
+    private int exportedObjectPort = 9999;
 
     private Registry registry;
 
@@ -45,6 +53,46 @@ public class DefaultRmiService
         catch ( RemoteException e )
         {
             throw new RmiServiceException( "Error while starting RMI registry.", e );
+        }
+    }
+
+    public Remote exportObject( Remote remote )
+        throws RmiServiceException
+    {
+        try
+        {
+            getLogger().info( "Exporting " + remote.getClass().getName() + " on port " + exportedObjectPort );
+
+            return UnicastRemoteObject.exportObject( remote, exportedObjectPort );
+        }
+        catch ( RemoteException e )
+        {
+            throw new RmiServiceException( "Error while exporting remote object.", e );
+        }
+    }
+
+    public Remote exportObject( Remote remote, String name )
+        throws RmiServiceException
+    {
+        Remote exportedRemote = exportObject( remote );
+
+        try
+        {
+            getLogger().info( "Binding " + remote.getClass().getName() + " to " + name );
+
+            getRegistry().bind( name, exportedRemote );
+
+            return exportedRemote;
+        }
+        catch ( RemoteException e )
+        {
+            throw new RmiServiceException( "Error while binding remote object " + remote.getClass().getName() +
+                " to '" + name + "'.", e );
+        }
+        catch ( AlreadyBoundException e )
+        {
+            throw new RmiServiceException( "Error while binding remote object " + remote.getClass().getName() +
+                " to '" + name + "'.", e );
         }
     }
 
