@@ -1,0 +1,48 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.cdc.component.IComponent</role>
+      <implementation>
+        org.codehaus.plexus.cdc.component.RecessiveComponent
+      </implementation>
+      <requirements>
+        <requirement>
+          <role>
+            org.codehaus.plexus.cdc.component.IComponentA
+          </role>
+          <field-name>recessiveField</field-name>
+        </requirement>
+      </requirements>
+    </component>
+    <!-- non-conflicting component in recessive -->
+    <component>
+      <role>org.codehaus.plexus.cdc.component.INonConflictingComponent</role>
+      <implementation>
+        org.codehaus.plexus.cdc.component.RecessiveComponent
+      </implementation>
+      <requirements>
+        <requirement>
+          <role>
+            org.codehaus.plexus.cdc.component.IComponentA
+          </role>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+
+  <lifecycle-handler-manager implementation="org.codehaus.plexus.lifecycle.DefaultLifecycleHandlerManager">
+    <default-lifecycle-handler-id>webapp</default-lifecycle-handler-id>
+    <lifecycle-handlers>
+      <lifecycle-handler implementation="org.codehaus.plexus.personality.plexus.PlexusLifecycleHandler">
+        <id>webapp</id>
+        <name>Webapp</name>
+        <begin-segment>
+          <phase implementation="" />
+        </begin-segment>
+        <end-segment>
+          <phase implementation="" />
+        </end-segment>
+      </lifecycle-handler>
+    </lifecycle-handlers>
+  </lifecycle-handler-manager>
+</component-set>
