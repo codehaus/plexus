@@ -4,7 +4,7 @@
   <artifactId>plexus</artifactId>
   <packaging>pom</packaging>
   <name>Plexus</name>
-  <version>1.0.10-SNAPSHOT</version>
+  <version>1.0.9-SNAPSHOT</version>
   <ciManagement>
     <notifiers>
       <notifier>
@@ -253,14 +253,5 @@
         <version>1.0-beta-1</version>
       </extension>
     </extensions>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <tagBase>https://svn.codehaus.org/plexus/tags</tagBase>
-        </configuration>
-      </plugin>
-    </plugins>
   </build>
 </project>
