@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus</artifactId>
   <packaging>pom</packaging>
   <name>Plexus</name>
-  <version>1.0.9-SNAPSHOT</version>
+  <version>1.0.9</version>
   <ciManagement>
     <notifiers>
       <notifier>
@@ -116,8 +113,8 @@
     <developer>
       <id>kaz</id>
       <name>Pete Kazmier</name>
-      <email></email>
-      <organization></organization>
+      <email />
+      <organization />
       <roles>
         <role>Developer</role>
       </roles>
@@ -126,7 +123,7 @@
       <id>jtaylor</id>
       <name>James Taylor</name>
       <email>james@jamestaylor.org</email>
-      <organization></organization>
+      <organization />
       <roles>
         <role>Developer</role>
       </roles>
@@ -144,7 +141,7 @@
       <id>kasper</id>
       <name>Kasper Nielsen</name>
       <email>apache@kav.dk</email>
-      <organization></organization>
+      <organization />
       <roles>
         <role>Developer</role>
       </roles>
@@ -240,9 +237,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/pom/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/pom/trunk/</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/pom/trunk/</url>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-1.0.9</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-1.0.9</developerConnection>
+    <url>https://svn.codehaus.org/plexus/tags/plexus-1.0.9</url>
   </scm>
   <organization>
     <name>Codehaus</name>
