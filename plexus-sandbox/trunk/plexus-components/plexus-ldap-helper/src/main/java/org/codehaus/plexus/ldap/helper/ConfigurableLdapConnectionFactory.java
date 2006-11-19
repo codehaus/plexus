@@ -32,6 +32,8 @@ import javax.naming.ldap.LdapName;
 import javax.naming.ldap.Rdn;
 import javax.naming.spi.ObjectFactory;
 import javax.naming.spi.StateFactory;
+import javax.naming.spi.DirObjectFactory;
+import javax.naming.spi.DirStateFactory;
 import java.util.Properties;
 
 /**

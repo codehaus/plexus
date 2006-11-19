@@ -155,8 +155,8 @@
             <name>seeAlso</name>
           </attributeType>
           <attributeType>
-            <name>surname</name>
-            <aliases>sn</aliases>
+            <name>sn</name>
+            <aliases>surname</aliases>
           </attributeType>
           <attributeType>
             <name>telephoneNumber</name>

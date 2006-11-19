@@ -394,7 +394,7 @@ public abstract class AbstractLdapFactory<T>
         {
             if ( value == null )
             {
-                throw new SchemaViolationException( "Cannot set the value of '" + attributeName + "' to null." );
+                throw new SchemaViolationException( "Cannot set the value of the required attribute '" + attributeName + "' to null." );
             }
 
             Attribute attribute = new BasicAttribute( descriptor.getPrimaryName(), value );
@@ -421,7 +421,30 @@ public abstract class AbstractLdapFactory<T>
             return;
         }
 
-        throw new SchemaViolationException( "The attribute '" + attributeName + "' is not a part of this class (" + clazz.getName() + ")." );
+        // ----------------------------------------------------------------------
+        // Build the error message
+        // ----------------------------------------------------------------------
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append( "The attribute '" ).append( attributeName ).append( "' is not a part of this class (" ).append(
+            clazz.getName() ).append( "). " );
+
+        boolean first = true;
+        builder.append( "Object classes: " );
+        for ( String objectClass : requiredObjectClasses )
+        {
+            if ( !first)
+            {
+                builder.append( objectClass ).append( ", " );
+                first = false;
+            }
+
+            builder.append( objectClass );
+        }
+        builder.append( "." );
+
+        throw new SchemaViolationException( builder.toString() );
     }
 
     // ----------------------------------------------------------------------

@@ -9,13 +9,13 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.BasicAttribute;
 import javax.naming.ldap.LdapName;
 import javax.naming.ldap.Rdn;
 import java.lang.reflect.InvocationTargetException;
@@ -35,14 +35,23 @@ public class DefaultLdapHelper<T>
     // Requirements
     // ----------------------------------------------------------------------
 
+    /**
+     * @plexus.requirement
+     */
     private LdapConnectionFactory connectionFactory;
 
+    /**
+     * @plexus.requirement
+     */
     private LdapFactoryHelper ldapFactoryHelper;
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
+    /**
+     * @plexus.configuration
+     */
     private LdapName baseDnLdapName;
 
     // ----------------------------------------------------------------------
@@ -92,6 +101,29 @@ public class DefaultLdapHelper<T>
         throws NamingException
     {
         return lookupObject( makeName( organizationalUnit, objectRdn ) );
+    }
+
+    public void bindObject( LdapName objectName, Object object )
+        throws NamingException
+    {
+        LdapConnection connection = null;
+
+        try
+        {
+            connection = connectionFactory.getConnection();
+
+            connection.getDirContext().bind( objectName, object );
+        }
+        finally
+        {
+            closeConnection( connection );
+        }
+    }
+
+    public void bindObject( Rdn organizationalUnit, Rdn rdn, Object object )
+        throws NamingException
+    {
+        bindObject( makeName( organizationalUnit, rdn ), object );
     }
 
     public void rebindObject( LdapName objectName, Object object )
