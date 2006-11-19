@@ -132,8 +132,6 @@ public class DefaultApacheDs
     public Partition addSimplePartition( String name, String[] domainComponents )
         throws NamingException
     {
-        System.out.println( "partitionConfigurations = " + partitionConfigurations );
-
         if ( domainComponents.length == 0 )
         {
             throw new NamingException( "Illegal argument, there has to be at least one domain component." );
@@ -233,8 +231,6 @@ public class DefaultApacheDs
         env.setProperty( Context.INITIAL_CONTEXT_FACTORY, ServerContextFactory.class.getName() );
         env.putAll( configuration.toJndiEnvironment() );
         new InitialDirContext( env );
-
-        System.out.println( "environment: " + new TreeMap(configuration.toJndiEnvironment()) );
 
         this.configuration = configuration;
 
