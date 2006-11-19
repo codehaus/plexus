@@ -220,6 +220,8 @@ public abstract class AbstractCli
             if ( pomPropertiesPath == null )
             {
                 System.err.println( "Unable determine version from JAR file." );
+
+                return;
             }
 
             is = AbstractCli.class.getClassLoader().getResourceAsStream( pomPropertiesPath );
@@ -227,6 +229,8 @@ public abstract class AbstractCli
             if ( is == null )
             {
                 System.err.println( "Unable determine version from JAR file." );
+
+                return;
             }
 
             properties.load( is );

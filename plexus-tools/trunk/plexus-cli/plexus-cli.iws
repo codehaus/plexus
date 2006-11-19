@@ -19,9 +19,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/plexus-cli.iws" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/plexus-cli.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/codehaus/plexus/tools/cli/AbstractCli.java" afterPath="$PROJECT_DIR$/src/main/java/org/codehaus/plexus/tools/cli/AbstractCli.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plexus-cli.iws" afterPath="$PROJECT_DIR$/plexus-cli.iws" />
     </list>
   </component>
   <component name="ChangeListSynchronizer" />
@@ -199,7 +199,7 @@
       <file leaf-file-name="AbstractCli.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/codehaus/plexus/tools/cli/AbstractCli.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="207" column="21" selection-start="5891" selection-end="5891" vertical-scroll-proportion="0.15430267">
+            <state line="230" column="23" selection-start="6592" selection-end="6592" vertical-scroll-proportion="0.4925816">
               <folding />
             </state>
           </provider>
@@ -764,7 +764,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/codehaus/plexus/tools/cli/AbstractCli.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="207" column="21" selection-start="5891" selection-end="5891" vertical-scroll-proportion="0.15430267">
+        <state line="230" column="23" selection-start="6592" selection-end="6592" vertical-scroll-proportion="0.4925816">
           <folding />
         </state>
       </provider>
