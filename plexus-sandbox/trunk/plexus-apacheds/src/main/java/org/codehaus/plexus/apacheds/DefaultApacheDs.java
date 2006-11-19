@@ -1,8 +1,9 @@
 package org.codehaus.plexus.apacheds;
 
 import org.apache.directory.server.configuration.MutableServerStartupConfiguration;
-import org.apache.directory.server.core.configuration.MutableDirectoryPartitionConfiguration;
 import org.apache.directory.server.core.configuration.ShutdownConfiguration;
+import org.apache.directory.server.core.configuration.SyncConfiguration;
+import org.apache.directory.server.core.partition.impl.btree.MutableBTreePartitionConfiguration;
 import org.apache.directory.server.core.schema.bootstrap.ApacheSchema;
 import org.apache.directory.server.core.schema.bootstrap.ApachednsSchema;
 import org.apache.directory.server.core.schema.bootstrap.AutofsSchema;
@@ -23,16 +24,17 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
-import javax.naming.directory.InitialDirContext;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.BasicAttributes;
+import javax.naming.directory.InitialDirContext;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -58,7 +60,7 @@ public class DefaultApacheDs
 
     private MutableServerStartupConfiguration configuration;
 
-    private Set contextPartitionConfigurations = new HashSet();
+    private Set partitionConfigurations = new HashSet();
 
     // ----------------------------------------------------------------------
     // ApacheDs Implementation
@@ -105,28 +107,33 @@ public class DefaultApacheDs
     public void addPartition( String name, String root, Set indexedAttributes, Attributes partitionAttributes )
         throws NamingException
     {
-        MutableDirectoryPartitionConfiguration directoryPartitionConfiguration = new MutableDirectoryPartitionConfiguration();
-        directoryPartitionConfiguration.setName( name );
-        directoryPartitionConfiguration.setSuffix( root );
-        directoryPartitionConfiguration.setIndexedAttributes( indexedAttributes );
-        directoryPartitionConfiguration.setContextEntry( partitionAttributes );
-        contextPartitionConfigurations.add( directoryPartitionConfiguration );
+        MutableBTreePartitionConfiguration configuration = new MutableBTreePartitionConfiguration();
+        configuration.setName( name );
+        configuration.setSuffix( root );
+        configuration.setIndexedAttributes( indexedAttributes );
+        configuration.setContextEntry( partitionAttributes );
+        partitionConfigurations.add( configuration );
     }
 
     public void addPartition( Partition partition )
         throws NamingException
     {
-        MutableDirectoryPartitionConfiguration directoryPartitionConfiguration = new MutableDirectoryPartitionConfiguration();
-        directoryPartitionConfiguration.setName( partition.getName() );
-        directoryPartitionConfiguration.setSuffix( partition.getSuffix() );
-        directoryPartitionConfiguration.setIndexedAttributes( partition.getIndexedAttributes() );
-        directoryPartitionConfiguration.setContextEntry( partition.getContextAttributes() );
-        contextPartitionConfigurations.add( directoryPartitionConfiguration );
+        MutableBTreePartitionConfiguration configuration = new MutableBTreePartitionConfiguration();
+        configuration.setName( partition.getName() );
+        configuration.setSuffix( partition.getSuffix() );
+        configuration.setIndexedAttributes( partition.getIndexedAttributes() );
+        configuration.setContextEntry( partition.getContextAttributes() );
+        configuration.setSynchOnWrite( true );
+        configuration.setCacheSize( 1 );
+        configuration.setOptimizerEnabled( false );
+        partitionConfigurations.add( configuration );
     }
 
-    public Partition addSimplePartition( String ... domainComponents )
+    public Partition addSimplePartition( String name, String[] domainComponents )
         throws NamingException
     {
+        System.out.println( "partitionConfigurations = " + partitionConfigurations );
+
         if ( domainComponents.length == 0 )
         {
             throw new NamingException( "Illegal argument, there has to be at least one domain component." );
@@ -146,18 +153,26 @@ public class DefaultApacheDs
             }
         }
 
-        Partition partition = new Partition();
-        partition.setName( "Partition for " + suffix );
-        partition.setSuffix( suffix );
+        // ----------------------------------------------------------------------
+        // The root entry of the partition
+        // ----------------------------------------------------------------------
+
         Attributes attributes = new BasicAttributes();
         attributes.put( "dc", domainComponents[0] );
-        attributes.put( "objectClass", "top" );
         Attribute objectClass = new BasicAttribute( "objectClass" );
         objectClass.add( "top" );
         objectClass.add( "domain" );
         objectClass.add( "extensibleObject" );
         attributes.put( objectClass );
+
+        Partition partition = new Partition();
+        partition.setName( name );
+        partition.setSuffix( suffix );
         partition.setContextAttributes( attributes );
+        HashSet set = new HashSet();
+        set.add( "uid" );
+        set.add( "cn" );
+        partition.setIndexedAttributes( set );
 
         addPartition( partition );
 
@@ -167,7 +182,7 @@ public class DefaultApacheDs
     public void startServer()
         throws Exception
     {
-        getLogger().info( "Starting LDAP server." );
+        getLogger().info( "Starting Apache Directory Server server." );
 
         getLogger().info( "ApacheDS basedir: " + basedir.getAbsolutePath() );
 
@@ -191,23 +206,24 @@ public class DefaultApacheDs
         configuration.setEnableChangePassword( false );
         configuration.setLdapPort( 10389 );
         configuration.setEnableNetworking( enableNetworking );
+        configuration.setSynchPeriodMillis( 100 );
 
-        configuration.setContextPartitionConfigurations( contextPartitionConfigurations );
+        configuration.setContextPartitionConfigurations( partitionConfigurations );
 
-        contextPartitionConfigurations = new HashSet();
-        contextPartitionConfigurations.add( new AutofsSchema() );
-        contextPartitionConfigurations.add( new CorbaSchema() );
-        contextPartitionConfigurations.add( new CoreSchema() );
-        contextPartitionConfigurations.add( new CosineSchema() );
-        contextPartitionConfigurations.add( new ApacheSchema() );
-        contextPartitionConfigurations.add( new CollectiveSchema() );
-        contextPartitionConfigurations.add( new InetorgpersonSchema() );
-        contextPartitionConfigurations.add( new JavaSchema() );
-        contextPartitionConfigurations.add( new Krb5kdcSchema() );
-        contextPartitionConfigurations.add( new NisSchema() );
-        contextPartitionConfigurations.add( new SystemSchema() );
-        contextPartitionConfigurations.add( new ApachednsSchema() );
-        configuration.setBootstrapSchemas( contextPartitionConfigurations );
+        Set bootstrapSchemas = new HashSet();
+        bootstrapSchemas.add( new AutofsSchema() );
+        bootstrapSchemas.add( new CorbaSchema() );
+        bootstrapSchemas.add( new CoreSchema() );
+        bootstrapSchemas.add( new CosineSchema() );
+        bootstrapSchemas.add( new ApacheSchema() );
+        bootstrapSchemas.add( new CollectiveSchema() );
+        bootstrapSchemas.add( new InetorgpersonSchema() );
+        bootstrapSchemas.add( new JavaSchema() );
+        bootstrapSchemas.add( new Krb5kdcSchema() );
+        bootstrapSchemas.add( new NisSchema() );
+        bootstrapSchemas.add( new SystemSchema() );
+        bootstrapSchemas.add( new ApachednsSchema() );
+        configuration.setBootstrapSchemas( bootstrapSchemas );
 
         Properties env = new Properties();
         env.setProperty( Context.SECURITY_PRINCIPAL, "uid=admin,ou=system" );
@@ -218,9 +234,11 @@ public class DefaultApacheDs
         env.putAll( configuration.toJndiEnvironment() );
         new InitialDirContext( env );
 
+        System.out.println( "environment: " + new TreeMap(configuration.toJndiEnvironment()) );
+
         this.configuration = configuration;
 
-        getLogger().info( "Started LDAP server." );
+        getLogger().info( "Started Apache Directory Server server." );
     }
 
     public void stopServer()
@@ -231,16 +249,27 @@ public class DefaultApacheDs
             throw new Exception( "Already stopped." );
         }
 
+        getLogger().info( "Stopping Apache Directory Server server." );
+
+        sync();
+
         stopped = true;
 
-        getLogger().info( "Stopping LDAP server." );
-
         Hashtable env = new Hashtable();
-        ShutdownConfiguration configuration = new ShutdownConfiguration();
-        env.putAll( configuration.toJndiEnvironment() );
+        env.putAll( new ShutdownConfiguration().toJndiEnvironment() );
         new InitialDirContext( env );
 
-        getLogger().info( "LDAP server stopped." );
+        getLogger().info( "Apache Directory Server server stopped." );
+    }
+
+    public void sync()
+        throws Exception
+    {
+        getLogger().info( "Sync'ing Apache Directory Server server." );
+
+        Hashtable env = new Hashtable();
+        env.putAll( new SyncConfiguration().toJndiEnvironment() );
+        new InitialDirContext( env );
     }
 
     // ----------------------------------------------------------------------
@@ -257,14 +286,14 @@ public class DefaultApacheDs
     {
         try
         {
-            if ( ! stopped )
+            if ( !stopped )
             {
                 stopServer();
             }
         }
         catch ( Exception e )
         {
-            throw new StoppingException( "Error while stopping LDAP server.", e );
+            throw new StoppingException( "Error while stopping Apache Directory Server server.", e );
         }
     }
 
