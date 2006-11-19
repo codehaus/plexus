@@ -69,7 +69,8 @@ public class ObjectStateHelperTest
         }
 
         Person person = new Person();
-        person.setName( "Trygve" );
+        person.setName( "Trygve Laugstol" );
+        person.setLastName( "Laugstol" );
 
         context.bind( name, person );
 
@@ -77,7 +78,8 @@ public class ObjectStateHelperTest
 
         assertEquals( Person.class, o.getClass() );
         person = (Person) o;
-        assertEquals( "Trygve", person.getName() );
+        assertEquals( "Trygve Laugstol", person.getName() );
+        assertEquals( "Laugstol", person.getLastName() );
         assertEquals( null, person.getDescription() );
 
         context.close();

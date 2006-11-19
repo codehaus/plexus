@@ -35,6 +35,12 @@ public interface LdapHelper<T>
     T lookupObject( Rdn organizationalUnit, Rdn objectRdn )
         throws NamingException;
 
+    void bindObject( LdapName objectName, T object )
+        throws NamingException;
+
+    public void bindObject( Rdn organizationalUnit, Rdn rdn, Object object )
+        throws NamingException;
+    
     void rebindObject( LdapName objectName, T object )
         throws NamingException;
 

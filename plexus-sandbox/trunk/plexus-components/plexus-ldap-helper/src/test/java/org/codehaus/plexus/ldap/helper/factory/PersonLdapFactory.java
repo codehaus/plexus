@@ -20,6 +20,7 @@ public class PersonLdapFactory
         Person person = new Person();
 
         person.setName( getStringAttribute( "commonName" ) );
+        person.setLastName( getStringAttribute( "sn" ) );
         person.setDescription( getStringAttribute( "description" ) );
 
         return person;
@@ -31,6 +32,7 @@ public class PersonLdapFactory
         Person person = (Person) object;
 
         setAttribute( "commonName", person.getName() );
+        setAttribute( "sn", person.getLastName() );
         setAttribute( "description", person.getDescription() );
     }
 }

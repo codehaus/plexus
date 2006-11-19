@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.ArrayList;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -115,6 +116,22 @@ public class DefaultLdapFactoryHelper
     public void initialize()
         throws InitializationException
     {
+        if ( attributeTypes == null )
+        {
+            attributeTypes = new ArrayList<AttributeType>();
+        }
+
+        if ( objectClasses == null )
+        {
+            objectClasses = new ArrayList<ObjectClass>();
+        }
+
+        // ----------------------------------------------------------------------
+        // Attribute types
+        // ----------------------------------------------------------------------
+
+        getLogger().debug( "Parsting attribute types. There are " + attributeTypes.size() + " attribute types registered.");
+
         for ( AttributeType attributeType : attributeTypes )
         {
             AttributeTypeDescriptor descriptor = new AttributeTypeDescriptor();
@@ -132,7 +149,7 @@ public class DefaultLdapFactoryHelper
 
             descriptor.setPrimaryName( name );
 
-//            getLogger().debug( "Adding attribute '" + name + "'." );
+            getLogger().debug( "Adding attribute '" + name + "'." );
 
             attributeDescriptors.put( name, descriptor );
 
@@ -158,11 +175,13 @@ public class DefaultLdapFactoryHelper
                     throw new InitializationException( "Attribute type is already aliased: '" + alias + "'." );
                 }
 
-//                getLogger().debug( "Aliasing '" + descriptor.getPrimaryName() + "' to '" + alias + "'." );
+                getLogger().debug( "Aliasing '" + descriptor.getPrimaryName() + "' to '" + alias + "'." );
 
                 attributeDescriptors.put( alias, descriptor );
             }
         }
+
+        getLogger().debug( "Parsting object classes. There are " + objectClasses.size() + " object classes registered.");
 
         for ( ObjectClass objectClass : objectClasses )
         {
@@ -181,7 +200,7 @@ public class DefaultLdapFactoryHelper
 
             descriptor.setName( name );
 
-//            getLogger().debug( "Adding object class: " + name );
+            getLogger().debug( "Adding object class: " + name );
 
             // ----------------------------------------------------------------------
             // Attributes
@@ -202,7 +221,7 @@ public class DefaultLdapFactoryHelper
                     throw new InitializationException( "Missing attribute type '" + attributeTypeName + "' for object class '" + name + "'." );
                 }
 
-//                getLogger().debug( " Required attribute '" + attribute.getPrimaryName() + "'." );
+                getLogger().debug( " Required attribute '" + attribute.getPrimaryName() + "'." );
                 descriptor.getRequiredAttributes().put( attribute.getPrimaryName(), attribute );
             }
 
@@ -221,7 +240,7 @@ public class DefaultLdapFactoryHelper
                     throw new InitializationException( "Missing attribute type '" + attributeTypeName + "' for object class '" + name + "'." );
                 }
 
-//                getLogger().debug( " Optional attribute '" + attribute.getPrimaryName() + "'." );
+                getLogger().debug( " Optional attribute '" + attribute.getPrimaryName() + "'." );
                 descriptor.getOptionalAttributes().put( attribute.getPrimaryName(), attribute );
             }
 
