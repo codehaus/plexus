@@ -209,7 +209,7 @@ public abstract class AbstractCli
     // specifics of the application so that I can do this in a general way.
     private void showVersion()
     {
-        InputStream resourceAsStream;
+        InputStream is;
 
         try
         {
@@ -222,9 +222,14 @@ public abstract class AbstractCli
                 System.err.println( "Unable determine version from JAR file." );
             }
 
-            resourceAsStream = AbstractCli.class.getClassLoader().getResourceAsStream( pomPropertiesPath );
+            is = AbstractCli.class.getClassLoader().getResourceAsStream( pomPropertiesPath );
 
-            properties.load( resourceAsStream );
+            if ( is == null )
+            {
+                System.err.println( "Unable determine version from JAR file." );
+            }
+
+            properties.load( is );
 
             if ( properties.getProperty( "builtOn" ) != null )
             {
