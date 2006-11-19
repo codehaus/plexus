@@ -31,10 +31,11 @@ public interface ApacheDs
     /**
      * Creates a partition usable for testing and other light usage.
      *
+     * @param name The name of the partition. Will be used as the directory name when persisted.
      * @param domainComponents E.g. "plexus", "codehaus", "org"
      * @throws NamingException
      */
-    Partition addSimplePartition( String ... domainComponents )
+    Partition addSimplePartition( String name, String[] domainComponents )
         throws NamingException;
 
     // ----------------------------------------------------------------------
@@ -45,6 +46,9 @@ public interface ApacheDs
         throws Exception;
 
     void stopServer()
+        throws Exception;
+
+    void sync()
         throws Exception;
 
     // ----------------------------------------------------------------------
