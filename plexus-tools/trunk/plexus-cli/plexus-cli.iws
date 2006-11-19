@@ -20,8 +20,8 @@
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/plexus-cli.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/codehaus/plexus/tools/cli/AbstractCli.java" afterPath="$PROJECT_DIR$/src/main/java/org/codehaus/plexus/tools/cli/AbstractCli.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/plexus-cli.iws" afterPath="$PROJECT_DIR$/plexus-cli.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/codehaus/plexus/tools/cli/AbstractCli.java" afterPath="$PROJECT_DIR$/src/main/java/org/codehaus/plexus/tools/cli/AbstractCli.java" />
     </list>
   </component>
   <component name="ChangeListSynchronizer" />
@@ -199,7 +199,7 @@
       <file leaf-file-name="AbstractCli.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/codehaus/plexus/tools/cli/AbstractCli.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="230" column="23" selection-start="6592" selection-end="6592" vertical-scroll-proportion="0.4925816">
+            <state line="238" column="37" selection-start="6802" selection-end="6802" vertical-scroll-proportion="0.31454006">
               <folding />
             </state>
           </provider>
@@ -622,7 +622,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1440" height="821" extended-state="0" />
+    <frame x="55" y="69" width="1440" height="821" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="3" />
@@ -764,7 +764,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/codehaus/plexus/tools/cli/AbstractCli.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="230" column="23" selection-start="6592" selection-end="6592" vertical-scroll-proportion="0.4925816">
+        <state line="238" column="37" selection-start="6802" selection-end="6802" vertical-scroll-proportion="0.31454006">
           <folding />
         </state>
       </provider>

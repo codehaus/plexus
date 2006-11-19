@@ -237,12 +237,12 @@ public abstract class AbstractCli
 
             if ( properties.getProperty( "builtOn" ) != null )
             {
-                System.out.println( "Maven version: " + properties.getProperty( "version", "unknown" ) + " built on " +
+                System.out.println( "Version: " + properties.getProperty( "version", "unknown" ) + " built on " +
                     properties.getProperty( "builtOn" ) );
             }
             else
             {
-                System.out.println( "Maven version: " + properties.getProperty( "version", "unknown" ) );
+                System.out.println( "Version: " + properties.getProperty( "version", "unknown" ) );
             }
         }
         catch ( IOException e )
