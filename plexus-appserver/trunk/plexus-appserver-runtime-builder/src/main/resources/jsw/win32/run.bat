@@ -21,7 +21,7 @@ rem Find the wrapper.conf
 rem
 :conf
 set _WRAPPER_CONF=wrapper.conf
-
+SET TOOLS_JAR=%JAVA_HOME%\lib\tools.jar
 
 rem
 rem Run the application.
