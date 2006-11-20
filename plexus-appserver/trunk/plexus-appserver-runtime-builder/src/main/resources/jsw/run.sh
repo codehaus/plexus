@@ -27,6 +27,13 @@ PRIORITY=
 # Location of the pid file.
 PIDDIR="."
 
+# Location of tools.jar.
+# For Darwin, use classes.jar for TOOLS_JAR
+TOOLS_JAR="${JAVA_HOME}/lib/tools.jar"
+if $darwin; then
+  TOOLS_JAR="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Classes/classes.jar"
+fi
+
 # If uncommented, causes the Wrapper to be shutdown using an anchor file.
 #  When launched with the 'start' command, it will also ignore all INT and
 #  TERM signals.
