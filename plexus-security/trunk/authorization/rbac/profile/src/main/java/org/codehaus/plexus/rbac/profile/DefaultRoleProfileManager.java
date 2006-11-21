@@ -107,6 +107,22 @@ public class DefaultRoleProfileManager
         }
     }
 
+    public void deleteDynamicRole( String roleHint, String resource )
+        throws RoleProfileException
+    {
+        try
+        {
+            DynamicRoleProfile roleProfile =  (DynamicRoleProfile)container.lookup( DynamicRoleProfile.ROLE, roleHint );
+
+            roleProfile.deleteRole( resource );
+        }
+        catch ( ComponentLookupException cle )
+        {
+            throw new RoleProfileException( "unable to locate dynamic role profile " + roleHint, cle );
+        }
+
+    }
+
     public void initialize()
         throws RoleProfileException
     {

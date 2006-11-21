@@ -7,6 +7,7 @@ import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.security.rbac.RbacObjectInvalidException;
 
 import java.util.List;
 import java.util.Iterator;
@@ -151,6 +152,11 @@ public abstract class AbstractDynamicRoleProfile
     }
 
 
+    /**
+     * override this method and return true if you do not want the role to be able to be deleted.
+     *
+     * @return boolean, true if the role is permanent
+     */
     public boolean isPermanent()
     {
         return false;
@@ -177,6 +183,57 @@ public abstract class AbstractDynamicRoleProfile
         catch ( RbacManagerException e )
         {
             throw new RoleProfileException( "system error with rbac manager", e );
+        }
+    }
+
+    /**
+     * Delete role, role must not be flagged as permanent or else this method will through
+     * a RoleProfileException
+     *
+     * @param resource
+     * @throws RoleProfileException
+     */
+    public void deleteRole( String resource )
+        throws RoleProfileException
+    {
+        try
+        {
+            if ( !isPermanent() )
+            {
+                if ( getOperations() != null )
+                {
+                    List operations = getOperations();
+
+                    for ( Iterator i = operations.iterator(); i.hasNext(); )
+                    {
+                        String operationString = (String) i.next();
+
+                        if ( !rbacManager.permissionExists(
+                            operationString + RoleProfileConstants.DELIMITER + resource ) )
+                        {
+                            rbacManager.removePermission( operationString + RoleProfileConstants.DELIMITER + resource );
+                        }
+                    }
+                }
+
+                rbacManager.removeRole( getRoleName( resource ) );
+            }
+            else
+            {
+                throw new RoleProfileException( "unable to honor delete role request, role is flagged permanent" );
+            }
+        }
+        catch ( RbacObjectInvalidException ri )
+        {
+            throw new RoleProfileException( "invalid role", ri );
+        }
+        catch ( RbacObjectNotFoundException rn )
+        {
+            throw new RoleProfileException( "unable to get role", rn );
+        }
+        catch ( RbacManagerException rm )
+        {
+            throw new RoleProfileException( "system error with rbac manager", rm );
         }
     }
 }
