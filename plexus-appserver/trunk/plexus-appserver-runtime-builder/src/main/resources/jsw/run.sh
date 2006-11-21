@@ -34,6 +34,14 @@ if $darwin; then
   TOOLS_JAR="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Classes/classes.jar"
 fi
 
+# Get standard environment variables
+PRGDIR=`dirname "$THIS_PROG"`
+PLEXUS_HOME=`cd "$PRGDIR/.." ; pwd`
+
+if [ -z "$PLEXUS_BASE" ]; then
+  PLEXUS_BASE=$PLEXUS_HOME
+fi
+
 # If uncommented, causes the Wrapper to be shutdown using an anchor file.
 #  When launched with the 'start' command, it will also ignore all INT and
 #  TERM signals.
