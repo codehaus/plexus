@@ -57,4 +57,6 @@ public interface DynamicRoleProfile
 
     public Role getRole( String resource ) throws RoleProfileException;
 
+    public void deleteRole( String resource ) throws RoleProfileException;
+
 }

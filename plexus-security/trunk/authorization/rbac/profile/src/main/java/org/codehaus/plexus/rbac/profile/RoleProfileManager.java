@@ -39,6 +39,9 @@ public interface RoleProfileManager
     public Role mergeRoleProfiles( String roleHint, String withRoleHint )
         throws RoleProfileException;
 
+    public void deleteDynamicRole( String roleHint, String resource )
+        throws RoleProfileException;
+
     public boolean isInitialized();
 
     public void setInitialized( boolean initialized );
