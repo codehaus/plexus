@@ -54,7 +54,7 @@
   </li>
   <li>
      Forgot your Password? 
-     <ww:url id="forgottenPassword" action="password!reset" />
+     <ww:url id="forgottenPassword" action="passwordReset" />
      <ww:a href="%{forgottenPassword}">Request a password reset.</ww:a>
   </li>
 </ul>
