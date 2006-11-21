@@ -63,6 +63,13 @@ How to use Plexus in web applications
 
  These location can be overidden <TODO: explain how>
 
+ ~~ TODO: Incorporate following
+ ~~ Notes from chat with Trygvis
+ ~~ plexus.properties is useful for changing ${properties} in your xml file
+ ~~ you can change the location of plexus.xml with servlet configuration
+ ~~ init-prameters or something
+
+
  In both the above cases a new instance of Plexus Conatiner will be created and stored in
  "application" scope for the web application under the key:
  <<org.codehaus.plexus.PlexusConstants.PLEXUS_KEY>>
@@ -151,3 +158,5 @@ PlexusContainer getPlexusContainer( ServletContext servletContext )
   <version>1.0-beta-2</version>
 </dependency>
 +---+
+
+
