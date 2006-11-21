@@ -62,7 +62,7 @@ public abstract class AbstractUserCredentialsAction
 
         if ( StringUtils.isEmpty( internalUser.getFullName() ) )
         {
-            addFieldError( "user.fullname", "Full Name is required." );
+            addFieldError( "user.fullName", "Full Name is required." );
         }
 
         if ( StringUtils.isEmpty( internalUser.getEmail() ) )
