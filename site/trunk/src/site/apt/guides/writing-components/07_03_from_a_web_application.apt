@@ -1,11 +1,153 @@
  -----
 Using a Plexus Component from a web application.
  -----
+Michal Maczka 
 Rahul Thakur
  ----
-08th June 2006 
+21st November 2006 
  ------
 
  <<<The contents of this document are a work in progress>>>
 
-~~TODO:  
+
+How to use Plexus in web applications
+
+ Before we demonstrate how we can set up a web application to start a Plexus 
+ Container and look up Plexus components, let us understand the alternatives 
+ that are available to embed Plexus container in web applications.
+
+* Configuration
+
+ Plexus Servlet module exists for simplifying embedding and usage of Plexus in
+ context of web applications which run inside the servlet container.
+
+ There are two ways  of embedding Plexus.  
+
+ [[1]]  By setting up a <<Plexus{{{http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/ServletContextListener.html}ServletContextListener}}>>
+
+ [[1]]  By setting up a <<PlexusLoaderServlet>>.
+
+
+ The first way is suported by servlet containers which are compliant with
+ servlet specification 2.3 or higher.  Second one should be used for
+ compatibility with older versions of servlet containers
+
+* Setting up PlexusServletContextListener to embed Plexus
+
++---+
+<web-app>
+  ...
+  <listener>
+    <listener-class>org.codehaus.plexus.servlet.PlexusServletContextListener</listener-class>
+  </listener>
+  ...
+<web-app>
++---+
+
+* Setting up PlexusLoaderServlet to embed Plexus
+
++---+
+<servlet>
+  <servlet-name>plexus</servlet-name>
+  <servlet-class>org.codehaus.plexus.servlet.PlexusLoaderServlet</servlet-class>
+  <load-on-startup>1</load-on-startup>
+</servlet>
++---+
+
+ By default, in both the above cases, the Plexus Embedder will search for the 
+ configuration files in the following locations:
+
+ * /WEB-INF/plexus.xml (for main Plexus configuration file)
+
+ * /WEB-INF/plexus.properties (for properties file which is used for seeding Plexus context)
+
+ These location can be overidden <TODO: explain how>
+
+ In both the above cases a new instance of Plexus Conatiner will be created and stored in
+ "application" scope for the web application under the key:
+ <<org.codehaus.plexus.PlexusConstants.PLEXUS_KEY>>
+
+* How to lookup and release components
+
+** In a Servlet
+
++---+
+...
+ServletContext context = getServletContext();
+VelocityComponent velocityComponent = ( VelocityComponent ) PlexusServletUtils.lookup( context, VelocityComponent.ROLE );
+...
+PlexusServletUtils.release( context, velocityComponent );
+...
++---+
+
+** In JSP
+
++---+
+<%
+...
+VelocityComponent velocityComponent = ( VelocityComponent ) PlexusServletUtils.lookup( application, VelocityComponent.ROLE );
+...
+PlexusServletUtils.release( application, velocityComponent );
+...
+%>
++---+
+
+** In Struts Action or in similar case 
+
++---+
+public abstract class BaseAction extends Action
+{
+    protected Object lookup( HttpServletRequest request, String role )
+        throws ServletException
+    {
+        HttpSession session = request.getSession();
+
+        ServletContext application = session.getServletContext();
+
+        Object retValue = PlexusServletUtils.lookup( application, role );
+
+        return retValue;
+    }
+
+    protected void release( HttpServletRequest request, Object component )
+        throws ServletException
+    {
+        HttpSession session = request.getSession();
+
+        ServletContext application = session.getServletContext();
+
+        PlexusServletUtils.release( application, component );
+    }
+
+    void someAction( HttpServletRequest request )
+    {
+        VelocityComponent velocityComponent= ( VelocityComponent ) lookup( request,  VelocityComponent.ROLE  );
+
+        ....
+
+        release( request, velocityComponent );
+    }
+}
++---+
+
+
+* Obtaining the Plexus Container instance
+
+ If you need to access the instance of PlexusContainer object, it can be 
+ obtained by the following call:
+
++---+
+PlexusContainer getPlexusContainer( ServletContext servletContext )
++---+
+
+** Required artifacts
+
+ Maven dependency:
+
++---+
+<dependency>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-servlet</artifactId>
+  <version>1.0-beta-2</version>
+</dependency>
++---+
