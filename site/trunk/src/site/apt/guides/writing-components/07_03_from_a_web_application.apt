@@ -159,4 +159,6 @@ PlexusContainer getPlexusContainer( ServletContext servletContext )
 </dependency>
 +---+
 
+ {{{07_03_setting_up_a_web_application.html}Next: Setting up a Web Application Project }} 
+
 
