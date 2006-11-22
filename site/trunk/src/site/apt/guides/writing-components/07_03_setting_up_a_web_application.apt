@@ -141,4 +141,21 @@ mvn archetype:create -DarchetypeGroupId=org.apache.maven.archetypes \
 </project>
 +---------------------------+
 
+*Generate a Project for your IDE.
+
+** For Eclipse.
+ 
+   [[1]] Change directory to the newly created directory 'plexus-example-webapp'
+   
+   [[1]] Run the following command from command prompt to generate Eclipse project setting files.
+
++------------------------------------------+
+ E:\workspaces\plexus-docs\plexus-website-monitor-component>mvn eclipse:eclipse
++------------------------------------------+
+
+ Eclipse project files should get generated succesfully at this point. If there were any unsatisfied dependencies, update <<<<version>>>> for dependencies in pom.xml to an available release version.
+ 
+   [[1]] Fire up Eclipse and import the generated project into an Eclipse Workspace.
+ 
+
 
