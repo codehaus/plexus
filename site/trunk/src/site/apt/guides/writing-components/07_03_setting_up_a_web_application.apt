@@ -1,0 +1,97 @@
+ -----
+Preparing the Web application project.
+ -----
+Rahul Thakur
+ ----
+22nd November 2006 
+ ------
+
+ <<<The contents of this document are a work in progress>>>
+
+Creating a web application project
+
+ We will create a very basic web application project first and then gradually
+ evolve it to demonstrate how Plexus can be embedded.
+
+ To create a web application skeleton: 
+
+  [[1]] Open the command prompt/terminal window. 
+
+  [[1]] Change directory to where you want to create your web application 
+        project.
+
+  [[1]] Run the following Maven command 
+
+
++---------------------------+
+mvn archetype:create -DarchetypeGroupId=org.apache.maven.archetypes \
+    -DarchetypeArtifactId=maven-archetype-webapp \
+    -DarchetypeVersion=1.0-alpha-4-SNAPSHOT  \
+    -DgroupId=org.codehaus.plexus.examples \
+    -DartifactId=plexus-example-webapp  \
+    -DpackageName=org.codehaus.plexus.tutorial \
+    -Dpackaging=war \
+    -DremoteRepositories=http://people.apache.org/repo/m2-snapshot-repository/
++---------------------------+
+
+ <<Archetype creation options are explained here:>>
+
+
+*----------+--------------+----------------:
+| <<Commandline Option>> 	| <<Description>> 	| <<Required>> |
+*----------+--------------+----------------:
+| -DarchetypeGroupId 	| "groupId" for the archetype we want to use 	| Yes |
+*----------+--------------+----------------:
+| -DarchetypeArtifact 	| "artifactId" for the archetype we want to use |	Yes |
+*----------+--------------+----------------:
+| -DarchetypeVersion 	| "version" for the archetype we want to use 	| Yes| 
+*----------+--------------+----------------:
+| -DgroupId 	| "groupId" for the project to be generated 	| Yes |
+*----------+--------------+----------------:
+| -DartifactId | "artifactId" for the project to be generated |	Yes |
+*----------+--------------+----------------:
+| -DpackageName |	Base package name to be use for any Java sources being copied over 	| No|
+*----------+--------------+----------------:
+| -Dpackaging |	Packaging to be used for the created project | No|
+*----------+--------------+----------------:
+| -DremoteRepositories | Comma-separated list of repositories to lookup to retrieve archetype | No|
+*----------+--------------+----------------:
+
+
+ For more information on Maven Archetypes please refer to 
+ {{{http://maven.apache.org/guides/getting-started/index.html}this resource}} on the Maven website.
+
+
+ A web application project should have been created now at the location where 
+ you ran the <<<archetype:create>>> command. 
+
+ Locate the <<<pom.xml>>> under the created project, the contents of the POM 
+ should be as below:
+
++---------------------------+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.plexus.examples</groupId>
+  <artifactId>plexus-example-webapp</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>Maven Webapp Archetype</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <finalName>plexus-example-webapp</finalName>
+  </build>
+</project>
++---------------------------+
+
+
+
+
