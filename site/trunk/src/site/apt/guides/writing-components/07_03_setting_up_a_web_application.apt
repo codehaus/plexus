@@ -149,8 +149,15 @@ mvn archetype:create -DarchetypeGroupId=org.apache.maven.archetypes \
    
    [[1]] Run the following command from command prompt to generate Eclipse project setting files.
 
+   
 +------------------------------------------+
- E:\workspaces\plexus-docs\plexus-website-monitor-component>mvn eclipse:eclipse
+ (for WTP 0.7)
+ E:\plexus\plexus-examples\plexus-example-webapp>mvn eclipse:eclipse 
++------------------------------------------+
+
++------------------------------------------+
+ (for WTP 1.0 or higher)
+ E:\plexus\plexus-examples\plexus-example-webapp>mvn eclipse:eclipse -Dwtpversion=1.0
 +------------------------------------------+
 
  Eclipse project files should get generated succesfully at this point. If there were any unsatisfied dependencies, update <<<<version>>>> for dependencies in pom.xml to an available release version.
