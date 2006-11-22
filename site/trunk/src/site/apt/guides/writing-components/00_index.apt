@@ -28,9 +28,20 @@ About this trail
  
   * {{{07_01_from_a_maven_mojo.html}From a Maven Mojo}}
 
-  * {{{07_02_from_a_plexus_application.html}From a Plexus application}}
+    * {{{07_01_implementing_monitor_mojo.html} Implementing Monitor Mojo}}
+
+    * {{{07_01_configuring_monitor_mojo.html} Adding configuration for the Mojo}}
+
+    * {{{07_01_setting_up_mojo_unit_tests.html} Setting up Mojo unit tests}}
+
+  * {{{07_02_from_a_plexus_application.html} From a Plexus application}}
+
+    * {{{07_02_plexus_embedder_and_component_integration.html} Plexus Embedder Intro & Site Monitor component integration into the application }} 
+
     
   * {{{07_03_from_a_web_application.html}From a Web application}}
+
+    *  {{{07_03_setting_up_a_web_application.html} Setting up a Web Application Project }} 
     
   * {{{07_04_from_a_soap_webservice.html}From a SOAP Web Service}}
     
