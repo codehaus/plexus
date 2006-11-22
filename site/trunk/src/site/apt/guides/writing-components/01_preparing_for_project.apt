@@ -43,7 +43,7 @@ Run the following command from the command line to setup an initial project stru
  The following table explains the options that we used above.
 
 *----------+--------------+----------------:
-| Commandline Option 	| Description 	| Required |
+| <<Commandline Option>>	| <<Description>> 	| <<Required>> |
 *----------+--------------+----------------:
 | -DarchetypeGroupId 	| "groupId" for the archetype we want to use 	| Yes |
 *----------+--------------+----------------:
