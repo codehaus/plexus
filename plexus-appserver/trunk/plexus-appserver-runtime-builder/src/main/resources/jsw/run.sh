@@ -38,6 +38,7 @@ TOOLS_JAR="${JAVA_HOME}/lib/tools.jar"
 if $darwin; then
   TOOLS_JAR="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Classes/classes.jar"
 fi
+export TOOLS_JAR
 
 # resolve links - $0 may be a softlink
 THIS_PROG="$0"
@@ -55,9 +56,11 @@ done
 # Get standard environment variables
 PRGDIR=`dirname "$THIS_PROG"`
 PLEXUS_HOME=`cd "$PRGDIR/../.." ; pwd`
+export PLEXUS_HOME
 
 if [ -z "$PLEXUS_BASE" ]; then
   PLEXUS_BASE=$PLEXUS_HOME
+  export PLEXUS_BASE
 fi
 
 # If uncommented, causes the Wrapper to be shutdown using an anchor file.
