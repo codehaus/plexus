@@ -8,7 +8,7 @@ Rahul Thakur
 
  <<<The contents of this document are a work in progress>>>
 
-Creating a web application project
+Preparing the web application project to use Plexus
 
  We will create a very basic web application project first and then gradually
  evolve it to demonstrate how Plexus can be embedded.
@@ -92,6 +92,53 @@ mvn archetype:create -DarchetypeGroupId=org.apache.maven.archetypes \
 </project>
 +---------------------------+
 
+* Updating the POM 
 
+  Before we can embed Plexus in our web application we need to make the JAR 
+  library that contains the Plexus Embedder available to our project. We do 
+  this by introducing required  <<<<dependency>>>> elements in the project's
+  <<<pom.xml>>>. 
+
+  The updated <<<pom.xml>>> (along with some other updates) looks as below:
+
++---------------------------+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>plexus-examples</artifactId>
+    <groupId>org.codehaus.plexus.examples</groupId>
+    <version>1-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.plexus.examples</groupId>
+  <artifactId>plexus-example-webapp</artifactId>
+  <packaging>war</packaging>
+  <name>Plexus Web Application Example</name>
+  <version>1.0-SNAPSHOT</version>
+  <url>http://maven.apache.org</url>
+  <build>
+    <finalName>plexus-example-webapp</finalName>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Added for embedding plexus -->
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-servlet</artifactId>
+      <version>1.0-beta-5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-10</version>
+    </dependency>
+  </dependencies>
+</project>
++---------------------------+
 
 
