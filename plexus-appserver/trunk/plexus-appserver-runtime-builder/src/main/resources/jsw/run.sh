@@ -39,9 +39,22 @@ if $darwin; then
   TOOLS_JAR="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Classes/classes.jar"
 fi
 
+# resolve links - $0 may be a softlink
+THIS_PROG="$0"
+
+while [ -h "$THIS_PROG" ]; do
+  ls=`ls -ld "$THIS_PROG"`
+  link=`expr "$ls" : '.*-> \(.*\)$'`
+  if expr "$link" : '.*/.*' > /dev/null; then
+    THIS_PROG="$link"
+  else
+    THIS_PROG=`dirname "$THIS_PROG"`/"$link"
+  fi
+done
+
 # Get standard environment variables
 PRGDIR=`dirname "$THIS_PROG"`
-PLEXUS_HOME=`cd "$PRGDIR/.." ; pwd`
+PLEXUS_HOME=`cd "$PRGDIR/../.." ; pwd`
 
 if [ -z "$PLEXUS_BASE" ]; then
   PLEXUS_BASE=$PLEXUS_HOME
