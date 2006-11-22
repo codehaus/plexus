@@ -12,6 +12,11 @@
 #-----------------------------------------------------------------------------
 # These settings can be modified to fit the needs of your application
 
+darwin=false;
+case "`uname`" in
+Darwin*) darwin=true;;
+esac
+
 # Application
 APP_NAME="@app.name@"
 APP_LONG_NAME="@app.long.name@"
