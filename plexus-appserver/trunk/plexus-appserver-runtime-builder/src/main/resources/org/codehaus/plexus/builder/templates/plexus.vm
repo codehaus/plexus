@@ -61,11 +61,9 @@ if $cygwin ; then
   [ -n "$PLEXUS_BASE" ] &&
     PLEXUS_BASE=`cygpath --unix "$PLEXUS_BASE"`
   [ -n "$PLEXUS_TMPDIR" ] &&
-    PLEXUS_BASE=`cygpath --unix "$PLEXUS_TMPDIR"`
+    PLEXUS_TMPDIR=`cygpath --unix "$PLEXUS_TMPDIR"`
   [ -n "$JAVA_HOME" ] &&
     JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
-  [ -n "$CLASSPATH" ] &&
-    CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
 fi
 
 if [ -z "$JAVACMD" ] ; then
@@ -92,6 +90,15 @@ if [ -z "$JAVA_HOME" ] ; then
   echo "  If build fails because sun.* classes could not be found"
   echo "  you will need to set the JAVA_HOME environment variable"
   echo "  to the installation directory of java."
+fi
+
+# For Cygwin, switch paths to Windows format before running java
+if $cygwin; then
+  PLEXUS_HOME=`cygpath --path --windows "$PLEXUS_HOME"`
+  PLEXUS_BASE=`cygpath --path --windows "$PLEXUS_BASE"`
+  PLEXUS_CONF=`cygpath --path --windows "$PLEXUS_CONF"`
+  PLEXUS_TMPDIR=`cygpath --path --windows "$PLEXUS_TMPDIR"`
+  JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
 fi
 
 # For Darwin, use classes.jar for TOOLS_JAR
