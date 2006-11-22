@@ -38,7 +38,7 @@ Run the following command from the command line to setup an initial project stru
 
 ** Archetype creation options explained
 
- More info on archetype creation and usage can be found here?
+ More info on archetype creation and usage can be found  {{{http://maven.apache.org/guides/getting-started/index.html}here}} on the Maven website.
 
  The following table explains the options that we used above.
 
