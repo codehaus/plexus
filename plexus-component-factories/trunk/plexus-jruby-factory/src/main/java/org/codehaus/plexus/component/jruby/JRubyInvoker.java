@@ -17,7 +17,7 @@ import java.util.Map;
 
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
-import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.util.IOUtil;
@@ -227,9 +227,9 @@ public class JRubyInvoker
                 if ( classRealm.getResource( impl ) == null )
                 {
                     StringBuffer buf = new StringBuffer( "Cannot find: " + impl + " in classpath:" );
-                    for ( int i = 0; i < classRealm.getConstituents().length; i++ )
+                    for ( int i = 0; i < classRealm.getURLs().length; i++ )
                     {
-                        URL constituent = classRealm.getConstituents()[i];
+                        URL constituent = classRealm.getURLs()[i];
                         buf.append( "\n   [" + i + "]  " + constituent );
                     }
                     throw new ComponentInstantiationException( buf.toString() );
@@ -245,7 +245,7 @@ public class JRubyInvoker
 
         Object result = null;
         ClassLoader oldClassLoader = null;
-        ClassLoader classLoader = classRealm == null ? null : classRealm.getClassLoader();
+        ClassLoader classLoader = classRealm == null ? null : (ClassLoader) classRealm.getStrategy();
         if ( classLoader != null )
         {
             oldClassLoader = Thread.currentThread().getContextClassLoader();
@@ -444,9 +444,9 @@ public class JRubyInvoker
             if ( classRealm != null )
             {
                 buf.append( ":" );
-                for ( int i = 0; i < classRealm.getConstituents().length; i++ )
+                for ( int i = 0; i < classRealm.getURLs().length; i++ )
                 {
-                    URL constituent = classRealm.getConstituents()[i];
+                    URL constituent = classRealm.getURLs()[i];
                     buf.append( "\n   [" + i + "]  " + constituent );
                 }
             }

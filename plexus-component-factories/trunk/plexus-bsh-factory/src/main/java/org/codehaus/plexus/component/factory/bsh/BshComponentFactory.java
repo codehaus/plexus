@@ -3,7 +3,7 @@ package org.codehaus.plexus.component.factory.bsh;
 import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.UtilEvalError;
-import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.factory.AbstractComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
@@ -40,9 +40,9 @@ public class BshComponentFactory
         if ( scriptLocation == null )
         {
             StringBuffer buf = new StringBuffer( "Cannot find: " + impl + " in classpath:" );
-            for ( int i = 0; i < containerRealm.getConstituents().length; i++ )
+            for ( int i = 0; i < containerRealm.getURLs().length; i++ )
             {
-                URL constituent = containerRealm.getConstituents()[i];
+                URL constituent = containerRealm.getURLs()[i];
                 buf.append( "\n   [" + i + "]  " + constituent );
             }
             throw new ComponentInstantiationException( buf.toString() );
@@ -61,7 +61,7 @@ public class BshComponentFactory
             // BeanShell honours the context classloader, which something is setting (erroneously?)
 //            interp.setClassLoader( containerRealm.getClassLoader() );
             ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-            Thread.currentThread().setContextClassLoader( containerRealm.getClassLoader() );
+            Thread.currentThread().setContextClassLoader( (ClassLoader) containerRealm.getStrategy() );
             result = interp.eval( reader );
             Thread.currentThread().setContextClassLoader( oldClassLoader );
         }

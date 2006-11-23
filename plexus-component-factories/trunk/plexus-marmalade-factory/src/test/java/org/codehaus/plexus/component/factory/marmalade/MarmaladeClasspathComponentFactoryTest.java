@@ -1,8 +1,8 @@
 /* Created on Aug 9, 2004 */
 package org.codehaus.plexus.component.factory.marmalade;
 
-import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.classworlds.ClassWorld;
+import org.codehaus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.embed.Embedder;
 
@@ -36,7 +36,7 @@ public class MarmaladeClasspathComponentFactoryTest extends TestCase {
             Class.forName("org.codehaus.plexus.component.factory.marmalade.TestTaglib");
             
             ClassRealm realm = world.newRealm("plexus.core", getClass().getClassLoader());
-            realm.addConstituent(file.getAbsoluteFile().getParentFile().toURL());
+            realm.addURL(file.getAbsoluteFile().getParentFile().toURL());
             
             String role="role";
             String hint = "hint";
