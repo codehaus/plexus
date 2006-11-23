@@ -3,7 +3,7 @@ package org.codehaus.plexus.component.factory.bsh;
 import bsh.EvalError;
 import bsh.Interpreter;
 
-import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.AbstractComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
@@ -56,7 +56,7 @@ public class BshComponentConfigurator
             ConfigurationConverter converter = converterLookup.lookupConverterForType( type );
 
             Object value = converter.fromConfiguration( converterLookup, childConfiguration, type, component.getClass(),
-                                                        containerRealm.getClassLoader(), expressionEvaluator, listener );
+                                                        containerRealm, expressionEvaluator, listener );
 
             if ( value != null )
             {

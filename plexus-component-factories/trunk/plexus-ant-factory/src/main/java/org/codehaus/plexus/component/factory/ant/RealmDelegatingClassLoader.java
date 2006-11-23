@@ -1,6 +1,6 @@
 package org.codehaus.plexus.component.factory.ant;
 
-import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.classworlds.realm.ClassRealm;
 
 import java.io.IOException;
 import java.io.InputStream;

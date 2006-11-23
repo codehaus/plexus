@@ -1,7 +1,7 @@
 /* Created on Aug 6, 2004 */
 package org.codehaus.plexus.component.factory.marmalade;
 
-import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 import java.net.URL;
@@ -31,9 +31,9 @@ public class MarmaladeClasspathComponentFactory
         if(scriptLocation == null)
         {
             System.out.println("Cannot find: " + impl + " in classpath:");
-            for ( int i = 0; i < classRealm.getConstituents().length; i++ )
+            for ( int i = 0; i < classRealm.getURLs().length; i++ )
             {
-                URL constituent = classRealm.getConstituents()[i];
+                URL constituent = classRealm.getURLs()[i];
                 System.out.println("[" + i + "]  " + constituent);
             }
         }

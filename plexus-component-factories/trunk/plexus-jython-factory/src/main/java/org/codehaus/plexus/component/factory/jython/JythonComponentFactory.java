@@ -5,7 +5,7 @@ import org.codehaus.plexus.component.factory.ComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.classworlds.realm.ClassRealm;
 import org.python.core.Py;
 import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
