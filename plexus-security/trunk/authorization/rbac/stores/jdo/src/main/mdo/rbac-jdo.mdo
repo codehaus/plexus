@@ -216,7 +216,7 @@
           <version>1.0.0+</version>
           <type>String</type>
           <description>
-            The string identifier for an operation.
+            The string identifier for a resource.
           </description>
           <identifier>true</identifier>
         </field>
