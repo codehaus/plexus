@@ -227,6 +227,14 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Rahul Thakur</name>
+      <id>rahul</id>
+      <email>rahul.thakur.xdev@gmail.com</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
   <dependencies>
     <dependency>
