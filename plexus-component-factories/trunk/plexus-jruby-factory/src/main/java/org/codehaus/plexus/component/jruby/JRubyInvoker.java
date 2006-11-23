@@ -25,10 +25,10 @@ import org.codehaus.plexus.util.StringOutputStream;
 import org.jruby.IRuby;
 import org.jruby.Ruby;
 import org.jruby.RubyIO;
-import org.jruby.RubyNil;
 import org.jruby.javasupport.JavaUtil;
 import org.jruby.javasupport.bsf.JRubyEngine;
 import org.jruby.runtime.builtin.IRubyObject;
+import org.jruby.util.NormalizedFile;
 
 /**
  * Configures and invokes the JRuby runtime. The "invoke" method executes a given
@@ -211,31 +211,38 @@ public class JRubyInvoker
     public Object invoke( OutputStream stdout, OutputStream stderr )
         throws IOException, ComponentInstantiationException
     {
-        String impl = componentDescriptor.getImplementation();
-        if ( !impl.startsWith( "/" ) )
-        {
-            impl = "/" + impl;
-        }
+        Reader theReader = reader;
 
-        if ( classRealm != null )
+        // Use the given reader, unless it it null. Then load one.
+        if ( theReader == null )
         {
-            if ( classRealm.getResource( impl ) == null )
+            String impl = componentDescriptor.getImplementation();
+            if ( !impl.startsWith( "/" ) )
             {
-                StringBuffer buf = new StringBuffer( "Cannot find: " + impl + " in classpath:" );
-                for ( int i = 0; i < classRealm.getConstituents().length; i++ )
-                {
-                    URL constituent = classRealm.getConstituents()[i];
-                    buf.append( "\n   [" + i + "]  " + constituent );
-                }
-                throw new ComponentInstantiationException( buf.toString() );
+                impl = "/" + impl;
             }
+    
+            if ( classRealm != null )
+            {
+                if ( classRealm.getResource( impl ) == null )
+                {
+                    StringBuffer buf = new StringBuffer( "Cannot find: " + impl + " in classpath:" );
+                    for ( int i = 0; i < classRealm.getConstituents().length; i++ )
+                    {
+                        URL constituent = classRealm.getConstituents()[i];
+                        buf.append( "\n   [" + i + "]  " + constituent );
+                    }
+                    throw new ComponentInstantiationException( buf.toString() );
+                }
+    
+                theReader = new InputStreamReader( classRealm.getResourceAsStream( impl ) );
+            }
+            else if ( theReader == null )
+            {
+                throw new ComponentInstantiationException( "If no classRealm is given in the constructor, a script Reader must be set." );
+            }
+        }
 
-            reader = new InputStreamReader( classRealm.getResourceAsStream( impl ) );
-        }
-        else if ( reader == null )
-        {
-            throw new ComponentInstantiationException( "If no classRealm is given in the constructor, a script Reader must be set." );
-        }
         Object result = null;
         ClassLoader oldClassLoader = null;
         ClassLoader classLoader = classRealm == null ? null : classRealm.getClassLoader();
@@ -246,10 +253,10 @@ public class JRubyInvoker
 
         StringOutputStream bos = null;
 
-        System.setProperty( "jruby.script", "" );
+        System.setProperty( "jruby.script", "<invoker>" );
         System.setProperty( "jruby.shell", "/bin/sh" );
-        System.setProperty( "jruby.home", "" );
-        System.setProperty( "jruby.lib", "/usr/lib/" );
+        System.setProperty( "jruby.home", new NormalizedFile( System.getProperty("user.dir"), ".jruby" ).getAbsolutePath() );
+        System.setProperty( "jruby.lib", new NormalizedFile( System.getProperty("jruby.home"), "lib" ).getAbsolutePath() );
 
         boolean isExternalRuntime = true;
         if ( runtime == null )
@@ -269,6 +276,7 @@ public class JRubyInvoker
 
             int read = -1;
             // append the required output streams to the head the script.
+            // TODO: Is this still necessary? Could probably let JRuby handle this.
             for ( Iterator iter = reqLibs.iterator(); iter.hasNext(); )
             {
                 String reqLibPath = (String) iter.next();
@@ -280,7 +288,7 @@ public class JRubyInvoker
                 ris.close();
             }
 
-            while ( ( read = reader.read() ) != -1 )
+            while ( ( read = theReader.read() ) != -1 )
             {
                 bos.write( read );
             }
@@ -288,7 +296,8 @@ public class JRubyInvoker
 
             if ( debug )
             {
-                System.out.println( bos.toString() );
+                stdout.write( bos.toString().getBytes() );
+                stdout.flush();
             }
 
             IRubyObject out = new RubyIO( runtime, stdout );
@@ -312,16 +321,21 @@ public class JRubyInvoker
 
                 BSFManager.registerScriptingEngine( "ruby", JRubyEngine.class.getName(), new String[] { "rb" } );
 
+                // runtime.getLoadService().init( libPaths );
+                
+                
                 manager.declareBean( "stdout", out, RubyIO.class);
                 manager.declareBean( "defout", out, RubyIO.class);
                 manager.declareBean( ">", out, RubyIO.class);
                 manager.declareBean( "stderr", err, RubyIO.class);
                 manager.declareBean( "deferr", err, RubyIO.class);
 
-                manager.declareBean("STDOUT", stdout, RubyIO.class);
-                manager.declareBean("STDERR", stderr, RubyIO.class);
+                manager.declareBean("STDOUT", out, RubyIO.class);
+                manager.declareBean("STDERR", err, RubyIO.class);
 
                 manager.declareBean( "VERBOSE", warning == 2 ? Boolean.TRUE : Boolean.FALSE, Boolean.class );
+//                manager.declareBean( "VERBOSE", Boolean.TRUE, Boolean.class );
+//                manager.declareBean( "DEBUG", Boolean.TRUE, Boolean.class );
 
                 String[] args = new String[1];
                 args[0] = buildLibs();
@@ -334,7 +348,7 @@ public class JRubyInvoker
                 manager.declareBean( "-a", autoSplit ? Boolean.TRUE : Boolean.FALSE, Boolean.class );
                 manager.declareBean( "-l", processLineEnds ? Boolean.TRUE : Boolean.FALSE, Boolean.class );
 
-                result = manager.eval( "ruby", "<script>", 1, 1, bos.toString() );
+                result = manager.eval( "ruby", "<invoker>", 1, 1, bos.toString() );
             }
             catch( BSFException e )
             {
@@ -353,9 +367,6 @@ public class JRubyInvoker
 
             if ( runtime != null )
             {
-                if ( result == null )
-                    result = RubyNil.createNilClass( runtime );
-
                 // Only tear down the runtime if it was set externally
                 if ( !isExternalRuntime )
                 {
@@ -363,7 +374,12 @@ public class JRubyInvoker
                 }
             }
 
-            IOUtil.close( reader );
+            // If this reader was created in this method, then close it.
+            // OTherwise, it was passed in, so its not my job.
+            if ( reader == null )
+            {
+                IOUtil.close( theReader ); 
+            }
         }
         return result;
     }

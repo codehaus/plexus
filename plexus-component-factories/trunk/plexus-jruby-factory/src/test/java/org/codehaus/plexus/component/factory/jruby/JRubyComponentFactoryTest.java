@@ -1,8 +1,12 @@
 package org.codehaus.plexus.component.factory.jruby;
 
+import java.io.StringReader;
 import java.util.Random;
 import java.util.StringTokenizer;
 
+import junit.framework.TestCase;
+
+import org.apache.maven.plugin.Mojo;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.component.jruby.JRubyInvoker;
 import org.codehaus.plexus.util.StringOutputStream;
@@ -35,6 +39,33 @@ public class JRubyComponentFactoryTest
 
         Executor result = (Executor)invoker.invoke();
         result.execute();
+
+        invoker.setReader( new StringReader( "puts 'new script'" ) );
+        invoker.invoke();
+    }
+
+    public void testJUnit()
+        throws Exception
+    {
+        JRubyInvoker invoker = (JRubyInvoker) lookup( "junit" );
+        assertNotNull( invoker );
+
+        // invoker.inputValue( "random", new Random() );
+
+        TestCase result = (TestCase)invoker.invoke();
+
+        result.run();
+    }
+
+    public void xtestGem()
+        throws Exception
+    {
+        JRubyInvoker invoker = (JRubyInvoker) lookup( "gem" );
+        assertNotNull( invoker );
+
+        invoker.inputValue( "args", "install rake" );
+
+        invoker.invoke();
     }
 
     public void testInjected()
@@ -44,6 +75,18 @@ public class JRubyComponentFactoryTest
         assertNotNull( invoker );
 
         invoker.invoke();
+    }
+
+    public void testMojo()
+        throws Exception
+    {
+        JRubyInvoker invoker = (JRubyInvoker) lookup( "mojo" );
+        assertNotNull( invoker );
+
+        invoker.inputValue( "LOG", getContainer().getLogger() );
+
+        Mojo mojo = (Mojo)invoker.invoke();
+        mojo.execute();
     }
 
     public void testLog()
