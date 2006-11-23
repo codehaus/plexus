@@ -7,8 +7,26 @@
     </component>
 
     <component>
+      <role>gem</role>
+      <implementation>/gem.rb</implementation>
+      <component-factory>jruby</component-factory>
+    </component>
+
+    <component>
       <role>execute</role>
       <implementation>/execute.rb</implementation>
+      <component-factory>jruby</component-factory>
+    </component>
+
+    <component>
+      <role>mojo</role>
+      <implementation>/mojo.rb</implementation>
+      <component-factory>jruby</component-factory>
+    </component>
+
+    <component>
+      <role>junit</role>
+      <implementation>/junit.rb</implementation>
       <component-factory>jruby</component-factory>
     </component>
 
