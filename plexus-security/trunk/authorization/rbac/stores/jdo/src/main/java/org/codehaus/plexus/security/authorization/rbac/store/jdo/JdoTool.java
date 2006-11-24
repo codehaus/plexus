@@ -22,13 +22,10 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoRole;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManagerListener;
-import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.RbacManagerException;
+import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.io.PrintStream;
-import java.util.List;
 
 import javax.jdo.Extent;
 import javax.jdo.JDOException;
@@ -45,15 +42,17 @@ import javax.jdo.listener.InstanceLifecycleEvent;
 import javax.jdo.listener.StoreLifecycleListener;
 import javax.jdo.spi.Detachable;
 import javax.jdo.spi.PersistenceCapable;
+import java.io.PrintStream;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * JdoTool - RBAC JDO Tools.
- * 
- * @plexus.component
- *   role="org.codehaus.plexus.security.authorization.rbac.store.jdo.JdoTool"
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * @plexus.component role="org.codehaus.plexus.security.authorization.rbac.store.jdo.JdoTool"
  */
 public class JdoTool
     implements Initializable, DeleteLifecycleListener, StoreLifecycleListener
@@ -231,13 +230,63 @@ public class JdoTool
         }
     }
 
+    public List getUserAssignmentsForRoles( Class clazz, String ordering, Collection roleNames )
+    {
+        PersistenceManager pm = getPersistenceManager();
+        Transaction tx = pm.currentTransaction();
+
+        try
+        {
+            tx.begin();
+
+            Extent extent = pm.getExtent( clazz, true );
+
+            Query query = pm.newQuery( extent );
+
+            if ( ordering != null )
+            {
+                query.setOrdering( ordering );
+            }
+
+            query.declareImports( "import java.lang.String" );
+
+            StringBuffer filter = new StringBuffer();
+
+            Iterator i = roleNames.iterator();
+
+            if ( roleNames.size() > 0 )
+            {
+                filter.append( "this.roleNames.contains(\"" ).append( i.next() ).append( "\")" );
+
+                while ( i.hasNext() )
+                {
+                    filter.append( " || this.roleNames.contains(\"" ).append( i.next() ).append( "\")" );
+                }
+
+                query.setFilter( filter.toString() );
+            }
+
+            List result = (List) query.execute();
+
+            result = (List) pm.detachCopyAll( result );
+
+            tx.commit();
+
+            return result;
+        }
+        finally
+        {
+            rollbackIfActive( tx );
+        }
+    }
+
     public Object getObjectById( Class clazz, String id, String fetchGroup )
         throws RbacObjectNotFoundException, RbacManagerException
     {
         if ( StringUtils.isEmpty( id ) )
         {
-            throw new RbacObjectNotFoundException( "Unable to get object '" + clazz.getName()
-                + "' from jdo using null/empty id." );
+            throw new RbacObjectNotFoundException(
+                "Unable to get object '" + clazz.getName() + "' from jdo using null/empty id." );
         }
 
         PersistenceManager pm = getPersistenceManager();
@@ -264,13 +313,13 @@ public class JdoTool
         }
         catch ( JDOObjectNotFoundException e )
         {
-            throw new RbacObjectNotFoundException( "Unable to find RBAC Object '" + id + "' of type " + clazz.getName()
-                + " using fetch-group '" + fetchGroup + "'", e, id );
+            throw new RbacObjectNotFoundException( "Unable to find RBAC Object '" + id + "' of type " +
+                clazz.getName() + " using fetch-group '" + fetchGroup + "'", e, id );
         }
         catch ( JDOException e )
         {
-            throw new RbacManagerException( "Error in JDO during get of RBAC object id '" + id + "' of type "
-                + clazz.getName() + " using fetch-group '" + fetchGroup + "'", e );
+            throw new RbacManagerException( "Error in JDO during get of RBAC object id '" + id + "' of type " +
+                clazz.getName() + " using fetch-group '" + fetchGroup + "'", e );
         }
         finally
         {
@@ -283,7 +332,8 @@ public class JdoTool
         return ( JDOHelper.getObjectId( object ) != null );
     }
 
-    public boolean objectExistsById( Class clazz, String id ) throws RbacManagerException
+    public boolean objectExistsById( Class clazz, String id )
+        throws RbacManagerException
     {
         try
         {
@@ -296,7 +346,8 @@ public class JdoTool
         }
     }
 
-    public Object removeObject( Object o ) throws RbacManagerException
+    public Object removeObject( Object o )
+        throws RbacManagerException
     {
         if ( o == null )
         {

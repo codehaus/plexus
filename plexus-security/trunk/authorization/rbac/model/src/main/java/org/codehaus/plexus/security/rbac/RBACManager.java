@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * RBACManager 
+ * RBACManager
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
@@ -35,9 +35,9 @@ public interface RBACManager
      * Plexus Role Name
      */
     public static final String ROLE = RBACManager.class.getName();
-    
+
     public void addListener( RBACManagerListener listener );
-    
+
     public void removeListener( RBACManagerListener listener );
 
     // ------------------------------------------------------------------
@@ -47,8 +47,8 @@ public interface RBACManager
     /**
      * Creates an implementation specific {@link Role}, or return an existing {@link Role}, depending
      * on the provided <code>name</code> parameter.
-     *
-     * Note: Be sure to use {@link #saveRole(Role)} in order to persist any changes to the Role. 
+     * <p/>
+     * Note: Be sure to use {@link #saveRole(Role)} in order to persist any changes to the Role.
      *
      * @param name the name.
      * @return the new {@link Role} object.
@@ -59,7 +59,7 @@ public interface RBACManager
      * Tests for the existance of a Role.
      *
      * @return true if role exists in store.
-     * @throws RbacManagerException 
+     * @throws RbacManagerException
      */
     public boolean roleExists( String name );
 
@@ -72,8 +72,6 @@ public interface RBACManager
         throws RbacObjectInvalidException, RbacManagerException;
 
     /**
-     *
-     *
      * @param roleName
      * @return
      * @throws RbacObjectNotFoundException
@@ -98,6 +96,12 @@ public interface RBACManager
         throws RbacManagerException;
 
     /**
+     * Method getEffectiveRoles
+     */
+    public Set getEffectiveRoles( Role role )
+        throws RbacObjectNotFoundException, RbacManagerException;
+
+    /**
      * Method removeRole
      *
      * @param role
@@ -119,35 +123,37 @@ public interface RBACManager
     /**
      * Creates an implementation specific {@link Permission}, or return an existing {@link Permission}, depending
      * on the provided <code>name</code> parameter.
-     *
+     * <p/>
      * Note: Be sure to use {@link #savePermission(Permission)} in order to persist any changes to the Role.
      *
      * @param name the name.
      * @return the new Permission.
-     * @throws RbacManagerException 
+     * @throws RbacManagerException
      */
-    public Permission createPermission( String name ) throws RbacManagerException;
+    public Permission createPermission( String name )
+        throws RbacManagerException;
 
     /**
      * Creates an implementation specific {@link Permission} with specified {@link Operation},
      * and {@link Resource} identifiers.
-     *
+     * <p/>
      * Note: Be sure to use {@link #savePermission(Permission)} in order to persist any changes to the Role.
      *
-     * @param name the name.
-     * @param operationName the {@link Operation#setName(String)} value
+     * @param name               the name.
+     * @param operationName      the {@link Operation#setName(String)} value
      * @param resourceIdentifier the {@link Resource#setIdentifier(String)} value
      * @return the new Permission.
-     * @throws RbacManagerException 
+     * @throws RbacManagerException
      */
-    public Permission createPermission( String name, String operationName, String resourceIdentifier ) throws RbacManagerException;
+    public Permission createPermission( String name, String operationName, String resourceIdentifier )
+        throws RbacManagerException;
 
     /**
      * Tests for the existance of a permission.
      *
      * @param name the name to test for.
      * @return true if permission exists.
-     * @throws RbacManagerException 
+     * @throws RbacManagerException
      */
     public boolean permissionExists( String name );
 
@@ -175,14 +181,15 @@ public interface RBACManager
     /**
      * Creates an implementation specific {@link Operation}, or return an existing {@link Operation}, depending
      * on the provided <code>name</code> parameter.
-     *
+     * <p/>
      * Note: Be sure to use {@link #saveOperation(Operation)} in order to persist any changes to the Role.
      *
      * @param name the name.
      * @return the new Operation.
-     * @throws RbacManagerException 
+     * @throws RbacManagerException
      */
-    public Operation createOperation( String name ) throws RbacManagerException;
+    public Operation createOperation( String name )
+        throws RbacManagerException;
 
     public boolean operationExists( String name );
 
@@ -190,7 +197,7 @@ public interface RBACManager
 
     /**
      * Save the new or existing operation to the store.
-     * 
+     *
      * @param operation the operation to save (new or existing)
      * @return the Operation that was saved.
      * @throws RbacObjectInvalidException
@@ -218,14 +225,15 @@ public interface RBACManager
     /**
      * Creates an implementation specific {@link Resource}, or return an existing {@link Resource}, depending
      * on the provided <code>identifier</code> parameter.
-     *
+     * <p/>
      * Note: Be sure to use {@link #saveResource(Resource)} in order to persist any changes to the Role.
      *
      * @param identifier the identifier.
      * @return the new Resource.
-     * @throws RbacManagerException 
+     * @throws RbacManagerException
      */
-    public Resource createResource( String identifier ) throws RbacManagerException;
+    public Resource createResource( String identifier )
+        throws RbacManagerException;
 
     public boolean resourceExists( String identifier );
 
@@ -251,16 +259,17 @@ public interface RBACManager
     // ------------------------------------------------------------------
 
     /**
-     * Creates an implementation specific {@link UserAssignment}, or return an existing {@link UserAssignment}, 
+     * Creates an implementation specific {@link UserAssignment}, or return an existing {@link UserAssignment},
      * depending on the provided <code>identifier</code> parameter.
-     *
+     * <p/>
      * Note: Be sure to use {@link #saveUserAssignment(UserAssignment)} in order to persist any changes to the Role.
      *
      * @param principal the principal reference to the user.
      * @return the new UserAssignment object.
-     * @throws RbacManagerException 
+     * @throws RbacManagerException
      */
-    public UserAssignment createUserAssignment( String principal ) throws RbacManagerException;
+    public UserAssignment createUserAssignment( String principal )
+        throws RbacManagerException;
 
     public boolean userAssignmentExists( String principal );
 
@@ -281,6 +290,12 @@ public interface RBACManager
      * Method getAssignments
      */
     public List getAllUserAssignments()
+        throws RbacManagerException;
+
+    /**
+     * Method getUserAssignmentsForRoless
+     */
+    public List getUserAssignmentsForRoles( Collection roleNames )
         throws RbacManagerException;
 
     /**
@@ -305,9 +320,9 @@ public interface RBACManager
 
     /**
      * returns the active roles for a given principal
-     *
+     * <p/>
      * NOTE: roles that are returned might have have roles themselves, if
-     * you just want all permissions then use {@link #getAssignedPermissions( Object principal )}
+     * you just want all permissions then use {@link #getAssignedPermissions(Objectprincipal)}
      *
      * @param principal
      * @return Collection of {@link Role} objects.
@@ -351,7 +366,7 @@ public interface RBACManager
 
     /**
      * Get a list of all assignable roles that are currently not assigned to the specific user.
-     * 
+     *
      * @param principal
      * @return
      * @throws RbacManagerException
@@ -374,10 +389,10 @@ public interface RBACManager
 
     /**
      * returns a list of all assignable roles
-     * 
+     *
      * @return
      * @throws RbacManagerException
-     * @throws RbacObjectNotFoundException 
+     * @throws RbacObjectNotFoundException
      */
     public List getAllAssignableRoles()
         throws RbacManagerException, RbacObjectNotFoundException;

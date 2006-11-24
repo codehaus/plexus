@@ -89,7 +89,7 @@ public abstract class AbstractRBACManager
             }
         }
     }
-    
+
     public void fireRbacRoleRemoved( Role role )
     {
         Iterator it = listeners.iterator();
@@ -106,7 +106,7 @@ public abstract class AbstractRBACManager
             }
         }
     }
-    
+
     public void fireRbacPermissionSaved( Permission permission )
     {
         Iterator it = listeners.iterator();
@@ -119,11 +119,12 @@ public abstract class AbstractRBACManager
             }
             catch ( Exception e )
             {
-                getLogger().warn( "Unable to trigger .rbacPermissionSaved( Permission ) to " + listener.getClass().getName(), e );
+                getLogger().warn(
+                    "Unable to trigger .rbacPermissionSaved( Permission ) to " + listener.getClass().getName(), e );
             }
         }
     }
-    
+
     public void fireRbacPermissionRemoved( Permission permission )
     {
         Iterator it = listeners.iterator();
@@ -136,11 +137,12 @@ public abstract class AbstractRBACManager
             }
             catch ( Exception e )
             {
-                getLogger().warn( "Unable to trigger .rbacPermissionRemoved( Permission ) to " + listener.getClass().getName(), e );
+                getLogger().warn(
+                    "Unable to trigger .rbacPermissionRemoved( Permission ) to " + listener.getClass().getName(), e );
             }
         }
-    }    
-    
+    }
+
     public void removeRole( String roleName )
         throws RbacObjectNotFoundException, RbacManagerException
     {
@@ -312,7 +314,7 @@ public abstract class AbstractRBACManager
         try
         {
             Iterator it = getAllUserAssignments().iterator();
-            
+
             while ( it.hasNext() )
             {
                 UserAssignment assignment = (UserAssignment) it.next();
@@ -326,7 +328,6 @@ public abstract class AbstractRBACManager
         {
             return false;
         }
-        
 
         return false;
     }
@@ -389,7 +390,8 @@ public abstract class AbstractRBACManager
         return permissionSet;
     }
 
-    private void gatherUniquePermissions( Role role, Collection coll ) throws RbacManagerException
+    private void gatherUniquePermissions( Role role, Collection coll )
+        throws RbacManagerException
     {
         if ( role.getPermissions() != null )
         {
@@ -437,11 +439,11 @@ public abstract class AbstractRBACManager
 
     /**
      * returns the active roles for a given principal
-     *
+     * <p/>
      * NOTE: roles that are returned might have have roles themselves, if
-     * you just want all permissions then use {@link #getAssignedPermissions( Object principal )}
+     * you just want all permissions then use {@link #getAssignedPermissions(Objectprincipal)}
      *
-     * @param principal 
+     * @param principal
      * @return
      * @throws RbacObjectNotFoundException
      * @throws RbacManagerException
@@ -510,7 +512,7 @@ public abstract class AbstractRBACManager
      * @throws RbacObjectNotFoundException
      * @throws RbacManagerException
      */
-    private void gatherEffectiveRoles( Role role, Set roleSet   )
+    private void gatherEffectiveRoles( Role role, Set roleSet )
         throws RbacObjectNotFoundException, RbacManagerException
     {
 
@@ -573,9 +575,8 @@ public abstract class AbstractRBACManager
         }
         return roleSet;
     }
+
     /**
-     *
-     *
      * @param principal
      * @return
      * @throws RbacManagerException
@@ -587,16 +588,14 @@ public abstract class AbstractRBACManager
         Collection assignedRoles = getEffectivelyAssignedRoles( principal );
         List allRoles = getAllAssignableRoles();
 
-        getLogger().debug("UR: assigned " + assignedRoles.size() );
-        getLogger().debug("UR: available " + allRoles.size() );
+        getLogger().debug( "UR: assigned " + assignedRoles.size() );
+        getLogger().debug( "UR: available " + allRoles.size() );
 
         return CollectionUtils.subtract( allRoles, assignedRoles );
     }
 
 
     /**
-     *
-     *
      * @param principal
      * @return
      * @throws RbacManagerException
@@ -608,8 +607,8 @@ public abstract class AbstractRBACManager
         Collection assignedRoles = getAssignedRoles( principal );
         List allRoles = getAllAssignableRoles();
 
-        getLogger().debug("UR: assigned " + assignedRoles.size() );
-        getLogger().debug("UR: available " + allRoles.size() );
+        getLogger().debug( "UR: assigned " + assignedRoles.size() );
+        getLogger().debug( "UR: available " + allRoles.size() );
 
         return CollectionUtils.subtract( allRoles, assignedRoles );
     }
@@ -663,6 +662,15 @@ public abstract class AbstractRBACManager
         }
 
         return childRoles;
+    }
+
+    public Set getEffectiveRoles( Role role )
+        throws RbacObjectNotFoundException, RbacManagerException
+    {
+        Set roleSet = new HashSet();
+        gatherEffectiveRoles( role, roleSet );
+
+        return roleSet;
     }
 
     public Map getRoles( Collection roleNames )

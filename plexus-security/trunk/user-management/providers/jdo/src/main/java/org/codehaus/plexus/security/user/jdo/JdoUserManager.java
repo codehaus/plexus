@@ -30,8 +30,10 @@ import org.codehaus.plexus.security.user.UserManagerException;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
+import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
+import javax.jdo.Query;
 import javax.jdo.Transaction;
 import java.util.List;
 
@@ -79,6 +81,67 @@ public class JdoUserManager
     public List getUsers()
     {
         return getAllObjectsDetached( JdoUser.class );
+    }
+
+    public List getUsers( boolean orderAscending )
+    {
+        String ordering = orderAscending ? "username ascending" : "username descending";
+
+        return getAllObjectsDetached( JdoUser.class, ordering, null );
+    }
+
+    public List findUsersByUsernameKey( String usernameKey, boolean orderAscending )
+    {
+        return findUsers( "username", usernameKey, orderAscending );
+    }
+
+    public List findUsersByFullNameKey( String fullNameKey, boolean orderAscending )
+    {
+        return findUsers( "fullName", fullNameKey, orderAscending );
+    }
+
+    public List findUsersByEmailKey( String emailKey, boolean orderAscending )
+    {
+        return findUsers( "email", emailKey, orderAscending );
+    }
+
+
+    private List findUsers( String searchField, String searchKey, boolean ascendingUsername )
+    {
+        PersistenceManager pm = getPersistenceManager();
+
+        Transaction tx = pm.currentTransaction();
+
+        try
+        {
+            tx.begin();
+
+            Extent extent = pm.getExtent( JdoUser.class, true );
+
+            Query query = pm.newQuery( extent );
+
+            String ordering = ascendingUsername ? "username ascending" : "username descending";
+
+            query.setOrdering( ordering );
+
+            query.declareImports( "import java.lang.String" );
+
+            query.declareParameters( "String searchKey" );
+
+            query.setFilter( "this." + searchField + ".toLowerCase().indexOf(searchKey.toLowerCase()) > -1" );
+
+            List result = (List) query.execute( searchKey );
+
+            result = (List) pm.detachCopyAll( result );
+
+            tx.commit();
+
+            return result;
+        }
+        finally
+        {
+            rollback( tx );
+        }
     }
 
     public User addUser( User user )

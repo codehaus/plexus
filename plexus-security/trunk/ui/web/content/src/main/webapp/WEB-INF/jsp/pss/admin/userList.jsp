@@ -27,12 +27,75 @@
 
 <%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
 
+<pss:ifAuthorized permission="user-management-user-create">
+  <div style="float: right">
+    <ww:url id="userCreateUrl" action="usercreate!show" namespace="/security"/>
+    <ww:a href="%{userCreateUrl}">Create User</ww:a>
+  </div>
+</pss:ifAuthorized>
 <h2>[Admin] User List</h2>
+
+<ww:form action="userlist!show" namespace="/security" theme="xhtml" method="post">
+  <ww:hidden name="ascending"/>
+  <tr>
+    <td colspan="3">
+      <table cellpadding="0" cellspacing="0">
+        <ww:select label="List users with role"
+                   list="roles"
+                   name="roleName"
+                   value="roleName"
+                   listKey="name"
+                   listValue="name"
+                   headerKey=""
+                   headerValue="Any"/>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap="true">
+      <table cellpadding="0" cellspacing="0">
+        <ww:select label="User search"
+                   list="criteria"
+                   name="criterion"
+                   value="criterion"/>
+      </table>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <ww:textfield name="searchKey"/>
+      </table>
+    </td>
+    <td colspan="2" align="right">
+      <table cellpadding="0" cellspacing="0">
+        <ww:submit value="Search"/>
+      </table>
+    </td>
+  </tr>
+</ww:form>
+
+<hr/>
 
 <table class="securityTable" border="1" cellspacing="0" cellpadding="2" width="80%">
   <thead>
     <tr>
-      <th>Username</th>
+      <th nowrap="true">
+        <ww:form id="sortlist" name="sortlist" action="userlist!show" namespace="/security" theme="xhtml" method="post">
+          <ww:if test="${ascending}">
+            <ww:a href="javascript: sortlist.submit()"><img src="<ww:url value='/images/icon_sortdown.gif'/>"
+                                                            title="<ww:text name='Sort descending'/>" border="0"></ww:a>
+            Username
+          </ww:if>
+          <ww:else>
+            <ww:a href="javascript: sortlist.submit()"><img src="<ww:url value='/images/icon_sortup.gif'/>"
+                                                            title="<ww:text name='Sort ascending'/>" border="0"></ww:a>
+            Username
+          </ww:else>
+          <ww:hidden name="ascending" value="${!ascending}"/>
+          <ww:hidden name="roleName"/>
+          <ww:hidden name="criterion"/>
+          <ww:hidden name="searchKey"/>
+        </ww:form>
+      </th>
       <th>Full Name</th>
       <th>Email Address</th>
       <th>Validated</th>
@@ -81,17 +144,6 @@
 
   </tbody>
 </table>
-
-<div class="buttonbar">
-  <pss:ifAuthorized permission="user-management-user-create">
-    <ww:form action="usercreate!show" namespace="/security" theme="xhtml"
-             id="buttonBar" method="post" name="buttonbar" cssClass="security buttonbar">
-      <ww:submit value="Create User"/>
-    </ww:form>
-  </pss:ifAuthorized>
-</div>
-
-
 </body>
 
 </html>
