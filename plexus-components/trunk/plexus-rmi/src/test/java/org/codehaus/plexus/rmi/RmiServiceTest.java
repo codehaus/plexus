@@ -1,8 +1,7 @@
 package org.codehaus.plexus.rmi;
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.rmi.test.DefaultMyService;
-import org.codehaus.plexus.rmi.test.MyService;
+import org.codehaus.plexus.rmi.test.MyRemoteService;
 
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
@@ -19,9 +18,9 @@ public class RmiServiceTest
     {
         RmiService rmiService = (RmiService) lookup( RmiService.ROLE );
 
-        Registry registry = rmiService.getRegistry();
+        MyRemoteService remoteService = (MyRemoteService) lookup( MyRemoteService.ROLE );
 
-        registry.bind( "service", new DefaultMyService() );
+        rmiService.exportObject( remoteService, "service" );
 
         pretentToBeClient();
     }
@@ -31,7 +30,7 @@ public class RmiServiceTest
     {
         Registry registry = LocateRegistry.getRegistry( "localhost", 9999 );
 
-        MyService service = (MyService) registry.lookup( "service" );
+        MyRemoteService service = (MyRemoteService) registry.lookup( "service" );
 
         System.out.println( "service.getClass().getName() = " + service.getClass().getName() );
 
