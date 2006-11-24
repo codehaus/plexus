@@ -35,19 +35,39 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * User Security Policy. 
- * 
+ * User Security Policy.
+ *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="org.codehaus.plexus.security.policy.UserSecurityPolicy"
- *                   role-hint="default"
+ * role-hint="default"
  */
 public class DefaultUserSecurityPolicy
     implements UserSecurityPolicy, Initializable, Contextualizable
 {
-    private static final String ENABLEMENT_KEY = DefaultUserSecurityPolicy.ROLE + ":ENABLED";
-    
+    private static final String ENABLEMENT_KEY = ROLE + ":ENABLED";
+
+    public static final String SECURITY_POLICY_PREFIX = "security.policy";
+
+    public static final String PASSWORD_RETENTION_COUNT = SECURITY_POLICY_PREFIX + ".password.previous.count";
+
+    public static final String LOGIN_ATTEMPT_COUNT = SECURITY_POLICY_PREFIX + ".allowed.login.attempt";
+
+    public static final String PASSWORD_EXPIRATION = SECURITY_POLICY_PREFIX + ".password.expiration.days";
+
+    public static final String PASSWORD_ENCODER = SECURITY_POLICY_PREFIX + ".password.encoder";
+
+    public static final int DEFAULT_PASSWORD_RETENTION_COUNT = 6;
+
+    public static final int DEFAULT_LOGIN_ATTEMPT_COUNT = 3;
+
+    public static final int DEFAULT_PASSWORD_EXPIRATION = 90;
+
+    private static final String[] defaultPasswordRules =
+        {"must-have", "character-length", "alpha-count", "numerical-count", "reuse"};
+
+    private PasswordRule defaultPasswordRule = new MustHavePasswordRule();
+
     /**
      * @plexus.requirement
      */
@@ -57,35 +77,35 @@ public class DefaultUserSecurityPolicy
      * @plexus.requirement role-hint="sha256"
      */
     private PasswordEncoder passwordEncoder;
-    
+
     private int previousPasswordsCount;
 
     private int loginAttemptCount;
 
     private int passwordExpirationDays;
-    
+
     /**
      * @plexus.requirement
      */
     private UserValidationSettings userValidationSettings;
-    
+
     /**
      * @plexus.requirement
      */
     private RememberMeSettings rememberMeSettings;
-    
+
     /**
      * @plexus.requirement
      */
     private SingleSignOnSettings singleSignOnSettings;
-    
+
     /**
      * The List of {@link PasswordRule} objects.
-     * 
+     *
      * @plexus.requirement role="org.codehaus.plexus.security.policy.PasswordRule"
      */
     private List rules = new ArrayList();
-    
+
     public String getId()
     {
         return "Default User Security Policy";
@@ -98,7 +118,7 @@ public class DefaultUserSecurityPolicy
 
     /**
      * Sets the count of previous passwords that should be tracked.
-     * 
+     *
      * @param previousPasswordsCount the count of previous passwords to track.
      */
     public void setPreviousPasswordsCount( int previousPasswordsCount )
@@ -118,23 +138,23 @@ public class DefaultUserSecurityPolicy
 
     /**
      * Get the password encoder to be used for password operations
-     * 
+     *
      * @return the encoder
      */
     public PasswordEncoder getPasswordEncoder()
     {
         return passwordEncoder;
     }
-    
+
     public boolean isEnabled()
     {
         Boolean bool = (Boolean) PolicyContext.getContext().get( ENABLEMENT_KEY );
-        if(bool == null)
+        if ( bool == null )
         {
             // no key? assume true. (default is true)
             return true;
         }
-        
+
         return bool.booleanValue();
     }
 
@@ -142,11 +162,11 @@ public class DefaultUserSecurityPolicy
     {
         PolicyContext.getContext().put( ENABLEMENT_KEY, new Boolean( enabled ) );
     }
-    
+
     /**
      * Add a Specific Rule to the Password Rules List.
-     * 
-     * @param rule the rule to add. 
+     *
+     * @param rule the rule to add.
      */
     public void addPasswordRule( PasswordRule rule )
     {
@@ -158,7 +178,7 @@ public class DefaultUserSecurityPolicy
 
     /**
      * Get the Password Rules List.
-     * 
+     *
      * @return the list of {@link PasswordRule} objects.
      */
     public List getPasswordRules()
@@ -168,7 +188,7 @@ public class DefaultUserSecurityPolicy
 
     /**
      * Set the Password Rules List.
-     * 
+     *
      * @param newRules the list of {@link PasswordRule} objects.
      */
     public void setPasswordRules( List newRules )
@@ -186,27 +206,27 @@ public class DefaultUserSecurityPolicy
         while ( it.hasNext() )
         {
             PasswordRule rule = (PasswordRule) it.next();
-            rule.setUserSecurityPolicy( this );
-            this.rules.add( rule );
+            addPasswordRule( rule );
         }
     }
-    
+
     public void extensionPasswordExpiration( User user )
         throws MustChangePasswordException
     {
-        
+
     }
-    
+
     public void extensionExcessiveLoginAttempts( User user )
         throws AccountLockedException
     {
         int attempt = user.getCountFailedLoginAttempts();
         attempt++;
         user.setCountFailedLoginAttempts( attempt );
-        
-        if( attempt >= getLoginAttemptCount() )
+
+        if ( attempt >= getLoginAttemptCount() )
         {
-            throw new AccountLockedException();
+            user.setLocked( true );
+            throw new AccountLockedException( "Account " + user.getUsername() + " is locked.", user );
         }
     }
 
@@ -272,46 +292,34 @@ public class DefaultUserSecurityPolicy
     public void initialize()
         throws InitializationException
     {
-        final String CONFIG_PREFIX = "security.policy";
-        this.previousPasswordsCount = config.getInt( CONFIG_PREFIX + ".password.previous.count", 6 );
-        this.loginAttemptCount = config.getInt( CONFIG_PREFIX + ".allowed.login.attempt", 3 );
-        this.passwordExpirationDays = config.getInt( CONFIG_PREFIX + ".password.expiration.days", 90 );
-        
+        configurePolicy();
+
+        configureEncoder();
+
         rules = new ArrayList();
 
         try
         {
-            rules.add( (PasswordRule) plexus.lookup( PasswordRule.ROLE, "must-have" ) );
-            rules.add( (PasswordRule) plexus.lookup( PasswordRule.ROLE, "character-length" ) );
-            rules.add( (PasswordRule) plexus.lookup( PasswordRule.ROLE, "alpha-count" ) );
-            rules.add( (PasswordRule) plexus.lookup( PasswordRule.ROLE, "numerical-count" ) );
-            rules.add( (PasswordRule) plexus.lookup( PasswordRule.ROLE, "reuse" ) );
+            for ( int nIndex = 0; nIndex < defaultPasswordRules.length; nIndex++ )
+            {
+                PasswordRule rule =
+                    (PasswordRule) plexus.lookup( PasswordRule.ROLE, (String) defaultPasswordRules[nIndex] );
+
+                if ( rule.isEnabled() )
+                {
+                    addPasswordRule( rule );
+                }
+            }
         }
         catch ( ComponentLookupException e )
         {
             throw new InitializationException( "Unable to lookup password rules.", e );
         }
 
-        if ( rules != null )
+        if ( rules.isEmpty() )
         {
-            Iterator it = rules.listIterator();
-            while ( it.hasNext() )
-            {
-                PasswordRule rule = (PasswordRule) it.next();
-                if ( !rule.isEnabled() )
-                {
-                    it.remove();
-                }
-                else
-                {
-                    rule.setUserSecurityPolicy( this );
-                }
-            }
-        }
-        else
-        {
-            rules = new ArrayList();
-            addPasswordRule( new MustHavePasswordRule() );
+            // there should be at least one rule
+            addPasswordRule( defaultPasswordRule );
         }
     }
 
@@ -361,5 +369,30 @@ public class DefaultUserSecurityPolicy
     public void setSingleSignOnSettings( SingleSignOnSettings singleSignOnSettings )
     {
         this.singleSignOnSettings = singleSignOnSettings;
+    }
+
+    private void configureEncoder()
+        throws InitializationException
+    {
+        String encoder = config.getString( PASSWORD_ENCODER, null );
+
+        if ( encoder != null )
+        {
+            try
+            {
+                this.passwordEncoder = (PasswordEncoder) plexus.lookup( PasswordEncoder.ROLE, encoder );
+            }
+            catch ( ComponentLookupException e )
+            {
+                throw new InitializationException( "Unable to lookup password encoder.", e );
+            }
+        }
+    }
+
+    private void configurePolicy()
+    {
+        this.previousPasswordsCount = config.getInt( PASSWORD_RETENTION_COUNT, DEFAULT_PASSWORD_RETENTION_COUNT );
+        this.loginAttemptCount = config.getInt( LOGIN_ATTEMPT_COUNT, DEFAULT_LOGIN_ATTEMPT_COUNT );
+        this.passwordExpirationDays = config.getInt( PASSWORD_EXPIRATION, DEFAULT_PASSWORD_EXPIRATION );
     }
 }

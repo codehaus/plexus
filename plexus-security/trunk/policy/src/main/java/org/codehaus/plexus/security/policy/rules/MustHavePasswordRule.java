@@ -16,9 +16,7 @@ package org.codehaus.plexus.security.policy.rules;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.security.policy.PasswordRule;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
@@ -26,16 +24,18 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Basic Password Rule, Checks for non-empty Passwords in non guest users.
- * 
- * @plexus.component role="org.codehaus.plexus.security.policy.PasswordRule" role-hint="must-have"
- * 
+ *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * @plexus.component role="org.codehaus.plexus.security.policy.PasswordRule" role-hint="must-have"
  */
 public class MustHavePasswordRule
     extends AbstractPasswordRule
-    implements PasswordRule, Initializable
 {
+    public static final String MISSING_PASSWORD_VIOLATION = "user.password.violation.missing";
+
+    public static final String MUST_HAVE = PASSWORD_RULE_CONFIGKEY + ".musthave";
+
     public void setUserSecurityPolicy( UserSecurityPolicy policy )
     {
         // Ignore, policy not needed in this rule.
@@ -45,13 +45,13 @@ public class MustHavePasswordRule
     {
         if ( StringUtils.isEmpty( user.getPassword() ) )
         {
-            violations.addViolation( "user.password.violation.missing" ); //$NON-NLS-1$
+            violations.addViolation( MISSING_PASSWORD_VIOLATION ); //$NON-NLS-1$
         }
     }
 
     public void initialize()
         throws InitializationException
     {
-        super.configure( config, PASSWORD_RULE_CONFIGKEY + ".musthave" );
+        super.configure( MUST_HAVE );
     }
 }

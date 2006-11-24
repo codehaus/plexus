@@ -26,42 +26,39 @@ import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.AbstractUserManager;
 import org.codehaus.plexus.security.user.PermanentUserException;
 import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserManagerException;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.util.List;
-
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Transaction;
+import java.util.List;
 
 /**
- * JdoUserManager 
- * 
- * @plexus.component role="org.codehaus.plexus.security.user.UserManager"
- *                   role-hint="jdo"
+ * JdoUserManager
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * @plexus.component role="org.codehaus.plexus.security.user.UserManager"
+ * role-hint="jdo"
  */
 public class JdoUserManager
     extends AbstractUserManager
-    implements UserManager, Initializable
+    implements Initializable
 {
     /**
      * @plexus.requirement role-hint="users"
      */
     private JdoFactory jdoFactory;
-    
+
     /**
      * @plexus.requirement
      */
     private UserSecurityPolicy userSecurityPolicy;
 
     private PersistenceManagerFactory pmf;
-    
+
     public String getId()
     {
         return "JDO UserManager - " + this.getClass().getName();
@@ -88,19 +85,20 @@ public class JdoUserManager
     {
         if ( !( user instanceof JdoUser ) )
         {
-            throw new UserManagerException( "Unable to Add User. User object " + user.getClass().getName()
-                + " is not an instance of " + JdoUser.class.getName() );
+            throw new UserManagerException( "Unable to Add User. User object " + user.getClass().getName() +
+                " is not an instance of " + JdoUser.class.getName() );
         }
-        
+
         if ( StringUtils.isEmpty( user.getUsername() ) )
         {
-            throw new IllegalStateException( Messages.getString( "user.manager.cannot.add.user.without.username" ) ); //$NON-NLS-1$
+            throw new IllegalStateException(
+                Messages.getString( "user.manager.cannot.add.user.without.username" ) ); //$NON-NLS-1$
         }
-        
+
         userSecurityPolicy.extensionChangePassword( user );
-        
+
         fireUserManagerUserAdded( user );
-        
+
         return (User) addObject( user );
     }
 
@@ -109,12 +107,12 @@ public class JdoUserManager
         try
         {
             User user = findUser( principal );
-            
+
             if ( user.isPermanent() )
             {
                 throw new PermanentUserException( "Cannot delete permanent user [" + user.getUsername() + "]." );
             }
-            
+
             fireUserManagerUserRemoved( user );
 
             removeObject( (JdoUser) user );
@@ -130,12 +128,12 @@ public class JdoUserManager
         try
         {
             User user = findUser( username );
-            
+
             if ( user.isPermanent() )
             {
                 throw new PermanentUserException( "Cannot delete permanent user [" + user.getUsername() + "]." );
             }
-            
+
             fireUserManagerUserRemoved( user );
 
             PlexusJdoUtils.removeObject( getPersistenceManager(), (JdoUser) user );
@@ -156,7 +154,8 @@ public class JdoUserManager
 
         try
         {
-            return (User) PlexusJdoUtils.getObjectById( getPersistenceManager(), JdoUser.class, principal.toString(), null );
+            return (User) PlexusJdoUtils.getObjectById( getPersistenceManager(), JdoUser.class, principal.toString(),
+                                                        null );
         }
         catch ( PlexusObjectNotFoundException e )
         {
@@ -175,7 +174,7 @@ public class JdoUserManager
         {
             throw new UserNotFoundException( "User with empty username not found." );
         }
-        
+
         return (User) getObjectById( JdoUser.class, username );
     }
 
@@ -193,14 +192,15 @@ public class JdoUserManager
         }
     }
 
-    public User updateUser( User user ) throws UserNotFoundException
+    public User updateUser( User user )
+        throws UserNotFoundException
     {
         if ( !( user instanceof JdoUser ) )
         {
-            throw new UserManagerException( "Unable to Update User. User object " + user.getClass().getName()
-                + " is not an instance of " + JdoUser.class.getName() );
+            throw new UserManagerException( "Unable to Update User. User object " + user.getClass().getName() +
+                " is not an instance of " + JdoUser.class.getName() );
         }
-        
+
         // If password is supplied, assume changing of password.
         // TODO: Consider adding a boolean to the updateUser indicating a password change or not.
         if ( StringUtils.isNotEmpty( user.getPassword() ) )
@@ -209,7 +209,7 @@ public class JdoUserManager
         }
 
         updateObject( (JdoUser) user );
-        
+
         fireUserManagerUserUpdated( user );
 
         return user;
@@ -228,7 +228,7 @@ public class JdoUserManager
         pm.getFetchPlan().setMaxFetchDepth( -1 );
 
         triggerInit();
-        
+
         return pm;
     }
 
@@ -260,11 +260,11 @@ public class JdoUserManager
         }
         catch ( PlexusStoreException e )
         {
-            throw new UserManagerException( "Unable to get object '" + clazz.getName() + "', id '" + id
-                + "', fetch-group '" + fetchGroup + "' from jdo store." );
+            throw new UserManagerException( "Unable to get object '" + clazz.getName() + "', id '" + id +
+                "', fetch-group '" + fetchGroup + "' from jdo store." );
         }
     }
-    
+
     private List getAllObjectsDetached( Class clazz )
     {
         return getAllObjectsDetached( clazz, null );
@@ -300,8 +300,8 @@ public class JdoUserManager
         }
         catch ( PlexusStoreException e )
         {
-            throw new UserManagerException( "Unable to update the '" + object.getClass().getName()
-                + "' object in the jdo database.", e );
+            throw new UserManagerException(
+                "Unable to update the '" + object.getClass().getName() + "' object in the jdo database.", e );
         }
     }
 
@@ -309,7 +309,7 @@ public class JdoUserManager
     {
         PlexusJdoUtils.rollbackIfActive( tx );
     }
-    
+
     private boolean hasTriggeredInit = false;
 
     public void triggerInit()
@@ -317,10 +317,10 @@ public class JdoUserManager
         if ( !hasTriggeredInit )
         {
             hasTriggeredInit = true;
-            
+
             List users = getAllObjectsDetached( JdoUser.class );
-            
+
             fireUserManagerInit( users.isEmpty() );
         }
-    }    
+    }
 }

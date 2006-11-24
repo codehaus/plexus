@@ -16,6 +16,7 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
@@ -26,27 +27,27 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * AccountAction 
+ * AccountAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-account"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="pss-account"
+ * instantiation-strategy="per-lookup"
  */
 public class AccountAction
     extends AbstractUserCredentialsAction
 {
     private static final String ACCOUNT_SUCCESS = "security-account-success";
+
     private static final String ACCOUNT_CANCEL = "security-account-cancel";
-    
+
     // ------------------------------------------------------------------
     // Action Parameters
     // ------------------------------------------------------------------
 
     private boolean cancelButton;
-    
+
     private EditUserCredentials user;
 
     // ------------------------------------------------------------------
@@ -56,15 +57,15 @@ public class AccountAction
     public String show()
     {
         SecuritySession session = getSecuritySession();
-        
-        if ( ! session.isAuthenticated() )
+
+        if ( !session.isAuthenticated() )
         {
             addActionError( "Unable to show your account. Not logged in." );
             return REQUIRES_AUTHENTICATION;
         }
-        
+
         String username = session.getUser().getUsername();
-        
+
         if ( username == null )
         {
             addActionError( "Unable to edit user with null username." );
@@ -78,7 +79,7 @@ public class AccountAction
         }
 
         UserManager manager = super.securitySystem.getUserManager();
-        
+
         if ( !manager.userExists( username ) )
         {
             // Means that the role name doesn't exist.
@@ -86,7 +87,7 @@ public class AccountAction
             addActionError( "User '" + username + "' does not exist." );
             return ERROR;
         }
-        
+
         internalUser = user;
 
         try
@@ -115,17 +116,17 @@ public class AccountAction
         {
             return ACCOUNT_CANCEL;
         }
-        
+
         SecuritySession session = getSecuritySession();
-        
-        if ( ! session.isAuthenticated() )
+
+        if ( !session.isAuthenticated() )
         {
             addActionError( "Unable to show your account. Not logged in." );
             return REQUIRES_AUTHENTICATION;
         }
-        
+
         String username = session.getUser().getUsername();
-        
+
         if ( username == null )
         {
             addActionError( "Unable to edit user with null username." );
@@ -144,8 +145,14 @@ public class AccountAction
             return ERROR;
         }
 
+        if ( !user.getPassword().equals( user.getConfirmPassword() ) )
+        {
+            addFieldError( "user.confirmPassword", "Password confirmation failed.  Passwords do not match." );
+            return ERROR;
+        }
+
         UserManager manager = super.securitySystem.getUserManager();
-        
+
         if ( !manager.userExists( username ) )
         {
             // Means that the role name doesn't exist.
@@ -153,7 +160,7 @@ public class AccountAction
             addActionError( "User '" + username + "' does not exist." );
             return ERROR;
         }
-        
+
         internalUser = user;
 
         try
@@ -174,6 +181,11 @@ public class AccountAction
         catch ( UserNotFoundException e )
         {
             addActionError( "Unable to find User '" + username + "': " + e.getMessage() );
+            return ERROR;
+        }
+        catch ( PasswordRuleViolationException e )
+        {
+            processPasswordRuleViolations( e );
             return ERROR;
         }
 

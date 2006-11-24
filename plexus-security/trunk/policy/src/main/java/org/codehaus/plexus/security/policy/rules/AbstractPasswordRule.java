@@ -21,7 +21,7 @@ import org.codehaus.plexus.security.configuration.UserConfiguration;
 import org.codehaus.plexus.security.policy.PasswordRule;
 
 /**
- * AbstractPasswordRule 
+ * AbstractPasswordRule
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -41,6 +41,11 @@ public abstract class AbstractPasswordRule
     public boolean isEnabled()
     {
         return enabled;
+    }
+
+    protected void configure( String configPrefix )
+    {
+        configure( config, configPrefix );
     }
 
     protected void configure( UserConfiguration config, String configPrefix )
