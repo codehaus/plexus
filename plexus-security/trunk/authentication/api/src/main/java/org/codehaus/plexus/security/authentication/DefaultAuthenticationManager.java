@@ -22,6 +22,9 @@ import org.codehaus.plexus.security.policy.MustChangePasswordException;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
 
 
 /**
@@ -62,6 +65,8 @@ public class DefaultAuthenticationManager
             return( new AuthenticationResult( false, null, new AuthenticationException("no valid authenticators, can't authenticate") ) );                    
         }
 
+        // put AuthenticationResult exceptions in a map
+        Map authnResultExceptionsMap = new HashMap();
         for( Iterator i = authenticators.iterator(); i.hasNext(); )
         {
             Authenticator authenticator = (Authenticator) i.next();
@@ -69,16 +74,27 @@ public class DefaultAuthenticationManager
             if ( authenticator.supportsDataSource( source ) )
             {
                 AuthenticationResult authResult = authenticator.authenticate( source );
+                Map exceptionsMap = authResult.getExceptionsMap();
 
                 if ( authResult.isAuthenticated() )
                 {
                     return authResult;
                 }
+
+                if ( exceptionsMap != null )
+                {
+                    Set entrySet = exceptionsMap.entrySet();
+                    for ( Iterator iter = entrySet.iterator(); iter.hasNext(); )
+                    {
+                        Map.Entry entry = ( Map.Entry ) iter.next();
+                        authnResultExceptionsMap.put( entry.getKey(), entry.getValue() );
+                    }
+                }
             }
         }
 
-        return ( new AuthenticationResult( false, null, new AuthenticationException( "authentication failed on authenticators: "
-                                                                                         + knownAuthenticators() ) ) );
+        return ( new AuthenticationResult( false, null,  new AuthenticationException( "authentication failed on authenticators: "
+                + knownAuthenticators() ), authnResultExceptionsMap ) );
     }
 
     public List getAuthenticators()

@@ -17,6 +17,8 @@ package org.codehaus.plexus.security.authentication;
  */
 
 import java.io.Serializable;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * AuthenticationResult: wrapper object for information that comes back from the authentication system
@@ -33,6 +35,8 @@ public class AuthenticationResult
 
     private Exception exception;
 
+    private Map exceptionsMap;
+
     public AuthenticationResult()
     {
         this.isAuthenticated = false;
@@ -45,6 +49,19 @@ public class AuthenticationResult
         isAuthenticated = authenticated;
         this.principal = principal;
         this.exception = exception;
+    }
+
+    public AuthenticationResult( boolean authenticated, Object principal, Exception exception, Map exceptionsMap )
+    {
+        if ( this.exceptionsMap == null )
+        {
+            this.exceptionsMap = new HashMap();
+        }
+
+        isAuthenticated = authenticated;
+        this.principal = principal;
+        this.exception = exception;
+        this.exceptionsMap = exceptionsMap;
     }
 
     public boolean isAuthenticated()
@@ -60,6 +77,11 @@ public class AuthenticationResult
     public Exception getException()
     {
         return exception;
+    }
+
+    public Map getExceptionsMap()
+    {
+        return exceptionsMap;
     }
 
     public String toString()

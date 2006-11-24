@@ -22,6 +22,7 @@ import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
 import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDataSource;
+import org.codehaus.plexus.security.authentication.AuthenticationConstants;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.policy.MustChangePasswordException;
 import org.codehaus.plexus.security.policy.PasswordEncoder;
@@ -30,6 +31,9 @@ import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * {@link Authenticator} implementation that uses a wrapped {@link UserManager} to authenticate.
@@ -72,6 +76,7 @@ public class UserManagerAuthenticator
         String username = null;
         Exception resultException = null;
         PasswordBasedAuthenticationDataSource source = (PasswordBasedAuthenticationDataSource) ds;
+        Map authnResultExceptionsMap = new HashMap();
         
         try
         {
@@ -110,6 +115,8 @@ public class UserManagerAuthenticator
             else
             {
                 getLogger().warn( "Password is Invalid for user " + source.getPrincipal() + "." );
+                authnResultExceptionsMap.put( AuthenticationConstants.AUTHN_NO_SUCH_USER,
+                    "Password is Invalid for user " + source.getPrincipal() + "." );
                 
                 try
                 {
@@ -120,16 +127,18 @@ public class UserManagerAuthenticator
                     userManager.updateUser( user );
                 }
                 
-                return new AuthenticationResult( false, source.getPrincipal(), null );
+                return new AuthenticationResult( false, source.getPrincipal(), null, authnResultExceptionsMap );
             }
         }
         catch ( UserNotFoundException e )
         {
             getLogger().warn( "Login for user " + source.getPrincipal() + " failed. user not found." );
             resultException = e;
+            authnResultExceptionsMap.put( AuthenticationConstants.AUTHN_NO_SUCH_USER, 
+                "Login for user \" + source.getPrincipal() + \" failed. user not found." );
         }
         
-        return new AuthenticationResult(authenticationSuccess, username, resultException);
+        return new AuthenticationResult(authenticationSuccess, username, resultException, authnResultExceptionsMap );
     }
 
     /**
