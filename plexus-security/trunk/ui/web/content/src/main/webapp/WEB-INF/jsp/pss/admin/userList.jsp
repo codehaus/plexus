@@ -37,64 +37,45 @@
 
 <ww:form action="userlist!show" namespace="/security" theme="xhtml" method="post">
   <ww:hidden name="ascending"/>
-  <tr>
-    <td colspan="3">
-      <table cellpadding="0" cellspacing="0">
-        <ww:select label="List users with role"
-                   list="roles"
-                   name="roleName"
-                   value="roleName"
-                   listKey="name"
-                   listValue="name"
-                   headerKey=""
-                   headerValue="Any"/>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true">
-      <table cellpadding="0" cellspacing="0">
-        <ww:select label="User search"
-                   list="criteria"
-                   name="criterion"
-                   value="criterion"/>
-      </table>
-    </td>
-    <td>
-      <table cellpadding="0" cellspacing="0">
-        <ww:textfield name="searchKey"/>
-      </table>
-    </td>
-    <td colspan="2" align="right">
-      <table cellpadding="0" cellspacing="0">
-        <ww:submit value="Search"/>
-      </table>
-    </td>
-  </tr>
+  <ww:select label="List users with role"
+             list="roles"
+             name="roleName"
+             value="roleName"
+             listKey="name"
+             listValue="name"
+             headerKey=""
+             headerValue="Any"/>
+  <ww:select label="User search"
+             list="criteria"
+             name="criterion"
+             value="criterion"/>
+  <ww:textfield name="searchKey" size="30" />
+  <ww:submit value="Search"/>
 </ww:form>
 
 <hr/>
 
-<table class="securityTable" border="1" cellspacing="0" cellpadding="2" width="80%">
+<table>
   <thead>
     <tr>
       <th nowrap="true">
-        <ww:form id="sortlist" name="sortlist" action="userlist!show" namespace="/security" theme="xhtml" method="post">
-          <ww:if test="${ascending}">
-            <ww:a href="javascript: sortlist.submit()"><img src="<ww:url value='/images/icon_sortdown.gif'/>"
-                                                            title="<ww:text name='Sort descending'/>" border="0"></ww:a>
-            Username
-          </ww:if>
-          <ww:else>
-            <ww:a href="javascript: sortlist.submit()"><img src="<ww:url value='/images/icon_sortup.gif'/>"
-                                                            title="<ww:text name='Sort ascending'/>" border="0"></ww:a>
-            Username
-          </ww:else>
-          <ww:hidden name="ascending" value="${!ascending}"/>
-          <ww:hidden name="roleName"/>
-          <ww:hidden name="criterion"/>
-          <ww:hidden name="searchKey"/>
-        </ww:form>
+        <c:set var="url">
+          <ww:url namespace="/security" action="userlist" method="show">
+            <ww:param name="ascending" value="${!ascending}" />
+            <ww:param name="roleName" value="roleName" />
+            <ww:param name="criterion" value="criterion" />
+            <ww:param name="searchKey" value="searchKey" />
+          </ww:url>
+        </c:set>
+        <c:choose>
+          <c:when test="${ascending}">
+            <a href="${url}"><img align="absmiddle" width="15" height="15" src="<ww:url value='/images/icon_sortdown.gif'/>" title="<ww:text name='Sort descending'/>" border="0" alt=""></a>
+          </c:when>
+          <c:otherwise>
+            <a href="${url}"><img align="absmiddle" width="15" height="15" src="<ww:url value='/images/icon_sortup.gif'/>" title="<ww:text name='Sort ascending'/>" border="0" alt=""></a>
+          </c:otherwise>
+        </c:choose>
+        Username
       </th>
       <th>Full Name</th>
       <th>Email Address</th>
