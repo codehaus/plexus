@@ -49,10 +49,8 @@ import java.util.List;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
- *
- * @plexus.component
- *   role="org.codehaus.plexus.security.rbac.RBACManager"
- *   role-hint="jdo"
+ * @plexus.component role="org.codehaus.plexus.security.rbac.RBACManager"
+ * role-hint="jdo"
  */
 public class JdoRbacManager
     extends AbstractRBACManager
@@ -62,29 +60,29 @@ public class JdoRbacManager
      * @plexus.requirement
      */
     private JdoTool jdo;
-    
+
     // private static final String ROLE_DETAIL = "role-child-detail";
     private static final String ROLE_DETAIL = null;
-    
+
     // ----------------------------------------------------------------------
     // Role methods
     // ----------------------------------------------------------------------
 
     /**
      * Creates an implementation specific {@link Role}.
-     *
+     * <p/>
      * Note: this method does not add the {@link Role} to the underlying store.
-     *       a call to {@link #saveRole(Role)} is required to track the role created with this
-     *       method call.
+     * a call to {@link #saveRole(Role)} is required to track the role created with this
+     * method call.
      *
      * @param name the name.
      * @return the new {@link Role} object with an empty (non-null) {@link Role#getChildRoleNames()} object.
-     * @throws RbacManagerException 
+     * @throws RbacManagerException
      */
     public Role createRole( String name )
     {
         Role role;
-        
+
         try
         {
             role = getRole( name );
@@ -94,7 +92,7 @@ public class JdoRbacManager
             role = new JdoRole();
             role.setName( name );
         }
-        
+
         return role;
     }
 
@@ -107,10 +105,10 @@ public class JdoRbacManager
         throws RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( role );
-        
-        return (Role) jdo.saveObject( role, new String[] { ROLE_DETAIL } );
+
+        return (Role) jdo.saveObject( role, new String[]{ROLE_DETAIL} );
     }
-    
+
     public boolean roleExists( Role role )
     {
         return jdo.objectExists( role );
@@ -129,8 +127,6 @@ public class JdoRbacManager
     }
 
     /**
-     *
-     *
      * @param roleName
      * @return
      * @throws RbacObjectNotFoundException
@@ -155,15 +151,15 @@ public class JdoRbacManager
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( role );
-        
+
         if ( role.isPermanent() )
         {
             throw new RbacPermanentException( "Unable to delete permanent role [" + role.getName() + "]" );
         }
-        
+
         jdo.removeObject( role );
     }
-    
+
     public void saveRoles( Collection roles )
         throws RbacObjectInvalidException, RbacManagerException
     {
@@ -207,7 +203,6 @@ public class JdoRbacManager
             jdo.rollbackIfActive( tx );
         }
     }
-    
 
     // ----------------------------------------------------------------------
     // Permission methods
@@ -215,19 +210,20 @@ public class JdoRbacManager
 
     /**
      * Creates an implementation specific {@link Permission}.
-     *
+     * <p/>
      * Note: this method does not add the {@link Permission} to the underlying store.
-     *       a call to {@link #savePermission(Permission)} is required to track the permission created
-     *       with this method call.
+     * a call to {@link #savePermission(Permission)} is required to track the permission created
+     * with this method call.
      *
      * @param name the name.
      * @return the new Permission.
-     * @throws RbacManagerException 
+     * @throws RbacManagerException
      */
-    public Permission createPermission( String name ) throws RbacManagerException
+    public Permission createPermission( String name )
+        throws RbacManagerException
     {
         Permission permission;
-        
+
         try
         {
             permission = getPermission( name );
@@ -239,25 +235,26 @@ public class JdoRbacManager
             permission.setName( name );
             getLogger().debug( "Create Permission [" + name + "] New JdoPermission." );
         }
-        
+
         return permission;
     }
 
     /**
      * Creates an implementation specific {@link Permission} with specified {@link Operation},
      * and {@link Resource} identifiers.
-     *
+     * <p/>
      * Note: this method does not add the Permission, Operation, or Resource to the underlying store.
-     *       a call to {@link #savePermission(Permission)} is required to track the permission, operation,
-     *       or resource created with this method call.
+     * a call to {@link #savePermission(Permission)} is required to track the permission, operation,
+     * or resource created with this method call.
      *
-     * @param name the name.
-     * @param operationName the {@link Operation#setName(String)} value
+     * @param name               the name.
+     * @param operationName      the {@link Operation#setName(String)} value
      * @param resourceIdentifier the {@link Resource#setIdentifier(String)} value
      * @return the new Permission.
-     * @throws RbacManagerException 
+     * @throws RbacManagerException
      */
-    public Permission createPermission( String name, String operationName, String resourceIdentifier ) throws RbacManagerException
+    public Permission createPermission( String name, String operationName, String resourceIdentifier )
+        throws RbacManagerException
     {
         Permission permission = new JdoPermission();
         permission.setName( name );
@@ -293,7 +290,7 @@ public class JdoRbacManager
         throws RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( permission );
-        
+
         return (Permission) jdo.saveObject( permission, null );
     }
 
@@ -344,19 +341,20 @@ public class JdoRbacManager
     // ----------------------------------------------------------------------
     /**
      * Creates an implementation specific {@link Operation}.
-     *
+     * <p/>
      * Note: this method does not add the {@link Operation} to the underlying store.
-     *       a call to {@link #saveOperation(Operation)} is required to track the operation created
-     *       with this method call.
+     * a call to {@link #saveOperation(Operation)} is required to track the operation created
+     * with this method call.
      *
      * @param name the name.
      * @return the new Operation.
-     * @throws RbacManagerException 
+     * @throws RbacManagerException
      */
-    public Operation createOperation( String name ) throws RbacManagerException
+    public Operation createOperation( String name )
+        throws RbacManagerException
     {
         Operation operation;
-        
+
         try
         {
             operation = getOperation( name );
@@ -376,7 +374,7 @@ public class JdoRbacManager
         RBACObjectAssertions.assertValid( operation );
         return (Operation) jdo.saveObject( operation, null );
     }
-    
+
     public boolean operationExists( Operation operation )
     {
         return jdo.objectExists( operation );
@@ -410,12 +408,12 @@ public class JdoRbacManager
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( operation );
-        
+
         if ( operation.isPermanent() )
         {
             throw new RbacPermanentException( "Unable to delete permanent operation [" + operation.getName() + "]" );
         }
-        
+
         jdo.removeObject( operation );
     }
 
@@ -424,19 +422,20 @@ public class JdoRbacManager
     // ----------------------------------------------------------------------
     /**
      * Creates an implementation specific {@link Resource}.
-     *
+     * <p/>
      * Note: this method does not add the {@link Resource} to the underlying store.
-     *       a call to {@link #saveResource(Resource)} is required to track the resource created
-     *       with this method call.
+     * a call to {@link #saveResource(Resource)} is required to track the resource created
+     * with this method call.
      *
      * @param identifier the identifier.
      * @return the new Resource.
-     * @throws RbacManagerException 
+     * @throws RbacManagerException
      */
-    public Resource createResource( String identifier ) throws RbacManagerException
+    public Resource createResource( String identifier )
+        throws RbacManagerException
     {
         Resource resource;
-        
+
         try
         {
             resource = getResource( identifier );
@@ -448,7 +447,7 @@ public class JdoRbacManager
             resource.setIdentifier( identifier );
             getLogger().debug( "Create Resource [" + identifier + "] New JdoResource." );
         }
-        
+
         return resource;
     }
 
@@ -458,7 +457,7 @@ public class JdoRbacManager
         RBACObjectAssertions.assertValid( resource );
         return (Resource) jdo.saveObject( resource, null );
     }
-    
+
     public boolean resourceExists( Resource resource )
     {
         return jdo.objectExists( resource );
@@ -492,12 +491,13 @@ public class JdoRbacManager
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( resource );
-        
+
         if ( resource.isPermanent() )
         {
-            throw new RbacPermanentException( "Unable to delete permanent resource [" + resource.getIdentifier() + "]" );
+            throw new RbacPermanentException(
+                "Unable to delete permanent resource [" + resource.getIdentifier() + "]" );
         }
-        
+
         jdo.removeObject( resource );
     }
 
@@ -507,19 +507,19 @@ public class JdoRbacManager
 
     /**
      * Creates an implementation specific {@link UserAssignment}.
-     *
+     * <p/>
      * Note: this method does not add the {@link UserAssignment} to the underlying store.
-     *       a call to {@link #saveUserAssignment(UserAssignment)} is required to track the user
-     *       assignment created with this method call.
+     * a call to {@link #saveUserAssignment(UserAssignment)} is required to track the user
+     * assignment created with this method call.
      *
      * @param principal the principal reference to the user.
      * @return the new UserAssignment with an empty (non-null) {@link UserAssignment#getRoleNames()} object.
-     * @throws RbacManagerException 
+     * @throws RbacManagerException
      */
     public UserAssignment createUserAssignment( String principal )
     {
         UserAssignment ua;
-        
+
         try
         {
             ua = getUserAssignment( principal );
@@ -542,10 +542,10 @@ public class JdoRbacManager
         throws RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( "Save User Assignment", userAssignment );
-        
-        return (UserAssignment) jdo.saveObject( userAssignment, new String[] { ROLE_DETAIL } );
+
+        return (UserAssignment) jdo.saveObject( userAssignment, new String[]{ROLE_DETAIL} );
     }
-    
+
     public boolean userAssignmentExists( String principal )
     {
         try
@@ -568,7 +568,7 @@ public class JdoRbacManager
     {
         return (UserAssignment) jdo.getObjectById( JdoUserAssignment.class, principal, ROLE_DETAIL );
     }
-    
+
     /**
      * Method getAssignments
      */
@@ -576,6 +576,15 @@ public class JdoRbacManager
         throws RbacManagerException
     {
         return jdo.getAllObjects( JdoUserAssignment.class );
+    }
+
+    /**
+     * Method getUserAssignmentsForRoles
+     */
+    public List getUserAssignmentsForRoles( Collection roleNames )
+        throws RbacManagerException
+    {
+        return jdo.getUserAssignmentsForRoles( JdoUserAssignment.class, null, roleNames );
     }
 
     /**
@@ -587,12 +596,13 @@ public class JdoRbacManager
         throws RbacObjectNotFoundException, RbacObjectInvalidException, RbacManagerException
     {
         RBACObjectAssertions.assertValid( userAssignment );
-        
+
         if ( userAssignment.isPermanent() )
         {
-            throw new RbacPermanentException( "Unable to delete permanent user assignment [" + userAssignment.getPrincipal() + "]" );
+            throw new RbacPermanentException(
+                "Unable to delete permanent user assignment [" + userAssignment.getPrincipal() + "]" );
         }
-        
+
         jdo.removeObject( userAssignment );
     }
 
@@ -614,7 +624,7 @@ public class JdoRbacManager
 
     public void rbacPermissionRemoved( Permission permission )
     {
-        fireRbacPermissionRemoved( permission );        
+        fireRbacPermissionRemoved( permission );
     }
 
     public void rbacPermissionSaved( Permission permission )
