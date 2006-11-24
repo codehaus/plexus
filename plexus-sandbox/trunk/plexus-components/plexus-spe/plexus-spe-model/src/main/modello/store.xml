@@ -85,7 +85,7 @@
           <version>1.0.0+</version>
         </field>
         <field>
-          <name>exception</name>
+          <name>exceptionStackTrace</name>
           <type>String</type>
           <version>1.0.0+</version>
         </field>
