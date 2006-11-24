@@ -61,7 +61,7 @@ public class BshComponentFactory
             // BeanShell honours the context classloader, which something is setting (erroneously?)
 //            interp.setClassLoader( containerRealm.getClassLoader() );
             ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-            Thread.currentThread().setContextClassLoader( (ClassLoader) containerRealm.getStrategy() );
+            Thread.currentThread().setContextClassLoader( containerRealm );
             result = interp.eval( reader );
             Thread.currentThread().setContextClassLoader( oldClassLoader );
         }

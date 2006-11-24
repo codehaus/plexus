@@ -245,8 +245,7 @@ public class JRubyInvoker
 
         Object result = null;
         ClassLoader oldClassLoader = null;
-        ClassLoader classLoader = classRealm == null ? null : (ClassLoader) classRealm.getStrategy();
-        if ( classLoader != null )
+        if ( classRealm != null )
         {
             oldClassLoader = Thread.currentThread().getContextClassLoader();
         }
@@ -267,9 +266,9 @@ public class JRubyInvoker
 
         try
         {
-            if ( classLoader != null )
+            if ( classRealm != null )
             {
-                Thread.currentThread().setContextClassLoader( classLoader );
+                Thread.currentThread().setContextClassLoader( classRealm );
             }
 
             bos = new StringOutputStream();
