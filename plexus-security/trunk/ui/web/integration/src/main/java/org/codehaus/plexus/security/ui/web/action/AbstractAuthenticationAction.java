@@ -18,6 +18,8 @@ package org.codehaus.plexus.security.ui.web.action;
 
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.security.authentication.AuthenticationConstants;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
@@ -78,7 +80,24 @@ public abstract class AbstractAuthenticationAction
                 getLogger().debug( "Login Action failed against principal : "
                                        + securitySession.getAuthenticationResult().getPrincipal(),
                                    securitySession.getAuthenticationResult().getException() );
+
+                AuthenticationResult result = securitySession.getAuthenticationResult();
+                if( result.getExceptionsMap() != null && !result.getExceptionsMap().isEmpty() )
+                {
+                    if ( result.getExceptionsMap().get( AuthenticationConstants.AUTHN_NO_SUCH_USER ) != null )
+                    {
+                        addActionError( "You have entered an incorrect username and/or password" );
+                    }
+                    else
+                    {                             
                 addActionError( "Authentication failed" );
+                    }
+                }
+                else
+                {
+                    addActionError( "Authentication failed" );
+                }
+
                 return ERROR;
             }
         }
