@@ -14,7 +14,7 @@
       <artifactId>plexus-jdo2</artifactId>
     </dependency>
     <dependency>
-        <groupId>org.apache.maven.continuum.jpox</groupId>
+      <groupId>jpox</groupId>
       <artifactId>jpox</artifactId>
     </dependency>
   </dependencies>
@@ -31,9 +31,7 @@
       <plugin>
         <groupId>org.codehaus.modello</groupId>
         <artifactId>modello-maven-plugin</artifactId>
-        <version>1.0-alpha-9-SNAPSHOT</version>
-        <dependencies>
-        </dependencies>
+        <version>1.0-alpha-11</version>
         <executions>
           <execution>
             <id>process-descriptor</id>
@@ -68,7 +66,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jpox-maven-plugin</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.3</version>
         <executions>
           <execution>
             <goals>

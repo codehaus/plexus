@@ -27,7 +27,7 @@ public class ProcessServiceTest
     {
         ProcessService processService = (ProcessService) lookup( ProcessService.ROLE );
 
-        processService.loadProcess( getTestFile( "src/test/resources/process/process-1.xml").toURL() );
+        processService.loadProcess( getTestFile( "src/test/resources/process/process-1.xml" ).toURL() );
 
         Map<String, Serializable> context = new HashMap<String, Serializable>();
         context.put( "message", "Context Hello World!" );
@@ -35,7 +35,7 @@ public class ProcessServiceTest
 
         Thread.sleep( 1000 );
 
-        assertTrue( processService.hasCompleted( instanceId ));
+        assertTrue( processService.hasCompleted( instanceId ) );
 
         assertEquals( 2, EchoAction.messages.size() );
         assertEquals( "Configuration Hello World!", EchoAction.messages.get( 0 ) );
@@ -47,7 +47,7 @@ public class ProcessServiceTest
     {
         ProcessService processService = (ProcessService) lookup( ProcessService.ROLE );
 
-        processService.loadProcess( getTestFile( "src/test/resources/process/process-2.xml").toURL() );
+        processService.loadProcess( getTestFile( "src/test/resources/process/process-2.xml" ).toURL() );
 
         Map<String, Serializable> context = new HashMap<String, Serializable>();
         context.put( "message", "Hello World!" );
@@ -64,8 +64,10 @@ public class ProcessServiceTest
     {
         ProcessService processService = (ProcessService) lookup( ProcessService.ROLE );
 
-        processService.loadProcess( getTestFile( "src/test/resources/process/exception-throwing-process.xml").toURL() );
-        processService.loadProcess( getTestFile( "src/test/resources/process/runtime-exception-throwing-process.xml").toURL() );
+        processService.loadProcess(
+            getTestFile( "src/test/resources/process/exception-throwing-process.xml" ).toURL() );
+        processService.loadProcess(
+            getTestFile( "src/test/resources/process/runtime-exception-throwing-process.xml" ).toURL() );
 
         // ----------------------------------------------------------------------
         // Test handling of runtime exceptions.
@@ -101,7 +103,7 @@ public class ProcessServiceTest
     {
         ProcessService processService = (ProcessService) lookup( ProcessService.ROLE );
 
-        processService.loadProcess( getTestFile( "src/test/resources/process/process-3.xml").toURL() );
+        processService.loadProcess( getTestFile( "src/test/resources/process/process-3.xml" ).toURL() );
 
         int instanceId = processService.executeProcess( "ant-based-process", new HashMap<String, Serializable>() );
 
@@ -113,7 +115,7 @@ public class ProcessServiceTest
     {
         ProcessService processService = (ProcessService) lookup( ProcessService.ROLE );
 
-        processService.loadProcess( getTestFile( "src/test/resources/process/process-4.xml").toURL() );
+        processService.loadProcess( getTestFile( "src/test/resources/process/process-4.xml" ).toURL() );
 
         HashMap<String, Serializable> context = new HashMap<String, Serializable>();
 
@@ -139,7 +141,7 @@ public class ProcessServiceTest
     private void waitForCompletion( long time, ProcessService processService, int instanceId )
         throws InterruptedException, ProcessException
     {
-        waitForCompletion( time, processService, instanceId, true);
+        waitForCompletion( time, processService, instanceId, true );
     }
 
     private void waitForCompletion( long time, ProcessService processService, int instanceId, boolean expectsSuccess )

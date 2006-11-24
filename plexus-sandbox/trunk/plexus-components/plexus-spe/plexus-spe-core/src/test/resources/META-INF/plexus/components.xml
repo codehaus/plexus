@@ -33,10 +33,12 @@
             <name>javax.jdo.option.ConnectionUserName</name>
             <value>sa</value>
           </property>
+<!--
           <property>
             <name>javax.jdo.option.ConnectionPassword</name>
             <value></value>
           </property>
+-->
           <property>
             <name>org.jpox.autoCreateSchema</name>
             <value>true</value>
