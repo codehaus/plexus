@@ -20,10 +20,11 @@ import org.codehaus.plexus.security.policy.PasswordEncoder;
 
 /**
  * PlainText PasswordEncoder for use in situtations where the password needs to be saved as-is.
- * See {@link PasswordEncoder#encodePassword(String)} for details. 
+ * See {@link PasswordEncoder#encodePassword(String)} for details.
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * @plexus.component role="org.codehaus.plexus.security.policy.PasswordEncoder" role-hint="plaintext"
  */
 public class PlainTextPasswordEncoder
     implements PasswordEncoder

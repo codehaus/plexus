@@ -17,16 +17,13 @@ package org.codehaus.plexus.security.ui.web.action;
  */
 
 import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
-import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.ui.web.model.UserCredentials;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.util.Iterator;
-
 /**
- * AbstractUserCredentialsAction 
+ * AbstractUserCredentialsAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -37,18 +34,18 @@ public abstract class AbstractUserCredentialsAction
     // ------------------------------------------------------------------
     // Plexus Component Requirements
     // ------------------------------------------------------------------
-    
+
     /**
      * @plexus.requirement
      */
     protected SecuritySystem securitySystem;
-    
+
     // ------------------------------------------------------------------
     // Action Parameters
     // ------------------------------------------------------------------
 
     protected UserCredentials internalUser;
-    
+
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
@@ -101,24 +98,4 @@ public abstract class AbstractUserCredentialsAction
             addFieldError( "user.password", "Password is required." );
         }
     }
-    
-    // ------------------------------------------------------------------
-    // Internal Support Methods
-    // ------------------------------------------------------------------
-
-    protected void processPasswordRuleViolations( PasswordRuleViolationException e )
-    {
-        PasswordRuleViolations violations = e.getViolations();
-
-        if ( violations != null )
-        {
-            Iterator it = violations.getLocalizedViolations().iterator();
-            while ( it.hasNext() )
-            {
-                String violation = (String) it.next();
-                addFieldError( "user.password", violation );
-            }
-        }
-    }
-
 }

@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
+import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystemConstants;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureAction;
@@ -23,8 +25,10 @@ import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
+import java.util.Iterator;
+
 /**
- * AbstractSecurityAction 
+ * AbstractSecurityAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -34,19 +38,20 @@ public abstract class AbstractSecurityAction
     implements SecureAction
 {
     protected static final String REQUIRES_AUTHENTICATION = "requires-authentication";
+
     private SecureActionBundle securityBundle;
-    
+
     public SecureActionBundle getSecureActionBundle()
         throws SecureActionException
     {
-        if(securityBundle == null)
+        if ( securityBundle == null )
         {
             securityBundle = initSecureActionBundle();
         }
-        
+
         return securityBundle;
     }
-    
+
     public abstract SecureActionBundle initSecureActionBundle()
         throws SecureActionException;
 
@@ -59,5 +64,28 @@ public abstract class AbstractSecurityAction
     protected SecuritySession getSecuritySession()
     {
         return (SecuritySession) session.get( SecuritySystemConstants.SECURITY_SESSION_KEY );
+    }
+
+    // ------------------------------------------------------------------
+    // Internal Support Methods
+    // ------------------------------------------------------------------
+    protected void processPasswordRuleViolations( PasswordRuleViolationException e )
+    {
+        processPasswordRuleViolations( e, "user.password" );
+    }
+
+    protected void processPasswordRuleViolations( PasswordRuleViolationException e, String field )
+    {
+        PasswordRuleViolations violations = e.getViolations();
+
+        if ( violations != null )
+        {
+            Iterator it = violations.getLocalizedViolations().iterator();
+            while ( it.hasNext() )
+            {
+                String violation = (String) it.next();
+                addFieldError( field, violation );
+            }
+        }
     }
 }

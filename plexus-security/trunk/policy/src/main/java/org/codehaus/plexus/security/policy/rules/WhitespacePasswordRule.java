@@ -16,24 +16,25 @@ package org.codehaus.plexus.security.policy.rules;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.security.policy.PasswordRule;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
 
 /**
- * Basic Password Rule. Checks that password does not have whitespaces in it. 
- * 
+ * Basic Password Rule. Checks that password does not have whitespaces in it.
+ *
  * @plexus.component role="org.codehaus.plexus.security.policy.PasswordRule" role-hint="no-whitespaces"
- * 
+ * <p/>
  * $Id$
  */
 public class WhitespacePasswordRule
     extends AbstractPasswordRule
-    implements PasswordRule, Initializable
 {
+    public static final String NO_WHITE_SPACE = PASSWORD_RULE_CONFIGKEY + ".nowhitespace";
+
+    public static final String NO_WHITE_SPACE_VIOLATION = "user.password.violation.whitespace.detected";
+
     public void setUserSecurityPolicy( UserSecurityPolicy policy )
     {
         // Ignore, policy not needed in this rule.
@@ -47,7 +48,7 @@ public class WhitespacePasswordRule
         {
             if ( Character.isWhitespace( password[i] ) )
             {
-                violations.addViolation( "user.password.violation.whitespace.detected" );
+                violations.addViolation( NO_WHITE_SPACE_VIOLATION );
                 return;
             }
         }
@@ -56,6 +57,6 @@ public class WhitespacePasswordRule
     public void initialize()
         throws InitializationException
     {
-        super.configure( config, PASSWORD_RULE_CONFIGKEY + ".nowhitespace" );
+        super.configure( NO_WHITE_SPACE );
     }
 }

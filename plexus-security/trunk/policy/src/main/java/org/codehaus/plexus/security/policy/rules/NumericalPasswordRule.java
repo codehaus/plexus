@@ -16,32 +16,36 @@ package org.codehaus.plexus.security.policy.rules;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.security.policy.PasswordRule;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * Basic Password Rule, Checks for non-empty passwords that have at least {@link #setMinimumCount(int)} of 
- * numerical characters contained within. 
- * 
- * @plexus.component role="org.codehaus.plexus.security.policy.PasswordRule" role-hint="numerical-count"
- * 
+ * Basic Password Rule, Checks for non-empty passwords that have at least {@link #setMinimumCount(int)} of
+ * numerical characters contained within.
+ *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * @plexus.component role="org.codehaus.plexus.security.policy.PasswordRule" role-hint="numerical-count"
  */
 public class NumericalPasswordRule
     extends AbstractPasswordRule
-    implements PasswordRule, Initializable
 {
+    public static final String NUMERICAL_COUNT = PASSWORD_RULE_CONFIGKEY + ".numericalcount";
+
+    public static final String MINIMUM = NUMERICAL_COUNT + ".minimum";
+
+    public static final String NUMERICAL_COUNT_VIOLATION = "user.password.violation.numeric";
+
+    public static final int DEFAULT_MIN = 1;
+
     private int minimumCount;
 
     public NumericalPasswordRule()
     {
-        this.minimumCount = 1;
+        this.minimumCount = DEFAULT_MIN;
     }
 
     private int countDigitCharacters( String password )
@@ -98,15 +102,15 @@ public class NumericalPasswordRule
     {
         if ( countDigitCharacters( user.getPassword() ) < this.minimumCount )
         {
-            violations.addViolation( "user.password.violation.numeric", new Object[] { new Integer( minimumCount ) } ); //$NON-NLS-1$
+            violations.addViolation( NUMERICAL_COUNT_VIOLATION,
+                                     new Object[]{new Integer( minimumCount )} ); //$NON-NLS-1$
         }
     }
 
     public void initialize()
         throws InitializationException
     {
-        final String PREFIX = PASSWORD_RULE_CONFIGKEY + ".numericalcount";
-        super.configure( config, PREFIX );
-        this.minimumCount = config.getInt( PREFIX + ".minimum", 1 );
+        super.configure( NUMERICAL_COUNT );
+        this.minimumCount = config.getInt( MINIMUM, DEFAULT_MIN );
     }
 }

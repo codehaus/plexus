@@ -16,35 +16,46 @@ package org.codehaus.plexus.security.policy.rules;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.security.policy.PasswordRule;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * Basic Password Rule, Checks for non-empty passwords that have between {@link #setMinimumCharacters(int)} and 
- * {@link #setMaximumCharacters(int)} characters in length. 
- * 
- * @plexus.component role="org.codehaus.plexus.security.policy.PasswordRule" role-hint="character-length"
- * 
+ * Basic Password Rule, Checks for non-empty passwords that have between {@link #setMinimumCharacters(int)} and
+ * {@link #setMaximumCharacters(int)} characters in length.
+ *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * @plexus.component role="org.codehaus.plexus.security.policy.PasswordRule" role-hint="character-length"
  */
 public class CharacterLengthPasswordRule
     extends AbstractPasswordRule
-    implements PasswordRule, Initializable
 {
+    public static final String CHARACTER_LENGTH = PASSWORD_RULE_CONFIGKEY + ".characterlength";
+
+    public static final String CHARACTER_LENGTH_MIN = CHARACTER_LENGTH + ".minimum";
+
+    public static final String CHARACTER_LENGTH_MAX = CHARACTER_LENGTH + ".maximum";
+
+    public static final String CHARACTER_LENGTH_MISCONFIGURED_VIOLATION =
+        "user.password.violation.length.misconfigured";
+
+    public static final String CHARACTER_LENGTH_VIOLATION = "user.password.violation.length";
+
+    public static final int DEFAULT_CHARACTER_LENGTH_MIN = 1;
+
+    public static final int DEFAULT_CHARACTER_LENGTH_MAX = 8;
+
     private int minimumCharacters;
 
     private int maximumCharacters;
 
     public CharacterLengthPasswordRule()
     {
-        minimumCharacters = 1;
-        maximumCharacters = 8;
+        minimumCharacters = DEFAULT_CHARACTER_LENGTH_MIN;
+        maximumCharacters = DEFAULT_CHARACTER_LENGTH_MAX;
     }
 
     public int getMaximumCharacters()
@@ -78,28 +89,26 @@ public class CharacterLengthPasswordRule
         {
             /* this should caught up front during the configuration of the component */
             // TODO: Throw runtime exception instead?
-            violations.addViolation( "user.password.violation.length.misconfigured", new Object[] {
-                new Integer( minimumCharacters ),
-                new Integer( maximumCharacters ) } ); //$NON-NLS-1$
+            violations.addViolation( CHARACTER_LENGTH_MISCONFIGURED_VIOLATION, new Object[]{
+                new Integer( minimumCharacters ), new Integer( maximumCharacters )} ); //$NON-NLS-1$
         }
 
         String password = user.getPassword();
 
-        if ( StringUtils.isEmpty( password ) || password.length() < minimumCharacters
-            || password.length() > maximumCharacters )
+        if ( StringUtils.isEmpty( password ) || password.length() < minimumCharacters ||
+            password.length() > maximumCharacters )
         {
-            violations.addViolation( "user.password.violation.length", new Object[] {
-                new Integer( minimumCharacters ),
-                new Integer( maximumCharacters ) } ); //$NON-NLS-1$
+            violations.addViolation( CHARACTER_LENGTH_VIOLATION, new Object[]{new Integer( minimumCharacters ),
+                new Integer( maximumCharacters )} ); //$NON-NLS-1$
         }
     }
 
     public void initialize()
         throws InitializationException
     {
-        final String PREFIX = PASSWORD_RULE_CONFIGKEY + "characterlength";
-        super.configure( config, PREFIX );
-        this.minimumCharacters = config.getInt( PREFIX + ".minimum", 1 );
-        this.maximumCharacters = config.getInt( PREFIX + ".maximum", 8 );
+
+        super.configure( CHARACTER_LENGTH );
+        this.minimumCharacters = config.getInt( CHARACTER_LENGTH_MIN, DEFAULT_CHARACTER_LENGTH_MIN );
+        this.maximumCharacters = config.getInt( CHARACTER_LENGTH_MAX, DEFAULT_CHARACTER_LENGTH_MAX );
     }
 }

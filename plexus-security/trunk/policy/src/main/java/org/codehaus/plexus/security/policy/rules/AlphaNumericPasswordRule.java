@@ -16,23 +16,25 @@ package org.codehaus.plexus.security.policy.rules;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
 
 /**
- * Basic Password Rule. Checks that password only contains alpha-numeric characters. 
- * 
+ * Basic Password Rule. Checks that password only contains alpha-numeric characters.
+ *
  * @plexus.component role="org.codehaus.plexus.security.policy.PasswordRule" role-hint="alpha-numeric"
- * 
+ * <p/>
  * $Id$
  */
 public class AlphaNumericPasswordRule
     extends AbstractPasswordRule
-    implements Initializable
 {
+    public static final String ALPHANUMERIC = PASSWORD_RULE_CONFIGKEY + ".alphanumeric";
+
+    public static final String ALPHANUM_VIOLATION = "user.password.violation.alphanum.only";
+
     public void setUserSecurityPolicy( UserSecurityPolicy policy )
     {
         // Ignore, policy not needed in this rule.
@@ -46,7 +48,7 @@ public class AlphaNumericPasswordRule
         {
             if ( !Character.isLetterOrDigit( password[i] ) )
             {
-                violations.addViolation( "user.password.violation.alphanum.only" );
+                violations.addViolation( ALPHANUM_VIOLATION );
                 return;
             }
         }
@@ -55,6 +57,6 @@ public class AlphaNumericPasswordRule
     public void initialize()
         throws InitializationException
     {
-        super.configure( config, PASSWORD_RULE_CONFIGKEY + ".alphanumeric" );
+        super.configure( ALPHANUMERIC );
     }
 }

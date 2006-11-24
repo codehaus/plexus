@@ -16,9 +16,7 @@ package org.codehaus.plexus.security.policy.rules;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.security.policy.PasswordRule;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
@@ -27,23 +25,21 @@ import org.codehaus.plexus.util.StringUtils;
 import java.util.Iterator;
 
 /**
- * Password Rule, Checks supplied password found at {@link User#getPassword()} against 
- * the {@link User#getPreviousEncodedPasswords()} to ensure that a password is not reused.  
- * 
- * @plexus.component role="org.codehaus.plexus.security.policy.PasswordRule" role-hint="reuse"
- * 
+ * Password Rule, Checks supplied password found at {@link User#getPassword()} against
+ * the {@link User#getPreviousEncodedPasswords()} to ensure that a password is not reused.
+ *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * @plexus.component role="org.codehaus.plexus.security.policy.PasswordRule" role-hint="reuse"
  */
 public class ReusePasswordRule
     extends AbstractPasswordRule
-    implements PasswordRule, Initializable
 {
-    private UserSecurityPolicy securityPolicy;
+    public static final String REUSE = PASSWORD_RULE_CONFIGKEY + ".reuse";
 
-    public ReusePasswordRule()
-    {
-    }
+    public static final String REUSE_VIOLATION = "user.password.violation.reuse";
+
+    private UserSecurityPolicy securityPolicy;
 
     public void setUserSecurityPolicy( UserSecurityPolicy policy )
     {
@@ -73,7 +69,7 @@ public class ReusePasswordRule
 
         Iterator it = user.getPreviousEncodedPasswords().iterator();
 
-        while ( it.hasNext() && ( checkCount >= 0 ) )
+        while ( it.hasNext() && checkCount >= 0 )
         {
             String prevEncodedPassword = (String) it.next();
             if ( encodedPassword.equals( prevEncodedPassword ) )
@@ -97,14 +93,14 @@ public class ReusePasswordRule
 
         if ( hasReusedPassword( user, password ) )
         {
-            violations.addViolation( "user.password.violation.reuse",
-                                     new Object[] { new Integer( getPreviousPasswordCount() ) } ); //$NON-NLS-1$
+            violations.addViolation( REUSE_VIOLATION,
+                                     new Object[]{new Integer( getPreviousPasswordCount() )} ); //$NON-NLS-1$
         }
     }
 
     public void initialize()
         throws InitializationException
     {
-        super.configure( config, PASSWORD_RULE_CONFIGKEY + ".reuse" );
+        super.configure( REUSE );
     }
 }
