@@ -1,9 +1,5 @@
 package org.codehaus.plexus.security.policy;
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.security.configuration.UserConfiguration;
-
 /*
  * Copyright 2001-2006 The Codehaus.
  *
@@ -19,6 +15,10 @@ import org.codehaus.plexus.security.configuration.UserConfiguration;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.security.configuration.UserConfiguration;
 
 /**
  * DefaultUserValidationSettings 
