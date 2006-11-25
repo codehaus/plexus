@@ -52,8 +52,6 @@
     <module>plexus-mail-sender</module>
     <module>plexus-notification</module>
     <module>plexus-resource</module>
-    <module>plexus-security</module>
-    <module>plexus-summit</module>
     <module>plexus-taskqueue</module>    
     <module>plexus-velocity</module>
     <module>plexus-xmlrpc</module>
