@@ -32,5 +32,11 @@
       <artifactId>derby</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>woodstox</groupId>
+      <artifactId>wstx-asl</artifactId>
+      <version>3.1.0</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>
