@@ -35,12 +35,15 @@ public interface DataManagementTool
      */
     String ROLE = DataManagementTool.class.getName();
 
-    void backupRBACDatabase( RBACManager rbacManager, File backupDirectory )
+    void backupRBACDatabase( RBACManager manager, File backupDirectory )
         throws RbacManagerException, IOException, XMLStreamException;
 
-    void backupUserDatabase( UserManager userManager, File backupDirectory )
+    void backupUserDatabase( UserManager manager, File backupDirectory )
         throws IOException, XMLStreamException;
 
     void backupKeyDatabase( KeyManager manager, File backupDirectory )
         throws IOException, XMLStreamException;
+
+    void restoreRBACDatabase( RBACManager manager, File backupDirectory )
+        throws IOException, XMLStreamException, RbacManagerException;
 }

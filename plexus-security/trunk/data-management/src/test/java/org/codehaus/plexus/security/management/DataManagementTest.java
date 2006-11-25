@@ -29,6 +29,7 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -145,6 +146,30 @@ public class DataManagementTest
         String expected = sw.toString();
         assertEquals( "Check database content", removeKeyAndTimestampVariance( expected ),
                       removeKeyAndTimestampVariance( actual ) );
+    }
+
+    public void testRestoreRbac()
+        throws Exception
+    {
+        RBACManager manager = (RBACManager) lookup( RBACManager.ROLE, "jdo" );
+
+        assertEquals( 0, manager.getAllRoles().size() );
+        assertEquals( 0, manager.getAllUserAssignments().size() );
+        assertEquals( 0, manager.getAllOperations().size() );
+        assertEquals( 0, manager.getAllResources().size() );
+        assertEquals( 0, manager.getAllPermissions().size() );
+
+        File backupFile = new File( targetDirectory, "rbac.xml" );
+
+        IOUtil.copy( getClass().getResourceAsStream( "/expected-rbac.xml" ), new FileWriter( backupFile ) );
+
+        dataManagementTool.restoreRBACDatabase( manager, targetDirectory );
+
+        assertEquals( 4, manager.getAllRoles().size() );
+        assertEquals( 2, manager.getAllUserAssignments().size() );
+        assertEquals( 6, manager.getAllOperations().size() );
+        assertEquals( 1, manager.getAllResources().size() );
+        assertEquals( 6, manager.getAllPermissions().size() );
     }
 
     private String removeKeyAndTimestampVariance( String content )

@@ -17,12 +17,18 @@ package org.codehaus.plexus.security.management;
  */
 
 import org.codehaus.plexus.security.authorization.rbac.jdo.RbacDatabase;
+import org.codehaus.plexus.security.authorization.rbac.jdo.io.stax.RbacJdoModelStaxReader;
 import org.codehaus.plexus.security.authorization.rbac.jdo.io.stax.RbacJdoModelStaxWriter;
 import org.codehaus.plexus.security.keys.KeyManager;
 import org.codehaus.plexus.security.keys.jdo.AuthenticationKeyDatabase;
 import org.codehaus.plexus.security.keys.jdo.io.stax.PlexusSecurityKeyManagementJdoStaxWriter;
+import org.codehaus.plexus.security.rbac.Operation;
+import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacManagerException;
+import org.codehaus.plexus.security.rbac.Resource;
+import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.security.rbac.UserAssignment;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.jdo.UserDatabase;
 import org.codehaus.plexus.security.user.jdo.io.stax.UserManagementStaxWriter;
@@ -30,8 +36,14 @@ import org.codehaus.plexus.util.IOUtil;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * JDO implementation of the data management tool.
@@ -42,12 +54,16 @@ import java.io.IOException;
 public class JdoDataManagementTool
     implements DataManagementTool
 {
-    public void backupRBACDatabase( RBACManager rbacManager, File backupDirectory )
+    public void backupRBACDatabase( RBACManager manager, File backupDirectory )
         throws RbacManagerException, IOException, XMLStreamException
     {
+        // TODO: this is inefficient - many of the resources, operations and permissions may be duplicated. We should
+        //       have the modello stax writer write reference IDs, and add the operations, resources and permissions to
+        //       the database itself
+
         RbacDatabase database = new RbacDatabase();
-        database.setRoles( rbacManager.getAllRoles() );
-        database.setUserAssignments( rbacManager.getAllUserAssignments() );
+        database.setRoles( manager.getAllRoles() );
+        database.setUserAssignments( manager.getAllUserAssignments() );
 
         RbacJdoModelStaxWriter writer = new RbacJdoModelStaxWriter();
         FileWriter fileWriter = new FileWriter( new File( backupDirectory, "rbac.xml" ) );
@@ -61,11 +77,11 @@ public class JdoDataManagementTool
         }
     }
 
-    public void backupUserDatabase( UserManager userManager, File backupDirectory )
+    public void backupUserDatabase( UserManager manager, File backupDirectory )
         throws IOException, XMLStreamException
     {
         UserDatabase database = new UserDatabase();
-        database.setUsers( userManager.getUsers() );
+        database.setUsers( manager.getUsers() );
 
         UserManagementStaxWriter writer = new UserManagementStaxWriter();
         FileWriter fileWriter = new FileWriter( new File( backupDirectory, "users.xml" ) );
@@ -94,6 +110,100 @@ public class JdoDataManagementTool
         finally
         {
             IOUtil.close( fileWriter );
+        }
+    }
+
+    public void restoreRBACDatabase( RBACManager manager, File backupDirectory )
+        throws IOException, XMLStreamException, RbacManagerException
+    {
+        RbacJdoModelStaxReader reader = new RbacJdoModelStaxReader();
+
+        FileReader fileReader = new FileReader( new File( backupDirectory, "rbac.xml" ) );
+
+        RbacDatabase database;
+        try
+        {
+            database = reader.read( fileReader );
+        }
+        finally
+        {
+            IOUtil.close( fileReader );
+        }
+
+        Map permissionMap = new HashMap();
+        Map resources = new HashMap();
+        Map operations = new HashMap();
+        for ( Iterator i = database.getRoles().iterator(); i.hasNext(); )
+        {
+            Role role = (Role) i.next();
+
+            // TODO: this could be generally useful and put into saveRole itself as long as the performance penalty isn't too harsh.
+            //   Currently it always saves everything where it could pull pack the existing permissions, etc if they exist
+            List permissions = new ArrayList();
+            for ( Iterator j = role.getPermissions().iterator(); j.hasNext(); )
+            {
+                Permission permission = (Permission) j.next();
+
+                if ( permissionMap.containsKey( permission.getName() ) )
+                {
+                    permission = (Permission) permissionMap.get( permission.getName() );
+                }
+                else if ( manager.permissionExists( permission ) )
+                {
+                    permission = manager.getPermission( permission.getName() );
+                    permissionMap.put( permission.getName(), permission );
+                }
+                else
+                {
+                    Operation operation = permission.getOperation();
+                    if ( operations.containsKey( operation.getName() ) )
+                    {
+                        operation = (Operation) operations.get( operation.getName() );
+                    }
+                    else if ( manager.operationExists( operation ) )
+                    {
+                        operation = manager.getOperation( operation.getName() );
+                        operations.put( operation.getName(), operation );
+                    }
+                    else
+                    {
+                        operation = manager.saveOperation( operation );
+                        operations.put( operation.getName(), operation );
+                    }
+                    permission.setOperation( operation );
+
+                    Resource resource = permission.getResource();
+                    if ( resources.containsKey( resource.getIdentifier() ) )
+                    {
+                        resource = (Resource) resources.get( resource.getIdentifier() );
+                    }
+                    else if ( manager.resourceExists( resource ) )
+                    {
+                        resource = manager.getResource( resource.getIdentifier() );
+                        resources.put( resource.getIdentifier(), resource );
+                    }
+                    else
+                    {
+                        resource = manager.saveResource( resource );
+                        resources.put( resource.getIdentifier(), resource );
+                    }
+                    permission.setResource( resource );
+
+                    permission = manager.savePermission( permission );
+                    permissionMap.put( permission.getName(), permission );
+                }
+                permissions.add( permission );
+            }
+            role.setPermissions( permissions );
+
+            manager.saveRole( role );
+        }
+
+        for ( Iterator i = database.getUserAssignments().iterator(); i.hasNext(); )
+        {
+            UserAssignment userAssignment = (UserAssignment) i.next();
+
+            manager.saveUserAssignment( userAssignment );
         }
     }
 }
