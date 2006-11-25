@@ -17,7 +17,7 @@ import java.util.Map;
 
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
-import org.codehaus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.util.IOUtil;

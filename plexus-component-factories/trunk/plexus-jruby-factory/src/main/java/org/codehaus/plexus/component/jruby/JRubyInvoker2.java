@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.plexus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.util.StringOutputStream;

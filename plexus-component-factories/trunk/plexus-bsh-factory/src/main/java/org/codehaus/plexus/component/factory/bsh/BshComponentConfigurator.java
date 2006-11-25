@@ -3,7 +3,7 @@ package org.codehaus.plexus.component.factory.bsh;
 import bsh.EvalError;
 import bsh.Interpreter;
 
-import org.codehaus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.AbstractComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;

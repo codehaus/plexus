@@ -1,8 +1,8 @@
 /* Created on Aug 9, 2004 */
 package org.codehaus.plexus.component.factory.marmalade;
 
-import org.codehaus.classworlds.ClassWorld;
-import org.codehaus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.classworlds.ClassWorld;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.embed.Embedder;
 

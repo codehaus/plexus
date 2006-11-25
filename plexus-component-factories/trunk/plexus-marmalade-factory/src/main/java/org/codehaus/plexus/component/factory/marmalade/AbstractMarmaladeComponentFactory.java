@@ -1,7 +1,7 @@
 /* Created on Aug 6, 2004 */
 package org.codehaus.plexus.component.factory.marmalade;
 
-import org.codehaus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.marmalade.compat.ant.discovery.AntBasedDiscoveryStrategy;
 import org.codehaus.marmalade.launch.MarmaladeLaunchException;
 import org.codehaus.marmalade.launch.MarmaladeLauncher;
