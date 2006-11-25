@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<project>
+  <parent>
+    <artifactId>plexus-security</artifactId>
+    <groupId>org.codehaus.plexus.security</groupId>
+    <version>1.0-alpha-6-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>plexus-security-data-management</artifactId>
+  <name>Plexus Security :: Data Management Utilities</name>
+  <description>Back up, restore and upgrade utilities for JDO databases using XML</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authorization-rbac-store-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derby</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
