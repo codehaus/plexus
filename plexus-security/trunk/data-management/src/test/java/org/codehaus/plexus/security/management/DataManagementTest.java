@@ -21,14 +21,13 @@ import org.codehaus.plexus.jdo.JdoFactory;
 import org.codehaus.plexus.security.authorization.store.test.utils.RBACDefaults;
 import org.codehaus.plexus.security.common.jdo.UserConfigurableJdoFactory;
 import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.UserAssignment;
+import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 
-import javax.xml.stream.XMLStreamException;
 import java.io.File;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,11 +36,9 @@ import java.util.Locale;
 public class DataManagementTest
     extends PlexusTestCase
 {
-    private RBACDefaults defaults;
-
-    private RBACManager manager;
-
     private DataManagementTool dataManagementTool;
+
+    private File targetDirectory;
 
     protected void setUp()
         throws Exception
@@ -56,16 +53,18 @@ public class DataManagementTest
         jdoFactory.setUrl(
             System.getProperty( "jdo.test.url", "jdbc:derby:" + database.getAbsolutePath() + ";create=true" ) );
 
-        manager = (RBACManager) lookup( RBACManager.ROLE, "jdo" );
-
-        defaults = new RBACDefaults( manager );
-
         dataManagementTool = (DataManagementTool) lookup( DataManagementTool.ROLE, "jdo" );
+
+        targetDirectory = createBackupDirectory();
     }
 
-    public void testBackup()
-        throws RbacManagerException, IOException, XMLStreamException
+    public void testBackupRbac()
+        throws Exception
     {
+        RBACManager manager = (RBACManager) lookup( RBACManager.ROLE, "jdo" );
+
+        RBACDefaults defaults = new RBACDefaults( manager );
+
         defaults.createDefaults();
 
         UserAssignment assignment = manager.createUserAssignment( "bob" );
@@ -75,11 +74,6 @@ public class DataManagementTest
         assignment = manager.createUserAssignment( "betty" );
         assignment.addRoleName( "System Administrator" );
         manager.saveUserAssignment( assignment );
-
-        String timestamp = new SimpleDateFormat( "yyyyMMdd.HHmmss", Locale.US ).format( new Date() );
-
-        File targetDirectory = getTestFile( "target/backups/" + timestamp );
-        targetDirectory.mkdirs();
 
         dataManagementTool.backupRBACDatabase( manager, targetDirectory );
 
@@ -92,5 +86,54 @@ public class DataManagementTest
         IOUtil.copy( getClass().getResourceAsStream( "/expected-rbac.xml" ), sw );
 
         assertEquals( "Check database content", sw.toString(), FileUtils.fileRead( backupFile ) );
+    }
+
+    public void testBackupUsers()
+        throws Exception
+    {
+        UserManager manager = (UserManager) lookup( UserManager.ROLE, "jdo" );
+
+        User user = manager.createUser( "smcqueen", "Steve McQueen", "the cooler king" );
+        user.setPassword( "abc123" );
+        manager.addUser( user );
+
+        user = manager.createUser( "bob", "Sideshow Bob", "bob_862@hotmail.com" );
+        user.setPassword( "bobby862" );
+        manager.addUser( user );
+
+        user = manager.createUser( "betty", "Betty", "betty@aol.com" );
+        user.setPassword( "rover2" );
+        manager.addUser( user );
+
+        dataManagementTool.backupUserDatabase( manager, targetDirectory );
+
+        File backupFile = new File( targetDirectory, "users.xml" );
+
+        assertTrue( "Check database exists", backupFile.exists() );
+
+        StringWriter sw = new StringWriter();
+
+        IOUtil.copy( getClass().getResourceAsStream( "/expected-users.xml" ), sw );
+
+        String actual = FileUtils.fileRead( backupFile );
+        String expected = sw.toString();
+        assertEquals( "Check database content", removeTimestampVariance( expected ),
+                      removeTimestampVariance( actual ) );
+    }
+
+    private static String removeTimestampVariance( String content )
+    {
+        return content.replaceAll( "<lastPasswordChange>.*</lastPasswordChange>",
+                                   "<lastPasswordChange></lastPasswordChange>" );
+    }
+
+    private static File createBackupDirectory()
+    {
+        String timestamp = new SimpleDateFormat( "yyyyMMdd.HHmmss", Locale.US ).format( new Date() );
+
+        File targetDirectory = getTestFile( "target/backups/" + timestamp );
+        targetDirectory.mkdirs();
+
+        return targetDirectory;
     }
 }

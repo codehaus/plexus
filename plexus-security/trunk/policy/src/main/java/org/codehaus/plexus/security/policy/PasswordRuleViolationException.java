@@ -18,7 +18,7 @@ package org.codehaus.plexus.security.policy;
 
 /**
  * Password Rule Violations Exception
- * 
+ *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
@@ -31,7 +31,6 @@ public class PasswordRuleViolationException
 
     public PasswordRuleViolationException()
     {
-        super();
     }
 
     public PasswordRuleViolationException( String message, Throwable cause )
