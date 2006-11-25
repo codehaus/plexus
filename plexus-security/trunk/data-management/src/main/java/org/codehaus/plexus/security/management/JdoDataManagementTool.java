@@ -18,6 +18,9 @@ package org.codehaus.plexus.security.management;
 
 import org.codehaus.plexus.security.authorization.rbac.jdo.RbacDatabase;
 import org.codehaus.plexus.security.authorization.rbac.jdo.io.stax.RbacJdoModelStaxWriter;
+import org.codehaus.plexus.security.keys.KeyManager;
+import org.codehaus.plexus.security.keys.jdo.AuthenticationKeyDatabase;
+import org.codehaus.plexus.security.keys.jdo.io.stax.PlexusSecurityKeyManagementJdoStaxWriter;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.user.UserManager;
@@ -66,6 +69,24 @@ public class JdoDataManagementTool
 
         UserManagementStaxWriter writer = new UserManagementStaxWriter();
         FileWriter fileWriter = new FileWriter( new File( backupDirectory, "users.xml" ) );
+        try
+        {
+            writer.write( fileWriter, database );
+        }
+        finally
+        {
+            IOUtil.close( fileWriter );
+        }
+    }
+
+    public void backupKeyDatabase( KeyManager manager, File backupDirectory )
+        throws IOException, XMLStreamException
+    {
+        AuthenticationKeyDatabase database = new AuthenticationKeyDatabase();
+        database.setKeys( manager.getAllKeys() );
+
+        PlexusSecurityKeyManagementJdoStaxWriter writer = new PlexusSecurityKeyManagementJdoStaxWriter();
+        FileWriter fileWriter = new FileWriter( new File( backupDirectory, "keys.xml" ) );
         try
         {
             writer.write( fileWriter, database );

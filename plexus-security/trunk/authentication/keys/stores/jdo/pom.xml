@@ -14,7 +14,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
@@ -34,34 +35,57 @@
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-common-jdo</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-keys-test</artifactId>
       <scope>test</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>1.7.3.3</version>
       <scope>test</scope>
     </dependency>
-    
+    <dependency>
+      <groupId>net.java.dev.stax-utils</groupId>
+      <artifactId>stax-utils</artifactId>
+      <version>20060502</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.bea.xml</groupId>
+          <artifactId>jsr173-ri</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>stax</groupId>
+      <artifactId>stax-api</artifactId>
+      <version>1.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>woodstox</groupId>
+      <artifactId>wstx-asl</artifactId>
+      <version>3.1.0</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/stores/jdo</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/stores/jdo</developerConnection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/stores/jdo
+    </developerConnection>
   </scm>
   <build>
     <plugins>
       <plugin>
         <groupId>org.codehaus.modello</groupId>
         <artifactId>modello-maven-plugin</artifactId>
-        <version>1.0-alpha-11</version>
+        <version>1.0-alpha-12-SNAPSHOT</version>
         <configuration>
-          <version>1.0.0</version>
+          <version>1.0.1</version>
           <packageWithVersion>false</packageWithVersion>
           <model>src/main/mdo/keys.mdo</model>
         </configuration>
@@ -70,6 +94,9 @@
             <id>modello-java</id>
             <goals>
               <goal>java</goal>
+              <goal>jpox-metadata-class</goal>
+              <goal>stax-reader</goal>
+              <goal>stax-writer</goal>
             </goals>
           </execution>
           <execution>
@@ -96,5 +123,5 @@
         </executions>
       </plugin>
     </plugins>
-  </build>  
+  </build>
 </project>

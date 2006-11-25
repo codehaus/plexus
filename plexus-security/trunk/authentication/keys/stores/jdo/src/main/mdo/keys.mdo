@@ -3,6 +3,7 @@
 <model>
   <id>plexus-security-keys-jdo</id>
   <name>PlexusSecurityKeyManagementJdo</name>
+  <version>1.0.1</version>
   <description>Plexus Security :: Key Management JDO Store.</description>
   <defaults>
     <default>
@@ -12,6 +13,20 @@
   </defaults>
 
   <classes>
+    <class stash.storable="false" rootElement="true">
+      <name>AuthenticationKeyDatabase</name>
+      <version>1.0.1+</version>
+      <fields>
+        <field>
+          <name>keys</name>
+          <version>1.0.1+</version>
+          <association>
+            <type>JdoAuthenticationKey</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
     <class stash.storable="true" jpox.use-identifiers-as-primary-key="false">
       <name>JdoAuthenticationKey</name>
       <version>1.0.0+</version>
@@ -19,12 +34,12 @@
         <interface>org.codehaus.plexus.security.keys.AuthenticationKey</interface>
       </interfaces>
       <description>
-@plexus.component role="org.codehaus.plexus.security.keys.AuthenticationKey"
-                  role-hint="jdo"
+        @plexus.component role="org.codehaus.plexus.security.keys.AuthenticationKey"
+        role-hint="jdo"
       </description>
       <fields>
-        <field jpox.primary-key="true" 
-               jpox.value-strategy="off" 
+        <field jpox.primary-key="true"
+               jpox.value-strategy="off"
                jpox.persistence-modifier="persistent"
                jpox.column="AUTHKEY">
           <name>key</name>
@@ -36,7 +51,7 @@
           <name>forPrincipal</name>
           <version>1.0.0+</version>
           <type>String</type>
-         <identifier>true</identifier>
+          <identifier>true</identifier>
         </field>
         <field>
           <name>purpose</name>
