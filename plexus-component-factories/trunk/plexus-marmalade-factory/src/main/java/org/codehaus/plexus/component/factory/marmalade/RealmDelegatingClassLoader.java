@@ -1,6 +1,6 @@
 package org.codehaus.plexus.component.factory.marmalade;
 
-import org.codehaus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 
 import java.io.IOException;
 import java.io.InputStream;
