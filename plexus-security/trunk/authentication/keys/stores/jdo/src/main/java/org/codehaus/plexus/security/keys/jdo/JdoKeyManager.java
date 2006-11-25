@@ -29,19 +29,18 @@ import org.codehaus.plexus.security.keys.KeyNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 import org.jpox.PersistenceManagerFactoryImpl;
 
-import java.util.Calendar;
-
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
+import java.util.Calendar;
+import java.util.List;
 
 /**
- * JdoKeyManager 
+ * JdoKeyManager
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="org.codehaus.plexus.security.keys.KeyManager"
- *                   role-hint="jdo"
+ * role-hint="jdo"
  */
 public class JdoKeyManager
     extends AbstractKeyManager
@@ -102,8 +101,8 @@ public class JdoKeyManager
         }
         catch ( PlexusStoreException e )
         {
-            throw new KeyManagerException( "Unable to get " + JdoAuthenticationKey.class.getName() + "', key '" + key
-                + "' from jdo store." );
+            throw new KeyManagerException(
+                "Unable to get " + JdoAuthenticationKey.class.getName() + "', key '" + key + "' from jdo store." );
         }
     }
 
@@ -127,6 +126,11 @@ public class JdoKeyManager
         }
     }
 
+    public List getAllKeys()
+    {
+        return PlexusJdoUtils.getAllObjectsDetached( getPersistenceManager(), JdoAuthenticationKey.class, null, null );
+    }
+
     public void initialize()
         throws InitializationException
     {
@@ -137,8 +141,8 @@ public class JdoKeyManager
             PersistenceManagerFactoryImpl jpoxpmf = (PersistenceManagerFactoryImpl) pmf;
             if ( !StringUtils.equals( "JDK_DEFAULT_TIMEZONE", jpoxpmf.getDateTimezone() ) )
             {
-                throw new InitializationException( "The JdoFactory property 'org.jpox.rdbms.dateTimezone' MUST BE "
-                    + "Set to 'JDK_DEFAULT_TIMEZONE' in order for jpox and JdoKeyManager to operate correctly." );
+                throw new InitializationException( "The JdoFactory property 'org.jpox.rdbms.dateTimezone' MUST BE " +
+                    "Set to 'JDK_DEFAULT_TIMEZONE' in order for jpox and JdoKeyManager to operate correctly." );
             }
         }
     }

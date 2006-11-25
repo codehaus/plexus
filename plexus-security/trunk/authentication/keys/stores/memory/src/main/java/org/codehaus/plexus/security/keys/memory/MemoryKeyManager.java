@@ -22,19 +22,20 @@ import org.codehaus.plexus.security.keys.KeyManagerException;
 import org.codehaus.plexus.security.keys.KeyNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
- * KeyManager backed by an in-memory only store. 
+ * KeyManager backed by an in-memory only store.
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="org.codehaus.plexus.security.keys.KeyManager"
- *                   role-hint="memory"
+ * role-hint="memory"
  */
 public class MemoryKeyManager
     extends AbstractKeyManager
@@ -96,6 +97,11 @@ public class MemoryKeyManager
         {
             keys.remove( authkey );
         }
+    }
+
+    public List getAllKeys()
+    {
+        return new ArrayList( keys.values() );
     }
 
     public String getId()

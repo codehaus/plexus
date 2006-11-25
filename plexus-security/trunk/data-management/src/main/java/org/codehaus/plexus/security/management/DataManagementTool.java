@@ -16,6 +16,7 @@ package org.codehaus.plexus.security.management;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.keys.KeyManager;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.user.UserManager;
@@ -38,5 +39,8 @@ public interface DataManagementTool
         throws RbacManagerException, IOException, XMLStreamException;
 
     void backupUserDatabase( UserManager userManager, File backupDirectory )
+        throws IOException, XMLStreamException;
+
+    void backupKeyDatabase( KeyManager manager, File backupDirectory )
         throws IOException, XMLStreamException;
 }

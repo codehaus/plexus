@@ -19,10 +19,13 @@ package org.codehaus.plexus.security.keys;
 import org.codehaus.plexus.PlexusTestCase;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 /**
- * KeyManagerTestCase 
+ * KeyManagerTestCase
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -86,6 +89,48 @@ public class KeyManagerTestCase
         assertEquals( purpose, found.getPurpose() );
         assertSameDates( expectedCreated, found.getDateCreated() );
         assertSameDates( expectedExpires, found.getDateExpires() );
+    }
+
+    public void testGetAllKeys()
+        throws KeyManagerException
+    {
+        AuthenticationKey created1 = getKeyManager().createKey( "foo", "Testing", 15 );
+        AuthenticationKey created2 = getKeyManager().createKey( "bar", "Something", 23 );
+
+        assertNotNull( created1 );
+        assertNotNull( created2 );
+
+        assertEquals( "foo", created1.getForPrincipal() );
+        assertEquals( "Testing", created1.getPurpose() );
+
+        assertEquals( "bar", created2.getForPrincipal() );
+        assertEquals( "Something", created2.getPurpose() );
+
+        List keys = getKeyManager().getAllKeys();
+        Collections.sort( keys, new Comparator()
+        {
+            public int compare( Object o, Object o1 )
+            {
+                AuthenticationKey key1 = (AuthenticationKey) o;
+                AuthenticationKey key2 = (AuthenticationKey) o1;
+
+                return key2.getForPrincipal().compareTo( key1.getForPrincipal() );
+            }
+        } );
+
+        AuthenticationKey found = (AuthenticationKey) keys.get( 0 );
+        assertEquals( created1.getKey(), found.getKey() );
+        assertEquals( "foo", found.getForPrincipal() );
+        assertEquals( "Testing", found.getPurpose() );
+        assertSameDates( created1.getDateCreated(), found.getDateCreated() );
+        assertSameDates( created1.getDateExpires(), found.getDateExpires() );
+
+        found = (AuthenticationKey) keys.get( 1 );
+        assertEquals( created2.getKey(), found.getKey() );
+        assertEquals( "bar", found.getForPrincipal() );
+        assertEquals( "Something", found.getPurpose() );
+        assertSameDates( created2.getDateCreated(), found.getDateCreated() );
+        assertSameDates( created2.getDateExpires(), found.getDateExpires() );
     }
 
     public void testNotThere()

@@ -1,5 +1,7 @@
 package org.codehaus.plexus.security.keys;
 
+import java.util.List;
+
 /*
  * Copyright 2001-2006 The Codehaus.
  *
@@ -17,7 +19,7 @@ package org.codehaus.plexus.security.keys;
  */
 
 /**
- * KeyManager 
+ * KeyManager
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -25,32 +27,33 @@ package org.codehaus.plexus.security.keys;
 public interface KeyManager
 {
     public static final String ROLE = KeyManager.class.getName();
-    
+
     /**
      * String identifying the key manager implementation.
+     *
      * @return the key manager implementation id.
      */
     public String getId();
 
     /**
      * Attempt to find a specific key in the store.
-     * 
+     * <p/>
      * NOTE: Implementations of this interface should never return an expired key.
-     * 
+     *
      * @param key the key to find.
      * @return the actual key found.
      * @throws KeyNotFoundException when the requested, unexpired, key cannot be found.
-     * @throws KeyManagerException when there is a fundamental problem with the KeyManager implementation.
+     * @throws KeyManagerException  when there is a fundamental problem with the KeyManager implementation.
      */
     public AuthenticationKey findKey( String key )
         throws KeyNotFoundException, KeyManagerException;
 
     /**
      * Create a key (and save it to the store) for the specified principal.
-     * 
-     * @param principal the principal to generate the key for.
-     * @param purpose the purpose of the key. (Example: "selfservice password reset", "new user validation", 
-     *                "remember me")  This is a purely informational field .
+     *
+     * @param principal         the principal to generate the key for.
+     * @param purpose           the purpose of the key. (Example: "selfservice password reset", "new user validation",
+     *                          "remember me")  This is a purely informational field .
      * @param expirationMinutes the amount in minutes until this key expires. (-1 means no expiration)
      * @return the key created
      * @throws KeyManagerException if there is a fundamental problem with the KeyManager implementation.
@@ -60,7 +63,7 @@ public interface KeyManager
 
     /**
      * Delete a key from the underlying store.
-     * 
+     *
      * @param key the key to delete.
      */
     public void deleteKey( AuthenticationKey key )
@@ -68,9 +71,11 @@ public interface KeyManager
 
     /**
      * Delete a key from the underlying store.
-     * 
+     *
      * @param key the key to delete.
      */
     public void deleteKey( String key )
         throws KeyManagerException;
+
+    List getAllKeys();
 }

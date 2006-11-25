@@ -20,6 +20,7 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.jdo.JdoFactory;
 import org.codehaus.plexus.security.authorization.store.test.utils.RBACDefaults;
 import org.codehaus.plexus.security.common.jdo.UserConfigurableJdoFactory;
+import org.codehaus.plexus.security.keys.KeyManager;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 import org.codehaus.plexus.security.user.User;
@@ -121,10 +122,44 @@ public class DataManagementTest
                       removeTimestampVariance( actual ) );
     }
 
+    public void testBackupKeys()
+        throws Exception
+    {
+        KeyManager manager = (KeyManager) lookup( KeyManager.ROLE, "jdo" );
+
+        manager.createKey( "bob", "Testing", 15 );
+        manager.createKey( "betty", "Something", 25 );
+        manager.createKey( "fred", "Else", 30 );
+
+        dataManagementTool.backupKeyDatabase( manager, targetDirectory );
+
+        File backupFile = new File( targetDirectory, "keys.xml" );
+
+        assertTrue( "Check database exists", backupFile.exists() );
+
+        StringWriter sw = new StringWriter();
+
+        IOUtil.copy( getClass().getResourceAsStream( "/expected-keys.xml" ), sw );
+
+        String actual = FileUtils.fileRead( backupFile );
+        String expected = sw.toString();
+        assertEquals( "Check database content", removeKeyAndTimestampVariance( expected ),
+                      removeKeyAndTimestampVariance( actual ) );
+    }
+
+    private String removeKeyAndTimestampVariance( String content )
+    {
+        return removeTagContent( removeTagContent( removeTagContent( content, "dateCreated" ), "dateExpires" ), "key" );
+    }
+
     private static String removeTimestampVariance( String content )
     {
-        return content.replaceAll( "<lastPasswordChange>.*</lastPasswordChange>",
-                                   "<lastPasswordChange></lastPasswordChange>" );
+        return removeTagContent( content, "lastPasswordChange" );
+    }
+
+    private static String removeTagContent( String content, String field )
+    {
+        return content.replaceAll( "<" + field + ">.*</" + field + ">", "<" + field + "></" + field + ">" );
     }
 
     private static File createBackupDirectory()

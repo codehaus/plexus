@@ -16,6 +16,10 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-keys-jdo</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-user-management-provider-jdo</artifactId>
     </dependency>
     <dependency>
