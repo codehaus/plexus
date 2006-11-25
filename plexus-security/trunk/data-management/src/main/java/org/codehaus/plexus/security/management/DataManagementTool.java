@@ -46,4 +46,10 @@ public interface DataManagementTool
 
     void restoreRBACDatabase( RBACManager manager, File backupDirectory )
         throws IOException, XMLStreamException, RbacManagerException;
+
+    void restoreUsersDatabase( UserManager manager, File backupDirectory )
+        throws IOException, XMLStreamException;
+
+    void restoreKeysDatabase( KeyManager manager, File backupDirectory )
+        throws IOException, XMLStreamException;
 }

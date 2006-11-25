@@ -207,6 +207,23 @@ public class JdoUserManager
         }
     }
 
+    public void addUserUnchecked( User user )
+    {
+        if ( !( user instanceof JdoUser ) )
+        {
+            throw new UserManagerException( "Unable to Add User. User object " + user.getClass().getName() +
+                " is not an instance of " + JdoUser.class.getName() );
+        }
+
+        if ( StringUtils.isEmpty( user.getUsername() ) )
+        {
+            throw new IllegalStateException(
+                Messages.getString( "user.manager.cannot.add.user.without.username" ) ); //$NON-NLS-1$
+        }
+
+        addObject( user );
+    }
+
     public User findUser( Object principal )
         throws UserNotFoundException
     {

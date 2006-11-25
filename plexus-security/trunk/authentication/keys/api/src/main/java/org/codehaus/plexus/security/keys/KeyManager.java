@@ -78,4 +78,6 @@ public interface KeyManager
         throws KeyManagerException;
 
     List getAllKeys();
+
+    AuthenticationKey addKey( AuthenticationKey key );
 }
