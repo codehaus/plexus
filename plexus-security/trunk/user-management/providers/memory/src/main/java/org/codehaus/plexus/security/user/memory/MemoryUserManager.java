@@ -167,6 +167,11 @@ public class MemoryUserManager
         fireUserManagerUserRemoved( user );
     }
 
+    public void addUserUnchecked( User user )
+    {
+        addUser( user );
+    }
+
     public User findUser( String username )
         throws UserNotFoundException
     {

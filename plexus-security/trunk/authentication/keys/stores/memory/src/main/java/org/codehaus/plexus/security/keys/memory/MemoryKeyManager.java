@@ -104,6 +104,12 @@ public class MemoryKeyManager
         return new ArrayList( keys.values() );
     }
 
+    public AuthenticationKey addKey( AuthenticationKey key )
+    {
+        keys.put( key.getKey(), key );
+        return key;
+    }
+
     public String getId()
     {
         return "Memory Key Manager";

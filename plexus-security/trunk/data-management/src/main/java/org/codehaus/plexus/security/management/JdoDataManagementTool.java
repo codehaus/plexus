@@ -19,8 +19,10 @@ package org.codehaus.plexus.security.management;
 import org.codehaus.plexus.security.authorization.rbac.jdo.RbacDatabase;
 import org.codehaus.plexus.security.authorization.rbac.jdo.io.stax.RbacJdoModelStaxReader;
 import org.codehaus.plexus.security.authorization.rbac.jdo.io.stax.RbacJdoModelStaxWriter;
+import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.keys.KeyManager;
 import org.codehaus.plexus.security.keys.jdo.AuthenticationKeyDatabase;
+import org.codehaus.plexus.security.keys.jdo.io.stax.PlexusSecurityKeyManagementJdoStaxReader;
 import org.codehaus.plexus.security.keys.jdo.io.stax.PlexusSecurityKeyManagementJdoStaxWriter;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
@@ -29,8 +31,10 @@ import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
+import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.jdo.UserDatabase;
+import org.codehaus.plexus.security.user.jdo.io.stax.UserManagementStaxReader;
 import org.codehaus.plexus.security.user.jdo.io.stax.UserManagementStaxWriter;
 import org.codehaus.plexus.util.IOUtil;
 
@@ -48,12 +52,19 @@ import java.util.Map;
 /**
  * JDO implementation of the data management tool.
  *
- * @todo do we really need JDO specifics here?
+ * @todo do we really need JDO specifics here? Could optimize by going straight to JDOFactory
+ * @todo check whether this current method logs everything unnecessarily.
  * @plexus.component role="org.codehaus.plexus.security.management.DataManagementTool" role-hint="jdo"
  */
 public class JdoDataManagementTool
     implements DataManagementTool
 {
+    private static final String USERS_XML_NAME = "users.xml";
+
+    private static final String KEYS_XML_NAME = "keys.xml";
+
+    private static final String RBAC_XML_NAME = "rbac.xml";
+
     public void backupRBACDatabase( RBACManager manager, File backupDirectory )
         throws RbacManagerException, IOException, XMLStreamException
     {
@@ -66,7 +77,7 @@ public class JdoDataManagementTool
         database.setUserAssignments( manager.getAllUserAssignments() );
 
         RbacJdoModelStaxWriter writer = new RbacJdoModelStaxWriter();
-        FileWriter fileWriter = new FileWriter( new File( backupDirectory, "rbac.xml" ) );
+        FileWriter fileWriter = new FileWriter( new File( backupDirectory, RBAC_XML_NAME ) );
         try
         {
             writer.write( fileWriter, database );
@@ -84,7 +95,7 @@ public class JdoDataManagementTool
         database.setUsers( manager.getUsers() );
 
         UserManagementStaxWriter writer = new UserManagementStaxWriter();
-        FileWriter fileWriter = new FileWriter( new File( backupDirectory, "users.xml" ) );
+        FileWriter fileWriter = new FileWriter( new File( backupDirectory, USERS_XML_NAME ) );
         try
         {
             writer.write( fileWriter, database );
@@ -102,7 +113,7 @@ public class JdoDataManagementTool
         database.setKeys( manager.getAllKeys() );
 
         PlexusSecurityKeyManagementJdoStaxWriter writer = new PlexusSecurityKeyManagementJdoStaxWriter();
-        FileWriter fileWriter = new FileWriter( new File( backupDirectory, "keys.xml" ) );
+        FileWriter fileWriter = new FileWriter( new File( backupDirectory, KEYS_XML_NAME ) );
         try
         {
             writer.write( fileWriter, database );
@@ -118,7 +129,7 @@ public class JdoDataManagementTool
     {
         RbacJdoModelStaxReader reader = new RbacJdoModelStaxReader();
 
-        FileReader fileReader = new FileReader( new File( backupDirectory, "rbac.xml" ) );
+        FileReader fileReader = new FileReader( new File( backupDirectory, RBAC_XML_NAME ) );
 
         RbacDatabase database;
         try
@@ -204,6 +215,56 @@ public class JdoDataManagementTool
             UserAssignment userAssignment = (UserAssignment) i.next();
 
             manager.saveUserAssignment( userAssignment );
+        }
+    }
+
+    public void restoreUsersDatabase( UserManager manager, File backupDirectory )
+        throws IOException, XMLStreamException
+    {
+        UserManagementStaxReader reader = new UserManagementStaxReader();
+
+        FileReader fileReader = new FileReader( new File( backupDirectory, USERS_XML_NAME ) );
+
+        UserDatabase database;
+        try
+        {
+            database = reader.read( fileReader );
+        }
+        finally
+        {
+            IOUtil.close( fileReader );
+        }
+
+        for ( Iterator i = database.getUsers().iterator(); i.hasNext(); )
+        {
+            User user = (User) i.next();
+
+            manager.addUserUnchecked( user );
+        }
+    }
+
+    public void restoreKeysDatabase( KeyManager manager, File backupDirectory )
+        throws IOException, XMLStreamException
+    {
+        PlexusSecurityKeyManagementJdoStaxReader reader = new PlexusSecurityKeyManagementJdoStaxReader();
+
+        FileReader fileReader = new FileReader( new File( backupDirectory, KEYS_XML_NAME ) );
+
+        AuthenticationKeyDatabase database;
+        try
+        {
+            database = reader.read( fileReader );
+        }
+        finally
+        {
+            IOUtil.close( fileReader );
+        }
+
+        for ( Iterator i = database.getKeys().iterator(); i.hasNext(); )
+        {
+            AuthenticationKey key = (AuthenticationKey) i.next();
+
+            manager.addKey( key );
         }
     }
 }

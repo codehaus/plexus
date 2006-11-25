@@ -142,4 +142,12 @@ public interface UserManager
      */
     void deleteUser( String username )
         throws UserNotFoundException;
+
+    /**
+     * Add a user to the database without checking for consistency or adjusting the password. Should only be used for
+     * re-importing known-good data.
+     *
+     * @param user the user to add
+     */
+    void addUserUnchecked( User user );
 }

@@ -71,7 +71,12 @@ public class JdoKeyManager
             authkey.setDateExpires( expiration.getTime() );
         }
 
-        return (AuthenticationKey) PlexusJdoUtils.addObject( getPersistenceManager(), authkey );
+        return addKey( authkey );
+    }
+
+    public AuthenticationKey addKey( AuthenticationKey key )
+    {
+        return (AuthenticationKey) PlexusJdoUtils.addObject( getPersistenceManager(), key );
     }
 
     public AuthenticationKey findKey( String key )
