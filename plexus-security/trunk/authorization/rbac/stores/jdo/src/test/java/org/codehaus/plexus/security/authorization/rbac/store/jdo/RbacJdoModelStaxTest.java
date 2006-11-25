@@ -23,12 +23,12 @@ import org.codehaus.plexus.security.authorization.rbac.jdo.JdoResource;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoRole;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoUserAssignment;
 import org.codehaus.plexus.security.authorization.rbac.jdo.RbacDatabase;
-import org.codehaus.plexus.security.authorization.rbac.jdo.io.xpp3.RbacJdoModelXpp3Reader;
-import org.codehaus.plexus.security.authorization.rbac.jdo.io.xpp3.RbacJdoModelXpp3Writer;
+import org.codehaus.plexus.security.authorization.rbac.jdo.io.stax.RbacJdoModelStaxReader;
+import org.codehaus.plexus.security.authorization.rbac.jdo.io.stax.RbacJdoModelStaxWriter;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Resource;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -36,15 +36,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 /**
- * Test the XPP3 reader and writer generated.
+ * Test the StAX reader and writer generated.
  */
-public class RbacJdoModelXpp3Test
+public class RbacJdoModelStaxTest
     extends TestCase
 {
-    public void testXpp3()
-        throws IOException, XmlPullParserException
+    public void testStax()
+        throws IOException, XMLStreamException
     {
         RbacDatabase database = new RbacDatabase();
 
@@ -86,9 +87,9 @@ public class RbacJdoModelXpp3Test
         database.addUserAssignment( assignment );
 
         StringWriter w = new StringWriter();
-        new RbacJdoModelXpp3Writer().write( w, database );
+        new RbacJdoModelStaxWriter().write( w, database );
 
-        RbacDatabase newDatabase = new RbacJdoModelXpp3Reader().read( new StringReader( w.toString() ) );
+        RbacDatabase newDatabase = new RbacJdoModelStaxReader().read( new StringReader( w.toString() ) );
 
         List expectedRoles = database.getRoles();
         List roles = newDatabase.getRoles();
@@ -148,7 +149,7 @@ public class RbacJdoModelXpp3Test
 
     private void assertUserAssignment( JdoUserAssignment expectedAssignment, JdoUserAssignment assignment )
     {
-        SimpleDateFormat sdf = new SimpleDateFormat( "EEE, d MMM yyyy HH:mm:ss Z" );
+        SimpleDateFormat sdf = new SimpleDateFormat( "EEE, d MMM yyyy HH:mm:ss Z", Locale.US );
         assertNotNull( expectedAssignment.getTimestamp() );
         assertNotNull( assignment.getTimestamp() );
 
