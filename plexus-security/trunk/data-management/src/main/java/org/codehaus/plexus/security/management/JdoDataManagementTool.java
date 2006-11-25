@@ -20,6 +20,9 @@ import org.codehaus.plexus.security.authorization.rbac.jdo.RbacDatabase;
 import org.codehaus.plexus.security.authorization.rbac.jdo.io.stax.RbacJdoModelStaxWriter;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacManagerException;
+import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.jdo.UserDatabase;
+import org.codehaus.plexus.security.user.jdo.io.stax.UserManagementStaxWriter;
 import org.codehaus.plexus.util.IOUtil;
 
 import javax.xml.stream.XMLStreamException;
@@ -45,6 +48,24 @@ public class JdoDataManagementTool
 
         RbacJdoModelStaxWriter writer = new RbacJdoModelStaxWriter();
         FileWriter fileWriter = new FileWriter( new File( backupDirectory, "rbac.xml" ) );
+        try
+        {
+            writer.write( fileWriter, database );
+        }
+        finally
+        {
+            IOUtil.close( fileWriter );
+        }
+    }
+
+    public void backupUserDatabase( UserManager userManager, File backupDirectory )
+        throws IOException, XMLStreamException
+    {
+        UserDatabase database = new UserDatabase();
+        database.setUsers( userManager.getUsers() );
+
+        UserManagementStaxWriter writer = new UserManagementStaxWriter();
+        FileWriter fileWriter = new FileWriter( new File( backupDirectory, "users.xml" ) );
         try
         {
             writer.write( fileWriter, database );

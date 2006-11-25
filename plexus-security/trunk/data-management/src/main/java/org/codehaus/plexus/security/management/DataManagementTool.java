@@ -18,6 +18,7 @@ package org.codehaus.plexus.security.management;
 
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacManagerException;
+import org.codehaus.plexus.security.user.UserManager;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
@@ -35,4 +36,7 @@ public interface DataManagementTool
 
     void backupRBACDatabase( RBACManager rbacManager, File backupDirectory )
         throws RbacManagerException, IOException, XMLStreamException;
+
+    void backupUserDatabase( UserManager userManager, File backupDirectory )
+        throws IOException, XMLStreamException;
 }

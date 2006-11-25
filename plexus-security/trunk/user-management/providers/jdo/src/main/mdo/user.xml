@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <model>
   <id>plexus-security-user-management-provider-jdo</id>
-  <name>Plexus Security User Management Model for JDO</name>
+  <name>UserManagement</name>
+  <version>1.0.1</version>
   <description>Plexus Security User Management object model.</description>
   <defaults>
     <default>
@@ -11,6 +12,20 @@
   </defaults>
 
   <classes>
+    <class stash.storable="false" rootElement="true">
+      <name>UserDatabase</name>
+      <version>1.0.1+</version>
+      <fields>
+        <field>
+          <name>users</name>
+          <version>1.0.1+</version>
+          <association>
+            <type>JdoUser</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
     <class stash.storable="true" jpox.use-identifiers-as-primary-key="false">
       <name>JdoUser</name>
       <version>1.0.0+</version>
@@ -18,8 +33,8 @@
         <interface>org.codehaus.plexus.security.user.User</interface>
       </interfaces>
       <description>
-@plexus.component role="org.codehaus.plexus.security.user.User"
-                  role-hint="jdo"
+        @plexus.component role="org.codehaus.plexus.security.user.User"
+        role-hint="jdo"
       </description>
       <fields>
         <field jpox.primary-key="true" jpox.value-strategy="off" jpox.persistence-modifier="persistent">
