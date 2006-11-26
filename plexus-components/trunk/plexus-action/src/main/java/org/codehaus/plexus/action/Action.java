@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.List;
 
 /**
- * An <code>Action</code in Plexus is meant to model the UML notion of an Action as closely
+ * An <code>Action</code> in Plexus is meant to model the UML notion of an Action as closely
  * as possible.
  * <p/>
  * An action is an executable atomic computation. Actions may include operation calls, the
