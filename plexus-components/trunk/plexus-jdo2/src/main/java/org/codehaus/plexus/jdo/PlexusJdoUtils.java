@@ -19,6 +19,8 @@ package org.codehaus.plexus.jdo;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jdo.Extent;
@@ -335,6 +337,18 @@ public class PlexusJdoUtils
 
     public static List getAllObjectsDetached( PersistenceManager pm, Class clazz, String ordering, String fetchGroup )
     {
+        if ( fetchGroup != null )
+        {
+            return getAllObjectsDetached( pm, clazz, ordering, Collections.singletonList( fetchGroup ) );
+        }    
+        else
+        {    
+            return getAllObjectsDetached( pm, clazz, ordering, Collections.EMPTY_LIST );
+        }    
+    }
+
+    public static List getAllObjectsDetached( PersistenceManager pm, Class clazz, String ordering, List/*<String>*/ fetchGroups )
+    {
         Transaction tx = pm.currentTransaction();
 
         try
@@ -350,9 +364,9 @@ public class PlexusJdoUtils
                 query.setOrdering( ordering );
             }
 
-            if ( fetchGroup != null )
+            for ( Iterator i = fetchGroups.iterator(); i.hasNext(); )
             {
-                pm.getFetchPlan().addGroup( fetchGroup );
+                pm.getFetchPlan().addGroup( (String) i.next() );
             }
 
             List result = (List) query.execute();
