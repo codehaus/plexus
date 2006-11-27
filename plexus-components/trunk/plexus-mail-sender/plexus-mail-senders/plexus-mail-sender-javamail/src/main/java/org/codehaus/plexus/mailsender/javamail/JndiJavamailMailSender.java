@@ -61,4 +61,9 @@ public class JndiJavamailMailSender
     {
         return jndiSessionName;
     }
+
+    public void setJndiSessionName( String jndiSessionName )
+    {
+        this.jndiSessionName = jndiSessionName;
+    }
 }
