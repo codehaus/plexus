@@ -75,10 +75,10 @@
             </c:set>
             <c:choose>
               <c:when test="${ascending}">
-                <a href="${url}"><img align="absmiddle" width="15" height="15" src="<ww:url value='/images/icon_sortdown.gif'/>" title="<ww:text name='Sort descending'/>" border="0" alt=""></a>
+                <a href="${url}"><img align="absmiddle" width="15" height="15" src="<ww:url value='/images/pss/icon_sortdown.gif'/>" title="<ww:text name='Sort descending'/>" border="0" alt=""></a>
               </c:when>
               <c:otherwise>
-                <a href="${url}"><img align="absmiddle" width="15" height="15" src="<ww:url value='/images/icon_sortup.gif'/>" title="<ww:text name='Sort ascending'/>" border="0" alt=""></a>
+                <a href="${url}"><img align="absmiddle" width="15" height="15" src="<ww:url value='/images/pss/icon_sortup.gif'/>" title="<ww:text name='Sort ascending'/>" border="0" alt=""></a>
               </c:otherwise>
             </c:choose>
             Username
