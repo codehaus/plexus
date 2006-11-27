@@ -32,6 +32,8 @@ public class ColorConsoleLoggerManager extends ConsoleLoggerManager
 
     /**
      * This special constructor is called directly when the container is bootstrapping itself.
+     *
+     * @param threshold the logging threshold to use for all loggers
      */
     public ColorConsoleLoggerManager( String threshold )
     {

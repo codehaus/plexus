@@ -1,8 +1,6 @@
 package org.codehaus.plexus.logging.console;
 
 import java.awt.*;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * TODO: Document Me
