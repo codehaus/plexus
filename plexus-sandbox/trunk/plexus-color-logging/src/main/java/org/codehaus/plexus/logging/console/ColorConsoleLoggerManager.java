@@ -69,6 +69,10 @@ public class ColorConsoleLoggerManager extends ConsoleLoggerManager
             {
                 return new ANSIColorConsoleLogger( getThreshold(), name );
             }
+            else if ( lower.equals("html") )
+            {
+                return new HTMLColorConsoleLogger( getThreshold(), name );
+            }
         }
         return new ConsoleLogger( getThreshold(), name );
     }
