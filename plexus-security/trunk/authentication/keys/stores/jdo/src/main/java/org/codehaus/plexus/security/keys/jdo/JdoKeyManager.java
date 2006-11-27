@@ -139,7 +139,7 @@ public class JdoKeyManager
 
     public List getAllKeys()
     {
-        return PlexusJdoUtils.getAllObjectsDetached( getPersistenceManager(), JdoAuthenticationKey.class, null, null );
+        return PlexusJdoUtils.getAllObjectsDetached( getPersistenceManager(), JdoAuthenticationKey.class );
     }
 
     public void initialize()
