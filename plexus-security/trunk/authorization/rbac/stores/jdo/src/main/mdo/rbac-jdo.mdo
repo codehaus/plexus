@@ -25,6 +25,30 @@
           </association>
         </field>
         <field>
+          <name>permissions</name>
+          <version>1.0.1+</version>
+          <association>
+            <type>JdoPermission</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>operations</name>
+          <version>1.0.1+</version>
+          <association>
+            <type>JdoOperation</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>resources</name>
+          <version>1.0.1+</version>
+          <association>
+            <type>JdoResource</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
           <name>userAssignments</name>
           <version>1.0.1+</version>
           <association>
@@ -96,6 +120,7 @@
           <name>permissions</name>
           <version>1.0.0+</version>
           <association stash.part="true"
+                       xml.reference="true"
                        jpox.join="true"
                        jpox.dependent="false"
                        java.init="field"
@@ -141,6 +166,7 @@
           <name>operation</name>
           <version>1.0.0+</version>
           <association stash.part="true" 
+                       xml.reference="true"
                        java.use-interface="org.codehaus.plexus.security.rbac.Operation"
                        jpox.dependent="false">
             <type>JdoOperation</type>
@@ -151,6 +177,7 @@
           <name>resource</name>
           <version>1.0.0+</version>
           <association stash.part="true" 
+                       xml.reference="true"
                        java.use-interface="org.codehaus.plexus.security.rbac.Resource"
                        jpox.dependent="false">
             <type>JdoResource</type>
