@@ -65,6 +65,11 @@
       <version>1.3</version>
     </dependency>
     <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-command</artifactId>
+      <version>1.0-alpha-5-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>org.apache.maven.scm</groupId>
       <artifactId>maven-scm-api</artifactId>
       <version>${maven-scm.version}</version>
@@ -120,6 +125,7 @@
       <groupId>org.apache.maven.scm</groupId>
       <artifactId>maven-scm-provider-svntest</artifactId>
       <version>1.0-SNAPSHOT</version>
+      <scope>test</scope>
     </dependency>
 
 
