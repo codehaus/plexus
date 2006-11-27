@@ -24,25 +24,16 @@ package org.codehaus.plexus.mailsender.javamail;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.mailsender.AbstractMailSender;
-import org.codehaus.plexus.mailsender.MailMessage;
 import org.codehaus.plexus.mailsender.MailSenderException;
-import org.codehaus.plexus.mailsender.util.DateFormatUtils;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.StringUtils;
 
 import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.security.Provider;
 import java.security.Security;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -52,7 +43,7 @@ import java.util.Properties;
  * @version $Id$
  */
 public class JavamailMailSender
-    extends AbstractMailSender
+    extends AbstractJavamailMailSender
     implements Initializable
 {
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
@@ -125,94 +116,26 @@ public class JavamailMailSender
         updateProps();
     }
 
-    // ----------------------------------------------------------------------
-    // MailSender Implementation
-    // ----------------------------------------------------------------------
-
-    public void send( MailMessage mail )
+    public Session getSession()
         throws MailSenderException
     {
-        verify( mail );
+        Authenticator auth = null;
 
-        try
+        if ( StringUtils.isNotEmpty( getUsername() ) )
         {
-            Authenticator auth = null;
-
-            if ( StringUtils.isNotEmpty( getUsername() ) )
+            auth = new Authenticator()
             {
-                auth = new Authenticator()
+                protected PasswordAuthentication getPasswordAuthentication()
                 {
-                    protected PasswordAuthentication getPasswordAuthentication()
-                    {
-                        return new PasswordAuthentication( getUsername(), getPassword() );
-                    }
-                };
-            }
-
-            Session session = Session.getDefaultInstance( props, auth );
-
-            session.setDebug( getLogger().isDebugEnabled() );
-
-            Message msg = new MimeMessage( session );
-            InternetAddress addressFrom = new InternetAddress( mail.getFrom().getRfc2822Address() );
-            msg.setFrom( addressFrom );
-
-            if ( mail.getToAddresses().size() > 0 )
-            {
-                InternetAddress[] addressTo = new InternetAddress[mail.getToAddresses().size()];
-                int count = 0;
-                for ( Iterator i = mail.getToAddresses().iterator(); i.hasNext(); )
-                {
-                    String address = ( (MailMessage.Address) i.next() ).getRfc2822Address();
-                    addressTo[count++] = new InternetAddress( address );
+                    return new PasswordAuthentication( getUsername(), getPassword() );
                 }
-                msg.setRecipients( Message.RecipientType.TO, addressTo );
-            }
-
-            if ( mail.getCcAddresses().size() > 0 )
-            {
-                InternetAddress[] addressCc = new InternetAddress[mail.getCcAddresses().size()];
-                int count = 0;
-                for ( Iterator i = mail.getCcAddresses().iterator(); i.hasNext(); )
-                {
-                    String address = ( (MailMessage.Address) i.next() ).getRfc2822Address();
-                    addressCc[count++] = new InternetAddress( address );
-                }
-                msg.setRecipients( Message.RecipientType.CC, addressCc );
-            }
-
-            if ( mail.getBccAddresses().size() > 0 )
-            {
-                InternetAddress[] addressBcc = new InternetAddress[mail.getBccAddresses().size()];
-                int count = 0;
-                for ( Iterator i = mail.getBccAddresses().iterator(); i.hasNext(); )
-                {
-                    String address = ( (MailMessage.Address) i.next() ).getRfc2822Address();
-                    addressBcc[count++] = new InternetAddress( address );
-                }
-                msg.setRecipients( Message.RecipientType.BCC, addressBcc );
-            }
-
-            // Setting the Subject and Content Type
-            msg.setSubject( mail.getSubject() );
-            msg.setContent( mail.getContent(), "text/plain" );
-
-            if ( mail.getSendDate() != null )
-            {
-                msg.setHeader( "Date", DateFormatUtils.getDateHeader( mail.getSendDate() ) );
-            }
-            else
-            {
-                msg.setHeader( "Date", DateFormatUtils.getDateHeader( new Date() ) );
-            }
-
-            // Send the message
-            Transport.send( msg );
+            };
         }
-        catch ( MessagingException e )
-        {
-            throw new MailSenderException( "Error while sending mail.", e );
-        }
+
+        Session session = Session.getDefaultInstance( props, auth );
+        session.setDebug( getLogger().isDebugEnabled() );
+
+        return session;
     }
 
     public String getSslProvider()
