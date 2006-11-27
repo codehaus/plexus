@@ -21,6 +21,7 @@ import org.codehaus.plexus.logging.Logger;
  */
 public class ColorConsoleLoggerManager extends ConsoleLoggerManager
 {
+    private String format;
 
     /**
      */
@@ -37,8 +38,38 @@ public class ColorConsoleLoggerManager extends ConsoleLoggerManager
         super( threshold );
     }
 
+    /**
+     * Get the format of loggers being returned from createLogger.
+     *
+     * @return the current logger format
+     */
+    public String getFormat()
+    {
+        return format;
+    }
+
+    /**
+     * Set the format of the color logger. "ansi" returns an ANSI colored logger, anything else
+     * returns a standard colsole logger.
+     *
+     * @param format The output format to use
+     */
+    public void setFormat( String format )
+    {
+        this.format = format;
+    }
+
     public Logger createLogger( int threshold, String name )
     {
-        return new ANSIColorConsoleLogger( getThreshold(), name );
+        if ( format != null )
+        {
+            String lower = format.toLowerCase();
+
+            if ( lower.equals("ansi") )
+            {
+                return new ANSIColorConsoleLogger( getThreshold(), name );
+            }
+        }
+        return new ConsoleLogger( getThreshold(), name );
     }
 }
