@@ -417,4 +417,23 @@ public class PlexusJdoUtils
             // ignore
         }
     }
+
+    public static void removeAll( PersistenceManager pm, Class aClass )
+    {
+        Transaction tx = pm.currentTransaction();
+
+        try
+        {
+            tx.begin();
+
+            Query query = pm.newQuery( aClass );
+            query.deletePersistentAll();
+
+            tx.commit();
+        }
+        finally
+        {
+            rollbackIfActive( tx );
+        }
+    }
 }
