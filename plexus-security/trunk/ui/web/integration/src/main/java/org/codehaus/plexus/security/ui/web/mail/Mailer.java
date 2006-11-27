@@ -23,6 +23,7 @@ import org.codehaus.plexus.mailsender.MailMessage;
 import org.codehaus.plexus.mailsender.MailSender;
 import org.codehaus.plexus.mailsender.MailSenderException;
 import org.codehaus.plexus.mailsender.javamail.JavamailMailSender;
+import org.codehaus.plexus.mailsender.javamail.JndiJavamailMailSender;
 import org.codehaus.plexus.security.configuration.UserConfiguration;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
@@ -212,17 +213,25 @@ public class Mailer
                 message.addTo( to );
             }
 
-            mailSender.setSmtpHost( config.getString( "email.smtp.host", "localhost" ) );
-            mailSender.setSmtpPort( config.getInt( "email.smtp.port", 25 ) );
-            mailSender.setUsername( config.getString( "email.smtp.username", "" ) );
-            mailSender.setPassword( config.getString( "email.smtp.password", "" ) );
-            mailSender.setSslMode( config.getBoolean( "email.smtp.ssl.enabled", false ) );
-            
-            if ( mailSender.isSslMode() && ( mailSender instanceof JavamailMailSender ) )
+            if ( mailSender instanceof JndiJavamailMailSender )
             {
-                JavamailMailSender jmsender = (JavamailMailSender) mailSender;
-                jmsender.updateProps();
-                jmsender.setSslProvider( config.getString( "email.smtp.ssl.provider" ) );
+                JndiJavamailMailSender jndiSender = (JndiJavamailMailSender) mailSender;
+                jndiSender.setJndiSessionName( config.getString( "email.jndiSessionName", "java:comp/env/mail/Session" ) );
+            }
+            else
+            {
+                mailSender.setSmtpHost( config.getString( "email.smtp.host", "localhost" ) );
+                mailSender.setSmtpPort( config.getInt( "email.smtp.port", 25 ) );
+                mailSender.setUsername( config.getString( "email.smtp.username", "" ) );
+                mailSender.setPassword( config.getString( "email.smtp.password", "" ) );
+                mailSender.setSslMode( config.getBoolean( "email.smtp.ssl.enabled", false ) );
+            
+                if ( mailSender.isSslMode() && ( mailSender instanceof JavamailMailSender ) )
+                {
+                    JavamailMailSender jmsender = (JavamailMailSender) mailSender;
+                    jmsender.updateProps();
+                    jmsender.setSslProvider( config.getString( "email.smtp.ssl.provider" ) );
+                }
             }
 
             mailSender.send( message );
