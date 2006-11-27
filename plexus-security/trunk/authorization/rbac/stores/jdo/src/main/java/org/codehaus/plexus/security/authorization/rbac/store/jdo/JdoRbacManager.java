@@ -23,6 +23,7 @@ import org.codehaus.plexus.security.authorization.rbac.jdo.JdoPermission;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoResource;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoRole;
 import org.codehaus.plexus.security.authorization.rbac.jdo.JdoUserAssignment;
+import org.codehaus.plexus.security.authorization.rbac.jdo.RbacJdoModelModelloMetadata;
 import org.codehaus.plexus.security.rbac.AbstractRBACManager;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
@@ -604,6 +605,17 @@ public class JdoRbacManager
         }
 
         jdo.removeObject( userAssignment );
+    }
+
+    public void eraseDatabase()
+    {
+        // Must delete in order so that FK constraints don't get violated
+        jdo.removeAll( JdoRole.class );
+        jdo.removeAll( JdoPermission.class );
+        jdo.removeAll( JdoOperation.class );
+        jdo.removeAll( JdoResource.class );
+        jdo.removeAll( JdoUserAssignment.class );
+        jdo.removeAll( RbacJdoModelModelloMetadata.class );
     }
 
     public void initialize()

@@ -267,4 +267,19 @@ public class JdoDataManagementTool
             manager.addKey( key );
         }
     }
+
+    public void eraseRBACDatabase( RBACManager manager )
+    {
+        manager.eraseDatabase();
+    }
+
+    public void eraseUsersDatabase( UserManager manager )
+    {
+        manager.eraseDatabase();
+    }
+
+    public void eraseKeysDatabase( KeyManager manager )
+    {
+        manager.eraseDatabase();
+    }
 }

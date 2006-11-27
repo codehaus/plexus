@@ -80,4 +80,6 @@ public interface KeyManager
     List getAllKeys();
 
     AuthenticationKey addKey( AuthenticationKey key );
+
+    void eraseDatabase();
 }

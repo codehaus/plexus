@@ -79,6 +79,12 @@ public class JdoKeyManager
         return (AuthenticationKey) PlexusJdoUtils.addObject( getPersistenceManager(), key );
     }
 
+    public void eraseDatabase()
+    {
+        PlexusJdoUtils.removeAll( getPersistenceManager(), JdoAuthenticationKey.class );
+        PlexusJdoUtils.removeAll( getPersistenceManager(), PlexusSecurityKeyManagementJdoModelloMetadata.class );
+    }
+
     public AuthenticationKey findKey( String key )
         throws KeyNotFoundException, KeyManagerException
     {

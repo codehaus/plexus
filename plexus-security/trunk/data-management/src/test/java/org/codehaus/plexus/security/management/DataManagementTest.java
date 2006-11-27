@@ -22,8 +22,10 @@ import org.codehaus.plexus.security.authorization.store.test.utils.RBACDefaults;
 import org.codehaus.plexus.security.common.jdo.UserConfigurableJdoFactory;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.keys.KeyManager;
+import org.codehaus.plexus.security.keys.KeyManagerException;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 import org.codehaus.plexus.security.user.User;
@@ -67,22 +69,48 @@ public class DataManagementTest
         targetDirectory = createBackupDirectory();
     }
 
+    public void testEraseRbac()
+        throws Exception
+    {
+        RBACManager manager = (RBACManager) lookup( RBACManager.ROLE, "jdo" );
+
+        createRbacDatabase( manager );
+
+        dataManagementTool.eraseRBACDatabase( manager );
+
+        assertEmpty( manager );
+    }
+
+    public void testEraseUsers()
+        throws Exception
+    {
+        UserManager manager = (UserManager) lookup( UserManager.ROLE, "jdo" );
+
+        createUserDatabase( manager );
+
+        dataManagementTool.eraseUsersDatabase( manager );
+
+        assertEmpty( manager );
+    }
+
+    public void testEraseKeys()
+        throws Exception
+    {
+        KeyManager manager = (KeyManager) lookup( KeyManager.ROLE, "jdo" );
+
+        createKeyDatabase( manager );
+
+        dataManagementTool.eraseKeysDatabase( manager );
+
+        assertEmpty( manager );
+    }
+
     public void testBackupRbac()
         throws Exception
     {
         RBACManager manager = (RBACManager) lookup( RBACManager.ROLE, "jdo" );
 
-        RBACDefaults defaults = new RBACDefaults( manager );
-
-        defaults.createDefaults();
-
-        UserAssignment assignment = manager.createUserAssignment( "bob" );
-        assignment.addRoleName( "Developer" );
-        manager.saveUserAssignment( assignment );
-
-        assignment = manager.createUserAssignment( "betty" );
-        assignment.addRoleName( "System Administrator" );
-        manager.saveUserAssignment( assignment );
+        createRbacDatabase( manager );
 
         dataManagementTool.backupRBACDatabase( manager, targetDirectory );
 
@@ -97,22 +125,28 @@ public class DataManagementTest
         assertEquals( "Check database content", sw.toString(), FileUtils.fileRead( backupFile ) );
     }
 
+    private void createRbacDatabase( RBACManager manager )
+        throws RbacManagerException
+    {
+        RBACDefaults defaults = new RBACDefaults( manager );
+
+        defaults.createDefaults();
+
+        UserAssignment assignment = manager.createUserAssignment( "bob" );
+        assignment.addRoleName( "Developer" );
+        manager.saveUserAssignment( assignment );
+
+        assignment = manager.createUserAssignment( "betty" );
+        assignment.addRoleName( "System Administrator" );
+        manager.saveUserAssignment( assignment );
+    }
+
     public void testBackupUsers()
         throws Exception
     {
         UserManager manager = (UserManager) lookup( UserManager.ROLE, "jdo" );
 
-        User user = manager.createUser( "smcqueen", "Steve McQueen", "the cooler king" );
-        user.setPassword( "abc123" );
-        manager.addUser( user );
-
-        user = manager.createUser( "bob", "Sideshow Bob", "bob_862@hotmail.com" );
-        user.setPassword( "bobby862" );
-        manager.addUser( user );
-
-        user = manager.createUser( "betty", "Betty", "betty@aol.com" );
-        user.setPassword( "rover2" );
-        manager.addUser( user );
+        createUserDatabase( manager );
 
         dataManagementTool.backupUserDatabase( manager, targetDirectory );
 
@@ -130,14 +164,27 @@ public class DataManagementTest
                       removeTimestampVariance( actual ) );
     }
 
+    private void createUserDatabase( UserManager manager )
+    {
+        User user = manager.createUser( "smcqueen", "Steve McQueen", "the cooler king" );
+        user.setPassword( "abc123" );
+        manager.addUser( user );
+
+        user = manager.createUser( "bob", "Sideshow Bob", "bob_862@hotmail.com" );
+        user.setPassword( "bobby862" );
+        manager.addUser( user );
+
+        user = manager.createUser( "betty", "Betty", "betty@aol.com" );
+        user.setPassword( "rover2" );
+        manager.addUser( user );
+    }
+
     public void testBackupKeys()
         throws Exception
     {
         KeyManager manager = (KeyManager) lookup( KeyManager.ROLE, "jdo" );
 
-        manager.createKey( "bob", "Testing", 15 );
-        manager.createKey( "betty", "Something", 25 );
-        manager.createKey( "fred", "Else", 30 );
+        createKeyDatabase( manager );
 
         dataManagementTool.backupKeyDatabase( manager, targetDirectory );
 
@@ -155,16 +202,20 @@ public class DataManagementTest
                       removeKeyAndTimestampVariance( actual ) );
     }
 
+    private static void createKeyDatabase( KeyManager manager )
+        throws KeyManagerException
+    {
+        manager.createKey( "bob", "Testing", 15 );
+        manager.createKey( "betty", "Something", 25 );
+        manager.createKey( "fred", "Else", 30 );
+    }
+
     public void testRestoreRbac()
         throws Exception
     {
         RBACManager manager = (RBACManager) lookup( RBACManager.ROLE, "jdo" );
 
-        assertEquals( 0, manager.getAllRoles().size() );
-        assertEquals( 0, manager.getAllUserAssignments().size() );
-        assertEquals( 0, manager.getAllOperations().size() );
-        assertEquals( 0, manager.getAllResources().size() );
-        assertEquals( 0, manager.getAllPermissions().size() );
+        assertEmpty( manager );
 
         File backupFile = new File( targetDirectory, "rbac.xml" );
 
@@ -226,13 +277,22 @@ public class DataManagementTest
         assertEquals( "System Administrator", assignment.getRoleNames().get( 0 ) );
     }
 
+    private void assertEmpty( RBACManager manager )
+        throws RbacManagerException
+    {
+        assertEquals( 0, manager.getAllRoles().size() );
+        assertEquals( 0, manager.getAllUserAssignments().size() );
+        assertEquals( 0, manager.getAllOperations().size() );
+        assertEquals( 0, manager.getAllResources().size() );
+        assertEquals( 0, manager.getAllPermissions().size() );
+    }
+
     public void testRestoreUsers()
         throws Exception
     {
         UserManager manager = (UserManager) lookup( UserManager.ROLE, "jdo" );
 
-        List users = manager.getUsers();
-        assertEquals( 0, users.size() );
+        assertEmpty( manager );
 
         File backupFile = new File( targetDirectory, "users.xml" );
 
@@ -240,7 +300,7 @@ public class DataManagementTest
 
         dataManagementTool.restoreUsersDatabase( manager, targetDirectory );
 
-        users = manager.getUsers();
+        List users = manager.getUsers();
         assertEquals( 3, users.size() );
 
         User user = (User) users.get( 0 );
@@ -271,12 +331,18 @@ public class DataManagementTest
                       user.getPreviousEncodedPasswords() );
     }
 
+    private void assertEmpty( UserManager manager )
+    {
+        List users = manager.getUsers();
+        assertEquals( 0, users.size() );
+    }
+
     public void testRestoreKeys()
         throws Exception
     {
         KeyManager manager = (KeyManager) lookup( KeyManager.ROLE, "jdo" );
 
-        assertEquals( 0, manager.getAllKeys().size() );
+        assertEmpty( manager );
 
         File backupFile = new File( targetDirectory, "keys.xml" );
 
@@ -307,6 +373,11 @@ public class DataManagementTest
         assertEquals( "Else", key.getPurpose() );
         assertEquals( 1164426315664L, key.getDateCreated().getTime() );
         assertEquals( 1164428115664L, key.getDateExpires().getTime() );
+    }
+
+    private void assertEmpty( KeyManager manager )
+    {
+        assertEquals( 0, manager.getAllKeys().size() );
     }
 
     private String removeKeyAndTimestampVariance( String content )

@@ -413,6 +413,15 @@ public class MemoryRbacManager
         userAssignments.remove( userAssignment.getPrincipal() );
     }
 
+    public void eraseDatabase()
+    {
+        userAssignments.clear();
+        resources.clear();
+        operations.clear();
+        permissions.clear();
+        roles.clear();
+    }
+
     public UserAssignment createUserAssignment( String principal )
         throws RbacManagerException
     {

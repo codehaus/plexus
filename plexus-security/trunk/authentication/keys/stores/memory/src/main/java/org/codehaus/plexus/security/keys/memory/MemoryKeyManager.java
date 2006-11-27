@@ -110,6 +110,11 @@ public class MemoryKeyManager
         return key;
     }
 
+    public void eraseDatabase()
+    {
+        keys.clear();
+    }
+
     public String getId()
     {
         return "Memory Key Manager";

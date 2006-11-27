@@ -224,6 +224,12 @@ public class JdoUserManager
         addObject( user );
     }
 
+    public void eraseDatabase()
+    {
+        PlexusJdoUtils.removeAll( getPersistenceManager(), JdoUser.class );
+        PlexusJdoUtils.removeAll( getPersistenceManager(), UserManagementModelloMetadata.class );
+    }
+
     public User findUser( Object principal )
         throws UserNotFoundException
     {
