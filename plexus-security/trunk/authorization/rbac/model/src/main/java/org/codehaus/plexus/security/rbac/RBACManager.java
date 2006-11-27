@@ -405,4 +405,6 @@ public interface RBACManager
      */
     public Resource getGlobalResource()
         throws RbacManagerException;
+
+    void eraseDatabase();
 }

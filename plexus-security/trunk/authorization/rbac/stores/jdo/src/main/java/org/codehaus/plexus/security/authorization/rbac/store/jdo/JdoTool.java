@@ -459,4 +459,23 @@ public class JdoTool
         // ignore
     }
 
+    public void removeAll( Class aClass )
+    {
+        PersistenceManager pm = getPersistenceManager();
+        Transaction tx = pm.currentTransaction();
+
+        try
+        {
+            tx.begin();
+
+            Query query = pm.newQuery( aClass );
+            query.deletePersistentAll();
+
+            tx.commit();
+        }
+        finally
+        {
+            rollbackIfActive( tx );
+        }
+    }
 }

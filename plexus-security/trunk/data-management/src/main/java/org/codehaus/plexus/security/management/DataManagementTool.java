@@ -52,4 +52,10 @@ public interface DataManagementTool
 
     void restoreKeysDatabase( KeyManager manager, File backupDirectory )
         throws IOException, XMLStreamException;
+
+    void eraseRBACDatabase( RBACManager manager );
+
+    void eraseUsersDatabase( UserManager manager );
+
+    void eraseKeysDatabase( KeyManager manager );
 }

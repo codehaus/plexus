@@ -150,4 +150,6 @@ public interface UserManager
      * @param user the user to add
      */
     void addUserUnchecked( User user );
+
+    void eraseDatabase();
 }

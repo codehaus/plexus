@@ -172,6 +172,11 @@ public class MemoryUserManager
         addUser( user );
     }
 
+    public void eraseDatabase()
+    {
+        users.clear();
+    }
+
     public User findUser( String username )
         throws UserNotFoundException
     {
