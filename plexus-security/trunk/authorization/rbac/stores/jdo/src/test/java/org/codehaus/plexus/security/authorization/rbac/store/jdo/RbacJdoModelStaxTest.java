@@ -67,14 +67,17 @@ public class RbacJdoModelStaxTest
         operation.setPermanent( true );
         operation.setResourceRequired( true );
         permission.setOperation( operation );
+        database.addOperation( operation );
 
         JdoResource resource = new JdoResource();
         resource.setIdentifier( "resId" );
         resource.setPattern( true );
         resource.setPermanent( true );
         permission.setResource( resource );
+        database.addResource( resource );
         permission.setPermanent( true );
         role.addPermission( permission );
+        database.addPermission( permission );
 
         database.addRole( role );
 
