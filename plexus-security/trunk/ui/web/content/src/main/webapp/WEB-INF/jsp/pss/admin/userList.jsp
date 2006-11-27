@@ -103,7 +103,7 @@
             <td>
               <pss:ifAuthorized permission="user-management-user-edit" resource="${username}">
                 <ww:url id="usereditUrl" action="useredit">
-                  <ww:param name="username">${username}</ww:param>
+                  <ww:param name="username">${user.username}</ww:param>
                 </ww:url>
                 <ww:a href="%{usereditUrl}">Edit</ww:a>
               </pss:ifAuthorized>
@@ -111,7 +111,7 @@
             <td>
               <pss:ifAuthorized permission="user-management-user-delete" resource="${username}">
                 <ww:url id="userDeleteUrl" action="userdelete">
-                  <ww:param name="username">${username}</ww:param>
+                  <ww:param name="username">${user.username}</ww:param>
                 </ww:url>
                 <ww:a href="%{userDeleteUrl}">Delete</ww:a>
               </pss:ifAuthorized>
