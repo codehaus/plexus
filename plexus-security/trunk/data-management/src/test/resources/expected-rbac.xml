@@ -5,24 +5,8 @@
       <name>User Administrator</name>
       <assignable>true</assignable>
       <permissions>
-        <permission>
-          <name>Edit All Users</name>
-          <operation>
-            <name>edit-all-users</name>
-          </operation>
-          <resource>
-            <identifier>*</identifier>
-          </resource>
-        </permission>
-        <permission>
-          <name>Remove Roles</name>
-          <operation>
-            <name>remove-roles</name>
-          </operation>
-          <resource>
-            <identifier>*</identifier>
-          </resource>
-        </permission>
+        <permission name="Edit All Users" />
+        <permission name="Remove Roles" />
       </permissions>
     </role>
     <role>
@@ -32,42 +16,10 @@
         <childRoleName>User Administrator</childRoleName>
       </childRoleNames>
       <permissions>
-        <permission>
-          <name>Edit Configuration</name>
-          <operation>
-            <name>edit-configuration</name>
-          </operation>
-          <resource>
-            <identifier>*</identifier>
-          </resource>
-        </permission>
-        <permission>
-          <name>Run Indexer</name>
-          <operation>
-            <name>run-indexer</name>
-          </operation>
-          <resource>
-            <identifier>*</identifier>
-          </resource>
-        </permission>
-        <permission>
-          <name>Add Repository</name>
-          <operation>
-            <name>add-repository</name>
-          </operation>
-          <resource>
-            <identifier>*</identifier>
-          </resource>
-        </permission>
-        <permission>
-          <name>Regenerate Index</name>
-          <operation>
-            <name>regenerate-index</name>
-          </operation>
-          <resource>
-            <identifier>*</identifier>
-          </resource>
-        </permission>
+        <permission name="Edit Configuration" />
+        <permission name="Run Indexer" />
+        <permission name="Add Repository" />
+        <permission name="Regenerate Index" />
       </permissions>
     </role>
     <role>
@@ -77,15 +29,7 @@
         <childRoleName>System Administrator</childRoleName>
       </childRoleNames>
       <permissions>
-        <permission>
-          <name>Run Indexer</name>
-          <operation>
-            <name>run-indexer</name>
-          </operation>
-          <resource>
-            <identifier>*</identifier>
-          </resource>
-        </permission>
+        <permission name="Run Indexer" />
       </permissions>
     </role>
     <role>
@@ -95,18 +39,82 @@
         <childRoleName>Trusted Developer</childRoleName>
       </childRoleNames>
       <permissions>
-        <permission>
-          <name>Run Indexer</name>
-          <operation>
-            <name>run-indexer</name>
-          </operation>
-          <resource>
-            <identifier>*</identifier>
-          </resource>
-        </permission>
+        <permission name="Run Indexer" />
       </permissions>
     </role>
   </roles>
+  <permissions>
+    <permission>
+      <name>Edit Configuration</name>
+      <operation name="edit-configuration" />
+      <resource identifier="*" />
+    </permission>
+    <permission>
+      <name>Run Indexer</name>
+      <operation name="run-indexer" />
+      <resource identifier="*" />
+    </permission>
+    <permission>
+      <name>Add Repository</name>
+      <operation name="add-repository" />
+      <resource identifier="*" />
+    </permission>
+    <permission>
+      <name>Edit All Users</name>
+      <operation name="edit-all-users" />
+      <resource identifier="*" />
+    </permission>
+    <permission>
+      <name>Remove Roles</name>
+      <operation name="remove-roles" />
+      <resource identifier="*" />
+    </permission>
+    <permission>
+      <name>Regenerate Index</name>
+      <operation name="regenerate-index" />
+      <resource identifier="*" />
+    </permission>
+  </permissions>
+  <operations>
+    <operation>
+      <name>add-repository</name>
+    </operation>
+    <operation>
+      <name>edit-repository</name>
+    </operation>
+    <operation>
+      <name>delete-repository</name>
+    </operation>
+    <operation>
+      <name>edit-configuration</name>
+    </operation>
+    <operation>
+      <name>run-indexer</name>
+    </operation>
+    <operation>
+      <name>regenerate-index</name>
+    </operation>
+    <operation>
+      <name>get-reports</name>
+    </operation>
+    <operation>
+      <name>regenerate-reports</name>
+    </operation>
+    <operation>
+      <name>edit-user</name>
+    </operation>
+    <operation>
+      <name>edit-all-users</name>
+    </operation>
+    <operation>
+      <name>remove-roles</name>
+    </operation>
+  </operations>
+  <resources>
+    <resource>
+      <identifier>*</identifier>
+    </resource>
+  </resources>
   <userAssignments>
     <userAssignment>
       <principal>bob</principal>
