@@ -75,6 +75,9 @@ public class JdoDataManagementTool
         RbacDatabase database = new RbacDatabase();
         database.setRoles( manager.getAllRoles() );
         database.setUserAssignments( manager.getAllUserAssignments() );
+        database.setPermissions( manager.getAllPermissions() );
+        database.setOperations( manager.getAllOperations() );
+        database.setResources( manager.getAllResources() );
 
         RbacJdoModelStaxWriter writer = new RbacJdoModelStaxWriter();
         FileWriter fileWriter = new FileWriter( new File( backupDirectory, RBAC_XML_NAME ) );
