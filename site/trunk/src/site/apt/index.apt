@@ -8,12 +8,12 @@
 
 Overview
 
-  The Plexus project provides a full software stack for creating and executing software projects. Founded on the
-  Plexus container, applications can utilise component-oriented programming to build modular, reusable components
+  The Plexus project provides a full software stack for creating and executing software projects. Based on the
+  Plexus container, the applications can utilise component-oriented programming to build modular, reusable components
   that can easily be assembled and reused.
 
   While Plexus is similar to other <inversion-of-control> (IoC) or <dependency injection> frameworks such as the
-  Spring Framework, it's fully-fledged container supports many more features such as:
+  Spring Framework, it is a full-fledged container that supports many more features such as:
   
     * Component lifecycles 
 
