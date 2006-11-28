@@ -21,16 +21,33 @@ import junit.framework.TestCase;
 public class DigestUtilsTest
     extends TestCase
 {
+    /**  SHA1 checksum from www.ibiblio.org/maven2, incuding file path */
+    private static final String SERVLETAPI_SHA1 = "bcc82975c0f9c681fcb01cc38504c992553e93ba";
+
     public void testCleanChecksum()
         throws DigesterException
     {
-        // SHA1 checksum from www.ibiblio.org/maven2, incuding file path
-        DigestUtils.cleanChecksum(
-            "bcc82975c0f9c681fcb01cc38504c992553e93ba  /home/projects/maven/repository-staging/to-ibiblio/maven2/servletapi/servletapi/2.4/servletapi-2.4.pom",
-            "SHA1", "servletapi/servletapi/2.4/servletapi-2.4.pom" );
+        String expected = SERVLETAPI_SHA1
+            + "  /home/projects/maven/repository-staging/to-ibiblio/maven2/servletapi/servletapi/2.4/servletapi-2.4.pom";
 
-        DigestUtils.cleanChecksum(
-            "SHA1(/home/projects/maven/repository-staging/to-ibiblio/maven2/servletapi/servletapi/2.4/servletapi-2.4.pom)=bcc82975c0f9c681fcb01cc38504c992553e93ba",
-            "SHA1", "servletapi/servletapi/2.4/servletapi-2.4.pom" );
+        String s = DigestUtils.cleanChecksum( expected, "SHA1", "servletapi/servletapi/2.4/servletapi-2.4.pom" );
+        assertEquals( "Checksum doesn't match", SERVLETAPI_SHA1, s );
+
+    }
+
+    public void testCleanChecksumAltDash1()
+        throws DigesterException
+    {
+        String expected = SERVLETAPI_SHA1 + "  -";
+        String s = DigestUtils.cleanChecksum( expected, "SHA1", "servletapi/servletapi/2.4/servletapi-2.4.pom" );
+        assertEquals( "Checksum doesn't match", SERVLETAPI_SHA1, s );
+    }
+
+    public void testCleanChecksumAltDash2()
+        throws DigesterException
+    {
+        String expected = "SHA1(-)=" + SERVLETAPI_SHA1;
+        String s = DigestUtils.cleanChecksum( expected, "SHA1", "servletapi/servletapi/2.4/servletapi-2.4.pom" );
+        assertEquals( "Checksum doesn't match", SERVLETAPI_SHA1, s );
     }
 }
