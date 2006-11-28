@@ -68,10 +68,6 @@ public class JdoDataManagementTool
     public void backupRBACDatabase( RBACManager manager, File backupDirectory )
         throws RbacManagerException, IOException, XMLStreamException
     {
-        // TODO: this is inefficient - many of the resources, operations and permissions may be duplicated. We should
-        //       have the modello stax writer write reference IDs, and add the operations, resources and permissions to
-        //       the database itself
-
         RbacDatabase database = new RbacDatabase();
         database.setRoles( manager.getAllRoles() );
         database.setUserAssignments( manager.getAllUserAssignments() );
