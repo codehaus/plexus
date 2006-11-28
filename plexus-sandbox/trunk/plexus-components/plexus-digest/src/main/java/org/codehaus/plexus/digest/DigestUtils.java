@@ -42,7 +42,7 @@ public class DigestUtils
         if ( m.matches() )
         {
             String filename = m.group( 1 );
-            if ( !filename.endsWith( path ) )
+            if ( !isValidChecksumPattern( filename, path ) )
             {
                 throw new DigesterException( "Supplied checksum does not match checksum pattern" );
             }
@@ -51,11 +51,11 @@ public class DigestUtils
         else
         {
             // GNU tools
-            m = Pattern.compile( "([a-fA-F0-9]+)\\s\\*?(.+)" ).matcher( trimmedChecksum );
+            m = Pattern.compile( "([a-fA-F0-9]+)\\s+\\*?(.+)" ).matcher( trimmedChecksum );
             if ( m.matches() )
             {
                 String filename = m.group( 2 );
-                if ( !filename.endsWith( path ) )
+                if ( !isValidChecksumPattern( filename, path ) )
                 {
                     throw new DigesterException( "Supplied checksum does not match checksum pattern" );
                 }
@@ -63,5 +63,10 @@ public class DigestUtils
             }
         }
         return trimmedChecksum;
+    }
+
+    private static boolean isValidChecksumPattern( String filename, String path )
+    {
+        return filename.endsWith( path ) || ( "-".equals( filename ) );
     }
 }
