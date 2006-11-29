@@ -6,6 +6,11 @@ import junit.framework.TestCase;
 
 public class JRubyTestCase extends TestCase
 {
+    public void test()
+    {
+        
+    }
+
     protected void runTest()
         throws Throwable
     {
