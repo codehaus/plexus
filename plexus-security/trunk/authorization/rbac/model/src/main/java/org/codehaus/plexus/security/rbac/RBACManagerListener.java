@@ -33,4 +33,8 @@ public interface RBACManagerListener
     public void rbacPermissionSaved( Permission permission );
 
     public void rbacPermissionRemoved( Permission permission );
+
+    public void rbacUserAssignmentSaved( UserAssignment userAssignment );
+
+    public void rbacUserAssignmentRemoved( UserAssignment userAssignment );
 }

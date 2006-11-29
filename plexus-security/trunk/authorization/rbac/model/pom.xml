@@ -28,4 +28,12 @@
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authorization/rbac/model</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authorization/rbac/model</developerConnection>
   </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>ehcache</groupId>
+      <artifactId>ehcache</artifactId>
+      <version>1.2</version>
+    </dependency>
+  </dependencies>
 </project>

@@ -16,6 +16,7 @@ package org.codehaus.plexus.security.authorization.store.test;
  * limitations under the License.
  */
 
+import net.sf.ehcache.Cache;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.security.authorization.store.test.utils.RBACDefaults;
 import org.codehaus.plexus.security.rbac.Operation;
@@ -31,6 +32,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * AbstractRbacManagerTestCase
@@ -1175,5 +1178,53 @@ public abstract class AbstractRbacManagerTestCase
         long endTime = System.currentTimeMillis();
 
         assertPerformance( "Operations", startTime, endTime, ITERATIONS, 500 );
+    }
+
+    public void testUserPermissionCache()
+        throws Exception
+    {
+        RBACManager manager = rbacManager;
+        Cache userPermCache = rbacManager.getCache( RBACManager.USER_PERMISSION_CACHE );
+
+        assertNotNull( userPermCache );
+
+        Role adminRole = rbacManager.saveRole( getAdminRole() );
+        Role devRole = rbacManager.saveRole( getDeveloperRole() );
+
+        // Setup User / Assignment with 1 role.
+        String username = "bob";
+        UserAssignment assignment = manager.createUserAssignment( username );
+        assignment.addRoleName( devRole );
+        assignment = manager.saveUserAssignment( assignment );
+
+        assertNull( "user perm cache for bob should be null", userPermCache.get( username ) );
+
+        Map permMap = manager.getAssignedPermissionMap( username );
+
+        assertNotNull( "user perm cache should not be null", userPermCache.get( username ) );
+
+        assertNotNull( "permission map should not be null", permMap );
+
+        assertEquals( "permission map should have one operation", 1, permMap.keySet().size() );
+
+        List permissionList = (ArrayList)permMap.get( "EDIT" );
+
+        assertNotNull( "permission list should not be null", permissionList );
+
+        assertEquals( "permission list for operation should have 1 entry", 1, permissionList.size() );
+
+        assignment.addRoleName( adminRole.getName() );
+        assignment = manager.saveUserAssignment( assignment );
+
+        //assertNull( "user perm cache for bob should be null after adding new role", userPermCache.get( username ) );
+
+        permMap = manager.getAssignedPermissionMap( username );
+
+        assertEquals( "permission map should have one operation still", 1, permMap.keySet().size() );
+
+        permissionList = (ArrayList)permMap.get( "EDIT" );
+
+        assertEquals( "we should have two permission now", 2, permissionList.size() );
+
     }
 }

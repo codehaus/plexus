@@ -16,7 +16,12 @@ package org.codehaus.plexus.security.rbac;
  * limitations under the License.
  */
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.CollectionUtils;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -37,8 +42,10 @@ import java.util.Set;
  */
 public abstract class AbstractRBACManager
     extends AbstractLogEnabled
-    implements RBACManager
+    implements RBACManager, Initializable
 {
+    private CacheManager cacheManager = CacheManager.create();
+
     private List listeners = new ArrayList();
 
     private Resource globalResource;
@@ -142,6 +149,59 @@ public abstract class AbstractRBACManager
             }
         }
     }
+
+    public void fireRbacUserAssignmentSaved( UserAssignment userAssignment )
+    {
+        Iterator it = listeners.iterator();
+        while ( it.hasNext() )
+        {
+            RBACManagerListener listener = (RBACManagerListener) it.next();
+            try
+            {
+                listener.rbacUserAssignmentSaved( userAssignment );
+            }
+            catch ( Exception e )
+            {
+                getLogger().warn(
+                    "Unable to trigger .rbacUserAssignmentSaved( UserAssignment ) to " + listener.getClass().getName(), e );
+            }
+        }
+
+        getLogger().info( "checking if I need to remove the cache for " + userAssignment.getPrincipal() );
+        // smoke the entry from the cacheManager
+        Cache userPermCache =  cacheManager.getCache( USER_PERMISSION_CACHE );
+        if ( userPermCache.get( userAssignment.getPrincipal() ) != null )
+        {
+            getLogger().info( "removing the cache of " + userAssignment.getPrincipal() );
+            cacheManager.getCache( USER_PERMISSION_CACHE ).remove( userAssignment.getPrincipal() );
+        }
+
+    }
+
+    public void fireRbacUserAssignmentRemoved( UserAssignment userAssignment )
+    {
+        Iterator it = listeners.iterator();
+        while ( it.hasNext() )
+        {
+            RBACManagerListener listener = (RBACManagerListener) it.next();
+            try
+            {
+                listener.rbacUserAssignmentRemoved( userAssignment );
+            }
+            catch ( Exception e )
+            {
+                getLogger().warn(
+                    "Unable to trigger .rbacUserAssignmentRemoved( UserAssignment ) to " + listener.getClass().getName(), e );
+            }
+        }
+
+        // smoke the entry from the cacheManager
+        if ( cacheManager.getCache( USER_PERMISSION_CACHE ).get( userAssignment.getPrincipal() ) != null )
+        {
+            cacheManager.getCache( USER_PERMISSION_CACHE ).remove( userAssignment.getPrincipal() );
+        }
+    }
+
 
     public void removeRole( String roleName )
         throws RbacObjectNotFoundException, RbacManagerException
@@ -356,6 +416,7 @@ public abstract class AbstractRBACManager
     public Set getAssignedPermissions( String principal )
         throws RbacObjectNotFoundException, RbacManagerException
     {
+
         UserAssignment ua = getUserAssignment( principal.toString() );
 
         Set permissionSet = new HashSet();
@@ -388,6 +449,60 @@ public abstract class AbstractRBACManager
         }
 
         return permissionSet;
+    }
+
+    /**
+     * returns a map of assigned permissions keyed off of operations
+     *
+     * @param principal
+     * @return
+     * @throws RbacObjectNotFoundException
+     * @throws RbacManagerException
+     */
+    public Map getAssignedPermissionMap( String principal )
+       throws RbacObjectNotFoundException, RbacManagerException
+    {
+        Cache userPermCache = cacheManager.getCache( USER_PERMISSION_CACHE );
+
+        if ( userPermCache.get( principal ) != null )
+        {
+            getLogger().info( "using cached user permission map" );
+            return (Map)userPermCache.get( principal ).getObjectValue();
+        }
+        else
+        {
+            getLogger().info( "building user permission map" );
+            Map userPermMap = getPermissionMapByOperation( getAssignedPermissions( principal ) );
+            
+            userPermCache.put( new Element( principal, userPermMap ) );
+
+            return userPermMap;
+        }
+    }
+
+    private Map getPermissionMapByOperation( Collection permissions )
+    {
+        Map userPermMap = new HashMap();
+
+        for ( Iterator i = permissions.iterator(); i.hasNext(); )
+        {
+            Permission permission = (Permission)i.next();
+
+            List permList = (List)userPermMap.get( permission.getOperation().getName() );
+
+            if ( permList != null )
+            {
+                permList.add( permission );
+            }
+            else
+            {
+                List newPermList = new ArrayList();
+                newPermList.add( permission );
+                userPermMap.put( permission.getOperation().getName(), newPermList );
+            }
+        }
+
+        return userPermMap;
     }
 
     private void gatherUniquePermissions( Role role, Collection coll )
@@ -441,7 +556,7 @@ public abstract class AbstractRBACManager
      * returns the active roles for a given principal
      * <p/>
      * NOTE: roles that are returned might have have roles themselves, if
-     * you just want all permissions then use {@link #getAssignedPermissions(Objectprincipal)}
+     * you just want all permissions then use {@link #getAssignedPermissions( String principal)}
      *
      * @param principal
      * @return
@@ -687,5 +802,26 @@ public abstract class AbstractRBACManager
         }
 
         return roleMap;
+    }
+
+
+    /**
+     * return the appointed cache, should it exist
+     *
+     * @param cacheName
+     * @return
+     */
+    public Cache getCache( String cacheName )
+    {
+        return cacheManager.getCache( cacheName );
+    }
+
+    public void initialize()
+        throws InitializationException
+    {
+        if ( !cacheManager.cacheExists( USER_PERMISSION_CACHE ) )
+        {
+            cacheManager.addCache( USER_PERMISSION_CACHE );
+        }
     }
 }
