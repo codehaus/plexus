@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -17,7 +16,7 @@ import java.util.Map;
 
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.util.IOUtil;
@@ -224,16 +223,16 @@ public class JRubyInvoker
     
             if ( classRealm != null )
             {
-                if ( classRealm.getResource( impl ) == null )
-                {
-                    StringBuffer buf = new StringBuffer( "Cannot find: " + impl + " in classpath:" );
-                    for ( int i = 0; i < classRealm.getURLs().length; i++ )
-                    {
-                        URL constituent = classRealm.getURLs()[i];
-                        buf.append( "\n   [" + i + "]  " + constituent );
-                    }
-                    throw new ComponentInstantiationException( buf.toString() );
-                }
+//                if ( classRealm.getResource( impl ) == null )
+//                {
+//                    StringBuffer buf = new StringBuffer( "Cannot find: " + impl + " in classpath:" );
+//                    for ( int i = 0; i < classRealm.getURLs().length; i++ )
+//                    {
+//                        URL constituent = classRealm.getURLs()[i];
+//                        buf.append( "\n   [" + i + "]  " + constituent );
+//                    }
+//                    throw new ComponentInstantiationException( buf.toString() );
+//                }
     
                 theReader = new InputStreamReader( classRealm.getResourceAsStream( impl ) );
             }
@@ -268,7 +267,7 @@ public class JRubyInvoker
         {
             if ( classRealm != null )
             {
-                Thread.currentThread().setContextClassLoader( classRealm );
+                Thread.currentThread().setContextClassLoader( classRealm.getClassLoader() );
             }
 
             bos = new StringOutputStream();
@@ -440,15 +439,15 @@ public class JRubyInvoker
         if ( scriptStream == null )
         {
             StringBuffer buf = new StringBuffer( "Cannot find: " + resourceName + " in classpath" );
-            if ( classRealm != null )
-            {
-                buf.append( ":" );
-                for ( int i = 0; i < classRealm.getURLs().length; i++ )
-                {
-                    URL constituent = classRealm.getURLs()[i];
-                    buf.append( "\n   [" + i + "]  " + constituent );
-                }
-            }
+//            if ( classRealm != null )
+//            {
+//                buf.append( ":" );
+//                for ( int i = 0; i < classRealm.getURLs().length; i++ )
+//                {
+//                    URL constituent = classRealm.getURLs()[i];
+//                    buf.append( "\n   [" + i + "]  " + constituent );
+//                }
+//            }
             throw new ComponentInstantiationException( buf.toString() );
         }
 
