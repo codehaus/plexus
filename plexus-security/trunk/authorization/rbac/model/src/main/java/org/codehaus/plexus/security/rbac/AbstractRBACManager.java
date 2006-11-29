@@ -167,12 +167,9 @@ public abstract class AbstractRBACManager
             }
         }
 
-        getLogger().info( "checking if I need to remove the cache for " + userAssignment.getPrincipal() );
         // smoke the entry from the cacheManager
-        Cache userPermCache =  cacheManager.getCache( USER_PERMISSION_CACHE );
-        if ( userPermCache.get( userAssignment.getPrincipal() ) != null )
+        if ( cacheManager.getCache( USER_PERMISSION_CACHE ).get( userAssignment.getPrincipal() ) != null )
         {
-            getLogger().info( "removing the cache of " + userAssignment.getPrincipal() );
             cacheManager.getCache( USER_PERMISSION_CACHE ).remove( userAssignment.getPrincipal() );
         }
 
