@@ -463,12 +463,12 @@ public abstract class AbstractRBACManager
 
         if ( userPermCache.get( principal ) != null )
         {
-            getLogger().info( "using cached user permission map" );
+            getLogger().debug( "using cached user permission map" );
             return (Map)userPermCache.get( principal ).getObjectValue();
         }
         else
         {
-            getLogger().info( "building user permission map" );
+            getLogger().debug( "building user permission map" );
             Map userPermMap = getPermissionMapByOperation( getAssignedPermissions( principal ) );
             
             userPermCache.put( new Element( principal, userPermMap ) );
