@@ -16,6 +16,8 @@ package org.codehaus.plexus.security.rbac;
  * limitations under the License.
  */
 
+import net.sf.ehcache.Cache;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,11 @@ public interface RBACManager
      * Plexus Role Name
      */
     public static final String ROLE = RBACManager.class.getName();
+
+    /**
+     * name of a cache used for user permissions
+     */
+    public String USER_PERMISSION_CACHE = "userPermissionCache";
 
     public void addListener( RBACManagerListener listener );
 
@@ -322,7 +329,7 @@ public interface RBACManager
      * returns the active roles for a given principal
      * <p/>
      * NOTE: roles that are returned might have have roles themselves, if
-     * you just want all permissions then use {@link #getAssignedPermissions(Objectprincipal)}
+     * you just want all permissions then use {@link #getAssignedPermissions(String principal)}
      *
      * @param principal
      * @return Collection of {@link Role} objects.
@@ -388,6 +395,17 @@ public interface RBACManager
         throws RbacObjectNotFoundException, RbacManagerException;
 
     /**
+     * returns a map of assigned permissions keyed off of operation with a list value of Permissions
+     *
+     * @param principal
+     * @return
+     * @throws RbacObjectNotFoundException
+     * @throws RbacManagerException
+     */
+    public Map getAssignedPermissionMap( String principal )
+        throws RbacObjectNotFoundException, RbacManagerException;;
+
+    /**
      * returns a list of all assignable roles
      *
      * @return
@@ -407,4 +425,12 @@ public interface RBACManager
         throws RbacManagerException;
 
     void eraseDatabase();
+
+    /**
+     * return the appointed cache, should it exist
+     *
+     * @param cacheName
+     * @return
+     */
+    Cache getCache( String cacheName );
 }

@@ -28,12 +28,13 @@ import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.user.User;
 
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
 /**
  * RbacAuthorizer:
@@ -86,17 +87,23 @@ public class RbacAuthorizer
         {
             if ( principal != null )
             {
-                Set permissions = manager.getAssignedPermissions( principal.toString() );
+                // Set permissions = manager.getAssignedPermissions( principal.toString(), operation );
+                Map permissionMap = manager.getAssignedPermissionMap( principal.toString() );
 
-                for ( Iterator i = permissions.iterator(); i.hasNext(); )
+                if ( permissionMap.keySet().contains( operation.toString() ) )
                 {
-                    Permission permission = (Permission) i.next();
+                    List permissions = (List) permissionMap.get( operation.toString() );
 
-                    //getLogger().debug( "checking permission " + permission.getName() );
-
-                    if ( evaluator.evaluate( permission, operation, resource, principal ) )
+                    for ( Iterator i = permissions.iterator(); i.hasNext(); )
                     {
-                        return new AuthorizationResult( true, permission, null );
+                        Permission permission = (Permission) i.next();
+
+                        getLogger().info( "checking permission " + permission.getName() );
+
+                        if ( evaluator.evaluate( permission, operation, resource, principal ) )
+                        {
+                            return new AuthorizationResult( true, permission, null );
+                        }
                     }
                 }
             }
@@ -104,16 +111,23 @@ public class RbacAuthorizer
             User guest = userManager.findUser( "guest" );
             if ( !guest.isLocked() )
             {
-                Set guestPermissions = manager.getAssignedPermissions( guest.getPrincipal().toString() );
-                Object guestPrincipal = guest.getPrincipal();
-                
-                for ( Iterator i = guestPermissions.iterator(); i.hasNext(); )
-                {
-                    Permission permission = (Permission) i.next();
+                // Set permissions = manager.getAssignedPermissions( principal.toString(), operation );
+                Map permissionMap = manager.getAssignedPermissionMap( guest.getPrincipal().toString() );
 
-                    if ( evaluator.evaluate( permission, operation, resource, guestPrincipal ) )
+                if ( permissionMap.keySet().contains( operation.toString() ) )
+                {
+                    List permissions = (List) permissionMap.get( operation.toString() );
+
+                    for ( Iterator i = permissions.iterator(); i.hasNext(); )
                     {
-                        return new AuthorizationResult( true, permission, null );
+                        Permission permission = (Permission) i.next();
+
+                        getLogger().info( "checking permission " + permission.getName() );
+
+                        if ( evaluator.evaluate( permission, operation, resource, guest.getPrincipal() ) )
+                        {
+                            return new AuthorizationResult( true, permission, null );
+                        }
                     }
                 }
             }

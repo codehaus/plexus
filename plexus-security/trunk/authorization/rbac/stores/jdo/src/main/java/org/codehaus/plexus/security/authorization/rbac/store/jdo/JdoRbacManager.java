@@ -544,6 +544,8 @@ public class JdoRbacManager
     {
         RBACObjectAssertions.assertValid( "Save User Assignment", userAssignment );
 
+        fireRbacUserAssignmentSaved( userAssignment );
+
         return (UserAssignment) jdo.saveObject( userAssignment, new String[]{ROLE_DETAIL} );
     }
 
@@ -604,6 +606,8 @@ public class JdoRbacManager
                 "Unable to delete permanent user assignment [" + userAssignment.getPrincipal() + "]" );
         }
 
+        fireRbacUserAssignmentRemoved( userAssignment );
+
         jdo.removeObject( userAssignment );
     }
 
@@ -621,6 +625,8 @@ public class JdoRbacManager
     public void initialize()
         throws InitializationException
     {
+        super.initialize();
+        
         jdo.setListener( this );
         jdo.enableCache( JdoRole.class );
         jdo.enableCache( JdoOperation.class );
@@ -652,5 +658,16 @@ public class JdoRbacManager
     public void rbacRoleSaved( Role role )
     {
         fireRbacRoleSaved( role );
+    }
+
+
+    public void rbacUserAssignmentSaved( UserAssignment userAssignment )
+    {
+        fireRbacUserAssignmentSaved( userAssignment );
+    }
+
+    public void rbacUserAssignmentRemoved( UserAssignment userAssignment )
+    {
+        fireRbacUserAssignmentRemoved( userAssignment );
     }
 }

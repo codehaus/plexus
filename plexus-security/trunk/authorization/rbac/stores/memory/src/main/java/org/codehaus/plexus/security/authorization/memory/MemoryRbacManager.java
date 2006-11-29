@@ -200,6 +200,8 @@ public class MemoryRbacManager
 
         RBACObjectAssertions.assertValid( "Save UserAssignment", userAssignment );
 
+        fireRbacUserAssignmentSaved( userAssignment );
+
         userAssignments.put( userAssignment.getPrincipal(), userAssignment );
         return userAssignment;
     }
@@ -408,6 +410,8 @@ public class MemoryRbacManager
                 "Unable to delete permanent user assignment [" + userAssignment.getPrincipal() + "]" );
         }
 
+        fireRbacUserAssignmentRemoved( userAssignment );
+
         assertUserAssignmentExists( userAssignment.getPrincipal() );
 
         userAssignments.remove( userAssignment.getPrincipal() );
@@ -433,6 +437,8 @@ public class MemoryRbacManager
         {
             UserAssignment ua = new MemoryUserAssignment();
             ua.setPrincipal( principal );
+
+            fireRbacUserAssignmentSaved( ua );
 
             return ua;
         }

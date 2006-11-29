@@ -19,6 +19,7 @@ package org.codehaus.plexus.security.authorization.store.test;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManagerListener;
 import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.security.rbac.UserAssignment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,16 @@ public class RbacManagerEventTracker
         LOG( "Role Saved: " + role.getName() );
         addUnique( addedRoleNames, role.getName() );
     }
+    public void rbacUserAssignmentRemoved( UserAssignment userAssignment )
+    {
 
+    }
+
+    public void rbacUserAssignmentSaved( UserAssignment userAssignment )
+    {
+
+    }
+    
     private void addUnique( List list, Object obj )
     {
         if ( !list.contains( obj ) )
