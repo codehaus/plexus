@@ -31,7 +31,11 @@ public interface EhcacheComponent
 
     public Cache getCache();
 
+    public boolean hasKey( Object key );
+
     public Element getElement( Object key );
+
     public void putElement( Element element );
+
     public void invalidateKey( Object key );
 }

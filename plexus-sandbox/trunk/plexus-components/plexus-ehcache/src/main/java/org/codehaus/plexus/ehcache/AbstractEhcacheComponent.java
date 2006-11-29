@@ -21,6 +21,7 @@ import net.sf.ehcache.Element;
 import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * AbstractEhcacheComponent 
@@ -104,8 +105,23 @@ public abstract class AbstractEhcacheComponent
         return timeToLiveSeconds;
     }
 
+    public boolean hasKey( Object key )
+    {
+        return ( cache.get( key ) != null );
+    }
+
     public void invalidateKey( Object key )
     {
+        if ( key == null )
+        {
+            return;
+        }
+
+        if ( ( key instanceof String ) && StringUtils.isEmpty( (String) key ) )
+        {
+            return;
+        }
+
         Element el = cache.get( key );
         if ( el != null )
         {
