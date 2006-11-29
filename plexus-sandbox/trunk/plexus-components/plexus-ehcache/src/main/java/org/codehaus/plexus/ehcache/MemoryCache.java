@@ -29,7 +29,6 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
  * @version $Id$
  * @plexus.component role="org.codehaus.plexus.ehcache.EhcacheComponent"
  *                   role-hint="memory"
- *                   instantiation-strategy="per-lookup"
  */
 public class MemoryCache
     extends AbstractEhcacheComponent
@@ -39,8 +38,12 @@ public class MemoryCache
         throws InitializationException
     {
         CacheManager cacheManager = CacheManager.getInstance();
-
         boolean overflowToDisk = false;
+
+        if ( cacheManager.cacheExists( getName() ) )
+        {
+            throw new InitializationException( "A previous cache with name [" + getName() + "] exists." );
+        }
 
         cache = new Cache( getName(), getMaxElementsInMemory(), getMemoryStoreEvictionPolicy(), overflowToDisk, null,
                            isEternal(), getTimeToLiveSeconds(), getTimeToIdleSeconds(), false, 100, null );
