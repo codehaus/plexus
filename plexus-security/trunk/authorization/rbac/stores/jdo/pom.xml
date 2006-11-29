@@ -30,11 +30,12 @@
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-rbac-model</artifactId>
     </dependency>
-    <!-- TODO: this is a temporary dependency. We should be lining these providers up more -->
+    <!-- TODO: this is a temporary dependency. We should be lining these providers up more 
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-rbac-store-memory</artifactId>
     </dependency>
+    -->
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-rbac-store-test</artifactId>
