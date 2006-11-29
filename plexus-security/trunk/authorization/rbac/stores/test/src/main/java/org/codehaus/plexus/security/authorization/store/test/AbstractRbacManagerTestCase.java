@@ -1216,7 +1216,7 @@ public abstract class AbstractRbacManagerTestCase
         assignment.addRoleName( adminRole.getName() );
         assignment = manager.saveUserAssignment( assignment );
 
-        //assertNull( "user perm cache for bob should be null after adding new role", userPermCache.get( username ) );
+        assertNull( "user perm cache for bob should be null after adding new role", userPermCache.get( username ) );
 
         permMap = manager.getAssignedPermissionMap( username );
 

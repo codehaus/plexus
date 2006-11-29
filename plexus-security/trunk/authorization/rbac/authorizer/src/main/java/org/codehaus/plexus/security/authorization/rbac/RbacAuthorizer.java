@@ -98,7 +98,7 @@ public class RbacAuthorizer
                     {
                         Permission permission = (Permission) i.next();
 
-                        getLogger().info( "checking permission " + permission.getName() );
+                        getLogger().debug( "checking permission " + permission.getName() );
 
                         if ( evaluator.evaluate( permission, operation, resource, principal ) )
                         {
@@ -122,7 +122,7 @@ public class RbacAuthorizer
                     {
                         Permission permission = (Permission) i.next();
 
-                        getLogger().info( "checking permission " + permission.getName() );
+                        getLogger().debug( "checking permission " + permission.getName() );
 
                         if ( evaluator.evaluate( permission, operation, resource, guest.getPrincipal() ) )
                         {
