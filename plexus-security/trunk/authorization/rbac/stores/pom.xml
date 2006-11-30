@@ -38,6 +38,7 @@
     <module>test</module>
     <module>jdo</module>
     <module>memory</module>
+    <module>cached</module>
     <!--
     <module>xstream</module>
     -->
