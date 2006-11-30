@@ -16,8 +16,6 @@ package org.codehaus.plexus.security.rbac;
  * limitations under the License.
  */
 
-import net.sf.ehcache.Cache;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -37,11 +35,6 @@ public interface RBACManager
      * Plexus Role Name
      */
     public static final String ROLE = RBACManager.class.getName();
-
-    /**
-     * name of a cache used for user permissions
-     */
-    public String USER_PERMISSION_CACHE = "userPermissionCache";
 
     public void addListener( RBACManagerListener listener );
 
@@ -425,12 +418,4 @@ public interface RBACManager
         throws RbacManagerException;
 
     void eraseDatabase();
-
-    /**
-     * return the appointed cache, should it exist
-     *
-     * @param cacheName
-     * @return
-     */
-    Cache getCache( String cacheName );
 }

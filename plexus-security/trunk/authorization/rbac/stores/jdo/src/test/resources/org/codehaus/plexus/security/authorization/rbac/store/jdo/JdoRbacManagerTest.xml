@@ -11,24 +11,6 @@
             <name>javax.jdo.PersistenceManagerFactoryClass</name>
             <value>org.jpox.PersistenceManagerFactoryImpl</value>
           </property>
-          <!-- Only used for the ehcache option
-          <property>
-            <name>org.jpox.cache.level2</name>
-            <value>true</value>
-          </property>
-          <property>
-            <name>org.jpox.cache.level2.type</name>
-            <value>default</value>
-          </property>
-          <property>
-            <name>org.jpox.cache.level2.cacheName</name>
-            <value>testCache</value>
-          </property>
-          <property>
-            <name>org.jpox.cache.level2.configurationFile</name>
-            <value>/org/codehaus/plexus/security/authorization/rbac/store/jdo/testCache.xml</value>
-          </property>
-            -->
         </otherProperties>
       </configuration>
     </component>
