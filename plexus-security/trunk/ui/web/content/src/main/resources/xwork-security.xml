@@ -149,6 +149,7 @@
       <result name="input">/WEB-INF/jsp/pss/admin/userEdit.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/admin/userEdit.jsp</result>
       <result name="success" type="redirect-action">userlist</result>
+      <result name="cancel" type="redirect-action">userlist</result>
     </action>
 
     <action name="usercreate" class="pss-admin-user-create" method="show">
