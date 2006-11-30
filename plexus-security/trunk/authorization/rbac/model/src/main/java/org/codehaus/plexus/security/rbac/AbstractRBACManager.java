@@ -16,9 +16,6 @@ package org.codehaus.plexus.security.rbac;
  * limitations under the License.
  */
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
@@ -44,8 +41,6 @@ public abstract class AbstractRBACManager
     extends AbstractLogEnabled
     implements RBACManager, Initializable
 {
-    private CacheManager cacheManager = CacheManager.create();
-
     private List listeners = new ArrayList();
 
     private Resource globalResource;
@@ -166,13 +161,6 @@ public abstract class AbstractRBACManager
                     "Unable to trigger .rbacUserAssignmentSaved( UserAssignment ) to " + listener.getClass().getName(), e );
             }
         }
-
-        // smoke the entry from the cacheManager
-        if ( cacheManager.getCache( USER_PERMISSION_CACHE ).get( userAssignment.getPrincipal() ) != null )
-        {
-            cacheManager.getCache( USER_PERMISSION_CACHE ).remove( userAssignment.getPrincipal() );
-        }
-
     }
 
     public void fireRbacUserAssignmentRemoved( UserAssignment userAssignment )
@@ -191,14 +179,7 @@ public abstract class AbstractRBACManager
                     "Unable to trigger .rbacUserAssignmentRemoved( UserAssignment ) to " + listener.getClass().getName(), e );
             }
         }
-
-        // smoke the entry from the cacheManager
-        if ( cacheManager.getCache( USER_PERMISSION_CACHE ).get( userAssignment.getPrincipal() ) != null )
-        {
-            cacheManager.getCache( USER_PERMISSION_CACHE ).remove( userAssignment.getPrincipal() );
-        }
     }
-
 
     public void removeRole( String roleName )
         throws RbacObjectNotFoundException, RbacManagerException
@@ -459,22 +440,7 @@ public abstract class AbstractRBACManager
     public Map getAssignedPermissionMap( String principal )
        throws RbacObjectNotFoundException, RbacManagerException
     {
-        Cache userPermCache = cacheManager.getCache( USER_PERMISSION_CACHE );
-
-        if ( userPermCache.get( principal ) != null )
-        {
-            getLogger().debug( "using cached user permission map" );
-            return (Map)userPermCache.get( principal ).getObjectValue();
-        }
-        else
-        {
-            getLogger().debug( "building user permission map" );
-            Map userPermMap = getPermissionMapByOperation( getAssignedPermissions( principal ) );
-            
-            userPermCache.put( new Element( principal, userPermMap ) );
-
-            return userPermMap;
-        }
+        return getPermissionMapByOperation( getAssignedPermissions( principal ) );
     }
 
     private Map getPermissionMapByOperation( Collection permissions )
@@ -800,25 +766,10 @@ public abstract class AbstractRBACManager
 
         return roleMap;
     }
-
-
-    /**
-     * return the appointed cache, should it exist
-     *
-     * @param cacheName
-     * @return
-     */
-    public Cache getCache( String cacheName )
-    {
-        return cacheManager.getCache( cacheName );
-    }
-
+    
     public void initialize()
         throws InitializationException
     {
-        if ( !cacheManager.cacheExists( USER_PERMISSION_CACHE ) )
-        {
-            cacheManager.addCache( USER_PERMISSION_CACHE );
-        }
+        // do nothing here.
     }
 }
