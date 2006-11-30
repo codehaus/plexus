@@ -255,12 +255,12 @@ public class CachedRbacManager
 
         if ( el != null )
         {
-            getLogger().info( "using cached user permission map" );
+            getLogger().debug( "using cached user permission map" );
             return (Map) el.getObjectValue();
         }
         else
         {
-            getLogger().info( "building user permission map" );
+            getLogger().debug( "building user permission map" );
             Map userPermMap = this.rbacImpl.getAssignedPermissionMap( principal );
             userPermissionsCache.putElement( new Element( principal, userPermMap ) );
             return userPermMap;
