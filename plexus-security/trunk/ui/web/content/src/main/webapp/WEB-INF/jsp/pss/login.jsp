@@ -34,7 +34,7 @@
   <ww:password  label="Password" name="password" size="20" required="true" />
   <ww:checkbox label="Remember Me" name="rememberMe" value="false" />
   <ww:submit type="button" value="Login" name="submitButton" />
-  <ww:submit type="button" value="Cancel" name="cancelButton" />
+  <ww:submit type="button" value="Cancel" name="cancelbutton" />
 </ww:form>
 
 <%-- TODO: Figure out how to auto-focus to first field --%>

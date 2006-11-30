@@ -72,7 +72,7 @@ public class RegisterAction
      */
     private RoleProfileManager roleManager;
 
-    private boolean cancelButton;
+    private String cancelbutton;
 
     private CreateUserCredentials user;
 
@@ -96,7 +96,7 @@ public class RegisterAction
 
     public String register()
     {
-        if ( cancelButton )
+        if ( isCancelButton() )
         {
             return REGISTER_CANCEL;
         }
@@ -212,12 +212,12 @@ public class RegisterAction
 
     public boolean isCancelButton()
     {
-        return cancelButton;
+        return "Cancel".equals( cancelbutton );
     }
 
-    public void setCancelButton( boolean cancelButton )
+    public void setCancelbutton( String cancelbutton )
     {
-        this.cancelButton = cancelButton;
+    	this.cancelbutton = cancelbutton;
     }
 
     public CreateUserCredentials getUser()
