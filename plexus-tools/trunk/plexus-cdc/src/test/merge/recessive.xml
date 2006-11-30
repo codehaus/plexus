@@ -6,6 +6,10 @@
         org.codehaus.plexus.cdc.component.RecessiveComponent
       </implementation>
       <description>Description for conflicting recessive component</description>
+      <configuration>
+        <prop1>Recessive Property1 value</prop1>
+        <prop3>Property3 value</prop3>        
+      </configuration>
       <requirements>
         <requirement>
           <role>

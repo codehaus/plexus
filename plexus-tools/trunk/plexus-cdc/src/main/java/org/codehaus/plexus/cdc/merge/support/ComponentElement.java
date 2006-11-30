@@ -43,6 +43,7 @@ public class ComponentElement
         FIELD_NAME,
         LIFECYCLE_HANDLER,
         DESCRIPTION,
+        CONFIGURATION,
         RequirementsElement.TAG };
 
     static final DescriptorTag TAG = new DescriptorTag( "component", true, ComponentElement.class );
@@ -52,6 +53,8 @@ public class ComponentElement
     static final DescriptorTag ROLE_HINT = new DescriptorTag( "role-hint" );
 
     private static final DescriptorTag DESCRIPTION = new DescriptorTag( "description" );
+    
+    private static final DescriptorTag CONFIGURATION = new DescriptorTag( "configuration" );
 
     static final DescriptorTag FIELD_NAME = new DescriptorTag( "field-name" );
 
