@@ -46,12 +46,22 @@ public class UserEditAction
 
     private AdminEditUserCredentials user;
 
+    private String cancelButton;
+
+    private String updateButton;
+
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
     
     public String edit()
     {
+
+        if ( isCancelButton() )
+        {
+           return "CANCEL";
+        }
+
         if ( getUsername() == null )
         {
             addActionError( "Unable to edit user with null username." );
@@ -160,9 +170,35 @@ public class UserEditAction
         return SUCCESS;
     }
 
+    public boolean isCancelButton()
+    {
+    	return "Cancel".equals( cancelButton );
+    }
+
     // ------------------------------------------------------------------
     // Parameter Accessor Methods
     // ------------------------------------------------------------------
+
+
+    public String getCancelButton()
+    {
+        return cancelButton;
+    }
+
+    public void setCancelButton( String cancelButton )
+    {
+        this.cancelButton = cancelButton;
+    }
+
+    public String getUpdateButton()
+    {
+        return updateButton;
+    }
+
+    public void setUpdateButton( String updateButton )
+    {
+        this.updateButton = updateButton;
+    }
 
     public AdminEditUserCredentials getUser()
     {
