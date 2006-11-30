@@ -56,7 +56,7 @@ public class LoginAction
 
     private String password;
     
-    private boolean cancelButton;
+    private String cancelbutton;
     
     private String validateMe;
     
@@ -75,7 +75,7 @@ public class LoginAction
     
     public String login()
     {
-        if ( cancelButton )
+        if ( isCancelButton() )
         {
             return LOGIN_CANCEL;
         }
@@ -89,7 +89,7 @@ public class LoginAction
         if ( StringUtils.isNotEmpty(resetPassword))
         {
             // Process a login / reset password request.
-            return resetPassword();
+        	return resetPassword();
         }
         
         if ( StringUtils.isEmpty(username)  )
@@ -214,12 +214,12 @@ public class LoginAction
 
     public boolean isCancelButton()
     {
-        return cancelButton;
+    	return "Cancel".equals( cancelbutton );
     }
 
-    public void setCancelButton( boolean cancelButton )
+    public void setCancelbutton( String cancelbutton )
     {
-        this.cancelButton = cancelButton;
+    	this.cancelbutton = cancelbutton;
     }
 
     public String getValidateMe()

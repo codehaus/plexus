@@ -46,7 +46,7 @@
     </c:otherwise>
   </c:choose>
   
-  <ww:submit type="button" value="Cancel"   name="cancelButton" />
+  <ww:submit type="button" value="Cancel"   name="cancelbutton" />
 </ww:form>
 
 </body>
