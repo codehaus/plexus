@@ -85,15 +85,17 @@ public class ComponentsXmlMergerTest
         assertEquals( "org.codehaus.plexus.cdc.component.IComponent", cElt.getChildTextTrim( "role" ) );
         assertEquals( "org.codehaus.plexus.cdc.component.DominantComponent", cElt.getChildTextTrim( "implementation" ) );
 
-        assertEquals( 1, cElt.getChildren( "description" ).size() );
+        assertEquals( "Should only have 1 description element.", 1, cElt.getChildren( "description" ).size() );
         assertEquals( "Description for Dominant component", cElt.getChildTextTrim( "description" ) );
 
-        assertEquals( 1, cElt.getChildren( "configuration" ).size() );
+        assertEquals( "Should only have 1 configuration element.", 1, cElt.getChildren( "configuration" ).size() );
         // assert Merged configuration properties
-        assertEquals( 1, cElt.getChild( "configuration" ).getChildren( "prop1" ).size() );
-        assertEquals( "Dominant Property1 value", cElt.getChildTextTrim( "description" ) );
-        assertEquals( 1, cElt.getChild( "configuration" ).getChildren( "prop2" ).size() );
-        assertEquals( 0, cElt.getChild( "configuration" ).getChildren( "prop3" ).size() );
+        Element configurationElt = cElt.getChild( "configuration" );
+        assertNotNull( configurationElt );
+        assertEquals( 1, configurationElt.getChildren( "prop1" ).size() );
+        assertEquals( "Dominant Property1 value", configurationElt.getChildTextTrim( "prop1" ) );
+        assertEquals( 1, configurationElt.getChildren( "prop2" ).size() );
+        assertEquals( 0, configurationElt.getChildren( "prop3" ).size() );
 
         // now for the second component
         cElt = (Element) componentEltList.get( 1 );
