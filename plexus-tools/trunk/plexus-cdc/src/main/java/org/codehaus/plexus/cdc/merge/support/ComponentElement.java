@@ -36,14 +36,22 @@ public class ComponentElement
     /**
      * Allowed elements/tags that we can expect under this element.
      */
-    private final DescriptorTag[] allowedTags =
-        {ROLE, ROLE_HINT, IMPLEMENTATION, FIELD_NAME, LIFECYCLE_HANDLER, RequirementsElement.TAG};
+    private final DescriptorTag[] allowedTags = {
+        ROLE,
+        ROLE_HINT,
+        IMPLEMENTATION,
+        FIELD_NAME,
+        LIFECYCLE_HANDLER,
+        DESCRIPTION,
+        RequirementsElement.TAG };
 
     static final DescriptorTag TAG = new DescriptorTag( "component", true, ComponentElement.class );
 
     static final DescriptorTag ROLE = new DescriptorTag( "role" );
 
     static final DescriptorTag ROLE_HINT = new DescriptorTag( "role-hint" );
+
+    private static final DescriptorTag DESCRIPTION = new DescriptorTag( "description" );
 
     static final DescriptorTag FIELD_NAME = new DescriptorTag( "field-name" );
 

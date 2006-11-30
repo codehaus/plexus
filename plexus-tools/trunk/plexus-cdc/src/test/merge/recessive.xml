@@ -5,6 +5,7 @@
       <implementation>
         org.codehaus.plexus.cdc.component.RecessiveComponent
       </implementation>
+      <description>Description for conflicting recessive component</description>
       <requirements>
         <requirement>
           <role>
@@ -20,6 +21,7 @@
       <implementation>
         org.codehaus.plexus.cdc.component.RecessiveComponent
       </implementation>
+      <description>Description for non-conflicting recessive component</description>
       <requirements>
         <requirement>
           <role>

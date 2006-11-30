@@ -82,17 +82,17 @@ public class ComponentsXmlMergerTest
         assertEquals( 2, componentEltList.size() );
         Element cElt = (Element) componentEltList.get( 0 );
         assertEquals( "org.codehaus.plexus.cdc.component.IComponent", cElt.getChildTextTrim( "role" ) );
-        assertEquals( "org.codehaus.plexus.cdc.component.DominantComponent",
-                      cElt.getChildTextTrim( "implementation" ) );
+        assertEquals( "org.codehaus.plexus.cdc.component.DominantComponent", cElt.getChildTextTrim( "implementation" ) );
+        assertEquals( 1, cElt.getChildren( "description" ).size() );
+        assertEquals( "Description for Dominant component", cElt.getChildTextTrim( "description" ) );
         // now for the second component
         cElt = (Element) componentEltList.get( 1 );
         assertEquals( "org.codehaus.plexus.cdc.component.INonConflictingComponent", cElt.getChildTextTrim( "role" ) );
-        assertEquals( "org.codehaus.plexus.cdc.component.RecessiveComponent",
-                      cElt.getChildTextTrim( "implementation" ) );
+        assertEquals( "org.codehaus.plexus.cdc.component.RecessiveComponent", cElt.getChildTextTrim( "implementation" ) );
 
         assertEquals( 1, mRootElt.getChildren( "lifecycle-handler-manager" ).size() );
-        assertEquals( "org.codehaus.plexus.lifecycle.DefaultLifecycleHandlerManager",
-                      mRootElt.getChild( "lifecycle-handler-manager" ).getAttributeValue( "implementation" ) );
+        assertEquals( "org.codehaus.plexus.lifecycle.DefaultLifecycleHandlerManager", mRootElt
+            .getChild( "lifecycle-handler-manager" ).getAttributeValue( "implementation" ) );
     }
 
     public void testInvalidMergeableElements()
@@ -178,8 +178,7 @@ public class ComponentsXmlMergerTest
         assertEquals( 1, dParent.getChildren( "component" ).size() );
         assertEquals( "org.codehaus.plexus.DominantImplementation", dParent.getChild( "component" )
             .getChildText( "implementation" ) );
-        assertEquals( 1,
-                      dParent.getChild( "component" ).getChild( "requirements" ).getChildren( "requirement" ).size() );
+        assertEquals( 1, dParent.getChild( "component" ).getChild( "requirements" ).getChildren( "requirement" ).size() );
     }
 
     /**
