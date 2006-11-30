@@ -6,6 +6,10 @@
         org.codehaus.plexus.cdc.component.DominantComponent
       </implementation>
       <description>Description for Dominant component</description>
+      <configuration>
+        <prop1>Dominant Property1 value</prop1>
+        <prop2>Dominant Property2 value</prop2>        
+      </configuration>
       <requirements>
         <requirement>
           <role>

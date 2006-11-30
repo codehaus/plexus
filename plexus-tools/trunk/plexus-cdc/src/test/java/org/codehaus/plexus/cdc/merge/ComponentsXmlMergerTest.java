@@ -81,10 +81,20 @@ public class ComponentsXmlMergerTest
         List componentEltList = mRootElt.getChild( "components" ).getChildren( "component" );
         assertEquals( 2, componentEltList.size() );
         Element cElt = (Element) componentEltList.get( 0 );
+
         assertEquals( "org.codehaus.plexus.cdc.component.IComponent", cElt.getChildTextTrim( "role" ) );
         assertEquals( "org.codehaus.plexus.cdc.component.DominantComponent", cElt.getChildTextTrim( "implementation" ) );
+
         assertEquals( 1, cElt.getChildren( "description" ).size() );
         assertEquals( "Description for Dominant component", cElt.getChildTextTrim( "description" ) );
+
+        assertEquals( 1, cElt.getChildren( "configuration" ).size() );
+        // assert Merged configuration properties
+        assertEquals( 1, cElt.getChild( "configuration" ).getChildren( "prop1" ).size() );
+        assertEquals( "Dominant Property1 value", cElt.getChildTextTrim( "description" ) );
+        assertEquals( 1, cElt.getChild( "configuration" ).getChildren( "prop2" ).size() );
+        assertEquals( 0, cElt.getChild( "configuration" ).getChildren( "prop3" ).size() );
+
         // now for the second component
         cElt = (Element) componentEltList.get( 1 );
         assertEquals( "org.codehaus.plexus.cdc.component.INonConflictingComponent", cElt.getChildTextTrim( "role" ) );
