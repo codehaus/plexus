@@ -42,8 +42,6 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
  * @plexus.component
  *   role="org.codehaus.plexus.security.system.SecuritySystem"
  *   role-hint="default"
- *
- * @todo allow for multiple authentication providers i.e. using window and radius
  */
 public class DefaultSecuritySystem
     extends AbstractLogEnabled
