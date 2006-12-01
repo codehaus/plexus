@@ -1,0 +1,14 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.swizzle.JiraReport</role>
+      <implementation>org.codehaus.plexus.swizzle.DefaultJiraReport</implementation>
+      <configuration>
+        <jiraServerUrl>http://jira.codehaus.org</jiraServerUrl>
+        <projectKey>SWIZZLE</projectKey>
+        <projectVersion>*</projectVersion>
+        <context type="org.codehaus.plexus.velocity.VelocityComponent"/>
+      </configuration>
+    </component>
+  </components>
+</component-set>

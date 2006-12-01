@@ -1,0 +1,20 @@
+#set( $jira = $xmlrpc.connect("swizzletester:swizzle","${jiraServerUrl}/rpc/xmlrpc") )
+#set( $project = $jira.getProject($projectKey) )
+#set( $version = $jira.getVersion( $project, $projectVersion) )
+#set( $url = "${jiraServerUrl}/secure/IssueNavigator.jspa?view=rss&&pid=${project.id}&fixfor=${version.id}&tempMax=500&reset=true&decorator=none" )
+#set( $issues = $rss.fetch($url).issues )
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>$project.name Resolved Issues Report</title>
+  </properties>
+  <body>
+    <section name="Issues Resolved for $project.name [$projectVersion]">
+#foreach( $issue in $issues.sort("id").sort("priority") )
+      <ul>
+        <li>[$issue.key] <![CDATA[$issue.summary]]></li>
+      </ul>
+#end
+    </section>
+  </body>
+</document>
