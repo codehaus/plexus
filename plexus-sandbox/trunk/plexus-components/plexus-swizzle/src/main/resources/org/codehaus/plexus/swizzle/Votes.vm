@@ -1,0 +1,34 @@
+#set( $jira = $xmlrpc.connect("swizzletester:swizzle","${jiraServerUrl}/rpc/xmlrpc") )
+#set( $projects = $jira.getProjects().matches("key", "$projectKey") )
+#set( $version = $jira.getVersion( $project, $projectVersion) )
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Project Votes Report</title>
+  </properties>
+  <body>
+    <section name="Issue Tracking Votes">
+#foreach( $project in $projects )
+#set( $url = "http://jira.codehaus.org/secure/IssueNavigator.jspa?view=rss&&pid=${project.id}&fixfor=${version.id}&status=1&sorter/field=issuekey&sorter/order=DESC&tempMax=100&reset=true&decorator=none" )
+#set( $jirarss = $rss.fetch( $url ) )
+#set( $project.attributes.totalVotes = $jirarss.issues.sum("votes") )
+## keep the issues in case you want them later
+#set( $project.attributes.issues = $jirarss.issues )
+#end
+#foreach( $project in $projects.descending("@totalVotes") )
+      <table>
+        <tr>
+          <th>$project.attributes.totalVotes</th>
+          <th>$project.name</th>
+        </tr>
+#foreach( $issue in $project.attributes.issues.descending("votes") )
+        <tr>
+          <td>$issue.votes</td>
+          <td><![CDATA[$issue.summary]]></td>
+        </tr>
+#end
+      </table>
+#end
+    </section>
+  </body>
+</document>
