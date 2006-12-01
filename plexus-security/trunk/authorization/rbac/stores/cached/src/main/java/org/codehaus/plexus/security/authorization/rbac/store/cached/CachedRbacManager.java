@@ -16,12 +16,10 @@ package org.codehaus.plexus.security.authorization.rbac.store.cached;
  * limitations under the License.
  */
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheException;
-import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
 import org.codehaus.plexus.ehcache.EhcacheComponent;
+import org.codehaus.plexus.ehcache.EhcacheUtils;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.rbac.Operation;
 import org.codehaus.plexus.security.rbac.Permission;
@@ -34,7 +32,6 @@ import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -160,40 +157,6 @@ public class CachedRbacManager
         return this.rbacImpl.createUserAssignment( principal );
     }
 
-    public void clearAllCaches()
-    {
-        try
-        {
-            CacheManager cacheManager = CacheManager.getInstance();
-
-            String names[] = cacheManager.getCacheNames();
-            for ( int i = 0; i < names.length; i++ )
-            {
-                try
-                {
-                    Cache cache = cacheManager.getCache( names[i] );
-                    cache.removeAll();
-                }
-                catch ( IllegalStateException e )
-                {
-                    getLogger().warn( "Unable to remove all elements from cache [" + names[i] + "]", e );
-                }
-                catch ( CacheException e )
-                {
-                    getLogger().warn( "Unable to remove all elements from cache [" + names[i] + "]", e );
-                }
-                catch ( IOException e )
-                {
-                    getLogger().warn( "Unable to remove all elements from cache [" + names[i] + "]", e );
-                }
-            }
-        }
-        catch ( IllegalStateException e )
-        {
-            getLogger().error( "Unable to clear all caches: ", e );
-        }
-    }
-
     public void eraseDatabase()
     {
         try
@@ -202,7 +165,7 @@ public class CachedRbacManager
         }
         finally
         {
-            clearAllCaches();
+            EhcacheUtils.clearAllCaches( getLogger() );
         }
     }
 
@@ -481,7 +444,7 @@ public class CachedRbacManager
             ( (RBACManagerListener) this.rbacImpl ).rbacInit( freshdb );
         }
 
-        clearAllCaches();
+        EhcacheUtils.clearAllCaches( getLogger() );
     }
 
     public void rbacPermissionRemoved( Permission permission )
