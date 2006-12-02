@@ -31,6 +31,10 @@
       <artifactId>plexus-action</artifactId>
     </dependency>
     <dependency>
+      <groupId>jython</groupId>
+      <artifactId>jython</artifactId>
+    </dependency>
+    <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <scope>test</scope>

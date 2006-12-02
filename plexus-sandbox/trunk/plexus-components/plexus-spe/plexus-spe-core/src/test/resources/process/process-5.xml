@@ -1,0 +1,13 @@
+<process>
+  <id>process-5</id>
+  <defaultExecutorId>jython</defaultExecutorId>
+  <steps>
+    <step>
+      <configuration>
+        <script>print 'Hello World!';
+value = 'balle'
+        </script>
+      </configuration>
+    </step>
+  </steps>
+</process>

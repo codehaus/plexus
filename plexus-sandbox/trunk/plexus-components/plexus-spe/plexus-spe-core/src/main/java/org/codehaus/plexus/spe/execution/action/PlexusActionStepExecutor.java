@@ -1,38 +1,31 @@
-package org.codehaus.plexus.spe.execution;
+package org.codehaus.plexus.spe.execution.action;
 
 import org.codehaus.classworlds.ClassRealm;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.action.Action;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ComponentConfigurator;
-import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.spe.ProcessException;
+import org.codehaus.plexus.spe.execution.AbstractStepExecutor;
+import org.codehaus.plexus.spe.execution.StepExecutor;
 import org.codehaus.plexus.spe.model.StepDescriptor;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.lang.reflect.Field;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class PlexusActionStepExecutor
-    extends AbstractLogEnabled
+    extends AbstractStepExecutor
     implements StepExecutor, Initializable
 {
-    /**
-     * @plexus.requirement
-     */
-    private PlexusContainer container;
 
     private ClassRealm classRealm;
 
@@ -49,9 +42,9 @@ public class PlexusActionStepExecutor
 
         String configuratorId = getChild( executorConfiguration, "configuratorId", "basic" );
 
-        Action action;
+        Action action = null;
 
-        ComponentConfigurator configurator;
+        ComponentConfigurator configurator = null;
 
         // ----------------------------------------------------------------------
         // Look up the action and the configurator
@@ -59,22 +52,17 @@ public class PlexusActionStepExecutor
 
         try
         {
-            action = (Action) container.lookup( Action.ROLE, actionId );
-        }
-        catch ( ComponentLookupException e )
-        {
-            throw new ProcessException( "Could not look up Hauskeeper action '" + actionId + "'.", e );
-        }
+            action = (Action) lookup( Action.ROLE, actionId );
 
-        try
-        {
-            configurator = (ComponentConfigurator) container.lookup( ComponentConfigurator.ROLE, configuratorId );
+            configurator = (ComponentConfigurator) lookup( ComponentConfigurator.ROLE, configuratorId );
         }
-        catch ( ComponentLookupException e )
+        catch ( ProcessException e )
         {
             release( action );
 
-            throw new ProcessException( "Could not look up component configurator '" + configuratorId + "'.", e );
+            release( configurator );
+
+            throw e;
         }
 
         // ----------------------------------------------------------------------
@@ -161,48 +149,6 @@ public class PlexusActionStepExecutor
     {
         // TODO: Is this the correct realm to use? I would think so as it's the same as the one that the action
         // itself is looked up from.
-        classRealm = container.getContainerRealm();
-    }
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    private String getChild( Xpp3Dom configuration, String key )
-        throws ProcessException
-    {
-        if ( configuration == null ||
-             configuration.getChild( key ) == null ||
-             StringUtils.isEmpty( configuration.getChild( key ).getValue() ) )
-        {
-            throw new ProcessException( "Invalid configuration: Missing '" + key + "'." );
-        }
-
-        return configuration.getChild( key ).getValue();
-    }
-
-    private String getChild( Xpp3Dom configuration, String key, String defaultValue )
-        throws ProcessException
-    {
-        if ( configuration == null ||
-             configuration.getChild( key ) == null ||
-             StringUtils.isEmpty( configuration.getChild( key ).getValue() ) )
-        {
-            return defaultValue;
-        }
-
-        return configuration.getChild( key ).getValue();
-    }
-
-    private void release( Object component )
-    {
-        try
-        {
-            container.release( component );
-        }
-        catch ( ComponentLifecycleException e )
-        {
-            getLogger().error( "Error while releasing ", e );
-        }
+        classRealm = getContainerRealm();
     }
 }

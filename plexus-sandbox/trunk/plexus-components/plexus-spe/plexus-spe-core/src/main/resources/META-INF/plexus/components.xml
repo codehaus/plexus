@@ -62,7 +62,18 @@
     <component>
       <role>org.codehaus.plexus.spe.execution.StepExecutor</role>
       <role-hint>plexus-action</role-hint>
-      <implementation>org.codehaus.plexus.spe.execution.PlexusActionStepExecutor</implementation>
+      <implementation>org.codehaus.plexus.spe.execution.action.PlexusActionStepExecutor</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.PlexusContainer</role>
+        </requirement>
+      </requirements>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.spe.execution.StepExecutor</role>
+      <role-hint>jython</role-hint>
+      <implementation>org.codehaus.plexus.spe.execution.jython.JythonStepExecutor</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.PlexusContainer</role>
