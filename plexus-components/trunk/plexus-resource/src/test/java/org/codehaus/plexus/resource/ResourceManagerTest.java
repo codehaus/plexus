@@ -26,6 +26,7 @@ package org.codehaus.plexus.resource;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -34,7 +35,7 @@ import org.codehaus.plexus.util.IOUtil;
 public class ResourceManagerTest
     extends PlexusTestCase
 {
-    public void testResourceManager()
+    public void testResourceManagerRetrievingInputStreams()
         throws Exception
     {
         ResourceManager resourceManager = (ResourceManager) lookup( ResourceManager.ROLE );
@@ -46,5 +47,19 @@ public class ResourceManagerTest
         assertEquals( "classpath.txt", IOUtil.toString( resourceManager.getResourceAsInputStream( "/dir/classpath.txt" ) ) );
 
         assertEquals( "classpath.txt", IOUtil.toString( resourceManager.getResourceAsInputStream( "dir/classpath.txt" ) ) );
+    }
+
+    public void testResourceManagerRetrievingFiles()
+        throws Exception
+    {
+        ResourceManager resourceManager = (ResourceManager) lookup( ResourceManager.ROLE );
+
+        assertEquals( "file.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "/dir/file.txt" ) ) );
+
+        assertEquals( "file.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "dir/file.txt" ) ) );
+
+        assertEquals( "classpath.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "/dir/classpath.txt" ) ) );
+
+        assertEquals( "classpath.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "dir/classpath.txt" ) ) );
     }
 }

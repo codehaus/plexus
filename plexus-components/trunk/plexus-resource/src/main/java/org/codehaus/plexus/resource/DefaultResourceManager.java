@@ -26,12 +26,20 @@ package org.codehaus.plexus.resource;
 
 import java.util.Iterator;
 import java.io.InputStream;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.Writer;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.resource.loader.manager.ResourceLoaderManager;
 import org.codehaus.plexus.resource.loader.ResourceLoader;
 import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
+import org.codehaus.plexus.resource.loader.FileResourceCreationException;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -76,5 +84,30 @@ public class DefaultResourceManager
         }
 
         return is;
+    }   
+
+    public File getResourceAsFile( String name )
+        throws ResourceNotFoundException, FileResourceCreationException
+    {
+        InputStream is = getResourceAsInputStream( name );
+
+        InputStreamReader reader = new InputStreamReader( is );
+
+        Writer writer;
+
+        File outputFile = FileUtils.createTempFile( "plexus-resources", "tmp", null );
+
+        try
+        {
+            writer = new FileWriter( outputFile );
+
+            IOUtil.copy( reader, writer );
+        }
+        catch ( IOException e )
+        {
+            throw new FileResourceCreationException( "Cannot create file-based resource.", e );
+        }
+
+        return outputFile;
     }
 }
