@@ -52,7 +52,10 @@ public class DefaultResourceManager
 {
     /** @plexus.requirement role="org.codehaus.plexus.resource.loader.ResourceLoader" */
     private Map resourceLoaders;
-    
+
+    /** @plexus.configuration */
+    private File outputDirectory;
+
     // ----------------------------------------------------------------------
     // ResourceManager Implementation
     // ----------------------------------------------------------------------
@@ -84,7 +87,7 @@ public class DefaultResourceManager
         }
 
         return is;
-    }   
+    }
 
     public File getResourceAsFile( String name )
         throws ResourceNotFoundException, FileResourceCreationException
@@ -92,7 +95,8 @@ public class DefaultResourceManager
         return getResourceAsFile( name, null );
     }
 
-    public File getResourceAsFile( String name, String outputPath )
+    public File getResourceAsFile( String name,
+                                   String outputPath )
         throws ResourceNotFoundException, FileResourceCreationException
     {
         InputStream is = getResourceAsInputStream( name );
@@ -109,7 +113,14 @@ public class DefaultResourceManager
         }
         else
         {
-            outputFile = new File( outputPath );
+            if ( outputDirectory != null )
+            {
+                outputFile = new File( outputDirectory, outputPath );
+            }
+            else
+            {
+                outputFile = new File( outputPath );
+            }
         }
 
         try
@@ -126,16 +137,31 @@ public class DefaultResourceManager
         return outputFile;
     }
 
-    public File resolveLocation( String name, String outputPath )
+    public File resolveLocation( String name,
+                                 String outputPath )
         throws IOException
     {
+        // Honour what the original locator does and return null ...
         try
         {
             return getResourceAsFile( name, outputPath );
         }
         catch ( Exception e )
         {
-            throw new IOException( "Error resolving resource " + name + ". " + e.getMessage() );
+            return null;
         }
+    }
+
+    public void setOutputDirectory( File outputDirectory )
+    {
+        this.outputDirectory = outputDirectory;
+    }
+
+    public void addSearchPath( String id,
+                               String path )
+    {
+        ResourceLoader loader = (ResourceLoader) resourceLoaders.get( id );
+
+        loader.addSearchPath( path );
     }
 }

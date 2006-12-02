@@ -43,6 +43,8 @@ import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
 public class FileResourceLoader
     extends AbstractResourceLoader
 {
+    public static final String ID = "file";
+
     // ----------------------------------------------------------------------
     // ResourceLoader Implementation
     // ----------------------------------------------------------------------

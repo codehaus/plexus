@@ -25,9 +25,6 @@ package org.codehaus.plexus.resource.loader;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -43,7 +40,7 @@ public abstract class AbstractResourceLoader
     /** @configuration */
     protected List paths;
 
-    public void addPath( String path )
+    public void addSearchPath( String path )
     {
         if ( paths == null )
         {
