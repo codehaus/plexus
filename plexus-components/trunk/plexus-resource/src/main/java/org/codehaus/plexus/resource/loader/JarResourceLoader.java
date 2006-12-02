@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * @author Jason van Zyl
  * @plexus.component role-hint="jar"
  */
 public class JarResourceLoader
