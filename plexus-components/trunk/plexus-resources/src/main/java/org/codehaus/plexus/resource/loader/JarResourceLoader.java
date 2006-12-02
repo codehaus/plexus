@@ -15,9 +15,6 @@ import java.util.Map;
 public class JarResourceLoader
     extends AbstractResourceLoader
 {
-    /** @plexus.configuration */
-    private List paths;
-
     /**
      * Maps entries to the parent JAR File
      * Key = the entry *excluding* plain directories

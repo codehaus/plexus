@@ -43,9 +43,6 @@ import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
 public class FileResourceLoader
     extends AbstractResourceLoader
 {
-    /** @configuration */
-    private List paths;
-
     // ----------------------------------------------------------------------
     // ResourceLoader Implementation
     // ----------------------------------------------------------------------

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * @author Jason van Zyl
@@ -12,9 +13,6 @@ import java.util.HashMap;
 public class URLResourceLoader
     extends AbstractResourceLoader
 {
-    /** @plexus.configuration */
-    private String[] roots;
-
     protected HashMap templateRoots = new HashMap();
 
     /**
@@ -38,11 +36,13 @@ public class URLResourceLoader
 
         Exception exception = null;
 
-        for ( int i = 0; i < roots.length; i++ )
+        for ( Iterator i = paths.iterator(); i.hasNext(); )
         {
+            String path = (String) i.next();
+
             try
             {
-                URL u = new URL( roots[i] + name );
+                URL u = new URL( path + name );
 
                 inputStream = u.openStream();
 
@@ -50,11 +50,11 @@ public class URLResourceLoader
                 {
                     if ( getLogger().isDebugEnabled() )
                     {
-                        getLogger().debug( "URLResourceLoader: Found '" + name + "' at '" + roots[i] + "'" );
+                        getLogger().debug( "URLResourceLoader: Found '" + name + "' at '" + path + "'" );
                     }
 
                     // save this root for later re-use
-                    templateRoots.put( name, roots[i] );
+                    templateRoots.put( name, path );
 
                     break;
                 }
@@ -63,7 +63,7 @@ public class URLResourceLoader
             {
                 if ( getLogger().isDebugEnabled() )
                 {
-                    getLogger().debug( "URLResourceLoader: Exception when looking for '" + name + "' at '" + roots[i] + "'",
+                    getLogger().debug( "URLResourceLoader: Exception when looking for '" + name + "' at '" + path + "'",
                                ioe );
                 }
 
