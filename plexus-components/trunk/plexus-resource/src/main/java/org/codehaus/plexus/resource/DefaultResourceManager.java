@@ -29,7 +29,7 @@ import java.io.InputStream;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.resource.manager.ResourceLoaderManager;
+import org.codehaus.plexus.resource.loader.manager.ResourceLoaderManager;
 import org.codehaus.plexus.resource.loader.ResourceLoader;
 import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
 
@@ -40,18 +40,10 @@ import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
  */
 public class DefaultResourceManager
     extends AbstractLogEnabled
-    implements ResourceManager, Initializable
+    implements ResourceManager
 {
-    /** @requirement */
+    /** @plexus.requirement */
     private ResourceLoaderManager resourceLoaderManager;
-
-    // ----------------------------------------------------------------------
-    // Component Lifecycle
-    // ----------------------------------------------------------------------
-
-    public void initialize()
-    {
-    }
 
     // ----------------------------------------------------------------------
     // ResourceManager Implementation

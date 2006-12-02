@@ -6,7 +6,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 /**
- * @plexus.component
+ * @plexus.component role-hint="url"
  */
 public class URLResourceLoader
     extends AbstractResourceLoader

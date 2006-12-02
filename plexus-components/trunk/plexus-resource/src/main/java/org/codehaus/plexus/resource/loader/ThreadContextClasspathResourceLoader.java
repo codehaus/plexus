@@ -34,7 +34,7 @@ import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
- * @plexus.component
+ * @plexus.component role-hint="classloader"
  */
 public class ThreadContextClasspathResourceLoader
     extends AbstractResourceLoader
