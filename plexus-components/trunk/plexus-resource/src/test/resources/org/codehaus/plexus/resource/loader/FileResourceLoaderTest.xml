@@ -2,7 +2,7 @@
   <components>
     <component>
       <role>org.codehaus.plexus.resource.loader.ResourceLoader</role>
-      <implementation>org.codehaus.plexus.resource.loader.file.FileResourceLoader</implementation>
+      <implementation>org.codehaus.plexus.resource.loader.FileResourceLoader</implementation>
       <configuration>
         <paths>
           <path implementation="java.lang.String">${basedir}/src/test/file-resources</path>
