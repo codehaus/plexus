@@ -46,6 +46,13 @@ public interface ResourceManager
     File getResourceAsFile( String name )
         throws ResourceNotFoundException, FileResourceCreationException;
 
+    File getResourceAsFile( String name, String outputFile )
+        throws ResourceNotFoundException, FileResourceCreationException;
+
+    void setOutputDirectory( File outputDirectory );
+
+    void addSearchPath( String resourceLoaderId, String searchPath );
+
     /**
      * Provides compatibility with the Locator utility used by several Maven Plugins.
      * @deprecated

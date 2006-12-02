@@ -36,4 +36,6 @@ public interface ResourceLoader
 
     InputStream getResourceAsInputStream( String name )
         throws ResourceNotFoundException;
+
+    void addSearchPath( String path );
 }
