@@ -30,6 +30,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -40,5 +41,15 @@ public abstract class AbstractResourceLoader
     implements ResourceLoader
 {
     /** @configuration */
-    private List paths;
+    protected List paths;
+
+    public void addPath( String path )
+    {
+        if ( paths == null )
+        {
+            paths = new ArrayList();
+        }
+
+        paths.add( path );
+    }
 }
