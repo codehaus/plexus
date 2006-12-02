@@ -29,23 +29,16 @@ import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
+import java.util.List;
+
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public abstract class AbstractResourceLoader
     extends AbstractLogEnabled
-    implements ResourceLoader, Initializable
+    implements ResourceLoader
 {
-    protected Logger log;
-
-    // ----------------------------------------------------------------------------
-    // Lifecycle
-    // ----------------------------------------------------------------------------
-
-    public void initialize()
-        throws InitializationException
-    {
-        log = getLogger();
-    }
+    /** @configuration */
+    private List paths;
 }

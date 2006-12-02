@@ -46,19 +46,19 @@ public class JarResourceLoader
 
     private void loadJar( String path )
     {
-        if ( log.isDebugEnabled() )
+        if ( getLogger().isDebugEnabled() )
         {
-            log.debug( "JarResourceLoader : trying to load \"" + path + "\"" );
+            getLogger().debug( "JarResourceLoader : trying to load \"" + path + "\"" );
         }
 
         // Check path information
         if ( path == null )
         {
-            log.error( "JarResourceLoader : can not load JAR - JAR path is null" );
+            getLogger().error( "JarResourceLoader : can not load JAR - JAR path is null" );
         }
         if ( !path.startsWith( "jar:" ) )
         {
-            log.error( "JarResourceLoader : JAR path must start with jar: -> " +
+            getLogger().error( "JarResourceLoader : JAR path must start with jar: -> " +
                 "see java.net.JarURLConnection for information" );
         }
         if ( !path.endsWith( "!/" ) )
@@ -127,7 +127,7 @@ public class JarResourceLoader
             String msg = "JAR resource error : argument " + source +
                 " contains .. and may be trying to access " + "content outside of template root.  Rejected.";
 
-            log.error( "JarResourceLoader : " + msg );
+            getLogger().error( "JarResourceLoader : " + msg );
 
             throw new ResourceNotFoundException( msg );
         }
