@@ -6,7 +6,7 @@
     <artifactId>plexus-components</artifactId>
     <version>1.1.7-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-resource</artifactId>
+  <artifactId>plexus-resources</artifactId>
   <version>1.0-alpha-4-SNAPSHOT</version>
   <name>Plexus Resource Component</name>
 </project>
