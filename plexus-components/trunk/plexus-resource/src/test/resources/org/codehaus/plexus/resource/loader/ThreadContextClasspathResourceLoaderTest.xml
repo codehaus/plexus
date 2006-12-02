@@ -2,6 +2,7 @@
   <components>
     <component>
       <role>org.codehaus.plexus.resource.loader.ResourceLoader</role>
+      <role-hint>classloader</role-hint>
       <implementation>org.codehaus.plexus.resource.loader.ThreadContextClasspathResourceLoader</implementation>
     </component>
   </components>

@@ -2,6 +2,7 @@
   <components>
     <component>
       <role>org.codehaus.plexus.resource.loader.ResourceLoader</role>
+      <role-hint>file</role-hint>
       <implementation>org.codehaus.plexus.resource.loader.FileResourceLoader</implementation>
       <configuration>
         <paths>
