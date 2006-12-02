@@ -25,6 +25,9 @@ package org.codehaus.plexus.resource.loader;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -32,6 +35,17 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
  */
 public abstract class AbstractResourceLoader
     extends AbstractLogEnabled
-    implements ResourceLoader
+    implements ResourceLoader, Initializable
 {
+    protected Logger log;
+
+    // ----------------------------------------------------------------------------
+    // Lifecycle
+    // ----------------------------------------------------------------------------
+
+    public void initialize()
+        throws InitializationException
+    {
+        log = getLogger();
+    }
 }

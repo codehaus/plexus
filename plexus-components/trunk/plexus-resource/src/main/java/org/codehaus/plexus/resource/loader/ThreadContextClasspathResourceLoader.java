@@ -1,4 +1,4 @@
-package org.codehaus.plexus.resource.loader.classpath;
+package org.codehaus.plexus.resource.loader;
 
 /*
  * The MIT License

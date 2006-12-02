@@ -1,4 +1,4 @@
-package org.codehaus.plexus.resource.loader.classpath;
+package org.codehaus.plexus.resource.loader;
 
 /*
  * The MIT License
@@ -25,25 +25,25 @@ package org.codehaus.plexus.resource.loader.classpath;
  */
 
 import org.codehaus.plexus.resource.loader.AbstractResourceLoaderTest;
-import org.codehaus.plexus.resource.loader.ResourceLoader;
+import org.codehaus.plexus.resource.loader.AbstractResourceLoaderTest;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class ThreadContextClasspathResourceLoaderTest
+public class FileResourceLoaderTest
     extends AbstractResourceLoaderTest
 {
     public void testLookupWithAAbsolutePathName()
         throws Exception
     {
-        assertResource( "/dir/classpath.txt", "classpath.txt" );
+        assertResource( "/dir/file.txt", "file.txt" );
     }
 
     public void testLookupWithARelativePath()
         throws Exception
     {
-        assertResource( "dir/classpath.txt", "classpath.txt" );
+        assertResource( "dir/file.txt", "file.txt" );
     }
 
     public void testLookupWhenTheResourceIsMissing()
@@ -52,21 +52,5 @@ public class ThreadContextClasspathResourceLoaderTest
         assertMissingResource( "/foo.txt" );
 
         assertMissingResource( "foo.txt" );
-    }
-
-    public void testLookupWithANullThreadContextClassLoader()
-        throws Exception
-    {
-        ResourceLoader resourceLoader = (ResourceLoader) lookup( ResourceLoader.ROLE );
-
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-
-        Thread.currentThread().setContextClassLoader( null );
-
-        assertMissingResource( "/dir/classpath.txt" );
-
-        assertMissingResource( "dir/classpath.txt" );
-
-        Thread.currentThread().setContextClassLoader( loader );
     }
 }
