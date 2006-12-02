@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 
+/**
+ * @plexus.component
+ */
 public class URLResourceLoader
     extends AbstractResourceLoader
 {
