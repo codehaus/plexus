@@ -48,9 +48,9 @@ public class URLResourceLoader
 
                 if ( inputStream != null )
                 {
-                    if ( log.isDebugEnabled() )
+                    if ( getLogger().isDebugEnabled() )
                     {
-                        log.debug( "URLResourceLoader: Found '" + name + "' at '" + roots[i] + "'" );
+                        getLogger().debug( "URLResourceLoader: Found '" + name + "' at '" + roots[i] + "'" );
                     }
 
                     // save this root for later re-use
@@ -61,9 +61,9 @@ public class URLResourceLoader
             }
             catch ( IOException ioe )
             {
-                if ( log.isDebugEnabled() )
+                if ( getLogger().isDebugEnabled() )
                 {
-                    log.debug( "URLResourceLoader: Exception when looking for '" + name + "' at '" + roots[i] + "'",
+                    getLogger().debug( "URLResourceLoader: Exception when looking for '" + name + "' at '" + roots[i] + "'",
                                ioe );
                 }
 
