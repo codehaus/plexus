@@ -40,7 +40,7 @@
     <module>plexus-mimetyper</module>    
     <module>plexus-mail-sender</module>
     <module>plexus-notification</module>
-    <module>plexus-resource</module>
+    <module>plexus-resources</module>
     <module>plexus-taskqueue</module>    
     <module>plexus-velocity</module>
     <module>plexus-xmlrpc</module>
