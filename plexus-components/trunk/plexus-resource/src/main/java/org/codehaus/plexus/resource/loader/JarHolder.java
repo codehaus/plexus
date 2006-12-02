@@ -13,6 +13,7 @@ import java.util.jar.JarFile;
  * A small wrapper around a Jar
  *
  * @author <a href="mailto:daveb@miceda-data.com">Dave Bryson</a>
+ * @author Jason van Zyl
  * @version $Id$
  */
 public class JarHolder
