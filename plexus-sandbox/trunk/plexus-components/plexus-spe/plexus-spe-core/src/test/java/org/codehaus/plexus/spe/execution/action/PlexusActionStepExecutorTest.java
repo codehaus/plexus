@@ -1,4 +1,4 @@
-package org.codehaus.plexus.spe.execution;
+package org.codehaus.plexus.spe.execution.action;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.xml.Xpp3Dom;

@@ -27,6 +27,11 @@
         <version>1.0-alpha-6</version>
       </dependency>
       <dependency>
+        <groupId>jython</groupId>
+        <artifactId>jython</artifactId>
+        <version>2.1</version>
+      </dependency>
+      <dependency>
         <groupId>hsqldb</groupId>
         <artifactId>hsqldb</artifactId>
         <version>1.8.0.1</version>

@@ -134,6 +134,18 @@ public class ProcessServiceTest
         // TODO: Asserts
     }
 
+    public void testJythonBasedTest()
+        throws Exception
+    {
+        ProcessService processService = (ProcessService) lookup( ProcessService.ROLE );
+
+        processService.loadProcess( getTestFile( "src/test/resources/process/process-5.xml" ).toURL() );
+
+        int instanceId = processService.executeProcess( "process-5", new HashMap<String, Serializable>() );
+
+        waitForCompletion( 3000, processService, instanceId );
+    }
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------

@@ -13,6 +13,17 @@
     </component>
 
     <component>
+      <role>org.codehaus.plexus.action.Action</role>
+      <implementation>org.codehaus.plexus.spe.execution.jython.TestActionA</implementation>
+      <role-hint>jython-a</role-hint>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.action.Action</role>
+      <implementation>org.codehaus.plexus.spe.execution.jython.TestActionB</implementation>
+      <role-hint>testb</role-hint>
+    </component>
+
+    <component>
       <role>org.codehaus.plexus.jdo.JdoFactory</role>
       <implementation>org.codehaus.plexus.jdo.DefaultJdoFactory</implementation>
       <configuration>
