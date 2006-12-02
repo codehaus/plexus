@@ -26,6 +26,7 @@ package org.codehaus.plexus.resource;
 
 import java.io.InputStream;
 import java.io.File;
+import java.io.IOException;
 
 import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
 import org.codehaus.plexus.resource.loader.FileResourceCreationException;
@@ -44,4 +45,11 @@ public interface ResourceManager
 
     File getResourceAsFile( String name )
         throws ResourceNotFoundException, FileResourceCreationException;
+
+    /**
+     * Provides compatibility with the Locator utility used by several Maven Plugins.
+     * @deprecated
+     */
+    File resolveLocation( String location, String localfile )
+        throws IOException;
 }

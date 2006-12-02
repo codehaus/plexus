@@ -111,4 +111,17 @@ public class DefaultResourceManager
 
         return outputFile;
     }
+
+    public File resolveLocation( String name, String localFile )
+        throws IOException
+    {
+        try
+        {
+            return getResourceAsFile( name );
+        }
+        catch ( Exception e )
+        {
+            throw new IOException( "Error resolving resource " + name + ". " + e.getMessage() );
+        }
+    }
 }
