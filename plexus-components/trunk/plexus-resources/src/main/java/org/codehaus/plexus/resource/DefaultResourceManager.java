@@ -24,22 +24,21 @@ package org.codehaus.plexus.resource;
  * SOFTWARE.
  */
 
-import java.util.Iterator;
-import java.io.InputStream;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.Writer;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.resource.loader.manager.ResourceLoaderManager;
+import org.codehaus.plexus.resource.loader.FileResourceCreationException;
 import org.codehaus.plexus.resource.loader.ResourceLoader;
 import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
-import org.codehaus.plexus.resource.loader.FileResourceCreationException;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Writer;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -51,9 +50,9 @@ public class DefaultResourceManager
     extends AbstractLogEnabled
     implements ResourceManager
 {
-    /** @plexus.requirement */
-    private ResourceLoaderManager resourceLoaderManager;
-
+    /** @plexus.requirement role="org.codehaus.plexus.resource.loader.ResourceLoader" */
+    private Map resourceLoaders;
+    
     // ----------------------------------------------------------------------
     // ResourceManager Implementation
     // ----------------------------------------------------------------------
@@ -63,9 +62,9 @@ public class DefaultResourceManager
     {
         InputStream is = null;
 
-        for ( Iterator it = resourceLoaderManager.getResourceLoaders(); it.hasNext(); )
+        for ( Iterator i = resourceLoaders.values().iterator(); i.hasNext(); )
         {
-            ResourceLoader resourceLoader = (ResourceLoader) it.next();
+            ResourceLoader resourceLoader = (ResourceLoader) i.next();
 
             try
             {
@@ -90,13 +89,28 @@ public class DefaultResourceManager
     public File getResourceAsFile( String name )
         throws ResourceNotFoundException, FileResourceCreationException
     {
+        return getResourceAsFile( name, null );
+    }
+
+    public File getResourceAsFile( String name, String outputPath )
+        throws ResourceNotFoundException, FileResourceCreationException
+    {
         InputStream is = getResourceAsInputStream( name );
 
         InputStreamReader reader = new InputStreamReader( is );
 
         Writer writer;
 
-        File outputFile = FileUtils.createTempFile( "plexus-resources", "tmp", null );
+        File outputFile;
+
+        if ( outputPath == null )
+        {
+            outputFile = FileUtils.createTempFile( "plexus-resources", "tmp", null );
+        }
+        else
+        {
+            outputFile = new File( outputPath );
+        }
 
         try
         {
@@ -112,12 +126,12 @@ public class DefaultResourceManager
         return outputFile;
     }
 
-    public File resolveLocation( String name, String localFile )
+    public File resolveLocation( String name, String outputPath )
         throws IOException
     {
         try
         {
-            return getResourceAsFile( name );
+            return getResourceAsFile( name, outputPath );
         }
         catch ( Exception e )
         {
