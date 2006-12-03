@@ -1,0 +1,9 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.apache.maven.reporting.MavenReport</role>
+      <role-hint>plexus-components</role-hint>
+      <implementation>org.codehaus.plexus.maven.plugin.PlexusComponentsReport</implementation>
+    </component>
+  </components>
+</component-set>
