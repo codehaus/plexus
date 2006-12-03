@@ -60,6 +60,8 @@ public class DefaultResourceManager
     // ResourceManager Implementation
     // ----------------------------------------------------------------------
 
+    //TODO: we should tell the user where we have searched for the resource so if it fails they can
+    // debug easier (jvz)
     public InputStream getResourceAsInputStream( String name )
         throws ResourceNotFoundException
     {
@@ -122,6 +124,8 @@ public class DefaultResourceManager
                 outputFile = new File( outputPath );
             }
         }
+
+        outputFile.deleteOnExit();            
 
         try
         {

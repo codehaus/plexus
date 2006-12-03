@@ -38,15 +38,10 @@ public abstract class AbstractResourceLoader
     implements ResourceLoader
 {
     /** @configuration */
-    protected List paths;
+    protected List paths = new ArrayList();
 
     public void addSearchPath( String path )
     {
-        if ( paths == null )
-        {
-            paths = new ArrayList();
-        }
-
         paths.add( path );
     }
 }
