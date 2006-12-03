@@ -28,11 +28,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
 import org.codehaus.plexus.resource.loader.AbstractResourceLoader;
 import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -75,5 +77,53 @@ public class FileResourceLoader
         }
 
         throw new ResourceNotFoundException( name );
+    }
+
+    public static File getResourceAsFile( String name,
+                                          String outputPath,
+                                          File outputDirectory )
+        throws FileResourceCreationException
+
+    {
+        File f = new File( name );
+
+        if ( f.exists() )
+        {
+            if ( outputPath == null )
+            {
+                return f;
+            }
+            else
+            {
+                try
+                {
+                    File outputFile;
+
+                    if ( outputDirectory != null )
+                    {
+                        outputFile = new File( outputDirectory, outputPath );
+                    }
+                    else
+                    {
+                        outputFile = new File( outputPath );
+                    }
+
+                    if ( !outputFile.getParentFile().exists() )
+                    {
+                        outputFile.getParentFile().mkdirs();
+                    }
+
+                    FileUtils.copyFile( f, outputFile );
+
+                    return outputFile;
+                }
+                catch ( IOException e )
+                {
+                    throw new FileResourceCreationException( "Cannot create file-based resource.", e );
+                }
+            }
+        }
+
+        return null;
     }
 }

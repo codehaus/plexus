@@ -59,4 +59,12 @@ public interface ResourceManager
      */
     File resolveLocation( String location, String localfile )
         throws IOException;
+
+    /**
+     * Provides compatibility with the Locator utility used by several Maven Plugins.
+     * @deprecated
+     */
+    File resolveLocation( String location )
+        throws IOException;
+
 }
