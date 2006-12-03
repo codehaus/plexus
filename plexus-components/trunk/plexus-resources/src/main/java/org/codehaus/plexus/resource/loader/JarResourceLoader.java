@@ -15,6 +15,8 @@ import java.util.Map;
 public class JarResourceLoader
     extends AbstractResourceLoader
 {
+    public static final String ID = "jar";
+
     /**
      * Maps entries to the parent JAR File
      * Key = the entry *excluding* plain directories
