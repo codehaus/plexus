@@ -28,6 +28,7 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.resource.loader.FileResourceCreationException;
 import org.codehaus.plexus.resource.loader.ResourceLoader;
 import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
+import org.codehaus.plexus.resource.loader.FileResourceLoader;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 
@@ -75,6 +76,8 @@ public class DefaultResourceManager
             {
                 is = resourceLoader.getResourceAsInputStream( name );
 
+                getLogger().debug( "The resource " + "'" + name + "'" + " found using the " + resourceLoader + "." );
+
                 break;
             }
             catch ( ResourceNotFoundException e )
@@ -101,6 +104,16 @@ public class DefaultResourceManager
                                    String outputPath )
         throws ResourceNotFoundException, FileResourceCreationException
     {
+        // Optimization for File to File fetches
+        File f = FileResourceLoader.getResourceAsFile( name, outputPath, outputDirectory );
+
+        if ( f != null )
+        {
+            return f;
+        }
+
+        // End optimization
+
         InputStream is = getResourceAsInputStream( name );
 
         InputStreamReader reader = new InputStreamReader( is );
@@ -125,10 +138,13 @@ public class DefaultResourceManager
             }
         }
 
-        outputFile.deleteOnExit();            
-
         try
         {
+            if ( !outputFile.getParentFile().exists() )
+            {
+                outputFile.getParentFile().mkdirs();
+            }
+
             writer = new FileWriter( outputFile );
 
             IOUtil.copy( reader, writer );
@@ -149,6 +165,23 @@ public class DefaultResourceManager
         try
         {
             return getResourceAsFile( name, outputPath );
+        }
+        catch ( Exception e )
+        {
+            return null;
+        }
+    }
+
+    public File resolveLocation( String name )
+        throws IOException
+    {
+        // Honour what the original locator does and return null ...
+
+        System.out.println( "name = " + name );
+
+        try
+        {
+            return getResourceAsFile( name );
         }
         catch ( Exception e )
         {
