@@ -33,7 +33,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-cdc</artifactId>
-      <version>1.0-alpha-8-SNAPSHOT</version>
+      <version>1.0-alpha-8</version>
     </dependency>
   </dependencies>
   <scm> 
