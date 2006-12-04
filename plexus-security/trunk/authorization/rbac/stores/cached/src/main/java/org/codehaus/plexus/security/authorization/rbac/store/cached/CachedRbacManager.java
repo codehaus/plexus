@@ -51,7 +51,7 @@ public class CachedRbacManager
     implements RBACManager, RBACManagerListener
 {
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private RBACManager rbacImpl;
 
