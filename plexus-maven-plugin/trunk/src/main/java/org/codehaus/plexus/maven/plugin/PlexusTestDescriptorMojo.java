@@ -27,16 +27,17 @@ import java.util.List;
 import com.sun.org.apache.xpath.internal.operations.And;
 
 /**
- * @goal descriptor
+ * @goal test-descriptor
  *
  * @phase process-sources
  *
- * @description Processes the specificed list of Java source directories {@link And} builds a Plexus descriptor.
+ * @description Processes the specificed list of Java unit test source directories {@link And} builds a Plexus descriptor.
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
+ * @since 1.3.4
  */
-public class PlexusDescriptorMojo
+public class PlexusTestDescriptorMojo
     extends AbstractDescriptorMojo
 {
     // ----------------------------------------------------------------------
@@ -44,14 +45,14 @@ public class PlexusDescriptorMojo
     // ----------------------------------------------------------------------
 
     /**
-     * List of Java source directories to process.
+     * List of Java unit test source directories to process.
      * 
-     * @parameter expression="${project.compileSourceRoots}"
+     * @parameter expression="${project.testCompileSourceRoots}"
      * @required
      */
     private List sourceDirectories;
 
-    /** 
+    /**
      * {@inheritDoc}
      * 
      * @see org.codehaus.plexus.maven.plugin.AbstractDescriptorMojo#getSourceDirectories()
