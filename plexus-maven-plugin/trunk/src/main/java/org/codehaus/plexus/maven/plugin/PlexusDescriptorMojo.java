@@ -24,8 +24,6 @@ package org.codehaus.plexus.maven.plugin;
 
 import java.util.List;
 
-import com.sun.org.apache.xpath.internal.operations.And;
-
 /**
  * @goal descriptor
  *

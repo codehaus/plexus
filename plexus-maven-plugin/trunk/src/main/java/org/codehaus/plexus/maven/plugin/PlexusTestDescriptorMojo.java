@@ -24,12 +24,11 @@ package org.codehaus.plexus.maven.plugin;
 
 import java.util.List;
 
-import com.sun.org.apache.xpath.internal.operations.And;
 
 /**
  * @goal test-descriptor
  *
- * @phase process-sources
+ * @phase process-sourcesO
  *
  * @description Processes the specificed list of Java unit test source directories {@link And} builds a Plexus descriptor.
  *
