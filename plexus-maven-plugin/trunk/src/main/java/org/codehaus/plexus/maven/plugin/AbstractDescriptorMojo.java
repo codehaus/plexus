@@ -46,11 +46,24 @@ import java.util.List;
 public abstract class AbstractDescriptorMojo
     extends AbstractMojo
 {
+    // -----------------------------------------------------------------------
+    // Abstract Methods
+    // -----------------------------------------------------------------------
+
     /**
-     * @parameter expression="${project.build.directory}/generated-resources/plexus/"
-     * @required
+     * Extensions are expected to override and return an appropriate list of
+     * source directories which this Mojo will process and generate
+     * <code>components.xml</code> descriptor.
+     *
+     * @return list of Java source directories to process.
      */
-    private File outputDirectory;
+    protected abstract List getSourceDirectories();
+
+    protected abstract File getOutputDirectory();
+
+    // -----------------------------------------------------------------------
+    // Parameters
+    // -----------------------------------------------------------------------
 
     /**
      * @parameter expression="META-INF/plexus/components.xml"
@@ -87,11 +100,6 @@ public abstract class AbstractDescriptorMojo
      */
     private MavenProjectHelper mavenProjectHelper;
 
-    public AbstractDescriptorMojo()
-    {
-        super();
-    }
-
     public void execute()
         throws MojoExecutionException
     {
@@ -110,23 +118,14 @@ public abstract class AbstractDescriptorMojo
 
         try
         {
-            cdc.processSources( sources, new File( outputDirectory, fileName ), containerDescriptor, roleDefaults );
+            cdc.processSources( sources, new File( getOutputDirectory(), fileName ), containerDescriptor, roleDefaults );
         }
         catch ( ComponentDescriptorCreatorException e )
         {
             throw new MojoExecutionException( "Error while executing component descritor creator.", e );
         }
 
-        mavenProjectHelper.addResource( mavenProject, outputDirectory.getAbsolutePath(), Collections.EMPTY_LIST,
+        mavenProjectHelper.addResource( mavenProject, getOutputDirectory().getAbsolutePath(), Collections.EMPTY_LIST,
                                         Collections.EMPTY_LIST );
     }
-
-    /**
-     * Extensions are expected to override and return an appropriate list of
-     * source directories which this Mojo will process and generate
-     * <code>components.xml</code> descriptor.
-     *
-     * @return list of Java source directories to process.
-     */
-    protected abstract List getSourceDirectories();
 }
