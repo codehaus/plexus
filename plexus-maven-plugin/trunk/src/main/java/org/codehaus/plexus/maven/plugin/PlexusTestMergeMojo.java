@@ -1,7 +1,7 @@
 package org.codehaus.plexus.maven.plugin;
 
 /*
- * Copyright (c) 2004-2006, Codehaus.org
+ * Copyright (c) 2006, Codehaus.org
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,30 +22,30 @@ package org.codehaus.plexus.maven.plugin;
  * SOFTWARE.
  */
 
-import java.io.File;
 import java.util.List;
+import java.io.File;
 
 /**
- * @goal merge-descriptors
+ * @goal test-merge-descriptors
  *
- * @phase process-resources
+ * @phase process-test-resources
  *
- * @description Merges all Plexus descriptors in the main sources.
- * 
+ * @description Merges all Plexus descriptors in the test sources.
+ *
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class PlexusMergeMojo
+public class PlexusTestMergeMojo
     extends AbstractMergeMojo
 {
     /**
-     * @parameter expression="${project.resources}"
+     * @parameter expression="${project.testResources}"
      * @required
      */
     private List resources;
 
     /**
-     * @parameter expression="${project.build.outputDirectory}/META-INF/plexus/components.xml"
+     * @parameter expression="${project.build.testOutputDirectory}/META-INF/plexus/components.xml"
      * @required
      */
     private File output;

@@ -23,6 +23,7 @@ package org.codehaus.plexus.maven.plugin;
  */
 
 import java.util.List;
+import java.io.File;
 
 /**
  * @goal descriptor
@@ -42,12 +43,25 @@ public class PlexusDescriptorMojo
     // ----------------------------------------------------------------------
 
     /**
+     * The output directory where the descriptor is written.
+     *
+     * @parameter expression="${project.build.directory}/generated-resources/plexus/"
+     * @required
+     */
+    private File outputDirectory;
+
+    /**
      * List of Java source directories to process.
      *
      * @parameter expression="${project.compileSourceRoots}"
      * @required
      */
     private List sourceDirectories;
+
+    protected File getOutputDirectory()
+    {
+        return outputDirectory;
+    }
 
     protected List getSourceDirectories()
     {
