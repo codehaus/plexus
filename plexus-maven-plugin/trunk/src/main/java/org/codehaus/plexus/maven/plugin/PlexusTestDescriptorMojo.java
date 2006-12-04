@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @goal test-descriptor
  *
- * @phase process-sourcesO
+ * @phase process-sources
  *
  * @description Processes the specificed list of Java unit test source directories {@link And} builds a Plexus descriptor.
  *
