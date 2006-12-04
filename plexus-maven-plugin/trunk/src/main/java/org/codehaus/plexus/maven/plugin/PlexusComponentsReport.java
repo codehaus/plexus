@@ -1,3 +1,5 @@
+package org.codehaus.plexus.maven.plugin;
+
 /*
  * The MIT License
  *
@@ -22,8 +24,6 @@
  * SOFTWARE.
  */
 
-package org.codehaus.plexus.maven.plugin;
-
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
@@ -40,6 +40,7 @@ import java.util.Locale;
 
 /**
  * @goal components-report
+ *
  * @execute phase="process-resources" lifecycle="plexus-site"
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -142,11 +143,13 @@ public class PlexusComponentsReport
         }
         catch ( JDOMException e )
         {
-            throw new MavenReportException( "Error while building document of " + componentsXml.getAbsolutePath() + ".", e);
+            throw new MavenReportException( "Error while building document of " + componentsXml.getAbsolutePath() + ".",
+                                            e );
         }
         catch ( IOException e )
         {
-            throw new MavenReportException( "Error while building document of " + componentsXml.getAbsolutePath() + ".", e);
+            throw new MavenReportException( "Error while building document of " + componentsXml.getAbsolutePath() + ".",
+                                            e );
         }
 
         if ( document.getRootElement().getName().equals( "component-set" ) )

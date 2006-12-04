@@ -1,7 +1,7 @@
+package org.codehaus.plexus.maven.plugin;
+
 /*
- * The MIT License
- *
- * Copyright (c) 2006, The Codehaus
+ * Copyright (c) 2004-2005, Codehaus.org
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,21 +22,19 @@
  * SOFTWARE.
  */
 
-package org.codehaus.plexus.maven.plugin;
-
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.model.Resource;
 import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
 import org.codehaus.plexus.cdc.ComponentDescriptorCreatorException;
 import org.codehaus.plexus.util.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * @goal merge-descriptors
@@ -112,7 +110,8 @@ public class PlexusMergeMojo
             {
                 File basedir = new File( resource.getDirectory() );
 
-                getLog().debug( "Searching for component.xml files. Basedir: " + basedir.getAbsolutePath() + ", includes: " + includes + ", excludes=" + excludes );
+                getLog().debug( "Searching for component.xml files. Basedir: " + basedir.getAbsolutePath() +
+                    ", includes: " + includes + ", excludes=" + excludes );
 
                 if ( !basedir.isDirectory() )
                 {

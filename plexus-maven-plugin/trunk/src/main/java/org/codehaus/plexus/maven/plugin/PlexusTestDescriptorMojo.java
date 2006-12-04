@@ -24,13 +24,12 @@ package org.codehaus.plexus.maven.plugin;
 
 import java.util.List;
 
-
 /**
  * @goal test-descriptor
  *
  * @phase process-sources
  *
- * @description Processes the specificed list of Java unit test source directories {@link And} builds a Plexus descriptor.
+ * @description Processes the specificed list of Java unit test source directories and builds a Plexus descriptor.
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -45,20 +44,14 @@ public class PlexusTestDescriptorMojo
 
     /**
      * List of Java unit test source directories to process.
-     * 
+     *
      * @parameter expression="${project.testCompileSourceRoots}"
      * @required
      */
     private List sourceDirectories;
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see org.codehaus.plexus.maven.plugin.AbstractDescriptorMojo#getSourceDirectories()
-     */
     protected List getSourceDirectories()
     {
         return this.sourceDirectories;
     }
-
 }
