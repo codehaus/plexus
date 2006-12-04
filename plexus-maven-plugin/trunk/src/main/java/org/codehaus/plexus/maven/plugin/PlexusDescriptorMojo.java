@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @phase process-sources
  *
- * @description Processes the specificed list of Java source directories {@link And} builds a Plexus descriptor.
+ * @description Processes the specificed list of Java source directories and builds a Plexus descriptor.
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -43,20 +43,14 @@ public class PlexusDescriptorMojo
 
     /**
      * List of Java source directories to process.
-     * 
+     *
      * @parameter expression="${project.compileSourceRoots}"
      * @required
      */
     private List sourceDirectories;
 
-    /** 
-     * {@inheritDoc}
-     * 
-     * @see org.codehaus.plexus.maven.plugin.AbstractDescriptorMojo#getSourceDirectories()
-     */
     protected List getSourceDirectories()
     {
         return this.sourceDirectories;
     }
-
 }
