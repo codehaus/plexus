@@ -236,4 +236,72 @@ public abstract class AbstractDynamicRoleProfile
             throw new RoleProfileException( "system error with rbac manager", rm );
         }
     }
+
+        /**
+     * rename the role built off of the profile based on the oldResource being passed in.
+     *
+     * will throw exception is original role isPermanent() returns true
+     *
+     * @param oldResource
+     * @param newResource
+     * @throws RoleProfileException
+     */
+    public void renameRole( String oldResource, String newResource )
+        throws RoleProfileException
+    {
+        try
+        {
+            if ( !isPermanent() )
+            {
+                // make sure the resource exists
+                if ( !rbacManager.resourceExists( newResource ) )
+                {
+                    Resource res = rbacManager.createResource( newResource );
+                    rbacManager.saveResource( res );
+                }
+
+                if ( getOperations() != null )
+                {
+                    for ( Iterator i = getOperations().iterator(); i.hasNext(); )
+                    {
+                        String operationString = (String) i.next();
+
+                        if ( !rbacManager.permissionExists(
+                            operationString + RoleProfileConstants.DELIMITER + oldResource ) )
+                        {
+                            Permission permission = rbacManager.getPermission(
+                                operationString + RoleProfileConstants.DELIMITER + oldResource );
+
+                            permission.setResource( rbacManager.getResource( newResource ) );
+
+                            permission.setName( operationString + RoleProfileConstants.DELIMITER + newResource );
+
+                            rbacManager.savePermission( permission );
+                        }
+                    }
+                }
+
+                Role role = rbacManager.getRole( getRoleName( oldResource ) );
+                role.setName( getRoleName( newResource ) );
+
+                rbacManager.saveRole( role );
+            }
+            else
+            {
+                throw new RoleProfileException( "denied, can not rename a permanent role" );
+            }
+        }
+        catch ( RbacObjectInvalidException ri )
+        {
+            throw new RoleProfileException( "invalid role", ri );
+        }
+        catch ( RbacObjectNotFoundException rn )
+        {
+            throw new RoleProfileException( "unable to get role", rn );
+        }
+        catch ( RbacManagerException rm )
+        {
+            throw new RoleProfileException( "system error with rbac manager", rm );
+        }
+    }
 }

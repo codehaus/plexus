@@ -59,4 +59,5 @@ public interface DynamicRoleProfile
 
     public void deleteRole( String resource ) throws RoleProfileException;
 
+    public void renameRole( String oldResource, String newResource ) throws RoleProfileException;
 }

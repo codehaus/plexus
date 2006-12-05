@@ -42,6 +42,9 @@ public interface RoleProfileManager
     public void deleteDynamicRole( String roleHint, String resource )
         throws RoleProfileException;
 
+    public void renameDynamicRole( String roleHint, String oldResource, String newResource )
+        throws RoleProfileException;
+
     public boolean isInitialized();
 
     public void setInitialized( boolean initialized );
