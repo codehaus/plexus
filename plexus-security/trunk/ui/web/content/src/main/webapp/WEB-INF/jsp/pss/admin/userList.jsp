@@ -32,11 +32,24 @@
 <h2>[Admin] User List</h2>
 
 <div class="users">
-<div class="reports">
+  <div class="reports">
     Reports: 
-    <ww:url id="rolematrixReport" action="report!rolematrix" namespace="/security" />
-    <ww:a href="%{rolematrixReport}">Roles Matrix</ww:a>
-</div>
+    <c:forEach items="${reportMap}" var="reportEntry">
+       <span class="report">
+         <c:forEach items="${reportEntry.value}" var="report" varStatus="status">
+           <a href="${pageContext.request.contextPath}/security/report!generate.action?reportId=${report.value.id}&reportType=${report.value.type}" 
+              title="${report.value.name} Report (${report.value.type} type)">
+             <c:if test="${status.count eq 1}">
+               <span class="name">
+                 ${report.value.name}
+               </span>
+             </c:if>
+             <img src="${pageContext.request.contextPath}/images/pss/table/${report.value.type}.gif" /></a>
+         </c:forEach>
+       </span>
+    </c:forEach>
+  </div>
+  
 <div class="extraFilters">
 <ww:form action="userlist!show" namespace="/security" theme="simple" method="get">
   <ww:label value="Filter By Role:" />

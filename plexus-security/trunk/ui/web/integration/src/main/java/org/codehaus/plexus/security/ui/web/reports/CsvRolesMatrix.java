@@ -155,7 +155,7 @@ public class CsvRolesMatrix
 
     public String getId()
     {
-        return "rolesmatix";
+        return "rolesmatrix";
     }
 
     public String getMimeType()
