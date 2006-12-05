@@ -1,5 +1,18 @@
 package org.codehaus.plexus.xwork;
 
+import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
+import org.codehaus.plexus.context.DefaultContext;
+import org.codehaus.plexus.util.PropertyUtils;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -8,19 +21,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-
-import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.PlexusContainerException;
-import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
-import org.codehaus.plexus.util.PropertyUtils;
 
 /**
  * Web listener that will initialize the Plexus container.
@@ -55,8 +55,20 @@ public class PlexusLifecycleListener
         try
         {
             ServletContext ctx = servletContextEvent.getServletContext();
+            Map containerContext = new HashMap();
 
-            PlexusContainer pc = new DefaultPlexusContainer( "default", getClass().getClassLoader(), setConfigurationStream( ctx ), initializeContext( ctx, resolveContextProperties( ctx ) ) );
+            PlexusContainer appContainer = (PlexusContainer) ctx.getAttribute( PlexusConstants.PLEXUS_KEY );
+            if ( appContainer != null )
+            {
+                // TODO: should this be a parent container? Concerned about classloading, so not doing this right now, just inheriting the context
+                DefaultContext appContainerContext = (DefaultContext) appContainer.getContext();
+                containerContext.putAll( appContainerContext.getContextData() );
+            }
+
+            containerContext.putAll( initializeContext( ctx, resolveContextProperties( ctx ) ) );
+
+            PlexusContainer pc = new DefaultPlexusContainer( "default", getClass().getClassLoader(), setConfigurationStream( ctx ),
+                                                             containerContext );
 
             ctx.setAttribute( KEY, pc );
         }
