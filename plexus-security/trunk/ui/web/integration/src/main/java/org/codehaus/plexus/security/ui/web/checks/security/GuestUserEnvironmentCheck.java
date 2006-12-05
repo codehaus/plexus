@@ -86,7 +86,9 @@ public class GuestUserEnvironmentCheck
                 policy.setEnabled( false );
 
                 guest = userManager.createUser( "guest", "Guest", "" );
+                guest.setPermanent( true );
                 guest = userManager.addUser( guest );
+
             }
             finally
             {
