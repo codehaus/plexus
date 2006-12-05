@@ -1,6 +1,147 @@
 <plexus>
   <components>
 
+    <!-- ===============================================================
+           Security System Definition.
+
+           Uses RBAC Authorizer and Keys Authorizer
+         =============================================================== -->
+    <component>
+      <role>org.codehaus.plexus.security.system.SecuritySystem</role>
+      <implementation>org.codehaus.plexus.security.system.DefaultSecuritySystem</implementation>
+      <role-hint>default</role-hint>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.authentication.AuthenticationManager</role>
+          <role-hint>default</role-hint>
+          <field-name>authnManager</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.authorization.Authorizer</role>
+          <role-hint>rbac</role-hint>
+          <field-name>authorizer</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.user.UserManager</role>
+          <role-hint>jdo</role-hint>
+          <field-name>userManager</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.keys.KeyManager</role>
+          <role-hint>jdo</role-hint>
+          <field-name>keyManager</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.policy.UserSecurityPolicy</role>
+          <role-hint>default</role-hint>
+          <field-name>policy</field-name>
+        </requirement>
+      </requirements>
+    </component>
+
+    <!-- User Security Policy -->
+    <component>
+      <role>org.codehaus.plexus.security.policy.UserSecurityPolicy</role>
+      <role-hint>default</role-hint>
+      <implementation>org.codehaus.plexus.security.policy.DefaultUserSecurityPolicy</implementation>
+      <description>User Security Policy.</description>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.configuration.UserConfiguration</role>
+          <field-name>config</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.policy.PasswordEncoder</role>
+          <role-hint>sha256</role-hint>
+          <field-name>passwordEncoder</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.policy.UserValidationSettings</role>
+          <field-name>userValidationSettings</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.policy.RememberMeSettings</role>
+          <field-name>rememberMeSettings</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.policy.SingleSignOnSettings</role>
+          <field-name>singleSignOnSettings</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.policy.PasswordRule</role>
+          <field-name>rules</field-name>
+        </requirement>
+      </requirements>
+    </component>
+
+    <!-- RBAC Authorizer utilizing cached jdo rbac manager. -->
+    <component>
+      <role>org.codehaus.plexus.security.authorization.Authorizer</role>
+      <role-hint>rbac</role-hint>
+      <implementation>org.codehaus.plexus.security.authorization.rbac.RbacAuthorizer</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.rbac.RBACManager</role>
+          <role-hint>cached</role-hint>
+          <field-name>manager</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.user.UserManager</role>
+          <role-hint>jdo</role-hint>
+          <field-name>userManager</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvaluator</role>
+          <role-hint>default</role-hint>
+        </requirement>
+      </requirements>
+    </component>
+
+    <!-- RBAC Manager, cached jdo -->
+    <component>
+      <role>org.codehaus.plexus.security.rbac.RBACManager</role>
+      <role-hint>cached</role-hint>
+      <implementation>org.codehaus.plexus.security.authorization.rbac.store.cached.CachedRbacManager</implementation>
+      <description>CachedRbacManager is a wrapped RBACManager with caching.</description>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.rbac.RBACManager</role>
+          <role-hint>jdo</role-hint>
+          <field-name>rbacImpl</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+          <role-hint>operations</role-hint>
+          <field-name>operationsCache</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+          <role-hint>permissions</role-hint>
+          <field-name>permissionsCache</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+          <role-hint>resources</role-hint>
+          <field-name>resourcesCache</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+          <role-hint>roles</role-hint>
+          <field-name>rolesCache</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+          <role-hint>userAssignments</role-hint>
+          <field-name>userAssignmentsCache</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+          <role-hint>userPermissions</role-hint>
+          <field-name>userPermissionsCache</field-name>
+        </requirement>
+      </requirements>
+    </component>
+
     <component>
       <role>org.codehaus.plexus.rbac.profile.RoleProfile</role>
       <role-hint>user-administrator</role-hint>
@@ -8,7 +149,7 @@
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.security.rbac.RBACManager</role>
-          <role-hint>jdo</role-hint>
+          <role-hint>cached</role-hint>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.PlexusContainer</role>
@@ -24,7 +165,7 @@
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.security.rbac.RBACManager</role>
-          <role-hint>jdo</role-hint>
+          <role-hint>cached</role-hint>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.PlexusContainer</role>
@@ -40,7 +181,7 @@
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.security.rbac.RBACManager</role>
-          <role-hint>jdo</role-hint>
+          <role-hint>cached</role-hint>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.PlexusContainer</role>
@@ -56,7 +197,7 @@
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.security.rbac.RBACManager</role>
-          <role-hint>jdo</role-hint>
+          <role-hint>cached</role-hint>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.PlexusContainer</role>
@@ -64,5 +205,55 @@
         </requirement>
       </requirements>
     </component>
+
+    <!-- ===============================================================
+           JDO Definition.
+         =============================================================== -->
+
+    <component>
+      <role>org.codehaus.plexus.jdo.JdoFactory</role>
+      <role-hint>users</role-hint>
+      <implementation>org.codehaus.plexus.jdo.DataSourceConfigurableJdoFactory</implementation>
+      <configuration>
+
+        <connectionFactoryName>java:comp/env/jdbc/users</connectionFactoryName>
+        <shutdownConnectionFactoryName>java:comp/env/jdbc/shutdown</shutdownConnectionFactoryName>
+
+        <!-- JPOX and JDO configuration -->
+        <persistenceManagerFactoryClass>org.jpox.PersistenceManagerFactoryImpl</persistenceManagerFactoryClass>
+        <otherProperties>
+          <property>
+            <name>org.jpox.autoCreateSchema</name>
+            <value>true</value>
+          </property>
+          <property>
+            <name>org.jpox.validateTables</name>
+            <value>false</value>
+          </property>
+          <property>
+            <name>org.jpox.validateColumns</name>
+            <value>false</value>
+          </property>
+          <property>
+            <name>org.jpox.validateConstraints</name>
+            <value>false</value>
+          </property>
+          <property>
+            <name>org.jpox.transactionIsolation</name>
+            <value>READ_UNCOMMITTED</value>
+          </property>
+          <property>
+            <name>org.jpox.poid.transactionIsolation</name>
+            <value>READ_UNCOMMITTED</value>
+          </property>
+          <property>
+            <name>org.jpox.rdbms.dateTimezone</name>
+            <value>JDK_DEFAULT_TIMEZONE</value>
+          </property>
+        </otherProperties>
+      </configuration>
+    </component>
+
+
   </components>
 </plexus>
