@@ -33,34 +33,16 @@ import org.codehaus.plexus.cdc.ComponentDescriptorCreatorException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 /**
- * Provides a template for extensions to process sources as specified by {@link #getSourceDirectories()}.
- *
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @since 1.3.4
  */
 public abstract class AbstractDescriptorMojo
     extends AbstractMojo
 {
-    // -----------------------------------------------------------------------
-    // Abstract Methods
-    // -----------------------------------------------------------------------
-
-    /**
-     * Extensions are expected to override and return an appropriate list of
-     * source directories which this Mojo will process and generate
-     * <code>components.xml</code> descriptor.
-     *
-     * @return list of Java source directories to process.
-     */
-    protected abstract List getSourceDirectories();
-
-    protected abstract File getOutputDirectory();
-
     // -----------------------------------------------------------------------
     // Parameters
     // -----------------------------------------------------------------------
@@ -100,16 +82,33 @@ public abstract class AbstractDescriptorMojo
      */
     private MavenProjectHelper mavenProjectHelper;
 
-    public void execute()
+    protected MavenProject getMavenProject()
+    {
+        return mavenProject;
+    }
+
+    protected MavenProjectHelper getMavenProjectHelper()
+    {
+        return mavenProjectHelper;
+    }
+
+    // -----------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------
+
+    /**
+     * Create the component set descriptor from the source files.
+     *
+     * @param sourceDirectories
+     * @param outputDirectory
+     * @throws MojoExecutionException
+     */
+    protected void generateDescriptor( List sourceDirectories, File outputDirectory )
         throws MojoExecutionException
     {
-        // ----------------------------------------------------------------------
-        // Create the component set descriptor from the source files
-        // ----------------------------------------------------------------------
+        File[] sources = new File[sourceDirectories.size()];
 
-        File[] sources = new File[getSourceDirectories().size()];
-
-        Iterator it = getSourceDirectories().iterator();
+        Iterator it = sourceDirectories.iterator();
 
         for ( int i = 0; i < sources.length; i++ )
         {
@@ -118,14 +117,11 @@ public abstract class AbstractDescriptorMojo
 
         try
         {
-            cdc.processSources( sources, new File( getOutputDirectory(), fileName ), containerDescriptor, roleDefaults );
+            cdc.processSources( sources, new File( outputDirectory, fileName ), containerDescriptor, roleDefaults );
         }
         catch ( ComponentDescriptorCreatorException e )
         {
             throw new MojoExecutionException( "Error while executing component descritor creator.", e );
         }
-
-        mavenProjectHelper.addResource( mavenProject, getOutputDirectory().getAbsolutePath(), Collections.EMPTY_LIST,
-                                        Collections.EMPTY_LIST );
     }
 }
