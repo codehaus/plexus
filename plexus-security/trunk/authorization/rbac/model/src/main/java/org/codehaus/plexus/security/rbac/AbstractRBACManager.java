@@ -697,6 +697,7 @@ public abstract class AbstractRBACManager
         if ( globalResource == null )
         {
             globalResource = createResource( Resource.GLOBAL );
+            globalResource.setPermanent( true );
             globalResource = saveResource( globalResource );
         }
         return globalResource;
