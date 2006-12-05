@@ -33,7 +33,7 @@
         <levels>
           <level>
             <hierarchy>org.codehaus.plexus.PlexusContainer</hierarchy>
-            <level>DEBUG</level>
+            <level>WARN</level>
           </level>
           <level>
             <hierarchy>org.codehaus.plexus.security</hierarchy>
@@ -45,11 +45,11 @@
           </level>
           <level>
             <hierarchy>com.opensymphony.xwork</hierarchy>
-            <level>DEBUG</level>
+            <level>WARN</level>
           </level>
           <level>
             <hierarchy>com.opensymphony.webwork</hierarchy>
-            <level>DEBUG</level>
+            <level>WARN</level>
           </level>
           <level>
             <hierarchy>freemarker</hierarchy>

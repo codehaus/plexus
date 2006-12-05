@@ -17,14 +17,11 @@ package org.codehaus.plexus.security.example.web;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.rbac.profile.RoleProfile;
-import org.codehaus.plexus.rbac.profile.RoleProfileConstants;
 import org.codehaus.plexus.rbac.profile.RoleProfileException;
 import org.codehaus.plexus.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacManagerException;
-import org.codehaus.plexus.security.rbac.RbacObjectInvalidException;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 import org.codehaus.plexus.security.system.SecuritySystem;
@@ -118,10 +115,12 @@ public class TestUsersEnvironmentCheck
         if ( !checked )
         {
             createUser( "testuser1", "Test User 1", "test.user@gmail.com", "pass123", false, true );
-            createUser( "testuser2", "Test User 2", "test.user.2@gmail.com", "pass123", false, true );
-            createUser( "testuser3", "Test User 3", "test.user.iii@gmail.com", "pass123", false, false );
-            createUser( "testuser4", "Test User 4", "test.user.four@gmail.com", "pass123", false, true );
-            createUser( "testuser5", "Test User 5", "test.user.ng@gmail.com", "pass123", true, true );
+            createUser( "testuser2", "Test User 2", "test,user.2@gmail.com", "pass123", false, true );
+            
+            // Intentionally create bad users to test CSV reporting
+            createUser( "csvtest1", "CSV Test \"User\" 1", "csv.1@gmail.com", "pass123", false, false );
+            createUser( "csvtest2", "CSV Test \t'Pau 2", "csv.2@gmail.com", "pass123", false, true );
+            createUser( "csvtest3", "CSV Test User \next Generation 3", "csv.3@gmail.com", "pass123", true, true );
 
             // Filmed On Location
             createUser( "amy", "Amy Wong", "amy@kapa.kapa.wong.mars", "guh!", false, true );
@@ -137,7 +136,7 @@ public class TestUsersEnvironmentCheck
             createUser( "nibbler", "Lord Nibbler", "nibbler@planetexpress.com", "growl", false, false );
             createUser( "hermes", "Hermes Conrad", "hermes@bureaucrat.planetexpress.com", "groovy", 
                         false, true );
-            createUser( "hubert", "Professor Hubert J. Farnsword", "owner@planetexpress.com", 
+            createUser( "hubert", "Professor Hubert J. Farnsworth", "owner@planetexpress.com", 
                         "doomsday", false, true );
             createUser( "zoidberg", "Dr. John Zoidberg", "doctor@planetexpress.com", "sayargh", 
                         true, false );
