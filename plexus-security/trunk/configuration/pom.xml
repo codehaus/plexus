@@ -37,6 +37,10 @@
           <groupId>commons-beanutils</groupId>
           <artifactId>commons-beanutils-core</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>commons-lang</groupId>
+          <artifactId>commons-lang</artifactId>
+        </exclusion>
         <!-- targeting JDK 1.4, xml parser/apis not needed -->
         <exclusion>
           <groupId>xerces</groupId>
@@ -59,6 +63,10 @@
           <artifactId>servletapi</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
     </dependency>
     <dependency>
       <groupId>commons-beanutils</groupId>
