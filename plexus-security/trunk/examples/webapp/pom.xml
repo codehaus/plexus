@@ -144,7 +144,7 @@
             </executions>
             <configuration>
               <archiveClasses>false</archiveClasses>
-              <dependentWarExcludes>WEB-INF/web.xml,WEB-INF/lib/**/*.jar,WEB-INF/jsp/pss/**,images/pss/**</dependentWarExcludes>
+              <dependentWarExcludes>WEB-INF/web.xml,WEB-INF/lib/**/*.jar</dependentWarExcludes>
             </configuration>
           </plugin>
           <plugin>
