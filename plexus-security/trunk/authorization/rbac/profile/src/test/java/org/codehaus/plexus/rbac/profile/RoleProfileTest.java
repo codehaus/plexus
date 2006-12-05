@@ -94,4 +94,17 @@ public class RoleProfileTest
         assertEquals( 2, root.getPermissions().size() );
 
     }
+
+    public void testRoleProfileRename()
+        throws Exception
+    {
+        Role bogus = roleManager.getDynamicRole( "bogus", "one" );
+
+        assertTrue( rbacManager.roleExists( BogusDynamicRoleProfile.NAME + RoleProfileConstants.DELIMITER + "one" ) );
+
+        roleManager.renameDynamicRole( "bogus", "one", "two" );
+
+        assertTrue( rbacManager.roleExists( BogusDynamicRoleProfile.NAME + RoleProfileConstants.DELIMITER + "two" ) );
+
+    }
 }

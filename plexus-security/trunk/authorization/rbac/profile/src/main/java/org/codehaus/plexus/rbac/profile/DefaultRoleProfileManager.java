@@ -123,6 +123,24 @@ public class DefaultRoleProfileManager
 
     }
 
+
+    public void renameDynamicRole( String roleHint, String oldResource, String newResource )
+        throws RoleProfileException
+    {
+        try
+        {
+            DynamicRoleProfile roleProfile =  (DynamicRoleProfile)container.lookup( DynamicRoleProfile.ROLE, roleHint );
+
+            roleProfile.renameRole( oldResource, newResource );
+        }
+        catch ( ComponentLookupException cle )
+        {
+            throw new RoleProfileException( "unable to locate dynamic role profile " + roleHint, cle );
+        }
+
+    }
+
+
     public void initialize()
         throws RoleProfileException
     {

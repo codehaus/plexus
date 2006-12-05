@@ -31,9 +31,11 @@ import java.util.Collections;
 public class BogusDynamicRoleProfile
     extends AbstractDynamicRoleProfile
 {
+    public static String NAME = "BOGUS ROLE";
+
     public String getRoleName( String resource )
     {
-        return "BOGUS ROLE" + RoleProfileConstants.DELIMITER + resource;
+        return NAME + RoleProfileConstants.DELIMITER + resource;
     }
 
     public List getOperations()
