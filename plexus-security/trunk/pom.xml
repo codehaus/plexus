@@ -269,6 +269,16 @@
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
         <version>1.0.4</version>
+        <!-- This dependency is not used in this project's codebase.
+             This dependency is in use by other dependencies.
+             TODO: write pmd rule to ensure no direct usage of commons-logging.
+             
+             Forcing version across the board to be 1.0.4 (or better) to 
+             ensure proper error, exception, and configuration messages. 
+             Goodbye percieved ClassLoader issues. 
+             
+             - Joakim Erdfelt
+          -->
       </dependency>
       <dependency>
         <groupId>hsqldb</groupId>
