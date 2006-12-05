@@ -40,7 +40,7 @@ public class ReportManager
     implements Initializable
 {
     /**
-     * @plexus.requirement
+     * @plexus.requirement role="org.codehaus.plexus.security.ui.web.reports.Report"
      */
     private List availableReports;
 
