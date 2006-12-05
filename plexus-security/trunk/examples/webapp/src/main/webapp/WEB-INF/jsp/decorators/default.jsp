@@ -26,6 +26,7 @@
 
   <style type="text/css" media="all">
     @IMPORT url("/css/main.css");
+    @IMPORT url("/css/pss/table.css");
   </style>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 </head>
