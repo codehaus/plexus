@@ -103,6 +103,7 @@ public class AddAdminUserAction
         u.setPassword( user.getPassword() );
         u.setLocked( false );
         u.setPasswordChangeRequired( false );
+        u.setPermanent( true );
 
         
         userManager.addUser( u );
