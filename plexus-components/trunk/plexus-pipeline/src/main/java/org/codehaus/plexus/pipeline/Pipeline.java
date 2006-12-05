@@ -15,4 +15,6 @@ public interface Pipeline
 
     void processMessage( Map context, ExceptionHandler exceptionHandler )
         throws PipelineException;
+
+    void setTraceExecution( boolean traceExecution );
 }
