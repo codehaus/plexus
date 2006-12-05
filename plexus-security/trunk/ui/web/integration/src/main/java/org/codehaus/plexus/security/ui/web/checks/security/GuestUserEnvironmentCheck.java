@@ -98,6 +98,7 @@ public class GuestUserEnvironmentCheck
                 Role guestRole = roleProfileManager.getRole( "guest" );
                 UserAssignment ua = rbacManager.createUserAssignment( guest.getPrincipal().toString() );
                 ua.addRoleName( guestRole );
+                ua.setPermanent( true );
                 rbacManager.saveUserAssignment( ua );
 
             }
