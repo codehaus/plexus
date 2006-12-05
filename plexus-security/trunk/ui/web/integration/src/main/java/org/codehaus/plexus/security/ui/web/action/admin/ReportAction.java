@@ -16,6 +16,9 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
+import com.opensymphony.webwork.ServletActionContext;
+import com.opensymphony.xwork.ActionContext;
+
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
@@ -24,6 +27,7 @@ import org.codehaus.plexus.security.ui.web.reports.Report;
 import org.codehaus.plexus.security.ui.web.reports.ReportException;
 import org.codehaus.plexus.security.ui.web.reports.ReportManager;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
+import org.extremecomponents.table.context.HttpServletRequestContext;
 
 /**
  * ReportAction 
@@ -62,7 +66,9 @@ public class ReportAction
             addActionError( "Unable to find report: " + e.getMessage() );
             return ERROR;
         }
-
+        
+        ServletActionContext.getRequest().setAttribute( "report", report );
+        
         return DOWNLOAD;
     }
 
@@ -93,15 +99,5 @@ public class ReportAction
     public void setReportType( String reportType )
     {
         this.reportType = reportType;
-    }
-
-    public Report getReport()
-    {
-        return report;
-    }
-
-    public void setReport( Report report )
-    {
-        this.report = report;
     }
 }

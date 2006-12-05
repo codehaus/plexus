@@ -49,8 +49,12 @@ div.users .reports {
 	font-family: Verdana;
 	font-size: 10px;
 	height: 1.3em;
-	padding-top: 0.5em;
 	padding-right: 0.5em;
+}
+
+div.users .reports img {
+	border: 0;
+	vertical-align: middle;
 }
 
 div.users .extraFilters input {
