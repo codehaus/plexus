@@ -41,6 +41,8 @@ public class UserComparator
 
     private static final int LOCKED = 5;
 
+    private static final int PERMANENT = 6;
+
     private int propKey = UNKNOWN;
 
     private boolean ascending;
@@ -68,6 +70,10 @@ public class UserComparator
         else if ( "locked".equals( property ) )
         {
             propKey = LOCKED;
+        }
+        else if ( "permanent".equals( property ) )
+        {
+            propKey = PERMANENT;
         }
     }
 
@@ -118,6 +124,8 @@ public class UserComparator
                 return compareBooleans( u1.isValidated(), u2.isValidated() );
             case LOCKED:
                 return compareBooleans( u1.isLocked(), u2.isLocked() );
+            case PERMANENT:
+                return compareBooleans( u1.isPermanent(), u2.isPermanent() );
             default:
                 return 0;
 

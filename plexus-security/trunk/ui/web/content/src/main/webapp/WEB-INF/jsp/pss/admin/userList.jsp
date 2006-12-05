@@ -94,7 +94,7 @@
         <ec:column property="fullName" title="Full Name" alias="fullname" />
         <ec:column property="email" title="Email" cell="org.codehaus.plexus.security.ui.web.eXc.MailtoCell" />
         <ec:column property="permanent" cell="org.codehaus.plexus.security.ui.web.eXc.CheckboxImageCell" style="text-align: center"
-          title="Perm" filterable="false"/> <%-- Boolean's can't be filtered --%>
+          title="Permanent" filterable="false"/> <%-- Boolean's can't be filtered --%>
         <ec:column property="validated" cell="org.codehaus.plexus.security.ui.web.eXc.CheckboxImageCell" style="text-align: center"
           title="Validated" filterable="false"/> <%-- Boolean's can't be filtered --%>
         <ec:column property="locked" cell="org.codehaus.plexus.security.ui.web.eXc.CheckboxImageCell" style="text-align: center"
