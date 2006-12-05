@@ -16,8 +16,8 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
+import com.opensymphony.module.sitemesh.filter.PageResponseWrapper;
 import com.opensymphony.webwork.ServletActionContext;
-import com.opensymphony.xwork.ActionContext;
 
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
@@ -27,7 +27,11 @@ import org.codehaus.plexus.security.ui.web.reports.Report;
 import org.codehaus.plexus.security.ui.web.reports.ReportException;
 import org.codehaus.plexus.security.ui.web.reports.ReportManager;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
-import org.extremecomponents.table.context.HttpServletRequestContext;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * ReportAction 
@@ -42,8 +46,6 @@ import org.extremecomponents.table.context.HttpServletRequestContext;
 public class ReportAction
     extends AbstractSecurityAction
 {
-    private static final String DOWNLOAD = "download";
-
     /**
      * @plexus.requirement
      */
@@ -52,24 +54,60 @@ public class ReportAction
     private String reportId;
 
     private String reportType;
-    
-    private Report report;
 
     public String generate()
     {
+        Report report;
         try
         {
-            this.report = reportManager.findReport( reportId, reportType );
+            report = reportManager.findReport( reportId, reportType );
         }
         catch ( ReportException e )
         {
             addActionError( "Unable to find report: " + e.getMessage() );
             return ERROR;
         }
-        
-        ServletActionContext.getRequest().setAttribute( "report", report );
-        
-        return DOWNLOAD;
+
+        HttpServletResponse response = ServletActionContext.getResponse();
+
+        // HACK: Unwrap sitemesh response. (effectively disables sitemesh)
+        if ( response instanceof PageResponseWrapper )
+        {
+            response = (HttpServletResponse) ( (PageResponseWrapper) response ).getResponse();
+        }
+
+        try
+        {
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            report.writeReport( os );
+            
+            response.reset();
+            response.setContentType( report.getMimeType() );
+            response.addHeader( "Content-Disposition", "attachment; filename=" + report.getId() + "."
+                + report.getType() ); 
+            byte bytes[] = os.toByteArray();
+            response.setContentLength( bytes.length );
+            response.getOutputStream().write( bytes, 0, bytes.length );
+            response.getOutputStream().flush();
+            response.getOutputStream().close();
+            
+            // Don't return a result.
+            return null;
+        }
+        catch ( ReportException e )
+        {
+            String emsg = "Unable to generate report.";
+            addActionError( emsg );
+            getLogger().error( emsg, e );
+            return ERROR;
+        }
+        catch ( IOException e )
+        {
+            String emsg = "Unable to generate report.";
+            addActionError( emsg );
+            getLogger().error( emsg, e );
+            return ERROR;
+        }
     }
 
     public SecureActionBundle initSecureActionBundle()
