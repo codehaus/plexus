@@ -27,9 +27,6 @@ public interface RoleProfileManager
 {
     String ROLE = RoleProfileManager.class.getName();
 
-    public void initialize()
-        throws RoleProfileException;
-
     public Role getRole( String roleName )
         throws RoleProfileException;
 
@@ -43,6 +40,13 @@ public interface RoleProfileManager
         throws RoleProfileException;
 
     public void renameDynamicRole( String roleHint, String oldResource, String newResource )
+        throws RoleProfileException;
+
+    /*
+     * TODO get rid of this initialization in the api, its not appropriate for this manager and
+     * could be much better done using plexus initializing interface
+     */
+    public void initialize()
         throws RoleProfileException;
 
     public boolean isInitialized();
