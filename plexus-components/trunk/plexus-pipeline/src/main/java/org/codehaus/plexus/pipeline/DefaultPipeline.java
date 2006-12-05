@@ -33,6 +33,11 @@ public class DefaultPipeline
      */
     private List valveInstances;
 
+    /**
+     * @plexus.configuration default-value="true"
+     */
+    private boolean traceExecution;
+
     // -----------------------------------------------------------------------
     // Pipeline Implementation
     // -----------------------------------------------------------------------
@@ -77,6 +82,11 @@ public class DefaultPipeline
                 exceptionHandler.handleException( e );
             }
         }
+    }
+
+    public void setTraceExecution( boolean traceExecution )
+    {
+        this.traceExecution = traceExecution;
     }
 
     // -----------------------------------------------------------------------
