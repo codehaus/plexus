@@ -22,7 +22,10 @@ package org.codehaus.plexus.maven.plugin;
  * SOFTWARE.
  */
 
+import org.apache.maven.plugin.MojoExecutionException;
+
 import java.util.List;
+import java.util.Collections;
 import java.io.File;
 
 /**
@@ -58,13 +61,18 @@ public class PlexusDescriptorMojo
      */
     private List sourceDirectories;
 
-    protected File getOutputDirectory()
-    {
-        return outputDirectory;
-    }
+    // -----------------------------------------------------------------------
+    // Mojo Implementation
+    // -----------------------------------------------------------------------
 
-    protected List getSourceDirectories()
+    public void execute()
+        throws MojoExecutionException
     {
-        return this.sourceDirectories;
+        generateDescriptor( sourceDirectories, outputDirectory );
+
+        getMavenProjectHelper().addResource( getMavenProject(),
+                                             outputDirectory.getAbsolutePath(),
+                                             Collections.EMPTY_LIST,
+                                             Collections.EMPTY_LIST );
     }
 }
