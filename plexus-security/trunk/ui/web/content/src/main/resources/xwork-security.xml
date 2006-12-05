@@ -142,7 +142,6 @@
     
     <action name="report" class="pss-report" method="generate">
       <result name="error" type="redirect-action">userlist</result>
-      <result name="download">/WEB-INF/jsp/pss/download.jsp</result>
     </action>
 
     <action name="userlist" class="pss-admin-user-list" method="show">
