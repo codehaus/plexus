@@ -139,6 +139,11 @@
     <action name="adminConsole" class="pss-admin-console" method="show">
       <result>/WEB-INF/jsp/pss/admin/console.jsp</result>
     </action>
+    
+    <action name="report" class="pss-report" method="generate">
+      <result name="error" type="redirect-action">userlist</result>
+      <result name="download">/WEB-INF/jsp/pss/download.jsp</result>
+    </action>
 
     <action name="userlist" class="pss-admin-user-list" method="show">
       <result name="input">/WEB-INF/jsp/pss/admin/userList.jsp</result>

@@ -25,6 +25,7 @@ import org.codehaus.plexus.security.rbac.UserAssignment;
 import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+import org.codehaus.plexus.security.ui.web.reports.ReportManager;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
@@ -74,6 +75,11 @@ public class UserListAction
      * @plexus.requirement
      */
     private RBACManager rbac;
+    
+    /**
+     * @plexus.requirement
+     */
+    private ReportManager reportManager;
 
     // ------------------------------------------------------------------
     // Action Parameters
@@ -88,7 +94,7 @@ public class UserListAction
     private String searchKey;
 
     private String criterion;
-
+    
     private boolean ascending = true;
 
     // ------------------------------------------------------------------
@@ -289,5 +295,10 @@ public class UserListAction
     public void setAscending( boolean ascending )
     {
         this.ascending = ascending;
+    }
+    
+    public Map getReportMap()
+    {
+        return reportManager.getReportMap();
     }
 }
