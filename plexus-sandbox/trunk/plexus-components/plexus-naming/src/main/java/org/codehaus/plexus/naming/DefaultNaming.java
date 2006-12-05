@@ -41,7 +41,8 @@ public class DefaultNaming
     /**
      * @plexus.configuration default-value="true"
      */
-    private boolean setSystemProperties = true; // deliberately set true default here so you must declare it false, not just omit it
+    private boolean setSystemProperties =
+        true; // deliberately set true default here so you must declare it false, not just omit it
 
     public Context createInitialContext()
         throws NamingException
@@ -58,14 +59,16 @@ public class DefaultNaming
     {
         if ( setSystemProperties )
         {
-            System.setProperty( Context.INITIAL_CONTEXT_FACTORY, org.apache.naming.java.javaURLContextFactory.class.getName() );
+            System.setProperty( Context.INITIAL_CONTEXT_FACTORY,
+                                org.apache.naming.java.javaURLContextFactory.class.getName() );
             System.setProperty( Context.URL_PKG_PREFIXES, "org.apache.naming" );
         }
 
         try
         {
-            envContext =
-                createInitialContext().createSubcontext( COMP_CONTEXT_NAME ).createSubcontext( ENV_CONTEXT_NAME );
+            Context initialContext = createInitialContext();
+            Context subcontext = getOrCreate( initialContext, COMP_CONTEXT_NAME );
+            envContext = getOrCreate( subcontext, ENV_CONTEXT_NAME );
 
             loadConfiguration();
         }
@@ -73,6 +76,21 @@ public class DefaultNaming
         {
             throw new InitializationException( e.getMessage(), e );
         }
+    }
+
+    private static Context getOrCreate( Context initialContext, String name )
+        throws NamingException
+    {
+        Context subcontext;
+        try
+        {
+            subcontext = initialContext.createSubcontext( name );
+        }
+        catch ( NameAlreadyBoundException e )
+        {
+            subcontext = (Context) initialContext.lookup( name );
+        }
+        return subcontext;
     }
 
     /**
