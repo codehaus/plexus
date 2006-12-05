@@ -111,6 +111,7 @@ public class AddAdminUserAction
         {
             UserAssignment ua = rbacManager.createUserAssignment( u.getPrincipal().toString() );
             ua.addRoleName( roleManager.getRole( "system-administrator" ) );
+            ua.setPermanent( true );
             rbacManager.saveUserAssignment( ua );
         }
         catch ( RoleProfileException rpe )
