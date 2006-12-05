@@ -135,7 +135,7 @@ public class TestUsersEnvironmentCheck
             createUser( "elzar", "Elzar", "elzar@elzarscuisine.com", "BAM!", false, true );
             createUser( "mom", "Mom", "mom@momsfriendlyrobotcompany.com", "heartless", false, true );
             createUser( "nibbler", "Lord Nibbler", "nibbler@planetexpress.com", "growl", false, false );
-            createUser( "hermes", "Hermes Conrad", "kermes@bureaucrat.planetexpress.com", "groovy", 
+            createUser( "hermes", "Hermes Conrad", "hermes@bureaucrat.planetexpress.com", "groovy", 
                         false, true );
             createUser( "hubert", "Professor Hubert J. Farnsword", "owner@planetexpress.com", 
                         "doomsday", false, true );
