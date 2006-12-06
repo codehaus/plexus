@@ -22,7 +22,7 @@ import java.io.PrintStream;
 /**
  * Generates a jira report
  *
- * @author
+ * @author John Tolentino
  * @version $$Id: JiraReport.java 1355 2005-01-06 01:28:02Z jtolentino $$
  */
 public interface JiraReport
@@ -31,6 +31,13 @@ public interface JiraReport
      * The role associated with the component.
      */
     public final static String ROLE = JiraReport.class.getName();
+
+    /**
+     * Generates reports based on the velocity template passed through the configuration parameter.
+     * @throws Exception
+     */
+    public void generateReport( ReportConfiguration configuration, PrintStream result )
+        throws ReportGenerationException;
 
     /**
      * Generates a report on all resolved issues. Writes the result of a jira report to a PrintStream in xdoc format.

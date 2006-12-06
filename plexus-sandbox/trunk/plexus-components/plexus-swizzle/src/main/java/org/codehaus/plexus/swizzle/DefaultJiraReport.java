@@ -28,7 +28,7 @@ import org.apache.velocity.VelocityContext;
  * Concrete implementation of a <tt>JiraReport</tt> component.  The
  * component is configured via the Plexus container.
  *
- * @author jtolentino
+ * @author John Tolentino
  * @version $$Id: DefaultJiraReport.java 3353 2006-05-31 14:17:11Z jtolentino $$
  */
 public class DefaultJiraReport
@@ -81,6 +81,24 @@ public class DefaultJiraReport
     // ----------------------------------------------------------------------
     // JiraReport Implementation
     // ----------------------------------------------------------------------
+
+    public void generateReport( ReportConfiguration configuration, PrintStream result )
+        throws ReportGenerationException
+    {
+        try
+        {
+            context.put( "projectKey", configuration.getProjectKey() );
+            context.put( "projectVersion", configuration.getProjectVersion() );
+            context.put( "jiraServerUrl", configuration.getJiraServerUrl() );
+
+            Main.generate( context, configuration.getTemplate(), result );
+        }
+        catch ( Exception e )
+        {
+            getLogger().error( "Error encountered while generating swizzle report: " + e.getMessage() );
+            throw new ReportGenerationException();
+        }
+    }
 
     /**
      * Generates a report on all resolved issues. Writes the result of a jira report to a PrintStream in xdoc format.
