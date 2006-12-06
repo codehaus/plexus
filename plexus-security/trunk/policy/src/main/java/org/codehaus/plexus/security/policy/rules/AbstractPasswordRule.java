@@ -43,6 +43,16 @@ public abstract class AbstractPasswordRule
         return enabled;
     }
 
+    /**
+     * true if the security policy is required for the rule to execute
+     *
+     * @return boolean
+     */
+    public boolean requiresSecurityPolicy()
+    {
+        return false;
+    }
+
     protected void configure( String configPrefix )
     {
         configure( config, configPrefix );

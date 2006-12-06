@@ -46,6 +46,16 @@ public class ReusePasswordRule
         this.securityPolicy = policy;
     }
 
+    /**
+     * true if the security policy is required for this rule
+     *
+     * @return boolean
+     */
+    public boolean requiresSecurityPolicy()
+    {
+        return true;
+    }
+
     public int getPreviousPasswordCount()
     {
         return securityPolicy.getPreviousPasswordsCount();

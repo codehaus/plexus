@@ -27,7 +27,6 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 import org.codehaus.plexus.security.configuration.UserConfiguration;
 import org.codehaus.plexus.security.policy.rules.MustHavePasswordRule;
 import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -259,16 +258,22 @@ public class DefaultUserSecurityPolicy
     {
         if ( isEnabled() )
         {
-            // Trim password.
-            user.setPassword( StringUtils.trim( user.getPassword() ) );
-
             PasswordRuleViolations violations = new PasswordRuleViolations();
 
             Iterator it = getPasswordRules().iterator();
             while ( it.hasNext() )
             {
                 PasswordRule rule = (PasswordRule) it.next();
-                rule.testPassword( violations, user );
+
+                if ( rule.isEnabled() )
+                {
+                    if ( rule.requiresSecurityPolicy() )
+                    {
+                        rule.setUserSecurityPolicy( this );
+                    }
+
+                    rule.testPassword( violations, user );
+                }
             }
 
             if ( violations.hasViolations() )

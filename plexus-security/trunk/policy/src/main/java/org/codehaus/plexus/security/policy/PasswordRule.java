@@ -45,6 +45,14 @@ public interface PasswordRule
      */
     void setUserSecurityPolicy(UserSecurityPolicy policy);
 
+
+    /**
+     * true if the security policy has been set on the rule
+     *
+     * @return boolean
+     */
+    boolean requiresSecurityPolicy();
+
     /**
      * Tests the {@link User#getPassword()} for a valid password, based on rule.
      * 
