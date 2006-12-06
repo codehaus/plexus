@@ -63,9 +63,6 @@ public class DefaultUserSecurityPolicy
 
     public static final int DEFAULT_PASSWORD_EXPIRATION = 90;
 
-    private static final String[] defaultPasswordRules =
-        {"must-have", "character-length", "alpha-count", "numerical-count", "reuse"};
-
     private PasswordRule defaultPasswordRule = new MustHavePasswordRule();
 
     /**
@@ -301,24 +298,6 @@ public class DefaultUserSecurityPolicy
         {
             // Set rules to prevent downstream NPE.
             rules = new ArrayList();
-        }
-
-        try
-        {
-            for ( int nIndex = 0; nIndex < defaultPasswordRules.length; nIndex++ )
-            {
-                PasswordRule rule =
-                    (PasswordRule) plexus.lookup( PasswordRule.ROLE, (String) defaultPasswordRules[nIndex] );
-
-                if ( rule.isEnabled() )
-                {
-                    addPasswordRule( rule );
-                }
-            }
-        }
-        catch ( ComponentLookupException e )
-        {
-            throw new InitializationException( "Unable to lookup password rules.", e );
         }
 
         if ( rules.isEmpty() )
