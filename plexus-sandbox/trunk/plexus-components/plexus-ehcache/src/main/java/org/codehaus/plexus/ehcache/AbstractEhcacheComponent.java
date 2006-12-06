@@ -17,10 +17,12 @@ package org.codehaus.plexus.ehcache;
  */
 
 import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -31,7 +33,7 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public abstract class AbstractEhcacheComponent
     extends AbstractLogEnabled
-    implements EhcacheComponent
+    implements EhcacheComponent, Disposable
 {
     /**
      * @plexus.configuration default-value="false"
@@ -167,5 +169,14 @@ public abstract class AbstractEhcacheComponent
     public void setTimeToLiveSeconds( int timeToLiveSeconds )
     {
         this.timeToLiveSeconds = timeToLiveSeconds;
+    }
+
+    public void dispose()
+    {
+        getLogger().info( "Disposing cache: " + cache );
+        if ( this.cache != null )
+        {
+            CacheManager.getInstance().removeCache( this.cache.getName() );
+        }
     }
 }
