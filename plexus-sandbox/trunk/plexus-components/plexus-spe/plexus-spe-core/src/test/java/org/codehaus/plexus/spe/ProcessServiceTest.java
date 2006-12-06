@@ -95,6 +95,7 @@ public class ProcessServiceTest
 
         processInstance = processService.getProcessInstance( instanceId );
 
+        assertNotNull( processInstance.getErrorMessage() );
         assertTrue( processInstance.getErrorMessage().contains( "Non-Runtime Exception Message" ) );
     }
 

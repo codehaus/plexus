@@ -1,13 +1,16 @@
 package org.codehaus.plexus.spe.execution.action;
 
 import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.action.Action;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ComponentConfigurator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.spe.ProcessException;
 import org.codehaus.plexus.spe.execution.AbstractStepExecutor;
 import org.codehaus.plexus.spe.execution.StepExecutor;
@@ -24,9 +27,8 @@ import java.util.Map;
  */
 public class PlexusActionStepExecutor
     extends AbstractStepExecutor
-    implements StepExecutor, Initializable
+    implements StepExecutor, Contextualizable
 {
-
     private ClassRealm classRealm;
 
     // ----------------------------------------------------------------------
@@ -144,11 +146,13 @@ public class PlexusActionStepExecutor
     // Component Lifecycle
     // ----------------------------------------------------------------------
 
-    public void initialize()
-        throws InitializationException
+    public void contextualize( Context context )
+        throws ContextException
     {
+        PlexusContainer container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+
         // TODO: Is this the correct realm to use? I would think so as it's the same as the one that the action
         // itself is looked up from.
-        classRealm = getContainerRealm();
+        classRealm = container.getContainerRealm();
     }
 }

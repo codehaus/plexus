@@ -1,7 +1,6 @@
 package org.codehaus.plexus.spe.execution.jython;
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.action.Action;
 import org.codehaus.plexus.spe.ProcessException;
 import org.codehaus.plexus.spe.execution.StepExecutor;
 import org.codehaus.plexus.spe.model.StepDescriptor;
@@ -54,8 +53,8 @@ public class JythonStepExecutorTest
 
         Xpp3Dom requirements = new Xpp3Dom( "requirements" );
 
-        requirements.addChild( addRequirement( Action.ROLE, "jython-a", "testa" ) );
-        requirements.addChild( addRequirement( Action.ROLE, "testb" ) );
+        requirements.addChild( addRequirement( FooService.ROLE, "jython-a", "testa" ) );
+        requirements.addChild( addRequirement( FooService.ROLE, "testb" ) );
 
         configuration.addChild( requirements );
 
@@ -63,8 +62,8 @@ public class JythonStepExecutorTest
 
         stepExecutor.execute( descriptor, new HashMap<String, Serializable>() );
 
-        assertTrue( TestActionA.beenTouched );
-        assertTrue( TestActionB.beenTouched );
+        assertTrue( FooServiceA.beenTouched );
+        assertTrue( FooServiceB.beenTouched );
     }
 
     private Xpp3Dom addRequirement( String role, String roleHint, String variableName )
