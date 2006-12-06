@@ -296,6 +296,7 @@ public class DefaultUserSecurityPolicy
 
         configureEncoder();
 
+        //Do we need this if rules is populated by plexus as a requirement?
         rules = new ArrayList();
 
         try
