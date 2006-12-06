@@ -6,10 +6,10 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.spe.ProcessException;
-import org.codehaus.plexus.spe.model.ProcessDescriptor;
-import org.codehaus.plexus.spe.model.ProcessInstance;
 import org.codehaus.plexus.spe.model.ProcessInstanceLifecycleListener;
+import org.codehaus.plexus.spe.model.ProcessInstance;
 import org.codehaus.plexus.spe.model.StepDescriptor;
+import org.codehaus.plexus.spe.model.ProcessDescriptor;
 import org.codehaus.plexus.spe.model.StepInstance;
 
 import javax.jdo.Extent;
@@ -46,7 +46,8 @@ public class DefaultProcessInstanceStore
     // ProcessInstanceStore Implementation
     // ----------------------------------------------------------------------
 
-    public ProcessInstance createInstance( ProcessDescriptor ProcessDescriptor, Map<String, Serializable> context )
+    public synchronized ProcessInstance createInstance( ProcessDescriptor ProcessDescriptor,
+                                                        Map<String, Serializable> context )
         throws ProcessException
     {
         getLogger().info( "Creating a new process instance: " + ProcessDescriptor.getId() + "." );
@@ -59,7 +60,7 @@ public class DefaultProcessInstanceStore
         instance.setContext( context );
         instance.setCreatedTime( System.currentTimeMillis() );
 
-        for ( StepDescriptor action : (List<StepDescriptor>)ProcessDescriptor.getSteps() )
+        for ( StepDescriptor action : (List<StepDescriptor>) ProcessDescriptor.getSteps() )
         {
             StepInstance step = new StepInstance();
             step.setExecutorId( action.getExecutorId() );
@@ -85,7 +86,7 @@ public class DefaultProcessInstanceStore
         }
     }
 
-    public Collection<ProcessInstance> getActiveInstances()
+    public synchronized Collection<ProcessInstance> getActiveInstances()
     {
         PersistenceManager pm = getPm();
 
@@ -109,14 +110,15 @@ public class DefaultProcessInstanceStore
         }
     }
 
-    public void saveInstance( ProcessInstance processInstance )
+    public synchronized void saveInstance( ProcessInstance processInstance )
     {
-        getLogger().debug( "Storing process instance " + processInstance.getInstanceId() + ", process: " + processInstance.getProcessId() + "." );
+        getLogger().debug( "Storing process instance " + processInstance.getInstanceId() + ", process: " +
+            processInstance.getProcessId() + "." );
 
         updateObject( getPm(), processInstance );
     }
 
-    public ProcessInstance getInstance( int id, boolean includeContext )
+    public synchronized ProcessInstance getInstance( int id, boolean includeContext )
         throws ProcessException
     {
         PersistenceManager pm = getPm();
@@ -146,7 +148,8 @@ public class DefaultProcessInstanceStore
         }
         catch ( JDOObjectNotFoundException e )
         {
-            throw new ProcessException( "Could not load object with id " + id + " of class : " + ProcessInstance.class.getName(), e);
+            throw new ProcessException(
+                "Could not load object with id " + id + " of class : " + ProcessInstance.class.getName(), e );
         }
         catch ( JDOException e )
         {
@@ -158,7 +161,7 @@ public class DefaultProcessInstanceStore
         }
     }
 
-    public void deleteInstance( int id )
+    public synchronized void deleteInstance( int id )
         throws ProcessException
     {
         PersistenceManager pm = getPm();
@@ -179,7 +182,8 @@ public class DefaultProcessInstanceStore
         }
         catch ( JDOObjectNotFoundException e )
         {
-            throw new ProcessException( "Could not delete object with id " + id + " of class : " + ProcessInstance.class.getName(), e);
+            throw new ProcessException(
+                "Could not delete object with id " + id + " of class : " + ProcessInstance.class.getName(), e );
         }
         catch ( JDOException e )
         {
@@ -211,7 +215,7 @@ public class DefaultProcessInstanceStore
     {
         PersistenceManager pm = pmf.getPersistenceManager();
 
-        pm.addInstanceLifecycleListener( processInstanceLifecycleListener, new Class[] { ProcessInstance.class } );
+        pm.addInstanceLifecycleListener( processInstanceLifecycleListener, new Class[]{ProcessInstance.class} );
 
         return pm;
     }
@@ -274,7 +278,7 @@ public class DefaultProcessInstanceStore
         }
         catch ( JDOObjectNotFoundException e )
         {
-            throw new ProcessException( "Could not load object with id " + id + " of class : " + clazz.getName(), e);
+            throw new ProcessException( "Could not load object with id " + id + " of class : " + clazz.getName(), e );
         }
         catch ( JDOException e )
         {
