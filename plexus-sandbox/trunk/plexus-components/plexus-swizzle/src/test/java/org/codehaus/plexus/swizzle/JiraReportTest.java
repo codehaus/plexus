@@ -62,6 +62,35 @@ public class JiraReportTest
         assertEquals( expected, actual );
     }
 
+    public void testGenerateVotesReportTemplate()
+        throws Exception
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream result = new PrintStream( baos );
+
+        ReportConfiguration configuration = new ReportConfiguration();
+
+        configuration.setJiraServerUrl( "http://jira.codehaus.org" );
+        configuration.setProjectKey( "SWIZZLE" );
+        configuration.setProjectVersion( "*" );
+        configuration.setTemplate( configuration.VOTES_REPORT_TEMPLATE );
+
+        JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
+
+        report.generateReport( configuration, result );
+
+        result.close();
+
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        String expectedFile = "org/codehaus/plexus/swizzle/VotesExpectedResult.txt";
+        URL resource = classLoader.getResource( expectedFile );
+        String expected = streamToString( resource.openStream() );
+
+        String actual = new String( baos.toByteArray() );
+
+        assertEquals( expected, actual );
+    }
+
     public void testResolvedIssuesReport()
         throws Exception
     {
