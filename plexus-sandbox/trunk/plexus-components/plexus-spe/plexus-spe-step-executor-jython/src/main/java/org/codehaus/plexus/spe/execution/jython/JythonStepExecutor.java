@@ -15,6 +15,7 @@ import java.util.HashMap;
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
+ * @plexus.component role-hint="jython"
  */
 public class JythonStepExecutor
     extends AbstractStepExecutor
@@ -33,7 +34,7 @@ public class JythonStepExecutor
         // Load and validate script
         // -----------------------------------------------------------------------
 
-        String script = getChild( configuration, "script" );
+        String script = AbstractStepExecutor.getChild( configuration, "script" );
 
         // -----------------------------------------------------------------------
         // Load all requirements

@@ -1,0 +1,21 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>plexus-spe</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>plexus-spe-step-executor-jython</artifactId>
+  <name>Plexus Simple Process Jython Step Executor</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-spe-api-internal</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>jython</groupId>
+      <artifactId>jython</artifactId>
+    </dependency>
+  </dependencies>
+</project>

@@ -11,8 +11,19 @@
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-spe-api-internal</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-spe-model</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-spe-step-executor-jython</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -29,10 +40,6 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-action</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>jython</groupId>
-      <artifactId>jython</artifactId>
     </dependency>
     <dependency>
       <groupId>hsqldb</groupId>

@@ -60,24 +60,6 @@
             <groupId>javax.sql</groupId>
             <artifactId>jdbc-stdext</artifactId>
           </exclusion>
-<!--
-          <exclusion>
-            <groupId>ant</groupId>
-            <artifactId>ant</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>javax.resource</groupId>
-            <artifactId>connector</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>javax.security</groupId>
-            <artifactId>jaas</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>ojdbc</groupId>
-            <artifactId>ojdbc</artifactId>
-          </exclusion>
--->
         </exclusions>
       </dependency>
     </dependencies>
@@ -91,10 +73,25 @@
           <target>1.5</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <version>1.3.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <modules>
+    <module>plexus-spe-api-public</module>
+    <module>plexus-spe-api-internal</module>
     <module>plexus-spe-core</module>
+    <module>plexus-spe-step-executor-jython</module>
     <module>plexus-spe-model</module>
   </modules>
 </project>

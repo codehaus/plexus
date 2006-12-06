@@ -1,0 +1,17 @@
+<project>
+  <parent>
+    <artifactId>plexus-spe</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>plexus-spe-api-internal</artifactId>
+  <name>Plexus Simple Process Internal API for Extensions</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-spe-api-public</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>

@@ -1,16 +1,14 @@
 package org.codehaus.plexus.spe.execution;
 
-import org.codehaus.classworlds.ClassRealm;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.ServiceLocator;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
 import org.codehaus.plexus.spe.ProcessException;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
-import java.util.List;
-import java.util.Collections;
 import java.util.Collection;
 
 /**
@@ -19,11 +17,13 @@ import java.util.Collection;
  */
 public abstract class AbstractStepExecutor
     extends AbstractLogEnabled
+    implements Serviceable
 {
-    /**
-     * @plexus.requirement
-     */
-    private PlexusContainer container;
+    private ServiceLocator locator;
+
+    // -----------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------
 
     protected static String getChild( Xpp3Dom configuration, String key )
         throws ProcessException
@@ -49,17 +49,12 @@ public abstract class AbstractStepExecutor
         return configuration.getChild( key ).getValue();
     }
 
-    protected ClassRealm getContainerRealm()
-    {
-        return container.getContainerRealm();
-    }
-
     protected Object lookup( String role )
         throws ProcessException
     {
         try
         {
-            return container.lookup( role );
+            return locator.lookup( role );
         }
         catch ( ComponentLookupException e )
         {
@@ -72,7 +67,7 @@ public abstract class AbstractStepExecutor
     {
         try
         {
-            return container.lookup( role, roleHint );
+            return locator.lookup( role, roleHint );
         }
         catch ( ComponentLookupException e )
         {
@@ -85,7 +80,7 @@ public abstract class AbstractStepExecutor
     {
         try
         {
-            container.release( component );
+            locator.release( component );
         }
         catch ( ComponentLifecycleException e )
         {
@@ -99,5 +94,14 @@ public abstract class AbstractStepExecutor
         {
             release( component );
         }
+    }
+
+    // -----------------------------------------------------------------------
+    // Serviceable Implementation
+    // -----------------------------------------------------------------------
+
+    public void service( ServiceLocator locator )
+    {
+        this.locator = locator;
     }
 }

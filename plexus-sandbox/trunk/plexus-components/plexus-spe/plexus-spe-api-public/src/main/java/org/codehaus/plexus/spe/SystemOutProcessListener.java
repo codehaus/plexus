@@ -4,7 +4,6 @@ import org.codehaus.plexus.spe.event.StartingProcessEvent;
 import org.codehaus.plexus.spe.event.StartingStepEvent;
 import org.codehaus.plexus.spe.event.StepCompletedEvent;
 import org.codehaus.plexus.spe.utils.DurationFormatUtils;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
