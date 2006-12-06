@@ -296,8 +296,12 @@ public class DefaultUserSecurityPolicy
 
         configureEncoder();
 
-        //Do we need this if rules is populated by plexus as a requirement?
-        rules = new ArrayList();
+        // In some configurations, rules can be unset.
+        if ( rules == null )
+        {
+            // Set rules to prevent downstream NPE.
+            rules = new ArrayList();
+        }
 
         try
         {
