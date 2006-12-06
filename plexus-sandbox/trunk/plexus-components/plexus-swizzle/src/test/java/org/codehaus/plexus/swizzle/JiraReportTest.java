@@ -91,50 +91,6 @@ public class JiraReportTest
         assertEquals( expected, actual );
     }
 
-    public void testResolvedIssuesReport()
-        throws Exception
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream result = new PrintStream( baos );
-
-        JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
-
-        report.generateResolvedIssuesReport( result );
-
-        result.close();
-
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        String expectedFile = "org/codehaus/plexus/swizzle/ResolvedIssuesExpectedResult.txt";
-        URL resource = classLoader.getResource( expectedFile );
-        String expected = streamToString( resource.openStream() );
-
-        String actual = new String( baos.toByteArray() );
-
-        assertEquals( expected, actual );
-    }
-
-    public void testVotesReport()
-        throws Exception
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream result = new PrintStream( baos );
-
-        JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
-
-        report.generateVotesReport( result );
-
-        result.close();
-
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        String expectedFile = "org/codehaus/plexus/swizzle/VotesExpectedResult.txt";
-        URL resource = classLoader.getResource( expectedFile );
-        String expected = streamToString( resource.openStream() );
-
-        String actual = new String( baos.toByteArray() );
-
-        assertEquals( expected, actual );
-    }
-
     private static String streamToString( InputStream in )
         throws IOException
     {

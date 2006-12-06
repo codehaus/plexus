@@ -100,49 +100,5 @@ public class DefaultJiraReport
         }
     }
 
-    /**
-     * Generates a report on all resolved issues. Writes the result of a jira report to a PrintStream in xdoc format.
-     *
-     * @throws Exception
-     */
-    public void generateResolvedIssuesReport( PrintStream result )
-        throws Exception
-    {
-        try
-        {
-            context.put( "projectKey", projectKey );
-            context.put( "projectVersion", projectVersion );
-            context.put( "jiraServerUrl", jiraServerUrl );
-
-            Main.generate( context, RESOLVED_ISSUES_TEMPLATE, result );
-        }
-        catch ( Exception e )
-        {
-            getLogger().error( "Error encountered while generating Resolved Issues Report: " + e.getMessage() );
-        }
-    }
-
-    /**
-     * Generates a report on all resolved issues. Writes the result of a jira report to a PrintStream in xdoc format.
-     *
-     * @throws Exception
-     */
-    public void generateVotesReport( PrintStream result )
-        throws Exception
-    {
-        try
-        {
-            context.put( "projectKey", projectKey );
-            context.put( "projectVersion", projectVersion );
-            context.put( "jiraServerUrl", jiraServerUrl );
-
-            Main.generate( context, VOTES_REPORT_TEMPLATE, result );
-        }
-        catch ( Exception e )
-        {
-            getLogger().error( "Error encountered while generating Votes Report: " + e.getMessage() );
-        }
-    }
-
 }
 

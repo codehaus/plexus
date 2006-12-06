@@ -39,21 +39,5 @@ public interface JiraReport
     public void generateReport( ReportConfiguration configuration, PrintStream result )
         throws ReportGenerationException;
 
-    /**
-     * Generates a report on all resolved issues. Writes the result of a jira report to a PrintStream in xdoc format.
-     *
-     * @throws Exception
-     */
-    public void generateResolvedIssuesReport( PrintStream result )
-        throws Exception;
-
-    /**
-     * Generates a report on all resolved issues. Writes the result of a jira report to a PrintStream in xdoc format.
-     *
-     * @throws Exception
-     */
-    public void generateVotesReport( PrintStream result )
-        throws Exception;
-
 }
 
