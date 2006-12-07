@@ -186,6 +186,11 @@ public class DefaultApplicationDeployer
         }
     }
 
+    public boolean isDeployed( String id )
+    {
+        return deployments.containsKey( id );
+    }
+
     private void stopApplicationServices( AppRuntimeProfile runtimeProfile )
         throws PlexusServiceException
     {
@@ -215,7 +220,7 @@ public class DefaultApplicationDeployer
 
         if ( profile == null )
         {
-            throw new ApplicationServerException( "No such appserver: '" + applicationName + "'." );
+            throw new ApplicationServerException( "No such application: '" + applicationName + "'." );
         }
 
         return profile;

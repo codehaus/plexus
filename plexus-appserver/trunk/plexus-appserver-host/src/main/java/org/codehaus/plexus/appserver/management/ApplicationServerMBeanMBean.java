@@ -43,4 +43,6 @@ public interface ApplicationServerMBeanMBean
 
     void undeploy( String id )
         throws ApplicationServerException;
+
+    boolean isDeployed( String id );
 }

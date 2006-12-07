@@ -60,4 +60,6 @@ public interface ApplicationServer
     void setAppServerHome( File appServerHome );
 
     void setAppServerBase( File appServerBase );
+
+    boolean isDeployed( String id );
 }
