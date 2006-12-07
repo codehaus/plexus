@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-taskqueue</artifactId>
   <name>Plexus Task Queue</name>
-  <version>1.0-alpha-5-SNAPSHOT</version>
+  <version>1.0-alpha-5</version>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -21,4 +21,9 @@
       <version>2.2</version>
     </dependency>
   </dependencies>
+
+  <scm>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-taskqueue-1.0-alpha-5</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-taskqueue-1.0-alpha-5</developerConnection>
+  </scm>
 </project>
