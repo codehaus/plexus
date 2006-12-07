@@ -42,4 +42,7 @@ public interface ApplicationDeployer
 
     AppRuntimeProfile getApplicationRuntimeProfile( String applicationName )
         throws ApplicationServerException;
+
+    void deleteApplication( String applicationName )
+        throws ApplicationServerException;
 }

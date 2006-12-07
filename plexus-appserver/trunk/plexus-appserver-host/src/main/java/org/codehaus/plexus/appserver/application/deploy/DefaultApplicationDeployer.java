@@ -42,8 +42,10 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -224,6 +226,32 @@ public class DefaultApplicationDeployer
         }
 
         return profile;
+    }
+
+    public void deleteApplication( String applicationName )
+        throws ApplicationServerException
+    {
+        undeploy( applicationName );
+
+        File file = getAppServer().getAppDescriptor( applicationName ).getPar();
+
+        File dir = new File( applicationsDirectory, applicationName );
+
+        try
+        {
+            FileUtils.deleteDirectory( dir );
+        }
+        catch ( IOException e )
+        {
+            throw new ApplicationServerException( "Failed to delete application: '" + applicationName + "'.", e );
+        }
+
+        file.delete();
+
+        if ( file.exists() || dir.exists() )
+        {
+            throw new ApplicationServerException( "Failed to delete application: '" + applicationName + "'." );
+        }
     }
 
     public void addApplicationListener( ApplicationListener listener )

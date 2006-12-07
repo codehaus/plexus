@@ -70,4 +70,10 @@ public class ApplicationServerMBean
     {
         return appserver.isDeployed( id );
     }
+
+    public void delete( String id )
+        throws ApplicationServerException
+    {
+        appserver.deleteApplication( id );
+    }
 }
