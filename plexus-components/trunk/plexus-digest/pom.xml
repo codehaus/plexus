@@ -1,4 +1,4 @@
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus</groupId>
@@ -7,7 +7,7 @@
   </parent>
 
   <artifactId>plexus-digest</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>Plexus Digest / Hashcode Components</name>
   <packaging>jar</packaging>
 
@@ -27,4 +27,10 @@
     </plugins>
   </build>
 
+
+  <scm>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-digest-1.0</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-digest-1.0</developerConnection>
+    <url>https://svn.codehaus.org/plexus/tags/plexus-digest-1.0</url>
+  </scm>
 </project>
