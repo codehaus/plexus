@@ -27,21 +27,20 @@
   </c:when>
   <c:otherwise>
     <ww:url id="logoutUrl" action="logout" namespace="/security" includeParams="none"/>
+    <ww:url id="accountUrl" action="account" namespace="/security" includeParams="none" />
     
-    Welcome, 
+    Current User: 
     <c:choose>
       <c:when test="${sessionScope.securitySession.user != null}">
-        <ww:url id="accountUrl" action="account" namespace="/security">
-          <ww:param name="username">${sessionScope.securitySession.user.username}</ww:param>
-        </ww:url>
-        <b><ww:a href="%{accountUrl}">${sessionScope.securitySession.user.username}</ww:a></b>
+        <span class="fullname"><ww:a href="%{accountUrl}" cssClass="edit">${sessionScope.securitySession.user.fullName}</ww:a></span>
+        (<span class="username">${sessionScope.securitySession.user.username}</span>)
       </c:when>
       <c:otherwise>
-        <b>Unknown User</b>
+        <span class="fullname">Unknown User</span>
       </c:otherwise>
     </c:choose>
-     -
-    <ww:a href="%{logoutUrl}">Logout</ww:a>
+    - <ww:a href="%{accountUrl}" cssClass="edit">Edit Details</ww:a>
+    - <ww:a href="%{logoutUrl}" cssClass="logout">Logout</ww:a>
   </c:otherwise>
 </c:choose>
 
