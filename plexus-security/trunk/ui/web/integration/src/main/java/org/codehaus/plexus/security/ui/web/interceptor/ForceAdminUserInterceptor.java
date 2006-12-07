@@ -34,6 +34,8 @@ public class ForceAdminUserInterceptor
     extends AbstractLogEnabled
     implements Interceptor
 {
+    private static final String SECURITY_ADMIN_USER_NEEDED = "security-admin-user-needed";
+
     private static boolean checked = false;
 
     /**
@@ -65,7 +67,7 @@ public class ForceAdminUserInterceptor
             if ( user == null )
             {
                 getLogger().info( "No admin user configured - forwarding to admin user creation page." );
-                return "security-admin-user-needed";
+                return SECURITY_ADMIN_USER_NEEDED;
             }
             checked = true;
             getLogger().info( "Admin user found. No need to configure admin user." );
@@ -73,7 +75,7 @@ public class ForceAdminUserInterceptor
         catch ( UserNotFoundException e )
         {
             getLogger().info( "No admin user found - forwarding to admin user creation page." );
-            return "security-admin-user-needed";
+            return SECURITY_ADMIN_USER_NEEDED;
         }
 
         return invocation.invoke();
