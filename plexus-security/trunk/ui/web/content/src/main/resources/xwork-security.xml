@@ -29,17 +29,20 @@
     <interceptors>
       <interceptor name="pssForceAdminUser" class="pssForceAdminUserInterceptor"/>
       <!-- <interceptor name="pssEnvCheck" class="pssEnvironmentCheckInterceptor"/> -->
+      <interceptor name="pssAutoLogin" class="pssAutoLoginInterceptor"/>
       <interceptor name="pssSecureActions" class="pssSecureActionInterceptor"/>
       <interceptor-stack name="securedStack">
         <interceptor-ref name="defaultStack"/>
         <!-- <interceptor-ref name="pssEnvCheck"/> -->
         <interceptor-ref name="pssForceAdminUser"/>
+        <interceptor-ref name="pssAutoLogin"/>
         <interceptor-ref name="pssSecureActions"/>
       </interceptor-stack>
       <interceptor-stack name="securedPrepareParamsStack">
         <interceptor-ref name="paramsPrepareParamsStack"/>
         <!-- <interceptor-ref name="pssEnvCheck"/> -->
         <interceptor-ref name="pssForceAdminUser"/>
+        <interceptor-ref name="pssAutoLogin"/>
         <interceptor-ref name="pssSecureActions"/>
       </interceptor-stack>
     </interceptors>
