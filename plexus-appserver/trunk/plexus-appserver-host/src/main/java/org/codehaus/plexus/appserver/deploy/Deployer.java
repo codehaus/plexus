@@ -20,4 +20,5 @@ public interface Deployer
     void undeploy( String id )
         throws ApplicationServerException;
 
+    boolean isDeployed( String id );
 }

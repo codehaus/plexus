@@ -139,6 +139,11 @@ public class DefaultApplicationServer
         this.appServerBase = appServerBase;
     }
 
+    public boolean isDeployed( String id )
+    {
+        return applicationDeployer.isDeployed( id );
+    }
+
     public Collection getAppDescriptors()
     {
         return appDescriptors.values();

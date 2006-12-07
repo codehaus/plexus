@@ -65,4 +65,9 @@ public class ApplicationServerMBean
     {
         appserver.undeploy( id );
     }
+
+    public boolean isDeployed( String id )
+    {
+        return appserver.isDeployed( id );
+    }
 }

@@ -103,6 +103,11 @@ public class DefaultServiceDeployer
     {
     }
 
+    public boolean isDeployed( String id )
+    {
+        return true;
+    }
+
     // ----------------------------------------------------------------------
     // Component Lifecycle
     // ----------------------------------------------------------------------
