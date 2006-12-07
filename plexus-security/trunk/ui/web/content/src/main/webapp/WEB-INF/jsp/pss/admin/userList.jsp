@@ -32,36 +32,41 @@
 <h2>[Admin] User List</h2>
 
 <div class="users">
-  <div class="reports">
-    Reports: 
-    <c:forEach items="${reportMap}" var="reportEntry">
-       <span class="report">
-         <c:forEach items="${reportEntry.value}" var="report" varStatus="status">
-           <a href="${pageContext.request.contextPath}/security/report!generate.action?reportId=${report.value.id}&reportType=${report.value.type}" 
-              title="${report.value.name} Report (${report.value.type} type)">
-             <c:if test="${status.count eq 1}">
-               <span class="name">
-                 ${report.value.name}
-               </span>
-             </c:if>
-             <img src="${pageContext.request.contextPath}/images/pss/table/${report.value.type}.gif" /></a>
-         </c:forEach>
-       </span>
-    </c:forEach>
-  </div>
+  <table border="0" cellspacing="0" cellpadding="0" class="customToolbar">
+    <tr class="extraFilters">
+      <td>
+        <ww:form action="userlist!show" namespace="/security" theme="simple" method="get">
+          <ww:label value="Filter By Role:" />
+          <ww:select list="roles"
+                     name="roleName"
+                     value="roleName"
+                     listKey="name"
+                     listValue="name"
+                     headerKey=""
+                     headerValue="Any"/>
+        </ww:form>
+      </td>
+      <td><img src="/images/pss/table/separator.gif"  style="border:0"  alt="Separator" /></td>
+      <td class="reports">
+        Reports: 
+        <c:forEach items="${reportMap}" var="reportEntry">
+           <span class="report">
+             <c:forEach items="${reportEntry.value}" var="report" varStatus="status">
+               <a href="${pageContext.request.contextPath}/security/report!generate.action?reportId=${report.value.id}&reportType=${report.value.type}" 
+                  title="${report.value.name} Report (${report.value.type} type)">
+                 <c:if test="${status.count eq 1}">
+                   <span class="name">
+                     ${report.value.name}
+                   </span>
+                 </c:if>
+                 <img src="${pageContext.request.contextPath}/images/pss/table/${report.value.type}.gif" /></a>
+             </c:forEach>
+           </span>
+        </c:forEach>
+      </td>
+    </tr>
+  </table>
   
-<div class="extraFilters">
-<ww:form action="userlist!show" namespace="/security" theme="simple" method="get">
-  <ww:label value="Filter By Role:" />
-  <ww:select list="roles"
-             name="roleName"
-             value="roleName"
-             listKey="name"
-             listValue="name"
-             headerKey=""
-             headerValue="Any"/>
-</ww:form>
-</div>
 <ec:table 
     var="user" 
     items="users" 
@@ -69,18 +74,21 @@
     imagePath="${pageContext.request.contextPath}/images/pss/table/*.gif"
     title="Users"
     showTitle="false"
-    view="compact" sortRowsCallback="org.codehaus.plexus.security.ui.web.eXc.ProcessUserRowsCallback"
+    showExports="false"
+    view="org.codehaus.plexus.security.ui.web.eXc.views.SecurityView" 
+    sortRowsCallback="org.codehaus.plexus.security.ui.web.eXc.ProcessUserRowsCallback"
 	>
+    <%-- TODO: Fix export download. --%>
     <ec:export 
        view="csv" 
        fileName="users.csv" 
        imageName="csv"
-       tooltip="Export CSV (Comma Seperated Values)"/>
+       tooltip="Export Table to CSV (Comma Seperated Values)."/>
     <ec:export 
        view="xls" 
        fileName="users.xls" 
        imageName="xls"
-       tooltip="Export Excel"/>
+       tooltip="Export Table to Excel format."/>
     <ec:row>          
 	    <ec:column property="username" title="User Name">
           <img src="${pageContext.request.contextPath}/images/pss/icon-user.gif" />
