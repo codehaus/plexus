@@ -144,6 +144,12 @@ public class DefaultApplicationServer
         return applicationDeployer.isDeployed( id );
     }
 
+    public void deleteApplication( String id )
+        throws ApplicationServerException
+    {
+        applicationDeployer.deleteApplication( id );
+    }
+
     public Collection getAppDescriptors()
     {
         return appDescriptors.values();

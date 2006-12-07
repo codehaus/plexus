@@ -62,4 +62,7 @@ public interface ApplicationServer
     void setAppServerBase( File appServerBase );
 
     boolean isDeployed( String id );
+
+    void deleteApplication( String id )
+        throws ApplicationServerException;
 }

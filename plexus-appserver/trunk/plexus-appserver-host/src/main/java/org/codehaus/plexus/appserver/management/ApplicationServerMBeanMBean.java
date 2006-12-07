@@ -45,4 +45,7 @@ public interface ApplicationServerMBeanMBean
         throws ApplicationServerException;
 
     boolean isDeployed( String id );
+
+    void delete( String id )
+        throws ApplicationServerException;
 }
