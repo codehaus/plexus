@@ -221,6 +221,6 @@ public class AccountAction
     {
         SecureActionBundle bundle = new SecureActionBundle();
         bundle.setRequiresAuthentication( true );
-        return null;
+        return bundle;
     }
 }
