@@ -235,6 +235,14 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Joakim Erdfelt</name>
+      <id>joakime</id>
+      <email>joakim@erdfelt.com</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
   <dependencies>
     <dependency>
