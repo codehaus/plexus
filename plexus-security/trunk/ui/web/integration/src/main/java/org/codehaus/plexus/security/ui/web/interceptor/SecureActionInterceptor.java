@@ -85,8 +85,9 @@ public class SecureActionInterceptor
                 
                 if ( bundle == null )
                 {
-                    getLogger().debug( "Null bundle detected." );
+                    getLogger().error( "Null bundle detected." );
                     
+                    // TODO: send them somewhere else?
                     return invocation.invoke();
                 }
                 
@@ -104,7 +105,7 @@ public class SecureActionInterceptor
                 {
                     if ( session == null || !session.isAuthenticated() )
                     {
-                        getLogger().debug( "not authenticated, need to authentication for this action" );
+                        getLogger().debug( "not authenticated, need to authenticate for this action" );
 
                         return REQUIRES_AUTHENTICATION;
                     }
@@ -148,7 +149,7 @@ public class SecureActionInterceptor
         }
         catch ( SecureActionException se )
         {
-            getLogger().debug( "can't generate the SecureActionBundle, deny access: " + se.getMessage() );
+            getLogger().error( "can't generate the SecureActionBundle, deny access: " + se.getMessage() );
             return REQUIRES_AUTHENTICATION;
         }
 
