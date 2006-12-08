@@ -87,6 +87,10 @@ public class SecurityToolbar
         if ( showPagination )
         {
             html.td( 5 ).close();
+            html.append( "Navigation:" );
+            html.tdEnd();
+            
+            html.td( 5 ).close();
             toolbarBuilder.firstPageItemAsImage();
             html.tdEnd();
 
@@ -106,6 +110,10 @@ public class SecurityToolbar
             toolbarBuilder.separator();
             html.tdEnd();
 
+            html.td( 5 ).close();
+            html.append( "Display Rows:" );
+            html.tdEnd();
+            
             html.td( 5 ).close();
             toolbarBuilder.rowsDisplayedDroplist();
             html.tdEnd();
