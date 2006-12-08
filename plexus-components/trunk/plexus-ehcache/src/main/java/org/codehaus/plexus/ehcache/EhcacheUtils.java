@@ -22,8 +22,6 @@ import net.sf.ehcache.CacheManager;
 
 import org.codehaus.plexus.logging.Logger;
 
-import java.io.IOException;
-
 /**
  * EhcacheUtils 
  *
@@ -51,10 +49,6 @@ public class EhcacheUtils
                     logger.warn( "Unable to remove all elements from cache [" + names[i] + "]", e );
                 }
                 catch ( CacheException e )
-                {
-                    logger.warn( "Unable to remove all elements from cache [" + names[i] + "]", e );
-                }
-                catch ( IOException e )
                 {
                     logger.warn( "Unable to remove all elements from cache [" + names[i] + "]", e );
                 }
