@@ -670,4 +670,9 @@ public class JdoRbacManager
     {
         fireRbacUserAssignmentRemoved( userAssignment );
     }
+
+    public JdoTool getJdo()
+    {
+        return jdo;
+    }
 }
