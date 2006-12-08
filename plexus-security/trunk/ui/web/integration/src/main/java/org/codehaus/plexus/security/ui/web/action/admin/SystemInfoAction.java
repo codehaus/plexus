@@ -16,12 +16,20 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * SystemInfoAction 
@@ -44,65 +52,115 @@ public class SystemInfoAction
      * @plexus.requirement
      */
     private SecuritySystem securitySystem;
-    
+
+    private static final List ignoredReaders;
+
+    private static final String NULL = "&lt;null&gt;";
+
+    private static final char LN = Character.LINE_SEPARATOR;
+
+    static
+    {
+        ignoredReaders = new ArrayList();
+        ignoredReaders.add( "class" );
+    }
+
     // ------------------------------------------------------------------
     // Action Parameters
     // ------------------------------------------------------------------
 
-    private String authentication;
+    private StringBuffer details;
 
-    private String authorization;
-
-    private String userManagement;
-    
-    private String keyManagement;
-    
-    private String policy;
-    
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
 
     public String show()
     {
-        authentication = securitySystem.getAuthenticatorId();
-        authorization = securitySystem.getAuthorizerId();
-        userManagement = securitySystem.getUserManagementId();
-        keyManagement = securitySystem.getKeyManagementId();
-        policy = securitySystem.getPolicyId();
+        details = new StringBuffer();
+
+        details.append( "SecuritySystem: " );
+        dumpObject( details, securitySystem, "  " );
 
         return SUCCESS;
     }
-    
+
+    private void dumpObject( StringBuffer sb, Object obj, String indent )
+    {
+        dumpObject( new ArrayList(), sb, obj, indent );
+    }
+
+    private void dumpObject( List seenObjects, StringBuffer sb, Object obj, String indent )
+    {
+        if ( obj == null )
+        {
+            sb.append( NULL ).append( LN );
+            return;
+        }
+
+        sb.append( indent ).append( "\\ " ).append( obj.getClass().getName() ).append( LN );
+
+        try
+        {
+            Map readers = PropertyUtils.describe( obj );
+            Iterator it = readers.entrySet().iterator();
+            while ( it.hasNext() )
+            {
+                Map.Entry readerEntry = (Entry) it.next();
+                String name = (String) readerEntry.getKey();
+
+                if ( ignoredReaders.contains( name ) )
+                {
+                    // skip this reader.
+                    continue;
+                }
+
+                sb.append( indent );
+                sb.append( name ).append( ":" );
+
+                Object value = readerEntry.getValue();
+                if ( value == null )
+                {
+                    sb.append( NULL ).append( LN );
+                }
+                else
+                {
+                    String className = value.getClass().getName();
+                    sb.append( "(" ).append( className ).append( ") " );
+                    sb.append( StringEscapeUtils.escapeHtml( value.toString() ) ).append( LN );
+
+                    if ( !className.startsWith( "java." ) && !className.startsWith( "javax." ) )
+                    {
+                        // prevent cycles
+                        if ( !seenObjects.contains( value ) )
+                        {
+                            dumpObject( seenObjects, sb, value, indent + "  " );
+                        }
+                        else
+                        {
+                            seenObjects.add( value );
+                        }
+                    }
+                }
+            }
+        }
+        catch ( Throwable e )
+        {
+            sb.append( "Unable to read bean [" + obj.getClass().getName() + "]: " + e.getMessage() + " ("
+                + e.getClass().getName() + ")" );
+            getLogger().warn( "dumpobject", e );
+        }
+    }
+
     // ------------------------------------------------------------------
     // Parameter Accessor Methods
     // ------------------------------------------------------------------
 
-    public String getAuthentication()
+    public String getDetails()
     {
-        return authentication;
+        return details.toString();
     }
 
-    public String getAuthorization()
-    {
-        return authorization;
-    }
-
-    public String getUserManagement()
-    {
-        return userManagement;
-    }
-
-    public String getKeyManagement()
-    {
-        return keyManagement;
-    }
-
-    public String getPolicy()
-    {
-        return policy;
-    }
-    
     public SecureActionBundle initSecureActionBundle()
         throws SecureActionException
     {
@@ -111,5 +169,4 @@ public class SystemInfoAction
         bundle.addRequiredAuthorization( RoleConstants.CONFIGURATION_EDIT_OPERATION, Resource.GLOBAL );
         return bundle;
     }
-
 }

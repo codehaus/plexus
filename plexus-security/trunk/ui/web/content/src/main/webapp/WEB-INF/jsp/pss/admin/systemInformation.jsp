@@ -24,13 +24,11 @@
 
 <body>
 
-<ul>
-  <li><strong>Authentication</strong> : ${authentication}</li>
-  <li><strong>Authorization</strong> : ${authorization}</li>
-  <li><strong>User Management</strong> : ${userManagement}</li>
-  <li><strong>Key Management</strong> : ${keyManagement}</li>
-  <li><strong>Policy</strong> : ${policy}</li>
-</ul>
+<h4>Security System Information</h4>
+
+<pre>
+${details}
+</pre>
 
 </body>
 </html>

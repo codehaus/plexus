@@ -80,7 +80,6 @@
       <artifactId>plexus-security-rbac-profile</artifactId>
     </dependency>
     <!-- ================================================================ -->
-
     <!-- OTHER Dependencies -->
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -146,6 +145,13 @@
       <groupId>opensymphony</groupId>
       <artifactId>sitemesh</artifactId>
       <version>2.2.1</version>
+    </dependency>
+    <!-- === Test Dependencies ======================= -->
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>1.7.3.3</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <scm>
