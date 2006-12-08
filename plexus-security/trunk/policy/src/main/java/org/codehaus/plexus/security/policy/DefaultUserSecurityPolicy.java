@@ -29,6 +29,7 @@ import org.codehaus.plexus.security.policy.rules.MustHavePasswordRule;
 import org.codehaus.plexus.security.user.User;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -209,7 +210,16 @@ public class DefaultUserSecurityPolicy
     public void extensionPasswordExpiration( User user )
         throws MustChangePasswordException
     {
+        Calendar expirationDate = Calendar.getInstance();
+        expirationDate.setTime( user.getLastPasswordChange() );
+        expirationDate.add( Calendar.DAY_OF_MONTH, getPasswordExpirationDays() );
+        Calendar now = Calendar.getInstance();
 
+        if ( now.after( expirationDate ) )
+        {
+            user.setLocked( true );
+            throw new MustChangePasswordException( "Password Expired, You must change your password." );
+        }
     }
 
     public void extensionExcessiveLoginAttempts( User user )
