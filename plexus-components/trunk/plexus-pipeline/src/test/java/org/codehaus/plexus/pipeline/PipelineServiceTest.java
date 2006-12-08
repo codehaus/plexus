@@ -6,7 +6,7 @@ import org.codehaus.plexus.PlexusTestCase;
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class PipelineTest
+public class PipelineServiceTest
     extends PlexusTestCase
 {
     protected void setUp()
@@ -19,19 +19,23 @@ public class PipelineTest
     public void testEmptyPipeline()
         throws Exception
     {
-        Pipeline pipeline = (Pipeline) lookup( Pipeline.ROLE, "empty" );
+        PipelineService pipelineService = (PipelineService) lookup( PipelineService.ROLE );
 
-        pipeline.processMessage( null );
+        Pipeline pipeline = new Pipeline();
+        pipeline.setId( "empty" );
+        pipelineService.addPipeline( pipeline );
+
+        pipelineService.processMessage( "empty", null );
 
         assertEquals( 0, Recorder.records.size() );
     }
-    
+
     public void testBasic()
         throws Exception
     {
-        Pipeline pipeline = (Pipeline) lookup( Pipeline.ROLE, "simple" );
+        PipelineService pipelineService = (PipelineService) lookup( PipelineService.ROLE );
 
-        pipeline.processMessage( null );
+        pipelineService.processMessage( "simple", null );
 
         assertEquals( 2, Recorder.records.size() );
     }

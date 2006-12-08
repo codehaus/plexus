@@ -1,21 +1,19 @@
 <component-set>
   <components>
     <component>
-      <role>org.codehaus.plexus.pipeline.Pipeline</role>
-      <implementation>org.codehaus.plexus.pipeline.DefaultPipeline</implementation>
-      <role-hint>simple</role-hint>
+      <role>org.codehaus.plexus.pipeline.PipelineService</role>
+      <implementation>org.codehaus.plexus.pipeline.DefaultPipelineService</implementation>
       <configuration>
-        <valve-role-hints>
-          <valve-role-hint>foo-1</valve-role-hint>
-          <valve-role-hint>foo-2</valve-role-hint>
-        </valve-role-hints>
+        <pipelines>
+          <pipeline>
+            <id>simple</id>
+            <valve-role-hints>
+              <valve-role-hint>foo-1</valve-role-hint>
+              <valve-role-hint>foo-2</valve-role-hint>
+            </valve-role-hints>
+          </pipeline>
+        </pipelines>
       </configuration>
-    </component>
-
-    <component>
-      <role>org.codehaus.plexus.pipeline.Pipeline</role>
-      <implementation>org.codehaus.plexus.pipeline.DefaultPipeline</implementation>
-      <role-hint>empty</role-hint>
     </component>
   </components>
 </component-set>
