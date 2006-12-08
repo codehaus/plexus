@@ -32,6 +32,7 @@ public class BogusDynamicRoleProfile
     extends AbstractDynamicRoleProfile
 {
     public static String NAME = "BOGUS ROLE";
+    public static String OPERATION = "BOGUS-OPERATION";
 
     public String getRoleName( String resource )
     {
@@ -40,7 +41,7 @@ public class BogusDynamicRoleProfile
 
     public List getOperations()
     {
-        return Collections.singletonList( "BOGUS-OPERATION" );
+        return Collections.singletonList( OPERATION );
     }
 
 

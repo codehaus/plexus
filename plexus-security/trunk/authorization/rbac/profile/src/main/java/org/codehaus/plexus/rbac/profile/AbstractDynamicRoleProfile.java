@@ -8,6 +8,7 @@ import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.RbacObjectInvalidException;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.util.List;
 import java.util.Iterator;
@@ -34,6 +35,7 @@ import java.util.Iterator;
  * @version: $ID:$
  */
 public abstract class AbstractDynamicRoleProfile
+    extends AbstractLogEnabled
     implements DynamicRoleProfile
 {
     /**
@@ -242,6 +244,12 @@ public abstract class AbstractDynamicRoleProfile
      *
      * will throw exception is original role isPermanent() returns true
      *
+     * WARNING: THIS METHOD IS BROKEN FOR JDO STORES!  jdo store does not let you rename the
+     * permissions or roles, you'll have to readd the role with get, plot the user assignments
+     * and assign that new role accordingly.
+     *
+     * TODO fix this WARNING re: broken with jdo store  
+     *
      * @param oldResource
      * @param newResource
      * @throws RoleProfileException
@@ -265,12 +273,11 @@ public abstract class AbstractDynamicRoleProfile
                     for ( Iterator i = getOperations().iterator(); i.hasNext(); )
                     {
                         String operationString = (String) i.next();
+                        String oldPermissionName =  operationString + RoleProfileConstants.DELIMITER + oldResource;
 
-                        if ( !rbacManager.permissionExists(
-                            operationString + RoleProfileConstants.DELIMITER + oldResource ) )
+                        if ( rbacManager.permissionExists( oldPermissionName ) )
                         {
-                            Permission permission = rbacManager.getPermission(
-                                operationString + RoleProfileConstants.DELIMITER + oldResource );
+                            Permission permission = rbacManager.getPermission( oldPermissionName );
 
                             permission.setResource( rbacManager.getResource( newResource ) );
 
