@@ -29,44 +29,8 @@
 <%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
 
 
-<h2>[Admin] User List</h2>
-
-<div class="users">
-  <table border="0" cellspacing="0" cellpadding="0" class="customToolbar">
-    <tr class="extraFilters">
-      <td>
-        <ww:form action="userlist!show" namespace="/security" theme="simple" method="get">
-          <ww:label value="Filter By Role:" />
-          <ww:select list="roles"
-                     name="roleName"
-                     value="roleName"
-                     listKey="name"
-                     listValue="name"
-                     headerKey=""
-                     headerValue="Any"/>
-        </ww:form>
-      </td>
-      <td><img src="/images/pss/table/separator.gif"  style="border:0"  alt="Separator" /></td>
-      <td class="reports">
-        Reports: 
-        <c:forEach items="${reportMap}" var="reportEntry">
-           <span class="report">
-             <c:forEach items="${reportEntry.value}" var="report" varStatus="status">
-               <a href="${pageContext.request.contextPath}/security/report!generate.action?reportId=${report.value.id}&reportType=${report.value.type}" 
-                  title="${report.value.name} Report (${report.value.type} type)">
-                 <c:if test="${status.count eq 1}">
-                   <span class="name">
-                     ${report.value.name}
-                   </span>
-                 </c:if>
-                 <img src="${pageContext.request.contextPath}/images/pss/table/${report.value.type}.gif" /></a>
-             </c:forEach>
-           </span>
-        </c:forEach>
-      </td>
-    </tr>
-  </table>
-  
+<h2>[Admin] List of Users in ${roleName} Role</h2>
+ 
 <ec:table 
     var="user" 
     items="users" 
@@ -120,14 +84,73 @@
         </ec:column>
     </ec:row>    
 </ec:table>
-<pss:ifAuthorized permission="user-management-user-create">
-  <div class="createUser">
-    <ww:form action="usercreate!show" namespace="/security" theme="xhtml" method="post">
-      <ww:submit value="Create User" />
-    </ww:form>
-  </div>
-</pss:ifAuthorized>
-</div>
+
+
+<table class="tools" border="0" cellspacing="1" cellpadding="0">
+
+<tr>
+  <th class="toolHeading">Tasks</th>
+  <th class="toolHeading column">Reports</th>
+</tr>
+
+<tr>
+  <td valign="top">
+    <p class="description">The following tools are available for administrators to manipulate the user list.</p>
+     
+    <pss:ifAuthorized permission="user-management-user-create">
+      <div class="task createUser">
+        <ww:form action="usercreate!show" namespace="/security" theme="simple" method="post">
+          <ww:submit cssClass="button" value="Create New User" />
+        </ww:form>
+      </div>
+    </pss:ifAuthorized>
+
+    <div class="task showRoles">
+      <ww:form action="userlist!show" namespace="/security" theme="simple" method="get">
+        <ww:submit cssClass="button" value="Show Users In Role" />
+        
+        <ww:select list="roles"
+                   name="roleName"
+                   value="roleName"
+                   listKey="name"
+                   listValue="name"
+                   headerKey=""
+                   headerValue="Any"/>
+      </ww:form>
+    </div>
+    
+  </td>
+  
+  <td valign="top" class="column">
+    <table cellspacing="0" cellpadding="0" border="0" class="reports">
+      <tr>
+        <th>Name</th>
+        <th>Types</th>
+      </tr>
+      
+      <c:forEach items="${reportMap}" var="reportEntry">
+        <tr>
+          <td class="reportName" nowrap="nowrap">
+            <c:forEach items="${reportEntry.value}" var="report" varStatus="status">
+              <c:if test="${status.first}">
+                ${report.value.name}
+              </c:if>
+            </c:forEach>
+          </td>
+          <td class="reportViews">
+          <c:forEach items="${reportEntry.value}" var="report" varStatus="status">
+            <a href="${pageContext.request.contextPath}/security/report!generate.action?reportId=${report.value.id}&reportType=${report.value.type}" 
+              title="${report.value.name} Report (${report.value.type} type)"><img 
+              src="${pageContext.request.contextPath}/images/pss/table/${report.value.type}.gif" /></a>
+          </c:forEach>
+          </td>
+        </tr>
+      </c:forEach>
+    </table>
+  </td>
+</tr>
+
+</table>
 
 </body>
 

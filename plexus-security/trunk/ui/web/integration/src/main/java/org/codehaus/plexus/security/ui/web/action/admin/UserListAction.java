@@ -27,6 +27,7 @@ import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.reports.ReportManager;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
+import org.codehaus.plexus.security.ui.web.util.UserComparator;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.util.StringUtils;
@@ -75,7 +76,7 @@ public class UserListAction
      * @plexus.requirement
      */
     private RBACManager rbac;
-    
+
     /**
      * @plexus.requirement
      */
@@ -90,12 +91,6 @@ public class UserListAction
     private List roles;
 
     private String roleName;
-
-    private String searchKey;
-
-    private String criterion;
-    
-    private boolean ascending = true;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
@@ -114,14 +109,8 @@ public class UserListAction
 
         if ( StringUtils.isEmpty( roleName ) )
         {
-            if ( StringUtils.isEmpty( searchKey ) )
-            {
-                users = manager.getUsers( ascending );
-            }
-            else
-            {
-                users = findUsers( criterion, searchKey, ascending );
-            }
+            users = manager.getUsers();
+            Collections.sort( users, new UserComparator( "username", true ) );
         }
         else
         {
@@ -139,7 +128,8 @@ public class UserListAction
                     }
                 }
 
-                users = findUsers( targetRoleNames, criterion, searchKey, ascending );
+                users = findUsers( targetRoleNames );
+                Collections.sort( users, new UserComparator( "username", true ) );
             }
             catch ( RbacObjectNotFoundException e )
             {
@@ -168,34 +158,10 @@ public class UserListAction
         return bundle;
     }
 
-    private List findUsers( String searchProperty, String searchKey, boolean orderAscending )
-    {
-        List users = null;
-
-        if ( "username".equals( searchProperty ) )
-        {
-            users = manager.findUsersByUsernameKey( searchKey, orderAscending );
-        }
-        else if ( "fullName".equals( getCriterion() ) )
-        {
-            users = manager.findUsersByFullNameKey( searchKey, orderAscending );
-        }
-        else if ( "email".equals( getCriterion() ) )
-        {
-            users = manager.findUsersByEmailKey( searchKey, orderAscending );
-        }
-        else
-        {
-            users = Collections.EMPTY_LIST;
-        }
-
-        return users;
-    }
-
-    private List findUsers( Collection roleNames, String searchProperty, String searchKey, boolean orderAscending )
+    private List findUsers( Collection roleNames )
     {
         List usernames = getUsernamesForRoles( roleNames );
-        List users = findUsers( searchProperty, searchKey, orderAscending );
+        List users = manager.getUsers();
         List filteredUsers = new ArrayList();
 
         for ( Iterator i = users.iterator(); i.hasNext(); )
@@ -228,6 +194,7 @@ public class UserListAction
         }
         catch ( RbacManagerException e )
         {
+            getLogger().warn( "Unable to get user assignments for roles " + roleNames, e );
         }
 
         return new ArrayList( usernames );
@@ -249,32 +216,16 @@ public class UserListAction
 
     public String getRoleName()
     {
+        if ( StringUtils.isEmpty( roleName ) )
+        {
+            return "Any";
+        }
         return roleName;
     }
 
     public void setRoleName( String roleName )
     {
         this.roleName = roleName;
-    }
-
-    public String getCriterion()
-    {
-        return criterion;
-    }
-
-    public void setCriterion( String criterion )
-    {
-        this.criterion = criterion;
-    }
-
-    public String getSearchKey()
-    {
-        return searchKey;
-    }
-
-    public void setSearchKey( String searchKey )
-    {
-        this.searchKey = searchKey;
     }
 
     public List getRoles()
@@ -287,16 +238,6 @@ public class UserListAction
         return SEARCH_CRITERIA;
     }
 
-    public boolean isAscending()
-    {
-        return ascending;
-    }
-
-    public void setAscending( boolean ascending )
-    {
-        this.ascending = ascending;
-    }
-    
     public Map getReportMap()
     {
         return reportManager.getReportMap();

@@ -3,15 +3,6 @@
 	padding: 0;
 }
 
-div.users {
-  border: 1px solid silver;
-  padding: 3px;
-}
-
-div.users .customToolbar a {
-  color: black;
-}
-
 .eXtremeTable select {
 	font-family: Verdana;
 	font-size: 9px;
@@ -20,31 +11,11 @@ div.users .customToolbar a {
 }
 
 .eXtremeTable .tableRegion {
-  border-bottom: 1px solid gray;
+  border: 1px solid gray;
 	padding: 2px;
 	font-family: Verdana;
 	font-size: 10px;
 	margin-top: 7px;
-}
-
-div.users .eXtremeTable .tableRegion {
-	margin-top: 0px;
-}
-
-div.users .customToolbar {
-  margin-left: auto;
-  text-align: right;
-}
-
-div.users .extraFilters form {
-	margin: 0 0 0 0;
-	padding: 0 0 0 0;
-	text-align: right;
-}
-
-div.users .extraFilters {
-	font-family: Verdana;
-	font-size: 9px;
 }
 
 .eXtremeTable .filter {
@@ -55,28 +26,6 @@ div.users .extraFilters {
 	font-family: Verdana;
 	font-size: 10px;
 	width: 100%;
-}
-
-div.users .reports {
-	font-family: Verdana;
-	font-size: 10px;
-  padding-left: 3px;
-}
-
-div.users .reports img {
-	border: 0;
-	vertical-align: middle;
-}
-
-div.users .extraFilters input {
-	font-family: Verdana;
-	font-size: 10px;
-}
-
-div.users .extraFilters select,div.users .extraFilters label {
-	font-family: Verdana;
-	font-size: 9px;
-	margin-right: 3px;
 }
 
 .eXtremeTable .filter select {
@@ -188,6 +137,10 @@ div.users .extraFilters select,div.users .extraFilters label {
 	font-size: 10px;
 }
 
+.eXtremeTable .compactToolbar td {
+  font-size: 10px;
+}
+
 .eXtremeTable .title {
 	color: #444444;
 	font-weight: bold;
@@ -238,4 +191,60 @@ div.users .extraFilters select,div.users .extraFilters label {
 .eXtremeTable .tasks form {
 	padding: 0px;
 	margin: 0px;
+}
+
+
+table.tools {
+  width: 30em;
+  border: 1px solid #308dbb;
+  margin-top: 7px;
+}
+
+table.tools img {
+  border: 0;
+}
+
+table.tools th.toolHeading {
+	background-color: #308dbb;
+  color: white;
+  font-size: 12px;
+  padding: 3px;
+  text-align: left;
+}
+
+table.tools form {
+  margin: 0;
+  padding: 0;
+}
+
+table.tools p {
+  font-size: 10px;
+  margin: 5px;
+}
+
+table.tools .task {
+  margin-bottom: 2px;
+}
+
+table.tools form input,
+table.tools form select {
+  font-size: 10px;
+}
+
+table.tools form .button {
+  margin-left: 15px;
+  width: 15em;
+}
+
+table.tools .reports {
+}
+
+table.tools .reports th {
+  text-align: left;
+  font-size: 11px;
+}
+
+table.tools .reports td {
+  text-align: left;
+  font-size: 10px;
 }
