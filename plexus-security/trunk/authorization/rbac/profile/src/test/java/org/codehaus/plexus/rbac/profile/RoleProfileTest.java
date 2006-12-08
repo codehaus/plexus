@@ -102,9 +102,15 @@ public class RoleProfileTest
 
         assertTrue( rbacManager.roleExists( BogusDynamicRoleProfile.NAME + RoleProfileConstants.DELIMITER + "one" ) );
 
+        assertTrue( rbacManager.permissionExists( BogusDynamicRoleProfile.OPERATION + RoleProfileConstants.DELIMITER + "one" ) );        
+
         roleManager.renameDynamicRole( "bogus", "one", "two" );
 
         assertTrue( rbacManager.roleExists( BogusDynamicRoleProfile.NAME + RoleProfileConstants.DELIMITER + "two" ) );
+
+        assertTrue( rbacManager.permissionExists( BogusDynamicRoleProfile.OPERATION + RoleProfileConstants.DELIMITER + "two" ) );
+
+        assertTrue( rbacManager.resourceExists( "two" ) );            
 
     }
 }
