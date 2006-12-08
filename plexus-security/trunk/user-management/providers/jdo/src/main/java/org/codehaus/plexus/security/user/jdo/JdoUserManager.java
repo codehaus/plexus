@@ -409,4 +409,14 @@ public class JdoUserManager
             fireUserManagerInit( users.isEmpty() );
         }
     }
+
+    public JdoFactory getJdoFactory()
+    {
+        return jdoFactory;
+    }
+
+    public UserSecurityPolicy getUserSecurityPolicy()
+    {
+        return userSecurityPolicy;
+    }
 }

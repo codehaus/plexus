@@ -256,4 +256,14 @@ public class DefaultSecuritySystem
         }
         return policy.getId();
     }
+
+    public AuthenticationManager getAuthenticationManager()
+    {
+        return authnManager;
+    }
+
+    public Authorizer getAuthorizer()
+    {
+        return authorizer;
+    }
 }
