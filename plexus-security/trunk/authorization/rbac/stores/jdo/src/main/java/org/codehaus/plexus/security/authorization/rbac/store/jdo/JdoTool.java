@@ -478,4 +478,9 @@ public class JdoTool
             rollbackIfActive( tx );
         }
     }
+
+    public JdoFactory getJdoFactory()
+    {
+        return jdoFactory;
+    }
 }

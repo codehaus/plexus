@@ -172,4 +172,9 @@ public class JdoKeyManager
         return "JDO Key Manager - " + this.getClass().getName();
     }
 
+    public JdoFactory getJdoFactory()
+    {
+        return jdoFactory;
+    }
+
 }
