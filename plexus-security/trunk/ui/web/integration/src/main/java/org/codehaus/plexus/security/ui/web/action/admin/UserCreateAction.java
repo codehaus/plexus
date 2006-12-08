@@ -91,6 +91,9 @@ public class UserCreateAction
         User u = manager.createUser( user.getUsername(), user.getFullName(), user.getEmail() );
         u.setPassword( user.getPassword() );
 
+        // force the user to change their password when they log in next
+        u.setPasswordChangeRequired( true );
+
         // Disable Password Rules for this creation.
         UserSecurityPolicy securityPolicy = securitySystem.getPolicy();
         securityPolicy.setEnabled( false );
