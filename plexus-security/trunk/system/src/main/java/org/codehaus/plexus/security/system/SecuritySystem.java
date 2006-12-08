@@ -18,8 +18,10 @@ package org.codehaus.plexus.security.system;
 
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.authentication.AuthenticationManager;
 import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.authorization.AuthorizationResult;
+import org.codehaus.plexus.security.authorization.Authorizer;
 import org.codehaus.plexus.security.keys.KeyManager;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
@@ -47,8 +49,6 @@ public interface SecuritySystem
     public boolean isAuthenticated( AuthenticationDataSource source )
         throws AuthenticationException, UserNotFoundException, AccountLockedException;
 
-    public String getAuthenticatorId();
-
     // ----------------------------------------------------------------------------
     // Authorization
     // ----------------------------------------------------------------------------
@@ -65,27 +65,22 @@ public interface SecuritySystem
     public boolean isAuthorized( SecuritySession session, Object permission, Object resource )
         throws AuthorizationException;
 
-    String getAuthorizerId();
-
     // ----------------------------------------------------------------------------
     // User Management
     // ----------------------------------------------------------------------------
 
     public UserManager getUserManager();
-    String getUserManagementId();
     
     // ----------------------------------------------------------------------------
     // Key Management
     // ----------------------------------------------------------------------------
     
     public KeyManager getKeyManager();
-    String getKeyManagementId();
 
     // ----------------------------------------------------------------------------
     // Policy Management
     // ----------------------------------------------------------------------------
     
     public UserSecurityPolicy getPolicy();
-    String getPolicyId();
 }
 
