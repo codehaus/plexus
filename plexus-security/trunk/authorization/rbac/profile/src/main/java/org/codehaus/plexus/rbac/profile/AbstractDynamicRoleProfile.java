@@ -8,10 +8,12 @@ import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.RbacObjectInvalidException;
+import org.codehaus.plexus.security.rbac.UserAssignment;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.util.List;
 import java.util.Iterator;
+import java.util.Collections;
 /*
  * Copyright 2006 The Apache Software Foundation.
  *
@@ -48,7 +50,7 @@ public abstract class AbstractDynamicRoleProfile
         throws RoleProfileException
     {
         Role role = null;
-        
+
         try
         {
             // make sure the resource exists
@@ -59,7 +61,7 @@ public abstract class AbstractDynamicRoleProfile
             }
 
             role = rbacManager.createRole( getRoleName( resource ) );
-            
+
             if ( getOperations() != null )
             {
                 List operations = getOperations();
@@ -202,6 +204,8 @@ public abstract class AbstractDynamicRoleProfile
         {
             if ( !isPermanent() )
             {
+                rbacManager.removeRole( getRoleName( resource ) );
+
                 if ( getOperations() != null )
                 {
                     List operations = getOperations();
@@ -216,9 +220,7 @@ public abstract class AbstractDynamicRoleProfile
                             rbacManager.removePermission( operationString + RoleProfileConstants.DELIMITER + resource );
                         }
                     }
-                }
-
-                rbacManager.removeRole( getRoleName( resource ) );
+                }           
             }
             else
             {
@@ -239,7 +241,7 @@ public abstract class AbstractDynamicRoleProfile
         }
     }
 
-        /**
+    /**
      * rename the role built off of the profile based on the oldResource being passed in.
      *
      * will throw exception is original role isPermanent() returns true
@@ -249,6 +251,74 @@ public abstract class AbstractDynamicRoleProfile
      * and assign that new role accordingly.
      *
      * TODO fix this WARNING re: broken with jdo store  
+     *
+     * @param oldResource
+     * @param newResource
+     * @throws RoleProfileException
+     */
+    /*
+public void renameRole( String oldResource, String newResource )
+  throws RoleProfileException
+{
+  try
+  {
+      if ( !isPermanent() )
+      {
+          // make sure the resource exists
+          if ( !rbacManager.resourceExists( newResource ) )
+          {
+              Resource res = rbacManager.createResource( newResource );
+              rbacManager.saveResource( res );
+          }
+
+          if ( getOperations() != null )
+          {
+              for ( Iterator i = getOperations().iterator(); i.hasNext(); )
+              {
+                  String operationString = (String) i.next();
+                  String oldPermissionName =  operationString + RoleProfileConstants.DELIMITER + oldResource;
+
+                  if ( rbacManager.permissionExists( oldPermissionName ) )
+                  {
+                      Permission permission = rbacManager.getPermission( oldPermissionName );
+
+                      permission.setResource( rbacManager.getResource( newResource ) );
+
+                      permission.setName( operationString + RoleProfileConstants.DELIMITER + newResource );
+
+                      rbacManager.savePermission( permission );
+                  }
+              }
+          }
+
+          Role role = rbacManager.getRole( getRoleName( oldResource ) );
+          role.setName( getRoleName( newResource ) );
+
+          rbacManager.saveRole( role );
+      }
+      else
+      {
+          throw new RoleProfileException( "denied, can not rename a permanent role" );
+      }
+  }
+  catch ( RbacObjectInvalidException ri )
+  {
+      throw new RoleProfileException( "invalid role", ri );
+  }
+  catch ( RbacObjectNotFoundException rn )
+  {
+      throw new RoleProfileException( "unable to get role", rn );
+  }
+  catch ( RbacManagerException rm )
+  {
+      throw new RoleProfileException( "system error with rbac manager", rm );
+  }
+}
+    */
+    
+
+    /**
+     * right now, leave the old resource
      *
      * @param oldResource
      * @param newResource
@@ -268,30 +338,19 @@ public abstract class AbstractDynamicRoleProfile
                     rbacManager.saveResource( res );
                 }
 
-                if ( getOperations() != null )
+                Role newRole = getRole( newResource );
+
+                List userAssignments =
+                    rbacManager.getUserAssignmentsForRoles( Collections.singletonList( getRoleName( oldResource ) ) );
+
+                for ( Iterator i = userAssignments.iterator(); i.hasNext(); )
                 {
-                    for ( Iterator i = getOperations().iterator(); i.hasNext(); )
-                    {
-                        String operationString = (String) i.next();
-                        String oldPermissionName =  operationString + RoleProfileConstants.DELIMITER + oldResource;
-
-                        if ( rbacManager.permissionExists( oldPermissionName ) )
-                        {
-                            Permission permission = rbacManager.getPermission( oldPermissionName );
-
-                            permission.setResource( rbacManager.getResource( newResource ) );
-
-                            permission.setName( operationString + RoleProfileConstants.DELIMITER + newResource );
-
-                            rbacManager.savePermission( permission );
-                        }
-                    }
+                    UserAssignment ua = (UserAssignment) i.next();
+                    ua.addRoleName( newRole.getName() );
+                    rbacManager.saveUserAssignment( ua );
                 }
 
-                Role role = rbacManager.getRole( getRoleName( oldResource ) );
-                role.setName( getRoleName( newResource ) );
-
-                rbacManager.saveRole( role );
+                deleteRole( oldResource );
             }
             else
             {
