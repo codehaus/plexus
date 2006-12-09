@@ -18,10 +18,8 @@ package org.codehaus.plexus.security.system;
 
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
-import org.codehaus.plexus.security.authentication.AuthenticationManager;
 import org.codehaus.plexus.security.authorization.AuthorizationException;
 import org.codehaus.plexus.security.authorization.AuthorizationResult;
-import org.codehaus.plexus.security.authorization.Authorizer;
 import org.codehaus.plexus.security.keys.KeyManager;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
@@ -82,5 +80,9 @@ public interface SecuritySystem
     // ----------------------------------------------------------------------------
     
     public UserSecurityPolicy getPolicy();
+
+    public String getUserManagementId();
+    public String getAuthenticatorId();
+    public String getAuthorizerId();
 }
 
