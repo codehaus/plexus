@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-xwork-integration</artifactId>
-  <version>1.0-alpha-3</version>
+  <version>1.0-alpha-4-SNAPSHOT</version>
   <name>Plexus XWork Integration</name>
   <dependencies>
     <dependency>
@@ -63,9 +63,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-xwork-integration-1.0-alpha-3</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-xwork-integration-1.0-alpha-3</developerConnection>
-  </scm>
 </project>
