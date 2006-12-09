@@ -95,10 +95,8 @@ public class DefaultJiraReport
         }
         catch ( Exception e )
         {
-            getLogger().error( "Error encountered while generating swizzle report: " + e.getMessage() );
-            throw new ReportGenerationException();
+            throw new ReportGenerationException( "Error encountered while generating swizzle report.", e );
         }
     }
-
 }
 
