@@ -17,7 +17,6 @@ package org.codehaus.plexus.security.authorization.rbac.store.cached;
  */
 
 import net.sf.ehcache.Element;
-
 import org.codehaus.plexus.ehcache.EhcacheComponent;
 import org.codehaus.plexus.ehcache.EhcacheUtils;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -37,6 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.io.IOException;
 
 /**
  * CachedRbacManager is a wrapped RBACManager with caching.
@@ -646,6 +646,25 @@ public class CachedRbacManager
     public Role saveRole( Role role )
         throws RbacObjectInvalidException, RbacManagerException
     {
+        /*
+        List assignments = this.rbacImpl.getUserAssignmentsForRoles( Collections.singletonList( role.getName() ) );
+
+        for ( Iterator i = assignments.iterator(); i.hasNext();  )
+        {
+            getLogger().debug( "invalidating user assignment with role " + role.getName() );
+            invalidateCachedUserAssignment( (UserAssignment)i.next() );
+        }
+        */
+
+        /*
+        the above commented out section would try and invalidate just that user caches that are effected by
+        changes in the users permissions map due to role changes.
+
+        however the implementations of those do not take into account child role hierarchies so wipe all
+        user caches on role saving...which is a heavy handed way to solve the problem, but not going to
+        happen frequently for current applications so not a huge deal.
+         */
+        invalidateAllCachedUserAssignments();
         invalidateCachedRole( role );
         return this.rbacImpl.saveRole( role );
     }
@@ -653,12 +672,24 @@ public class CachedRbacManager
     public void saveRoles( Collection roles )
         throws RbacObjectInvalidException, RbacManagerException
     {
+
         Iterator it = roles.iterator();
         while ( it.hasNext() )
         {
             Role role = (Role) it.next();
             invalidateCachedRole( role );
         }
+
+        /*
+        List assignments = this.rbacImpl.getUserAssignmentsForRoles( roles );
+
+        for ( Iterator i = assignments.iterator(); i.hasNext();  )
+        {
+            getLogger().debug( "invalidating user assignment with roles" );
+            invalidateCachedUserAssignment( (UserAssignment)i.next() );
+        }
+        */
+        invalidateAllCachedUserAssignments();
         this.rbacImpl.saveRoles( roles );
     }
 
@@ -735,5 +766,11 @@ public class CachedRbacManager
     {
         userAssignmentsCache.invalidateKey( principal );
         userPermissionsCache.invalidateKey( principal );
+    }
+
+    private void invalidateAllCachedUserAssignments()
+    {
+        userAssignmentsCache.getCache().removeAll();
+        userPermissionsCache.getCache().removeAll();
     }
 }
