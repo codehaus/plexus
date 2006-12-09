@@ -23,4 +23,19 @@ package org.codehaus.plexus.swizzle;
 public class ReportGenerationException
     extends Exception
 {
+    public ReportGenerationException( String string )
+    {
+        super( string );
+    }
+
+    public ReportGenerationException( String string,
+                                      Throwable throwable )
+    {
+        super( string, throwable );
+    }
+
+    public ReportGenerationException( Throwable throwable )
+    {
+        super( throwable );
+    }
 }
