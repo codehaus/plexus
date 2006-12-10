@@ -61,6 +61,8 @@ public class PasswordResetAction
 
     private String username;
 
+    private String cancelbutton;
+
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
@@ -72,6 +74,11 @@ public class PasswordResetAction
 
     public String reset()
     {
+        if ( isCancelButton() )
+        {
+            return NONE;
+        }
+
         if ( StringUtils.isEmpty( username ) )
         {
             addFieldError( "username", "Username cannot be empty." );
@@ -137,5 +144,15 @@ public class PasswordResetAction
     {
         this.username = username;
     }
+
+   public boolean isCancelButton()
+   {
+       return "Cancel".equals( cancelbutton );
+   }
+
+   public void setCancelbutton( String cancelbutton )
+   {
+       this.cancelbutton = cancelbutton;
+   }
 
 }
