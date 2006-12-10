@@ -71,13 +71,13 @@ public class DefaultPlexusIbatisHelper
 
             if ( properties != null )
             {
-                getLogger().debug( "Properties" );
+                getLogger().debug( "Extra properties:" );
 
                 for ( Iterator it = properties.entrySet().iterator(); it.hasNext(); )
                 {
                     Map.Entry entry = (Map.Entry) it.next();
 
-                    getLogger().debug( entry.getKey() + "=" + entry.getValue() );
+                    getLogger().debug( entry.getKey() + "='" + entry.getValue() + "'" );
                 }
             }
         }
