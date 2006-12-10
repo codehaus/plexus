@@ -118,6 +118,7 @@
 
     <action name="passwordReset" class="pss-password-reset" method="show">
       <result name="input">/WEB-INF/jsp/pss/requestPasswordReset.jsp</result>
+      <result name="none">/WEB-INF/jsp/pss/login.jsp</result>
     </action>
     
     <action name="addadmin" class="pss-admin-account" method="show">
