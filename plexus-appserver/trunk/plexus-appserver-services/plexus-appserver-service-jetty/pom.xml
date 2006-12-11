@@ -13,6 +13,7 @@
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-appserver-maven-plugin</artifactId>
+        <version>${project.version}</version>
         <extensions>true</extensions>
         <configuration>
           <serviceName>jetty</serviceName>
