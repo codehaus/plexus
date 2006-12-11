@@ -47,7 +47,7 @@ import java.util.List;
 public class RegisterAction
     extends AbstractUserCredentialsAction
 {
-    private static final String REGISTER_SUCCESS = "security-register-success";
+    protected static final String REGISTER_SUCCESS = "security-register-success";
 
     private static final String REGISTER_CANCEL = "security-register-cancel";
     
