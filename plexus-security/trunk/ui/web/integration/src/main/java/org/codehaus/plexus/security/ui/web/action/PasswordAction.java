@@ -165,8 +165,20 @@ public class PasswordAction
             getLogger().debug( "User is not authenticated." );
             return REQUIRES_AUTHENTICATION;
         }
-        
-        return SUCCESS;
+
+        /*
+        *  If provide existing is true, then this was a normal password change flow, if it is
+        * false then it is changing the password from the registration flow in which case direct to
+         * external link
+         */
+        if ( !provideExisting )
+        {
+           return RegisterAction.REGISTER_SUCCESS; 
+        }
+        else
+        {
+            return SUCCESS;
+        }
     }
     
     // ------------------------------------------------------------------
