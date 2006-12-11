@@ -46,7 +46,7 @@ public class AccountAction
     // Action Parameters
     // ------------------------------------------------------------------
 
-    private boolean cancelButton;
+    private String cancelButton;
 
     private EditUserCredentials user;
 
@@ -112,7 +112,7 @@ public class AccountAction
 
     public String submit()
     {
-        if ( cancelButton )
+        if ( isCancelButton() )
         {
             return ACCOUNT_CANCEL;
         }
@@ -208,10 +208,10 @@ public class AccountAction
 
     public boolean isCancelButton()
     {
-        return cancelButton;
+        return !StringUtils.isEmpty( cancelButton );
     }
 
-    public void setCancelButton( boolean cancelButton )
+    public void setCancelButton( String cancelButton )
     {
         this.cancelButton = cancelButton;
     }
