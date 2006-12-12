@@ -24,10 +24,5 @@
       <artifactId>plexus-utils</artifactId>
       <version>1.0.5</version>
     </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-11</version>
-    </dependency>
   </dependencies>
 </project>

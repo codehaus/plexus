@@ -7,15 +7,13 @@ import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.jruby.JRubyInvoker;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
-/**
- * 
- * @author eredmond
- */
+/** @author eredmond */
 public class JRubyComponentFactory
     extends AbstractComponentFactory
 {
-    public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm containerRealm,
-                              PlexusContainer container )
+    public Object newInstance( ComponentDescriptor componentDescriptor,
+                               ClassRealm containerRealm,
+                               PlexusContainer container )
         throws ComponentInstantiationException
     {
         return new JRubyInvoker( componentDescriptor, containerRealm );
