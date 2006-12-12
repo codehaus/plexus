@@ -12,10 +12,10 @@ public class JRubyComponentFactory
     extends AbstractComponentFactory
 {
     public Object newInstance( ComponentDescriptor componentDescriptor,
-                               ClassRealm containerRealm,
+                               ClassLoader classLoader,
                                PlexusContainer container )
         throws ComponentInstantiationException
     {
-        return new JRubyInvoker( componentDescriptor, containerRealm );
+        return new JRubyInvoker( componentDescriptor, classLoader );
     }
 }

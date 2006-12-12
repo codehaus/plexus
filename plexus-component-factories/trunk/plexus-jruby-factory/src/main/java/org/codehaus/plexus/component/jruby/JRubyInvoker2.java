@@ -10,13 +10,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.util.StringOutputStream;
@@ -60,7 +60,7 @@ public class JRubyInvoker2 extends JRubyInvoker
 
     private List reqLibs = new LinkedList();
 
-    private ClassRealm classRealm;
+    private ClassLoader classLoader;
 
     private Reader reader;
 
@@ -68,7 +68,6 @@ public class JRubyInvoker2 extends JRubyInvoker
 
     /**
      * Create a reader JRubyInvoker that reads a JRuby script from the given reader.
-     * @param classLoader
      */
     public JRubyInvoker2( Reader scriptReader )
     {
@@ -80,14 +79,14 @@ public class JRubyInvoker2 extends JRubyInvoker
     /**
      * Create a JRubyInvoker that runs under the context of this class loader.
      * @param componentDescriptor
-     * @param classRealm
+     * @param classLoader
      */
-    public JRubyInvoker2( ComponentDescriptor componentDescriptor, ClassRealm classRealm )
+    public JRubyInvoker2( ComponentDescriptor componentDescriptor, ClassLoader classLoader )
     {
-        super( componentDescriptor, classRealm );
+        super( componentDescriptor, classLoader );
 
         this.componentDescriptor = componentDescriptor;
-        this.classRealm = classRealm;
+        this.classLoader = classLoader;
     }
 
     /**
@@ -196,7 +195,6 @@ public class JRubyInvoker2 extends JRubyInvoker
 
     /**
      * Invokes the script after all other values are set.
-     * @param log A Maven Log object
      * @return a Map of returned values
      */
     public Object invoke( OutputStream stdout, OutputStream stderr )
@@ -213,24 +211,24 @@ public class JRubyInvoker2 extends JRubyInvoker
                 impl = "/" + impl;
             }
     
-            if ( classRealm != null )
+            if ( classLoader != null )
             {
-                if ( classRealm.getResource( impl ) == null )
+                if ( classLoader.getResource( impl ) == null )
                 {
                     StringBuffer buf = new StringBuffer( "Cannot find: " + impl + " in classpath:" );
-                    for ( int i = 0; i < classRealm.getConstituents().length; i++ )
+                    for ( int i = 0; i < ((URLClassLoader) classLoader ).getURLs().length; i++ )
                     {
-                        URL constituent = classRealm.getConstituents()[i];
+                        URL constituent = ((URLClassLoader) classLoader ).getURLs()[i];
                         buf.append( "\n   [" + i + "]  " + constituent );
                     }
                     throw new ComponentInstantiationException( buf.toString() );
                 }
     
-                theReader = new InputStreamReader( classRealm.getResourceAsStream( impl ) );
+                theReader = new InputStreamReader( classLoader.getResourceAsStream( impl ) );
             }
             else if ( theReader == null )
             {
-                throw new ComponentInstantiationException( "If no classRealm is given in the constructor, a script Reader must be set." );
+                throw new ComponentInstantiationException( "If no classLoader is given in the constructor, a script Reader must be set." );
             }
         }
     
@@ -241,7 +239,7 @@ public class JRubyInvoker2 extends JRubyInvoker
 
         Object result = null;
         ClassLoader oldClassLoader = null;
-        ClassLoader classLoader = classRealm == null ? null : classRealm.getClassLoader();
+        ClassLoader classLoader = this.classLoader == null ? null : this.classLoader;
         if ( classLoader != null )
         {
             oldClassLoader = Thread.currentThread().getContextClassLoader();
@@ -439,9 +437,9 @@ public class JRubyInvoker2 extends JRubyInvoker
         throws ComponentInstantiationException
     {
         InputStream scriptStream = null;
-        if ( classRealm != null )
+        if ( classLoader != null )
         {
-            scriptStream = classRealm.getResourceAsStream( resourceName );
+            scriptStream = classLoader.getResourceAsStream( resourceName );
             if ( scriptStream == null )
             {
                 File resourceFile = new File( resourceName );
@@ -466,12 +464,12 @@ public class JRubyInvoker2 extends JRubyInvoker
         if ( scriptStream == null )
         {
             StringBuffer buf = new StringBuffer( "Cannot find: " + resourceName + " in classpath" );
-            if ( classRealm != null )
+            if ( classLoader != null )
             {
                 buf.append( ":" );
-                for ( int i = 0; i < classRealm.getConstituents().length; i++ )
+                for ( int i = 0; i < ((URLClassLoader) classLoader ).getURLs().length; i++ )
                 {
-                    URL constituent = classRealm.getConstituents()[i];
+                    URL constituent = ((URLClassLoader) classLoader ).getURLs()[i];
                     buf.append( "\n   [" + i + "]  " + constituent );
                 }
             }

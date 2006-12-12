@@ -11,12 +11,12 @@ import java.io.IOException;
 public class AntComponentFactory
     extends AbstractComponentFactory
 {
-    public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm classRealm, PlexusContainer container )
+    public Object newInstance( ComponentDescriptor componentDescriptor, ClassLoader classLoader, PlexusContainer container )
         throws ComponentInstantiationException
     {
         try
         {
-            return new AntScriptInvoker( componentDescriptor, new RealmDelegatingClassLoader( classRealm ) );
+            return new AntScriptInvoker( componentDescriptor, classLoader );
         }
         catch ( IOException e )
         {

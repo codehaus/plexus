@@ -55,7 +55,7 @@ public class JRubyInvoker
 
     private List reqLibs = new LinkedList();
 
-    private ClassRealm classRealm;
+    private ClassLoader classLoader;
 
     private ComponentDescriptor componentDescriptor;
 
@@ -65,7 +65,6 @@ public class JRubyInvoker
 
     /**
      * Create a reader JRubyInvoker that reads a JRuby script from the given reader.
-     * @param classLoader
      */
     public JRubyInvoker( Reader scriptReader )
     {
@@ -75,12 +74,12 @@ public class JRubyInvoker
     /**
      * Create a JRubyInvoker that runs under the context of this class loader.
      * @param componentDescriptor
-     * @param classRealm
+     * @param classLoader
      */
-    public JRubyInvoker( ComponentDescriptor componentDescriptor, ClassRealm classRealm )
+    public JRubyInvoker( ComponentDescriptor componentDescriptor, ClassLoader classLoader )
     {
         this.componentDescriptor = componentDescriptor;
-        this.classRealm = classRealm;
+        this.classLoader = classLoader;
     }
 
     /**
@@ -221,7 +220,7 @@ public class JRubyInvoker
                 impl = "/" + impl;
             }
     
-            if ( classRealm != null )
+            if ( classLoader != null )
             {
 //                if ( classRealm.getResource( impl ) == null )
 //                {
@@ -234,7 +233,7 @@ public class JRubyInvoker
 //                    throw new ComponentInstantiationException( buf.toString() );
 //                }
     
-                theReader = new InputStreamReader( classRealm.getResourceAsStream( impl ) );
+                theReader = new InputStreamReader( classLoader.getResourceAsStream( impl ) );
             }
             else if ( theReader == null )
             {
@@ -244,7 +243,7 @@ public class JRubyInvoker
 
         Object result = null;
         ClassLoader oldClassLoader = null;
-        if ( classRealm != null )
+        if ( classLoader != null )
         {
             oldClassLoader = Thread.currentThread().getContextClassLoader();
         }
@@ -265,9 +264,9 @@ public class JRubyInvoker
 
         try
         {
-            if ( classRealm != null )
+            if ( classLoader != null )
             {
-                Thread.currentThread().setContextClassLoader( classRealm.getClassLoader() );
+                Thread.currentThread().setContextClassLoader( classLoader );
             }
 
             bos = new StringOutputStream();
@@ -412,9 +411,9 @@ public class JRubyInvoker
         throws ComponentInstantiationException
     {
         InputStream scriptStream = null;
-        if ( classRealm != null )
+        if ( classLoader != null )
         {
-            scriptStream = classRealm.getResourceAsStream( resourceName );
+            scriptStream = classLoader.getResourceAsStream( resourceName );
             if ( scriptStream == null )
             {
                 File resourceFile = new File( resourceName );
