@@ -11,7 +11,6 @@ import java.io.IOException;
 public class AntComponentFactory
     extends AbstractComponentFactory
 {
-
     public Object newInstance( ComponentDescriptor componentDescriptor, ClassRealm classRealm, PlexusContainer container )
         throws ComponentInstantiationException
     {
