@@ -27,7 +27,6 @@
     <module>plexus-maven-plugin</module>
     <module>plexus-personalities</module>
     <module>plexus-security</module>
-    <module>plexus-servers</module>
     <module>plexus-servlet</module>
     <module>plexus-tools</module>
     <module>plexus-utils</module>
