@@ -11,15 +11,14 @@ import org.codehaus.plexus.component.configurator.converters.ConfigurationConver
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
-/**
- * @todo not happy that this has to be different to the object with fields configurator - should only need to redefine the "setValue" method
- */
+/** @todo not happy that this has to be different to the object with fields configurator - should only need to redefine the "setValue" method */
 public class BshComponentConfigurator
     extends AbstractComponentConfigurator
 {
-
-    public void configureComponent( Object component, PlexusConfiguration configuration,
-                                    ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm,
+    public void configureComponent( Object component,
+                                    PlexusConfiguration configuration,
+                                    ExpressionEvaluator expressionEvaluator,
+                                    ClassRealm containerRealm,
                                     ConfigurationListener listener )
         throws ComponentConfigurationException
     {
@@ -46,8 +45,9 @@ public class BshComponentConfigurator
                 }
                 catch ( ClassNotFoundException e )
                 {
-                    String msg = "Class name which was explicitly given in configuration using 'implementation' attribute: '" +
-                        implementation + "' cannot be loaded";
+                    String msg =
+                        "Class name which was explicitly given in configuration using 'implementation' attribute: '" +
+                            implementation + "' cannot be loaded";
 
                     throw new ComponentConfigurationException( msg, e );
                 }
