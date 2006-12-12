@@ -19,9 +19,6 @@
   <modules>
     <module>plexus-appserver</module>
     <module>plexus-archetypes</module>
-<!--
-    <module>plexus-avalon-components</module>
--->
     <module>plexus-component-factories</module>
     <module>plexus-components</module>
     <module>plexus-containers</module>
@@ -29,9 +26,6 @@
     <module>plexus-logging</module>
     <module>plexus-maven-plugin</module>
     <module>plexus-personalities</module>
-<!--
-    <module>plexus-sandbox</module>
--->
     <module>plexus-security</module>
     <module>plexus-servers</module>
     <module>plexus-servlet</module>
