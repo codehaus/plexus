@@ -32,7 +32,7 @@
          id="registerForm" method="post" name="register" cssClass="security register">     
   <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jsp" %>
   <ww:submit type="submit" value="Submit"   name="submitButton" />
-  <ww:submit type="cancel" value="Cancel"   name="cancelButton"   />
+  <ww:submit type="button" value="Cancel"   name="cancelButton"   />
 </ww:form>
 
 </body>
