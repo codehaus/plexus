@@ -1,5 +1,0 @@
-main is org.codehaus.plexus.appserver.PlexusApplicationHost from plexus.core
-
-[plexus.core]
-load ${plexus.core}/*.jar
-load ${tools.jar}
