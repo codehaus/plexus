@@ -30,12 +30,6 @@
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-rbac-model</artifactId>
     </dependency>
-    <!-- TODO: this is a temporary dependency. We should be lining these providers up more 
-    <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-authorization-rbac-store-memory</artifactId>
-    </dependency>
-    -->
     <dependency>
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authorization-rbac-store-test</artifactId>
@@ -67,9 +61,9 @@
       <version>1.0.1</version>
     </dependency>
     <dependency>
-      <groupId>woodstox</groupId>
-      <artifactId>wstx-asl</artifactId>
-      <version>3.1.0</version>
+      <groupId>stax</groupId>
+      <artifactId>stax</artifactId>
+      <version>1.2.0</version>
       <scope>test</scope>
     </dependency>
 
