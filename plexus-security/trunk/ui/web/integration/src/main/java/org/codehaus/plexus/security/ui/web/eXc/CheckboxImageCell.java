@@ -29,6 +29,9 @@ import org.extremecomponents.table.view.html.BuilderUtils;
  */
 public class CheckboxImageCell extends AbstractCell
 {
+  
+    private static final String CHECKBOX_TRUE = "icon_success_sml";
+    private static final String CHECKBOX_FALSE = "checkbox-false";
 
     protected String getCellValue( TableModel model, Column column )
     {
@@ -38,6 +41,20 @@ public class CheckboxImageCell extends AbstractCell
         }
         
         Boolean bool = (Boolean) value;
-        return "<img src=\"" + BuilderUtils.getImage( model, "checkbox-" + bool.toString() ) + "\" alt=\"" + bool.toString() + "\"/>";
+
+        String cellValue = "<img src=\"" ;
+
+        if ( bool.booleanValue() )
+        {
+            cellValue = cellValue + BuilderUtils.getImage( model, CHECKBOX_TRUE );
+        }
+        else
+        {
+            cellValue = cellValue + BuilderUtils.getImage( model, CHECKBOX_FALSE );
+        }
+
+        cellValue = cellValue + "\" alt=\"" + bool.toString() + "\"/>";
+
+        return cellValue;
     }
 }
