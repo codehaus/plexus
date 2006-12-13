@@ -1,7 +1,7 @@
 package org.codehaus.plexus.component.factory.jruby;
 
-import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.factory.AbstractComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.jruby.JRubyInvoker;
@@ -12,10 +12,10 @@ public class JRubyComponentFactory
     extends AbstractComponentFactory
 {
     public Object newInstance( ComponentDescriptor componentDescriptor,
-                               ClassLoader classLoader,
+                               ClassRealm classRealm,
                                PlexusContainer container )
         throws ComponentInstantiationException
     {
-        return new JRubyInvoker( componentDescriptor, classLoader );
+        return new JRubyInvoker( componentDescriptor, classRealm );
     }
 }
