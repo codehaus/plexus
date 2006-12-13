@@ -112,7 +112,7 @@ public class AccountAction
 
     public String submit()
     {
-        if ( isCancelButton() )
+        if ( !StringUtils.isEmpty( cancelButton ) )
         {
             return ACCOUNT_CANCEL;
         }
@@ -206,9 +206,9 @@ public class AccountAction
         this.user = user;
     }
 
-    public boolean isCancelButton()
+    public String getCancelButton()
     {
-        return !StringUtils.isEmpty( cancelButton );
+        return cancelButton;
     }
 
     public void setCancelButton( String cancelButton )
