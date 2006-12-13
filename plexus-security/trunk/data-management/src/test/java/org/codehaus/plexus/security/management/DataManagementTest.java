@@ -122,7 +122,7 @@ public class DataManagementTest
 
         IOUtil.copy( getClass().getResourceAsStream( "/expected-rbac.xml" ), sw );
 
-        assertEquals( "Check database content", sw.toString(), FileUtils.fileRead( backupFile ) );
+        assertEquals( "Check database content", convertLineEndings( sw.toString() ).trim(), fixXmlQuotes( FileUtils.fileRead( backupFile ) ).trim() );
     }
 
     private void createRbacDatabase( RBACManager manager )
@@ -158,10 +158,10 @@ public class DataManagementTest
 
         IOUtil.copy( getClass().getResourceAsStream( "/expected-users.xml" ), sw );
 
-        String actual = FileUtils.fileRead( backupFile );
-        String expected = sw.toString();
-        assertEquals( "Check database content", removeTimestampVariance( expected ),
-                      removeTimestampVariance( actual ) );
+        String actual = FileUtils.fileRead( backupFile ).trim();
+        String expected = sw.toString().trim();
+        assertEquals( "Check database content", convertLineEndings( removeTimestampVariance( expected ) ),
+                      fixXmlQuotes( removeTimestampVariance( actual ) ) );
     }
 
     private void createUserDatabase( UserManager manager )
@@ -196,10 +196,10 @@ public class DataManagementTest
 
         IOUtil.copy( getClass().getResourceAsStream( "/expected-keys.xml" ), sw );
 
-        String actual = FileUtils.fileRead( backupFile );
-        String expected = sw.toString();
-        assertEquals( "Check database content", removeKeyAndTimestampVariance( expected ),
-                      removeKeyAndTimestampVariance( actual ) );
+        String actual = FileUtils.fileRead( backupFile ).trim();
+        String expected = sw.toString().trim();
+        assertEquals( "Check database content", convertLineEndings( removeKeyAndTimestampVariance( expected ) ),
+                      fixXmlQuotes( removeKeyAndTimestampVariance( actual ) ) );
     }
 
     private static void createKeyDatabase( KeyManager manager )
@@ -410,5 +410,19 @@ public class DataManagementTest
         targetDirectory.mkdirs();
 
         return targetDirectory;
+    }
+
+    private static String fixXmlQuotes( String s )
+    {
+        if ( s.startsWith( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"))
+        {
+            return "<?xml version='1.0' encoding='UTF-8'?>" + s.substring( "<?xml version='1.0' encoding='UTF-8'?>".length() );
+        }
+        return s;
+    }
+
+    private String convertLineEndings( String s )
+    {
+        return s;
     }
 }
