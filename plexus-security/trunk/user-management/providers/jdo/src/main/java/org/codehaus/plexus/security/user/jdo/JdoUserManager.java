@@ -159,9 +159,22 @@ public class JdoUserManager
         }
 
         userSecurityPolicy.extensionChangePassword( user );
-
+        
         fireUserManagerUserAdded( user );
 
+        // TODO: find a better solution
+        // workaround for avoiding the admin from providing another password on the next login after the
+        // admin account has been created
+        // extensionChangePassword by default sets the password change status to false
+        if ( "admin".equals( user.getUsername() ) )
+        {
+            user.setPasswordChangeRequired( false );
+        }
+        else
+        {
+            user.setPasswordChangeRequired( true );
+        }
+        
         return (User) addObject( user );
     }
 

@@ -218,6 +218,7 @@ public class DefaultUserSecurityPolicy
         if ( now.after( expirationDate ) )
         {
             user.setLocked( true );
+            user.setPasswordChangeRequired( true );
             throw new MustChangePasswordException( "Password Expired, You must change your password." );
         }
     }
@@ -257,7 +258,9 @@ public class DefaultUserSecurityPolicy
             previousPasswords.addAll( sublist );
         }
 
-        user.setPreviousEncodedPasswords( previousPasswords );
+        user.setPreviousEncodedPasswords( previousPasswords );        
+        user.setPasswordChangeRequired( false );
+        user.setLocked( false );
 
         // Update timestamp for password change.
         user.setLastPasswordChange( new Date() );

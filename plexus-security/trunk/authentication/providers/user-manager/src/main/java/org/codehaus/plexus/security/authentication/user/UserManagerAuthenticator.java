@@ -84,7 +84,7 @@ public class UserManagerAuthenticator
             User user = userManager.findUser( source.getPrincipal() );
             username = user.getUsername();
             
-            if (user.isLocked())
+            if ( user.isLocked() && !user.isPasswordChangeRequired() )
             {
                 throw new AccountLockedException( "Account " + source.getPrincipal() + " is locked.", user );
             }
