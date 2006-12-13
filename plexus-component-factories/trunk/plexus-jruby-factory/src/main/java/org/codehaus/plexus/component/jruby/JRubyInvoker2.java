@@ -20,6 +20,7 @@ import java.util.Map;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.util.StringOutputStream;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.jruby.IRuby;
 import org.jruby.Ruby;
 import org.jruby.RubyException;
@@ -60,7 +61,7 @@ public class JRubyInvoker2 extends JRubyInvoker
 
     private List reqLibs = new LinkedList();
 
-    private ClassLoader classLoader;
+    private ClassLoader classRealm;
 
     private Reader reader;
 
@@ -79,14 +80,14 @@ public class JRubyInvoker2 extends JRubyInvoker
     /**
      * Create a JRubyInvoker that runs under the context of this class loader.
      * @param componentDescriptor
-     * @param classLoader
+     * @param classRealm
      */
-    public JRubyInvoker2( ComponentDescriptor componentDescriptor, ClassLoader classLoader )
+    public JRubyInvoker2( ComponentDescriptor componentDescriptor, ClassRealm classRealm )
     {
-        super( componentDescriptor, classLoader );
+        super( componentDescriptor, classRealm );
 
         this.componentDescriptor = componentDescriptor;
-        this.classLoader = classLoader;
+        this.classRealm = classRealm;
     }
 
     /**
@@ -211,24 +212,24 @@ public class JRubyInvoker2 extends JRubyInvoker
                 impl = "/" + impl;
             }
     
-            if ( classLoader != null )
+            if ( classRealm != null )
             {
-                if ( classLoader.getResource( impl ) == null )
+                if ( classRealm.getResource( impl ) == null )
                 {
                     StringBuffer buf = new StringBuffer( "Cannot find: " + impl + " in classpath:" );
-                    for ( int i = 0; i < ((URLClassLoader) classLoader ).getURLs().length; i++ )
+                    for ( int i = 0; i < ((URLClassLoader) classRealm ).getURLs().length; i++ )
                     {
-                        URL constituent = ((URLClassLoader) classLoader ).getURLs()[i];
+                        URL constituent = ((URLClassLoader) classRealm ).getURLs()[i];
                         buf.append( "\n   [" + i + "]  " + constituent );
                     }
                     throw new ComponentInstantiationException( buf.toString() );
                 }
     
-                theReader = new InputStreamReader( classLoader.getResourceAsStream( impl ) );
+                theReader = new InputStreamReader( classRealm.getResourceAsStream( impl ) );
             }
             else if ( theReader == null )
             {
-                throw new ComponentInstantiationException( "If no classLoader is given in the constructor, a script Reader must be set." );
+                throw new ComponentInstantiationException( "If no classRealm is given in the constructor, a script Reader must be set." );
             }
         }
     
@@ -239,7 +240,7 @@ public class JRubyInvoker2 extends JRubyInvoker
 
         Object result = null;
         ClassLoader oldClassLoader = null;
-        ClassLoader classLoader = this.classLoader == null ? null : this.classLoader;
+        ClassLoader classLoader = this.classRealm == null ? null : this.classRealm;
         if ( classLoader != null )
         {
             oldClassLoader = Thread.currentThread().getContextClassLoader();
@@ -437,9 +438,9 @@ public class JRubyInvoker2 extends JRubyInvoker
         throws ComponentInstantiationException
     {
         InputStream scriptStream = null;
-        if ( classLoader != null )
+        if ( classRealm != null )
         {
-            scriptStream = classLoader.getResourceAsStream( resourceName );
+            scriptStream = classRealm.getResourceAsStream( resourceName );
             if ( scriptStream == null )
             {
                 File resourceFile = new File( resourceName );
@@ -464,12 +465,12 @@ public class JRubyInvoker2 extends JRubyInvoker
         if ( scriptStream == null )
         {
             StringBuffer buf = new StringBuffer( "Cannot find: " + resourceName + " in classpath" );
-            if ( classLoader != null )
+            if ( classRealm != null )
             {
                 buf.append( ":" );
-                for ( int i = 0; i < ((URLClassLoader) classLoader ).getURLs().length; i++ )
+                for ( int i = 0; i < ((URLClassLoader) classRealm ).getURLs().length; i++ )
                 {
-                    URL constituent = ((URLClassLoader) classLoader ).getURLs()[i];
+                    URL constituent = ((URLClassLoader) classRealm ).getURLs()[i];
                     buf.append( "\n   [" + i + "]  " + constituent );
                 }
             }

@@ -16,11 +16,11 @@ import java.util.Map;
 
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
-import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringOutputStream;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.jruby.IRuby;
 import org.jruby.Ruby;
 import org.jruby.RubyIO;
@@ -55,7 +55,7 @@ public class JRubyInvoker
 
     private List reqLibs = new LinkedList();
 
-    private ClassLoader classLoader;
+    private ClassRealm classRealm;
 
     private ComponentDescriptor componentDescriptor;
 
@@ -74,12 +74,12 @@ public class JRubyInvoker
     /**
      * Create a JRubyInvoker that runs under the context of this class loader.
      * @param componentDescriptor
-     * @param classLoader
+     * @param classRealm
      */
-    public JRubyInvoker( ComponentDescriptor componentDescriptor, ClassLoader classLoader )
+    public JRubyInvoker( ComponentDescriptor componentDescriptor, ClassRealm classRealm )
     {
         this.componentDescriptor = componentDescriptor;
-        this.classLoader = classLoader;
+        this.classRealm = classRealm;
     }
 
     /**
@@ -220,7 +220,7 @@ public class JRubyInvoker
                 impl = "/" + impl;
             }
     
-            if ( classLoader != null )
+            if ( classRealm != null )
             {
 //                if ( classRealm.getResource( impl ) == null )
 //                {
@@ -233,7 +233,7 @@ public class JRubyInvoker
 //                    throw new ComponentInstantiationException( buf.toString() );
 //                }
     
-                theReader = new InputStreamReader( classLoader.getResourceAsStream( impl ) );
+                theReader = new InputStreamReader( classRealm.getResourceAsStream( impl ) );
             }
             else if ( theReader == null )
             {
@@ -243,7 +243,7 @@ public class JRubyInvoker
 
         Object result = null;
         ClassLoader oldClassLoader = null;
-        if ( classLoader != null )
+        if ( classRealm != null )
         {
             oldClassLoader = Thread.currentThread().getContextClassLoader();
         }
@@ -264,9 +264,9 @@ public class JRubyInvoker
 
         try
         {
-            if ( classLoader != null )
+            if ( classRealm != null )
             {
-                Thread.currentThread().setContextClassLoader( classLoader );
+                Thread.currentThread().setContextClassLoader( classRealm );
             }
 
             bos = new StringOutputStream();
@@ -411,9 +411,9 @@ public class JRubyInvoker
         throws ComponentInstantiationException
     {
         InputStream scriptStream = null;
-        if ( classLoader != null )
+        if ( classRealm != null )
         {
-            scriptStream = classLoader.getResourceAsStream( resourceName );
+            scriptStream = classRealm.getResourceAsStream( resourceName );
             if ( scriptStream == null )
             {
                 File resourceFile = new File( resourceName );
