@@ -8,7 +8,7 @@
   <artifactId>plexus-mail-sender</artifactId>
   <packaging>pom</packaging>
   <name>Plexus Mail Sender</name>
-  <version>1.0-alpha-5</version>
+  <version>1.0-alpha-6-SNAPSHOT</version>
   <modules>
     <module>plexus-mail-sender-api</module>
     <module>plexus-mail-senders</module>
