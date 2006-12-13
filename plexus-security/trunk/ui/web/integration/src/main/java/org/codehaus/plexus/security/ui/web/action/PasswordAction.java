@@ -147,7 +147,7 @@ public class PasswordAction
         {
             String encodedPassword = encoder.encodePassword( newPassword );
             user.setEncodedPassword( encodedPassword );
-            user.setPasswordChangeRequired( false );
+            user.setPassword( newPassword );            
             securitySystem.getUserManager().updateUser( user );
         }
         catch ( UserNotFoundException e )
