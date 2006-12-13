@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-authorization</artifactId>
-    <version>1.0-alpha-6-SNAPSHOT</version>
+    <version>1.0-alpha-6</version>
   </parent>
   <artifactId>plexus-security-authorization-open</artifactId>
   <name>Plexus Security :: Open Authorization</name>
@@ -30,7 +30,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authorization/open</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authorization/open</developerConnection>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-6</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-6</developerConnection>
+    <url>https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-6</url>
   </scm>
 </project>
