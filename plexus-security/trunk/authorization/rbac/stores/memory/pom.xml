@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-authorization-rbac-stores</artifactId>
-    <version>1.0-alpha-6</version>
+    <version>1.0-alpha-7-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-authorization-rbac-store-memory</artifactId>
   <name>Plexus Security :: RBAC Authorization Store :: Memory</name>
@@ -43,9 +43,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-6</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-6</developerConnection>
-    <url>https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-6</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authorization/rbac/stores/memory</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authorization/rbac/stores/memory</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-authorization/plexus-security-authorization-rbac/plexus-security-authorization-rbac-stores/plexus-security-authorization-rbac-store-memory</url>
   </scm>
   <build>
     <plugins>
