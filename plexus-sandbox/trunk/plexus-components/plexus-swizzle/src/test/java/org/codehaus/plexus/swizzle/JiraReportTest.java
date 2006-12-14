@@ -45,7 +45,7 @@ public class JiraReportTest
         configuration.setJiraServerUrl( "http://jira.codehaus.org" );
         configuration.setProjectKey( "SWIZZLE" );
         configuration.setProjectVersion( "*" );
-        configuration.setTemplate( configuration.RESOLVED_ISSUES_TEMPLATE );
+        configuration.setTemplate( "RESOLVED_ISSUES" );
 
         JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
 
@@ -74,7 +74,7 @@ public class JiraReportTest
         configuration.setJiraServerUrl( "http://jira.codehaus.org" );
         configuration.setProjectKey( "SWIZZLE" );
         configuration.setProjectVersion( "*" );
-        configuration.setTemplate( configuration.VOTES_TEMPLATE );
+        configuration.setTemplate( "VOTES" );
 
         JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
 
