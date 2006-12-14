@@ -89,7 +89,7 @@ public class ReportConfiguration
     {
         if ( EMPTY_STRING.equals( template ) )
         {
-            throw new ReportConfigurationException( "Provided template was an empty string. was expecting " +
+            throw new ReportConfigurationException( "Provided template was an empty string. Was expecting " +
                 "\"RESOLVED_ISSUES_TEMPLATE\", \"VOTES_TEMPLATE\" or a fully qualified path to a user-provided " +
                 "velocity template." );
         }
