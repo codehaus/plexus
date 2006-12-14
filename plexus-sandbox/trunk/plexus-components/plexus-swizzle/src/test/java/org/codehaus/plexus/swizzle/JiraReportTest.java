@@ -32,6 +32,7 @@ import org.codehaus.plexus.PlexusTestCase;
 public class JiraReportTest
     extends PlexusTestCase
 {
+    private static final String EMPTY_STRING = "";
 
     public void testResolvedIssuesProvidedTemplate()
         throws Exception
@@ -118,6 +119,28 @@ public class JiraReportTest
         String actual = new String( baos.toByteArray() );
 
         assertEquals( expected, actual );
+    }
+
+    public void testConfigurationExceptionHandling()
+        throws Exception
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream result = new PrintStream( baos );
+
+        ReportConfiguration configuration = new ReportConfiguration();
+
+        configuration.setJiraServerUrl( "http://jira.codehaus.org" );
+        configuration.setProjectKey( "SWIZZLE" );
+        configuration.setProjectVersion( "*" );
+
+        try
+        {
+            configuration.setTemplate( EMPTY_STRING );
+        }
+        catch( ReportConfigurationException e)
+        {
+            assertTrue( true );
+        }
     }
 
     public void testGenerateVotesReportTemplate()
