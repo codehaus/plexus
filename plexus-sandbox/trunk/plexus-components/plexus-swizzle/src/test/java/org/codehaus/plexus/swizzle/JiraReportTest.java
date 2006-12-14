@@ -33,6 +33,64 @@ public class JiraReportTest
     extends PlexusTestCase
 {
 
+    public void testResolvedIssuesProvidedTemplate()
+        throws Exception
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream result = new PrintStream( baos );
+
+        ReportConfiguration configuration = new ReportConfiguration();
+
+        configuration.setJiraServerUrl( "http://jira.codehaus.org" );
+        configuration.setProjectKey( "SWIZZLE" );
+        configuration.setProjectVersion( "*" );
+        configuration.setTemplate( "RESOLVED_ISSUES_TEMPLATE" );
+
+        JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
+
+        report.generateReport( configuration, result );
+
+        result.close();
+
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        String expectedFile = "org/codehaus/plexus/swizzle/ResolvedIssuesExpectedResult.txt";
+        URL resource = classLoader.getResource( expectedFile );
+        String expected = streamToString( resource.openStream() );
+
+        String actual = new String( baos.toByteArray() );
+
+        assertEquals( expected, actual );
+    }
+
+    public void testVotesProvidedTemplate()
+        throws Exception
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream result = new PrintStream( baos );
+
+        ReportConfiguration configuration = new ReportConfiguration();
+
+        configuration.setJiraServerUrl( "http://jira.codehaus.org" );
+        configuration.setProjectKey( "SWIZZLE" );
+        configuration.setProjectVersion( "*" );
+        configuration.setTemplate( "VOTES_TEMPLATE" );
+
+        JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
+
+        report.generateReport( configuration, result );
+
+        result.close();
+
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        String expectedFile = "org/codehaus/plexus/swizzle/VotesExpectedResult.txt";
+        URL resource = classLoader.getResource( expectedFile );
+        String expected = streamToString( resource.openStream() );
+
+        String actual = new String( baos.toByteArray() );
+
+        assertEquals( expected, actual );
+    }
+
     public void testGenerateReportResolvedIssuesTemplate()
         throws Exception
     {
@@ -73,7 +131,7 @@ public class JiraReportTest
         configuration.setJiraServerUrl( "http://jira.codehaus.org" );
         configuration.setProjectKey( "SWIZZLE" );
         configuration.setProjectVersion( "*" );
-        configuration.setTemplate( configuration.VOTES_REPORT_TEMPLATE );
+        configuration.setTemplate( configuration.VOTES_TEMPLATE );
 
         JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
 

@@ -28,7 +28,7 @@ public class ReportConfiguration
     private String template;
 
     public static final String RESOLVED_ISSUES_TEMPLATE = "org/codehaus/plexus/swizzle/ResolvedIssues.vm";
-    public static final String VOTES_REPORT_TEMPLATE = "org/codehaus/plexus/swizzle/Votes.vm";
+    public static final String VOTES_TEMPLATE = "org/codehaus/plexus/swizzle/Votes.vm";
 
 
     public ReportConfiguration( String projectKey, String projectVersion, String jiraServerUrl, String template )
@@ -80,7 +80,21 @@ public class ReportConfiguration
 
     public void setTemplate( String template )
     {
-        this.template = template;
+        if ("RESOLVED_ISSUES_TEMPLATE".equals(template))
+        {
+            this.template = RESOLVED_ISSUES_TEMPLATE;
+        }
+        else
+        {
+            if ( "VOTES_TEMPLATE".equals(template))
+            {
+                this.template = VOTES_TEMPLATE;
+            }
+            else
+            {
+                this.template = template;
+            }
+        }
     }
 
 }
