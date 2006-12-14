@@ -23,11 +23,17 @@ package org.codehaus.plexus.swizzle;
 public class ReportConfiguration
 {
     private String projectKey;
+
     private String projectVersion;
+
     private String jiraServerUrl;
+
     private String template;
 
+    private static final String EMPTY_STRING = "";
+
     public static final String RESOLVED_ISSUES_TEMPLATE = "org/codehaus/plexus/swizzle/ResolvedIssues.vm";
+
     public static final String VOTES_TEMPLATE = "org/codehaus/plexus/swizzle/Votes.vm";
 
 
@@ -79,14 +85,21 @@ public class ReportConfiguration
     }
 
     public void setTemplate( String template )
+        throws ReportConfigurationException
     {
-        if ("RESOLVED_ISSUES_TEMPLATE".equals(template))
+        if ( EMPTY_STRING.equals( template ) )
+        {
+            throw new ReportConfigurationException( "Provided template was an empty string. was expecting " +
+                "\"RESOLVED_ISSUES_TEMPLATE\", \"VOTES_TEMPLATE\" or a fully qualified path to a user-provided " +
+                "velocity template." );
+        }
+        if ( "RESOLVED_ISSUES_TEMPLATE".equals( template ) )
         {
             this.template = RESOLVED_ISSUES_TEMPLATE;
         }
         else
         {
-            if ( "VOTES_TEMPLATE".equals(template))
+            if ( "VOTES_TEMPLATE".equals( template ) )
             {
                 this.template = VOTES_TEMPLATE;
             }
