@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-naming</artifactId>
   <name>Plexus Naming Component</name>
-  <version>1.0-alpha-2-SNAPSHOT</version>
+  <version>1.0-alpha-2</version>
   <build>
     <plugins>
       <plugin>
@@ -52,4 +52,9 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <scm>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-naming-1.0-alpha-2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-naming-1.0-alpha-2</developerConnection>
+  </scm>
 </project>
