@@ -35,7 +35,7 @@ public class ArtifactReportTest
 
         VelocityComponent velocityComponent = (DefaultVelocityComponent) lookup ( DefaultVelocityComponent.ROLE );
 
-        System.out.println( "velocity: " + velocityComponent );
+        assertNotNull( velocityComponent );
 
         report.generate( velocityComponent );
 
