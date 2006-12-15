@@ -33,7 +33,15 @@ public class DefaultArtifactReport
     extends AbstractLogEnabled
     implements ArtifactReport, Startable
 {
-    private String test;
+    private String artifactName;
+
+    private String artifactGroupId;
+
+    private String artifactId;
+
+    private String artifactVersion;
+
+    private String artifactRepository;
 
     // ----------------------------------------------------------------------
     // Component Lifecycle
@@ -58,15 +66,15 @@ public class DefaultArtifactReport
     {
         VelocityContext context = new VelocityContext();
 
-        context.put( "artifactName", "sample1" );
+        context.put( "artifactName", artifactName );
 
-        context.put( "artifactGroupId", "sample2" );
+        context.put( "artifactGroupId", artifactGroupId );
 
-        context.put( "artifactId", "sample3" );
+        context.put( "artifactId", artifactId );
 
-        context.put( "artifactVersion", "sample4" );
+        context.put( "artifactVersion", artifactVersion );
 
-        context.put( "artifactRepository", "sample5" );
+        context.put( "artifactRepository", artifactRepository );
 
         Template template = velocityComponent.getEngine().getTemplate( "target/classes/org/codehaus/plexus/artifact/ArtifactReport.vm" );
 
