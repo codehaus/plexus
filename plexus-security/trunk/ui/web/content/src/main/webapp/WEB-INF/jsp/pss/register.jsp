@@ -34,18 +34,13 @@
   <ww:textfield label="Username"         name="user.username" size="30" required="true"/>
   <ww:textfield label="Full Name"        name="user.fullName" size="30" required="true"/>
   <ww:textfield label="Email Address"    name="user.email" size="50"    required="true"/>
+
+  <c:if test="${! emailValidationRequired}">
+    <ww:password  label="Password"         name="user.password" size="20" required="true"/>
+    <ww:password  label="Confirm Password" name="user.confirmPassword" size="20" required="true"/>
+  </c:if>
   
-  <c:choose>
-    <c:when test="${! emailValidationRequired}">
-      <ww:password  label="Password"         name="user.password" size="20" required="true"/>
-      <ww:password  label="Confirm Password" name="user.confirmPassword" size="20" required="true"/>
-      <ww:submit type="input" value="Register" />
-    </c:when>
-    <c:otherwise>
-      <ww:submit type="input" value="Validate Me" />
-    </c:otherwise>
-  </c:choose>
-  
+  <ww:submit type="input" value="Register" />
   <ww:submit type="button" value="Cancel"   name="cancelbutton" />
 </ww:form>
 
