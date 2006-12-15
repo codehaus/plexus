@@ -9,7 +9,7 @@
   <artifactId>plexus-tools</artifactId>
   <packaging>pom</packaging>
   <name>Plexus Tools Parent Project</name>
-  <version>1.0.8</version>
+  <version>1.0.9-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
