@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-ui-web-parent</artifactId>
-    <version>1.0-alpha-7</version>
+    <version>1.0-alpha-8-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-ui-web-taglib</artifactId>
   <name>Plexus Security :: UI Web :: Taglib</name>
@@ -54,8 +54,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-7</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-7</developerConnection>
-    <url>https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-7</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/ui/web/taglib</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/ui/web/taglib</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-ui/plexus-security-ui-web-parent/plexus-security-ui-web-taglib</url>
   </scm>
 </project>
