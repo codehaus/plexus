@@ -9,12 +9,12 @@
   <artifactId>plexus-tools</artifactId>
   <packaging>pom</packaging>
   <name>Plexus Tools Parent Project</name>
-  <version>1.0.8-SNAPSHOT</version>
+  <version>1.0.8</version>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-9</version>
+      <version>1.0-alpha-14</version>
     </dependency>
   </dependencies>
   <modules>
