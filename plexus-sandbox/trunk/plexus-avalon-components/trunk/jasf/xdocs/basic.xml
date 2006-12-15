@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Basic Package</title>
+    <author email="dan@envoisolutions.com">Dan Diephouse</author>
+  </properties>
+
+  <body>
+
+  <section name="Basic Package">
+    <p>
+	  The basic package (org.apache.fulcrum.jasf.impl.basic) provides a bunch of
+	  ResourceAccessControllers to secure your resources.  They are all xml based and
+	  entities being passed to them must inherit the BasicEntity interface.
+    </p>
+    <p>
+      See BasicSecurityTest for info on how to use it at this point.
+    </p>
+  </section>
+
+</body>
+</document>
