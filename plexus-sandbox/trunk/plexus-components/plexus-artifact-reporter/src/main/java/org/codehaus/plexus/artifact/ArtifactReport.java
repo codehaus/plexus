@@ -17,7 +17,7 @@
 
 package org.codehaus.plexus.artifact;
 
-import java.io.PrintStream;
+import org.codehaus.plexus.velocity.VelocityComponent;
 
 /**
  * @author John Tolentino
@@ -26,5 +26,6 @@ public interface ArtifactReport
 {
     public final static String ROLE = ArtifactReport.class.getName();
 
-    public void generate( PrintStream result );
+    public void generate( VelocityComponent velocityComponent )
+        throws Exception;
 }
