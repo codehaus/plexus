@@ -75,10 +75,12 @@
         <ec:column title="Tasks" alias="tasks" sortable="false" filterable="false" styleClass="tasks">
           <c:if test="${user.permanent eq false}">
             <pss:ifAuthorized permission="user-management-user-delete" resource="${user.username}">
-              <ww:form action="userdelete" namespace="/security" theme="simple" method="post">
-                <ww:hidden name="username" value="${user.username}" />
-                <ww:submit type="image" title="Delete ${user.username}" src="${pageContext.request.contextPath}/images/pss/delete.gif" />
-              </ww:form>
+              <ww:url id="userdeleteUrl" action="userdelete">
+                <ww:param name="username">${user.username}</ww:param>
+              </ww:url>
+              <ww:a href="%{userdeleteUrl}" title="Delete ${user.username}">
+                <img src="<ww:url value="${pageContext.request.contextPath}/images/pss/delete.gif"/>" border="none"/>
+              </ww:a>              
             </pss:ifAuthorized>
           </c:if>
         </ec:column>
