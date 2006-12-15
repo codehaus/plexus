@@ -92,7 +92,7 @@ public class Mailer
 
         context.put( "accountId", authkey.getForPrincipal() );
 
-        SimpleDateFormat dateformatter = new SimpleDateFormat( config.getString("applicaiton.timestamp", "EEE, d MMM yyyy HH:mm:ss Z") );
+        SimpleDateFormat dateformatter = new SimpleDateFormat( config.getString("application.timestamp", "EEE, d MMM yyyy HH:mm:ss Z") );
 
         context.put( "requestedOn", dateformatter.format( authkey.getDateCreated() ) );
 
@@ -133,7 +133,7 @@ public class Mailer
 
         context.put( "accountId", authkey.getForPrincipal() );
 
-        SimpleDateFormat dateformatter = new SimpleDateFormat( config.getString("applicaiton.timestamp", "EEE, d MMM yyyy HH:mm:ss Z") );
+        SimpleDateFormat dateformatter = new SimpleDateFormat( config.getString("application.timestamp", "EEE, d MMM yyyy HH:mm:ss Z") );
 
         context.put( "requestedOn", dateformatter.format( authkey.getDateCreated() ) );
 
