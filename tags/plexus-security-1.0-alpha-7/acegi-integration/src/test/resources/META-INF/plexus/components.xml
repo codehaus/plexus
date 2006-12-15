@@ -1,0 +1,65 @@
+<plexus>
+  <components>        
+    <component>
+      <role>org.codehaus.plexus.security.authentication.Authenticator</role>
+      <role-hint>acegi</role-hint>
+      <implementation>org.codehaus.plexus.security.acegi.AcegiAuthenticator</implementation>
+      <description>AcegiAuthenticator:</description>
+      <requirements>
+        <requirement>
+          <role>org.acegisecurity.providers.ProviderManager</role>
+          <field-name>manager</field-name>
+          <role-hint>dao</role-hint>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.acegi.AuthenticationTokenFactory</role>
+          <field-name>tokenFactory</field-name>
+        </requirement>
+      </requirements>
+    </component>
+    
+    <component>
+      <role>org.acegisecurity.providers.ProviderManager</role>
+      <implementation>org.acegisecurity.providers.ProviderManager</implementation>
+      <role-hint>dao</role-hint>
+      <requirements>
+        <requirement>
+          <role>org.acegisecurity.providers.dao.DaoAuthenticationProvider</role>
+          <field-name>providers</field-name>
+        </requirement>
+      </requirements>
+    </component>
+
+    <component>
+      <role>org.acegisecurity.userdetails.UserDetailsService</role>
+      <implementation>org.acegisecurity.userdetails.memory.InMemoryDaoImpl</implementation>
+      <configuration>
+        <userProperties>
+          <property>
+            <name>foo</name>
+            <value>bar,ROLE_USER,ROLE_SUPERVISOR</value>
+          </property>
+        </userProperties>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.acegisecurity.providers.dao.DaoAuthenticationProvider</role>
+      <implementation>org.acegisecurity.providers.dao.DaoAuthenticationProvider</implementation>
+      <requirements>
+        <requirement>
+          <role>org.acegisecurity.userdetails.UserDetailsService</role>
+          <field-name>userDetailsService</field-name>
+        </requirement>
+      </requirements>
+      <configuration>
+        <passwordEncoder implementation="org.acegisecurity.providers.encoding.PlaintextPasswordEncoder"/>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.acegisecurity.event.authentication.LoggerListener</role>
+      <implementation>org.acegisecurity.event.authentication.LoggerListener</implementation>
+    </component>
+  </components>
+</plexus>

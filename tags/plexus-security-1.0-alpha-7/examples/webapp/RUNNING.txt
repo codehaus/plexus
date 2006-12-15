@@ -1,0 +1,14 @@
+
+Running the Plexus Security Example Webapp
+------------------------------------------
+
+To run, open a command prompt/terminal. 
+
+1)  Change directory to the Plexus Security Example Webapp. 
+
+2)  Run the following Maven command line.
+
+    >  mvn -Pjetty
+    
+    This is ensure that the requisite resources are overlaid for example webapp
+    before it is deployed to a Jetty instance.
