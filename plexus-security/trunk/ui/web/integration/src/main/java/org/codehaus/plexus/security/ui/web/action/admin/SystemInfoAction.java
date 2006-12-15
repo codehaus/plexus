@@ -52,8 +52,6 @@ public class SystemInfoAction
     // Plexus Component Requirements
     // ------------------------------------------------------------------
 
-    private static final String INDENT = "  ";
-
     /**
      * @plexus.requirement
      */
@@ -75,11 +73,17 @@ public class SystemInfoAction
 
     private static final char LN = Character.LINE_SEPARATOR;
 
+    private static final String INDENT = "  ";
+
+    private static final int MAXDEPTH = 10;
+
     static
     {
         ignoredReaders = new ArrayList();
         // Ignoring Class.getClass()
         ignoredReaders.add( "class" );
+        // Found in some jpox classes.
+        ignoredReaders.add( "copy" );
     }
 
     // ------------------------------------------------------------------
@@ -114,7 +118,7 @@ public class SystemInfoAction
 
     private void dumpObject( StringBuffer sb, Object obj, String indent )
     {
-        dumpObjectSwitchboard( new ArrayList(), sb, obj, indent );
+        dumpObjectSwitchboard( new ArrayList(), sb, obj, indent, 0 );
     }
 
     /**
@@ -124,8 +128,9 @@ public class SystemInfoAction
      * @param sb the stringbuffer to populate
      * @param obj the object to dump
      * @param indent the current indent string.
+     * @param depth the depth in the tree.
      */
-    private void dumpObjectSwitchboard( List seenObjects, StringBuffer sb, Object obj, String indent )
+    private void dumpObjectSwitchboard( List seenObjects, StringBuffer sb, Object obj, String indent, int depth )
     {
         if ( obj == null )
         {
@@ -133,25 +138,34 @@ public class SystemInfoAction
             return;
         }
 
+        if( depth > MAXDEPTH )
+        {
+            sb.append( StringEscapeUtils.escapeHtml( "<MAX DEPTH>" ) );
+            sb.append( LN );
+            return;
+        }
+        
+        depth++;
+        
         String className = obj.getClass().getName();
 
         sb.append( "(" ).append( className ).append( ") " );
 
         if ( obj instanceof List )
         {
-            dumpIterator( seenObjects, sb, ( (List) obj ).iterator(), indent );
+            dumpIterator( seenObjects, sb, ( (List) obj ).iterator(), indent, depth );
         }
         else if ( obj instanceof Set )
         {
-            dumpIterator( seenObjects, sb, ( (Set) obj ).iterator(), indent );
+            dumpIterator( seenObjects, sb, ( (Set) obj ).iterator(), indent, depth );
         }
         else if ( obj instanceof Map )
         {
-            dumpIterator( seenObjects, sb, ( (Map) obj ).entrySet().iterator(), indent );
+            dumpIterator( seenObjects, sb, ( (Map) obj ).entrySet().iterator(), indent, depth );
         }
         else if ( obj instanceof Iterator )
         {
-            dumpIterator( seenObjects, sb, (Iterator) obj, indent );
+            dumpIterator( seenObjects, sb, (Iterator) obj, indent, depth );
         }
         else
         {
@@ -174,11 +188,12 @@ public class SystemInfoAction
             // Adding object to seen list (to prevent cycles)
             seenObjects.add( obj );
 
-            dumpObjectReaders( seenObjects, sb, obj, indent );
+            dumpObjectReaders( seenObjects, sb, obj, indent, depth );
         }
+        depth--;
     }
 
-    private void dumpObjectReaders( List seenObjects, StringBuffer sb, Object obj, String indent )
+    private void dumpObjectReaders( List seenObjects, StringBuffer sb, Object obj, String indent, int depth )
     {
         sb.append( obj.toString() ).append( LN );
         String name = null;
@@ -208,7 +223,7 @@ public class SystemInfoAction
                 }
                 else
                 {
-                    dumpObjectSwitchboard( seenObjects, sb, value, INDENT + indent );
+                    dumpObjectSwitchboard( seenObjects, sb, value, INDENT + indent, depth );
                 }
             }
         }
@@ -220,21 +235,19 @@ public class SystemInfoAction
             {
                 sb.append( ".get" ).append( StringUtils.capitalize( name ) ).append( "()" );
             }
-            sb.append( "]: " );
-            sb.append( e.getMessage() ).append( " (" ).append( e.getClass().getName() ).append( ")" );
-            sb.append( LN );
-            getLogger().info( "dumpobject", e );
+            sb.append( "]: " ).append( "(" ).append( e.getClass().getName() ).append( ") ");
+            sb.append( e.getMessage() ).append( LN );
         }
     }
 
-    private void dumpIterator( List seenObjects, StringBuffer sb, Iterator iterator, String indent )
+    private void dumpIterator( List seenObjects, StringBuffer sb, Iterator iterator, String indent, int depth )
     {
         sb.append( LN );
         while ( iterator.hasNext() )
         {
             Object entry = iterator.next();
             sb.append( indent );
-            dumpObjectSwitchboard( seenObjects, sb, entry, indent + " | " );
+            dumpObjectSwitchboard( seenObjects, sb, entry, indent + " | ", depth );
         }
     }
 
