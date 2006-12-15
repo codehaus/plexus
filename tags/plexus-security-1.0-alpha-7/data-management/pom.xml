@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>plexus-security</artifactId>
+    <groupId>org.codehaus.plexus.security</groupId>
+    <version>1.0-alpha-7</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>plexus-security-data-management</artifactId>
+  <name>Plexus Security :: Data Management Utilities</name>
+  <description>Back up, restore and upgrade utilities for JDO databases using XML</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-keys-jdo</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-user-management-provider-jdo</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>plexus-security-authorization-rbac-store-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derby</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>stax</groupId>
+      <artifactId>stax</artifactId>
+      <version>1.1.1-dev</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>xmlbeans</groupId>
+          <artifactId>xmlbeans-jsr173-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
