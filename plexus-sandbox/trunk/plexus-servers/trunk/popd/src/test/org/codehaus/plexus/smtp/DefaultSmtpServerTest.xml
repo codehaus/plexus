@@ -1,0 +1,23 @@
+<configuration>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.synapse.SynapseServer</role>
+      <implementation>org.codehaus.plexus.ircd.server.IrcServer</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.synapse.acceptor.SocketAcceptor</role>
+      <implementation>org.codehaus.plexus.synapse.acceptor.DefaultSocketAcceptor</implementation>
+      <configuration>
+        <port>25</port>
+      </configuration>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.synapse.reactor.Reactor</role>
+      <implementation>org.codehaus.plexus.synapse.reactor.DefaultReactor</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.synapse.socket.ServerSocketFactory</role>
+      <implementation>org.codehaus.plexus.synapse.socket.DefaultServerSocketFactory</implementation>
+    </component>
+  </components>
+</configuration>

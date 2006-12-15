@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<project>
+  <extend>${maven.repo.local}/plexus/poms/plexus-server-1.0.pom</extend>
+  <id>plexus-ircd</id>
+  <artifactId>plexus-ircd</artifactId>
+  <name>Plexus IRC Server</name>
+  <currentVersion>1.0</currentVersion>
+
+  <dependencies>
+    
+    <!--
+     |
+     | Common compile-time dependencies for all the components.
+     |
+     -->
+
+    <!--
+     |
+     | Common test-time dependencies for all the components.
+     |
+     -->
+
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src/main</sourceDirectory>
+  </build>
+
+</project>
