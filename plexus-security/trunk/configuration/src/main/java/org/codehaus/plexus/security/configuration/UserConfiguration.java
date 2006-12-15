@@ -136,13 +136,14 @@ public class UserConfiguration
 
         if ( getLog().isDebugEnabled() )
         {
-            dumpState();
+            StringBuffer dbg = new StringBuffer();
+            dumpState( dbg );
+            getLog().debug( dbg.toString() );
         }
     }
 
-    public void dumpState()
+    public StringBuffer dumpState( StringBuffer sb )
     {
-        StringBuffer sb = new StringBuffer();
         sb.append( "Configuration Dump." );
         Iterator it = getKeys();
         while ( it.hasNext() )
@@ -150,7 +151,7 @@ public class UserConfiguration
             String key = (String) it.next();
             sb.append( "\n\"" ).append( key ).append( "\" = \"" ).append( getProperty( key ) ).append( "\"" );
         }
-        getLog().info( sb.toString() );
+        return sb;
     }
 
     public Object getProperty( String key )
@@ -271,5 +272,10 @@ public class UserConfiguration
         }
 
         return super.getString( expression );
+    }
+
+    public List getConfigs()
+    {
+        return configs;
     }
 }
