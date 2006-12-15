@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Artifact Report</title>
+  </properties>
+  <body>
+    <section name="Artifact Info">
+      <tr>
+          <th>field</th>
+          <th>value</th>
+      </tr>
+      <tr>
+          <td>Artifact Name</td>
+          <td>$artifactName</td>
+      </tr>
+      <tr>
+          <td>Group Id</td>
+          <td>$artifactGroupId</td>
+      </tr>
+      <tr>
+          <td>artifact Id</td>
+          <td>$artifactGroupId</td>
+      </tr>
+      <tr>
+          <td>Version</td>
+          <td>$artifactVersion</td>
+      </tr>
+      <tr>
+          <td>Repository</td>
+          <td>$artifactRepository</td>
+      </tr>
+    </section>
+  </body>
+</document>

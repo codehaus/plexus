@@ -1,0 +1,8 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.artifact.ArtifactReport</role>
+      <implementation>org.codehaus.plexus.artifact.DefaultArtifactReport</implementation>
+    </component>
+  </components>
+</component-set>
