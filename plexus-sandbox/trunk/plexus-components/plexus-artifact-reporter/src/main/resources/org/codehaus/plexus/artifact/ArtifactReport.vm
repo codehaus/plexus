@@ -19,7 +19,7 @@
       </tr>
       <tr>
           <td>artifact Id</td>
-          <td>$artifactGroupId</td>
+          <td>$artifactId</td>
       </tr>
       <tr>
           <td>Version</td>
