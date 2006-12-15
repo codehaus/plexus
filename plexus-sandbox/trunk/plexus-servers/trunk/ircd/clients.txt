@@ -1,0 +1,5 @@
+irssi
+xchat
+vIRC
+Colloquy
+mIRC
