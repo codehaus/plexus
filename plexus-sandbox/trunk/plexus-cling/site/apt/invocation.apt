@@ -1,0 +1,114 @@
+---
+CLIng Invocation Handling
+---
+John Casey
+---
+09/14/2004
+---
+
+Command-Line Parsing in CLIng
+
+*Abstract
+
+  CLIng attempts to provide for maximum flexibility in the realm of command 
+  invocation. This document describes the design of the CLIng command-line
+  parser, paying special attention to the concept of InvocationTemplates.
+
+*Introduction
+
+  Often, an application can be invoked in different ways. It may be as simple
+  as specifying an input- versus output-mode, or it may be relatively complex, 
+  such as specifying that certain sets of options are allowed (and even 
+  <required>) to be specified together. Many other CLI implementations account
+  for this reality by simply forcing the developer to specify all possible 
+  options in a single set, then group-and-validate subsets later in the launch
+  code for the application.
+  
+  Since it is CLIng's goal to remove the necessity of CLI-oriented launch code,
+  this approach to option sets is simply unacceptable. Instead, this project 
+  attempts to embrace the reality of command-line invocation by providing the
+  ability to specify multiple runtime modes - or InvocationTemplates - and then
+  scoring the provided command-line options against each template to find out 
+  which one is the best match. This is just one way in which CLIng's parsing
+  strategy will make development of command-line applications a snap.
+  
+*CLI Parser Specification
+
+  The command-line parser for CLIng follows a few simple rules, broadly 
+  separated by category:
+  
+**Options
+
+  Options must have the following properties:
+  
+   - [Short name] consisting of a one-character shorthand reference for the 
+     option
+     
+   - [Long name] consisting of a more verbose, descriptive name for the option
+   
+   - [Description] consisting of an explanation for what the option means in the
+     larger execution context
+     
+   - [Property] consisting of the main-class object property which will accept
+     the option's value, or else a boolean flag if the option doesn't require a
+     value
+  
+   []
+   
+  Options may have - but are not required to have - the following properties:
+  
+   - [Required] which flags the option as required for a valid command-line 
+     parse result
+   
+   []
+    
+  Options may require one or more values. If this is the case, the following
+  properties may be set:
+  
+   - [Type] consisting of a String reference to a valid OptionFormat, to be used
+     in validating and extracting the option's real value from the command-line
+     argument
+     
+   - [Multi value] which flags this option as consisting of a list of one or 
+     more values, each conforming to the format specified by the <Type> property
+   
+   []
+   
+**Option-Sets
+
+  Options may be grouped into sets, in order to capture different runtime modes
+  for a particular application. Each set of options will make up an 
+  InvocationTemplate, which can:
+  
+   - score an array of command-line arguments to determine how well it matches
+     the options specified for that template
+     
+   - set the values of the options contained within that template based on a 
+     Map of option-name -> value entries, where option-name can be the short or
+     long name for the option
+     
+   - determine whether that template has all of its required options satisfied; 
+     that is, whether the invocation was a valid call to the application
+     
+   - supply a usage statement based on the options and requirements of that
+     template, in order to provide user feedback on how to use the application
+     correctly
+     
+**Invocations
+
+  Every time CLIng proxies the invocation of an application, it instantiates
+  an Invocation object, which is then loaded with all of the available 
+  InvocationTemplates. This invocation handler is then asked to parse an array
+  of arguments (these will be the args from the main method invocation) into a 
+  map of option-name -> value entries, and determine which template best fits 
+  the supplied information. Using the template with the best score, the 
+  invocation handler will set its values and return.
+  
+  Now, the invocation is available for query by the Launcher instance, which
+  controls its lifecycle. Queries for option satisfaction and usage will be 
+  delegated to the appropriate template(s). The Launcher is responsible for 
+  using the information from the matching template to configure the application
+  entry point instance before running it.
+  
+  See the lifecycle document for more information about the function of the 
+  Launcher.
