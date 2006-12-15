@@ -19,6 +19,12 @@ package org.codehaus.plexus.artifact;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.velocity.VelocityComponent;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.Template;
+
+import java.io.PrintWriter;
+import java.io.PrintStream;
 
 /**
  * @author John Tolentino
@@ -27,6 +33,16 @@ public class DefaultArtifactReport
     extends AbstractLogEnabled
     implements ArtifactReport, Startable
 {
+    /**
+     * Velocity context to use
+     */
+    private VelocityContext context;
+
+    /**
+     * Velocity component to use
+     */
+    private VelocityComponent velocity;
+
     // ----------------------------------------------------------------------
     // Component Lifecycle
     // ----------------------------------------------------------------------
@@ -45,4 +61,28 @@ public class DefaultArtifactReport
     // ArtifactReport Implementation
     // ----------------------------------------------------------------------
 
+
+    public void generate( PrintStream result )
+    {
+        context.put( "artifactName", "sample" );
+        context.put( "artifactGroupId", "sample" );
+        context.put( "artifactId", "sample" );
+        context.put( "artifactVersion", "sample" );
+        context.put( "artifactRepository", "sample" );
+
+        try
+        {
+            Template template = velocity.getEngine().getTemplate( "org/codehaus/plexus/artifact/ArtifactReport.vm" );
+            PrintWriter writer = new PrintWriter( result );
+            template.merge( context, writer );
+            writer.flush();
+
+        }
+        catch ( Exception e )
+        {
+
+        }
+
+
+    }
 }

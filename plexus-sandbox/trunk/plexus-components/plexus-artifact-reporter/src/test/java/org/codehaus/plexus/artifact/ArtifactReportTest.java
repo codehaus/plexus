@@ -30,5 +30,8 @@ public class ArtifactReportTest
     {
         ArtifactReport report = (DefaultArtifactReport) lookup( ArtifactReport.ROLE );
         assertNotNull( report );
+
+        report.generate( System.out );
     }
+
 }

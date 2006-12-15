@@ -17,10 +17,14 @@
 
 package org.codehaus.plexus.artifact;
 
+import java.io.PrintStream;
+
 /**
  * @author John Tolentino
  */
 public interface ArtifactReport
 {
     public final static String ROLE = ArtifactReport.class.getName();
+
+    public void generate( PrintStream result );
 }
