@@ -379,6 +379,6 @@
     <module>data-management</module>
   </modules>
   <properties>
-    <security.version>1.0-alpha-7</security.version>
+    <security.version>1.0-alpha-7-SNAPSHOT</security.version>
   </properties>
 </project>
