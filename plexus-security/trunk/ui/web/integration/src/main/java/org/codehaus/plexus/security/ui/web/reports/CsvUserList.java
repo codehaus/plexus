@@ -152,6 +152,7 @@ public class CsvUserList
                 {
                     out.print( escapeCell( propValue.toString() ) );
                 }
+                hasPreviousField = true;
             }
             out.println();
         }
