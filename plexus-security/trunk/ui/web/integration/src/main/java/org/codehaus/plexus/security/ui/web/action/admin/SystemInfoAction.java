@@ -18,6 +18,9 @@ package org.codehaus.plexus.security.ui.web.action.admin;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
+import org.codehaus.plexus.security.configuration.UserConfiguration;
+import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 /**
@@ -48,10 +52,22 @@ public class SystemInfoAction
     // Plexus Component Requirements
     // ------------------------------------------------------------------
 
+    private static final String INDENT = "  ";
+
     /**
      * @plexus.requirement
      */
     private SecuritySystem securitySystem;
+
+    /**
+     * @plexus.requirement
+     */
+    private UserConfiguration configuration;
+
+    /**
+     * @plexus.requirement
+     */
+    private RBACManager rbacManager;
 
     private static final List ignoredReaders;
 
@@ -62,6 +78,7 @@ public class SystemInfoAction
     static
     {
         ignoredReaders = new ArrayList();
+        // Ignoring Class.getClass()
         ignoredReaders.add( "class" );
     }
 
@@ -79,18 +96,36 @@ public class SystemInfoAction
     {
         details = new StringBuffer();
 
+        details.append( "Configuration: " );
+        dumpObject( details, configuration, INDENT );
+        configuration.dumpState( details );
+        details.append( LN );
+
+        details.append( LN ).append( "<hr/>" ).append( LN );
+        details.append( "RBAC Manager: " );
+        dumpObject( details, rbacManager, INDENT );
+
+        details.append( LN ).append( "<hr/>" ).append( LN );
         details.append( "SecuritySystem: " );
-        dumpObject( details, securitySystem, "  " );
+        dumpObject( details, securitySystem, INDENT );
 
         return SUCCESS;
     }
 
     private void dumpObject( StringBuffer sb, Object obj, String indent )
     {
-        dumpObject( new ArrayList(), sb, obj, indent );
+        dumpObjectSwitchboard( new ArrayList(), sb, obj, indent );
     }
 
-    private void dumpObject( List seenObjects, StringBuffer sb, Object obj, String indent )
+    /**
+     * The recursive object dumping switchboard.
+     * 
+     * @param seenObjects objects already seen (to prevent cycles)
+     * @param sb the stringbuffer to populate
+     * @param obj the object to dump
+     * @param indent the current indent string.
+     */
+    private void dumpObjectSwitchboard( List seenObjects, StringBuffer sb, Object obj, String indent )
     {
         if ( obj == null )
         {
@@ -98,7 +133,55 @@ public class SystemInfoAction
             return;
         }
 
-        sb.append( indent ).append( "\\ " ).append( obj.getClass().getName() ).append( LN );
+        String className = obj.getClass().getName();
+
+        sb.append( "(" ).append( className ).append( ") " );
+
+        if ( obj instanceof List )
+        {
+            dumpIterator( seenObjects, sb, ( (List) obj ).iterator(), indent );
+        }
+        else if ( obj instanceof Set )
+        {
+            dumpIterator( seenObjects, sb, ( (Set) obj ).iterator(), indent );
+        }
+        else if ( obj instanceof Map )
+        {
+            dumpIterator( seenObjects, sb, ( (Map) obj ).entrySet().iterator(), indent );
+        }
+        else if ( obj instanceof Iterator )
+        {
+            dumpIterator( seenObjects, sb, (Iterator) obj, indent );
+        }
+        else
+        {
+            // Filter classes that start with java or javax
+            if ( className.startsWith( "java." ) || className.startsWith( "javax." ) )
+            {
+                sb.append( StringEscapeUtils.escapeHtml( obj.toString() ) ).append( LN );
+                return;
+            }
+
+            // prevent cycles
+            if ( seenObjects.contains( obj ) )
+            {
+                // No need to dump.
+                sb.append( StringEscapeUtils.escapeHtml( "<seen already preventing cycle in dump> " ) );
+                sb.append( LN );
+                return;
+            }
+
+            // Adding object to seen list (to prevent cycles)
+            seenObjects.add( obj );
+
+            dumpObjectReaders( seenObjects, sb, obj, indent );
+        }
+    }
+
+    private void dumpObjectReaders( List seenObjects, StringBuffer sb, Object obj, String indent )
+    {
+        sb.append( obj.toString() ).append( LN );
+        String name = null;
 
         try
         {
@@ -107,7 +190,7 @@ public class SystemInfoAction
             while ( it.hasNext() )
             {
                 Map.Entry readerEntry = (Entry) it.next();
-                String name = (String) readerEntry.getKey();
+                name = (String) readerEntry.getKey();
 
                 if ( ignoredReaders.contains( name ) )
                 {
@@ -125,30 +208,33 @@ public class SystemInfoAction
                 }
                 else
                 {
-                    String className = value.getClass().getName();
-                    sb.append( "(" ).append( className ).append( ") " );
-                    sb.append( StringEscapeUtils.escapeHtml( value.toString() ) ).append( LN );
-
-                    if ( !className.startsWith( "java." ) && !className.startsWith( "javax." ) )
-                    {
-                        // prevent cycles
-                        if ( !seenObjects.contains( value ) )
-                        {
-                            dumpObject( seenObjects, sb, value, indent + "  " );
-                        }
-                        else
-                        {
-                            seenObjects.add( value );
-                        }
-                    }
+                    dumpObjectSwitchboard( seenObjects, sb, value, INDENT + indent );
                 }
             }
         }
         catch ( Throwable e )
         {
-            sb.append( "Unable to read bean [" + obj.getClass().getName() + "]: " + e.getMessage() + " ("
-                + e.getClass().getName() + ")" );
-            getLogger().warn( "dumpobject", e );
+            sb.append( LN ).append( indent );
+            sb.append( "Unable to read bean [" ).append( obj.getClass().getName() );
+            if ( StringUtils.isNotBlank( name ) )
+            {
+                sb.append( ".get" ).append( StringUtils.capitalize( name ) ).append( "()" );
+            }
+            sb.append( "]: " );
+            sb.append( e.getMessage() ).append( " (" ).append( e.getClass().getName() ).append( ")" );
+            sb.append( LN );
+            getLogger().info( "dumpobject", e );
+        }
+    }
+
+    private void dumpIterator( List seenObjects, StringBuffer sb, Iterator iterator, String indent )
+    {
+        sb.append( LN );
+        while ( iterator.hasNext() )
+        {
+            Object entry = iterator.next();
+            sb.append( indent );
+            dumpObjectSwitchboard( seenObjects, sb, entry, indent + " | " );
         }
     }
 
