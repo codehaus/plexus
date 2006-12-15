@@ -24,9 +24,10 @@ under the License.
     <component>
       <role>org.codehaus.plexus.artifact.ArtifactReport</role>
       <implementation>org.codehaus.plexus.artifact.DefaultArtifactReport</implementation>
-      <configuration>
-        <context type="org.codehaus.plexus.velocity.VelocityComponent"/>
-      </configuration>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.velocity.VelocityComponent</role>
+      <implementation>org.codehaus.plexus.velocity.DefaultVelocityComponent</implementation>
     </component>
   </components>
 </plexus>

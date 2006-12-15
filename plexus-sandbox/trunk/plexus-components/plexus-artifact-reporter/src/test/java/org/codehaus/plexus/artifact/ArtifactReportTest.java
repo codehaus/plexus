@@ -18,6 +18,8 @@
 package org.codehaus.plexus.artifact;
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.velocity.DefaultVelocityComponent;
+import org.codehaus.plexus.velocity.VelocityComponent;
 
 /**
  * @author John Tolentino
@@ -31,7 +33,11 @@ public class ArtifactReportTest
         ArtifactReport report = (DefaultArtifactReport) lookup( ArtifactReport.ROLE );
         assertNotNull( report );
 
-        report.generate( System.out );
-    }
+        VelocityComponent velocityComponent = (DefaultVelocityComponent) lookup ( DefaultVelocityComponent.ROLE );
 
+        System.out.println( "velocity: " + velocityComponent );
+
+        report.generate( velocityComponent );
+
+    }
 }

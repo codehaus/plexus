@@ -20,11 +20,11 @@ package org.codehaus.plexus.artifact;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.velocity.VelocityComponent;
+import org.codehaus.plexus.velocity.DefaultVelocityComponent;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.Template;
 
-import java.io.PrintWriter;
-import java.io.PrintStream;
+import java.io.StringWriter;
 
 /**
  * @author John Tolentino
@@ -33,15 +33,7 @@ public class DefaultArtifactReport
     extends AbstractLogEnabled
     implements ArtifactReport, Startable
 {
-    /**
-     * Velocity context to use
-     */
-    private VelocityContext context;
-
-    /**
-     * Velocity component to use
-     */
-    private VelocityComponent velocity;
+    private String test;
 
     // ----------------------------------------------------------------------
     // Component Lifecycle
@@ -61,28 +53,29 @@ public class DefaultArtifactReport
     // ArtifactReport Implementation
     // ----------------------------------------------------------------------
 
-
-    public void generate( PrintStream result )
+    public void generate( VelocityComponent velocityComponent )
+        throws Exception
     {
-        context.put( "artifactName", "sample" );
-        context.put( "artifactGroupId", "sample" );
-        context.put( "artifactId", "sample" );
-        context.put( "artifactVersion", "sample" );
-        context.put( "artifactRepository", "sample" );
+        VelocityContext context = new VelocityContext();
 
-        try
-        {
-            Template template = velocity.getEngine().getTemplate( "org/codehaus/plexus/artifact/ArtifactReport.vm" );
-            PrintWriter writer = new PrintWriter( result );
-            template.merge( context, writer );
-            writer.flush();
+        context.put( "artifactName", "sample1" );
 
-        }
-        catch ( Exception e )
-        {
+        context.put( "artifactGroupId", "sample2" );
 
-        }
+        context.put( "artifactId", "sample3" );
 
+        context.put( "artifactVersion", "sample4" );
+
+        context.put( "artifactRepository", "sample5" );
+
+        Template template = velocityComponent.getEngine().getTemplate( "target/classes/org/codehaus/plexus/artifact/ArtifactReport.vm" );
+
+        StringWriter writer = new StringWriter();
+
+        template.merge( context, writer );
+
+        System.out.println( writer.toString() );
 
     }
+
 }
