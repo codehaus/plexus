@@ -3,6 +3,8 @@
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-swizzle</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <name>Plexus Swizzle Component</name>
+  <url>http://plexus.codehaus.org</url>
   <repositories>
     <repository>
       <id>codehaus.org</id>

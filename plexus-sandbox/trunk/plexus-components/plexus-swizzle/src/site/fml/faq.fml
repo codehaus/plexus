@@ -1,6 +1,6 @@
-<!--
-Copyright 2006 Apache Software Foundation
+<?xml version="1.0"?>
 
+<!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -19,14 +19,16 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<plexus>
-  <components>
-    <component>
-      <role>org.codehaus.plexus.swizzle.JiraReport</role>
-      <implementation>org.codehaus.plexus.swizzle.DefaultJiraReport</implementation>
-      <configuration>
-        <context type="org.codehaus.plexus.velocity.VelocityComponent"/>
-      </configuration>
-    </component>
-  </components>
-</plexus>
+<faqs id="FAQ" title="Frequently Asked Questions">
+ <part id="General">
+   <faq id="availableTemplates">
+     <question>What templates can I use to generate reports?</question>
+     <answer>
+       <p>There are currently two templates available. <a href="examples/generating-votes-report.html">Votes</a>
+       and <a href="examples/generating-resolved-issues-report.html">Resolved Issues.</a></p>
+       <p>You can also provide <a href="examples/generating-custom-report.html">your own template</a> by specifying
+       the path where it's located.</p>
+     </answer>
+   </faq>
+ </part>
+</faqs>
