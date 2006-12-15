@@ -17,6 +17,7 @@ package org.codehaus.plexus.security.policy.rules;
  */
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.security.policy.DefaultUserSecurityPolicy;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
@@ -58,6 +59,11 @@ public class ReusePasswordRule
 
     public int getPreviousPasswordCount()
     {
+        if ( securityPolicy == null )
+        {
+            return DefaultUserSecurityPolicy.DEFAULT_PASSWORD_RETENTION_COUNT;
+        }
+
         return securityPolicy.getPreviousPasswordsCount();
     }
 
@@ -103,8 +109,7 @@ public class ReusePasswordRule
 
         if ( hasReusedPassword( user, password ) )
         {
-            violations.addViolation( REUSE_VIOLATION,
-                                     new Object[]{new Integer( getPreviousPasswordCount() )} ); //$NON-NLS-1$
+            violations.addViolation( REUSE_VIOLATION, new Object[] { new Integer( getPreviousPasswordCount() ) } ); //$NON-NLS-1$
         }
     }
 
