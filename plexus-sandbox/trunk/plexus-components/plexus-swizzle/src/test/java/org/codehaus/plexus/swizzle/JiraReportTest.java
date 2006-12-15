@@ -140,7 +140,7 @@ public class JiraReportTest
 
         String actual = new String( baos.toByteArray() );
 
-        assertEquals( expected, actual );
+        assertEquals( expected, actual ); 
     }
 
     private static String streamToString( InputStream in )

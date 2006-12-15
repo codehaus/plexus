@@ -1,0 +1,115 @@
+ ------
+ Usage
+ ------
+ John Tolentino
+ ------
+ 15 December 2006
+
+~~ Copyright 2006 The Apache Software Foundation.
+~~
+~~ Licensed under the Apache License, Version 2.0 (the "License");
+~~ you may not use this file except in compliance with the License.
+~~ You may obtain a copy of the License at
+~~
+~~      http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing, software
+~~ distributed under the License is distributed on an "AS IS" BASIS,
+~~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~~ See the License for the specific language governing permissions and
+~~ limitations under the License.
+
+~~ NOTE: For help with the syntax of this file, see:
+~~ http://maven.apache.org/guides/mini/guide-apt-format.html
+
+Usage
+
+ The Maven Swizzle Plugin generate reports from a project's issue tracking system (currently only JIRA is supported).
+ It requires 2 parameters a ReportConfiguration and a PrintStream for the results.
+
+*POM dependency
+
+ Add plexus-swizzle to your POM:
+
++-------+
+<project>
+  [...]
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-swizzle</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+  [...]
+</project>
++-------+
+
+*Usage in your class
+
+ Declare the plexus component in your class and call <<<generateReport()>>>:
+
++-------+
+package sample;
+
+import org.codehaus.plexus.swizzle.JiraReport;
+
+public class SampleClass
+{
+    /**
+     * @component
+     */
+    private JiraReport report;
+
+    /*
+     * @parameter
+     * @required
+     */
+    private ReportConfiguration reportConfiguration;
+
+
+    public void sampleRun()
+    {
+        try
+        {
+            PrintStream printStream = System.out;
+            report.generateReport( reportConfiguration, printStream );
+        }
+        catch ( ReportGenerationException reportException )
+        {
+            throw new MojoExecutionException(
+                "Problem encountered while generating the swizzle report: " + reportException.getStackTrace() );
+        }
+    }
+}
++-------+
+
+*Plexus Component Configuration
+
+ Declare the plexus component in your components.xml and provide the necessary report configuration. The following
+ configuration will generate a report based on the provided <<<VOTES>>> template for all project versions in the
+ <<<SWIZZLE>>> project hosted at <<<http://jira.codehaus.org>>>. Swizzle accepts wildcards for the projectKey and
+ projectVersion parameters.
+
++-------+
+<plexus>
+  [...]
+  <components>
+    <component>
+      <role>org.codehaus.plexus.swizzle.JiraReport</role>
+      <implementation>org.codehaus.plexus.swizzle.DefaultJiraReport</implementation>
+      <configuration>
+        <reportConfiguration>
+          <jiraServerUrl>http://jira.codehaus.org</jiraServerUrl>
+          <projectKey>SWIZZLE</projectKey>
+          <projectVersion>*</projectVersion>
+          <template>VOTES</template>
+        </reportConfiguration>
+      </configuration>
+    </component>
+  </components>
+  [...]
+<plexus>
++-------+
+
+ If you save it to a file, you can then use the generated xdoc file to create reports for your site.
