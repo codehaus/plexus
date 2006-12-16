@@ -23,8 +23,11 @@ import org.codehaus.plexus.velocity.VelocityComponent;
 import org.codehaus.plexus.velocity.DefaultVelocityComponent;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.Template;
+import org.apache.maven.artifact.Artifact;
 
 import java.io.StringWriter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 
 /**
  * @author John Tolentino
@@ -33,16 +36,6 @@ public class DefaultArtifactReport
     extends AbstractLogEnabled
     implements ArtifactReport, Startable
 {
-    private String artifactName;
-
-    private String artifactGroupId;
-
-    private String artifactId;
-
-    private String artifactVersion;
-
-    private String artifactRepository;
-
     // ----------------------------------------------------------------------
     // Component Lifecycle
     // ----------------------------------------------------------------------
@@ -61,28 +54,26 @@ public class DefaultArtifactReport
     // ArtifactReport Implementation
     // ----------------------------------------------------------------------
 
-    public void generate( VelocityComponent velocityComponent )
+    public void generate( VelocityComponent velocityComponent, Artifact artifact, PrintStream result )
         throws Exception
     {
         VelocityContext context = new VelocityContext();
 
-        context.put( "artifactName", artifactName );
+        context.put( "artifactGroupId", artifact.getGroupId() );
 
-        context.put( "artifactGroupId", artifactGroupId );
+        context.put( "artifactId", artifact.getArtifactId() );
 
-        context.put( "artifactId", artifactId );
+        context.put( "artifactVersion", artifact.getVersion() );
 
-        context.put( "artifactVersion", artifactVersion );
-
-        context.put( "artifactRepository", artifactRepository );
+        context.put( "artifactDownloadUrl", artifact.getDownloadUrl() );
 
         Template template = velocityComponent.getEngine().getTemplate( "target/classes/org/codehaus/plexus/artifact/ArtifactReport.vm" );
 
-        StringWriter writer = new StringWriter();
+        PrintWriter writer = new PrintWriter(result);
 
         template.merge( context, writer );
 
-        System.out.println( writer.toString() );
+        writer.flush();
 
     }
 
