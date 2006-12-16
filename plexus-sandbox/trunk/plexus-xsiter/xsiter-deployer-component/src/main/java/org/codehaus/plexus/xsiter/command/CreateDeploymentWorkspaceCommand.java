@@ -15,7 +15,7 @@ import org.codehaus.plexus.xsiter.utils.DeployerUtils;
  *
  */
 public class CreateDeploymentWorkspaceCommand
-    extends AbstractDeployerCommand
+    extends AbstractCommand
     implements Command
 {
 
