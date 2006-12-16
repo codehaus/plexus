@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * A {@link CommandResult} instance is created and returned as a consequence of
- * {@link DeployerCommand}'s execution.<p>
+ * {@link Command}'s execution.<p>
  * {@link CommandResult} has a {@link ResultState} which can be either of - 
  * {@link ResultState#SUCCESS}, {@link ResultState#FAILURE} or {@link ResultState#ERROR.<p>
  * 
@@ -20,7 +20,7 @@ public class CommandResult
 
     /**
      * State of {@link CommandResult} set as a consequnce of 
-     * {@link DeployerCommand} execution. 
+     * {@link Command} execution. 
      */
     private ResultState state = ResultState.FAILURE;
 
