@@ -10,10 +10,6 @@
           <th>value</th>
       </tr>
       <tr>
-          <td>Artifact Name</td>
-          <td>$artifactName</td>
-      </tr>
-      <tr>
           <td>Group Id</td>
           <td>$artifactGroupId</td>
       </tr>
@@ -26,8 +22,8 @@
           <td>$artifactVersion</td>
       </tr>
       <tr>
-          <td>Repository</td>
-          <td>$artifactRepository</td>
+          <td>Download URL</td>
+          <td>$artifactDownloadUrl</td>
       </tr>
     </section>
   </body>
