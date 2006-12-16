@@ -25,7 +25,7 @@ import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.xsiter.deployer.model.DeployableProject;
 import org.codehaus.plexus.xsiter.deployer.model.DeployerResource;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
-import org.codehaus.plexus.xsiter.deployer.model.DeployableProject.ProjectProperties;
+import org.codehaus.plexus.xsiter.utils.DeployerUtils;
 import org.codehaus.plexus.xsiter.vhost.VirtualHostConfiguration;
 import org.codehaus.plexus.xsiter.vhost.VirtualHostManager;
 
@@ -78,8 +78,9 @@ public abstract class AbstractDeployer
 
     /**
      * Creates a deployment workspace if none exists for the specified DeployableProject.
-     * @return {@link DeploymentWorkspace} instance 
-     * @throws Exception 
+     * 
+     * @return {@link DeploymentWorkspace} instance
+     * @throws Exception
      */
     protected DeploymentWorkspace createDeploymentWorkspaceIfRequired( DeployerResource project )
         throws Exception
@@ -95,8 +96,8 @@ public abstract class AbstractDeployer
      * 
      * @param project
      * @param workspaceID
-     * @return created {@link DeploymentWorkspace} instance 
-     * @throws Exception 
+     * @return created {@link DeploymentWorkspace} instance
+     * @throws Exception
      */
     protected DeploymentWorkspace createDeploymentWorkspace( DeployerResource project )
         throws Exception
@@ -133,6 +134,7 @@ public abstract class AbstractDeployer
      * Persists DeploymentWorkspace for the Project to XML.
      * 
      * @param workspace
+     * @deprecated <em>Moved to {@link DeployerUtils}</em>
      */
     private void persistWorkspaceDescriptor( DeployerResource project, DeploymentWorkspace workspace )
     {
@@ -143,41 +145,41 @@ public abstract class AbstractDeployer
             File workspaceDesc = new File( workspace.getRootDirectory(), "workspace.xml" );
             FileWriter writer = new FileWriter( workspaceDesc );
             XMLWriter w = new PrettyPrintXMLWriter( writer );
-            w.startElement( ELT_WORKSPACE );
+            w.startElement( Deployer.ELT_WORKSPACE );
 
-            w.startElement( ELT_ID );
+            w.startElement( Deployer.ELT_ID );
             w.writeText( project.getLabel() );
             w.endElement();
 
-            w.startElement( ELT_SCM_URL );
+            w.startElement( Deployer.ELT_SCM_URL );
             w.writeText( project.getScmURL() );
             w.endElement();
 
-            w.startElement( ELT_SCM_USERNAME );
+            w.startElement( Deployer.ELT_SCM_USERNAME );
             w.writeText( project.getScmUsername() );
             w.endElement();
 
-            w.startElement( ELT_SCM_PASSWORD );
+            w.startElement( Deployer.ELT_SCM_PASSWORD );
             w.writeText( project.getScmPassword() );
             w.endElement();
 
-            w.startElement( ELT_ROOT_DIRECTORY );
+            w.startElement( Deployer.ELT_ROOT_DIRECTORY );
             w.writeText( workspace.getRootDirectory() );
             w.endElement();
 
-            w.startElement( ELT_TEMP_DIRECTORY );
+            w.startElement( Deployer.ELT_TEMP_DIRECTORY );
             w.writeText( workspace.getTempDirectory() );
             w.endElement();
 
-            w.startElement( ELT_WEBAPP_DIRECTORY );
+            w.startElement( Deployer.ELT_WEBAPP_DIRECTORY );
             w.writeText( workspace.getWebappDirectory() );
             w.endElement();
 
-            w.startElement( ELT_WEBSERVER_DIRECTORY );
+            w.startElement( Deployer.ELT_WEBSERVER_DIRECTORY );
             w.writeText( workspace.getWebserverDirectory() );
             w.endElement();
 
-            w.startElement( ELT_WORKING_DIRECTORY );
+            w.startElement( Deployer.ELT_WORKING_DIRECTORY );
             w.writeText( workspace.getWorkingDirectory() );
             w.endElement();
 
@@ -194,13 +196,14 @@ public abstract class AbstractDeployer
     }
 
     /**
-     * Reads the XML descriptor for the specified Project and creates a
-     * {@link DeploymentWorkspace} instance from it.
+     * Reads the XML descriptor for the specified Project and creates a {@link DeploymentWorkspace}
+     * instance from it.
      * 
-     * @param workspaceId String identifier for the workspace for which to
-     *            source the Workspace descriptor for.
+     * @param workspaceId String identifier for the workspace for which to source the Workspace
+     *            descriptor for.
      * @return {@link DeploymentWorkspace} instance.
      * @throws Exception
+     * @deprecated <em>Moved to {@link DeployerUtils}</em>
      */
     protected DeploymentWorkspace loadWorkspaceFromDescriptor( String workspaceId )
         throws Exception
@@ -214,15 +217,15 @@ public abstract class AbstractDeployer
         FileReader reader = new FileReader( desc );
         // root element is <workspace>
         Xpp3Dom eltWorkSpace = Xpp3DomBuilder.build( reader );
-        String id = eltWorkSpace.getChild( ELT_ID ).getValue();
-        String scmURL = eltWorkSpace.getChild( ELT_SCM_URL ).getValue();
-        String scmUsername = eltWorkSpace.getChild( ELT_SCM_USERNAME ).getValue();
-        String scmPassword = eltWorkSpace.getChild( ELT_SCM_PASSWORD ).getValue();
-        String rootDir = eltWorkSpace.getChild( ELT_ROOT_DIRECTORY ).getValue();
-        String tmpDir = eltWorkSpace.getChild( ELT_TEMP_DIRECTORY ).getValue();
-        String webserverDir = eltWorkSpace.getChild( ELT_WEBSERVER_DIRECTORY ).getValue();
-        String webappDir = eltWorkSpace.getChild( ELT_WEBAPP_DIRECTORY ).getValue();
-        String workingDir = eltWorkSpace.getChild( ELT_WORKING_DIRECTORY ).getValue();
+        String id = eltWorkSpace.getChild( Deployer.ELT_ID ).getValue();
+        String scmURL = eltWorkSpace.getChild( Deployer.ELT_SCM_URL ).getValue();
+        String scmUsername = eltWorkSpace.getChild( Deployer.ELT_SCM_USERNAME ).getValue();
+        String scmPassword = eltWorkSpace.getChild( Deployer.ELT_SCM_PASSWORD ).getValue();
+        String rootDir = eltWorkSpace.getChild( Deployer.ELT_ROOT_DIRECTORY ).getValue();
+        String tmpDir = eltWorkSpace.getChild( Deployer.ELT_TEMP_DIRECTORY ).getValue();
+        String webserverDir = eltWorkSpace.getChild( Deployer.ELT_WEBSERVER_DIRECTORY ).getValue();
+        String webappDir = eltWorkSpace.getChild( Deployer.ELT_WEBAPP_DIRECTORY ).getValue();
+        String workingDir = eltWorkSpace.getChild( Deployer.ELT_WORKING_DIRECTORY ).getValue();
 
         DeploymentWorkspace workspace = new DeploymentWorkspace();
         workspace.setLabel( id );
@@ -272,9 +275,8 @@ public abstract class AbstractDeployer
     }
 
     /**
-     * Service method to translate and adjust the directory paths for the
-     * Virtual Host configuration to be relative from the Deployment workspaces
-     * ROOT dir.
+     * Service method to translate and adjust the directory paths for the Virtual Host configuration
+     * to be relative from the Deployment workspaces ROOT dir.
      * <p>
      * Also deletes any existing vhost resources.
      * 
@@ -306,11 +308,11 @@ public abstract class AbstractDeployer
     }
 
     /**
-     * Reads the pom.xml from the checked out project and returns a
-     * {@link MavenProject} instance.
+     * Reads the pom.xml from the checked out project and returns a {@link MavenProject} instance.
      * 
      * @param project
      * @return
+     * @deprecated <em>Moved to {@link DeployerUtils}</em>
      */
     protected MavenProject getMavenProjectForCheckedoutProject( DeployableProject project )
     {
@@ -339,12 +341,13 @@ public abstract class AbstractDeployer
     }
 
     /**
-     * Checks out the project if its not yet checked out and returns the Project
-     * Check out directory.
+     * Checks out the project if its not yet checked out and returns the Project Check out
+     * directory.
      * 
      * @param project
      * @return Check out directory where the project was checked out to.
      * @throws Exception
+     * @deprecated <em>Moved to {@link DeployerUtils}</em>
      */
     protected File checkoutProjectIfRequired( DeployableProject project )
         throws Exception
@@ -374,6 +377,7 @@ public abstract class AbstractDeployer
      * @param list
      * @param delim
      * @return
+     * @deprecated <em>Moved to {@link DeployerUtils}</em>
      */
     protected List string2List( String list, char delim )
     {
@@ -397,8 +401,8 @@ public abstract class AbstractDeployer
     }
 
     /**
-     * Returns <code>true</code> if there exists cargo plugin configuration in
-     * the Maven POM.xml which we need to deploy to appserver.
+     * Returns <code>true</code> if there exists cargo plugin configuration in the Maven POM.xml
+     * which we need to deploy to appserver.
      * 
      * @return
      */
@@ -412,35 +416,14 @@ public abstract class AbstractDeployer
             Plugin plugin = (Plugin) it.next();
             String groupId = plugin.getGroupId();
             String artifactId = plugin.getArtifactId();
-            if ( groupId.equals( GROUP_ID_ORG_CODEHAUS_CARGO ) && artifactId.equals( ARTIFACT_ID_CARGO_MAVEN_2_PLUGIN ) )
+            if ( groupId.equals( AbstractDeployer.GROUP_ID_ORG_CODEHAUS_CARGO )
+                && artifactId.equals( AbstractDeployer.ARTIFACT_ID_CARGO_MAVEN_2_PLUGIN ) )
             {
                 return true;
             }
         }
 
         return false;
-    }
-
-    /**
-     * Service method that sets up properties for a {@link DeployableProject}
-     * instance.
-     * 
-     * @param project
-     * @param property
-     * @param value
-     */
-    private void assignProjectProperty( DeployerResource project, ProjectProperties property, String value )
-    {
-        if ( property == ProjectProperties.PROP_LABEL )
-            project.setLabel( value );
-        if ( property == ProjectProperties.PROP_SCM_URL )
-            project.setScmURL( value );
-        if ( property == ProjectProperties.PROP_SCM_USER )
-            project.setScmUsername( value );
-        if ( property == ProjectProperties.PROP_SCM_PASSWORD )
-            project.setScmPassword( value );
-        if ( property == ProjectProperties.PROP_SCM_TAG )
-            project.setScmTag( value );
     }
 
 }
