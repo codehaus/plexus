@@ -42,7 +42,7 @@ public class CreateDeploymentWorkspaceCommand
         DeployerUtils.createIfNonExistent( new File( rootDir, workspace.getWebappDirectory() ) );
         DeployerUtils.createIfNonExistent( new File( rootDir, workspace.getWebserverDirectory() ) );
         DeployerUtils.createIfNonExistent( new File( rootDir, workspace.getWorkingDirectory() ) );
-        DeployerUtils.persistWorkspaceDescriptor( workspace );
+        DeployerUtils.persistWorkspaceDescriptor( workingDirectory, workspace );
 
         CommandResult result = new CommandResult();
         result.setState( ResultState.SUCCESS );

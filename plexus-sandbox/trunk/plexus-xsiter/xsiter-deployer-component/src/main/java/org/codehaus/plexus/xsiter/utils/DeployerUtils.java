@@ -79,55 +79,36 @@ public class DeployerUtils
 
     /**
      * Persists {@link DeploymentWorkspace} for the Project to XML.
-     * 
+     * @param deployerWorkingDir Working directory where all deployment workspaces are created.
      * @param workspace
      */
-    public static void persistWorkspaceDescriptor( DeploymentWorkspace workspace )
+    public static void persistWorkspaceDescriptor( File deployerWorkingDir, DeploymentWorkspace workspace )
     {
         String LS = System.getProperty( "line.separator" );
 
         try
         {
-            File workspaceDesc = new File( workspace.getRootDirectory(), "workspace.xml" );
+            File workspaceDir = new File( deployerWorkingDir, workspace.getId() );
+            File workspaceDesc = new File( workspaceDir, "workspace.xml" );
+
             FileWriter writer = new FileWriter( workspaceDesc );
             XMLWriter w = new PrettyPrintXMLWriter( writer );
+
             w.startElement( Deployer.ELT_WORKSPACE );
+            writeElement( w, Deployer.ELT_ID, workspace.getId(), false );
 
-            w.startElement( Deployer.ELT_ID );
-            w.writeText( workspace.getLabel() );
-            w.endElement();
-
-            w.startElement( Deployer.ELT_SCM_URL );
-            w.writeText( workspace.getScmURL() );
-            w.endElement();
-
-            w.startElement( Deployer.ELT_SCM_USERNAME );
-            w.writeText( workspace.getScmUsername() );
-            w.endElement();
-
-            w.startElement( Deployer.ELT_SCM_PASSWORD );
-            w.writeText( workspace.getScmPassword() );
-            w.endElement();
-
-            w.startElement( Deployer.ELT_ROOT_DIRECTORY );
-            w.writeText( workspace.getRootDirectory() );
-            w.endElement();
-
-            w.startElement( Deployer.ELT_TEMP_DIRECTORY );
-            w.writeText( workspace.getTempDirectory() );
-            w.endElement();
-
-            w.startElement( Deployer.ELT_WEBAPP_DIRECTORY );
-            w.writeText( workspace.getWebappDirectory() );
-            w.endElement();
-
-            w.startElement( Deployer.ELT_WEBSERVER_DIRECTORY );
-            w.writeText( workspace.getWebserverDirectory() );
-            w.endElement();
-
-            w.startElement( Deployer.ELT_WORKING_DIRECTORY );
-            w.writeText( workspace.getWorkingDirectory() );
-            w.endElement();
+            // write out SCM info if there was an SCM URL
+            if ( null != workspace.getScmURL() && !workspace.getScmURL().trim().equals( "" ) )
+            {
+                writeElement( w, Deployer.ELT_SCM_URL, workspace.getScmURL(), true );
+                writeElement( w, Deployer.ELT_SCM_USERNAME, workspace.getScmUsername(), true );
+                writeElement( w, Deployer.ELT_SCM_PASSWORD, workspace.getScmPassword(), true );
+            }
+            writeElement( w, Deployer.ELT_ROOT_DIRECTORY, workspaceDir.getAbsolutePath(), false );
+            writeElement( w, Deployer.ELT_TEMP_DIRECTORY, workspace.getTempDirectory(), false );
+            writeElement( w, Deployer.ELT_WEBAPP_DIRECTORY, workspace.getWebappDirectory(), false );
+            writeElement( w, Deployer.ELT_WEBSERVER_DIRECTORY, workspace.getWebserverDirectory(), false );
+            writeElement( w, Deployer.ELT_WORKING_DIRECTORY, workspace.getWorkingDirectory(), false );
 
             // close workspace element
             w.endElement();
@@ -137,8 +118,25 @@ public class DeployerUtils
         }
         catch ( Exception e )
         {
-            //getLogger().error( "Error persisting Workspace Descriptor", e );
+            e.printStackTrace();
         }
+    }
+
+    /**
+     * Writes out XML elements.
+     * @param w 
+     * @param eltName Element to be written out.
+     * @param value Value for for the element.
+     * @param skipNullValue If <code>true</code> the element is not written if its 
+     *        value is <code>null</code>. 
+     */
+    private static void writeElement( XMLWriter w, String eltName, String value, boolean skipNullValue )
+    {
+        if ( skipNullValue && null == value )
+            return;
+        w.startElement( eltName );
+        w.writeText( value );
+        w.endElement();
     }
 
     /**
