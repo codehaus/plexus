@@ -65,7 +65,7 @@ public class CommandResult
      * Adds the specified message to the result.
      * @param msg
      */
-    public void addmessage( String msg )
+    public void addMessage( String msg )
     {
         this.messages.add( msg );
     }

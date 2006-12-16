@@ -18,7 +18,6 @@ import org.codehaus.plexus.util.xml.XMLWriter;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.xsiter.deployer.Deployer;
-import org.codehaus.plexus.xsiter.deployer.model.DeployableProject;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
 
 /**
@@ -169,20 +168,21 @@ public class DeployerUtils
 
     /**
      * Reads the pom.xml from the checked out project and returns a {@link MavenProject} instance.
-     * 
-     * @param project
      * @param deployerWorkingDirectory 
+     * @param workspace
+     * 
      * @return
      */
-    protected MavenProject getMavenProjectForCheckedoutProject( DeployableProject project, File deployerWorkingDirectory )
+    public static MavenProject getMavenProjectForCheckedoutProject( File deployerWorkingDirectory,
+                                                                    DeploymentWorkspace workspace )
     {
         MavenProject mavenProject = null;
         // Build Maven Project
         MavenXpp3Reader mavenReader = new MavenXpp3Reader();
         try
         {
-            File checkoutDir = new File( new File( deployerWorkingDirectory, project.getLabel() ), "working/"
-                + project.getScmTag() );
+
+            File checkoutDir = getWorkspaceCheckoutDirectory( deployerWorkingDirectory, workspace );
             File pomXml = new File( checkoutDir, "pom.xml" );
             if ( !pomXml.exists() )
                 throw new Exception( "No Maven Project descriptor available for checked out project under: "
@@ -193,9 +193,21 @@ public class DeployerUtils
         catch ( Exception e )
         {
             // getLogger().error( e.getMessage(), e );
+            e.printStackTrace();
         }
 
         return mavenProject;
+    }
+
+    /**
+     * @param deployerWorkingDirectory
+     * @param workspace
+     * @return
+     */
+    public static File getWorkspaceCheckoutDirectory( File deployerWorkingDirectory, DeploymentWorkspace workspace )
+    {
+        return new File( deployerWorkingDirectory, workspace.getId() + "/" + workspace.getWorkingDirectory() + "/"
+            + workspace.getScmTag() );
     }
 
     /**
