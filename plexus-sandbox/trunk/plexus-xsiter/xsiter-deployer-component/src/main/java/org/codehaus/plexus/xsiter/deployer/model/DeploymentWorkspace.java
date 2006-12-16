@@ -20,7 +20,7 @@ public class DeploymentWorkspace
      * Absolute path to the Deployment workspace. All other directories are
      * resolved relative to this.
      */
-    private String rootDirectory = null;
+    private String rootDirectory = getId();
 
     /**
      * Webapp deployment directory for the workspace.
@@ -44,6 +44,7 @@ public class DeploymentWorkspace
 
     /**
      * @return the rootDir
+     * @deprecated <em>Marked for removal.</em>
      */
     public String getRootDirectory()
     {
@@ -52,6 +53,7 @@ public class DeploymentWorkspace
 
     /**
      * @param rootDir the rootDir to set
+     * @deprecated <em>Marked for removal.</em>
      */
     public void setRootDirectory( String rootDir )
     {
