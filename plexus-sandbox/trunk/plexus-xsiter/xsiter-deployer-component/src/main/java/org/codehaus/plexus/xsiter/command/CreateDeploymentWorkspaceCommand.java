@@ -16,7 +16,7 @@ import org.codehaus.plexus.xsiter.utils.DeployerUtils;
  */
 public class CreateDeploymentWorkspaceCommand
     extends AbstractDeployerCommand
-    implements DeployerCommand
+    implements Command
 {
 
     /**
@@ -31,7 +31,7 @@ public class CreateDeploymentWorkspaceCommand
      * {@inheritDoc}
      * @see org.codehaus.plexus.xsiter.command.Command#execute(org.codehaus.plexus.xsiter.command.CommandContext)
      */
-    public void execute( CommandContext context )
+    public CommandResult execute( CommandContext context )
         throws CommandException
     {
         DeploymentWorkspace workspace = context.getWorkspace();
@@ -43,6 +43,10 @@ public class CreateDeploymentWorkspaceCommand
         DeployerUtils.createIfNonExistent( new File( rootDir, workspace.getWebserverDirectory() ) );
         DeployerUtils.createIfNonExistent( new File( rootDir, workspace.getWorkingDirectory() ) );
         DeployerUtils.persistWorkspaceDescriptor( workspace );
-    }
 
+        CommandResult result = new CommandResult();
+        result.setState( ResultState.SUCCESS );
+        result.addmessage( "Workspace created for Id: " + workspace.getId() );
+        return result;
+    }
 }

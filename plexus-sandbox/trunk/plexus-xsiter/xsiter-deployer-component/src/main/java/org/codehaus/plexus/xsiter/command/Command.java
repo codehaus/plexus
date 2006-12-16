@@ -9,10 +9,10 @@ package org.codehaus.plexus.xsiter.command;
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  *
  */
-public interface DeployerCommand
+public interface Command
 {
 
-    static final String ROLE = DeployerCommand.class.getName();
+    static final String ROLE = Command.class.getName();
 
     /**
      * Invokes the command.
@@ -20,9 +20,10 @@ public interface DeployerCommand
      * @param context {@link CommandContext} that wraps the contextual 
      *        information that the executing {@link Command} instance can use 
      *        to query adapt its behaviour.
+     * @return TODO
      * @throws CommandException TODO
      */
-    public void execute( CommandContext context )
+    public CommandResult execute( CommandContext context )
         throws CommandException;
 
 }

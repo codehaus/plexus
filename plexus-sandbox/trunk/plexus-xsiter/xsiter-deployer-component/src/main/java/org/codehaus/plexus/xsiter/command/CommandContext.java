@@ -10,7 +10,7 @@ import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
 
 /**
  * Command execution context. Wraps up the contextual information required 
- * by a {@link DeployerCommand} to execute and
+ * by a {@link Command} to execute and
  * do its stuff.
  * 
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
@@ -20,7 +20,7 @@ public class CommandContext
 
     /**
      * {@link DeploymentWorkspace} that is the target for the
-     *  {@link DeployerCommand}.
+     *  {@link Command}.
      */
     private DeploymentWorkspace workspace;
 
@@ -33,7 +33,7 @@ public class CommandContext
 
     /**
      * @return the {@link DeploymentWorkspace} instance that is the target
-     *         for the {@link DeployerCommand}. Returns <code>null</code>
+     *         for the {@link Command}. Returns <code>null</code>
      *         if there is none.
      */
     public DeploymentWorkspace getWorkspace()
@@ -43,7 +43,7 @@ public class CommandContext
 
     /**
      * Sets the the {@link DeploymentWorkspace} instance that is the target for
-     * the {@link DeployerCommand}.
+     * the {@link Command}.
      * 
      * @param workspace
      *            the workspace to set
