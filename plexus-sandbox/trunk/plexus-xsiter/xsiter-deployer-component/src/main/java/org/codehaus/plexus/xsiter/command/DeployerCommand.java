@@ -3,24 +3,26 @@
  */
 package org.codehaus.plexus.xsiter.command;
 
-import org.codehaus.plexus.command.Command;
-
 /**
  * Deployer command.
+ * 
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  *
  */
 public interface DeployerCommand
-    extends Command
 {
 
     static final String ROLE = DeployerCommand.class.getName();
 
     /**
-     * Sets the command's execution context.
+     * Invokes the command.
      * 
-     * @param context execution for the command.
+     * @param context {@link CommandContext} that wraps the contextual 
+     *        information that the executing {@link Command} instance can use 
+     *        to query adapt its behaviour.
+     * @throws CommandException TODO
      */
-    public void setContext( CommandContext context );
+    public void execute( CommandContext context )
+        throws CommandException;
 
 }

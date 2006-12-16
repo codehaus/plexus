@@ -5,7 +5,7 @@ package org.codehaus.plexus.xsiter.deployer.model;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
- *
+ * @deprecated <em>Use {@link DeploymentWorkspace} instead.</em>
  */
 public abstract class DeployerResource
 {
