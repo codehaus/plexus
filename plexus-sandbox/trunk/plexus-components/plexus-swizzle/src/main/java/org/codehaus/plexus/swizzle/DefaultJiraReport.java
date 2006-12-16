@@ -36,26 +36,6 @@ public class DefaultJiraReport
     implements JiraReport, Startable
 {
     /**
-     * Jira project Key
-     */
-    private String projectKey;
-
-    /**
-     * Version of the project where the generate report will be based
-     */
-    private String projectVersion;
-
-    /**
-     * URL of the jira server. e.g. http://jira.codehaus.org
-     */
-    private String jiraServerUrl;
-
-    /**
-     * Velocity template to use to generate the reports
-     */
-    private String template;
-
-    /**
      * Velocity context to use
      */
     private VelocityContext context;
