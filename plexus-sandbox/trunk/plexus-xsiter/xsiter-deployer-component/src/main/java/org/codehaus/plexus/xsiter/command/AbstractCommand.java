@@ -5,7 +5,7 @@ package org.codehaus.plexus.xsiter.command;
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  *
  */
-public class AbstractDeployerCommand
+public class AbstractCommand
 {
 
     /**
@@ -17,7 +17,7 @@ public class AbstractDeployerCommand
      * Command Constructor.
      * @param label name or identifier for the command.
      */
-    public AbstractDeployerCommand( String label )
+    public AbstractCommand( String label )
     {
         this.label = label;
     }
