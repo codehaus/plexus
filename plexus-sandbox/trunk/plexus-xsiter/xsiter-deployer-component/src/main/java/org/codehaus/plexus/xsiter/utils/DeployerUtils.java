@@ -19,7 +19,6 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.xsiter.deployer.Deployer;
 import org.codehaus.plexus.xsiter.deployer.model.DeployableProject;
-import org.codehaus.plexus.xsiter.deployer.model.DeployerResource;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
 
 /**
@@ -79,7 +78,7 @@ public class DeployerUtils
     }
 
     /**
-     * Persists DeploymentWorkspace for the Project to XML.
+     * Persists {@link DeploymentWorkspace} for the Project to XML.
      * 
      * @param workspace
      */
