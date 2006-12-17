@@ -49,7 +49,7 @@ public class ListDeploymentWorkspacesCommand
         // workspace descriptor.
         for ( int i = 0; i < files.length; i++ )
         {
-            File workspaceXml = new File( files[i], "workspace.xml" );
+            File workspaceXml = new File( files[i], DESCRIPTOR_WORKSPACE_XML );
             if ( workspaceXml.exists() )
             {
                 try
