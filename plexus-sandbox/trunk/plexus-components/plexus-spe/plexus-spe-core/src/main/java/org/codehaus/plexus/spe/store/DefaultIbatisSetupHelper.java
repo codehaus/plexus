@@ -16,9 +16,9 @@ import java.sql.SQLException;
  * @version $Id$
  * @plexus.component
  */
-public class DefaultIbatisTestHelper
+public class DefaultIbatisSetupHelper
     extends AbstractLogEnabled
-    implements IbatisTestHelper, Initializable
+    implements IbatisSetupHelper, Initializable
 {
     /**
      * @plexus.requirement role-hint="plexus-spe"
