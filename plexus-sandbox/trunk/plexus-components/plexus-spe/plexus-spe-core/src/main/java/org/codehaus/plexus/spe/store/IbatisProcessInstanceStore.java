@@ -35,6 +35,11 @@ public class IbatisProcessInstanceStore
      */
     private PlexusIbatisHelper ibatisHelper;
 
+    /**
+     * @plexus.requirement
+     */
+    private IbatisSetupHelper setupHelper;
+    
     private ProcessInstanceLifecycleListener processInstanceLifecycleListener;
 
     private SqlMapClient sqlMap;

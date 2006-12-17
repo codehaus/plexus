@@ -28,8 +28,6 @@ public class ProcessStoreTest
         LoggerManager loggerManager = (LoggerManager) lookup( LoggerManager.ROLE );
         loggerManager.setThreshold( Logger.LEVEL_DEBUG );
 
-        lookup( IbatisTestHelper.ROLE );
-
         ProcessInstanceStore store = (ProcessInstanceStore) lookup( ProcessInstanceStore.ROLE );
 
         for ( ProcessInstance instance : store.getActiveInstances() )
