@@ -6,7 +6,7 @@
      |
      |-->
 
-    <!-- Process Service -->
+    <!-- Process Service
     <component>
       <role>org.codehaus.plexus.spe.ProcessService</role>
       <implementation>org.codehaus.plexus.spe.DefaultProcessService</implementation>
@@ -23,24 +23,12 @@
       </requirements>
     </component>
 
-    <!-- Process Instance Store -->
     <component>
       <role>org.codehaus.plexus.spe.core.ProcessEventManager</role>
       <implementation>org.codehaus.plexus.spe.core.DefaultProcessEventManager</implementation>
-    </component>
+    </component>-->
 
-    <!-- Process Instance Store -->
-    <component>
-      <role>org.codehaus.plexus.spe.store.ProcessInstanceStore</role>
-      <implementation>org.codehaus.plexus.spe.store.DefaultProcessInstanceStore</implementation>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.jdo.JdoFactory</role>
-        </requirement>
-      </requirements>
-    </component>
-
-    <!-- Process Executor -->
+    <!-- Process Executor
     <component>
       <role>org.codehaus.plexus.spe.execution.ProcessExecutor</role>
       <implementation>org.codehaus.plexus.spe.execution.DefaultProcessExecutor</implementation>
@@ -56,14 +44,14 @@
           <field-name>stepExecutors</field-name>
         </requirement>
       </requirements>
-    </component>
+    </component> -->
 
-    <!-- Step Executor -->
+    <!-- Step Executor
     <component>
       <role>org.codehaus.plexus.spe.execution.StepExecutor</role>
       <role-hint>plexus-action</role-hint>
       <implementation>org.codehaus.plexus.spe.execution.action.PlexusActionStepExecutor</implementation>
-    </component>
+    </component> -->
 
     <!-- Ant Converters -->
     <component>
@@ -99,7 +87,6 @@
      |
      | Process Actions
      |
-     |-->
     <component>
       <role>org.codehaus.plexus.action.Action</role>
       <role-hint>echo-message</role-hint>
@@ -115,5 +102,6 @@
       <role-hint>ant</role-hint>
       <implementation>org.codehaus.plexus.spe.action.AntRunAction</implementation>
     </component>
+     |-->
   </components>
 </component-set>

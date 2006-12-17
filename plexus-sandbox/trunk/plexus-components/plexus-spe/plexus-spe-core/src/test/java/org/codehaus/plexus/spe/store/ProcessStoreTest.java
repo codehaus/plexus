@@ -1,12 +1,13 @@
 package org.codehaus.plexus.spe.store;
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.logging.LoggerManager;
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.spe.model.ProcessDescriptor;
 import org.codehaus.plexus.spe.model.ProcessInstance;
 import org.codehaus.plexus.spe.model.StepDescriptor;
 import org.codehaus.plexus.spe.model.StepInstance;
 
-import javax.jdo.JDODetachedFieldAccessException;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,12 +25,19 @@ public class ProcessStoreTest
     {
         super.setUp();
 
+        LoggerManager loggerManager = (LoggerManager) lookup( LoggerManager.ROLE );
+        loggerManager.setThreshold( Logger.LEVEL_DEBUG );
+
+        lookup( IbatisTestHelper.ROLE );
+
         ProcessInstanceStore store = (ProcessInstanceStore) lookup( ProcessInstanceStore.ROLE );
 
         for ( ProcessInstance instance : store.getActiveInstances() )
         {
-            store.deleteInstance( instance.getInstanceId() );
+            store.deleteInstance( instance.getId() );
         }
+
+        assertEquals( 0, store.getActiveInstances().size() );
     }
 
     public void testSimple()
@@ -54,6 +62,10 @@ public class ProcessStoreTest
 
         Map<String, Serializable> context = new HashMap<String, Serializable>();
 
+        // -----------------------------------------------------------------------
+        // Create the process descriptor
+        // -----------------------------------------------------------------------
+
         ProcessDescriptor process = new ProcessDescriptor();
         process.setId( "hello-world" );
         StepDescriptor stepDescriptor = new StepDescriptor();
@@ -63,15 +75,25 @@ public class ProcessStoreTest
         context.put( "message", "Hello World!" );
         context.put( "user", new User( "Trygve", 123 ) );
 
+        // -----------------------------------------------------------------------
+        // Create an instance of the process
+        // -----------------------------------------------------------------------
+
         ProcessInstance instance = store.createInstance( process, context );
 
-        assertNotNull( process.getId() );
-        assertTrue( process.getId().length() > 0 );
+        assertEquals( instance.getProcessId(), process.getId() );
+        assertEquals( 0, instance.getEndTime() );
+        assertTrue( instance.getCreatedTime() > 0 );
+        assertEquals( null, instance.getErrorMessage() );
         assertEquals( 1, instance.getSteps().size() );
         StepInstance step = (StepInstance) instance.getSteps().get( 0 );
         assertEquals( "echo-message", step.getExecutorId() );
 
-        Collection<ProcessInstance> instances = store.getActiveInstances();
+        // -----------------------------------------------------------------------
+        // Make sure there's exactly one active process
+        // -----------------------------------------------------------------------
+
+        Collection<? extends ProcessInstance> instances = store.getActiveInstances();
 
         assertNotNull( instances );
 
@@ -79,23 +101,27 @@ public class ProcessStoreTest
 
         ProcessInstance actualProcess = instances.iterator().next();
 
-        assertEquals( instance.getInstanceId(), actualProcess.getInstanceId() );
+        assertEquals( instance.getId(), actualProcess.getId() );
         assertEquals( instance.getProcessId(), actualProcess.getProcessId() );
         try
         {
-            assertEquals( instance.getContext(), actualProcess.getContext() );
+            actualProcess.getContext();
             fail( "Expected JDODetachedFieldAccessException" );
         }
-        catch ( JDODetachedFieldAccessException e )
+        catch ( Exception e )
         {
             // expected
         }
 
-        actualProcess = store.getInstance( instance.getInstanceId(), true );
+        // -----------------------------------------------------------------------
+        // Try loading the process again directly, this time including the entire
+        // objects
+        // -----------------------------------------------------------------------
+
+        actualProcess = store.getInstance( instance.getId(), true );
 
         assertNotNull( actualProcess );
-        System.out.println( "actualProcess.getProcessInstance() = " + actualProcess.getContext() );
-        assertEquals( instance.getInstanceId(), actualProcess.getInstanceId() );
+        assertEquals( instance.getId(), actualProcess.getId() );
         assertEquals( instance.getProcessId(), actualProcess.getProcessId() );
         assertEquals( 2, actualProcess.getContext().size() );
         assertEquals( "Hello World!", actualProcess.getContext().get( "message" ) );
@@ -104,10 +130,17 @@ public class ProcessStoreTest
         assertEquals( 123, ((User)actualProcess.getContext().get( "user" )).getAge() );
         assertEquals( instance.getContext(), actualProcess.getContext() );
 
-        store.saveInstance( actualProcess );
-        actualProcess = store.getInstance( actualProcess.getInstanceId(), true );
+        // -----------------------------------------------------------------------
+        // Change the context and save again
+        // -----------------------------------------------------------------------
 
-        assertEquals( "Hello World!", actualProcess.getContext().get( "message" ) );
+        actualProcess.getContext().put( "message", "yo yo!" );
+
+        store.saveInstance( actualProcess );
+
+        actualProcess = store.getInstance( actualProcess.getId(), true );
+
+        assertEquals( "yo yo!", actualProcess.getContext().get( "message" ) );
     }
 
     private static class User

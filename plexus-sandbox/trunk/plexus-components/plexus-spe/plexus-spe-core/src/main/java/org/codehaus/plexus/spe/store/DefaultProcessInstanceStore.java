@@ -86,7 +86,7 @@ public class DefaultProcessInstanceStore
         }
     }
 
-    public synchronized Collection<ProcessInstance> getActiveInstances()
+    public synchronized Collection<? extends ProcessInstance> getActiveInstances()
     {
         PersistenceManager pm = getPm();
 
@@ -112,7 +112,7 @@ public class DefaultProcessInstanceStore
 
     public synchronized void saveInstance( ProcessInstance processInstance )
     {
-        getLogger().debug( "Storing process instance " + processInstance.getInstanceId() + ", process: " +
+        getLogger().debug( "Storing process instance " + processInstance.getId() + ", process: " +
             processInstance.getProcessId() + "." );
 
         updateObject( getPm(), processInstance );

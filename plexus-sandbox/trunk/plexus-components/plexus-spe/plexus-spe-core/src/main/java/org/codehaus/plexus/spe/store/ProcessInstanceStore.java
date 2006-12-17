@@ -19,7 +19,7 @@ public interface ProcessInstanceStore
     ProcessInstance createInstance( ProcessDescriptor ProcessDescriptor, Map<String, Serializable> context )
         throws ProcessException;
 
-    Collection<ProcessInstance> getActiveInstances()
+    Collection<? extends ProcessInstance> getActiveInstances()
         throws ProcessException;
 
     void saveInstance( ProcessInstance processState )

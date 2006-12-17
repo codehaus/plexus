@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Person">
+  <statement id="createTableProcessInstance">
+    CREATE TABLE ProcessInstance (
+      id                    integer generated always as identity ( start with 1 ) primary key,
+      processId             varchar(100) not null,
+      createdTime           bigint,
+      endTime               bigint,
+      errorMessage          varchar(8000),
+      completed             int,
+      contextBytes          blob(1M)
+    )
+  </statement>
+  <statement id="createTableStepInstance">
+    CREATE TABLE StepInstance (
+      id                    integer,
+      processInstanceId     integer,
+      executorId            varchar(100) not null,
+      startTime             bigint,
+      endTime               bigint,
+      exceptionStackTrace   varchar(8000),
+      primary key( id, processInstanceId ),
+      foreign key( processInstanceId ) references ProcessInstance( id )
+    )
+  </statement>
+</sqlMap>

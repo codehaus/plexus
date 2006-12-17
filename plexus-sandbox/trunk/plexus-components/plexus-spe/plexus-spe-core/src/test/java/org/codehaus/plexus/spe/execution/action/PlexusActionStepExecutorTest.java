@@ -5,6 +5,7 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.spe.model.StepDescriptor;
 import org.codehaus.plexus.spe.action.SaveUserAction;
 import org.codehaus.plexus.spe.User;
+import org.codehaus.plexus.spe.execution.StepExecutor;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class PlexusActionStepExecutorTest
     public void testBasic()
         throws Exception
     {
-        PlexusActionStepExecutor executor = (PlexusActionStepExecutor) lookup( PlexusActionStepExecutor.ROLE );
+        PlexusActionStepExecutor executor = (PlexusActionStepExecutor) lookup( StepExecutor.ROLE, "plexus-action" );
 
         Xpp3Dom executorConfiguration = new Xpp3Dom( "executor-configuration" );
         Xpp3Dom actionId = new Xpp3Dom( "actionId" );

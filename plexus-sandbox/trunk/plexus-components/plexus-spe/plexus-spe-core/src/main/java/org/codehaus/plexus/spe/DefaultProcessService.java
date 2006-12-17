@@ -31,6 +31,7 @@ import java.util.Map;
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
+ * @plexus.component
  */
 public class DefaultProcessService
     extends AbstractLogEnabled
@@ -141,7 +142,7 @@ public class DefaultProcessService
 
         executor.startProcess( process, processState );
 
-        return processState.getInstanceId();
+        return processState.getId();
     }
 
     /**
@@ -176,13 +177,13 @@ public class DefaultProcessService
     {
         try
         {
-            Collection<ProcessInstance> processInstances = store.getActiveInstances();
+            Collection<? extends ProcessInstance> processInstances = store.getActiveInstances();
 
             getLogger().info( "Active processes:" );
 
             for ( ProcessInstance instance : processInstances )
             {
-                getLogger().info( " Instance: " + instance.getInstanceId() + " of process: " + instance.getProcessId() );
+                getLogger().info( " Instance: " + instance.getId() + " of process: " + instance.getProcessId() );
             }
         }
         catch ( ProcessException e )

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="StepInstance">
+<!--
+  <select id="selectStepInstance" resultClass="org.codehaus.plexus.spe.model.StepInstance">
+    select
+      executorId,
+      startTime,
+      endTime,
+      exceptionStackTrace
+    from
+      stepInstance
+    where
+      1 = 1
+    <isPropertyAvailable property="id">
+      and id = #id#
+    </isPropertyAvailable>
+  </select>
+
+  <insert id="insertStepInstance">
+    insert into StepInstance(
+      id,
+      processInstanceId,
+      executorId,
+      startTime)
+    values(#id#, #processInstanceId#, #executorId#, #startTime#)
+  </insert>
+
+  <delete id="deleteStepInstance">
+    delete from StepInstance where processInstanceId=#processInstanceId#
+  </delete>
+-->
+</sqlMap>
