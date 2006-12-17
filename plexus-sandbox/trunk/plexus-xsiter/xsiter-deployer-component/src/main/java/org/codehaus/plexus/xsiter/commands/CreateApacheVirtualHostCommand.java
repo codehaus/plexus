@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.codehaus.plexus.xsiter.command;
+package org.codehaus.plexus.xsiter.commands;
 
 import java.io.File;
 import java.io.StringReader;
@@ -13,6 +13,12 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.manager.ScmManager;
 import org.apache.velocity.app.Velocity;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.xsiter.command.AbstractCommand;
+import org.codehaus.plexus.xsiter.command.Command;
+import org.codehaus.plexus.xsiter.command.CommandContext;
+import org.codehaus.plexus.xsiter.command.CommandException;
+import org.codehaus.plexus.xsiter.command.CommandResult;
+import org.codehaus.plexus.xsiter.command.ResultState;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
 import org.codehaus.plexus.xsiter.utils.DeployerUtils;
 import org.codehaus.plexus.xsiter.vhost.VirtualHostConfiguration;

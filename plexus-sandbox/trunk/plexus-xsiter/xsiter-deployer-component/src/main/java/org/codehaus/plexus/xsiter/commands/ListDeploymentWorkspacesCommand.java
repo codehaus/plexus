@@ -1,12 +1,18 @@
 /**
  * 
  */
-package org.codehaus.plexus.xsiter.command;
+package org.codehaus.plexus.xsiter.commands;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.plexus.xsiter.command.AbstractCommand;
+import org.codehaus.plexus.xsiter.command.Command;
+import org.codehaus.plexus.xsiter.command.CommandContext;
+import org.codehaus.plexus.xsiter.command.CommandException;
+import org.codehaus.plexus.xsiter.command.CommandResult;
+import org.codehaus.plexus.xsiter.command.ResultState;
 import org.codehaus.plexus.xsiter.deployer.Deployer;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
 import org.codehaus.plexus.xsiter.utils.DeployerUtils;

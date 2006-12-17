@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.xsiter.commands.CreateDeploymentWorkspaceCommand;
+import org.codehaus.plexus.xsiter.commands.ListDeploymentWorkspacesCommand;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ResultTreeType;
 
