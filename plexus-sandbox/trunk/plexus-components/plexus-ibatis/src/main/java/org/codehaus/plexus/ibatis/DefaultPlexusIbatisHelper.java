@@ -22,7 +22,6 @@ import com.ibatis.common.resources.Resources;
  *
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
- * @plexus.component
  */
 public class DefaultPlexusIbatisHelper
     extends AbstractLogEnabled
