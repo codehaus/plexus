@@ -10,7 +10,7 @@ package org.codehaus.plexus.xsiter.command;
  */
 public enum ResultState {
 
-    SUCCESS("Success"), FAILURE("Failure"), ERROR("Error");
+    UNKNOWN("Unknown"), SUCCESS("Success"), FAILURE("Failure"), ERROR("Error");
 
     /**
      * State label, for display.
