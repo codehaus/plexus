@@ -62,8 +62,8 @@ public class JythonStepExecutorTest
 
         stepExecutor.execute( descriptor, new HashMap<String, Serializable>() );
 
-        assertTrue( FooServiceA.beenTouched );
-        assertTrue( FooServiceB.beenTouched );
+        assertTrue( AFooService.beenTouched );
+        assertTrue( BFooService.beenTouched );
     }
 
     private Xpp3Dom addRequirement( String role, String roleHint, String variableName )

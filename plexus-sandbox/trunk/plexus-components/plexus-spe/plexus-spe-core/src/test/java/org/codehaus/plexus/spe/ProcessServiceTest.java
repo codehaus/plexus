@@ -3,6 +3,7 @@ package org.codehaus.plexus.spe;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.spe.action.EchoAction;
 import org.codehaus.plexus.spe.model.ProcessInstance;
+import org.codehaus.plexus.spe.store.IbatisTestHelper;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -19,6 +20,9 @@ public class ProcessServiceTest
         throws Exception
     {
         super.setUp();
+
+        lookup( IbatisTestHelper.ROLE );
+
         EchoAction.messages.clear();
     }
 
@@ -81,6 +85,7 @@ public class ProcessServiceTest
 
         ProcessInstance processInstance = processService.getProcessInstance( instanceId );
 
+        System.out.println( "processInstance.getErrorMessage() = " + processInstance.getErrorMessage() );
         assertTrue( processInstance.getErrorMessage().contains( "Runtime Exception Message" ) );
 
         // ----------------------------------------------------------------------

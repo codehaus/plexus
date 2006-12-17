@@ -13,10 +13,12 @@
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-jdo2</artifactId>
     </dependency>
+<!--
     <dependency>
       <groupId>jpox</groupId>
       <artifactId>jpox</artifactId>
     </dependency>
+-->
   </dependencies>
   <build>
     <plugins>
@@ -49,7 +51,9 @@
             <id>store</id>
             <goals>
               <goal>java</goal>
+<!--
               <goal>jpox-jdo-mapping</goal>
+-->
             </goals>
             <configuration>
               <version>1.0.0</version>
@@ -63,6 +67,7 @@
           <packageWithVersion>false</packageWithVersion>
         </configuration>
       </plugin>
+<!--
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jpox-maven-plugin</artifactId>
@@ -96,6 +101,7 @@
           </dependency>
         </dependencies>
       </plugin>
+-->
     </plugins>
   </build>
 </project>

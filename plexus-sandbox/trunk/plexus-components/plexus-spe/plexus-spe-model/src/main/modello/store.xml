@@ -15,7 +15,7 @@
       <version>1.0.0+</version>
       <fields>
         <field>
-          <name>instanceId</name>
+          <name>id</name>
           <type>int</type>
           <identifier>true</identifier>
           <version>1.0.0+</version>
@@ -69,6 +69,16 @@
       <name>StepInstance</name>
       <version>1.0.0+</version>
       <fields>
+        <field>
+          <name>id</name>
+          <type>int</type>
+          <version>1.0.0+</version>
+        </field>
+        <field>
+          <name>processInstanceId</name>
+          <type>String</type>
+          <version>1.0.0+</version>
+        </field>
         <field>
           <name>executorId</name>
           <type>String</type>

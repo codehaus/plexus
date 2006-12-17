@@ -31,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
+ * @plexus.component
  */
 public class DefaultProcessExecutor
     extends AbstractLogEnabled
@@ -47,7 +48,7 @@ public class DefaultProcessExecutor
     private ProcessEventManager eventManager;
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role="org.codehaus.plexus.spe.execution.StepExecutor"
      */
     private Map stepExecutors;
 
@@ -73,7 +74,7 @@ public class DefaultProcessExecutor
         // Stores the first action and adds that to the executor queue.
         // ----------------------------------------------------------------------
 
-        ProcessRuntimeDescriptor runtimeDescriptor = new ProcessRuntimeDescriptor( process, instance.getInstanceId() );
+        ProcessRuntimeDescriptor runtimeDescriptor = new ProcessRuntimeDescriptor( process, instance.getId() );
 
         runtimeDescriptor.setCurrentStep( 0 );
 
@@ -196,8 +197,12 @@ public class DefaultProcessExecutor
         // Check if this is the last step in the process
         // ----------------------------------------------------------------------
 
-        if ( runtimeDescriptor.getProcessDescriptor().getSteps().size() == runtimeDescriptor.getCurrentStep() + 1 )
+        ProcessDescriptor descriptor = runtimeDescriptor.getProcessDescriptor();
+
+        if ( descriptor.getSteps().size() == runtimeDescriptor.getCurrentStep() + 1 )
         {
+            getLogger().info( "Process completed normally. Process: " + processInstance.getProcessId() + ", instance: " + processInstance.getId() );
+
             processInstance.setCompleted( true );
             processInstance.setEndTime( timestamp );
 

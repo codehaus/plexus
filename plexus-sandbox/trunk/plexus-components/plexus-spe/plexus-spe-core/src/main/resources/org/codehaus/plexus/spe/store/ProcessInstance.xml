@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ProcessInstance">
+
+  <!--
+   |
+   | Step Instance
+   |
+   |-->
+
+  <resultMap id="StepInstanceRM" class="org.codehaus.plexus.spe.model.StepInstance">
+    <result property="executorId"/>
+    <result property="startTime"/>
+    <result property="endTime" nullValue="0"/>
+    <result property="exceptionStackTrace" nullValue=""/>
+  </resultMap>
+
+  <select id="selectStepInstance" resultMap="StepInstanceRM">
+    select
+      executorId,
+      startTime,
+      endTime,
+      exceptionStackTrace
+    from
+      stepInstance
+    where
+      1 = 1
+    <isPropertyAvailable property="id">
+      and id = #id#
+    </isPropertyAvailable>
+  </select>
+
+  <insert id="insertStepInstance">
+    insert into StepInstance(
+      id,
+      processInstanceId,
+      executorId,
+      startTime)
+    values(#id#, #processInstanceId#, #executorId#, #startTime#)
+  </insert>
+
+  <delete id="deleteStepInstance">
+    delete from StepInstance where processInstanceId=#processInstanceId#
+  </delete>
+
+  <!--
+   |
+   | Process Instance
+   |
+   |-->
+
+  <sql id="basicFields">
+    id,
+    processId,
+    createdTime,
+    endTime,
+    errorMessage,
+    completed
+  </sql>
+
+  <resultMap id="processInstanceRM" class="org.codehaus.plexus.spe.store.IbatisProcessInstance">
+    <result property="id" column="ID"/>
+    <result property="processId" column="PROCESSID"/>
+    <result property="createdTime" column="CREATEDTIME"/>
+    <result property="endTime" column="ENDTIME" nullValue="0"/>
+    <result property="errorMessage" column="ERRORMESSAGE" jdbcType="VARCHAR"/>
+    <result property="completed" column="COMPLETED" nullValue=""/>
+    <result property="contextBytes" column="contextBytes" nullValue=""/>
+    <result property="contextExists" column="contextExists"/>
+  </resultMap>
+
+  <resultMap id="processInstanceRMFull" class="org.codehaus.plexus.spe.store.IbatisProcessInstance" extends="processInstanceRM">
+    <result property="steps" select="selectStepInstance" column="processInstanceId=id"/>
+  </resultMap>
+
+  <select id="selectProcessInstanceBasic" resultMap="processInstanceRM">
+    select
+      <include refid="basicFields"/>,
+      nullif( 1, 1 ) as contextBytes, <!-- This is fucked up but I don't know how to select null -->
+      0 as contextExists
+    from
+      processInstance
+    <isPropertyAvailable property="id">
+    where
+      id = #id#
+    </isPropertyAvailable>
+  </select>
+
+  <select id="selectProcessInstanceFull" resultMap="processInstanceRMFull">
+    select
+      <include refid="basicFields"/>,
+      contextBytes,
+      1 as contextExists
+    from
+      processInstance
+    where
+      id = #id#
+  </select>
+
+   <!--parameterMap="IbatisProcessInstance"-->
+  <insert id="insertProcessInstance">
+    insert into ProcessInstance(
+      processId,
+      createdTime,
+      contextBytes
+    )
+    values(
+      #processId#,
+      #createdTime#,
+      #contextBytes#
+    )
+    <selectKey resultClass="int">
+      values IDENTITY_VAL_LOCAL()
+    </selectKey>
+  </insert>
+
+  <parameterMap id="updateProcessInstancePM" class="org.codehaus.plexus.spe.store.IbatisProcessInstance">
+    <parameter property="endTime" jdbcType="BIGINT"/>
+    <parameter property="errorMessage" jdbcType="VARCHAR"/>
+    <parameter property="completed" jdbcType="SMALLINT"/>
+    <parameter property="contextBytes" jdbcType="BLOB"/>
+    <!--<parameter property="contextExists"/>-->
+    <parameter property="id" jdbcType="INT"/>
+  </parameterMap>
+  <update id="updateProcessInstance" parameterMap="updateProcessInstancePM">
+    update ProcessInstance set
+      endTime=?,
+      errorMessage=?,
+      completed=?,
+      contextBytes=?
+    where
+      id=?
+  </update>
+
+  <delete id="deleteProcessInstance">
+    delete from ProcessInstance where id=#processInstanceId#
+  </delete>
+</sqlMap>

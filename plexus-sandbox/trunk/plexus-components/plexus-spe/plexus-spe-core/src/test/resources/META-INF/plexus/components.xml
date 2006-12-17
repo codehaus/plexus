@@ -1,5 +1,6 @@
 <plexus>
   <components>
+<!--
     <component>
       <role>org.codehaus.plexus.action.Action</role>
       <implementation>org.codehaus.plexus.spe.action.ThrowExceptionAction</implementation>
@@ -11,48 +12,43 @@
       <implementation>org.codehaus.plexus.spe.action.SaveUserAction</implementation>
       <role-hint>save-user</role-hint>
     </component>
-
+-->
     <component>
-      <role>org.codehaus.plexus.jdo.JdoFactory</role>
-      <implementation>org.codehaus.plexus.jdo.DefaultJdoFactory</implementation>
+      <role>org.codehaus.plexus.ibatis.PlexusIbatisHelper</role>
+      <implementation>org.codehaus.plexus.ibatis.DefaultPlexusIbatisHelper</implementation>
+      <role-hint>plexus-spe</role-hint>
       <configuration>
+        <resource>ibatis-config.xml</resource>
         <properties>
           <property>
-            <name>javax.jdo.PersistenceManagerFactoryClass</name>
-            <value>org.jpox.PersistenceManagerFactoryImpl</value>
+            <name>jdbc.driver</name>
+            <value>org.apache.derby.jdbc.EmbeddedDriver</value>
           </property>
           <property>
-            <name>javax.jdo.option.ConnectionDriverName</name>
-            <value>org.hsqldb.jdbcDriver</value>
+            <name>jdbc.url</name>
+            <value>jdbc:derby:${plexus.home}/testdb;create=true</value>
           </property>
           <property>
-            <name>javax.jdo.option.ConnectionURL</name>
-            <value>jdbc:hsqldb:mem</value>
+            <name>jdbc.username</name>
+            <value>app</value>
           </property>
           <property>
-            <name>javax.jdo.option.ConnectionUserName</name>
-            <value>sa</value>
-          </property>
-<!--
-          <property>
-            <name>javax.jdo.option.ConnectionPassword</name>
+            <name>jdbc.password</name>
             <value></value>
-          </property>
--->
-          <property>
-            <name>org.jpox.autoCreateSchema</name>
-            <value>true</value>
-          </property>
-          <property>
-            <name>org.jpox.autoStartMechanism</name>
-            <value>SchemaTable</value>
-          </property>
-          <property>
-            <name>org.jpox.autoStartMechanismMode</name>
-            <value>Quiet</value>
           </property>
         </properties>
       </configuration>
     </component>
+<!--
+    <component>
+      <role>org.codehaus.plexus.spe.store.IbatisTestHelper</role>
+      <implementation>org.codehaus.plexus.spe.store.DefaultIbatisTestHelper</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.ibatis.PlexusIbatisHelper</role>
+        </requirement>
+      </requirements>
+    </component>
+-->
   </components>
 </plexus>
