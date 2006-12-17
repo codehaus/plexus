@@ -15,4 +15,38 @@ public class CommandException
     extends Throwable
 {
 
+    /**
+     * 
+     */
+    public CommandException()
+    {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    /**
+     * @param message
+     * @param cause
+     */
+    public CommandException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
+
+    /**
+     * @param message
+     */
+    public CommandException( String message )
+    {
+        super( message );
+    }
+
+    /**
+     * @param cause
+     */
+    public CommandException( Throwable cause )
+    {
+        super( cause );
+    }
+
 }

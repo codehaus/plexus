@@ -18,7 +18,7 @@ import org.codehaus.plexus.xsiter.utils.DeployerUtils;
  * Creates a new {@link DeploymentWorkspace}.
  * 
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
- * @plexus.component role="org.codehaus.plexus.xsiter.command.Command" role-hint="create-workspace"
+ * @plexus.component role="org.codehaus.plexus.xsiter.command.Command" role-hint="create"
  */
 public class CreateDeploymentWorkspaceCommand
     extends AbstractCommand
@@ -31,6 +31,11 @@ public class CreateDeploymentWorkspaceCommand
     public CreateDeploymentWorkspaceCommand( String label )
     {
         super( label );
+    }
+
+    public CreateDeploymentWorkspaceCommand()
+    {
+        super();
     }
 
     /**
