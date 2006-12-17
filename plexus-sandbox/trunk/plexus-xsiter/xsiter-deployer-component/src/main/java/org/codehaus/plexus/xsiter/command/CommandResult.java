@@ -22,12 +22,19 @@ public class CommandResult
      * State of {@link CommandResult} set as a consequnce of 
      * {@link Command} execution. 
      */
-    private ResultState state = ResultState.FAILURE;
+    private ResultState state = ResultState.UNKNOWN;
 
     /**
      * List of messages setup on the result. 
      */
     private List messages = new ArrayList();
+
+    /**
+     * Result data created as a consequence of command execution.<p> 
+     * This assumes that the client that invokes the command already
+     * knows what type of result data to expect in return.
+     */
+    private Object data = null;
 
     /**
      * @return the state
@@ -68,6 +75,22 @@ public class CommandResult
     public void addMessage( String msg )
     {
         this.messages.add( msg );
+    }
+
+    /**
+     * @return the data
+     */
+    public Object getData()
+    {
+        return data;
+    }
+
+    /**
+     * @param data the data to set
+     */
+    public void setData( Object data )
+    {
+        this.data = data;
     }
 
 }

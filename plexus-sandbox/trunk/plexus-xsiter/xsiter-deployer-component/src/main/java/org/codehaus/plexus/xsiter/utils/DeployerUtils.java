@@ -4,8 +4,10 @@
 package org.codehaus.plexus.xsiter.utils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,7 @@ import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 import org.codehaus.plexus.util.xml.XMLWriter;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.codehaus.plexus.xsiter.deployer.Deployer;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
 
@@ -48,32 +51,70 @@ public class DeployerUtils
             //getLogger().error( "Workspace descriptor not found for workspace Id: " + workspaceId );
             throw new Exception( "Workspace descriptor not found for workspace Id: " + workspaceId );
         }
-        FileReader reader = new FileReader( desc );
+        return loadWorkspaceFromDescriptor( desc );
+    }
+
+    /**
+     * Given the absolute path to the workspace descriptor (workspace.xml), the descriptor
+     * is read and an instance of {@link DeploymentWorkspace} is created and returned
+     * @param descriptorFile
+     * @return
+     * @throws FileNotFoundException
+     * @throws XmlPullParserException
+     * @throws IOException
+     */
+    public static DeploymentWorkspace loadWorkspaceFromDescriptor( File descriptorFile )
+        throws FileNotFoundException, XmlPullParserException, IOException
+    {
+        FileReader reader = new FileReader( descriptorFile );
         // root element is <workspace>
         Xpp3Dom eltWorkSpace = Xpp3DomBuilder.build( reader );
-        String id = eltWorkSpace.getChild( Deployer.ELT_ID ).getValue();
-        String scmURL = eltWorkSpace.getChild( Deployer.ELT_SCM_URL ).getValue();
-        String scmUsername = eltWorkSpace.getChild( Deployer.ELT_SCM_USERNAME ).getValue();
-        String scmPassword = eltWorkSpace.getChild( Deployer.ELT_SCM_PASSWORD ).getValue();
-        String rootDir = eltWorkSpace.getChild( Deployer.ELT_ROOT_DIRECTORY ).getValue();
-        String tmpDir = eltWorkSpace.getChild( Deployer.ELT_TEMP_DIRECTORY ).getValue();
-        String webserverDir = eltWorkSpace.getChild( Deployer.ELT_WEBSERVER_DIRECTORY ).getValue();
-        String webappDir = eltWorkSpace.getChild( Deployer.ELT_WEBAPP_DIRECTORY ).getValue();
-        String workingDir = eltWorkSpace.getChild( Deployer.ELT_WORKING_DIRECTORY ).getValue();
+        String id = readElement( eltWorkSpace, Deployer.ELT_ID );
+        String scmURL = readElement( eltWorkSpace, Deployer.ELT_SCM_URL );
+        String scmUsername = readElement( eltWorkSpace, Deployer.ELT_SCM_USERNAME );
+        String scmPassword = readElement( eltWorkSpace, Deployer.ELT_SCM_PASSWORD );
+        String rootDir = readElement( eltWorkSpace, Deployer.ELT_ROOT_DIRECTORY );
+        String tmpDir = readElement( eltWorkSpace, Deployer.ELT_TEMP_DIRECTORY );
+        String webserverDir = readElement( eltWorkSpace, Deployer.ELT_WEBSERVER_DIRECTORY );
+        String webappDir = readElement( eltWorkSpace, Deployer.ELT_WEBAPP_DIRECTORY );
+        String workingDir = readElement( eltWorkSpace, Deployer.ELT_WORKING_DIRECTORY );
 
         DeploymentWorkspace workspace = new DeploymentWorkspace();
         workspace.setLabel( id );
-        workspace.setScmURL( scmURL );
-        workspace.setScmUsername( scmUsername );
-        workspace.setScmPassword( scmPassword );
+        // check for an SCM Url
+        if ( null != scmURL )
+        {
+            workspace.setScmURL( scmURL );
+            workspace.setScmUsername( scmUsername );
+            workspace.setScmPassword( scmPassword );
+        }
         workspace.setRootDirectory( rootDir );
         workspace.setTempDirectory( tmpDir );
         workspace.setWebappDirectory( webappDir );
         workspace.setWebserverDirectory( webserverDir );
         workspace.setWebappDirectory( webappDir );
         workspace.setWorkingDirectory( workingDir );
+        reader.close();
 
         return workspace;
+    }
+
+    /**
+     * Reads and returns the values for specified element from the passed in 
+     * DOM.<p>
+     * Checks if element actually exists, if not a <code>null</code> value is returned.
+     * 
+     * @param dom
+     * @param elementName
+     * @return  value of element as String or <code>null</code> if the element 
+     *          was not found.
+     */
+    private static String readElement( Xpp3Dom dom, String elementName )
+    {
+        Xpp3Dom child = dom.getChild( elementName );
+        if ( null != child )
+            return child.getValue();
+        return null;
     }
 
     /**
