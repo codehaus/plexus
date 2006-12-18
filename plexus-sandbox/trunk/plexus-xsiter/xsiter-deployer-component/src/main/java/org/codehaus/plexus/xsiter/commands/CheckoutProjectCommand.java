@@ -35,16 +35,16 @@ public class CheckoutProjectCommand
     /**
      * Source Control Manager.
      * 
-     * @plexus.requirement
+     * @plexus.requirement 
      */
-    protected ScmManager scmManager;
+    private ScmManager scmManager;
 
     /**
      * 
      */
     public CheckoutProjectCommand()
     {
-        super();       
+        super();
     }
 
     public CheckoutProjectCommand( String label )
@@ -105,7 +105,7 @@ public class CheckoutProjectCommand
             }
             else
             {
-                // TODO: User logger
+                // TODO: Use logger
                 System.out.println( "Project checked out successfully." );
                 cmdResult.setState( ResultState.SUCCESS );
                 cmdResult.addMessage( "Command output: " + result.getCommandOutput() );
@@ -140,7 +140,7 @@ public class CheckoutProjectCommand
      * @throws ScmRepositoryException
      * @throws NoSuchScmProviderException
      */
-    protected ScmRepository getScmRepository( DeploymentWorkspace workspace )
+    private ScmRepository getScmRepository( DeploymentWorkspace workspace )
         throws ScmRepositoryException, NoSuchScmProviderException
     {
         ScmRepository repository = scmManager.makeScmRepository( workspace.getScmURL().trim() );

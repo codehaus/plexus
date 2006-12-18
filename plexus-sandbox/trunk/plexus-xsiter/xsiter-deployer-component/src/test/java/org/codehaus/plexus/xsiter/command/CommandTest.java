@@ -3,11 +3,11 @@ package org.codehaus.plexus.xsiter.command;
 import java.io.File;
 import java.util.List;
 
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.xsiter.commands.CheckoutProjectCommand;
 import org.codehaus.plexus.xsiter.commands.CreateDeploymentWorkspaceCommand;
 import org.codehaus.plexus.xsiter.commands.ListDeploymentWorkspacesCommand;
+import org.codehaus.plexus.xsiter.deployer.AbstractDeployerTest;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
 
 /**
@@ -17,16 +17,35 @@ import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
  *
  */
 public class CommandTest
-    extends PlexusTestCase
+    extends AbstractDeployerTest
 {
+    /**
+     * Workspace/Deployable Project label.
+     */
+    private static final String PROJECT_LABEL_SAMPLE_WEB = "sample-web";
+
+    /**
+     * SCM repository URL.
+     */
+    private static final String SCM_SAMPLE_WEB = "scm:svn:file:///" + getBasedir().replace( '\\', '/' )
+        + "/target/scm-test/repository/trunk";
+
+    /**
+     * SCM tag to test against.
+     */
+    protected static final String SCM_TAG_VERSION_1_0_0 = "Version-1_0_0";
+
+    /**
+     * Deployer working/deployment directory for test.
+     */
     private File testDeploymentDir = getTestFile( getBasedir(), "target/deployments" );
 
-    protected void setUp()
+    public void setUp()
         throws Exception
     {
-        super.setUp();
         if ( testDeploymentDir.exists() )
             FileUtils.forceDelete( testDeploymentDir );
+        super.setUp();
     }
 
     public void testCreateDeploymentWorkspace()
@@ -176,13 +195,13 @@ public class CommandTest
         context.setDeployerWorkingDirectory( testDeploymentDir );
         // set up a deployment workspace for test 
         DeploymentWorkspace workspace = new DeploymentWorkspace();
-        workspace.setScmURL( "scm:svn:http://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-xsiter/xsiter-web" );
+        workspace.setScmURL( SCM_SAMPLE_WEB );
         workspace.setScmUsername( "" );
         workspace.setScmPassword( "" );
-        workspace.setScmTag( "HEAD" );
+        workspace.setScmTag( SCM_TAG_VERSION_1_0_0 );
         context.setWorkspace( workspace );
         assertNotNull( context.getWorkspace() );
-        workspace.setid( "xsiter-web" );
+        workspace.setid( "sample-web" );
 
         // verify result
         CommandResult result = null;
@@ -201,7 +220,7 @@ public class CommandTest
 
         // verify deployment workspace create
         assertTrue( testDeploymentDir.exists() );
-        assertTrue( new File( testDeploymentDir, "xsiter-web/workspace.xml" ).exists() );
+        assertTrue( new File( testDeploymentDir, "sample-web/workspace.xml" ).exists() );
 
         // Attempt to check out project
         CheckoutProjectCommand checkoutCommand = new CheckoutProjectCommand( "checkout" );

@@ -39,8 +39,7 @@ public class ListDeploymentWorkspacesCommand
      */
     public ListDeploymentWorkspacesCommand()
     {
-        super();
-        // TODO Auto-generated constructor stub
+        super();        
     }
 
     /* (non-Javadoc)
@@ -64,8 +63,7 @@ public class ListDeploymentWorkspacesCommand
                 try
                 {
                     DeploymentWorkspace workspace = DeployerUtils.loadWorkspaceFromDescriptor( workspaceXml );
-                    list.add( workspace );
-                    System.out.println( "workspace added!" );
+                    list.add( workspace );                 
                 }
                 catch ( Exception e )
                 {
