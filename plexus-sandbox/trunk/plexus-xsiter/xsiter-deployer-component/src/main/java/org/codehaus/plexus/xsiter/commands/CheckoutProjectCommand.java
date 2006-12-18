@@ -22,6 +22,7 @@ import org.codehaus.plexus.xsiter.command.CommandException;
 import org.codehaus.plexus.xsiter.command.CommandResult;
 import org.codehaus.plexus.xsiter.command.ResultState;
 import org.codehaus.plexus.xsiter.deployer.model.DeploymentWorkspace;
+import org.codehaus.plexus.xsiter.utils.DeployerUtils;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
@@ -47,11 +48,6 @@ public class CheckoutProjectCommand
         super();
     }
 
-    public CheckoutProjectCommand( String label )
-    {
-        super( label );
-    }
-
     /**
      * @see org.codehaus.plexus.xsiter.command.Command#execute(org.codehaus.plexus.xsiter.command.CommandContext)
      */
@@ -72,7 +68,9 @@ public class CheckoutProjectCommand
             ScmResult result;
             synchronized ( this )
             {
-                File checkoutDir = new File( workspace.getRootDirectory(), workspace.getWorkingDirectory() );
+                File checkoutDir = DeployerUtils.getWorkspaceCheckoutDirectory( context.getDeployerWorkingDirectory(),
+                                                                                context.getWorkspace() );
+
                 try
                 {
                     if ( checkoutDir.exists() )
@@ -84,20 +82,18 @@ public class CheckoutProjectCommand
                 }
 
                 // check out to a tagged directory
-                String scmTag = null != workspace.getScmTag() ? workspace.getScmTag() : "HEAD";
-                ScmFileSet fileSet = new ScmFileSet( new File( checkoutDir, scmTag ) );
+                String scmTag = null != workspace.getScmTag() ? workspace.getScmTag() : "HEAD";                
+                ScmFileSet fileSet = new ScmFileSet( checkoutDir );
                 result = scmManager.getProviderByRepository( repository ).checkOut( repository, fileSet,
-                                                                                    workspace.getScmTag() );
-                // TODO: Use logger
-                System.out.println( result.getCommandOutput() );
-                System.out.println( result.getProviderMessage() );
+                                                                                    workspace.getScmTag() );                
             }
 
+            // TODO: Use logger
+            System.out.println( "Command output: " + result.getCommandOutput() );
+            System.out.println( "Provider message: " + result.getProviderMessage() );
+            
             if ( !result.isSuccess() )
             {
-                // TODO: Use logger
-                System.out.println( "Command output: " + result.getCommandOutput() );
-                System.out.println( "Provider message: " + result.getProviderMessage() );
                 cmdResult.setState( ResultState.FAILURE );
                 cmdResult.addMessage( "Command output: " + result.getCommandOutput() );
                 cmdResult.addMessage( "Provider message: " + result.getProviderMessage() );

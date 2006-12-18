@@ -163,15 +163,20 @@ public class CommandTest
         assertTrue( new File( testDeploymentDir, "xsiter-web/workspace.xml" ).exists() );
 
         // Attempt to check out project
-        CheckoutProjectCommand checkoutCommand = new CheckoutProjectCommand( "checkout" );
+        CheckoutProjectCommand checkoutCommand = null;
         try
         {
+            checkoutCommand = (CheckoutProjectCommand) lookup( Command.ROLE, "checkout" );
             checkoutCommand.execute( context );
             fail( "Expected CommandException while checking out project with no SCM URL." );
         }
         catch ( CommandException e )
         {
             // do nothing.
+        }
+        catch ( Exception e )
+        {
+            fail( "Unexpected exception while looking up " + CheckoutProjectCommand.class.getName() );
         }
 
     }
@@ -223,15 +228,20 @@ public class CommandTest
         assertTrue( new File( testDeploymentDir, "sample-web/workspace.xml" ).exists() );
 
         // Attempt to check out project
-        CheckoutProjectCommand checkoutCommand = new CheckoutProjectCommand( "checkout" );
+        CheckoutProjectCommand checkoutCommand = null;
         try
         {
+            checkoutCommand = (CheckoutProjectCommand) lookup( Command.ROLE, "checkout" );
             checkoutCommand.execute( context );
         }
         catch ( CommandException e )
         {
             e.printStackTrace();
-            fail( "UnExpected CommandException while checking out project with no SCM URL." );
+            fail( "UnExpected CommandException while checking out project with SCM URL." );
+        }
+        catch ( Exception e )
+        {
+            fail( "Unexpected exception while looking up " + CheckoutProjectCommand.class.getName() );
         }
 
     }
