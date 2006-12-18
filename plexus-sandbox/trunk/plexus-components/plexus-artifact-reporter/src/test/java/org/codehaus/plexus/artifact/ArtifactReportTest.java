@@ -49,6 +49,13 @@ public class ArtifactReportTest
 
         VelocityComponent velocityComponent = (DefaultVelocityComponent) lookup( DefaultVelocityComponent.ROLE );
         assertNotNull( velocityComponent );
+    }
+
+    public void testVelocityContextPlexusConfiguration()
+        throws Exception
+    {
+        ArtifactReport report = (DefaultArtifactReport) lookup( ArtifactReport.ROLE );
+        assertNotNull( report );
 
         controlArtifact = MockControl.createControl( Artifact.class );
         mockArtifact = (Artifact) controlArtifact.getMock();
@@ -70,7 +77,7 @@ public class ArtifactReportTest
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream result = new PrintStream( baos );
 
-        report.generate( velocityComponent, mockArtifact, result );
+        report.generate( mockArtifact, result );
 
         result.close();
 
@@ -79,7 +86,7 @@ public class ArtifactReportTest
         ClassLoader classLoader = this.getClass().getClassLoader();
         String expectedFile = "org/codehaus/plexus/artifact/ExpectedResult.txt";
         URL resource = classLoader.getResource( expectedFile );
-        String expected = streamToString( resource.openStream() );        
+        String expected = streamToString( resource.openStream() );
 
         assertEquals( expected, actual );
 

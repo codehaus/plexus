@@ -24,6 +24,11 @@ under the License.
     <component>
       <role>org.codehaus.plexus.artifact.ArtifactReport</role>
       <implementation>org.codehaus.plexus.artifact.DefaultArtifactReport</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.velocity.VelocityComponent</role>
+        </requirement>
+      </requirements>
     </component>
     <component>
       <role>org.codehaus.plexus.velocity.VelocityComponent</role>

@@ -20,12 +20,10 @@ package org.codehaus.plexus.artifact;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.velocity.VelocityComponent;
-import org.codehaus.plexus.velocity.DefaultVelocityComponent;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.Template;
 import org.apache.maven.artifact.Artifact;
 
-import java.io.StringWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
@@ -36,6 +34,13 @@ public class DefaultArtifactReport
     extends AbstractLogEnabled
     implements ArtifactReport, Startable
 {
+    /*
+     * @plexus.requirement
+     */
+    private VelocityComponent velocityComponent;
+
+    private static final String ARTIFACT_REPORT = "target/classes/org/codehaus/plexus/artifact/ArtifactReport.vm";
+
     // ----------------------------------------------------------------------
     // Component Lifecycle
     // ----------------------------------------------------------------------
@@ -54,7 +59,7 @@ public class DefaultArtifactReport
     // ArtifactReport Implementation
     // ----------------------------------------------------------------------
 
-    public void generate( VelocityComponent velocityComponent, Artifact artifact, PrintStream result )
+    public void generate( Artifact artifact, PrintStream result )
         throws Exception
     {
         VelocityContext context = new VelocityContext();
@@ -67,14 +72,12 @@ public class DefaultArtifactReport
 
         context.put( "artifactDownloadUrl", artifact.getDownloadUrl() );
 
-        Template template = velocityComponent.getEngine().getTemplate( "target/classes/org/codehaus/plexus/artifact/ArtifactReport.vm" );
+        Template template = velocityComponent.getEngine().getTemplate( ARTIFACT_REPORT );
 
-        PrintWriter writer = new PrintWriter(result);
+        PrintWriter writer = new PrintWriter( result );
 
         template.merge( context, writer );
 
         writer.flush();
-
     }
-
 }
