@@ -32,7 +32,15 @@ public class CommandTest
     public void testCreateDeploymentWorkspace()
         throws CommandException
     {
-        CreateDeploymentWorkspaceCommand command = new CreateDeploymentWorkspaceCommand( "add-project" );
+        CreateDeploymentWorkspaceCommand command = null;
+        try
+        {
+            command = (CreateDeploymentWorkspaceCommand) lookup( Command.ROLE, "create" );
+        }
+        catch ( Exception e )
+        {
+            fail( "Unexpected Exception while looking up " + CreateDeploymentWorkspaceCommand.class.getName() );
+        }
         CommandContext context = new CommandContext();
 
         context.setDeployerWorkingDirectory( testDeploymentDir );
@@ -57,7 +65,15 @@ public class CommandTest
     public void testListWorkspaces()
         throws CommandException
     {
-        CreateDeploymentWorkspaceCommand command = new CreateDeploymentWorkspaceCommand( "add-project" );
+        CreateDeploymentWorkspaceCommand command = null;
+        try
+        {
+            command = (CreateDeploymentWorkspaceCommand) lookup( Command.ROLE, "create" );
+        }
+        catch ( Exception e )
+        {
+            fail( "Unexpected Exception while looking up " + CreateDeploymentWorkspaceCommand.class.getName() );
+        }
         CommandContext context = new CommandContext();
         File testDeploymentDir = getTestFile( getBasedir(), "target/deployments" );
         context.setDeployerWorkingDirectory( testDeploymentDir );
@@ -90,7 +106,15 @@ public class CommandTest
 
     public void testCheckoutProjectWithoutSCMUrl()
     {
-        CreateDeploymentWorkspaceCommand command = new CreateDeploymentWorkspaceCommand( "add-project" );
+        CreateDeploymentWorkspaceCommand command = null;
+        try
+        {
+            command = (CreateDeploymentWorkspaceCommand) lookup( Command.ROLE, "create" );
+        }
+        catch ( Exception e )
+        {
+            fail( "Unexpected Exception while looking up " + CreateDeploymentWorkspaceCommand.class.getName() );
+        }
         CommandContext context = new CommandContext();
 
         context.setDeployerWorkingDirectory( testDeploymentDir );

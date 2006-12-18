@@ -39,6 +39,14 @@ public class CheckoutProjectCommand
      */
     protected ScmManager scmManager;
 
+    /**
+     * 
+     */
+    public CheckoutProjectCommand()
+    {
+        super();       
+    }
+
     public CheckoutProjectCommand( String label )
     {
         super( label );

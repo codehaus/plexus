@@ -55,6 +55,15 @@ public class CreateApacheVirtualHostCommand
     }
 
     /**
+     * 
+     */
+    public CreateApacheVirtualHostCommand()
+    {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    /**
      * {@inheritDoc}
      * @see org.codehaus.plexus.xsiter.command.Command#execute(org.codehaus.plexus.xsiter.command.CommandContext)
      */

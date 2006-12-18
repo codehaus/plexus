@@ -34,6 +34,15 @@ public class ListDeploymentWorkspacesCommand
         super( label );
     }
 
+    /**
+     * 
+     */
+    public ListDeploymentWorkspacesCommand()
+    {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
     /* (non-Javadoc)
      * @see org.codehaus.plexus.xsiter.command.Command#execute(org.codehaus.plexus.xsiter.command.CommandContext)
      */

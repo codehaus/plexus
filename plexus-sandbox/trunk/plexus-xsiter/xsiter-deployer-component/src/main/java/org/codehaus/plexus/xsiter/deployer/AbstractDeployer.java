@@ -72,7 +72,7 @@ public abstract class AbstractDeployer
     /**
      * Directory where all the Project deployment workspaces are created.
      * 
-     * @plexus.configuration
+     * @plexus.configuration default-value="target/deployments"
      */
     protected String workingDirectory;
 
