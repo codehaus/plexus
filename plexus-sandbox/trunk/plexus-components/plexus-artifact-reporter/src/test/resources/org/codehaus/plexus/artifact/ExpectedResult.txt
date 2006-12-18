@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Artifact Report</title>
+  </properties>
+  <body>
+    <section name="Artifact Info">
+      <tr>
+          <th>field</th>
+          <th>value</th>
+      </tr>
+      <tr>
+          <td>Group Id</td>
+          <td>org.codehaus.pleuxs.artifact</td>
+      </tr>
+      <tr>
+          <td>artifact Id</td>
+          <td>ArtifactReporter</td>
+      </tr>
+      <tr>
+          <td>Version</td>
+          <td>1.0-SNAPSHOT</td>
+      </tr>
+      <tr>
+          <td>Download URL</td>
+          <td>http://download-it-here.org</td>
+      </tr>
+    </section>
+  </body>
+</document>
