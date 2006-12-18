@@ -46,14 +46,14 @@ public class CreateDeploymentWorkspaceCommand
         throws CommandException
     {
         DeploymentWorkspace workspace = context.getWorkspace();
-        File workingDirectory = context.getDeployerWorkingDirectory();
-        File rootDir = new File( workingDirectory, workspace.getId() );
+        File depoyerWorkingDirectory = context.getDeployerWorkingDirectory();
+        File rootDir = new File( depoyerWorkingDirectory, workspace.getId() );
         DeployerUtils.createIfNonExistent( rootDir );
         DeployerUtils.createIfNonExistent( new File( rootDir, workspace.getTempDirectory() ) );
         DeployerUtils.createIfNonExistent( new File( rootDir, workspace.getWebappDirectory() ) );
         DeployerUtils.createIfNonExistent( new File( rootDir, workspace.getWebserverDirectory() ) );
         DeployerUtils.createIfNonExistent( new File( rootDir, workspace.getWorkingDirectory() ) );
-        DeployerUtils.persistWorkspaceDescriptor( workingDirectory, workspace );
+        DeployerUtils.persistWorkspaceDescriptor( depoyerWorkingDirectory, workspace );
 
         CommandResult result = new CommandResult();
         result.setState( ResultState.SUCCESS );
