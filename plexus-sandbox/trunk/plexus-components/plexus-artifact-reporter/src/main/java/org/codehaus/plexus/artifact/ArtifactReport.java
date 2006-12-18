@@ -17,7 +17,6 @@
 
 package org.codehaus.plexus.artifact;
 
-import org.codehaus.plexus.velocity.VelocityComponent;
 import org.apache.maven.artifact.Artifact;
 
 import java.io.PrintStream;
@@ -29,6 +28,6 @@ public interface ArtifactReport
 {
     public final static String ROLE = ArtifactReport.class.getName();
 
-    public void generate( VelocityComponent velocityComponent, Artifact artifact, PrintStream result )
+    public void generate( Artifact artifact, PrintStream result )
         throws Exception;
 }
