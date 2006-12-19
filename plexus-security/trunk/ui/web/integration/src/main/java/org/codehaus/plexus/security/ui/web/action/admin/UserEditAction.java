@@ -18,6 +18,9 @@ package org.codehaus.plexus.security.ui.web.action.admin;
 
 import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.security.rbac.Resource;
+import org.codehaus.plexus.security.system.DefaultSecuritySession;
+import org.codehaus.plexus.security.system.SecuritySession;
+import org.codehaus.plexus.security.system.SecuritySystemConstants;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.model.AdminEditUserCredentials;
@@ -28,11 +31,11 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * UserEditAction 
+ * UserEditAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
+ *
  * @plexus.component role="com.opensymphony.xwork.Action"
  *                   role-hint="pss-admin-user-edit"
  *                   instantiation-strategy="per-lookup"
@@ -53,7 +56,7 @@ public class UserEditAction
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
-    
+
     public String edit()
     {
 
@@ -73,7 +76,7 @@ public class UserEditAction
             addActionError( "Unable to edit user with empty username." );
             return ERROR;
         }
-        
+
         UserManager manager = super.securitySystem.getUserManager();
 
         if ( !manager.userExists( getUsername() ) )
@@ -83,11 +86,11 @@ public class UserEditAction
             addActionError( "User '" + getUsername() + "' does not exist." );
             return ERROR;
         }
-        
+
         try
         {
             User u = manager.findUser( getUsername() );
-            
+
             if ( u == null )
             {
                 addActionError( "Unable to operate on null user." );
@@ -124,11 +127,11 @@ public class UserEditAction
             addActionError( "Unable to edit user with null user credentials." );
             return ERROR;
         }
-        
+
         internalUser = user;
-        
+
         validateCredentialsLoose();
-        
+
         UserManager manager = super.securitySystem.getUserManager();
 
         if ( !manager.userExists( getUsername() ) )
@@ -155,6 +158,17 @@ public class UserEditAction
             u.setPasswordChangeRequired( user.isPasswordChangeRequired() );
 
             manager.updateUser( u );
+
+            //check if current user then update the session
+            if ( getSecuritySession().getUser().getUsername().equals( u.getUsername() ) )
+            {
+                SecuritySession securitySession = new DefaultSecuritySession(
+                    getSecuritySession().getAuthenticationResult(), u );
+
+                session.put( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
+
+                setSession( session );
+            }
         }
         catch ( UserNotFoundException e )
         {
@@ -209,14 +223,14 @@ public class UserEditAction
     {
         this.user = user;
     }
-    
+
     public SecureActionBundle initSecureActionBundle()
         throws SecureActionException
     {
         SecureActionBundle bundle = new SecureActionBundle();
         bundle.setRequiresAuthentication( true );
         bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_USER_EDIT_OPERATION, Resource.GLOBAL );
-        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_USER_EDIT_OPERATION, getUsername() );               
+        bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_USER_EDIT_OPERATION, getUsername() );
 
         return bundle;
     }

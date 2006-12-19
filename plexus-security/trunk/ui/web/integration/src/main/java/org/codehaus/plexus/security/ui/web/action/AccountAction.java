@@ -17,7 +17,9 @@ package org.codehaus.plexus.security.ui.web.action;
  */
 
 import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
+import org.codehaus.plexus.security.system.DefaultSecuritySession;
 import org.codehaus.plexus.security.system.SecuritySession;
+import org.codehaus.plexus.security.system.SecuritySystemConstants;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.model.EditUserCredentials;
@@ -177,6 +179,17 @@ public class AccountAction
             u.setPassword( user.getPassword() );
 
             manager.updateUser( u );
+
+            //check if current user then update the session
+            if ( getSecuritySession().getUser().getUsername().equals( u.getUsername() ) )
+            {
+                SecuritySession securitySession = new DefaultSecuritySession(
+                    getSecuritySession().getAuthenticationResult(), u );
+
+                this.session.put( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
+
+                setSession( this.session );
+            }
         }
         catch ( UserNotFoundException e )
         {
