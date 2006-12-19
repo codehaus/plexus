@@ -1,0 +1,29 @@
+
+Review of AJAX Frameworks/Toolkit
+---------------------------------
+
+http://searchsystemschannel.techtarget.com/tip/0,289483,sid99_gci1226710,00.html
+http://searchopensource.techtarget.com/tip/0,289483,sid39_gci1224880,00.html
+
+(Exploring Ajax Runtime Offerings) http://dev2dev.bea.com/pub/a/2006/11/exploring-ajax.html
+
+(Surveying open-source AJAX toolkits) http://www.infoworld.com/article/06/07/31/31FEajax_1.html
+
+
+
+Resources
+---------
+
+http://ajaxpatterns.org/wiki/index.php?title=AJAXFrameworks
+
+(Ajax with Direct Web Remoting) http://www-128.ibm.com/developerworks/java/library/j-ajax3/
+
+(XAP) http://incubator.apache.org/xap/index.php@cid=1057.html
+
+(Discover the Ajax Toolkit Framework for Eclipse) http://www-128.ibm.com/developerworks/opensource/library/os-ecl-atf/
+
+(Eclipse ATF/JSDT) http://wiki.eclipse.org/index.php/ATF/JSDT
+
+
+
+
