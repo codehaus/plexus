@@ -24,6 +24,12 @@ http://ajaxpatterns.org/wiki/index.php?title=AJAXFrameworks
 
 (Eclipse ATF/JSDT) http://wiki.eclipse.org/index.php/ATF/JSDT
 
+(Yahoo Design Pattern Library) http://developer.yahoo.com/ypatterns/index.php
 
+(Google Web Toolkit)  http://code.google.com/webtoolkit/
+
+(Dojo Toolkit) http://dojotoolkit.org/
+
+(qooxdoo framework)  http://qooxdoo.org/
 
 
