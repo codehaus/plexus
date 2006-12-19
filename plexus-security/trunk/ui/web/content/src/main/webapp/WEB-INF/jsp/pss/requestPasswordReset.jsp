@@ -31,8 +31,8 @@
 <ww:form action="passwordReset!reset" namespace="/security" theme="xhtml" 
          id="passwordResetForm" method="post" name="passwordReset" cssClass="security passwordReset">
   <ww:textfield label="Username" name="username" size="30" required="true" />
-  <ww:submit type="button" value="Request Reset" name="submitButton" />
-  <ww:submit type="button" value="Cancel" name="cancelbutton" />
+  <ww:submit value="Request Reset" />
+  <ww:submit value="Cancel" name="cancelbutton" />
 </ww:form>
 
 </body>

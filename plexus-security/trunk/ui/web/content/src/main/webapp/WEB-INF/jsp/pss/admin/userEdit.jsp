@@ -35,8 +35,8 @@
   <ww:checkbox label="Locked User" name="user.locked" />
   <ww:checkbox label="Change Password Next Login" name="user.passwordChangeRequired" />
   <ww:hidden   label="Username"    name="username" />
-  <ww:submit type="button" value="Update" name="updateButton" />
-  <ww:submit type="button" value="Cancel" name="cancelButton" />
+  <ww:submit value="Update" />
+  <ww:submit value="Cancel" name="cancelButton" />
 </ww:form>
 
   <ww:action name="assignments" executeResult="true" >
