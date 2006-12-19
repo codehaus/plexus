@@ -40,8 +40,8 @@
     <ww:password  label="Confirm Password" name="user.confirmPassword" size="20" required="true"/>
   </c:if>
   
-  <ww:submit type="input" value="Register" />
-  <ww:submit type="button" value="Cancel"   name="cancelbutton" />
+  <ww:submit value="Register" />
+  <ww:submit value="Cancel"   name="cancelbutton" />
 </ww:form>
 
 </body>

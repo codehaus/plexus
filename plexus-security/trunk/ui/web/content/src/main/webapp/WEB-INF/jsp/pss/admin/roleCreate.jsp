@@ -80,7 +80,7 @@
           <ww:textfield name="addpermission.resourceIdentifier" theme="simple" />
         </td>
         <td>
-          <ww:submit type="button" value="Add Permission" theme="simple" 
+          <ww:submit value="Add Permission" theme="simple" 
                      onclick="setSubmitMode('addPermission')" />
         </td>
       </tr>

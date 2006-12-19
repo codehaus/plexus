@@ -35,8 +35,8 @@
   </c:if>
   <ww:password  label="New Password" name="newPassword" size="20" required="true" />
   <ww:password  label="Confirm New Password" name="newPasswordConfirm" size="20" required="true" />
-  <ww:submit type="submit" value="Change Password" />
-  <ww:submit type="button" value="Cancel" name="cancelButton" />
+  <ww:submit value="Change Password" />
+  <ww:submit value="Cancel" name="cancelButton" />
 </ww:form>
 
 <ul class="tips">
