@@ -1,7 +1,7 @@
 package org.codehaus.plexus.appserver;
 
 import junit.framework.TestCase;
-import org.codehaus.classworlds.ClassWorld;
+import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.util.FileUtils;

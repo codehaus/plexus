@@ -22,14 +22,13 @@ package org.codehaus.plexus.appserver;
  * SOFTWARE.
  */
 
-import org.codehaus.classworlds.ClassWorld;
+import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
 
 import java.io.File;
-import java.io.FileReader;
 
 // Container host plexus container is configured and initialized
 // The appserver component is looked up
@@ -89,19 +88,34 @@ public class PlexusApplicationHost
     {
         this.classWorld = classWorld;
 
-        container = new DefaultPlexusContainer();
-
-        container.setClassWorld( classWorld );
-
         String plexusHome = System.getProperty( "plexus.home" );
         plexusHome = new File( plexusHome ).getAbsolutePath();
 
-        container.addContextValue( "plexus.home", plexusHome );
-
         File appserverHome = new File( System.getProperty( "appserver.home", plexusHome ) );
-        container.addContextValue( "appserver.home", appserverHome.getAbsolutePath() );
 
         File appserverBase = new File( System.getProperty( "appserver.base", appserverHome.getAbsolutePath() ) );
+
+        if ( configurationResource == null )
+        {
+            File conf = new File( new File( appserverBase, PlexusRuntimeConstants.CONF_DIRECTORY ),
+                                  PlexusRuntimeConstants.CONFIGURATION_FILE );
+            if ( !conf.exists() )
+            {
+                conf = new File( new File( appserverHome, PlexusRuntimeConstants.CONF_DIRECTORY ),
+                                 PlexusRuntimeConstants.CONFIGURATION_FILE );
+
+                if ( !conf.exists() )
+                {
+                    throw new Exception( "Unable to find a default configuration file" );
+                }
+            }
+            configurationResource = conf.getAbsolutePath();
+        }
+
+        container = new DefaultPlexusContainer( "appserver", null, configurationResource, classWorld );
+
+        container.addContextValue( "plexus.home", plexusHome );
+        container.addContextValue( "appserver.home", appserverHome.getAbsolutePath() );
         container.addContextValue( "appserver.base", appserverBase.getAbsolutePath() );
 
         container.addContextValue( "plexus.work",
@@ -123,30 +137,8 @@ public class PlexusApplicationHost
             plexusTemp.mkdirs();
         }
 
-        if ( configurationResource == null )
-        {
-            File conf = new File( new File( appserverBase, PlexusRuntimeConstants.CONF_DIRECTORY ),
-                                  PlexusRuntimeConstants.CONFIGURATION_FILE );
-            if ( !conf.exists() )
-            {
-                conf = new File( new File( appserverHome, PlexusRuntimeConstants.CONF_DIRECTORY ),
-                                 PlexusRuntimeConstants.CONFIGURATION_FILE );
-
-                if ( !conf.exists() )
-                {
-                    throw new Exception( "Unable to find a default configuration file" );
-                }
-            }
-            configurationResource = conf.getAbsolutePath();
-        }
 
         this.configurationResource = configurationResource;
-
-        container.setConfigurationResource( new FileReader( configurationResource ) );
-
-        container.initialize();
-
-        container.start();
 
         LoggerManager loggerManager = (LoggerManager) container.lookup( LoggerManager.ROLE );
 
@@ -277,7 +269,7 @@ public class PlexusApplicationHost
     }
 
     // ----------------------------------------------------------------------
-    // Main: used by org.codehaus.classworlds.Launcher
+    // Main: used by org.codehaus.plexus.classworlds.launcher.Launcher
     // ----------------------------------------------------------------------
 
     public static void main( String[] args, ClassWorld classWorld )
