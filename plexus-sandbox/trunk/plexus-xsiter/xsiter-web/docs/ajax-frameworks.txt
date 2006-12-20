@@ -32,4 +32,4 @@ http://ajaxpatterns.org/wiki/index.php?title=AJAXFrameworks
 
 (qooxdoo framework)  http://qooxdoo.org/
 
-
+(Javascript libraries roundup) http://edevil.wordpress.com/2005/11/14/javascript-libraries-roundup/
