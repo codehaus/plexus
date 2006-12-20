@@ -180,6 +180,7 @@
     <!-- This action is meant to be embedded within the User Edit action output jsp.
          It is injected using the <ww:action> taglib -->
     <action name="assignments" class="pss-assignments" method="show">
+      <interceptor-ref name="securedStack"/>
       <result name="input">/WEB-INF/jsp/pss/include/assignments.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/include/error.jsp</result>
       <result name="success">/WEB-INF/jsp/pss/include/assignments.jsp</result>
