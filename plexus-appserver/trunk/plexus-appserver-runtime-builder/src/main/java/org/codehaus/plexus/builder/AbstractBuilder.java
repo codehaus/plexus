@@ -29,6 +29,7 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.project.MavenProjectBuilder;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -207,7 +208,7 @@ public abstract class AbstractBuilder
 
     protected Set getBootArtifacts( Set projectArtifacts, List remoteRepositories, ArtifactRepository localRepository,
                                     boolean ignoreIfMissing )
-        throws ArtifactResolutionException
+        throws ArtifactResolutionException, ArtifactNotFoundException
     {
         Set artifacts = new HashSet();
 
@@ -220,11 +221,14 @@ public abstract class AbstractBuilder
 
     protected Set getCoreArtifacts( Set projectArtifacts, Set additionalCoreArtifacts, List remoteRepositories,
                                     ArtifactRepository localRepository, boolean ignoreIfMissing )
-        throws ArtifactResolutionException
+        throws ArtifactResolutionException, ArtifactNotFoundException
     {
         Set artifacts = new HashSet();
 
         resolveVersion( "org.codehaus.plexus", "plexus-container-default", projectArtifacts, ignoreIfMissing,
+                        artifacts );
+
+        resolveVersion( "org.codehaus.plexus", "plexus-component-api", projectArtifacts, ignoreIfMissing,
                         artifacts );
 
         resolveVersion( "org.codehaus.plexus", "plexus-appserver-host", projectArtifacts, ignoreIfMissing, artifacts );
@@ -247,7 +251,7 @@ public abstract class AbstractBuilder
 
     protected Set getExcludedArtifacts( Set projectArtifacts, List remoteRepositories,
                                         ArtifactRepository localRepository )
-        throws ArtifactResolutionException
+        throws ArtifactResolutionException, ArtifactNotFoundException
     {
         Set artifacts = new HashSet();
 
@@ -263,7 +267,7 @@ public abstract class AbstractBuilder
 
     protected Set findArtifacts( List remoteRepositories, ArtifactRepository localRepository, Set sourceArtifacts,
                                  boolean resolveTransitively, ArtifactFilter artifactFilter )
-        throws ArtifactResolutionException
+        throws ArtifactResolutionException, ArtifactNotFoundException
     {
         ArtifactResolutionResult result;
 

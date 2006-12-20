@@ -25,6 +25,7 @@ package org.codehaus.plexus.builder.application;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.codehaus.plexus.appserver.PlexusApplicationConstants;
 import org.codehaus.plexus.archiver.Archiver;
@@ -141,6 +142,10 @@ public class DefaultApplicationBuilder
             artifacts = findArtifacts( remoteRepositories, localRepository, projectArtifacts, true, filter );
         }
         catch ( ArtifactResolutionException e )
+        {
+            throw new ApplicationBuilderException( "Error while finding dependencies.", e );
+        }
+        catch ( ArtifactNotFoundException e )
         {
             throw new ApplicationBuilderException( "Error while finding dependencies.", e );
         }
