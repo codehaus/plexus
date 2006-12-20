@@ -79,7 +79,7 @@
                 <ww:param name="username">${user.username}</ww:param>
               </ww:url>
               <ww:a href="%{userdeleteUrl}" title="Delete ${user.username}">
-                <img src="<ww:url value="${pageContext.request.contextPath}/images/pss/delete.gif"/>" border="none"/>
+                <img src="<c:url value="/images/pss/delete.gif"/>" border="none"/>
               </ww:a>              
             </pss:ifAuthorized>
           </c:if>
