@@ -94,11 +94,13 @@ public class AbstractJAASPasswordEncoder
             return false;
         }
 
-        if ( StringUtils.isEmpty( rawPass ) )
-        {
-            // TODO: Throw exception?
-            return false;
-        }
+        // PLXREDBACK-36 Commented out because a user with an empty password can't login due to the checking.
+        // Empty password checking can also be achieve by turning on MustHavePasswordRule.
+        //if ( StringUtils.isEmpty( rawPass ) )
+        //{
+        //    TODO: Throw exception?
+        //    return false;
+        //}
 
         String testPass = encodePassword( rawPass, salt );
         return ( encPass.equals( testPass ) );
