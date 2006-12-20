@@ -76,6 +76,9 @@ public class DefaultI18NTest
     {
         super.setUp();
 
+        /* Set an unsupported locale to default to ensure we do not get unexpected matches */
+        Locale.setDefault( new Locale( "jp" ) );
+
         i18n = (I18N) lookup( I18N.ROLE );
     }
 
