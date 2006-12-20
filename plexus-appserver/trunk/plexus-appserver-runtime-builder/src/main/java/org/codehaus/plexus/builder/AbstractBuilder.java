@@ -211,7 +211,7 @@ public abstract class AbstractBuilder
     {
         Set artifacts = new HashSet();
 
-        resolveVersion( "classworlds", "classworlds", projectArtifacts, ignoreIfMissing, artifacts );
+        resolveVersion( "org.codehaus.plexus", "plexus-classworlds", projectArtifacts, ignoreIfMissing, artifacts );
 
         artifacts = findArtifacts( remoteRepositories, localRepository, artifacts, false, null );
 

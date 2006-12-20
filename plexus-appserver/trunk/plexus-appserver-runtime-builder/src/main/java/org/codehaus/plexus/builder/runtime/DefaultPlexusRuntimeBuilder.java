@@ -169,8 +169,8 @@ public class DefaultPlexusRuntimeBuilder
             // ----------------------------------------------------------------------
 
             String classworldsVersion =
-                resolveVersion( "classworlds", "classworlds", projectArtifacts, false, new HashSet() );
-
+                resolveVersion( "org.codehaus.plexus", "plexus-classworlds", projectArtifacts, false, new HashSet() );
+            System.out.println( "***classworldsVersion = " + classworldsVersion );
             configurationProperties.setProperty( PROPERTY_CLASSWORLDS_VERSION, classworldsVersion );
 
             // add defaults
