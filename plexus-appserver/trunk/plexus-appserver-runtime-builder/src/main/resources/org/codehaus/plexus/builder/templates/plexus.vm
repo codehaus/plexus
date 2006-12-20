@@ -115,11 +115,11 @@ echo "Using PLEXUS_CONF:   $PLEXUS_CONF"
 echo "Using PLEXUS_TMPDIR: $PLEXUS_TMPDIR"
 echo "Using JAVA_HOME:     $JAVA_HOME"
 
-MAIN_CLASS=org.codehaus.classworlds.Launcher
+MAIN_CLASS=org.codehaus.plexus.classworlds.launcher.Launcher
 
 exec "$JAVACMD" \
   $PLEXUS_OPTS \
-  -classpath "${PLEXUS_HOME}"/core/boot/classworlds-*.jar \
+  -classpath "${PLEXUS_HOME}"/core/boot/plexus-classworlds-*.jar \
   -Dclassworlds.conf="${PLEXUS_CONF}/classworlds.conf"  \
   -Dplexus.core="${PLEXUS_HOME}/core" \
   -Dplexus.system.path="${PATH}" \
