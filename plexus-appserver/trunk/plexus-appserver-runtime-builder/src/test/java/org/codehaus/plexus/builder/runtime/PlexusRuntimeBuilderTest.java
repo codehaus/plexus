@@ -84,15 +84,16 @@ public class PlexusRuntimeBuilderTest
             (ArtifactRepositoryLayout) lookup( ArtifactRepositoryLayout.ROLE, "legacy" );
 
         ArtifactRepository localRepository = artifactRepositoryFactory.createArtifactRepository( "local", "file://" +
-            getTestFile( "src/test/repository" ).getAbsolutePath(), repositoryLayout );
+            getTestFile( "src/test/repository" ).getAbsolutePath(), repositoryLayout, null, null );
 
         Set projectArtifacts = new HashSet();
 
         projectArtifacts.add( makeArtifact( "org.codehaus.plexus", "plexus-classworlds", "1.2-alpha-5" ) );
-        projectArtifacts.add( makeArtifact( "org.codehaus.plexus", "plexus-container-default", "1.0-alpha-14" ) );
+        projectArtifacts.add( makeArtifact( "org.codehaus.plexus", "plexus-component-api", "1.0-alpha-15-SNAPSHOT" ) );
+        projectArtifacts.add( makeArtifact( "org.codehaus.plexus", "plexus-container-default", "1.0-alpha-15-SNAPSHOT" ) );
         projectArtifacts.add( makeArtifact( "plexus", "plexus-container-artifact", "1.0-alpha-2" ) );
-        projectArtifacts.add( makeArtifact( "org.codehaus.plexus", "plexus-appserver-host", "1.0" ) );
-        projectArtifacts.add( makeArtifact( "org.codehaus.plexus", "plexus-utils", "1.0.4" ) );
+        projectArtifacts.add( makeArtifact( "org.codehaus.plexus", "plexus-appserver-host", "2.0-alpha-6-SNAPSHOT" ) );
+        projectArtifacts.add( makeArtifact( "org.codehaus.plexus", "plexus-utils", "1.4-alpha-1" ) );
 
         // ----------------------------------------------------------------------
         //

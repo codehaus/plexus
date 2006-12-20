@@ -27,6 +27,7 @@ package org.codehaus.plexus.builder.service;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.codehaus.plexus.appserver.PlexusServiceConstants;
 import org.codehaus.plexus.archiver.Archiver;
@@ -135,6 +136,10 @@ public class DefaultServiceBuilder
             artifacts = findArtifacts( remoteRepositories, localRepository, serviceArtifacts, true, filter );
         }
         catch ( ArtifactResolutionException e )
+        {
+            throw new ServiceBuilderException( "Error while finding dependencies.", e );
+        }
+        catch ( ArtifactNotFoundException e )
         {
             throw new ServiceBuilderException( "Error while finding dependencies.", e );
         }
