@@ -4,6 +4,7 @@ import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
 import org.codehaus.plexus.context.DefaultContext;
 import org.codehaus.plexus.util.PropertyUtils;
@@ -67,8 +68,8 @@ public class PlexusLifecycleListener
 
             containerContext.putAll( initializeContext( ctx, resolveContextProperties( ctx ) ) );
 
-            PlexusContainer pc = new DefaultPlexusContainer( "default", getClass().getClassLoader(), setConfigurationStream( ctx ),
-                                                             containerContext );
+            PlexusContainer pc = new DefaultPlexusContainer( "default", containerContext, setConfigurationFile( ctx ),
+                                                             new ClassWorld( "plexus.core", getClass().getClassLoader() ) );
 
             ctx.setAttribute( KEY, pc );
         }
@@ -159,17 +160,17 @@ public class PlexusLifecycleListener
         }
     }
 
-    private InputStreamReader setConfigurationStream( ServletContext ctx )
+    private String setConfigurationFile( ServletContext ctx )
         throws PlexusConfigurationResourceException
     {
-        InputStream is =
-            Thread.currentThread().getContextClassLoader().getResourceAsStream( "META-INF/plexus/application.xml" );
-        if ( is == null )
+        URL url =
+            Thread.currentThread().getContextClassLoader().getResource( "META-INF/plexus/application.xml" );
+
+        if ( url == null )
         {
-            ctx.log( "Could not find " + "META-INF/plexus/application.xml" + ", skipping" );
-            is = new ByteArrayInputStream( "<plexus><components></components></plexus>".getBytes() );
+            return null;
         }
-        return new InputStreamReader( is );
+        return url.toExternalForm();
     }
 
     public void contextDestroyed( ServletContextEvent servletContextEvent )
