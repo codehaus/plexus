@@ -33,3 +33,13 @@ http://ajaxpatterns.org/wiki/index.php?title=AJAXFrameworks
 (qooxdoo framework)  http://qooxdoo.org/
 
 (Javascript libraries roundup) http://edevil.wordpress.com/2005/11/14/javascript-libraries-roundup/
+
+(GWT Resources) http://www.gwtpowered.org/#Resources
+
+(GWT Eclipse plugin) http://www.googlipse.com/
+
+(Kick starting GWT on client side) http://today.java.net/pub/a/today/2006/06/27/client-side-google-web-toolkit.html
+
+(Exploring GWT) http://www-128.ibm.com/developerworks/library/j-ajax4/index.html
+
+(GWT - Compiling from source) http://code.google.com/webtoolkit/makinggwtbetter.html#compiling
