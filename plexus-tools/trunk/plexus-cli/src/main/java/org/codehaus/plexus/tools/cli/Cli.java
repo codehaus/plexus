@@ -1,6 +1,5 @@
 package org.codehaus.plexus.tools.cli;
 
-import org.codehaus.classworlds.ClassWorld;
 import org.codehaus.plexus.PlexusContainer;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.CommandLine;

@@ -7,7 +7,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.OptionBuilder;
-import org.codehaus.classworlds.ClassWorld;
+import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
@@ -151,7 +151,7 @@ public abstract class AbstractCli
 
         try
         {
-            PlexusContainer plexus = new DefaultPlexusContainer( "plexus.core", classWorld );
+            PlexusContainer plexus = new DefaultPlexusContainer( "plexus.core", null, null, classWorld );
 
             invokePlexusComponent( cli, plexus );
         }
