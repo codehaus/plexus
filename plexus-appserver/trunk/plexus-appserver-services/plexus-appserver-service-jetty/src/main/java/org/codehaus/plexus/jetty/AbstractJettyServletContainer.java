@@ -24,6 +24,7 @@ package org.codehaus.plexus.jetty;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.jetty.configuration.ProxyHttpListener;
@@ -34,7 +35,6 @@ import org.codehaus.plexus.jetty.configuration.InitParameter;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.classworlds.ClassRealm;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.HttpListener;
 import org.mortbay.http.handler.ResourceHandler;
@@ -424,7 +424,7 @@ public abstract class AbstractJettyServletContainer
             {
                 // Dirty hack, need better methods for classloaders because i can set the core realm but not get it,
                 // or get the container realm but not set it. blah!
-                webappContext.setClassLoader( container.getContainerRealm().getClassLoader() );
+                webappContext.setClassLoader( container.getContainerRealm() );
             }
 
             // Save the classloader for reloads
