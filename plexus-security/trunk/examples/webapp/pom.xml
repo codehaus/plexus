@@ -166,6 +166,26 @@
                 </connector>
               </connectors>
             </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.1</version>
+                <type>jar</type>
+              </dependency>
+              <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-jcl</artifactId>
+                <version>1.0.1</version>
+                <type>jar</type>
+              </dependency>
+              <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.13</version>
+                <type>jar</type>
+              </dependency>
+            </dependencies>
           </plugin>
         </plugins>
       </build>
