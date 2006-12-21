@@ -81,11 +81,6 @@ public class PasswordAction
         SecuritySession session = getSecuritySession();
 
         provideExisting = StringUtils.isNotEmpty( session.getUser().getEncodedPassword() );
-        
-        if ( provideExisting && StringUtils.isEmpty( existingPassword ) )
-        {
-            addFieldError( "existingPassword", "Existing Password cannot be empty." );
-        }
 
         if ( StringUtils.isEmpty( newPassword ) )
         {
@@ -147,17 +142,17 @@ public class PasswordAction
         {
             String encodedPassword = encoder.encodePassword( newPassword );
             user.setEncodedPassword( encodedPassword );
-            user.setPassword( newPassword );            
+            user.setPassword( newPassword );
             securitySystem.getUserManager().updateUser( user );
         }
         catch ( UserNotFoundException e )
         {
             addActionError( "Unable to update user '" + user.getUsername() + "' not found." );
             addActionError( "Likely occurs because an Administrator deleted your account." );
-            
+
             return ERROR;
         }
-        
+
         getLogger().info( "Password Change Request Success." );
 
         if ( !session.isAuthenticated() )
