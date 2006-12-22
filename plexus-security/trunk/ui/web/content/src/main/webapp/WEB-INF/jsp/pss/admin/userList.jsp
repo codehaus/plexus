@@ -34,14 +34,14 @@
 <ec:table 
     var="user" 
     items="users" 
-    action="${pageContext.request.contextPath}/security/userlist!show.action" 
+    action="${pageContext.request.contextPath}/security/userlist!show.action"
     imagePath="${pageContext.request.contextPath}/images/pss/table/*.gif"
     title="Users"
     showTitle="false"
     showExports="false"
     view="org.codehaus.plexus.security.ui.web.eXc.views.SecurityView" 
     sortRowsCallback="org.codehaus.plexus.security.ui.web.eXc.ProcessUserRowsCallback"
-	>
+    >
     <%-- TODO: Fix export download. --%>
     <ec:export 
        view="csv" 
@@ -54,8 +54,8 @@
        imageName="xls"
        tooltip="Export Table to Excel format."/>
     <ec:row>          
-	    <ec:column property="username" title="User Name">
-          <img src="${pageContext.request.contextPath}/images/pss/icon-user.gif" />
+        <ec:column property="username" title="User Name">
+          <img src="<c:url value="/images/pss/icon-user.gif"/>" />
           <pss:ifAuthorized permission="user-management-user-edit" resource="${user.username}">
             <ww:url id="usereditUrl" action="useredit">
               <ww:param name="username">${user.username}</ww:param>
@@ -141,9 +141,9 @@
           </td>
           <td class="reportViews">
           <c:forEach items="${reportEntry.value}" var="report" varStatus="status">
-            <a href="${pageContext.request.contextPath}/security/report!generate.action?reportId=${report.value.id}&reportType=${report.value.type}" 
+            <a href="<c:url value="/security/report!generate.action?reportId=${report.value.id}&reportType=${report.value.type}"/>" 
               title="${report.value.name} Report (${report.value.type} type)"><img 
-              src="${pageContext.request.contextPath}/images/pss/table/${report.value.type}.gif" /></a>
+              src="<c:url value="/images/pss/table/${report.value.type}.gif"/>" /></a>
           </c:forEach>
           </td>
         </tr>
