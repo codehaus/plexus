@@ -4,7 +4,6 @@ import org.apache.avalon.framework.service.ServiceSelector;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.ServiceA;
 import org.codehaus.plexus.ServiceC;
-import org.codehaus.plexus.personality.avalon.AvalonServiceSelector;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>

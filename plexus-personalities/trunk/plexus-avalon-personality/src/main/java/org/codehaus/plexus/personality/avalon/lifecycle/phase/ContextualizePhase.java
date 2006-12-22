@@ -2,16 +2,18 @@ package org.codehaus.plexus.personality.avalon.lifecycle.phase;
 
 import org.apache.avalon.framework.context.Context;
 import org.apache.avalon.framework.context.Contextualizable;
+import org.apache.avalon.framework.context.ContextException;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.manager.ComponentManager;
 import org.codehaus.plexus.lifecycle.phase.AbstractPhase;
 import org.codehaus.plexus.personality.avalon.AvalonContext;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.PhaseExecutionException;
 
 public class ContextualizePhase
     extends AbstractPhase
 {
     public void execute( Object object, ComponentManager manager )
-        throws Exception
+        throws PhaseExecutionException
     {
         if ( object instanceof Contextualizable )
         {
@@ -26,7 +28,14 @@ public class ContextualizePhase
                 throw new IllegalArgumentException( message );
             }
 
-            ( (Contextualizable) object ).contextualize( context );
+            try
+            {
+                ( (Contextualizable) object ).contextualize( context );
+            }
+            catch ( ContextException e )
+            {
+                throw new PhaseExecutionException( "contextualize threw ContextException", e );                
+            }
         }
     }
 }

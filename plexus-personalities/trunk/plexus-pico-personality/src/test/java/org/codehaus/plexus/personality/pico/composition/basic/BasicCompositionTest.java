@@ -1,14 +1,13 @@
 package org.codehaus.plexus.personality.pico.composition.basic;
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.personality.pico.composition.basic.Kisser;
 
 
 public class BasicCompositionTest extends PlexusTestCase
 {
-    public BasicCompositionTest( String testname )
+    public BasicCompositionTest( )
     {
-        super( testname );
+        super( );
     }
 
 

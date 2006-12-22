@@ -5,6 +5,10 @@ import junit.framework.TestCase;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfigurationMerger;
+import org.codehaus.plexus.component.repository.io.PlexusTools;
+
 /**
  *  @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  */
@@ -53,11 +57,11 @@ public class DefaultPlexusContainerTest
 
         container.addContextValue( "plexus.home", basedir + "/target/plexus-home" );
 
-        container.setConfigurationResource( new InputStreamReader( configurationStream ) );
+        PlexusConfiguration config = PlexusTools.buildConfiguration(
+                "<User Specified Configuration Reader>",
+                new InputStreamReader( configurationStream ) );
 
-        container.initialize();
-
-        container.start();
+        container.setConfiguration( PlexusConfigurationMerger.merge( container.getConfiguration(), config ) );
     }
 
     public void tearDown()

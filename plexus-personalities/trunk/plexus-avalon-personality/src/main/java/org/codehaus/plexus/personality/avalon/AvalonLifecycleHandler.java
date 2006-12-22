@@ -13,7 +13,6 @@ public class AvalonLifecycleHandler
     extends AbstractLifecycleHandler
 {
     public void initialize()
-        throws Exception
     {
     }
 }

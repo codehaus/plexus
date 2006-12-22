@@ -13,7 +13,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-11-SNAPSHOT</version>
+      <version>1.0-alpha-14</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

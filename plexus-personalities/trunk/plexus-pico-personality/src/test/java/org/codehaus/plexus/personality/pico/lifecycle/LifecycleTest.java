@@ -1,16 +1,13 @@
 package org.codehaus.plexus.personality.pico.lifecycle;
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.personality.pico.composition.basic.Kisser;
-import org.codehaus.plexus.personality.pico.composition.array.DefaultBaa;
-import org.codehaus.plexus.personality.pico.composition.array.Baa;
 
 
 public class LifecycleTest extends PlexusTestCase
 {
-    public LifecycleTest( String testname )
+    public LifecycleTest( )
     {
-        super( testname );
+        super( );
     }
 
 
