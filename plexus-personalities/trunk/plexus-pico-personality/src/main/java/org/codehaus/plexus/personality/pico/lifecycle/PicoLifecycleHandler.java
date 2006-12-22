@@ -17,7 +17,6 @@ public class PicoLifecycleHandler
     }
 
     public void initialize()
-        throws Exception
     {
     }
 }

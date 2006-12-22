@@ -3,16 +3,24 @@ package org.codehaus.plexus.personality.avalon.lifecycle.phase;
 import org.apache.avalon.framework.activity.Startable;
 import org.codehaus.plexus.component.manager.ComponentManager;
 import org.codehaus.plexus.lifecycle.phase.AbstractPhase;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.PhaseExecutionException;
 
 public class StopPhase
     extends AbstractPhase
 {
     public void execute( Object object, ComponentManager manager )
-        throws Exception
+        throws PhaseExecutionException
     {
         if ( object instanceof Startable )
         {
-            ( (Startable) object ).stop();
+            try
+            {
+                ( (Startable) object ).stop();
+            }
+            catch ( Exception e )
+            {
+                throw new PhaseExecutionException( "stop threw Exception", e );
+            }
         }
     }
 }

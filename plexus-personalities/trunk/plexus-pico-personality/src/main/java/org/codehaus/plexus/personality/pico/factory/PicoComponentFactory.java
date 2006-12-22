@@ -6,14 +6,11 @@ import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Array;
-import java.util.Set;
 import java.util.Iterator;
-import java.util.Arrays;
 import java.util.List;
 
 /**

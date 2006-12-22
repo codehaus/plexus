@@ -19,7 +19,7 @@ public class AvalonComponentRepository
 	/**
 	 * @see org.codehaus.plexus.component.repository.ComponentRepository#initialize()
 	 */
-	public void initialize() throws Exception
+	public void initialize() throws ComponentRepositoryException
 	{
 		super.initialize();
 	}
