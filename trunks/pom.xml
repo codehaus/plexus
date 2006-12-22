@@ -25,7 +25,6 @@
     <module>plexus-examples</module>
     <module>plexus-logging</module>
     <module>plexus-maven-plugin</module>
-    <module>plexus-personalities</module>
     <module>plexus-security</module>
     <module>plexus-servlet</module>
     <module>plexus-tools</module>
