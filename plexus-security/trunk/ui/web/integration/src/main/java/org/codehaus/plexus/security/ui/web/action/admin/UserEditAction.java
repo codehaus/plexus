@@ -132,6 +132,12 @@ public class UserEditAction
 
         validateCredentialsLoose();
 
+        // if form errors, return with them before continuing
+        if ( hasActionErrors() || hasFieldErrors() )
+        {
+            return ERROR;
+        }
+
         UserManager manager = super.securitySystem.getUserManager();
 
         if ( !manager.userExists( getUsername() ) )
