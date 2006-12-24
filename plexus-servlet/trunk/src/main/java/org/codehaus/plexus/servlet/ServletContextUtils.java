@@ -27,6 +27,7 @@ package org.codehaus.plexus.servlet;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.embed.Embedder;
 import org.codehaus.plexus.embed.EmbedderException;
 import org.codehaus.plexus.util.PropertyUtils;
@@ -36,6 +37,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
+import java.util.StringTokenizer;
+import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * <code>ServletContextUtils</code> provides methods to embed a Plexus
@@ -49,6 +54,8 @@ final class ServletContextUtils
     private static final String PLEXUS_HOME = "plexus.home";
 
     static final String PLEXUS_CONFIG_PARAM = "plexus-config";
+
+    static final String PLEXUS_CONFIG_ADD_TO_CONTEXT = "plexus.add-to-context";
 
     private static final String PLEXUS_PROPERTIES_PARAM = "plexus-properties";
 

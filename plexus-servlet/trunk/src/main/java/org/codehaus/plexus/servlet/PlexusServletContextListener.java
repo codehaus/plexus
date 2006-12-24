@@ -26,6 +26,8 @@ package org.codehaus.plexus.servlet;
 
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.embed.Embedder;
 import org.codehaus.plexus.embed.EmbedderException;
 
@@ -33,6 +35,11 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.StringTokenizer;
+import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * By adding this to the listeners for your web application, a Plexus container
@@ -52,6 +59,8 @@ public class PlexusServletContextListener
 {
     private Embedder embedder = null;
 
+    private List components = new ArrayList();
+
     public void contextInitialized( ServletContextEvent sce )
     {
         ServletContext context = sce.getServletContext();
@@ -70,6 +79,8 @@ public class PlexusServletContextListener
         try
         {
             embedder = ServletContextUtils.createContainer( context, configName );
+
+            loadAddToContextComponents( context, embedder.getContainer() );
         }
         catch ( EmbedderException e )
         {
@@ -85,6 +96,56 @@ public class PlexusServletContextListener
         }
 
         context.log( "Plexus container initialized." );
+    }
+
+    private void loadAddToContextComponents( ServletContext context, PlexusContainer container )
+    {
+        String string = context.getInitParameter( ServletContextUtils.PLEXUS_CONFIG_ADD_TO_CONTEXT );
+
+        if ( string == null || string.length() == 0 )
+        {
+            return;
+        }
+
+        StringTokenizer tokenizer = new StringTokenizer( string, "," );
+
+        while( tokenizer.hasMoreTokens() )
+        {
+            String token = tokenizer.nextToken();
+
+            int index = token.indexOf( ":" );
+
+            Object component;
+
+            if ( index > 0 )
+            {
+                String role = token.substring( 0, index );
+                String roleHint = role.substring( index );
+
+                try
+                {
+                    component = container.lookup( role, roleHint );
+                }
+                catch ( ComponentLookupException e )
+                {
+                    throw new RuntimeException( "Error while looking up component '" + role + ":" + roleHint + "'", e );
+                }
+            }
+            else
+            {
+                try
+                {
+                    component = container.lookup( token );
+                }
+                catch ( ComponentLookupException e )
+                {
+                    throw new RuntimeException( "Error while looking up component '" + token + "'", e );
+                }
+            }
+
+            context.setAttribute( token, component );
+            components.add( component );
+        }
     }
 
     public void contextDestroyed( ServletContextEvent sce )
