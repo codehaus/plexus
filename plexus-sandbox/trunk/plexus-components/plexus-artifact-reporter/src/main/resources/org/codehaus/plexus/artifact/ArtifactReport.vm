@@ -7,20 +7,20 @@
         </tr>
         <tr>
           <td><b>GroupId</b></td>
-          <td>org.codehaus.pleuxs.artifact</td>
+          <td>${artifactGroupId}</td>
         </tr>
         <tr>
           <td><b>ArtifactId</b></td>
-          <td>ArtifactReporter</td>
+          <td>${artifactId}</td>
         </tr>
         <tr>
           <td><b>Version</b></td>
-          <td>1.0</td>
+          <td>${artifactVersion}</td>
         </tr>
         <tr>
           <td><b>Download URL</b></td>
-          <td><a href="http://download-it-here.org/repo/swizzle-1.0.jar">
-            http://download-it-here.org/repo/swizzle-1.0.jar</a></td>
+          <td><a href="$artifactDownloadUrl">
+            $artifactDownloadUrl</a></td>
         </tr>
         <tr>
           <td><b>SCM</b></td>

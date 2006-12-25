@@ -7,7 +7,7 @@
         </tr>
         <tr>
           <td><b>GroupId</b></td>
-          <td>org.codehaus.pleuxs.artifact</td>
+          <td>org.codehaus.plexus.artifact</td>
         </tr>
         <tr>
           <td><b>ArtifactId</b></td>
