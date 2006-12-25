@@ -61,16 +61,16 @@ public class ArtifactReportTest
         mockArtifact = (Artifact) controlArtifact.getMock();
 
         mockArtifact.getGroupId();
-        controlArtifact.setReturnValue( "org.codehaus.pleuxs.artifact" );
+        controlArtifact.setReturnValue( "org.codehaus.plexus.artifact" );
 
         mockArtifact.getArtifactId();
         controlArtifact.setReturnValue( "ArtifactReporter" );
 
         mockArtifact.getVersion();
-        controlArtifact.setReturnValue( "1.0-SNAPSHOT" );
+        controlArtifact.setReturnValue( "1.0" );
 
         mockArtifact.getDownloadUrl();
-        controlArtifact.setReturnValue( "http://download-it-here.org" );
+        controlArtifact.setReturnValue( "http://download-it-here.org/repo/swizzle-1.0.jar" );
 
         controlArtifact.replay();
 
