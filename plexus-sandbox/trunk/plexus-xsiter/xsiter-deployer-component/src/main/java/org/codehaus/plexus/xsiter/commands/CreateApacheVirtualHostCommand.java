@@ -59,8 +59,7 @@ public class CreateApacheVirtualHostCommand
      */
     public CreateApacheVirtualHostCommand()
     {
-        super();
-        // TODO Auto-generated constructor stub
+        super();       
     }
 
     /**
