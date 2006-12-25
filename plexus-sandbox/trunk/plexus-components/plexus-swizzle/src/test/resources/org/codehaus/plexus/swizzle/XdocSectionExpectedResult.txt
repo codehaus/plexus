@@ -6,24 +6,24 @@
             <th>DESCRIPTION</th>
           </tr>
           <tr>
-            <td>1</td>
-            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-1"><![CDATA[Unit Test Summary]]></a></td>
+            <td>2</td>
+            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-10"><![CDATA[Beer fridge for the garage]]></a></td>
           </tr>
           <tr>
             <td>0</td>
-            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-2"><![CDATA[Need Wilhemina to get some things from the store]]></a></td>
+            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-9"><![CDATA[Clean the pool]]></a></td>
           </tr>
           <tr>
             <td>0</td>
-            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-4"><![CDATA[a container of milk]]></a></td>
+            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-11"><![CDATA[Make sure the smoke alarms work]]></a></td>
           </tr>
           <tr>
             <td>0</td>
-            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-3"><![CDATA[a loaf of bread]]></a></td>
+            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-8"><![CDATA[Get more colored lights for the disco ball]]></a></td>
           </tr>
           <tr>
             <td>0</td>
-            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-5"><![CDATA[a stick of butter]]></a></td>
+            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-12"><![CDATA[Fix whole in the wall]]></a></td>
           </tr>
         </table>
       </div>
