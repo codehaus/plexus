@@ -40,10 +40,6 @@ public class DefaultJiraReport
      */
     private VelocityContext context;
 
-    private static final String RESOLVED_ISSUES_TEMPLATE = "org/codehaus/plexus/swizzle/ResolvedIssues.vm";
-
-    private static final String VOTES_REPORT_TEMPLATE = "org/codehaus/plexus/swizzle/Votes.vm";
-
     // ----------------------------------------------------------------------
     // Component Lifecycle
     // ----------------------------------------------------------------------
