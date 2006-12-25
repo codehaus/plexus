@@ -49,6 +49,14 @@ public class CheckoutProjectCommand
     }
 
     /**
+     * @param label
+     */
+    public CheckoutProjectCommand( String label )
+    {
+        super( label );
+    }
+
+    /**
      * @see org.codehaus.plexus.xsiter.command.Command#execute(org.codehaus.plexus.xsiter.command.CommandContext)
      */
     public CommandResult execute( CommandContext context )
@@ -82,16 +90,16 @@ public class CheckoutProjectCommand
                 }
 
                 // check out to a tagged directory
-                String scmTag = null != workspace.getScmTag() ? workspace.getScmTag() : "HEAD";                
+                String scmTag = null != workspace.getScmTag() ? workspace.getScmTag() : "HEAD";
                 ScmFileSet fileSet = new ScmFileSet( checkoutDir );
                 result = scmManager.getProviderByRepository( repository ).checkOut( repository, fileSet,
-                                                                                    workspace.getScmTag() );                
+                                                                                    workspace.getScmTag() );
             }
 
             // TODO: Use logger
             System.out.println( "Command output: " + result.getCommandOutput() );
             System.out.println( "Provider message: " + result.getProviderMessage() );
-            
+
             if ( !result.isSuccess() )
             {
                 cmdResult.setState( ResultState.FAILURE );
