@@ -17,6 +17,10 @@
 
 package org.codehaus.plexus.swizzle;
 
+import java.util.HashMap;
+import java.util.Set;
+import java.util.Iterator;
+
 /**
  * Author: John Tolentino
  */
@@ -36,17 +40,21 @@ public class ReportConfiguration
 
     public static final String VOTES_TEMPLATE = "org/codehaus/plexus/swizzle/Votes.vm";
 
+    public static final String XDOC_SECTION_TEMPLATE = "org/codehaus/plexus/swizzle/XdocSection.vm";
 
-    public ReportConfiguration( String projectKey, String projectVersion, String jiraServerUrl, String template )
-    {
-        this.projectKey = projectKey;
-        this.projectVersion = projectVersion;
-        this.jiraServerUrl = jiraServerUrl;
-        this.template = template;
-    }
+    private static HashMap AVAILABLE_TEMPLATES;
 
     public ReportConfiguration()
     {
+        loadTemplates();
+    }
+
+    private void loadTemplates()
+    {
+        AVAILABLE_TEMPLATES = new HashMap();
+        AVAILABLE_TEMPLATES.put( "RESOLVED_ISSUES", RESOLVED_ISSUES_TEMPLATE );
+        AVAILABLE_TEMPLATES.put( "VOTES", VOTES_TEMPLATE );
+        AVAILABLE_TEMPLATES.put( "XDOC_SECTION", XDOC_SECTION_TEMPLATE );
     }
 
     public String getProjectKey()
@@ -89,25 +97,31 @@ public class ReportConfiguration
     {
         if ( EMPTY_STRING.equals( template ) )
         {
+            String exceptionString = new String();
             throw new ReportConfigurationException( "Provided template was an empty string. Was expecting " +
-                "\"RESOLVED_ISSUES\", \"VOTES\" or a fully qualified path to a user-provided " +
+                getTemplateKeys( AVAILABLE_TEMPLATES.keySet() ) + "or a fully qualified path to a user-provided " +
                 "velocity template." );
         }
-        if ( "RESOLVED_ISSUES".equals( template ) )
+
+        if ( AVAILABLE_TEMPLATES.containsKey( template ) )
         {
-            this.template = RESOLVED_ISSUES_TEMPLATE;
+            this.template = (String) AVAILABLE_TEMPLATES.get( template );
         }
         else
         {
-            if ( "VOTES".equals( template ) )
-            {
-                this.template = VOTES_TEMPLATE;
-            }
-            else
-            {
-                this.template = template;
-            }
+            this.template = template;
         }
+    }
+
+    private String getTemplateKeys( Set keySet )
+    {
+        StringBuffer templateKeys = new StringBuffer();
+        Iterator itr = keySet.iterator();
+        while ( itr.hasNext() )
+        {
+            templateKeys.append( "\"" + itr.next() + "\", " );
+        }
+        return templateKeys.toString();
     }
 
 }
