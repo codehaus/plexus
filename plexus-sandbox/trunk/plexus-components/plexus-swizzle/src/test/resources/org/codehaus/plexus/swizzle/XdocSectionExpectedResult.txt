@@ -1,0 +1,29 @@
+      <div class="section">
+        <h3><a href="http://jira.codehaus.org/browse/SWIZZLE?report=com.atlassian.jira.plugin.system.project:roadmap-panel">List of Issues Resolved in this Release</a></h3>
+        <table>
+          <tr>
+            <th>VOTES</th>
+            <th>DESCRIPTION</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-1"><![CDATA[Unit Test Summary]]></a></td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-2"><![CDATA[Need Wilhemina to get some things from the store]]></a></td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-4"><![CDATA[a container of milk]]></a></td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-3"><![CDATA[a loaf of bread]]></a></td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-5"><![CDATA[a stick of butter]]></a></td>
+          </tr>
+        </table>
+      </div>

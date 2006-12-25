@@ -92,6 +92,35 @@ public class JiraReportTest
         assertEquals( expected, actual );
     }
 
+    public void testGenerateXdocSectionTemplate()
+        throws Exception
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream result = new PrintStream( baos );
+
+        ReportConfiguration configuration = new ReportConfiguration();
+
+        configuration.setJiraServerUrl( "http://jira.codehaus.org" );
+        configuration.setProjectKey( "SWIZZLE" );
+        configuration.setProjectVersion( "*" );
+        configuration.setTemplate( "XDOC_SECTION" );
+
+        JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
+
+        report.generateReport( configuration, result );
+
+        result.close();
+
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        String expectedFile = "org/codehaus/plexus/swizzle/XdocSectionExpectedResult.txt";
+        URL resource = classLoader.getResource( expectedFile );
+        String expected = streamToString( resource.openStream() );
+
+        String actual = new String( baos.toByteArray() );
+
+        assertEquals( expected, actual );
+    }
+
     public void testConfigurationExceptionHandling()
         throws Exception
     {
@@ -108,7 +137,7 @@ public class JiraReportTest
         {
             configuration.setTemplate( EMPTY_STRING );
         }
-        catch( ReportConfigurationException e)
+        catch ( ReportConfigurationException e )
         {
             assertTrue( true );
         }
@@ -140,7 +169,7 @@ public class JiraReportTest
 
         String actual = new String( baos.toByteArray() );
 
-        assertEquals( expected, actual ); 
+        assertEquals( expected, actual );
     }
 
     private static String streamToString( InputStream in )
