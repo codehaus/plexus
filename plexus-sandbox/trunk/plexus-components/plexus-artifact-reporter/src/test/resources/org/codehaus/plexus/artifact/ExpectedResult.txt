@@ -1,30 +1,62 @@
-<?xml version="1.0"?>
-<document>
-  <properties>
-    <title>Artifact Report</title>
-  </properties>
-  <body>
-    <section name="Artifact Info">
-      <tr>
-          <th>field</th>
-          <th>value</th>
-      </tr>
-      <tr>
-          <td>Group Id</td>
+    <div class="section">
+      <h3>Artifact Info</h3>
+      <table>
+        <tr>
+          <th>ITEM</th>
+          <th>DESCRIPTION</th>
+        </tr>
+        <tr>
+          <td><b>GroupId</b></td>
           <td>org.codehaus.pleuxs.artifact</td>
-      </tr>
-      <tr>
-          <td>artifact Id</td>
+        </tr>
+        <tr>
+          <td><b>ArtifactId</b></td>
           <td>ArtifactReporter</td>
-      </tr>
-      <tr>
-          <td>Version</td>
-          <td>1.0-SNAPSHOT</td>
-      </tr>
-      <tr>
-          <td>Download URL</td>
-          <td>http://download-it-here.org</td>
-      </tr>
-    </section>
-  </body>
-</document>
+        </tr>
+        <tr>
+          <td><b>Version</b></td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td><b>Download URL</b></td>
+          <td><a href="http://download-it-here.org/repo/swizzle-1.0.jar">
+            http://download-it-here.org/repo/swizzle-1.0.jar</a></td>
+        </tr>
+        <tr>
+          <td><b>SCM</b></td>
+          <td><a href="http://svn.codehaus.org/swizzle/trunk">SVN</a><p>To checkout use the following
+            command: <pre>   svn co -r 107 http://svn.codehaus.org/swizzle/trunk/swizzle-jirareport</pre></p></td>
+        </tr>
+        <tr>
+          <td><b>Last Release Date</b></td>
+          <td>1815/12/10 13:14:15 CEST</td>
+        </tr>
+        <tr>
+          <td><b>Staging Site</b></td>
+          <td><a href="http://people.apache.org/~jtolentino/release-reports">http://people.apache.org/~jtolentino/release-reports</a></td>
+        </tr>
+        <tr>
+          <td><b>Maven Docck Test Results</b></td>
+          <td><img src="images/icon_success_sml.gif" /> <a href="docck-results.html">Successful</a></td>
+        </tr>
+        <tr>
+          <td><b>License Header Results</b></td>
+          <td><img src="images/icon_error_sml.gif" /> Failed!
+            <pre><![CDATA[
+              [INFO] The License Header Verifier Results Will be placed here
+              [INFO] ----------------------------------------------------------------------------
+              [INFO] Failure Details....
+              [INFO] Error 1
+              [INFO] Error 2
+              [INFO] Error 3
+              [INFO] Error 4
+              [INFO] ------------------------------------------------------------------------
+            ]]></pre>
+          </td>
+        </tr>
+        <tr>
+          <td><b>List of Release Deliverables</b></td>
+          <td><a href="deliverables.html">deliverables.html</a></td>
+        </tr>
+      </table>
+    </div>
