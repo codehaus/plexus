@@ -118,6 +118,8 @@ public class JiraReportTest
 
         String actual = new String( baos.toByteArray() );
 
+        System.out.println( ">>>>>>>>>>>>>>>>>" + actual );
+
         assertEquals( expected, actual );
     }
 
