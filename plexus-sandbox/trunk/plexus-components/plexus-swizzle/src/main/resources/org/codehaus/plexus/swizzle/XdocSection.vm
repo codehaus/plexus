@@ -1,5 +1,5 @@
       <div class="section">
-        <h3><a href="http://jira.codehaus.org/browse/SWIZZLE?report=com.atlassian.jira.plugin.system.project:roadmap-panel">List of Issues Resolved in this Release</a></h3>
+        <h3><a href="${jiraServerUrl}/browse/${projectKey}?report=com.atlassian.jira.plugin.system.project:roadmap-panel">List of Issues Resolved in this Release</a></h3>
         <table>
           <tr>
             <th>VOTES</th>
