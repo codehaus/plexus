@@ -42,6 +42,18 @@ import javax.servlet.ServletException;
  */
 public final class PlexusServletUtils
 {
+    public static final String PLEXUS_HOME = "plexus.home";
+
+    public static final String PLEXUS_CONFIG_PARAM = "plexus-config";
+
+    public static final String PLEXUS_CONFIG_ADD_TO_CONTEXT = "plexus.add-to-context";
+
+    public static final String PLEXUS_PROPERTIES_PARAM = "plexus-properties";
+
+    public static final String DEFAULT_PLEXUS_CONFIG = "/WEB-INF/plexus.xml";
+
+    public static final String DEFAULT_PLEXUS_PROPERTIES = "/WEB-INF/plexus.properties";
+
     // prevent instantiation
     private PlexusServletUtils()
     {

@@ -27,20 +27,20 @@ package org.codehaus.plexus.servlet;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.embed.Embedder;
-import org.codehaus.plexus.embed.EmbedderException;
+import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
 import org.codehaus.plexus.util.PropertyUtils;
 
 import javax.servlet.ServletContext;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
+import java.net.MalformedURLException;
 import java.util.Properties;
 import java.util.StringTokenizer;
-import java.util.Collection;
+import java.util.List;
+import java.util.Iterator;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * <code>ServletContextUtils</code> provides methods to embed a Plexus
@@ -49,50 +49,95 @@ import java.util.Collections;
  * @author <a href="mhw@kremvax.net">Mark Wilkinson</a>
  * @version $Id$
  */
-final class ServletContextUtils
+public final class ServletContextUtils
 {
-    private static final String PLEXUS_HOME = "plexus.home";
+    private ServletContext context;
 
-    static final String PLEXUS_CONFIG_PARAM = "plexus-config";
+    private PlexusContainer container;
 
-    static final String PLEXUS_CONFIG_ADD_TO_CONTEXT = "plexus.add-to-context";
+    private boolean removeFromContext;
 
-    private static final String PLEXUS_PROPERTIES_PARAM = "plexus-properties";
+    private List components = new ArrayList();
 
-    private static final String DEFAULT_PLEXUS_CONFIG = "/WEB-INF/plexus.xml";
-
-    private static final String DEFAULT_PLEXUS_PROPERTIES = "/WEB-INF/plexus.properties";
-
-    // prevent instantiation
-    private ServletContextUtils()
+    /**
+     * Create a Plexus container using the {@link org.codehaus.plexus.DefaultPlexusContainer}. This method
+     * should be called from an environment where a
+     * <code>ServletContext</code> is available. It will create and initialize
+     * the Plexus container and place references to the container into the context.
+     *
+     * @param context The servlet context to place the container in.
+     * @return a Plexus container that has been initialized and started.
+     * @throws PlexusContainerException If the Plexus container could not be started.
+     */
+    public void start( ServletContext context )
+        throws PlexusContainerException
     {
-    }
+        this.context = context;
 
-    private static String resolveConfig( ServletContext context, String plexusConf )
-    {
-        if ( plexusConf == null )
+        Object o = context.getAttribute( PlexusConstants.PLEXUS_KEY );
+
+        if ( o == null )
         {
-            plexusConf = context.getInitParameter( PLEXUS_CONFIG_PARAM );
+            context.log( "Initializing Plexus." );
+
+            container = new DefaultPlexusContainer( null,
+                                                    resolveContextProperties( context ),
+                                                    resolveConfig( context ),
+                                                    null );
+
+            context.setAttribute( PlexusConstants.PLEXUS_KEY, container );
+
+            removeFromContext = true;
+        }
+        else
+        {
+            if ( !( o instanceof PlexusContainer ) )
+            {
+                throw new RuntimeException( "An attribute with key '" + PlexusConstants.PLEXUS_KEY +
+                    "' was in the context but it was not an instance of " + PlexusContainer.class.getName() + "." );
+            }
+
+            context.log( "Plexus container already in context." );
+
+            container = (PlexusContainer) o;
+
+            // TODO: make a child container. The child container has to load the WEB-INF/plexus.xml in the WAR.
         }
 
-        if ( plexusConf == null )
-        {
-            plexusConf = DEFAULT_PLEXUS_CONFIG;
-        }
+        lookupAddToContextComponents( context );
 
-        return plexusConf;
+        context.log( "Plexus initialized." );
     }
 
-    private static Properties resolveContextProperties( ServletContext context )
+    public void stop()
     {
+        context.log( "Stopping Plexus." );
 
+        if ( removeFromContext )
+        {
+            context.removeAttribute( PlexusConstants.PLEXUS_KEY );
+        }
+
+        releaseAddToContextComponents();
+
+        container.dispose();
+
+        context.log( "Plexus stopped." );
+    }
+
+    // -----------------------------------------------------------------------
+    // Private
+    // -----------------------------------------------------------------------
+
+    private Properties resolveContextProperties( ServletContext context )
+    {
         Properties properties = new Properties();
 
-        String filename = context.getInitParameter( PLEXUS_PROPERTIES_PARAM );
+        String filename = context.getInitParameter( PlexusServletUtils.PLEXUS_PROPERTIES_PARAM );
 
         if ( filename == null )
         {
-            filename = DEFAULT_PLEXUS_PROPERTIES;
+            filename = PlexusServletUtils.DEFAULT_PLEXUS_PROPERTIES;
         }
 
         context.log( "Loading plexus context properties from: '" + filename + "'" );
@@ -110,14 +155,13 @@ final class ServletContextUtils
             context.log( "Could not load plexus context properties from: '" + filename + "'" );
         }
 
-
         if ( properties == null )
         {
             context.log( "Could not load plexus context properties from: '" + filename + "'" );
             properties = new Properties();
         }
 
-        if ( !properties.containsKey( PLEXUS_HOME ) )
+        if ( !properties.containsKey( PlexusServletUtils.PLEXUS_HOME ) )
         {
             setPlexusHome( context, properties );
         }
@@ -125,10 +169,34 @@ final class ServletContextUtils
         return properties;
     }
 
+    private URL resolveConfig( ServletContext context )
+        throws PlexusContainerException
+    {
+        String plexusConf = context.getInitParameter( PlexusServletUtils.PLEXUS_CONFIG_PARAM );
+
+        if ( plexusConf == null )
+        {
+            plexusConf = PlexusServletUtils.DEFAULT_PLEXUS_CONFIG;
+        }
+
+        try
+        {
+            URL resource = context.getResource( plexusConf );
+
+            System.out.println( "resource = " + resource );
+
+            return resource;
+        }
+        catch ( MalformedURLException e )
+        {
+            throw new PlexusContainerException( "Error while getting URL to '" + plexusConf + "'", e );
+        }
+    }
+
     /**
      * Set plexus.home context variable
      */
-    private static void setPlexusHome( ServletContext context, Properties contexProperties )
+    private void setPlexusHome( ServletContext context, Properties contexProperties )
     {
         String realPath = context.getRealPath( "/WEB-INF" );
 
@@ -136,8 +204,7 @@ final class ServletContextUtils
         {
             File f = new File( realPath );
 
-            contexProperties.setProperty( PLEXUS_HOME, f.getAbsolutePath() );
-
+            contexProperties.setProperty( PlexusServletUtils.PLEXUS_HOME, f.getAbsolutePath() );
         }
         else
         {
@@ -145,63 +212,70 @@ final class ServletContextUtils
         }
     }
 
-    /**
-     * Create a Plexus container using the {@link Embedder}. This method
-     * should be called from an environment where a
-     * <code>ServletContext</code> is available. It will create and initialize
-     * the Plexus container and place references to the container into the context.
-     *
-     * @param context    The servlet context to place the container in.
-     * @param plexusConf Name of the Plexus configuration file to load, or
-     *                   <code>null</code> to fall back to the default behaviour.
-     * @return a Plexus container that has been initialized and started.
-     * @throws RuntimeException If the Plexus container could not be started.
-     */
-    static Embedder createContainer( ServletContext context, String plexusConf )
-        throws IOException, PlexusContainerException, EmbedderException
+    private void lookupAddToContextComponents( ServletContext context )
     {
-        Embedder embedder = new Embedder();
+        String string = context.getInitParameter( PlexusServletUtils.PLEXUS_CONFIG_ADD_TO_CONTEXT );
 
-        plexusConf = resolveConfig( context, plexusConf );
-
-        URL resource = context.getResource( plexusConf );
-
-        if ( resource == null )
+        if ( string == null || string.length() == 0 )
         {
-            throw new IOException( "Could not find the resource '" + plexusConf + "' in the servlet context." );
+            return;
         }
 
-        embedder.setConfiguration( resource );
+        StringTokenizer tokenizer = new StringTokenizer( string, "," );
 
-        Properties properties = resolveContextProperties( context );
+        while( tokenizer.hasMoreTokens() )
+        {
+            String token = tokenizer.nextToken();
 
-        embedder.setProperties( properties );
+            int index = token.indexOf( ":" );
 
-        embedder.start();
+            Object component;
 
-        PlexusContainer plexus = embedder.getContainer();
+            if ( index > 0 )
+            {
+                String role = token.substring( 0, index );
+                String roleHint = role.substring( index );
 
-        context.setAttribute( PlexusConstants.PLEXUS_KEY, plexus );
+                try
+                {
+                    component = container.lookup( role, roleHint );
+                }
+                catch ( ComponentLookupException e )
+                {
+                    throw new RuntimeException( "Error while looking up component '" + role + ":" + roleHint + "'", e );
+                }
+            }
+            else
+            {
+                try
+                {
+                    component = container.lookup( token );
+                }
+                catch ( ComponentLookupException e )
+                {
+                    throw new RuntimeException( "Error while looking up component '" + token + "'", e );
+                }
+            }
 
-        return embedder;
+            context.setAttribute( token, component );
+            components.add( component );
+        }
     }
 
-    static void destroyContainer( Embedder embedder, ServletContext context )
+    private void releaseAddToContextComponents()
     {
-        try
+        for ( Iterator it = components.iterator(); it.hasNext(); )
         {
-            if ( embedder != null )
+            Object component = it.next();
+
+            try
             {
-                embedder.stop();
+                container.release( component );
             }
-        }
-        catch ( Exception e )
-        {
-            context.log( "Error disposing the Plexus container", e );
-        }
-        finally
-        {
-            context.removeAttribute( PlexusConstants.PLEXUS_KEY );
+            catch ( ComponentLifecycleException e )
+            {
+                context.log( "Error while releasing " + component, e );
+            }
         }
     }
 }

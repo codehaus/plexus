@@ -71,36 +71,22 @@ public class MockServletContext
 
     public URL getResource( String resourceName )
     {
-        if ( resourceName.equals( "/WEB-INF/plexus.xml" ) )
+        if ( resourceName.equals( PlexusServletUtils.DEFAULT_PLEXUS_CONFIG ) )
         {
             return MockServletContext.class.getResource( "plexus.xml" );
         }
-        if ( resourceName.equals( "/WEB-INF/plexus.properties" ) )
+
+        if ( resourceName.equals( PlexusServletUtils.DEFAULT_PLEXUS_PROPERTIES ) )
         {
             return MockServletContext.class.getResource( "plexus.properties" );
         }
+
         throw new RuntimeException( "not implemented" );
     }
 
     public InputStream getResourceAsStream( String resourceName )
     {
-        URL url = getResource( resourceName );
-        if ( url == null )
-        {
-            return null;
-        }
-        else
-        {
-            try
-            {
-                return url.openStream();
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-                return null;
-            }
-        }
+        throw new RuntimeException( "not implemented" );
     }
 
     public RequestDispatcher getRequestDispatcher( String arg0 )
@@ -108,9 +94,6 @@ public class MockServletContext
         throw new RuntimeException( "not implemented" );
     }
 
-    /* (non-Javadoc)
-     * @see javax.servlet.ServletContext#getNamedDispatcher(java.lang.String)
-     */
     public RequestDispatcher getNamedDispatcher( String arg0 )
     {
         throw new RuntimeException( "not implemented" );
@@ -161,19 +144,18 @@ public class MockServletContext
         arg1.printStackTrace();
     }
 
-    /* (non-Javadoc)
-     * @see javax.servlet.ServletContext#getRealPath(java.lang.String)
-     */
     public String getRealPath( String resourceName )
     {
         if ( resourceName.equals( "/WEB-INF" ) )
         {
             return resourceName;
         }
+
         if ( resourceName.equals( "/WEB-INF/plexus.xml" ) )
         {
             return MockServletContext.class.getResource( "plexus.xml" ).getPath();
         }
+
         return null;
     }
 
