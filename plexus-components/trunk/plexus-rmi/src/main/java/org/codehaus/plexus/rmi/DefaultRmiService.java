@@ -74,13 +74,15 @@ public class DefaultRmiService
     public Remote exportObject( Remote remote, String name )
         throws RmiServiceException
     {
-        Remote exportedRemote = exportObject( remote );
-
         try
         {
-            getLogger().info( "Binding " + remote.getClass().getName() + " to " + name );
+            Registry registry = getRegistry();
 
-            getRegistry().bind( name, exportedRemote );
+            Remote exportedRemote = exportObject( remote );
+
+            getLogger().info( "Binding " + remote.getClass().getName() + " to " + name + "." );
+
+            registry.bind( name, exportedRemote );
 
             return exportedRemote;
         }
