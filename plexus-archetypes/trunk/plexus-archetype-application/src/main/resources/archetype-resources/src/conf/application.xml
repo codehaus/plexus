@@ -15,7 +15,7 @@
   <services>
 <!--
     <service>
-      <id>servlet-container</id>
+      <id>jetty</id>
       <configuration>
         <webapps>
           <webapp>
