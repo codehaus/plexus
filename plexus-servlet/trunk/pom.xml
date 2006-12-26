@@ -18,12 +18,12 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-10</version>
+      <version>1.0-alpha-15-SNAPSHOT</version>
     </dependency>
   </dependencies>
-  <scm> 
+  <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-servlet/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-servlet/trunk</developerConnection> 
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-servlet/trunk</developerConnection>
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-servlet/trunk/</url>
   </scm>
 </project>

@@ -26,6 +26,8 @@ package org.codehaus.plexus.servlet;
 
 import junit.framework.TestCase;
 import org.codehaus.plexus.embed.Embedder;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.DefaultPlexusContainer;
 
 import javax.servlet.ServletContext;
 
@@ -39,12 +41,16 @@ public class ServletContextUtilsTest
     public void testResolveConfig()
         throws Exception
     {
-        ServletContext msc = new MockServletContext();
+        ServletContext context = new MockServletContext();
 
-        Embedder embedder = ServletContextUtils.createContainer( msc, null );
+        ServletContextUtils utils = new ServletContextUtils();
 
-        assertNotNull( "embedder != null", embedder );
+        utils.start( context );
 
-        embedder.stop();
+        assertNotNull( context.getAttribute( PlexusConstants.PLEXUS_KEY ) );
+
+        assertTrue( context.getAttribute( PlexusConstants.PLEXUS_KEY ) instanceof DefaultPlexusContainer );
+
+        utils.stop();
     }
 }

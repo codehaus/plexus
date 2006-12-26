@@ -45,16 +45,10 @@ public class PlexusServletContextListenerTest
         ServletContextEvent sce = new ServletContextEvent( sc );
 
         pacl.contextInitialized( sce );
-        {
-            PlexusContainer pc = PlexusServletUtils.getPlexusContainer( sc );
-            assertNotNull( "pc", pc );
-        }
+        assertNotNull( PlexusServletUtils.getPlexusContainer( sc ) );
 
         pacl.contextDestroyed( sce );
-        {
-            PlexusContainer pc = PlexusServletUtils.getPlexusContainer( sc );
-            assertNull( "pc", pc );
-        }
+        assertNull( PlexusServletUtils.getPlexusContainer( sc ) );
     }
 
     /**

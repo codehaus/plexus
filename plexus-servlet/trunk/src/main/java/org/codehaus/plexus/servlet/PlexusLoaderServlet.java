@@ -25,15 +25,12 @@ package org.codehaus.plexus.servlet;
  */
 
 import org.codehaus.plexus.PlexusContainerException;
-import org.codehaus.plexus.embed.Embedder;
-import org.codehaus.plexus.embed.EmbedderException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import java.io.IOException;
 
 /**
- * <p>PlexusLoaderServlet loads a Plexus {@link Embedder} for a web
+ * <p>PlexusLoaderServlet loads a Plexus {@link org.codehaus.plexus.DefaultPlexusContainer} for a web
  * application.  The embedder is put into the
  * <code>ServletContext</code> so <code>PlexusServlet</code>s can retrieve it.
  * It is important to make sure that this class is loaded before the startup of
@@ -54,10 +51,7 @@ import java.io.IOException;
 public class PlexusLoaderServlet
     extends HttpServlet
 {
-    /**
-     * Embedded Plexus.
-     */
-    private Embedder embedder;
+    private ServletContextUtils utils = new ServletContextUtils();
 
     /**
      * Load Plexus into the ServletContext for PlexusServlets.
@@ -69,28 +63,14 @@ public class PlexusLoaderServlet
     {
         super.init();
 
-        log( "Initializing Plexus..." );
-        String configName = getInitParameter( ServletContextUtils.PLEXUS_CONFIG_PARAM );
-
         try
         {
-            embedder = ServletContextUtils.createContainer( getServletContext(),
-                                                            configName );
-        }
-        catch ( EmbedderException e )
-        {
-            throw new ServletException( "Could not start the Plexus container.", e );
-        }
-        catch ( IOException e )
-        {
-            throw new ServletException( "Could not start the Plexus container.", e );
+            utils.start( getServletContext() );
         }
         catch ( PlexusContainerException e )
         {
             throw new ServletException( "Could not start the Plexus container.", e );
         }
-
-        log( "Plexus Initialized." );
     }
 
     /**
@@ -100,9 +80,7 @@ public class PlexusLoaderServlet
      */
     public void destroy()
     {
-        log( "Shutting down Plexus..." );
-        ServletContextUtils.destroyContainer( embedder, getServletContext() );
-        log( "... Plexus shutdown. Goodbye" );
+        utils.stop();
 
         super.destroy();
     }

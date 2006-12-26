@@ -28,6 +28,7 @@ import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
 import org.codehaus.plexus.embed.Embedder;
 import org.codehaus.plexus.embed.EmbedderException;
 
@@ -35,11 +36,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.StringTokenizer;
-import java.util.Collection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 /**
  * By adding this to the listeners for your web application, a Plexus container
@@ -57,103 +57,22 @@ import java.util.List;
 public class PlexusServletContextListener
     implements ServletContextListener
 {
-    private Embedder embedder = null;
-
-    private List components = new ArrayList();
+    private ServletContextUtils utils = new ServletContextUtils();
 
     public void contextInitialized( ServletContextEvent sce )
     {
-        ServletContext context = sce.getServletContext();
-
-        if ( context.getAttribute( PlexusConstants.PLEXUS_KEY ) != null )
-        {
-            context.log( "Plexus container already in context." );
-
-            return;
-        }
-
-        String configName = context.getInitParameter( ServletContextUtils.PLEXUS_CONFIG_PARAM );
-
-        context.log( "Initializing Plexus container..." );
-
         try
         {
-            embedder = ServletContextUtils.createContainer( context, configName );
-
-            loadAddToContextComponents( context, embedder.getContainer() );
-        }
-        catch ( EmbedderException e )
-        {
-            throw new RuntimeException( "Could not start the Plexus container.", e );
-        }
-        catch ( IOException e )
-        {
-            throw new RuntimeException( "Could not start the Plexus container.", e );
+            utils.start( sce.getServletContext() );
         }
         catch ( PlexusContainerException e )
         {
-            throw new RuntimeException( "Could not start the Plexus container.", e );
-        }
-
-        context.log( "Plexus container initialized." );
-    }
-
-    private void loadAddToContextComponents( ServletContext context, PlexusContainer container )
-    {
-        String string = context.getInitParameter( ServletContextUtils.PLEXUS_CONFIG_ADD_TO_CONTEXT );
-
-        if ( string == null || string.length() == 0 )
-        {
-            return;
-        }
-
-        StringTokenizer tokenizer = new StringTokenizer( string, "," );
-
-        while( tokenizer.hasMoreTokens() )
-        {
-            String token = tokenizer.nextToken();
-
-            int index = token.indexOf( ":" );
-
-            Object component;
-
-            if ( index > 0 )
-            {
-                String role = token.substring( 0, index );
-                String roleHint = role.substring( index );
-
-                try
-                {
-                    component = container.lookup( role, roleHint );
-                }
-                catch ( ComponentLookupException e )
-                {
-                    throw new RuntimeException( "Error while looking up component '" + role + ":" + roleHint + "'", e );
-                }
-            }
-            else
-            {
-                try
-                {
-                    component = container.lookup( token );
-                }
-                catch ( ComponentLookupException e )
-                {
-                    throw new RuntimeException( "Error while looking up component '" + token + "'", e );
-                }
-            }
-
-            context.setAttribute( token, component );
-            components.add( component );
+            throw new RuntimeException( "Could not start the Olexus container.", e );
         }
     }
 
     public void contextDestroyed( ServletContextEvent sce )
     {
-        ServletContext context = sce.getServletContext();
-
-        context.log( "Disposing of Plexus container." );
-
-        ServletContextUtils.destroyContainer( embedder, context );
+        utils.stop();
     }
 }
