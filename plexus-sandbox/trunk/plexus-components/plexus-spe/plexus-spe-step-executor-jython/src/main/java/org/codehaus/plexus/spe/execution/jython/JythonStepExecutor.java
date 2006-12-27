@@ -64,7 +64,7 @@ public class JythonStepExecutor
 
         try
         {
-            executeScript( components, script );
+            executeScript( components, script, context );
         }
         finally
         {
@@ -115,22 +115,27 @@ public class JythonStepExecutor
             }
             else
             {
+                // If the role hint is set, use that as the variable name
                 if ( roleHint != null )
                 {
                     variableName = roleHint;
                 }
                 else
                 {
+                    // Use the last part of the role as variable name, but with the first letter lower cased
+
                     int i = role.lastIndexOf( '.' );
 
                     if ( i > 0 )
                     {
-                        variableName = role.substring( i );
+                        variableName = role.substring( i + 1 );
                     }
                     else
                     {
                         variableName = role;
                     }
+
+                    variableName = Character.toLowerCase( variableName.charAt( 0 ) ) + variableName.substring( 1 );
                 }
             }
 
@@ -153,12 +158,22 @@ public class JythonStepExecutor
         }
     }
 
-    private void executeScript( Map<String, Object> components, String script )
+    private void executeScript( Map<String, Object> components, String script, Map<String, Serializable> context )
     {
         PythonInterpreter interpreter = new PythonInterpreter();
 
         interpreter.setOut( System.out );
         interpreter.setErr( System.err );
+
+        // -----------------------------------------------------------------------
+        // Build the context
+        // -----------------------------------------------------------------------
+
+        interpreter.set( "context", context );
+
+        // -----------------------------------------------------------------------
+        // Add all the components to the context
+        // -----------------------------------------------------------------------
 
         for ( Map.Entry<String, Object> entry : components.entrySet() )
         {
@@ -166,7 +181,6 @@ public class JythonStepExecutor
         }
 
         interpreter.exec( script );
-
 
         System.out.flush();
         System.err.flush();

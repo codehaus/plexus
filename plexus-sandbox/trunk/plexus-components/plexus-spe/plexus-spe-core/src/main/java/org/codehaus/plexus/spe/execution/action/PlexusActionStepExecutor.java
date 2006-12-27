@@ -1,8 +1,8 @@
 package org.codehaus.plexus.spe.execution.action;
 
-import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.action.Action;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ComponentConfigurator;
