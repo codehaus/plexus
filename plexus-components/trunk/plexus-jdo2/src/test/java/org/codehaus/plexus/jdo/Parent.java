@@ -37,7 +37,7 @@ public class Parent
     /**
      * Field id
      */
-    private int id = 0;
+    private long id = 0;
 
     /**
      * Field price
@@ -116,7 +116,7 @@ public class Parent
     /**
      * Get id
      */
-    public int getId()
+    public long getId()
     {
         return this.id;
     }
@@ -182,7 +182,7 @@ public class Parent
      * 
      * @param id
      */
-    public void setId( int id )
+    public void setId( long id )
     {
         this.id = id;
     }

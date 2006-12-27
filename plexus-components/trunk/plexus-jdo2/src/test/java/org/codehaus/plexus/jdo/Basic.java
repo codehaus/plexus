@@ -26,7 +26,7 @@ public class Basic implements java.io.Serializable {
     /**
      * Field id
      */
-    private int id = 0;
+    private long id = 0;
 
     /**
      * Field name
@@ -72,7 +72,7 @@ public class Basic implements java.io.Serializable {
     /**
      * Get id
      */
-    public int getId()
+    public long getId()
     {
         return this.id;
     }  
@@ -110,7 +110,7 @@ public class Basic implements java.io.Serializable {
      * 
      * @param id
      */
-    public void setId(int id)
+    public void setId(long id)
     {
         this.id = id;
     }  
