@@ -221,8 +221,6 @@ public class DefaultApplicationBuilder
                                         File configurationsDirectory )
         throws IOException, ApplicationBuilderException
     {
-        System.out.println( "configurationProperties = " + configurationProperties );
-
         // ----------------------------------------------------------------------
         // Process the configurations
         // ----------------------------------------------------------------------
