@@ -6,12 +6,12 @@
 
 <jdo>
   <package name="org.codehaus.plexus.jdo">
-    <class name="Basic" detachable="true" identity-type="application" objectid-class="javax.jdo.identity.IntIdentity">
+    <class name="Basic" detachable="true" identity-type="application" objectid-class="javax.jdo.identity.LongIdentity">
       <field name="id" primary-key="true" value-strategy="native"/>
       <field name="name"/>
       <field name="description"/>
     </class>
-    <class name="Parent" detachable="true" identity-type="application" objectid-class="javax.jdo.identity.IntIdentity">
+    <class name="Parent" detachable="true" identity-type="application" objectid-class="javax.jdo.identity.LongIdentity">
       <field name="id" primary-key="true" value-strategy="native"/>
       <field name="price"/>
       <field name="name"/>
@@ -21,7 +21,7 @@
         <join/>
       </field>
     </class>
-    <class name="Child" detachable="true" identity-type="application" objectid-class="javax.jdo.identity.IntIdentity">
+    <class name="Child" detachable="true" identity-type="application" objectid-class="javax.jdo.identity.LongIdentity">
       <field name="id" primary-key="true" value-strategy="native"/>
       <field name="name"/>
       <field name="description"/>
