@@ -12,7 +12,6 @@ public class BFooService
 
     public void touch()
     {
-        System.out.println( "BFooService.touch" );
         beenTouched = true;
     }
 }

@@ -49,21 +49,27 @@ public class JythonStepExecutorTest
         // -----------------------------------------------------------------------
 
         configuration = new Xpp3Dom( "configuration" );
-        setScript( configuration, "testb.touch(); testa.beenTouched = 1; value = 'cool'" );
+        setScript( configuration, "testb.touch(); testa.beenTouched = 1; barService.beenTouched = 1; context.put( 'trygve', 'cool' ); value = 'cool'" );
 
         Xpp3Dom requirements = new Xpp3Dom( "requirements" );
 
         requirements.addChild( addRequirement( FooService.ROLE, "jython-a", "testa" ) );
         requirements.addChild( addRequirement( FooService.ROLE, "testb" ) );
+        requirements.addChild( addRequirement( BarService.ROLE ) );
 
         configuration.addChild( requirements );
 
         descriptor.setConfiguration( configuration );
 
-        stepExecutor.execute( descriptor, new HashMap<String, Serializable>() );
+        HashMap<String, Serializable> context = new HashMap<String, Serializable>();
+        context.put( "a", "b" );
+
+        stepExecutor.execute( descriptor, context );
 
         assertTrue( AFooService.beenTouched );
         assertTrue( BFooService.beenTouched );
+        assertTrue( DefaultBarService.beenTouched );
+        assertEquals( "cool", context.get( "trygve" ) );
     }
 
     private Xpp3Dom addRequirement( String role, String roleHint, String variableName )
@@ -74,9 +80,12 @@ public class JythonStepExecutorTest
         r.setValue( role );
         requirement.addChild( r );
 
-        Xpp3Dom h = new Xpp3Dom( "role-hint" );
-        h.setValue( roleHint );
-        requirement.addChild( h );
+        if ( roleHint != null )
+        {
+            Xpp3Dom h = new Xpp3Dom( "role-hint" );
+            h.setValue( roleHint );
+            requirement.addChild( h );
+        }
 
         if ( variableName != null )
         {
@@ -86,6 +95,11 @@ public class JythonStepExecutorTest
         }
 
         return requirement;
+    }
+
+    private Xpp3Dom addRequirement( String role )
+    {
+        return addRequirement( role, null, null );
     }
 
     private Xpp3Dom addRequirement( String role, String roleHint )
