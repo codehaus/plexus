@@ -12,7 +12,6 @@ public class AppInitializationPhase
     public void execute( AppDeploymentContext context )
         throws AppDeploymentException
     {
-/* This is now handled by the constructor
         try
         {
             context.getApplicationContainer().initialize();
@@ -22,6 +21,6 @@ public class AppInitializationPhase
         catch ( Exception e )
         {
             throw new AppDeploymentException( "Error starting Plexus.", e );
-        }*/
+        }
     }
 }

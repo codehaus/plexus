@@ -2,6 +2,7 @@ package org.codehaus.plexus.appserver.application.deploy.lifecycle.phase;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
@@ -41,7 +42,7 @@ public class CreateAppContainerPhase
         try
         {
             applicationContainer = new DefaultPlexusContainer( name, null, context.getAppConfigurationFile().getPath(),
-                                                               serverContainer.getClassWorld()/*, serverContainer*/ );
+                                                               serverContainer.getClassWorld()/*, serverContainer*/, false );
         }
         catch ( PlexusContainerException e )
         {
@@ -113,6 +114,16 @@ public class CreateAppContainerPhase
         }
 
         applicationContainer.addContextValue( "plexus.appserver", appserver );
+
+        // ----------------------------------------------------------------------
+        // Create the realm for the application
+        // ----------------------------------------------------------------------
+
+        ClassRealm realm = new ClassRealm( applicationContainer.getClassWorld(),
+                                           "plexus.application." + context.getApplicationId(),
+                                           applicationContainer.getContainerRealm() );
+
+        applicationContainer.setContainerRealm( realm );
 
         // ----------------------------------------------------------------------
         //
