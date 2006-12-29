@@ -14,12 +14,12 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-component-api</artifactId>
-      <version>1.0-alpha-13</version>
+      <version>1.0-alpha-15</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-13</version>
+      <version>1.0-alpha-15</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
