@@ -15,7 +15,6 @@ public class CreateAppRuntimeProfilePhase
     {
         AppRuntimeProfile profile = new AppRuntimeProfile( context.getApplicationId(),
                                                            context.getApplicationsDirectory(), context.getPar(),
-                                                           context.getApplicationContainer(),
                                                            context.getAppServerContainer(),
                                                            context.getAppConfiguration() );
 

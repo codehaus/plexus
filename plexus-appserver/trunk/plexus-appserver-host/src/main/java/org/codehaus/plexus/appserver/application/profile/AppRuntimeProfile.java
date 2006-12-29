@@ -54,16 +54,6 @@ public class AppRuntimeProfile
 
     private PlexusConfiguration applicationConfiguration;
 
-    /**
-     * @deprecated
-     */
-    private List services;
-
-    /**
-     * @deprecated
-     */
-    private List serviceConfigurations;
-    
     private Map serviceMap;
     
     private Map plexusConfigurationMap;
@@ -74,8 +64,8 @@ public class AppRuntimeProfile
     //
     // ----------------------------------------------------------------------
 
-    public AppRuntimeProfile( String name, File home, File lib, DefaultPlexusContainer applicationContainer,
-                              PlexusContainer applicationServerContainer, PlexusConfiguration applicationConfiguration )
+    public AppRuntimeProfile( String name, File home, File lib, PlexusContainer applicationServerContainer,
+                              PlexusConfiguration applicationConfiguration )
     {
         this.name = name;
 
@@ -83,16 +73,10 @@ public class AppRuntimeProfile
 
         this.lib = lib;
 
-        this.applicationContainer = applicationContainer;
-
         this.applicationServerContainer = applicationServerContainer;
 
         this.applicationConfiguration = applicationConfiguration;
 
-        this.services = new ArrayList();
-
-        this.serviceConfigurations = new ArrayList();
-        
         serviceMap = new HashMap();
         
         plexusConfigurationMap = new HashMap();
@@ -115,6 +99,17 @@ public class AppRuntimeProfile
         return lib;
     }
 
+    public void setApplicationContainer( DefaultPlexusContainer applicationContainer )
+    {
+        this.applicationContainer = applicationContainer;
+    }
+
+    /**
+     * Get the application container that contains this application.
+     * NOTE: This will not be available until the app-init phase has completed.
+     *
+     * @return the container for this application
+     */
     public DefaultPlexusContainer getApplicationContainer()
     {
         return applicationContainer;
