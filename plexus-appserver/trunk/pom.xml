@@ -6,7 +6,7 @@
     <version>1.0.9</version>
   </parent>
   <artifactId>plexus-appserver</artifactId>
-  <version>2.0-alpha-6</version>
+  <version>2.0-alpha-7-SNAPSHOT</version>
   <name>Plexus Application Server</name>
   <packaging>pom</packaging>
   <dependencies>
@@ -28,8 +28,8 @@
     <module>plexus-appserver-runtime-builder</module>
   </modules>
   <scm> 
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-appserver/tags/plexus-appserver-2.0-alpha-6</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-appserver/tags/plexus-appserver-2.0-alpha-6</developerConnection> 
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-appserver/tags/plexus-appserver-2.0-alpha-6</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-appserver/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-appserver/trunk</developerConnection> 
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-appserver/trunk/</url>
   </scm>
 </project>
