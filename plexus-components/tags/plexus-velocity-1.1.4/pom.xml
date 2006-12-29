@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>plexus-components</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.1.8</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>plexus-velocity</artifactId>
+  <name>Plexus Velocity Component</name>
+  <version>1.1.4</version>
+  <dependencies>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>1.4</version>
+    </dependency>
+  </dependencies>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/tags/plexus-velocity-1.1.4</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/tags/plexus-velocity-1.1.4</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/tags/plexus-velocity-1.1.4</url>
+  </scm>
+</project>
