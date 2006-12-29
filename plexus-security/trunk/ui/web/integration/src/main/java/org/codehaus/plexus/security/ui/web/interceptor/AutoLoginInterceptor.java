@@ -35,11 +35,11 @@ import org.codehaus.plexus.util.StringUtils;
 import javax.servlet.http.HttpSession;
 
 /**
- * AutoLoginInterceptor 
+ * AutoLoginInterceptor
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
+ *
  * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor"
  *                   role-hint="pssAutoLoginInterceptor"
  */
@@ -55,7 +55,7 @@ public class AutoLoginInterceptor
      * @plexus.requirement
      */
     private SecuritySystem securitySystem;
-    
+
     /**
      * @plexus.requirement
      */
@@ -71,12 +71,13 @@ public class AutoLoginInterceptor
         // Ignore
     }
 
+    /** @noinspection ProhibitedExceptionDeclared*/
     public String intercept( ActionInvocation invocation )
         throws Exception
     {
         SecuritySession securitySession = getSecuritySession();
 
-        if ( ( securitySession != null ) && securitySession.isAuthenticated() )
+        if ( securitySession != null && securitySession.isAuthenticated() )
         {
             // User already authenticated.
             getLogger().debug( "User already authenticated." );
@@ -90,22 +91,22 @@ public class AutoLoginInterceptor
             if( authkey != null )
             {
                 String result = performLogin(authkey);
-                
+
                 if(StringUtils.isNotEmpty( result ))
                 {
                     return result;
                 }
             }
         }
-        
+
         if ( autologinCookies.isSingleSignonEnabled() )
         {
             AuthenticationKey authkey = autologinCookies.getSingleSignonKey();
-            
+
             if( authkey != null )
             {
                 String result = performLogin(authkey);
-                
+
                 if(StringUtils.isNotEmpty( result ))
                 {
                     return result;
@@ -118,7 +119,8 @@ public class AutoLoginInterceptor
 
     private String performLogin( AuthenticationKey authkey )
     {
-        setAuthTokens( null );
+        getHttpSession().removeAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY );
+        getLogger().debug( "Removing session:" + SecuritySystemConstants.SECURITY_SESSION_KEY );
 
         try
         {
@@ -166,11 +168,16 @@ public class AutoLoginInterceptor
 
     private void setAuthTokens( SecuritySession securitySession )
     {
-        HttpSession session = ServletActionContext.getRequest().getSession( true );
+        if ( securitySession == null )
+        {
+            throw new NullPointerException( "securitySession must not be null" );
+        }
+
+        HttpSession session = getHttpSession();
         session.setAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
         getLogger().debug( "Setting session:" + SecuritySystemConstants.SECURITY_SESSION_KEY + " to " + securitySession );
-        
-        if ( ( securitySession != null ) && ( securitySession.getUser() != null ) )
+
+        if ( securitySession.getUser() != null )
         {
             Object principal = securitySession.getUser().getPrincipal();
             if ( principal != null )
@@ -178,6 +185,11 @@ public class AutoLoginInterceptor
                 autologinCookies.setSingleSignon( principal.toString() );
             }
         }
+    }
+
+    private HttpSession getHttpSession()
+    {
+        return ServletActionContext.getRequest().getSession( true );
     }
 
     private SecuritySession getSecuritySession()
