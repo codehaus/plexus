@@ -1,0 +1,21 @@
+ -----
+ Cookie Handling in Redback Web Integration
+ -----
+ Brett Porter
+ -----
+ 29 December 2006
+ -----
+
+Cookie Handling in Redback Web Integration
+
+    Currently consists of two cookies:
+      - single signon cookie, cookieName = securitySingleSignOn, path = /, domain = constructed domain, session cookie.
+        It's main purpose is to sign on to all webapps on the given domain
+      - remember me cookie, cookieName = securityRememberMe, path = webapp context path, domain = constructed domain,
+        permanent cookie (duration comes from policy settings, default is ?)
+
+    In both cases the values are constructed from an authentication key. This contains information:
+     - principal (username)
+     - purpose (the type of cookie/key)
+     - uuid
+
