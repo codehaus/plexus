@@ -1,0 +1,14 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGenerator</role>
+      <role-hint>shellscript</role-hint>
+      <implementation>org.codehaus.plexus.builder.runtime.ShellScriptPlexusRuntimeBootloaderGenerator</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.velocity.VelocityComponent</role>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+</component-set>

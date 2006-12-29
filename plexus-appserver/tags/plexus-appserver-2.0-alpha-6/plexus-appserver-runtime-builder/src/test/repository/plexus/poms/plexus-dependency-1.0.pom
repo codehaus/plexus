@@ -1,0 +1,7 @@
+<model>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>plexus</groupId>
+  <artifactId>plexus-dependency</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0</version>
+</model>
