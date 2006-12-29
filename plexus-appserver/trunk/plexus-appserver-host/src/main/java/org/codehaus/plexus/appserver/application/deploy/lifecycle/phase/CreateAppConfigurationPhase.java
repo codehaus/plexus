@@ -1,14 +1,11 @@
 package org.codehaus.plexus.appserver.application.deploy.lifecycle.phase;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.PlexusContainerException;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.context.ContextMapAdapter;
 import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
@@ -21,11 +18,12 @@ import java.io.Reader;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.HashMap;
 
 /**
  * @author Jason van Zyl
  */
-public class CreateAppContainerPhase
+public class CreateAppConfigurationPhase
     extends AbstractAppDeploymentPhase
 {
     public void execute( AppDeploymentContext context )
@@ -33,21 +31,13 @@ public class CreateAppContainerPhase
     {
         DefaultPlexusContainer serverContainer = context.getAppServerContainer();
 
-        String name = "plexus.application." + context.getApplicationId();
-
         getLogger().info( "Using appDir = " + context.getAppDir() );
 
-        DefaultPlexusContainer applicationContainer;
+        // ----------------------------------------------------------------------------
+        // Create the containers context value mappings
+        // ----------------------------------------------------------------------------
 
-        try
-        {
-            applicationContainer = new DefaultPlexusContainer( name, null, context.getAppConfigurationFile().getPath(),
-                                                               serverContainer.getClassWorld()/*, serverContainer*/, false );
-        }
-        catch ( PlexusContainerException e )
-        {
-            throw new AppDeploymentException( "Error starting container.", e );
-        }
+        Map contextMap = new HashMap();
 
         Properties contextValues = context.getContext();
 
@@ -57,7 +47,7 @@ public class CreateAppContainerPhase
             {
                 String contextName = (String) i.next();
 
-                applicationContainer.addContextValue( contextName, contextValues.getProperty( contextName ) );
+                contextMap.put( contextName, contextValues.getProperty( contextName ) );
             }
         }
 
@@ -67,40 +57,31 @@ public class CreateAppContainerPhase
         // from the parent container.
         // ----------------------------------------------------------------------
 
-        try
+        if ( !contextMap.containsKey( "appserver.home" ) )
         {
-            if ( !applicationContainer.getContext().contains( "appserver.home" ) )
-            {
-                applicationContainer.addContextValue( "appserver.home",
-                                                      context.getAppServer().getAppServerHome().getAbsolutePath() );
-            }
-
-            if ( !applicationContainer.getContext().contains( "appserver.base" ) )
-            {
-                applicationContainer.addContextValue( "appserver.base",
-                                                      context.getAppServer().getAppServerBase().getAbsolutePath() );
-            }
-
-            getLogger().debug( "appserver.home = " + applicationContainer.getContext().get( "appserver.home" ) );
-            getLogger().debug( "appserver.base = " + applicationContainer.getContext().get( "appserver.base" ) );
+            contextMap.put( "appserver.home", context.getAppServer().getAppServerHome().getAbsolutePath() );
         }
-        catch ( ContextException e )
+
+        if ( !contextMap.containsKey( "appserver.base" ) )
         {
-            // Won't happen
+            contextMap.put( "appserver.base", context.getAppServer().getAppServerBase().getAbsolutePath() );
         }
+
+        getLogger().debug( "appserver.home = " + contextMap.get( "appserver.home" ) );
+        getLogger().debug( "appserver.base = " + contextMap.get( "appserver.base" ) );
 
         // ----------------------------------------------------------------------------
         // Make the application's home directory available in the context
         // ----------------------------------------------------------------------------
-        applicationContainer.addContextValue( "plexus.home", context.getAppDir().getAbsolutePath() );
+        contextMap.put( "plexus.home", context.getAppDir().getAbsolutePath() );
 
-        applicationContainer.addContextValue( "app.home", context.getAppDir().getAbsolutePath() );
+        contextMap.put( "app.home", context.getAppDir().getAbsolutePath() );
 
         // ----------------------------------------------------------------------------
         // Make the user's home directory available in the context
         // ----------------------------------------------------------------------------
         //noinspection AccessOfSystemProperties
-        applicationContainer.addContextValue( "user.home", System.getProperty( "user.home" ) );
+        contextMap.put( "user.home", System.getProperty( "user.home" ) );
 
         Object appserver = null;
 
@@ -113,23 +94,13 @@ public class CreateAppContainerPhase
             // won't happen.
         }
 
-        applicationContainer.addContextValue( "plexus.appserver", appserver );
+        contextMap.put( "plexus.appserver", appserver );
 
-        // ----------------------------------------------------------------------
-        // Create the realm for the application
-        // ----------------------------------------------------------------------
-
-        ClassRealm realm = new ClassRealm( applicationContainer.getClassWorld(),
-                                           "plexus.application." + context.getApplicationId(),
-                                           applicationContainer.getContainerRealm() );
-
-        applicationContainer.setContainerRealm( realm );
+        context.setContextValues( contextMap );
 
         // ----------------------------------------------------------------------
         //
         // ----------------------------------------------------------------------
-
-        Map ctx = new ContextMapAdapter( applicationContainer.getContext() );
 
         Xpp3Dom dom = null;
 
@@ -137,7 +108,7 @@ public class CreateAppContainerPhase
         {
             //noinspection IOResourceOpenedButNotSafelyClosed
             Reader configurationReader =
-                new InterpolationFilterReader( new FileReader( context.getAppConfigurationFile() ), ctx );
+                new InterpolationFilterReader( new FileReader( context.getAppConfigurationFile() ), contextMap );
 
             dom = Xpp3DomBuilder.build( configurationReader );
         }
@@ -161,7 +132,5 @@ public class CreateAppContainerPhase
 
             context.setAppConfiguration( applicationConfiguration );
         }
-
-        context.setApplicationContainer( applicationContainer );
     }
 }

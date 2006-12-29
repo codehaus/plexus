@@ -31,10 +31,10 @@ import java.io.File;
  * SOFTWARE.
  */
 
-public class CreateAppContainerPhaseTest
+public class CreateAppConfigurationPhaseTest
     extends PlexusTestCase
 {
-    private CreateAppContainerPhase phase;
+    private CreateAppConfigurationPhase phase;
 
     private AppDeploymentContext context;
 
@@ -58,7 +58,7 @@ public class CreateAppContainerPhaseTest
         context.setAppConfigurationFile( new File( appDir, "conf/application.xml" ) );
         context.setAppDir( appDir );
 
-        phase = (CreateAppContainerPhase) lookup( AppDeploymentPhase.ROLE, "create-app-container" );
+        phase = (CreateAppConfigurationPhase) lookup( AppDeploymentPhase.ROLE, "create-app-configuration" );
     }
 
     public void testAppServerDefaultHome()
@@ -66,9 +66,8 @@ public class CreateAppContainerPhaseTest
     {
         phase.execute( context );
 
-        DefaultPlexusContainer applicationContainer = context.getApplicationContainer();
         assertEquals( "Check appserver.home", appServerHome,
-                      applicationContainer.getContext().get( "appserver.home" ) );
+                      context.getContextValues().get( "appserver.home" ) );
         assertEquals( "Check appServer.appServerHome", appServerHome, appServer.getAppServerHome().getAbsolutePath() );
     }
 
@@ -77,9 +76,8 @@ public class CreateAppContainerPhaseTest
     {
         phase.execute( context );
 
-        DefaultPlexusContainer applicationContainer = context.getApplicationContainer();
         assertEquals( "Check appserver.base", appServerHome,
-                      applicationContainer.getContext().get( "appserver.base" ) );
+                      context.getContextValues().get( "appserver.base" ) );
         assertEquals( "Check appServer.appServerBase", appServerHome, appServer.getAppServerBase().getAbsolutePath() );
     }
 
@@ -91,9 +89,8 @@ public class CreateAppContainerPhaseTest
 
         phase.execute( context );
 
-        DefaultPlexusContainer applicationContainer = context.getApplicationContainer();
         assertEquals( "Check appserver.base", appServerBase.getAbsolutePath(),
-                      applicationContainer.getContext().get( "appserver.base" ) );
+                      context.getContextValues().get( "appserver.base" ) );
         assertEquals( "Check appServer.appServerBase", appServerBase.getAbsolutePath(),
                       appServer.getAppServerBase().getAbsolutePath() );
     }

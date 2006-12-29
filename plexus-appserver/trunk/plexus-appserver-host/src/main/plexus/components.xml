@@ -62,7 +62,7 @@
           <phase>process-app-metadata</phase>
           <phase>expand-app</phase>
           <phase>validate-app</phase>
-          <phase>create-app-container</phase>
+          <phase>create-app-configuration</phase>
           <phase>create-app-runtime-profile</phase>
           <phase>pre-app-container-init-service-call</phase>
           <phase>app-init</phase>
@@ -94,8 +94,8 @@
 
     <component>
       <role>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase</role>
-      <role-hint>create-app-container</role-hint>
-      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.CreateAppContainerPhase</implementation>
+      <role-hint>create-app-configuration</role-hint>
+      <implementation>org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.CreateAppConfigurationPhase</implementation>
     </component>
 
     <component>

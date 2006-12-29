@@ -24,6 +24,7 @@ public class AppDeploymentContext
 
     private Properties context;
 
+    private Map contextValues;
     //
 
     private String applicationId;
@@ -89,6 +90,16 @@ public class AppDeploymentContext
     public void setContext( Properties context )
     {
         this.context = context;
+    }
+
+    public Map getContextValues()
+    {
+        return contextValues;
+    }
+
+    public void setContextValues( Map contextValues )
+    {
+        this.contextValues = contextValues;
     }
 
     public String getApplicationId()
