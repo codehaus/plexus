@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.filter.authentication;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.codehaus.plexus.security.ui.web.filter.authentication;
  */
 
 import com.opensymphony.xwork.ActionContext;
-
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
@@ -30,15 +29,14 @@ import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
- * HttpAuthenticator 
+ * HttpAuthenticator
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -55,8 +53,9 @@ public abstract class HttpAuthenticator
 
     /**
      * The Public Face of the Authenticator.
-     * @throws MustChangePasswordException 
-     * @throws AccountLockedException 
+     *
+     * @throws MustChangePasswordException
+     * @throws AccountLockedException
      */
     public AuthenticationResult authenticate( AuthenticationDataSource ds )
         throws AuthenticationException, AccountLockedException, MustChangePasswordException
@@ -84,7 +83,7 @@ public abstract class HttpAuthenticator
 
     /**
      * Entry point for a Filter.
-     * 
+     *
      * @param request
      * @param response
      * @throws AuthenticationException
@@ -114,7 +113,7 @@ public abstract class HttpAuthenticator
 
     /**
      * Issue a Challenge Response back to the HTTP Client.
-     * 
+     *
      * @param request
      * @param response
      * @param realmName
@@ -127,13 +126,13 @@ public abstract class HttpAuthenticator
 
     /**
      * Parse the incoming request and return an AuthenticationResult.
-     *  
+     *
      * @param request
      * @param response
      * @return null if no http auth credentials, or the actual authentication result based on the credentials.
      * @throws AuthenticationException
-     * @throws MustChangePasswordException 
-     * @throws AccountLockedException 
+     * @throws MustChangePasswordException
+     * @throws AccountLockedException
      */
     public abstract AuthenticationResult getAuthenticationResult( HttpServletRequest request,
                                                                   HttpServletResponse response )

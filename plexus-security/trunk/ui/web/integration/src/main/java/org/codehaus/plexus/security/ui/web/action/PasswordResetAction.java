@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,14 +33,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * PasswordResetAction 
+ * PasswordResetAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-password-reset"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="pss-password-reset"
+ * instantiation-strategy="per-lookup"
  */
 public class PasswordResetAction
     extends AbstractSecurityAction
@@ -93,8 +92,8 @@ public class PasswordResetAction
         {
             User user = userManager.findUser( username );
 
-            AuthenticationKey authkey = keyManager.createKey( username, "Password Reset Request", policy
-                .getUserValidationSettings().getEmailValidationTimeout() );
+            AuthenticationKey authkey = keyManager.createKey( username, "Password Reset Request",
+                                                              policy.getUserValidationSettings().getEmailValidationTimeout() );
 
             List recipients = new ArrayList();
             recipients.add( user.getEmail() );
@@ -145,14 +144,14 @@ public class PasswordResetAction
         this.username = username;
     }
 
-   public boolean isCancelButton()
-   {
-       return "Cancel".equals( cancelbutton );
-   }
+    public boolean isCancelButton()
+    {
+        return "Cancel".equals( cancelbutton );
+    }
 
-   public void setCancelbutton( String cancelbutton )
-   {
-       this.cancelbutton = cancelbutton;
-   }
+    public void setCancelbutton( String cancelbutton )
+    {
+        this.cancelbutton = cancelbutton;
+    }
 
 }

@@ -1,11 +1,7 @@
 package org.codehaus.plexus.security.ui.web.role.profile;
 
-import org.codehaus.plexus.rbac.profile.AbstractRoleProfile;
-
-import java.util.ArrayList;
-import java.util.List;
 /*
- * Copyright 2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +16,18 @@ import java.util.List;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.rbac.profile.AbstractRoleProfile;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * SystemAdministratorRoleProfile:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- *
- * @plexus.component
- *   role="org.codehaus.plexus.rbac.profile.RoleProfile"
- *   role-hint="guest"
+ * @plexus.component role="org.codehaus.plexus.rbac.profile.RoleProfile"
+ * role-hint="guest"
  */
 public class GuestRoleProfile
     extends AbstractRoleProfile
@@ -41,7 +40,7 @@ public class GuestRoleProfile
     public List getOperations()
     {
         List operations = new ArrayList();
-        
+
         operations.add( RoleConstants.GUEST_ACCESS_OPERATION );
 
         return operations;

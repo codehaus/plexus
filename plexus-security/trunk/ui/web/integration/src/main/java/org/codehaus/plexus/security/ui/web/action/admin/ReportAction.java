@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package org.codehaus.plexus.security.ui.web.action.admin;
 
 import com.opensymphony.module.sitemesh.filter.PageResponseWrapper;
 import com.opensymphony.webwork.ServletActionContext;
-
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
@@ -28,17 +27,15 @@ import org.codehaus.plexus.security.ui.web.reports.ReportException;
 import org.codehaus.plexus.security.ui.web.reports.ReportManager;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
- * ReportAction 
+ * ReportAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="com.opensymphony.xwork.Action"
  * role-hint="pss-report"
  * instantiation-strategy="per-lookup"
@@ -80,17 +77,17 @@ public class ReportAction
         {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             report.writeReport( os );
-            
+
             response.reset();
             response.setContentType( report.getMimeType() );
-            response.addHeader( "Content-Disposition", "attachment; filename=" + report.getId() + "."
-                + report.getType() ); 
+            response.addHeader( "Content-Disposition",
+                                "attachment; filename=" + report.getId() + "." + report.getType() );
             byte bytes[] = os.toByteArray();
             response.setContentLength( bytes.length );
             response.getOutputStream().write( bytes, 0, bytes.length );
             response.getOutputStream().flush();
             response.getOutputStream().close();
-            
+
             // Don't return a result.
             return null;
         }

@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.interceptor;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package org.codehaus.plexus.security.ui.web.interceptor;
 
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.interceptor.Interceptor;
-
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
@@ -29,25 +28,24 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * EnvironmentCheckInterceptor 
+ * EnvironmentCheckInterceptor
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor"
- *                   role-hint="pssEnvironmentCheckInterceptor"
+ * role-hint="pssEnvironmentCheckInterceptor"
  */
 public class EnvironmentCheckInterceptor
     extends AbstractLogEnabled
     implements Interceptor
 {
     private static boolean checked = false;
-    
+
     /**
      * We track our own logger, because we test for Plexus too.
      */
     private Logger logger;
-    
+
     /**
      * @plexus.requirement role="org.codehaus.plexus.security.system.check.EnvironmentCheck"
      */
@@ -60,25 +58,25 @@ public class EnvironmentCheckInterceptor
 
     public void init()
     {
-        if( EnvironmentCheckInterceptor.checked )
+        if ( EnvironmentCheckInterceptor.checked )
         {
             // No need to check twice.
             return;
         }
-        
-        if( checkers != null )
+
+        if ( checkers != null )
         {
             List violations = new ArrayList();
-            
+
             Iterator it = checkers.iterator();
-            while(it.hasNext())
+            while ( it.hasNext() )
             {
                 EnvironmentCheck check = (EnvironmentCheck) it.next();
-                
+
                 check.validateEnvironment( violations );
             }
-            
-            if (!violations.isEmpty())
+
+            if ( !violations.isEmpty() )
             {
                 StringBuffer msg = new StringBuffer();
                 msg.append( "EnvironmentCheck Failure.\n" );
@@ -87,17 +85,17 @@ public class EnvironmentCheckInterceptor
                 msg.append( "\n" );
 
                 Iterator vit = violations.iterator();
-                while(vit.hasNext())
+                while ( vit.hasNext() )
                 {
-                    msg.append( vit.next() ).append("\n");
+                    msg.append( vit.next() ).append( "\n" );
                 }
-                
+
                 msg.append( "\n" );
                 msg.append( "======================================================================" );
                 getLogger().fatalError( msg.toString() );
             }
         }
-        
+
         EnvironmentCheckInterceptor.checked = true;
     }
 

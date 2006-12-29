@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.eXc;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * ProcessUserRowsCallback - Efficient and safe sort callback for user manager provided user lists.  
+ * ProcessUserRowsCallback - Efficient and safe sort callback for user manager provided user lists.
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -49,10 +49,10 @@ public class ProcessUserRowsCallback
         Sort sort = model.getLimit().getSort();
         String property = sort.getProperty();
         String sortOrder = sort.getSortOrder();
-        
+
         System.out.println( "SORTING: " + property + " - " + sortOrder );
-        
-        UserComparator comparator = new UserComparator(property, TableConstants.SORT_ASC.equals( sortOrder ) );
+
+        UserComparator comparator = new UserComparator( property, TableConstants.SORT_ASC.equals( sortOrder ) );
         Collections.sort( (List) rows, comparator );
 
         return rows;

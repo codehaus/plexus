@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,14 +30,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * EditRoleAction 
+ * EditRoleAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-role-edit"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="pss-role-edit"
+ * instantiation-strategy="per-lookup"
  */
 public class EditRoleAction
     extends AbstractSecurityAction
@@ -58,11 +57,11 @@ public class EditRoleAction
     private String name;
 
     private String description;
-    
+
     private List childRoleNames = new ArrayList();
-    
+
     private List permissions = new ArrayList();
-    
+
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
@@ -80,14 +79,14 @@ public class EditRoleAction
             addActionError( "Unable to edit empty role name." );
             return ERROR;
         }
-        
-        if( !manager.roleExists( name ))
+
+        if ( !manager.roleExists( name ) )
         {
             // Means that the role name doesn't exist.
             // We should exit early and not attempt to look up the role information.
             return INPUT;
         }
-        
+
         try
         {
             Role role = manager.getRole( name );
@@ -109,7 +108,7 @@ public class EditRoleAction
 
         return INPUT;
     }
-    
+
     public String submit()
     {
         if ( name == null )
@@ -123,7 +122,7 @@ public class EditRoleAction
             addActionError( "Unable to edit empty role name." );
             return ERROR;
         }
-        
+
         try
         {
             Role role;
@@ -135,13 +134,13 @@ public class EditRoleAction
             {
                 role = manager.createRole( name );
             }
-            
+
             role.setDescription( description );
             role.setChildRoleNames( childRoleNames );
             role.setPermissions( permissions );
-            
+
             manager.saveRole( role );
-            
+
             addActionMessage( "Successfully Saved Role '" + name + "'" );
         }
         catch ( RbacManagerException e )
@@ -149,7 +148,7 @@ public class EditRoleAction
             addActionError( "Unable to get Role '" + name + "': " + e.getMessage() );
             return ERROR;
         }
-                
+
         return SUCCESS;
     }
 
@@ -196,7 +195,7 @@ public class EditRoleAction
     {
         this.permissions = permissions;
     }
-    
+
     // ------------------------------------------------------------------
     // Internal Support Methods
     // ------------------------------------------------------------------
@@ -209,5 +208,5 @@ public class EditRoleAction
         bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_RBAC_ADMIN_OPERATION, Resource.GLOBAL );
         return bundle;
     }
-    
+
 }

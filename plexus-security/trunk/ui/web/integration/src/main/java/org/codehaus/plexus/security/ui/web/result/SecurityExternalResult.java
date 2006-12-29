@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.result;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,13 @@ import com.opensymphony.webwork.dispatcher.ServletActionRedirectResult;
 import com.opensymphony.xwork.ActionInvocation;
 
 /**
- * SecurityExternalResult 
+ * SecurityExternalResult
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="com.opensymphony.xwork.Result"
- *                   role-hint="securityExternalResult"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="securityExternalResult"
+ * instantiation-strategy="per-lookup"
  */
 public class SecurityExternalResult
     extends ServletActionRedirectResult
@@ -36,9 +35,9 @@ public class SecurityExternalResult
      * @plexus.configuration default-value="pssRedirect"
      */
     private String externalActionName;
-    
+
     private String externalResult;
-    
+
     public void execute( ActionInvocation invocation )
         throws Exception
     {
@@ -56,5 +55,5 @@ public class SecurityExternalResult
     {
         this.externalResult = externalResult;
     }
-    
+
 }

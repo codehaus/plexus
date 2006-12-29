@@ -1,9 +1,8 @@
 package org.codehaus.plexus.security.ui.web.model;
 
 /*
- * Copyright 2001-2006 The
- * /cCodehaus. 
- *x
+ * Copyright 2005-2006 The Codehaus.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +19,7 @@ package org.codehaus.plexus.security.ui.web.model;
 import org.codehaus.plexus.security.user.User;
 
 /**
- * AdminEditUserCredentials 
+ * AdminEditUserCredentials
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -29,8 +28,9 @@ public class AdminEditUserCredentials
     extends EditUserCredentials
 {
     private boolean locked;
+
     private boolean passwordChangeRequired;
-    
+
     public AdminEditUserCredentials()
     {
         super();

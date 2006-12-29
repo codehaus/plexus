@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -183,8 +183,8 @@ public class AccountAction
             //check if current user then update the session
             if ( getSecuritySession().getUser().getUsername().equals( u.getUsername() ) )
             {
-                SecuritySession securitySession = new DefaultSecuritySession(
-                    getSecuritySession().getAuthenticationResult(), u );
+                SecuritySession securitySession =
+                    new DefaultSecuritySession( getSecuritySession().getAuthenticationResult(), u );
 
                 this.session.put( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
 

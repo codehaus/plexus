@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.eXc.views;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import org.extremecomponents.util.HtmlBuilder;
 import java.util.Iterator;
 
 /**
- * SecurityToolbar 
+ * SecurityToolbar
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -89,7 +89,7 @@ public class SecurityToolbar
             html.td( 5 ).close();
             html.append( "Navigation:" );
             html.tdEnd();
-            
+
             html.td( 5 ).close();
             toolbarBuilder.firstPageItemAsImage();
             html.tdEnd();
@@ -113,7 +113,7 @@ public class SecurityToolbar
             html.td( 5 ).close();
             html.append( "Display Rows:" );
             html.tdEnd();
-            
+
             html.td( 5 ).close();
             toolbarBuilder.rowsDisplayedDroplist();
             html.tdEnd();

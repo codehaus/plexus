@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.checks;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,13 +21,12 @@ import org.codehaus.plexus.security.system.check.EnvironmentCheck;
 import java.util.List;
 
 /**
- * ExpectedJsps 
+ * ExpectedJsps
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="org.codehaus.plexus.security.system.check.EnvironmentCheck"
- *                   role-hint="ExpectedJsps"
+ * role-hint="ExpectedJsps"
  */
 public class ExpectedJsps
     implements EnvironmentCheck
@@ -35,16 +34,9 @@ public class ExpectedJsps
     public void validateEnvironment( List violations )
     {
         String pss = "/WEB-INF/jsp/pss";
-        String resources[] = new String[] {
-            "/admin/userCreate.jspf",
-            "/admin/userList.jspf",
-            "/admin/userEdit.jspf",
-            "/admin/userFind.jspf",
-            "/userCredentials.jspf",
-            "/account.jspf",
-            "/login.jspf",
-            "/passwordChange.jspf",
-            "/register.jspf" };
+        String resources[] = new String[]{"/admin/userCreate.jspf", "/admin/userList.jspf", "/admin/userEdit.jspf",
+            "/admin/userFind.jspf", "/userCredentials.jspf", "/account.jspf", "/login.jspf", "/passwordChange.jspf",
+            "/register.jspf"};
 
         int missingCount = 0;
         String jspPath;

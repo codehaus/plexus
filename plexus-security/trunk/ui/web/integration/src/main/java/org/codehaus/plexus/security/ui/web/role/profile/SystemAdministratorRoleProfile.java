@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.role.profile;
 
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,18 +19,16 @@ package org.codehaus.plexus.security.ui.web.role.profile;
 import org.codehaus.plexus.rbac.profile.AbstractRoleProfile;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * SystemAdministratorRoleProfile:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- *
- * @plexus.component
- *   role="org.codehaus.plexus.rbac.profile.RoleProfile"
- *   role-hint="system-administrator"
+ * @plexus.component role="org.codehaus.plexus.rbac.profile.RoleProfile"
+ * role-hint="system-administrator"
  */
 public class SystemAdministratorRoleProfile
     extends AbstractRoleProfile
@@ -45,7 +43,7 @@ public class SystemAdministratorRoleProfile
         List operations = new ArrayList();
         operations.add( RoleConstants.CONFIGURATION_EDIT_OPERATION );
         operations.add( RoleConstants.USER_MANAGEMENT_RBAC_ADMIN_OPERATION );
-        
+
         return operations;
     }
 

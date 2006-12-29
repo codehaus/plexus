@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,14 +29,13 @@ import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 
 /**
- * AddAdminUserAction 
+ * AddAdminUserAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id: AddAdminUserAction.java 448077 2006-09-20 05:42:22Z joakime $
- * 
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-admin-account"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="pss-admin-account"
+ * instantiation-strategy="per-lookup"
  */
 public class AddAdminUserAction
     extends AbstractAdminUserCredentialsAction
@@ -52,14 +51,14 @@ public class AddAdminUserAction
     private RBACManager rbacManager;
 
     private EditUserCredentials user;
-    
+
     public String show()
     {
         if ( user == null )
         {
             user = new EditUserCredentials( RoleConstants.ADMINISTRATOR_ACCOUNT_NAME );
         }
-        
+
         return INPUT;
     }
 
@@ -71,15 +70,15 @@ public class AddAdminUserAction
             addActionError( "Invalid admin credentials, try again." );
             return ERROR;
         }
-        
+
         getLogger().info( "user = " + user );
-        
+
         internalUser = user;
-        
+
         validateCredentialsStrict();
-        
+
         UserManager userManager = super.securitySystem.getUserManager();
-        
+
         if ( userManager.userExists( RoleConstants.ADMINISTRATOR_ACCOUNT_NAME ) )
         {
             // Means that the role name exist already.
@@ -87,13 +86,14 @@ public class AddAdminUserAction
             addActionError( "Admin User exists in database (someone else probably created the user before you)." );
             return ERROR;
         }
-        
+
         if ( hasActionErrors() || hasFieldErrors() )
         {
             return ERROR;
         }
 
-        User u = userManager.createUser( RoleConstants.ADMINISTRATOR_ACCOUNT_NAME, user.getFullName(), user.getEmail() );
+        User u =
+            userManager.createUser( RoleConstants.ADMINISTRATOR_ACCOUNT_NAME, user.getFullName(), user.getEmail() );
         if ( u == null )
         {
             addActionError( "Unable to operate on null user." );
@@ -105,7 +105,6 @@ public class AddAdminUserAction
         u.setPasswordChangeRequired( false );
         u.setPermanent( true );
 
-        
         userManager.addUser( u );
 
         try

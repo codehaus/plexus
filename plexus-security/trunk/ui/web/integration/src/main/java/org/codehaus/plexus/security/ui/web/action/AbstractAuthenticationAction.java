@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.authentication.AuthenticationConstants;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
-import org.codehaus.plexus.security.authentication.AuthenticationConstants;
 import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
@@ -27,7 +27,7 @@ import org.codehaus.plexus.security.ui.web.util.AutoLoginCookies;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 
 /**
- * AbstractAuthenticationAction 
+ * AbstractAuthenticationAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -77,20 +77,20 @@ public abstract class AbstractAuthenticationAction
             }
             else
             {
-                getLogger().debug( "Login Action failed against principal : "
-                                       + securitySession.getAuthenticationResult().getPrincipal(),
+                getLogger().debug( "Login Action failed against principal : " +
+                    securitySession.getAuthenticationResult().getPrincipal(),
                                    securitySession.getAuthenticationResult().getException() );
 
                 AuthenticationResult result = securitySession.getAuthenticationResult();
-                if( result.getExceptionsMap() != null && !result.getExceptionsMap().isEmpty() )
+                if ( result.getExceptionsMap() != null && !result.getExceptionsMap().isEmpty() )
                 {
                     if ( result.getExceptionsMap().get( AuthenticationConstants.AUTHN_NO_SUCH_USER ) != null )
                     {
                         addActionError( "You have entered an incorrect username and/or password" );
                     }
                     else
-                    {                             
-                addActionError( "Authentication failed" );
+                    {
+                        addActionError( "Authentication failed" );
                     }
                 }
                 else

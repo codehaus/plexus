@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.filter;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.codehaus.plexus.security.ui.web.filter;
  */
 
 import com.opensymphony.xwork.ActionContext;
-
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.Logger;
@@ -29,7 +28,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 
 /**
- * PlexusServletFilter 
+ * PlexusServletFilter
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$

@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.role.profile;
 
 /*
- * Copyright 2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,8 @@ import java.util.List;
  *
  * @author: Jesse McConnell <jmcconnell@apache.org>
  * @version: $ID:$
- *
- * @plexus.component
- *   role="org.codehaus.plexus.rbac.profile.RoleProfile"
- *   role-hint="user-administrator"
+ * @plexus.component role="org.codehaus.plexus.rbac.profile.RoleProfile"
+ * role-hint="user-administrator"
  */
 public class UserAdministratorRoleProfile
     extends AbstractRoleProfile

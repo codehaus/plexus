@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,14 +32,13 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * PermissionsAction 
+ * PermissionsAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-permissions"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="pss-permissions"
+ * instantiation-strategy="per-lookup"
  */
 public class PermissionsAction
     extends PlexusActionSupport

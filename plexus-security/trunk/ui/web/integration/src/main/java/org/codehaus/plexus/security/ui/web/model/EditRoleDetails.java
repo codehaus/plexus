@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.model;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@ import org.codehaus.plexus.security.rbac.Role;
 import java.util.Iterator;
 
 /**
- * EditRoleDetails - Existing user Role Details. 
- * 
- * This is a placeholder for information passed back 
+ * EditRoleDetails - Existing user Role Details.
+ * <p/>
+ * This is a placeholder for information passed back
  * and forth between the Action and the Client.
- * 
+ * <p/>
  * We intentionally do not hook up the actual object to prevent
- * creative injection of fields and values by the untrusted client. 
+ * creative injection of fields and values by the untrusted client.
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -41,15 +41,15 @@ public class EditRoleDetails
         super.setName( role.getName() );
         super.setDescription( role.getDescription() );
         Iterator it;
-        
+
         it = role.getChildRoleNames().iterator();
-        while(it.hasNext())
+        while ( it.hasNext() )
         {
             super.addChildRoleName( (String) it.next() );
         }
-        
+
         it = role.getPermissions().iterator();
-        while(it.hasNext())
+        while ( it.hasNext() )
         {
             Permission perm = (Permission) it.next();
             super.addPermission( perm.getName(), perm.getOperation().getName(), perm.getResource().getIdentifier() );

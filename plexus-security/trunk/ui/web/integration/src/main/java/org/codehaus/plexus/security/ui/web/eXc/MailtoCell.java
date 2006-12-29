@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.eXc;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,21 +22,23 @@ import org.extremecomponents.table.cell.AbstractCell;
 import org.extremecomponents.table.core.TableModel;
 
 /**
- * MailtoCell 
+ * MailtoCell
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class MailtoCell extends AbstractCell
+public class MailtoCell
+    extends AbstractCell
 {
 
     protected String getCellValue( TableModel model, Column column )
     {
         String value = column.getPropertyValueAsString();
-        if (StringUtils.isBlank( value )) {
+        if ( StringUtils.isBlank( value ) )
+        {
             return "";
         }
-        
+
         return "<a href=\"mailto:" + value + "\">" + value + "</a>";
     }
 

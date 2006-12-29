@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,27 +17,25 @@ package org.codehaus.plexus.security.ui.web.action;
  */
 
 import com.opensymphony.webwork.dispatcher.SessionMap;
-
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.util.AutoLoginCookies;
 
 /**
- * LogoutAction 
+ * LogoutAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-logout"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="pss-logout"
+ * instantiation-strategy="per-lookup"
  */
 public class LogoutAction
     extends AbstractAuthenticationAction
 {
     // Result Names.
     private static final String LOGOUT = "security-logout";
-    
+
     /**
      * @plexus.requirement
      */
@@ -47,7 +45,7 @@ public class LogoutAction
     {
         autologinCookies.removeRememberMe();
         autologinCookies.removeSingleSignon();
-        
+
         setAuthTokens( null );
 
         if ( session != null )

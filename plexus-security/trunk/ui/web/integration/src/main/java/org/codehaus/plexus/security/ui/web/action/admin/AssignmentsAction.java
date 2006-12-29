@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ public class AssignmentsAction
 
 
     private List effectivelyAssignedRoles;
-    
+
     /**
      * List of names (recieved from client) of roles to add.
      */
@@ -134,7 +134,7 @@ public class AssignmentsAction
                     Role role = (Role) i.next();
                     if ( role.isAssignable() )
                     {
-                        effectivelyAssignedRoles.add( role );       
+                        effectivelyAssignedRoles.add( role );
                     }
                 }
             }

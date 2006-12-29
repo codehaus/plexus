@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.checks.security;
 
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ import java.util.List;
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $Id:$
- *
  * @plexus.component role="org.codehaus.plexus.security.system.check.EnvironmentCheck"
  * role-hint="required-roles"
  */

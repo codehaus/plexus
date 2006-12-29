@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.mail;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Mailer 
+ * Mailer
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -73,8 +73,8 @@ public class Mailer
         UserSecurityPolicy policy = securitySystem.getPolicy();
         UserValidationSettings validation = policy.getUserValidationSettings();
 
-        context.put( "applicationName", config.getString("application.name", "Unconfigured Application") );
-        
+        context.put( "applicationName", config.getString( "application.name", "Unconfigured Application" ) );
+
         String appUrl = config.getString( "application.url", "http://localhost/unconfigured/application/url" );
 
         context.put( "applicationUrl", appUrl );
@@ -92,7 +92,8 @@ public class Mailer
 
         context.put( "accountId", authkey.getForPrincipal() );
 
-        SimpleDateFormat dateformatter = new SimpleDateFormat( config.getString("application.timestamp", "EEE, d MMM yyyy HH:mm:ss Z") );
+        SimpleDateFormat dateformatter =
+            new SimpleDateFormat( config.getString( "application.timestamp", "EEE, d MMM yyyy HH:mm:ss Z" ) );
 
         context.put( "requestedOn", dateformatter.format( authkey.getDateCreated() ) );
 
@@ -114,8 +115,8 @@ public class Mailer
         UserSecurityPolicy policy = securitySystem.getPolicy();
         UserValidationSettings validation = policy.getUserValidationSettings();
 
-        context.put( "applicationName", config.getString("application.name", "Unconfigured Application") );
-        
+        context.put( "applicationName", config.getString( "application.name", "Unconfigured Application" ) );
+
         String appUrl = config.getString( "application.url", "http://localhost/unconfigured/application/url" );
 
         context.put( "applicationUrl", appUrl );
@@ -133,7 +134,8 @@ public class Mailer
 
         context.put( "accountId", authkey.getForPrincipal() );
 
-        SimpleDateFormat dateformatter = new SimpleDateFormat( config.getString("application.timestamp", "EEE, d MMM yyyy HH:mm:ss Z") );
+        SimpleDateFormat dateformatter =
+            new SimpleDateFormat( config.getString( "application.timestamp", "EEE, d MMM yyyy HH:mm:ss Z" ) );
 
         context.put( "requestedOn", dateformatter.format( authkey.getDateCreated() ) );
 
@@ -181,7 +183,7 @@ public class Mailer
             getLogger().warn( "Mail Not Sent - No mail recipients for email. subject [" + subject + "]" );
             return;
         }
-        
+
         String fromAddress = config.getString( "email.from.address", "security@unconfigured.com" );
         String fromName = config.getString( "email.from.name", "Unconfigured Username" );
 
@@ -216,7 +218,8 @@ public class Mailer
             if ( mailSender instanceof JndiJavamailMailSender )
             {
                 JndiJavamailMailSender jndiSender = (JndiJavamailMailSender) mailSender;
-                jndiSender.setJndiSessionName( config.getString( "email.jndiSessionName", "java:comp/env/mail/Session" ) );
+                jndiSender.setJndiSessionName(
+                    config.getString( "email.jndiSessionName", "java:comp/env/mail/Session" ) );
             }
             else
             {
@@ -225,7 +228,7 @@ public class Mailer
                 mailSender.setUsername( config.getString( "email.smtp.username", "" ) );
                 mailSender.setPassword( config.getString( "email.smtp.password", "" ) );
                 mailSender.setSslMode( config.getBoolean( "email.smtp.ssl.enabled", false ) );
-            
+
                 if ( mailSender.isSslMode() && ( mailSender instanceof JavamailMailSender ) )
                 {
                     JavamailMailSender jmsender = (JavamailMailSender) mailSender;

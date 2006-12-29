@@ -18,8 +18,8 @@ package org.codehaus.plexus.security.ui.web.interceptor;
 
 import org.codehaus.plexus.security.rbac.Resource;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * SecureActionBundle:
@@ -32,10 +32,11 @@ public class SecureActionBundle
     private boolean requiresAuthentication = false;
 
     private List authorizationTuples = new ArrayList();
-    
+
     public static final SecureActionBundle OPEN;
+
     public static final SecureActionBundle AUTHONLY;
-    
+
     static
     {
         OPEN = new SecureActionBundle();

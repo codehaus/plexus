@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.util;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.codehaus.plexus.security.ui.web.util;
  */
 
 import com.opensymphony.webwork.ServletActionContext;
-
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
@@ -32,11 +31,10 @@ import org.codehaus.plexus.util.StringUtils;
 import javax.servlet.http.Cookie;
 
 /**
- * AutoLoginCookies 
+ * AutoLoginCookies
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="org.codehaus.plexus.security.ui.web.util.AutoLoginCookies"
  */
 public class AutoLoginCookies
@@ -70,8 +68,8 @@ public class AutoLoginCookies
             return null;
         }
 
-        Cookie rememberMeCookie = CookieUtils.getCookie( ServletActionContext.getRequest(),
-                                                         SecuritySystemConstants.REMEMBER_ME_KEY );
+        Cookie rememberMeCookie =
+            CookieUtils.getCookie( ServletActionContext.getRequest(), SecuritySystemConstants.REMEMBER_ME_KEY );
 
         if ( rememberMeCookie == null )
         {
@@ -109,11 +107,11 @@ public class AutoLoginCookies
             getLogger().warn( "Unable to set remember me cookie." );
         }
     }
-    
+
     public void removeRememberMe()
     {
-        CookieUtils.setCookie( ServletActionContext.getResponse(), getDomain(),
-                               SecuritySystemConstants.REMEMBER_ME_KEY, "-", getWebappContext(), 0 );
+        CookieUtils.setCookie( ServletActionContext.getResponse(), getDomain(), SecuritySystemConstants.REMEMBER_ME_KEY,
+                               "-", getWebappContext(), 0 );
     }
 
     public AuthenticationKey getSingleSignonKey()
@@ -123,8 +121,8 @@ public class AutoLoginCookies
             return null;
         }
 
-        Cookie ssoCookie = CookieUtils.getCookie( ServletActionContext.getRequest(),
-                                                  SecuritySystemConstants.SINGLE_SIGN_ON_KEY );
+        Cookie ssoCookie =
+            CookieUtils.getCookie( ServletActionContext.getRequest(), SecuritySystemConstants.SINGLE_SIGN_ON_KEY );
 
         if ( ssoCookie == null )
         {
@@ -168,7 +166,7 @@ public class AutoLoginCookies
 
         }
     }
-    
+
     public void removeSingleSignon()
     {
         CookieUtils.setCookie( ServletActionContext.getResponse(), getDomain(),
@@ -176,64 +174,64 @@ public class AutoLoginCookies
     }
 
     /**
-     * <p>
+     * <p/>
      * Initialize the Domain Parameter of all cookies.
      * </p>
-     *
-     * <p>
+     * <p/>
+     * <p/>
      * The domain parameter is used to specify which hosts (single host, or multiple hosts) within a domain
      * can access the cookie.
      * </p>
-     * 
-     * <p>
+     * <p/>
+     * <p/>
      * If you have a web configuration with multiple servers within the same domain such like...
      * </p>
-     * 
+     * <p/>
      * <ul>
-     *   <li>plexus.codehaus.org</li>
-     *   <li>svn.codehaus.org</li>
-     *   <li>www.codehaus.org</li>
-     *   <li>fisheye.codehaus.org</li>
+     * <li>plexus.codehaus.org</li>
+     * <li>svn.codehaus.org</li>
+     * <li>www.codehaus.org</li>
+     * <li>fisheye.codehaus.org</li>
      * </ul>
-     *   
-     * <p>
+     * <p/>
+     * <p/>
      * ... and you want all of those hosts to be able to access the domain, then the following string <b>must</b>
      * be passed into the domain parameter.
      * </p>
-     * 
+     * <p/>
      * <ul>
-     *   <li>".codehaus.org"</li>
+     * <li>".codehaus.org"</li>
      * </ul>
-     * 
-     * <p>
-     * Per RFC 2109, when using the domain parameter, the use of a "." (dot) character at the start of the 
+     * <p/>
+     * <p/>
+     * Per RFC 2109, when using the domain parameter, the use of a "." (dot) character at the start of the
      * domain parameter indicates a desire to match multiple machines in a domain.  Implementations found in the
-     * popular browsers, proxies, and caches, out an extra restriction on this value in that it must contain at least 
+     * popular browsers, proxies, and caches, out an extra restriction on this value in that it must contain at least
      * 2 "." (dot) characters to be treated as a multi-machine domain parameter.
      * </p>
-     * 
-     * <p>
+     * <p/>
+     * <p/>
      * Examples:
      * </p>
-     * 
+     * <p/>
      * <pre>
      *    "plexus.codehaus.org"   - (single host) matches only on "plexus.codehaus.org"
      *    ".codehaus.org"         - (multi host) matches on "*.codehaus.org"
      *    ".svn.codehaus.org"     - (multi host) matches on "*.svn.codehaus.org"
      *    "localhost"             - (single host) matches only on "localhost"
      *    ".com"                  - (single host) matches only on "com"
-     * </pre> 
-     *
-     * <p>
+     * </pre>
+     * <p/>
+     * <p/>
      * It is important to note that all browser based cookie implementations impose a security check to ensure that
      * only members of the domain that tries to set set the cookie can issue a cookie for that domain.
      * For example, a server called plexus.codehaus.org cannot set a cookie for the domain google.com.
      * </p>
-     * 
-     * <p>
+     * <p/>
+     * <p/>
      * This implementation utilizes the HttpServletRequest.getServerName() so that various web techniques such as
      * aliases, virtual hosts, clusters, load balancing, proxying, etc.. will work correctly.
-     * </p> 
+     * </p>
      */
     public String getDomain()
     {
@@ -284,7 +282,7 @@ public class AutoLoginCookies
         try
         {
             AuthenticationKey authkey = securitySystem.getKeyManager().findKey( providedKey );
-            
+
             getLogger().debug( "Found AuthKey: " + authkey );
 
             return authkey;
@@ -292,7 +290,7 @@ public class AutoLoginCookies
         catch ( KeyNotFoundException e )
         {
             getLogger().info( "Invalid AuthenticationKey " + providedKey + " submitted. Invalidating cookie." );
-            
+
             // Invalid Cookie.  Remove it.
             CookieUtils.setCookie( ServletActionContext.getResponse(), domain, cookieName, "-", webcontext, 0 );
         }

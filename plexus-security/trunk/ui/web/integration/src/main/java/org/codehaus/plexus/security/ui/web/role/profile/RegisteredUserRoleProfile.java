@@ -1,15 +1,7 @@
 package org.codehaus.plexus.security.ui.web.role.profile;
 
-import org.codehaus.plexus.rbac.profile.AbstractRoleProfile;
-import org.codehaus.plexus.rbac.profile.RoleProfileException;
-import org.codehaus.plexus.security.rbac.RbacManagerException;
-import org.codehaus.plexus.security.rbac.Resource;
-import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-
-import java.util.List;
-import java.util.Collections;
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,15 +16,22 @@ import java.util.Collections;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.rbac.profile.AbstractRoleProfile;
+import org.codehaus.plexus.rbac.profile.RoleProfileException;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
+import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.security.rbac.Resource;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * RegisteredUserRoleProfile:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- *
- * @plexus.component
- *   role="org.codehaus.plexus.rbac.profile.RoleProfile"
- *   role-hint="registered-user" 
+ * @plexus.component role="org.codehaus.plexus.rbac.profile.RoleProfile"
+ * role-hint="registered-user"
  */
 public class RegisteredUserRoleProfile
     extends AbstractRoleProfile
@@ -43,7 +42,7 @@ public class RegisteredUserRoleProfile
     {
         return RoleConstants.REGISTERED_USER_ROLE;
     }
- 
+
     public List getOperations()
     {
         return Collections.singletonList( RoleConstants.USER_MANAGEMENT_USER_EDIT_OPERATION );
@@ -87,7 +86,7 @@ public class RegisteredUserRoleProfile
                 throw new RoleProfileException( "system error with rbac manager", e );
             }
         }
-        
+
         return username;
     }
 
