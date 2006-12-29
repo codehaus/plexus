@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.util;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,16 +23,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * CookieUtils 
+ * CookieUtils
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
 public class CookieUtils
 {
-    public static final int SESSION_COOKIE = (-1);
-    
-    public static Cookie setCookie( HttpServletResponse response, String domain, String name, String value, String path, int maxAge )
+    public static final int SESSION_COOKIE = ( -1 );
+
+    public static Cookie setCookie( HttpServletResponse response, String domain, String name, String value, String path,
+                                    int maxAge )
     {
         Cookie cookie = new Cookie( name, value );
         if ( maxAge > 0 )

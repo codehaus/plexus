@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,18 +32,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
- * SystemInfoAction 
+ * SystemInfoAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-sysinfo"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="pss-sysinfo"
+ * instantiation-strategy="per-lookup"
  */
 public class SystemInfoAction
     extends AbstractSecurityAction
@@ -123,12 +122,12 @@ public class SystemInfoAction
 
     /**
      * The recursive object dumping switchboard.
-     * 
+     *
      * @param seenObjects objects already seen (to prevent cycles)
-     * @param sb the stringbuffer to populate
-     * @param obj the object to dump
-     * @param indent the current indent string.
-     * @param depth the depth in the tree.
+     * @param sb          the stringbuffer to populate
+     * @param obj         the object to dump
+     * @param indent      the current indent string.
+     * @param depth       the depth in the tree.
      */
     private void dumpObjectSwitchboard( List seenObjects, StringBuffer sb, Object obj, String indent, int depth )
     {
@@ -138,15 +137,15 @@ public class SystemInfoAction
             return;
         }
 
-        if( depth > MAXDEPTH )
+        if ( depth > MAXDEPTH )
         {
             sb.append( StringEscapeUtils.escapeHtml( "<MAX DEPTH>" ) );
             sb.append( LN );
             return;
         }
-        
+
         depth++;
-        
+
         String className = obj.getClass().getName();
 
         sb.append( "(" ).append( className ).append( ") " );
@@ -235,7 +234,7 @@ public class SystemInfoAction
             {
                 sb.append( ".get" ).append( StringUtils.capitalize( name ) ).append( "()" );
             }
-            sb.append( "]: " ).append( "(" ).append( e.getClass().getName() ).append( ") ");
+            sb.append( "]: " ).append( "(" ).append( e.getClass().getName() ).append( ") " );
             sb.append( e.getMessage() ).append( LN );
         }
     }

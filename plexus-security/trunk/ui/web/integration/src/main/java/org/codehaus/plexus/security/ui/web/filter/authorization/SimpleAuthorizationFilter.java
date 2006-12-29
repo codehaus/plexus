@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.filter.authorization;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,17 +22,16 @@ import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.ui.web.filter.PlexusServletFilter;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.io.IOException;
-
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
- * SimpleAuthorizationFilter 
+ * SimpleAuthorizationFilter
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -57,8 +56,8 @@ public class SimpleAuthorizationFilter
 
         if ( StringUtils.isEmpty( accessDeniedLocation ) )
         {
-            throw new ServletException( "Missing parameter 'accessDeniedLocation' from "
-                + SimpleAuthorizationFilter.class.getName() + " configuration." );
+            throw new ServletException( "Missing parameter 'accessDeniedLocation' from " +
+                SimpleAuthorizationFilter.class.getName() + " configuration." );
         }
     }
 

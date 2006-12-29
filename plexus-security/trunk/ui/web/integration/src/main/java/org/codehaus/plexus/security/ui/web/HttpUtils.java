@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import org.codehaus.plexus.util.StringUtils;
 import java.util.Properties;
 
 /**
- * Collection of Utility methods useful in an Http environment. 
+ * Collection of Utility methods useful in an Http environment.
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -31,23 +31,23 @@ public class HttpUtils
 {
     /**
      * Convert typical complex header into properties.
-     * 
-     * <p>
+     * <p/>
+     * <p/>
      * Example:
      * </p>
-     * 
+     * <p/>
      * <code>
      * realm="Somewhere Over The Rainbow", domain="kansas.co.us", nonce="65743ABCF"
      * </code>
-     * 
+     * <p/>
      * <p>becomes</p>
-     * 
+     * <p/>
      * <code>
      * Map ( "realm",  "Somewhere Over The Rainbox" )
      * Map ( "domain", "kansas.co.us" )
      * Map ( "nonce",  "65743ABCF" )
      * </code>
-     * 
+     *
      * @param rawheader
      * @param majorDelim
      * @param subDelim

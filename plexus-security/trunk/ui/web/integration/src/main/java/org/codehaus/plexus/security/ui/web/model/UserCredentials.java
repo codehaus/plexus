@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.model;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * UserCredentials 
+ * UserCredentials
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -39,14 +39,14 @@ public abstract class UserCredentials
     private String fullName;
 
     private String email;
-    
+
     // Display Only Fields.
     private String timestampAccountCreation;
-    
+
     private String timestampLastLogin;
-    
+
     private String timestampLastPasswordChange;
-    
+
     public User createUser( UserManager um )
     {
         User user = um.createUser( username, fullName, email );
@@ -55,7 +55,7 @@ public abstract class UserCredentials
 
         return user;
     }
-    
+
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
@@ -83,7 +83,7 @@ public abstract class UserCredentials
             sb.append( "<empty>" );
         }
 
-        return sb.append("]").toString();
+        return sb.append( "]" ).toString();
     }
 
     public String getConfirmPassword()

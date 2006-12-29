@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.interceptor;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,17 +37,18 @@ import java.util.List;
  * @author Jesse McConnell <jesse@codehaus.org>
  * @version $Id: SecureActionInterceptor.java 4035 2006-09-14 12:59:40Z joakime $
  * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor"
- *                   role-hint="pssSecureActionInterceptor"
+ * role-hint="pssSecureActionInterceptor"
  */
 public class SecureActionInterceptor
     extends AbstractLogEnabled
     implements Interceptor
 {
     private static final String REQUIRES_AUTHORIZATION = "requires-authorization";
+
     private static final String REQUIRES_AUTHENTICATION = "requires-authentication";
-    
+
     /**
-     * @plexus.requirement 
+     * @plexus.requirement
      */
     private SecuritySystem securitySystem;
 
@@ -82,23 +83,24 @@ public class SecureActionInterceptor
             {
                 SecureAction secureAction = (SecureAction) action;
                 SecureActionBundle bundle = secureAction.getSecureActionBundle();
-                
+
                 if ( bundle == null )
                 {
                     getLogger().error( "Null bundle detected." );
-                    
+
                     // TODO: send them somewhere else?
                     return invocation.invoke();
                 }
-                
+
                 if ( bundle == SecureActionBundle.OPEN )
                 {
                     getLogger().debug( "Bundle.OPEN detected." );
-                    
+
                     return invocation.invoke();
                 }
-                
-                SecuritySession session = (SecuritySession) context.getSession().get( SecuritySystemConstants.SECURITY_SESSION_KEY );
+
+                SecuritySession session =
+                    (SecuritySession) context.getSession().get( SecuritySystemConstants.SECURITY_SESSION_KEY );
 
                 // check the authentication requirements
                 if ( bundle.requiresAuthentication() )
@@ -133,7 +135,8 @@ public class SecureActionInterceptor
                         AuthorizationResult authzResult =
                             securitySystem.authorize( session, tuple.getOperation(), tuple.getResource() );
 
-                        getLogger().debug( "checking the interceptor authz " + authzResult.isAuthorized() + " for " + tuple.toString() );
+                        getLogger().debug( "checking the interceptor authz " + authzResult.isAuthorized() + " for " +
+                            tuple.toString() );
 
                         if ( authzResult.isAuthorized() )
                         {
@@ -155,7 +158,8 @@ public class SecureActionInterceptor
 
         getLogger().debug( "not a secure action " + action.getClass().getName() );
         String result = invocation.invoke();
-        getLogger().debug( "Passing invocation up, result is [" + result + "] on call " + invocation.getAction().getClass().getName() );
+        getLogger().debug( "Passing invocation up, result is [" + result + "] on call " +
+            invocation.getAction().getClass().getName() );
         return result;
     }
 }

@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,14 +32,13 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * RoleCreateAction 
+ * RoleCreateAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-role-create"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="pss-role-create"
+ * instantiation-strategy="per-lookup"
  */
 public class RoleCreateAction
     extends AbstractSecurityAction
@@ -102,12 +101,12 @@ public class RoleCreateAction
             addActionError( "Unable to add null permission." );
             return ERROR;
         }
-        
+
         if ( permissions == null )
         {
             permissions = new ArrayList();
         }
-        
+
         permissions.add( addpermission );
 
         addpermission = new SimplePermission();
@@ -148,8 +147,8 @@ public class RoleCreateAction
             while ( it.hasNext() )
             {
                 SimplePermission perm = (SimplePermission) it.next();
-                _permissionList.add( manager.createPermission( perm.getName(), perm.getOperationName(), perm
-                    .getResourceIdentifier() ) );
+                _permissionList.add(
+                    manager.createPermission( perm.getName(), perm.getOperationName(), perm.getResourceIdentifier() ) );
             }
 
             _role.setPermissions( _permissionList );
@@ -200,7 +199,7 @@ public class RoleCreateAction
     {
         this.submitMode = submitMode;
     }
-    
+
     public SecureActionBundle initSecureActionBundle()
         throws SecureActionException
     {

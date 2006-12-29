@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.interceptor;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package org.codehaus.plexus.security.ui.web.interceptor;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.interceptor.Interceptor;
-
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.authentication.TokenBasedAuthenticationDataSource;
@@ -39,9 +38,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- *
  * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor"
- *                   role-hint="pssAutoLoginInterceptor"
+ * role-hint="pssAutoLoginInterceptor"
  */
 public class AutoLoginInterceptor
     extends AbstractLogEnabled
@@ -71,7 +69,9 @@ public class AutoLoginInterceptor
         // Ignore
     }
 
-    /** @noinspection ProhibitedExceptionDeclared*/
+    /**
+     * @noinspection ProhibitedExceptionDeclared
+     */
     public String intercept( ActionInvocation invocation )
         throws Exception
     {
@@ -84,15 +84,15 @@ public class AutoLoginInterceptor
             return invocation.invoke();
         }
 
-        if( autologinCookies.isRememberMeEnabled() )
+        if ( autologinCookies.isRememberMeEnabled() )
         {
-            AuthenticationKey authkey = autologinCookies.getRememberMeKey( );
+            AuthenticationKey authkey = autologinCookies.getRememberMeKey();
 
-            if( authkey != null )
+            if ( authkey != null )
             {
-                String result = performLogin(authkey);
+                String result = performLogin( authkey );
 
-                if(StringUtils.isNotEmpty( result ))
+                if ( StringUtils.isNotEmpty( result ) )
                 {
                     return result;
                 }
@@ -103,11 +103,11 @@ public class AutoLoginInterceptor
         {
             AuthenticationKey authkey = autologinCookies.getSingleSignonKey();
 
-            if( authkey != null )
+            if ( authkey != null )
             {
-                String result = performLogin(authkey);
+                String result = performLogin( authkey );
 
-                if(StringUtils.isNotEmpty( result ))
+                if ( StringUtils.isNotEmpty( result ) )
                 {
                     return result;
                 }
@@ -144,8 +144,8 @@ public class AutoLoginInterceptor
             }
             else
             {
-                getLogger().info( "Login Action failed against principal : "
-                                      + securitySession.getAuthenticationResult().getPrincipal(),
+                getLogger().info( "Login Action failed against principal : " +
+                    securitySession.getAuthenticationResult().getPrincipal(),
                                   securitySession.getAuthenticationResult().getException() );
             }
         }
@@ -175,7 +175,8 @@ public class AutoLoginInterceptor
 
         HttpSession session = getHttpSession();
         session.setAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
-        getLogger().debug( "Setting session:" + SecuritySystemConstants.SECURITY_SESSION_KEY + " to " + securitySession );
+        getLogger().debug(
+            "Setting session:" + SecuritySystemConstants.SECURITY_SESSION_KEY + " to " + securitySession );
 
         if ( securitySession.getUser() != null )
         {
@@ -197,12 +198,12 @@ public class AutoLoginInterceptor
         HttpSession session = ServletActionContext.getRequest().getSession();
         if ( session == null )
         {
-            getLogger().debug( "No Security Session exists." );
+            getLogger().debug( "No HTTP Session exists." );
             return null;
         }
 
-        SecuritySession secSession = (SecuritySession) session
-            .getAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY );
+        SecuritySession secSession =
+            (SecuritySession) session.getAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY );
         getLogger().debug( "Returning Security Session: " + secSession );
         return secSession;
     }

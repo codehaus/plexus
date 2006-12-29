@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,21 +34,21 @@ import java.util.List;
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-resources"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="pss-resources"
+ * instantiation-strategy="per-lookup"
  */
 public class ResourcesAction
     extends AbstractSecurityAction
 {
     private static final String LIST = "list";
-    
+
     /**
      * @plexus.requirement
      */
     private RBACManager manager;
 
     private String resourceIdentifier;
-    
+
     private boolean isPattern;
 
     private List allResources;
@@ -72,7 +72,7 @@ public class ResourcesAction
             getLogger().error( "System error:", e );
             allResources = Collections.EMPTY_LIST;
         }
-        
+
         return LIST;
     }
 
@@ -140,7 +140,7 @@ public class ResourcesAction
     {
         this.isPattern = isPattern;
     }
-    
+
     public SecureActionBundle initSecureActionBundle()
         throws SecureActionException
     {

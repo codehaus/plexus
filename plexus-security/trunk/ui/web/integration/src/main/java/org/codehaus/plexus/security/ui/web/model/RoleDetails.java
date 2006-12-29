@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.model;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * RoleDetails - this is a placeholder for information passed back 
+ * RoleDetails - this is a placeholder for information passed back
  * and forth between the Action and the Client.
- * 
+ * <p/>
  * We intentionally do not hook up the actual object to prevent
- * creative injection of fields and values by the untrusted client. 
+ * creative injection of fields and values by the untrusted client.
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$

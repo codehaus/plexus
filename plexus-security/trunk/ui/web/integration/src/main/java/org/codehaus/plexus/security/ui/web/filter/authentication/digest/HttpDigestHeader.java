@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.filter.authentication.digest;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,12 +26,11 @@ import java.util.Properties;
 
 /**
  * HttpDigestHeader
- * 
- * @plexus.component role="org.codehaus.plexus.security.ui.web.filter.authentication.digest.HttpClientHeader"
- *                   instantiation-strategy="per-lookup"
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * @plexus.component role="org.codehaus.plexus.security.ui.web.filter.authentication.digest.HttpClientHeader"
+ * instantiation-strategy="per-lookup"
  */
 class HttpDigestHeader
     extends AbstractLogEnabled
@@ -67,8 +66,8 @@ class HttpDigestHeader
         cnonce = authHeaderProps.getProperty( "cnonce" );
 
         // [RFC 2067] Validate all required values
-        if ( StringUtils.isEmpty( username ) || StringUtils.isEmpty( realm ) || StringUtils.isEmpty( nonce )
-            || StringUtils.isEmpty( uri ) || StringUtils.isEmpty( response ) )
+        if ( StringUtils.isEmpty( username ) || StringUtils.isEmpty( realm ) || StringUtils.isEmpty( nonce ) ||
+            StringUtils.isEmpty( uri ) || StringUtils.isEmpty( response ) )
         {
             getLogger().debug( "Missing mandatory fields: Raw Digest Header : [" + rawHeader + "]" );
 
@@ -109,11 +108,11 @@ class HttpDigestHeader
         // Validate nonce format
         if ( nonceTokens.length != 2 )
         {
-            getLogger().debug( "Nonce format expected [2] elements, but got [" + nonceTokens.length
-                                   + "] instead.  Decoded nonce [" + decodedNonce + "]" );
+            getLogger().debug( "Nonce format expected [2] elements, but got [" + nonceTokens.length +
+                "] instead.  Decoded nonce [" + decodedNonce + "]" );
 
-            throw new HttpAuthenticationException( "Nonce format is invalid.  "
-                + "Received an unexpected number of sub elements." );
+            throw new HttpAuthenticationException(
+                "Nonce format is invalid.  " + "Received an unexpected number of sub elements." );
         }
 
         // Extract nonce timestamp

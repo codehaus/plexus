@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,10 +35,9 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- *
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-admin-user-edit"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="pss-admin-user-edit"
+ * instantiation-strategy="per-lookup"
  */
 public class UserEditAction
     extends AbstractAdminUserCredentialsAction
@@ -62,7 +61,7 @@ public class UserEditAction
 
         if ( isCancelButton() )
         {
-           return "CANCEL";
+            return "CANCEL";
         }
 
         if ( getUsername() == null )
@@ -168,8 +167,8 @@ public class UserEditAction
             //check if current user then update the session
             if ( getSecuritySession().getUser().getUsername().equals( u.getUsername() ) )
             {
-                SecuritySession securitySession = new DefaultSecuritySession(
-                    getSecuritySession().getAuthenticationResult(), u );
+                SecuritySession securitySession =
+                    new DefaultSecuritySession( getSecuritySession().getAuthenticationResult(), u );
 
                 session.put( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
 
@@ -192,7 +191,7 @@ public class UserEditAction
 
     public boolean isCancelButton()
     {
-    	return "Cancel".equals( cancelButton );
+        return "Cancel".equals( cancelButton );
     }
 
     // ------------------------------------------------------------------

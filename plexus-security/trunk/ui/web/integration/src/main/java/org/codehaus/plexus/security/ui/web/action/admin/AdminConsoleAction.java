@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action.admin;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,14 +23,13 @@ import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 
 /**
- * AdminConsoleAction 
+ * AdminConsoleAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-admin-console"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="pss-admin-console"
+ * instantiation-strategy="per-lookup"
  */
 public class AdminConsoleAction
     extends AbstractSecurityAction
@@ -39,7 +38,7 @@ public class AdminConsoleAction
     {
         return INPUT;
     }
-    
+
     public SecureActionBundle initSecureActionBundle()
         throws SecureActionException
     {

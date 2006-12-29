@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,15 +34,14 @@ import org.codehaus.plexus.util.StringUtils;
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-login"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="pss-login"
+ * instantiation-strategy="per-lookup"
  */
 public class LoginAction
     extends AbstractAuthenticationAction
 {
-    
+
     // ------------------------------------------------------------------
     // Plexus Component Requirements
     // ------------------------------------------------------------------
@@ -51,60 +50,60 @@ public class LoginAction
      * @plexus.requirement
      */
     protected SecuritySystem securitySystem;
-    
+
     private String username;
 
     private String password;
-    
+
     private String cancelbutton;
-    
+
     private String validateMe;
-    
+
     private String resetPassword;
-    
+
     private boolean rememberMe;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
-    
-    public String show()   
+
+    public String show()
     {
         return INPUT;
     }
-    
+
     public String login()
     {
         if ( isCancelButton() )
         {
             return LOGIN_CANCEL;
         }
-        
-        if ( StringUtils.isNotEmpty( validateMe ))
+
+        if ( StringUtils.isNotEmpty( validateMe ) )
         {
             // Process a login / validate request.
             return validated();
         }
-        
-        if ( StringUtils.isNotEmpty(resetPassword))
+
+        if ( StringUtils.isNotEmpty( resetPassword ) )
         {
             // Process a login / reset password request.
-        	return resetPassword();
+            return resetPassword();
         }
-        
-        if ( StringUtils.isEmpty(username)  )
+
+        if ( StringUtils.isEmpty( username ) )
         {
             addFieldError( "username", "Username cannot be empty." );
             return ERROR;
         }
-        
+
         PasswordBasedAuthenticationDataSource authdatasource = new PasswordBasedAuthenticationDataSource();
         authdatasource.setPrincipal( username );
         authdatasource.setPassword( password );
-        
+
         return webLogin( securitySystem, authdatasource, rememberMe );
     }
-    
+
     public String resetPassword()
     {
         if ( StringUtils.isEmpty( resetPassword ) )
@@ -118,16 +117,16 @@ public class LoginAction
             AuthenticationKey authkey = securitySystem.getKeyManager().findKey( validateMe );
 
             User user = securitySystem.getUserManager().findUser( authkey.getForPrincipal() );
-            
+
             user.setPasswordChangeRequired( true );
             user.setEncodedPassword( "" );
-            
-            TokenBasedAuthenticationDataSource authsource = new TokenBasedAuthenticationDataSource( );
+
+            TokenBasedAuthenticationDataSource authsource = new TokenBasedAuthenticationDataSource();
             authsource.setPrincipal( user.getPrincipal().toString() );
             authsource.setToken( authkey.getKey() );
-            
+
             securitySystem.getUserManager().updateUser( user );
-            
+
             return webLogin( securitySystem, authsource, false );
         }
         catch ( KeyNotFoundException e )
@@ -147,7 +146,7 @@ public class LoginAction
             return ERROR;
         }
     }
-    
+
     public String validated()
     {
         if ( StringUtils.isEmpty( validateMe ) )
@@ -161,18 +160,18 @@ public class LoginAction
             AuthenticationKey authkey = securitySystem.getKeyManager().findKey( validateMe );
 
             User user = securitySystem.getUserManager().findUser( authkey.getForPrincipal() );
-            
+
             user.setValidated( true );
             user.setLocked( false );
             user.setPasswordChangeRequired( true );
             user.setEncodedPassword( "" );
-            
-            TokenBasedAuthenticationDataSource authsource = new TokenBasedAuthenticationDataSource( );
+
+            TokenBasedAuthenticationDataSource authsource = new TokenBasedAuthenticationDataSource();
             authsource.setPrincipal( user.getPrincipal().toString() );
             authsource.setToken( authkey.getKey() );
-            
+
             securitySystem.getUserManager().updateUser( user );
-            
+
             return webLogin( securitySystem, authsource, false );
         }
         catch ( KeyNotFoundException e )
@@ -214,12 +213,12 @@ public class LoginAction
 
     public boolean isCancelButton()
     {
-    	return "Cancel".equals( cancelbutton );
+        return "Cancel".equals( cancelbutton );
     }
 
     public void setCancelbutton( String cancelbutton )
     {
-    	this.cancelbutton = cancelbutton;
+        this.cancelbutton = cancelbutton;
     }
 
     public String getValidateMe()

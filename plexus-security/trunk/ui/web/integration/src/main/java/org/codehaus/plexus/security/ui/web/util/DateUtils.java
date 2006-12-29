@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.util;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * DateUtils 
+ * DateUtils
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -31,7 +31,7 @@ public class DateUtils
     /**
      * Provided a date you will get a timestamp and the age/old that you want
      *
-     * @param date the date to compare to now.
+     * @param date   the date to compare to now.
      * @param suffix the suffix in the age string.  using "ago" here would result in "2006 Aug 23, 11:43 pm - 12 days ago"
      * @return the formated string.
      */
@@ -43,9 +43,9 @@ public class DateUtils
     /**
      * Provided a date you will get a timestamp and the age/old that you want.
      *
-     * @param date the date to compare to now.
+     * @param date       the date to compare to now.
      * @param dateFormat the {@link SimpleDateFormat} format string to use for the date.
-     * @param suffix the suffix in the age string.  using "ago" here would result in "2006 Aug 23, 11:43 pm - 12 days ago"
+     * @param suffix     the suffix in the age string.  using "ago" here would result in "2006 Aug 23, 11:43 pm - 12 days ago"
      * @return the formated string.
      */
     public static String formatWithAge( Date date, String dateFormat, String suffix )

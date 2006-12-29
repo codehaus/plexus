@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.util;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import org.codehaus.plexus.security.rbac.Operation;
 import java.util.Comparator;
 
 /**
- * OperationSorter 
+ * OperationSorter
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$

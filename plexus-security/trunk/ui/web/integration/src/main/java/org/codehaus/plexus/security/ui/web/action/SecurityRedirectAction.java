@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,13 @@ import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
 /**
- * SecurityRedirectAction 
+ * SecurityRedirectAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-redirect"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="pss-redirect"
+ * instantiation-strategy="per-lookup"
  */
 public class SecurityRedirectAction
     extends PlexusActionSupport
@@ -36,14 +35,14 @@ public class SecurityRedirectAction
 
     public String redirect()
     {
-        if(StringUtils.isNotEmpty( externalResult ))
+        if ( StringUtils.isNotEmpty( externalResult ) )
         {
             return externalResult;
         }
-        
+
         return SUCCESS;
     }
-    
+
     public String getExternalResult()
     {
         return externalResult;

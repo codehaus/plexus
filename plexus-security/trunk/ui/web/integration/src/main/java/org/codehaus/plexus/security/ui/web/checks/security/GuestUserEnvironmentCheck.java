@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.checks.security;
 
 /*
- * Copyright 2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,18 +17,18 @@ package org.codehaus.plexus.security.ui.web.checks.security;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.rbac.profile.RoleProfileException;
-import org.codehaus.plexus.security.system.check.EnvironmentCheck;
-import org.codehaus.plexus.security.system.SecuritySystem;
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
+import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.system.check.EnvironmentCheck;
+import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.UserNotFoundException;
 
 import java.util.List;
 

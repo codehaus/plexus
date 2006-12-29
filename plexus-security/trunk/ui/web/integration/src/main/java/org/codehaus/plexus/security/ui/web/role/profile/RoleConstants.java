@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.role.profile;
 
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,11 @@ public class RoleConstants
 
     // roles
     public static final String SYSTEM_ADMINISTRATOR_ROLE = "System Administrator";
+
     public static final String USER_ADMINISTRATOR_ROLE = "User Administrator";
+
     public static final String REGISTERED_USER_ROLE = "Registered User";
+
     public static final String GUEST_ROLE = "Guest";
 
     // guest access operation
@@ -40,14 +43,18 @@ public class RoleConstants
 
     // operations against user
     public static final String USER_MANAGEMENT_USER_CREATE_OPERATION = "user-management-user-create";
+
     public static final String USER_MANAGEMENT_USER_EDIT_OPERATION = "user-management-user-edit";
+
     public static final String USER_MANAGEMENT_USER_DELETE_OPERATION = "user-management-user-delete";
+
     public static final String USER_MANAGEMENT_USER_LIST_OPERATION = "user-management-user-list";
-    
+
     // operations against user assignment.
     public static final String USER_MANAGEMENT_ROLE_GRANT_OPERATION = "user-management-role-grant";
+
     public static final String USER_MANAGEMENT_ROLE_DROP_OPERATION = "user-management-role-drop";
-    
+
     // operations against rbac objects.
     public static final String USER_MANAGEMENT_RBAC_ADMIN_OPERATION = "user-management-rbac-admin";
 }

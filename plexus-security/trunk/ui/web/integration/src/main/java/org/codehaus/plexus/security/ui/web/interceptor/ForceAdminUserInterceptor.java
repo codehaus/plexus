@@ -1,13 +1,7 @@
 package org.codehaus.plexus.security.ui.web.interceptor;
 
-import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.Interceptor;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.UserNotFoundException;
 /*
- * Copyright 2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +15,13 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import com.opensymphony.xwork.ActionInvocation;
+import com.opensymphony.xwork.interceptor.Interceptor;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.UserNotFoundException;
 
 /**
  * EnvironmentCheckInterceptor

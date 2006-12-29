@@ -1,20 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action;
 
-import org.codehaus.plexus.security.policy.PasswordEncoder;
-import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
-import org.codehaus.plexus.security.policy.PasswordRuleViolations;
-import org.codehaus.plexus.security.system.SecuritySession;
-import org.codehaus.plexus.security.system.SecuritySystem;
-import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
-import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
-import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.util.StringUtils;
-
-import java.util.Iterator;
-
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,15 +16,27 @@ import java.util.Iterator;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.policy.PasswordEncoder;
+import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
+import org.codehaus.plexus.security.policy.PasswordRuleViolations;
+import org.codehaus.plexus.security.system.SecuritySession;
+import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
+import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.Iterator;
+
 /**
- * PasswordAction 
+ * PasswordAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
- * @plexus.component role="com.opensymphony.xwork.Action" 
- *                   role-hint="pss-password" 
- *                   instantiation-strategy="per-lookup"
+ * @plexus.component role="com.opensymphony.xwork.Action"
+ * role-hint="pss-password"
+ * instantiation-strategy="per-lookup"
  */
 public class PasswordAction
     extends AbstractSecurityAction
@@ -50,7 +49,7 @@ public class PasswordAction
      * @plexus.requirement
      */
     protected SecuritySystem securitySystem;
-    
+
     // ------------------------------------------------------------------
     // Action Parameters
     // ------------------------------------------------------------------
@@ -60,22 +59,22 @@ public class PasswordAction
     private String newPassword;
 
     private String newPasswordConfirm;
-    
+
     private boolean provideExisting;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
-    
+
     public String show()
     {
         SecuritySession session = getSecuritySession();
-        
+
         provideExisting = StringUtils.isNotEmpty( session.getUser().getEncodedPassword() );
-        
+
         return INPUT;
     }
-    
+
     public String submit()
     {
         SecuritySession session = getSecuritySession();
@@ -91,7 +90,6 @@ public class PasswordAction
         {
             addFieldError( "newPassword", "Password confirmation failed.  Passwords do not match." );
         }
-
 
         User user = session.getUser();
 
@@ -127,7 +125,7 @@ public class PasswordAction
                 }
             }
         }
-        
+
         // Toss error (if any exists)
         if ( hasActionErrors() || hasFieldErrors() || hasActionMessages() )
         {
@@ -168,14 +166,14 @@ public class PasswordAction
          */
         if ( !provideExisting )
         {
-           return RegisterAction.REGISTER_SUCCESS; 
+            return RegisterAction.REGISTER_SUCCESS;
         }
         else
         {
             return SUCCESS;
         }
     }
-    
+
     // ------------------------------------------------------------------
     // Parameter Accessor Methods
     // ------------------------------------------------------------------

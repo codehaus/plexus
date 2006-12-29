@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.model;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package org.codehaus.plexus.security.ui.web.model;
  */
 
 /**
- * CreateUserCredentials 
+ * CreateUserCredentials
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$

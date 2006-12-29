@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.filter.authentication.digest;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,19 +29,17 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.Base64;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * HttpDigestAuthentication methods for working with <a href="http://www.faqs.org/rfcs/rfc2617.html">RFC 2617 HTTP Authentication</a>.
- * 
- * @plexus.component role="org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator"
- *                   role-hint="digest"
- * 
+ *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * @plexus.component role="org.codehaus.plexus.security.ui.web.filter.authentication.HttpAuthenticator"
+ * role-hint="digest"
  */
 public class HttpDigestAuthentication
     extends HttpAuthenticator
@@ -58,13 +56,13 @@ public class HttpDigestAuthentication
 
     /**
      * NOTE: Must be alphanumeric.
-     * 
+     *
      * @plexus.configuration default-value="OrycteropusAfer"
      */
     private String digestKey;
 
     private String realm;
-    
+
     public String getId()
     {
         return HttpDigestAuthentication.class.getName();
@@ -119,13 +117,13 @@ public class HttpDigestAuthentication
     }
 
     /**
-     * Issue HTTP Digest Authentication Challenge  
+     * Issue HTTP Digest Authentication Challenge
      *
-     * @param request the request to use.
-     * @param response the response to use.
+     * @param request   the request to use.
+     * @param response  the response to use.
      * @param realmName the realm name to state.
      * @param exception the exception to base the message off of.
-     * @throws IOException if there was a problem with the {@link HttpServletResponse#sendError(int, String)} call.
+     * @throws IOException if there was a problem with the {@link HttpServletResponse#sendError(int,String)} call.
      */
     public void challenge( HttpServletRequest request, HttpServletResponse response, String realmName,
                            AuthenticationException exception )
@@ -179,13 +177,13 @@ public class HttpDigestAuthentication
         }
         else if ( StringUtils.equals( "auth", digestHeader.qop ) )
         {
-            digest = a1 + ":" + digestHeader.nonce + ":" + digestHeader.nc + ":" + digestHeader.cnonce + ":"
-                + digestHeader.qop + ":" + a2;
+            digest = a1 + ":" + digestHeader.nonce + ":" + digestHeader.nc + ":" + digestHeader.cnonce + ":" +
+                digestHeader.qop + ":" + a2;
         }
         else
         {
-            throw new IllegalStateException( "Http Digest Parameter [qop] with value of [" + digestHeader.qop
-                + "] is unsupported." );
+            throw new IllegalStateException(
+                "Http Digest Parameter [qop] with value of [" + digestHeader.qop + "] is unsupported." );
         }
 
         return Digest.md5Hex( digest );

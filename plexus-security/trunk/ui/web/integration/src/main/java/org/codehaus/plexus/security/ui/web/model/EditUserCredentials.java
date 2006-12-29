@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.model;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import org.codehaus.plexus.security.ui.web.util.DateUtils;
 import org.codehaus.plexus.security.user.User;
 
 /**
- * EditUserCredentials 
+ * EditUserCredentials
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -32,13 +32,13 @@ public class EditUserCredentials
     {
         super();
     }
-    
+
     public EditUserCredentials( String username )
     {
         super();
         super.setUsername( username );
     }
-    
+
     public EditUserCredentials( User user )
     {
         super();

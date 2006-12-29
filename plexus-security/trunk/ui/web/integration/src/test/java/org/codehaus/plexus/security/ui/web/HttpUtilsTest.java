@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@ package org.codehaus.plexus.security.ui.web;
  * limitations under the License.
  */
 
-import java.util.Properties;
-
 import junit.framework.TestCase;
 
+import java.util.Properties;
+
 /**
- * HttpUtilsTest 
+ * HttpUtilsTest
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$

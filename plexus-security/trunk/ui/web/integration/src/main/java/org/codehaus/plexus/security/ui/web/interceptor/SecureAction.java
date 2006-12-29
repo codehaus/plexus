@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.interceptor;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,8 @@ public interface SecureAction
 {
     /**
      * get an authorization bundle to process for authn and authz
-     *
      */
     public SecureActionBundle getSecureActionBundle()
-         throws SecureActionException;
+        throws SecureActionException;
 
 }

@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.checks;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package org.codehaus.plexus.security.ui.web.checks;
 import com.opensymphony.xwork.config.Configuration;
 import com.opensymphony.xwork.config.entities.ActionConfig;
 import com.opensymphony.xwork.config.entities.PackageConfig;
-
 import org.codehaus.plexus.security.ui.web.checks.xwork.XworkActionConfig;
 import org.codehaus.plexus.security.ui.web.checks.xwork.XworkPackageConfig;
 import org.codehaus.plexus.util.StringUtils;
@@ -29,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * AbstractXworkConfigurationCheck 
+ * AbstractXworkConfigurationCheck
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -47,9 +46,9 @@ public class AbstractXworkConfigurationCheck
             {
                 if ( !StringUtils.equals( expectedAction.clazz, xwActionConfig.getClassName() ) )
                 {
-                    violations.add( "xwork.xml - Expected class attribute value of " + quote( expectedAction.clazz )
-                        + " but got " + quote( xwActionConfig.getClassName() ) + " instead, on action "
-                        + quote( expectedAction.name ) + " in package " + quote( expectedPackage.name ) + "." );
+                    violations.add( "xwork.xml - Expected class attribute value of " + quote( expectedAction.clazz ) +
+                        " but got " + quote( xwActionConfig.getClassName() ) + " instead, on action " +
+                        quote( expectedAction.name ) + " in package " + quote( expectedPackage.name ) + "." );
                 }
             }
 
@@ -57,9 +56,9 @@ public class AbstractXworkConfigurationCheck
             {
                 if ( !StringUtils.equals( expectedAction.method, xwActionConfig.getMethodName() ) )
                 {
-                    violations.add( "xwork.xml - Expected method attribute value of " + quote( expectedAction.method )
-                        + " but got " + quote( xwActionConfig.getMethodName() ) + " instead, on action "
-                        + quote( expectedAction.name ) + " in package " + quote( expectedPackage.name ) + "." );
+                    violations.add( "xwork.xml - Expected method attribute value of " + quote( expectedAction.method ) +
+                        " but got " + quote( xwActionConfig.getMethodName() ) + " instead, on action " +
+                        quote( expectedAction.name ) + " in package " + quote( expectedPackage.name ) + "." );
                 }
             }
 
@@ -70,8 +69,8 @@ public class AbstractXworkConfigurationCheck
                 // Check for single default result.
                 if ( xwResultMap.size() < 1 )
                 {
-                    violations.add( "xwork.xml - Missing default result on action name " + quote( expectedAction.name )
-                        + " in package " + quote( expectedPackage.name ) + "." );
+                    violations.add( "xwork.xml - Missing default result on action name " +
+                        quote( expectedAction.name ) + " in package " + quote( expectedPackage.name ) + "." );
                 }
             }
             else
@@ -84,16 +83,16 @@ public class AbstractXworkConfigurationCheck
 
                     if ( xwResultMap.get( resultName ) == null )
                     {
-                        violations.add( "xwork.xml - Missing named result " + quote( resultName ) + " in action "
-                            + quote( expectedAction.name ) + " in package " + quote( expectedPackage.name ) + "." );
+                        violations.add( "xwork.xml - Missing named result " + quote( resultName ) + " in action " +
+                            quote( expectedAction.name ) + " in package " + quote( expectedPackage.name ) + "." );
                     }
                 }
             }
         }
         else
         {
-            violations.add( "xwork.xml - Missing action named " + quote( expectedAction.name ) + " in package "
-                + quote( expectedPackage.name ) + "." );
+            violations.add( "xwork.xml - Missing action named " + quote( expectedAction.name ) + " in package " +
+                quote( expectedPackage.name ) + "." );
         }
     }
 

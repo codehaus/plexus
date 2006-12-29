@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.action;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,14 +35,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * RegisterAction 
+ * RegisterAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="com.opensymphony.xwork.Action"
- *                   role-hint="pss-register"
- *                   instantiation-strategy="per-lookup"
+ * role-hint="pss-register"
+ * instantiation-strategy="per-lookup"
  */
 public class RegisterAction
     extends AbstractUserCredentialsAction
@@ -50,7 +49,7 @@ public class RegisterAction
     protected static final String REGISTER_SUCCESS = "security-register-success";
 
     private static final String REGISTER_CANCEL = "security-register-cancel";
-    
+
     private static final String VALIDATION_NOTE = "validation-note";
 
     // ------------------------------------------------------------------
@@ -107,9 +106,9 @@ public class RegisterAction
             addActionError( "Invalid user credentials." );
             return ERROR;
         }
-        
-        UserSecurityPolicy securityPolicy = securitySystem.getPolicy(); 
-        
+
+        UserSecurityPolicy securityPolicy = securitySystem.getPolicy();
+
         emailValidationRequired = securityPolicy.getUserValidationSettings().isEmailValidationRequired();
 
         internalUser = user;
@@ -143,7 +142,7 @@ public class RegisterAction
         u.setValidated( false );
         u.setLocked( false );
 
-       try
+        try
         {
             // assign the base role for all users
             UserAssignment ua = rbacManager.createUserAssignment( u.getPrincipal().toString() );
@@ -165,7 +164,6 @@ public class RegisterAction
             return ERROR;
         }
 
-
         if ( securityPolicy.getUserValidationSettings().isEmailValidationRequired() )
         {
             u.setLocked( true );
@@ -173,18 +171,17 @@ public class RegisterAction
             try
             {
                 AuthenticationKey authkey = securitySystem.getKeyManager().createKey( u.getPrincipal().toString(),
-                                                                  "New User Email Validation", securityPolicy
-                                                                      .getUserValidationSettings()
-                                                                      .getEmailValidationTimeout() );
+                                                                                      "New User Email Validation",
+                                                                                      securityPolicy.getUserValidationSettings().getEmailValidationTimeout() );
 
                 List recipients = new ArrayList();
                 recipients.add( u.getEmail() );
 
                 mailer.sendAccountValidationEmail( recipients, authkey );
-                
+
                 securityPolicy.setEnabled( false );
                 manager.addUser( u );
-                
+
                 return VALIDATION_NOTE;
             }
             catch ( KeyManagerException e )
@@ -217,7 +214,7 @@ public class RegisterAction
 
     public void setCancelbutton( String cancelbutton )
     {
-    	this.cancelbutton = cancelbutton;
+        this.cancelbutton = cancelbutton;
     }
 
     public CreateUserCredentials getUser()

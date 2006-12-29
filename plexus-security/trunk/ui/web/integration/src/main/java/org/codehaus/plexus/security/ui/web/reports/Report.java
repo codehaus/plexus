@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.ui.web.reports;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package org.codehaus.plexus.security.ui.web.reports;
 import java.io.OutputStream;
 
 /**
- * Report 
+ * Report
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -28,6 +28,7 @@ public interface Report
 {
     /**
      * The Name of the Report (for display to the user)
+     *
      * @return the name of the report.
      */
     public String getName();
@@ -35,30 +36,31 @@ public interface Report
     /**
      * The type of report (example: 'csv', 'xls', 'pdf')
      * Used in the display of the report links to the user.
-     * 
+     *
      * @return the type of report.
      */
     public String getType();
-    
+
     /**
      * The mimetype of the report. (used to set download content type correctly)
-     * 
+     *
      * @return the mimetype.
      */
     public String getMimeType();
-    
+
     /**
      * The ID for this report.
-     * 
+     *
      * @return the ID for this report.
      */
     public String getId();
 
     /**
      * Write Report to provided outputstream.
-     * 
+     *
      * @param os the outputstream to write to.
      * @throws ReportException if there was a problem in generating the report.
      */
-    public void writeReport( OutputStream os ) throws ReportException;
+    public void writeReport( OutputStream os )
+        throws ReportException;
 }
