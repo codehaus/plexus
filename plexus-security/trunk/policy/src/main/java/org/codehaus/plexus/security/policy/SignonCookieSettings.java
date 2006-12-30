@@ -1,7 +1,7 @@
 package org.codehaus.plexus.security.policy;
 
 /*
- * Copyright 2001-2006 The Codehaus.
+ * Copyright 2005-2006 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ public class SignonCookieSettings
 {
     protected String getConfigKeyPrefix()
     {
-        return "security.sso";
+        return "security.signon";
     }
 
     public boolean isEnabled()
