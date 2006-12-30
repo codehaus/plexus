@@ -17,24 +17,38 @@ package org.codehaus.plexus.security.policy;
  */
 
 /**
- * RememberMeSettings 
+ * CookieSettings
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public interface RememberMeSettings
+public interface CookieSettings
 {
     /**
-     * Enable or disables the remember me features of the application.
+     * Gets the Cookie timeout (in minutes) for the signon cookie.
      * 
+     * @return the timeout in minutes
+     */
+    int getCookieTimeout();
+
+    /**
+     * Gets the domain to use for the signon cookie.
+     *
+     * @return the domain
+     */
+    String getDomain();
+
+    /**
+     * Gets the path to use for the signon cookie.
+     *
+     * @return the path
+     */
+    String getPath();
+
+    /**
+     * Enable or disables the remember me features of the application.
+     *
      * @return true if remember me settings are enabled.
      */
-    public boolean isEnabled();
-    
-    /**
-     * Gets the timeout (in minutes) for the cookie that tracks the rememberme key.
-     * 
-     * @return the timeout in minutes.
-     */
-    public int getCookieTimeout();
+    boolean isEnabled();
 }

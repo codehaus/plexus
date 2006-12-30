@@ -87,14 +87,14 @@ public class DefaultUserSecurityPolicy
     private UserValidationSettings userValidationSettings;
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="rememberMe"
      */
-    private RememberMeSettings rememberMeSettings;
+    private CookieSettings rememberMeCookieSettings;
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="signon"
      */
-    private SingleSignOnSettings singleSignOnSettings;
+    private CookieSettings signonCookieSettings;
 
     /**
      * The List of {@link PasswordRule} objects.
@@ -116,11 +116,11 @@ public class DefaultUserSecurityPolicy
     /**
      * Sets the count of previous passwords that should be tracked.
      *
-     * @param previousPasswordsCount the count of previous passwords to track.
+     * @param count the count of previous passwords to track.
      */
-    public void setPreviousPasswordsCount( int previousPasswordsCount )
+    public void setPreviousPasswordsCount( int count )
     {
-        this.previousPasswordsCount = previousPasswordsCount;
+        this.previousPasswordsCount = count;
     }
 
     public int getLoginAttemptCount()
@@ -128,9 +128,9 @@ public class DefaultUserSecurityPolicy
         return loginAttemptCount;
     }
 
-    public void setLoginAttemptCount( int loginAttemptCount )
+    public void setLoginAttemptCount( int count )
     {
-        this.loginAttemptCount = loginAttemptCount;
+        this.loginAttemptCount = count;
     }
 
     /**
@@ -146,18 +146,12 @@ public class DefaultUserSecurityPolicy
     public boolean isEnabled()
     {
         Boolean bool = (Boolean) PolicyContext.getContext().get( ENABLEMENT_KEY );
-        if ( bool == null )
-        {
-            // no key? assume true. (default is true)
-            return true;
-        }
-
-        return bool.booleanValue();
+        return bool == null || bool.booleanValue();
     }
 
     public void setEnabled( boolean enabled )
     {
-        PolicyContext.getContext().put( ENABLEMENT_KEY, new Boolean( enabled ) );
+        PolicyContext.getContext().put( ENABLEMENT_KEY, Boolean.valueOf( enabled ) );
     }
 
     /**
@@ -186,20 +180,20 @@ public class DefaultUserSecurityPolicy
     /**
      * Set the Password Rules List.
      *
-     * @param newRules the list of {@link PasswordRule} objects.
+     * @param rules the list of {@link PasswordRule} objects.
      */
-    public void setPasswordRules( List newRules )
+    public void setPasswordRules( List rules )
     {
         this.rules.clear();
 
-        if ( newRules == null )
+        if ( rules == null )
         {
             return;
         }
 
         // Intentionally iterating to ensure policy settings in provided rules.
 
-        Iterator it = newRules.iterator();
+        Iterator it = rules.iterator();
         while ( it.hasNext() )
         {
             PasswordRule rule = (PasswordRule) it.next();
@@ -212,7 +206,7 @@ public class DefaultUserSecurityPolicy
     {
         Calendar expirationDate = Calendar.getInstance();
         expirationDate.setTime( user.getLastPasswordChange() );
-        expirationDate.add( Calendar.DAY_OF_MONTH, getPasswordExpirationDays() );
+        expirationDate.add( Calendar.DAY_OF_MONTH, passwordExpirationDays );
         Calendar now = Calendar.getInstance();
 
         if ( now.after( expirationDate ) )
@@ -230,7 +224,7 @@ public class DefaultUserSecurityPolicy
         attempt++;
         user.setCountFailedLoginAttempts( attempt );
 
-        if ( attempt >= getLoginAttemptCount() )
+        if ( attempt >= loginAttemptCount )
         {
             user.setLocked( true );
             throw new AccountLockedException( "Account " + user.getUsername() + " is locked.", user );
@@ -243,7 +237,7 @@ public class DefaultUserSecurityPolicy
         validatePassword( user );
 
         // set the current encoded password.
-        user.setEncodedPassword( getPasswordEncoder().encodePassword( user.getPassword() ) );
+        user.setEncodedPassword( passwordEncoder.encodePassword( user.getPassword() ) );
         user.setPassword( null );
 
         // push new password onto list of previous password.
@@ -252,7 +246,7 @@ public class DefaultUserSecurityPolicy
 
         if ( !user.getPreviousEncodedPasswords().isEmpty() )
         {
-            int oldCount = Math.min( getPreviousPasswordsCount() - 1, user.getPreviousEncodedPasswords().size() );
+            int oldCount = Math.min( previousPasswordsCount - 1, user.getPreviousEncodedPasswords().size() );
             //modified sublist start index as the previous value results to nothing being added to the list. 
             List sublist = user.getPreviousEncodedPasswords().subList( 0, oldCount );
             previousPasswords.addAll( sublist );
@@ -273,7 +267,7 @@ public class DefaultUserSecurityPolicy
         {
             PasswordRuleViolations violations = new PasswordRuleViolations();
 
-            Iterator it = getPasswordRules().iterator();
+            Iterator it = rules.iterator();
             while ( it.hasNext() )
             {
                 PasswordRule rule = (PasswordRule) it.next();
@@ -338,9 +332,9 @@ public class DefaultUserSecurityPolicy
         return passwordExpirationDays;
     }
 
-    public void setPasswordExpirationDays( int passwordExpirationDays )
+    public void setPasswordExpirationDays( int passwordExpiry )
     {
-        this.passwordExpirationDays = passwordExpirationDays;
+        this.passwordExpirationDays = passwordExpiry;
     }
 
     public UserValidationSettings getUserValidationSettings()
@@ -348,29 +342,19 @@ public class DefaultUserSecurityPolicy
         return userValidationSettings;
     }
 
-    public void setUserValidationSettings( UserValidationSettings userValidationSettings )
+    public void setUserValidationSettings( UserValidationSettings settings )
     {
-        this.userValidationSettings = userValidationSettings;
+        this.userValidationSettings = settings;
     }
 
-    public RememberMeSettings getRememberMeSettings()
+    public CookieSettings getRememberMeCookieSettings()
     {
-        return rememberMeSettings;
+        return rememberMeCookieSettings;
     }
 
-    public void setRememberMeSettings( RememberMeSettings rememberMeSettings )
+    public CookieSettings getSignonCookieSettings()
     {
-        this.rememberMeSettings = rememberMeSettings;
-    }
-
-    public SingleSignOnSettings getSingleSignOnSettings()
-    {
-        return singleSignOnSettings;
-    }
-
-    public void setSingleSignOnSettings( SingleSignOnSettings singleSignOnSettings )
-    {
-        this.singleSignOnSettings = singleSignOnSettings;
+        return signonCookieSettings;
     }
 
     private void configureEncoder()

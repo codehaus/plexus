@@ -17,24 +17,22 @@ package org.codehaus.plexus.security.policy;
  */
 
 /**
- * SingleSignOnSettings 
+ * SignonCookieSettings
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * @plexus.component role="org.codehaus.plexus.security.policy.CookieSettings" role-hint="signon"
  */
-public interface SingleSignOnSettings
+public class SignonCookieSettings
+    extends AbstractCookieSettings
 {
-    /**
-     * Gets the flag enabled or not for Single Sign On.
-     * 
-     * @return true if single sign on is enabled.
-     */
-    public boolean isEnabled();
-    
-    /**
-     * Gets the Cookie timeout (in minutes) for the Single Sign On.
-     * 
-     * @return the cookie timeout (in minutes) for the single sign on.
-     */
-    public int getCookieTimeout();
+    protected String getConfigKeyPrefix()
+    {
+        return "security.sso";
+    }
+
+    public boolean isEnabled()
+    {
+        return true;
+    }
 }
