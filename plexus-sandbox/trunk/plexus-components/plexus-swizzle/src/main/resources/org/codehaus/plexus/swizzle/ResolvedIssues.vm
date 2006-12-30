@@ -12,7 +12,7 @@
     <section name="Issues Resolved for $project.name [$projectVersion]">
 #foreach( $issue in $issues.sort("id").sort("priority") )
       <ul>
-        <li>[$issue.key] <![CDATA[$issue.summary]]></li>
+        <li><a href="${jiraServerUrl}/browse/${issue.key}">[${issue.key}]</a> <![CDATA[$issue.summary]]></li>
       </ul>
 #end
     </section>
