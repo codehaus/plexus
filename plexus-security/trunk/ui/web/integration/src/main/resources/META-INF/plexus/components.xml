@@ -76,12 +76,14 @@
           <field-name>userValidationSettings</field-name>
         </requirement>
         <requirement>
-          <role>org.codehaus.plexus.security.policy.RememberMeSettings</role>
-          <field-name>rememberMeSettings</field-name>
+          <role>org.codehaus.plexus.security.policy.CookieSettings</role>
+          <role-hint>rememberMe</role-hint>
+          <field-name>rememberMeCookieSettings</field-name>
         </requirement>
         <requirement>
-          <role>org.codehaus.plexus.security.policy.SingleSignOnSettings</role>
-          <field-name>singleSignOnSettings</field-name>
+          <role>org.codehaus.plexus.security.policy.CookieSettings</role>
+          <role-hint>signon</role-hint>
+          <field-name>signonCookieSettings</field-name>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.security.policy.PasswordRule</role>

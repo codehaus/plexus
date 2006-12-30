@@ -29,13 +29,7 @@ public class SecuritySystemConstants
      */
     public static final String SECURITY_SESSION_KEY = "securitySession";
 
-    /**
-     * Cookie key for the Remember Me functionality.
-     */
-    public static final String REMEMBER_ME_KEY = "securityRememberMe";
-    
-    /**
-     * Cookie key for the Single Sign On functionality.
-     */
-    public static final String SINGLE_SIGN_ON_KEY = "securitySingleSignOn";
+    private SecuritySystemConstants()
+    {
+    }
 }

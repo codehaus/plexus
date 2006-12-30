@@ -21,6 +21,7 @@ import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.interceptor.Interceptor;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.TokenBasedAuthenticationDataSource;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.policy.AccountLockedException;
@@ -29,7 +30,6 @@ import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.system.SecuritySystemConstants;
 import org.codehaus.plexus.security.ui.web.util.AutoLoginCookies;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.util.StringUtils;
 
 import javax.servlet.http.HttpSession;
 
@@ -81,35 +81,70 @@ public class AutoLoginInterceptor
         {
             // User already authenticated.
             getLogger().debug( "User already authenticated." );
-            return invocation.invoke();
-        }
 
-        if ( autologinCookies.isRememberMeEnabled() )
+            checkCookieConsistency( securitySession );
+        }
+        else
         {
-            AuthenticationKey authkey = autologinCookies.getRememberMeKey();
+            AuthenticationKey authkey = autologinCookies.getSignonKey();
 
             if ( authkey != null )
             {
-                String result = performLogin( authkey );
-
-                if ( StringUtils.isNotEmpty( result ) )
+                try
                 {
-                    return result;
+                    securitySession = checkAuthentication( authkey );
+
+                    if ( securitySession != null && securitySession.isAuthenticated() )
+                    {
+                        checkCookieConsistency( securitySession );
+
+                        if ( securitySession.getUser().isPasswordChangeRequired() )
+                        {
+                            return PASSWORD_CHANGE;
+                        }
+                    }
+                    else
+                    {
+                        autologinCookies.removeSingleSignon();
+                        autologinCookies.removeRememberMe();
+                    }
+                }
+                catch ( AccountLockedException e )
+                {
+                    getLogger().info( "Account Locked : Username [" + e.getUser().getUsername() + "]", e );
+                    autologinCookies.removeSingleSignon();
+                    autologinCookies.removeRememberMe();
+                    return ACCOUNT_LOCKED;
                 }
             }
-        }
-
-        if ( autologinCookies.isSingleSignonEnabled() )
-        {
-            AuthenticationKey authkey = autologinCookies.getSingleSignonKey();
-
-            if ( authkey != null )
+            else if ( autologinCookies.isRememberMeEnabled() )
             {
-                String result = performLogin( authkey );
+                authkey = autologinCookies.getRememberMeKey();
 
-                if ( StringUtils.isNotEmpty( result ) )
+                if ( authkey != null )
                 {
-                    return result;
+                    try
+                    {
+                        securitySession = checkAuthentication( authkey );
+
+                        if ( securitySession != null && securitySession.isAuthenticated() )
+                        {
+                            if ( securitySession.getUser().isPasswordChangeRequired() )
+                            {
+                                return PASSWORD_CHANGE;
+                            }
+                        }
+                        else
+                        {
+                            autologinCookies.removeRememberMe();
+                        }
+                    }
+                    catch ( AccountLockedException e )
+                    {
+                        getLogger().info( "Account Locked : Username [" + e.getUser().getUsername() + "]", e );
+                        autologinCookies.removeRememberMe();
+                        return ACCOUNT_LOCKED;
+                    }
                 }
             }
         }
@@ -117,42 +152,69 @@ public class AutoLoginInterceptor
         return invocation.invoke();
     }
 
-    private String performLogin( AuthenticationKey authkey )
+    private void checkCookieConsistency( SecuritySession securitySession )
     {
-        getHttpSession().removeAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY );
-        getLogger().debug( "Removing session:" + SecuritySystemConstants.SECURITY_SESSION_KEY );
-
-        try
+        String username = securitySession.getUser().getUsername();
+        
+        AuthenticationKey key = autologinCookies.getRememberMeKey();
+        if ( key != null )
         {
-            getLogger().info( "Performing Login." );
-            TokenBasedAuthenticationDataSource authsource = new TokenBasedAuthenticationDataSource();
-            authsource.setPrincipal( authkey.getForPrincipal() );
-            authsource.setToken( authkey.getKey() );
-
-            SecuritySession securitySession = securitySystem.authenticate( authsource );
-
-            if ( securitySession.getAuthenticationResult().isAuthenticated() )
+            if ( !key.getForPrincipal().equals( username ) )
             {
-                getLogger().info( "Login success." );
-                // Success!  Create tokens.
-                setAuthTokens( securitySession );
-
-                if ( securitySession.getUser().isPasswordChangeRequired() )
+                removeCookiesAndSession();
+            }
+        }
+        else
+        {
+            key = autologinCookies.getSignonKey();
+            if ( key != null )
+            {
+                if ( !key.getForPrincipal().equals( username ) )
                 {
-                    return PASSWORD_CHANGE;
+                    removeCookiesAndSession();
                 }
             }
             else
             {
-                getLogger().info( "Login Action failed against principal : " +
-                    securitySession.getAuthenticationResult().getPrincipal(),
-                                  securitySession.getAuthenticationResult().getException() );
+                removeCookiesAndSession();
             }
         }
-        catch ( AccountLockedException e )
+    }
+
+    private SecuritySession checkAuthentication( AuthenticationKey authkey )
+        throws AccountLockedException
+    {
+        SecuritySession securitySession = null;
+        getLogger().debug( "Logging in with an authentication key: " + authkey.getForPrincipal() );
+        TokenBasedAuthenticationDataSource authsource = new TokenBasedAuthenticationDataSource();
+        authsource.setPrincipal( authkey.getForPrincipal() );
+        authsource.setToken( authkey.getKey() );
+
+        try
         {
-            getLogger().info( "Account Locked : Username [" + e.getUser().getUsername() + "]", e );
-            return ACCOUNT_LOCKED;
+            securitySession = securitySystem.authenticate( authsource );
+
+            if ( securitySession.isAuthenticated() )
+            {
+                // TODO: this should not happen if there is a password change required,
+                //  ... but that requires that we somehow secure the password change action
+                // (by entering the old password - check if this already happens?)
+                getLogger().debug( "Login success." );
+
+                HttpSession session = ServletActionContext.getRequest().getSession( true );
+                session.setAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
+                getLogger().debug(
+                    "Setting session:" + SecuritySystemConstants.SECURITY_SESSION_KEY + " to " + securitySession );
+
+                autologinCookies.setSingleSignon( authkey.getForPrincipal() );
+            }
+            else
+            {
+                AuthenticationResult result = securitySession.getAuthenticationResult();
+                getLogger().info( "Login interceptor failed against principal : " + result.getPrincipal(),
+                                  result.getException() );
+            }
+
         }
         catch ( AuthenticationException e )
         {
@@ -160,37 +222,21 @@ public class AutoLoginInterceptor
         }
         catch ( UserNotFoundException e )
         {
-            getLogger().info( "User Not Found.", e );
+            getLogger().info( "User Not Found: " + authkey.getForPrincipal(), e );
         }
-
-        return null;
+        return securitySession;
     }
 
-    private void setAuthTokens( SecuritySession securitySession )
+    private void removeCookiesAndSession()
     {
-        if ( securitySession == null )
+        autologinCookies.removeRememberMe();
+        autologinCookies.removeSingleSignon();
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        if ( session != null )
         {
-            throw new NullPointerException( "securitySession must not be null" );
+            session.removeAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY );
         }
-
-        HttpSession session = getHttpSession();
-        session.setAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession );
-        getLogger().debug(
-            "Setting session:" + SecuritySystemConstants.SECURITY_SESSION_KEY + " to " + securitySession );
-
-        if ( securitySession.getUser() != null )
-        {
-            Object principal = securitySession.getUser().getPrincipal();
-            if ( principal != null )
-            {
-                autologinCookies.setSingleSignon( principal.toString() );
-            }
-        }
-    }
-
-    private HttpSession getHttpSession()
-    {
-        return ServletActionContext.getRequest().getSession( true );
     }
 
     private SecuritySession getSecuritySession()

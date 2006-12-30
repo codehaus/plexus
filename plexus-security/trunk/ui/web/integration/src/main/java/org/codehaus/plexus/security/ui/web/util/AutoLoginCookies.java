@@ -24,11 +24,13 @@ import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.keys.KeyManager;
 import org.codehaus.plexus.security.keys.KeyManagerException;
 import org.codehaus.plexus.security.keys.KeyNotFoundException;
+import org.codehaus.plexus.security.policy.CookieSettings;
 import org.codehaus.plexus.security.system.SecuritySystem;
-import org.codehaus.plexus.security.system.SecuritySystemConstants;
 import org.codehaus.plexus.util.StringUtils;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * AutoLoginCookies
@@ -48,17 +50,20 @@ public class AutoLoginCookies
 
     private boolean rememberMeEnabled;
 
-    private boolean singleSignonEnabled;
+    /**
+     * Cookie key for the Remember Me functionality.
+     */
+    private static final String REMEMBER_ME_KEY = "rbkRememberMe";
 
-    public AutoLoginCookies()
-    {
-    }
+    /**
+     * Cookie key for the signon cookie.
+     */
+    private static final String SIGNON_KEY = "rbkSignon";
 
     public void initialize()
         throws InitializationException
     {
-        rememberMeEnabled = securitySystem.getPolicy().getRememberMeSettings().isEnabled();
-        singleSignonEnabled = securitySystem.getPolicy().getSingleSignOnSettings().isEnabled();
+        rememberMeEnabled = securitySystem.getPolicy().getRememberMeCookieSettings().isEnabled();
     }
 
     public AuthenticationKey getRememberMeKey()
@@ -69,11 +74,11 @@ public class AutoLoginCookies
         }
 
         Cookie rememberMeCookie =
-            CookieUtils.getCookie( ServletActionContext.getRequest(), SecuritySystemConstants.REMEMBER_ME_KEY );
+            getCookie( ServletActionContext.getRequest(), REMEMBER_ME_KEY );
 
         if ( rememberMeCookie == null )
         {
-            getLogger().debug( "Remember Me Cookie Not Found: " + SecuritySystemConstants.REMEMBER_ME_KEY );
+            getLogger().debug( "Remember Me Cookie Not Found: " + REMEMBER_ME_KEY );
             return null;
         }
 
@@ -82,7 +87,7 @@ public class AutoLoginCookies
 
         getLogger().info( "Found remember me cookie : " + providedKey );
 
-        return findAuthKey( SecuritySystemConstants.REMEMBER_ME_KEY, providedKey, getDomain(), getWebappContext() );
+        return findAuthKey( REMEMBER_ME_KEY, providedKey, getDomain(), getWebappContext() );
     }
 
     public void setRememberMe( String principal )
@@ -94,13 +99,19 @@ public class AutoLoginCookies
 
         try
         {
-            int timeout = securitySystem.getPolicy().getRememberMeSettings().getCookieTimeout();
+            int timeout = securitySystem.getPolicy().getRememberMeCookieSettings().getCookieTimeout();
             KeyManager keyManager = securitySystem.getKeyManager();
             AuthenticationKey authkey = keyManager.createKey( principal, "Remember Me Key", timeout );
 
-            CookieUtils.setCookie( ServletActionContext.getResponse(), getDomain(),
-                                   SecuritySystemConstants.REMEMBER_ME_KEY, authkey.getKey(), getWebappContext(),
-                                   timeout );
+            Cookie cookie = new Cookie( REMEMBER_ME_KEY, authkey.getKey() );
+            if ( timeout > 0 )
+            {
+                cookie.setMaxAge( timeout );
+            }
+            cookie.setDomain( getDomain() );
+            cookie.setPath( getWebappContext() );
+            ServletActionContext.getResponse().addCookie( cookie );
+
         }
         catch ( KeyManagerException e )
         {
@@ -110,23 +121,17 @@ public class AutoLoginCookies
 
     public void removeRememberMe()
     {
-        CookieUtils.setCookie( ServletActionContext.getResponse(), getDomain(), SecuritySystemConstants.REMEMBER_ME_KEY,
-                               "-", getWebappContext(), 0 );
+        removeCookie( ServletActionContext.getResponse(), REMEMBER_ME_KEY, getDomain(),
+                      getWebappContext() );
     }
 
-    public AuthenticationKey getSingleSignonKey()
+    public AuthenticationKey getSignonKey()
     {
-        if ( !singleSignonEnabled )
-        {
-            return null;
-        }
-
-        Cookie ssoCookie =
-            CookieUtils.getCookie( ServletActionContext.getRequest(), SecuritySystemConstants.SINGLE_SIGN_ON_KEY );
+        Cookie ssoCookie = getCookie( ServletActionContext.getRequest(), SIGNON_KEY );
 
         if ( ssoCookie == null )
         {
-            getLogger().debug( "Single Sign On Cookie Not Found: " + SecuritySystemConstants.SINGLE_SIGN_ON_KEY );
+            getLogger().debug( "Single Sign On Cookie Not Found: " + SIGNON_KEY );
             return null;
         }
 
@@ -136,29 +141,28 @@ public class AutoLoginCookies
 
         getLogger().info( "Found sso cookie : " + providedKey );
 
-        return findAuthKey( SecuritySystemConstants.SINGLE_SIGN_ON_KEY, providedKey, getDomain(), "/" );
+        CookieSettings settings = securitySystem.getPolicy().getSignonCookieSettings();
+        return findAuthKey( SIGNON_KEY, providedKey, settings.getDomain(),
+                            settings.getPath() );
     }
 
     public void setSingleSignon( String principal )
     {
-        if ( !singleSignonEnabled )
-        {
-            return;
-        }
-
         try
         {
-            int timeout = securitySystem.getPolicy().getSingleSignOnSettings().getCookieTimeout();
+            int timeout = securitySystem.getPolicy().getSignonCookieSettings().getCookieTimeout();
             KeyManager keyManager = securitySystem.getKeyManager();
-            AuthenticationKey authkey = keyManager.createKey( principal, "Single Sign On Key", timeout );
+            AuthenticationKey authkey = keyManager.createKey( principal, "Signon Session Key", timeout );
 
             /* The path must remain as "/" in order for SSO to work on installations where the only
              * all of the servers are installed into the same web container but under different 
              * web contexts.
              */
-            CookieUtils.setCookie( ServletActionContext.getResponse(), getDomain(),
-                                   SecuritySystemConstants.SINGLE_SIGN_ON_KEY, authkey.getKey(), "/",
-                                   CookieUtils.SESSION_COOKIE );
+            Cookie cookie = new Cookie( SIGNON_KEY, authkey.getKey() );
+            cookie.setDomain( getDomain() );
+            cookie.setPath( "/" );
+            ServletActionContext.getResponse().addCookie( cookie );
+
         }
         catch ( KeyManagerException e )
         {
@@ -169,8 +173,8 @@ public class AutoLoginCookies
 
     public void removeSingleSignon()
     {
-        CookieUtils.setCookie( ServletActionContext.getResponse(), getDomain(),
-                               SecuritySystemConstants.SINGLE_SIGN_ON_KEY, "-", "/", 0 );
+        removeCookie( ServletActionContext.getResponse(), SIGNON_KEY, getDomain(),
+                      "/" );
     }
 
     /**
@@ -272,12 +276,7 @@ public class AutoLoginCookies
         return rememberMeEnabled;
     }
 
-    public boolean isSingleSignonEnabled()
-    {
-        return singleSignonEnabled;
-    }
-
-    private AuthenticationKey findAuthKey( String cookieName, String providedKey, String domain, String webcontext )
+    private AuthenticationKey findAuthKey( String cookieName, String providedKey, String domain, String path )
     {
         try
         {
@@ -292,7 +291,7 @@ public class AutoLoginCookies
             getLogger().info( "Invalid AuthenticationKey " + providedKey + " submitted. Invalidating cookie." );
 
             // Invalid Cookie.  Remove it.
-            CookieUtils.setCookie( ServletActionContext.getResponse(), domain, cookieName, "-", webcontext, 0 );
+            removeCookie( ServletActionContext.getResponse(), cookieName, domain, path );
         }
         catch ( KeyManagerException e )
         {
@@ -300,5 +299,33 @@ public class AutoLoginCookies
         }
 
         return null;
+    }
+
+    private static Cookie getCookie( HttpServletRequest request, String name )
+    {
+        Cookie[] cookies = request.getCookies();
+
+        Cookie cookie = null;
+        if ( cookies != null && !StringUtils.isEmpty( name ) )
+        {
+            for ( int i = 0; i < cookies.length && cookie == null; i++ )
+            {
+                if ( StringUtils.equals( name, cookies[i].getName() ) )
+                {
+                    cookie = cookies[i];
+                }
+            }
+        }
+
+        return cookie;
+    }
+
+    private static void removeCookie( HttpServletResponse response, String cookieName, String domain, String path )
+    {
+        Cookie cookie = new Cookie( cookieName, "" );
+        cookie.setMaxAge( 0 );
+        cookie.setDomain( domain );
+        cookie.setPath( path );
+        response.addCookie( cookie );
     }
 }
