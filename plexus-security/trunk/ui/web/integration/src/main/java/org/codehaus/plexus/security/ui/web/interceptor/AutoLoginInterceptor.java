@@ -155,29 +155,42 @@ public class AutoLoginInterceptor
     private void checkCookieConsistency( SecuritySession securitySession )
     {
         String username = securitySession.getUser().getUsername();
-        
+
+        boolean failed = false;
+
         AuthenticationKey key = autologinCookies.getRememberMeKey();
         if ( key != null )
         {
             if ( !key.getForPrincipal().equals( username ) )
             {
-                removeCookiesAndSession();
+                getLogger().debug( "Login invalidated: remember me cookie was for " + key.getForPrincipal() +
+                    "; but session was for " + username );
+                failed = true;
             }
         }
-        else
+
+        if ( !failed )
         {
             key = autologinCookies.getSignonKey();
             if ( key != null )
             {
                 if ( !key.getForPrincipal().equals( username ) )
                 {
-                    removeCookiesAndSession();
+                    getLogger().debug( "Login invalidated: signon cookie was for " + key.getForPrincipal() +
+                        "; but session was for " + username );
+                    failed = true;
                 }
             }
             else
             {
-                removeCookiesAndSession();
+                getLogger().debug( "Login invalidated: signon cookie was removed" );
+                failed = true;
             }
+        }
+
+        if ( failed )
+        {
+            removeCookiesAndSession();
         }
     }
 
@@ -206,7 +219,7 @@ public class AutoLoginInterceptor
                 getLogger().debug(
                     "Setting session:" + SecuritySystemConstants.SECURITY_SESSION_KEY + " to " + securitySession );
 
-                autologinCookies.setSingleSignon( authkey.getForPrincipal() );
+                autologinCookies.setSignonCookie( authkey.getForPrincipal() );
             }
             else
             {
