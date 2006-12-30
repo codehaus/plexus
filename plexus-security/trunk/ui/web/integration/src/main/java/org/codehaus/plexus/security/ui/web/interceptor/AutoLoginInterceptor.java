@@ -105,15 +105,15 @@ public class AutoLoginInterceptor
                     }
                     else
                     {
-                        autologinCookies.removeSingleSignon();
-                        autologinCookies.removeRememberMe();
+                        autologinCookies.removeSignonCookie();
+                        autologinCookies.removeRememberMeCookie();
                     }
                 }
                 catch ( AccountLockedException e )
                 {
                     getLogger().info( "Account Locked : Username [" + e.getUser().getUsername() + "]", e );
-                    autologinCookies.removeSingleSignon();
-                    autologinCookies.removeRememberMe();
+                    autologinCookies.removeSignonCookie();
+                    autologinCookies.removeRememberMeCookie();
                     return ACCOUNT_LOCKED;
                 }
             }
@@ -136,13 +136,13 @@ public class AutoLoginInterceptor
                         }
                         else
                         {
-                            autologinCookies.removeRememberMe();
+                            autologinCookies.removeRememberMeCookie();
                         }
                     }
                     catch ( AccountLockedException e )
                     {
                         getLogger().info( "Account Locked : Username [" + e.getUser().getUsername() + "]", e );
-                        autologinCookies.removeRememberMe();
+                        autologinCookies.removeRememberMeCookie();
                         return ACCOUNT_LOCKED;
                     }
                 }
@@ -242,8 +242,8 @@ public class AutoLoginInterceptor
 
     private void removeCookiesAndSession()
     {
-        autologinCookies.removeRememberMe();
-        autologinCookies.removeSingleSignon();
+        autologinCookies.removeRememberMeCookie();
+        autologinCookies.removeSignonCookie();
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         if ( session != null )

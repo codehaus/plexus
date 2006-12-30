@@ -43,8 +43,8 @@ public class LogoutAction
 
     public String logout()
     {
-        autologinCookies.removeRememberMe();
-        autologinCookies.removeSingleSignon();
+        autologinCookies.removeRememberMeCookie();
+        autologinCookies.removeSignonCookie();
 
         setAuthTokens( null );
 
