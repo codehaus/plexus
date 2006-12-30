@@ -31,7 +31,7 @@ import org.codehaus.plexus.security.ui.web.util.AutoLoginCookies;
  * instantiation-strategy="per-lookup"
  */
 public class LogoutAction
-    extends AbstractAuthenticationAction
+    extends AbstractSecurityAction
 {
     // Result Names.
     private static final String LOGOUT = "security-logout";
