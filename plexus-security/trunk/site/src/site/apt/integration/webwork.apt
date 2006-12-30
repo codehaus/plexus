@@ -294,7 +294,7 @@ Plexus Security Webwork Integration
     <component>
       <role>org.codehaus.plexus.security.policy.CookieSettings</role>
       <role-hint>rememberMe</role-hint>
-      <implementation>org.codehaus.plexus.security.policy.RememberMeSettings</implementation>
+      <implementation>org.codehaus.plexus.security.policy.RememberMeCookieSettings</implementation>
       <description>DefaultRememberMeSettings</description>
       <configuration>
         <enabled>true</enabled>
