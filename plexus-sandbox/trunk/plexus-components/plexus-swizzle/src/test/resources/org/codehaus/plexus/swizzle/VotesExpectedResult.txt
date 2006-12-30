@@ -5,10 +5,11 @@
   </properties>
   <body>
     <section name="Issue Tracking Votes">
+      <h3>Swizzle <a href="http://jira.codehaus.org/browse/SWIZZLE?report=com.atlassian.jira.plugin.system.project:roadmap-panel">(Road Map)</a></h3>
       <table>
         <tr>
-          <th>2</th>
-          <th>Swizzle</th>
+          <th>TOTAL VOTES: 2</th>
+          <th>DESCRIPTION</th>
         </tr>
         <tr>
           <td>2</td>
