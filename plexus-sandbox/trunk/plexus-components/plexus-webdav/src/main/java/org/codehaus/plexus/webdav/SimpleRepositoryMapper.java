@@ -110,6 +110,11 @@ public class SimpleRepositoryMapper
 
     private String trimTrailingSlashes( String string )
     {
+        if ( string == null )
+        {
+            return null;
+        }
+
         while ( string.endsWith( "/" ) )
         {
             string = string.substring( 0, string.length() - 1 );
