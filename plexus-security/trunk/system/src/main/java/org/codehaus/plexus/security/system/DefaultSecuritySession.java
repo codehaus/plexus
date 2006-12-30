@@ -29,6 +29,7 @@ public class DefaultSecuritySession
 
     private User user;
 
+    // TODO: ambiguity between this authenticated and authentication result's authenticated is dangerous
     private boolean authenticated;
 
     public DefaultSecuritySession()
