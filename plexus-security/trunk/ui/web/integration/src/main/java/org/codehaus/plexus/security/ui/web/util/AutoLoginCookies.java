@@ -107,7 +107,7 @@ public class AutoLoginCookies
         }
     }
 
-    public void removeRememberMe()
+    public void removeRememberMeCookie()
     {
         CookieSettings settings = securitySystem.getPolicy().getRememberMeCookieSettings();
         removeCookie( ServletActionContext.getResponse(), REMEMBER_ME_KEY, settings.getDomain(), settings.getPath() );
@@ -157,7 +157,7 @@ public class AutoLoginCookies
         }
     }
 
-    public void removeSingleSignon()
+    public void removeSignonCookie()
     {
         CookieSettings settings = securitySystem.getPolicy().getSignonCookieSettings();
         removeCookie( ServletActionContext.getResponse(), SIGNON_KEY, settings.getDomain(), settings.getPath() );
