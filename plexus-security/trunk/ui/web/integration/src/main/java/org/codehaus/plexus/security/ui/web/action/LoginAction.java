@@ -18,14 +18,21 @@ package org.codehaus.plexus.security.ui.web.action;
 
 import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.TokenBasedAuthenticationDataSource;
+import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
+import org.codehaus.plexus.security.authentication.AuthenticationResult;
+import org.codehaus.plexus.security.authentication.AuthenticationConstants;
+import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.keys.KeyManagerException;
 import org.codehaus.plexus.security.keys.KeyNotFoundException;
 import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+import org.codehaus.plexus.security.ui.web.util.AutoLoginCookies;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -39,8 +46,15 @@ import org.codehaus.plexus.util.StringUtils;
  * instantiation-strategy="per-lookup"
  */
 public class LoginAction
-    extends AbstractAuthenticationAction
+    extends AbstractSecurityAction
 {
+    private static final String LOGIN_SUCCESS = "security-login-success";
+
+    private static final String LOGIN_CANCEL = "security-login-cancel";
+
+    private static final String PASSWORD_CHANGE = "must-change-password";
+
+    private static final String ACCOUNT_LOCKED = "security-login-locked";
 
     // ------------------------------------------------------------------
     // Plexus Component Requirements
@@ -62,6 +76,11 @@ public class LoginAction
     private String resetPassword;
 
     private boolean rememberMe;
+
+    /**
+     * @plexus.requirement
+     */
+    private AutoLoginCookies autologinCookies;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
@@ -101,7 +120,7 @@ public class LoginAction
         authdatasource.setPrincipal( username );
         authdatasource.setPassword( password );
 
-        return webLogin( securitySystem, authdatasource, rememberMe );
+        return webLogin( authdatasource, rememberMe );
     }
 
     public String resetPassword()
@@ -127,7 +146,7 @@ public class LoginAction
 
             securitySystem.getUserManager().updateUser( user );
 
-            return webLogin( securitySystem, authsource, false );
+            return webLogin( authsource, false );
         }
         catch ( KeyNotFoundException e )
         {
@@ -172,7 +191,7 @@ public class LoginAction
 
             securitySystem.getUserManager().updateUser( user );
 
-            return webLogin( securitySystem, authsource, false );
+            return webLogin( authsource, false );
         }
         catch ( KeyNotFoundException e )
         {
@@ -255,5 +274,79 @@ public class LoginAction
     public void setRememberMe( boolean rememberMe )
     {
         this.rememberMe = rememberMe;
+    }
+
+    private String webLogin( AuthenticationDataSource authdatasource, boolean rememberMe )
+    {
+        // An attempt should log out your authentication tokens first!
+        setAuthTokens( null );
+
+        clearErrorsAndMessages();
+
+        // TODO: share this section with AutoLoginInterceptor
+        try
+        {
+            SecuritySession securitySession = securitySystem.authenticate( authdatasource );
+
+            if ( securitySession.getAuthenticationResult().isAuthenticated() )
+            {
+                // TODO: this should not happen if there is a password change required - but the password change action needs to log the user in on success to swap them
+                // Success!  Create tokens.
+                setAuthTokens( securitySession );
+
+                if ( rememberMe )
+                {
+                    autologinCookies.setRememberMeCookie( authdatasource.getPrincipal() );
+                }
+                autologinCookies.setSignonCookie( authdatasource.getPrincipal() );
+
+                if ( securitySession.getUser().isPasswordChangeRequired() )
+                {
+                    return PASSWORD_CHANGE;
+                }
+
+                return LOGIN_SUCCESS;
+            }
+            else
+            {
+                getLogger().debug( "Login Action failed against principal : " +
+                    securitySession.getAuthenticationResult().getPrincipal(),
+                                   securitySession.getAuthenticationResult().getException() );
+
+                AuthenticationResult result = securitySession.getAuthenticationResult();
+                if ( result.getExceptionsMap() != null && !result.getExceptionsMap().isEmpty() )
+                {
+                    if ( result.getExceptionsMap().get( AuthenticationConstants.AUTHN_NO_SUCH_USER ) != null )
+                    {
+                        addActionError( "You have entered an incorrect username and/or password" );
+                    }
+                    else
+                    {
+                        addActionError( "Authentication failed" );
+                    }
+                }
+                else
+                {
+                    addActionError( "Authentication failed" );
+                }
+
+                return ERROR;
+            }
+        }
+        catch ( AuthenticationException ae )
+        {
+            addActionError( ae.getMessage() );
+            return ERROR;
+        }
+        catch ( UserNotFoundException ue )
+        {
+            addActionError( ue.getMessage() );
+            return ERROR;
+        }
+        catch ( AccountLockedException e )
+        {
+            addActionError( "Your Account is Locked." );
+            return ACCOUNT_LOCKED;
+        }
     }
 }

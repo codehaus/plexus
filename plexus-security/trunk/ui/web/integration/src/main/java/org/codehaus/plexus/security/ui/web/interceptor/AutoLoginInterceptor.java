@@ -209,9 +209,7 @@ public class AutoLoginInterceptor
 
             if ( securitySession.isAuthenticated() )
             {
-                // TODO: this should not happen if there is a password change required,
-                //  ... but that requires that we somehow secure the password change action
-                // (by entering the old password - check if this already happens?)
+                // TODO: this should not happen if there is a password change required - but the password change action needs to log the user in on success to swap them
                 getLogger().debug( "Login success." );
 
                 HttpSession session = ServletActionContext.getRequest().getSession( true );
