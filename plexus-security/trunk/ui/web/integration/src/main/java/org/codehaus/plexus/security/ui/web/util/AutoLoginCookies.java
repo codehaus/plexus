@@ -18,8 +18,6 @@ package org.codehaus.plexus.security.ui.web.util;
 
 import com.opensymphony.webwork.ServletActionContext;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.keys.KeyManager;
 import org.codehaus.plexus.security.keys.KeyManagerException;
@@ -41,14 +39,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AutoLoginCookies
     extends AbstractLogEnabled
-    implements Initializable
 {
     /**
      * @plexus.requirement
      */
     private SecuritySystem securitySystem;
-
-    private boolean rememberMeEnabled;
 
     /**
      * Cookie key for the Remember Me functionality.
@@ -60,21 +55,14 @@ public class AutoLoginCookies
      */
     private static final String SIGNON_KEY = "rbkSignon";
 
-    public void initialize()
-        throws InitializationException
-    {
-        rememberMeEnabled = securitySystem.getPolicy().getRememberMeCookieSettings().isEnabled();
-    }
-
     public AuthenticationKey getRememberMeKey()
     {
-        if ( !rememberMeEnabled )
+        if ( !isRememberMeEnabled() )
         {
             return null;
         }
 
-        Cookie rememberMeCookie =
-            getCookie( ServletActionContext.getRequest(), REMEMBER_ME_KEY );
+        Cookie rememberMeCookie = getCookie( ServletActionContext.getRequest(), REMEMBER_ME_KEY );
 
         if ( rememberMeCookie == null )
         {
@@ -87,29 +75,29 @@ public class AutoLoginCookies
 
         getLogger().info( "Found remember me cookie : " + providedKey );
 
-        return findAuthKey( REMEMBER_ME_KEY, providedKey, getDomain(), getWebappContext() );
+        CookieSettings settings = securitySystem.getPolicy().getRememberMeCookieSettings();
+        return findAuthKey( REMEMBER_ME_KEY, providedKey, settings.getDomain(), settings.getPath() );
     }
 
-    public void setRememberMe( String principal )
+    public void setRememberMeCookie( String principal )
     {
-        if ( !rememberMeEnabled )
+        if ( !isRememberMeEnabled() )
         {
             return;
         }
 
         try
         {
-            int timeout = securitySystem.getPolicy().getRememberMeCookieSettings().getCookieTimeout();
+            CookieSettings settings = securitySystem.getPolicy().getRememberMeCookieSettings();
+            int timeout = settings.getCookieTimeout();
             KeyManager keyManager = securitySystem.getKeyManager();
             AuthenticationKey authkey = keyManager.createKey( principal, "Remember Me Key", timeout );
 
-            Cookie cookie = new Cookie( REMEMBER_ME_KEY, authkey.getKey() );
+            Cookie cookie = createCookie( REMEMBER_ME_KEY, authkey.getKey(), settings.getDomain(), settings.getPath() );
             if ( timeout > 0 )
             {
                 cookie.setMaxAge( timeout );
             }
-            cookie.setDomain( getDomain() );
-            cookie.setPath( getWebappContext() );
             ServletActionContext.getResponse().addCookie( cookie );
 
         }
@@ -121,8 +109,8 @@ public class AutoLoginCookies
 
     public void removeRememberMe()
     {
-        removeCookie( ServletActionContext.getResponse(), REMEMBER_ME_KEY, getDomain(),
-                      getWebappContext() );
+        CookieSettings settings = securitySystem.getPolicy().getRememberMeCookieSettings();
+        removeCookie( ServletActionContext.getResponse(), REMEMBER_ME_KEY, settings.getDomain(), settings.getPath() );
     }
 
     public AuthenticationKey getSignonKey()
@@ -142,15 +130,15 @@ public class AutoLoginCookies
         getLogger().info( "Found sso cookie : " + providedKey );
 
         CookieSettings settings = securitySystem.getPolicy().getSignonCookieSettings();
-        return findAuthKey( SIGNON_KEY, providedKey, settings.getDomain(),
-                            settings.getPath() );
+        return findAuthKey( SIGNON_KEY, providedKey, settings.getDomain(), settings.getPath() );
     }
 
-    public void setSingleSignon( String principal )
+    public void setSignonCookie( String principal )
     {
         try
         {
-            int timeout = securitySystem.getPolicy().getSignonCookieSettings().getCookieTimeout();
+            CookieSettings settings = securitySystem.getPolicy().getSignonCookieSettings();
+            int timeout = settings.getCookieTimeout();
             KeyManager keyManager = securitySystem.getKeyManager();
             AuthenticationKey authkey = keyManager.createKey( principal, "Signon Session Key", timeout );
 
@@ -158,9 +146,7 @@ public class AutoLoginCookies
              * all of the servers are installed into the same web container but under different 
              * web contexts.
              */
-            Cookie cookie = new Cookie( SIGNON_KEY, authkey.getKey() );
-            cookie.setDomain( getDomain() );
-            cookie.setPath( "/" );
+            Cookie cookie = createCookie( SIGNON_KEY, authkey.getKey(), settings.getDomain(), settings.getPath() );
             ServletActionContext.getResponse().addCookie( cookie );
 
         }
@@ -173,91 +159,11 @@ public class AutoLoginCookies
 
     public void removeSingleSignon()
     {
-        removeCookie( ServletActionContext.getResponse(), SIGNON_KEY, getDomain(),
-                      "/" );
+        CookieSettings settings = securitySystem.getPolicy().getSignonCookieSettings();
+        removeCookie( ServletActionContext.getResponse(), SIGNON_KEY, settings.getDomain(), settings.getPath() );
     }
 
-    /**
-     * <p/>
-     * Initialize the Domain Parameter of all cookies.
-     * </p>
-     * <p/>
-     * <p/>
-     * The domain parameter is used to specify which hosts (single host, or multiple hosts) within a domain
-     * can access the cookie.
-     * </p>
-     * <p/>
-     * <p/>
-     * If you have a web configuration with multiple servers within the same domain such like...
-     * </p>
-     * <p/>
-     * <ul>
-     * <li>plexus.codehaus.org</li>
-     * <li>svn.codehaus.org</li>
-     * <li>www.codehaus.org</li>
-     * <li>fisheye.codehaus.org</li>
-     * </ul>
-     * <p/>
-     * <p/>
-     * ... and you want all of those hosts to be able to access the domain, then the following string <b>must</b>
-     * be passed into the domain parameter.
-     * </p>
-     * <p/>
-     * <ul>
-     * <li>".codehaus.org"</li>
-     * </ul>
-     * <p/>
-     * <p/>
-     * Per RFC 2109, when using the domain parameter, the use of a "." (dot) character at the start of the
-     * domain parameter indicates a desire to match multiple machines in a domain.  Implementations found in the
-     * popular browsers, proxies, and caches, out an extra restriction on this value in that it must contain at least
-     * 2 "." (dot) characters to be treated as a multi-machine domain parameter.
-     * </p>
-     * <p/>
-     * <p/>
-     * Examples:
-     * </p>
-     * <p/>
-     * <pre>
-     *    "plexus.codehaus.org"   - (single host) matches only on "plexus.codehaus.org"
-     *    ".codehaus.org"         - (multi host) matches on "*.codehaus.org"
-     *    ".svn.codehaus.org"     - (multi host) matches on "*.svn.codehaus.org"
-     *    "localhost"             - (single host) matches only on "localhost"
-     *    ".com"                  - (single host) matches only on "com"
-     * </pre>
-     * <p/>
-     * <p/>
-     * It is important to note that all browser based cookie implementations impose a security check to ensure that
-     * only members of the domain that tries to set set the cookie can issue a cookie for that domain.
-     * For example, a server called plexus.codehaus.org cannot set a cookie for the domain google.com.
-     * </p>
-     * <p/>
-     * <p/>
-     * This implementation utilizes the HttpServletRequest.getServerName() so that various web techniques such as
-     * aliases, virtual hosts, clusters, load balancing, proxying, etc.. will work correctly.
-     * </p>
-     */
-    public String getDomain()
-    {
-        // Calculate the domain.
-        String domain = "." + ServletActionContext.getRequest().getServerName();
-
-        int idx = domain.lastIndexOf( '.' );
-        if ( idx > 0 )
-        {
-            // domain has a dot.
-            idx = domain.lastIndexOf( '.', idx - 1 );
-            if ( idx > 0 )
-            {
-                // domain has second dot. trim it.
-                domain = domain.substring( idx );
-            }
-        }
-
-        return domain;
-    }
-
-    public String getWebappContext()
+    private static String getWebappContext()
     {
         // Calculate the webapp context.
         String webappContext = ServletActionContext.getRequest().getContextPath();
@@ -273,7 +179,7 @@ public class AutoLoginCookies
 
     public boolean isRememberMeEnabled()
     {
-        return rememberMeEnabled;
+        return securitySystem.getPolicy().getRememberMeCookieSettings().isEnabled();
     }
 
     private AuthenticationKey findAuthKey( String cookieName, String providedKey, String domain, String path )
@@ -322,10 +228,27 @@ public class AutoLoginCookies
 
     private static void removeCookie( HttpServletResponse response, String cookieName, String domain, String path )
     {
-        Cookie cookie = new Cookie( cookieName, "" );
+        Cookie cookie = createCookie( cookieName, "", domain, path );
         cookie.setMaxAge( 0 );
-        cookie.setDomain( domain );
-        cookie.setPath( path );
         response.addCookie( cookie );
+    }
+
+    private static Cookie createCookie( String cookieName, String value, String domain, String path )
+    {
+        Cookie cookie = new Cookie( cookieName, value );
+        if ( domain != null )
+        {
+            cookie.setDomain( domain );
+        }
+        if ( path != null )
+        {
+            cookie.setPath( path );
+        }
+        else
+        {
+            // default to the context path, otherwise you get /security and such in some places
+            cookie.setPath( getWebappContext() );
+        }
+        return cookie;
     }
 }

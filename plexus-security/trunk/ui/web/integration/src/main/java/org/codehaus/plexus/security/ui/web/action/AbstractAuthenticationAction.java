@@ -65,8 +65,8 @@ public abstract class AbstractAuthenticationAction
                 // Success!  Create tokens.
                 setAuthTokens( securitySession );
 
-                autologinCookies.setRememberMe( authdatasource.getPrincipal() );
-                autologinCookies.setSingleSignon( authdatasource.getPrincipal() );
+                autologinCookies.setRememberMeCookie( authdatasource.getPrincipal() );
+                autologinCookies.setSignonCookie( authdatasource.getPrincipal() );
 
                 if ( securitySession.getUser().isPasswordChangeRequired() )
                 {
