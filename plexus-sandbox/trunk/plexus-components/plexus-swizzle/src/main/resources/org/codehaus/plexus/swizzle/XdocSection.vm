@@ -19,7 +19,7 @@
 #foreach( $issue in $project.attributes.issues.descending("votes") )
           <tr>
             <td>$issue.votes</td>
-            <td><a href="${jiraServerUrl}/browse/${issue.key}"><![CDATA[$issue.summary]]></a></td>
+            <td><a href="${jiraServerUrl}/browse/${issue.key}">[${issue.key}]</a> <![CDATA[$issue.summary]]></td>
           </tr>
 #end
 #end

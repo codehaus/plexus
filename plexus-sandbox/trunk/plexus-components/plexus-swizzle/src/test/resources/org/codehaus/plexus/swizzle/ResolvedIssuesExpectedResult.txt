@@ -6,43 +6,43 @@
   <body>
     <section name="Issues Resolved for Swizzle [*]">
       <ul>
-        <li>[SWIZZLE-1] <![CDATA[Unit Test Summary]]></li>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-1">[SWIZZLE-1]</a> <![CDATA[Unit Test Summary]]></li>
       </ul>
       <ul>
-        <li>[SWIZZLE-6] <![CDATA[Fix the toilet]]></li>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-6">[SWIZZLE-6]</a> <![CDATA[Fix the toilet]]></li>
       </ul>
       <ul>
-        <li>[SWIZZLE-9] <![CDATA[Clean the pool]]></li>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-9">[SWIZZLE-9]</a> <![CDATA[Clean the pool]]></li>
       </ul>
       <ul>
-        <li>[SWIZZLE-2] <![CDATA[Need Wilhemina to get some things from the store]]></li>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-2">[SWIZZLE-2]</a> <![CDATA[Need Wilhemina to get some things from the store]]></li>
       </ul>
       <ul>
-        <li>[SWIZZLE-3] <![CDATA[a loaf of bread]]></li>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-3">[SWIZZLE-3]</a> <![CDATA[a loaf of bread]]></li>
       </ul>
       <ul>
-        <li>[SWIZZLE-4] <![CDATA[a container of milk]]></li>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-4">[SWIZZLE-4]</a> <![CDATA[a container of milk]]></li>
       </ul>
       <ul>
-        <li>[SWIZZLE-5] <![CDATA[a stick of butter]]></li>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-5">[SWIZZLE-5]</a> <![CDATA[a stick of butter]]></li>
       </ul>
       <ul>
-        <li>[SWIZZLE-8] <![CDATA[Get more colored lights for the disco ball]]></li>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-8">[SWIZZLE-8]</a> <![CDATA[Get more colored lights for the disco ball]]></li>
       </ul>
       <ul>
-        <li>[SWIZZLE-10] <![CDATA[Beer fridge for the garage]]></li>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-10">[SWIZZLE-10]</a> <![CDATA[Beer fridge for the garage]]></li>
       </ul>
       <ul>
-        <li>[SWIZZLE-11] <![CDATA[Make sure the smoke alarms work]]></li>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-11">[SWIZZLE-11]</a> <![CDATA[Make sure the smoke alarms work]]></li>
       </ul>
       <ul>
-        <li>[SWIZZLE-12] <![CDATA[Fix whole in the wall]]></li>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-12">[SWIZZLE-12]</a> <![CDATA[Fix whole in the wall]]></li>
       </ul>
       <ul>
-        <li>[SWIZZLE-13] <![CDATA[Test issue with attachments]]></li>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-13">[SWIZZLE-13]</a> <![CDATA[Test issue with attachments]]></li>
       </ul>
       <ul>
-        <li>[SWIZZLE-7] <![CDATA[Put a TV in the bathroom]]></li>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-7">[SWIZZLE-7]</a> <![CDATA[Put a TV in the bathroom]]></li>
       </ul>
     </section>
   </body>
