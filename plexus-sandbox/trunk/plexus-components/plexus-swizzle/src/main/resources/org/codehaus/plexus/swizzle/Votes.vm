@@ -16,10 +16,11 @@
 #set( $project.attributes.issues = $jirarss.issues )
 #end
 #foreach( $project in $projects.descending("@totalVotes") )
+      <h3>$project.name <a href="${jiraServerUrl}/browse/${projectKey}?report=com.atlassian.jira.plugin.system.project:roadmap-panel">(Road Map)</a></h3>
       <table>
         <tr>
-          <th>$project.attributes.totalVotes</th>
-          <th>$project.name</th>
+          <th>TOTAL VOTES: $project.attributes.totalVotes</th>
+          <th>DESCRIPTION</th>
         </tr>
 #foreach( $issue in $project.attributes.issues.descending("votes") )
         <tr>
