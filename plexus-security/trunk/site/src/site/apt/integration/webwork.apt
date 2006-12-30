@@ -6,6 +6,8 @@
 
 Plexus Security Webwork Integration
 
+  <<NOTE>>: This has changed dramatically and may not be correct.
+
  The Webwork integration comes as a war overlay that will integration
  smoothly with your web application through some minor configuration in the
  xwork.xml file and the weaving of the relavent components in the
@@ -255,12 +257,14 @@ Plexus Security Webwork Integration
           <field-name>userValidationSettings</field-name>
         </requirement>
         <requirement>
-          <role>org.codehaus.plexus.security.policy.RememberMeSettings</role>
+          <role>org.codehaus.plexus.security.policy.CookieSettings</role>
+          <role-hint>rememberMe</role-hint>
           <field-name>rememberMeSettings</field-name>
         </requirement>
         <requirement>
-          <role>org.codehaus.plexus.security.policy.SingleSignOnSettings</role>
-          <field-name>singleSignOnSettings</field-name>
+          <role>org.codehaus.plexus.security.policy.CookieSettings</role>
+          <role-hint>signon</role-hint>
+          <field-name>signonCookieSettings</field-name>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.security.policy.PasswordRule</role>
@@ -288,8 +292,9 @@ Plexus Security Webwork Integration
     </component>
 
     <component>
-      <role>org.codehaus.plexus.security.policy.RememberMeSettings</role>
-      <implementation>org.codehaus.plexus.security.policy.DefaultRememberMeSettings</implementation>
+      <role>org.codehaus.plexus.security.policy.CookieSettings</role>
+      <role-hint>rememberMe</role-hint>
+      <implementation>org.codehaus.plexus.security.policy.RememberMeSettings</implementation>
       <description>DefaultRememberMeSettings</description>
       <configuration>
         <enabled>true</enabled>
@@ -298,8 +303,9 @@ Plexus Security Webwork Integration
     </component>
 
     <component>
-      <role>org.codehaus.plexus.security.policy.SingleSignOnSettings</role>
-      <implementation>org.codehaus.plexus.security.policy.DefaultSingleSignOnSettings</implementation>
+      <role>org.codehaus.plexus.security.policy.CookieSettings</role>
+      <role-hint>signon</role-hint>
+      <implementation>org.codehaus.plexus.security.policy.SignonCookieSettings</implementation>
       <description>DefaultSingleSignOnSettings</description>
       <configuration>
         <enabled>true</enabled>

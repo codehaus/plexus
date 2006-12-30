@@ -33,6 +33,7 @@ public class AuthenticationResult
 
     private Object principal;
 
+    // TODO: why aren't these just thrown from the authenticate() method?
     private Exception exception;
 
     private Map exceptionsMap;
