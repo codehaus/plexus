@@ -370,8 +370,8 @@ public class PlexusObjectFactory
      * Used to provide useful exception messages to a web-app during a lookup in {@link #getClassInstance(String)} and
      * {@link #lookup(String, String, Map)}
      * 
-     * @param clazz the type of class to look up
-     * @param className the name of the specific class (or plexus role) to look up.
+     * @param role the component role to look up
+     * @param roleHint the hint for the plexus role (if required).
      * @return the class that was found.
      * 
      * @throws ComponentNotFoundException if the component was simply not found.
