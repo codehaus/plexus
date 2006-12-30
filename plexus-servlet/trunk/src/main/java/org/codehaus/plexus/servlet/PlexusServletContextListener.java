@@ -67,7 +67,7 @@ public class PlexusServletContextListener
         }
         catch ( PlexusContainerException e )
         {
-            throw new RuntimeException( "Could not start the Olexus container.", e );
+            throw new RuntimeException( "Error while starting the Plexus container.", e );
         }
     }
 

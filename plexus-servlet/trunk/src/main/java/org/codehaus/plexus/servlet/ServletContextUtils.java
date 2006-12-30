@@ -93,7 +93,7 @@ public final class ServletContextUtils
         {
             if ( !( o instanceof PlexusContainer ) )
             {
-                throw new RuntimeException( "An attribute with key '" + PlexusConstants.PLEXUS_KEY +
+                throw new PlexusContainerException( "An attribute with key '" + PlexusConstants.PLEXUS_KEY +
                     "' was in the context but it was not an instance of " + PlexusContainer.class.getName() + "." );
             }
 
@@ -213,6 +213,7 @@ public final class ServletContextUtils
     }
 
     private void lookupAddToContextComponents( ServletContext context )
+        throws PlexusContainerException
     {
         String string = context.getInitParameter( PlexusServletUtils.PLEXUS_CONFIG_ADD_TO_CONTEXT );
 
@@ -242,7 +243,7 @@ public final class ServletContextUtils
                 }
                 catch ( ComponentLookupException e )
                 {
-                    throw new RuntimeException( "Error while looking up component '" + role + ":" + roleHint + "'", e );
+                    throw new PlexusContainerException( "Error while looking up component '" + role + ":" + roleHint + "'", e );
                 }
             }
             else
@@ -253,7 +254,7 @@ public final class ServletContextUtils
                 }
                 catch ( ComponentLookupException e )
                 {
-                    throw new RuntimeException( "Error while looking up component '" + token + "'", e );
+                    throw new PlexusContainerException( "Error while looking up component '" + token + "'", e );
                 }
             }
 
