@@ -57,7 +57,7 @@ public class DefaultPlexusIbatisHelper
     {
         if ( resource == null || resource.trim().length() == 0 )
         {
-            throw new InitializationException( "Invalid configuraion, the 'resource' configuration parameter has to be set." );
+            throw new InitializationException( "Invalid configuration, the 'resource' configuration parameter has to be set." );
         }
 
         // -----------------------------------------------------------------------
