@@ -56,7 +56,7 @@ public class PlexusApplicationHost
 
     private ClassWorld classWorld;
 
-    private String configurationResource;
+    private File configurationResource;
 
     // ----------------------------------------------------------------------
     //
@@ -83,7 +83,7 @@ public class PlexusApplicationHost
         start( classWorld, null );
     }
 
-    public void start( ClassWorld classWorld, String configurationResource )
+    public void start( ClassWorld classWorld, File configurationResource )
         throws Exception
     {
         this.classWorld = classWorld;
@@ -109,7 +109,7 @@ public class PlexusApplicationHost
                     throw new Exception( "Unable to find a default configuration file" );
                 }
             }
-            configurationResource = conf.getAbsolutePath();
+            configurationResource = conf;
         }
 
         container = new DefaultPlexusContainer( "appserver", null, configurationResource, classWorld );
@@ -280,7 +280,7 @@ public class PlexusApplicationHost
 
             if ( args.length > 0 )
             {
-                host.start( classWorld, args[0] );
+                host.start( classWorld, new File( args[0] ) );
             }
             else
             {
@@ -309,7 +309,7 @@ public class PlexusApplicationHost
         }
     }
 
-    public String getConfigurationResource()
+    public File getConfigurationResource()
     {
         return configurationResource;
     }
