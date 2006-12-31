@@ -26,6 +26,8 @@ package org.codehaus.plexus.appserver.application.profile;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.classworlds.ClassWorld;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.appserver.service.PlexusService;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -49,6 +52,8 @@ public class AppRuntimeProfile
     private File lib;
 
     private DefaultPlexusContainer applicationContainer;
+
+    private ClassWorld applicationWorld;
 
     private PlexusContainer applicationServerContainer;
 
@@ -72,6 +77,8 @@ public class AppRuntimeProfile
         this.home = home;
 
         this.lib = lib;
+
+        this.applicationWorld = new ClassWorld( "plexus.application." + name, applicationServerContainer.getContainerRealm() );
 
         this.applicationServerContainer = applicationServerContainer;
 
@@ -113,6 +120,22 @@ public class AppRuntimeProfile
     public DefaultPlexusContainer getApplicationContainer()
     {
         return applicationContainer;
+    }
+
+    public ClassWorld getApplicationWorld()
+    {
+        return applicationWorld;
+    }
+
+    public ClassRealm getApplicationRealm()
+    {
+        LinkedList realms = new LinkedList( applicationWorld.getRealms() );
+        if ( realms.size() == 0 )
+        {
+            return null;
+        }
+
+        return (ClassRealm) realms.get( 0 );
     }
 
     public PlexusContainer getApplicationServerContainer()
