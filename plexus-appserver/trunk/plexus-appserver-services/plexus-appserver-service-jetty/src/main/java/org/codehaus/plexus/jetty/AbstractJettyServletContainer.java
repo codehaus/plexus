@@ -25,6 +25,8 @@ package org.codehaus.plexus.jetty;
  */
 
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
+import org.codehaus.plexus.classworlds.realm.NoSuchRealmException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.jetty.configuration.ProxyHttpListener;
@@ -34,6 +36,7 @@ import org.codehaus.plexus.jetty.configuration.ServletContext;
 import org.codehaus.plexus.jetty.configuration.InitParameter;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.util.FileUtils;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.HttpListener;
@@ -50,6 +53,9 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.List;
+import java.util.Vector;
+import java.util.Enumeration;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -179,10 +185,10 @@ public abstract class AbstractJettyServletContainer
         }                   
     }
     
-    public void deployWarDirectory( File directory, DefaultPlexusContainer container, Webapp webapp )
+    public void deployWarDirectory( File directory, AppRuntimeProfile profile, Webapp webapp )
         throws ServletContainerException
     {
-        deployWAR( directory, false, null, container, webapp );
+        deployWAR( directory, false, null, profile, webapp );
     }
 
     public void startApplication( String contextPath )
@@ -324,7 +330,7 @@ public abstract class AbstractJettyServletContainer
         throw new ServletContainerException( "No such context '" + contextPath + "'." );
     }
 
-    private void deployWAR( File war, boolean extractWar, File extractionLocation, DefaultPlexusContainer container,
+    private void deployWAR( File war, boolean extractWar, File extractionLocation, AppRuntimeProfile profile,
                             Webapp webapp )
         throws ServletContainerException
     {
@@ -382,35 +388,34 @@ public abstract class AbstractJettyServletContainer
             if ( standardWebappClassloader )
             {
                 getLogger().info( "Using standard webapp classloader for webapp." );
-
-/*                try
+                try
                 {
                     // We need to start the context to trigger the unpacking so that we can
                     // create a realm. We need to create a realm so that we can discover all
                     // the components in the webapp.
 
-                    ClassRealm realm = container.getContainerRealm();
-*/
-//                    List jars = FileUtils.getFiles( war, "**/*.jar", null );
-/*
+                    ClassRealm realm = profile.getApplicationRealm();
+
+                    List jars = FileUtils.getFiles( war, "**/*.jar", null );
+
                     // The webapp directory needs to be unpacked before we can pick up the files
 
                     for ( Iterator i = jars.iterator(); i.hasNext(); )
                     {
                         File file = (File) i.next();
 
-                        realm.addConstituent( file.toURL() );
+                        realm.addURL( file.toURL() );
                     }
 
                     File webInf = new File( war, "WEB-INF" );
 
-                    realm.addConstituent( webInf.toURL() );
+                    realm.addURL( webInf.toURL() );
 
                     File classes = new File( war, "WEB-INF/classes" );
 
-                    realm.addConstituent( classes.toURL() );
+                    realm.addURL( classes.toURL() );
 
-                    webappContext.setClassLoader( realm.getClassLoader() );
+                    webappContext.setClassLoader( realm );
 
                     classRealms.put( webapp.getContext(), realm );
                 }
@@ -418,13 +423,12 @@ public abstract class AbstractJettyServletContainer
                 {
                     throw new ServletContainerException( "Error creating webapp classloader.", e );
                 }
-*/
             }
             else
             {
                 // Dirty hack, need better methods for classloaders because i can set the core realm but not get it,
                 // or get the container realm but not set it. blah!
-                webappContext.setClassLoader( container.getContainerRealm() );
+                webappContext.setClassLoader( profile.getApplicationRealm() );
             }
 
             // Save the classloader for reloads
@@ -433,6 +437,8 @@ public abstract class AbstractJettyServletContainer
         else
         {
             webappContext = (WebApplicationContext) getContext( webapp.getContext() );
+
+            // TODO: determine if this is really needed now
 
             // We only need to reset the classloader if we're doing standard webapp loading. The stopping
             // of the Jetty context seems to whack the classloader so we need to reset it. If we are
@@ -444,11 +450,31 @@ public abstract class AbstractJettyServletContainer
                 webappContext.setClassLoader( (ClassLoader) classLoaders.get( webapp.getContext() ) );
                 ClassRealm cr = (ClassRealm) classRealms.get( webapp.getContext() );
 
-                container.setContainerRealm( cr );
+                Enumeration realms = new Vector( profile.getApplicationWorld().getRealms() ).elements();
+                while ( realms.hasMoreElements() )
+                {
+                    ClassRealm next = (ClassRealm) realms.nextElement();
+
+                    try
+                    {
+                        profile.getApplicationWorld().disposeRealm( next.getId() );
+                    }
+                    catch ( NoSuchRealmException e )
+                    {
+                        // no problems if it can ever happen
+                    }
+                }
+
+                try
+                {
+                    profile.getApplicationWorld().newRealm( cr.getId(),  cr );
+                }
+                catch ( DuplicateRealmException e )
+                {
+                    // won't happen
+                }
             }
         }
-
-        webappContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY, container );
     }
 
     protected HttpContext addContext( HttpContext context )
