@@ -160,7 +160,7 @@ public class PlexusLifecycleListener
         }
     }
 
-    private String setConfigurationFile( ServletContext ctx )
+    private File setConfigurationFile( ServletContext ctx )
         throws PlexusConfigurationResourceException
     {
         URL url =
@@ -170,7 +170,7 @@ public class PlexusLifecycleListener
         {
             return null;
         }
-        return url.toExternalForm();
+        return new File( url.getFile() );
     }
 
     public void contextDestroyed( ServletContextEvent servletContextEvent )
