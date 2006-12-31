@@ -24,7 +24,7 @@ package org.codehaus.plexus.jetty;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.jetty.configuration.HttpListener;
 import org.codehaus.plexus.jetty.configuration.ProxyHttpListener;
 import org.codehaus.plexus.jetty.configuration.ServletContext;
@@ -64,7 +64,7 @@ public interface ServletContainer
     // For simple document serving
     // ----------------------------------------------------------------------------
 
-    void deployWarDirectory( File directory, DefaultPlexusContainer container, Webapp webapp )
+    void deployWarDirectory( File directory, AppRuntimeProfile profile, Webapp webapp )
         throws ServletContainerException;
 
     public void deployServletContext( ServletContext servletContext )

@@ -153,7 +153,7 @@ public class JettyPlexusService
             {
                 getLogger().info( "Deploying " + webAppDir + " with context path of " + webapp.getContext() );
 
-                servletContainer.deployWarDirectory( webAppDir, appRuntimeProfile.getApplicationContainer(), webapp );
+                servletContainer.deployWarDirectory( webAppDir, appRuntimeProfile, webapp );
             }
             catch ( ServletContainerException e )
             {
