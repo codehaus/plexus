@@ -126,19 +126,19 @@ public class PlexusApplicationHostTest
         File confDir = new File( appserverBase, "conf" );
         confDir.mkdirs();
         File confFile = new File( confDir, "plexus.xml" );
-        FileUtils.copyFile( new File( getResourceFile( "/plexus.xml" ) ), confFile );
+        FileUtils.copyFile( getResourceFile( "/plexus.xml" ), confFile );
         System.setProperty( "appserver.base", appserverBase.getAbsolutePath() );
 
         File appserverHome = new File( "target/appserver-home" );
         confDir = new File( appserverHome, "conf" );
         confDir.mkdirs();
-        FileUtils.copyFile( new File( getResourceFile( "/plexus.xml" ) ), new File( confDir, "plexus.xml" ) );
+        FileUtils.copyFile( getResourceFile( "/plexus.xml" ), new File( confDir, "plexus.xml" ) );
         System.setProperty( "appserver.home", appserverHome.getAbsolutePath() );
 
         PlexusApplicationHost host = new PlexusApplicationHost();
         host.start( getClassWorld() );
 
-        assertEquals( "Check config file used is in base", confFile.getAbsolutePath(), host.getConfigurationResource() );
+        assertEquals( "Check config file used is in base", confFile.getAbsoluteFile(), host.getConfigurationResource() );
     }
 
     public void testHomeConfigFile()
@@ -151,13 +151,13 @@ public class PlexusApplicationHostTest
         File confDir = new File( appserverHome, "conf" );
         confDir.mkdirs();
         File confFile = new File( confDir, "plexus.xml" );
-        FileUtils.copyFile( new File( getResourceFile( "/plexus.xml" ) ), confFile );
+        FileUtils.copyFile( getResourceFile( "/plexus.xml" ), confFile );
         System.setProperty( "appserver.home", appserverHome.getAbsolutePath() );
 
         PlexusApplicationHost host = new PlexusApplicationHost();
         host.start( getClassWorld() );
 
-        assertEquals( "Check config file used is in base", confFile.getAbsolutePath(), host.getConfigurationResource() );
+        assertEquals( "Check config file used is in base", confFile.getAbsoluteFile(), host.getConfigurationResource() );
     }
 
     private PlexusApplicationHost startHost()
@@ -188,9 +188,9 @@ public class PlexusApplicationHostTest
                       context.get( "plexus.work" ) );
     }
 
-    private String getResourceFile( String path )
+    private File getResourceFile( String path )
     {
         URL url = getClass().getResource( path );
-        return url.getPath();
+        return new File( url.getFile() );
     }
 }
