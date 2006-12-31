@@ -30,24 +30,14 @@ public class AppInitializationPhase
             // This call will initialise and start the container
 
             applicationContainer = new DefaultPlexusContainer( name, context.getContextValues(),
-                                                               context.getAppConfigurationFile().getPath(),
-                                                               serverContainer.getClassWorld()/*, serverContainer*/ );
+                                                               context.getAppConfigurationFile().getAbsoluteFile(),
+                                                               context.getAppRuntimeProfile().getApplicationWorld()
+                                                               /*, serverContainer*/ );
         }
         catch ( PlexusContainerException e )
         {
             throw new AppDeploymentException( "Error starting container.", e );
         }
-
-
-        // ----------------------------------------------------------------------
-        // Create the realm for the application
-        // ----------------------------------------------------------------------
-
-        ClassRealm realm = new ClassRealm( applicationContainer.getClassWorld(),
-                                           "plexus.application." + context.getApplicationId(),
-                                           applicationContainer.getContainerRealm() );
-
-        applicationContainer.setContainerRealm( realm );
 
         context.setApplicationContainer( applicationContainer );
 
