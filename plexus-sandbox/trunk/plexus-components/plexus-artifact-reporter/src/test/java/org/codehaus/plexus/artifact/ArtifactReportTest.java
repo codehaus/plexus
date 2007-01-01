@@ -21,9 +21,8 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.velocity.DefaultVelocityComponent;
 import org.codehaus.plexus.velocity.VelocityComponent;
 
-import org.apache.maven.artifact.Artifact;
-
-import org.easymock.MockControl;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.model.Scm;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -37,10 +36,6 @@ import java.net.URL;
 public class ArtifactReportTest
     extends PlexusTestCase
 {
-    private MockControl controlArtifact;
-
-    private Artifact mockArtifact;
-
     public void testSimple()
         throws Exception
     {
@@ -57,27 +52,26 @@ public class ArtifactReportTest
         ArtifactReport report = (DefaultArtifactReport) lookup( ArtifactReport.ROLE );
         assertNotNull( report );
 
-        controlArtifact = MockControl.createControl( Artifact.class );
-        mockArtifact = (Artifact) controlArtifact.getMock();
+        MavenProject project = new MavenProject();
 
-        mockArtifact.getGroupId();
-        controlArtifact.setReturnValue( "org.codehaus.plexus.artifact" );
+        project.setGroupId( "org.codehaus.plexus.artifact" );
 
-        mockArtifact.getArtifactId();
-        controlArtifact.setReturnValue( "ArtifactReporter" );
+        project.setArtifactId( "ArtifactReporter" );
 
-        mockArtifact.getVersion();
-        controlArtifact.setReturnValue( "1.0" );
+        project.setVersion( "1.0" );
 
-        mockArtifact.getDownloadUrl();
-        controlArtifact.setReturnValue( "http://download-it-here.org/repo/swizzle-1.0.jar" );
+        project.setUrl( "http://download-it-here.org/repo/swizzle-1.0.jar" );
 
-        controlArtifact.replay();
+        Scm scm = new Scm();
+
+        scm.setUrl( "http://svn.codehaus.org/swizzle/trunk" );
+
+        project.setScm( scm );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream result = new PrintStream( baos );
 
-        report.generate( mockArtifact, result );
+        report.generate( project, result );
 
         result.close();
 
