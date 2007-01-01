@@ -30,5 +30,12 @@ under the License.
        the path where it's located.</p>
      </answer>
    </faq>
+   <faq id="connection">
+     <question>My application can't connect to my issue tracking system. What could have caused the connection
+     problems?</question>
+     <answer>
+       <p>Check your configuration if you misspelt your username or supplied the wrong password.</p>
+     </answer>
+   </faq>
  </part>
 </faqs>

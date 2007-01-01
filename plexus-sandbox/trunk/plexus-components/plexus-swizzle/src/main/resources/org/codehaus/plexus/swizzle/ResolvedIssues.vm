@@ -1,4 +1,4 @@
-#set( $jira = $xmlrpc.connect("swizzletester:swizzle","${jiraServerUrl}/rpc/xmlrpc") )
+#set( $jira = $xmlrpc.connect("${username}:${password}","${jiraServerUrl}/rpc/xmlrpc") )
 #set( $project = $jira.getProject($projectKey) )
 #set( $version = $jira.getVersion( $project, $projectVersion) )
 #set( $url = "${jiraServerUrl}/secure/IssueNavigator.jspa?view=rss&&pid=${project.id}&fixfor=${version.id}&tempMax=500&reset=true&decorator=none" )
