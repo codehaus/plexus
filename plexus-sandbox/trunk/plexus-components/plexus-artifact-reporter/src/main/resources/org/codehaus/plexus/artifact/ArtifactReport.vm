@@ -33,7 +33,7 @@
         </tr>
         <tr>
           <td><b>Staging Site</b></td>
-          <td><a href="http://people.apache.org/~jtolentino/release-reports">http://people.apache.org/~jtolentino/release-reports</a></td>
+          <td><a href="${stagingSite}">${stagingSite}</a></td>
         </tr>
         <tr>
           <td><b>Maven Docck Test Results</b></td>

@@ -26,6 +26,8 @@ import org.apache.maven.project.MavenProject;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author John Tolentino
@@ -70,9 +72,11 @@ public class DefaultArtifactReport
 
         context.put( "artifactVersion", project.getVersion() );
 
-        context.put( "artifactDownloadUrl", project.getUrl() );
+        context.put( "artifactDownloadUrl", project.getDistributionManagement().getDownloadUrl() );
 
         context.put( "scmUrl", project.getScm().getUrl() );
+
+        context.put( "stagingSite", project.getDistributionManagement().getSite().getUrl() );
 
         Template template = velocityComponent.getEngine().getTemplate( ARTIFACT_REPORT );
 

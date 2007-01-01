@@ -23,6 +23,8 @@ import org.codehaus.plexus.velocity.VelocityComponent;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.model.Scm;
+import org.apache.maven.model.DistributionManagement;
+import org.apache.maven.model.Site;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -60,13 +62,24 @@ public class ArtifactReportTest
 
         project.setVersion( "1.0" );
 
-        project.setUrl( "http://download-it-here.org/repo/swizzle-1.0.jar" );
+        project.setUrl( "" );
 
         Scm scm = new Scm();
 
         scm.setUrl( "http://svn.codehaus.org/swizzle/trunk" );
 
         project.setScm( scm );
+
+        DistributionManagement distributionManagement = new DistributionManagement();
+
+        distributionManagement.setDownloadUrl( "http://download-it-here.org/repo/swizzle-1.0.jar" );
+
+        Site site = new Site();
+        site.setUrl( "http://people.apache.org/~jtolentino/release-reports" );
+
+        distributionManagement.setSite( site );
+
+        project.setDistributionManagement( distributionManagement );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream result = new PrintStream( baos );
