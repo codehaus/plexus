@@ -18,6 +18,7 @@
 package org.codehaus.plexus.swizzle;
 
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
@@ -63,10 +64,11 @@ public class DefaultJiraReport
     {
         try
         {
+            context.put( "username", configuration.getUsername() );
+            context.put( "password", configuration.getPassword() );
             context.put( "projectKey", configuration.getProjectKey() );
             context.put( "projectVersion", configuration.getProjectVersion() );
             context.put( "jiraServerUrl", configuration.getJiraServerUrl() );
-
             Main.generate( context, configuration.getTemplate(), result );
         }
         catch ( Exception e )

@@ -42,6 +42,8 @@ public class JiraReportTest
 
         ReportConfiguration configuration = new ReportConfiguration();
 
+        configuration.setUsername( "swizzletester" );
+        configuration.setPassword( "swizzle" );
         configuration.setJiraServerUrl( "http://jira.codehaus.org" );
         configuration.setProjectKey( "SWIZZLE" );
         configuration.setProjectVersion( "*" );
@@ -71,6 +73,8 @@ public class JiraReportTest
 
         ReportConfiguration configuration = new ReportConfiguration();
 
+        configuration.setUsername( "swizzletester" );
+        configuration.setPassword( "swizzle" );
         configuration.setJiraServerUrl( "http://jira.codehaus.org" );
         configuration.setProjectKey( "SWIZZLE" );
         configuration.setProjectVersion( "*" );
@@ -100,6 +104,8 @@ public class JiraReportTest
 
         ReportConfiguration configuration = new ReportConfiguration();
 
+        configuration.setUsername( "swizzletester" );
+        configuration.setPassword( "swizzle" );
         configuration.setJiraServerUrl( "http://jira.codehaus.org" );
         configuration.setProjectKey( "SWIZZLE" );
         configuration.setProjectVersion( "*" );
@@ -129,6 +135,8 @@ public class JiraReportTest
 
         ReportConfiguration configuration = new ReportConfiguration();
 
+        configuration.setUsername( "swizzletester" );
+        configuration.setPassword( "swizzle" );
         configuration.setJiraServerUrl( "http://jira.codehaus.org" );
         configuration.setProjectKey( "SWIZZLE" );
         configuration.setProjectVersion( "*" );
@@ -151,6 +159,8 @@ public class JiraReportTest
 
         ReportConfiguration configuration = new ReportConfiguration();
 
+        configuration.setUsername( "swizzletester" );
+        configuration.setPassword( "swizzle" );
         configuration.setJiraServerUrl( "http://jira.codehaus.org" );
         configuration.setProjectKey( "SWIZZLE" );
         configuration.setProjectVersion( "*" );

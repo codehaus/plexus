@@ -100,6 +100,8 @@ public class SampleClass
       <implementation>org.codehaus.plexus.swizzle.DefaultJiraReport</implementation>
       <configuration>
         <reportConfiguration>
+          <username>swizzletester</username>
+          <password>swizzle</password>
           <jiraServerUrl>http://jira.codehaus.org</jiraServerUrl>
           <projectKey>SWIZZLE</projectKey>
           <projectVersion>*</projectVersion>

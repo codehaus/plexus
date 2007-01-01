@@ -26,6 +26,10 @@ import java.util.Iterator;
  */
 public class ReportConfiguration
 {
+    private String username;
+
+    private String password;
+
     private String projectKey;
 
     private String projectVersion;
@@ -55,6 +59,27 @@ public class ReportConfiguration
         AVAILABLE_TEMPLATES.put( "RESOLVED_ISSUES", RESOLVED_ISSUES_TEMPLATE );
         AVAILABLE_TEMPLATES.put( "VOTES", VOTES_TEMPLATE );
         AVAILABLE_TEMPLATES.put( "XDOC_SECTION", XDOC_SECTION_TEMPLATE );
+    }
+
+
+    public String getUsername()
+    {
+        return username;
+    }
+
+    public void setUsername( String username )
+    {
+        this.username = username;
+    }
+
+    public String getPassword()
+    {
+        return password;
+    }
+
+    public void setPassword( String password )
+    {
+        this.password = password;
     }
 
     public String getProjectKey()
