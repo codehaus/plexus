@@ -22,7 +22,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.velocity.VelocityComponent;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.Template;
-import org.apache.maven.artifact.Artifact;
+import org.apache.maven.project.MavenProject;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -59,18 +59,20 @@ public class DefaultArtifactReport
     // ArtifactReport Implementation
     // ----------------------------------------------------------------------
 
-    public void generate( Artifact artifact, PrintStream result )
+    public void generate( MavenProject project, PrintStream result )
         throws Exception
     {
         VelocityContext context = new VelocityContext();
 
-        context.put( "artifactGroupId", artifact.getGroupId() );
+        context.put( "artifactGroupId", project.getGroupId() );
 
-        context.put( "artifactId", artifact.getArtifactId() );
+        context.put( "artifactId", project.getArtifactId() );
 
-        context.put( "artifactVersion", artifact.getVersion() );
+        context.put( "artifactVersion", project.getVersion() );
 
-        context.put( "artifactDownloadUrl", artifact.getDownloadUrl() );
+        context.put( "artifactDownloadUrl", project.getUrl() );
+
+        context.put( "scmUrl", project.getScm().getUrl() );
 
         Template template = velocityComponent.getEngine().getTemplate( ARTIFACT_REPORT );
 

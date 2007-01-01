@@ -17,7 +17,7 @@
 
 package org.codehaus.plexus.artifact;
 
-import org.apache.maven.artifact.Artifact;
+import org.apache.maven.project.MavenProject;
 
 import java.io.PrintStream;
 
@@ -28,6 +28,6 @@ public interface ArtifactReport
 {
     public final static String ROLE = ArtifactReport.class.getName();
 
-    public void generate( Artifact artifact, PrintStream result )
+    public void generate( MavenProject project, PrintStream result )
         throws Exception;
 }

@@ -24,7 +24,7 @@
         </tr>
         <tr>
           <td><b>SCM</b></td>
-          <td><a href="http://svn.codehaus.org/swizzle/trunk">SVN</a><p>To checkout use the following
+          <td><a href="${scmUrl}">SVN</a><p>To checkout use the following
             command: <pre>   svn co -r 107 http://svn.codehaus.org/swizzle/trunk/swizzle-jirareport</pre></p></td>
         </tr>
         <tr>
