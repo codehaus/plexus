@@ -16,6 +16,22 @@
         <li>[$issue.key] <![CDATA[$issue.summary]]></li>
       </ul>
 #end
+      <div class="section">
+        <h3>Release-related Items</h3>
+        <table>
+          <tr>
+            <th>ITEM</th>
+            <th>DESCRIPTION</th>
+          </tr>
+          <tr>
+            <td>Last Release</td>
+#if ( ${previousReleaseVersion} == "" )
+            <td>No previous releases</td>
+#else
+            <td>Version ${previousReleaseVersion} released on ${lastReleaseDate}</td>
+#end
+          </tr>
+      </div>
     </section>
   </body>
 </document>

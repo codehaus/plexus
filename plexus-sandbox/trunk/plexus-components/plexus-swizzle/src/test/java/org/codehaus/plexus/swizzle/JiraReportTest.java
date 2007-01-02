@@ -151,6 +151,8 @@ public class JiraReportTest
         }
     }
 
+    // TODO: This test will fail if timezone is enabled in formatting and ran from a different timezone.
+
     public void testUserProvidedTemplate()
         throws Exception
     {
@@ -163,12 +165,12 @@ public class JiraReportTest
         configuration.setPassword( "swizzle" );
         configuration.setJiraServerUrl( "http://jira.codehaus.org" );
         configuration.setProjectKey( "SWIZZLE" );
-        configuration.setProjectVersion( "*" );
+        configuration.setProjectVersion( "Test 0.1.1" );
         configuration.setTemplate( "org/codehaus/plexus/swizzle/MyResolvedIssuesTemplate.vm" );
 
         JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
 
-        report.generateReport( configuration, result );
+        report.generateSpecialReport( configuration, result );
 
         result.close();
 

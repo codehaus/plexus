@@ -39,5 +39,8 @@ public interface JiraReport
     public void generateReport( ReportConfiguration configuration, PrintStream result )
         throws ReportGenerationException;
 
+    public void generateSpecialReport( ReportConfiguration configuration, PrintStream result )
+        throws ReportGenerationException;
+
 }
 
