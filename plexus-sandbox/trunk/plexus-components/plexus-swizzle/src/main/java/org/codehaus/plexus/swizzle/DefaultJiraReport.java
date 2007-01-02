@@ -19,10 +19,15 @@ package org.codehaus.plexus.swizzle;
 
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Iterator;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.swizzle.jirareport.Main;
+import org.codehaus.swizzle.jira.Jira;
+import org.codehaus.swizzle.jira.Project;
+import org.codehaus.swizzle.jira.Version;
 import org.apache.velocity.VelocityContext;
 
 /**
@@ -59,6 +64,8 @@ public class DefaultJiraReport
     // JiraReport Implementation
     // ----------------------------------------------------------------------
 
+    // TODO: Extract to method redundant code.
+
     public void generateReport( ReportConfiguration configuration, PrintStream result )
         throws ReportGenerationException
     {
@@ -75,6 +82,80 @@ public class DefaultJiraReport
         {
             throw new ReportGenerationException( "Error encountered while generating swizzle report.", e );
         }
+    }
+
+    public void generateSpecialReport( ReportConfiguration configuration, PrintStream result )
+        throws ReportGenerationException
+    {
+        try
+        {
+            context.put( "username", configuration.getUsername() );
+            context.put( "password", configuration.getPassword() );
+            context.put( "projectKey", configuration.getProjectKey() );
+            context.put( "projectVersion", configuration.getProjectVersion() );
+            context.put( "jiraServerUrl", configuration.getJiraServerUrl() );
+            context.put( "previousReleaseVersion", getPreviousRelease( configuration ) );
+            context.put( "lastReleaseDate", getReleaseDate( configuration ) );
+            Main.generate( context, configuration.getTemplate(), result );
+        }
+        catch ( Exception e )
+        {
+            throw new ReportGenerationException( "Error encountered while generating swizzle report.", e );
+        }
+    }
+
+    private String getPreviousRelease( ReportConfiguration configuration )
+        throws Exception
+    {
+        String previousVersion = "";
+
+        Jira jira = new Jira( configuration.getJiraServerUrl() + "/rpc/xmlrpc" );
+        jira.login( configuration.getUsername(), configuration.getPassword() );
+
+        Project project = jira.getProject( configuration.getProjectKey() );
+
+        List versions = jira.getVersions( project );
+
+        for ( Iterator itr = versions.iterator(); itr.hasNext(); )
+        {
+            Version nextVersion = (Version) itr.next();
+            if ( configuration.getProjectVersion().equals( nextVersion.getName() ) )
+            {
+                return previousVersion;
+            }
+            else
+            {
+                previousVersion = nextVersion.getName();
+            }
+        }
+
+        return previousVersion;
+    }
+
+    private String getReleaseDate( ReportConfiguration configuration )
+        throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy/MM/dd hh:mm:ss" );
+
+        Jira jira = new Jira( configuration.getJiraServerUrl() + "/rpc/xmlrpc" );
+        jira.login( configuration.getUsername(), configuration.getPassword() );
+
+        Project project = jira.getProject( configuration.getProjectKey() );
+
+        String previousRelease = getPreviousRelease( configuration );
+
+        Version version;
+
+        if ( "".equals( previousRelease ) )
+        {
+           version  = jira.getVersion( project, configuration.getProjectVersion() );
+        }
+        else
+        {
+           version = jira.getVersion( project, previousRelease );
+        }
+
+        return simpleDateFormat.format( version.getReleaseDate() );
     }
 }
 
