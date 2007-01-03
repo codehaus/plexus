@@ -42,6 +42,9 @@
         <li><a href="http://jira.codehaus.org/browse/SWIZZLE-13">[SWIZZLE-13]</a> <![CDATA[Test issue with attachments]]></li>
       </ul>
       <ul>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-14">[SWIZZLE-14]</a> <![CDATA[votes screwed up]]></li>
+      </ul>
+      <ul>
         <li><a href="http://jira.codehaus.org/browse/SWIZZLE-7">[SWIZZLE-7]</a> <![CDATA[Put a TV in the bathroom]]></li>
       </ul>
     </section>

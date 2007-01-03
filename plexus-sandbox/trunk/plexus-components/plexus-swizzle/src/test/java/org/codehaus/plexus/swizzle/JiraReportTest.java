@@ -170,7 +170,7 @@ public class JiraReportTest
 
         JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
 
-        report.generateSpecialReport( configuration, result );
+        report.generateReleaseReport( configuration, result );
 
         result.close();
 

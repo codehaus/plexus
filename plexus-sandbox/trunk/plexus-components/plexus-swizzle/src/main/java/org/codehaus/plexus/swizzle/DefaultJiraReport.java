@@ -46,6 +46,8 @@ public class DefaultJiraReport
      */
     private VelocityContext context;
 
+    private static Jira jira;
+
     // ----------------------------------------------------------------------
     // Component Lifecycle
     // ----------------------------------------------------------------------
@@ -64,18 +66,12 @@ public class DefaultJiraReport
     // JiraReport Implementation
     // ----------------------------------------------------------------------
 
-    // TODO: Extract to method redundant code.
-
     public void generateReport( ReportConfiguration configuration, PrintStream result )
         throws ReportGenerationException
     {
         try
         {
-            context.put( "username", configuration.getUsername() );
-            context.put( "password", configuration.getPassword() );
-            context.put( "projectKey", configuration.getProjectKey() );
-            context.put( "projectVersion", configuration.getProjectVersion() );
-            context.put( "jiraServerUrl", configuration.getJiraServerUrl() );
+            putStandardConfigToContext( configuration );
             Main.generate( context, configuration.getTemplate(), result );
         }
         catch ( Exception e )
@@ -84,16 +80,12 @@ public class DefaultJiraReport
         }
     }
 
-    public void generateSpecialReport( ReportConfiguration configuration, PrintStream result )
+    public void generateReleaseReport( ReportConfiguration configuration, PrintStream result )
         throws ReportGenerationException
     {
         try
         {
-            context.put( "username", configuration.getUsername() );
-            context.put( "password", configuration.getPassword() );
-            context.put( "projectKey", configuration.getProjectKey() );
-            context.put( "projectVersion", configuration.getProjectVersion() );
-            context.put( "jiraServerUrl", configuration.getJiraServerUrl() );
+            putStandardConfigToContext( configuration );
             context.put( "previousReleaseVersion", getPreviousRelease( configuration ) );
             context.put( "lastReleaseDate", getReleaseDate( configuration ) );
             Main.generate( context, configuration.getTemplate(), result );
@@ -104,13 +96,21 @@ public class DefaultJiraReport
         }
     }
 
+    private void putStandardConfigToContext( ReportConfiguration configuration )
+    {
+        context.put( "username", configuration.getUsername() );
+        context.put( "password", configuration.getPassword() );
+        context.put( "projectKey", configuration.getProjectKey() );
+        context.put( "projectVersion", configuration.getProjectVersion() );
+        context.put( "jiraServerUrl", configuration.getJiraServerUrl() );
+    }
+
     private String getPreviousRelease( ReportConfiguration configuration )
         throws Exception
     {
         String previousVersion = "";
 
-        Jira jira = new Jira( configuration.getJiraServerUrl() + "/rpc/xmlrpc" );
-        jira.login( configuration.getUsername(), configuration.getPassword() );
+        Jira jira = getJira( configuration );
 
         Project project = jira.getProject( configuration.getProjectKey() );
 
@@ -137,8 +137,7 @@ public class DefaultJiraReport
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy/MM/dd hh:mm:ss" );
 
-        Jira jira = new Jira( configuration.getJiraServerUrl() + "/rpc/xmlrpc" );
-        jira.login( configuration.getUsername(), configuration.getPassword() );
+        Jira jira = getJira( configuration );
 
         Project project = jira.getProject( configuration.getProjectKey() );
 
@@ -148,14 +147,26 @@ public class DefaultJiraReport
 
         if ( "".equals( previousRelease ) )
         {
-           version  = jira.getVersion( project, configuration.getProjectVersion() );
+            version = jira.getVersion( project, configuration.getProjectVersion() );
         }
         else
         {
-           version = jira.getVersion( project, previousRelease );
+            version = jira.getVersion( project, previousRelease );
         }
 
         return simpleDateFormat.format( version.getReleaseDate() );
     }
+
+    private Jira getJira( ReportConfiguration configuration )
+        throws Exception
+    {
+        if ( null == jira )
+        {
+            jira = new Jira( configuration.getJiraServerUrl() + "/rpc/xmlrpc" );
+            jira.login( configuration.getUsername(), configuration.getPassword() );
+        }
+        return jira;
+    }
+
 }
 
