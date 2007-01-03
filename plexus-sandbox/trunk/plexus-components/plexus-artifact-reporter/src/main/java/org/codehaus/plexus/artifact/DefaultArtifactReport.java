@@ -79,6 +79,12 @@ public class DefaultArtifactReport
 
         context.put( "stagingSite", configuration.getStagingSiteUrl() );
 
+        context.put( "docckPassed", configuration.isDocckPassed() );
+
+        context.put( "docckResultDetails", configuration.getDocckResultDetails() );
+
+        context.put( "docckResultContents", configuration.getDocckResultContents() );
+
         Template template = velocityComponent.getEngine().getTemplate( ARTIFACT_REPORT );
 
         PrintWriter writer = new PrintWriter( result );
@@ -87,4 +93,5 @@ public class DefaultArtifactReport
 
         writer.flush();
     }
+
 }

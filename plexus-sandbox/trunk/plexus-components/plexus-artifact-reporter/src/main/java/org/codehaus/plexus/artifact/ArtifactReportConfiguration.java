@@ -19,6 +19,8 @@ package org.codehaus.plexus.artifact;
 
 import org.apache.maven.project.MavenProject;
 
+import java.io.File;
+
 /**
  * @author John Tolentino
  */
@@ -37,6 +39,10 @@ public class ArtifactReportConfiguration
     private String downloadUrl;
 
     private String stagingSiteUrl;
+
+    private boolean docckPassed;
+
+    private File docckResultDetails;
 
     private static final String SVN = "svn";
 
@@ -132,9 +138,11 @@ public class ArtifactReportConfiguration
         if ( SVN.equals( getScmType() ) )
         {
             scmCheckoutCommand.append( "svn co " );
-            if ( !EMPTY_STRING.equals(getScmRevisionId()) )
+            if ( !EMPTY_STRING.equals( getScmRevisionId() ) )
             {
-                scmCheckoutCommand.append( "-r " + getScmRevisionId() + " " );
+                scmCheckoutCommand.append( "-r " );
+                scmCheckoutCommand.append( getScmRevisionId() );
+                scmCheckoutCommand.append( " " );
             }
             scmCheckoutCommand.append( getScmUrl() );
         }
@@ -160,4 +168,35 @@ public class ArtifactReportConfiguration
     {
         this.stagingSiteUrl = stagingSiteUrl;
     }
+
+    public Boolean isDocckPassed()
+    {
+        return new Boolean( docckPassed );
+    }
+
+    public void setDocckPassed( boolean docckPassed )
+    {
+        this.docckPassed = docckPassed;
+    }
+
+    public File getDocckResultDetails()
+    {
+        return docckResultDetails;
+    }
+
+    public void setDocckResultDetails( String docckResultDetails )
+    {
+        this.docckResultDetails = new File( docckResultDetails );
+    }
+
+    public void setDocckResultDetails( File docckResultDetails )
+    {
+        this.docckResultDetails = docckResultDetails;
+    }
+
+    public String getDocckResultContents()
+    {
+        return "";
+    }
+
 }
