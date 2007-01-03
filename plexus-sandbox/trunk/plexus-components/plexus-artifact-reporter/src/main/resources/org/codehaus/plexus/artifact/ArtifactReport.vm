@@ -24,12 +24,8 @@
         </tr>
         <tr>
           <td><b>SCM</b></td>
-          <td><a href="${scmUrl}">SVN</a><p>To checkout use the following
-            command: <pre>   svn co -r 107 http://svn.codehaus.org/swizzle/trunk/swizzle-jirareport</pre></p></td>
-        </tr>
-        <tr>
-          <td><b>Last Release Date</b></td>
-          <td>1815/12/10 13:14:15 CEST</td>
+          <td><a href="${scmUrl}">${scmType}</a><p>To checkout use the following
+            command: <pre>   ${scmCheckoutCommand}</pre></p></td>
         </tr>
         <tr>
           <td><b>Staging Site</b></td>

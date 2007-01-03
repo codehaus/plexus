@@ -73,6 +73,10 @@ public class DefaultArtifactReport
 
         context.put( "scmUrl", configuration.getScmUrl() );
 
+        context.put( "scmType", configuration.getScmType() );
+
+        context.put( "scmCheckoutCommand", configuration.getScmCheckoutCommand() );
+
         context.put( "stagingSite", configuration.getStagingSiteUrl() );
 
         Template template = velocityComponent.getEngine().getTemplate( ARTIFACT_REPORT );

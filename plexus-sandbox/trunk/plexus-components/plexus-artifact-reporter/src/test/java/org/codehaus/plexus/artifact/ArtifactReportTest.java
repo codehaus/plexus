@@ -83,6 +83,8 @@ public class ArtifactReportTest
 
         ArtifactReportConfiguration config = new ArtifactReportConfiguration( project );
 
+        config.setScmRevisionId( "107" );
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream result = new PrintStream( baos );
 

@@ -32,11 +32,15 @@ public class ArtifactReportConfiguration
 
     private String scmUrl;
 
+    private String scmRevisionId;
+
     private String downloadUrl;
 
     private String stagingSiteUrl;
 
     private static final String SVN = "svn";
+
+    private static final String EMPTY_STRING = "";
 
     public ArtifactReportConfiguration()
     {
@@ -98,6 +102,17 @@ public class ArtifactReportConfiguration
         this.scmUrl = scmUrl;
     }
 
+
+    public String getScmRevisionId()
+    {
+        return ( null == scmRevisionId ? EMPTY_STRING : scmRevisionId );
+    }
+
+    public void setScmRevisionId( String scmRevisionId )
+    {
+        this.scmRevisionId = scmRevisionId;
+    }
+
     public String getScmType()
     {
         String scmType = "UNKNOWN";
@@ -108,6 +123,22 @@ public class ArtifactReportConfiguration
         }
 
         return scmType;
+    }
+
+    public String getScmCheckoutCommand()
+    {
+        StringBuffer scmCheckoutCommand = new StringBuffer( "" );
+
+        if ( SVN.equals( getScmType() ) )
+        {
+            scmCheckoutCommand.append( "svn co " );
+            if ( !EMPTY_STRING.equals(getScmRevisionId()) )
+            {
+                scmCheckoutCommand.append( "-r " + getScmRevisionId() + " " );
+            }
+            scmCheckoutCommand.append( getScmUrl() );
+        }
+        return scmCheckoutCommand.toString();
     }
 
     public String getDownloadUrl()
