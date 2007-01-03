@@ -36,23 +36,23 @@
 #if ( $docckPassed )
           <td><img src="images/icon_success_sml.gif" /> <a href="${docckResultDetails}">Successful</a></td>
 #else
-          <td><img src="images/icon_error_sml.gif" /> <a href="${docckResultDetails}">${docckResultContents}</a></td>
+          <td><img src="images/icon_error_sml.gif" /> Failed!
+${docckResultContents}
+            ]]></pre>
+          </td>
 #end
         </tr>
         <tr>
           <td><b>License Header Results</b></td>
+#if ( $licenseCheckPassed )
+          <td><img src="images/icon_success_sml.gif" /> <a href="${licenseCheckResultDetails}">Successful</a></td>
+#else
           <td><img src="images/icon_error_sml.gif" /> Failed!
             <pre><![CDATA[
-              [INFO] The License Header Verifier Results Will be placed here
-              [INFO] ----------------------------------------------------------------------------
-              [INFO] Failure Details....
-              [INFO] Error 1
-              [INFO] Error 2
-              [INFO] Error 3
-              [INFO] Error 4
-              [INFO] ------------------------------------------------------------------------
+${licenseCheckResultContents}
             ]]></pre>
           </td>
+#end
         </tr>
         <tr>
           <td><b>List of Release Deliverables</b></td>

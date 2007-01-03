@@ -89,6 +89,10 @@ public class ArtifactReportTest
 
         config.setDocckResultDetails( "target/test-classes/org/codehaus/plexus/artifact/docck-successful.txt" );
 
+        config.setLicenseCheckPassed( false );
+
+        config.setLicenseCheckResultDetails( "target/test-classes/org/codehaus/plexus/artifact/license-failed.txt" );
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream result = new PrintStream( baos );
 

@@ -20,6 +20,11 @@ package org.codehaus.plexus.artifact;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * @author John Tolentino
@@ -43,6 +48,10 @@ public class ArtifactReportConfiguration
     private boolean docckPassed;
 
     private File docckResultDetails;
+
+    private boolean licenseCheckPassed;
+
+    private File licenseCheckResultDetails;
 
     private static final String SVN = "svn";
 
@@ -199,4 +208,70 @@ public class ArtifactReportConfiguration
         return "";
     }
 
+    public Boolean isLicenseCheckPassed()
+    {
+        return new Boolean( licenseCheckPassed );
+    }
+
+    public void setLicenseCheckPassed( boolean licenseCheckPassed )
+    {
+        this.licenseCheckPassed = licenseCheckPassed;
+    }
+
+    public File getLicenseCheckResultDetails()
+    {
+        return licenseCheckResultDetails;
+    }
+
+    public void setLicenseCheckResultDetails( String licenseCheckResultDetails )
+    {
+        this.licenseCheckResultDetails = new File( licenseCheckResultDetails );
+    }
+
+    public void setLicenseCheckResultDetails( File licenseCheckResultDetails )
+    {
+        this.licenseCheckResultDetails = licenseCheckResultDetails;
+    }
+
+    public String getLicenseCheckResultContents()
+    {
+        String contents;
+
+        FileInputStream resource = null;
+        try
+        {
+            resource = new FileInputStream( licenseCheckResultDetails );
+            contents = streamToString( resource );
+        }
+        catch ( FileNotFoundException e )
+        {
+            contents = "Can't find License Header results file: " + licenseCheckResultDetails.getAbsolutePath() +
+                e.getMessage();
+        }
+        catch ( IOException e )
+        {
+            contents = "Can't read License Header results file: " + licenseCheckResultDetails.getAbsolutePath() +
+                e.getMessage();
+        }
+        return contents;
+    }
+
+    private static String streamToString( InputStream in )
+        throws IOException
+    {
+        StringBuffer text = new StringBuffer();
+        try
+        {
+            int b;
+            while ( ( b = in.read() ) != -1 )
+            {
+                text.append( (char) b );
+            }
+        }
+        finally
+        {
+            in.close();
+        }
+        return text.toString();
+    }
 }
