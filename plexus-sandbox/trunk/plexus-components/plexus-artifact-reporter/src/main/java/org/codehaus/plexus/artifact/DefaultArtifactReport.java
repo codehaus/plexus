@@ -85,6 +85,12 @@ public class DefaultArtifactReport
 
         context.put( "docckResultContents", configuration.getDocckResultContents() );
 
+        context.put( "licenseCheckPassed", configuration.isLicenseCheckPassed() );
+
+        context.put( "licenseCheckResultDetails", configuration.getLicenseCheckResultDetails() );
+
+        context.put( "licenseCheckResultContents", configuration.getLicenseCheckResultContents() );
+
         Template template = velocityComponent.getEngine().getTemplate( ARTIFACT_REPORT );
 
         PrintWriter writer = new PrintWriter( result );
