@@ -28,6 +28,6 @@ public interface ArtifactReport
 {
     public final static String ROLE = ArtifactReport.class.getName();
 
-    public void generate( MavenProject project, PrintStream result )
+    public void generate( ArtifactReportConfiguration config, PrintStream result )
         throws Exception;
 }

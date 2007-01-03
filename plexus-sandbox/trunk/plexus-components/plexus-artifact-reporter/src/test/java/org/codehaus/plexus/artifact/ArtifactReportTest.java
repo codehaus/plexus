@@ -81,10 +81,12 @@ public class ArtifactReportTest
 
         project.setDistributionManagement( distributionManagement );
 
+        ArtifactReportConfiguration config = new ArtifactReportConfiguration( project );
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream result = new PrintStream( baos );
 
-        report.generate( project, result );
+        report.generate( config, result );
 
         result.close();
 
