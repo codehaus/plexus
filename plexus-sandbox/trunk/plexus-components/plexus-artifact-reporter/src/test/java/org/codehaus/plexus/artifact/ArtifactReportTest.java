@@ -85,6 +85,10 @@ public class ArtifactReportTest
 
         config.setScmRevisionId( "107" );
 
+        config.setDocckPassed( true );
+
+        config.setDocckResultDetails( "target/test-classes/org/codehaus/plexus/artifact/docck-successful.txt" );
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream result = new PrintStream( baos );
 

@@ -33,7 +33,11 @@
         </tr>
         <tr>
           <td><b>Maven Docck Test Results</b></td>
-          <td><img src="images/icon_success_sml.gif" /> <a href="docck-results.html">Successful</a></td>
+#if ( $docckPassed )
+          <td><img src="images/icon_success_sml.gif" /> <a href="${docckResultDetails}">Successful</a></td>
+#else
+          <td><img src="images/icon_error_sml.gif" /> <a href="${docckResultDetails}">${docckResultContents}</a></td>
+#end
         </tr>
         <tr>
           <td><b>License Header Results</b></td>

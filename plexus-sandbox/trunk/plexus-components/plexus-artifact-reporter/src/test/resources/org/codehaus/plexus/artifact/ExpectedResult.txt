@@ -33,7 +33,7 @@
         </tr>
         <tr>
           <td><b>Maven Docck Test Results</b></td>
-          <td><img src="images/icon_success_sml.gif" /> <a href="docck-results.html">Successful</a></td>
+          <td><img src="images/icon_success_sml.gif" /> <a href="target\test-classes\org\codehaus\plexus\artifact\docck-successful.txt">Successful</a></td>
         </tr>
         <tr>
           <td><b>License Header Results</b></td>
