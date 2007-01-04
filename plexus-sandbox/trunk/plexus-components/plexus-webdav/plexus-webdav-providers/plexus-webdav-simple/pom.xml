@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project>
-  <moduleVersion>4.0.0</moduleVersion>
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus.webdav</groupId>
     <artifactId>plexus-webdav-providers-parent</artifactId>
@@ -11,5 +11,4 @@
   <name>Plexus WebDAV Provider :: Simple</name>
 
   <packaging>jar</packaging>
-
 </project>
