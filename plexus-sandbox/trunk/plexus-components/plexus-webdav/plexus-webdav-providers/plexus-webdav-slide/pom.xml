@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<project>
+  <moduleVersion>4.0.0</moduleVersion>
+  <parent>
+    <groupId>org.codehaus.plexus.webdav</groupId>
+    <artifactId>plexus-webdav-providers-parent</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>plexus-webdav-slide</artifactId>
+  <name>Plexus WebDAV Provider :: Jakarta Slide</name>
+
+  <packaging>jar</packaging>
+
+</project>
