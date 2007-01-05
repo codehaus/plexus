@@ -22,9 +22,7 @@ import org.apache.maven.project.MavenProject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * @author John Tolentino
@@ -61,21 +59,27 @@ public class ArtifactReportConfiguration
     {
     }
 
-    public ArtifactReportConfiguration( MavenProject project )
+    public ArtifactReportConfiguration( MavenProject project, String scmRevisionId, boolean docckPassed,
+                                        String docckResultDetails, boolean licenseCheckPassed,
+                                        String licenseCheckResultDetails )
     {
-        groupId = project.getGroupId();
-
-        artifactId = project.getArtifactId();
-
-        version = project.getVersion();
-
-        scmUrl = project.getScm().getUrl();
-
-        downloadUrl = project.getDistributionManagement().getDownloadUrl();
-
-        stagingSiteUrl = project.getDistributionManagement().getSite().getUrl();
+        loadValuesFromMavenProject( project );
+        setScmRevisionId( scmRevisionId );
+        setDocckPassed( docckPassed );
+        setDocckResultDetails( docckResultDetails );
+        setLicenseCheckPassed( licenseCheckPassed );
+        setLicenseCheckResultDetails( licenseCheckResultDetails );
     }
 
+    private void loadValuesFromMavenProject( MavenProject project )
+    {
+        groupId = project.getGroupId();
+        artifactId = project.getArtifactId();
+        version = project.getVersion();
+        scmUrl = project.getScm().getUrl();
+        downloadUrl = project.getDistributionManagement().getDownloadUrl();
+        stagingSiteUrl = project.getDistributionManagement().getSite().getUrl();
+    }
 
     public String getGroupId()
     {
@@ -241,7 +245,7 @@ public class ArtifactReportConfiguration
         try
         {
             resource = new FileInputStream( licenseCheckResultDetails );
-            contents = streamToString( resource );
+            contents = Utils.streamToString( resource );
         }
         catch ( FileNotFoundException e )
         {
@@ -256,22 +260,4 @@ public class ArtifactReportConfiguration
         return contents;
     }
 
-    private static String streamToString( InputStream in )
-        throws IOException
-    {
-        StringBuffer text = new StringBuffer();
-        try
-        {
-            int b;
-            while ( ( b = in.read() ) != -1 )
-            {
-                text.append( (char) b );
-            }
-        }
-        finally
-        {
-            in.close();
-        }
-        return text.toString();
-    }
 }
