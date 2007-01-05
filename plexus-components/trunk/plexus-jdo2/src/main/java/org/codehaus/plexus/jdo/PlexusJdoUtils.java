@@ -271,7 +271,7 @@ public class PlexusJdoUtils
     public static Object getObjectById( PersistenceManager pm, Class clazz, int id, String fetchGroup )
         throws PlexusStoreException, PlexusObjectNotFoundException
     {
-        return getObjectById( pm, clazz, id, fetchGroup );
+        return getObjectById( pm, clazz, (long)id, fetchGroup );
     }
 
     /**
