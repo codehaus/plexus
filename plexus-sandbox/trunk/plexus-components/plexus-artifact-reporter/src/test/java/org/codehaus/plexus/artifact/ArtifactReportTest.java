@@ -81,17 +81,9 @@ public class ArtifactReportTest
 
         project.setDistributionManagement( distributionManagement );
 
-        ArtifactReportConfiguration config = new ArtifactReportConfiguration( project );
-
-        config.setScmRevisionId( "107" );
-
-        config.setDocckPassed( true );
-
-        config.setDocckResultDetails( "target/test-classes/org/codehaus/plexus/artifact/docck-successful.txt" );
-
-        config.setLicenseCheckPassed( false );
-
-        config.setLicenseCheckResultDetails( "target/test-classes/org/codehaus/plexus/artifact/license-failed.txt" );
+        ArtifactReportConfiguration config = new ArtifactReportConfiguration( project, "107",
+           true, "target/test-classes/org/codehaus/plexus/artifact/docck-successful.txt",
+           false, "target/test-classes/org/codehaus/plexus/artifact/license-failed.txt" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream result = new PrintStream( baos );
@@ -105,29 +97,10 @@ public class ArtifactReportTest
         ClassLoader classLoader = this.getClass().getClassLoader();
         String expectedFile = "org/codehaus/plexus/artifact/ExpectedResult.txt";
         URL resource = classLoader.getResource( expectedFile );
-        String expected = streamToString( resource.openStream() );
+        String expected = Utils.streamToString( resource.openStream() );
 
         assertEquals( expected, actual );
 
-    }
-
-    private static String streamToString( InputStream in )
-        throws IOException
-    {
-        StringBuffer text = new StringBuffer();
-        try
-        {
-            int b;
-            while ( ( b = in.read() ) != -1 )
-            {
-                text.append( (char) b );
-            }
-        }
-        finally
-        {
-            in.close();
-        }
-        return text.toString();
     }
 
 }
