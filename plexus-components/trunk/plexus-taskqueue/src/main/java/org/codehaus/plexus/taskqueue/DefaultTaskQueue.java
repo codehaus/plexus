@@ -217,10 +217,7 @@ public class DefaultTaskQueue
     public List getQueueSnapshot()
         throws TaskQueueException
     {
-        synchronized ( queue )
-        {
-            return Collections.unmodifiableList( new ArrayList( queue ) );
-        }
+        return Collections.unmodifiableList( new ArrayList( queue ) );
     }
 
     // ----------------------------------------------------------------------
@@ -229,18 +226,12 @@ public class DefaultTaskQueue
 
     private void enqueue( Task task )
     {
-        synchronized ( queue )
-        {
-            queue.offer( task );
-        }
+        queue.offer( task );
     }
 
     private Task dequeue()
     {
-        synchronized ( queue )
-        {
-            return (Task) queue.poll();
-        }
+        return (Task) queue.poll();
     }
 
     // ----------------------------------------------------------------------
