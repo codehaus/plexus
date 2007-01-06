@@ -70,7 +70,7 @@ public class PlexusJdoUtilsTest
             System.setProperty( (String) entry.getKey(), (String) entry.getValue() );
         }
 
-        SchemaTool.createSchemaTables( new URL[] { getClass().getResource( "/META-INF/package.jdo" ) }, null, false ); 
+        SchemaTool.createSchemaTables( new URL[] { getClass().getResource( "/META-INF/package.jdo" ) }, null, null, false, null ); 
 
         pmf = jdoFactory.getPersistenceManagerFactory();
         assertNotNull( pmf );
