@@ -11,5 +11,49 @@
   <name>Plexus WebDAV Provider :: Jakarta Slide</name>
 
   <packaging>jar</packaging>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-expression-evaluator</artifactId>
+      <version>1.0-alpha-1</version>
+    </dependency>
+    <dependency>
+      <groupId>slide</groupId>
+      <artifactId>slide-stores</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>slide</groupId>
+      <artifactId>slide-kernel</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>slide</groupId>
+      <artifactId>slide-webdavservlet</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.transaction</groupId>
+      <artifactId>jta</artifactId>
+      <version>1.0.1B</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-transaction</groupId>
+      <artifactId>commons-transaction</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.8</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
 </project>

@@ -11,5 +11,19 @@
   <name>Plexus WebDAV Provider :: Jackrabbit</name>
 
   <packaging>jar</packaging>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.jackrabbit</groupId>
+      <artifactId>jackrabbit-core</artifactId>
+      <version>1.2-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.jackrabbit</groupId>
+      <artifactId>jackrabbit-jcr-server</artifactId>
+      <version>1.2-SNAPSHOT</version>
+    </dependency>
+
+  </dependencies>
 
 </project>

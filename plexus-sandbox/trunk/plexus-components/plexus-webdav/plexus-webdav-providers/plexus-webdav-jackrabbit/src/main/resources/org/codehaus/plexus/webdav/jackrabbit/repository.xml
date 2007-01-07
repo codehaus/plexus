@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<Repository>
+	<!--
+		virtual file system where the repository stores global state
+		(e.g. registered namespaces, custom node types, etc.)
+	-->
+	<FileSystem class="org.apache.jackrabbit.core.fs.local.LocalFileSystem">
+		<param name="path" value="${rep.home}" />
+	</FileSystem>
+
+	<!--
+		security configuration
+	-->
+	<Security appName="Jackrabbit">
+		<!--
+			access manager:
+			class: FQN of class implementing the AccessManager interface
+		-->
+		<AccessManager class="org.codehaus.plexus.webdav.jackrabbit.JackrabbitFullAccessManager"></AccessManager>
+
+		<LoginModule class="org.codehaus.plexus.webdav.jackrabbit.JackrabbitLoginModule"></LoginModule>
+	</Security>
+
+	<!--
+		location of workspaces root directory and name of default workspace
+	-->
+	<Workspaces rootPath="${rep.home}/.workspaces" defaultWorkspace="default" />
+	<!--
+		workspace configuration template:
+		used to create the initial workspace if there's no workspace yet
+	-->
+	<Workspace name="${wsp.name}">
+		<!--
+			virtual file system of the workspace:
+			class: FQN of class implementing FileSystem interface
+		-->
+		<FileSystem class="org.apache.jackrabbit.core.fs.local.LocalFileSystem">
+			<param name="path" value="${wsp.home}" />
+		</FileSystem>
+		<!--
+			persistence of the workspace:
+			class: FQN of class implementing PersistenceManager interface
+		-->
+		<PersistenceManager class="org.apache.jackrabbit.core.state.obj.ObjectPersistenceManager" />
+		<!--
+			Search index and the file system it uses.
+		-->
+		<SearchIndex class="org.apache.jackrabbit.core.query.lucene.SearchIndex">
+			<param name="path" value="${wsp.home}/.index" />
+		</SearchIndex>
+	</Workspace>
+
+	<!--
+		Configures the versioning
+	-->
+	<Versioning rootPath="${rep.home}/.version">
+		<!--
+			Configures the filesystem to use for versioning for the respective
+			persistence manager
+		-->
+		<FileSystem class="org.apache.jackrabbit.core.fs.local.LocalFileSystem">
+			<param name="path" value="${rep.home}/.version" />
+		</FileSystem>
+
+		<!--
+			Configures the persistence manager to be used for persisting version state.
+			Please note that the current versioning implementation is based on
+			a 'normal' persistence manager, but this could change in future
+			implementations.
+		-->
+		<PersistenceManager class="org.apache.jackrabbit.core.state.obj.ObjectPersistenceManager" />
+
+	</Versioning>
+
+
+	<!--
+		Search index for content that is shared repository wide
+		(/jcr:system tree, contains mainly versions)
+		
+		The same parameters are supported as in the search index configuration
+		inside the workspace definition element.
+		
+		This element is optional. If omitted, the /jcr:system tree will not be
+		indexed and no results will be returned for that tree!
+	-->
+	<SearchIndex class="org.apache.jackrabbit.core.query.lucene.SearchIndex">
+		<param name="path" value="${rep.home}/.index" />
+	</SearchIndex>
+</Repository>
