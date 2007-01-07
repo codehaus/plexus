@@ -11,4 +11,12 @@
   <name>Plexus WebDAV Provider :: Simple</name>
 
   <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>it.could</groupId>
+      <artifactId>webdav</artifactId>
+      <version>0.4</version>
+    </dependency>
+  </dependencies>
 </project>

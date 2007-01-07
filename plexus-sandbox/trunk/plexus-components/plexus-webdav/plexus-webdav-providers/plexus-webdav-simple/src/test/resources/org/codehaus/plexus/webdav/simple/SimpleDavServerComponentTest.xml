@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<plexus>
+  <components>
+  
+    <component>
+      <role>org.codehaus.plexus.webdav.DavServerManager</role>
+      <role-hint>simple</role-hint>
+      <implementation>org.codehaus.plexus.webdav.DefaultDavServerManager</implementation>
+      <description>DefaultDavServerManager</description>
+      <configuration>
+        <provider-hint>simple</provider-hint>
+      </configuration>
+    </component>
+    
+  </components>
+</plexus>
