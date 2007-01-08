@@ -38,6 +38,21 @@ import javax.jdo.Transaction;
  */
 public class PlexusJdoUtils
 {
+    /**
+     * This operation as opposed to
+     * {@link #updateObject(PersistenceManager, Object)} is an
+     * <em>new school</em> technique, which <em><b>does not</b></em>
+     * requires that the object be previously added using
+     * {@link #addObject(PersistenceManager, Object)} or
+     * {@link #addObject(PersistenceManager, Object, String[])}.
+     * 
+     * @param pm
+     * @param object
+     * @param fetchGroups
+     * @return
+     * @throws PlexusStoreException
+     * @see {@link #updateObject(PersistenceManager, Object)} for old technique.
+     */
     public static Object saveObject( PersistenceManager pm, Object object, String fetchGroups[] )
         throws PlexusStoreException
     {
@@ -129,8 +144,19 @@ public class PlexusJdoUtils
         }
     }
 
-    public static Object updateObject( PersistenceManager pm, Object object )
-        throws PlexusStoreException
+    /**
+     * This operation is an <em>old school</em> technique, which required that
+     * the object be previously added using
+     * {@link #addObject(PersistenceManager, Object)} or
+     * {@link #addObject(PersistenceManager, Object, String[])}.
+     * 
+     * @param pm
+     * @param object
+     * @return
+     * @throws PlexusStoreException
+     * @see {@link #saveObject(PersistenceManager, Object, String[])}
+     */
+    public static Object updateObject( PersistenceManager pm, Object object ) throws PlexusStoreException
     {
         Object ret = object;
         Transaction tx = pm.currentTransaction();
@@ -151,7 +177,8 @@ public class PlexusJdoUtils
             catch ( NullPointerException npe )
             {
                 // Do not hide useful error messages.
-                // This exception can occur if you have an object with a List that isn't initialized yet.
+                // This exception can occur if you have an object with a List
+                // that isn't initialized yet.
                 throw new PlexusStoreException( "Unable to update object due to unexpected null value.", npe );
             }
             catch ( Exception e )
@@ -237,27 +264,28 @@ public class PlexusJdoUtils
     }
 
     /**
-     * @deprecated Use {@link #getObjectById(PersistenceManager,Class,long)} instead
+     * @deprecated Use {@link #getObjectById(PersistenceManager,Class,long)}
+     *             instead
      */
     public static Object getObjectById( PersistenceManager pm, Class clazz, int id )
         throws PlexusStoreException, PlexusObjectNotFoundException
     {
-        return getObjectById( pm, clazz, (long)id );
+        return getObjectById( pm, clazz, (long) id );
     }
 
     /**
-     * Obtain and return an {@link Object} instance from the underlying data 
+     * Obtain and return an {@link Object} instance from the underlying data
      * store based on the passed in identifier.
      * 
      * @param pm {@link PersistenceManager} manager to use to query database.
-     * @param clazz Expected {@link Class} of the Object instance to be 
-     *          returned.
+     * @param clazz Expected {@link Class} of the Object instance to be
+     *            returned.
      * @param id Object identifier to match in the database.
      * @return Object instance that matches the passed in identifier.
      * @throws PlexusStoreException if there was an error querying the database
-     *          for the object.
+     *             for the object.
      * @throws PlexusObjectNotFoundException if a matching object could not be
-     *          found.
+     *             found.
      */
     public static Object getObjectById( PersistenceManager pm, Class clazz, long id )
         throws PlexusStoreException, PlexusObjectNotFoundException
@@ -266,28 +294,30 @@ public class PlexusJdoUtils
     }
 
     /**
-     * @deprecated Use {@link #getObjectById(PersistenceManager,Class,long, String)} instead
+     * @deprecated Use
+     *             {@link #getObjectById(PersistenceManager,Class,long, String)}
+     *             instead
      */
     public static Object getObjectById( PersistenceManager pm, Class clazz, int id, String fetchGroup )
         throws PlexusStoreException, PlexusObjectNotFoundException
     {
-        return getObjectById( pm, clazz, (long)id, fetchGroup );
+        return getObjectById( pm, clazz, (long) id, fetchGroup );
     }
 
     /**
-     * Obtain and return an {@link Object} instance from the underlying data 
+     * Obtain and return an {@link Object} instance from the underlying data
      * store based on the passed in identifier.
-     *  
+     * 
      * @param pm {@link PersistenceManager} manager to use to query database.
-     * @param clazz Expected {@link Class} of the Object instance to be 
-     *          returned.
+     * @param clazz Expected {@link Class} of the Object instance to be
+     *            returned.
      * @param id Object identifier to match in the database.
      * @param fetchGroup TODO: Document!
      * @return Object instance that matches the passed in identifier.
      * @throws PlexusStoreException if there was an error querying the database
-     *          for the object.
+     *             for the object.
      * @throws PlexusObjectNotFoundException if a matching object could not be
-     *          found.
+     *             found.
      */
     public static Object getObjectById( PersistenceManager pm, Class clazz, long id, String fetchGroup )
         throws PlexusStoreException, PlexusObjectNotFoundException
@@ -358,7 +388,7 @@ public class PlexusJdoUtils
             if ( result.size() > 1 )
             {
                 throw new PlexusStoreException( "A query for object of " + "type " + clazz.getName() + " on the "
-                    + "field '" + idField + "' returned more than one object." );
+                                + "field '" + idField + "' returned more than one object." );
             }
 
             pm.getFetchPlan().addGroup( fetchGroup );
@@ -398,7 +428,7 @@ public class PlexusJdoUtils
     }
 
     public static List getAllObjectsDetached( PersistenceManager pm, Class clazz, String ordering,
-                                              List/*<String>*/fetchGroups )
+                                              List/* <String> */fetchGroups )
     {
         Transaction tx = pm.currentTransaction();
 
