@@ -73,15 +73,7 @@
   </distributionManagement>
   <repositories>
     <repository>
-      <id>apache-snapshots</id>
-      <name>Snapshot repository</name>
-      <url>http://people.apache.org/maven-snapshot-repository</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>codehaus-snapshots</id>
+      <id>codehaus.snapshots</id>
       <name>Codehaus Snapshot Development Repository</name>
       <url>http://snapshots.repository.codehaus.org</url>
       <releases>
@@ -89,16 +81,6 @@
       </releases>
     </repository>
   </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>codehaus-snapshots</id>
-      <name>Codehaus Snapshot Development Repository</name>
-      <url>http://snapshots.repository.codehaus.org</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
 
   <developers>
     <developer>
