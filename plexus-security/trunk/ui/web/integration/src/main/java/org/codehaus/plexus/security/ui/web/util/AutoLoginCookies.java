@@ -127,7 +127,7 @@ public class AutoLoginCookies
 
         String providedKey = ssoCookie.getValue();
 
-        getLogger().info( "Found sso cookie : " + providedKey );
+        getLogger().debug( "Found sso cookie : " + providedKey );
 
         CookieSettings settings = securitySystem.getPolicy().getSignonCookieSettings();
         return findAuthKey( SIGNON_KEY, providedKey, settings.getDomain(), settings.getPath() );
