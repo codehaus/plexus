@@ -108,9 +108,11 @@ public class MungedHttpsURL
      */
     public boolean isValid()
     {
+        HttpURLConnection urlc = null;
+
         try
         {
-            HttpURLConnection urlc = getURLConnection();
+            urlc = getURLConnection();
 
             urlc.getResponseCode();
         }
@@ -122,6 +124,13 @@ public class MungedHttpsURL
             }
 
             return false;
+        }
+        finally
+        {
+            if ( urlc != null )
+            {
+                urlc.disconnect();
+            }
         }
 
         return true;
