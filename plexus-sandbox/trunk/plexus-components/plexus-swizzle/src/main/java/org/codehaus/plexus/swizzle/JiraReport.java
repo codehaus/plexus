@@ -32,14 +32,21 @@ public interface JiraReport
      */
     public final static String ROLE = JiraReport.class.getName();
 
+    public static final String RESOLVED_ISSUES_TEMPLATE = "org/codehaus/plexus/swizzle/ResolvedIssues.vm";
+    public static final String VOTES_TEMPLATE = "org/codehaus/plexus/swizzle/Votes.vm";
+    public static final String XDOC_SECTION_TEMPLATE = "org/codehaus/plexus/swizzle/XdocSection.vm";
+    public static final String RELEASE_TEMPLATE = "org/codehaus/plexus/swizzle/Release.vm";
+
+    public static final String RESOLVED_ISSUES = "RESOLVED_ISSUES";
+    public static final String VOTES = "VOTES";
+    public static final String XDOC_SECTION = "XDOC_SECTION";
+    public static final String RELEASE = "RELEASE";    
+
     /**
      * Generates reports based on the velocity template passed through the configuration parameter.
      * @throws Exception
      */
     public void generateReport( ReportConfiguration configuration, PrintStream result )
-        throws ReportGenerationException;
-
-    public void generateReleaseReport( ReportConfiguration configuration, PrintStream result )
         throws ReportGenerationException;
 
 }

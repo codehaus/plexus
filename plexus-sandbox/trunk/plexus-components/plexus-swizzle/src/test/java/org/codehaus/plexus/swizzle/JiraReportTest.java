@@ -34,105 +34,9 @@ public class JiraReportTest
 {
     private static final String EMPTY_STRING = "";
 
-    public void testGenerateReportResolvedIssuesTemplate()
-        throws Exception
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream result = new PrintStream( baos );
-
-        ReportConfiguration configuration = new ReportConfiguration();
-
-        configuration.setUsername( "swizzletester" );
-        configuration.setPassword( "swizzle" );
-        configuration.setJiraServerUrl( "http://jira.codehaus.org" );
-        configuration.setProjectKey( "SWIZZLE" );
-        configuration.setProjectVersion( "*" );
-        configuration.setTemplate( "RESOLVED_ISSUES" );
-
-        JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
-
-        report.generateReport( configuration, result );
-
-        result.close();
-
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        String expectedFile = "org/codehaus/plexus/swizzle/ResolvedIssuesExpectedResult.txt";
-        URL resource = classLoader.getResource( expectedFile );
-        String expected = streamToString( resource.openStream() );
-
-        String actual = new String( baos.toByteArray() );
-
-        assertEquals( expected, actual );
-    }
-
-    public void testGenerateVotesReportTemplate()
-        throws Exception
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream result = new PrintStream( baos );
-
-        ReportConfiguration configuration = new ReportConfiguration();
-
-        configuration.setUsername( "swizzletester" );
-        configuration.setPassword( "swizzle" );
-        configuration.setJiraServerUrl( "http://jira.codehaus.org" );
-        configuration.setProjectKey( "SWIZZLE" );
-        configuration.setProjectVersion( "*" );
-        configuration.setTemplate( "VOTES" );
-
-        JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
-
-        report.generateReport( configuration, result );
-
-        result.close();
-
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        String expectedFile = "org/codehaus/plexus/swizzle/VotesExpectedResult.txt";
-        URL resource = classLoader.getResource( expectedFile );
-        String expected = streamToString( resource.openStream() );
-
-        String actual = new String( baos.toByteArray() );
-
-        assertEquals( expected, actual );
-    }
-
-    public void testGenerateXdocSectionTemplate()
-        throws Exception
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream result = new PrintStream( baos );
-
-        ReportConfiguration configuration = new ReportConfiguration();
-
-        configuration.setUsername( "swizzletester" );
-        configuration.setPassword( "swizzle" );
-        configuration.setJiraServerUrl( "http://jira.codehaus.org" );
-        configuration.setProjectKey( "SWIZZLE" );
-        configuration.setProjectVersion( "*" );
-        configuration.setTemplate( "XDOC_SECTION" );
-
-        JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
-
-        report.generateReport( configuration, result );
-
-        result.close();
-
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        String expectedFile = "org/codehaus/plexus/swizzle/XdocSectionExpectedResult.txt";
-        URL resource = classLoader.getResource( expectedFile );
-        String expected = streamToString( resource.openStream() );
-
-        String actual = new String( baos.toByteArray() );
-
-        assertEquals( expected, actual );
-    }
-
     public void testConfigurationExceptionHandling()
         throws Exception
     {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream result = new PrintStream( baos );
-
         ReportConfiguration configuration = new ReportConfiguration();
 
         configuration.setUsername( "swizzletester" );
@@ -151,9 +55,42 @@ public class JiraReportTest
         }
     }
 
+    public void testGenerateReportResolvedIssuesTemplate()
+        throws Exception
+    {
+        useTemplate( JiraReport.RESOLVED_ISSUES, "*", false,
+                     "org/codehaus/plexus/swizzle/ResolvedIssuesExpectedResult.txt" );
+    }
+
+    public void testGenerateVotesReportTemplate()
+        throws Exception
+    {
+        useTemplate( JiraReport.VOTES, "*", false, "org/codehaus/plexus/swizzle/VotesExpectedResult.txt" );
+    }
+
+    public void testGenerateXdocSectionTemplate()
+        throws Exception
+    {
+        useTemplate( JiraReport.XDOC_SECTION, "*", false, "org/codehaus/plexus/swizzle/XdocSectionExpectedResult.txt" );
+    }
+
+    public void testGenerateReleaseTemplate()
+        throws Exception
+    {
+        // release information should implicitly be loaded when the release template is used
+        useTemplate( JiraReport.RELEASE, "Test 0.1.1", false, "org/codehaus/plexus/swizzle/ReleaseExpectedResult.txt" );
+    }
+
     // TODO: This test will fail if timezone is enabled in formatting and ran from a different timezone.
 
     public void testUserProvidedTemplate()
+        throws Exception
+    {
+        useTemplate( "org/codehaus/plexus/swizzle/MyResolvedIssuesTemplate.vm", "Test 0.1.1", true,
+                     "org/codehaus/plexus/swizzle/MyResolvedIssuesExpectedResult.txt" );
+    }
+
+    private void useTemplate( String template, String version, boolean releaseInfoNeeded, String expectedResult )
         throws Exception
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -165,42 +102,41 @@ public class JiraReportTest
         configuration.setPassword( "swizzle" );
         configuration.setJiraServerUrl( "http://jira.codehaus.org" );
         configuration.setProjectKey( "SWIZZLE" );
-        configuration.setProjectVersion( "Test 0.1.1" );
-        configuration.setTemplate( "org/codehaus/plexus/swizzle/MyResolvedIssuesTemplate.vm" );
+        configuration.setProjectVersion( version );
+        configuration.setTemplate( template );
+        configuration.setReleaseInfoNeeded( releaseInfoNeeded );
+        if ( JiraReport.RELEASE.equals( template ) || releaseInfoNeeded )
+        {
+            loadReleaseInfo( configuration );
+        }
 
         JiraReport report = (DefaultJiraReport) lookup( JiraReport.ROLE );
 
-        report.generateReleaseReport( configuration, result );
+        report.generateReport( configuration, result );
 
         result.close();
 
         ClassLoader classLoader = this.getClass().getClassLoader();
-        String expectedFile = "org/codehaus/plexus/swizzle/MyResolvedIssuesExpectedResult.txt";
-        URL resource = classLoader.getResource( expectedFile );
-        String expected = streamToString( resource.openStream() );
+        URL resource = classLoader.getResource( expectedResult );
+        String expected = Utils.streamToString( resource.openStream() );
 
         String actual = new String( baos.toByteArray() );
 
         assertEquals( expected, actual );
     }
 
-    private static String streamToString( InputStream in )
-        throws IOException
+    private void loadReleaseInfo( ReportConfiguration configuration )
     {
-        StringBuffer text = new StringBuffer();
-        try
-        {
-            int b;
-            while ( ( b = in.read() ) != -1 )
-            {
-                text.append( (char) b );
-            }
-        }
-        finally
-        {
-            in.close();
-        }
-        return text.toString();
+        configuration.setGroupId( "org.codehaus.plexus.swizzle" );
+        configuration.setArtifactId( "swizzle" );
+        configuration.setScmUrl( "http://svn.codehaus.org/swizzle/trunk" );
+        configuration.setScmRevisionId( "107" );
+        configuration.setDownloadUrl( "http://download-it-here.org/repo/swizzle-1.0.jar" );
+        configuration.setStagingSiteUrl( "http://people.apache.org/~jtolentino/release-reports" );
+        configuration.setDocckPassed( true );
+        configuration.setDocckResultDetails( "target/test-classes/org/codehaus/plexus/swizzle/docck-successful.txt" );
+        configuration.setLicenseCheckPassed( false );
+        configuration.setLicenseCheckResultDetails( "target/test-classes/org/codehaus/plexus/swizzle/license-failed.txt" );
     }
 
 }

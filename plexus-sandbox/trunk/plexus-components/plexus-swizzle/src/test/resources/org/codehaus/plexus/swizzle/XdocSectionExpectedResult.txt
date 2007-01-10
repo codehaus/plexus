@@ -25,9 +25,5 @@
             <td>0</td>
             <td><a href="http://jira.codehaus.org/browse/SWIZZLE-12">[SWIZZLE-12]</a> <![CDATA[Fix whole in the wall]]></td>
           </tr>
-          <tr>
-            <td>0</td>
-            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-14">[SWIZZLE-14]</a> <![CDATA[votes screwed up]]></td>
-          </tr>
         </table>
       </div>
