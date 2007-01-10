@@ -20,6 +20,10 @@ package org.codehaus.plexus.swizzle;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Iterator;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Author: John Tolentino
@@ -38,29 +42,26 @@ public class ReportConfiguration
 
     private String template;
 
+    private boolean isReleaseInfoNeeded = false;
+
+
+    private String groupId;
+    private String artifactId;
+    private String scmUrl;
+    private String scmRevisionId;
+    private String downloadUrl;
+    private String stagingSiteUrl;
+    private boolean docckPassed;
+    private File docckResultDetails;
+    private boolean licenseCheckPassed;
+    private File licenseCheckResultDetails;
+
+
     private static final String EMPTY_STRING = "";
 
-    public static final String RESOLVED_ISSUES_TEMPLATE = "org/codehaus/plexus/swizzle/ResolvedIssues.vm";
-
-    public static final String VOTES_TEMPLATE = "org/codehaus/plexus/swizzle/Votes.vm";
-
-    public static final String XDOC_SECTION_TEMPLATE = "org/codehaus/plexus/swizzle/XdocSection.vm";
-
-    private static HashMap AVAILABLE_TEMPLATES;
-
-    public ReportConfiguration()
-    {
-        loadTemplates();
-    }
-
-    private void loadTemplates()
-    {
-        AVAILABLE_TEMPLATES = new HashMap();
-        AVAILABLE_TEMPLATES.put( "RESOLVED_ISSUES", RESOLVED_ISSUES_TEMPLATE );
-        AVAILABLE_TEMPLATES.put( "VOTES", VOTES_TEMPLATE );
-        AVAILABLE_TEMPLATES.put( "XDOC_SECTION", XDOC_SECTION_TEMPLATE );
-    }
-
+    private static final String SVN = "svn";
+    
+    private static HashMap AVAILABLE_TEMPLATES = null;
 
     public String getUsername()
     {
@@ -120,6 +121,11 @@ public class ReportConfiguration
     public void setTemplate( String template )
         throws ReportConfigurationException
     {
+        if ( null == AVAILABLE_TEMPLATES )
+        {
+            loadTemplates();
+        }
+
         if ( EMPTY_STRING.equals( template ) )
         {
             String exceptionString = new String();
@@ -137,6 +143,194 @@ public class ReportConfiguration
             this.template = template;
         }
     }
+
+    private void loadTemplates()
+    {
+        AVAILABLE_TEMPLATES = new HashMap();
+        AVAILABLE_TEMPLATES.put( JiraReport.RESOLVED_ISSUES, JiraReport.RESOLVED_ISSUES_TEMPLATE );
+        AVAILABLE_TEMPLATES.put( JiraReport.VOTES, JiraReport.VOTES_TEMPLATE );
+        AVAILABLE_TEMPLATES.put( JiraReport.XDOC_SECTION, JiraReport.XDOC_SECTION_TEMPLATE );
+        AVAILABLE_TEMPLATES.put( JiraReport.RELEASE, JiraReport.RELEASE_TEMPLATE );
+    }
+
+    public boolean isReleaseInfoNeeded()
+    {
+        return isReleaseInfoNeeded;
+    }
+
+    public void setReleaseInfoNeeded( boolean releaseInfoNeeded )
+    {
+        isReleaseInfoNeeded = releaseInfoNeeded;
+    }
+
+    public String getGroupId()
+    {
+        return groupId;
+    }
+
+    public void setGroupId( String groupId )
+    {
+        this.groupId = groupId;
+    }
+
+    public String getArtifactId()
+    {
+        return artifactId;
+    }
+
+    public void setArtifactId( String artifactId )
+    {
+        this.artifactId = artifactId;
+    }
+
+    public String getScmUrl()
+    {
+        return scmUrl;
+    }
+
+    public void setScmUrl( String scmUrl )
+    {
+        this.scmUrl = scmUrl;
+    }
+
+    public String getScmRevisionId()
+    {
+        return ( null == scmRevisionId ? EMPTY_STRING : scmRevisionId );
+    }
+
+    public void setScmRevisionId( String scmRevisionId )
+    {
+        this.scmRevisionId = scmRevisionId;
+    }
+
+    public String getScmType()
+    {
+        String scmType = "UNKNOWN";
+
+        if ( scmUrl.contains( SVN ) )
+        {
+            scmType = SVN;
+        }
+
+        return scmType;
+    }
+
+    public String getScmCheckoutCommand()
+    {
+        StringBuffer scmCheckoutCommand = new StringBuffer( "" );
+
+        if ( SVN.equals( getScmType() ) )
+        {
+            scmCheckoutCommand.append( "svn co " );
+            if ( !EMPTY_STRING.equals( getScmRevisionId() ) )
+            {
+                scmCheckoutCommand.append( "-r " );
+                scmCheckoutCommand.append( getScmRevisionId() );
+                scmCheckoutCommand.append( " " );
+            }
+            scmCheckoutCommand.append( getScmUrl() );
+        }
+        return scmCheckoutCommand.toString();
+    }
+
+    public String getDownloadUrl()
+    {
+        return downloadUrl;
+    }
+
+    public void setDownloadUrl( String downloadUrl )
+    {
+        this.downloadUrl = downloadUrl;
+    }
+
+    public String getStagingSiteUrl()
+    {
+        return stagingSiteUrl;
+    }
+
+    public void setStagingSiteUrl( String stagingSiteUrl )
+    {
+        this.stagingSiteUrl = stagingSiteUrl;
+    }
+
+    public Boolean isDocckPassed()
+    {
+        return new Boolean( docckPassed );
+    }
+
+    public void setDocckPassed( boolean docckPassed )
+    {
+        this.docckPassed = docckPassed;
+    }
+
+    public File getDocckResultDetails()
+    {
+        return docckResultDetails;
+    }
+
+    public void setDocckResultDetails( String docckResultDetails )
+    {
+        this.docckResultDetails = new File( docckResultDetails );
+    }
+
+    public void setDocckResultDetails( File docckResultDetails )
+    {
+        this.docckResultDetails = docckResultDetails;
+    }
+
+    public String getDocckResultContents()
+    {
+        return "";
+    }
+
+    public Boolean isLicenseCheckPassed()
+    {
+        return new Boolean( licenseCheckPassed );
+    }
+
+    public void setLicenseCheckPassed( boolean licenseCheckPassed )
+    {
+        this.licenseCheckPassed = licenseCheckPassed;
+    }
+
+    public File getLicenseCheckResultDetails()
+    {
+        return licenseCheckResultDetails;
+    }
+
+    public void setLicenseCheckResultDetails( String licenseCheckResultDetails )
+    {
+        this.licenseCheckResultDetails = new File( licenseCheckResultDetails );
+    }
+
+    public void setLicenseCheckResultDetails( File licenseCheckResultDetails )
+    {
+        this.licenseCheckResultDetails = licenseCheckResultDetails;
+    }
+
+    public String getLicenseCheckResultContents()
+    {
+        String contents;
+
+        FileInputStream resource = null;
+        try
+        {
+            resource = new FileInputStream( licenseCheckResultDetails );
+            contents = Utils.streamToString( resource );
+        }
+        catch ( FileNotFoundException e )
+        {
+            contents = "Can't find License Header results file: " + licenseCheckResultDetails.getAbsolutePath() +
+                e.getMessage();
+        }
+        catch ( IOException e )
+        {
+            contents = "Can't read License Header results file: " + licenseCheckResultDetails.getAbsolutePath() +
+                e.getMessage();
+        }
+        return contents;
+    }
+
 
     private String getTemplateKeys( Set keySet )
     {

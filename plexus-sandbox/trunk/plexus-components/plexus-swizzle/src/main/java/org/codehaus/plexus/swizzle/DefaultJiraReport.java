@@ -71,38 +71,50 @@ public class DefaultJiraReport
     {
         try
         {
-            putStandardConfigToContext( configuration );
+            putStandardConfigToContext( configuration, context );
+            if ( JiraReport.RELEASE_TEMPLATE.equals( configuration.getTemplate() ) ||
+                configuration.isReleaseInfoNeeded() )
+            {
+                putReleaseInfoConfigToContext( configuration, context );
+            }
             Main.generate( context, configuration.getTemplate(), result );
         }
         catch ( Exception e )
         {
+            e.printStackTrace();
             throw new ReportGenerationException( "Error encountered while generating swizzle report.", e );
         }
     }
 
-    public void generateReleaseReport( ReportConfiguration configuration, PrintStream result )
-        throws ReportGenerationException
-    {
-        try
-        {
-            putStandardConfigToContext( configuration );
-            context.put( "previousReleaseVersion", getPreviousRelease( configuration ) );
-            context.put( "lastReleaseDate", getReleaseDate( configuration ) );
-            Main.generate( context, configuration.getTemplate(), result );
-        }
-        catch ( Exception e )
-        {
-            throw new ReportGenerationException( "Error encountered while generating swizzle report.", e );
-        }
-    }
-
-    private void putStandardConfigToContext( ReportConfiguration configuration )
+    private void putStandardConfigToContext( ReportConfiguration configuration, VelocityContext context )
     {
         context.put( "username", configuration.getUsername() );
         context.put( "password", configuration.getPassword() );
         context.put( "projectKey", configuration.getProjectKey() );
         context.put( "projectVersion", configuration.getProjectVersion() );
         context.put( "jiraServerUrl", configuration.getJiraServerUrl() );
+    }
+
+    private void putReleaseInfoConfigToContext( ReportConfiguration configuration, VelocityContext context )
+        throws Exception
+    {
+        context.put( "previousReleaseVersion", getPreviousRelease( configuration ) );
+        context.put( "lastReleaseDate", getReleaseDate( configuration ) );
+
+        context.put( "groupId", configuration.getGroupId() );
+        context.put( "artifactId", configuration.getArtifactId() );
+        context.put( "downloadUrl", configuration.getDownloadUrl() );
+        context.put( "scmUrl", configuration.getScmUrl() );
+        context.put( "scmRevisionId", configuration.getScmRevisionId() );
+        context.put( "scmType", configuration.getScmType() );
+        context.put( "scmCheckoutCommand", configuration.getScmCheckoutCommand() );
+        context.put( "stagingSiteUrl", configuration.getStagingSiteUrl() );
+        context.put( "docckPassed", configuration.isDocckPassed() );
+        context.put( "docckResultDetails", configuration.getDocckResultDetails() );
+        context.put( "docckResultContents", configuration.getDocckResultContents() );
+        context.put( "licenseCheckPassed", configuration.isLicenseCheckPassed() );
+        context.put( "licenseCheckResultDetails", configuration.getLicenseCheckResultDetails() );
+        context.put( "licenseCheckResultContents", configuration.getLicenseCheckResultContents() );
     }
 
     private String getPreviousRelease( ReportConfiguration configuration )
