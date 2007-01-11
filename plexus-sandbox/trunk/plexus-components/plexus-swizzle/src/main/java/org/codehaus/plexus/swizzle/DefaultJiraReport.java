@@ -147,7 +147,7 @@ public class DefaultJiraReport
     private String getReleaseDate( ReportConfiguration configuration )
         throws Exception
     {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy/MM/dd hh:mm:ss" );
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( configuration.getDateFormat() );
 
         Jira jira = getJira( configuration );
 

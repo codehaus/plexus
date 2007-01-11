@@ -43,7 +43,7 @@ public class JiraReportTest
         configuration.setPassword( "swizzle" );
         configuration.setJiraServerUrl( "http://jira.codehaus.org" );
         configuration.setProjectKey( "SWIZZLE" );
-        configuration.setProjectVersion( "*" );
+        configuration.setProjectVersion( "Test 0.1.1" );
 
         try
         {
@@ -58,27 +58,27 @@ public class JiraReportTest
     public void testGenerateReportResolvedIssuesTemplate()
         throws Exception
     {
-        useTemplate( JiraReport.RESOLVED_ISSUES, "*", false,
+        useTemplate( JiraReport.RESOLVED_ISSUES, "Test 0.1.1", false,
                      "org/codehaus/plexus/swizzle/ResolvedIssuesExpectedResult.txt" );
     }
 
     public void testGenerateVotesReportTemplate()
         throws Exception
     {
-        useTemplate( JiraReport.VOTES, "*", false, "org/codehaus/plexus/swizzle/VotesExpectedResult.txt" );
+        useTemplate( JiraReport.VOTES, "Test 0.2.0", false, "org/codehaus/plexus/swizzle/VotesExpectedResult.txt" );
     }
 
     public void testGenerateXdocSectionTemplate()
         throws Exception
     {
-        useTemplate( JiraReport.XDOC_SECTION, "*", false, "org/codehaus/plexus/swizzle/XdocSectionExpectedResult.txt" );
+        useTemplate( JiraReport.XDOC_SECTION, "Test 0.1.1", false, "org/codehaus/plexus/swizzle/XdocSectionExpectedResult.txt" );
     }
 
     public void testGenerateReleaseTemplate()
         throws Exception
     {
         // release information should implicitly be loaded when the release template is used
-        useTemplate( JiraReport.RELEASE, "Test 0.1.1", false, "org/codehaus/plexus/swizzle/ReleaseExpectedResult.txt" );
+        useTemplate( JiraReport.RELEASE, "Test 0.3.0", false, "org/codehaus/plexus/swizzle/ReleaseExpectedResult.txt" );
     }
 
     // TODO: This test will fail if timezone is enabled in formatting and ran from a different timezone.
