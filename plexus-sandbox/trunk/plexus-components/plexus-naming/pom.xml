@@ -39,7 +39,12 @@
       <groupId>directory-naming</groupId>
       <artifactId>naming-factory</artifactId>
       <version>0.8</version>
-    </dependency>  
+    </dependency>
+    <dependency>
+      <groupId>directory-naming</groupId>
+      <artifactId>naming-config</artifactId>
+      <version>0.8</version>
+    </dependency>      
     <dependency>
       <groupId>commons-dbcp</groupId>
       <artifactId>commons-dbcp</artifactId>

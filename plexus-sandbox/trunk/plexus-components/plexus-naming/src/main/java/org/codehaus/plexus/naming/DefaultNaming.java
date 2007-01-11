@@ -1,8 +1,9 @@
 package org.codehaus.plexus.naming;
 
-import org.apache.naming.ResourceRef;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
 import javax.naming.CompositeName;
 import javax.naming.Context;
@@ -13,10 +14,12 @@ import javax.naming.NameClassPair;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.StringRefAddr;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
+
+import org.apache.naming.ResourceRef;
+import org.apache.naming.config.Config;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.util.reflection.ReflectorException;
 
 /**
  * Default implementation of naming.
@@ -39,10 +42,14 @@ public class DefaultNaming
     private List resources;
 
     /**
+     * @plexus.configuration
+     */
+    private List environments;
+
+    /**
      * @plexus.configuration default-value="true"
      */
-    private boolean setSystemProperties =
-        true; // deliberately set true default here so you must declare it false, not just omit it
+    private boolean setSystemProperties = true; // deliberately set true default here so you must declare it false, not just omit it
 
     public Context createInitialContext()
         throws NamingException
@@ -59,8 +66,8 @@ public class DefaultNaming
     {
         if ( setSystemProperties )
         {
-            System.setProperty( Context.INITIAL_CONTEXT_FACTORY,
-                                org.apache.naming.java.javaURLContextFactory.class.getName() );
+            System.setProperty( Context.INITIAL_CONTEXT_FACTORY, org.apache.naming.java.javaURLContextFactory.class
+                .getName() );
             System.setProperty( Context.URL_PKG_PREFIXES, "org.apache.naming" );
         }
 
@@ -73,6 +80,14 @@ public class DefaultNaming
             loadConfiguration();
         }
         catch ( NamingException e )
+        {
+            throw new InitializationException( e.getMessage(), e );
+        }
+        catch ( ClassNotFoundException e )
+        {
+            throw new InitializationException( e.getMessage(), e );
+        }
+        catch ( ReflectorException e )
         {
             throw new InitializationException( e.getMessage(), e );
         }
@@ -119,15 +134,21 @@ public class DefaultNaming
      * @throws NamingException if a NamingException occurs.
      */
     public synchronized void loadConfiguration()
-        throws NamingException
+        throws NamingException, ClassNotFoundException, ReflectorException
     {
-/* TODO
-                for ( Iterator j = ctx.getEnvironmentList().iterator(); j.hasNext(); )
-                {
-                    Config.Environment e = (Config.Environment) j.next();
-                    jndiCtx.rebind( e.getName(), e.createValue() );
-                }
-*/
+
+        if ( environments != null )
+        {
+            for ( Iterator iterator = this.environments.iterator(); iterator.hasNext(); )
+            {
+                Environment environment = (Environment) iterator.next();
+                Config.Environment config = new Config.Environment();
+                config.setName( environment.getName() );
+                config.setType( environment.getType() );
+                config.setValue( environment.getValue() );
+                envContext.bind( environment.getName(), config.createValue() );
+            }
+        }
 
         if ( resources != null )
         {

@@ -31,5 +31,26 @@
         </resources>
       </configuration>
     </component>
+    
+    <component>
+      <role>org.codehaus.plexus.naming.Naming</role>
+      <role-hint>environments</role-hint>
+      <implementation>org.codehaus.plexus.naming.DefaultNaming</implementation>
+      <configuration>
+        <environments>
+          <environment>
+            <name>ten</name>
+            <type>java.lang.Integer</type>
+            <value>10</value>
+          </environment>
+          <environment>
+            <name>wine</name>
+            <type>java.lang.String</type>
+            <value>bordeaux</value>
+          </environment>          
+        </environments>
+      </configuration>
+    </component>    
+    
   </components>
 </component-set>
