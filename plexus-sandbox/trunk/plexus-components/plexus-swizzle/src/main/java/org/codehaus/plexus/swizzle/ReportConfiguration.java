@@ -31,31 +31,46 @@ import java.io.IOException;
 public class ReportConfiguration
 {
     private String username;
+
     private String password;
+
     private String projectKey;
+
     private String projectVersion;
+
     private String jiraServerUrl;
+
     private String template;
 
     private boolean isReleaseInfoNeeded = false;
 
     private String groupId;
+
     private String artifactId;
-    private String scmUrl;
+
+    private String scmConnection;
+
     private String scmRevisionId;
+
     private String downloadUrl;
+
     private String stagingSiteUrl;
+
     private boolean docckPassed;
+
     private File docckResultDetails;
+
     private boolean licenseCheckPassed;
+
     private File licenseCheckResultDetails;
+
     private String dateFormat = "yyyy/MM/dd hh:mm:ss";
 
 
     private static final String EMPTY_STRING = "";
 
     private static final String SVN = "svn";
-    
+
     private static HashMap AVAILABLE_TEMPLATES = null;
 
     public String getUsername()
@@ -178,14 +193,14 @@ public class ReportConfiguration
         this.artifactId = artifactId;
     }
 
-    public String getScmUrl()
+    public String getScmConnection()
     {
-        return scmUrl;
+        return scmConnection;
     }
 
-    public void setScmUrl( String scmUrl )
+    public void setScmConnection( String scmConnection )
     {
-        this.scmUrl = scmUrl;
+        this.scmConnection = scmConnection;
     }
 
     public String getScmRevisionId()
@@ -202,12 +217,19 @@ public class ReportConfiguration
     {
         String scmType = "UNKNOWN";
 
-        if ( scmUrl.contains( SVN ) )
+        if ( scmConnection.contains( "scm:" + SVN + ":" ) )
         {
             scmType = SVN;
         }
 
         return scmType;
+    }
+
+    public String getScmUrl()
+    {
+        String scmUrl = scmConnection.substring( "scm:".length(), scmConnection.length() );
+        scmUrl = scmUrl.substring( scmUrl.indexOf( ":" ) + 1, scmUrl.length() );
+        return scmUrl;
     }
 
     public String getScmCheckoutCommand()
