@@ -81,7 +81,6 @@ public class DefaultJiraReport
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
             throw new ReportGenerationException( "Error encountered while generating swizzle report.", e );
         }
     }

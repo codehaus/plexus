@@ -129,7 +129,7 @@ public class JiraReportTest
     {
         configuration.setGroupId( "org.codehaus.plexus.swizzle" );
         configuration.setArtifactId( "swizzle" );
-        configuration.setScmUrl( "http://svn.codehaus.org/swizzle/trunk" );
+        configuration.setScmConnection( "scm:svn:http://svn.codehaus.org/swizzle/trunk" );
         configuration.setScmRevisionId( "107" );
         configuration.setDownloadUrl( "http://download-it-here.org/repo/swizzle-1.0.jar" );
         configuration.setStagingSiteUrl( "http://people.apache.org/~jtolentino/release-reports" );
