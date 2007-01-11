@@ -6,22 +6,6 @@
             <th>DESCRIPTION</th>
           </tr>
           <tr>
-            <td>2</td>
-            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-10">[SWIZZLE-10]</a> <![CDATA[Beer fridge for the garage]]></td>
-          </tr>
-          <tr>
-            <td>0</td>
-            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-9">[SWIZZLE-9]</a> <![CDATA[Clean the pool]]></td>
-          </tr>
-          <tr>
-            <td>0</td>
-            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-11">[SWIZZLE-11]</a> <![CDATA[Make sure the smoke alarms work]]></td>
-          </tr>
-          <tr>
-            <td>0</td>
-            <td><a href="http://jira.codehaus.org/browse/SWIZZLE-8">[SWIZZLE-8]</a> <![CDATA[Get more colored lights for the disco ball]]></td>
-          </tr>
-          <tr>
             <td>0</td>
             <td><a href="http://jira.codehaus.org/browse/SWIZZLE-12">[SWIZZLE-12]</a> <![CDATA[Fix whole in the wall]]></td>
           </tr>

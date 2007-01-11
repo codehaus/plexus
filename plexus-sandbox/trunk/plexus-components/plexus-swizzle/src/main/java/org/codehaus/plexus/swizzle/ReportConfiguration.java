@@ -31,19 +31,13 @@ import java.io.IOException;
 public class ReportConfiguration
 {
     private String username;
-
     private String password;
-
     private String projectKey;
-
     private String projectVersion;
-
     private String jiraServerUrl;
-
     private String template;
 
     private boolean isReleaseInfoNeeded = false;
-
 
     private String groupId;
     private String artifactId;
@@ -55,6 +49,7 @@ public class ReportConfiguration
     private File docckResultDetails;
     private boolean licenseCheckPassed;
     private File licenseCheckResultDetails;
+    private String dateFormat = "yyyy/MM/dd hh:mm:ss";
 
 
     private static final String EMPTY_STRING = "";
@@ -306,6 +301,16 @@ public class ReportConfiguration
     public void setLicenseCheckResultDetails( File licenseCheckResultDetails )
     {
         this.licenseCheckResultDetails = licenseCheckResultDetails;
+    }
+
+    public String getDateFormat()
+    {
+        return dateFormat;
+    }
+
+    public void setDateFormat( String dateFormat )
+    {
+        this.dateFormat = dateFormat;
     }
 
     public String getLicenseCheckResultContents()
