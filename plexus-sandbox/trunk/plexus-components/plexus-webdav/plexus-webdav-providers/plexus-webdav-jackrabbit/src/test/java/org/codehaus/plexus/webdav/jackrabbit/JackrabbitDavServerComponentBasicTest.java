@@ -16,18 +16,18 @@ package org.codehaus.plexus.webdav.jackrabbit;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.webdav.test.AbstractWebdavProviderTestCase;
+import org.codehaus.plexus.webdav.test.AbstractBasicWebdavProviderTestCase;
 
 /**
- * JackrabbitDavServerComponentTest 
+ * JackrabbitDavServerComponentBasicTest 
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class JackrabbitDavServerComponentTest
-    extends AbstractWebdavProviderTestCase
+public class JackrabbitDavServerComponentBasicTest
+    extends AbstractBasicWebdavProviderTestCase
 {
-    public JackrabbitDavServerComponentTest()
+    public JackrabbitDavServerComponentBasicTest()
     {
         super();
         setProviderHint( "jackrabbit" );

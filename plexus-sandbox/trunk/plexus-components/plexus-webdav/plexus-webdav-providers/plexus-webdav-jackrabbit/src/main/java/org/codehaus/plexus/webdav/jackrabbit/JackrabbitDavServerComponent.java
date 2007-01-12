@@ -17,7 +17,7 @@ import org.apache.jackrabbit.webdav.simple.ResourceConfig;
 import org.apache.jackrabbit.webdav.simple.ResourceFactoryImpl;
 import org.codehaus.plexus.webdav.AbstractDavServerComponent;
 import org.codehaus.plexus.webdav.DavServerException;
-import org.codehaus.plexus.webdav.DavServerRequest;
+import org.codehaus.plexus.webdav.servlet.DavServerRequest;
 
 import java.io.File;
 import java.io.IOException;
