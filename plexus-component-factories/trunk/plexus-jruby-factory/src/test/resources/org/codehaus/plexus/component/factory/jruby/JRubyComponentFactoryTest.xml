@@ -19,12 +19,6 @@
     </component>
 
     <component>
-      <role>mojo</role>
-      <implementation>/mojo.rb</implementation>
-      <component-factory>jruby</component-factory>
-    </component>
-
-    <component>
       <role>junit</role>
       <implementation>/junit.rb</implementation>
       <component-factory>jruby</component-factory>

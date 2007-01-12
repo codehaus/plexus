@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 
 import junit.framework.TestCase;
 
-import org.apache.maven.plugin.Mojo;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.component.jruby.JRubyInvoker;
 import org.codehaus.plexus.util.StringOutputStream;
@@ -21,7 +20,7 @@ public class JRubyComponentFactoryTest
     public void testHello()
         throws Exception
     {
-        JRubyInvoker invoker = (JRubyInvoker) lookup( "hello" );
+        JRubyInvoker invoker = (JRubyInvoker)lookup( "hello" );
         assertNotNull( invoker );
 
         invoker.inputValue( "hello_from", JRubyComponentFactoryTest.class );
@@ -50,8 +49,6 @@ public class JRubyComponentFactoryTest
         JRubyInvoker invoker = (JRubyInvoker) lookup( "junit" );
         assertNotNull( invoker );
 
-        // invoker.inputValue( "random", new Random() );
-
         TestCase result = (TestCase)invoker.invoke();
 
         result.run();
@@ -71,28 +68,16 @@ public class JRubyComponentFactoryTest
     public void testInjected()
         throws Exception
     {
-        JRubyInvoker invoker = (JRubyInvoker) lookup( "injected" );
+        JRubyInvoker invoker = (JRubyInvoker)lookup( "injected" );
         assertNotNull( invoker );
 
         invoker.invoke();
     }
 
-    public void testMojo()
-        throws Exception
-    {
-        JRubyInvoker invoker = (JRubyInvoker) lookup( "mojo" );
-        assertNotNull( invoker );
-
-        invoker.inputValue( "LOG", getContainer().getLogger() );
-
-        Mojo mojo = (Mojo)invoker.invoke();
-        mojo.execute();
-    }
-
     public void testLog()
         throws Exception
     {
-        JRubyInvoker invoker = (JRubyInvoker) lookup( "hello" );
+        JRubyInvoker invoker = (JRubyInvoker)lookup( "hello" );
         assertNotNull( invoker );
 
         invoker.inputValue( "hello_from", JRubyComponentFactoryTest.class );
@@ -100,11 +85,11 @@ public class JRubyComponentFactoryTest
         StringOutputStream stdout = new StringOutputStream();
         StringOutputStream stderr = new StringOutputStream();
         invoker.invoke( stdout, stderr );
-        logOutput( stdout, false );
-        logOutput( stderr, true );
+        logOutput( stdout, false, "hello" );
+        logOutput( stderr, true, "hello" );
     }
     
-    private void logOutput( StringOutputStream out, boolean error )
+    private void logOutput( StringOutputStream out, boolean error, String component )
     {
         String output = out.toString();
         if ( output != null && output.length() > 0 )
@@ -113,11 +98,11 @@ public class JRubyComponentFactoryTest
             {
                 if ( error )
                 {
-                    getContainer().getLogger().error( tokens.nextToken() );
+                    getContainer().getLoggerManager().getLoggerForComponent( component ).error( tokens.nextToken() );
                 }
                 else
                 {
-                    getContainer().getLogger().info( tokens.nextToken() );
+                    getContainer().getLoggerManager().getLoggerForComponent( component ).info( tokens.nextToken() );
                 }
             }
         }

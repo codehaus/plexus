@@ -17,10 +17,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.util.StringOutputStream;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.jruby.IRuby;
 import org.jruby.Ruby;
 import org.jruby.RubyException;
@@ -41,7 +41,7 @@ import org.jruby.runtime.GlobalVariable;
 import org.jruby.runtime.IAccessor;
 import org.jruby.runtime.builtin.IRubyObject;
 
-public class JRubyInvoker2 extends JRubyInvoker
+public class JRubyRuntimeInvoker extends JRubyBSFInvoker
 {
     private boolean assumePrintLoop;
 
@@ -70,7 +70,7 @@ public class JRubyInvoker2 extends JRubyInvoker
     /**
      * Create a reader JRubyInvoker that reads a JRuby script from the given reader.
      */
-    public JRubyInvoker2( Reader scriptReader )
+    public JRubyRuntimeInvoker( Reader scriptReader )
     {
         super( scriptReader );
 
@@ -82,12 +82,12 @@ public class JRubyInvoker2 extends JRubyInvoker
      * @param componentDescriptor
      * @param classRealm
      */
-    public JRubyInvoker2( ComponentDescriptor componentDescriptor, ClassRealm classRealm )
+    public JRubyRuntimeInvoker( ComponentDescriptor componentDescriptor, ClassRealm classRealm )
     {
         super( componentDescriptor, classRealm );
 
         this.componentDescriptor = componentDescriptor;
-        this.classRealm = classRealm;
+        this.classRealm = classRealm.getClassLoader();
     }
 
     /**
@@ -531,7 +531,7 @@ public class JRubyInvoker2 extends JRubyInvoker
 
     private Node getParsedScript( IRuby runtime, String script )
     {
-        Node result = runtime.parse( script, "<script>" );
+        Node result = runtime.parse( script, "<script>", runtime.getCurrentContext().getCurrentScope() );
         if ( assumePrintLoop )
         {
             result = new ParserSupport().appendPrintToBlock(result);
