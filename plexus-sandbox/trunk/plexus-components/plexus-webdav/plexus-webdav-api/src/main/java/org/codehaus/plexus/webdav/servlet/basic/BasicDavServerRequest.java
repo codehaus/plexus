@@ -1,4 +1,4 @@
-package org.codehaus.plexus.webdav;
+package org.codehaus.plexus.webdav.servlet.basic;
 
 /*
  * Copyright 2001-2007 The Codehaus.
@@ -16,7 +16,9 @@ package org.codehaus.plexus.webdav;
  * limitations under the License.
  */
 
-import javax.servlet.http.HttpServletRequest;
+
+import org.codehaus.plexus.webdav.servlet.DavServerRequest;
+import org.codehaus.plexus.webdav.util.WrappedRepositoryRequest;
 
 /**
  * BasicDavServerRequest - for requests that have a prefix based off of the servlet path id.
@@ -27,13 +29,13 @@ import javax.servlet.http.HttpServletRequest;
 public class BasicDavServerRequest
     implements DavServerRequest
 {
-    private HttpServletRequest request;
+    private WrappedRepositoryRequest request;
 
     private String prefix;
 
     private String logicalResource;
 
-    public BasicDavServerRequest( HttpServletRequest request )
+    public BasicDavServerRequest( WrappedRepositoryRequest request )
     {
         this.request = request;
         this.prefix = request.getServletPath();
@@ -50,7 +52,7 @@ public class BasicDavServerRequest
         return this.prefix;
     }
 
-    public HttpServletRequest getRequest()
+    public WrappedRepositoryRequest getRequest()
     {
         return request;
     }

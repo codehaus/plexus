@@ -1,8 +1,24 @@
-package org.codehaus.plexus.webdav;
+package org.codehaus.plexus.webdav.servlet.multiplexed;
+
+/*
+ * Copyright 2001-2007 The Codehaus.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 import org.codehaus.plexus.util.FileUtils;
-
-import javax.servlet.http.HttpServletRequest;
+import org.codehaus.plexus.webdav.servlet.DavServerRequest;
+import org.codehaus.plexus.webdav.util.WrappedRepositoryRequest;
 
 /**
  * <p>
@@ -21,13 +37,13 @@ import javax.servlet.http.HttpServletRequest;
 public class MultiplexedDavServerRequest
     implements DavServerRequest
 {
-    private HttpServletRequest request;
+    private WrappedRepositoryRequest request;
 
     private String prefix;
 
     private String logicalResource;
 
-    public MultiplexedDavServerRequest( HttpServletRequest request )
+    public MultiplexedDavServerRequest( WrappedRepositoryRequest request )
     {
         /* Perform a simple security normalization of the requested pathinfo.
          * This is to prevent requests for information outside of the root directory.
@@ -65,7 +81,8 @@ public class MultiplexedDavServerRequest
             this.logicalResource = "/";
         }
         
-        this.request = new RepositoryRequest( request, this.logicalResource );
+        this.request = request;
+        this.request.setPathInfo( logicalResource );
     }
 
     public String getLogicalResource()
@@ -78,7 +95,7 @@ public class MultiplexedDavServerRequest
         return this.prefix;
     }
 
-    public HttpServletRequest getRequest()
+    public WrappedRepositoryRequest getRequest()
     {
         return request;
     }

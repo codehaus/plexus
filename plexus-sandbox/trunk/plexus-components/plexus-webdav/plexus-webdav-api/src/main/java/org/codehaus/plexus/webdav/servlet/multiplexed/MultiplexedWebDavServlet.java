@@ -1,4 +1,4 @@
-package org.codehaus.plexus.webdav;
+package org.codehaus.plexus.webdav.servlet.multiplexed;
 
 /*
  * Copyright 2001-2007 The Codehaus.
@@ -17,7 +17,13 @@ package org.codehaus.plexus.webdav;
  */
 
 import org.codehaus.plexus.servlet.PlexusServletUtils;
+import org.codehaus.plexus.webdav.DavServerComponent;
+import org.codehaus.plexus.webdav.DavServerException;
+import org.codehaus.plexus.webdav.DavServerManager;
+import org.codehaus.plexus.webdav.servlet.DavServerRequest;
+import org.codehaus.plexus.webdav.util.WrappedRepositoryRequest;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.Servlet;
@@ -59,9 +65,33 @@ public abstract class MultiplexedWebDavServlet
         this.config = config;
 
         davManager = (DavServerManager) PlexusServletUtils.lookup( config.getServletContext(), DavServerManager.ROLE );
+
+        try
+        {
+            initServers( config );
+        }
+        catch ( DavServerException e )
+        {
+            throw new ServletException( "Unable to init nested servers." + e );
+        }
     }
 
-    public abstract void initServers();
+    /**
+     * Create any DavServerComponents here.
+     * Use the {@link #createServer(String, File, ServletConfig)} method to create your servers.
+     * 
+     * @param config the config to use.
+     * @throws DavServerException if there was a problem initializing the server components.
+     */
+    public abstract void initServers( ServletConfig config )
+        throws DavServerException;
+
+    public void createServer( String prefix, File rootDirectory, ServletConfig config )
+        throws DavServerException
+    {
+        DavServerComponent serverComponent = getDavManager().createServer( prefix, rootDirectory );
+        serverComponent.init( config );
+    }
 
     public void destroy()
     {
@@ -103,7 +133,7 @@ public abstract class MultiplexedWebDavServlet
 
         HttpServletRequest httpRequest = (HttpServletRequest) req;
         HttpServletResponse httpResponse = (HttpServletResponse) res;
-        DavServerRequest davRequest = new MultiplexedDavServerRequest( httpRequest );
+        DavServerRequest davRequest = new MultiplexedDavServerRequest( new WrappedRepositoryRequest( httpRequest ) );
 
         DavServerComponent davServer = davManager.getServer( davRequest.getPrefix() );
 

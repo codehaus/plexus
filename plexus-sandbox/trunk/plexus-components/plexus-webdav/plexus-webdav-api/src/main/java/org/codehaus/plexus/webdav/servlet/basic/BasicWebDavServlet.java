@@ -1,4 +1,4 @@
-package org.codehaus.plexus.webdav;
+package org.codehaus.plexus.webdav.servlet.basic;
 
 /*
  * Copyright 2001-2007 The Codehaus.
@@ -18,6 +18,11 @@ package org.codehaus.plexus.webdav;
 
 import org.codehaus.plexus.servlet.PlexusServletUtils;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.webdav.DavServerComponent;
+import org.codehaus.plexus.webdav.DavServerException;
+import org.codehaus.plexus.webdav.DavServerManager;
+import org.codehaus.plexus.webdav.servlet.DavServerRequest;
+import org.codehaus.plexus.webdav.util.WrappedRepositoryRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -135,11 +140,13 @@ public class BasicWebDavServlet
 
         HttpServletRequest httpRequest = (HttpServletRequest) req;
         HttpServletResponse httpResponse = (HttpServletResponse) res;
-        DavServerRequest davRequest = new BasicDavServerRequest( httpRequest );
+        DavServerRequest davRequest = new BasicDavServerRequest( new WrappedRepositoryRequest( httpRequest ) );
 
         if ( debug )
         {
             System.out.println( "-->>> request ----------------------------------------------------------" );
+            System.out.println( "--> " + httpRequest.getScheme() + "://" + httpRequest.getServerName() + ":"
+                + httpRequest.getServerPort() + httpRequest.getServletPath() );
             System.out
                 .println( httpRequest.getMethod() + " " + httpRequest.getRequestURI()
                     + ( httpRequest.getQueryString() != null ? "?" + httpRequest.getQueryString() : "" ) + " "

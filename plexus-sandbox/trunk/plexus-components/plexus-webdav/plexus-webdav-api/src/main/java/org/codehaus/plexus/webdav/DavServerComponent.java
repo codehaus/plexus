@@ -16,6 +16,8 @@ package org.codehaus.plexus.webdav;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.webdav.servlet.DavServerRequest;
+
 import java.io.File;
 import java.io.IOException;
 

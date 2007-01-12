@@ -1,4 +1,4 @@
-package org.codehaus.plexus.webdav;
+package org.codehaus.plexus.webdav.servlet;
 
 /*
  * Copyright 2001-2007 The Codehaus.
@@ -16,7 +16,7 @@ package org.codehaus.plexus.webdav;
  * limitations under the License.
  */
 
-import javax.servlet.http.HttpServletRequest;
+import org.codehaus.plexus.webdav.util.WrappedRepositoryRequest;
 
 /**
  * DavServerRequest 
@@ -30,5 +30,5 @@ public interface DavServerRequest
 
     public String getLogicalResource();
 
-    public HttpServletRequest getRequest();
+    public WrappedRepositoryRequest getRequest();
 }
