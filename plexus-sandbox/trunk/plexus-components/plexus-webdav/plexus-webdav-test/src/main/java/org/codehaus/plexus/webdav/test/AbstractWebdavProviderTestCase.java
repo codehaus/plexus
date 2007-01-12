@@ -16,22 +16,16 @@ package org.codehaus.plexus.webdav.test;
  * limitations under the License.
  */
 
-import org.apache.commons.httpclient.HttpURL;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.webdav.lib.WebdavResource;
-import org.apache.webdav.lib.methods.DepthSupport;
-import org.codehaus.plexus.PlexusConstants;
+import org.apache.webdav.lib.WebdavResources;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.webdav.BasicWebDavServlet;
 import org.codehaus.plexus.webdav.DavServerManager;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.ServletHandler;
-import org.mortbay.jetty.servlet.ServletHolder;
 
 import java.io.File;
-import java.io.InputStream;
+import java.io.IOException;
 
 /**
  * AbstractWebdavProviderTestCase 
@@ -42,22 +36,15 @@ import java.io.InputStream;
 public class AbstractWebdavProviderTestCase
     extends PlexusTestCase
 {
-    private static final int PORT = 4321;
+    public static final int PORT = 4321;
 
-    private static final String CONTEXT = "/projects";
+    public static final String CONTEXT = "/repos";
+
+    protected File serverRootDir = null;
 
     private DavServerManager manager;
 
     private String providerHint = "simple";
-
-    private File serverContentsDir;
-
-    /**
-     * The Jetty Server.
-     */
-    private Server server;
-
-    private WebdavResource davResource;
 
     public DavServerManager getManager()
     {
@@ -84,75 +71,18 @@ public class AbstractWebdavProviderTestCase
     {
         super.setUp();
         manager = (DavServerManager) lookup( DavServerManager.ROLE, getProviderHint() );
-
-        // Initialize server contents directory.
-        serverContentsDir = new File( "target/test-contents/" + getName() );
-
-        FileUtils.deleteDirectory( serverContentsDir );
-        if ( serverContentsDir.exists() )
-        {
-            fail( "Unable to execute test, server contents test directory [" + serverContentsDir.getAbsolutePath()
-                + "] exists, and cannot be deleted by the test case." );
-        }
-
-        if ( !serverContentsDir.mkdirs() )
-        {
-            fail( "Unable to execute test, server contents test directory [" + serverContentsDir.getAbsolutePath()
-                + "] cannot be created." );
-        }
-
-        // Setup the Jetty Server.
-        System.setProperty( "DEBUG", "" );
-        System.setProperty( "org.mortbay.log.class", "org.slf4j.impl.SimpleLogger" );
-
-        server = new Server( PORT );
-        Context root = new Context( server, "/", Context.SESSIONS );
-
-        root.setContextPath( "/" );
-        root.setAttribute( PlexusConstants.PLEXUS_KEY, getContainer() );
-
-        ServletHandler servletHandler = root.getServletHandler();
-
-        ServletHolder holder = servletHandler.addServletWithMapping( BasicWebDavServlet.class, CONTEXT + "/*" );
-
-        holder.setInitParameter( "dav.root", serverContentsDir.getAbsolutePath() );
+        serverRootDir = getRootDir();
     }
 
     protected void tearDown()
         throws Exception
     {
-        serverContentsDir = null;
+        serverRootDir = null;
 
-        if ( server != null )
-        {
-            try
-            {
-                server.stop();
-            }
-            catch ( Exception e )
-            {
-                /* ignore */
-            }
-            server = null;
-        }
-
-        if ( davResource != null )
-        {
-            try
-            {
-                davResource.close();
-            }
-            catch ( Exception e )
-            {
-                /* ignore */
-            }
-
-            davResource = null;
-        }
         super.tearDown();
     }
 
-    private void dumpCollection( WebdavResource webdavResource, String path )
+    protected void dumpCollection( WebdavResource webdavResource, String path )
         throws Exception
     {
         webdavResource.setPath( path );
@@ -163,7 +93,7 @@ public class AbstractWebdavProviderTestCase
         dumpCollectionRecursive( "", webdavResource, path );
     }
 
-    private void dumpCollectionRecursive( String indent, WebdavResource webdavResource, String path )
+    protected void dumpCollectionRecursive( String indent, WebdavResource webdavResource, String path )
         throws Exception
     {
         if ( indent.length() > 12 )
@@ -185,205 +115,248 @@ public class AbstractWebdavProviderTestCase
         }
     }
 
-    private void assertMethod( String msg, boolean expectedState, boolean actualState )
-    {
-        if ( expectedState != actualState )
-        {
-            int statusCode = davResource.getStatusCode();
-            String statusMessage = davResource.getStatusMessage();
-            fail( "Unable to process method as expected [" + msg + "] expected [" + expectedState + "] actual ["
-                + actualState + "], status code [" + statusCode + "], status message [" + statusMessage + "]." );
-        }
-    }
-
     // --------------------------------------------------------------------
     // Actual Test Cases.
     // --------------------------------------------------------------------
 
-    public void testPutGet()
-        throws Exception
+    public void assertNotExists( File basedir, String relativePath )
     {
-        FileUtils.fileWrite( new File( serverContentsDir, "data.txt" ).getAbsolutePath(), "yo!" );
-
-        server.start();
-
-        HttpURL httpUrl = new HttpURL( "http://localhost:" + PORT + CONTEXT );
-
-        davResource = new WebdavResource( httpUrl );
-        davResource.setPath( CONTEXT );
-
-        assertMethod( "Put [/data.txt]", true, davResource.putMethod( CONTEXT + "/data.txt", "yo!\n" ) );
-
-        dumpCollection( davResource, CONTEXT );
-
-        InputStream inputStream = davResource.getMethodData( CONTEXT + "/data.txt" );
-
-        assertEquals( "yo!\n", IOUtil.toString( inputStream ) );
-
-        server.stop();
+        assertNotExists( new File( basedir, relativePath ) );
     }
 
-    public void testCollectionTasks()
-        throws Exception
+    public void assertNotExists( File file )
     {
-        server.start();
-
-        HttpURL httpUrl = new HttpURL( "http://localhost:" + PORT + CONTEXT );
-
-        davResource = new WebdavResource( httpUrl );
-        davResource.setPath( CONTEXT );
-
-        // Pull up a collection list.
-        String resources[] = davResource.list();
-        assertNotNull( resources );
-        assertEquals( 0, resources.length );
-
-        // Create a few collections.
-        assertMethod( "Create Collection '/bar'", true, davResource.mkcolMethod( CONTEXT + "/bar" ) );
-        assertMethod( "Create Collection '/bar/foo'", true, davResource.mkcolMethod( CONTEXT + "/bar/foo" ) );
-
-        // Test for collection via webdav interface.
-        resources = davResource.list();
-        assertNotNull( resources );
-        assertEquals( 1, resources.length );
-
-        davResource.setPath( CONTEXT + "/bar" );
-        // Needed for .exists() to function.
-        davResource.setProperties( WebdavResource.NAME, DepthSupport.DEPTH_0 );
-
-        assertTrue( "DAV Resource [/bar] should exist.", davResource.exists() );
-        assertTrue( "DAV Resource [/bar] should be a collection.", davResource.isCollection() );
-
-        // Test for existance of directories on disk.
-        File expectedDir = new File( serverContentsDir, "bar/foo" );
-        assertTrue( "Directory/Collection bar/foo should exist.", expectedDir.exists() && expectedDir.isDirectory() );
-
-        server.stop();
+        if ( file.exists() )
+        {
+            fail( "Unexpected path <" + file.getAbsolutePath() + "> should not exist." );
+        }
     }
 
-    public void testResourceCopy()
-        throws Exception
+    public void assertExists( File basedir, String relativePath )
     {
-        server.start();
-
-        HttpURL httpUrl = new HttpURL( "http://localhost:" + PORT + CONTEXT );
-
-        davResource = new WebdavResource( httpUrl );
-        davResource.setPath( CONTEXT );
-        davResource.setDebug( 1 );
-
-        // Create a few collections.
-        assertMethod( "Create Collection '/bar'", true, davResource.mkcolMethod( CONTEXT + "/bar" ) );
-        assertMethod( "Create Collection '/foo'", true, davResource.mkcolMethod( CONTEXT + "/foo" ) );
-
-        // Create a resource
-        davResource.setPath( CONTEXT + "/bar" );
-        assertMethod( "Put [/bar/data.txt]", true, davResource.putMethod( CONTEXT + "/bar/data.txt", "yo!" ) );
-
-        // Test for existance of resource on disk.
-        assertTrue( "Existance of [/bar/data.txt]", new File( serverContentsDir, "bar/data.txt" ).exists() );
-        assertFalse( "Existance of [/foo/data.txt]", new File( serverContentsDir, "foo/data.txt" ).exists() );
-
-        // Move resource
-        davResource.setPath( CONTEXT );
-        assertMethod( "Copy Resource", true, davResource.copyMethod( CONTEXT + "/bar/data.txt", CONTEXT
-            + "/foo/data.txt" ) );
-
-        // Test for existance of resource on disk.
-        assertTrue( "Existance of [/bar/data.txt]", new File( serverContentsDir, "bar/data.txt" ).exists() );
-        assertTrue( "Existance of [/foo/data.txt]", new File( serverContentsDir, "foo/data.txt" ).exists() );
-
-        // Test for existance via webdav interface.
-        davResource.setPath( CONTEXT + "/bar" );
-        String resources[] = davResource.list();
-        assertNotNull( resources );
-        assertEquals( 1, resources.length );
-
-        davResource.setPath( CONTEXT + "/foo" );
-        resources = davResource.list();
-        assertNotNull( resources );
-        assertEquals( 1, resources.length );
-
-        server.stop();
+        assertExists( new File( basedir, relativePath ) );
     }
 
-    public void testResourceMove()
-        throws Exception
+    public void assertExists( File file )
     {
-        server.start();
-
-        HttpURL httpUrl = new HttpURL( "http://localhost:" + PORT + CONTEXT );
-
-        davResource = new WebdavResource( httpUrl );
-        davResource.setPath( CONTEXT );
-
-        // Create a few collections.
-        assertMethod( "Create Collection '/bar'", true, davResource.mkcolMethod( CONTEXT + "/bar" ) );
-        assertMethod( "Create Collection '/foo'", true, davResource.mkcolMethod( CONTEXT + "/foo" ) );
-
-        // Create a resource
-        davResource.setPath( CONTEXT + "/bar" );
-        assertMethod( "Put [/bar/data.txt]", true, davResource.putMethod( CONTEXT + "/bar/data.txt", "yo!" ) );
-
-        // Test for existance of resource on disk.
-        assertTrue( "Existance of [/bar/data.txt]", new File( serverContentsDir, "bar/data.txt" ).exists() );
-        assertFalse( "Existance of [/foo/data.txt]", new File( serverContentsDir, "foo/data.txt" ).exists() );
-
-        // Move resource
-        davResource.setPath( CONTEXT );
-        assertMethod( "Move Resource", true, davResource.moveMethod( CONTEXT + "/bar/data.txt", "foo/data.txt" ) );
-
-        // Test for existance of resource on disk.
-        assertFalse( "Existance of [/bar/data.txt]", new File( serverContentsDir, "bar/data.txt" ).exists() );
-        assertTrue( "Existance of [/foo/data.txt]", new File( serverContentsDir, "foo/data.txt" ).exists() );
-
-        // Test for existance via webdav interface.
-        davResource.setPath( CONTEXT + "/bar" );
-        String resources[] = davResource.list();
-        assertNotNull( resources );
-        assertEquals( 0, resources.length );
-
-        davResource.setPath( CONTEXT + "/foo" );
-        resources = davResource.list();
-        assertNotNull( resources );
-        assertEquals( 1, resources.length );
-
-        server.stop();
+        if ( !file.exists() )
+        {
+            fail( "Expected path <" + file.getAbsolutePath() + "> does not exist." );
+        }
     }
 
-    public void testResourceDelete()
+    private void resetDirectory( File dir )
+    {
+        try
+        {
+            FileUtils.deleteDirectory( dir );
+        }
+        catch ( IOException e )
+        {
+            fail( "Unable to delete test directory [" + dir.getAbsolutePath() + "]." );
+        }
+
+        if ( dir.exists() )
+        {
+            fail( "Unable to execute test, test directory [" + dir.getAbsolutePath()
+                + "] exists, and cannot be deleted by the test case." );
+        }
+
+        if ( !dir.mkdirs() )
+        {
+            fail( "Unable to execute test, test directory [" + dir.getAbsolutePath() + "] cannot be created." );
+        }
+    }
+
+    private File getRootDir()
+    {
+        if ( this.serverRootDir == null )
+        {
+            String clazz = this.getClass().getName();
+            clazz = clazz.substring( clazz.lastIndexOf( "." ) + 1 );
+            serverRootDir = new File( "target/test-contents-" + clazz + "/" + getName() );
+
+            resetDirectory( serverRootDir );
+        }
+
+        return serverRootDir;
+    }
+
+    protected File getTestDir( String subdir )
+    {
+        File testDir = new File( getRootDir(), subdir );
+        resetDirectory( testDir );
+        return testDir;
+    }
+
+    public boolean isHttpStatusOk( WebdavResource webdavResource )
+    {
+        int statusCode = webdavResource.getStatusCode();
+
+        if ( statusCode == HttpStatus.SC_MULTI_STATUS )
+        {
+            // TODO: find out multi-status values.
+        }
+
+        return ( statusCode >= 200 ) && ( statusCode < 300 );
+    }
+
+    public void assertDavMkDir( WebdavResource webdavResource, String collectionName )
         throws Exception
     {
-        server.start();
+        String httpurl = webdavResource.getHttpURL().toString();
 
-        HttpURL httpUrl = new HttpURL( "http://localhost:" + PORT + CONTEXT );
+        if ( !webdavResource.mkcolMethod( collectionName ) )
+        {
+            fail( "Unable to create collection/dir <" + collectionName + "> against <" + httpurl + "> due to <"
+                + webdavResource.getStatusMessage() + ">" );
+        }
 
-        davResource = new WebdavResource( httpUrl );
-        davResource.setPath( CONTEXT );
+        assertDavDirExists( webdavResource, collectionName );
+    }
 
-        // Create a few collections.
-        assertMethod( "Create Collection '/bar'", true, davResource.mkcolMethod( CONTEXT + "/bar" ) );
+    public void assertDavFileExists( WebdavResource webdavResource, String path, String filename )
+        throws Exception
+    {
+        String httpurl = webdavResource.getHttpURL().toString();
 
-        // Create a resource
-        davResource.setPath( CONTEXT + "/bar" );
-        assertMethod( "Put [/bar/data.txt]", true, davResource.putMethod( CONTEXT + "/bar/data.txt", "yo!" ) );
+        if ( !webdavResource.headMethod( path + "/" + filename ) )
+        {
+            fail( "Unable to verify that file/contents <" + path + "/" + filename + "> exists against <" + httpurl
+                + "> due to <" + webdavResource.getStatusMessage() + ">" );
+        }
 
-        // Test for existance of resource on disk.
-        assertTrue( "Existance of [/bar/data.txt]", new File( serverContentsDir, "bar/data.txt" ).exists() );
+        String oldPath = webdavResource.getPath();
+        try
+        {
+            webdavResource.setPath( path );
 
-        // Move resource
-        davResource.setPath( CONTEXT );
-        assertMethod( "Delete Resource", true, davResource.deleteMethod( CONTEXT + "/bar/data.txt" ) );
+            WebdavResources resources = webdavResource.getChildResources();
 
-        // Test for existance via webdav interface.
-        davResource.setPath( CONTEXT + "/bar" );
-        String resources[] = davResource.list();
-        assertNotNull( resources );
-        assertEquals( 0, resources.length );
+            WebdavResource testResource = resources.getResource( filename );
 
-        // Test for existance of resource on disk.
-        assertFalse( "Existance of [/bar/data.txt]", new File( serverContentsDir, "bar/data.txt" ).exists() );
+            if ( testResource == null )
+            {
+                fail( "The file/contents <" + path + "/" + filename + "> does not exist in <" + httpurl + ">" );
+            }
 
-        server.stop();
+            if ( testResource.isCollection() )
+            {
+                fail( "The file/contents <" + path + "/" + filename
+                    + "> is incorrectly being reported as a collection." );
+            }
+        }
+        finally
+        {
+            webdavResource.setPath( oldPath );
+        }
+    }
+
+    public void assertDavFileNotExists( WebdavResource webdavResource, String path, String filename )
+        throws Exception
+    {
+        String httpurl = webdavResource.getHttpURL().toString();
+
+        if ( webdavResource.headMethod( path + "/" + filename ) )
+        {
+            fail( "Encountered unexpected file/contents <" + path + "/" + filename + "> at <" + httpurl + ">" );
+        }
+
+        String oldPath = webdavResource.getPath();
+        try
+        {
+            webdavResource.setPath( path );
+
+            WebdavResources resources = webdavResource.getChildResources();
+
+            WebdavResource testResource = resources.getResource( filename );
+
+            if ( testResource == null )
+            {
+                // Nothing found. we're done.
+                return;
+            }
+
+            if ( !testResource.isCollection() )
+            {
+                fail( "Encountered unexpected file/contents <" + path + "/" + filename + "> at <" + httpurl + ">" );
+            }
+        }
+        finally
+        {
+            webdavResource.setPath( oldPath );
+        }
+    }
+
+    public void assertDavDirExists( WebdavResource webdavResource, String path )
+        throws Exception
+    {
+        String httpurl = webdavResource.getHttpURL().toString();
+
+        String oldPath = webdavResource.getPath();
+        try
+        {
+            webdavResource.setPath( path );
+
+            if ( !webdavResource.isCollection() )
+            {
+                if ( !isHttpStatusOk( webdavResource ) )
+                {
+                    fail( "Unable to verify that path <" + path + "> is really a collection against <" + httpurl
+                        + "> due to <" + webdavResource.getStatusMessage() + ">" );
+                }
+            }
+        }
+        finally
+        {
+            webdavResource.setPath( oldPath );
+        }
+    }
+
+    public void assertDavDirNotExists( WebdavResource webdavResource, String path )
+        throws Exception
+    {
+        String httpurl = webdavResource.getHttpURL().toString();
+
+        String oldPath = webdavResource.getPath();
+        try
+        {
+            webdavResource.setPath( path );
+
+            if ( webdavResource.isCollection() )
+            {
+                fail( "Encountered unexpected collection <" + path + "> at <" + httpurl + ">" );
+            }
+        }
+        catch ( HttpException e )
+        {
+            if ( e.getReasonCode() == HttpStatus.SC_NOT_FOUND )
+            {
+                // Expected path.
+                return;
+            }
+
+            fail( "Unable to set path due to HttpException: " + e.getReasonCode() + ":" + e.getReason() );
+        }
+        finally
+        {
+            webdavResource.setPath( oldPath );
+        }
+    }
+
+    public void assertDavTouchFile( WebdavResource webdavResource, String path, String filename, String contents )
+        throws Exception
+    {
+        String httpurl = webdavResource.getHttpURL().toString();
+
+        webdavResource.setPath( path );
+
+        if ( !webdavResource.putMethod( path + "/" + filename, contents ) )
+        {
+            fail( "Unable to create file/contents <" + path + "/" + filename + "> against <" + httpurl + "> due to <"
+                + webdavResource.getStatusMessage() + ">" );
+        }
+
+        assertDavFileExists( webdavResource, path, filename );
     }
 }
