@@ -16,6 +16,7 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.ui.web.action.CancellableAction;
 import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.system.DefaultSecuritySession;
@@ -41,14 +42,13 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class UserEditAction
     extends AbstractAdminUserCredentialsAction
+    implements CancellableAction
 {
     // ------------------------------------------------------------------
     // Action Parameters
     // ------------------------------------------------------------------
 
     private AdminEditUserCredentials user;
-
-    private String cancelButton;
 
     private String updateButton;
 
@@ -58,12 +58,6 @@ public class UserEditAction
 
     public String edit()
     {
-
-        if ( isCancelButton() )
-        {
-            return "CANCEL";
-        }
-
         if ( getUsername() == null )
         {
             addActionError( "Unable to edit user with null username." );
@@ -188,26 +182,16 @@ public class UserEditAction
 
         return SUCCESS;
     }
-
-    public boolean isCancelButton()
+    
+    public String cancel() 
     {
-        return "Cancel".equals( cancelButton );
-    }
+		return CANCEL;
+	}
 
-    // ------------------------------------------------------------------
+	// ------------------------------------------------------------------
     // Parameter Accessor Methods
     // ------------------------------------------------------------------
 
-
-    public String getCancelButton()
-    {
-        return cancelButton;
-    }
-
-    public void setCancelButton( String cancelButton )
-    {
-        this.cancelButton = cancelButton;
-    }
 
     public String getUpdateButton()
     {

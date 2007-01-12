@@ -29,14 +29,14 @@
 
 <h2>[Admin] User Edit</h2>
 
-<ww:form action="useredit!submit" namespace="/security" theme="xhtml"
+<ww:form action="useredit" namespace="/security" theme="xhtml"
          id="userEditForm" method="post" name="useredit" cssClass="security userEdit">
   <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jsp" %>
   <ww:checkbox label="Locked User" name="user.locked" />
   <ww:checkbox label="Change Password Next Login" name="user.passwordChangeRequired" />
   <ww:hidden   label="Username"    name="username" />
-  <ww:submit value="Update" />
-  <ww:submit value="Cancel" name="cancelButton" />
+  <ww:submit value="Update" method="submit" />
+  <ww:submit value="Cancel" method="cancel" />
 </ww:form>
 
   <ww:action name="assignments" executeResult="true" >

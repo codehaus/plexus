@@ -39,16 +39,13 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class AccountAction
     extends AbstractUserCredentialsAction
+    implements CancellableAction
 {
     private static final String ACCOUNT_SUCCESS = "security-account-success";
-
-    private static final String ACCOUNT_CANCEL = "security-account-cancel";
 
     // ------------------------------------------------------------------
     // Action Parameters
     // ------------------------------------------------------------------
-
-    private String cancelButton;
 
     private EditUserCredentials user;
 
@@ -114,11 +111,6 @@ public class AccountAction
 
     public String submit()
     {
-        if ( !StringUtils.isEmpty( cancelButton ) )
-        {
-            return ACCOUNT_CANCEL;
-        }
-
         SecuritySession session = getSecuritySession();
 
         if ( !session.isAuthenticated() )
@@ -204,8 +196,13 @@ public class AccountAction
 
         return ACCOUNT_SUCCESS;
     }
+    
+    public String cancel()
+    {
+		return CANCEL;
+	}
 
-    // ------------------------------------------------------------------
+	// ------------------------------------------------------------------
     // Parameter Accessor Methods
     // ------------------------------------------------------------------
 
@@ -217,16 +214,6 @@ public class AccountAction
     public void setUser( EditUserCredentials user )
     {
         this.user = user;
-    }
-
-    public String getCancelButton()
-    {
-        return cancelButton;
-    }
-
-    public void setCancelButton( String cancelButton )
-    {
-        this.cancelButton = cancelButton;
     }
 
     public SecureActionBundle initSecureActionBundle()

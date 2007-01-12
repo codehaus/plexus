@@ -28,13 +28,13 @@
 
 <%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
 
-<ww:form action="login!login" namespace="/security" theme="xhtml" 
+<ww:form action="login" namespace="/security" theme="xhtml" 
          id="loginForm" method="post" name="login" cssClass="security login">
   <ww:textfield label="Username" name="username" size="30" required="true" />
   <ww:password  label="Password" name="password" size="20" required="true" />
   <ww:checkbox label="Remember Me" name="rememberMe" value="false" />
-  <ww:submit value="Login" />
-  <ww:submit value="Cancel" name="cancelbutton" />
+  <ww:submit value="Login" method="login" />
+  <ww:submit value="Cancel" method="cancel" />
 </ww:form>
 
 <%-- TODO: Figure out how to auto-focus to first field --%>
