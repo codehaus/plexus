@@ -7,16 +7,22 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
 
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
+import javax.management.MalformedObjectNameException;
+import javax.management.NotCompliantMBeanException;
+import javax.management.ObjectName;
 import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXConnectorServerFactory;
 import javax.management.remote.JMXServiceURL;
 import java.io.IOException;
-import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -37,6 +43,8 @@ public class DefaultJmxService
 
     private MBeanServer mBeanServer;
 
+    private List registeredMBeans;
+
     // -----------------------------------------------------------------------
     // JmxService Implementation
     // -----------------------------------------------------------------------
@@ -44,6 +52,44 @@ public class DefaultJmxService
     public MBeanServer getMBeanServer()
     {
         return mBeanServer;
+    }
+
+    public ObjectName registerMBean( Object object, String objectName )
+        throws MBeanRegistrationException, InstanceAlreadyExistsException, NotCompliantMBeanException,
+        MalformedObjectNameException
+    {
+        ObjectName on = ObjectName.getInstance( objectName );
+
+        getMBeanServer().registerMBean( object, on );
+
+        registeredMBeans.add( on );
+
+        return on;
+    }
+
+    public void releaseAllMBeansQuiet()
+    {
+        MBeanServer mBeanServer = getMBeanServer();
+
+        for ( Iterator it = registeredMBeans.iterator(); it.hasNext(); )
+        {
+            ObjectName objectName = (ObjectName) it.next();
+
+            it.remove();
+
+            try
+            {
+                mBeanServer.unregisterMBean( objectName );
+            }
+            catch ( InstanceNotFoundException e )
+            {
+                getLogger().error( "Error while releasing MBean '" + objectName.getCanonicalName() + "'.", e );
+            }
+            catch ( MBeanRegistrationException e )
+            {
+                getLogger().error( "Error while releasing MBean '" + objectName.getCanonicalName() + "'.", e );
+            }
+        }
     }
 
     // -----------------------------------------------------------------------
@@ -60,17 +106,21 @@ public class DefaultJmxService
         {
             connectorServers = new ArrayList();
         }
-        
-        for ( Iterator it = connectorServers.iterator(); it.hasNext(); )
+        else
         {
-            String string = (String) it.next();
+            for ( Iterator it = connectorServers.iterator(); it.hasNext(); )
+            {
+                String string = (String) it.next();
 
-            JMXServiceURL serviceUrl;
+                JMXServiceURL serviceUrl;
 
-            serviceUrl = makeUrl( string );
+                serviceUrl = makeUrl( string );
 
-            connectorServerUrls.add( serviceUrl );
+                connectorServerUrls.add( serviceUrl );
+            }
         }
+
+        registeredMBeans = new ArrayList();
     }
 
     public void start()
@@ -105,6 +155,8 @@ public class DefaultJmxService
         throws StoppingException
     {
         getLogger().info( "Stopping JMX Service" );
+
+        releaseAllMBeansQuiet();
 
         closeConnectorServerInstances();
     }
