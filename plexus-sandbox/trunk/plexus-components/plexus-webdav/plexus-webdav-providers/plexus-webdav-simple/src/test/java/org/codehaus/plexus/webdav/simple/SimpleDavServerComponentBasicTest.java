@@ -16,18 +16,18 @@ package org.codehaus.plexus.webdav.simple;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.webdav.test.AbstractWebdavProviderTestCase;
+import org.codehaus.plexus.webdav.test.AbstractBasicWebdavProviderTestCase;
 
 /**
- * SimpleDavServerComponentTest 
+ * SimpleDavServerComponentBasicTest 
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class SimpleDavServerComponentTest
-    extends AbstractWebdavProviderTestCase
+public class SimpleDavServerComponentBasicTest
+    extends AbstractBasicWebdavProviderTestCase
 {
-    public SimpleDavServerComponentTest()
+    public SimpleDavServerComponentBasicTest()
     {
         super();
         setProviderHint( "simple" );

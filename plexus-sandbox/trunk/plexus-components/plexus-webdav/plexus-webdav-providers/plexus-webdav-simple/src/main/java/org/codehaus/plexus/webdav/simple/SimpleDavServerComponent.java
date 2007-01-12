@@ -16,11 +16,13 @@ package org.codehaus.plexus.webdav.simple;
  * limitations under the License.
  */
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.plexus.webdav.AbstractDavServerComponent;
 import org.codehaus.plexus.webdav.DavServerException;
-import org.codehaus.plexus.webdav.DavServerRequest;
+import org.codehaus.plexus.webdav.servlet.DavServerRequest;
 
 import it.could.webdav.DAVListener;
+import it.could.webdav.DAVMethod;
 import it.could.webdav.DAVProcessor;
 import it.could.webdav.DAVRepository;
 import it.could.webdav.DAVResource;
@@ -28,6 +30,8 @@ import it.could.webdav.DAVTransaction;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -84,6 +88,8 @@ public class SimpleDavServerComponent
             davRepository = new DAVRepository( rootDirectory );
             davProcessor = new DAVProcessor( davRepository );
             davRepository.addListener( this );
+
+            hackDavProcessor( davProcessor );
         }
         catch ( IOException e )
         {
@@ -91,12 +97,47 @@ public class SimpleDavServerComponent
         }
     }
 
+    /**
+     * Replace the problematic dav methods with local hacked versions.
+     * 
+     * TODO: Remove when upgrading it.could.webdav to v0.5
+     * @param davProcessor
+     * @throws DavServerException 
+     */
+    private void hackDavProcessor( DAVProcessor davProcessor )
+        throws DavServerException
+    {
+        try
+        {
+            Field fldInstance = davProcessor.getClass().getDeclaredField( "INSTANCES" );
+            fldInstance.setAccessible( true );
+
+            Map mapInstances = (Map) fldInstance.get( davProcessor );
+            
+            // Replace MOVE method.
+            mapInstances.put( "MOVE", (DAVMethod) new HackedMoveMethod() );
+        }
+        catch ( Throwable e )
+        {
+            throw new DavServerException( "Unable to twiddle DAVProcessor.INSTANCES field.", e );
+        }
+    }
+
     public void process( DavServerRequest request, HttpServletResponse response )
         throws ServletException, IOException
     {
-        request.getRequest().getSession( true );
-
         DAVTransaction transaction = new DAVTransaction( request.getRequest(), response );
+
+        /* BEGIN - it.could.webdav hacks
+         * TODO: Remove hacks with release of it.could.webdav 0.5 (or newer)
+         */
+        String depthValue = request.getRequest().getHeader( "Depth" );
+        if ( StringUtils.equalsIgnoreCase( "infinity", depthValue ) )
+        {
+            // See - http://could.it/bugs/browse/DAV-3
+            request.getRequest().setHeader( "Depth", "infinity" );
+        }
+        /* END - it.could.webdav hacks */
 
         davProcessor.process( transaction );
     }
