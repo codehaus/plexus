@@ -45,10 +45,9 @@ import java.util.List;
  */
 public class RegisterAction
     extends AbstractUserCredentialsAction
+    implements CancellableAction
 {
     protected static final String REGISTER_SUCCESS = "security-register-success";
-
-    private static final String REGISTER_CANCEL = "security-register-cancel";
 
     private static final String VALIDATION_NOTE = "validation-note";
 
@@ -70,8 +69,6 @@ public class RegisterAction
      * @plexus.requirement
      */
     private RoleProfileManager roleManager;
-
-    private String cancelbutton;
 
     private CreateUserCredentials user;
 
@@ -95,11 +92,6 @@ public class RegisterAction
 
     public String register()
     {
-        if ( isCancelButton() )
-        {
-            return REGISTER_CANCEL;
-        }
-
         if ( user == null )
         {
             user = new CreateUserCredentials();
@@ -202,20 +194,15 @@ public class RegisterAction
 
         return REGISTER_SUCCESS;
     }
+    
+    public String cancel()
+    {
+		return CANCEL;
+	}
 
-    // ------------------------------------------------------------------
+	// ------------------------------------------------------------------
     // Parameter Accessor Methods
     // ------------------------------------------------------------------
-
-    public boolean isCancelButton()
-    {
-        return "Cancel".equals( cancelbutton );
-    }
-
-    public void setCancelbutton( String cancelbutton )
-    {
-        this.cancelbutton = cancelbutton;
-    }
 
     public CreateUserCredentials getUser()
     {

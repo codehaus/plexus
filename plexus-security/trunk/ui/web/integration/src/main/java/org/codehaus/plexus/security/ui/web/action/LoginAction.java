@@ -47,10 +47,9 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class LoginAction
     extends AbstractSecurityAction
+    implements CancellableAction
 {
     private static final String LOGIN_SUCCESS = "security-login-success";
-
-    private static final String LOGIN_CANCEL = "security-login-cancel";
 
     private static final String PASSWORD_CHANGE = "must-change-password";
 
@@ -68,8 +67,6 @@ public class LoginAction
     private String username;
 
     private String password;
-
-    private String cancelbutton;
 
     private String validateMe;
 
@@ -93,11 +90,6 @@ public class LoginAction
 
     public String login()
     {
-        if ( isCancelButton() )
-        {
-            return LOGIN_CANCEL;
-        }
-
         if ( StringUtils.isNotEmpty( validateMe ) )
         {
             // Process a login / validate request.
@@ -209,8 +201,13 @@ public class LoginAction
             return ERROR;
         }
     }
+    
+    public String cancel() 
+    {
+		return CANCEL;
+	}
 
-    public String getUsername()
+	public String getUsername()
     {
         return username;
     }
@@ -228,16 +225,6 @@ public class LoginAction
     public void setPassword( String password )
     {
         this.password = password;
-    }
-
-    public boolean isCancelButton()
-    {
-        return "Cancel".equals( cancelbutton );
-    }
-
-    public void setCancelbutton( String cancelbutton )
-    {
-        this.cancelbutton = cancelbutton;
     }
 
     public String getValidateMe()

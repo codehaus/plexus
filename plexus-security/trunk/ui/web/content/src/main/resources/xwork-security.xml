@@ -67,7 +67,7 @@
       <result name="security-login-success" type="security-external">
         <param name="externalResult">security-login-success</param>
       </result>
-      <result name="security-login-cancel" type="security-external">
+      <result name="cancel" type="security-external">
         <param name="externalResult">security-login-cancel</param>
       </result>
       <result name="security-login-locked" type="security-external">
@@ -88,7 +88,7 @@
       <result name="security-register-success" type="security-external">
         <param name="externalResult">security-register-success</param>
       </result>
-      <result name="security-register-cancel" type="security-external">
+      <result name="cancel" type="security-external">
         <param name="externalResult">security-register-cancel</param>
       </result>
     </action>
@@ -99,7 +99,7 @@
       <result name="security-account-success" type="security-external">
         <param name="externalResult">security-account-success</param>
       </result>
-      <result name="security-account-cancel" type="security-external">
+      <result name="cancel" type="security-external">
         <param name="externalResult">security-account-cancel</param>
       </result>
     </action>

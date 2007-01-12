@@ -28,11 +28,11 @@
 
 <%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
 
-<ww:form action="passwordReset!reset" namespace="/security" theme="xhtml" 
+<ww:form action="passwordReset" namespace="/security" theme="xhtml" 
          id="passwordResetForm" method="post" name="passwordReset" cssClass="security passwordReset">
   <ww:textfield label="Username" name="username" size="30" required="true" />
-  <ww:submit value="Request Reset" />
-  <ww:submit value="Cancel" name="cancelbutton" />
+  <ww:submit value="Request Reset" method="reset" />
+  <ww:submit value="Cancel" method="cancel" />
 </ww:form>
 
 </body>

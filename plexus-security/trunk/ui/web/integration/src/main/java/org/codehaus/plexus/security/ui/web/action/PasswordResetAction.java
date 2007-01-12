@@ -43,6 +43,7 @@ import java.util.List;
  */
 public class PasswordResetAction
     extends AbstractSecurityAction
+    implements CancellableAction
 {
     // ------------------------------------------------------------------
     // Plexus Component Requirements
@@ -60,8 +61,6 @@ public class PasswordResetAction
 
     private String username;
 
-    private String cancelbutton;
-
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
@@ -73,11 +72,6 @@ public class PasswordResetAction
 
     public String reset()
     {
-        if ( isCancelButton() )
-        {
-            return NONE;
-        }
-
         if ( StringUtils.isEmpty( username ) )
         {
             addFieldError( "username", "Username cannot be empty." );
@@ -129,6 +123,11 @@ public class PasswordResetAction
     {
         return SecureActionBundle.OPEN;
     }
+    
+    public String cancel() 
+    {
+		return NONE;
+	}
 
     // ------------------------------------------------------------------
     // Parameter Accessor Methods
@@ -142,16 +141,6 @@ public class PasswordResetAction
     public void setUsername( String username )
     {
         this.username = username;
-    }
-
-    public boolean isCancelButton()
-    {
-        return "Cancel".equals( cancelbutton );
-    }
-
-    public void setCancelbutton( String cancelbutton )
-    {
-        this.cancelbutton = cancelbutton;
     }
 
 }

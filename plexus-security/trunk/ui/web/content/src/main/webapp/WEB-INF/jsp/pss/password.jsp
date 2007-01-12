@@ -28,15 +28,15 @@
 
 <%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
 
-<ww:form action="password!submit" namespace="/security" theme="xhtml" 
+<ww:form action="password" namespace="/security" theme="xhtml" 
          id="passwordForm" method="post" name="password" cssClass="security password">
   <c:if test="${provideExisting}">
     <ww:password  label="Existing Password" name="existingPassword" size="20" required="true" />
   </c:if>
   <ww:password  label="New Password" name="newPassword" size="20" required="true" />
   <ww:password  label="Confirm New Password" name="newPasswordConfirm" size="20" required="true" />
-  <ww:submit value="Change Password" />
-  <ww:submit value="Cancel" name="cancelButton" />
+  <ww:submit value="Change Password" method="submit" />
+  <ww:submit value="Cancel" method="cancel" />
 </ww:form>
 
 <ul class="tips">
