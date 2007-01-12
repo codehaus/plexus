@@ -38,7 +38,7 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringInputStream;
 import org.codehaus.plexus.webdav.AbstractDavServerComponent;
 import org.codehaus.plexus.webdav.DavServerException;
-import org.codehaus.plexus.webdav.DavServerRequest;
+import org.codehaus.plexus.webdav.servlet.DavServerRequest;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
