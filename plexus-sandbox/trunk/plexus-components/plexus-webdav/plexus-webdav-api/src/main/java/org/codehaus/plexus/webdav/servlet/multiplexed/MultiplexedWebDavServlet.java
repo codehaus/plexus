@@ -86,11 +86,58 @@ public abstract class MultiplexedWebDavServlet
     public abstract void initServers( ServletConfig config )
         throws DavServerException;
 
-    public void createServer( String prefix, File rootDirectory, ServletConfig config )
+    /**
+     * Perform any authentication steps here.
+     * 
+     * If authentication fails, it is the responsibility of the implementor to issue
+     * the appropriate status codes and/or challenge back on the response object, then
+     * return false on the overridden version of this method.
+     * 
+     * To effectively not have authentication, just implement this method and always
+     * return true.
+     * 
+     * @param httpRequest the incoming http request.
+     * @param httpResponse the outgoing http response.
+     * @return true if user is authenticated, false if not.
+     * @throws ServletException if there was a problem performing authencation.
+     * @throws IOException if there was a problem obtaining credentials or issuing challenge.
+     */
+    public boolean isAuthenticated( DavServerRequest davRequest, HttpServletResponse httpResponse )
+        throws ServletException, IOException
+    {
+        // Always return true. Effectively no Authentication done.
+        return true;
+    }
+
+    /**
+     * Perform any authorization steps here.
+     * 
+     * If authorization fails, it is the responsibility of the implementor to issue
+     * the appropriate status codes and/or challenge back on the response object, then
+     * return false on the overridden version of this method.
+     * 
+     * to effectively not have authorization, just implement this method and always
+     * return true.
+     * 
+     * @param httpRequest
+     * @param httpResponse
+     * @return
+     * @throws ServletException
+     * @throws IOException
+     */
+    public boolean isAuthorized( DavServerRequest davRequest, HttpServletResponse httpResponse )
+        throws ServletException, IOException
+    {
+        // Always return true. Effectively no Authorization done.
+        return true;
+    }
+
+    public DavServerComponent createServer( String prefix, File rootDirectory, ServletConfig config )
         throws DavServerException
     {
         DavServerComponent serverComponent = getDavManager().createServer( prefix, rootDirectory );
         serverComponent.init( config );
+        return serverComponent;
     }
 
     public void destroy()
@@ -115,7 +162,7 @@ public abstract class MultiplexedWebDavServlet
 
     public String getServletInfo()
     {
-        return "Plexus Simple WebDAV Servlet";
+        return "Plexus WebDAV Servlet";
     }
 
     public void service( ServletRequest req, ServletResponse res )
@@ -123,12 +170,12 @@ public abstract class MultiplexedWebDavServlet
     {
         if ( !( req instanceof HttpServletRequest ) )
         {
-            throw new ServletException( "BasicWebDavServlet can only handle HttpServletRequests." );
+            throw new ServletException( "MultiplexedWebDavServlet can only handle HttpServletRequests." );
         }
 
         if ( !( res instanceof HttpServletResponse ) )
         {
-            throw new ServletException( "BasicWebDavServlet can only handle HttpServletResponse." );
+            throw new ServletException( "MultiplexedWebDavServlet can only handle HttpServletResponse." );
         }
 
         HttpServletRequest httpRequest = (HttpServletRequest) req;
@@ -141,6 +188,16 @@ public abstract class MultiplexedWebDavServlet
         {
             throw new ServletException( "Unable to service DAV request due to unconfigured DavServerComponent "
                 + "for prefix [" + davRequest.getPrefix() + "]." );
+        }
+
+        if ( !isAuthenticated( davRequest, httpResponse ) )
+        {
+            return;
+        }
+
+        if ( !isAuthorized( davRequest, httpResponse ) )
+        {
+            return;
         }
 
         try
@@ -161,5 +218,15 @@ public abstract class MultiplexedWebDavServlet
     public void setDavManager( DavServerManager davManager )
     {
         this.davManager = davManager;
+    }
+
+    public void log( String msg )
+    {
+        getServletConfig().getServletContext().log( msg );
+    }
+
+    public void log( String msg, Throwable t )
+    {
+        getServletConfig().getServletContext().log( msg, t );
     }
 }

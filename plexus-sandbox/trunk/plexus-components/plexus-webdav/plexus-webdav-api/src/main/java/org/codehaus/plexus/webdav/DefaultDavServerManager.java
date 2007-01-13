@@ -120,4 +120,9 @@ public class DefaultDavServerManager
             }
         }
     }
+
+    public void removeAllServers()
+    {
+        servers.clear();
+    }
 }
