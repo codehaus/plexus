@@ -63,4 +63,9 @@ public interface DavServerManager
      * @return the DavServerComponent, or null if not found.
      */
     public DavServerComponent getServer( String prefix );
+    
+    /**
+     * Remove all servers being tracked by the manager.
+     */
+    public void removeAllServers();
 }

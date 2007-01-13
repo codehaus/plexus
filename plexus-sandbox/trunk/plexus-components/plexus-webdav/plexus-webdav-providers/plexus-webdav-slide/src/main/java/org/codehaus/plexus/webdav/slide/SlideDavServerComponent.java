@@ -340,10 +340,10 @@ public class SlideDavServerComponent
             return impl.getContext( uripath );
         }
 
-        public String getContextPath()
-        {
-            return impl.getContextPath();
-        }
+//        public String getContextPath()
+//        {
+//            return impl.getContextPath();
+//        }
 
         public String getInitParameter( String name )
         {
