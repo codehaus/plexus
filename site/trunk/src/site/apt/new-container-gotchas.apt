@@ -1,0 +1,31 @@
+ -----
+ New container gotchas
+ -----
+ Brett Porter
+ -----
+ 13 January 2007
+ -----
+
+New Container Gotchas
+
+  Due to the fundamental classloading changes in the new container, there can occasionally be clahes with old versions of the 
+  container or components designed for the other container. This document will help workaround those issues, align code
+  appropriately, and perhaps help form a list of backwards compatibility fixes that need to be made.
+
+* New component API creeping into dependency tree
+
+  One thing to watch out for is that if you are using an old container (alpha-10) in your application, but some of your
+  dependencies have been updated to the new one as a compile time dependency, then the plexus-component-api artifact will be
+  added to the tree, which can conflict with the same classes already in the alpha-10 artifact.
+
+  <<Workaround:>> upgrade application to the new container, or add component-api to \<exclusions\> where necessary.
+
+* Maven Jetty Plugin
+
+  The Maven Jetty Plugin seems to be failing with webapps that use the plexus container in some instances. In former versions
+  of plexus-xwork-integration, the container was forced to ignore plexus.xml from Maven using a classloader. Using the new
+  version this appears not to work (though I suspect it would work if Maven was using the new container too - ie, trunk).
+  More investigation needed. See {{{http://jira.codehaus.org/browse/JETTY-62} JETTY-62}} for the original problem that is
+  reoccurring.
+
+
