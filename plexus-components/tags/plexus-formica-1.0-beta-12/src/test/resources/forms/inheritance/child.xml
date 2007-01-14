@@ -1,0 +1,33 @@
+<form>
+  <extend>parent</extend>
+  <id>child</id>
+  <elements>
+    <element>
+      <id>field-2</id>
+      <expression>field2</expression>
+      <validators>
+        <validator>
+          <id>email</id>
+          <error-message-key>field-2-error-message-key</error-message-key>
+        </validator>
+      </validators>
+      <label-key>field-2-label-key</label-key>
+      <message-key>field-2-message-key</message-key>
+      <type>text</type>
+    </element>
+    <element>
+      <id>field-3</id>
+      <expression>field3</expression>
+      <validators>
+        <validator>
+          <id>pattern-digits</id>
+          <error-message-key>field-3-error-message-key</error-message-key>
+        </validator>
+      </validators>
+      <label-key>field-3-label-key</label-key>
+      <message-key>field-3-message-key</message-key>
+      <default-value>0000000</default-value>
+      <type>text</type>
+    </element>
+  </elements>
+</form>
