@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security</artifactId>
-    <version>1.0-alpha-8-SNAPSHOT</version>
+    <version>1.0-alpha-8</version>
   </parent>
   <artifactId>plexus-security-configuration</artifactId>
   <name>Plexus Security :: Configuration</name>
@@ -98,9 +98,9 @@
   </repositories>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/configuration</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/configuration</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-configuration</url>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-8</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-8</developerConnection>
+    <url>https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-8</url>
   </scm>
   <build>
     <plugins>
