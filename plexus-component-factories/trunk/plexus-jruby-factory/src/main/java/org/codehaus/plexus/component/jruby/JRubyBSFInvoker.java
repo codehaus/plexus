@@ -250,8 +250,15 @@ public class JRubyBSFInvoker implements JRubyInvoker
 
         StringOutputStream bos = null;
 
+        String shell = "/bin/sh";
+        String osName = System.getProperty( "os.name" );
+        if( osName != null && osName.startsWith( "Win" ) )
+        {
+            shell = "cmd.exe";
+        }
+
         System.setProperty( "jruby.script", "<invoker>" );
-        System.setProperty( "jruby.shell", "/bin/sh" );
+        System.setProperty( "jruby.shell", shell );
         System.setProperty( "jruby.home", new NormalizedFile( System.getProperty("user.dir"), ".jruby" ).getAbsolutePath() );
         System.setProperty( "jruby.lib", new NormalizedFile( System.getProperty("jruby.home"), "lib" ).getAbsolutePath() );
 
