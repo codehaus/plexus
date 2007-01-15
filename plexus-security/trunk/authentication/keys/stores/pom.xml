@@ -19,15 +19,15 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-keys-parent</artifactId>
-    <version>1.0-alpha-9</version>
+    <version>1.0-alpha-10-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-keys-stores</artifactId>
   <name>Plexus Security :: Key Management Stores Parent</name>
   <packaging>pom</packaging>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-9</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-9</developerConnection>
-    <url>https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-9</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/stores</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/stores</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-authentication/plexus-security-keys-parent/plexus-security-keys-stores</url>
   </scm>
   <modules>
     <module>test</module>

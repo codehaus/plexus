@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-authentication-providers</artifactId>
-    <version>1.0-alpha-9</version>
+    <version>1.0-alpha-10-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-authentication-provider-memory</artifactId>
   <name>Plexus Security :: Authentication Provider :: Memory</name>
@@ -30,9 +30,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-9</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-9</developerConnection>
-    <url>https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-9</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authentication/providers/memory</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authentication/providers/memory</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-authentication/plexus-security-authentication-providers/plexus-security-authentication-provider-memory</url>
   </scm>
   <build>
     <plugins>
