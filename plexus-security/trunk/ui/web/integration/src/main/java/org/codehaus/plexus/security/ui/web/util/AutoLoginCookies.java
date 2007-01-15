@@ -73,7 +73,7 @@ public class AutoLoginCookies
         // Found user with a remember me key.
         String providedKey = rememberMeCookie.getValue();
 
-        getLogger().info( "Found remember me cookie : " + providedKey );
+        getLogger().debug( "Found remember me cookie : " + providedKey );
 
         CookieSettings settings = securitySystem.getPolicy().getRememberMeCookieSettings();
         return findAuthKey( REMEMBER_ME_KEY, providedKey, settings.getDomain(), settings.getPath() );
