@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-keys-stores</artifactId>
-    <version>1.0-alpha-9-SNAPSHOT</version>
+    <version>1.0-alpha-9</version>
   </parent>
   <artifactId>plexus-security-keys-cached</artifactId>
   <name>Plexus Security :: Key Management Cached Store</name>
@@ -51,9 +51,9 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/stores/cached</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/stores/cached</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-authentication/plexus-security-keys-parent/plexus-security-keys-stores/plexus-security-keys-cached</url>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-9</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-9</developerConnection>
+    <url>https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-9</url>
   </scm>
 
   <build>
