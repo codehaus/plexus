@@ -18,6 +18,7 @@ package org.codehaus.plexus.security.ui.web.action.admin;
 
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
+import org.codehaus.plexus.security.ui.web.action.CancellableAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
@@ -36,6 +37,7 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class UserDeleteAction
     extends AbstractSecurityAction
+    implements CancellableAction
 {
     // ------------------------------------------------------------------
     // Plexus Component Requirements
@@ -91,6 +93,18 @@ public class UserDeleteAction
         }
 
         return SUCCESS;
+    }
+
+    /**
+     * Returns the cancel result.
+     * <p/>
+     * A basic implementation would simply be to return CANCEL.
+     *
+     * @return
+     */
+    public String cancel()
+    {
+        return CANCEL;
     }
 
     // ------------------------------------------------------------------
