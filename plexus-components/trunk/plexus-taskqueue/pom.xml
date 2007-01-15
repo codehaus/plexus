@@ -2,13 +2,18 @@
   <parent>
     <artifactId>plexus-components</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.1.7</version>
+    <version>1.1.8</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-taskqueue</artifactId>
   <name>Plexus Task Queue</name>
   <version>1.0-alpha-7-SNAPSHOT</version>
   <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-15</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
