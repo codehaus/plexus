@@ -117,6 +117,10 @@
         <param name="actionName">account</param>
         <param name="namespace">/security</param>
       </result>
+       <result name="cancel" type="redirect-action">
+        <param name="actionName">logout</param>
+        <param name="namespace">/security</param>
+      </result>
     </action>
 
     <action name="passwordReset" class="pss-password-reset" method="show">
