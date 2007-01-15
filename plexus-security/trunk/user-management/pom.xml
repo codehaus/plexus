@@ -19,15 +19,15 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security</artifactId>
-    <version>1.0-alpha-8</version>
+    <version>1.0-alpha-9-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-user-management</artifactId>
   <name>Plexus Security :: User Management Parent</name>
   <packaging>pom</packaging>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-8</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-8</developerConnection>
-    <url>https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-8</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/user-management</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/user-management</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-user-management</url>
   </scm>
   <modules>
     <module>api</module>
