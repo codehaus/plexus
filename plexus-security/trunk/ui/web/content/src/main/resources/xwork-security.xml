@@ -177,6 +177,7 @@
       <result name="input">/WEB-INF/jsp/pss/admin/userDelete.jsp</result>
       <result name="error" type="redirect-action">userlist</result>
       <result name="success" type="redirect-action">userlist</result>
+      <result name="cancel" type="redirect-action">userlist</result>
     </action>
 
     <!-- ==== RBAC Actions ========================================== -->
