@@ -40,6 +40,7 @@ import java.util.Iterator;
  */
 public class PasswordAction
     extends AbstractSecurityAction
+    implements CancellableAction
 {
     // ------------------------------------------------------------------
     // Plexus Component Requirements
@@ -172,6 +173,11 @@ public class PasswordAction
         {
             return SUCCESS;
         }
+    }
+
+    public String cancel()
+    {
+        return CANCEL;
     }
 
     // ------------------------------------------------------------------
