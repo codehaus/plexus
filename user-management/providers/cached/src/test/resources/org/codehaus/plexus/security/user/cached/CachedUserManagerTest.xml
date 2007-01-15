@@ -1,0 +1,60 @@
+<component-set>
+  <components>
+
+    <component>
+      <role>org.codehaus.plexus.security.user.UserManager</role>
+      <role-hint>cached</role-hint>
+      <implementation>org.codehaus.plexus.security.user.cached.CachedUserManager</implementation>
+      <description>CachedUserManager</description>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.user.UserManager</role>
+          <role-hint>memory</role-hint>
+          <field-name>userImpl</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+          <role-hint>users</role-hint>
+          <field-name>usersCache</field-name>
+        </requirement>
+      </requirements>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.logging.LoggerManager</role>
+      <implementation>org.codehaus.plexus.logging.log4j.Log4JLoggerManager</implementation>
+      <!--<lifecycle-handler>basic</lifecycle-handler> -->
+
+      <configuration>
+        <threshold>INFO</threshold>
+        <default-appender>console</default-appender>
+        <appenders>
+          <appender>
+            <id>console</id>
+            <threshold>INFO</threshold>
+            <type>org.apache.log4j.ConsoleAppender</type>
+            <conversion-pattern>%d [%t] %-5p %-30c{1} - %m%n</conversion-pattern>
+          </appender>
+        </appenders>
+        <levels>
+          <level>
+            <hierarchy>org.codehaus.plexus.security</hierarchy>
+            <level>WARN</level>
+          </level>
+          <level>
+            <hierarchy>org.codehaus.plexus.jdo</hierarchy>
+            <level>INFO</level>
+          </level>
+          <level>
+            <hierarchy>JPOX</hierarchy>
+            <level>INFO</level>
+          </level>
+          <level>
+            <hierarchy>JPOX.Cache</hierarchy>
+            <level>WARN</level>
+          </level>
+        </levels>
+      </configuration>
+    </component>
+  </components>
+</component-set>
