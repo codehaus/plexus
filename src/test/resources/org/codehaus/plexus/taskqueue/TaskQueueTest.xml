@@ -1,0 +1,54 @@
+<plexus>
+  <components>
+
+    <component>
+      <role>org.codehaus.plexus.taskqueue.TaskQueue</role>
+      <implementation>org.codehaus.plexus.taskqueue.DefaultTaskQueue</implementation>
+      <lifecycle-handler>plexus-configurable</lifecycle-handler>
+      <configuration>
+        <task-entry-evaluators>
+          <task-entry-evaluator>a</task-entry-evaluator>
+          <task-entry-evaluator>b</task-entry-evaluator>
+        </task-entry-evaluators>
+        <task-exit-evaluators>
+          <task-exit-evaluator>a</task-exit-evaluator>
+          <task-exit-evaluator>b</task-exit-evaluator>
+        </task-exit-evaluators>
+        <task-viability-evaluators>
+          <task-viability-evaluator>build-project</task-viability-evaluator>
+        </task-viability-evaluators>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.taskqueue.TaskEntryEvaluator</role>
+      <role-hint>a</role-hint>
+      <implementation>org.codehaus.plexus.taskqueue.ATaskEntryEvaluator</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.taskqueue.TaskEntryEvaluator</role>
+      <role-hint>b</role-hint>
+      <implementation>org.codehaus.plexus.taskqueue.BTaskEntryEvaluator</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.taskqueue.TaskExitEvaluator</role>
+      <role-hint>a</role-hint>
+      <implementation>org.codehaus.plexus.taskqueue.ATaskExitEvaluator</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.taskqueue.TaskExitEvaluator</role>
+      <role-hint>b</role-hint>
+      <implementation>org.codehaus.plexus.taskqueue.BTaskExitEvaluator</implementation>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.taskqueue.TaskViabilityEvaluator</role>
+      <role-hint>build-project</role-hint>
+      <implementation>org.codehaus.plexus.taskqueue.BuildProjectTaskViabilityEvaluator</implementation>
+    </component>
+
+  </components>
+</plexus>
