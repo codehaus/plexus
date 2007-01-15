@@ -1,0 +1,182 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.security.rbac.RBACManager</role>
+      <role-hint>cached</role-hint>
+      <implementation>org.codehaus.plexus.security.authorization.rbac.store.cached.CachedRbacManager</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.rbac.RBACManager</role>
+          <role-hint>memory</role-hint>
+          <field-name>rbacImpl</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+          <role-hint>test-operations</role-hint>
+          <field-name>operationsCache</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+          <role-hint>test-permissions</role-hint>
+          <field-name>permissionsCache</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+          <role-hint>test-resources</role-hint>
+          <field-name>resourcesCache</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+          <role-hint>test-roles</role-hint>
+          <field-name>rolesCache</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+          <role-hint>test-userAssignments</role-hint>
+          <field-name>userAssignmentsCache</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+          <role-hint>test-userPermissions</role-hint>
+          <field-name>userPermissionsCache</field-name>
+        </requirement>
+      </requirements>
+    </component>
+    
+    <!-- ================================================================
+           Caches with Long Term entries
+         ================================================================ -->
+    
+    <component>
+      <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+      <role-hint>test-operations</role-hint>
+      <implementation>org.codehaus.plexus.ehcache.MemoryCache</implementation>
+      <description>MemoryCache for Operations</description>
+      <configuration>
+        <eternal>false</eternal>
+        <max-elements-in-memory>1000</max-elements-in-memory>
+        <memory-eviction-policy>LRU</memory-eviction-policy>
+        <name>test-operationsCache</name>
+        <time-to-idle-seconds>1800</time-to-idle-seconds>
+        <time-to-live-seconds>14400</time-to-live-seconds>
+      </configuration>
+    </component>
+    
+    <component>
+      <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+      <role-hint>test-permissions</role-hint>
+      <implementation>org.codehaus.plexus.ehcache.MemoryCache</implementation>
+      <description>MemoryCache for Permissions</description>
+      <configuration>
+        <eternal>false</eternal>
+        <max-elements-in-memory>1000</max-elements-in-memory>
+        <memory-eviction-policy>LRU</memory-eviction-policy>
+        <name>test-permissionsCache</name>
+        <time-to-idle-seconds>1800</time-to-idle-seconds>
+        <time-to-live-seconds>14400</time-to-live-seconds>
+      </configuration>
+    </component>
+    
+    <component>
+      <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+      <role-hint>test-resources</role-hint>
+      <implementation>org.codehaus.plexus.ehcache.MemoryCache</implementation>
+      <description>MemoryCache for Resources</description>
+      <configuration>
+        <eternal>false</eternal>
+        <max-elements-in-memory>1000</max-elements-in-memory>
+        <memory-eviction-policy>LRU</memory-eviction-policy>
+        <name>test-resourcesCache</name>
+        <time-to-idle-seconds>1800</time-to-idle-seconds>
+        <time-to-live-seconds>14400</time-to-live-seconds>
+      </configuration>
+    </component>
+    
+    <component>
+      <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+      <role-hint>test-roles</role-hint>
+      <implementation>org.codehaus.plexus.ehcache.MemoryCache</implementation>
+      <description>MemoryCache for Roles</description>
+      <configuration>
+        <eternal>false</eternal>
+        <max-elements-in-memory>1000</max-elements-in-memory>
+        <memory-eviction-policy>LRU</memory-eviction-policy>
+        <name>test-rolesCache</name>
+        <time-to-idle-seconds>1800</time-to-idle-seconds>
+        <time-to-live-seconds>14400</time-to-live-seconds>
+      </configuration>
+    </component>
+    
+    <!-- ================================================================
+           Caches with Short Term entries
+         ================================================================ -->
+    
+    <component>
+      <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+      <role-hint>test-userAssignments</role-hint>
+      <implementation>org.codehaus.plexus.ehcache.MemoryCache</implementation>
+      <description>MemoryCache for UserAssignments</description>
+      <configuration>
+        <eternal>false</eternal>
+        <max-elements-in-memory>10000</max-elements-in-memory>
+        <memory-eviction-policy>LRU</memory-eviction-policy>
+        <name>test-userAssignmentsCache</name>
+        <time-to-idle-seconds>300</time-to-idle-seconds>
+        <time-to-live-seconds>600</time-to-live-seconds>
+      </configuration>
+    </component>
+    
+    <component>
+      <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+      <role-hint>test-userPermissions</role-hint>
+      <implementation>org.codehaus.plexus.ehcache.MemoryCache</implementation>
+      <description>MemoryCache for UserPermissions</description>
+      <configuration>
+        <eternal>false</eternal>
+        <max-elements-in-memory>10000</max-elements-in-memory>
+        <memory-eviction-policy>LRU</memory-eviction-policy>
+        <name>test-userPermissionsCache</name>
+        <time-to-idle-seconds>300</time-to-idle-seconds>
+        <time-to-live-seconds>600</time-to-live-seconds>
+      </configuration>
+    </component>
+    
+    <component>
+      <role>org.codehaus.plexus.logging.LoggerManager</role>
+      <implementation>org.codehaus.plexus.logging.log4j.Log4JLoggerManager</implementation>
+      <!--<lifecycle-handler>basic</lifecycle-handler> -->
+
+      <configuration>
+        <threshold>INFO</threshold>
+        <default-appender>console</default-appender>
+        <appenders>
+          <appender>
+            <id>console</id>
+            <threshold>INFO</threshold>
+            <type>org.apache.log4j.ConsoleAppender</type>
+            <conversion-pattern>%d [%t] %-5p %-30c{1} - %m%n</conversion-pattern>
+          </appender>
+        </appenders>
+        <levels>
+          <level>
+            <hierarchy>org.codehaus.plexus.security</hierarchy>
+            <level>WARN</level>
+          </level>
+          <level>
+            <hierarchy>org.codehaus.plexus.jdo</hierarchy>
+            <level>INFO</level>
+          </level>
+          <level>
+            <hierarchy>JPOX</hierarchy>
+            <level>INFO</level>
+          </level>
+          <level>
+            <hierarchy>JPOX.Cache</hierarchy>
+            <level>WARN</level>
+          </level>
+        </levels>
+      </configuration>
+    </component>
+    
+  </components>
+</component-set>
