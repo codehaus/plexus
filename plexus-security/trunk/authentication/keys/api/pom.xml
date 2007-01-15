@@ -19,15 +19,15 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-keys-parent</artifactId>
-    <version>1.0-alpha-8-SNAPSHOT</version>
+    <version>1.0-alpha-8</version>
   </parent>
   <artifactId>plexus-security-keys-api</artifactId>
   <name>Plexus Security :: Key Management API</name>
   <packaging>jar</packaging>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/api</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/api</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-authentication/plexus-security-keys-parent/plexus-security-keys-api</url>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-8</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-8</developerConnection>
+    <url>https://svn.codehaus.org/plexus/tags/plexus-security-1.0-alpha-8</url>
   </scm>
   <dependencies>
     <dependency>
