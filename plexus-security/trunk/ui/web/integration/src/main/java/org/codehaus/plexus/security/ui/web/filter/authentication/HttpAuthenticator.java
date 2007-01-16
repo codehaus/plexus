@@ -44,7 +44,7 @@ import java.util.Map;
 public abstract class HttpAuthenticator
     extends AbstractLogEnabled
 {
-    public static final String ROLE = HttpAuthenticator.ROLE;
+    public static final String ROLE = HttpAuthenticator.class.getName();
 
     /**
      * @plexus.requirement
