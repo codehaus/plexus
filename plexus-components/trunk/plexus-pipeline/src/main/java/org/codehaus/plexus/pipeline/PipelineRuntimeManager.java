@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class PipelineDescriptor
+public class PipelineRuntimeManager
 {
     private String id;
 
@@ -15,7 +15,7 @@ public class PipelineDescriptor
 
     private List valveRoleHints;
 
-    public PipelineDescriptor( String id )
+    public PipelineRuntimeManager( String id )
     {
         this.id = id;
     }

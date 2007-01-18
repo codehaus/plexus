@@ -1,7 +1,5 @@
 package org.codehaus.plexus.pipeline;
 
-import java.util.Map;
-
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -10,7 +8,7 @@ import java.util.Map;
 public class Foo2Valve
     implements Valve
 {
-    public ValveReturnCode invoke( Map context )
+    public ValveReturnCode invoke( ValveRequest request )
         throws Exception
     {
         Recorder.records.add( "foo-2" );

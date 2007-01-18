@@ -14,17 +14,20 @@ public interface PipelineService
     //
     // -----------------------------------------------------------------------
 
-    void addPipeline( Pipeline pipeline )
+    void addPipeline( PipelineDescriptor pipelineDescriptor )
         throws PipelineException;
 
     // -----------------------------------------------------------------------
     // Execution
     // -----------------------------------------------------------------------
 
-    void processMessage( String pipeline, Map context )
+    void processMessage( PipelineRequest request )
         throws PipelineException;
 
-    void processMessage( String pipeline, Map context, ExceptionHandler exceptionHandler )
+    void processMessage( String pipelineId, Map context )
+        throws PipelineException;
+
+    void processMessage( String pipelineId, Map context, ExceptionHandler exceptionHandler )
         throws PipelineException;
 
     void setTraceExecution( boolean traceExecution );
