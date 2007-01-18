@@ -21,9 +21,9 @@ public class PipelineServiceTest
     {
         PipelineService pipelineService = (PipelineService) lookup( PipelineService.ROLE );
 
-        Pipeline pipeline = new Pipeline();
-        pipeline.setId( "empty" );
-        pipelineService.addPipeline( pipeline );
+        PipelineDescriptor pipelineDescriptor = new PipelineDescriptor();
+        pipelineDescriptor.setId( "empty" );
+        pipelineService.addPipeline( pipelineDescriptor );
 
         pipelineService.processMessage( "empty", null );
 

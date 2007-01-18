@@ -3,15 +3,22 @@
     <component>
       <role>org.codehaus.plexus.pipeline.PipelineService</role>
       <implementation>org.codehaus.plexus.pipeline.DefaultPipelineService</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.pipeline.execution.PipelineExecutor</role>
+          <role-hint>default</role-hint>
+          <field-name>executor</field-name>
+        </requirement>
+      </requirements>
       <configuration>
         <pipelines>
-          <pipeline>
+          <pipeline-descriptor>
             <id>simple</id>
             <valve-role-hints>
               <valve-role-hint>foo-1</valve-role-hint>
               <valve-role-hint>foo-2</valve-role-hint>
             </valve-role-hints>
-          </pipeline>
+          </pipeline-descriptor>
         </pipelines>
       </configuration>
     </component>

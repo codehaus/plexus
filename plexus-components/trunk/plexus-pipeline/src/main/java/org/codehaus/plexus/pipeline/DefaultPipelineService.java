@@ -7,15 +7,18 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.ServiceLocator;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
+import org.codehaus.plexus.pipeline.execution.PipelineExecutor;
 import org.codehaus.plexus.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 
 /**
+ * This class is NOT annotated as a Plexus component as should always be configured in applications using it.
+ *
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
@@ -24,14 +27,14 @@ public class DefaultPipelineService
     implements PipelineService, Startable, Serviceable
 {
     /**
+     * @plexus.requirement
+     */
+    private PipelineExecutor executor;
+
+    /**
      * @plexus.configuration
      */
     private List pipelines;
-
-    /**
-     * @plexus.configuration default-value="true"
-     */
-    private boolean traceExecution;
 
     private final Object lock = new Object();
 
@@ -39,29 +42,31 @@ public class DefaultPipelineService
 
     private Map pipelineDescriptors = new HashMap();
 
+    private Boolean traceExecution;
+
     // -----------------------------------------------------------------------
     // PipelineService Implementation
     // -----------------------------------------------------------------------
 
-    public void addPipeline( Pipeline pipeline )
+    public void addPipeline( PipelineDescriptor pipelineDescriptor )
         throws PipelineException
     {
         // -----------------------------------------------------------------------
         // Validate
         // -----------------------------------------------------------------------
 
-        if ( StringUtils.isEmpty( pipeline.getId() ) )
+        if ( StringUtils.isEmpty( pipelineDescriptor.getId() ) )
         {
-            throw new PipelineException( "Invalid pipeline, id is required." );
+            throw new PipelineException( "Invalid pipelineDescriptor, id is required." );
         }
 
         // -----------------------------------------------------------------------
-        // Create the descriptor
+        // Create the runtimeManager
         // -----------------------------------------------------------------------
 
-        PipelineDescriptor descriptor = new PipelineDescriptor( pipeline.getId() );
+        PipelineRuntimeManager runtimeManager = new PipelineRuntimeManager( pipelineDescriptor.getId() );
 
-        List valves = pipeline.getValveRoleHints();
+        List valves = pipelineDescriptor.getValveRoleHints();
 
         if ( valves == null )
         {
@@ -69,7 +74,7 @@ public class DefaultPipelineService
         }
 
         // -----------------------------------------------------------------------
-        // Look up all the valves in the pipeline
+        // Look up all the valves in the pipelineDescriptor
         // -----------------------------------------------------------------------
 
         try
@@ -78,92 +83,93 @@ public class DefaultPipelineService
             {
                 String valve = (String) it.next();
 
-                descriptor.getValveInstances().add( serviceLocator.lookup( Valve.class.getName(), valve ) );
+                runtimeManager.getValveInstances().add( serviceLocator.lookup( Valve.class.getName(), valve ) );
             }
         }
         catch ( ComponentLookupException e )
         {
-            removePipeline( descriptor );
+            removePipeline( runtimeManager );
 
             throw new PipelineException( "Error while looking up the valves.", e );
         }
 
-        descriptor.setValveRoleHints( pipeline.getValveRoleHints() );
+        runtimeManager.setValveRoleHints( pipelineDescriptor.getValveRoleHints() );
 
         // -----------------------------------------------------------------------
-        // Save the pipeline
+        // Save the pipelineDescriptor
         // -----------------------------------------------------------------------
 
         synchronized ( lock )
         {
-            pipelineDescriptors.put( descriptor.getId(), descriptor );
+            pipelineDescriptors.put( runtimeManager.getId(), runtimeManager );
         }
     }
 
-    public void processMessage( String pipeline, Map context )
+    public void processMessage( PipelineRequest request )
         throws PipelineException
     {
-        processMessage( pipeline, context, new RuntimeExceptionHandler() );
+        // -----------------------------------------------------------------------
+        // Validate the request
+        // -----------------------------------------------------------------------
+
+        String pipelineId = request.getPipelineId();
+
+        if ( StringUtils.isEmpty( pipelineId ) )
+        {
+            throw new PipelineException( "Illegal request: missing required field 'pipeline id'" );
+        }
+
+        if ( request.getTraceExecution() == null )
+        {
+            request.setTraceExecution( traceExecution );
+        }
+
+        // -----------------------------------------------------------------------
+        // Find the descriptor and call the executor
+        // -----------------------------------------------------------------------
+
+        PipelineRuntimeManager pipelineRuntimeManager;
+
+        synchronized ( lock )
+        {
+            pipelineRuntimeManager = (PipelineRuntimeManager) pipelineDescriptors.get( pipelineId );
+        }
+
+        if ( pipelineRuntimeManager == null )
+        {
+            throw new PipelineException( "No such pipeline '" + pipelineId + "'." );
+        }
+
+        executor.execute( pipelineRuntimeManager, request );
+    }
+
+    public void processMessage( String pipelineId, Map context )
+        throws PipelineException
+    {
+        PipelineRequest request = new PipelineRequest();
+
+        request.setPipelineId( pipelineId );
+        request.setContext( context );
+        request.setExceptionHandler( new RuntimeExceptionHandler() );
+
+        processMessage( request );
     }
 
     public void processMessage( String pipelineId, Map context, ExceptionHandler exceptionHandler )
         throws PipelineException
     {
-        PipelineDescriptor pipelineDescriptor;
+        PipelineRequest request = new PipelineRequest();
 
-        synchronized ( lock )
-        {
-            pipelineDescriptor = (PipelineDescriptor) pipelineDescriptors.get( pipelineId );
-        }
+        request.setPipelineId( pipelineId );
+        request.setContext( context );
+        request.setExceptionHandler( exceptionHandler );
 
-        if ( pipelineDescriptor == null )
-        {
-            throw new PipelineException( "No such pipeline '" + pipelineId + "'." );
-        }
-
-        // -----------------------------------------------------------------------
-        // Invoke all the valveRoleHints in the pipelineId
-        // -----------------------------------------------------------------------
-
-        int i = 0;
-
-        for ( Iterator it = pipelineDescriptor.getValveInstances().iterator(); it.hasNext(); i++ )
-        {
-            Valve valve = (Valve) it.next();
-
-            if ( traceExecution && getLogger().isInfoEnabled() )
-            {
-                getLogger().info( "Trace: " + pipelineId + ":" + pipelineDescriptor.getValveRoleHints().get( i ) );
-            }
-
-            try
-            {
-                ValveReturnCode returnCode = valve.invoke( context );
-
-                if ( returnCode.equals( Valve.PROCEED ) )
-                {
-                    // continue
-                }
-                else if ( returnCode.equals( Valve.STOP ) )
-                {
-                    break;
-                }
-                else
-                {
-                    throw new PipelineException(
-                        "Unknown return code. This pipeline cannot handle this type: " + returnCode.toString() );
-                }
-            }
-            catch ( Exception e )
-            {
-                exceptionHandler.handleException( e );
-            }
-        }
+        processMessage( request );
     }
 
     public void setTraceExecution( boolean traceExecution )
     {
-        this.traceExecution = traceExecution;
+        this.traceExecution = Boolean.valueOf( traceExecution );
     }
 
     // -----------------------------------------------------------------------
@@ -185,17 +191,17 @@ public class DefaultPipelineService
 
         for ( Iterator it = pipelines.iterator(); it.hasNext(); )
         {
-            Pipeline pipeline = (Pipeline) it.next();
+            PipelineDescriptor pipelineDescriptor = (PipelineDescriptor) it.next();
 
             try
             {
-                addPipeline( pipeline );
+                addPipeline( pipelineDescriptor );
             }
             catch ( PipelineException e )
             {
                 stop();
 
-                throw new StartingException( "Error while starting pipeline.", e );
+                throw new StartingException( "Error while starting pipelineDescriptor.", e );
             }
         }
     }
@@ -208,7 +214,7 @@ public class DefaultPipelineService
             {
                 Map.Entry entry = (Map.Entry) it.next();
 
-                removePipeline( (PipelineDescriptor) entry.getValue() );
+                removePipeline( (PipelineRuntimeManager) entry.getValue() );
             }
         }
     }
@@ -217,9 +223,9 @@ public class DefaultPipelineService
     // Private
     // -----------------------------------------------------------------------
 
-    private void removePipeline( PipelineDescriptor descriptor )
+    private void removePipeline( PipelineRuntimeManager runtimeManager )
     {
-        for ( Iterator it = descriptor.getValveInstances().iterator(); it.hasNext(); )
+        for ( Iterator it = runtimeManager.getValveInstances().iterator(); it.hasNext(); )
         {
             Valve valve = (Valve) it.next();
 
