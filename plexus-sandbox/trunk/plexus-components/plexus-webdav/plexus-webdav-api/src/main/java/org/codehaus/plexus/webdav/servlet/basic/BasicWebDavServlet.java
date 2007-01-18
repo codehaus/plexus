@@ -16,23 +16,18 @@ package org.codehaus.plexus.webdav.servlet.basic;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.servlet.PlexusServletUtils;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.webdav.DavServerComponent;
 import org.codehaus.plexus.webdav.DavServerException;
-import org.codehaus.plexus.webdav.DavServerManager;
+import org.codehaus.plexus.webdav.servlet.AbstractWebDavServlet;
 import org.codehaus.plexus.webdav.servlet.DavServerRequest;
 import org.codehaus.plexus.webdav.util.WrappedRepositoryRequest;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
 
-import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,17 +38,11 @@ import javax.servlet.http.HttpServletResponse;
  * @version $Id$
  */
 public class BasicWebDavServlet
-    implements Servlet
+    extends AbstractWebDavServlet
 {
     public static final String INIT_ROOT_DIRECTORY = "dav.root";
 
-    private ServletConfig config;
-
-    private DavServerManager davManager;
-
     private DavServerComponent davServer;
-
-    private boolean debug = true;
 
     // -----------------------------------------------------------------------
     // Servlet Implementation
@@ -62,9 +51,7 @@ public class BasicWebDavServlet
     public void init( ServletConfig config )
         throws ServletException
     {
-        this.config = config;
-
-        davManager = (DavServerManager) PlexusServletUtils.lookup( config.getServletContext(), DavServerManager.ROLE );
+        super.init( config );
 
         String prefix = config.getServletContext().getServletContextName();
 
@@ -95,76 +82,28 @@ public class BasicWebDavServlet
         }
     }
 
-    public void destroy()
-    {
-        if ( davManager != null )
-        {
-            try
-            {
-                PlexusServletUtils.release( config.getServletContext(), davManager );
-            }
-            catch ( ServletException e )
-            {
-                config.getServletContext().log( "Unable to release DavServletManager.", e );
-            }
-        }
-    }
-
-    public ServletConfig getServletConfig()
-    {
-        return config;
-    }
-
-    public String getServletInfo()
-    {
-        return "Plexus Simple WebDAV Servlet";
-    }
-
-    public void service( ServletRequest req, ServletResponse res )
-        throws ServletException, IOException
-    {
-        if ( !( req instanceof HttpServletRequest ) )
-        {
-            throw new ServletException( "BasicWebDavServlet can only handle HttpServletRequests." );
-        }
-
-        if ( !( res instanceof HttpServletResponse ) )
-        {
-            throw new ServletException( "BasicWebDavServlet can only handle HttpServletResponse." );
-        }
+    protected void service( HttpServletRequest httpRequest, HttpServletResponse httpResponse )
+    throws ServletException, IOException
+{
+        DavServerRequest davRequest = new BasicDavServerRequest( new WrappedRepositoryRequest( httpRequest ) );
 
         if ( davServer == null )
         {
-            throw new ServletException( "Unable to service request due to unconfigured DavServerComponent." );
+            throw new ServletException( "Unable to service DAV request due to unconfigured DavServerComponent." );
         }
 
-        HttpServletRequest httpRequest = (HttpServletRequest) req;
-        HttpServletResponse httpResponse = (HttpServletResponse) res;
-        DavServerRequest davRequest = new BasicDavServerRequest( new WrappedRepositoryRequest( httpRequest ) );
-
-        if ( debug )
+        requestDebug( httpRequest );
+        
+        if ( !isAuthenticated( davRequest, httpResponse ) )
         {
-            System.out.println( "-->>> request ----------------------------------------------------------" );
-            System.out.println( "--> " + httpRequest.getScheme() + "://" + httpRequest.getServerName() + ":"
-                + httpRequest.getServerPort() + httpRequest.getServletPath() );
-            System.out
-                .println( httpRequest.getMethod() + " " + httpRequest.getRequestURI()
-                    + ( httpRequest.getQueryString() != null ? "?" + httpRequest.getQueryString() : "" ) + " "
-                    + "HTTP/1.1" );
-
-            Enumeration enHeaders = httpRequest.getHeaderNames();
-            while ( enHeaders.hasMoreElements() )
-            {
-                String headerName = (String) enHeaders.nextElement();
-                String headerValue = httpRequest.getHeader( headerName );
-                System.out.println( headerName + ": " + headerValue );
-            }
-
-            System.out.println();
-
-            System.out.println( "------------------------------------------------------------------------" );
+            return;
         }
 
+        if ( !isAuthorized( davRequest, httpResponse ) )
+        {
+            return;
+        }
+        
         try
         {
             davServer.process( davRequest, httpResponse );
@@ -174,15 +113,4 @@ public class BasicWebDavServlet
             throw new ServletException( "Unable to process request.", e );
         }
     }
-
-    public boolean isDebug()
-    {
-        return debug;
-    }
-
-    public void setDebug( boolean debug )
-    {
-        this.debug = debug;
-    }
-
 }
