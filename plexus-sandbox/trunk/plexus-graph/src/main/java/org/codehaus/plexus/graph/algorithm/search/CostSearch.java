@@ -24,15 +24,15 @@ package org.codehaus.plexus.graph.algorithm.search;
  * minimal cost first, and then go to the later costs.
  */
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.apache.commons.collections.BinaryHeap;
 import org.apache.commons.collections.PriorityQueue;
 import org.codehaus.plexus.graph.Edge;
 import org.codehaus.plexus.graph.Vertex;
 import org.codehaus.plexus.graph.WeightedGraph;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /** Description of the Class */
 public class CostSearch

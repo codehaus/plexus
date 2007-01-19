@@ -19,12 +19,14 @@ package org.codehaus.plexus.graph;
  * under the License.
  */
 
-import org.codehaus.plexus.graph.exception.*;
+import org.codehaus.plexus.graph.exception.GraphException;
 
 /** Description of the Interface */
 public interface MutableDirectedGraph
     extends DirectedGraph
 {
+    Vertex getRoot();
+    
     /** Adds a feature to the Vertex attribute of the MutableDirectedGraph object */
     public void addVertex( Vertex v )
         throws GraphException;

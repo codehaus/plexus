@@ -24,11 +24,13 @@ package org.codehaus.plexus.graph.search;
  * before moving to the siblling nodes.
  */
 
-import java.util.Map;
+import org.codehaus.plexus.graph.DirectedGraph;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Vertex;
+
 import java.util.HashMap;
 import java.util.Iterator;
-
-import org.codehaus.plexus.graph.*;
+import java.util.Map;
 
 /** Description of the Class */
 public class DFS

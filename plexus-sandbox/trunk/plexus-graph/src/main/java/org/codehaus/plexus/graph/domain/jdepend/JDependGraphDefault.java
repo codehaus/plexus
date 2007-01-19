@@ -19,26 +19,26 @@ package org.codehaus.plexus.graph.domain.jdepend;
  * under the License.
  */
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
+import jdepend.framework.JDepend;
+import jdepend.framework.JavaClass;
+import jdepend.framework.JavaPackage;
+import org.codehaus.plexus.graph.DirectedGraph;
+import org.codehaus.plexus.graph.domain.basic.DefaultDirectedGraph;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-import jdepend.framework.*;
-
-import org.codehaus.plexus.graph.*;
-import org.codehaus.plexus.graph.domain.basic.*;
-
-public class JDependGraph
-    extends DirectedGraphImpl
+public class JDependGraphDefault
+    extends DefaultDirectedGraph
     implements DirectedGraph
 {
     private JDepend jdep = new JDepend();
     private Map pkgMap = new HashMap(); // JP X JPV
     private Map clazzMap = new HashMap(); // JC X JCV
 
-    public JDependGraph()
+    public JDependGraphDefault()
     {
     }
 

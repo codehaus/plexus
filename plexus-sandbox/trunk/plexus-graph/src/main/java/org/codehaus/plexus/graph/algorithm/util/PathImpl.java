@@ -19,10 +19,12 @@ package org.codehaus.plexus.graph.algorithm.util;
  * under the License.
  */
 
-import java.util.List;
-import java.util.ArrayList;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Path;
+import org.codehaus.plexus.graph.Vertex;
 
-import org.codehaus.plexus.graph.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PathImpl
     implements Path

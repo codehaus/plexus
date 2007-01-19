@@ -281,7 +281,7 @@ public class GraphTest extends TestCase
     public UndirectedGraph makeNullGraph()
         throws GraphException
     {
-        return new UndirectedGraphImpl();
+        return new DefaultUndirectedGraph();
     }
 
     /**
@@ -290,7 +290,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makeDirNullGraph()
         throws GraphException
     {
-        return new DirectedGraphImpl();
+        return new DefaultDirectedGraph();
     }
 
     /**
@@ -299,7 +299,7 @@ public class GraphTest extends TestCase
     public UndirectedGraph makeSingleVertex()
         throws GraphException
     {
-        UndirectedGraphImpl RC = new UndirectedGraphImpl();
+        DefaultUndirectedGraph RC = new DefaultUndirectedGraph();
         RC.addVertex(V1);
         return RC;
     }
@@ -310,7 +310,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makeDirSingleVertex()
         throws GraphException
     {
-        DirectedGraphImpl RC = new DirectedGraphImpl();
+        DefaultDirectedGraph RC = new DefaultDirectedGraph();
         RC.addVertex(V1);
         return RC;
     }
@@ -321,7 +321,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makeSelfLoop()
         throws GraphException
     {
-        DirectedGraphImpl RC = new DirectedGraphImpl();
+        DefaultDirectedGraph RC = new DefaultDirectedGraph();
         RC.addVertex(V1);
         RC.addEdge(V1_V1, V1, V1);
         return RC;
@@ -333,7 +333,7 @@ public class GraphTest extends TestCase
     public UndirectedGraph makeDoubleVertex()
         throws GraphException
     {
-        UndirectedGraphImpl RC = new UndirectedGraphImpl();
+        DefaultUndirectedGraph RC = new DefaultUndirectedGraph();
         RC.addVertex(V1);
         RC.addVertex(V2);
         return RC;
@@ -345,7 +345,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makeDirDoubleVertex()
         throws GraphException
     {
-        DirectedGraphImpl RC = new DirectedGraphImpl();
+        DefaultDirectedGraph RC = new DefaultDirectedGraph();
         RC.addVertex(V1);
         RC.addVertex(V2);
         return RC;
@@ -357,7 +357,7 @@ public class GraphTest extends TestCase
     public UndirectedGraph makeSingleEdge()
         throws GraphException
     {
-        UndirectedGraphImpl RC = new UndirectedGraphImpl();
+        DefaultUndirectedGraph RC = new DefaultUndirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -373,7 +373,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makeDirectedEdge()
         throws GraphException
     {
-        DirectedGraphImpl RC = new DirectedGraphImpl();
+        DefaultDirectedGraph RC = new DefaultDirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -390,7 +390,7 @@ public class GraphTest extends TestCase
     public UndirectedGraph makeParallelEdges()
         throws GraphException
     {
-        UndirectedGraphImpl RC = new UndirectedGraphImpl();
+        DefaultUndirectedGraph RC = new DefaultUndirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -407,7 +407,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makeDirParallelEdges()
         throws GraphException
     {
-        DirectedGraphImpl RC = new DirectedGraphImpl();
+        DefaultDirectedGraph RC = new DefaultDirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -425,7 +425,7 @@ public class GraphTest extends TestCase
     public UndirectedGraph makeCycle()
         throws GraphException
     {
-        UndirectedGraphImpl RC = new UndirectedGraphImpl();
+        DefaultUndirectedGraph RC = new DefaultUndirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -444,7 +444,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makeTwoCycle()
         throws GraphException
     {
-        DirectedGraphImpl RC = new DirectedGraphImpl();
+        DefaultDirectedGraph RC = new DefaultDirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -461,7 +461,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makeDirectedCycle()
         throws GraphException
     {
-        DirectedGraphImpl RC = new DirectedGraphImpl();
+        DefaultDirectedGraph RC = new DefaultDirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -480,7 +480,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makeDirected4Cycle()
         throws GraphException
     {
-        DirectedGraphImpl RC = new DirectedGraphImpl();
+        DefaultDirectedGraph RC = new DefaultDirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -501,7 +501,7 @@ public class GraphTest extends TestCase
     public UndirectedGraph makeNoCycle()
         throws GraphException
     {
-        UndirectedGraphImpl RC = new UndirectedGraphImpl();
+        DefaultUndirectedGraph RC = new DefaultUndirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -519,7 +519,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makePipe()
         throws GraphException
     {
-        DirectedGraphImpl RC = new DirectedGraphImpl();
+        DefaultDirectedGraph RC = new DefaultDirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -537,7 +537,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makeDiamond()
         throws GraphException
     {
-        DirectedGraphImpl RC = new DirectedGraphImpl();
+        DefaultDirectedGraph RC = new DefaultDirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -558,7 +558,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makePipelessCycle()
         throws GraphException
     {
-        DirectedGraphImpl RC = new DirectedGraphImpl();
+        DefaultDirectedGraph RC = new DefaultDirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -579,7 +579,7 @@ public class GraphTest extends TestCase
     public UndirectedGraph makeTree()
         throws GraphException
     {
-        UndirectedGraphImpl RC = new UndirectedGraphImpl();
+        DefaultUndirectedGraph RC = new DefaultUndirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -601,7 +601,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makeParentTree()
         throws GraphException
     {
-        DirectedGraphImpl RC = new DirectedGraphImpl();
+        DefaultDirectedGraph RC = new DefaultDirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -623,7 +623,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makeChildTree()
         throws GraphException
     {
-        DirectedGraphImpl RC = new DirectedGraphImpl();
+        DefaultDirectedGraph RC = new DefaultDirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -645,7 +645,7 @@ public class GraphTest extends TestCase
     public UndirectedGraph makeDisconnected()
         throws GraphException
     {
-        UndirectedGraphImpl RC = new UndirectedGraphImpl();
+        DefaultUndirectedGraph RC = new DefaultUndirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);
@@ -671,7 +671,7 @@ public class GraphTest extends TestCase
    *
    */
   public Graph makeHyperGraph() {
-    UndirectedGraphImpl RC = new UndirectedGraphImpl();
+    DefaultUndirectedGraph RC = new DefaultUndirectedGraph();
     
     RC.addVertex( V1 );
     RC.addVertex( V2 );
@@ -693,7 +693,7 @@ public class GraphTest extends TestCase
     public DirectedGraph makeCycleNoReturn()
         throws GraphException
     {
-        DirectedGraphImpl RC = new DirectedGraphImpl();
+        DefaultDirectedGraph RC = new DefaultDirectedGraph();
 
         RC.addVertex(V1);
         RC.addVertex(V2);

@@ -19,8 +19,10 @@ package org.codehaus.plexus.graph.contract;
  * under the License.
  */
 
-import org.codehaus.plexus.graph.*;
-import org.codehaus.plexus.graph.exception.*;
+import org.codehaus.plexus.graph.DirectedGraph;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Vertex;
+import org.codehaus.plexus.graph.exception.GraphException;
 
 /** Description of the Interface */
 public interface Contract

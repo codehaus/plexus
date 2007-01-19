@@ -19,7 +19,7 @@ package org.codehaus.plexus.graph;
  * under the License.
  */
 
-import org.codehaus.plexus.graph.exception.*;
+import org.codehaus.plexus.graph.exception.GraphException;
 
 /** Description of the Interface */
 public interface MutableGraph

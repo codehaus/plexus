@@ -24,9 +24,11 @@ package org.codehaus.plexus.graph.domain.basic;
  * basically does a redirection to the graph.
  */
 
-import java.util.Set;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Graph;
+import org.codehaus.plexus.graph.Vertex;
 
-import org.codehaus.plexus.graph.*;
+import java.util.Set;
 
 /** Description of the Class */
 public class GraphWrapper

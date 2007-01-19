@@ -19,8 +19,10 @@ package org.codehaus.plexus.graph.domain.jdepend;
  * under the License.
  */
 
-import org.codehaus.plexus.graph.*;
-import jdepend.framework.*;
+import jdepend.framework.JavaClass;
+import jdepend.framework.JavaPackage;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Named;
 
 public class ImportEdge
     implements Edge, Named

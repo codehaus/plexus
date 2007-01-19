@@ -19,7 +19,7 @@ package org.codehaus.plexus.graph.domain.dependency;
  * under the License.
  */
 
-import org.codehaus.plexus.graph.*;
+import org.codehaus.plexus.graph.Vertex;
 
 /** Description of the Class */
 public class DependencyVertex

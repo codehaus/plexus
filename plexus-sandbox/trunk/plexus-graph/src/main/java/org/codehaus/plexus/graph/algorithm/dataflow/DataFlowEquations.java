@@ -19,9 +19,9 @@ package org.codehaus.plexus.graph.algorithm.dataflow;
  * under the License.
  */
 
-import java.util.BitSet;
+import org.codehaus.plexus.graph.Vertex;
 
-import org.codehaus.plexus.graph.*;
+import java.util.BitSet;
 
 public interface DataFlowEquations
 {

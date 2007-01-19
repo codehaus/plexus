@@ -19,22 +19,28 @@ package org.codehaus.plexus.graph.domain.basic;
  * under the License.
  */
 
-import java.lang.reflect.*;
+import org.codehaus.plexus.graph.DirectedGraph;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.MutableDirectedGraph;
+import org.codehaus.plexus.graph.Vertex;
+import org.codehaus.plexus.graph.WeightedEdge;
+import org.codehaus.plexus.graph.WeightedGraph;
+import org.codehaus.plexus.graph.contract.Contract;
+import org.codehaus.plexus.graph.exception.GraphException;
 
-import java.util.Set;
-import java.util.Map;
-import java.util.List;
-import java.util.HashSet;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
-
-import org.codehaus.plexus.graph.*;
-import org.codehaus.plexus.graph.contract.*;
-import org.codehaus.plexus.graph.exception.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /** Description of the Class */
-public class DirectedGraphImpl
+public class DefaultDirectedGraph
     implements DirectedGraph, WeightedGraph, MutableDirectedGraph, InvocationHandler
 {
     private Vertex root = null;
@@ -51,19 +57,18 @@ public class DirectedGraphImpl
 
     private Map edgeWeights = new HashMap();// EDGE X WEIGHT
 
-    /** Constructor for the DirectedGraphImpl object */
-    public DirectedGraphImpl()
+    /** Constructor for the DefaultDirectedGraph object */
+    public DefaultDirectedGraph()
     {
     }
 
     /**
-     * Constructor for the DirectedGraphImpl object
+     * Constructor for the DefaultDirectedGraph object
      *
      * @param dg
      */
-    public DirectedGraphImpl( DirectedGraph dg )
+    public DefaultDirectedGraph( DirectedGraph dg )
     {
-
         Iterator v = dg.getVertices().iterator();
         while ( v.hasNext() )
         {
@@ -83,7 +88,12 @@ public class DirectedGraphImpl
         }
     }
 
-    /** Adds a feature to the Contract attribute of the DirectedGraphImpl object */
+    public Vertex getRoot()
+    {
+        return root;
+    }
+
+    /** Adds a feature to the Contract attribute of the DefaultDirectedGraph object */
     public void addContract( Contract c )
         throws GraphException
     {
@@ -98,7 +108,7 @@ public class DirectedGraphImpl
         contracts.remove( c );
     }
 
-    /** Sets the weight attribute of the DirectedGraphImpl object */
+    /** Sets the weight attribute of the DefaultDirectedGraph object */
     public void setWeight( Edge e,
                            double value )
     {
@@ -111,13 +121,13 @@ public class DirectedGraphImpl
 
     // Interface Methods
     // Graph
-    /** Gets the vertices attribute of the DirectedGraphImpl object */
+    /** Gets the vertices attribute of the DefaultDirectedGraph object */
     public Set getVertices()
     {
         return new HashSet( vertices );
     }
 
-    /** Gets the vertices attribute of the DirectedGraphImpl object */
+    /** Gets the vertices attribute of the DefaultDirectedGraph object */
     public Set getVertices( Edge e )
     {
         Set RC = new HashSet();
@@ -134,13 +144,13 @@ public class DirectedGraphImpl
         return RC;
     }
 
-    /** Gets the edges attribute of the DirectedGraphImpl object */
+    /** Gets the edges attribute of the DefaultDirectedGraph object */
     public Set getEdges()
     {
         return new HashSet( edges );
     }
 
-    /** Gets the edges attribute of the DirectedGraphImpl object */
+    /** Gets the edges attribute of the DefaultDirectedGraph object */
     public Set getEdges( Vertex v )
     {
         Set RC = new HashSet();
@@ -158,19 +168,19 @@ public class DirectedGraphImpl
     }
 
     // Directed Graph
-    /** Gets the source attribute of the DirectedGraphImpl object */
+    /** Gets the source attribute of the DefaultDirectedGraph object */
     public Vertex getSource( Edge e )
     {
         return (Vertex) edgeSource.get( e );
     }
 
-    /** Gets the target attribute of the DirectedGraphImpl object */
+    /** Gets the target attribute of the DefaultDirectedGraph object */
     public Vertex getTarget( Edge e )
     {
         return (Vertex) edgeTarget.get( e );
     }
 
-    /** Gets the inbound attribute of the DirectedGraphImpl object */
+    /** Gets the inbound attribute of the DefaultDirectedGraph object */
     public Set getInbound( Vertex v )
     {
         if ( inbound.containsKey( v ) )
@@ -183,7 +193,7 @@ public class DirectedGraphImpl
         }
     }
 
-    /** Gets the outbound attribute of the DirectedGraphImpl object */
+    /** Gets the outbound attribute of the DefaultDirectedGraph object */
     public Set getOutbound( Vertex v )
     {
         if ( outbound.containsKey( v ) )
@@ -198,7 +208,7 @@ public class DirectedGraphImpl
 
 
     // MutableDirectedGraph
-    /** Adds a feature to the VertexI attribute of the DirectedGraphImpl object */
+    /** Adds a feature to the VertexI attribute of the DefaultDirectedGraph object */
     private void addVertexI( Vertex v )
         throws GraphException
     {
@@ -210,7 +220,7 @@ public class DirectedGraphImpl
         vertices.add( v );
     }
 
-    /** Adds a feature to the Vertex attribute of the DirectedGraphImpl object */
+    /** Adds a feature to the Vertex attribute of the DefaultDirectedGraph object */
     public void addVertex( Vertex v )
         throws GraphException
     {
@@ -250,7 +260,7 @@ public class DirectedGraphImpl
     }
 
 
-    /** Adds a feature to the EdgeI attribute of the DirectedGraphImpl object */
+    /** Adds a feature to the EdgeI attribute of the DefaultDirectedGraph object */
     private void addEdgeI( Edge e,
                            Vertex start,
                            Vertex end )
@@ -295,7 +305,7 @@ public class DirectedGraphImpl
         }
     }
 
-    /** Adds a feature to the Edge attribute of the DirectedGraphImpl object */
+    /** Adds a feature to the Edge attribute of the DefaultDirectedGraph object */
     public void addEdge( Edge e,
                          Vertex start,
                          Vertex end )
@@ -355,7 +365,7 @@ public class DirectedGraphImpl
     }
 
     // WeightedGraph
-    /** Gets the weight attribute of the DirectedGraphImpl object */
+    /** Gets the weight attribute of the DefaultDirectedGraph object */
     public double getWeight( Edge e )
     {
         if ( edgeWeights.containsKey( e ) )

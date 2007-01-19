@@ -19,7 +19,8 @@ package org.codehaus.plexus.graph.domain.statemachine;
  * under the License.
  */
 
-import org.codehaus.plexus.graph.*;
+import org.codehaus.plexus.graph.Named;
+import org.codehaus.plexus.graph.Vertex;
 
 /** Description of the Class */
 public class State

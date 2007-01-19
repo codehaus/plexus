@@ -19,15 +19,17 @@ package org.codehaus.plexus.graph.visualize;
  * under the License.
  */
 
-import java.util.Random;
-import java.util.Iterator;
+import org.codehaus.plexus.graph.DirectedGraph;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Named;
+import org.codehaus.plexus.graph.Vertex;
+import org.codehaus.plexus.graph.WeightedGraph;
 
+import java.awt.*;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-
-import java.awt.Color;
-
-import org.codehaus.plexus.graph.*;
+import java.util.Iterator;
+import java.util.Random;
 
 /** Description of the Class */
 public class TouchGraph

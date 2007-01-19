@@ -19,11 +19,6 @@ package org.codehaus.plexus.graph.decorator;
  * under the License.
  */
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
 import org.codehaus.plexus.graph.DirectedGraph;
 import org.codehaus.plexus.graph.Edge;
 import org.codehaus.plexus.graph.Vertex;
@@ -31,13 +26,19 @@ import org.codehaus.plexus.graph.WeightedGraph;
 import org.codehaus.plexus.graph.WeightedPath;
 import org.codehaus.plexus.graph.algorithm.path.AllPairsShortestPath;
 import org.codehaus.plexus.graph.algorithm.spanning.MinimumSpanningForest;
-import org.codehaus.plexus.graph.domain.basic.DirectedGraphImpl;
+import org.codehaus.plexus.graph.domain.basic.DefaultDirectedGraph;
 import org.codehaus.plexus.graph.domain.basic.DirectedGraphWrapper;
 import org.codehaus.plexus.graph.exception.GraphException;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /** Description of the Class */
 public class DDirectedGraph
     extends DirectedGraphWrapper
+    //extends DefaultDirectedGraph
     implements DirectedGraph, WeightedGraph
 {
     private WeightedGraph weighted;
@@ -123,7 +124,7 @@ public class DDirectedGraph
     {
         try
         {
-            DirectedGraphImpl RC = new DirectedGraphImpl();
+            DefaultDirectedGraph RC = new DefaultDirectedGraph();
             Set vertexSet = getVertices();
             Set edgeSet = getEdges();
 
