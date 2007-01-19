@@ -19,7 +19,9 @@ package org.codehaus.plexus.graph.algorithm.search;
  * under the License.
  */
 
-import org.codehaus.plexus.graph.*;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Graph;
+import org.codehaus.plexus.graph.Vertex;
 
 /** Description of the Interface */
 public interface Visitor

@@ -45,11 +45,11 @@ public class WeightedGraphTest
      *
      * @---------> @
      */
-    public DirectedGraphImpl makeWDirectedEdge()
+    public DefaultDirectedGraph makeWDirectedEdge()
         throws GraphException
     {
-        DirectedGraphImpl RC =
-            (DirectedGraphImpl) makeDirectedEdge();
+        DefaultDirectedGraph RC =
+            (DefaultDirectedGraph) makeDirectedEdge();
         RC.setWeight(V1_V2, 5.0);
         return RC;
     }
@@ -60,7 +60,7 @@ public class WeightedGraphTest
     public void testWDirectedEdge()
         throws Throwable
     {
-        DirectedGraphImpl IUT = makeWDirectedEdge();
+        DefaultDirectedGraph IUT = makeWDirectedEdge();
 
         verifyGraph(IUT, 2, 1);
         assertEquals("Wrong Weight on V1->V2",
@@ -70,11 +70,11 @@ public class WeightedGraphTest
     /**
      * /----\ / 5.0 \ @ | \ / \----/
      */
-    public DirectedGraphImpl makeWSelfLoop()
+    public DefaultDirectedGraph makeWSelfLoop()
         throws GraphException
     {
-        DirectedGraphImpl RC =
-            (DirectedGraphImpl) makeSelfLoop();
+        DefaultDirectedGraph RC =
+            (DefaultDirectedGraph) makeSelfLoop();
         RC.setWeight(V1_V1, 5.0);
         return RC;
     }
@@ -85,7 +85,7 @@ public class WeightedGraphTest
     public void testWSelfLoop()
         throws Throwable
     {
-        DirectedGraphImpl IUT = makeWSelfLoop();
+        DefaultDirectedGraph IUT = makeWSelfLoop();
 
         verifyGraph(IUT, 1, 1);
         assertEquals("Wrong Weight on V1->V1",
@@ -95,11 +95,11 @@ public class WeightedGraphTest
     /**
      * v1 / ^ 2.0 / \ 1.5 v \ v2------->v3 4.0
      */
-    public DirectedGraphImpl makePositiveCycle()
+    public DefaultDirectedGraph makePositiveCycle()
         throws GraphException
     {
-        DirectedGraphImpl RC =
-            (DirectedGraphImpl) makeDirectedCycle();
+        DefaultDirectedGraph RC =
+            (DefaultDirectedGraph) makeDirectedCycle();
 
         RC.setWeight(V1_V2, 2.0);
         RC.setWeight(V2_V3, 4.0);
@@ -114,7 +114,7 @@ public class WeightedGraphTest
     public void testPositiveCycle()
         throws Throwable
     {
-        DirectedGraphImpl IUT = makePositiveCycle();
+        DefaultDirectedGraph IUT = makePositiveCycle();
         verifyGraph(IUT, 3, 3);
 
         assertEquals("Wrong Weight on V1->V2",
@@ -130,11 +130,11 @@ public class WeightedGraphTest
     /**
      * v1 / ^ 2.0 / \ - 1.5 v \ v2------->v3 4.0
      */
-    public DirectedGraphImpl makePositivePartNegCycle()
+    public DefaultDirectedGraph makePositivePartNegCycle()
         throws GraphException
     {
-        DirectedGraphImpl RC =
-            (DirectedGraphImpl) makeDirectedCycle();
+        DefaultDirectedGraph RC =
+            (DefaultDirectedGraph) makeDirectedCycle();
 
         RC.setWeight(V1_V2, 2.0);
         RC.setWeight(V2_V3, 4.0);
@@ -149,7 +149,7 @@ public class WeightedGraphTest
     public void testPositivePartNegCycle()
         throws Throwable
     {
-        DirectedGraphImpl IUT = makePositivePartNegCycle();
+        DefaultDirectedGraph IUT = makePositivePartNegCycle();
         verifyGraph(IUT, 3, 3);
 
         assertEquals("Wrong Weight on V1->V2",
@@ -165,11 +165,11 @@ public class WeightedGraphTest
     /**
      * v1 / ^ - 2.0 / \ - 1.5 v \ v2------->v3 - 4.0
      */
-    public DirectedGraphImpl makeNegativeCycle()
+    public DefaultDirectedGraph makeNegativeCycle()
         throws GraphException
     {
-        DirectedGraphImpl RC =
-            (DirectedGraphImpl) makeDirectedCycle();
+        DefaultDirectedGraph RC =
+            (DefaultDirectedGraph) makeDirectedCycle();
 
         RC.setWeight(V1_V2, -2.0);
         RC.setWeight(V2_V3, -4.0);
@@ -184,7 +184,7 @@ public class WeightedGraphTest
     public void testNegativeCycle()
         throws Throwable
     {
-        DirectedGraphImpl IUT = makeNegativeCycle();
+        DefaultDirectedGraph IUT = makeNegativeCycle();
         verifyGraph(IUT, 3, 3);
 
         assertEquals("Wrong Weight on V1->V2",
@@ -200,11 +200,11 @@ public class WeightedGraphTest
     /**
      * v1 / ^ - 2.0 / \ 1.5 v \ v2------->v3 - 4.0
      */
-    public DirectedGraphImpl makeNegativePartPosCycle()
+    public DefaultDirectedGraph makeNegativePartPosCycle()
         throws GraphException
     {
-        DirectedGraphImpl RC =
-            (DirectedGraphImpl) makeDirectedCycle();
+        DefaultDirectedGraph RC =
+            (DefaultDirectedGraph) makeDirectedCycle();
 
         RC.setWeight(V1_V2, -2.0);
         RC.setWeight(V2_V3, -4.0);
@@ -219,7 +219,7 @@ public class WeightedGraphTest
     public void testNegativePartPosCycle()
         throws Throwable
     {
-        DirectedGraphImpl IUT = makeNegativePartPosCycle();
+        DefaultDirectedGraph IUT = makeNegativePartPosCycle();
         verifyGraph(IUT, 3, 3);
 
         assertEquals("Wrong Weight on V1->V2",
@@ -235,11 +235,11 @@ public class WeightedGraphTest
     /**
      * 1.5 3.5 v1 ---> v2 --->v3
      */
-    public DirectedGraphImpl makePositivePipe()
+    public DefaultDirectedGraph makePositivePipe()
         throws GraphException
     {
-        DirectedGraphImpl RC =
-            (DirectedGraphImpl) makePipe();
+        DefaultDirectedGraph RC =
+            (DefaultDirectedGraph) makePipe();
 
         RC.setWeight(V1_V2, 1.5);
         RC.setWeight(V2_V3, 3.5);
@@ -253,7 +253,7 @@ public class WeightedGraphTest
     public void testPositivePipe()
         throws Throwable
     {
-        DirectedGraphImpl IUT = makePositivePipe();
+        DefaultDirectedGraph IUT = makePositivePipe();
         verifyGraph(IUT, 3, 2);
 
         assertEquals("Wrong Weight on V1->V2",
@@ -266,11 +266,11 @@ public class WeightedGraphTest
     /**
      * -1.5 3.5 v1 ---> v2 --->v3
      */
-    public DirectedGraphImpl makePositivePartNegPipe()
+    public DefaultDirectedGraph makePositivePartNegPipe()
         throws GraphException
     {
-        DirectedGraphImpl RC =
-            (DirectedGraphImpl) makePipe();
+        DefaultDirectedGraph RC =
+            (DefaultDirectedGraph) makePipe();
 
         RC.setWeight(V1_V2, -1.5);
         RC.setWeight(V2_V3, 3.5);
@@ -284,7 +284,7 @@ public class WeightedGraphTest
     public void testPositivePartNegPipe()
         throws Throwable
     {
-        DirectedGraphImpl IUT = makePositivePartNegPipe();
+        DefaultDirectedGraph IUT = makePositivePartNegPipe();
         verifyGraph(IUT, 3, 2);
 
         assertEquals("Wrong Weight on V1->V2",
@@ -298,11 +298,11 @@ public class WeightedGraphTest
     /**
      * -1.5 -3.5 v1 ---> v2 --->v3
      */
-    public DirectedGraphImpl makeNegativePipe()
+    public DefaultDirectedGraph makeNegativePipe()
         throws GraphException
     {
-        DirectedGraphImpl RC =
-            (DirectedGraphImpl) makePipe();
+        DefaultDirectedGraph RC =
+            (DefaultDirectedGraph) makePipe();
 
         RC.setWeight(V1_V2, -1.5);
         RC.setWeight(V2_V3, -3.5);
@@ -316,7 +316,7 @@ public class WeightedGraphTest
     public void testNegativePipe()
         throws Throwable
     {
-        DirectedGraphImpl IUT = makeNegativePipe();
+        DefaultDirectedGraph IUT = makeNegativePipe();
         verifyGraph(IUT, 3, 2);
 
         assertEquals("Wrong Weight on V1->V2",
@@ -329,11 +329,11 @@ public class WeightedGraphTest
     /**
      * 1.5 -3.5 v1 ---> v2 --->v3
      */
-    public DirectedGraphImpl makeNegativePartPosPipe()
+    public DefaultDirectedGraph makeNegativePartPosPipe()
         throws GraphException
     {
-        DirectedGraphImpl RC =
-            (DirectedGraphImpl) makePipe();
+        DefaultDirectedGraph RC =
+            (DefaultDirectedGraph) makePipe();
 
         RC.setWeight(V1_V2, 1.5);
         RC.setWeight(V2_V3, -3.5);
@@ -347,7 +347,7 @@ public class WeightedGraphTest
     public void testNegativePartPosPipe()
         throws Throwable
     {
-        DirectedGraphImpl IUT = makeNegativePartPosPipe();
+        DefaultDirectedGraph IUT = makeNegativePartPosPipe();
         verifyGraph(IUT, 3, 2);
 
         assertEquals("Wrong Weight on V1->V2",
@@ -362,11 +362,11 @@ public class WeightedGraphTest
      * v1 1.5 / \ 2.5 v v v2 v3 1.5 \ / 2.5 vv v4
      */
 
-    public DirectedGraphImpl makeMultiplePathL()
+    public DefaultDirectedGraph makeMultiplePathL()
         throws GraphException
     {
-        DirectedGraphImpl RC =
-            (DirectedGraphImpl) makeDiamond();
+        DefaultDirectedGraph RC =
+            (DefaultDirectedGraph) makeDiamond();
 
         RC.setWeight(V1_V2, 1.5);
         RC.setWeight(V2_V4, 1.5);
@@ -383,7 +383,7 @@ public class WeightedGraphTest
     public void testMultiplePathL()
         throws Throwable
     {
-        DirectedGraphImpl IUT = makeMultiplePathL();
+        DefaultDirectedGraph IUT = makeMultiplePathL();
         verifyGraph(IUT, 4, 4);
 
         assertEquals("Wrong Weight on V1->V2",
@@ -404,11 +404,11 @@ public class WeightedGraphTest
      * v1 2.5 / \ 1.5 v v v2 v3 2.5 \ / 1.5 vv v4
      */
 
-    public DirectedGraphImpl makeMultiplePathR()
+    public DefaultDirectedGraph makeMultiplePathR()
         throws GraphException
     {
-        DirectedGraphImpl RC =
-            (DirectedGraphImpl) makeDiamond();
+        DefaultDirectedGraph RC =
+            (DefaultDirectedGraph) makeDiamond();
 
         RC.setWeight(V1_V2, 3.5);
         RC.setWeight(V2_V4, 2.5);
@@ -425,7 +425,7 @@ public class WeightedGraphTest
     public void testMultiplePathR()
         throws Throwable
     {
-        DirectedGraphImpl IUT = makeMultiplePathR();
+        DefaultDirectedGraph IUT = makeMultiplePathR();
         verifyGraph(IUT, 4, 4);
 
         assertEquals("Wrong Weight on V1->V2",
@@ -446,11 +446,11 @@ public class WeightedGraphTest
      * v1 10.0 / \ 0.5 v v v2 v3 10.0 \ / 10.5 vv v4
      */
 
-    public DirectedGraphImpl makeMultiplePathEarlyLow()
+    public DefaultDirectedGraph makeMultiplePathEarlyLow()
         throws GraphException
     {
-        DirectedGraphImpl RC =
-            (DirectedGraphImpl) makeDiamond();
+        DefaultDirectedGraph RC =
+            (DefaultDirectedGraph) makeDiamond();
 
         RC.setWeight(V1_V2, 10.0);
         RC.setWeight(V2_V4, 10.0);
@@ -467,7 +467,7 @@ public class WeightedGraphTest
     public void testMultiplePathEarlyLow()
         throws Throwable
     {
-        DirectedGraphImpl IUT = makeMultiplePathEarlyLow();
+        DefaultDirectedGraph IUT = makeMultiplePathEarlyLow();
         verifyGraph(IUT, 4, 4);
 
         assertEquals("Wrong Weight on V1->V2",
@@ -488,11 +488,11 @@ public class WeightedGraphTest
      * v1 10.0 / \ 10.5 v v v2 v3 10.0 \ / 0.5 vv v4
      */
 
-    public DirectedGraphImpl makeMultiplePathEarlyHigh()
+    public DefaultDirectedGraph makeMultiplePathEarlyHigh()
         throws GraphException
     {
-        DirectedGraphImpl RC =
-            (DirectedGraphImpl) makeDiamond();
+        DefaultDirectedGraph RC =
+            (DefaultDirectedGraph) makeDiamond();
 
         RC.setWeight(V1_V2, 10.0);
         RC.setWeight(V2_V4, 10.0);
@@ -510,7 +510,7 @@ public class WeightedGraphTest
     public void testMultiplePathEarlyHigh()
         throws Throwable
     {
-        DirectedGraphImpl IUT = makeMultiplePathEarlyHigh();
+        DefaultDirectedGraph IUT = makeMultiplePathEarlyHigh();
         verifyGraph(IUT, 4, 4);
 
         assertEquals("Wrong Weight on V1->V2",

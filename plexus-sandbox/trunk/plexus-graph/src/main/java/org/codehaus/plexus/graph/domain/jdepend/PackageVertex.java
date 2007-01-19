@@ -19,12 +19,12 @@ package org.codehaus.plexus.graph.domain.jdepend;
  * under the License.
  */
 
-import java.awt.Color;
+import jdepend.framework.JavaPackage;
+import org.codehaus.plexus.graph.Named;
+import org.codehaus.plexus.graph.Vertex;
+import org.codehaus.plexus.graph.visualize.Colored;
 
-import org.codehaus.plexus.graph.*;
-import org.codehaus.plexus.graph.visualize.*;
-
-import jdepend.framework.*;
+import java.awt.*;
 
 public class PackageVertex
     implements Vertex, Named, Colored

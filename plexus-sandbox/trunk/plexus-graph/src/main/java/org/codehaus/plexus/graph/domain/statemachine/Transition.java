@@ -19,7 +19,8 @@ package org.codehaus.plexus.graph.domain.statemachine;
  * under the License.
  */
 
-import org.codehaus.plexus.graph.*;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Named;
 
 /** Description of the Class */
 public class Transition

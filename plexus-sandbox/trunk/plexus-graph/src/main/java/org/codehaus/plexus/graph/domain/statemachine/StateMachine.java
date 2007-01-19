@@ -19,16 +19,16 @@ package org.codehaus.plexus.graph.domain.statemachine;
  * under the License.
  */
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.codehaus.plexus.graph.MutableDirectedGraph;
 import org.codehaus.plexus.graph.contract.Contract;
 import org.codehaus.plexus.graph.decorator.DDirectedGraph;
 import org.codehaus.plexus.graph.exception.GraphException;
 import org.codehaus.plexus.graph.factory.GraphFactory;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * StateMachine -

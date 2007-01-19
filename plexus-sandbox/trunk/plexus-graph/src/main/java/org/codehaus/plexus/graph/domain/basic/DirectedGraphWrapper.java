@@ -24,9 +24,11 @@ package org.codehaus.plexus.graph.domain.basic;
  * DirectedGraphs.
  */
 
-import java.util.Set;
+import org.codehaus.plexus.graph.DirectedGraph;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Vertex;
 
-import org.codehaus.plexus.graph.*;
+import java.util.Set;
 
 /** Description of the Class */
 public class DirectedGraphWrapper

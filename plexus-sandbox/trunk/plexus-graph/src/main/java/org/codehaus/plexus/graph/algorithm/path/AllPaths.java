@@ -25,14 +25,17 @@ package org.codehaus.plexus.graph.algorithm.path;
  * amount.
  */
 
-import java.util.Map;
-import java.util.Set;
+import org.codehaus.plexus.graph.DirectedGraph;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Vertex;
+import org.codehaus.plexus.graph.algorithm.util.PathImpl;
+import org.codehaus.plexus.graph.algorithm.util.VertexPair;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-
-import org.codehaus.plexus.graph.*;
-import org.codehaus.plexus.graph.algorithm.util.*;
+import java.util.Map;
+import java.util.Set;
 
 public class AllPaths
 {

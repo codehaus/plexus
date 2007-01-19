@@ -19,19 +19,24 @@ package org.codehaus.plexus.graph.domain.basic;
  * under the License.
  */
 
-import java.util.Set;
-import java.util.Map;
-import java.util.HashSet;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.MutableGraph;
+import org.codehaus.plexus.graph.UndirectedGraph;
+import org.codehaus.plexus.graph.Vertex;
+import org.codehaus.plexus.graph.WeightedGraph;
+import org.codehaus.plexus.graph.exception.GraphException;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
-
-import java.lang.reflect.*;
-
-import org.codehaus.plexus.graph.*;
-import org.codehaus.plexus.graph.exception.*;
+import java.util.Map;
+import java.util.Set;
 
 /** Description of the Class */
-public class UndirectedGraphImpl
+public class DefaultUndirectedGraph
     implements UndirectedGraph, WeightedGraph, MutableGraph, InvocationHandler
 {
     private Set vertices = new HashSet();
@@ -41,12 +46,12 @@ public class UndirectedGraphImpl
     private Map vertEdges = new HashMap();// VERTEX X SET( EDGE )
     private Map edgeWeights = new HashMap(); // EDGE X WEIGHT
 
-    /** Constructor for the UndirectedGraphImpl object */
-    public UndirectedGraphImpl()
+    /** Constructor for the DefaultUndirectedGraph object */
+    public DefaultUndirectedGraph()
     {
     }
 
-    /** Adds a feature to the Vertex attribute of the UndirectedGraphImpl object */
+    /** Adds a feature to the Vertex attribute of the DefaultUndirectedGraph object */
     public void addVertex( Vertex v )
         throws GraphException
     {
@@ -116,7 +121,7 @@ public class UndirectedGraphImpl
 
     }
 
-    /** Adds a feature to the Edge attribute of the UndirectedGraphImpl object */
+    /** Adds a feature to the Edge attribute of the DefaultUndirectedGraph object */
     public void addEdge( Edge e,
                          Set vertices )
         throws GraphException
@@ -131,13 +136,13 @@ public class UndirectedGraphImpl
     }
 
     // Interface Methods
-    /** Gets the vertices attribute of the UndirectedGraphImpl object */
+    /** Gets the vertices attribute of the DefaultUndirectedGraph object */
     public Set getVertices()
     {
         return new HashSet( vertices );
     }
 
-    /** Gets the vertices attribute of the UndirectedGraphImpl object */
+    /** Gets the vertices attribute of the DefaultUndirectedGraph object */
     public Set getVertices( Edge e )
     {
         if ( edgeVerts.containsKey( e ) )
@@ -150,13 +155,13 @@ public class UndirectedGraphImpl
         }
     }
 
-    /** Gets the edges attribute of the UndirectedGraphImpl object */
+    /** Gets the edges attribute of the DefaultUndirectedGraph object */
     public Set getEdges()
     {
         return new HashSet( edges );
     }
 
-    /** Gets the edges attribute of the UndirectedGraphImpl object */
+    /** Gets the edges attribute of the DefaultUndirectedGraph object */
     public Set getEdges( Vertex v )
     {
         if ( vertEdges.containsKey( v ) )

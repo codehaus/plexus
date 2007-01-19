@@ -19,12 +19,17 @@ package org.codehaus.plexus.graph.contract;
  * under the License.
  */
 
-import java.util.Iterator;
+import org.codehaus.plexus.graph.DirectedGraph;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Graph;
+import org.codehaus.plexus.graph.Vertex;
+import org.codehaus.plexus.graph.algorithm.search.DFS;
+import org.codehaus.plexus.graph.algorithm.search.Visitor;
+import org.codehaus.plexus.graph.decorator.DDirectedGraph;
+import org.codehaus.plexus.graph.exception.CycleException;
+import org.codehaus.plexus.graph.exception.GraphException;
 
-import org.codehaus.plexus.graph.*;
-import org.codehaus.plexus.graph.algorithm.search.*;
-import org.codehaus.plexus.graph.exception.*;
-import org.codehaus.plexus.graph.decorator.*;
+import java.util.Iterator;
 
 /** Description of the Class */
 public class AcyclicContract

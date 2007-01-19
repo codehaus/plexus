@@ -19,12 +19,14 @@ package org.codehaus.plexus.graph.algorithm.dataflow;
  * under the License.
  */
 
-import java.util.Map;
+import org.codehaus.plexus.graph.DirectedGraph;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Vertex;
+
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import org.codehaus.plexus.graph.*;
+import java.util.Map;
 
 public class DataFlowSolutions
 {

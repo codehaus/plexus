@@ -26,7 +26,7 @@ package org.codehaus.plexus.graph.algorithm.util;
  * of storing things in a Hashtable.
  */
 
-import org.codehaus.plexus.graph.*;
+import org.codehaus.plexus.graph.Vertex;
 
 public class VertexPair
 {

@@ -19,7 +19,7 @@ package org.codehaus.plexus.graph.domain.dependency.exception;
  * under the License.
  */
 
-import org.codehaus.plexus.graph.exception.*;
+import org.codehaus.plexus.graph.exception.CycleException;
 
 /** Description of the Class */
 public class CircularDependencyException

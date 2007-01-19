@@ -19,12 +19,14 @@ package org.codehaus.plexus.graph.factory;
  * under the License.
  */
 
-import java.lang.reflect.*;
+import org.codehaus.plexus.graph.DirectedGraph;
+import org.codehaus.plexus.graph.MutableDirectedGraph;
+import org.codehaus.plexus.graph.contract.Contract;
+import org.codehaus.plexus.graph.domain.basic.DefaultDirectedGraph;
+import org.codehaus.plexus.graph.exception.GraphException;
 
-import org.codehaus.plexus.graph.*;
-import org.codehaus.plexus.graph.contract.*;
-import org.codehaus.plexus.graph.exception.*;
-import org.codehaus.plexus.graph.domain.basic.*;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
 
 /** Description of the Class */
 public class GraphFactory
@@ -43,7 +45,6 @@ public class GraphFactory
      *                      the Proxy.
      * @param baseGraphType Interface which is returned.
      * @param isWeighted    Does the graph handle Weights?
-     * @param init          Initialization Graph.
      */
     private Object makeGraph( Contract contracts[],
                               InvocationHandler baseGraph,
@@ -91,15 +92,15 @@ public class GraphFactory
                                             DirectedGraph graph )
         throws GraphException
     {
-        DirectedGraphImpl dgi = null;
+        DefaultDirectedGraph dgi = null;
 
         if ( graph != null )
         {
-            dgi = new DirectedGraphImpl( graph );
+            dgi = new DefaultDirectedGraph( graph );
         }
         else
         {
-            dgi = new DirectedGraphImpl();
+            dgi = new DefaultDirectedGraph();
         }
 
         for ( int i = 0; i < contracts.length; i++ )
@@ -125,15 +126,15 @@ public class GraphFactory
         throws GraphException
     {
 
-        DirectedGraphImpl dgi = null;
+        DefaultDirectedGraph dgi = null;
 
         if ( graph != null )
         {
-            dgi = new DirectedGraphImpl( graph );
+            dgi = new DefaultDirectedGraph( graph );
         }
         else
         {
-            dgi = new DirectedGraphImpl();
+            dgi = new DefaultDirectedGraph();
         }
 
         for ( int i = 0; i < contracts.length; i++ )

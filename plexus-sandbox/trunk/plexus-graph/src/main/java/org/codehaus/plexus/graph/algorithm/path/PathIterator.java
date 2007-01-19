@@ -19,12 +19,12 @@ package org.codehaus.plexus.graph.algorithm.path;
  * under the License.
  */
 
-import java.util.List;
+import org.codehaus.plexus.graph.Path;
+
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
-
-import org.codehaus.plexus.graph.Path;
 
 public class PathIterator
     implements PathListener, Iterator

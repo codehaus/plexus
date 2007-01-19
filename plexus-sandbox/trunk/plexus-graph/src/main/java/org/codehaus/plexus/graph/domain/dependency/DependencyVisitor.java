@@ -19,11 +19,14 @@ package org.codehaus.plexus.graph.domain.dependency;
  * under the License.
  */
 
-import java.util.List;
-import java.util.LinkedList;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Graph;
+import org.codehaus.plexus.graph.Vertex;
+import org.codehaus.plexus.graph.algorithm.search.DFS;
+import org.codehaus.plexus.graph.algorithm.search.Visitor;
 
-import org.codehaus.plexus.graph.*;
-import org.codehaus.plexus.graph.algorithm.search.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /** Description of the Class */
 public class DependencyVisitor

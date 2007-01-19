@@ -19,22 +19,29 @@ package org.codehaus.plexus.graph.domain.dependency;
  * under the License.
  */
 
-import org.codehaus.plexus.graph.*;
-import org.codehaus.plexus.graph.contract.*;
-import org.codehaus.plexus.graph.exception.*;
-import org.codehaus.plexus.graph.factory.GraphFactory;
+import org.codehaus.plexus.graph.MutableDirectedGraph;
+import org.codehaus.plexus.graph.Vertex;
+import org.codehaus.plexus.graph.contract.Acyclic;
+import org.codehaus.plexus.graph.contract.AcyclicContract;
+import org.codehaus.plexus.graph.contract.Contract;
 import org.codehaus.plexus.graph.decorator.DDirectedGraph;
 import org.codehaus.plexus.graph.domain.dependency.exception.CircularDependencyException;
+import org.codehaus.plexus.graph.domain.basic.DefaultDirectedGraph;
+import org.codehaus.plexus.graph.exception.CycleException;
+import org.codehaus.plexus.graph.exception.GraphException;
+import org.codehaus.plexus.graph.factory.GraphFactory;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /** Description of the Class */
 public class DependencyGraph
     extends DDirectedGraph
+    //extends DefaultDirectedGraph
     implements Acyclic
 {
     private GraphFactory factory = new GraphFactory();
@@ -60,13 +67,23 @@ public class DependencyGraph
     {
     }
 
+    public DependencyVertex getRoot()
+    {
+        return (DependencyVertex) DAG.getRoot();
+    }
+
+    public Set getDependencies( DependencyVertex vertex )
+    {
+        return DAG.getInbound( vertex );
+    }
+
     /**
      * Adds a feature to the Dependencies attribute of the DependencyGraph
      * object
      */
     public void addDependencies( Object head,
                                  Collection deps )
-        throws GraphException, CircularDependencyException
+        throws GraphException
     {
         DependencyVertex vHead = findVertex( head );
 

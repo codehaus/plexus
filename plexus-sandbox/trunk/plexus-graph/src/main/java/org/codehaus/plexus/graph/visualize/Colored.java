@@ -19,7 +19,7 @@ package org.codehaus.plexus.graph.visualize;
  * under the License.
  */
 
-import java.awt.Color;
+import java.awt.*;
 
 public interface Colored
 {

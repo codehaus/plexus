@@ -23,10 +23,12 @@ package org.codehaus.plexus.graph.domain.basic;
  * This is a simple wrapper to wrap around a graph, and create a weighted graph.
  */
 
-import java.util.Map;
-import java.util.HashMap;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Graph;
+import org.codehaus.plexus.graph.WeightedGraph;
 
-import org.codehaus.plexus.graph.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Description of the Class */
 public class WeightedGraphWrapper

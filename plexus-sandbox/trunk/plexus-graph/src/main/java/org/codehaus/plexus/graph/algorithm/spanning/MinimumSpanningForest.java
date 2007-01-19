@@ -19,24 +19,27 @@ package org.codehaus.plexus.graph.algorithm.spanning;
  * under the License.
  */
 
-import org.codehaus.plexus.graph.*;
-import org.codehaus.plexus.graph.exception.*;
-import org.codehaus.plexus.graph.decorator.*;
-import org.codehaus.plexus.graph.domain.basic.*;
-import org.codehaus.plexus.graph.algorithm.util.*;
-
-import org.apache.commons.collections.PriorityQueue;
 import org.apache.commons.collections.BinaryHeap;
+import org.apache.commons.collections.PriorityQueue;
+import org.codehaus.plexus.graph.Edge;
+import org.codehaus.plexus.graph.Graph;
+import org.codehaus.plexus.graph.UndirectedGraph;
+import org.codehaus.plexus.graph.Vertex;
+import org.codehaus.plexus.graph.WeightedGraph;
+import org.codehaus.plexus.graph.algorithm.util.Label;
+import org.codehaus.plexus.graph.decorator.DDirectedGraph;
+import org.codehaus.plexus.graph.domain.basic.DefaultUndirectedGraph;
+import org.codehaus.plexus.graph.exception.HyperGraphException;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Comparator;
+import java.util.Map;
+import java.util.Set;
 
 public class MinimumSpanningForest
-    extends UndirectedGraphImpl
+    extends DefaultUndirectedGraph
     implements UndirectedGraph, WeightedGraph
 {
     private PriorityQueue queue = null;
