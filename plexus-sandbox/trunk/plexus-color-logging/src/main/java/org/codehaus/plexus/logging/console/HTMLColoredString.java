@@ -1,6 +1,6 @@
 package org.codehaus.plexus.logging.console;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * TODO: Document Me

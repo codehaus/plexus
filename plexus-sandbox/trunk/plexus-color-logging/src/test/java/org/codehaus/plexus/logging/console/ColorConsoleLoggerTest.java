@@ -28,7 +28,7 @@ import junit.framework.TestCase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.awt.*;
+import java.awt.Color;
 
 import org.codehaus.plexus.util.StringUtils;
 
