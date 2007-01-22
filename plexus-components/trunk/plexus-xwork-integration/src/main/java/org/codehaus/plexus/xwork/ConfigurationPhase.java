@@ -9,6 +9,7 @@ import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.lifecycle.phase.AbstractPhase;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.PhaseExecutionException;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 
 import javax.servlet.ServletContext;
 
@@ -23,7 +24,7 @@ public class ConfigurationPhase
 {
     public static final String DEFAULT_CONFIGURATOR_ID = "basic";
 
-    public void execute( Object component, ComponentManager manager )
+    public void execute( Object component, ComponentManager manager, ClassRealm realm )
         throws PhaseExecutionException
     {
         try
@@ -47,8 +48,7 @@ public class ConfigurationPhase
 
                 componentConfigurator.configureComponent( component,
                                                           manager.getComponentDescriptor().getConfiguration(),
-                                                          new ServletExpressionEvaluator( servletContext ),
-                                                          manager.getContainer().getContainerRealm() );
+                                                          new ServletExpressionEvaluator( servletContext ), realm );
             }
         }
         catch ( ComponentLookupException e )
