@@ -1,5 +1,11 @@
 package org.codehaus.plexus.xwork;
 
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.composition.CompositionException;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.util.StringUtils;
+
 import com.opensymphony.webwork.util.ObjectFactoryInitializable;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ObjectFactory;
@@ -11,13 +17,9 @@ import com.opensymphony.xwork.config.entities.ResultConfig;
 import com.opensymphony.xwork.interceptor.Interceptor;
 import com.opensymphony.xwork.util.OgnlUtil;
 import com.opensymphony.xwork.validator.Validator;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.composition.CompositionException;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.StringUtils;
 
 import javax.servlet.ServletContext;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -189,14 +191,14 @@ public class PlexusObjectFactory
 
         return lookup( clazz.getName(), extraContext );
     }
-    
+
     /**
      * Used to provide useful exception messages to a web-app during a lookup in {@link #getClassInstance(String)}
-     * 
+     *
      * @param clazz the type of class to look up
      * @param className the name of the specific class (or plexus role) to look up.
      * @return the class that was found.
-     * 
+     *
      * @throws ComponentNotFoundException if the component was simply not found.
      * @throws ComponentCreationException if the component was found, but failed to be created correctly.
      */
@@ -205,12 +207,12 @@ public class PlexusObjectFactory
     {
         return lookup( base, clazz.getName(), className ).getClass();
     }
-    
+
     public Class getClassInstance( String className )
         throws ClassNotFoundException
     {
         List exceptions = new ArrayList();
-        
+
         try
         {
             return lookupClass( Class.class, className );
@@ -285,17 +287,17 @@ public class PlexusObjectFactory
             exceptions.add( e );
             // Fall Thru to next lookup Technique.
         }
-        
+
         getLogger().debug( "All standard lookups have failed for getClassInstance( \"" + className
                                + "\" ), the following exceptions detail the problem." );
-        
+
         Iterator it = exceptions.iterator();
         while ( it.hasNext() )
         {
             Exception e = (Exception) it.next();
             getLogger().debug( e.getMessage(), e );
         }
-        
+
         // Try the xwork component lookup as a fallback.
         return super.getClassInstance( className );
     }
@@ -340,7 +342,7 @@ public class PlexusObjectFactory
         }
     }
 
-    private Object loadComponentWithPlexus( PlexusContainer pc, String role, String roleHint ) 
+    private Object loadComponentWithPlexus( PlexusContainer pc, String role, String roleHint )
         throws ComponentNotFoundException, ComponentCreationException
     {
         return lookup( pc, role, roleHint );
@@ -361,19 +363,19 @@ public class PlexusObjectFactory
         pc.autowire( o );
         return o;
     }
-    
+
     /**
      * Specialized Lookup supplement for standard plexus process, used to differentiate between an object
      * that just doesn't match the provided criteria, and one that did match, but failed to be created due to
-     * component composition issues.  
-     * 
+     * component composition issues.
+     *
      * Used to provide useful exception messages to a web-app during a lookup in {@link #getClassInstance(String)} and
      * {@link #lookup(String, String, Map)}
-     * 
+     *
      * @param role the component role to look up
      * @param roleHint the hint for the plexus role (if required).
      * @return the class that was found.
-     * 
+     *
      * @throws ComponentNotFoundException if the component was simply not found.
      * @throws ComponentCreationException if the component was found, but failed to be created correctly.
      */
@@ -384,10 +386,10 @@ public class PlexusObjectFactory
         {
             throw new ComponentNotFoundException( "Unable to find component for empty role." );
         }
-        
+
         try
         {
-            return plexus.lookup( role, roleHint );
+            return plexus.lookup( role, roleHint, plexus.getLookupRealm() );
         }
         catch ( ComponentLookupException e )
         {
@@ -401,10 +403,10 @@ public class PlexusObjectFactory
                 }
                 cause = cause.getCause();
             }
-            throw new ComponentNotFoundException( "Failed lookup for " + role + ":" + roleHint + ".", e );
+            throw new ComponentNotFoundException( "Failed lookup for " + role + ":" + roleHint + " in realm " + plexus.getLookupRealm(), e );
         }
     }
-    
+
     private Logger getLogger()
     {
         // Cheating here...

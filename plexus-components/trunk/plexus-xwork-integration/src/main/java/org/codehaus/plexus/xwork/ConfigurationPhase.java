@@ -1,5 +1,6 @@
 package org.codehaus.plexus.xwork;
 
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ComponentConfigurator;
 import org.codehaus.plexus.component.manager.ComponentManager;
@@ -9,7 +10,6 @@ import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.lifecycle.phase.AbstractPhase;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.PhaseExecutionException;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
 
 import javax.servlet.ServletContext;
 
@@ -24,7 +24,7 @@ public class ConfigurationPhase
 {
     public static final String DEFAULT_CONFIGURATOR_ID = "basic";
 
-    public void execute( Object component, ComponentManager manager, ClassRealm realm )
+    public void execute( Object component, ComponentManager manager, ClassRealm lookupRealm )
         throws PhaseExecutionException
     {
         try
@@ -39,7 +39,7 @@ public class ConfigurationPhase
             }
 
             ComponentConfigurator componentConfigurator =
-                (ComponentConfigurator) manager.getContainer().lookup( ComponentConfigurator.ROLE, configuratorId );
+                (ComponentConfigurator) manager.getContainer().lookup( ComponentConfigurator.ROLE, configuratorId, lookupRealm );
 
             if ( manager.getComponentDescriptor().hasConfiguration() )
             {
@@ -48,7 +48,7 @@ public class ConfigurationPhase
 
                 componentConfigurator.configureComponent( component,
                                                           manager.getComponentDescriptor().getConfiguration(),
-                                                          new ServletExpressionEvaluator( servletContext ), realm );
+                                                          new ServletExpressionEvaluator( servletContext ), lookupRealm );
             }
         }
         catch ( ComponentLookupException e )
