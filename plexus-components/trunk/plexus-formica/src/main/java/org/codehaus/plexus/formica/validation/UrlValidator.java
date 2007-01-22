@@ -264,6 +264,8 @@ public class UrlValidator
             return true;
         }
 
+        value = replace( value, " ", "%20" );
+
         Perl5Util matchUrlPat = new Perl5Util();
         Perl5Util matchAsciiPat = new Perl5Util();
 
@@ -308,11 +310,6 @@ public class UrlValidator
                 return false;
             }
 
-            if ( !isValidPath( matchUrlPat.group( PARSE_URL_PATH ) ) )
-            {
-                return false;
-            }
-
             if ( !isValidQuery( matchUrlPat.group( PARSE_URL_QUERY ) ) )
             {
                 return false;
@@ -323,12 +320,10 @@ public class UrlValidator
                 return false;
             }
         }
-        else
+
+        if ( !isValidPath( matchUrlPat.group( PARSE_URL_PATH ) ) )
         {
-            if ( !isValidPath( matchUrlPat.group( PARSE_URL_PATH ), false ) )
-            {
-                return false;
-            }
+            return false;
         }
 
         return true;
@@ -489,27 +484,16 @@ public class UrlValidator
      */
     protected boolean isValidPath( String path )
     {
-        return isValidPath( path, true );
-    }
-
-    /**
-     * Returns true if the path is valid.  A <code>null</code> value is considered invalid.
-     */
-    protected boolean isValidPath( String path, boolean testPathPattern )
-    {
         if ( path == null )
         {
             return false;
         }
 
-        if ( testPathPattern )
-        {
-            Perl5Util pathMatcher = new Perl5Util();
+        Perl5Util pathMatcher = new Perl5Util();
 
-            if ( !pathMatcher.match( PATH_PATTERN, path ) )
-            {
-                return false;
-            }
+        if ( !pathMatcher.match( PATH_PATTERN, path ) )
+        {
+            return false;
         }
 
         int slash2Count = countToken( "//", path );
@@ -580,5 +564,24 @@ public class UrlValidator
     private static boolean isBlankOrNull( String value )
     {
         return ( ( value == null ) || ( value.trim().length() == 0 ) );
+    }
+
+    public static String replace( String text, String repl, String with )
+    {
+        if ( text == null || repl == null || with == null || repl.length() == 0 )
+        {
+            return text;
+        }
+
+        StringBuffer buf = new StringBuffer( text.length() );
+        int start = 0, end = 0;
+        while ( ( end = text.indexOf( repl, start ) ) != -1 )
+        {
+            buf.append( text.substring( start, end ) ).append( with );
+            start = end + repl.length();
+        }
+
+        buf.append( text.substring( start ) );
+        return buf.toString();
     }
 }
