@@ -38,6 +38,14 @@ public class UrlValidatorTest
 
         assertNotNull( v );
 
+        assertTrue( v.validate( "http://www.apache.org" ) );
+
+        assertTrue( v.validate( "http://www.apache.org/" ) );
+
+        assertTrue( v.validate( "http://www.apache.org/;jsessionid=12345" ) );
+
+        assertTrue( v.validate( "http://www.apache.org/my_servlet?param=value" ) );
+
         assertTrue( v.validate( "http://www.apache.org/pom.xml" ) );
 
         assertTrue( v.validate( "http://www.blah.museum/pom.xml" ) );
@@ -61,6 +69,8 @@ public class UrlValidatorTest
         assertTrue( v.validate( "file://myserver/pom.xml" ) );
 
         assertTrue( v.validate( "file:///pom.xml" ) );
+
+        assertTrue( v.validate( "file:///C:/Program Files/pom.xml" ) );
 
         assertFalse( v.validate( "anything://www.apache.org/pom.xml" ) );
     }

@@ -151,7 +151,7 @@ public class UrlValidator
      */
     private static final int PARSE_AUTHORITY_EXTRA = 3;
 
-    private static final String PATH_PATTERN = "/^(/[-\\w:@&?=+,.!/~*'%$]*)$/";
+    private static final String PATH_PATTERN = "/^(/[-\\w:@&?=+,.!/~*'%$_;]*)?$/";
 
     private static final String QUERY_PATTERN = "/^(.*)$/";
 
@@ -307,20 +307,28 @@ public class UrlValidator
             {
                 return false;
             }
-        }
 
-        if ( !isValidPath( matchUrlPat.group( PARSE_URL_PATH ) ) )
-        {
-            return false;
-        }
-        if ( !isValidQuery( matchUrlPat.group( PARSE_URL_QUERY ) ) )
-        {
-            return false;
-        }
+            if ( !isValidPath( matchUrlPat.group( PARSE_URL_PATH ) ) )
+            {
+                return false;
+            }
 
-        if ( !isValidFragment( matchUrlPat.group( PARSE_URL_FRAGMENT ) ) )
+            if ( !isValidQuery( matchUrlPat.group( PARSE_URL_QUERY ) ) )
+            {
+                return false;
+            }
+
+            if ( !isValidFragment( matchUrlPat.group( PARSE_URL_FRAGMENT ) ) )
+            {
+                return false;
+            }
+        }
+        else
         {
-            return false;
+            if ( !isValidPath( matchUrlPat.group( PARSE_URL_PATH ), false ) )
+            {
+                return false;
+            }
         }
 
         return true;
@@ -481,21 +489,27 @@ public class UrlValidator
      */
     protected boolean isValidPath( String path )
     {
+        return isValidPath( path, true );
+    }
+
+    /**
+     * Returns true if the path is valid.  A <code>null</code> value is considered invalid.
+     */
+    protected boolean isValidPath( String path, boolean testPathPattern )
+    {
         if ( path == null )
         {
             return false;
         }
 
-        Perl5Util pathMatcher = new Perl5Util();
-
-        if ( !pathMatcher.match( PATH_PATTERN, path ) )
+        if ( testPathPattern )
         {
-            return false;
-        }
+            Perl5Util pathMatcher = new Perl5Util();
 
-        if ( path.endsWith( "/" ) )
-        {
-            return false;
+            if ( !pathMatcher.match( PATH_PATTERN, path ) )
+            {
+                return false;
+            }
         }
 
         int slash2Count = countToken( "//", path );
