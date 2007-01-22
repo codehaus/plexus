@@ -98,7 +98,7 @@ public class DefaultApplicationDeployer
             try
             {
                 AppDeploymentPhase phase =
-                    (AppDeploymentPhase) appServerContainer.lookup( AppDeploymentPhase.ROLE, id );
+                    (AppDeploymentPhase) appServerContainer.lookup( AppDeploymentPhase.ROLE, id, appServerContainer.getContainerRealm() );
 
                 phase.execute( context );
             }
