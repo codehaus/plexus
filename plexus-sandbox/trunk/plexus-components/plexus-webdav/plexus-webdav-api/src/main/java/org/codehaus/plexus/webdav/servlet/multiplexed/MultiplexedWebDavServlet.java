@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
  * </p>
  * 
  * <p>
- * Implementations of this servlet should override the {@link #initServers()} method and create all of the
+ * Implementations of this servlet should override the {@link #initServers} method and create all of the
  * appropriate DavServerComponents needed using the {@link DavServerManager} obtained via the {@link #getDavManager()}
  * method.
  * </p>
@@ -59,7 +59,7 @@ public abstract class MultiplexedWebDavServlet
         }
         catch ( DavServerException e )
         {
-            throw new ServletException( "Unable to init nested servers." + e );
+            throw new ServletException( "Unable to init nested servers.", e );
         }
     }
 
