@@ -19,6 +19,11 @@
     <module>plexus-webdav-providers</module>
   </modules>
 
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-webdav</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-webdav</developerConnection>
+  </scm>
+
   <reporting>
     <plugins>
       <plugin>
