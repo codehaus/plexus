@@ -18,4 +18,18 @@
     <module>plexus-webdav-test</module>
     <module>plexus-webdav-providers</module>
   </modules>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <aggregate>true</aggregate>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jxr-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
