@@ -5,6 +5,7 @@ import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.classworlds.ClassWorld;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.configuration.PlexusConfigurationResourceException;
 import org.codehaus.plexus.context.DefaultContext;
 import org.codehaus.plexus.util.PropertyUtils;
@@ -14,10 +15,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import java.io.ByteArrayInputStream;
+
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +24,7 @@ import java.util.Properties;
 
 /**
  * Web listener that will initialize the Plexus container.
- * 
+ *
  * @version $Id$
  */
 public class PlexusLifecycleListener
@@ -68,8 +67,31 @@ public class PlexusLifecycleListener
 
             containerContext.putAll( initializeContext( ctx, resolveContextProperties( ctx ) ) );
 
-            PlexusContainer pc = new DefaultPlexusContainer( "default", containerContext, setConfigurationFile( ctx ),
-                                                             new ClassWorld( "plexus.core", getClass().getClassLoader() ) );
+            ClassWorld cw = new ClassWorld( "plexus.xwork", getClass().getClassLoader() );
+
+            // XXX when some app using xwork is deployed using the appserver, the parent classloader used
+            // above will be the application container's classrealm.
+            // All components discovered are registered using their classloader, since you don't want to
+            // register them using the lookup context because they may not be present there.
+            // Since all components will have the application's containers classrealm as the classloader
+            // they'll be stored using that realm, AND NOT plexus.xwork!
+            // This works fine, but when these components will be disposed, lookups are done,
+            // for instance for the logger manager. The lookup realm will be plexus.xwork,
+            // but since it has no parent realm (only a parent classloader), the component won't be found.
+            //
+            // Therefore, we check if the parent classloader is a classrealm, and if so, use it as the parent
+            // realm for the plexus.xwork realm:
+
+            if ( getClass().getClassLoader() instanceof ClassRealm )
+            {
+                ( (ClassRealm) cw.getRealms().iterator().next() ).setParentRealm( ( (ClassRealm) getClass()
+                    .getClassLoader() ) );
+            }
+
+            // So basically what this means is that for component lookups, the parent realm
+            // is also searched, if those components could be registered using that realm.
+
+            PlexusContainer pc = new DefaultPlexusContainer( "xwork", containerContext, setConfigurationFile( ctx ), cw );
 
             ctx.setAttribute( KEY, pc );
         }
