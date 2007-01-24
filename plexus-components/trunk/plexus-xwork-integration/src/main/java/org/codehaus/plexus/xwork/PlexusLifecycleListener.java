@@ -69,6 +69,8 @@ public class PlexusLifecycleListener
 
             ClassWorld cw = new ClassWorld( "plexus.xwork", getClass().getClassLoader() );
 
+            PlexusContainer pc = new DefaultPlexusContainer( "xwork", containerContext, setConfigurationFile( ctx ), cw );
+
             // XXX when some app using xwork is deployed using the appserver, the parent classloader used
             // above will be the application container's classrealm.
             // All components discovered are registered using their classloader, since you don't want to
@@ -78,7 +80,7 @@ public class PlexusLifecycleListener
             // This works fine, but when these components will be disposed, lookups are done,
             // for instance for the logger manager. The lookup realm will be plexus.xwork,
             // but since it has no parent realm (only a parent classloader), the component won't be found.
-            //
+
             // Therefore, we check if the parent classloader is a classrealm, and if so, use it as the parent
             // realm for the plexus.xwork realm:
 
@@ -90,8 +92,6 @@ public class PlexusLifecycleListener
 
             // So basically what this means is that for component lookups, the parent realm
             // is also searched, if those components could be registered using that realm.
-
-            PlexusContainer pc = new DefaultPlexusContainer( "xwork", containerContext, setConfigurationFile( ctx ), cw );
 
             ctx.setAttribute( KEY, pc );
         }
