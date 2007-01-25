@@ -22,13 +22,15 @@ package org.codehaus.plexus.appserver;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 // Container host plexus container is configured and initialized
 // The appserver component is looked up
@@ -112,20 +114,19 @@ public class PlexusApplicationHost
             configurationResource = conf;
         }
 
-        container = new DefaultPlexusContainer( "appserver", null, configurationResource, classWorld );
+        Map context = new HashMap();
 
-        container.addContextValue( "plexus.home", plexusHome );
-        container.addContextValue( "appserver.home", appserverHome.getAbsolutePath() );
-        container.addContextValue( "appserver.base", appserverBase.getAbsolutePath() );
-
-        container.addContextValue( "plexus.work",
-                                   new File( appserverBase, PlexusRuntimeConstants.WORK_DIRECTORY ).getAbsolutePath() );
+        context.put( "plexus.home", plexusHome );
+        context.put( "appserver.home", appserverHome.getAbsolutePath() );
+        context.put( "appserver.base", appserverBase.getAbsolutePath() );
+        context.put( "plexus.work",
+                     new File( appserverBase, PlexusRuntimeConstants.WORK_DIRECTORY ).getAbsolutePath() );
 
         File plexusTemp = new File( appserverBase, PlexusRuntimeConstants.TEMP_DIRECTORY );
-        container.addContextValue( "plexus.temp", plexusTemp.getAbsolutePath() );
+        context.put( "plexus.temp", plexusTemp.getAbsolutePath() );
 
         File plexusLogs = new File( appserverBase, PlexusRuntimeConstants.LOGS_DIRECTORY );
-        container.addContextValue( "plexus.logs", plexusLogs.getAbsolutePath() );
+        context.put( "plexus.logs", plexusLogs.getAbsolutePath() );
 
         if ( !plexusLogs.exists() )
         {
@@ -137,6 +138,7 @@ public class PlexusApplicationHost
             plexusTemp.mkdirs();
         }
 
+        container = new DefaultPlexusContainer( "appserver", context, configurationResource, classWorld );
 
         this.configurationResource = configurationResource;
 
