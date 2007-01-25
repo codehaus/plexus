@@ -26,6 +26,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
@@ -207,7 +208,7 @@ public abstract class AbstractBuilder
 
     protected Set getBootArtifacts( Set projectArtifacts, List remoteRepositories, ArtifactRepository localRepository,
                                     boolean ignoreIfMissing )
-        throws ArtifactResolutionException
+        throws ArtifactResolutionException, ArtifactNotFoundException
     {
         Set artifacts = new HashSet();
 
@@ -220,7 +221,7 @@ public abstract class AbstractBuilder
 
     protected Set getCoreArtifacts( Set projectArtifacts, Set additionalCoreArtifacts, List remoteRepositories,
                                     ArtifactRepository localRepository, boolean ignoreIfMissing )
-        throws ArtifactResolutionException
+        throws ArtifactResolutionException, ArtifactNotFoundException
     {
         Set artifacts = new HashSet();
 
@@ -250,7 +251,7 @@ public abstract class AbstractBuilder
 
     protected Set getExcludedArtifacts( Set projectArtifacts, List remoteRepositories,
                                         ArtifactRepository localRepository )
-        throws ArtifactResolutionException
+        throws ArtifactResolutionException, ArtifactNotFoundException
     {
         Set artifacts = new HashSet();
 
@@ -266,7 +267,7 @@ public abstract class AbstractBuilder
 
     protected Set findArtifacts( List remoteRepositories, ArtifactRepository localRepository, Set sourceArtifacts,
                                  boolean resolveTransitively, ArtifactFilter artifactFilter )
-        throws ArtifactResolutionException
+        throws ArtifactResolutionException, ArtifactNotFoundException
     {
         ArtifactResolutionResult result;
 

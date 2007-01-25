@@ -23,6 +23,7 @@ package org.codehaus.plexus.builder.runtime;
  */
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.exception.ResourceNotFoundException;
@@ -158,6 +159,10 @@ public class DefaultPlexusRuntimeBuilder
 
                 coreArtifacts = getCoreArtifacts( projectArtifacts, newAdditionalCoreArtifacts, remoteRepositories,
                                                   localRepository, false );
+            }
+            catch ( ArtifactNotFoundException e )
+            {
+                throw new PlexusRuntimeBuilderException( "Could not resolve a artifact.", e );
             }
             catch ( ArtifactResolutionException e )
             {
