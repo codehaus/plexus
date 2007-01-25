@@ -20,6 +20,15 @@ New Container Gotchas
 
   <<Workaround:>> upgrade application to the new container, or add component-api to \<exclusions\> where necessary.
 
+* New component API creeping into plugin dependency tree
+
+  Similar to above, but more serious. This causes the new component API to be loaded into the classloader of a plugin.
+  In Maven 2.0.x, this means that many Plexus classes will be loaded from there, causing ClassNotFoundExceptions, or failed
+  instanceof calls causing the plugins not to work. For instance, a NullPointerException for a logger is a classic case.
+
+  <<Workaround:>> None known. You can add plexus-component-api to the exclusions in Maven, but this requires a new 2.0.x release.
+  Alternatively, don't use the component API from plugins that have a prerequisite lower than Maven 2.1.
+
 * Maven Jetty Plugin
 
   The Maven Jetty Plugin seems to be failing with webapps that use the plexus container in some instances. In former versions
