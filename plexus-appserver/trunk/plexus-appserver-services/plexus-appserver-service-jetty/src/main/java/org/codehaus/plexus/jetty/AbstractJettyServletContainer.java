@@ -475,7 +475,8 @@ public abstract class AbstractJettyServletContainer
         }
 
         // This is used by the xwork integration to pass some knowledge of the application server to the web applications
-        webappContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY, profile.getApplicationContainer() );
+        webappContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY,
+                                                        profile.getApplicationServerContainer() );
     }
 
     protected HttpContext addContext( HttpContext context )
