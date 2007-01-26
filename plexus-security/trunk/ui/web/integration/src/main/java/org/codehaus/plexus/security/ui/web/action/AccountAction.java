@@ -16,6 +16,7 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.policy.PasswordEncoder;
 import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.security.system.DefaultSecuritySession;
 import org.codehaus.plexus.security.system.SecuritySession;
@@ -48,6 +49,8 @@ public class AccountAction
     // ------------------------------------------------------------------
 
     private EditUserCredentials user;
+    
+    private String oldPassword;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
@@ -165,6 +168,19 @@ public class AccountAction
                 addActionError( "Unable to operate on null user." );
                 return ERROR;
             }
+            
+            if ( StringUtils.isNotEmpty( user.getPassword() ) )
+            {
+                PasswordEncoder encoder = securitySystem.getPolicy().getPasswordEncoder();
+
+                if ( !encoder.isPasswordValid( u.getEncodedPassword(), oldPassword ) )
+                {
+                    addFieldError( "oldPassword", "Password provided does not match existing." );
+                    return ERROR;
+                }
+                
+                u.setPassword( user.getPassword() );
+            }
 
             u.setFullName( user.getFullName() );
             u.setEmail( user.getEmail() );
@@ -222,5 +238,15 @@ public class AccountAction
         SecureActionBundle bundle = new SecureActionBundle();
         bundle.setRequiresAuthentication( true );
         return bundle;
+    }
+
+    public void setOldPassword( String oldPassword )
+    {
+        this.oldPassword = oldPassword;
+    }
+    
+    public boolean isSelf()
+    {
+        return true;
     }
 }
