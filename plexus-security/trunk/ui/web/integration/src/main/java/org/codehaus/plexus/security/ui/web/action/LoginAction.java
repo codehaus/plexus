@@ -201,8 +201,8 @@ public class LoginAction
             return ERROR;
         }
     }
-    
-    public String cancel() 
+
+    public String cancel()
     {
 		return CANCEL;
 	}
@@ -286,11 +286,6 @@ public class LoginAction
                     autologinCookies.setRememberMeCookie( authdatasource.getPrincipal() );
                 }
                 autologinCookies.setSignonCookie( authdatasource.getPrincipal() );
-
-                if ( securitySession.getUser().isPasswordChangeRequired() )
-                {
-                    return PASSWORD_CHANGE;
-                }
 
                 return LOGIN_SUCCESS;
             }
