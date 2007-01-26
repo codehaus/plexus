@@ -30,19 +30,22 @@
       <interceptor name="pssForceAdminUser" class="pssForceAdminUserInterceptor"/>
       <!-- <interceptor name="pssEnvCheck" class="pssEnvironmentCheckInterceptor"/> -->
       <interceptor name="pssAutoLogin" class="pssAutoLoginInterceptor"/>
+      <interceptor name="pssPolicyEnforcement" class="pssPolicyEnforcementInterceptor"/>
       <interceptor name="pssSecureActions" class="pssSecureActionInterceptor"/>
+
       <interceptor-stack name="securedStack">
         <interceptor-ref name="defaultStack"/>
-        <!-- <interceptor-ref name="pssEnvCheck"/> -->
-        <interceptor-ref name="pssForceAdminUser"/>
-        <interceptor-ref name="pssAutoLogin"/>
-        <interceptor-ref name="pssSecureActions"/>
+        <interceptor-ref name="pssCommonStack"/>
       </interceptor-stack>
       <interceptor-stack name="securedPrepareParamsStack">
         <interceptor-ref name="paramsPrepareParamsStack"/>
+        <interceptor-ref name="pssCommonStack"/>
+      </interceptor-stack>
+      <interceptor-stack name="pssCommonStack">
         <!-- <interceptor-ref name="pssEnvCheck"/> -->
         <interceptor-ref name="pssForceAdminUser"/>
         <interceptor-ref name="pssAutoLogin"/>
+        <interceptor-ref name="pssPolicyEnforcement"/>
         <interceptor-ref name="pssSecureActions"/>
       </interceptor-stack>
     </interceptors>
@@ -56,14 +59,14 @@
       </result>
       <result name="requires-authentication">/WEB-INF/jsp/pss/requiresAuthentication.jsp</result>
       <result name="requires-authorization">/WEB-INF/jsp/pss/accessDenied.jsp</result>
+      <result name="must-change-password" type="redirect-action">
+        <param name="actionName">password</param>
+      </result>
     </global-results>
 
     <action name="login" class="pss-login" method="show">
       <result name="input">/WEB-INF/jsp/pss/login.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/login.jsp</result>
-      <result name="must-change-password" type="redirect-action">
-        <param name="actionName">password</param>
-      </result>
       <result name="security-login-success" type="security-external">
         <param name="externalResult">security-login-success</param>
       </result>
@@ -127,7 +130,7 @@
       <result name="input">/WEB-INF/jsp/pss/requestPasswordReset.jsp</result>
       <result name="none">/WEB-INF/jsp/pss/login.jsp</result>
     </action>
-    
+
     <action name="addadmin" class="pss-admin-account" method="show">
       <interceptor-ref name="defaultStack"/>
       <result name="input">/WEB-INF/jsp/pss/admin/createAdmin.jsp</result>
@@ -150,7 +153,7 @@
     <action name="adminConsole" class="pss-admin-console" method="show">
       <result>/WEB-INF/jsp/pss/admin/console.jsp</result>
     </action>
-    
+
     <action name="report" class="pss-report" method="generate">
       <result name="error" type="redirect-action">userlist</result>
     </action>
