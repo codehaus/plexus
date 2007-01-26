@@ -299,7 +299,7 @@
         </field>
         <field java.adder="false"
                jpox.persistence-modifier="persistent" 
-               jpox.indexed="true"
+               jpox.indexed="false"
                jpox.join-table="USERASSIGNMENT_ROLENAMES">
           <name>roleNames</name>
           <version>1.0.0+</version>
