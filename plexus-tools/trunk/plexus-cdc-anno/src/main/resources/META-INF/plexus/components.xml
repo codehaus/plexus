@@ -1,0 +1,34 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.cdc.ComponentDescriptorCreator</role>
+      <role-hint>annotation</role-hint>
+      <implementation>org.codehaus.plexus.cdc.DefaultComponentDescriptorCreator</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.cdc.ComponentGleaner</role>
+          <role-hint>annotation</role-hint>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.cdc.merge.Merger</role>
+          <role-hint>plexusXml</role-hint>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.cdc.ComponentGleaner</role>
+      <role-hint>annotation</role-hint>
+      <implementation>org.codehaus.plexus.cdc.PlexusAnnotationComponentGleaner</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.cdc.merge.Merger</role>
+      <role-hint>componentsXml</role-hint>
+      <implementation>org.codehaus.plexus.cdc.merge.ComponentsXmlMerger</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.cdc.merge.Merger</role>
+      <role-hint>plexusXml</role-hint>
+      <implementation>org.codehaus.plexus.cdc.merge.PlexusXmlMerger</implementation>
+    </component>
+  </components>
+</component-set>
