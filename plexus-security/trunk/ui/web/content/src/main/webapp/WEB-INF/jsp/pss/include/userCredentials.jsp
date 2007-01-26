@@ -28,7 +28,15 @@
 
   <ww:textfield label="Full Name"        name="user.fullName" size="30" required="true"/>
   <ww:textfield label="Email Address"    name="user.email" size="50"    required="true"/>
-  <ww:password  label="Password"         name="user.password" size="20" required="true"/>
+  <c:choose>
+    <c:when test="${self}">
+      <ww:password  label="Current Password"         name="oldPassword" size="20" required="true"/>
+      <ww:password  label="New Password"         name="user.password" size="20" required="true"/>
+    </c:when>
+    <c:otherwise>
+      <ww:password  label="Password"         name="user.password" size="20" required="true"/>
+    </c:otherwise>
+  </c:choose>
   <ww:password  label="Confirm Password" name="user.confirmPassword" size="20" required="true"/>
 
 <ww:if test="%{user.timestampAccountCreation != null}">
