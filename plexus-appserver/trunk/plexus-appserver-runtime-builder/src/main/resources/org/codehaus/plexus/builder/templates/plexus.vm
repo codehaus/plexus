@@ -30,7 +30,6 @@ PLEXUS_HOME=`cd "$PRGDIR/.." ; pwd`
 if [ -z "$PLEXUS_BASE" ]; then
   PLEXUS_BASE=$PLEXUS_HOME
 fi
-PLEXUS_CONF=`cd "$PLEXUS_BASE/conf" ; pwd`
 unset THIS_PROG
 
 if [ -z "$PLEXUS_TMPDIR" ] ; then
@@ -86,7 +85,6 @@ fi
 if $cygwin; then
   PLEXUS_HOME=`cygpath --path --windows "$PLEXUS_HOME"`
   PLEXUS_BASE=`cygpath --path --windows "$PLEXUS_BASE"`
-  PLEXUS_CONF=`cygpath --path --windows "$PLEXUS_CONF"`
   PLEXUS_TMPDIR=`cygpath --path --windows "$PLEXUS_TMPDIR"`
   JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
 fi
@@ -101,7 +99,6 @@ fi
 
 echo "Using PLEXUS_HOME:   $PLEXUS_HOME"
 echo "Using PLEXUS_BASE:   $PLEXUS_BASE"
-echo "Using PLEXUS_CONF:   $PLEXUS_CONF"
 echo "Using PLEXUS_TMPDIR: $PLEXUS_TMPDIR"
 if [ $JAVA_HOME ] ; then
   echo "Using JAVA_HOME:     $JAVA_HOME"
@@ -112,7 +109,7 @@ MAIN_CLASS=org.codehaus.plexus.classworlds.launcher.Launcher
 exec "$JAVACMD" \
   $PLEXUS_OPTS \
   -classpath "${PLEXUS_HOME}"/core/boot/plexus-classworlds-*.jar \
-  -Dclassworlds.conf="${PLEXUS_CONF}/classworlds.conf"  \
+  -Dclassworlds.conf="${PLEXUS_HOME}/conf/classworlds.conf"  \
   -Dplexus.core="${PLEXUS_HOME}/core" \
   -Dplexus.system.path="${PATH}" \
   -Djava.io.tmpdir="${PLEXUS_TMPDIR}" \
