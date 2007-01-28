@@ -17,34 +17,31 @@ package org.codehaus.plexus.ehcache;
  */
 
 import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
- * MemoryCache 
+ * MemoryCache
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="org.codehaus.plexus.ehcache.EhcacheComponent"
- *                   role-hint="memory"
+ * role-hint="memory"
  */
 public class MemoryCache
     extends AbstractEhcacheComponent
-    implements EhcacheComponent, Initializable
 {
     public void initialize()
         throws InitializationException
     {
-        CacheManager cacheManager = CacheManager.getInstance();
-        boolean overflowToDisk = false;
+        super.initialize();
 
         if ( cacheManager.cacheExists( getName() ) )
         {
             throw new InitializationException( "A previous cache with name [" + getName() + "] exists." );
         }
 
+        boolean overflowToDisk = false;
         cache = new Cache( getName(), getMaxElementsInMemory(), getMemoryStoreEvictionPolicy(), overflowToDisk, null,
                            isEternal(), getTimeToLiveSeconds(), getTimeToIdleSeconds(), false, 100, null );
 

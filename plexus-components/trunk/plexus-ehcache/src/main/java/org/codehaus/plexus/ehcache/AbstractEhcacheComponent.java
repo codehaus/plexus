@@ -19,21 +19,23 @@ package org.codehaus.plexus.ehcache;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+import net.sf.ehcache.Status;
 import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
-
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * AbstractEhcacheComponent 
+ * AbstractEhcacheComponent
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
 public abstract class AbstractEhcacheComponent
     extends AbstractLogEnabled
-    implements EhcacheComponent, Disposable
+    implements EhcacheComponent, Initializable, Disposable
 {
     /**
      * @plexus.configuration default-value="false"
@@ -66,6 +68,14 @@ public abstract class AbstractEhcacheComponent
     private int timeToLiveSeconds;
 
     protected Cache cache;
+
+    protected CacheManager cacheManager;
+
+    public void initialize()
+        throws InitializationException
+    {
+        cacheManager = CacheManager.getInstance();
+    }
 
     public Cache getCache()
     {
@@ -109,7 +119,7 @@ public abstract class AbstractEhcacheComponent
 
     public boolean hasKey( Object key )
     {
-        return ( cache.get( key ) != null );
+        return cache.get( key ) != null;
     }
 
     public void invalidateKey( Object key )
@@ -119,7 +129,7 @@ public abstract class AbstractEhcacheComponent
             return;
         }
 
-        if ( ( key instanceof String ) && StringUtils.isEmpty( (String) key ) )
+        if ( key instanceof String && StringUtils.isEmpty( (String) key ) )
         {
             return;
         }
@@ -173,10 +183,18 @@ public abstract class AbstractEhcacheComponent
 
     public void dispose()
     {
-        getLogger().info( "Disposing cache: " + cache );
-        if ( this.cache != null )
+        if ( cacheManager.getStatus().equals( Status.STATUS_ALIVE ) )
         {
-            CacheManager.getInstance().removeCache( this.cache.getName() );
+            getLogger().info( "Disposing cache: " + cache );
+            if ( this.cache != null )
+            {
+                cacheManager.removeCache( this.cache.getName() );
+                cache = null;
+            }
+        }
+        else
+        {
+            getLogger().debug( "Not disposing cache, because cacheManager is not alive: " + cache );
         }
     }
 }
