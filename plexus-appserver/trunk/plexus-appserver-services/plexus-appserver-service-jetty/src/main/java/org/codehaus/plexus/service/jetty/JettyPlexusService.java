@@ -195,7 +195,7 @@ public class JettyPlexusService
 
             try
             {
-                servletContainer.deployServletContext( servletContext );
+                servletContainer.deployServletContext( servletContext, appRuntimeProfile );
             }
             catch ( ServletContainerException e )
             {
