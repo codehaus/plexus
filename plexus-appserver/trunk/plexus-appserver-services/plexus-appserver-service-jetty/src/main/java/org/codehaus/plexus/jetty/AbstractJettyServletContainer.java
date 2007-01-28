@@ -244,7 +244,7 @@ public abstract class AbstractJettyServletContainer
         addContext( context );
     }
 
-    public void deployServletContext( ServletContext servletContext )
+    public void deployServletContext( ServletContext servletContext, AppRuntimeProfile appRuntimeProfile )
         throws ServletContainerException
     {
         if ( hasContext( servletContext.getContext() ) )
@@ -255,6 +255,8 @@ public abstract class AbstractJettyServletContainer
         ServletHttpContext context = new ServletHttpContext();
 
         context.setContextPath( servletContext.getContext() );
+
+        context.setClassLoader( appRuntimeProfile.getApplicationRealm() );
 
         try
         {

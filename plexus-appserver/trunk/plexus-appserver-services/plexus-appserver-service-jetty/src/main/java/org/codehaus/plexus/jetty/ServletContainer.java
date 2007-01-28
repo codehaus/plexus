@@ -67,7 +67,7 @@ public interface ServletContainer
     void deployWarDirectory( File directory, AppRuntimeProfile profile, Webapp webapp )
         throws ServletContainerException;
 
-    public void deployServletContext( ServletContext servletContext )
+    void deployServletContext( ServletContext servletContext, AppRuntimeProfile appRuntimeProfile )
         throws ServletContainerException;
 
     void deployContext( WebContext webContext )
