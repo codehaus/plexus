@@ -1,10 +1,15 @@
 package org.codehaus.plexus.naming;
 
-import org.codehaus.plexus.PlexusTestCase;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.naming.Context;
+import javax.naming.NameClassPair;
+import javax.naming.NamingEnumeration;
 import javax.sql.DataSource;
-import java.sql.Connection;
+
+import org.codehaus.plexus.PlexusTestCase;
 
 public class NamingTest
     extends PlexusTestCase
@@ -41,5 +46,27 @@ public class NamingTest
         String wine = (String) ctx.lookup( "wine" );
         assertNotNull( wine );
         assertEquals( "wine not bordeaux", "bordeaux", wine );
+
+        NamingEnumeration namingEnumeration = ctx.list( "UserPasswords" );
+        int userPasswordsNumber = 0;
+        Map userPasswords = new HashMap();
+        while ( namingEnumeration.hasMoreElements() )
+        {
+            Object object = namingEnumeration.nextElement();
+            NameClassPair nameClassPair = (NameClassPair) object;
+            String password = (String) ctx.lookup( "UserPasswords/" + nameClassPair.getName() );
+            userPasswords.put( nameClassPair.getName(), password );
+            userPasswordsNumber++;
+            /*
+             Binding binding = (Binding) object;
+             String key = binding.getName();
+             Object value = binding.getObject();
+             */
+            //log.info( "key " + key + ", value " + key );
+        }
+        assertEquals( 2, userPasswordsNumber );
+        assertEquals( 2, userPasswords.size() );
+        assertEquals( "pwdUser1", userPasswords.get( "User1" ) );
+        assertEquals( "pwdUser2", userPasswords.get( "User2" ) );
     }
 }

@@ -47,7 +47,17 @@
             <name>wine</name>
             <type>java.lang.String</type>
             <value>bordeaux</value>
-          </environment>          
+          </environment>
+          <environment>
+            <name>UserPasswords/User1</name>
+            <type>java.lang.String</type>
+            <value>pwdUser1</value>
+          </environment>   
+          <environment>
+            <name>UserPasswords/User2</name>
+            <type>java.lang.String</type>
+            <value>pwdUser2</value>
+          </environment>                           
         </environments>
       </configuration>
     </component>    

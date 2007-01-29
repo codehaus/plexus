@@ -142,11 +142,31 @@ public class DefaultNaming
             for ( Iterator iterator = this.environments.iterator(); iterator.hasNext(); )
             {
                 Environment environment = (Environment) iterator.next();
+
                 Config.Environment config = new Config.Environment();
                 config.setName( environment.getName() );
                 config.setType( environment.getType() );
                 config.setValue( environment.getValue() );
-                envContext.bind( environment.getName(), config.createValue() );
+                try
+                {
+                    CompositeName name = new CompositeName( environment.getName() );
+                    for ( int i = 1; i <= name.size() - 1; i++ )
+                    {
+                        try
+                        {
+                            envContext.createSubcontext( name.getPrefix( i ) );
+                        }
+                        catch ( NameAlreadyBoundException e )
+                        {
+                            // The prefix is already added as a sub context
+                        }
+                    }
+                    envContext.bind( environment.getName(), config.createValue() );
+                }
+                catch ( NameAlreadyBoundException e )
+                {
+                    // skip already bind
+                }
             }
         }
 
