@@ -49,6 +49,7 @@ import org.mortbay.util.InetAddrPort;
 import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.net.MalformedURLException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -79,11 +80,9 @@ public abstract class AbstractJettyServletContainer
     {
         HttpContext[] contexts = server.getContexts();
 
-        HttpContext context;
-
         for ( int i = 0; i < contexts.length; i++ )
         {
-            context = contexts[i];
+            HttpContext context = contexts[i];
 
             if ( context.getContextPath().equals( contextPath ) )
             {
@@ -170,14 +169,15 @@ public abstract class AbstractJettyServletContainer
             {
                 ListenerStopThread stopThread = new ListenerStopThread( server, httpListenerReference.getListener() );
 
+                //noinspection CatchGenericClass
                 try
                 {
                     httpListeners.remove( port );
                     stopThread.start();
                 }
-                catch ( Exception ex )
+                catch ( Throwable t )
                 {
-                    getLogger().info( "Error Stopping Http Listener", ex );
+                    getLogger().info( "Error Stopping Http Listener", t );
                 }
             }
         }
@@ -186,12 +186,152 @@ public abstract class AbstractJettyServletContainer
     public void deployWarDirectory( File directory, AppRuntimeProfile profile, Webapp webapp )
         throws ServletContainerException
     {
-        deployWAR( directory, false, null, profile, webapp );
+        String context = webapp.getContext();
+
+        String virtualHost = webapp.getVirtualHost();
+
+        boolean standardWebappClassloader = webapp.isStandardWebappClassloader();
+
+        if ( directory == null )
+        {
+            throw new ServletContainerException( "Invalid parameter: 'war' cannot be null." );
+        }
+
+        if ( context == null )
+        {
+            throw new ServletContainerException( "Invalid parameter: 'context' cannot be null." );
+        }
+
+        // ----------------------------------------------------------------------
+        // Create the web appserver
+        // ----------------------------------------------------------------------
+
+        WebApplicationContext webappContext;
+
+        if ( !hasContext( context ) )
+        {
+            try
+            {
+                if ( virtualHost != null )
+                {
+                    webappContext = server.addWebApplication( virtualHost, context, directory.getAbsolutePath() );
+                }
+                else
+                {
+                    webappContext = server.addWebApplication( context, directory.getAbsolutePath() );
+                }
+            }
+            catch ( IOException e )
+            {
+                throw new ServletContainerException( "Error while deploying WAR.", e );
+            }
+
+            // ----------------------------------------------------------------------
+            // Configure the appserver context
+            // ----------------------------------------------------------------------
+
+            webappContext.setExtractWAR( false );
+
+            if ( standardWebappClassloader )
+            {
+                getLogger().info( "Using standard webapp classloader for webapp." );
+                try
+                {
+                    // We need to start the context to trigger the unpacking so that we can
+                    // create a realm. We need to create a realm so that we can discover all
+                    // the components in the webapp.
+
+                    // The webapp directory needs to be unpacked before we can pick up the files
+                    ClassRealm realm = profile.getApplicationRealm();
+
+                    List jars = FileUtils.getFiles( directory, "WEB-INF/lib/*.jar", null );
+
+
+                    for ( Iterator i = jars.iterator(); i.hasNext(); )
+                    {
+                        File file = (File) i.next();
+
+                        realm.addURL( file.toURL() );
+                    }
+
+                    File classes = new File( directory, "WEB-INF/classes" );
+
+                    realm.addURL( classes.toURL() );
+
+                    webappContext.setClassLoader( realm );
+
+                    classRealms.put( webapp.getContext(), realm );
+                }
+                catch ( MalformedURLException e )
+                {
+                    throw new ServletContainerException( "Error creating webapp classloader.", e );
+                }
+                catch ( IOException e )
+                {
+                    throw new ServletContainerException( "Error creating webapp classloader.", e );
+                }
+            }
+            else
+            {
+                // Dirty hack, need better methods for classloaders because i can set the core realm but not get it,
+                // or get the container realm but not set it. blah!
+                webappContext.setClassLoader( profile.getApplicationRealm() );
+            }
+
+            // Save the classloader for reloads
+            classLoaders.put( webapp.getContext(), webappContext.getClassLoader() );
+        }
+        else
+        {
+            webappContext = (WebApplicationContext) getContext( webapp.getContext() );
+
+            // TODO: determine if this is really needed now
+
+            // We only need to reset the classloader if we're doing standard webapp loading. The stopping
+            // of the Jetty context seems to whack the classloader so we need to reset it. If we are
+            // using Plexus classloading then the classloader appears to resist the whacking. Not sure
+            // what's happening here but classworlds is going to take a bath shortly anyway.
+            if ( standardWebappClassloader )
+            {
+
+                webappContext.setClassLoader( (ClassLoader) classLoaders.get( webapp.getContext() ) );
+                ClassRealm cr = (ClassRealm) classRealms.get( webapp.getContext() );
+
+                Enumeration realms = new Vector( profile.getApplicationWorld().getRealms() ).elements();
+                while ( realms.hasMoreElements() )
+                {
+                    ClassRealm next = (ClassRealm) realms.nextElement();
+
+                    try
+                    {
+                        profile.getApplicationWorld().disposeRealm( next.getId() );
+                    }
+                    catch ( NoSuchRealmException e )
+                    {
+                        // no problems if it can ever happen
+                    }
+                }
+
+                try
+                {
+                    profile.getApplicationWorld().newRealm( cr.getId(), cr );
+                }
+                catch ( DuplicateRealmException e )
+                {
+                    // won't happen
+                }
+            }
+        }
+
+        // This is used by the xwork integration to pass some knowledge of the application server to the web applications
+        webappContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY,
+                                                        profile.getApplicationServerContainer() );
     }
 
     public void startApplication( String contextPath )
         throws ServletContainerException
     {
+        //noinspection OverlyBroadCatchBlock
         try
         {
             HttpContext context = getContext( contextPath );
@@ -217,7 +357,7 @@ public abstract class AbstractJettyServletContainer
 
             context.stop( true );
         }
-        catch ( Exception e )
+        catch ( InterruptedException e )
         {
             throw new ServletContainerException( "Error while stopping the context " + contextPath, e );
         }
@@ -283,7 +423,7 @@ public abstract class AbstractJettyServletContainer
 
                     if ( directive != null )
                     {
-                        if ( directive.equals( "create-directory" ) )
+                        if ( "create-directory".equals( directive ) )
                         {
                             FileUtils.mkdir( value );
                         }
@@ -315,11 +455,9 @@ public abstract class AbstractJettyServletContainer
     {
         HttpContext[] contexts = server.getContexts();
 
-        HttpContext context;
-
         for ( int i = 0; i < contexts.length; i++ )
         {
-            context = contexts[i];
+            HttpContext context = contexts[i];
 
             if ( context.getContextPath().equals( contextPath ) )
             {
@@ -328,157 +466,6 @@ public abstract class AbstractJettyServletContainer
         }
 
         throw new ServletContainerException( "No such context '" + contextPath + "'." );
-    }
-
-    private void deployWAR( File war, boolean extractWar, File extractionLocation, AppRuntimeProfile profile,
-                            Webapp webapp )
-        throws ServletContainerException
-    {
-        String context = webapp.getContext();
-
-        String virtualHost = webapp.getVirtualHost();
-
-        boolean standardWebappClassloader = webapp.isStandardWebappClassloader();
-
-        if ( war == null )
-        {
-            throw new ServletContainerException( "Invalid parameter: 'war' cannot be null." );
-        }
-
-        if ( context == null )
-        {
-            throw new ServletContainerException( "Invalid parameter: 'context' cannot be null." );
-        }
-
-        // ----------------------------------------------------------------------
-        // Create the web appserver
-        // ----------------------------------------------------------------------
-
-        WebApplicationContext webappContext;
-
-        if ( !hasContext( context ) )
-        {
-            try
-            {
-                if ( virtualHost != null )
-                {
-                    webappContext = server.addWebApplication( virtualHost, context, war.getAbsolutePath() );
-                }
-                else
-                {
-                    webappContext = server.addWebApplication( context, war.getAbsolutePath() );
-                }
-            }
-            catch ( IOException e )
-            {
-                throw new ServletContainerException( "Error while deploying WAR.", e );
-            }
-
-            // ----------------------------------------------------------------------
-            // Configure the appserver context
-            // ----------------------------------------------------------------------
-
-            webappContext.setExtractWAR( extractWar );
-
-            if ( extractionLocation != null )
-            {
-                webappContext.setTempDirectory( extractionLocation );
-            }
-
-            if ( standardWebappClassloader )
-            {
-                getLogger().info( "Using standard webapp classloader for webapp." );
-                try
-                {
-                    // We need to start the context to trigger the unpacking so that we can
-                    // create a realm. We need to create a realm so that we can discover all
-                    // the components in the webapp.
-
-                    ClassRealm realm = profile.getApplicationRealm();
-
-                    List jars = FileUtils.getFiles( war, "**/*.jar", null );
-
-                    // The webapp directory needs to be unpacked before we can pick up the files
-
-                    for ( Iterator i = jars.iterator(); i.hasNext(); )
-                    {
-                        File file = (File) i.next();
-
-                        realm.addURL( file.toURL() );
-                    }
-
-                    File webInf = new File( war, "WEB-INF" );
-
-                    realm.addURL( webInf.toURL() );
-
-                    File classes = new File( war, "WEB-INF/classes" );
-
-                    realm.addURL( classes.toURL() );
-
-                    webappContext.setClassLoader( realm );
-
-                    classRealms.put( webapp.getContext(), realm );
-                }
-                catch ( Exception e )
-                {
-                    throw new ServletContainerException( "Error creating webapp classloader.", e );
-                }
-            }
-            else
-            {
-                // Dirty hack, need better methods for classloaders because i can set the core realm but not get it,
-                // or get the container realm but not set it. blah!
-                webappContext.setClassLoader( profile.getApplicationRealm() );
-            }
-
-            // Save the classloader for reloads
-            classLoaders.put( webapp.getContext(), webappContext.getClassLoader() );
-        }
-        else
-        {
-            webappContext = (WebApplicationContext) getContext( webapp.getContext() );
-
-            // TODO: determine if this is really needed now
-
-            // We only need to reset the classloader if we're doing standard webapp loading. The stopping
-            // of the Jetty context seems to whack the classloader so we need to reset it. If we are
-            // using Plexus classloading then the classloader appears to resist the whacking. Not sure
-            // what's happening here but classworlds is going to take a bath shortly anyway.
-            if ( standardWebappClassloader )
-            {
-
-                webappContext.setClassLoader( (ClassLoader) classLoaders.get( webapp.getContext() ) );
-                ClassRealm cr = (ClassRealm) classRealms.get( webapp.getContext() );
-
-                Enumeration realms = new Vector( profile.getApplicationWorld().getRealms() ).elements();
-                while ( realms.hasMoreElements() )
-                {
-                    ClassRealm next = (ClassRealm) realms.nextElement();
-
-                    try
-                    {
-                        profile.getApplicationWorld().disposeRealm( next.getId() );
-                    }
-                    catch ( NoSuchRealmException e )
-                    {
-                        // no problems if it can ever happen
-                    }
-                }
-
-                try
-                {
-                    profile.getApplicationWorld().newRealm( cr.getId(), cr );
-                }
-                catch ( DuplicateRealmException e )
-                {
-                    // won't happen
-                }
-            }
-        }
-
-        // This is used by the xwork integration to pass some knowledge of the application server to the web applications
-        webappContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY,
-                                                        profile.getApplicationServerContainer() );
     }
 
     protected HttpContext addContext( HttpContext context )
@@ -514,7 +501,7 @@ public abstract class AbstractJettyServletContainer
                 }
                 catch ( InterruptedException e )
                 {
-                    continue;
+                    // ignore, try again
                 }
             }
 
@@ -522,9 +509,9 @@ public abstract class AbstractJettyServletContainer
         }
     }
 
-    public boolean isPortRegistered( org.codehaus.plexus.jetty.configuration.HttpListener config )
+    public boolean isPortRegistered( org.codehaus.plexus.jetty.configuration.HttpListener listener )
     {
-        return httpListeners.containsKey( Integer.toString( config.getPort() ) );
+        return httpListeners.containsKey( Integer.toString( listener.getPort() ) );
     }
 
     private void registerPort( org.codehaus.plexus.jetty.configuration.HttpListener config, HttpListener httpListener )
@@ -551,14 +538,14 @@ public abstract class AbstractJettyServletContainer
         }
     }
 
-    class ListenerStopThread
+    private static class ListenerStopThread
         extends Thread
     {
-        Server server;
+        private Server server;
 
-        HttpListener listener;
+        private HttpListener listener;
 
-        public ListenerStopThread( Server _server, HttpListener _listener )
+        private ListenerStopThread( Server _server, HttpListener _listener )
         {
             server = _server;
             listener = _listener;

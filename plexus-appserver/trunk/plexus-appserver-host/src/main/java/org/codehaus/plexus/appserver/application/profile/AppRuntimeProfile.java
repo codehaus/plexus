@@ -51,8 +51,6 @@ public class AppRuntimeProfile
 
     private File lib;
 
-    private DefaultPlexusContainer applicationContainer;
-
     private ClassWorld applicationWorld;
 
     private PlexusContainer applicationServerContainer;
@@ -104,22 +102,6 @@ public class AppRuntimeProfile
     public File getLib()
     {
         return lib;
-    }
-
-    public void setApplicationContainer( DefaultPlexusContainer applicationContainer )
-    {
-        this.applicationContainer = applicationContainer;
-    }
-
-    /**
-     * Get the application container that contains this application.
-     * NOTE: This will not be available until the app-init phase has completed.
-     *
-     * @return the container for this application
-     */
-    public DefaultPlexusContainer getApplicationContainer()
-    {
-        return applicationContainer;
     }
 
     public ClassWorld getApplicationWorld()
