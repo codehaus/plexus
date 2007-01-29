@@ -359,6 +359,8 @@ public abstract class AbstractJettyServletContainer
             getLogger().info( "Starting Jetty Context " + contextPath );
 
             context.stop( true );
+            
+            context.destroy();
         }
         catch ( InterruptedException e )
         {
