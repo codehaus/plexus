@@ -25,15 +25,12 @@ public class AppDeploymentContext
     private Properties context;
 
     private Map contextValues;
-    //
 
     private String applicationId;
 
     private PlexusConfiguration appConfiguration;
 
     private AppRuntimeProfile appRuntimeProfile;
-
-    private DefaultPlexusContainer applicationContainer;
 
     private File appConfigurationFile;
 
@@ -130,16 +127,6 @@ public class AppDeploymentContext
     public void setAppRuntimeProfile( AppRuntimeProfile appRuntimeProfile )
     {
         this.appRuntimeProfile = appRuntimeProfile;
-    }
-
-    public DefaultPlexusContainer getApplicationContainer()
-    {
-        return applicationContainer;
-    }
-
-    public void setApplicationContainer( DefaultPlexusContainer applicationContainer )
-    {
-        this.applicationContainer = applicationContainer;
     }
 
     public File getAppConfigurationFile()
