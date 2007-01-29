@@ -46,13 +46,9 @@ import org.codehaus.plexus.jetty.configuration.builder.ServiceConfigurationBuild
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.UnknownHostException;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -73,13 +69,6 @@ public class JettyPlexusService
      * @plexus.requirement
      */
     private ServletContainer servletContainer;
-
-    /**
-     * Set of ports to be activated. The port can only be used once.
-     *
-     * @deprecated
-     */
-    private Set activePorts = new HashSet();
 
     // ----------------------------------------------------------------------
     // PlexusService Implementation

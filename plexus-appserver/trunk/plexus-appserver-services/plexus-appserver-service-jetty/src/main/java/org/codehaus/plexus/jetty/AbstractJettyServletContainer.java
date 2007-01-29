@@ -48,8 +48,8 @@ import org.mortbay.util.InetAddrPort;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -75,6 +75,8 @@ public abstract class AbstractJettyServletContainer
     private Map classLoaders = new HashMap();
 
     private Map classRealms = new HashMap();
+
+    private ListenerStopThread stopThread;
 
     public boolean hasContext( String contextPath )
     {
@@ -167,17 +169,19 @@ public abstract class AbstractJettyServletContainer
 
             if ( httpListenerReference.decrement().getRefCount() <= 0 )
             {
-                ListenerStopThread stopThread = new ListenerStopThread( server, httpListenerReference.getListener() );
+                if ( stopThread == null || !stopThread.isWaiting() )
+                {
+                    stopThread = new ListenerStopThread( server, httpListenerReference.getListener(), port );
 
-                //noinspection CatchGenericClass
-                try
-                {
-                    httpListeners.remove( port );
-                    stopThread.start();
-                }
-                catch ( Throwable t )
-                {
-                    getLogger().info( "Error Stopping Http Listener", t );
+                    //noinspection CatchGenericClass
+                    try
+                    {
+                        stopThread.start();
+                    }
+                    catch ( Throwable t )
+                    {
+                        getLogger().info( "Error Stopping Http Listener", t );
+                    }
                 }
             }
         }
@@ -245,7 +249,6 @@ public abstract class AbstractJettyServletContainer
                     ClassRealm realm = profile.getApplicationRealm();
 
                     List jars = FileUtils.getFiles( directory, "WEB-INF/lib/*.jar", null );
-
 
                     for ( Iterator i = jars.iterator(); i.hasNext(); )
                     {
@@ -538,30 +541,57 @@ public abstract class AbstractJettyServletContainer
         }
     }
 
-    private static class ListenerStopThread
+    private class ListenerStopThread
         extends Thread
     {
         private Server server;
 
         private HttpListener listener;
 
-        private ListenerStopThread( Server _server, HttpListener _listener )
+        private boolean waiting;
+
+        private String port;
+
+        private ListenerStopThread( Server server, HttpListener listener, String port )
         {
-            server = _server;
-            listener = _listener;
+            this.server = server;
+            this.listener = listener;
+            this.port = port;
         }
 
         public void run()
         {
             try
             {
+                waiting = true;
                 Thread.sleep( 20000 );
-                server.removeListener( listener );
+                waiting = false;
+                stopListener();
             }
             catch ( Exception ex )
             {
                 //TODO:
             }
+        }
+
+        private void stopListener()
+        {
+            if ( httpListeners.containsKey( port ) )
+            {
+                HttpListenerReference httpListenerReference = (HttpListenerReference) httpListeners.get( port );
+
+                if ( httpListenerReference.getRefCount() <= 0 )
+                {
+                    httpListeners.remove( port );
+
+                    server.removeListener( listener );
+                }
+            }
+        }
+
+        public boolean isWaiting()
+        {
+            return waiting;
         }
     }
 }
