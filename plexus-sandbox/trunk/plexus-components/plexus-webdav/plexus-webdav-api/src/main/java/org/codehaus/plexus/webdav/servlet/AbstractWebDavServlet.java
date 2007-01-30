@@ -185,16 +185,9 @@ public abstract class AbstractWebDavServlet
     private void ensureContainerSet( ServletConfig sc )
         throws ServletException
     {
+        // TODO: unify this code with the lifecycle listener and application server
+
         ServletContext context = sc.getServletContext();
-
-        if ( context.getAttribute( PlexusConstants.PLEXUS_KEY ) != null )
-        {
-            context.log( "Plexus container already in context." );
-
-            return;
-        }
-
-        // Container not found.
 
         // Attempt to find it already loaded by xwork.
         PlexusContainer xworkContainer = (PlexusContainer) context.getAttribute( "webwork.plexus.container" );
@@ -202,6 +195,15 @@ public abstract class AbstractWebDavServlet
         if ( xworkContainer != null )
         {
             context.setAttribute( PlexusConstants.PLEXUS_KEY, xworkContainer );
+
+            return;
+        }
+
+        // Container not found.
+
+        if ( context.getAttribute( PlexusConstants.PLEXUS_KEY ) != null )
+        {
+            context.log( "Plexus container already in context." );
 
             return;
         }
