@@ -16,6 +16,7 @@ package org.codehaus.plexus.webdav.servlet.multiplexed;
  * limitations under the License.
  */
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.webdav.servlet.DavServerRequest;
 import org.codehaus.plexus.webdav.util.WrappedRepositoryRequest;
@@ -45,10 +46,7 @@ public class MultiplexedDavServerRequest
 
     public MultiplexedDavServerRequest( WrappedRepositoryRequest request )
     {
-        /* Perform a simple security normalization of the requested pathinfo.
-         * This is to prevent requests for information outside of the root directory.
-         */
-        String requestPathInfo = FileUtils.normalize( request.getPathInfo() );
+        String requestPathInfo = StringUtils.defaultString( request.getPathInfo() );
 
         // Remove prefixing slash as the repository id doesn't contain it;
         if ( requestPathInfo.startsWith( "/" ) )
@@ -70,6 +68,11 @@ public class MultiplexedDavServerRequest
                 this.logicalResource += "/";
             }
 
+            /* Perform a simple security normalization of the requested pathinfo.
+             * This is to prevent requests for information outside of the root directory.
+             */
+            this.logicalResource = FileUtils.normalize( logicalResource );
+            
             if ( this.logicalResource == null )
             {
                 this.logicalResource = "/";
@@ -80,7 +83,7 @@ public class MultiplexedDavServerRequest
             this.prefix = requestPathInfo;
             this.logicalResource = "/";
         }
-        
+
         this.request = request;
         this.request.setPathInfo( logicalResource );
     }
