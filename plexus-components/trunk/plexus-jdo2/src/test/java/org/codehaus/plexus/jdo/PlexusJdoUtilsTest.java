@@ -19,13 +19,12 @@ package org.codehaus.plexus.jdo;
 import org.codehaus.plexus.PlexusTestCase;
 import org.jpox.SchemaTool;
 
+import javax.jdo.PersistenceManager;
+import javax.jdo.PersistenceManagerFactory;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.jdo.PersistenceManager;
-import javax.jdo.PersistenceManagerFactory;
 
 /**
  * Tests for PlexusJdoUtilsTest 
@@ -70,7 +69,7 @@ public class PlexusJdoUtilsTest
             System.setProperty( (String) entry.getKey(), (String) entry.getValue() );
         }
 
-        SchemaTool.createSchemaTables( new URL[] { getClass().getResource( "/META-INF/package.jdo" ) }, null, null, false, null ); 
+        SchemaTool.createSchemaTables( new URL[] { getClass().getResource( "/META-INF/package.jdo" ) }, new URL[] {}, null, false, null ); 
 
         pmf = jdoFactory.getPersistenceManagerFactory();
         assertNotNull( pmf );
@@ -102,7 +101,7 @@ public class PlexusJdoUtilsTest
 
         Basic fetched = (Basic) PlexusJdoUtils.getObjectById( getPersistenceManager(), Basic.class, added.getId() );
 
-        long id = fetched.getId();
+        int id = fetched.getId();
         String BRAINSLUG = "Starved a Brain Slug";
 
         fetched.setDescription( BRAINSLUG );
@@ -140,7 +139,7 @@ public class PlexusJdoUtilsTest
         assertNotNull( fetched.getChildren() );
         assertEquals( 1, fetched.getChildren().size() );
 
-        long id = fetched.getId();
+        int id = fetched.getId();
         String PLANETEXPRESS = "Owns Planet Express";
 
         fetched.setDescription( PLANETEXPRESS );
