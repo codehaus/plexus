@@ -59,7 +59,7 @@ echo.
 goto end
 
 :valMHome
-if exist "%PLEXUS_HOME%\bin\plexus.bat" goto init
+if exist "%PLEXUS_HOME%\bin\plexus.bat" goto chkMBase
 
 echo.
 echo ERROR: PLEXUS_HOME is set to an invalid directory.
@@ -68,6 +68,11 @@ echo Please set the PLEXUS_HOME variable in your environment to match the
 echo location of the PLEXUS installation
 echo.
 goto end
+
+:chkMBase
+if not "%PLEXUS_BASE%"=="" goto init
+
+SET PLEXUS_BASE=%PLEXUS_HOME%
 
 @REM ==== END VALIDATION ====
 
