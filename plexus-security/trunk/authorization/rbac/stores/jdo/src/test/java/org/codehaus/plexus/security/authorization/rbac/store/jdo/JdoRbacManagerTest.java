@@ -101,8 +101,8 @@ public class JdoRbacManagerTest
         File propsFile = null; // intentional
         boolean verbose = true;
 
-        SchemaTool.deleteSchemaTables( jdoFileUrls, propsFile, verbose );
-        SchemaTool.createSchemaTables( jdoFileUrls, propsFile, verbose );
+        SchemaTool.deleteSchemaTables( jdoFileUrls, new URL[] {}, propsFile, verbose );
+        SchemaTool.createSchemaTables( jdoFileUrls, new URL[] {}, propsFile, verbose, null );
 
         PersistenceManagerFactory pmf = jdoFactory.getPersistenceManagerFactory();
 
