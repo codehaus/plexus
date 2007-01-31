@@ -24,12 +24,12 @@ package org.codehaus.plexus.service.jetty;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.appserver.deploy.DeploymentException;
 import org.codehaus.plexus.appserver.service.AbstractPlexusService;
 import org.codehaus.plexus.appserver.service.PlexusServiceException;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.repository.exception.ComponentRepositoryException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
@@ -223,10 +223,9 @@ public class JettyPlexusService
             // means discovery can occur.
             // ----------------------------------------------------------------------------
 
-            // TODO: realy need to assess the correctness of this, and if so put discoverComponents into the plexus container API
-            DefaultPlexusContainer c = (DefaultPlexusContainer) appRuntimeProfile.getApplicationServerContainer();
+            DefaultPlexusContainer c = appRuntimeProfile.getApplicationContainer();
 
-            ClassRealm realm = appRuntimeProfile.getApplicationRealm();
+            ClassRealm realm = c.getContainerRealm();
 
             try
             {

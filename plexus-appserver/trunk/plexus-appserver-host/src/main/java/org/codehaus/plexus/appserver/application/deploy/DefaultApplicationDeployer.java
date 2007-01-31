@@ -35,8 +35,6 @@ import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.appserver.deploy.AbstractDeployer;
 import org.codehaus.plexus.appserver.service.PlexusService;
 import org.codehaus.plexus.appserver.service.PlexusServiceException;
-import org.codehaus.plexus.classworlds.realm.NoSuchRealmException;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
@@ -99,8 +97,8 @@ public class DefaultApplicationDeployer
 
             try
             {
-                AppDeploymentPhase phase = (AppDeploymentPhase) appServerContainer.lookup( AppDeploymentPhase.ROLE, id,
-                                                                                           appServerContainer.getContainerRealm() );
+                AppDeploymentPhase phase =
+                    (AppDeploymentPhase) appServerContainer.lookup( AppDeploymentPhase.ROLE, id, appServerContainer.getContainerRealm() );
 
                 phase.execute( context );
             }
@@ -156,6 +154,8 @@ public class DefaultApplicationDeployer
 
         deployments.remove( id );
 
+        DefaultPlexusContainer app = profile.getApplicationContainer();
+
         try
         {
             stopApplicationServices( profile );
@@ -165,7 +165,10 @@ public class DefaultApplicationDeployer
             getLogger().info( "Can not stop services attached to application ", e );
         }
 
-        ClassRealm realm = profile.getApplicationRealm();
+        app.dispose();
+
+/* Don't dispose since the appserver container realm = the app container realm at present
+        ClassRealm realm = app.getContainerRealm();
 
         try
         {
@@ -175,6 +178,7 @@ public class DefaultApplicationDeployer
         {
             getLogger().warn( "Error while disposing appserver realm '" + realm.getId() + "'" );
         }
+*/
 
         DefaultDeployEvent event = createDeployEvent( profile );
 
