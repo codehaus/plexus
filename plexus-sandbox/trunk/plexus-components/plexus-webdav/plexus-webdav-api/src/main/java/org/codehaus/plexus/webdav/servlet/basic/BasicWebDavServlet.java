@@ -53,7 +53,7 @@ public class BasicWebDavServlet
     {
         super.init( config );
 
-        String prefix = config.getServletContext().getServletContextName();
+        String prefix = config.getServletName();
 
         File rootDir = getRootDirectory( config );
 
