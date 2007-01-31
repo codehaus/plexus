@@ -72,7 +72,7 @@ public class JdoUserManagerTest
         }
 
         SchemaTool.createSchemaTables( new URL[] { getClass()
-            .getResource( "/org/codehaus/plexus/security/user/jdo/package.jdo" ) }, null, false ); //$NON-NLS-1$
+            .getResource( "/org/codehaus/plexus/security/user/jdo/package.jdo" ) }, new URL[] {}, null, false, null ); //$NON-NLS-1$
 
         PersistenceManagerFactory pmf = jdoFactory.getPersistenceManagerFactory();
 
