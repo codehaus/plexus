@@ -48,28 +48,10 @@ echo.
 goto end
 
 :chkMBase
-if not "%PLEXUS_BASE%"=="" goto valMBase
+if not "%PLEXUS_BASE%"=="" goto startup
 
-if "%OS%"=="Windows_NT" SET PLEXUS_BASE=%PLEXUS_HOME%
-if not "%PLEXUS_BASE%"=="" goto valMBase
+SET PLEXUS_BASE=%PLEXUS_HOME%
 
-echo.
-echo ERROR: PLEXUS_BASE not found in your environment.
-echo Please set the PLEXUS_BASE variable in your environment to match the
-echo location of the PLEXUS installation
-echo.
-goto end
-
-:valMBase
-if exist "%PLEXUS_BASE%\bin\plexus.bat" goto startup
-
-echo.
-echo ERROR: PLEXUS_BASE is set to an invalid directory.
-echo PLEXUS_BASE = %PLEXUS_BASE%
-echo Please set the PLEXUS_BASE variable in your environment to match the
-echo location of the PLEXUS installation
-echo.
-goto end
 @REM ==== END VALIDATION ====
 
 rem
