@@ -101,7 +101,7 @@ public class PlexusJdoUtilsTest
 
         Basic fetched = (Basic) PlexusJdoUtils.getObjectById( getPersistenceManager(), Basic.class, added.getId() );
 
-        int id = fetched.getId();
+        long id = fetched.getId();
         String BRAINSLUG = "Starved a Brain Slug";
 
         fetched.setDescription( BRAINSLUG );
@@ -139,7 +139,7 @@ public class PlexusJdoUtilsTest
         assertNotNull( fetched.getChildren() );
         assertEquals( 1, fetched.getChildren().size() );
 
-        int id = fetched.getId();
+        long id = fetched.getId();
         String PLANETEXPRESS = "Owns Planet Express";
 
         fetched.setDescription( PLANETEXPRESS );
