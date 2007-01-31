@@ -55,6 +55,29 @@ public class BasicWebDavServlet
 
         String prefix = config.getServletContext().getServletContextName();
 
+        File rootDir = getRootDirectory( config );
+
+        if ( !rootDir.isDirectory() )
+        {
+            throw new ServletException( "Invalid configuration, the dav root " + rootDir.getPath()
+                + " is not a directory: [" + rootDir.getAbsolutePath() + "]" );
+        }
+
+        try
+        {
+            davServer = davManager.createServer( prefix, rootDir );
+            davServer.init( config );
+        }
+        catch ( DavServerException e )
+        {
+            throw new ServletException( "Unable to create DAV Server component for prefix [" + prefix
+                + "] mapped to root directory [" + rootDir.getPath() + "]", e );
+        }
+    }
+
+    public File getRootDirectory( ServletConfig config )
+        throws ServletException
+    {
         String rootDirName = config.getInitParameter( INIT_ROOT_DIRECTORY );
 
         if ( StringUtils.isEmpty( rootDirName ) )
@@ -62,24 +85,7 @@ public class BasicWebDavServlet
             throw new ServletException( "Init Parameter '" + INIT_ROOT_DIRECTORY + "' is empty." );
         }
 
-        File rootDir = new File( rootDirName );
-
-        if ( !rootDir.isDirectory() )
-        {
-            throw new ServletException( "Invalid configuration, the specified " + INIT_ROOT_DIRECTORY
-                + " is not a directory: [" + rootDir.getAbsolutePath() + "]" );
-        }
-
-        try
-        {
-            davServer = davManager.createServer( prefix, new File( rootDirName ) );
-            davServer.init( config );
-        }
-        catch ( DavServerException e )
-        {
-            throw new ServletException( "Unable to create DAV Server component for prefix [" + prefix
-                + "] mapped to root directory [" + rootDirName + "]", e );
-        }
+        return new File( rootDirName );
     }
 
     protected void service( HttpServletRequest httpRequest, HttpServletResponse httpResponse )
