@@ -25,6 +25,7 @@ package org.codehaus.plexus.mailsender.javamail;
  */
 
 import org.codehaus.plexus.mailsender.MailSenderException;
+import org.codehaus.plexus.util.StringUtils;
 
 import javax.mail.Session;
 import javax.naming.Context;
@@ -52,10 +53,17 @@ public class JndiJavamailMailSender
             Context ctx = new InitialContext();
             Session s = (Session) ctx.lookup( jndiSessionName );
             Properties props = new Properties( s.getProperties() );
+
             if ( "smtps".equals( props.getProperty( AbstractJavamailMailSender.MAIL_TRANSPORT_PROTOCOL ) ) )
             {
                 props.put( "mail.smtps.socketFactory.class", DummySSLSocketFactory.class.getName() );
             }
+
+            if ( StringUtils.isEmpty( props.getProperty( AbstractJavamailMailSender.MAIL_SMTP_TIMEOUT ) ) )
+            {
+                props.put( AbstractJavamailMailSender.MAIL_SMTP_TIMEOUT, "30000" );
+            }
+
             return Session.getInstance( props, null );
         }
         catch ( NamingException e )

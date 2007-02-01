@@ -99,6 +99,11 @@ public class JavamailMailSender
         {
             setSslMode( false );
         }
+
+        if ( StringUtils.isEmpty( getProperties().getProperty( AbstractJavamailMailSender.MAIL_SMTP_TIMEOUT ) ) )
+        {
+            addProperty( AbstractJavamailMailSender.MAIL_SMTP_TIMEOUT, "30000" );
+        }
         Session session = Session.getInstance( getProperties(), null );
 
         return session;
