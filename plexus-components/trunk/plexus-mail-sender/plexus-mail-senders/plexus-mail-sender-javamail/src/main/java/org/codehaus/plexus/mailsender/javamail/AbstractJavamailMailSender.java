@@ -117,7 +117,7 @@ public abstract class AbstractJavamailMailSender
             message.setFrom( fromAddress );
 
             // Make all the reply-to fields set to the given address.
-            Address[] replyToAddresses = new Address[]{ fromAddress };
+            Address[] replyToAddresses = new Address[]{new InternetAddress( mail.getReplyTo().getRfc2822Address() )};
             message.setReplyTo( replyToAddresses );
 
             if ( mail.getToAddresses().size() > 0 )
