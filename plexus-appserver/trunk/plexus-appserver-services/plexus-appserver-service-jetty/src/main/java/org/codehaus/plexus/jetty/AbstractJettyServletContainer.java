@@ -82,11 +82,9 @@ public abstract class AbstractJettyServletContainer
     {
         HttpContext[] contexts = server.getContexts();
 
-        HttpContext context;
-
         for ( int i = 0; i < contexts.length; i++ )
         {
-            context = contexts[i];
+            HttpContext context = contexts[i];
 
             if ( context.getContextPath().equals( contextPath ) )
             {
@@ -171,8 +169,8 @@ public abstract class AbstractJettyServletContainer
 
             if ( httpListenerReference.decrement().getRefCount() <= 0 )
             {
-               if ( stopThread == null || !stopThread.isWaiting() )
-                  {
+                if ( stopThread == null || !stopThread.isWaiting() )
+                {
                     stopThread = new ListenerStopThread( server, httpListenerReference.getListener(), port );
 
                     //noinspection CatchGenericClass
@@ -198,6 +196,7 @@ public abstract class AbstractJettyServletContainer
     public void startApplication( String contextPath )
         throws ServletContainerException
     {
+        //noinspection OverlyBroadCatchBlock
         try
         {
             HttpContext context = getContext( contextPath );
@@ -222,10 +221,10 @@ public abstract class AbstractJettyServletContainer
             getLogger().info( "Starting Jetty Context " + contextPath );
 
             context.stop( true );
-            
+
             context.destroy();
         }
-        catch ( Exception e )
+        catch ( InterruptedException e )
         {
             throw new ServletContainerException( "Error while stopping the context " + contextPath, e );
         }
@@ -264,7 +263,7 @@ public abstract class AbstractJettyServletContainer
 
         context.setContextPath( servletContext.getContext() );
 
-        context.setClassLoader( appRuntimeProfile.getApplicationRealm() );
+        context.setClassLoader( appRuntimeProfile.getApplicationContainer().getContainerRealm() );
 
         try
         {
@@ -291,7 +290,7 @@ public abstract class AbstractJettyServletContainer
 
                     if ( directive != null )
                     {
-                        if ( directive.equals( "create-directory" ) )
+                        if ( "create-directory".equals( directive ) )
                         {
                             FileUtils.mkdir( value );
                         }
@@ -323,11 +322,9 @@ public abstract class AbstractJettyServletContainer
     {
         HttpContext[] contexts = server.getContexts();
 
-        HttpContext context;
-
         for ( int i = 0; i < contexts.length; i++ )
         {
-            context = contexts[i];
+            HttpContext context = contexts[i];
 
             if ( context.getContextPath().equals( contextPath ) )
             {
@@ -398,15 +395,16 @@ public abstract class AbstractJettyServletContainer
                 getLogger().info( "Using standard webapp classloader for webapp." );
                 try
                 {
+                    // TODO: this isn't right. We're shoving the webapp into the single container realm - should be
+                    // split. Also, it should really happen after the container is initialised 
+
                     // We need to start the context to trigger the unpacking so that we can
                     // create a realm. We need to create a realm so that we can discover all
                     // the components in the webapp.
 
                     ClassRealm realm = profile.getApplicationRealm();
 
-                    List jars = FileUtils.getFiles( war, "**/*.jar", null );
-
-                    // The webapp directory needs to be unpacked before we can pick up the files
+                    List jars = FileUtils.getFiles( war, "WEB-INF/lib/*.jar", null );
 
                     for ( Iterator i = jars.iterator(); i.hasNext(); )
                     {
@@ -414,10 +412,6 @@ public abstract class AbstractJettyServletContainer
 
                         realm.addURL( file.toURL() );
                     }
-
-                    File webInf = new File( war, "WEB-INF" );
-
-                    realm.addURL( webInf.toURL() );
 
                     File classes = new File( war, "WEB-INF/classes" );
 
@@ -427,7 +421,11 @@ public abstract class AbstractJettyServletContainer
 
                     classRealms.put( webapp.getContext(), realm );
                 }
-                catch ( Exception e )
+                catch ( MalformedURLException e )
+                {
+                    throw new ServletContainerException( "Error creating webapp classloader.", e );
+                }
+                catch ( IOException e )
                 {
                     throw new ServletContainerException( "Error creating webapp classloader.", e );
                 }
@@ -436,7 +434,7 @@ public abstract class AbstractJettyServletContainer
             {
                 // Dirty hack, need better methods for classloaders because i can set the core realm but not get it,
                 // or get the container realm but not set it. blah!
-                webappContext.setClassLoader( profile.getApplicationRealm() );
+                webappContext.setClassLoader( profile.getApplicationContainer().getContainerRealm() );
             }
 
             // Save the classloader for reloads
@@ -485,8 +483,7 @@ public abstract class AbstractJettyServletContainer
         }
 
         // This is used by the xwork integration to pass some knowledge of the application server to the web applications
-        webappContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY,
-                                                        profile.getApplicationContainer() );
+        webappContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY, profile.getApplicationContainer() );
     }
 
     protected HttpContext addContext( HttpContext context )
@@ -530,9 +527,9 @@ public abstract class AbstractJettyServletContainer
         }
     }
 
-    public boolean isPortRegistered( org.codehaus.plexus.jetty.configuration.HttpListener config )
+    public boolean isPortRegistered( org.codehaus.plexus.jetty.configuration.HttpListener listener )
     {
-        return httpListeners.containsKey( Integer.toString( config.getPort() ) );
+        return httpListeners.containsKey( Integer.toString( listener.getPort() ) );
     }
 
     private void registerPort( org.codehaus.plexus.jetty.configuration.HttpListener config, HttpListener httpListener )
@@ -562,9 +559,9 @@ public abstract class AbstractJettyServletContainer
     private class ListenerStopThread
         extends Thread
     {
-        Server server;
+        private Server server;
 
-        HttpListener listener;
+        private HttpListener listener;
 
         private boolean waiting;
 

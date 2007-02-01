@@ -24,19 +24,18 @@ package org.codehaus.plexus.appserver.application.profile;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.appserver.service.PlexusService;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
-import org.codehaus.plexus.appserver.service.PlexusService;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,7 +50,7 @@ public class AppRuntimeProfile
 
     private File lib;
 
-    private DefaultPlexusContainer applicationContainer;
+    private PlexusContainer applicationContainer;
 
     private ClassWorld applicationWorld;
 
@@ -60,9 +59,9 @@ public class AppRuntimeProfile
     private PlexusConfiguration applicationConfiguration;
 
     private Map serviceMap;
-    
+
     private Map plexusConfigurationMap;
-    
+
     private Map serviceConfigurationMap;
 
     // ----------------------------------------------------------------------
@@ -78,16 +77,17 @@ public class AppRuntimeProfile
 
         this.lib = lib;
 
-        this.applicationWorld = new ClassWorld( "plexus.application." + name, applicationServerContainer.getContainerRealm() );
+        this.applicationWorld =
+            new ClassWorld( "plexus.application." + name, applicationServerContainer.getContainerRealm() );
 
         this.applicationServerContainer = applicationServerContainer;
 
         this.applicationConfiguration = applicationConfiguration;
 
         serviceMap = new HashMap();
-        
+
         plexusConfigurationMap = new HashMap();
-        
+
         serviceConfigurationMap = new HashMap();
     }
 
@@ -106,7 +106,7 @@ public class AppRuntimeProfile
         return lib;
     }
 
-    public void setApplicationContainer( DefaultPlexusContainer applicationContainer )
+    public void setApplicationContainer( PlexusContainer applicationContainer )
     {
         this.applicationContainer = applicationContainer;
     }
@@ -117,7 +117,7 @@ public class AppRuntimeProfile
      *
      * @return the container for this application
      */
-    public DefaultPlexusContainer getApplicationContainer()
+    public PlexusContainer getApplicationContainer()
     {
         return applicationContainer;
     }
@@ -127,6 +127,10 @@ public class AppRuntimeProfile
         return applicationWorld;
     }
 
+    /**
+     * @return the realm
+     * @deprecated
+     */
     public ClassRealm getApplicationRealm()
     {
         LinkedList realms = new LinkedList( applicationWorld.getRealms() );
@@ -155,33 +159,33 @@ public class AppRuntimeProfile
 
     public List getServiceConfigurations()
     {
-        return Collections.unmodifiableList( new ArrayList ( plexusConfigurationMap.values() ) );
+        return Collections.unmodifiableList( new ArrayList( plexusConfigurationMap.values() ) );
     }
-    
+
     public PlexusService getService( String id )
     {
         return (PlexusService) serviceMap.get( id );
     }
-    
+
     public PlexusConfiguration getPlexusConfiguration( PlexusService service )
     {
         return (PlexusConfiguration) plexusConfigurationMap.get( service );
     }
-    
+
     public void addService( String id, PlexusService service, PlexusConfiguration configuration )
     {
         plexusConfigurationMap.put( service, configuration );
-        
+
         serviceMap.put( id, service );
     }
-    
+
     public Object getServiceConfiguration( PlexusService service )
     {
         return serviceConfigurationMap.get( service );
     }
-    
+
     public void addServiceConfiguration( PlexusService service, Object configuration )
     {
-        serviceConfigurationMap.put( service, configuration );    
+        serviceConfigurationMap.put( service, configuration );
     }
 }

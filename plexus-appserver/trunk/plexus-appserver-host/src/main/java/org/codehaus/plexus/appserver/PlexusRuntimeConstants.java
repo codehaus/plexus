@@ -42,8 +42,6 @@ public class PlexusRuntimeConstants
 
     public static final String LOGS_DIRECTORY = "logs";
 
-    public static final String LIB_DIRECTORY = "lib";
-
     public static final String TEMP_DIRECTORY = "temp";
 
     public static final String WORK_DIRECTORY = "work";
