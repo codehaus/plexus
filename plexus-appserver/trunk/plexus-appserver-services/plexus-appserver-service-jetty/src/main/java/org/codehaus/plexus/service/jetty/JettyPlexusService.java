@@ -24,12 +24,12 @@ package org.codehaus.plexus.service.jetty;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.appserver.deploy.DeploymentException;
 import org.codehaus.plexus.appserver.service.AbstractPlexusService;
 import org.codehaus.plexus.appserver.service.PlexusServiceException;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.repository.exception.ComponentRepositoryException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
@@ -223,7 +223,8 @@ public class JettyPlexusService
             // means discovery can occur.
             // ----------------------------------------------------------------------------
 
-            DefaultPlexusContainer c = appRuntimeProfile.getApplicationContainer();
+            // TODO: why is this here? Surely it belongs in the app-init, not the jetty service, if at all
+            DefaultPlexusContainer c = (DefaultPlexusContainer) appRuntimeProfile.getApplicationContainer();
 
             ClassRealm realm = c.getContainerRealm();
 

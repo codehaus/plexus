@@ -24,6 +24,7 @@ package org.codehaus.plexus.appserver.application.deploy;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.appserver.ApplicationServer;
 import org.codehaus.plexus.appserver.ApplicationServerException;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
@@ -97,8 +98,8 @@ public class DefaultApplicationDeployer
 
             try
             {
-                AppDeploymentPhase phase =
-                    (AppDeploymentPhase) appServerContainer.lookup( AppDeploymentPhase.ROLE, id, appServerContainer.getContainerRealm() );
+                AppDeploymentPhase phase = (AppDeploymentPhase) appServerContainer.lookup( AppDeploymentPhase.ROLE, id,
+                                                                                           appServerContainer.getContainerRealm() );
 
                 phase.execute( context );
             }
@@ -154,7 +155,7 @@ public class DefaultApplicationDeployer
 
         deployments.remove( id );
 
-        DefaultPlexusContainer app = profile.getApplicationContainer();
+        PlexusContainer app = profile.getApplicationContainer();
 
         try
         {
@@ -166,19 +167,6 @@ public class DefaultApplicationDeployer
         }
 
         app.dispose();
-
-/* Don't dispose since the appserver container realm = the app container realm at present
-        ClassRealm realm = app.getContainerRealm();
-
-        try
-        {
-            realm.getWorld().disposeRealm( realm.getId() );
-        }
-        catch ( NoSuchRealmException e )
-        {
-            getLogger().warn( "Error while disposing appserver realm '" + realm.getId() + "'" );
-        }
-*/
 
         DefaultDeployEvent event = createDeployEvent( profile );
 

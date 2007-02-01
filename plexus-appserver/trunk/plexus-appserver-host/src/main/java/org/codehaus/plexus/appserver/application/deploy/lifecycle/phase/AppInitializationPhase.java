@@ -1,10 +1,9 @@
 package org.codehaus.plexus.appserver.application.deploy.lifecycle.phase;
 
-import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
-import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
+import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 
 /**
  * @author Jason van Zyl
@@ -16,8 +15,6 @@ public class AppInitializationPhase
         throws AppDeploymentException
     {
         String name = "plexus.application." + context.getApplicationId();
-
-        DefaultPlexusContainer serverContainer = context.getAppServerContainer();
 
         // ----------------------------------------------------------------------------
         // Create the container and start
@@ -31,15 +28,12 @@ public class AppInitializationPhase
 
             applicationContainer = new DefaultPlexusContainer( name, context.getContextValues(),
                                                                context.getAppConfigurationFile().getAbsoluteFile(),
-                                                               context.getAppRuntimeProfile().getApplicationWorld()
-                                                               /*, serverContainer*/ );
+                                                               context.getAppRuntimeProfile().getApplicationWorld() );
         }
         catch ( PlexusContainerException e )
         {
             throw new AppDeploymentException( "Error starting container.", e );
         }
-
-        context.setApplicationContainer( applicationContainer );
 
         context.getAppRuntimeProfile().setApplicationContainer( applicationContainer );
     }
