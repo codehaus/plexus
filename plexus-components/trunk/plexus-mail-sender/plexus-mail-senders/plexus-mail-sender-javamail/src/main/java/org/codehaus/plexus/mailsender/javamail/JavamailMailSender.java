@@ -91,6 +91,14 @@ public class JavamailMailSender
     public Session getSession()
         throws MailSenderException
     {
+        if ( "smtps".equals( getProperties().getProperty( AbstractJavamailMailSender.MAIL_TRANSPORT_PROTOCOL ) ) )
+        {
+            setSslMode( true );
+        }
+        else
+        {
+            setSslMode( false );
+        }
         Session session = Session.getInstance( getProperties(), null );
 
         return session;
@@ -104,5 +112,18 @@ public class JavamailMailSender
     public void setUserProperties( Properties userProperties )
     {
         this.userProperties = userProperties;
+    }
+
+    public void setSslMode( boolean sslEnabled )
+    {
+        super.setSslMode( sslEnabled );
+        if ( sslEnabled )
+        {
+            addProperty( "mail.smtps.socketFactory.class", DummySSLSocketFactory.class.getName() );
+        }
+        else
+        {
+            removeProperty( "mail.smtps.socketFactory.class" );
+        }
     }
 }
