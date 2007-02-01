@@ -10,6 +10,11 @@
   <version>1.0-alpha-6-SNAPSHOT</version>
   <dependencies>
     <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4</version>
+    </dependency>
+    <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-mail-sender-test</artifactId>
       <version>1.0-alpha-5-SNAPSHOT</version>
@@ -20,11 +25,12 @@
       <artifactId>plexus-naming</artifactId>
       <version>1.0-alpha-1</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
-      <version>1.4</version>
+      <exclusions>
+        <exclusion>
+          <groupId>geronimo-spec</groupId>
+          <artifactId>geronimo-spec-javamail</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 </project>

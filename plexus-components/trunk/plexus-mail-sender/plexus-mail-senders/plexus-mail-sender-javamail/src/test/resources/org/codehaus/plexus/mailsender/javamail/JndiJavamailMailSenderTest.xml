@@ -35,6 +35,14 @@
                 <name>mail.smtp.port</name>
                 <value>4000</value>
               </property>
+              <property>
+                <name>mail.smtp.debug</name>
+                <value>true</value>
+              </property>
+              <property>
+                <name>mail.smtp.timeout</name>
+                <value>10000</value>
+              </property>
             </properties>
           </resource>
         </resources>

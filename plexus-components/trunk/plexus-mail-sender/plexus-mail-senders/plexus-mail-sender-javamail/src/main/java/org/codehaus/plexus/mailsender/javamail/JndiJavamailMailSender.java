@@ -30,6 +30,7 @@ import javax.mail.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.util.Properties;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
@@ -49,7 +50,13 @@ public class JndiJavamailMailSender
         try
         {
             Context ctx = new InitialContext();
-            return (Session) ctx.lookup( jndiSessionName );
+            Session s = (Session) ctx.lookup( jndiSessionName );
+            Properties props = new Properties( s.getProperties() );
+            if ( "smtps".equals( props.getProperty( AbstractJavamailMailSender.MAIL_TRANSPORT_PROTOCOL ) ) )
+            {
+                props.put( "mail.smtps.socketFactory.class", DummySSLSocketFactory.class.getName() );
+            }
+            return Session.getInstance( props, null );
         }
         catch ( NamingException e )
         {
