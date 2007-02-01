@@ -229,12 +229,13 @@ public class Mailer
                 mailSender.setPassword( config.getString( "email.smtp.password", "" ) );
                 mailSender.setSslMode( config.getBoolean( "email.smtp.ssl.enabled", false ) );
 
+                /* Not supported for now
                 if ( mailSender.isSslMode() && ( mailSender instanceof JavamailMailSender ) )
                 {
                     JavamailMailSender jmsender = (JavamailMailSender) mailSender;
                     jmsender.updateProps();
                     jmsender.setSslProvider( config.getString( "email.smtp.ssl.provider" ) );
-                }
+                }*/
             }
 
             mailSender.send( message );
