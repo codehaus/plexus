@@ -26,9 +26,7 @@ package org.codehaus.plexus.mailsender.javamail;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.mailsender.MailSender;
-import org.codehaus.plexus.mailsender.MailMessage;
 import org.codehaus.plexus.mailsender.test.SmtpServer;
-
 import com.dumbster.smtp.SmtpMessage;
 
 /**
@@ -37,7 +35,7 @@ import com.dumbster.smtp.SmtpMessage;
  * @version $Id$
  */
 public class JavamailMailSenderTest
-	extends PlexusTestCase
+    extends PlexusTestCase
 {
     private JavamailMailSender javamailMailSender;
 
@@ -61,10 +59,13 @@ public class JavamailMailSenderTest
         assertEquals( "localhost", javamailMailSender.getSmtpHost() );
 
         assertEquals( 4000, javamailMailSender.getSmtpPort() );
+
+        javamailMailSender.addProperty( AbstractJavamailMailSender.MAIL_SMTP_TIMEOUT, "10000" );
+        javamailMailSender.addProperty( AbstractJavamailMailSender.MAIL_SMTP_DEBUG, "true" );
     }
 
     public void testDefaultComponentConfiguration()
-    	throws Exception
+        throws Exception
     {
         // ----------------------------------------------------------------------
         // Start the SMTP sever

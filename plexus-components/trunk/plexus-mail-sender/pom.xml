@@ -18,4 +18,12 @@
     <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-mail-sender-1.0-alpha-5</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-mail-sender-1.0-alpha-5</developerConnection>
   </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.4</version>
+    </dependency>
+  </dependencies>
 </project>
