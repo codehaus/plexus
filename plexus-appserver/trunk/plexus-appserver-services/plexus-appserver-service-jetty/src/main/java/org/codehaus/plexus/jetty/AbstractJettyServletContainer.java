@@ -263,7 +263,7 @@ public abstract class AbstractJettyServletContainer
 
         context.setContextPath( servletContext.getContext() );
 
-        context.setClassLoader( appRuntimeProfile.getApplicationContainer().getContainerRealm() );
+        context.setClassLoader( appRuntimeProfile.getApplicationRealm() );
 
         try
         {
