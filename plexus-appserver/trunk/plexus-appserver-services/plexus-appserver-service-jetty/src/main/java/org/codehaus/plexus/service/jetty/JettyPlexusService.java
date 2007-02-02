@@ -25,6 +25,7 @@ package org.codehaus.plexus.service.jetty;
  */
 
 import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.appserver.deploy.DeploymentException;
 import org.codehaus.plexus.appserver.service.AbstractPlexusService;
@@ -244,7 +245,7 @@ public class JettyPlexusService
 
             try
             {
-                servletContainer.startApplication( application.getContext() );
+                servletContainer.startApplication( application.getContext(), appRuntimeProfile );
             }
             catch ( ServletContainerException e )
             {
@@ -260,7 +261,7 @@ public class JettyPlexusService
 
             try
             {
-                servletContainer.startApplication( webContext.getContext() );
+                servletContainer.startApplication( webContext.getContext(), appRuntimeProfile );
             }
             catch ( ServletContainerException e )
             {
@@ -276,7 +277,7 @@ public class JettyPlexusService
 
             try
             {
-                servletContainer.startApplication( servletContext.getContext() );
+                servletContainer.startApplication( servletContext.getContext(), appRuntimeProfile );
             }
             catch ( ServletContainerException e )
             {

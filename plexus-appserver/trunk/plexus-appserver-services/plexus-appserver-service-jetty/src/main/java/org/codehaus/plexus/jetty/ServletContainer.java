@@ -54,7 +54,7 @@ public interface ServletContainer
     void addProxyListener( ProxyHttpListener listener )
         throws ServletContainerException, UnknownHostException;
 
-    void startApplication( String contextPath )
+    void startApplication( String contextPath, AppRuntimeProfile profile )
         throws ServletContainerException;
 
     void stopApplication( String contextPath )
