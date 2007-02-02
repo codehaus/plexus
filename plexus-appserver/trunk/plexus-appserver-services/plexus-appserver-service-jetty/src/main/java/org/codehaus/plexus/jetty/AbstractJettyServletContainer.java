@@ -193,7 +193,7 @@ public abstract class AbstractJettyServletContainer
         deployWAR( directory, false, null, profile, webapp );
     }
 
-    public void startApplication( String contextPath )
+    public void startApplication( String contextPath, AppRuntimeProfile profile )
         throws ServletContainerException
     {
         //noinspection OverlyBroadCatchBlock
@@ -202,6 +202,9 @@ public abstract class AbstractJettyServletContainer
             HttpContext context = getContext( contextPath );
 
             getLogger().info( "Starting Jetty Context " + contextPath );
+
+            // This is used by the xwork integration to pass some knowledge of the application server to the web applications
+            context.setAttribute( PlexusConstants.PLEXUS_KEY, profile.getApplicationContainer() );
 
             context.start();
         }
@@ -481,9 +484,6 @@ public abstract class AbstractJettyServletContainer
                 }
             }
         }
-
-        // This is used by the xwork integration to pass some knowledge of the application server to the web applications
-        webappContext.getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY, profile.getApplicationContainer() );
     }
 
     protected HttpContext addContext( HttpContext context )
