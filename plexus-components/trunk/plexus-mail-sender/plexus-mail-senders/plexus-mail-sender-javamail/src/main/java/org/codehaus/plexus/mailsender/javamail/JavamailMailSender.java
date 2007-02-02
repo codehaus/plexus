@@ -121,10 +121,20 @@ public class JavamailMailSender
 
     public void setSslMode( boolean sslEnabled )
     {
+        setSslMode( sslEnabled, false );
+    }
+
+    public void setSslMode( boolean sslEnabled, boolean tlsEnabled )
+    {
         super.setSslMode( sslEnabled );
         if ( sslEnabled )
         {
             addProperty( "mail.smtps.socketFactory.class", DummySSLSocketFactory.class.getName() );
+
+            if ( tlsEnabled )
+            {
+                addProperty( AbstractJavamailMailSender.MAIL_SMTP_STARTTLS_ENABLE, "true" );
+            }
         }
         else
         {
