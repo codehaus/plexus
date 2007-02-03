@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.plexus.cache</groupId>
+    <artifactId>plexus-cache-parent</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>plexus-cache-api</artifactId>
+  <name>Plexus Cache API</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-component-api</artifactId>
+      <version>1.0-alpha-16</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-16</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.1</version>
+    </dependency>
+  </dependencies>
+</project>

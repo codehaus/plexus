@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.plexus</groupId>
+    <artifactId>plexus-components</artifactId>
+    <version>1.1.8</version>
+  </parent>
+
+  <groupId>org.codehaus.plexus.cache</groupId>
+  <artifactId>plexus-cache-parent</artifactId>
+  <name>Plexus Cache Component Parent</name>
+  <version>1.0-alpha-1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>plexus-cache-api</module>
+    <module>plexus-cache-test</module>
+    <module>plexus-cache-providers</module>
+  </modules>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-cache</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-cache</developerConnection>
+  </scm>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <aggregate>true</aggregate>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jxr-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
