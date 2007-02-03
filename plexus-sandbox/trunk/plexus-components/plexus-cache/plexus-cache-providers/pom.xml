@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.plexus.cache</groupId>
+    <artifactId>plexus-cache-parent</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
+  </parent>
+  <artifactId>plexus-cache-providers-parent</artifactId>
+  <name>Plexus Cache Providers Parent</name>
+  <packaging>pom</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus.cache</groupId>
+      <artifactId>plexus-cache-api</artifactId>
+      <version>1.0-alpha-1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.cache</groupId>
+      <artifactId>plexus-cache-test</artifactId>
+      <version>1.0-alpha-1-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <modules>
+    <module>plexus-cache-hashmap</module>
+    <module>plexus-cache-ehcache</module>
+  </modules>
+</project>
