@@ -21,9 +21,9 @@ public class DefaultRmiService
     implements RmiService, Startable
 {
     /**
-     * @plexus.configuration default-value = "1051"
+     * @plexus.configuration default-value = "1099"
      */
-    private int rmiRegistryPort = 1051;
+    private int rmiRegistryPort = Registry.REGISTRY_PORT;
 
     /**
      * @plexus.configuration default-value = "9999"
