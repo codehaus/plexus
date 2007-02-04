@@ -6,6 +6,7 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.spe.ProcessException;
+import org.codehaus.plexus.spe.model.LogMessage;
 import org.codehaus.plexus.spe.model.ProcessDescriptor;
 import org.codehaus.plexus.spe.model.ProcessInstance;
 import org.codehaus.plexus.spe.model.ProcessInstanceLifecycleListener;
@@ -39,7 +40,7 @@ public class IbatisProcessInstanceStore
      * @plexus.requirement
      */
     private IbatisSetupHelper setupHelper;
-    
+
     private ProcessInstanceLifecycleListener processInstanceLifecycleListener;
 
     private SqlMapClient sqlMap;
@@ -69,7 +70,7 @@ public class IbatisProcessInstanceStore
 
             instance.serialize();
 
-            Integer id = (Integer) sqlMap.insert( "insertProcessInstance", instance );
+            String id = sqlMap.insert( "insertProcessInstance", instance ).toString();
 
             if ( id == null )
             {
@@ -91,7 +92,7 @@ public class IbatisProcessInstanceStore
                 }
 
                 StepInstance step = new StepInstance();
-                step.setId( i );
+                step.setId( Integer.toString( i ) );
                 step.setProcessInstanceId( id.toString() );
                 step.setExecutorId( action.getExecutorId() );
 
@@ -145,13 +146,41 @@ public class IbatisProcessInstanceStore
 
         IbatisProcessInstance instance = new IbatisProcessInstance( processInstance );
 
+        instance.serialize();
+
         try
         {
             sqlMap.startTransaction();
 
-            instance.serialize();
-
             sqlMap.update( "updateProcessInstance", instance );
+
+            // -----------------------------------------------------------------------
+            // Empty all the existing log message array
+            // -----------------------------------------------------------------------
+
+            sqlMap.delete( "deleteStepInstanceLogMessage",
+                           Collections.singletonMap( "processInstanceId", processInstance.getId() ) );
+
+            for ( StepInstance step : (List<StepInstance>) processInstance.getSteps() )
+            {
+                sqlMap.update( "updateStepInstance", step );
+
+                // -----------------------------------------------------------------------
+                // Insert all the log messages
+                // -----------------------------------------------------------------------
+
+                int sequenceNo = 0;
+                Map parameters = new HashMap<String, Object>();
+                parameters.put( "stepInstanceId", step.getId() );
+                parameters.put( "processInstanceId", processInstance.getId() );
+                for ( LogMessage logMessage : (List<LogMessage>) step.getLogMessages() )
+                {
+                    parameters.put( "sequenceNo", sequenceNo++ );
+                    parameters.put( "logMessage", logMessage.getMessage() );
+                    parameters.put( "timestamp", logMessage.getTimestamp() );
+                    sqlMap.insert( "insertStepInstanceLogMessage", parameters );
+                }
+            }
 
             sqlMap.commitTransaction();
         }
@@ -165,7 +194,7 @@ public class IbatisProcessInstanceStore
         }
     }
 
-    public synchronized ProcessInstance getInstance( int id, boolean includeContext )
+    public synchronized ProcessInstance getInstance( String id, boolean includeContext )
         throws ProcessException
     {
         try
@@ -179,6 +208,18 @@ public class IbatisProcessInstanceStore
                 (IbatisProcessInstance) sqlMap.queryForObject( "selectProcessInstanceFull", map );
 
             processInstance.deserialize();
+
+            // Because of some iBatis bug the log messages can't be loaded properly. Waiting for 2.2.0 and 2.3.0 to be
+            // uploaded to the Maven repository
+
+            for ( StepInstance stepInstance : ( (List<StepInstance>) processInstance.getSteps() ) )
+            {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put( "processInstanceId", processInstance.getId() );
+                parameters.put( "stepInstanceId", stepInstance.getId() );
+                List list = sqlMap.queryForList( "selectStepInstanceLogMessage", parameters );
+                stepInstance.setLogMessages( list );
+            }
 
             sqlMap.commitTransaction();
 
@@ -194,7 +235,7 @@ public class IbatisProcessInstanceStore
         }
     }
 
-    public synchronized void deleteInstance( int id )
+    public synchronized void deleteInstance( String id )
         throws ProcessException
     {
         getLogger().info( "Deleting process instance " + id );
@@ -203,6 +244,7 @@ public class IbatisProcessInstanceStore
         {
             sqlMap.startTransaction();
 
+            sqlMap.delete( "deleteStepInstanceLogMessage", Collections.singletonMap( "processInstanceId", id ) );
             sqlMap.delete( "deleteStepInstance", Collections.singletonMap( "processInstanceId", id ) );
             sqlMap.delete( "deleteProcessInstance", Collections.singletonMap( "processInstanceId", id ) );
 

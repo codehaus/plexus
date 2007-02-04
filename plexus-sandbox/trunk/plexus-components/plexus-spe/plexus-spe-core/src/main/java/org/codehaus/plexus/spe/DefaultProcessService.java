@@ -128,7 +128,7 @@ public class DefaultProcessService
     // Process Control
     // ----------------------------------------------------------------------
 
-    public int executeProcess( String processId, Map<String, Serializable> context )
+    public String executeProcess( String processId, Map<String, Serializable> context )
         throws ProcessException
     {
         ProcessDescriptor process = processes.get( processId );
@@ -149,7 +149,7 @@ public class DefaultProcessService
      * Returns true if this process has stopped, either because it completed successfully or because it failed
      * and cannot be started again.
      */
-    public boolean hasCompleted( int instanceId )
+    public boolean hasCompleted( String instanceId )
         throws ProcessException
     {
         ProcessInstance instance = store.getInstance( instanceId, false );
@@ -157,7 +157,7 @@ public class DefaultProcessService
         return instance.getEndTime() > 0 || StringUtils.isNotEmpty( instance.getErrorMessage() );
     }
 
-    public ProcessInstance getProcessInstance( int instanceId )
+    public ProcessInstance getProcessInstance( String instanceId )
         throws ProcessException
     {
         return store.getInstance( instanceId, true );

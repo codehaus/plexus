@@ -11,24 +11,28 @@
    |-->
 
   <resultMap id="StepInstanceRM" class="org.codehaus.plexus.spe.model.StepInstance">
+    <result property="id"/>
+    <result property="processInstanceId"/>
     <result property="executorId"/>
-    <result property="startTime"/>
+    <result property="startTime" nullValue=""/>
     <result property="endTime" nullValue="0"/>
     <result property="exceptionStackTrace" nullValue=""/>
+    <!--This is done in code
+    <result property="logMessages" select="selectStepInstanceLogMessage" column="[stepInstanceId=id, processInstanceId=processInstanceId]"/>-->
   </resultMap>
 
   <select id="selectStepInstance" resultMap="StepInstanceRM">
     select
+      char( id ),
+      processInstanceId,
       executorId,
       startTime,
       endTime,
       exceptionStackTrace
     from
       stepInstance
-    where
-      1 = 1
     <isPropertyAvailable property="id">
-      and id = #id#
+      where id = #id#
     </isPropertyAvailable>
   </select>
 
@@ -38,11 +42,72 @@
       processInstanceId,
       executorId,
       startTime)
-    values(#id#, #processInstanceId#, #executorId#, #startTime#)
+    values(
+      #id#,
+      #processInstanceId#,
+      #executorId#,
+      #startTime#)
   </insert>
 
+  <delete id="updateStepInstance" parameterClass="org.codehaus.plexus.spe.model.StepInstance">
+    update StepInstance set
+      endTime=#endTime#,
+      exceptionStackTrace=#exceptionStackTrace#
+    where
+      id=#id# and
+      processInstanceId=#processInstanceId#
+  </delete>
+
   <delete id="deleteStepInstance">
-    delete from StepInstance where processInstanceId=#processInstanceId#
+    delete from StepInstance
+    where
+      processInstanceId=#processInstanceId#
+  </delete>
+
+  <!--
+   |
+   | Step Instance Log Message
+   |
+   |-->
+
+  <parameterMap id="insertStepInstanceLogMessagePM" class="map">
+    <parameter property="stepInstanceId" jdbcType="INTEGER"/>
+    <parameter property="processInstanceId" jdbcType="INTEGER"/>
+    <parameter property="sequenceNo" jdbcType="INTEGER"/>
+    <parameter property="logMessage" jdbcType="VARCHAR"/>
+    <parameter property="timestamp" jdbcType="BIGINT"/>
+  </parameterMap>
+  <insert id="insertStepInstanceLogMessage" parameterMap="insertStepInstanceLogMessagePM">
+    insert into StepInstanceLogMessage(
+      stepInstanceId,
+      processInstanceId,
+      sequenceNo,
+      logMessage,
+      timestamp)
+    values(?,?,?,?,?)
+  </insert>
+
+  <!--<resultMap id="selectStepInstanceLogMessageRM" class="org.codehaus.plexus.spe.model.LogMessage">-->
+    <!--<result property="timestamp"/>-->
+    <!--<result property="logMessage"/>-->
+  <!--</resultMap>-->
+  <select id="selectStepInstanceLogMessage" resultClass="org.codehaus.plexus.spe.model.LogMessage">
+    select
+      timestamp,
+      logMessage as message
+    from
+      StepInstanceLogMessage
+    where
+      stepInstanceId = #stepInstanceId# and
+      processInstanceId = #processInstanceId#
+    order by
+      sequenceNo
+  </select>
+
+  <delete id="deleteStepInstanceLogMessage">
+    delete from StepInstanceLogMessage
+    where
+      processInstanceId=#processInstanceId#
   </delete>
 
   <!--

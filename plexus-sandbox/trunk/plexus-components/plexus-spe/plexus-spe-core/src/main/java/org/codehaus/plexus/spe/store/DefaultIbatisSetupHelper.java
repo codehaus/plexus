@@ -56,10 +56,22 @@ public class DefaultIbatisSetupHelper
             getLogger().info( "Creating step instance table" );
             sqlMap.update( "createTableStepInstance", null );
 
+            getLogger().info( "Creating step instance log message table" );
+            sqlMap.update( "createTableStepInstanceLogMessage", null );
+
             sqlMap.commitTransaction();
         }
         catch ( SQLException e )
         {
+            getLogger().error( "Error while initializing database, showing all linked exceptions in SQLException." );
+
+            while( e != null )
+            {
+                getLogger().error( e.getMessage(), e );
+
+                e = e.getNextException();
+            }
+
             throw new InitializationException( "Error while setting up database.", e );
         }
         finally

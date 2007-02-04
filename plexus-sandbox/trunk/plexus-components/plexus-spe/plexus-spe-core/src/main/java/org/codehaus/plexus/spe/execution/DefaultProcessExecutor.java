@@ -3,8 +3,6 @@ package org.codehaus.plexus.spe.execution;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.ServiceLocator;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
@@ -35,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class DefaultProcessExecutor
     extends AbstractLogEnabled
-    implements ProcessExecutor, Initializable, Startable, Serviceable
+    implements ProcessExecutor, Initializable, Startable
 {
     /**
      * @plexus.requirement
@@ -50,9 +48,7 @@ public class DefaultProcessExecutor
     /**
      * @plexus.requirement role="org.codehaus.plexus.spe.execution.StepExecutor"
      */
-    private Map stepExecutors;
-
-    private ServiceLocator serviceLocator;
+    private Map<String, StepExecutor> stepExecutors;
 
     private ExecutorService executorService;
 
@@ -104,11 +100,6 @@ public class DefaultProcessExecutor
         throws StoppingException
     {
         executorService.shutdownNow();
-    }
-
-    public void service( ServiceLocator serviceLocator )
-    {
-        this.serviceLocator = serviceLocator;
     }
 
     // ----------------------------------------------------------------------
@@ -164,6 +155,7 @@ public class DefaultProcessExecutor
         List steps = processInstance.getSteps();
         StepInstance step = (StepInstance) steps.get( steps.size() - 1 );
         step.setEndTime( timestamp );
+        step.setLogMessages( stepExecutorRunner.getListener().getLogMessages() );
 
         processInstance.setContext( stepExecutorRunner.getContext() );
 
@@ -242,14 +234,16 @@ public class DefaultProcessExecutor
 
         StepDescriptor stepDescriptor = (StepDescriptor) runtimeDescriptor.getProcessDescriptor().getSteps().get( currentStep );
 
-        StepExecutor stepExecutor = (StepExecutor) stepExecutors.get( stepDescriptor.getExecutorId() );
+        StepExecutor stepExecutor = stepExecutors.get( stepDescriptor.getExecutorId() );
 
         if ( stepExecutor == null )
         {
             throw new ProcessException( "No such executor '" + stepDescriptor.getExecutorId() + "'." );
         }
 
-        StepExecutorRunner stepExecutorRunner = new StepExecutorRunner( stepExecutor, stepDescriptor );
+        StepExecutorRunner stepExecutorRunner = new StepExecutorRunner( stepExecutor,
+                                                                        stepDescriptor,
+                                                                        new CollectingStepEventListener() );
 
         runningProcesses.put( stepExecutorRunner, runtimeDescriptor );
 
@@ -263,11 +257,11 @@ public class DefaultProcessExecutor
     {
         private ProcessDescriptor processDescriptor;
 
-        private int instanceId;
+        private String instanceId;
 
         private int currentStep;
 
-        public ProcessRuntimeDescriptor( ProcessDescriptor processDescriptor, int processId )
+        public ProcessRuntimeDescriptor( ProcessDescriptor processDescriptor, String processId )
         {
             this.processDescriptor = processDescriptor;
             this.instanceId = processId;
@@ -278,7 +272,7 @@ public class DefaultProcessExecutor
             return processDescriptor;
         }
 
-        public int getInstanceId()
+        public String getInstanceId()
         {
             return instanceId;
         }
@@ -317,7 +311,7 @@ public class DefaultProcessExecutor
             {
                 StepExecutorRunner stepExecutorRunner = (StepExecutorRunner) runnable;
 
-                ProcessRuntimeDescriptor processRuntimeDescriptor = runningProcesses.get( stepExecutorRunner );
+                ProcessRuntimeDescriptor processRuntimeDescriptor = runningProcesses.remove( stepExecutorRunner );
 
                 onStepCompletion( stepExecutorRunner, processRuntimeDescriptor );
             }

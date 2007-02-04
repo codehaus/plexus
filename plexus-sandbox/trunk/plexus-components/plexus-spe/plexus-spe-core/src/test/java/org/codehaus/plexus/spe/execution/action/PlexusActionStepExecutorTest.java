@@ -6,6 +6,7 @@ import org.codehaus.plexus.spe.model.StepDescriptor;
 import org.codehaus.plexus.spe.action.SaveUserAction;
 import org.codehaus.plexus.spe.User;
 import org.codehaus.plexus.spe.execution.StepExecutor;
+import org.codehaus.plexus.spe.execution.CollectingStepEventListener;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -46,7 +47,7 @@ public class PlexusActionStepExecutorTest
         user.setLastName( "Laugstol" );
         context.put( "user", user );
 
-        executor.execute( descriptor, context );
+        executor.execute( descriptor, context, new CollectingStepEventListener() );
 
         // ----------------------------------------------------------------------
         // Assertions

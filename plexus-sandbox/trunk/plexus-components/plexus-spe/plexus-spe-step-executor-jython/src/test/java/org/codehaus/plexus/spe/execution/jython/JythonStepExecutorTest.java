@@ -3,6 +3,7 @@ package org.codehaus.plexus.spe.execution.jython;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.spe.ProcessException;
 import org.codehaus.plexus.spe.execution.StepExecutor;
+import org.codehaus.plexus.spe.execution.CollectingStepEventListener;
 import org.codehaus.plexus.spe.model.StepDescriptor;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
@@ -25,7 +26,9 @@ public class JythonStepExecutorTest
 
         try
         {
-            stepExecutor.execute( descriptor, new HashMap<String, Serializable>() );
+            stepExecutor.execute( descriptor,
+                                  new HashMap<String, Serializable>(),
+                                  new CollectingStepEventListener() );
 
             fail( "Expected exception." );
         }
@@ -42,7 +45,9 @@ public class JythonStepExecutorTest
         setScript( configuration );
         descriptor.setConfiguration( configuration );
 
-        stepExecutor.execute( descriptor, new HashMap<String, Serializable>() );
+        stepExecutor.execute( descriptor,
+                              new HashMap<String, Serializable>(),
+                              new CollectingStepEventListener() );
 
         // -----------------------------------------------------------------------
         //
@@ -64,7 +69,7 @@ public class JythonStepExecutorTest
         HashMap<String, Serializable> context = new HashMap<String, Serializable>();
         context.put( "a", "b" );
 
-        stepExecutor.execute( descriptor, context );
+        stepExecutor.execute( descriptor, context, new CollectingStepEventListener() );
 
         assertTrue( AFooService.beenTouched );
         assertTrue( BFooService.beenTouched );

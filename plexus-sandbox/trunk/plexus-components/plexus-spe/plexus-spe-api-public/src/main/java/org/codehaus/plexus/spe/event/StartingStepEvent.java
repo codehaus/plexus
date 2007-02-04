@@ -11,7 +11,7 @@ public class StartingStepEvent
 {
     private String processId;
 
-    private int processInstanceId;
+    private String processInstanceId;
 
     private int stepNumber;
 
@@ -25,12 +25,12 @@ public class StartingStepEvent
         this.processId = processId;
     }
 
-    public int getProcessInstanceId()
+    public String getProcessInstanceId()
     {
         return processInstanceId;
     }
 
-    public void setProcessInstanceId( int processInstanceId )
+    public void setProcessInstanceId( String processInstanceId )
     {
         this.processInstanceId = processInstanceId;
     }

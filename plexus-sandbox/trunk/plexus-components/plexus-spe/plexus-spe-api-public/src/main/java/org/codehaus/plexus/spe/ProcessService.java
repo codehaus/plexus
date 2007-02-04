@@ -37,12 +37,12 @@ public interface ProcessService
     // Process
     // ----------------------------------------------------------------------
 
-    int executeProcess( String processId, Map<String, Serializable> context )
+    String executeProcess( String processId, Map<String, Serializable> context )
         throws ProcessException;
 
-    boolean hasCompleted( int processId )
+    boolean hasCompleted( String processId )
         throws ProcessException;
 
-    ProcessInstance getProcessInstance( int instanceId )
+    ProcessInstance getProcessInstance( String instanceId )
         throws ProcessException;
 }

@@ -14,6 +14,8 @@ public interface StepExecutor
 {
     String ROLE = StepExecutor.class.getName();
 
-    void execute( StepDescriptor stepDescriptor, Map<String, Serializable> context )
+    void execute( StepDescriptor stepDescriptor,
+                  Map<String, Serializable> context,
+                  StepEventListener eventListener )
         throws ProcessException;
 }

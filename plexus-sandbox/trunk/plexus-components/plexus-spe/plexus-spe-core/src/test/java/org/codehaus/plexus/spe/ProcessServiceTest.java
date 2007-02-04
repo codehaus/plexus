@@ -32,7 +32,7 @@ public class ProcessServiceTest
 
         Map<String, Serializable> context = new HashMap<String, Serializable>();
         context.put( "message", "Context Hello World!" );
-        int instanceId = processService.executeProcess( "hello-world", context );
+        String instanceId = processService.executeProcess( "hello-world", context );
 
         Thread.sleep( 1000 );
 
@@ -52,7 +52,7 @@ public class ProcessServiceTest
 
         Map<String, Serializable> context = new HashMap<String, Serializable>();
         context.put( "message", "Hello World!" );
-        int instanceId = processService.executeProcess( "context-modifying-process", context );
+        String instanceId = processService.executeProcess( "context-modifying-process", context );
 
         waitForCompletion( 3000, processService, instanceId );
         assertEquals( 2, EchoAction.messages.size() );
@@ -76,7 +76,7 @@ public class ProcessServiceTest
 
         Map<String, Serializable> context = new HashMap<String, Serializable>();
         context.put( "message", "Runtime Exception Message" );
-        int instanceId = processService.executeProcess( "runtime-exception-throwing-process", context );
+        String instanceId = processService.executeProcess( "runtime-exception-throwing-process", context );
 
         waitForCompletion( 3000, processService, instanceId, false );
 
@@ -108,7 +108,7 @@ public class ProcessServiceTest
 
         processService.loadProcess( getTestFile( "src/test/resources/process/process-3.xml" ).toURL() );
 
-        int instanceId = processService.executeProcess( "ant-based-process", new HashMap<String, Serializable>() );
+        String instanceId = processService.executeProcess( "ant-based-process", new HashMap<String, Serializable>() );
 
         waitForCompletion( 3000, processService, instanceId );
     }
@@ -130,7 +130,7 @@ public class ProcessServiceTest
         context.put( "user", user );
         context.put( "username", "foo" );
 
-        int instanceId = processService.executeProcess( "process-4", context );
+        String instanceId = processService.executeProcess( "process-4", context );
 
         waitForCompletion( 3000, processService, instanceId );
 
@@ -144,7 +144,7 @@ public class ProcessServiceTest
 
         processService.loadProcess( getTestFile( "src/test/resources/process/process-5.xml" ).toURL() );
 
-        int instanceId = processService.executeProcess( "process-5", new HashMap<String, Serializable>() );
+        String instanceId = processService.executeProcess( "process-5", new HashMap<String, Serializable>() );
 
         waitForCompletion( 3000, processService, instanceId );
     }
@@ -153,13 +153,13 @@ public class ProcessServiceTest
     //
     // ----------------------------------------------------------------------
 
-    private void waitForCompletion( long time, ProcessService processService, int instanceId )
+    private void waitForCompletion( long time, ProcessService processService, String instanceId )
         throws InterruptedException, ProcessException
     {
         waitForCompletion( time, processService, instanceId, true );
     }
 
-    private void waitForCompletion( long time, ProcessService processService, int instanceId, boolean expectsSuccess )
+    private void waitForCompletion( long time, ProcessService processService, String instanceId, boolean expectsSuccess )
         throws InterruptedException, ProcessException
     {
         int sleepTime = 100;

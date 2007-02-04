@@ -26,4 +26,15 @@
       foreign key( processInstanceId ) references ProcessInstance( id )
     )
   </statement>
+  <statement id="createTableStepInstanceLogMessage">
+    CREATE TABLE StepInstanceLogMessage (
+      stepInstanceId        integer not null,
+      processInstanceId     integer not null,
+      sequenceNo            integer not null,
+      logMessage            varchar(8000) not null,
+      timestamp             bigint not null,
+      primary key( stepInstanceId, processInstanceId, sequenceNo ),
+      foreign key( stepInstanceId, processInstanceId ) references StepInstance( id, processInstanceId )
+    )
+  </statement>
 </sqlMap>

@@ -118,7 +118,7 @@ public class DefaultProcessInstanceStore
         updateObject( getPm(), processInstance );
     }
 
-    public synchronized ProcessInstance getInstance( int id, boolean includeContext )
+    public synchronized ProcessInstance getInstance( String id, boolean includeContext )
         throws ProcessException
     {
         PersistenceManager pm = getPm();
@@ -129,7 +129,7 @@ public class DefaultProcessInstanceStore
         {
             tx.begin();
 
-            Object objectId = pm.newObjectIdInstance( ProcessInstance.class, (Integer) id );
+            Object objectId = pm.newObjectIdInstance( ProcessInstance.class, id );
 
             Object object = pm.getObjectById( objectId );
 
@@ -161,7 +161,7 @@ public class DefaultProcessInstanceStore
         }
     }
 
-    public synchronized void deleteInstance( int id )
+    public synchronized void deleteInstance( String id )
         throws ProcessException
     {
         PersistenceManager pm = getPm();
@@ -172,7 +172,7 @@ public class DefaultProcessInstanceStore
         {
             tx.begin();
 
-            Object objectId = pm.newObjectIdInstance( ProcessInstance.class, (Integer) id );
+            Object objectId = pm.newObjectIdInstance( ProcessInstance.class, id );
 
             Object object = pm.getObjectById( objectId );
 
@@ -266,7 +266,7 @@ public class DefaultProcessInstanceStore
                 pm.getFetchPlan().addGroup( fetchGroup );
             }
 
-            Object objectId = pm.newObjectIdInstance( clazz, new Integer( id ) );
+            Object objectId = pm.newObjectIdInstance( clazz, id );
 
             Object object = pm.getObjectById( objectId );
 

@@ -14,6 +14,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.spe.ProcessException;
 import org.codehaus.plexus.spe.execution.AbstractStepExecutor;
 import org.codehaus.plexus.spe.execution.StepExecutor;
+import org.codehaus.plexus.spe.execution.StepEventListener;
 import org.codehaus.plexus.spe.model.StepDescriptor;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
@@ -36,7 +37,9 @@ public class PlexusActionStepExecutor
     // StepExecutor Implementation
     // ----------------------------------------------------------------------
 
-    public void execute( StepDescriptor stepDescriptor, Map<String, Serializable> context )
+    public void execute( StepDescriptor stepDescriptor,
+                         Map<String, Serializable> context,
+                         StepEventListener eventListener  )
         throws ProcessException
     {
         Xpp3Dom executorConfiguration = (Xpp3Dom) stepDescriptor.getExecutorConfiguration();
