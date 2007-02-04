@@ -18,14 +18,17 @@ public class StepExecutorRunner
 
     private StepDescriptor stepDescriptor;
 
+    private CollectingStepEventListener listener;
+
     private Map<String, Serializable> context;
 
     private Throwable throwable;
 
-    public StepExecutorRunner( StepExecutor executor, StepDescriptor stepDescriptor )
+    public StepExecutorRunner( StepExecutor executor, StepDescriptor stepDescriptor, CollectingStepEventListener listener )
     {
         this.executor = executor;
         this.stepDescriptor = stepDescriptor;
+        this.listener = listener;
     }
 
     public StepExecutor getExecutor()
@@ -36,6 +39,11 @@ public class StepExecutorRunner
     public StepDescriptor getStepDescriptor()
     {
         return stepDescriptor;
+    }
+
+    public CollectingStepEventListener getListener()
+    {
+        return listener;
     }
 
     public Map<String, Serializable> getContext()
@@ -61,7 +69,7 @@ public class StepExecutorRunner
     {
         try
         {
-            executor.execute( stepDescriptor, context );
+            executor.execute( stepDescriptor, context, listener );
         }
         catch ( Throwable e )
         {

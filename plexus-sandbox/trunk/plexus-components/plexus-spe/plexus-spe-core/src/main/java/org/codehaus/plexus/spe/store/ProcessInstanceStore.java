@@ -25,9 +25,9 @@ public interface ProcessInstanceStore
     void saveInstance( ProcessInstance processState )
         throws ProcessException;
 
-    ProcessInstance getInstance( int id, boolean includeContext )
+    ProcessInstance getInstance( String id, boolean includeContext )
         throws ProcessException;
 
-    void deleteInstance( int id )
+    void deleteInstance( String id )
         throws ProcessException;
 }

@@ -3,6 +3,7 @@ package org.codehaus.plexus.spe.execution.jython;
 import org.codehaus.plexus.spe.ProcessException;
 import org.codehaus.plexus.spe.execution.AbstractStepExecutor;
 import org.codehaus.plexus.spe.execution.StepExecutor;
+import org.codehaus.plexus.spe.execution.StepEventListener;
 import org.codehaus.plexus.spe.model.StepDescriptor;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.StringUtils;
@@ -25,7 +26,9 @@ public class JythonStepExecutor
     // StepExecutor Implementation
     // ----------------------------------------------------------------------
 
-    public void execute( StepDescriptor stepDescriptor, Map<String, Serializable> context )
+    public void execute( StepDescriptor stepDescriptor,
+                         Map<String, Serializable> context,
+                         StepEventListener eventListener )
         throws ProcessException
     {
         Xpp3Dom configuration = (Xpp3Dom) stepDescriptor.getConfiguration();
