@@ -34,7 +34,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * 
- * @plexus.component role="org.codehaus.plexus.cache.Cache" role-hint="ehcache" instantiation-strategy="per-lookup"
+ * @plexus.component role="org.codehaus.plexus.cache.Cache" role-hint="ehcache"
  */
 public class EhcacheCache
     extends AbstractLogEnabled
@@ -83,58 +83,58 @@ public class EhcacheCache
      * 
      * @plexus.configuration default-value="600"
      */
-    private long diskExpiryThreadIntervalSeconds;
+    private long diskExpiryThreadIntervalSeconds = 600;
 
     /**
      * Whether to persist the cache to disk between JVM restarts.
      * 
      * @plexus.configuration default-value="true"
      */
-    private boolean diskPersistent;
+    private boolean diskPersistent = true;
 
     /**
      * Location on disk for the ehcache store.
      * 
      * @plexus.configuration default-value="${java.io.tmpdir}/ehcache"
      */
-    private String diskStorePath;
+    private String diskStorePath = System.getProperty( "java.io.tmpdir" ) + "/ehcache";
 
     /**
      * @plexus.configuration default-value="false"
      */
-    private boolean eternal;
+    private boolean eternal = false;
 
     /**
      * @plexus.configuration default-value="1000"
      */
-    private int maxElementsInMemory;
+    private int maxElementsInMemory = 1000;
 
     /**
      * @plexus.configuration default-value="LRU"
      */
-    private String memoryEvictionPolicy;
+    private String memoryEvictionPolicy = "LRU";
 
     /**
      * @plexus.configuration default-value="cache"
      */
-    private String name;
+    private String name = "cache";
 
     /**
-     * Where to use the disk store.
+     * Flag indicating when to use the disk store.
      * 
      * @plexus.configuration default-value="false"
      */
-    private boolean overflowToDisk;
+    private boolean overflowToDisk = false;
 
     /**
      * @plexus.configuration default-value="600"
      */
-    private int timeToIdleSeconds;
+    private int timeToIdleSeconds = 600;
 
     /**
      * @plexus.configuration default-value="300"
      */
-    private int timeToLiveSeconds;
+    private int timeToLiveSeconds = 300;
 
     private CacheManager cacheManager;
 

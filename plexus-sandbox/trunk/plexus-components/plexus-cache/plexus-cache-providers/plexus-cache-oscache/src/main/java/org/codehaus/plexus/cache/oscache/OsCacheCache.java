@@ -15,6 +15,7 @@ package org.codehaus.plexus.cache.oscache;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,9 +33,11 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
 /**
  * for configuration see documentation : http://opensymphony.com/oscache/wiki/Configuration.html
- * @since 3 févr. 07
+ * @since 3 Februrary, 2007
  * @version $Id$
  * @author <a href="mailto:Olivier.LAMY@accor.com">Olivier Lamy</a>
+ * 
+ * @plexus.component role="org.codehaus.plexus.cache.Cache" role-hint="oscache"
  */
 public class OsCacheCache
     extends AbstractLogEnabled
@@ -133,28 +136,27 @@ public class OsCacheCache
         {
             cacheProperties.put( GeneralCacheAdministrator.CACHE_ALGORITHM_KEY, this.getCacheAlgorithm() );
         }
-        cacheProperties.put( GeneralCacheAdministrator.CACHE_BLOCKING_KEY, this.isBlockingCache() ? Boolean.TRUE
-            .toString() : Boolean.FALSE.toString() );
+        cacheProperties.put( GeneralCacheAdministrator.CACHE_BLOCKING_KEY, Boolean.toString( this.isBlockingCache() ) );
         cacheProperties.put( GeneralCacheAdministrator.CACHE_CAPACITY_KEY, Integer.toString( this.getCapacity() ) );
-        cacheProperties.put( GeneralCacheAdministrator.CACHE_DISK_UNLIMITED_KEY,
-                             this.isCacheUnlimitedDisk() ? Boolean.TRUE.toString() : Boolean.FALSE.toString() );
+        cacheProperties.put( GeneralCacheAdministrator.CACHE_DISK_UNLIMITED_KEY, Boolean.toString( this
+            .isCacheUnlimitedDisk() ) );
+
         String cacheEventListenersAsString = this.getCacheEventListenersAsString();
         if ( cacheEventListenersAsString != null )
         {
             cacheProperties
                 .put( GeneralCacheAdministrator.CACHE_ENTRY_EVENT_LISTENERS_KEY, cacheEventListenersAsString );
         }
-        cacheProperties
-            .put( GeneralCacheAdministrator.CACHE_MEMORY_KEY, this.isCacheMemory() ? Boolean.TRUE.toString()
-                                                                                  : Boolean.FALSE.toString() );
-        cacheProperties.put( GeneralCacheAdministrator.CACHE_PERSISTENCE_OVERFLOW_KEY, this
-            .isCachePersistenceOverflowOnly() ? Boolean.TRUE.toString() : Boolean.FALSE.toString() );
+        cacheProperties.put( GeneralCacheAdministrator.CACHE_MEMORY_KEY, Boolean.toString( this.isCacheMemory() ) );
+        cacheProperties.put( GeneralCacheAdministrator.CACHE_PERSISTENCE_OVERFLOW_KEY, Boolean.toString( this
+            .isCachePersistenceOverflowOnly() ) );
+
         if ( this.getCachePersistenceClass() != null )
         {
             cacheProperties.put( GeneralCacheAdministrator.PERSISTENCE_CLASS_KEY, this.getCachePersistenceClass() );
         }
-        cacheProperties.put( "cache.unlimited.disk", this.isCacheUnlimitedDisk() ? Boolean.TRUE.toString()
-                                                                                : Boolean.FALSE.toString() );
+
+        cacheProperties.put( "cache.unlimited.disk", Boolean.toString( this.isCacheUnlimitedDisk() ) );
         if ( this.getCachePath() != null )
         {
             cacheProperties.put( "cache.path", this.getCachePath() );
@@ -163,9 +165,7 @@ public class OsCacheCache
         {
             cacheProperties.put( "cache.key", this.getCacheKey() );
         }
-        cacheProperties
-            .put( "cache.use.host.domain.in.key", this.isCacheUseHostDomainInKey() ? Boolean.TRUE.toString()
-                                                                                  : Boolean.FALSE.toString() );
+        cacheProperties.put( "cache.use.host.domain.in.key", Boolean.toString( this.isCacheUseHostDomainInKey() ) );
         this.generalCacheAdministrator = new GeneralCacheAdministrator( cacheProperties );
         this.osCacheStatistics = new OsCacheStatistics( this.generalCacheAdministrator.getCache() );
     }
