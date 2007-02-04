@@ -26,14 +26,20 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * HashMapCache - this is a Cache implementation taken from the Archiva project, original class written by 
- * Edwin Punzalan for purposes of addressing the jira ticket http://jira.codehaus.org/browse/MRM-39   
+ * <p>
+ * HashMapCache - this is a Cache implementation taken from the Archiva project.
+ * </p>
+ * 
+ * <p>
+ * Original class written by Edwin Punzalan for purposes of addressing the 
+ * jira ticket <a href="http://jira.codehaus.org/browse/MRM-39">MRM-39</a>
+ * </p>   
  * 
  * @author Edwin Punzalan
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * 
- * @plexus.component role="org.codehaus.plexus.cache.Cache" role-hint="hashmap" instantiation-strategy="per-lookup"
+ * @plexus.component role="org.codehaus.plexus.cache.Cache" role-hint="hashmap"
  */
 public class HashMapCache
     implements Cache, Initializable
@@ -96,18 +102,18 @@ public class HashMapCache
     /**
      * @plexus.configuration default-value="1.0"
      */
-    private double cacheHitRatio;
+    private double cacheHitRatio = 1.0;
 
     /**
      * @plexus.configuration default-value="0"
      */
-    private int cacheMaxSize;
+    private int cacheMaxSize = 0;
 
     private Stats stats;
 
     public HashMapCache()
     {
-
+        
     }
 
     /**
