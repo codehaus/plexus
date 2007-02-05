@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cache.oscache;
+package org.codehaus.plexus.cache.test.examples.wine;
 
 /*
  * Copyright 2001-2007 The Codehaus.
@@ -16,22 +16,15 @@ package org.codehaus.plexus.cache.oscache;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.cache.test.AbstractCacheTestCase;
-
 /**
- * Tests for OsCacheCache.
  * 
- * @since 3 February, 2007
+ * @since 5 February, 2007
  * @version $Id$
  * @author <a href="mailto:Olivier.LAMY@accor.com">Olivier Lamy</a>
  */
-public class OsCacheCacheTest
-    extends AbstractCacheTestCase
+public interface WineService
 {
+    String ROLE = WineService.class.getName();
 
-    public String getProviderHint()
-    {
-        return "oscache";
-    }
-
+    public Wine getWine( String name );
 }

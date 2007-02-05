@@ -258,6 +258,11 @@ public class EhcacheCache
         return overflowToDisk;
     }
 
+    public void register( Object key, Object value )
+    {
+        ehcache.put( new Element( key, value ) );
+    }
+    
     public Object put( Object key, Object value )
     {
         // Multiple steps done to satisfy Cache API requirement for Previous object return.

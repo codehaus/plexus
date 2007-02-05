@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cache.oscache;
+package org.codehaus.plexus.cache.test.examples.wine;
 
 /*
  * Copyright 2001-2007 The Codehaus.
@@ -16,22 +16,44 @@ package org.codehaus.plexus.cache.oscache;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.cache.test.AbstractCacheTestCase;
+import java.io.Serializable;
 
 /**
- * Tests for OsCacheCache.
- * 
- * @since 3 February, 2007
+ * @since 5 February, 2007
  * @version $Id$
  * @author <a href="mailto:Olivier.LAMY@accor.com">Olivier Lamy</a>
  */
-public class OsCacheCacheTest
-    extends AbstractCacheTestCase
+public class Wine
+    implements Serializable
 {
+    private String name;
 
-    public String getProviderHint()
+    private String localisation;
+
+    public Wine( String name, String localisation )
     {
-        return "oscache";
+        this.name = name;
+        this.localisation = localisation;
+    }
+
+    public String getLocalisation()
+    {
+        return localisation;
+    }
+
+    public void setLocalisation( String localisation )
+    {
+        this.localisation = localisation;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName( String name )
+    {
+        this.name = name;
     }
 
 }
