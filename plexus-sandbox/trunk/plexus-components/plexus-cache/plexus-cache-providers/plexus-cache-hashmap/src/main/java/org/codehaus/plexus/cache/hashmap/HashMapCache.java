@@ -229,6 +229,28 @@ public class HashMapCache
 
         return ret;
     }
+    
+    /**
+     * Cache the given value and map it using the given key
+     *
+     * @param key   the object to map the valued object
+     * @param value the object to cache
+     */
+    public void register( Object key, Object value )
+    {
+        // remove and put: this promotes it to the top since we use a linked hash map
+        synchronized ( cache )
+        {
+            if ( cache.containsKey( key ) )
+            {
+                cache.remove( key );
+            }
+
+            cache.put( key, value );
+        }
+
+        manageCache();
+    }
 
     public Object remove( Object key )
     {

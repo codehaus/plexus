@@ -32,8 +32,9 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
 /**
- * for configuration see documentation : http://opensymphony.com/oscache/wiki/Configuration.html
- * @since 3 Februrary, 2007
+ * For configuration see documentation : http://opensymphony.com/oscache/wiki/Configuration.html
+ * 
+ * @since 3 February, 2007
  * @version $Id$
  * @author <a href="mailto:Olivier.LAMY@accor.com">Olivier Lamy</a>
  * 
@@ -213,13 +214,17 @@ public class OsCacheCache
         return this.get( key ) == null;
     }
 
+    public void register( Object key, Object value )
+    {
+        this.generalCacheAdministrator.putInCache( key.toString(), value );
+    }
+    
     public Object put( Object key, Object value )
     {
         Object previous = null;
         try
         {
             previous = this.generalCacheAdministrator.getFromCache( key.toString(), this.getRefreshPeriod() );
-
         }
         catch ( NeedsRefreshException e )
         {
@@ -291,7 +296,11 @@ public class OsCacheCache
     {
         if ( this.getCacheEventListeners() == null )
         {
-            return OsCacheStatistics.class.getName();
+            return null;
+        }
+        if ( this.getCacheEventListeners().isEmpty() )
+        {
+            return null;
         }
         StringBuffer stringBuffer = new StringBuffer();
         for ( Iterator iterator = this.getCacheEventListeners().iterator(); iterator.hasNext(); )

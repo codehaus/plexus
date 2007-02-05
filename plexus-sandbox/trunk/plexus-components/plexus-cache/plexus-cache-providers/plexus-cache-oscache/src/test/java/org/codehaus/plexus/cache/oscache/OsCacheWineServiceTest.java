@@ -15,23 +15,15 @@ package org.codehaus.plexus.cache.oscache;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import org.codehaus.plexus.cache.test.AbstractCacheTestCase;
+import org.codehaus.plexus.cache.test.examples.wine.AbstractTestWineService;
 
 /**
- * Tests for OsCacheCache.
- * 
- * @since 3 February, 2007
+ * @since 5 f�vr. 07
  * @version $Id$
  * @author <a href="mailto:Olivier.LAMY@accor.com">Olivier Lamy</a>
  */
-public class OsCacheCacheTest
-    extends AbstractCacheTestCase
+public class OsCacheWineServiceTest
+    extends AbstractTestWineService
 {
-
-    public String getProviderHint()
-    {
-        return "oscache";
-    }
-
+    // nothing to do 
 }

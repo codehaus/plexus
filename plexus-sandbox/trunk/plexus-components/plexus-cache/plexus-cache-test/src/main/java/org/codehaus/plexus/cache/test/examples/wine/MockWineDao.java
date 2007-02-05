@@ -1,4 +1,5 @@
-package org.codehaus.plexus.cache.oscache;
+package org.codehaus.plexus.cache.test.examples.wine;
+
 
 /*
  * Copyright 2001-2007 The Codehaus.
@@ -16,22 +17,28 @@ package org.codehaus.plexus.cache.oscache;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.cache.test.AbstractCacheTestCase;
-
 /**
- * Tests for OsCacheCache.
- * 
- * @since 3 February, 2007
+ * @since 5 February, 2007
  * @version $Id$
  * @author <a href="mailto:Olivier.LAMY@accor.com">Olivier Lamy</a>
+ * @plexus.component
+ *   role="org.codehaus.plexus.cache.test.examples.wine.WineDao" role-hint="mock"
  */
-public class OsCacheCacheTest
-    extends AbstractCacheTestCase
+public class MockWineDao
+    implements WineDao
 {
 
-    public String getProviderHint()
+    public Wine getWine( String name )
     {
-        return "oscache";
+        if ( name.equals( "bordeaux" ) )
+        {
+            return new Wine( "bordeaux", "west/south of France" );
+        }
+        if ( name.equals( "bourgogne" ) )
+        {
+            return new Wine( "bourgogne", "center of France" );
+        }
+        return null;
     }
 
 }

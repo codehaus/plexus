@@ -10,6 +10,23 @@
   <name>Plexus Cache Tests</name>
   <packaging>jar</packaging>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>      
+    </plugins>
+  </build>  
+  
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus.cache</groupId>

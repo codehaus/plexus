@@ -57,6 +57,17 @@ public interface Cache
     public Object put( Object key, Object value );
 
     /**
+     * Register the specified value into the cache under the provided key.
+     * 
+     * This {@link #register(Object, Object)} method is just an optimized version of the {@link #put(Object, Object)} 
+     * method, but does not return the previous value contained with the specified key.  
+     * 
+     * @param key the key to put the value into
+     * @param value the object to place into the cache.
+     */
+    public void register( Object key, Object value );
+
+    /**
      * Remove the specified key and value from the cache.
      * 
      * @param key the key to the value to remove. 

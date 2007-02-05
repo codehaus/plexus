@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cache.oscache;
+package org.codehaus.plexus.cache;
 
 /*
  * Copyright 2001-2007 The Codehaus.
@@ -15,23 +15,27 @@ package org.codehaus.plexus.cache.oscache;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import org.codehaus.plexus.cache.test.AbstractCacheTestCase;
-
 /**
- * Tests for OsCacheCache.
+ * CacheBuilder interface.
  * 
  * @since 3 February, 2007
  * @version $Id$
  * @author <a href="mailto:Olivier.LAMY@accor.com">Olivier Lamy</a>
  */
-public class OsCacheCacheTest
-    extends AbstractCacheTestCase
+public interface CacheBuilder
 {
+    String ROLE = CacheBuilder.class.getName();
 
-    public String getProviderHint()
-    {
-        return "oscache";
-    }
+    /**
+     * @param roleHint
+     * @return
+     */
+    public Cache getCache( String roleHint );
+
+    /**
+     * @param clazz
+     * @return
+     */
+    public Cache getCache( Class clazz );
 
 }
