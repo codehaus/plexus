@@ -21,7 +21,6 @@ package org.codehaus.plexus.graph;
 
 import org.codehaus.plexus.graph.exception.GraphException;
 
-/** Description of the Interface */
 public interface MutableDirectedGraph
     extends DirectedGraph
 {

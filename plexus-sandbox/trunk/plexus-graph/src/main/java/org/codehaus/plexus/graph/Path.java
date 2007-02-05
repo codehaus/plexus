@@ -21,7 +21,6 @@ package org.codehaus.plexus.graph;
 
 import java.util.List;
 
-/** Description of the Interface */
 public interface Path
 {
     /** Returns the start of the path. */

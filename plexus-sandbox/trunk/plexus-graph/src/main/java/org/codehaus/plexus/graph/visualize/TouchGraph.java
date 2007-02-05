@@ -31,7 +31,6 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.Random;
 
-/** Description of the Class */
 public class TouchGraph
 {
     private Color vertexColor = Color.yellow;

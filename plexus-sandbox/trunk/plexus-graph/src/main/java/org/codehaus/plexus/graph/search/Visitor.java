@@ -23,7 +23,6 @@ import org.codehaus.plexus.graph.Edge;
 import org.codehaus.plexus.graph.Graph;
 import org.codehaus.plexus.graph.Vertex;
 
-/** Description of the Interface */
 public interface Visitor
 {
     /** Description of the Method */

@@ -21,7 +21,6 @@ package org.codehaus.plexus.graph;
 
 import java.util.Set;
 
-/** Description of the Interface */
 public interface DirectedGraph
     extends Graph
 {

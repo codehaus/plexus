@@ -19,7 +19,6 @@ package org.codehaus.plexus.graph;
  * under the License.
  */
 
-/** Description of the Interface */
 public interface Named
 {
     /** Gets the name attribute of the Named object */
