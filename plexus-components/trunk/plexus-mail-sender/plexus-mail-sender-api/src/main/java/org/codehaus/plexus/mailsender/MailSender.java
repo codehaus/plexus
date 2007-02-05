@@ -53,7 +53,15 @@ public interface MailSender
 
     public boolean isSslMode();
 
-    public void setSslMode( boolean sslMode );
+    public boolean isTlsEnabled();
+
+    public void setSslMode( boolean sslEnabled );
+
+    public void setSslMode( boolean sslEnabled, boolean tlsEnabled );
+
+    public boolean isDebugMode();
+
+    public void setDebugMode( boolean debugMode );
 
     /**
      * Send a mail.

@@ -93,7 +93,14 @@ public class JavamailMailSender
     {
         if ( "smtps".equals( getProperties().getProperty( AbstractJavamailMailSender.MAIL_TRANSPORT_PROTOCOL ) ) )
         {
-            setSslMode( true );
+            if ( "true".equals( getProperties().getProperty( AbstractJavamailMailSender.MAIL_SMTP_STARTTLS_ENABLE ) ) )
+            {
+                setSslMode( true, true );
+            }
+            else
+            {
+                setSslMode( true, false );
+            }
         }
         else
         {
@@ -119,16 +126,12 @@ public class JavamailMailSender
         this.userProperties = userProperties;
     }
 
-    public void setSslMode( boolean sslEnabled )
-    {
-        setSslMode( sslEnabled, false );
-    }
-
     public void setSslMode( boolean sslEnabled, boolean tlsEnabled )
     {
-        super.setSslMode( sslEnabled );
+        super.setSslMode( sslEnabled, tlsEnabled );
         if ( sslEnabled )
         {
+            addProperty( AbstractJavamailMailSender.MAIL_TRANSPORT_PROTOCOL, "smtps" );
             addProperty( "mail.smtps.socketFactory.class", DummySSLSocketFactory.class.getName() );
 
             if ( tlsEnabled )
