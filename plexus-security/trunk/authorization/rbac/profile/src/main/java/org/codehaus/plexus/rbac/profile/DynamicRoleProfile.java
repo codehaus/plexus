@@ -40,6 +40,8 @@ public interface DynamicRoleProfile
 
     public List getOperations();
 
+    public List getGlobalOperations();
+
      /**
      * is this role profile assignable
      * @return

@@ -94,6 +94,38 @@ public abstract class AbstractDynamicRoleProfile
                 }
             }
 
+            if ( getGlobalOperations() != null )
+            {
+                List globalOperations = getGlobalOperations();
+
+                for ( Iterator i = globalOperations.iterator(); i.hasNext(); )
+                {
+                    String operationString = (String) i.next();
+
+                    if ( !rbacManager.operationExists( operationString ) )
+                    {
+                        Operation operation = rbacManager.createOperation( operationString );
+                        operation.setPermanent( isPermanent() );
+                        operation = rbacManager.saveOperation( operation );
+                    }
+
+                    if ( !rbacManager.permissionExists( operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL ) )
+                    {
+
+                        Permission permission =
+                            rbacManager.createPermission( operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL );
+                        permission.setOperation( rbacManager.getOperation( operationString ) );
+                        permission.setResource( rbacManager.getResource( Resource.GLOBAL ) );
+                        permission.setPermanent( isPermanent() );
+                        rbacManager.savePermission( permission );
+
+                    }
+
+                    role.addPermission(
+                        rbacManager.getPermission( operationString + RoleProfileConstants.DELIMITER + Resource.GLOBAL  ) );
+                }
+            }
+
             if ( getChildRoles() != null )
             {
                 List childRoles = getChildRoles();
@@ -151,6 +183,17 @@ public abstract class AbstractDynamicRoleProfile
      * @return
      */
     public List getDynamicChildRoles( String resource )
+    {
+        return null;
+    }
+
+    /**
+     * some roles might want to declare operations that would held at a global scope, these operations will be
+     * matched up with the global resource declaration when the roles permissions are assembled
+     * 
+     * @return
+     */
+    public List getGlobalOperations()
     {
         return null;
     }
