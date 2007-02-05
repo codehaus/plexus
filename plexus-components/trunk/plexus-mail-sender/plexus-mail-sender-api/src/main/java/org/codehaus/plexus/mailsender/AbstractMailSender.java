@@ -60,6 +60,10 @@ public abstract class AbstractMailSender
 
     private boolean sslMode;
 
+    private boolean tlsEnabled;
+
+    private boolean debugMode;
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -109,9 +113,30 @@ public abstract class AbstractMailSender
         return sslMode;
     }
 
+    public boolean isTlsEnabled()
+    {
+        return tlsEnabled;
+    }
+
     public void setSslMode( boolean sslEnabled )
     {
+        setSslMode( sslEnabled, false );
+    }
+
+    public void setSslMode( boolean sslEnabled, boolean tlsEnabled )
+    {
         this.sslMode = sslEnabled;
+        this.tlsEnabled = tlsEnabled;
+    }
+
+    public boolean isDebugMode()
+    {
+        return debugMode;
+    }
+
+    public void setDebugMode( boolean debugMode )
+    {
+        this.debugMode = debugMode;
     }
 
     public void send( String subject, String content, String toMailbox, String toName, String fromMailbox,

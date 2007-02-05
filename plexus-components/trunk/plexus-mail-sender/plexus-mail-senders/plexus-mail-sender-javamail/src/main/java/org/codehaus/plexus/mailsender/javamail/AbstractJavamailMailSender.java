@@ -95,7 +95,11 @@ public abstract class AbstractJavamailMailSender
         Session session = getSession();
 
         // To see the mail commands exchanged with the mail server, set the debug flag:
-        if ( StringUtils.isNotEmpty( session.getProperty( MAIL_SMTP_DEBUG ) ) )
+        if ( isDebugMode() )
+        {
+            session.setDebug( true );
+        }
+        else if ( StringUtils.isNotEmpty( session.getProperty( MAIL_SMTP_DEBUG ) ) )
         {
             session.setDebug( ( new Boolean( session.getProperty( MAIL_SMTP_DEBUG ) ) ).booleanValue() );
         }
@@ -103,7 +107,7 @@ public abstract class AbstractJavamailMailSender
         {
             session.setDebug( ( new Boolean( session.getProperty( MAIL_SMTP_DEBUG2 ) ) ).booleanValue() );
         }
-        else
+        else if ( getLogger() != null )
         {
             session.setDebug( getLogger().isDebugEnabled() );
         }
