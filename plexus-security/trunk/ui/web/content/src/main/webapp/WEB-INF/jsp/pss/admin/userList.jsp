@@ -62,6 +62,17 @@
             </ww:url>
             <ww:a href="%{usereditUrl}">${user.username}</ww:a>
           </pss:ifAuthorized>
+          <pss:elseAuthorized>
+            <pss:ifAuthorized permission="user-management-user-role" resource="${user.username}">
+              <ww:url id="usereditUrl" action="useredit">
+                <ww:param name="username">${user.username}</ww:param>
+              </ww:url>
+              <ww:a href="%{usereditUrl}">${user.username}</ww:a>
+            </pss:ifAuthorized>
+            <pss:elseAuthorized>
+              ${user.username}
+            </pss:elseAuthorized>
+          </pss:elseAuthorized>
         </ec:column>
         <ec:column property="fullName" title="Full Name" alias="fullname" />
         <ec:column property="email" title="Email" cell="org.codehaus.plexus.security.ui.web.eXc.MailtoCell" />

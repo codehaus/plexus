@@ -46,6 +46,7 @@ public class UserAdministratorRoleProfile
         operations.add( RoleConstants.USER_MANAGEMENT_USER_CREATE_OPERATION );
         operations.add( RoleConstants.USER_MANAGEMENT_USER_DELETE_OPERATION );
         operations.add( RoleConstants.USER_MANAGEMENT_USER_EDIT_OPERATION );
+        operations.add( RoleConstants.USER_MANAGEMENT_USER_ROLE_OPERATION );
         operations.add( RoleConstants.USER_MANAGEMENT_USER_LIST_OPERATION );
 
         return operations;
