@@ -38,12 +38,14 @@ import java.util.Set;
 /** Description of the Class */
 public class DDirectedGraph
     extends DirectedGraphWrapper
-    //extends DefaultDirectedGraph
     implements DirectedGraph, WeightedGraph
 {
     private WeightedGraph weighted;
+
     private Map weights = new HashMap();// EDGE X DOUBLE
+
     private static Map decoratedGraphs = new HashMap();// DGRAPH X DDGRAPH
+
     private AllPairsShortestPath allPaths = null;
 
     protected DDirectedGraph()

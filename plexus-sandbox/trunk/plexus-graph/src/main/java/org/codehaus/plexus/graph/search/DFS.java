@@ -32,14 +32,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-/** Description of the Class */
 public class DFS
 {
     private Map colors = new HashMap();// VERTEX X COLOR
+
     /** Description of the Field */
     public final static String WHITE = "white";
+
     /** Description of the Field */
     public final static String BLACK = "black";
+
     /** Description of the Field */
     public final static String GRAY = "gray";
 

@@ -38,33 +38,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** Description of the Class */
 public class DependencyGraph
     extends DDirectedGraph
-    //extends DefaultDirectedGraph
     implements Acyclic
 {
     private GraphFactory factory = new GraphFactory();
+
     private AcyclicContract acyclic = new AcyclicContract();
+
     private DependencyVisitor visitor = new DependencyVisitor();
 
     private Map vertices = new HashMap();
 
     private MutableDirectedGraph DAG = null;
 
-    /** Constructor for the DependencyGraph object */
     public DependencyGraph()
     {
         super();
-        Contract[] dagContracts = new Contract[1];
-        dagContracts[0] = acyclic;
-        DAG = factory.makeMutableDirectedGraph( dagContracts, false, null );
-        setDirGraph( DAG );
-    }
 
-    /** Description of the Method */
-    private void init()
-    {
+        Contract[] dagContracts = new Contract[1];
+
+        dagContracts[0] = acyclic;
+
+        DAG = factory.makeMutableDirectedGraph( dagContracts, false, null );
+
+        setDirGraph( DAG );
     }
 
     public DependencyVertex getRoot()
@@ -81,8 +79,8 @@ public class DependencyGraph
      * Adds a feature to the Dependencies attribute of the DependencyGraph
      * object
      */
-    public void addDependencies( Object head,
-                                 Collection deps )
+    public DependencyVertex addDependencies( Object head,
+                                             Collection deps )
         throws GraphException
     {
         DependencyVertex vHead = findVertex( head );
@@ -112,9 +110,10 @@ public class DependencyGraph
         {
             throw new CircularDependencyException( ex );
         }
+
+        return vHead;
     }
 
-    /** Description of the Method */
     public DependencyVertex findVertex( Object o )
     {
         if ( vertices.containsKey( o ) )
@@ -123,9 +122,11 @@ public class DependencyGraph
         }
         else
         {
-            DependencyVertex RC = new DependencyVertex( o );
-            vertices.put( o, RC );
-            return RC;
+            DependencyVertex vertex = new DependencyVertex( o );
+
+            vertices.put( o, vertex );
+
+            return vertex;
         }
     }
 
