@@ -16,11 +16,14 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
+import org.codehaus.plexus.security.system.SecuritySession;
+import org.codehaus.plexus.security.system.SecuritySystemConstants;
 import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
@@ -28,8 +31,10 @@ import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * AssignmentsAction
@@ -151,6 +156,10 @@ public class AssignmentsAction
             {
                 this.availableRoles = new ArrayList( manager.getAllAssignableRoles() );
             }
+
+            // filter the roles through the hack method below
+            assignedRoles = filterRolesForCurrentUserAccess( assignedRoles );
+            availableRoles = filterRolesForCurrentUserAccess( availableRoles );
         }
         catch ( RbacManagerException e )
         {
@@ -237,6 +246,74 @@ public class AssignmentsAction
         }
 
         return SUCCESS;
+    }
+
+    /**
+     * this is a hack.
+     *
+     * this is a hack around the requirements of putting RBAC constraits into the model.
+     *
+     * this adds one very major restriction to this security system, that a role name must contain the identifiers of
+     * the resource that is being constrained for adding and granting of roles, this is unacceptable in the long term
+     * and we need to get the model refactored to include this RBAC concept 
+     *
+     *
+     * @param roleList
+     * @return
+     * @throws RbacManagerException
+     */
+    private List filterRolesForCurrentUserAccess( List roleList )
+        throws RbacManagerException
+    {
+        String currentUser = ((SecuritySession)session.get( SecuritySystemConstants.SECURITY_SESSION_KEY )).getUser().getPrincipal().toString();
+
+        List filteredRoleList = new ArrayList();
+
+        Map assignedPermissionMap = manager.getAssignedPermissionMap( currentUser );
+        List resourceGrants = new ArrayList();
+
+        if ( assignedPermissionMap.containsKey( RoleConstants.USER_MANAGEMENT_ROLE_GRANT_OPERATION ) )
+        {
+            List roleGrantPermissions = (List) assignedPermissionMap.get( RoleConstants.USER_MANAGEMENT_ROLE_GRANT_OPERATION );
+
+            for (Iterator i = roleGrantPermissions.iterator(); i.hasNext(); )
+            {
+                Permission permission = (Permission)i.next();
+
+                if ( permission.getResource().getIdentifier().equals( Resource.GLOBAL ))
+                {
+                    // the current user has the rights to assign any given role
+                    return roleList;
+                }
+                else
+                {
+                    resourceGrants.add( permission.getResource().getIdentifier() );
+                }
+            }
+        }
+        else
+        {
+            return Collections.EMPTY_LIST;
+        }
+
+        // we should have a list of resourceGrants now, this will provide us with the information necessary to restrict
+        // the role list
+        for ( Iterator i = roleList.iterator(); i.hasNext(); )
+        {
+            Role role = (Role)i.next();
+
+            for (Iterator j = resourceGrants.iterator(); j.hasNext(); )
+            {
+                String resourceIdentifier = (String)j.next();
+
+                if ( role.getName().indexOf( resourceIdentifier ) != -1 )
+                {
+                    filteredRoleList.add( role );
+                }
+            }
+        }
+
+        return filteredRoleList;
     }
 
     // ------------------------------------------------------------------

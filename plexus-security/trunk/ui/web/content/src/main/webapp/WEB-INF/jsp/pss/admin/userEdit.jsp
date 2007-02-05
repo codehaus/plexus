@@ -29,20 +29,23 @@
 
 <h2>[Admin] User Edit</h2>
 
-<ww:form action="useredit" namespace="/security" theme="xhtml"
+<pss:ifAuthorized permission="user-management-user-edit" resource="${user.username}">
+  <ww:form action="useredit" namespace="/security" theme="xhtml"
          id="userEditForm" method="post" name="useredit" cssClass="security userEdit">
-  <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jsp" %>
-  <ww:checkbox label="Locked User" name="user.locked" />
-  <ww:checkbox label="Change Password Next Login" name="user.passwordChangeRequired" />
-  <ww:hidden   label="Username"    name="username" />
-  <ww:submit value="Update" method="submit" />
-  <ww:submit value="Cancel" method="cancel" />
-</ww:form>
+    <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jsp" %>
+    <ww:checkbox label="Locked User" name="user.locked" />
+    <ww:checkbox label="Change Password Next Login" name="user.passwordChangeRequired" />
+    <ww:hidden   label="Username"    name="username" />
+    <ww:submit value="Update" method="submit" />
+    <ww:submit value="Cancel" method="cancel" />
+  </ww:form>
+</pss:ifAuthorized>
 
+<pss:ifAuthorized permission="user-management-user-role" resource="${user.username}">
   <ww:action name="assignments" executeResult="true" >
     <ww:param name="principal">${user.username}</ww:param>
   </ww:action>
-
+</pss:ifAuthorized>
 </body>
 
 </html>
