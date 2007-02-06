@@ -17,7 +17,6 @@ package org.codehaus.plexus.security.policy.rules;
  */
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.security.policy.DefaultUserSecurityPolicy;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.user.User;
@@ -36,8 +35,6 @@ import java.util.Iterator;
 public class ReusePasswordRule
     extends AbstractPasswordRule
 {
-    public static final String REUSE = PASSWORD_RULE_CONFIGKEY + ".reuse";
-
     public static final String REUSE_VIOLATION = "user.password.violation.reuse";
 
     private UserSecurityPolicy securityPolicy;
@@ -61,7 +58,7 @@ public class ReusePasswordRule
     {
         if ( securityPolicy == null )
         {
-            return DefaultUserSecurityPolicy.DEFAULT_PASSWORD_RETENTION_COUNT;
+            throw new IllegalStateException( "The security policy has not yet been set." );
         }
 
         return securityPolicy.getPreviousPasswordsCount();
@@ -69,7 +66,7 @@ public class ReusePasswordRule
 
     private boolean hasReusedPassword( User user, String password )
     {
-        if ( this.securityPolicy == null )
+        if ( securityPolicy == null )
         {
             throw new IllegalStateException( "The security policy has not yet been set." );
         }
@@ -109,13 +106,14 @@ public class ReusePasswordRule
 
         if ( hasReusedPassword( user, password ) )
         {
-            violations.addViolation( REUSE_VIOLATION, new Object[] { new Integer( getPreviousPasswordCount() ) } ); //$NON-NLS-1$
+            violations.addViolation( REUSE_VIOLATION,
+                                     new Object[]{new Integer( getPreviousPasswordCount() )} ); //$NON-NLS-1$
         }
     }
 
     public void initialize()
         throws InitializationException
     {
-        super.configure( REUSE );
+        enabled = config.getBoolean( "security.policy.password.rule.reuse.enabled" );
     }
 }

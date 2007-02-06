@@ -33,20 +33,11 @@ import org.codehaus.plexus.util.StringUtils;
 public class AlphaPasswordRule
     extends AbstractPasswordRule
 {
-    public static final String ALPHA_COUNT = PASSWORD_RULE_CONFIGKEY + ".alphacount";
-
-    public static final String ALPHA_COUNT_MIN = ALPHA_COUNT + ".minimum";
+    public static final String ALPHA_COUNT_MIN = "security.policy.password.rule.alphacount.minimum";
 
     public static final String ALPHA_COUNT_VIOLATION = "user.password.violation.alpha";
 
-    public static final int DEFAULT_MINIMUM = 1;
-
     private int minimumCount;
-
-    public AlphaPasswordRule()
-    {
-        minimumCount = DEFAULT_MINIMUM;
-    }
 
     private int countAlphaCharacters( String password )
     {
@@ -109,8 +100,7 @@ public class AlphaPasswordRule
     public void initialize()
         throws InitializationException
     {
-        super.configure( ALPHA_COUNT );
-        this.minimumCount = config.getInt( ALPHA_COUNT_MIN, DEFAULT_MINIMUM );
-
+        enabled = config.getBoolean( "security.policy.password.rule.alphacount.enabled" );
+        this.minimumCount = config.getInt( ALPHA_COUNT_MIN );
     }
 }

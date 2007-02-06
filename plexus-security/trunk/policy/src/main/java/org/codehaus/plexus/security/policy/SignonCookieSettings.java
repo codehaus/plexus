@@ -1,5 +1,7 @@
 package org.codehaus.plexus.security.policy;
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+
 /*
  * Copyright 2005-2006 The Codehaus.
  *
@@ -26,9 +28,12 @@ package org.codehaus.plexus.security.policy;
 public class SignonCookieSettings
     extends AbstractCookieSettings
 {
-    protected String getConfigKeyPrefix()
+    public void initialize()
+        throws InitializationException
     {
-        return "security.signon";
+        cookieTimeout = config.getInt( "security.signon.timeout" );
+        domain = config.getString( "security.signon.domain" );
+        path = config.getString( "security.signon.path" );
     }
 
     public boolean isEnabled()

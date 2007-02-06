@@ -16,18 +16,17 @@ package org.codehaus.plexus.security.policy;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.security.configuration.UserConfiguration;
 
 /**
  * Base class for cookie settings. These will only differ by their configuration keys.
+ *
  * @todo not sure if having the domain and path in the general configuration is a good idea - this is probably something
  * customised once for all cookies and applications. Should it be in a sharead configuration file, under a sharead key,
- * or perhaps even configured at the application server level? (ie, in Naming). 
+ * or perhaps even configured at the application server level? (ie, in Naming).
  */
 public abstract class AbstractCookieSettings
-    implements CookieSettings, Initializable
+    implements CookieSettings
 {
     /**
      * @plexus.requirement
@@ -37,19 +36,17 @@ public abstract class AbstractCookieSettings
     /**
      * Timeout (in minutes) for the sign on cookie.
      */
-    private int cookieTimeout;
+    protected int cookieTimeout;
 
     /**
      * The domain for the cookie.
      */
-    private String domain;
+    protected String domain;
 
     /**
      * The path for the cookie.
      */
-    private String path;
-
-    private static final int DEFAULT_COOKIE_TIMEOUT = 525600; // 1 year (365 days), in minutes
+    protected String path;
 
     public int getCookieTimeout()
     {
@@ -66,14 +63,4 @@ public abstract class AbstractCookieSettings
         return path;
     }
 
-    public void initialize()
-        throws InitializationException
-    {
-        String prefix = getConfigKeyPrefix();
-        this.cookieTimeout = config.getInt( prefix + ".timeout", DEFAULT_COOKIE_TIMEOUT );
-        this.domain = config.getString( prefix + ".domain" );
-        this.path = config.getString( prefix + ".path" );
-    }
-
-    protected abstract String getConfigKeyPrefix();
 }

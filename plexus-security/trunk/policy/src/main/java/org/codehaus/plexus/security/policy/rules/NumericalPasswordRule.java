@@ -33,20 +33,11 @@ import org.codehaus.plexus.util.StringUtils;
 public class NumericalPasswordRule
     extends AbstractPasswordRule
 {
-    public static final String NUMERICAL_COUNT = PASSWORD_RULE_CONFIGKEY + ".numericalcount";
-
-    public static final String MINIMUM = NUMERICAL_COUNT + ".minimum";
+    public static final String MINIMUM = "security.policy.password.rule.numericalcount.minimum";
 
     public static final String NUMERICAL_COUNT_VIOLATION = "user.password.violation.numeric";
 
-    public static final int DEFAULT_MIN = 1;
-
     private int minimumCount;
-
-    public NumericalPasswordRule()
-    {
-        this.minimumCount = DEFAULT_MIN;
-    }
 
     private int countDigitCharacters( String password )
     {
@@ -110,7 +101,7 @@ public class NumericalPasswordRule
     public void initialize()
         throws InitializationException
     {
-        super.configure( NUMERICAL_COUNT );
-        this.minimumCount = config.getInt( MINIMUM, DEFAULT_MIN );
+        enabled = config.getBoolean( "security.policy.password.rule.numericalcount.enabled" );
+        this.minimumCount = config.getInt( MINIMUM );
     }
 }

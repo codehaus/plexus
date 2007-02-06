@@ -34,8 +34,6 @@ public class MustHavePasswordRule
 {
     public static final String MISSING_PASSWORD_VIOLATION = "user.password.violation.missing";
 
-    public static final String MUST_HAVE = PASSWORD_RULE_CONFIGKEY + ".musthave";
-
     public void setUserSecurityPolicy( UserSecurityPolicy policy )
     {
         // Ignore, policy not needed in this rule.
@@ -52,6 +50,6 @@ public class MustHavePasswordRule
     public void initialize()
         throws InitializationException
     {
-        super.configure( MUST_HAVE );
+        enabled = config.getBoolean( "security.policy.password.rule.musthave.enabled" );
     }
 }

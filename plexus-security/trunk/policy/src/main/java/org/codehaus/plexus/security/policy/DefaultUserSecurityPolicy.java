@@ -47,21 +47,13 @@ public class DefaultUserSecurityPolicy
 {
     private static final String ENABLEMENT_KEY = ROLE + ":ENABLED";
 
-    public static final String SECURITY_POLICY_PREFIX = "security.policy";
+    public static final String PASSWORD_RETENTION_COUNT = "security.policy.password.previous.count";
 
-    public static final String PASSWORD_RETENTION_COUNT = SECURITY_POLICY_PREFIX + ".password.previous.count";
+    public static final String LOGIN_ATTEMPT_COUNT = "security.policy.allowed.login.attempt";
 
-    public static final String LOGIN_ATTEMPT_COUNT = SECURITY_POLICY_PREFIX + ".allowed.login.attempt";
+    public static final String PASSWORD_EXPIRATION = "security.policy.password.expiration.days";
 
-    public static final String PASSWORD_EXPIRATION = SECURITY_POLICY_PREFIX + ".password.expiration.days";
-
-    public static final String PASSWORD_ENCODER = SECURITY_POLICY_PREFIX + ".password.encoder";
-
-    public static final int DEFAULT_PASSWORD_RETENTION_COUNT = 6;
-
-    public static final int DEFAULT_LOGIN_ATTEMPT_COUNT = 3;
-
-    public static final int DEFAULT_PASSWORD_EXPIRATION = 90;
+    public static final String PASSWORD_ENCODER = "security.policy.password.encoder";
 
     private PasswordRule defaultPasswordRule = new MustHavePasswordRule();
 
@@ -252,7 +244,7 @@ public class DefaultUserSecurityPolicy
             previousPasswords.addAll( sublist );
         }
 
-        user.setPreviousEncodedPasswords( previousPasswords );        
+        user.setPreviousEncodedPasswords( previousPasswords );
         user.setPasswordChangeRequired( false );
         user.setLocked( false );
 
@@ -360,7 +352,7 @@ public class DefaultUserSecurityPolicy
     private void configureEncoder()
         throws InitializationException
     {
-        String encoder = config.getString( PASSWORD_ENCODER, null );
+        String encoder = config.getString( PASSWORD_ENCODER );
 
         if ( encoder != null )
         {
@@ -377,8 +369,8 @@ public class DefaultUserSecurityPolicy
 
     private void configurePolicy()
     {
-        this.previousPasswordsCount = config.getInt( PASSWORD_RETENTION_COUNT, DEFAULT_PASSWORD_RETENTION_COUNT );
-        this.loginAttemptCount = config.getInt( LOGIN_ATTEMPT_COUNT, DEFAULT_LOGIN_ATTEMPT_COUNT );
-        this.passwordExpirationDays = config.getInt( PASSWORD_EXPIRATION, DEFAULT_PASSWORD_EXPIRATION );
+        this.previousPasswordsCount = config.getInt( PASSWORD_RETENTION_COUNT );
+        this.loginAttemptCount = config.getInt( LOGIN_ATTEMPT_COUNT );
+        this.passwordExpirationDays = config.getInt( PASSWORD_EXPIRATION );
     }
 }

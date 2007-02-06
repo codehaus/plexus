@@ -31,8 +31,6 @@ import org.codehaus.plexus.security.user.User;
 public class WhitespacePasswordRule
     extends AbstractPasswordRule
 {
-    public static final String NO_WHITE_SPACE = PASSWORD_RULE_CONFIGKEY + ".nowhitespace";
-
     public static final String NO_WHITE_SPACE_VIOLATION = "user.password.violation.whitespace.detected";
 
     public void setUserSecurityPolicy( UserSecurityPolicy policy )
@@ -57,6 +55,6 @@ public class WhitespacePasswordRule
     public void initialize()
         throws InitializationException
     {
-        super.configure( NO_WHITE_SPACE );
+        enabled = config.getBoolean( "security.policy.password.rule.nowhitespace.enabled" );
     }
 }

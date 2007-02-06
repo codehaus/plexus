@@ -17,12 +17,13 @@ package org.codehaus.plexus.security.ui.web.mail;
  */
 
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.mailsender.MailMessage;
 import org.codehaus.plexus.mailsender.MailSender;
 import org.codehaus.plexus.mailsender.MailSenderException;
-import org.codehaus.plexus.mailsender.javamail.JavamailMailSender;
 import org.codehaus.plexus.mailsender.javamail.JndiJavamailMailSender;
 import org.codehaus.plexus.security.configuration.UserConfiguration;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
@@ -36,6 +37,7 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * Mailer
@@ -69,73 +71,40 @@ public class Mailer
 
     public void sendAccountValidationEmail( Collection recipients, AuthenticationKey authkey )
     {
-        VelocityContext context = new VelocityContext();
         UserSecurityPolicy policy = securitySystem.getPolicy();
         UserValidationSettings validation = policy.getUserValidationSettings();
-
-        context.put( "applicationName", config.getString( "application.name", "Unconfigured Application" ) );
-
-        String appUrl = config.getString( "application.url", "http://localhost/unconfigured/application/url" );
-
-        context.put( "applicationUrl", appUrl );
-
-        String feedback = config.getString( "email.feedback.path", "/feedback.action" );
-
-        if ( feedback.startsWith( "/" ) )
-        {
-            feedback = appUrl + feedback;
-        }
-
-        context.put( "feedback", feedback );
-
-        context.put( "authkey", authkey.getKey() );
-
-        context.put( "accountId", authkey.getForPrincipal() );
-
-        SimpleDateFormat dateformatter =
-            new SimpleDateFormat( config.getString( "application.timestamp", "EEE, d MMM yyyy HH:mm:ss Z" ) );
-
-        context.put( "requestedOn", dateformatter.format( authkey.getDateCreated() ) );
-
-        if ( authkey.getDateExpires() != null )
-        {
-            context.put( "expiresOn", dateformatter.format( authkey.getDateExpires() ) );
-        }
-        else
-        {
-            context.put( "expiresOn", "(does not expire)" );
-        }
+        VelocityContext context = createVelocityContext( authkey );
 
         sendVelocityEmail( "newAccountValidationEmail", context, recipients, validation.getEmailSubject() );
     }
 
-    public void sendPasswordResetEmail( Collection recipients, AuthenticationKey authkey )
+    private VelocityContext createVelocityContext( AuthenticationKey authkey )
     {
         VelocityContext context = new VelocityContext();
-        UserSecurityPolicy policy = securitySystem.getPolicy();
-        UserValidationSettings validation = policy.getUserValidationSettings();
 
-        context.put( "applicationName", config.getString( "application.name", "Unconfigured Application" ) );
+        context.put( "applicationName", config.getString( "application.name" ) );
 
-        String appUrl = config.getString( "application.url", "http://localhost/unconfigured/application/url" );
+        String appUrl = config.getString( "application.url" );
 
         context.put( "applicationUrl", appUrl );
 
-        String feedback = config.getString( "email.feedback.path", "/feedback.action" );
+        String feedback = config.getString( "email.feedback.path" );
 
-        if ( feedback.startsWith( "/" ) )
+        if ( feedback != null )
         {
-            feedback = appUrl + feedback;
-        }
+            if ( feedback.startsWith( "/" ) )
+            {
+                feedback = appUrl + feedback;
+            }
 
-        context.put( "feedback", feedback );
+            context.put( "feedback", feedback );
+        }
 
         context.put( "authkey", authkey.getKey() );
 
         context.put( "accountId", authkey.getForPrincipal() );
 
-        SimpleDateFormat dateformatter =
-            new SimpleDateFormat( config.getString( "application.timestamp", "EEE, d MMM yyyy HH:mm:ss Z" ) );
+        SimpleDateFormat dateformatter = new SimpleDateFormat( config.getString( "application.timestamp" ), Locale.US );
 
         context.put( "requestedOn", dateformatter.format( authkey.getDateCreated() ) );
 
@@ -147,6 +116,14 @@ public class Mailer
         {
             context.put( "expiresOn", "(does not expire)" );
         }
+        return context;
+    }
+
+    public void sendPasswordResetEmail( Collection recipients, AuthenticationKey authkey )
+    {
+        UserSecurityPolicy policy = securitySystem.getPolicy();
+        UserValidationSettings validation = policy.getUserValidationSettings();
+        VelocityContext context = createVelocityContext( authkey );
 
         sendVelocityEmail( "passwordResetEmail", context, recipients, validation.getEmailSubject() );
     }
@@ -170,6 +147,14 @@ public class Mailer
         {
             getLogger().error( "No such template: '" + templateFile + "'." );
         }
+        catch ( ParseErrorException e )
+        {
+            getLogger().error( "Unable to generate email for template '" + templateFile + "': " + e.getMessage(), e );
+        }
+        catch ( MethodInvocationException e )
+        {
+            getLogger().error( "Unable to generate email for template '" + templateFile + "': " + e.getMessage(), e );
+        }
         catch ( Exception e )
         {
             getLogger().error( "Unable to generate email for template '" + templateFile + "': " + e.getMessage(), e );
@@ -184,8 +169,8 @@ public class Mailer
             return;
         }
 
-        String fromAddress = config.getString( "email.from.address", "security@unconfigured.com" );
-        String fromName = config.getString( "email.from.name", "Unconfigured Username" );
+        String fromAddress = config.getString( "email.from.address" );
+        String fromName = config.getString( "email.from.name" );
 
         if ( StringUtils.isEmpty( fromAddress ) )
         {
@@ -218,16 +203,15 @@ public class Mailer
             if ( mailSender instanceof JndiJavamailMailSender )
             {
                 JndiJavamailMailSender jndiSender = (JndiJavamailMailSender) mailSender;
-                jndiSender.setJndiSessionName(
-                    config.getString( "email.jndiSessionName", "java:comp/env/mail/Session" ) );
+                jndiSender.setJndiSessionName( config.getString( "email.jndiSessionName" ) );
             }
             else
             {
-                mailSender.setSmtpHost( config.getString( "email.smtp.host", "localhost" ) );
-                mailSender.setSmtpPort( config.getInt( "email.smtp.port", 25 ) );
-                mailSender.setUsername( config.getString( "email.smtp.username", "" ) );
-                mailSender.setPassword( config.getString( "email.smtp.password", "" ) );
-                mailSender.setSslMode( config.getBoolean( "email.smtp.ssl.enabled", false ) );
+                mailSender.setSmtpHost( config.getString( "email.smtp.host" ) );
+                mailSender.setSmtpPort( config.getInt( "email.smtp.port" ) );
+                mailSender.setUsername( config.getString( "email.smtp.username" ) );
+                mailSender.setPassword( config.getString( "email.smtp.password" ) );
+                mailSender.setSslMode( config.getBoolean( "email.smtp.ssl.enabled" ) );
 
                 /* Not supported for now
                 if ( mailSender.isSslMode() && ( mailSender instanceof JavamailMailSender ) )

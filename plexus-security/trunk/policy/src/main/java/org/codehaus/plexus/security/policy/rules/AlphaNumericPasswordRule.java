@@ -31,8 +31,6 @@ import org.codehaus.plexus.security.user.User;
 public class AlphaNumericPasswordRule
     extends AbstractPasswordRule
 {
-    public static final String ALPHANUMERIC = PASSWORD_RULE_CONFIGKEY + ".alphanumeric";
-
     public static final String ALPHANUM_VIOLATION = "user.password.violation.alphanum.only";
 
     public void setUserSecurityPolicy( UserSecurityPolicy policy )
@@ -57,6 +55,6 @@ public class AlphaNumericPasswordRule
     public void initialize()
         throws InitializationException
     {
-        super.configure( ALPHANUMERIC );
+        enabled = config.getBoolean( "security.policy.password.rule.alphanumeric.enabled" );
     }
 }

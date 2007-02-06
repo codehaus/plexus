@@ -29,8 +29,6 @@ import org.codehaus.plexus.security.policy.PasswordRule;
 public abstract class AbstractPasswordRule
     implements PasswordRule, Initializable
 {
-    protected static final String PASSWORD_RULE_CONFIGKEY = "security.policy.password.rule";
-
     protected boolean enabled = true;
 
     /**
@@ -51,15 +49,5 @@ public abstract class AbstractPasswordRule
     public boolean requiresSecurityPolicy()
     {
         return false;
-    }
-
-    protected void configure( String configPrefix )
-    {
-        configure( config, configPrefix );
-    }
-
-    protected void configure( UserConfiguration config, String configPrefix )
-    {
-        enabled = config.getBoolean( configPrefix + ".enabled", true );
     }
 }
