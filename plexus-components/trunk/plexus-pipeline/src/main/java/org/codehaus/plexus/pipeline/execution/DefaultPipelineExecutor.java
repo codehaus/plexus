@@ -3,7 +3,7 @@ package org.codehaus.plexus.pipeline.execution;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.pipeline.ExceptionHandler;
+import org.codehaus.plexus.pipeline.ValveExceptionHandler;
 import org.codehaus.plexus.pipeline.PipelineException;
 import org.codehaus.plexus.pipeline.PipelineListener;
 import org.codehaus.plexus.pipeline.PipelineRequest;
@@ -37,7 +37,7 @@ public class DefaultPipelineExecutor
     {
         String pipelineId = pipelineRequest.getPipelineId();
 
-        ExceptionHandler exceptionHandler = pipelineRequest.getExceptionHandler();
+        ValveExceptionHandler valveExceptionHandler = pipelineRequest.getExceptionHandler();
 
         // -----------------------------------------------------------------------
         // Invoke all the valveRoleHints in the pipelineId
@@ -89,30 +89,45 @@ public class DefaultPipelineExecutor
 
             PipelineException newException = null;
 
+            ValveReturnCode returnCode = null;
+            ValveReturnCode handlerReturnCode = null;
+
             try
             {
-                ValveReturnCode returnCode = valve.invoke( request );
+                returnCode = valve.invoke( request );
 
-                if ( returnCode.equals( Valve.PROCEED ) )
+                if ( returnCode == null )
                 {
-                    shouldBreak = false;
-                }
-                else if ( returnCode.equals( Valve.STOP ) )
-                {
-                    shouldBreak = true;
-                }
-                else
-                {
-                    newException = new PipelineException( "Unknown return code. This pipeline cannot handle this type: " + returnCode.toString() );
-
-                    shouldBreak = true;
+                    throw new PipelineException( "The valve cannot return null." );
                 }
             }
             catch ( Throwable e )
             {
-                exceptionHandler.handleException( e );
+                handlerReturnCode = valveExceptionHandler.handleValveException( request, e );
+            }
 
+            // -----------------------------------------------------------------------
+            //
+            // -----------------------------------------------------------------------
+
+            if ( handlerReturnCode != null )
+            {
+                returnCode = handlerReturnCode;
+            }
+
+            if ( returnCode.equals( Valve.PROCEED ) )
+            {
                 shouldBreak = false;
+            }
+            else if ( returnCode.equals( Valve.STOP ) )
+            {
+                shouldBreak = true;
+            }
+            else
+            {
+                newException = new PipelineException( "Unknown return code. This pipeline cannot handle this type: " + returnCode.toString() );
+
+                shouldBreak = true;
             }
 
             // -----------------------------------------------------------------------

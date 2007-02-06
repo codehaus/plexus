@@ -16,7 +16,7 @@ public class PipelineRequest
 
     private List listeners;
 
-    private ExceptionHandler exceptionHandler;
+    private ValveExceptionHandler valveExceptionHandler;
 
     private Boolean traceExecution;
 
@@ -30,12 +30,12 @@ public class PipelineRequest
         this.context = context;
     }
 
-    public PipelineRequest( String pipeline, Map context, List listeners, ExceptionHandler exceptionHandler )
+    public PipelineRequest( String pipeline, Map context, List listeners, ValveExceptionHandler valveExceptionHandler )
     {
         this.pipelineId = pipeline;
         this.context = context;
         this.listeners = listeners;
-        this.exceptionHandler = exceptionHandler;
+        this.valveExceptionHandler = valveExceptionHandler;
     }
 
     public String getPipelineId()
@@ -73,14 +73,14 @@ public class PipelineRequest
         this.listeners = listeners;
     }
 
-    public ExceptionHandler getExceptionHandler()
+    public ValveExceptionHandler getExceptionHandler()
     {
-        return exceptionHandler;
+        return valveExceptionHandler;
     }
 
-    public void setExceptionHandler( ExceptionHandler exceptionHandler )
+    public void setExceptionHandler( ValveExceptionHandler valveExceptionHandler )
     {
-        this.exceptionHandler = exceptionHandler;
+        this.valveExceptionHandler = valveExceptionHandler;
     }
 
     public Boolean getTraceExecution()

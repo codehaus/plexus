@@ -27,7 +27,7 @@ public interface PipelineService
     void processMessage( String pipelineId, Map context )
         throws PipelineException;
 
-    void processMessage( String pipelineId, Map context, ExceptionHandler exceptionHandler )
+    void processMessage( String pipelineId, Map context, ValveExceptionHandler valveExceptionHandler )
         throws PipelineException;
 
     void setTraceExecution( boolean traceExecution );
