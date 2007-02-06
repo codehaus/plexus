@@ -72,7 +72,7 @@ public class DefaultPipelineExecutor
 
                 try
                 {
-                    listener.beforeValve( pipelineRequest );
+                    listener.beforeValve( request );
                 }
                 catch ( Throwable e )
                 {
@@ -125,7 +125,7 @@ public class DefaultPipelineExecutor
 
                 try
                 {
-                    listener.afterValve( pipelineRequest );
+                    listener.afterValve( request );
                 }
                 catch ( Throwable e )
                 {

@@ -6,7 +6,7 @@ package org.codehaus.plexus.pipeline;
  */
 public interface PipelineListener
 {
-    void beforeValve( PipelineRequest request );
+    void beforeValve( ValveRequest request );
 
-    void afterValve( PipelineRequest request );
+    void afterValve( ValveRequest request );
 }
