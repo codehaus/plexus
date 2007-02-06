@@ -150,19 +150,19 @@ public class DefaultPipelineService
 
         request.setPipelineId( pipelineId );
         request.setContext( context );
-        request.setExceptionHandler( new RuntimeExceptionHandler() );
+        request.setExceptionHandler( new RuntimeValveExceptionHandler() );
 
         processMessage( request );
     }
 
-    public void processMessage( String pipelineId, Map context, ExceptionHandler exceptionHandler )
+    public void processMessage( String pipelineId, Map context, ValveExceptionHandler valveExceptionHandler )
         throws PipelineException
     {
         PipelineRequest request = new PipelineRequest();
 
         request.setPipelineId( pipelineId );
         request.setContext( context );
-        request.setExceptionHandler( exceptionHandler );
+        request.setExceptionHandler( valveExceptionHandler );
 
         processMessage( request );
     }
