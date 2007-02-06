@@ -16,6 +16,7 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import com.opensymphony.webwork.ServletActionContext;
 import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.security.policy.PasswordRuleViolations;
 import org.codehaus.plexus.security.system.SecuritySession;
@@ -25,6 +26,7 @@ import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
 
 /**
@@ -87,5 +89,12 @@ public abstract class AbstractSecurityAction
                 addFieldError( field, violation );
             }
         }
+    }
+
+    protected String getBaseUrl()
+    {
+        HttpServletRequest req = ServletActionContext.getRequest();
+        return req.getProtocol() + "://" + req.getServerName() +
+            ( req.getServerPort() == 80 ? "" : ":" + req.getServerPort() ) + req.getContextPath();
     }
 }

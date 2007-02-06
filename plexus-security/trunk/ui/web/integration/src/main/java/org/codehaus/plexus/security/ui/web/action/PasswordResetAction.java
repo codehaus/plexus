@@ -92,7 +92,7 @@ public class PasswordResetAction
             List recipients = new ArrayList();
             recipients.add( user.getEmail() );
 
-            mailer.sendAccountValidationEmail( recipients, authkey );
+            mailer.sendAccountValidationEmail( recipients, authkey, getBaseUrl() );
 
             addActionMessage( "Password reset email has been sent." );
         }
@@ -123,11 +123,11 @@ public class PasswordResetAction
     {
         return SecureActionBundle.OPEN;
     }
-    
-    public String cancel() 
+
+    public String cancel()
     {
-		return NONE;
-	}
+        return NONE;
+    }
 
     // ------------------------------------------------------------------
     // Parameter Accessor Methods

@@ -69,22 +69,18 @@ public class Mailer
      */
     private SecuritySystem securitySystem;
 
-    public void sendAccountValidationEmail( Collection recipients, AuthenticationKey authkey )
+    public void sendAccountValidationEmail( Collection recipients, AuthenticationKey authkey, String baseUrl )
     {
         UserSecurityPolicy policy = securitySystem.getPolicy();
         UserValidationSettings validation = policy.getUserValidationSettings();
-        VelocityContext context = createVelocityContext( authkey );
+        VelocityContext context = createVelocityContext( authkey, baseUrl );
 
         sendVelocityEmail( "newAccountValidationEmail", context, recipients, validation.getEmailSubject() );
     }
 
-    private VelocityContext createVelocityContext( AuthenticationKey authkey )
+    private VelocityContext createVelocityContext( AuthenticationKey authkey, String appUrl )
     {
         VelocityContext context = new VelocityContext();
-
-        context.put( "applicationName", config.getString( "application.name" ) );
-
-        String appUrl = config.getString( "application.url" );
 
         context.put( "applicationUrl", appUrl );
 
@@ -119,11 +115,11 @@ public class Mailer
         return context;
     }
 
-    public void sendPasswordResetEmail( Collection recipients, AuthenticationKey authkey )
+    public void sendPasswordResetEmail( Collection recipients, AuthenticationKey authkey, String baseUrl )
     {
         UserSecurityPolicy policy = securitySystem.getPolicy();
         UserValidationSettings validation = policy.getUserValidationSettings();
-        VelocityContext context = createVelocityContext( authkey );
+        VelocityContext context = createVelocityContext( authkey, baseUrl );
 
         sendVelocityEmail( "passwordResetEmail", context, recipients, validation.getEmailSubject() );
     }
