@@ -42,6 +42,6 @@ public class SystemInfoActionTest
         String result = systeminfo.show();
         assertNotNull( result );
         assertEquals( "success", result );
-        System.out.println( systeminfo.getDetails() );
+        assertNotNull( systeminfo.getDetails() );
     }
 }
