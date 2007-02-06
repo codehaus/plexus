@@ -207,7 +207,8 @@ public class Mailer
                 mailSender.setSmtpPort( config.getInt( "email.smtp.port" ) );
                 mailSender.setUsername( config.getString( "email.smtp.username" ) );
                 mailSender.setPassword( config.getString( "email.smtp.password" ) );
-                mailSender.setSslMode( config.getBoolean( "email.smtp.ssl.enabled" ) );
+                mailSender.setSslMode( config.getBoolean( "email.smtp.ssl.enabled" ),
+                                       config.getBoolean( "email.smtp.tls.enabled" ) );
 
                 /* Not supported for now
                 if ( mailSender.isSslMode() && ( mailSender instanceof JavamailMailSender ) )
