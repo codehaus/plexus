@@ -33,30 +33,20 @@ import org.codehaus.plexus.util.StringUtils;
 public class CharacterLengthPasswordRule
     extends AbstractPasswordRule
 {
-    public static final String CHARACTER_LENGTH = PASSWORD_RULE_CONFIGKEY + ".characterlength";
+    public static final String CHARACTER_LENGTH_MIN = "security.policy.password.rule.characterlength.minimum";
 
-    public static final String CHARACTER_LENGTH_MIN = CHARACTER_LENGTH + ".minimum";
-
-    public static final String CHARACTER_LENGTH_MAX = CHARACTER_LENGTH + ".maximum";
+    public static final String CHARACTER_LENGTH_MAX = "security.policy.password.rule.characterlength.maximum";
 
     public static final String CHARACTER_LENGTH_MISCONFIGURED_VIOLATION =
         "user.password.violation.length.misconfigured";
 
     public static final String CHARACTER_LENGTH_VIOLATION = "user.password.violation.length";
 
-    public static final int DEFAULT_CHARACTER_LENGTH_MIN = 1;
-
     public static final int DEFAULT_CHARACTER_LENGTH_MAX = 8;
 
     private int minimumCharacters;
 
     private int maximumCharacters;
-
-    public CharacterLengthPasswordRule()
-    {
-        minimumCharacters = DEFAULT_CHARACTER_LENGTH_MIN;
-        maximumCharacters = DEFAULT_CHARACTER_LENGTH_MAX;
-    }
 
     public int getMaximumCharacters()
     {
@@ -106,9 +96,8 @@ public class CharacterLengthPasswordRule
     public void initialize()
         throws InitializationException
     {
-
-        super.configure( CHARACTER_LENGTH );
-        this.minimumCharacters = config.getInt( CHARACTER_LENGTH_MIN, DEFAULT_CHARACTER_LENGTH_MIN );
-        this.maximumCharacters = config.getInt( CHARACTER_LENGTH_MAX, DEFAULT_CHARACTER_LENGTH_MAX );
+        enabled = config.getBoolean( "security.policy.password.rule.characterlength.enabled" );
+        this.minimumCharacters = config.getInt( CHARACTER_LENGTH_MIN );
+        this.maximumCharacters = config.getInt( CHARACTER_LENGTH_MAX );
     }
 }

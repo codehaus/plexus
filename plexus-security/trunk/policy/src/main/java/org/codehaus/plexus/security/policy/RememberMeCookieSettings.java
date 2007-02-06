@@ -16,6 +16,7 @@ package org.codehaus.plexus.security.policy;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
@@ -27,10 +28,9 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
  */
 public class RememberMeCookieSettings
     extends AbstractCookieSettings
+    implements Initializable
 {
     private boolean enabled;
-
-    private static final String PREFIX = "security.rememberme";
 
     public boolean isEnabled()
     {
@@ -40,13 +40,9 @@ public class RememberMeCookieSettings
     public void initialize()
         throws InitializationException
     {
-        super.initialize();
-        
-        this.enabled = config.getBoolean( PREFIX + ".enabled", true );
-    }
-
-    protected String getConfigKeyPrefix()
-    {
-        return PREFIX;
+        this.cookieTimeout = config.getInt( "security.rememberme.timeout" );
+        this.domain = config.getString( "security.rememberme.domain" );
+        this.path = config.getString( "security.rememberme.path" );
+        this.enabled = config.getBoolean( "security.rememberme.enabled" );
     }
 }

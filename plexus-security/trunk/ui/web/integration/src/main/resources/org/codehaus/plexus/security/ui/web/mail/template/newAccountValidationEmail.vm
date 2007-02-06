@@ -33,6 +33,8 @@ a more appropriate set of Roles and Permissions.
 
 Please keep this email for future reference.
 
+#if ( $feedback )
 Questions/Comments? $feedback
+#endif
 
 

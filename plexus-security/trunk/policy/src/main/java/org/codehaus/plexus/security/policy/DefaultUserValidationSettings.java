@@ -21,11 +21,10 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 import org.codehaus.plexus.security.configuration.UserConfiguration;
 
 /**
- * DefaultUserValidationSettings 
+ * DefaultUserValidationSettings
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="org.codehaus.plexus.security.policy.UserValidationSettings"
  */
 public class DefaultUserValidationSettings
@@ -60,9 +59,8 @@ public class DefaultUserValidationSettings
     public void initialize()
         throws InitializationException
     {
-        final String PREFIX = "email.validation";
-        this.emailValidationRequired = config.getBoolean( PREFIX + ".required", true );
-        this.emailValidationTimeout = config.getInt( PREFIX + ".timeout", 2880 );
-        this.emailSubject = config.getString( PREFIX + ".subject", "Welcome to the unconfigured system." );
+        this.emailValidationRequired = config.getBoolean( "email.validation.required" );
+        this.emailValidationTimeout = config.getInt( "email.validation.timeout" );
+        this.emailSubject = config.getString( "email.validation.subject" );
     }
 }
