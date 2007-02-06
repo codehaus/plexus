@@ -169,7 +169,7 @@ public class RegisterAction
                 List recipients = new ArrayList();
                 recipients.add( u.getEmail() );
 
-                mailer.sendAccountValidationEmail( recipients, authkey );
+                mailer.sendAccountValidationEmail( recipients, authkey, getBaseUrl() );
 
                 securityPolicy.setEnabled( false );
                 manager.addUser( u );
@@ -194,13 +194,13 @@ public class RegisterAction
 
         return REGISTER_SUCCESS;
     }
-    
+
     public String cancel()
     {
-		return CANCEL;
-	}
+        return CANCEL;
+    }
 
-	// ------------------------------------------------------------------
+    // ------------------------------------------------------------------
     // Parameter Accessor Methods
     // ------------------------------------------------------------------
 

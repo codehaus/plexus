@@ -15,7 +15,7 @@
  *#
 
 
-Welcome to $applicationName
+Welcome
 
 Username: $accountId
 
@@ -28,8 +28,8 @@ $applicationUrl/security/login!login.action?validateMe=$authkey
 This url will be valid until $expiresOn
 
 Once validated, your account will only have the most basic rights on the system.
-Please contact the $applicationName administrator to be assigned
-a more appropriate set of Roles and Permissions.
+Please contact the administrator to be assigned a more appropriate set of Roles
+and Permissions.
 
 Please keep this email for future reference.
 
