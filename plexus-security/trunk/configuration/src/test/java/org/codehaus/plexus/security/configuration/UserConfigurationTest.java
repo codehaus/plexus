@@ -62,7 +62,7 @@ public class UserConfigurationTest
     {
         UserConfiguration config = (UserConfiguration) lookup( UserConfiguration.ROLE );
         assertFalse( config.getBoolean( "email.smtp.ssl.enabled" ) );
-        assertTrue( config.getBoolean( "email.smtp.tls.enabled.fake", true ) );
+        assertFalse( config.getBoolean( "email.smtp.tls.enabled" ) );
     }
 
     public void testGetInt()
