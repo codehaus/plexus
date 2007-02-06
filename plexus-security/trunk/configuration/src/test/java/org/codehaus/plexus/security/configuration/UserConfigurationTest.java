@@ -20,7 +20,7 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- * UserConfigurationTest 
+ * UserConfigurationTest
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -48,7 +48,7 @@ public class UserConfigurationTest
     {
         UserConfiguration config = (UserConfiguration) lookup( UserConfiguration.ROLE );
         // Test default configuration entry
-        assertEquals( "Unconfigured Username", config.getString( "email.from.name" ) );
+        assertEquals( "25", config.getString( "email.smtp.port" ) );
         // Test overlaid configuration entry
         assertEquals( "127.0.2.2", config.getString( "email.smtp.host" ) );
         // Test default value
