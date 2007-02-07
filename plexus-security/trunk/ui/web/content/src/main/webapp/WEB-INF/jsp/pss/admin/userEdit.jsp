@@ -35,17 +35,18 @@
     <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jsp" %>
     <ww:checkbox label="Locked User" name="user.locked" />
     <ww:checkbox label="Change Password Next Login" name="user.passwordChangeRequired" />
-    <ww:hidden   label="Username"    name="username" />
+    <pss:ifAuthorized permission="user-management-user-role" resource="${user.username}">
+      <ww:url id="assignmentUrl" action="assignments">
+        <ww:param name="username"/>
+      </ww:url>
+      <ww:a href="%{assignmentUrl}">Edit Roles</ww:a>
+    </pss:ifAuthorized>
+    <ww:hidden label="Username"    name="username" />
     <ww:submit value="Update" method="submit" />
     <ww:submit value="Cancel" method="cancel" />
   </ww:form>
 </pss:ifAuthorized>
 
-<pss:ifAuthorized permission="user-management-user-role" resource="${user.username}">
-  <ww:action name="assignments" executeResult="true" >
-    <ww:param name="principal">${user.username}</ww:param>
-  </ww:action>
-</pss:ifAuthorized>
 </body>
 
 </html>
