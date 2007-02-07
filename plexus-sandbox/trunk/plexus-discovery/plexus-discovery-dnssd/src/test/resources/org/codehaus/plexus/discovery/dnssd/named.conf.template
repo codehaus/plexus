@@ -1,0 +1,28 @@
+options {
+  directory "$DIR";
+  pid-file none;
+  listen-on port 1053 { $IF; };
+};
+
+controls {
+  inet * port 1953 allow { any; };
+};
+
+zone "dnssd.test." {
+  type master;
+  file "$DIR/db.dnssd.test";
+  update-policy {
+    grant update-key subdomain _http._tcp.dnssd.test. ANY;
+  };
+};
+
+zone "unsecure.dnssd.test." {
+  type master;
+  file "$DIR/db.unsecure.dnssd.test";
+  allow-update { ANY ; };
+};
+
+key update-key {
+  algorithm HMAC-MD5;
+  secret "ZEdP4A3ohHuiH/Qvwk08d0QvM3uFbsMk80bLm3swQVI=";
+};

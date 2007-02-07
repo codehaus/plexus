@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plexus>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.discovery.ResourceDiscoverer</role>
+      <role-hint>Discovery</role-hint>
+      <implementation>
+        org.codehaus.plexus.discovery.dnssd.DNSSDResourceDiscoverer
+      </implementation>
+      <lifecycle-handler>basic</lifecycle-handler>
+      <instantiation-strategy>singleton</instantiation-strategy>
+      <configuration>
+        <refresh-time>120</refresh-time>
+        <dns-domains>
+          <dns-domain>dns-sd.org.</dns-domain>
+        </dns-domains>
+        <services>
+          <service>_http._tcp</service>
+        </services>
+      </configuration>
+    </component>
+  </components>
+</plexus>

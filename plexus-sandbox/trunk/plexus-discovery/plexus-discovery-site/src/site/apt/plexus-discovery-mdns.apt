@@ -1,0 +1,37 @@
+ ----------------------
+ plexus-discovery-mdns
+ ----------------------
+ Aldrin Leal
+ ----------------------
+
+Using plexus-discovery-mdns for mDNS sharing of resources!
+
+ To use plexus-discovery-mdns you must:
+
+ * Declare plexus-discovery-mdns as {{{#dependency}a dependency}}
+
+ * {{{#settings}Use the built-in settings}} (suitable for HTTP Resources), or {{{#declaring}declare your own}}
+
+ * Obtain your {{{#discoverer}ResourceDiscoverer}} instance to browse available resources, or
+
+ * Obtain your {{{#publisher}ResourcePublisher}} instance to publish additional resources
+
+Declaring plexus-discovery-mdns as a {dependency}
+
+ TBD
+
+Using the built-in {settings}
+
+ TBD
+
+{declaring} a plexus-mdns component
+
+ TBD
+
+Working with Resource{discoverer}
+
+ TBD
+
+Working with Resource{publisher}
+
+ TBD
