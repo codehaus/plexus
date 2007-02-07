@@ -173,7 +173,10 @@
     <action name="usercreate" class="pss-admin-user-create" method="show">
       <result name="input">/WEB-INF/jsp/pss/admin/userCreate.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/admin/userCreate.jsp</result>
-      <result name="success" type="redirect-action">userlist</result>
+      <result name="success" type="redirect-action">
+        <param name="actionName">assignments</param>
+        <param name="principal">${user.username}</param>
+      </result>
     </action>
 
     <action name="userdelete" class="pss-admin-user-delete" method="confirm">
@@ -189,25 +192,17 @@
          It is injected using the <ww:action> taglib -->
     <action name="assignments" class="pss-assignments" method="show">
       <interceptor-ref name="securedStack"/>
-      <result name="input">/WEB-INF/jsp/pss/include/assignments.jsp</result>
+      <result name="input">/WEB-INF/jsp/pss/admin/assignments.jsp</result>
       <result name="error">/WEB-INF/jsp/pss/include/error.jsp</result>
-      <result name="success">/WEB-INF/jsp/pss/include/assignments.jsp</result>
+      <result name="success">/WEB-INF/jsp/pss/admin/assignments.jsp</result>
     </action>
 
     <action name="addRolesToUser" class="pss-assignments" method="edituser">
-      <result name="success" type="redirect-action">
-        <param name="actionName">useredit</param>
-        <param name="namespace">/security</param>
-        <param name="username">${principal}</param>
-      </result>
+      <result name="success" type="redirect-action">userlist</result>
     </action>
 
     <action name="removeRolesFromUser" class="pss-assignments" method="edituser">
-      <result name="success" type="redirect-action">
-        <param name="actionName">useredit</param>
-        <param name="namespace">/security</param>
-        <param name="username">${principal}</param>
-      </result>
+      <result name="success" type="redirect-action">userlist</result>
     </action>
 
     <action name="rolecreate" class="pss-role-create" method="show">

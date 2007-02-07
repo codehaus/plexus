@@ -24,10 +24,14 @@ import org.codehaus.plexus.security.rbac.Role;
 import org.codehaus.plexus.security.rbac.UserAssignment;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystemConstants;
-import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
+import org.codehaus.plexus.security.ui.web.action.AbstractUserCredentialsAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
+import org.codehaus.plexus.security.ui.web.model.AdminEditUserCredentials;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
+import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
@@ -46,7 +50,7 @@ import java.util.Map;
  * instantiation-strategy="per-lookup"
  */
 public class AssignmentsAction
-    extends AbstractSecurityAction
+    extends AbstractUserCredentialsAction
 {
     // ------------------------------------------------------------------
     // Plexus Component Requirements
@@ -63,6 +67,8 @@ public class AssignmentsAction
 
     private String principal;
 
+    private AdminEditUserCredentials user;
+    
     /**
      * A List of {@link Role} objects.
      */
@@ -112,10 +118,36 @@ public class AssignmentsAction
      */
     public String show()
     {
-
         if ( StringUtils.isEmpty( principal ) )
         {
             addActionError( "Cannot use AssignmentsAction for RBAC Edit User with an empty principal." );
+            return ERROR;
+        }
+
+        UserManager userManager = super.securitySystem.getUserManager();
+        
+
+        if ( !userManager.userExists( principal ) )
+        {
+            addActionError( "User '" + principal + "' does not exist." );
+            return ERROR;
+        }
+
+        try
+        {
+            User u = userManager.findUser( principal );
+
+            if ( u == null )
+            {
+                addActionError( "Unable to operate on null user." );
+                return ERROR;
+            }
+
+            user = new AdminEditUserCredentials( u );
+        }
+        catch ( UserNotFoundException e )
+        {
+            addActionError( "Unable to get User '" + principal + "': " + e.getMessage() );
             return ERROR;
         }
 
@@ -390,6 +422,11 @@ public class AssignmentsAction
         this.principal = principal;
     }
 
+    public void setUsername( String username )
+    {
+        this.principal = username;
+    }
+
     public List getRemoveSelectedRoles()
     {
         return removeSelectedRoles;
@@ -398,6 +435,11 @@ public class AssignmentsAction
     public void setRemoveSelectedRoles( List removeSelectedRoles )
     {
         this.removeSelectedRoles = removeSelectedRoles;
+    }
+
+    public AdminEditUserCredentials getUser()
+    {
+        return user;
     }
 
     public SecureActionBundle initSecureActionBundle()

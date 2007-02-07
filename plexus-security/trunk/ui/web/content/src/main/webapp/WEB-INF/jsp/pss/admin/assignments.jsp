@@ -17,6 +17,23 @@
 <%@ taglib prefix="ww" uri="/webwork"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<html>
+<head>
+  <title>[Admin] User Edit</title>
+</head>
+
+<body>
+
+<h2>[Admin] User Roles</h2>
+
+    <div class="axial">
+      <table border="1" cellspacing="2" cellpadding="3" width="100%">
+        <ww:label label="%{getText('Username')}" name="principal"/>
+        <ww:label label="%{getText('Full Name')}" name="user.fullName"/>
+        <ww:label label="%{getText('Email')}" name="user.email"/>
+      </table>
+    </div>
+    
 <c:if test="${!empty effectivelyAssignedRoles}">
 <h3>Effective Roles</h3>
 
@@ -34,7 +51,7 @@
   <c:when test="${!empty assignedRoles}">
 
     <ww:form action="removeRolesFromUser" namespace="/security" name="removeRoles">
-      <ww:hidden name="principal" value="${username}"/>
+      <ww:hidden name="principal"/>
       <ww:hidden name="removeRolesButton" value="true"/>
       <ww:checkboxlist list="assignedRoles" name="removeSelectedRoles" listValue="name" listKey="name" theme="pss"/>
       <br/>
@@ -46,14 +63,12 @@
   </c:otherwise>
 </c:choose>
 
-
-
 <h3>Available Roles</h3>
 
 <c:choose>
   <c:when test="${!empty availableRoles}">
     <ww:form action="addRolesToUser" namespace="/security" name="addRoles">
-      <ww:hidden name="principal" value="${username}"/>
+      <ww:hidden name="principal"/>
       <ww:hidden name="addRolesButton" value="true"/>
       <ww:checkboxlist list="availableRoles" name="addSelectedRoles" listValue="name" listKey="name" theme="pss"/>
       <br/>
@@ -64,3 +79,7 @@
     <p><em>No Roles Available to Grant</em></p>
   </c:otherwise>
 </c:choose>
+
+</body>
+
+</html>
