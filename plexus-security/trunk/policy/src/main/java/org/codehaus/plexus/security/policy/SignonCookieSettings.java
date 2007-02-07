@@ -1,9 +1,7 @@
 package org.codehaus.plexus.security.policy;
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-
 /*
- * Copyright 2005-2006 The Codehaus.
+ * Copyright 2006-2007 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +16,9 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
  * limitations under the License.
  */
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+
 /**
  * SignonCookieSettings
  *
@@ -27,6 +28,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
  */
 public class SignonCookieSettings
     extends AbstractCookieSettings
+    implements Initializable
 {
     public void initialize()
         throws InitializationException
