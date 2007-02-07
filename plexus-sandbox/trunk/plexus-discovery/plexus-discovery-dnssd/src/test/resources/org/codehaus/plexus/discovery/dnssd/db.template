@@ -1,0 +1,10 @@
+$TTL 1800
+@       IN SOA ns (
+        hostmaster
+        2006010701
+        1h
+        15m
+        30d
+        1h
+)
+        IN NS ns.dnssd.test.

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plexus>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.discovery.ResourcePublisher</role>
+      <role-hint>Unsecure</role-hint>
+      <implementation>
+        org.codehaus.plexus.discovery.dnssd.DNSSDResourcePublisher
+      </implementation>
+      <lifecycle-handler>basic</lifecycle-handler>
+      <instantiation-strategy>singleton</instantiation-strategy>
+      <configuration>
+        <domain>unsecure.dnssd.test.</domain>
+        <dns-server>${IF}:1053</dns-server>
+      </configuration>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.discovery.ResourcePublisher</role>
+      <role-hint>Simple</role-hint>
+      <implementation>
+        org.codehaus.plexus.discovery.dnssd.DNSSDResourcePublisher
+      </implementation>
+      <lifecycle-handler>basic</lifecycle-handler>
+      <instantiation-strategy>singleton</instantiation-strategy>
+      <configuration>
+        <domain>dnssd.test.</domain>
+        <dns-server>${IF}:1053</dns-server>
+        <key-algorithm>HMAC-MD5</key-algorithm>
+        <key-name>update-key</key-name>
+        <key-data>ZEdP4A3ohHuiH/Qvwk08d0QvM3uFbsMk80bLm3swQVI=</key-data>
+      </configuration>
+    </component>
+  </components>
+</plexus>
