@@ -16,28 +16,18 @@ package org.codehaus.plexus.security.configuration;
  * limitations under the License.
  */
 
-import org.apache.commons.configuration.CompositeConfiguration;
+import org.apache.commons.configuration.CombinedConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration.SystemConfiguration;
 import org.codehaus.plexus.evaluator.DefaultExpressionEvaluator;
 import org.codehaus.plexus.evaluator.EvaluatorException;
 import org.codehaus.plexus.evaluator.ExpressionEvaluator;
-import org.codehaus.plexus.evaluator.ExpressionSource;
 import org.codehaus.plexus.evaluator.sources.SystemPropertyExpressionSource;
-import org.codehaus.plexus.logging.LogEnabled;
-import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,48 +37,27 @@ import java.util.List;
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * 
  * @plexus.component role="org.codehaus.plexus.security.configuration.UserConfiguration"
  */
 public class UserConfiguration
-    extends CompositeConfiguration
-    implements Initializable, LogEnabled, ExpressionSource
+    extends AbstractLogEnabled
+    implements Initializable
 {
     public static final String ROLE = UserConfiguration.class.getName();
 
-    private static final String DEFAULT_CONFIG_RESOURCE = "/org/codehaus/plexus/security/config-defaults.properties";
-
-    /**
-     * @plexus.requirement role-hint="default"
-     */
-    private ExpressionEvaluator evaluator;
+    private static final String DEFAULT_CONFIG_RESOURCE = "org/codehaus/plexus/security/config-defaults.properties";
 
     /**
      * @plexus.configuration
      */
     private List configs;
 
-    private Logger logger;
-
-    public void enableLogging( Logger logger )
-    {
-        this.logger = logger;
-    }
-
-    public Logger getLog()
-    {
-        return this.logger;
-    }
+    private CombinedConfiguration configuration = new CombinedConfiguration();
 
     public void initialize()
         throws InitializationException
     {
-        if ( evaluator == null )
-        {
-            evaluator = (ExpressionEvaluator) new DefaultExpressionEvaluator();
-        }
-
-        evaluator.addExpressionSource( this );
+        ExpressionEvaluator evaluator = new DefaultExpressionEvaluator();
         evaluator.addExpressionSource( new SystemPropertyExpressionSource() );
 
         if ( configs == null )
@@ -101,181 +70,78 @@ public class UserConfiguration
             configs.add( DEFAULT_CONFIG_RESOURCE );
         }
 
-        try
+        Iterator it = configs.iterator();
+        while ( it.hasNext() )
         {
-            Iterator it = configs.iterator();
-            while ( it.hasNext() )
+            String configName = (String) it.next();
+            try
             {
-                String configName = (String) it.next();
-                String resolvedConfigName = resolveName( configName );
-                getLog().info(
-                               "Attempting to find configuration [" + configName + "] (resolved to ["
-                                   + resolvedConfigName + "])" );
+                configName = evaluator.expand( configName );
+            }
+            catch ( EvaluatorException e )
+            {
+                getLogger().warn( "Unable to resolve configuration name: " + e.getMessage(), e );
+            }
+            getLogger().info(
+                "Attempting to find configuration [" + configName + "] (resolved to [" + configName + "])" );
 
-                InputStream is = findConfig( resolvedConfigName );
-                if ( is != null )
-                {
-                    PropertiesConfiguration userConfig = new PropertiesConfiguration();
+            try
+            {
+                PropertiesConfiguration userConfig = new PropertiesConfiguration( configName );
 
-                    userConfig.load( is );
-
-                    IOUtil.close( is );
-
-                    super.addConfiguration( userConfig );
-                }
-                else
-                {
-                    getLog().info( "Non-existant configuration [" + resolvedConfigName + "] not loaded." );
-                }
+                configuration.addConfiguration( userConfig );
+            }
+            catch ( ConfigurationException e )
+            {
+                throw new InitializationException( "Unable to load configuration " + configs + " : " + e.getMessage(),
+                                                   e );
             }
         }
-        catch ( ConfigurationException e )
-        {
-            throw new InitializationException( "Unable to load configuration " + configs + " : " + e.getMessage(), e );
-        }
+        configuration.addConfiguration( new SystemConfiguration() );
 
-        if ( getLog().isDebugEnabled() )
+        if ( getLogger().isDebugEnabled() )
         {
             StringBuffer dbg = new StringBuffer();
             dumpState( dbg );
-            getLog().debug( dbg.toString() );
+            getLogger().debug( dbg.toString() );
         }
     }
 
     public StringBuffer dumpState( StringBuffer sb )
     {
         sb.append( "Configuration Dump." );
-        Iterator it = getKeys();
+        Iterator it = configuration.getKeys();
         while ( it.hasNext() )
         {
             String key = (String) it.next();
-            sb.append( "\n\"" ).append( key ).append( "\" = \"" ).append( getProperty( key ) ).append( "\"" );
+            sb.append( "\n\"" ).append( key ).append( "\" = \"" ).append( configuration.getProperty( key ) ).append(
+                "\"" );
         }
         return sb;
     }
 
-    public Object getProperty( String key )
+    public String getString( String key )
     {
-        Object value = super.getProperty( key );
-
-        if ( value == null )
-        {
-            return null;
-        }
-
-        if ( value instanceof String )
-        {
-            try
-            {
-                return evaluator.expand( (String) value );
-            }
-            catch ( EvaluatorException e )
-            {
-                getLog().warn( "Unable to expand/evaluate \"" + value + "\": " + e.getMessage(), e );
-                return value;
-            }
-        }
-
-        return value;
+        return configuration.getString( key );
     }
 
-    private String resolveName( String name )
+    public int getInt( String key )
     {
-        try
-        {
-            return evaluator.expand( name );
-        }
-        catch ( EvaluatorException e )
-        {
-            getLog().warn( "Unable to resolve configuration name: " + e.getMessage(), e );
-            return name;
-        }
+        return configuration.getInt( key );
     }
 
-    private InputStream findConfig( String name )
+    public boolean getBoolean( String key )
     {
-        if ( StringUtils.isEmpty( name ) )
-        {
-            getLog().warn( "Unable to find empty config." );
-            return null;
-        }
-
-        // Test for name as resource
-        getLog().debug( "Testing [" + name + "] as resource" );
-        URL resourceUrl = this.getClass().getResource( name );
-        if ( resourceUrl != null )
-        {
-            try
-            {
-                getLog().debug( "Found [" + name + "] as resource" );
-                return resourceUrl.openStream();
-            }
-            catch ( IOException e )
-            {
-                getLog().debug( "Resource [" + name + "] open stream error : " + e.getMessage(), e );
-                // Ignore, try different technique.
-            }
-        }
-
-        // Test for name as url.
-        getLog().debug( "Testing [" + name + "] as url" );
-        URL nameUrl;
-        try
-        {
-            nameUrl = new URL( name );
-            getLog().debug( "Found [" + name + "] as url" );
-            return nameUrl.openStream();
-        }
-        catch ( MalformedURLException e )
-        {
-            getLog().debug( "URL [" + name + "] is malformed" );
-            // Ignore, try different technique.
-        }
-        catch ( IOException e )
-        {
-            getLog().debug( "URL [" + name + "] open stream error : " + e.getMessage(), e );
-            // Ignore, try different technique.
-        }
-
-        // Test for name as file.
-        getLog().debug( "Testing [" + name + "] as file" );
-        File nameFile = new File( name );
-        if ( nameFile.exists() && nameFile.isFile() && nameFile.canRead() )
-        {
-            getLog().debug( "Found [" + name + "] as file" );
-            try
-            {
-                return new FileInputStream( nameFile );
-            }
-            catch ( FileNotFoundException e )
-            {
-                getLog().debug( "File [" + name + "] open stream error : " + e.getMessage(), e );
-                // Ignore, try different technique.
-            }
-        }
-
-        // No other techniques to try.
-        getLog().warn( "Unable to find configuration [" + name + "]" );
-        return null;
+        return configuration.getBoolean( key );
     }
 
-    public String getExpressionValue( String expression )
+    public int getInt( String key, int defaultValue )
     {
-        if ( StringUtils.equals( "config.default", expression ) )
-        {
-            return DEFAULT_CONFIG_RESOURCE;
-        }
-
-        if ( !super.containsKey( expression ) )
-        {
-            return null;
-        }
-
-        return super.getString( expression );
+        return configuration.getInt( key, defaultValue );
     }
 
-    public List getConfigs()
+    public String getString( String key, String defaultValue )
     {
-        return configs;
+        return configuration.getString( key, defaultValue );
     }
 }
