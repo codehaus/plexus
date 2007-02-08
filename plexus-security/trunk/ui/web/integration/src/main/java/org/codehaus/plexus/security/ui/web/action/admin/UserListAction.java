@@ -27,7 +27,6 @@ import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.reports.ReportManager;
 import org.codehaus.plexus.security.ui.web.role.profile.RoleConstants;
-import org.codehaus.plexus.security.ui.web.util.UserComparator;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.util.StringUtils;
@@ -35,7 +34,6 @@ import org.codehaus.plexus.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -54,15 +52,6 @@ import java.util.Set;
 public class UserListAction
     extends AbstractSecurityAction
 {
-    private final static Map SEARCH_CRITERIA = new HashMap();
-
-    static
-    {
-        SEARCH_CRITERIA.put( "username", "Username contains" );
-        SEARCH_CRITERIA.put( "fullName", "Name contains" );
-        SEARCH_CRITERIA.put( "email", "Email contains" );
-    }
-
     // ------------------------------------------------------------------
     // Plexus Component Requirements
     // ------------------------------------------------------------------
@@ -110,7 +99,6 @@ public class UserListAction
         if ( StringUtils.isEmpty( roleName ) )
         {
             users = manager.getUsers();
-            Collections.sort( users, new UserComparator( "username", true ) );
         }
         else
         {
@@ -129,7 +117,6 @@ public class UserListAction
                 }
 
                 users = findUsers( targetRoleNames );
-                Collections.sort( users, new UserComparator( "username", true ) );
             }
             catch ( RbacObjectNotFoundException e )
             {
@@ -231,11 +218,6 @@ public class UserListAction
     public List getRoles()
     {
         return roles;
-    }
-
-    public Map getCriteria()
-    {
-        return SEARCH_CRITERIA;
     }
 
     public Map getReportMap()
