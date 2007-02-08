@@ -2,7 +2,7 @@
   <components>
     <component>
       <role>org.codehaus.plexus.synapse.SynapseServer</role>
-      <implementation>org.codehaus.plexus.ircd.server.IrcServer</implementation>
+      <implementation>org.codehaus.plexus.server.irc.server.IrcServer</implementation>
     </component>
     <component>
       <role>org.codehaus.plexus.synapse.acceptor.SocketAcceptor</role>
