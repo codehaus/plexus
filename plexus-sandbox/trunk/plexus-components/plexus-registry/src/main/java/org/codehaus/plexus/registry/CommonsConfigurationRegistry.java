@@ -22,13 +22,14 @@ import org.apache.commons.configuration.DefaultConfigurationBuilder;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.codehaus.plexus.util.xml.Xpp3DomWriter;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
@@ -62,7 +63,7 @@ public class CommonsConfigurationRegistry
      *
      * @plexus.configuration
      */
-    private Xpp3Dom properties;
+    private PlexusConfiguration properties;
 
     public String dump()
     {
@@ -183,12 +184,12 @@ public class CommonsConfigurationRegistry
             {
                 // TODO: changing this to have a different configurator might be more appropriate?
                 StringWriter w = new StringWriter();
-                Xpp3DomWriter.write( w, properties );
+                printConfiguration( properties, new PrintWriter( w ) );
 
                 DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
                 getLogger().debug( "Loading configuration into commons-configuration: " + w.toString() );
                 builder.load( new StringReader( w.toString() ) );
-                configuration = builder.getConfiguration( true );
+                configuration = builder.getConfiguration( false );
             }
             else
             {
@@ -202,5 +203,39 @@ public class CommonsConfigurationRegistry
         {
             throw new InitializationException( e.getMessage(), e );
         }
+        catch ( PlexusConfigurationException e )
+        {
+            throw new InitializationException( e.getMessage(), e );
+        }
+    }
+
+    private static void printConfiguration( PlexusConfiguration configuration, PrintWriter writer )
+        throws PlexusConfigurationException
+    {
+        writer.print( "<" + configuration.getName() );
+        String[] attrs = configuration.getAttributeNames();
+        for ( int i = 0; i < attrs.length; i++ )
+        {
+            writer.print( " " + attrs[i] + "=\"" + configuration.getAttribute( attrs[i] ) + "\"" );
+        }
+        writer.print( ">" );
+        if ( configuration.getChildCount() > 0 )
+        {
+            for ( int i = 0; i < configuration.getChildCount(); i++ )
+            {
+                writer.println();
+                printConfiguration( configuration.getChild( i ), writer );
+            }
+        }
+        else
+        {
+            writer.print( configuration.getValue() );
+        }
+        writer.println( "</" + configuration.getName() + ">" );
+    }
+
+    public void setProperties( PlexusConfiguration properties )
+    {
+        this.properties = properties;
     }
 }
