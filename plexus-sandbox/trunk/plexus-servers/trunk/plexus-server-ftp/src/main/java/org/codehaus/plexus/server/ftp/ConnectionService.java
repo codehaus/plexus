@@ -292,7 +292,6 @@ public class ConnectionService
         }
     }
 
-
     /** Close all - close all the connections. */
     public void closeAllConnections()
     {

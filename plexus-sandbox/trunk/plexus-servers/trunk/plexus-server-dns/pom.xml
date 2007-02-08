@@ -7,7 +7,7 @@
   </parent>
   <artifactId>plexus-server-dns</artifactId>
   <name>Plexus DNS Server</name>
-  <version>1.0.4-SNAPSHOT</version>  
+  <version>1.0-SNAPSHOT</version>  
   <dependencies>
     <dependency>
       <groupId>dnsjava</groupId>
