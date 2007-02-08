@@ -34,14 +34,8 @@
     </plugins>                                                                                                                                                                              
   </build>          
   <modules>
-    <module>plexus-server</module>  
-    <module>plexus-server-dns</module>
-    <module>plexus-server-ftp</module>
-    <module>plexus-server-http</module>
-    <module>plexus-server-irc</module>
-    <module>plexus-server-jabber</module>
-    <module>plexus-server-pop</module>
-    <module>plexus-server-smtp</module>
+    <module>plexus-server-core</module>
+    <module>plexus-servers</module>    
   </modules>
   <scm> 
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-servers/trunk/</connection>

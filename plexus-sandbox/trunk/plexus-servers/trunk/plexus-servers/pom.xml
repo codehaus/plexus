@@ -18,7 +18,6 @@
     </dependency>
   </dependencies>
   <modules>
-    <module>plexus-server</module>  
     <module>plexus-server-dns</module>
     <module>plexus-server-ftp</module>
     <module>plexus-server-http</module>
