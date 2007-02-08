@@ -16,18 +16,23 @@ package org.codehaus.plexus.security.configuration;
  * limitations under the License.
  */
 
-import org.apache.commons.configuration.CombinedConfiguration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.configuration.SystemConfiguration;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.evaluator.DefaultExpressionEvaluator;
 import org.codehaus.plexus.evaluator.EvaluatorException;
 import org.codehaus.plexus.evaluator.ExpressionEvaluator;
 import org.codehaus.plexus.evaluator.sources.SystemPropertyExpressionSource;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.registry.Registry;
+import org.codehaus.plexus.registry.RegistryException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,7 +46,7 @@ import java.util.List;
  */
 public class UserConfiguration
     extends AbstractLogEnabled
-    implements Initializable
+    implements Contextualizable, Initializable
 {
     public static final String ROLE = UserConfiguration.class.getName();
 
@@ -49,13 +54,34 @@ public class UserConfiguration
 
     /**
      * @plexus.configuration
+     * @deprecated Please configure the Plexus registry instead
      */
     private List configs;
 
-    private CombinedConfiguration configuration = new CombinedConfiguration();
+    private Registry registry;
 
     public void initialize()
         throws InitializationException
+    {
+        try
+        {
+            performLegacyInitialization();
+
+            registry.addConfigurationFromResource( DEFAULT_CONFIG_RESOURCE );
+        }
+        catch ( RegistryException e )
+        {
+            throw new InitializationException( e.getMessage(), e );
+        }
+
+        if ( getLogger().isDebugEnabled() )
+        {
+            getLogger().debug( registry.dump() );
+        }
+    }
+
+    private void performLegacyInitialization()
+        throws InitializationException, RegistryException
     {
         ExpressionEvaluator evaluator = new DefaultExpressionEvaluator();
         evaluator.addExpressionSource( new SystemPropertyExpressionSource() );
@@ -65,9 +91,11 @@ public class UserConfiguration
             configs = new ArrayList();
         }
 
-        if ( !configs.contains( DEFAULT_CONFIG_RESOURCE ) )
+        if ( !configs.isEmpty() )
         {
-            configs.add( DEFAULT_CONFIG_RESOURCE );
+            // TODO: plexus should be able to do this on it's own.
+            getLogger().warn(
+                "DEPRECATED: the <configs> elements is deprecated. Please configure the Plexus registry instead" );
         }
 
         Iterator it = configs.iterator();
@@ -85,63 +113,47 @@ public class UserConfiguration
             getLogger().info(
                 "Attempting to find configuration [" + configName + "] (resolved to [" + configName + "])" );
 
-            try
-            {
-                PropertiesConfiguration userConfig = new PropertiesConfiguration( configName );
-
-                configuration.addConfiguration( userConfig );
-            }
-            catch ( ConfigurationException e )
-            {
-                throw new InitializationException( "Unable to load configuration " + configs + " : " + e.getMessage(),
-                                                   e );
-            }
+            registry.addConfigurationFromFile( new File( configName ) );
         }
-        configuration.addConfiguration( new SystemConfiguration() );
-
-        if ( getLogger().isDebugEnabled() )
-        {
-            StringBuffer dbg = new StringBuffer();
-            dumpState( dbg );
-            getLogger().debug( dbg.toString() );
-        }
-    }
-
-    public StringBuffer dumpState( StringBuffer sb )
-    {
-        sb.append( "Configuration Dump." );
-        Iterator it = configuration.getKeys();
-        while ( it.hasNext() )
-        {
-            String key = (String) it.next();
-            sb.append( "\n\"" ).append( key ).append( "\" = \"" ).append( configuration.getProperty( key ) ).append(
-                "\"" );
-        }
-        return sb;
     }
 
     public String getString( String key )
     {
-        return configuration.getString( key );
+        return registry.getString( key );
     }
 
     public int getInt( String key )
     {
-        return configuration.getInt( key );
+        return registry.getInt( key );
     }
 
     public boolean getBoolean( String key )
     {
-        return configuration.getBoolean( key );
+        return registry.getBoolean( key );
     }
 
     public int getInt( String key, int defaultValue )
     {
-        return configuration.getInt( key, defaultValue );
+        return registry.getInt( key, defaultValue );
     }
 
     public String getString( String key, String defaultValue )
     {
-        return configuration.getString( key, defaultValue );
+        return registry.getString( key, defaultValue );
+    }
+
+    public void contextualize( Context context )
+        throws ContextException
+    {
+        PlexusContainer container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+        try
+        {
+            // elsewhere, this can be a requirement, but we need this for backwards compatibility
+            registry = (Registry) container.lookup( Registry.class.getName() );
+        }
+        catch ( ComponentLookupException e )
+        {
+            throw new ContextException( e.getMessage(), e );
+        }
     }
 }

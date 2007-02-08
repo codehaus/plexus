@@ -19,7 +19,7 @@ package org.codehaus.plexus.security.ui.web.action.admin;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.plexus.security.configuration.UserConfiguration;
+import org.codehaus.plexus.registry.Registry;
 import org.codehaus.plexus.security.rbac.RBACManager;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.system.SecuritySystem;
@@ -59,7 +59,7 @@ public class SystemInfoAction
     /**
      * @plexus.requirement
      */
-    private UserConfiguration configuration;
+    private Registry registry;
 
     /**
      * @plexus.requirement
@@ -100,8 +100,8 @@ public class SystemInfoAction
         details = new StringBuffer();
 
         details.append( "Configuration: " );
-        dumpObject( details, configuration, INDENT );
-        configuration.dumpState( details );
+        dumpObject( details, registry, INDENT );
+        details.append( registry.dump() );
         details.append( LN );
 
         details.append( LN ).append( "<hr/>" ).append( LN );
