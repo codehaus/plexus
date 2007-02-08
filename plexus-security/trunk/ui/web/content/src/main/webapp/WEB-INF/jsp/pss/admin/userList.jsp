@@ -22,6 +22,7 @@
 <html>
 <head>
   <title>[Admin] User List</title>
+  <link rel="stylesheet" type="text/css" href="<ww:url value="/css/pss/table.css"/>" media="screen"/>
 </head>
 
 <body>
@@ -30,17 +31,22 @@
 
 
 <h2>[Admin] List of Users in ${roleName} Role</h2>
- 
-<ec:table 
+
+<table class="outerTableRegion" cellpadding="0" cellspacing="0">
+<tr>
+<td><ec:table 
     var="user" 
     items="users" 
     action="${pageContext.request.contextPath}/security/userlist!show.action"
     imagePath="${pageContext.request.contextPath}/images/pss/table/*.gif"
+     autoIncludeParameters="false" 
     title="Users"
     showTitle="false"
     showExports="false"
     view="org.codehaus.plexus.security.ui.web.eXc.views.SecurityView" 
     sortRowsCallback="org.codehaus.plexus.security.ui.web.eXc.ProcessUserRowsCallback"
+    cellspacing="2"
+    cellpadding="3"
     >
     <%-- TODO: Fix export download. --%>
     <ec:export 
@@ -96,20 +102,11 @@
           </c:if>
         </ec:column>
     </ec:row>    
-</ec:table>
-
-
-<table class="tools" border="0" cellspacing="1" cellpadding="0">
-
-<tr>
-  <th class="toolHeading">Tasks</th>
-  <th class="toolHeading column">Reports</th>
+</ec:table></td>
 </tr>
-
+<tr><td></td></tr>
 <tr>
-  <td valign="top">
-    <p class="description">The following tools are available for administrators to manipulate the user list.</p>
-     
+<td>
     <pss:ifAuthorized permission="user-management-user-create">
       <div class="task createUser">
         <ww:form action="usercreate!show" namespace="/security" theme="simple" method="post">
@@ -117,28 +114,20 @@
         </ww:form>
       </div>
     </pss:ifAuthorized>
+</td>
+</tr>
+</table>
 
-    <div class="task showRoles">
-      <ww:form action="userlist!show" namespace="/security" theme="simple" method="get">
-        <ww:submit cssClass="button" value="Show Users In Role" />
-        
-        <ww:select list="roles"
-                   name="roleName"
-                   value="roleName"
-                   listKey="name"
-                   listValue="name"
-                   headerKey=""
-                   headerValue="Any"/>
-      </ww:form>
-    </div>
-    
-  </td>
-  
-  <td valign="top" class="column">
-    <table cellspacing="0" cellpadding="0" border="0" class="reports">
+<br>
+<br>
+<b>Reports</b>
+<br>
+
+<table class="tools" border="0" cellspacing="1" cellpadding="0">
+
       <tr>
-        <th>Name</th>
-        <th>Types</th>
+        <th class="toolHeading" width="30%">Name</th>
+        <th class="toolHeading column">Types</th>
       </tr>
       
       <c:forEach items="${reportMap}" var="reportEntry">
@@ -159,9 +148,6 @@
           </td>
         </tr>
       </c:forEach>
-    </table>
-  </td>
-</tr>
 
 </table>
 
