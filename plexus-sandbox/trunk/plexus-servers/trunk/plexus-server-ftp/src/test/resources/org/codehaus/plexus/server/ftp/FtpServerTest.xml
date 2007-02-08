@@ -1,6 +1,37 @@
 <plexus>
   <components>
-
+    <component>
+      <role>org.codehaus.plexus.server.ftp.FtpServer</role>
+      <implementation>org.codehaus.plexus.server.ftp.DefaultFtpServer</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.server.PlexusServerSocketFactory</role>
+          <field-name>socketFactory</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.server.ftp.ip.IpRestrictor</role>
+          <field-name>ipRestrictor</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.server.ftp.usermanager.UserManager</role>
+          <field-name>userManager</field-name>
+        </requirement>
+      </requirements>
+      <configuration>
+        <port>10021</port>
+        <host>localhost</host>
+        <backlog>5</backlog>
+        <host>localhost</host>
+        <port>10021</port>
+        <max-login>20</max-login>
+        <anonymous-login>10</anonymous-login>
+        <poll-interval>120</poll-interval>
+        <default-idle>300</default-idle>
+        <anonymous-allowed>true</anonymous-allowed>
+        <create-home>true</create-home>
+        <default-root>/</default-root>
+      </configuration>
+    </component>
     <!--
     <component>
       <role>org.codehaus.ftpserver.ip.IpRestrictor</role>

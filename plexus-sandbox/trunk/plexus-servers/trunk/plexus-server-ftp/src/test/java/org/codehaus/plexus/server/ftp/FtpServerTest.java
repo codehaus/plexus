@@ -20,7 +20,7 @@ public class FtpServerTest
         release( server );
     }
 
-    public void xtestFileRetrieval()
+    public void testFileRetrieval()
         throws Exception
     {
         FtpServer server = (FtpServer) lookup( FtpServer.ROLE );

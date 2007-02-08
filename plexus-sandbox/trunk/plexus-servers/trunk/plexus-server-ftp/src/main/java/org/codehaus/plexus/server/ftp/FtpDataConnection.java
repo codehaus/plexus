@@ -162,8 +162,8 @@ class FtpDataConnection
             {
                 throw new Exception( "No available port found for PASV connection." );
             }
-            mServSoc = new ServerSocket( port, 1, mConfig.getSelfAddress() );
-            mAddress = mConfig.getServerAddress();
+            mServSoc = new ServerSocket( port, 1, mConfig.getFtpServer().getServerAddress() );
+            mAddress = mConfig.getFtpServer().getServerAddress();
             miPort = mServSoc.getLocalPort();
 
             // set different state variables
