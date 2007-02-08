@@ -42,6 +42,17 @@
 </pss:ifAuthorized>
 
 <pss:ifAuthorized permission="user-management-user-role" resource="${user.username}">
+  <c:if test="${!empty effectivelyAssignedRoles}">
+  <h3>Effective Roles</h3>
+
+  <ul>
+    <ww:iterator id="role" value="effectivelyAssignedRoles">
+      <li>${role.name}</li>
+    </ww:iterator>
+  </ul>
+
+</c:if>
+
   <ww:url id="assignmentUrl" action="assignments">
     <ww:param name="username">${user.username}</ww:param>
   </ww:url>

@@ -16,12 +16,14 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.ui.web.action.CancellableAction;
 import org.codehaus.plexus.security.policy.PasswordRuleViolationException;
+import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.system.DefaultSecuritySession;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystemConstants;
+import org.codehaus.plexus.security.ui.web.action.CancellableAction;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.model.AdminEditUserCredentials;
@@ -30,6 +32,9 @@ import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * UserEditAction
@@ -44,6 +49,16 @@ public class UserEditAction
     extends AbstractAdminUserCredentialsAction
     implements CancellableAction
 {
+    /**
+     * @plexus.requirement
+     */
+    private RBACManager rbacManager;
+
+    /**
+     * A List of {@link org.codehaus.plexus.security.rbac.Role} objects.
+     */
+    private List effectivelyAssignedRoles;
+
     // ------------------------------------------------------------------
     // Action Parameters
     // ------------------------------------------------------------------
@@ -91,12 +106,22 @@ public class UserEditAction
             }
 
             user = new AdminEditUserCredentials( u );
+
+            try
+            {
+                this.effectivelyAssignedRoles = new ArrayList( rbacManager.getEffectivelyAssignedRoles( u.getPrincipal().toString() ) );
+            }
+            catch ( RbacManagerException rme )
+            {
+                // ignore, this can happen when the user has no roles assigned  
+            }
         }
         catch ( UserNotFoundException e )
         {
             addActionError( "Unable to get User '" + getUsername() + "': " + e.getMessage() );
             return ERROR;
         }
+
 
         return INPUT;
     }
@@ -223,4 +248,10 @@ public class UserEditAction
 
         return bundle;
     }
+
+    public List getEffectivelyAssignedRoles()
+    {
+        return effectivelyAssignedRoles;
+    }
+
 }
