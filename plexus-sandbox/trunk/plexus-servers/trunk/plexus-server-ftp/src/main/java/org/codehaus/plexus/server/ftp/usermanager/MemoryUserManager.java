@@ -1,17 +1,24 @@
 package org.codehaus.plexus.server.ftp.usermanager;
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+
 import java.util.Collection;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * @author Jason van Zyl
  * @plexus.component 
  */
 public class MemoryUserManager
-    implements UserManager
+    implements UserManager, Initializable
 {
+    private Map users;
+
     public User getUserByName( String name )
     {
-        return new User();
+        return (User) users.get( name );
     }
 
     public boolean doesExist( String name )
@@ -32,21 +39,33 @@ public class MemoryUserManager
 
     public void save( User user )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        users.put( user.getName(), user );
     }
 
     public void delete( String user )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        User u = (User) users.get( user );
+
+        users.remove( u);
     }
 
     public Collection getAllUserNames()
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public void reload()
     {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    // ----------------------------------------------------------------------------
+    // Lifecycle
+    // ----------------------------------------------------------------------------
+
+    public void initialize()
+        throws InitializationException
+    {
+        users = new HashMap();
     }
 }

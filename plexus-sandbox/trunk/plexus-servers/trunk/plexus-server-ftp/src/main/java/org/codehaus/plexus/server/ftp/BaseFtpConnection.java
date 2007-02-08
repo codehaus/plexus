@@ -100,7 +100,7 @@ public class BaseFtpConnection
         mUser = new FtpUser();
     }
 
-    /** Server one FTP connection. */
+    /** DefaultServer one FTP connection. */
     public void handleConnection( final Socket socket )
     {
         mControlSocket = socket;
@@ -108,6 +108,9 @@ public class BaseFtpConnection
         mConfig.getLogger().info( "Handling new request from " + clientAddress.getHostAddress() );
         mDataConnection = new FtpDataConnection( mConfig );
         mUser.setClientAddress( clientAddress );
+
+        System.out.println( "mConfig = " + mConfig.getConnectionService() );
+
         mConfig.getConnectionService().newConnection( this );
 
         BufferedReader in = null;

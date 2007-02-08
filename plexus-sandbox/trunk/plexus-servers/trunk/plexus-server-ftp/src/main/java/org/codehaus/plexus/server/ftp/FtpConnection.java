@@ -734,10 +734,6 @@ public class FtpConnection
 
         // get connection info
         InetAddress servAddr = mDataConnection.getInetAddress();
-        if ( servAddr == null )
-        {
-            servAddr = mConfig.getSelfAddress();
-        }
 
         int servPort = mDataConnection.getPort();
 
@@ -1214,7 +1210,7 @@ public class FtpConnection
         resetState();
 
         // write the status info
-        String args[] = {mConfig.getSelfAddress().getHostAddress(), mControlSocket.getInetAddress().getHostAddress(),
+        String args[] = {mControlSocket.getInetAddress().getHostAddress(),
             mUser.getName()};
         out.write( mFtpStatus.getResponse( 211, request, mUser, args ) );
     }

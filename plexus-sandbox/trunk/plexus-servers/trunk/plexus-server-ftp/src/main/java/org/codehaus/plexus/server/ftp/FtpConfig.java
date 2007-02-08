@@ -13,7 +13,6 @@ public class FtpConfig
 {
     private Logger logger;
     private FtpStatistics statistics;
-    private InetAddress selfAddress;
     private ConnectionService connectionService;
     private String systemName;
     private boolean isAnonymousLoginAllowed;
@@ -27,14 +26,11 @@ public class FtpConfig
     private int maxConnections;
     private int maxAnonymousLogins;
     private boolean createHome;
-    private InetAddress serverAddress;
     private int dataPort;
     private DefaultFtpServer ftpServer;
 
-
     public FtpConfig( Logger logger,
                       FtpStatistics statistics,
-                      InetAddress selfAddress,
                       ConnectionService connectionService,
                       String systemName,
                       boolean anonymousLoginAllowed,
@@ -48,13 +44,11 @@ public class FtpConfig
                       int maxConnections,
                       int maxAnonymousLogins,
                       boolean createHome,
-                      InetAddress serverAddress,
                       int dataPort,
                       DefaultFtpServer ftpServer )
     {
         this.logger = logger;
         this.statistics = statistics;
-        this.selfAddress = selfAddress;
         this.connectionService = connectionService;
         this.systemName = systemName;
         isAnonymousLoginAllowed = anonymousLoginAllowed;
@@ -68,7 +62,6 @@ public class FtpConfig
         this.maxConnections = maxConnections;
         this.maxAnonymousLogins = maxAnonymousLogins;
         this.createHome = createHome;
-        this.serverAddress = serverAddress;
         this.dataPort = dataPort;
         this.ftpServer = ftpServer;
     }
@@ -76,12 +69,6 @@ public class FtpConfig
     public void releaseDataPort( int port )
     {
         ftpServer.releaseDataPort( port );
-    }
-
-
-    public InetAddress getServerAddress()
-    {
-        return serverAddress;
     }
 
     public int getDataPort()
@@ -97,11 +84,6 @@ public class FtpConfig
     public FtpStatistics getStatistics()
     {
         return statistics;
-    }
-
-    public InetAddress getSelfAddress()
-    {
-        return selfAddress;
     }
 
     public ConnectionService getConnectionService()
@@ -167,5 +149,20 @@ public class FtpConfig
     public boolean isCreateHome()
     {
         return createHome;
+    }
+
+    public DefaultFtpServer getFtpServer()
+    {
+        return ftpServer;
+    }
+
+    public void setConnectionService( ConnectionService connectionService )
+    {
+        this.connectionService = connectionService;
+    }
+
+    public void setStatistics( FtpStatistics statistics )
+    {
+        this.statistics = statistics;
     }
 }

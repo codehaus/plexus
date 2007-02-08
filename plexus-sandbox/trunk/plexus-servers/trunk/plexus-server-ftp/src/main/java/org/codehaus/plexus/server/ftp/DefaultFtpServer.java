@@ -56,7 +56,6 @@
  */
 package org.codehaus.plexus.server.ftp;
 
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
@@ -64,11 +63,13 @@ import org.codehaus.plexus.server.ftp.ip.IpRestrictor;
 import org.codehaus.plexus.server.ftp.usermanager.UserManager;
 import org.codehaus.plexus.server.ftp.util.AsyncMessageQueue;
 import org.codehaus.plexus.server.PlexusServerSocketFactory;
+import org.codehaus.plexus.server.DefaultServer;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  * @author Rana Bhattacharyya <rana_b@yahoo.com>
@@ -77,15 +78,12 @@ import java.net.ServerSocket;
  * @plexus.component
  */
 public class DefaultFtpServer
-    extends AbstractLogEnabled
+    extends DefaultServer
     implements FtpServer, Initializable, Disposable
 {
     // ----------------------------------------------------------------------------
     // Components
     // ----------------------------------------------------------------------------
-
-    /** @plexus.requirement */
-    private PlexusServerSocketFactory factory;
 
     /** @plexus.requirement */
     private IpRestrictor ipRestrictor;
@@ -102,96 +100,69 @@ public class DefaultFtpServer
     // ----------------------------------------------------------------------------
 
     private FtpStatus ftpStatus;
-    private String serverAddressName;
-    private InetAddress serverAddress;
-    private String selfAddressName;
-    private InetAddress selfAddress;
+
     private FtpStatistics statistics;
-    /** @plexus.configuration default-value="10021" */
-    private int serverPort;
+
     private int dataPort[][];
+
     /** @plexus.configuration default-value="20" */
     private int maxLogin;
+
     /** @plexus.configuration default-value="10" */
     private int anonymousLogin;
+
     /** @plexus.configuration default-value="120" */
     private int pollInterval;
+
     /** @plexus.configuration default-value="300" */
     private int defaultIdle;
+
     /** @plexus.configuration default-value="true" */
     private boolean anonymousAllowed;
-    /** @plexus.configuration default-value="false" */
+
+    /** @plexus.configuration default-value="true" */
     private boolean createHome;
+
     /** @plexus.configuration default-value="/" */
     private File defaultRoot;
-
-    private ServerSocket serverSocket;
 
     private FtpConfig configuration;
 
     public void initialize()
         throws InitializationException
     {
+        getLogger().info( "Initializing Server." );
+
         try
         {
-            configuration = new FtpConfig( getLogger(), statistics, selfAddress, connectionService, "systemName",
+            ftpStatus = new FtpStatus();
+
+            configuration = new FtpConfig( getLogger(), statistics, connectionService, "systemName",
                                            anonymousAllowed, ftpStatus, ipRestrictor, asyncMessageQueue, defaultIdle,
                                            pollInterval, userManager, defaultRoot, maxLogin, anonymousLogin, createHome,
-                                           serverAddress, 0, this );
-
-            // get host addresses
-            if ( selfAddress == null )
-            {
-                selfAddress = InetAddress.getLocalHost();
-            }
-            if ( serverAddress == null )
-            {
-                serverAddress = selfAddress;
-            }
-
-            statistics = new FtpStatistics( configuration );
+                                            0, this );
 
             connectionService = new ConnectionService( configuration );
 
-            serverAddress = InetAddress.getByName( serverAddressName );
+            configuration.setConnectionService( connectionService );
 
-            selfAddress = InetAddress.getByName( selfAddressName );
+            statistics = new FtpStatistics( configuration );
 
-            ftpStatus = new FtpStatus();
+            configuration.setStatistics( statistics );
 
             asyncMessageQueue = new AsyncMessageQueue();
 
             asyncMessageQueue.setMaxSize( 4096 );
-
-            InetAddress serverAddress = selfAddress;
-
-            if ( serverAddress == null )
-            {
-                serverSocket = factory.createServerSocket( serverPort, 5, InetAddress.getLocalHost() );
-            }
-            else
-            {
-                serverSocket = factory.createServerSocket( serverPort, 5, serverAddress );
-            }
         }
         catch ( Exception ex )
         {
-            throw new InitializationException( "Error starting FTP Server", ex );
+            throw new InitializationException( "Error starting FTP DefaultServer", ex );
         }
     }
 
     /** Release all resources. */
     public void dispose()
     {
-        try
-        {
-            serverSocket.close();
-        }
-        catch ( IOException e )
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-
         // close connection service
         if ( connectionService != null )
         {
@@ -209,19 +180,11 @@ public class DefaultFtpServer
         }
     }
 
-    /**
-     * Construct an appropriate <code>ConnectionHandler</code>
-     * to handle a new connection.
-     *
-     * @return the new ConnectionHandler
-     * @throws Exception if an error occurs
-     */
-    public FtpConnection createConnectionHandler()
-        throws Exception
+    public void handleConnection( Socket socket )
     {
         FtpConnection conHandle = new FtpConnection( configuration );
 
-        return conHandle;
+        conHandle.handleConnection( socket );
     }
 
     /**
@@ -285,6 +248,7 @@ public class DefaultFtpServer
                     break;
                 }
             }
+
             dataPort.notify();
         }
     }
