@@ -1,0 +1,35 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>plexus-server</artifactId>
+    <groupId>org.codehaus.plexus.servers</groupId>
+    <version>1</version>
+  </parent>
+  <groupId>org.codehaus.plexus.servers</groupId>
+  <artifactId>plexus-servers</artifactId>
+  <version>1</version>
+  <packaging>pom</packaging>
+  <name>Plexus Servers</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus.servers</groupId>
+      <artifactId>plexus-server</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+  <modules>
+    <module>plexus-server</module>  
+    <module>plexus-server-dns</module>
+    <module>plexus-server-ftp</module>
+    <module>plexus-server-http</module>
+    <module>plexus-server-irc</module>
+    <module>plexus-server-jabber</module>
+    <module>plexus-server-pop</module>
+    <module>plexus-server-smtp</module>
+  </modules>
+  <scm> 
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-servers/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-servers/trunk</developerConnection> 
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-servers/trunk/</url>
+  </scm>
+</project>
