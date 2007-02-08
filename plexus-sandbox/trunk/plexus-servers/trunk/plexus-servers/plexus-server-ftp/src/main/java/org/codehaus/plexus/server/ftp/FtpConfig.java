@@ -1,12 +1,11 @@
 package org.codehaus.plexus.server.ftp;
 
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.server.ftp.ip.IpRestrictor;
 import org.codehaus.plexus.server.ftp.usermanager.UserManager;
 import org.codehaus.plexus.server.ftp.util.AsyncMessageQueue;
-import org.codehaus.plexus.logging.Logger;
 
 import java.io.File;
-import java.net.InetAddress;
 
 /** @author Jason van Zyl */
 public class FtpConfig

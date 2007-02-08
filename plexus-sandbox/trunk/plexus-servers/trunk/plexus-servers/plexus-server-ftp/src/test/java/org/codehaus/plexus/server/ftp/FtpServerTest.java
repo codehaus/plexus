@@ -1,9 +1,9 @@
 package org.codehaus.plexus.server.ftp;
 
-import java.net.URL;
-
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.IOUtil;
+
+import java.net.URL;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>

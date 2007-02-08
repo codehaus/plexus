@@ -56,7 +56,6 @@
  */
 package org.codehaus.plexus.server.ftp.usermanager;
 
-import java.util.List;
 import java.util.Collection;
 
 /**

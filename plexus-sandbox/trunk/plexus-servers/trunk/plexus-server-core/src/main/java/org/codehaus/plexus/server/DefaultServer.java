@@ -13,9 +13,9 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.InetAddress;
 
 /** @plexus.component */
 public abstract class DefaultServer
