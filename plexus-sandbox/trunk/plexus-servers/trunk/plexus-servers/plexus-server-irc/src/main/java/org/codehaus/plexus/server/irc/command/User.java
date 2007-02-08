@@ -6,7 +6,6 @@
 package org.codehaus.plexus.server.irc.command;
 
 import org.codehaus.plexus.server.irc.properties.Config;
-import org.codehaus.plexus.server.irc.server.Server;
 import org.codehaus.plexus.server.irc.token.MiddleToken;
 import org.codehaus.plexus.server.irc.token.ParamsToken;
 import org.codehaus.plexus.server.irc.token.TrailingToken;
@@ -71,10 +70,11 @@ public class User extends Command
         {
             user.setUserName( middleTokens[0].toString() );
             user.setHostName( user.getHost() );
-            user.setServerName( Server.getHost() );
+            //!!!
+            user.setServerName( "localhost" );
             user.setRealName( trailingToken.toString() );
             Vector vMessage = new Vector();
-            vMessage.addElement( new Message( user.getNoNullNickName(), Replies.RPL_MOTDSTART, new String[]{Server.getHost()} ) );
+            vMessage.addElement( new Message( user.getNoNullNickName(), Replies.RPL_MOTDSTART, new String[]{"localhost"} ) );
             vMessage.addElement( new Message( user.getNoNullNickName(), Replies.RPL_MOTD, new String[]{Utilities.getMessage( Config.getValue( "command.user.host.message.syntax" ), new String[]{user.getUserFullName()} )} ) );
             displayHostFile( vMessage, user );
             vMessage.addElement( new Message( user.getNoNullNickName(), Replies.RPL_ENDOFMOTD, new String[]{} ) );

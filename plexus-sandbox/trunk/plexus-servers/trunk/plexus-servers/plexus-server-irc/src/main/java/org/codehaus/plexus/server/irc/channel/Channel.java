@@ -18,6 +18,7 @@ import org.codehaus.plexus.server.irc.utils.Utilities;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.Enumeration;
 import java.util.regex.Pattern;
 
 public class Channel implements IRCString
@@ -286,9 +287,9 @@ public class Channel implements IRCString
         Vector vAllUsers = new Vector();
         String sCurrentUser;
         StringBuffer buffer = new StringBuffer( Message.getSizeLimit() + 20 );
-        for ( Enumeration enum = userList.keys(); enum.hasMoreElements(); )
+        for ( Enumeration e = userList.keys(); e.hasMoreElements(); )
         {
-            sCurrentUser = getDisplayedValue( (String) enum.nextElement() );
+            sCurrentUser = getDisplayedValue( (String) e.nextElement() );
             if ( !sCurrentUser.equals( VOID ) )
             {
                 buffer.append( sCurrentUser + SPACE );
@@ -321,13 +322,13 @@ public class Channel implements IRCString
     public User[] getUsers()
     {
         Vector vAllUser = new Vector();
-        for ( Enumeration enum = userList.keys(); enum.hasMoreElements(); )
+        for ( Enumeration e = userList.keys(); e.hasMoreElements(); )
         {
             try
             {
-                vAllUser.addElement( HandleUser.getUser( (String) enum.nextElement() ) );
+                vAllUser.addElement( HandleUser.getUser( (String) e.nextElement() ) );
             }
-            catch ( IRCException e )
+            catch ( IRCException ex )
             {
             }
         }

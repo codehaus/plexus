@@ -12,6 +12,7 @@ import org.codehaus.plexus.server.irc.utils.IRCString;
 import org.codehaus.plexus.server.irc.utils.Replies;
 
 import java.util.Hashtable;
+import java.util.Enumeration;
 
 public class HandleUser implements IRCString
 {
@@ -112,9 +113,9 @@ public class HandleUser implements IRCString
      */
     public synchronized static void disconnectAll()
     {
-        for ( Enumeration enum = _hAllUsers.elements(); enum.hasMoreElements(); )
+        for ( Enumeration e = _hAllUsers.elements(); e.hasMoreElements(); )
         {
-            final User user = (User) enum.nextElement();
+            final User user = (User) e.nextElement();
             if ( user != null )
             {
                 Thread t = new Thread( new Runnable()

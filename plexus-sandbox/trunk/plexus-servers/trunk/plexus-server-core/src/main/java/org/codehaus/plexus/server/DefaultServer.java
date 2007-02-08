@@ -41,6 +41,11 @@ public abstract class DefaultServer
         return serverSocket.getInetAddress();
     }
 
+    public String getServerHost()
+    {
+        return serverSocket.getInetAddress().getHostName();
+    }
+
     public void start()
         throws StartingException
     {
