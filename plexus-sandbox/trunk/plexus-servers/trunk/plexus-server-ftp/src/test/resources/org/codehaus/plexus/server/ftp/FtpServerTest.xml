@@ -1,0 +1,33 @@
+<plexus>
+  <components>
+
+    <!--
+    <component>
+      <role>org.codehaus.ftpserver.ip.IpRestrictor</role>
+      <implementation>org.codehaus.ftpserver.ip.FileIpRestrictor</implementation>
+      <configuration>
+        <base-directory>${plexus.home}/../../src/test/resources</base-directory>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.ftpserver.FtpServer</role>
+      <implementation>org.codehaus.ftpserver.DefaultFtpServer</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.ftpserver.ip.IpRestrictor</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.ftpserver.usermanager.UserManagerInterface</role>
+        </requirement>
+      </requirements>
+      <configuration>
+        <server-host>localhost</server-host>
+        <self-host>localhost</self-host>
+        <ftp-port>10021</ftp-port>
+        <default-user-root>${plexus.home}/../../src/test/resources</default-user-root>
+      </configuration>
+    </component>
+    -->
+  </components>
+</plexus>
