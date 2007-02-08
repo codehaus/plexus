@@ -7,44 +7,30 @@
  */
 package org.codehaus.plexus.httpd;
 
+import org.apache.velocity.context.Context;
+import org.codehaus.plexus.server.ConnectionHandlingException;
+import org.codehaus.plexus.server.DefaultServer;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InterruptedIOException;
 import java.io.OutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import org.apache.velocity.context.Context;
-
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 /**
  * HttpAdaptor sets the basic adaptor listening for HTTP requests
  *
  * @author    <a href="mailto:tibu@users.sourceforge.net">Carlos Quiroz</a>
- * @version   $Revision$
+ * @plexus.component
  */
-public class Httpd
-    extends AbstractLogEnabled
+public class DefaultHttpServer
+    extends DefaultServer
+    implements HttpServer
 {
     private static final String VERSION = "1.1.1";
-
-    /** Port to listen for connections */
-    private int port = 8080;
-
-    /** Host where to set the server socket */
-    private String host = "localhost";
-
-    /** Server socket */
-    private ServerSocket serverSocket;
-
-    /** Indicates whether the server is running */
-    private boolean alive;
 
     /** Map of commands indexed by the request path */
     private Map commands = new HashMap();
@@ -70,129 +56,6 @@ public class Httpd
         {"server", "org.apache.plexus.manager.adaptor.processor.ServerCommandProcessor"},
         {"mbean", "org.apache.plexus.manager.adaptor.processor.MBeanCommandProcessor"},
     };
-
-    /**
-     * Default Constructor added so that we can have some additional
-     * constructors as well.
-     */
-    public Httpd()
-    {
-    }
-
-    /**
-     * Overloaded constructor to allow the port to be set.
-     * The reason this was added was to allow the loading of this adaptor by
-     * the dynamic loading service of the MBean server and have the port set
-     * from a param in the mlet file. Example: (replaced lt & gt symbol with [])
-     * <br>[mlet code="org.apache.plexus.manager.HttpAdaptor"
-     * <br>      archive="mx4j.jar"
-     * <br>      name="Server:name=HttpAdaptor"]
-     * <br>   [arg  type="int" value="12345"]
-     * <br>[/mlet]
-     *
-     * <p>This constructor uses the default host or the host must be set later.
-     * @param port The port on which the HttpAdaptor should listen
-     */
-    public Httpd( int port )
-    {
-        this.port = port;
-    }
-
-
-    /**
-     * Overloaded constructor to allow the host to be set.
-     * The reason this was added was to allow the loading of this adaptor by
-     * the dynamic loading service of the MBean server and have the host set
-     * from a param in the mlet file. Example: (replaced lt & gt symbol with [])
-     * <br>[mlet code="org.apache.plexus.manager.HttpAdaptor"
-     * <br>      archive="mx4j.jar"
-     * <br>      name="Server:name=HttpAdaptor"]
-     * <br>   [arg type="java.lang.String" value="someserver.somehost.com"]
-     * <br>[/mlet]
-     *
-     * <p>This constructor uses the default port or the port must be set later.
-     * @param host The host on which the HttpAdaptor should listen
-     */
-    public Httpd( String host )
-    {
-        this.host = host;
-    }
-
-
-    /**
-     * Overloaded constructor to allow the port to be set.
-     * The reason this was added was to allow the loading of this adaptor by
-     * the dynamic loading service of the MBean server and have the port set
-     * from a param in the mlet file. Example: (replaced lt & gt symbol with [])
-     * NOTE that the port must come before the host in the arg list of the mlet
-     * <br>[mlet code="org.apache.plexus.manager.HttpAdaptor"
-     * <br>      archive="mx4j.jar"
-     * <br>      name="Server:name=HttpAdaptor"]
-     * <br>   [arg type="int" value="12345"]
-     * <br>   [arg type="java.lang.String" value="someserver.somehost.com"]
-     * <br>[/mlet]
-     *
-     * @param port The port on which the HttpAdaptor should listen
-     * @param host The host on which the HttpAdaptor should listen
-     */
-    public Httpd( int port, String host )
-    {
-        this.port = port;
-        this.host = host;
-    }
-
-    /**
-     * Sets the value of the server's port
-     *
-     * @param port  the new port's value
-     */
-    public void setPort( int port )
-    {
-        if ( alive )
-        {
-            throw new IllegalArgumentException( "Not possible to change port with the server running" );
-        }
-        this.port = port;
-    }
-
-
-    /**
-     * Returns the port where the server is running on. Default is 8080
-     *
-     * @return   HTTPServer's port
-     */
-    public int getPort()
-    {
-        return port;
-    }
-
-
-    /**
-     * Sets the host name where the server will be listening
-     *
-     * @param host  Server's host
-     */
-    public void setHost( String host )
-    {
-        if ( alive )
-        {
-            throw new IllegalArgumentException( "Not possible to change port with the server running" );
-        }
-        this.host = host;
-    }
-
-
-    /**
-     * Return the host name the server will be listening to. If null the server
-     * listen at the localhost
-     *
-     * @return   the current hostname
-     */
-    public String getHost()
-    {
-        return host;
-    }
-
 
     /**
      * Sets the Authentication Method.
@@ -226,18 +89,6 @@ public class Httpd
     {
         return authenticationMethod;
     }
-
-
-    /**
-     * Sets the object which create the server sockets
-     *
-     * @param factory the socket factory
-     */
-    public void setSocketFactory( AdaptorServerSocketFactory factory )
-    {
-        this.socketFactory = factory;
-    }
-
 
     /**
      * Indicates whether the server's running
@@ -325,132 +176,6 @@ public class Httpd
         }
     }
 
-
-    /**
-     * Starts the server
-     */
-    public void start()
-        throws IOException
-    {
-        serverSocket = createServerSocket();
-
-        if ( serverSocket == null )
-        {
-            getLogger().error( "Server socket is null" );
-            return;
-        }
-
-        if ( processorClass != null )
-        {
-            // We need to created the processor
-        }
-
-        Iterator i = commands.values().iterator();
-        while ( i.hasNext() )
-        {
-            HttpCommandProcessor processor = (HttpCommandProcessor) i.next();
-        }
-
-        getLogger().info( "HttpAdaptor server listening on port " + port );
-        alive = true;
-        Thread serverThread = new Thread(
-            new Runnable()
-            {
-                public void run()
-                {
-                    getLogger().info( "HttpAdaptor version " + VERSION + " started" );
-
-                    startDate = new Date();
-                    requestsCount = 0;
-
-                    while ( alive )
-                    {
-                        try
-                        {
-                            Socket client = null;
-                            client = serverSocket.accept();
-                            if ( !alive )
-                            {
-                                break;
-                            }
-                            requestsCount++;
-                            new HttpClient( client ).start();
-                        }
-                        catch ( InterruptedIOException e )
-                        {
-                            continue;
-                        }
-                        catch ( IOException e )
-                        {
-                            continue;
-                        }
-                        catch ( Exception e )
-                        {
-                            getLogger().warn( "Exception during request processing", e );
-                            continue;
-                        }
-                        catch ( Error e )
-                        {
-                            getLogger().error( "Error during request processing", e );
-                            continue;
-                        }
-                    }
-                    try
-                    {
-                        serverSocket.close();
-                    }
-                    catch ( IOException e )
-                    {
-                        getLogger().warn( "Exception closing the server", e );
-                    }
-                    serverSocket = null;
-                    alive = false;
-
-                    getLogger().info( "Server stopped" );
-                }
-            } );
-        serverThread.start();
-    }
-
-
-    /**
-     * Restarts the server. Useful when changing the Server parameters
-     *
-     * @deprecated as of RC 1
-     */
-    public void restart()
-        throws IOException
-    {
-        stop();
-        start();
-    }
-
-
-    /**
-     * Stops the HTTP daemon
-     */
-    public void stop()
-    {
-        try
-        {
-            if ( alive )
-            {
-                alive = false;
-                // force the close with a socket call
-                new Socket( host, port );
-                if ( serverSocket != null )
-                {
-                    serverSocket.close();
-                }
-            }
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-        }
-    }
-
-
     /**
      * Adds an authorization pair as username/password
      */
@@ -480,19 +205,6 @@ public class Httpd
     public void postDeregister()
     {
     }
-
-    private ServerSocket createServerSocket() throws IOException
-    {
-        if ( socketFactory == null )
-        {
-        }
-        else
-        {
-        }
-
-        return null;
-    }
-
 
     private boolean isUsernameValid( String username, String password )
     {
@@ -560,8 +272,13 @@ public class Httpd
         defaultProcessor.writeError( out, in, e );
     }
 
+    public void handleConnection( Socket socket )
+        throws ConnectionHandlingException
+    {
+        new HttpClient( socket ).run();
+    }
 
-    private class HttpClient extends Thread
+    private class HttpClient
     {
         private Socket client;
 
