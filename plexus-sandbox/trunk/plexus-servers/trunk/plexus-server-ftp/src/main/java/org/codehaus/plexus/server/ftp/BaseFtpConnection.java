@@ -108,9 +108,6 @@ public class BaseFtpConnection
         mConfig.getLogger().info( "Handling new request from " + clientAddress.getHostAddress() );
         mDataConnection = new FtpDataConnection( mConfig );
         mUser.setClientAddress( clientAddress );
-
-        System.out.println( "mConfig = " + mConfig.getConnectionService() );
-
         mConfig.getConnectionService().newConnection( this );
 
         BufferedReader in = null;
@@ -125,6 +122,7 @@ public class BaseFtpConnection
                 mWriter.write( mFtpStatus.getResponse( 530, null, mUser, null ) );
                 return;
             }
+
             mWriter.write( mFtpStatus.getResponse( 220, null, mUser, null ) );
 
             do

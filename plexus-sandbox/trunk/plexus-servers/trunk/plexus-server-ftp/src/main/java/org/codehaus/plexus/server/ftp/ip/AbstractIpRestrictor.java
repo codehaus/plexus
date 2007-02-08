@@ -74,7 +74,7 @@ abstract class AbstractIpRestrictor
 {
     protected boolean mbAllowIp;
 
-    private String mBaseDirectory;
+    private String baseDirectory;
 
     /** Get allow/ban IP flag. */
     public boolean isAllowIp()
@@ -84,7 +84,7 @@ abstract class AbstractIpRestrictor
 
     public String getBaseDirectory()
     {
-        return mBaseDirectory;
+        return baseDirectory;
     }
 
     /** Reload banned ip list - dummy implementation */

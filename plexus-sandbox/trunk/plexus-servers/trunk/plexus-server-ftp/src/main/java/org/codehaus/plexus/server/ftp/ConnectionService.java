@@ -248,9 +248,11 @@ public class ConnectionService
     public void closeConnection( final String sessId )
     {
         BaseFtpConnection con = null;
+
         synchronized ( mConList )
         {
             con = getConnection( sessId );
+
             if ( con != null )
             {
                 mConList.remove( con );
@@ -283,7 +285,9 @@ public class ConnectionService
                     }
                 }
             };
+
             mConfig.getMessageQueue().add( msg );
+
             mConfig.getStatistics().setCloseConnection();
         }
     }
@@ -307,7 +311,9 @@ public class ConnectionService
 
         // get the existing user
         UserManager userManager = mConfig.getUserManager();
+
         User existUser = userManager.getUserByName( user );
+
         if ( existUser == null )
         {
             return false;

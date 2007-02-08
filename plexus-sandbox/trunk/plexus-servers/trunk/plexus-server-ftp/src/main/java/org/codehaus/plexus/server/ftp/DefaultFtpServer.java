@@ -137,6 +137,10 @@ public class DefaultFtpServer
         {
             ftpStatus = new FtpStatus();
 
+            asyncMessageQueue = new AsyncMessageQueue();
+
+            asyncMessageQueue.setMaxSize( 4096 );
+
             configuration = new FtpConfig( getLogger(), statistics, connectionService, "systemName",
                                            anonymousAllowed, ftpStatus, ipRestrictor, asyncMessageQueue, defaultIdle,
                                            pollInterval, userManager, defaultRoot, maxLogin, anonymousLogin, createHome,
@@ -149,10 +153,6 @@ public class DefaultFtpServer
             statistics = new FtpStatistics( configuration );
 
             configuration.setStatistics( statistics );
-
-            asyncMessageQueue = new AsyncMessageQueue();
-
-            asyncMessageQueue.setMaxSize( 4096 );
         }
         catch ( Exception ex )
         {
@@ -238,6 +238,11 @@ public class DefaultFtpServer
     /** Release data port */
     public void releaseDataPort( int port )
     {
+        if ( dataPort == null )
+        {
+            return;
+        }
+
         synchronized ( dataPort )
         {
             for ( int i = 0; i < dataPort.length; i++ )
@@ -245,6 +250,7 @@ public class DefaultFtpServer
                 if ( dataPort[i][0] == port )
                 {
                     dataPort[i][1] = 0;
+
                     break;
                 }
             }

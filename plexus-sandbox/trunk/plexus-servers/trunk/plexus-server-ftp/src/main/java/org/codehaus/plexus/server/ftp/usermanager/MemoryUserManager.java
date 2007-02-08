@@ -23,7 +23,7 @@ public class MemoryUserManager
 
     public boolean doesExist( String name )
     {
-        return true;
+        return users.containsKey( name );
     }
 
     public boolean authenticate( String login,
@@ -34,11 +34,11 @@ public class MemoryUserManager
 
     public String getAdminName()
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return "The Big Cheese";
     }
 
     public void save( User user )
-    {
+    {                
         users.put( user.getName(), user );
     }
 
@@ -66,6 +66,6 @@ public class MemoryUserManager
     public void initialize()
         throws InitializationException
     {
-        users = new HashMap();
+        users = new HashMap();        
     }
 }
