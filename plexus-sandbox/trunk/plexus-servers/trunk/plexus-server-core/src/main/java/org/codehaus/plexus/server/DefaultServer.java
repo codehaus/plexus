@@ -23,18 +23,18 @@ public abstract class DefaultServer
     implements Server, Startable
 {
     /** @plexus.requirement */
-    private PlexusServerSocketFactory socketFactory;
+    protected PlexusServerSocketFactory socketFactory;
 
-    private int port;
+    protected int port;
 
-    private String host;
+    protected String host;
 
     /** @plexus.configuration default-value="5" */
-    private int backlog;
+    protected int backlog;
 
-    private ServerSocket serverSocket;
+    protected ServerSocket serverSocket;
 
-    private boolean alive;
+    protected boolean alive;
 
     public InetAddress getServerAddress()
     {
