@@ -50,10 +50,12 @@ public interface Registry
     String getString( String key, String defaultValue );
 
     /**
-     * Get an integer value from the registry. If not found, 0 is returned.
+     * Get an integer value from the registry. If not found, an exception is thrown.
      *
      * @param key the key in the registry
      * @return the value
+     * @throws java.util.NoSuchElementException
+     *          if the key is not found
      */
     int getInt( String key );
 
@@ -67,10 +69,12 @@ public interface Registry
     int getInt( String key, int defaultValue );
 
     /**
-     * Get a boolean value from the registry. If not found, <code>false</code> is returned.
+     * Get a boolean value from the registry. If not found, an exception is thrown.
      *
      * @param key the key in the registry
      * @return the value
+     * @throws java.util.NoSuchElementException
+     *          if the key is not found
      */
     boolean getBoolean( String key );
 
