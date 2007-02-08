@@ -1,0 +1,11 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.plexus.servers</groupId>
+    <artifactId>plexus-servers</artifactId>
+    <version>1</version>
+  </parent>
+  <artifactId>plexus-server-irc</artifactId>
+  <name>Plexus IRC Server</name>
+  <version>1.0-SNAPSHOT</version>  
+</project>
