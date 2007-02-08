@@ -57,18 +57,14 @@
 package org.codehaus.plexus.server.ftp;
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.server.DefaultServer;
 import org.codehaus.plexus.server.ftp.ip.IpRestrictor;
 import org.codehaus.plexus.server.ftp.usermanager.UserManager;
 import org.codehaus.plexus.server.ftp.util.AsyncMessageQueue;
-import org.codehaus.plexus.server.PlexusServerSocketFactory;
-import org.codehaus.plexus.server.DefaultServer;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 /**

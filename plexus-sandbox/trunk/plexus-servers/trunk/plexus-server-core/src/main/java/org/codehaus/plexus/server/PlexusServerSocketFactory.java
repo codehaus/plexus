@@ -1,8 +1,8 @@
 package org.codehaus.plexus.server;
 
-import java.net.ServerSocket;
-import java.net.InetAddress;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
 
 public interface PlexusServerSocketFactory
 {

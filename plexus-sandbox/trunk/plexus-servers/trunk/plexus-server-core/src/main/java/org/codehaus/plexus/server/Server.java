@@ -1,7 +1,7 @@
 package org.codehaus.plexus.server;
 
-import java.net.Socket;
 import java.net.InetAddress;
+import java.net.Socket;
 
 /** @author Jason van Zyl */
 public interface Server
