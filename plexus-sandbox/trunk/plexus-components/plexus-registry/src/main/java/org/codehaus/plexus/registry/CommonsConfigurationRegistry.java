@@ -17,6 +17,7 @@ package org.codehaus.plexus.registry;
  */
 
 import org.apache.commons.configuration.CombinedConfiguration;
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.DefaultConfigurationBuilder;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -33,6 +34,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Implementation of the registry component using
@@ -53,7 +55,7 @@ public class CommonsConfigurationRegistry
     /**
      * The combined configuration instance that houses the registry.
      */
-    private CombinedConfiguration configuration;
+    private Configuration configuration;
 
     /**
      * The configuration properties for the registry. This should take the format of an input to the Commons
@@ -76,6 +78,24 @@ public class CommonsConfigurationRegistry
             buffer.append( "\n\"" ).append( key ).append( "\" = \"" ).append( value ).append( "\"" );
         }
         return buffer.toString();
+    }
+
+    public boolean isEmpty()
+    {
+        return configuration.isEmpty();
+    }
+
+    public Registry getSubRegistry( String key )
+    {
+        // TODO! ungross this
+        CommonsConfigurationRegistry registry = new CommonsConfigurationRegistry();
+        registry.configuration = this.configuration.subset( key );
+        return registry;
+    }
+
+    public List getList( String key )
+    {
+        return configuration.getList( key );
     }
 
     public String getString( String key )
@@ -106,6 +126,7 @@ public class CommonsConfigurationRegistry
     public void addConfigurationFromResource( String resource )
         throws RegistryException
     {
+        CombinedConfiguration configuration = (CombinedConfiguration) this.configuration;
         if ( resource.endsWith( ".properties" ) )
         {
             try
@@ -142,6 +163,7 @@ public class CommonsConfigurationRegistry
     public void addConfigurationFromFile( File file )
         throws RegistryException
     {
+        CombinedConfiguration configuration = (CombinedConfiguration) this.configuration;
         if ( file.getName().endsWith( ".properties" ) )
         {
             try
@@ -180,9 +202,10 @@ public class CommonsConfigurationRegistry
     {
         try
         {
+            CombinedConfiguration configuration;
             if ( properties != null )
             {
-                // TODO: changing this to have a different configurator might be more appropriate?
+                // TODO: changing this component to have a different configurator might be more appropriate?
                 StringWriter w = new StringWriter();
                 printConfiguration( properties, new PrintWriter( w ) );
 
@@ -198,6 +221,8 @@ public class CommonsConfigurationRegistry
             }
 
             configuration.addConfiguration( new SystemConfiguration() );
+
+            this.configuration = configuration;
         }
         catch ( ConfigurationException e )
         {
