@@ -3,6 +3,12 @@
     <component>
       <role>org.codehaus.plexus.server.irc.IrcServer</role>
       <implementation>org.codehaus.plexus.server.irc.DefaultIrcServer</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.server.PlexusServerSocketFactory</role>
+          <field-name>socketFactory</field-name>
+        </requirement>
+      </requirements>
       <configuration>
         <host>localhost</host>
         <port>6667</port>
