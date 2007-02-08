@@ -17,6 +17,7 @@ package org.codehaus.plexus.registry;
  */
 
 import java.io.File;
+import java.util.List;
 
 /**
  * The Plexus registry is a single source of external configuration for Plexus components and applications.
@@ -95,4 +96,17 @@ public interface Registry
      */
     void addConfigurationFromFile( File file )
         throws RegistryException;
+
+    // TODO!
+    Registry getSubRegistry( String key );
+
+    /**
+     * Determine if the registry contains any elements.
+     *
+     * @return whether the registry contains any elements
+     */
+    boolean isEmpty();
+
+    // TODO!
+    List getList( String key );
 }
