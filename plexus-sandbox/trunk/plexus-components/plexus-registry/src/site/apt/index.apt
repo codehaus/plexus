@@ -1,0 +1,18 @@
+ -----
+ Plexus Registry Component
+ -----
+ Brett Porter
+ -----
+ 7 February 2007
+ -----
+
+Plexus Registry
+
+    The Plexus registry is a single source of external configuration for Plexus components and applications.
+    It can be used by components to source configuration, knowing that it can be used from within applications
+    without the information being hard coded into the component.
+
+    To facilitate a variety of providers, {{{http://jakarta.apache.org/commons/configuration/} Commons Configuration}}
+    is used to implement the backing storage.
+
+    
