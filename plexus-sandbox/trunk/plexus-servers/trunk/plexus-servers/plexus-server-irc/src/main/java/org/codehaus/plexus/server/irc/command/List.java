@@ -17,6 +17,7 @@ import org.codehaus.plexus.server.irc.utils.Message;
 import org.codehaus.plexus.server.irc.utils.Replies;
 
 import java.util.Vector;
+import java.util.Enumeration;
 
 public class List extends Command
 {
@@ -62,9 +63,9 @@ public class List extends Command
 
         if ( middleTokens == null )
         {
-            for ( Enumeration enum = HandleChannel.getAllChannels(); enum.hasMoreElements(); )
+            for ( Enumeration e = HandleChannel.getAllChannels(); e.hasMoreElements(); )
             {
-                Channel channel = (Channel) enum.nextElement();
+                Channel channel = (Channel) e.nextElement();
                 addChannelInList( vMessage, channel, sNickName );
             }
         }

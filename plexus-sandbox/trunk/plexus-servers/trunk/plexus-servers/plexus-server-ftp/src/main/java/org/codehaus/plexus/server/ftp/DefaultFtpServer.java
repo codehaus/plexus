@@ -60,6 +60,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.server.DefaultServer;
+import org.codehaus.plexus.server.ConnectionHandlingException;
 import org.codehaus.plexus.server.ftp.ip.IpRestrictor;
 import org.codehaus.plexus.server.ftp.usermanager.UserManager;
 import org.codehaus.plexus.server.ftp.util.AsyncMessageQueue;
@@ -177,6 +178,7 @@ public class DefaultFtpServer
     }
 
     public void handleConnection( Socket socket )
+        throws ConnectionHandlingException
     {
         FtpConnection conHandle = new FtpConnection( configuration );
 

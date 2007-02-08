@@ -1,8 +1,8 @@
 package org.codehaus.plexus.server.irc;
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.synapse.SynapseServer;
-import org.codehaus.plexus.server.irc.server.IrcServer;
+import org.codehaus.plexus.server.irc.IrcServer;
+import org.codehaus.plexus.server.Server;
 
 /**
  *
@@ -14,10 +14,10 @@ import org.codehaus.plexus.server.irc.server.IrcServer;
 public class IrcServerTest
     extends PlexusTestCase
 {
-    public void testIrcd()
+    public void testIrc()
         throws Exception
     {
-        SynapseServer server = (SynapseServer) lookup( IrcServer.ROLE );
+        Server server = (Server) lookup( IrcServer.ROLE );
 
         assertNotNull( server );
 /*

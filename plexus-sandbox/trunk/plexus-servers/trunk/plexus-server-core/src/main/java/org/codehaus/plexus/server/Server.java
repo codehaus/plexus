@@ -8,7 +8,10 @@ public interface Server
 {
     String ROLE = Server.class.getName();
 
-    void handleConnection( Socket socket );
+    void handleConnection( Socket socket )
+        throws ConnectionHandlingException;
 
-    InetAddress getServerAddress();    
+    InetAddress getServerAddress();
+
+    String getServerHost();
 }

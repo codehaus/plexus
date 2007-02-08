@@ -6,7 +6,6 @@
 package org.codehaus.plexus.server.irc.utils;
 
 import org.codehaus.plexus.server.irc.properties.Config;
-import org.codehaus.plexus.server.irc.server.Server;
 import org.codehaus.plexus.server.irc.token.CommandToken;
 import org.codehaus.plexus.server.irc.token.ParamsToken;
 import org.codehaus.plexus.server.irc.token.PrefixToken;
@@ -70,7 +69,8 @@ public class Message implements IRCString
      */
     public Message( String sLogin, String sCommand, String sMiddle, String sTrailing )
     {
-        this( Server.getHost(), sLogin, sCommand, sMiddle, sTrailing );
+        //!!!
+        this( "localhost", sLogin, sCommand, sMiddle, sTrailing );
     }
 
     /**
