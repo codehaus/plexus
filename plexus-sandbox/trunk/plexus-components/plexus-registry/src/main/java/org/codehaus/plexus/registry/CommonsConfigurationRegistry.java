@@ -137,6 +137,11 @@ public class CommonsConfigurationRegistry
         return configuration.getBoolean( key );
     }
 
+    public boolean getBoolean( String key, boolean defaultValue )
+    {
+        return configuration.getBoolean( key, defaultValue );
+    }
+
     public void addConfigurationFromResource( String resource )
         throws RegistryException
     {
