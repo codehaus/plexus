@@ -81,6 +81,15 @@ public interface Registry
     boolean getBoolean( String key );
 
     /**
+     * Get a boolean value from the registry. If not found, the default value is used.
+     *
+     * @param key          the key in the registry
+     * @param defaultValue the default value
+     * @return the value
+     */
+    boolean getBoolean( String key, boolean defaultValue );
+
+    /**
      * Load configuration from the given classloader resource.
      *
      * @param resource the location to load the configuration from
