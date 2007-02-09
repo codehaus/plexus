@@ -40,15 +40,10 @@
 
 package org.codehaus.plexus.smtp.mailbox;
 
-import org.apache.avalon.framework.activity.Initializable;
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.smtp.Address;
-import org.codehaus.plexus.smtp.mailbox.FileMailbox;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.smtp.Address;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -79,6 +74,10 @@ public class FileMailboxManager
     private File rootDirectory;
 
     private Map mailboxLocks;
+
+    private String realPassword;
+
+    private String mailboxId;
 
     public void initialize()
         throws InitializationException
@@ -154,11 +153,7 @@ public class FileMailboxManager
      */
     public String valiateMailbox( String userName, String password )
     {
-        String mailboxId = null;
-
         userName = userName.toLowerCase();
-
-        String realPassword = configuration.getChild( CONFIGURATION_PREFIX + "user." + userName + ".password" ).getValue( null );
 
         // If the user specified password is valid, encrypt it.
         // the realPassword is already encrypted.
@@ -176,8 +171,6 @@ public class FileMailboxManager
         // Load the mailbox ID
         else
         {
-            mailboxId = configuration.getChild( CONFIGURATION_PREFIX + "user." + userName + ".mailbox" ).getValue( null );
-
             if ( mailboxId == null || mailboxId.length() == 0 )
             {
                 mailboxId = null;
@@ -202,8 +195,6 @@ public class FileMailboxManager
     public String validateAddress( Address address )
     {
         String userName = address.getUsername().toLowerCase();
-
-        String realPassword = configuration.getChild( CONFIGURATION_PREFIX + "user." + userName + ".password" ).getValue( null );
 
         // If the user is defined then open the mailbox.
         if ( realPassword != null )

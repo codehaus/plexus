@@ -40,17 +40,10 @@
 
 package org.codehaus.plexus.smtp.delivery;
 
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.service.ServiceException;
-import org.apache.avalon.framework.service.ServiceManager;
-import org.apache.avalon.framework.service.Serviceable;
+import org.codehaus.plexus.dns.DnsServer;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.smtp.Address;
 import org.codehaus.plexus.smtp.SmtpMessage;
-import org.codehaus.plexus.smtp.delivery.DeliveryProcessor;
-import org.codehaus.plexus.dns.DNSResolver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -64,12 +57,10 @@ import java.util.List;
 
 public class SmtpDeliveryProcessor
     extends AbstractLogEnabled
-    implements Serviceable, Configurable, DeliveryProcessor
+    implements DeliveryProcessor
 {
-    /**
-     * The DNSResolver Plugin Implementation
-     */
-    private DNSResolver dnsResolver;
+    /** @plexus.requirement */
+    private DnsServer dnsServer;
 
     /** Writer to sent data to the client */
     private PrintWriter out;
@@ -77,37 +68,6 @@ public class SmtpDeliveryProcessor
     private BufferedReader in;
 
     private String domain;
-
-    //***************************************************************
-    // Constructor
-    //***************************************************************
-
-    public SmtpDeliveryProcessor()
-    {
-    }
-
-    // ----------------------------------------------------------------------
-    // Lifecylce Management
-    // ----------------------------------------------------------------------
-
-    /** @see org.apache.avalon.framework.service.Serviceable#service */
-    public void service( ServiceManager serviceManager )
-        throws ServiceException
-    {
-        dnsResolver = (DNSResolver) serviceManager.lookup( DNSResolver.ROLE );
-    }
-
-    /** @see org.apache.avalon.framework.configuration.Configurable#configure */
-    public void configure( Configuration configuration )
-        throws ConfigurationException
-    {
-        domain = configuration.getChild( "domain" ).getValue();
-    }
-
-
-    //***************************************************************
-    // DeliveryProcessor Interface Methods
-    //***************************************************************
 
     /**
      * Delivers the specified message to the addresses specified.
@@ -122,7 +82,7 @@ public class SmtpDeliveryProcessor
      */
     public void deliverMessage( SmtpMessage message, String domain, List addresses )
     {
-        Collection serverAddresses = dnsResolver.getMXEntries( domain );
+        Collection serverAddresses = dnsServer.findMXRecords( domain );
 
         Socket socket = null;
 

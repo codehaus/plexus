@@ -40,33 +40,13 @@
 
 package org.codehaus.plexus.smtp.delivery;
 
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.smtp.delivery.DeliveryProcessor;
-import org.codehaus.plexus.smtp.delivery.FileDeliveryProcessor;
-import org.codehaus.plexus.smtp.delivery.DeliveryManager;
 
 public class DefaultDeliveryManager
     extends AbstractLogEnabled
-    implements Configurable, DeliveryManager
+    implements DeliveryManager
 {
-    private Configuration configuration;
-
-    /**
-     * Gets a reference to the configurationManager.
-     */
-    public DefaultDeliveryManager()
-    {
-    }
-
-    /** @see org.apache.avalon.framework.configuration.Configurable#configure */
-    public void configure( Configuration configuration )
-        throws ConfigurationException
-    {
-        this.configuration = configuration;
-    }
+    private String[] domains;
 
     /**
      * Returns the DeliveryProcessor that should be used to
@@ -78,15 +58,15 @@ public class DefaultDeliveryManager
     public DeliveryProcessor getDeliveryProcessor( String domain )
     {
         domain = domain.trim();
-        boolean isLocal = false;
 
-        Configuration[] domains = configuration.getChildren( "domain" );
+        boolean isLocal = false;
 
         for ( int index = 0; index < domains.length; index++ )
         {
-            if ( domains[index].getValue( "" ).equalsIgnoreCase( domain ) )
+            if ( domains[index].equalsIgnoreCase( domain ) )
             {
                 isLocal = true;
+
                 break;
             }
         }

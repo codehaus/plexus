@@ -40,15 +40,12 @@ package org.codehaus.plexus.smtp;
  * java@ericdaugherty.com
  *****************************************************************************/
 
-import org.apache.avalon.framework.activity.Initializable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.service.ServiceException;
-import org.apache.avalon.framework.service.ServiceManager;
-import org.apache.avalon.framework.service.Serviceable;
 import org.codehaus.plexus.smtp.queue.DeliveryQueueException;
 import org.codehaus.plexus.smtp.queue.Queue;
-import org.codehaus.plexus.synapse.handler.AbstractServiceHandler;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.server.ServerConnectionHandler;
+import org.codehaus.plexus.server.ConnectionHandlingException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -67,10 +64,11 @@ import java.util.Random;
  * of rfc821.
  *
  * @author Eric Daugherty
+ * @author Jason van Zyl
+ * @plexus.component
  */
 public class SmtpServiceHandler
-    extends AbstractServiceHandler
-    implements Serviceable, Initializable
+    implements ServerConnectionHandler, Initializable
 {
     private static final int DATA_BUFFER_SIZE = 1024;
 
@@ -107,6 +105,7 @@ public class SmtpServiceHandler
 
     private String heloDomain;
 
+    /** @plexus.requirement */
     private Queue queue;
 
     private SmtpMessage message;
@@ -123,25 +122,17 @@ public class SmtpServiceHandler
 
     private boolean collectingMessage;
 
-    public SmtpServiceHandler()
+    public void handleConnection( Socket socket )
+        throws ConnectionHandlingException
     {
-    }
-
-    // ----------------------------------------------------------------------
-    // API
-    // ----------------------------------------------------------------------
-
-    public void handleEvents()
-        throws Exception
-    {
-    }
-
-    public void handleEvent( Socket socket )
-        throws Exception
-    {
-        Client c = new Client( socket );
-
-        c.start();
+        try
+        {
+            new Client( socket ).start();
+        }
+        catch ( Exception e )
+        {
+            throw new ConnectionHandlingException( "Error handling connection.", e );
+        }
     }
 
     class Client
@@ -179,13 +170,13 @@ public class SmtpServiceHandler
 
                     if ( collectingMessage )
                     {
-                        if ( inputLine.trim().equals(".") )
+                        if ( inputLine.trim().equals( "." ) )
                         {
                             processData( socket );
                         }
                         else
                         {
-                            data.append( inputLine ).append("\r\n");
+                            data.append( inputLine ).append( "\r\n" );
                         }
                     }
                     else
@@ -211,7 +202,8 @@ public class SmtpServiceHandler
      *
      * @throws java.io.IOException thrown if an error occurs writing a client response.
      */
-    private void processCommand( Socket socket ) throws IOException
+    private void processCommand( Socket socket )
+        throws IOException
     {
         String command = inputLine;
 
@@ -383,9 +375,7 @@ public class SmtpServiceHandler
         writeLine( socket, getMessage( MESSAGE_OK ) );
     }
 
-    /**
-     * Resets the current state.
-     */
+    /** Resets the current state. */
     private void reset()
     {
         message = new SmtpMessage( generateSMTPId() );
@@ -396,13 +386,12 @@ public class SmtpServiceHandler
     /**
      * Generates a unique String that is used to identify the
      * incoming message.
-     * <p>
+     * <p/>
      * This method can be overridden by a subclass to provide an alternate
      * algorithm for generating IDs.
      *
-     * @todo create a Plugin for SMTP ID Generation.
-     *
      * @return a new unique SMTP Id.
+     * @todo create a Plugin for SMTP ID Generation.
      */
     protected String generateSMTPId()
     {
@@ -461,7 +450,8 @@ public class SmtpServiceHandler
      * Parses an address argument into a real email address.  This
      * method strips off any &gt; or &lt; symbols.
      */
-    private Address parseAddress( String address ) throws InvalidAddressException
+    private Address parseAddress( String address )
+        throws InvalidAddressException
     {
 
         int index = address.indexOf( "<" );
@@ -482,7 +472,6 @@ public class SmtpServiceHandler
      *
      * @param messageName name of the message to retrieve.
      * @return the message text.
-     *
      * @todo use the i18n component.
      */
     private String getMessage( String messageName )
@@ -495,15 +484,17 @@ public class SmtpServiceHandler
      * MessageFormat class and the specified arguments.
      *
      * @param messageName name of the message to retrieve.
-     * @param arguments objects used to format the message.
+     * @param arguments   objects used to format the message.
      * @return the formatted message text.
      */
-    private String getMessage( String messageName, String[] arguments )
+    private String getMessage( String messageName,
+                               String[] arguments )
     {
         return MessageFormat.format( getMessage( messageName ), arguments );
     }
 
-    public void writeLine( Socket c, String s )
+    public void writeLine( Socket c,
+                           String s )
         throws IOException
     {
         PrintWriter writer = new PrintWriter( c.getOutputStream() );
@@ -517,32 +508,13 @@ public class SmtpServiceHandler
     // Lifecylce Management
     // ----------------------------------------------------------------------
 
-    /** @see org.apache.avalon.framework.service.Serviceable#service */
-    public void service( ServiceManager serviceManager )
-        throws ServiceException
-    {
-        queue = (Queue) serviceManager.lookup( Queue.ROLE );
-    }
-
-    /** @see org.apache.avalon.framework.configuration.Configurable#configure */
-    public void configure( Configuration configuration )
-        throws ConfigurationException
-    {
-        domain = configuration.getChild( "domain" ).getValue();
-    }
-
-    /** @see org.apache.avalon.framework.activity.Initializable#initialize */
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         data = new StringBuffer( DATA_BUFFER_SIZE );
 
         random = new Random();
 
         message = new SmtpMessage( generateSMTPId() );
-    }
-
-    public void dispose()
-    {
     }
 }

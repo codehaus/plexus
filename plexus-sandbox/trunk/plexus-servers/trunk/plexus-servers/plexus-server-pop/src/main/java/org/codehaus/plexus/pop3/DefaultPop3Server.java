@@ -40,16 +40,13 @@
 
 package org.codehaus.plexus.pop3;
 
-import org.apache.avalon.framework.activity.Initializable;
-import org.apache.avalon.framework.service.ServiceException;
-import org.apache.avalon.framework.service.ServiceManager;
-import org.apache.avalon.framework.service.Serviceable;
 import org.codehaus.plexus.smtp.mailbox.Mailbox;
 import org.codehaus.plexus.smtp.mailbox.MailboxManager;
 import org.codehaus.plexus.smtp.server.AbstractServer;
 import org.codehaus.plexus.smtp.server.connection.ConnectionHandler;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.server.DefaultServer;
 
 import java.io.BufferedReader;
@@ -68,7 +65,7 @@ import java.text.MessageFormat;
  */
 public class DefaultPop3Server
     extends DefaultServer
-    implements Serviceable, Initializable
+    implements Initializable
 {
     //***************************************************************
     // Constants
@@ -184,6 +181,8 @@ public class DefaultPop3Server
 
     /**
      * Provides validation of user authentication and access to individual mailboxes.
+     *
+     * @plexus.requirement
      */
     private MailboxManager mailboxManager;
 
@@ -215,16 +214,8 @@ public class DefaultPop3Server
     // Lifecylce Management
     // ----------------------------------------------------------------------
 
-    /** @see org.apache.avalon.framework.service.Serviceable#service */
-    public void service( ServiceManager serviceManager )
-        throws ServiceException
-    {
-        mailboxManager = (MailboxManager) serviceManager.lookup( MailboxManager.ROLE );
-    }
-
-    /** @see org.apache.avalon.framework.activity.Initializable#initialize */
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         state = STATE_INITIAL;
     }
