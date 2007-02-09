@@ -51,7 +51,6 @@ import java.util.Collection;
  */
 public interface Queue
 {
-    /** Role of this component. */
     public static String ROLE = Queue.class.getName();
 
     /**
