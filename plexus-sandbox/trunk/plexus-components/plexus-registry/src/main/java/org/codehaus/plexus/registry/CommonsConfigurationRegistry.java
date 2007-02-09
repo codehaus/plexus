@@ -20,6 +20,7 @@ import org.apache.commons.configuration.CombinedConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.DefaultConfigurationBuilder;
+import org.apache.commons.configuration.FileConfiguration;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
@@ -33,6 +34,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -51,7 +53,7 @@ import java.util.Properties;
  */
 public class CommonsConfigurationRegistry
     extends AbstractLogEnabled
-    implements Registry, Initializable
+    implements Initializable, Registry
 {
     /**
      * The combined configuration instance that houses the registry.
@@ -67,6 +69,16 @@ public class CommonsConfigurationRegistry
      * @plexus.configuration
      */
     private PlexusConfiguration properties;
+
+    public CommonsConfigurationRegistry()
+    {
+        // default constructor for plexus
+    }
+
+    private CommonsConfigurationRegistry( Configuration configuration )
+    {
+        this.configuration = configuration;
+    }
 
     public String dump()
     {
@@ -86,30 +98,70 @@ public class CommonsConfigurationRegistry
         return configuration.isEmpty();
     }
 
-    public Registry getSubRegistry( String key )
+    public Registry getSubset( String key )
     {
-        // TODO! ungross this
-        CommonsConfigurationRegistry registry = new CommonsConfigurationRegistry();
-        registry.configuration = this.configuration.subset( key );
-        return registry;
+        return new CommonsConfigurationRegistry( configuration.subset( key ) );
     }
 
     public List getList( String key )
     {
-        // TODO! is this the right method?
         return configuration.getList( key );
     }
 
-    public Properties asProperties()
+    public List getSubsetList( String key )
     {
-        // TODO! is this the right method, or should it be key based like getList?
+        List subsets = new ArrayList();
+
+        boolean done = false;
+        do
+        {
+            Registry registry = getSubset( key + "(" + subsets.size() + ")" );
+            if ( !registry.isEmpty() )
+            {
+                subsets.add( registry );
+            }
+            else
+            {
+                done = true;
+            }
+        }
+        while ( !done );
+
+        return subsets;
+    }
+
+    public Properties getProperties( String key )
+    {
+        Configuration configuration = this.configuration.subset( key );
+
         Properties properties = new Properties();
         for ( Iterator i = configuration.getKeys(); i.hasNext(); )
         {
-            String key = (String) i.next();
-            properties.setProperty( key, configuration.getString( key ) );
+            String property = (String) i.next();
+            properties.setProperty( property, configuration.getString( property ) );
         }
         return properties;
+    }
+
+    public void save()
+        throws RegistryException
+    {
+        if ( configuration instanceof FileConfiguration )
+        {
+            FileConfiguration fileConfiguration = (FileConfiguration) configuration;
+            try
+            {
+                fileConfiguration.save();
+            }
+            catch ( ConfigurationException e )
+            {
+                throw new RegistryException( e.getMessage(), e );
+            }
+        }
+        else
+        {
+            throw new UnsupportedOperationException( "Can only save file-based configurations" );
+        }
     }
 
     public String getString( String key )
@@ -256,30 +308,49 @@ public class CommonsConfigurationRegistry
     private static void printConfiguration( PlexusConfiguration configuration, PrintWriter writer )
         throws PlexusConfigurationException
     {
-        writer.print( "<" + configuration.getName() );
+        printConfiguration( configuration, "", writer );
+    }
+
+    private static void printConfiguration( PlexusConfiguration configuration, String indent, PrintWriter writer )
+        throws PlexusConfigurationException
+    {
+        writer.print( indent + "<" + configuration.getName() );
         String[] attrs = configuration.getAttributeNames();
         for ( int i = 0; i < attrs.length; i++ )
         {
             writer.print( " " + attrs[i] + "=\"" + configuration.getAttribute( attrs[i] ) + "\"" );
         }
-        writer.print( ">" );
         if ( configuration.getChildCount() > 0 )
         {
+            writer.print( ">" );
             for ( int i = 0; i < configuration.getChildCount(); i++ )
             {
                 writer.println();
-                printConfiguration( configuration.getChild( i ), writer );
+                printConfiguration( configuration.getChild( i ), indent + "  ", writer );
             }
+            writer.println( "</" + configuration.getName() + ">" );
+        }
+        else if ( configuration.getValue() != null )
+        {
+            writer.print( ">" );
+            writer.print( configuration.getValue() );
+            writer.println( "</" + configuration.getName() + ">" );
         }
         else
         {
-            writer.print( configuration.getValue() );
+            writer.println( "/>" );
         }
-        writer.println( "</" + configuration.getName() + ">" );
     }
 
     public void setProperties( PlexusConfiguration properties )
     {
         this.properties = properties;
+    }
+
+    public Registry getSection( String name )
+    {
+        CombinedConfiguration combinedConfiguration = (CombinedConfiguration) configuration;
+        Configuration configuration = combinedConfiguration.getConfiguration( name );
+        return new CommonsConfigurationRegistry( configuration );
     }
 }
