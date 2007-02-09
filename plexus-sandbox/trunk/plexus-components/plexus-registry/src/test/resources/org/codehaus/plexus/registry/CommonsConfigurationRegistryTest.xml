@@ -27,11 +27,8 @@
       <role-hint>builder</role-hint>
       <configuration>
         <properties>
-          <!--
-                    <xml fileName="${basedir}/src/test/resources/org/codehaus/plexus/registry/test.xml" config-optional="true" />
-          -->
           <xml fileName="org/codehaus/plexus/registry/test.xml"/>
-          <properties fileName="org/codehaus/plexus/registry/test.properties"/>
+          <properties fileName="org/codehaus/plexus/registry/test.properties" config-name="properties"/>
         </properties>
       </configuration>
     </component>

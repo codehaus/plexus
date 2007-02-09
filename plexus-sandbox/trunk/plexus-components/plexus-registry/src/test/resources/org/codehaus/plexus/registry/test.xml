@@ -22,4 +22,21 @@
     <interpolation>${test.value}/bar</interpolation>
   </test>
   <repository>${user.home}/.m2/repository</repository>
+  <objects>
+    <object>
+      <foo>bar</foo>
+    </object>
+    <object>
+      <foo>baz</foo>
+    </object>
+  </objects>
+  <properties>
+    <foo>bar</foo>
+    <bar>baz</bar>
+  </properties>
+  <strings>
+    <string>s1</string>
+    <string>s2</string>
+    <string>s3</string>
+  </strings>
 </configuration>

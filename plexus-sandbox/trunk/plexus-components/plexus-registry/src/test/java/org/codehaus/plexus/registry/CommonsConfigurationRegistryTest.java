@@ -18,7 +18,9 @@ package org.codehaus.plexus.registry;
 
 import org.codehaus.plexus.PlexusTestCase;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Properties;
 
 /**
  * Test the commons configuration registry.
@@ -92,6 +94,8 @@ public class CommonsConfigurationRegistryTest
         {
             // success
         }
+
+        assertTrue( "Check getBoolean returns default", registry.getBoolean( "foo", true ) );
     }
 
     public void testInterpolation()
@@ -182,5 +186,71 @@ public class CommonsConfigurationRegistryTest
         {
             // success
         }
+    }
+
+    public void testIsEmpty()
+        throws Exception
+    {
+        registry = (Registry) lookup( Registry.class.getName(), "default" );
+
+        assertFalse( registry.isEmpty() );
+        assertTrue( registry.getSubset( "foo" ).isEmpty() );
+    }
+
+    public void testGetSubset()
+        throws Exception
+    {
+        registry = (Registry) lookup( Registry.class.getName(), "builder" );
+
+        Registry registry = this.registry.getSubset( "test" );
+        assertEquals( "Check other properties are loaded", "foo", registry.getString( "value" ) );
+        assertEquals( "Check other properties are loaded", 1, registry.getInt( "number" ) );
+        assertTrue( "Check other properties are loaded", registry.getBoolean( "boolean" ) );
+    }
+
+    public void testGetSubsetList()
+        throws Exception
+    {
+        registry = (Registry) lookup( Registry.class.getName(), "builder" );
+
+        List list = registry.getSubsetList( "objects.object" );
+        assertEquals( 2, list.size() );
+        Registry r = (Registry) list.get( 0 );
+        assertTrue( "bar".equals( r.getString( "foo" ) ) || "baz".equals( r.getString( "foo" ) ) );
+        r = (Registry) list.get( 1 );
+        assertTrue( "bar".equals( r.getString( "foo" ) ) || "baz".equals( r.getString( "foo" ) ) );
+    }
+
+    public void testGetProperties()
+        throws Exception
+    {
+        registry = (Registry) lookup( Registry.class.getName(), "builder" );
+
+        Properties properties = registry.getProperties( "properties" );
+        assertEquals( 2, properties.size() );
+        assertEquals( "bar", properties.getProperty( "foo" ) );
+        assertEquals( "baz", properties.getProperty( "bar" ) );
+    }
+
+    public void testGetList()
+        throws Exception
+    {
+        registry = (Registry) lookup( Registry.class.getName(), "builder" );
+
+        List list = registry.getList( "strings.string" );
+        assertEquals( 3, list.size() );
+        assertEquals( "s1", list.get( 0 ) );
+        assertEquals( "s2", list.get( 1 ) );
+        assertEquals( "s3", list.get( 2 ) );
+    }
+
+    public void testGetSection()
+        throws Exception
+    {
+        registry = (Registry) lookup( Registry.class.getName(), "builder" );
+
+        Registry registry = this.registry.getSection( "properties" );
+        assertNull( registry.getString( "test.value" ) );
+        assertEquals( "baz", registry.getString( "foo.bar" ) );
     }
 }
