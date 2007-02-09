@@ -40,16 +40,12 @@
 
 package org.codehaus.plexus.smtp.queue;
 
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.activity.Initializable;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.smtp.Address;
-import org.codehaus.plexus.smtp.SmtpMessage;
 import org.codehaus.plexus.smtp.InvalidAddressException;
-import org.codehaus.plexus.smtp.queue.Queue;
-import org.codehaus.plexus.smtp.queue.DeliveryQueueException;
+import org.codehaus.plexus.smtp.SmtpMessage;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -68,10 +64,12 @@ import java.util.StringTokenizer;
  * uses simple flat files to persist queued messages.
  *
  * @author Eric Daugherty
+ * @author Jason van Zyl
+ * @plexus.component
  */
 public class FileQueue
     extends AbstractLogEnabled
-    implements Configurable, Initializable, Queue
+    implements Initializable, Queue
 {
     private static final String DELIMITER = "\r\n";
 
@@ -87,15 +85,8 @@ public class FileQueue
     // Lifecylce Management
     // ----------------------------------------------------------------------
 
-    /** @see org.apache.avalon.framework.configuration.Configurable#configure */
-    public void configure( Configuration configuration )
-        throws ConfigurationException
-    {
-        queueDirectory = new File( configuration.getChild( "directory" ).getValue() );
-    }
-
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         if ( !queueDirectory.exists() )
         {

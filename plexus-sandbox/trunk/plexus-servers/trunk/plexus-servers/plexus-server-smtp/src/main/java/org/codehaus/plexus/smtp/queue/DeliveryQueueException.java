@@ -48,10 +48,6 @@ package org.codehaus.plexus.smtp.queue;
  */
 public class DeliveryQueueException extends Exception
 {
-
-    /**
-     * Default Constructor
-     */
     public DeliveryQueueException()
     {
         super();

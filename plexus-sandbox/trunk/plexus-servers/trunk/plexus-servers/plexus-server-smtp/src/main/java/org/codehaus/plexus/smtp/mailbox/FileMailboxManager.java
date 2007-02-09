@@ -47,6 +47,8 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.smtp.Address;
 import org.codehaus.plexus.smtp.mailbox.FileMailbox;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -63,10 +65,12 @@ import java.util.Map;
  * local file system to store messages.
  *
  * @author Eric Daugherty
+ * @author Jason van Zyl
+ * @plexus.component
  */
 public class FileMailboxManager
     extends AbstractLogEnabled
-    implements Configurable, Initializable, MailboxManager
+    implements Initializable, MailboxManager
 {
     public static final String CONFIGURATION_PREFIX = "filemailbox.";
 
@@ -76,34 +80,8 @@ public class FileMailboxManager
 
     private Map mailboxLocks;
 
-    private Configuration configuration;
-
-    //***************************************************************
-    // Constructor
-    //***************************************************************
-
-    /**
-     * Initializes the using the file path from the ConfigurationManager.
-     */
-    public FileMailboxManager()
-    {
-    }
-
-    // ----------------------------------------------------------------------
-    // Lifecylce Management
-    // ----------------------------------------------------------------------
-
-    /** @see org.apache.avalon.framework.configuration.Configurable#configure */
-    public void configure( Configuration configuration )
-        throws ConfigurationException
-    {
-        this.configuration = configuration;
-
-        rootDirectory = new File( configuration.getChild( "root-directory" ).getValue() );
-    }
-
     public void initialize()
-        throws Exception
+        throws InitializationException
     {
         mailboxLocks = Collections.synchronizedMap( new HashMap() );
 
@@ -179,6 +157,7 @@ public class FileMailboxManager
         String mailboxId = null;
 
         userName = userName.toLowerCase();
+
         String realPassword = configuration.getChild( CONFIGURATION_PREFIX + "user." + userName + ".password" ).getValue( null );
 
         // If the user specified password is valid, encrypt it.
@@ -198,6 +177,7 @@ public class FileMailboxManager
         else
         {
             mailboxId = configuration.getChild( CONFIGURATION_PREFIX + "user." + userName + ".mailbox" ).getValue( null );
+
             if ( mailboxId == null || mailboxId.length() == 0 )
             {
                 mailboxId = null;
@@ -222,6 +202,7 @@ public class FileMailboxManager
     public String validateAddress( Address address )
     {
         String userName = address.getUsername().toLowerCase();
+
         String realPassword = configuration.getChild( CONFIGURATION_PREFIX + "user." + userName + ".password" ).getValue( null );
 
         // If the user is defined then open the mailbox.

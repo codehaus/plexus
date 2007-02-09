@@ -56,6 +56,8 @@ import java.util.List;
  * mailbox implementation.
  *
  * @author Eric Daugherty
+ * @author Jason van Zyl
+ * @plexus.component
  */
 public class FileMailbox implements Mailbox
 {
