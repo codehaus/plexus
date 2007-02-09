@@ -174,6 +174,11 @@ public class CommonsConfigurationRegistry
         return configuration.getString( key, defaultValue );
     }
 
+    public void setString( String key, String value )
+    {
+        configuration.setProperty( key, value );
+    }
+
     public int getInt( String key )
     {
         return configuration.getInt( key );
@@ -184,6 +189,11 @@ public class CommonsConfigurationRegistry
         return configuration.getInt( key, defaultValue );
     }
 
+    public void setInt( String key, int value )
+    {
+        configuration.setProperty( key, new Integer( value ) );
+    }
+
     public boolean getBoolean( String key )
     {
         return configuration.getBoolean( key );
@@ -192,6 +202,11 @@ public class CommonsConfigurationRegistry
     public boolean getBoolean( String key, boolean defaultValue )
     {
         return configuration.getBoolean( key, defaultValue );
+    }
+
+    public void setBoolean( String key, boolean value )
+    {
+        configuration.setProperty( key, Boolean.valueOf( value ) );
     }
 
     public void addConfigurationFromResource( String resource )
