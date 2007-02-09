@@ -10,55 +10,37 @@
  */
 package org.codehaus.plexus.server.jabber;
 
-import java.util.List;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.server.jabber.data.jabber.DeferrableIMPresenceImpl;
+import org.codehaus.plexus.server.jabber.data.jabber.IMPresence;
+import org.codehaus.plexus.server.jabber.data.jabber.IMPresenceImpl;
+import org.codehaus.plexus.server.jabber.data.jabber.IMRosterItem;
+import org.codehaus.plexus.server.jabber.data.storage.RosterListRepositoryHolder;
+import org.codehaus.plexus.server.jabber.session.IMSession;
+import org.codehaus.plexus.server.jabber.tools.JIDParser;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
-import org.apache.avalon.framework.service.Serviceable;
-import org.apache.avalon.framework.service.ServiceManager;
-import org.apache.avalon.framework.logger.AbstractLogEnabled;
-
-import org.codehaus.plexus.server.jabber.data.jabber.IMPresence;
-import org.codehaus.plexus.server.jabber.data.jabber.IMPresenceImpl;
-import org.codehaus.plexus.server.jabber.data.jabber.DeferrableIMPresenceImpl;
-import org.codehaus.plexus.server.jabber.data.storage.RosterListRepositoryHolder;
-import org.codehaus.plexus.server.jabber.tools.JIDParser;
-import org.codehaus.plexus.server.jabber.data.jabber.IMRosterItem;
-import org.codehaus.plexus.server.jabber.IMPresenceHolder;
-
-import org.codehaus.plexus.server.jabber.session.IMSession;
-
+import java.util.List;
 
 /**
  * @author AlAg
  * @version 1.0
- * @avalon.component version="1.0" name="SubscriptionManager" lifestyle="singleton"
- * @avalon.service type="org.codehaus.plexus.server.jabber.SubscriptionManager"
+ * @plexus.component
  */
 public class SubscriptionManagerImpl
     extends AbstractLogEnabled
-    implements SubscriptionManager, Serviceable
+    implements SubscriptionManager
 {
-
-
+    /** @plexus.requirement */
     private IMPresenceHolder m_presenceHolder;
+
+    /** @plexus.requirement */
     private RosterListRepositoryHolder m_rosterListReposityHolder;
+
+    /** @plexus.requirement */
     private ServerParameters m_serverParameters;
-
-    /**
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.IMPresenceHolder:1.0" key="IMPresenceHolder"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.data.storage.RosterListRepositoryHolder:1.0" key="RosterListRepositoryHolder"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.ServerParameters:1.0"  key="ServerParameters"
-     */
-    public void service( ServiceManager serviceManager )
-        throws org.apache.avalon.framework.service.ServiceException
-    {
-        m_rosterListReposityHolder = (RosterListRepositoryHolder) serviceManager.lookup( "RosterListRepositoryHolder" );
-        m_serverParameters = (ServerParameters) serviceManager.lookup( "ServerParameters" );
-        m_presenceHolder = (IMPresenceHolder) serviceManager.lookup( "IMPresenceHolder" );
-    }
-
 
     //-------------------------------------------------------------------------
     public void process( final IMSession session,

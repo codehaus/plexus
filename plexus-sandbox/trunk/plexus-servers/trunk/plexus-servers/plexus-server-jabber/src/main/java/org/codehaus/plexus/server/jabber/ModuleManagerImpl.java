@@ -15,14 +15,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import org.codehaus.plexus.server.jabber.module.ServerModule;
-
-import org.apache.avalon.framework.logger.AbstractLogEnabled;
-import org.apache.avalon.framework.service.Serviceable;
-import org.apache.avalon.framework.service.ServiceManager;
-import org.apache.avalon.framework.service.ServiceException;
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 /**
  * @author AlAg
@@ -33,22 +26,9 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
  */
 public class ModuleManagerImpl
     extends AbstractLogEnabled
-    implements ModuleManager, Serviceable, Configurable
+    implements ModuleManager
 {
-
     private HashSet m_moduleList = new HashSet();
-
-    //-------------------------------------------------------------------------
-    public void configure( Configuration configuration )
-        throws ConfigurationException
-    {
-    }
-
-    //-------------------------------------------------------------------------
-    public void service( ServiceManager serviceManager )
-        throws ServiceException
-    {
-    }
 
     public void registerModule( ServerModule module )
     {

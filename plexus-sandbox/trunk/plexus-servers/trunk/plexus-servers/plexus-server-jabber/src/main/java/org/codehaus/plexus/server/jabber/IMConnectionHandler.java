@@ -10,14 +10,12 @@
  */
 package org.codehaus.plexus.server.jabber;
 
-import org.apache.avalon.cornerstone.services.connection.ConnectionHandler;
-
 /**
  * @author AlAg
  * @version 1.0
  */
 public interface IMConnectionHandler
-    extends SessionProcessor, ConnectionHandler
+    extends SessionProcessor
 {
 }
 

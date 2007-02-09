@@ -17,39 +17,31 @@ import java.net.InetSocketAddress;
 
 import java.io.IOException;
 
-import org.apache.avalon.framework.logger.AbstractLogEnabled;
-import org.apache.avalon.framework.service.Serviceable;
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-import org.apache.avalon.framework.configuration.ConfigurationException;
-import org.apache.avalon.framework.service.ServiceManager;
-
-
 import org.xmlpull.v1.XmlPullParser;
 
 
 import org.codehaus.plexus.server.jabber.session.SessionsManager;
 import org.codehaus.plexus.server.jabber.session.IMServerSession;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 
 /**
  * @author AlAg
  * @author PV
  * @version 1.0
- * @avalon.component version="1.0" name="S2SConnector" lifestyle="transient"
- * @avalon.service type="org.codehaus.plexus.server.jabber.S2SConnector"
+ * @plexus.component
  */
-
 public class S2SConnectorImpl
     extends AbstractLogEnabled
-    implements S2SConnector, Runnable, Configurable, Serviceable
+    implements S2SConnector, Runnable
 {
-
+    /** @plexus.requrement */
     private ServerParameters m_serverParameters;
     private SessionsManager m_sessionsManager;
     private IMConnectionHandler m_connectionHandler;
 
 
+    /** @plexus.configuration default-value="60000" */
     private int m_deliveryConnectionTimout;
 
 
@@ -65,21 +57,6 @@ public class S2SConnectorImpl
 
     private volatile String m_verifyDialbackValue;
     private volatile String m_verifyId;
-
-    /** @avalon.dependency type="org.codehaus.plexus.server.jabber.ServerParameters:1.0"  key="ServerParameters" */
-    public void service( ServiceManager serviceManager )
-        throws org.apache.avalon.framework.service.ServiceException
-    {
-        m_serverParameters = (ServerParameters) serviceManager.lookup( "ServerParameters" );
-    }
-
-    //-------------------------------------------------------------------------
-    public void configure( Configuration configuration )
-        throws ConfigurationException
-    {
-        m_deliveryConnectionTimout =
-            configuration.getChild( "delivery-connection-timeout" ).getValueAsInteger( 1000 * 60 );
-    }
 
     //-------------------------------------------------------------------------
     public void setToHostname( String toHostname )

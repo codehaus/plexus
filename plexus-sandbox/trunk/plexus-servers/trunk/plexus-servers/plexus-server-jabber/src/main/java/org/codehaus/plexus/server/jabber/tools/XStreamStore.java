@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.avalon.framework.logger.Logger;
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.plexus.logging.Logger;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;

@@ -10,9 +10,6 @@
  */
 package org.codehaus.plexus.server.jabber.jabber;
 
-
-import org.apache.avalon.framework.service.ServiceManager;
-
 import org.xmlpull.v1.XmlPullParser;
 
 import org.codehaus.plexus.server.jabber.session.IMSession;

@@ -12,15 +12,11 @@ package org.codehaus.plexus.server.jabber.data.jabber;
 
 import java.util.List;
 
-import org.apache.avalon.framework.logger.AbstractLogEnabled;
-import org.apache.avalon.framework.service.Serviceable;
-import org.apache.avalon.framework.service.ServiceManager;
-import org.apache.avalon.framework.service.ServiceException;
-
 import org.codehaus.plexus.server.jabber.data.Account;
 import org.codehaus.plexus.server.jabber.data.storage.AccountRepositoryHolder;
 import org.codehaus.plexus.server.jabber.data.storage.RosterListRepositoryHolder;
 import org.codehaus.plexus.server.jabber.ServerParameters;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 
 /**
@@ -31,7 +27,7 @@ import org.codehaus.plexus.server.jabber.ServerParameters;
  */
 public class UserImpl
     extends AbstractLogEnabled
-    implements User, Serviceable
+    implements User
 {
 
     private String m_name;
@@ -40,27 +36,14 @@ public class UserImpl
     private String m_digest;
     private String m_resource;
 
-    private ServiceManager m_serviceManager;
+    /** @plexus.requirement */
     private AccountRepositoryHolder m_accountHolder;
+
+    /** @plexus.requirement */
     private RosterListRepositoryHolder m_rosterListHolder;
 
+    /** @plexus.requirement */
     private ServerParameters m_serverParameters;
-
-    /**
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.ServerParameters:1.0"  key="ServerParameters"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.data.storage.AccountRepositoryHolder:1.0" key="AccountRepositoryHolder"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.data.storage.RosterListRepositoryHolder:1.0" key="RosterListRepositoryHolder"
-     */
-    //-------------------------------------------------------------------------
-    public void service( ServiceManager serviceManager )
-        throws ServiceException
-    {
-        m_serviceManager = serviceManager;
-        m_serverParameters = (ServerParameters) serviceManager.lookup( "ServerParameters" );
-        m_accountHolder = (AccountRepositoryHolder) serviceManager.lookup( "AccountRepositoryHolder" );
-        m_rosterListHolder = (RosterListRepositoryHolder) serviceManager.lookup( "RosterListRepositoryHolder" );
-
-    }
 
     //-------------------------------------------------------------------------
     public final String getName()
