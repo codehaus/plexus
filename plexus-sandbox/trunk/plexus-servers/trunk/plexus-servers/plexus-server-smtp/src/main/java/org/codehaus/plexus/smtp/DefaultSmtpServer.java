@@ -52,6 +52,8 @@ import java.net.Socket;
  * of rfc821.
  *
  * @author Eric Daugherty
+ * @author Jason van Zyl
+ * @plexus.component
  */
 public class DefaultSmtpServer
     extends DefaultServer
