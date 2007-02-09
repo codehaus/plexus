@@ -48,6 +48,9 @@ import org.codehaus.plexus.smtp.mailbox.Mailbox;
 import org.codehaus.plexus.smtp.mailbox.MailboxManager;
 import org.codehaus.plexus.smtp.server.AbstractServer;
 import org.codehaus.plexus.smtp.server.connection.ConnectionHandler;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
+import org.codehaus.plexus.server.DefaultServer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -64,7 +67,7 @@ import java.text.MessageFormat;
  * @author Eric Daugherty
  */
 public class DefaultPop3Server
-    extends AbstractServer
+    extends DefaultServer
     implements Serviceable, Initializable
 {
     //***************************************************************

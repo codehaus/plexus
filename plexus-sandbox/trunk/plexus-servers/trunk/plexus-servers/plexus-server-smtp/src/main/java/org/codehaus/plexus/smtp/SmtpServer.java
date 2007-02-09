@@ -1,7 +1,5 @@
 package org.codehaus.plexus.smtp;
 
-import org.codehaus.plexus.synapse.SynapseServer;
-
 /**
  *
  * 
@@ -10,7 +8,6 @@ import org.codehaus.plexus.synapse.SynapseServer;
  * @version $Id$
  */
 public interface SmtpServer
-    extends SynapseServer
 {
-    public static String ROLE = SmtpServer.class.getName();
+    String ROLE = SmtpServer.class.getName();
 }
