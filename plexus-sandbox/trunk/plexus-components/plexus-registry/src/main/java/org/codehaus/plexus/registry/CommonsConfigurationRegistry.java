@@ -35,6 +35,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Implementation of the registry component using
@@ -95,7 +96,20 @@ public class CommonsConfigurationRegistry
 
     public List getList( String key )
     {
+        // TODO! is this the right method?
         return configuration.getList( key );
+    }
+
+    public Properties asProperties()
+    {
+        // TODO! is this the right method, or should it be key based like getList?
+        Properties properties = new Properties();
+        for ( Iterator i = configuration.getKeys(); i.hasNext(); )
+        {
+            String key = (String) i.next();
+            properties.setProperty( key, configuration.getString( key ) );
+        }
+        return properties;
     }
 
     public String getString( String key )
