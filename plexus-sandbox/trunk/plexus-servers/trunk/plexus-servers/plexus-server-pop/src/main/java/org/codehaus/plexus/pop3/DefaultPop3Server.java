@@ -32,25 +32,24 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  * *****************************************************************************
  * For current versions and more information, please visit:
- * http://www.ericdaugherty.com/java/mailserver
+ * http://www.ericdaugherty.com/codehaus/mailserver
  *
  * or contact the author at:
- * java@ericdaugherty.com
+ * codehaus@ericdaugherty.com
  *****************************************************************************/
 
 package org.codehaus.plexus.pop3;
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.server.DefaultServer;
 import org.codehaus.plexus.server.ConnectionHandlingException;
+import org.codehaus.plexus.server.DefaultServer;
 import org.codehaus.plexus.smtp.mailbox.Mailbox;
 import org.codehaus.plexus.smtp.mailbox.MailboxManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.BufferedOutputStream;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.Socket;

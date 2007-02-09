@@ -1,4 +1,0 @@
-<configuration>
-    <map name="vcard-temp:vCard" key="iq.vcardtemp.VCard"/>
-    <map name="vcard-temp:VCARD" key="iq.vcardtemp.VCard"/>
-</configuration>

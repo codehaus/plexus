@@ -51,7 +51,7 @@ public class DefaultProcessor
         mimeTypes.put( ".xsl", "text/xsl" );
         mimeTypes.put( ".css", "text/css" );
         mimeTypes.put( ".js", "text/x-javascript" );
-        mimeTypes.put( ".jar", "application/java-archive" );
+        mimeTypes.put( ".jar", "application/codehaus-archive" );
 
         // Velocity engine setup.
         velocity = new VelocityEngine();

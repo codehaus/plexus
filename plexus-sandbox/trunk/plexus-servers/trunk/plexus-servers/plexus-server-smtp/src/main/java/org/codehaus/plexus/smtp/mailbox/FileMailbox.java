@@ -32,10 +32,10 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  * *****************************************************************************
  * For current versions and more information, please visit:
- * http://www.ericdaugherty.com/java/mailserver
+ * http://www.ericdaugherty.com/codehaus/mailserver
  *
  * or contact the author at:
- * java@ericdaugherty.com
+ * codehaus@ericdaugherty.com
  *****************************************************************************/
 
 package org.codehaus.plexus.smtp.mailbox;
@@ -158,7 +158,7 @@ public class FileMailbox implements Mailbox
     }
 
     /**
-     * Returns a java.io.Reader which is positioned to read
+     * Returns a codehaus.io.Reader which is positioned to read
      * the message from the storage system.
      * <p>
      * The client should close the Reader once the message has

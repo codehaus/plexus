@@ -15,8 +15,8 @@ import java.io.IOException;
  * The ServerSocket factory interface. <p>
  * It allows to create ServerSocket for JMX adaptors
  *
- * @author <a href="mailto:tibu@users.sourceforge.net">Carlos Quiroz</a>
- * @author <a href="mailto:biorn_steedom@users.sourceforge.net">Simone Bordet</a>
+ * @author <a href="mailto:tibu@users.sourceforge.org">Carlos Quiroz</a>
+ * @author <a href="mailto:biorn_steedom@users.sourceforge.org">Simone Bordet</a>
  * @version $Revision$
  */
 public interface AdaptorServerSocketFactory

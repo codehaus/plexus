@@ -75,7 +75,7 @@ public class AsciiOutputStream
     /**
      * Constructor.
      *
-     * @param os <code>java.io.OutputStream</code> to be filtered.
+     * @param os <code>codehaus.io.OutputStream</code> to be filtered.
      */
     public AsciiOutputStream( OutputStream os )
     {

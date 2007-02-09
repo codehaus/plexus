@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * HttpAdaptor sets the basic adaptor listening for HTTP requests
  *
- * @author <a href="mailto:tibu@users.sourceforge.net">Carlos Quiroz</a>
+ * @author <a href="mailto:tibu@users.sourceforge.org">Carlos Quiroz</a>
  * @version $Revision$
  */
 public class HttpOutputStream

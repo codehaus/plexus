@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Processor ManagementBean, just defines a generic description
  *
- * @author <a href="mailto:tibu@users.sourceforge.net">Carlos Quiroz</a>
+ * @author <a href="mailto:tibu@users.sourceforge.org">Carlos Quiroz</a>
  * @version $Revision$
  */
 public interface Processor

@@ -60,8 +60,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Connect one <code>java.io.InputStream</code> with a
- * <code>java.io.OutputStream</code>.
+ * Connect one <code>codehaus.io.InputStream</code> with a
+ * <code>codehaus.io.OutputStream</code>.
  * <p/>
  * Features:
  * <ul>

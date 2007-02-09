@@ -39,7 +39,7 @@ public interface Mailbox
     long getMessageSize( String messageId );
 
     /**
-     * Returns a java.io.Reader which is positioned to read
+     * Returns a codehaus.io.Reader which is positioned to read
      * the message from the storage system.
      * <p>
      * The client should close the Reader once the message has
