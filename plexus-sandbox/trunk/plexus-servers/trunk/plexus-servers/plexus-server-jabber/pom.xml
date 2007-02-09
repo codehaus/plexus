@@ -1,0 +1,9 @@
+<project>
+  <dependencies>
+    <dependency>
+      <groupId>avalon-framework</groupId>
+      <artifactId>avalon-framework-api</artifactId>
+      <version>4.2.0</version>
+    </dependency>
+  </dependencies>
+</project>

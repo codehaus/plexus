@@ -1,0 +1,3 @@
+<configuration>
+    <map name="jabber:iq:roster:group" key="iq.roster.Group"/>
+</configuration>
