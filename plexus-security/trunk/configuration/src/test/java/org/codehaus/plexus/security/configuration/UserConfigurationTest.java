@@ -28,6 +28,14 @@ import org.codehaus.plexus.util.StringUtils;
 public class UserConfigurationTest
     extends PlexusTestCase
 {
+    protected void setUp()
+        throws Exception
+    {
+        super.setUp();
+        
+        System.setProperty( "plexus.home", (String) getContainer().getContext().get( "plexus.home" ) );
+    }
+
     private void assertEmpty( String str )
     {
         if ( StringUtils.isNotEmpty( str ) )
@@ -48,7 +56,6 @@ public class UserConfigurationTest
     public void testGetString()
         throws Exception
     {
-        System.setProperty( "plexus.home", (String) getContainer().getContext().get( "plexus.home" ) );
         UserConfiguration config = (UserConfiguration) lookup( UserConfiguration.ROLE );
         // Test default configuration entry
         assertEquals( "25", config.getString( "email.smtp.port" ) );

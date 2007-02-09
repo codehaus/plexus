@@ -58,6 +58,10 @@ public class UserConfiguration
      */
     private List configs;
 
+    private Registry lookupRegistry;
+
+    private static final String PREFIX = "org.codehaus.plexus.security";
+
     private Registry registry;
 
     public void initialize()
@@ -67,16 +71,18 @@ public class UserConfiguration
         {
             performLegacyInitialization();
 
-            registry.addConfigurationFromResource( DEFAULT_CONFIG_RESOURCE );
+            registry.addConfigurationFromResource( DEFAULT_CONFIG_RESOURCE, PREFIX );
         }
         catch ( RegistryException e )
         {
             throw new InitializationException( e.getMessage(), e );
         }
 
+        lookupRegistry = registry.getSubset( PREFIX );
+
         if ( getLogger().isDebugEnabled() )
         {
-            getLogger().debug( registry.dump() );
+            getLogger().debug( lookupRegistry.dump() );
         }
     }
 
@@ -113,33 +119,33 @@ public class UserConfiguration
             getLogger().info(
                 "Attempting to find configuration [" + configName + "] (resolved to [" + configName + "])" );
 
-            registry.addConfigurationFromFile( new File( configName ) );
+            registry.addConfigurationFromFile( new File( configName ), PREFIX );
         }
     }
 
     public String getString( String key )
     {
-        return registry.getString( key );
+        return lookupRegistry.getString( key );
     }
 
     public int getInt( String key )
     {
-        return registry.getInt( key );
+        return lookupRegistry.getInt( key );
     }
 
     public boolean getBoolean( String key )
     {
-        return registry.getBoolean( key );
+        return lookupRegistry.getBoolean( key );
     }
 
     public int getInt( String key, int defaultValue )
     {
-        return registry.getInt( key, defaultValue );
+        return lookupRegistry.getInt( key, defaultValue );
     }
 
     public String getString( String key, String defaultValue )
     {
-        return registry.getString( key, defaultValue );
+        return lookupRegistry.getString( key, defaultValue );
     }
 
     public void contextualize( Context context )
@@ -149,7 +155,7 @@ public class UserConfiguration
         try
         {
             // elsewhere, this can be a requirement, but we need this for backwards compatibility
-            registry = (Registry) container.lookup( Registry.class.getName() );
+            registry = (Registry) container.lookup( Registry.class.getName(), "commons-configuration" );
         }
         catch ( ComponentLookupException e )
         {
