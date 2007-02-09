@@ -43,14 +43,17 @@ package org.codehaus.plexus.pop3;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.server.DefaultServer;
+import org.codehaus.plexus.server.ConnectionHandlingException;
 import org.codehaus.plexus.smtp.mailbox.Mailbox;
 import org.codehaus.plexus.smtp.mailbox.MailboxManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.BufferedOutputStream;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.text.MessageFormat;
 
 /**
@@ -59,6 +62,8 @@ import java.text.MessageFormat;
  * of rfc1939.
  *
  * @author Eric Daugherty
+ * @author Jason van Zyl
+ * @plexus.component
  */
 public class DefaultPop3Server
     extends DefaultServer
@@ -199,14 +204,6 @@ public class DefaultPop3Server
      */
     private String user;
 
-    //***************************************************************
-    // Constructor
-    //***************************************************************
-
-    public DefaultPop3Server()
-    {
-    }
-
     // ----------------------------------------------------------------------
     // Lifecylce Management
     // ----------------------------------------------------------------------
@@ -226,6 +223,7 @@ public class DefaultPop3Server
         if ( line != null && line.trim().length() > 0 )
         {
             inputLine = line.trim();
+
             return true;
         }
         else
@@ -238,17 +236,23 @@ public class DefaultPop3Server
     // ServerProcessor Method Implementations
     //***************************************************************
 
+    public void handleConnection( Socket socket )
+        throws ConnectionHandlingException
+    {
+        process( socket );
+    }
+
     /**
      * Called when the client input needs to be processed.
      */
-    public void process( ConnectionHandler connectionHandler )
+    public void process( Socket socket )
     {
         try
         {
             // If the connection was just established, write a welcome message.
             if ( state == STATE_INITIAL )
             {
-                InetAddress clientAddress = connectionHandler.getClientAddress();
+                InetAddress clientAddress = socket.getInetAddress();
 
                 // Log the connection.
                 if ( getLogger().isInfoEnabled() ) getLogger().info( "POP3 Connection made from client: " + clientAddress.getHostName() + " (" + clientAddress.getHostAddress() + ")." );
@@ -257,18 +261,20 @@ public class DefaultPop3Server
                 if ( mailboxManager.acceptClient( clientAddress ) )
                 {
                     state = STATE_AUTHORIZATION;
-                    writeLine( connectionHandler, getMessage( MESSAGE_WELCOME ) );
+
+                    writeLine( socket, getMessage( MESSAGE_WELCOME ) );
                 }
                 else
                 {
                     // If the client is not valid, display an error message and close the connection.
-                    writeLine( connectionHandler, getMessage( MESSAGE_CLIENT_INVALID ) );
-                    connectionHandler.close();
+                    writeLine( socket, getMessage( MESSAGE_CLIENT_INVALID ) );
+
+                    socket.close();
                 }
             }
             else
             {
-                processCommand( connectionHandler );
+                processCommand( socket );
             }
         }
         catch ( IOException ioException )
@@ -281,7 +287,7 @@ public class DefaultPop3Server
             }
             try
             {
-                connectionHandler.close();
+                socket.close();
             }
             catch ( IOException e )
             {
@@ -298,7 +304,7 @@ public class DefaultPop3Server
             }
             try
             {
-                connectionHandler.close();
+                socket.close();
             }
             catch ( IOException e )
             {
@@ -326,16 +332,19 @@ public class DefaultPop3Server
      *
      * @throws java.io.IOException thrown if an error occurs writing a client response.
      */
-    private void processCommand( ConnectionHandler connectionHandler ) throws IOException
+    private void processCommand( Socket connectionHandler ) throws IOException
     {
         String command = inputLine;
 
         // Get the requested command.
         int commandId = getCommandId( command );
+
         if ( commandId == -1 )
         {
             String[] invalidCommandArguments = {command};
+
             writeLine( connectionHandler,  getMessage( MESSAGE_COMMAND_INVALID, invalidCommandArguments ) );
+
             return;
         }
 
@@ -343,7 +352,9 @@ public class DefaultPop3Server
         if ( !isCommandValid( commandId ) )
         {
             String[] invalidOrderArguments = {command};
+
             writeLine( connectionHandler,  getMessage( MESSAGE_COMMAND_ORDER_INVALID, invalidOrderArguments ) );
+
             return;
         }
 
@@ -403,7 +414,7 @@ public class DefaultPop3Server
      *
      * @throws java.io.IOException
      */
-    private void processUserCommand( ConnectionHandler connectionHandler ) throws IOException
+    private void processUserCommand( Socket Socket ) throws IOException
     {
         String userName = getCommandArgument();
 
@@ -411,19 +422,19 @@ public class DefaultPop3Server
         {
             user = null;
             String[] arguments = {"USER"};
-            writeLine( connectionHandler,  getMessage( MESSAGE_MISSING_ARGUMENT, arguments ) );
+            writeLine( Socket,  getMessage( MESSAGE_MISSING_ARGUMENT, arguments ) );
         }
         else
         {
             if ( mailboxManager.validateUser( userName ) )
             {
                 user = userName;
-                writeLine( connectionHandler,  getMessage( MESSAGE_OK ) );
+                writeLine( Socket,  getMessage( MESSAGE_OK ) );
             }
             else
             {
                 user = null;
-                writeLine( connectionHandler,  getMessage( MESSAGE_UNKNOWN_USER ) );
+                writeLine( Socket,  getMessage( MESSAGE_UNKNOWN_USER ) );
             }
         }
     }
@@ -433,20 +444,20 @@ public class DefaultPop3Server
      *
      * @throws java.io.IOException
      */
-    private void processPassCommand( ConnectionHandler connectionHandler ) throws IOException
+    private void processPassCommand( Socket Socket ) throws IOException
     {
         String password = getCommandArgument();
 
         // Must specify the user before the password.
         if ( user == null )
         {
-            writeLine( connectionHandler,  getMessage( MESSAGE_NEED_USER_COMMAND ) );
+            writeLine( Socket,  getMessage( MESSAGE_NEED_USER_COMMAND ) );
         }
         // Make sure they actually gave a password.
         else if ( password == null || password.length() < 1 )
         {
             String[] arguments = {"PASS"};
-            writeLine( connectionHandler,  getMessage( MESSAGE_MISSING_ARGUMENT, arguments ) );
+            writeLine( Socket,  getMessage( MESSAGE_MISSING_ARGUMENT, arguments ) );
         }
         // Validate the username and password.
         else
@@ -459,16 +470,16 @@ public class DefaultPop3Server
                 {
                     state = STATE_TRANSACTION;
                     if ( getLogger().isInfoEnabled() ) getLogger().info( "User: " + user + " logged in to POP3 Server." );
-                    writeLine( connectionHandler,  getMessage( MESSAGE_OK ) );
+                    writeLine( Socket,  getMessage( MESSAGE_OK ) );
                 }
                 else
                 {
-                    writeLine( connectionHandler,  getMessage( MESSAGE_MAILBOX_LOCK_FAILED ) );
+                    writeLine( Socket,  getMessage( MESSAGE_MAILBOX_LOCK_FAILED ) );
                 }
             }
             else
             {
-                writeLine( connectionHandler,  getMessage( MESSAGE_INVALID_AUTHENTICATION ) );
+                writeLine( Socket,  getMessage( MESSAGE_INVALID_AUTHENTICATION ) );
             }
         }
     }
@@ -481,12 +492,12 @@ public class DefaultPop3Server
      *
      * @throws java.io.IOException
      */
-    private void processStatCommand( ConnectionHandler connectionHandler ) throws IOException
+    private void processStatCommand( Socket Socket ) throws IOException
     {
         String messageCount = String.valueOf( mailbox.getMessageCount() );
         String mailboxSize = String.valueOf( mailbox.getMailboxSize() );
         String[] arguments = {messageCount, mailboxSize};
-        writeLine( connectionHandler,  getMessage( MESSAGE_STAT, arguments ) );
+        writeLine( Socket,  getMessage( MESSAGE_STAT, arguments ) );
     }
 
     /**
@@ -501,7 +512,7 @@ public class DefaultPop3Server
      *
      * @throws java.io.IOException
      */
-    private void processListCommand( ConnectionHandler connectionHandler ) throws IOException
+    private void processListCommand( Socket Socket ) throws IOException
     {
         String argument = getCommandArgument();
 
@@ -511,16 +522,16 @@ public class DefaultPop3Server
             String messageCount = String.valueOf( mailbox.getMessageCount() );
             String mailboxSize = String.valueOf( mailbox.getMailboxSize() );
             String[] arguments = {messageCount, mailboxSize};
-            writeLine( connectionHandler,  getMessage( MESSAGE_LIST_ALL, arguments ) );
+            writeLine( Socket,  getMessage( MESSAGE_LIST_ALL, arguments ) );
 
             String[] messageIds = mailbox.getMessageIds();
             String messageSize;
             for ( int index = 0; index < messageIds.length; index++ )
             {
                 messageSize = String.valueOf( mailbox.getMessageSize( messageIds[index] ) );
-                writeLine( connectionHandler,  String.valueOf( index + 1 ) + " " + messageSize );
+                writeLine( Socket,  String.valueOf( index + 1 ) + " " + messageSize );
             }
-            writeLine( connectionHandler,  "." );
+            writeLine( Socket,  "." );
         }
         // List a specific message
         else
@@ -531,7 +542,7 @@ public class DefaultPop3Server
             if ( messageNumber < 0 )
             {
                 String[] arguments = {argument};
-                writeLine( connectionHandler,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
+                writeLine( Socket,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
                 return;
             }
 
@@ -543,14 +554,14 @@ public class DefaultPop3Server
             if ( messageIds.length > messageNumber || mailbox.isMessageDeleted( messageIds[index] ) )
             {
                 String[] arguments = {argument};
-                writeLine( connectionHandler,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
+                writeLine( Socket,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
             }
             else
             {
                 String messageNumberString = String.valueOf( messageNumber );
                 String messageSize = String.valueOf( mailbox.getMessageSize( messageIds[index] ) );
                 String[] arguments = {messageNumberString, messageSize};
-                writeLine( connectionHandler,  getMessage( MESSAGE_LIST_ONE, arguments ) );
+                writeLine( Socket,  getMessage( MESSAGE_LIST_ONE, arguments ) );
             }
         }
     }
@@ -562,7 +573,7 @@ public class DefaultPop3Server
      *
      * @throws java.io.IOException
      */
-    private void processRetrCommand( ConnectionHandler connectionHandler ) throws IOException
+    private void processRetrCommand( Socket Socket ) throws IOException
     {
         int messageNumber = getMessageNumber();
 
@@ -570,7 +581,7 @@ public class DefaultPop3Server
         if ( messageNumber < 0 )
         {
             String[] arguments = {getCommandArgument()};
-            writeLine( connectionHandler,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
+            writeLine( Socket,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
             return;
         }
 
@@ -582,11 +593,11 @@ public class DefaultPop3Server
         if ( messageIds.length > messageNumber || mailbox.isMessageDeleted( messageIds[index] ) )
         {
             String[] arguments = {getCommandArgument()};
-            writeLine( connectionHandler,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
+            writeLine( Socket,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
         }
         else
         {
-            writeLine( connectionHandler,  getMessage( MESSAGE_OK ) );
+            writeLine( Socket,  getMessage( MESSAGE_OK ) );
 
             Reader reader = mailbox.getMessage( messageIds[index] );
             BufferedReader messageReader = null;
@@ -597,11 +608,11 @@ public class DefaultPop3Server
                 String currentLine = messageReader.readLine();
                 while ( currentLine != null )
                 {
-                    writeLine( connectionHandler,  currentLine );
+                    writeLine( Socket,  currentLine );
                     currentLine = messageReader.readLine();
                 }
 
-                writeLine( connectionHandler,  "." );
+                writeLine( Socket,  "." );
             }
             finally
             {
@@ -620,7 +631,7 @@ public class DefaultPop3Server
      *
      * @throws java.io.IOException
      */
-    private void processDeleCommand( ConnectionHandler connectionHandler ) throws IOException
+    private void processDeleCommand( Socket Socket ) throws IOException
     {
         int messageNumber = getMessageNumber();
 
@@ -628,7 +639,7 @@ public class DefaultPop3Server
         if ( messageNumber < 0 )
         {
             String[] arguments = {getCommandArgument()};
-            writeLine( connectionHandler,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
+            writeLine( Socket,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
             return;
         }
 
@@ -640,12 +651,12 @@ public class DefaultPop3Server
         if ( messageIds.length > messageNumber || mailbox.isMessageDeleted( messageIds[index] ) )
         {
             String[] arguments = {getCommandArgument()};
-            writeLine( connectionHandler,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
+            writeLine( Socket,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
         }
         else
         {
             mailbox.deleteMessage( messageIds[index] );
-            writeLine( connectionHandler,  getMessage( MESSAGE_OK ) );
+            writeLine( Socket,  getMessage( MESSAGE_OK ) );
         }
 
     }
@@ -657,10 +668,10 @@ public class DefaultPop3Server
      *
      * @throws java.io.IOException
      */
-    private void processRsetCommand( ConnectionHandler connectionHandler ) throws IOException
+    private void processRsetCommand( Socket Socket ) throws IOException
     {
         mailbox.resetDeleteFlags();
-        writeLine( connectionHandler,  getMessage( MESSAGE_OK ) );
+        writeLine( Socket,  getMessage( MESSAGE_OK ) );
     }
 
     /**
@@ -670,7 +681,7 @@ public class DefaultPop3Server
      *
      * @throws java.io.IOException
      */
-    private void processTopCommand( ConnectionHandler connectionHandler) throws IOException
+    private void processTopCommand( Socket Socket) throws IOException
     {
         String argument = getCommandArgument();
 
@@ -682,7 +693,7 @@ public class DefaultPop3Server
         if ( delimiterIndex < -1 || delimiterIndex + 1 > argument.length() )
         {
             String[] arguments = {"TOP"};
-            writeLine( connectionHandler,  getMessage( MESSAGE_MISSING_SECOND_ARGUMENT, arguments ) );
+            writeLine( Socket,  getMessage( MESSAGE_MISSING_SECOND_ARGUMENT, arguments ) );
             return;
         }
 
@@ -697,7 +708,7 @@ public class DefaultPop3Server
         catch ( NumberFormatException nfe )
         {
             String[] arguments = {argument};
-            writeLine( connectionHandler,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
+            writeLine( Socket,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
             return;
         }
 
@@ -709,12 +720,12 @@ public class DefaultPop3Server
         if ( messageIds.length > messageNumber || mailbox.isMessageDeleted( messageIds[index] ) )
         {
             String[] arguments = {argument};
-            writeLine( connectionHandler,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
+            writeLine( Socket,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
             return;
         }
         else
         {
-            writeLine( connectionHandler,  getMessage( MESSAGE_OK ) );
+            writeLine( Socket,  getMessage( MESSAGE_OK ) );
 
             Reader reader = mailbox.getMessage( messageIds[index] );
             BufferedReader messageReader = null;
@@ -726,24 +737,24 @@ public class DefaultPop3Server
                 String currentLine = messageReader.readLine();
                 while ( currentLine != null && !currentLine.equals( "" ) )
                 {
-                    writeLine( connectionHandler,  currentLine );
+                    writeLine( Socket,  currentLine );
                     currentLine = messageReader.readLine();
                 }
 
                 //Write an empty line to seperate header from body.
-                writeLine( connectionHandler,  "" );
+                writeLine( Socket,  "" );
 
                 // Write the body
                 int lineNumber = 0;
                 currentLine = messageReader.readLine();
                 while ( currentLine != null && lineNumber < numberOfLines )
                 {
-                    writeLine( connectionHandler,  currentLine );
+                    writeLine( Socket,  currentLine );
                     currentLine = messageReader.readLine();
                     lineNumber++;
                 }
 
-                writeLine( connectionHandler,  "." );
+                writeLine( Socket,  "." );
             }
             finally
             {
@@ -763,7 +774,7 @@ public class DefaultPop3Server
      *
      * @throws java.io.IOException
      */
-    private void processUidlCommand( ConnectionHandler connectionHandler) throws IOException
+    private void processUidlCommand( Socket Socket) throws IOException
     {
 
         String argument = getCommandArgument();
@@ -772,15 +783,15 @@ public class DefaultPop3Server
         // List all messages
         if ( argument.equals( "" ) )
         {
-            writeLine( connectionHandler,  getMessage( MESSAGE_OK ) );
+            writeLine( Socket,  getMessage( MESSAGE_OK ) );
 
             for ( int index = 0; index < messageIds.length; index++ )
             {
                 String[] arguments = {String.valueOf( index + 1 ), messageIds[index]};
-                writeLine( connectionHandler,  getMessage( MESSAGE_UIDL_ALL, arguments ) );
+                writeLine( Socket,  getMessage( MESSAGE_UIDL_ALL, arguments ) );
             }
 
-            writeLine( connectionHandler,  "." );
+            writeLine( Socket,  "." );
         }
         // List a specific message
         else
@@ -791,7 +802,7 @@ public class DefaultPop3Server
             if ( messageNumber < 0 )
             {
                 String[] arguments = {argument};
-                writeLine( connectionHandler,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
+                writeLine( Socket,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
                 return;
             }
 
@@ -802,12 +813,12 @@ public class DefaultPop3Server
             if ( messageIds.length > messageNumber || mailbox.isMessageDeleted( messageIds[index] ) )
             {
                 String[] arguments = {argument};
-                writeLine( connectionHandler,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
+                writeLine( Socket,  getMessage( MESSAGE_INVALID_MESSAGE_NUMBER, arguments ) );
             }
             else
             {
                 String[] arguments = {String.valueOf( messageNumber ), messageIds[index]};
-                writeLine( connectionHandler,  getMessage( MESSAGE_UIDL_ONE, arguments ) );
+                writeLine( Socket,  getMessage( MESSAGE_UIDL_ONE, arguments ) );
             }
         }
     }
@@ -942,5 +953,11 @@ public class DefaultPop3Server
     private String getMessage( String messageName, String[] arguments )
     {
         return MessageFormat.format( getMessage( messageName ), arguments );
+    }
+
+    private void writeLine( Socket socket, String message )
+        throws IOException
+    {
+        socket.getOutputStream().write( message.getBytes() );
     }
 }
