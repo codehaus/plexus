@@ -52,6 +52,14 @@ public interface Registry
     String getString( String key, String defaultValue );
 
     /**
+     * Set a string value in the registry.
+     *
+     * @param key   the key in the registry
+     * @param value the value to set
+     */
+    void setString( String key, String value );
+
+    /**
      * Get an integer value from the registry. If not found, an exception is thrown.
      *
      * @param key the key in the registry
@@ -71,6 +79,14 @@ public interface Registry
     int getInt( String key, int defaultValue );
 
     /**
+     * Set an integer value in the registry.
+     *
+     * @param key   the key in the registry
+     * @param value the value to set
+     */
+    void setInt( String key, int value );
+
+    /**
      * Get a boolean value from the registry. If not found, an exception is thrown.
      *
      * @param key the key in the registry
@@ -88,6 +104,14 @@ public interface Registry
      * @return the value
      */
     boolean getBoolean( String key, boolean defaultValue );
+
+    /**
+     * Set a boolean value in the registry.
+     *
+     * @param key   the key in the registry
+     * @param value the value to set
+     */
+    void setBoolean( String key, boolean value );
 
     /**
      * Load configuration from the given classloader resource.
