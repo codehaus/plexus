@@ -13,8 +13,6 @@ package org.codehaus.plexus.server.jabber.jabber.server;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.avalon.framework.thread.ThreadSafe;
-
 import org.xmlpull.v1.XmlPullParser;
 
 import org.codehaus.plexus.server.jabber.IMPresenceHolder;

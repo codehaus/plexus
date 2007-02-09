@@ -10,48 +10,27 @@
  */
 package org.codehaus.plexus.server.jabber;
 
-
-import org.apache.avalon.framework.logger.AbstractLogEnabled;
-import org.apache.avalon.framework.service.Serviceable;
-import org.apache.avalon.framework.service.ServiceManager;
-
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.server.jabber.data.jabber.MessagePacket;
-
 import org.codehaus.plexus.server.jabber.session.IMSession;
 import org.codehaus.plexus.server.jabber.session.SessionsManager;
 
+import java.io.IOException;
 
 /**
  * @author AlAg
  * @version 1.0
- * @avalon.component version="1.0" name="SimpleMessageRouter" lifestyle="singleton"
- * @avalon.service type="org.codehaus.plexus.server.jabber.SimpleMessageRouter"
- * @avalon.dependency type="org.codehaus.plexus.server.jabber.IMRouter:1.0" key="IMRouter"
+ * @plexus.component
  */
 public class SimpleMessageRouterImpl
     extends AbstractLogEnabled
-    implements SimpleMessageRouter, Serviceable
+    implements SimpleMessageRouter
 {
-
-
-    private ServiceManager m_serviceManager;
-
+    /** @plexus.requirement */
     private SessionsManager m_sessionsManager;
-    private IMRouter m_router;
 
-    /**
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.session.SessionsManager:1.0" key="SessionsManager"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.IMRouter:1.0" key="IMRouter"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.IMConnectionHandler:1.0" key="IMConnectionHandler"
-     */
-    public void service( ServiceManager serviceManager )
-        throws org.apache.avalon.framework.service.ServiceException
-    {
-        m_serviceManager = serviceManager;
-        m_sessionsManager = (SessionsManager) serviceManager.lookup( "SessionsManager" );
-        m_router = (IMRouter) serviceManager.lookup( "IMRouter" );
-        IMConnectionHandler connectionHandler = (IMConnectionHandler) serviceManager.lookup( "IMConnectionHandler" );
-    }
+    /** @plexus.requirement */
+    private IMRouter m_router;
 
     public void route( final String from,
                        final String to,
@@ -59,7 +38,7 @@ public class SimpleMessageRouterImpl
                        final String subject,
                        final String body,
                        final String threadId )
-        throws java.io.IOException
+        throws IOException
     {
 
         MessagePacket message = new MessagePacket();

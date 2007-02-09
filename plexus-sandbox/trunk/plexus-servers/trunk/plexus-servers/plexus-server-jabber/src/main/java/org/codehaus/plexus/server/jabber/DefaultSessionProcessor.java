@@ -14,32 +14,25 @@ package org.codehaus.plexus.server.jabber;
 import java.util.Properties;
 import java.io.StringWriter;
 
-
-import org.apache.avalon.framework.logger.AbstractLogEnabled;
-import org.apache.avalon.framework.service.Serviceable;
-import org.apache.avalon.framework.service.ServiceManager;
-import org.apache.avalon.framework.configuration.Configurable;
-import org.apache.avalon.framework.configuration.Configuration;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 
 import org.codehaus.plexus.server.jabber.session.IMSession;
 import org.codehaus.plexus.server.jabber.jabber.Streams;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 /**
  * @author AlAg
  * @author PV
+ * @plexus.component
  */
 public class DefaultSessionProcessor
     extends AbstractLogEnabled
-    implements SessionProcessor, Serviceable, Configurable
+    implements SessionProcessor
 {
-
-
     protected Properties m_XmlEventRole;
-    protected ServiceManager m_serviceManager;
+
     protected StringWriter m_notProcessedData = null;
 
     //-------------------------------------------------------------------------
@@ -52,13 +45,6 @@ public class DefaultSessionProcessor
         {
             m_XmlEventRole.setProperty( children[i].getAttribute( "name" ), children[i].getAttribute( "key" ) );
         }
-    }
-
-    //-------------------------------------------------------------------------
-    public void service( ServiceManager serviceManager )
-        throws org.apache.avalon.framework.service.ServiceException
-    {
-        m_serviceManager = serviceManager;
     }
 
     //-------------------------------------------------------------------------
