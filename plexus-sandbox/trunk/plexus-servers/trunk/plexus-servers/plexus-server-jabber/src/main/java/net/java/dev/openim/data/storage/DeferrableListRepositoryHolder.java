@@ -14,18 +14,17 @@ package net.java.dev.openim.data.storage;
 import java.util.List;
 
 
-
-
 /*
- * @version 1.0
- *
- * @author AlAg
- */
-public interface DeferrableListRepositoryHolder 
+* @version 1.0
+*
+* @author AlAg
+*/
+public interface DeferrableListRepositoryHolder
 {
-    public List getDeferrableList( String username );    
-    
-    public void setDeferrableList(String username, List rosterList );
+    public List getDeferrableList( String username );
+
+    public void setDeferrableList( String username,
+                                   List rosterList );
 }
 
 

@@ -16,18 +16,22 @@ import net.java.dev.openim.data.jabber.IMPresence;
 
 
 /**
- * @version 1.0
  * @author AlAg
  * @author PV
+ * @version 1.0
  */
-public interface IMClientSession extends IMSession
+public interface IMClientSession
+    extends IMSession
 {
     // C2S session  (will split)
     public User getUser();
+
     public void setUser( User user );
+
     public int getPriority();
 
     public IMPresence getPresence();
+
     public void setPresence( IMPresence presence );
 }
 

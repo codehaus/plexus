@@ -11,23 +11,26 @@
 package net.java.dev.openim.jabber.server;
 
 
-
-
 import net.java.dev.openim.DefaultSessionProcessor;
 import net.java.dev.openim.data.jabber.IMPresence;
 import net.java.dev.openim.session.IMSession;
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="server.Show" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.server.Show"
- *
- * @version 1.0
- * @author AlAg
  */
-public class ShowImpl extends DefaultSessionProcessor implements Show {
+public class ShowImpl
+    extends DefaultSessionProcessor
+    implements Show
+{
 
-    public void processText( final IMSession session, final Object context ) throws Exception {
-        ((IMPresence)context).setShow( session.getXmlPullParser().getText().trim() );
+    public void processText( final IMSession session,
+                             final Object context )
+        throws Exception
+    {
+        ( (IMPresence) context ).setShow( session.getXmlPullParser().getText().trim() );
     }
 
 }

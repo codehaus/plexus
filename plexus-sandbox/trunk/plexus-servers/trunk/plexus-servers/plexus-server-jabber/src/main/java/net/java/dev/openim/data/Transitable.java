@@ -11,27 +11,30 @@
 package net.java.dev.openim.data;
 
 
-
 /**
  * @author AlAg
  * @author PV
  */
-public interface Transitable 
+public interface Transitable
 {
     public static final String TYPE_ERROR = "error";
 
     public void setTo( String to );
+
     public String getTo();
-    
+
     public void setFrom( String from );
+
     public String getFrom();
 
     public void setType( String type );
+
     public String getType();
-    
+
     public void setError( String errormsg );
+
     public void setErrorCode( int errorCode );
-    
-    public String toString(String encoding);
+
+    public String toString( String encoding );
 }
 

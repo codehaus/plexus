@@ -16,18 +16,22 @@ import net.java.dev.openim.data.jabber.IMPresence;
 
 
 /**
- * @version 1.0
  * @author AlAg
  * @author PV
+ * @version 1.0
  */
-public interface IMPresenceHolder 
+public interface IMPresenceHolder
 {
-    public void setPresence( String jidAndRessource, IMPresence presence );
+    public void setPresence( String jidAndRessource,
+                             IMPresence presence );
+
     public Collection getPresence( String jid );
+
     public IMPresence removePresence( String jidAndRessource );
 
-    public void registerListener(IMPresenceListener listener);
-    public void unregisterListener(IMPresenceListener listener);
+    public void registerListener( IMPresenceListener listener );
+
+    public void unregisterListener( IMPresenceListener listener );
 }
 
 

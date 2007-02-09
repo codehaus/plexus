@@ -12,13 +12,19 @@ package net.java.dev.openim;
 
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface SimpleMessageRouter 
+public interface SimpleMessageRouter
 {
-  
-    public void route( String from, String to, String type, String subject, String body, String threadId ) throws java.io.IOException;
-    
+
+    public void route( String from,
+                       String to,
+                       String type,
+                       String subject,
+                       String body,
+                       String threadId )
+        throws java.io.IOException;
+
 
 }

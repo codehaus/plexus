@@ -16,35 +16,52 @@ import ctu.jabber.data.Packet;
 import org.xmlpull.v1.XmlPullParser;
 
 
-/**
- * @author PV
- */
-public class MessagePacket extends Packet implements Transitable, Deferrable {
+/** @author PV */
+public class MessagePacket
+    extends Packet
+    implements Transitable, Deferrable
+{
     public static final String TYPE_CHAT = "chat";
 
     // Constructors
-    public MessagePacket() { super("message"); }
-    public MessagePacket(XmlPullParser xpp) { super(xpp); }
-
-    public final void setSubject(String subject) {
-        this.setChildText("subject", subject);
-    }
-    public final String getSubject() {
-        return this.getChildText("subject");
+    public MessagePacket()
+    {
+        super( "message" );
     }
 
-    public final void setBody(String body) {
-        this.setChildText("body", body);
-    }
-    public final String getBody() {
-        return this.getChildText("body");
+    public MessagePacket( XmlPullParser xpp )
+    {
+        super( xpp );
     }
 
-    public final void setThread(String thread) {
-        this.setChildText("thread", thread);
+    public final void setSubject( String subject )
+    {
+        this.setChildText( "subject", subject );
     }
-    public final String getThread() {
-        return this.getChildText("thread");
+
+    public final String getSubject()
+    {
+        return this.getChildText( "subject" );
+    }
+
+    public final void setBody( String body )
+    {
+        this.setChildText( "body", body );
+    }
+
+    public final String getBody()
+    {
+        return this.getChildText( "body" );
+    }
+
+    public final void setThread( String thread )
+    {
+        this.setChildText( "thread", thread );
+    }
+
+    public final String getThread()
+    {
+        return this.getChildText( "thread" );
     }
 
 }

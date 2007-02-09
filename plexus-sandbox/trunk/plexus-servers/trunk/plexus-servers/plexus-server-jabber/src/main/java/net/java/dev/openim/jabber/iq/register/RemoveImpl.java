@@ -17,19 +17,24 @@ import net.java.dev.openim.session.IMSession;
 
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="iq.register.Remove" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.iq.register.Remove"
- *
- * @version 1.0
- * @author AlAg
  */
-public class RemoveImpl extends DefaultSessionProcessor implements Remove {
+public class RemoveImpl
+    extends DefaultSessionProcessor
+    implements Remove
+{
 
     //-------------------------------------------------------------------------
-    public void process( final IMSession session, final Object context ) throws Exception{
-        ((Map)context).put( Query.CTX_SHOULD_REMOVE, Boolean.FALSE );
+    public void process( final IMSession session,
+                         final Object context )
+        throws Exception
+    {
+        ( (Map) context ).put( Query.CTX_SHOULD_REMOVE, Boolean.FALSE );
     }
-    
+
 }
 
 

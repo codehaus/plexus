@@ -23,29 +23,34 @@ import net.java.dev.openim.data.Transitable;
 
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="MessageLogger" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.log.MessageLogger"
- *
- * @version 1.0
- * @author AlAg
  */
 
 public class MessageLoggerImpl
-extends AbstractLogEnabled implements MessageLogger, Configurable {
+    extends AbstractLogEnabled
+    implements MessageLogger, Configurable
+{
 
-    
+
     //-------------------------------------------------------------------------
-    public void configure(Configuration configuration) 
-    throws org.apache.avalon.framework.configuration.ConfigurationException {
-        
+    public void configure( Configuration configuration )
+        throws org.apache.avalon.framework.configuration.ConfigurationException
+    {
+
     }
-    
+
     //-------------------------------------------------------------------------
-    public void log( Transitable message ){
-        if( getLogger().isInfoEnabled() ){
-            if( message instanceof MessagePacket ){
-                MessagePacket m = (MessagePacket)message;
-                getLogger().info( new Date() + " "+m.getFrom() + " " + m.getTo() + " " + m.toString().length() );
+    public void log( Transitable message )
+    {
+        if ( getLogger().isInfoEnabled() )
+        {
+            if ( message instanceof MessagePacket )
+            {
+                MessagePacket m = (MessagePacket) message;
+                getLogger().info( new Date() + " " + m.getFrom() + " " + m.getTo() + " " + m.toString().length() );
             }
         }
     }

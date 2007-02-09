@@ -21,65 +21,78 @@ import net.java.dev.openim.session.IMSession;
 import net.java.dev.openim.session.SessionsManager;
 
 
-
-
-
-
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="server.dialback.Result" lifestyle="transient"
  * @avalon.service type="net.java.dev.openim.jabber.server.dialback.Result"
- *
- * @version 1.0
- * @author AlAg
  */
-public class ResultImpl extends DefaultSessionProcessor implements Result {
-    
+public class ResultImpl
+    extends DefaultSessionProcessor
+    implements Result
+{
+
     private String m_dialbackValue;
     private SessionsManager m_sessionsManager;
-    /**
-     * @avalon.dependency type="net.java.dev.openim.session.SessionsManager:1.0"  key="SessionsManager"
-     */
-    public void service( ServiceManager serviceManager) throws org.apache.avalon.framework.service.ServiceException {
-        m_sessionsManager = (SessionsManager)serviceManager.lookup( "SessionsManager" );
+
+    /** @avalon.dependency type="net.java.dev.openim.session.SessionsManager:1.0"  key="SessionsManager" */
+    public void service( ServiceManager serviceManager )
+        throws org.apache.avalon.framework.service.ServiceException
+    {
+        m_sessionsManager = (SessionsManager) serviceManager.lookup( "SessionsManager" );
         super.service( serviceManager );
     }
-    //-------------------------------------------------------------------------
-    public void process( final IMSession session, final Object context ) throws Exception {
 
-        IMServerSession serverSession = (IMServerSession)session;
-        
+    //-------------------------------------------------------------------------
+    public void process( final IMSession session,
+                         final Object context )
+        throws Exception
+    {
+
+        IMServerSession serverSession = (IMServerSession) session;
+
         XmlPullParser xpp = session.getXmlPullParser();
         //String to = xpp.getAttributeValue( "", "to" );
         String from = xpp.getAttributeValue( "", "from" );
         String type = xpp.getAttributeValue( "", "type" );
-        
-        if( from != null && from.length() > 0 ){
+
+        if ( from != null && from.length() > 0 )
+        {
             serverSession.setRemoteHostname( from );
         }
-        
+
         super.process( session, context );
-        
+
         //String id = xpp.getAttributeValue( "", "id" );
 
-        if( "valid".equals( type ) ){
-            getLogger().debug( "Result valid from " + from  );
+        if ( "valid".equals( type ) )
+        {
+            getLogger().debug( "Result valid from " + from );
             serverSession.setDialbackValid( true );
-            synchronized( session ){
+            synchronized ( session )
+            {
                 session.notifyAll();
             }
         }
-        else if( m_dialbackValue != null ){
-            getLogger().debug( "Verify " + from + " dialback " +  m_dialbackValue );
-            if( serverSession.getTwinSession() == null ){
-                session.getRouter().getS2SConnectorManager().verifyRemoteHost( from, m_dialbackValue, Long.toString( session.getId() ), serverSession );
+        else if ( m_dialbackValue != null )
+        {
+            getLogger().debug( "Verify " + from + " dialback " + m_dialbackValue );
+            if ( serverSession.getTwinSession() == null )
+            {
+                session.getRouter().getS2SConnectorManager().verifyRemoteHost( from, m_dialbackValue,
+                                                                               Long.toString( session.getId() ),
+                                                                               serverSession );
             }
         }
-        
+
     }
-    
-    
+
+
     //-------------------------------------------------------------------------
-    public void processText( final IMSession session, final Object context ) throws Exception {
+    public void processText( final IMSession session,
+                             final Object context )
+        throws Exception
+    {
         m_dialbackValue = session.getXmlPullParser().getText().trim();
     }
 

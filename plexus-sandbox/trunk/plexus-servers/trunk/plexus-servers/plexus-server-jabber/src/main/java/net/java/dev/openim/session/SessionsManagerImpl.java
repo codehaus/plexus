@@ -21,80 +21,104 @@ import org.apache.avalon.framework.logger.AbstractLogEnabled;
 
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="SessionsManager" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.session.SessionsManager"
- *
- * @version 1.0
- * @author AlAg
  */
-public class SessionsManagerImpl extends AbstractLogEnabled implements SessionsManager, Serviceable, Initializable {
-    
-    
+public class SessionsManagerImpl
+    extends AbstractLogEnabled
+    implements SessionsManager, Serviceable, Initializable
+{
+
+
     private Map m_sessionSetByHostName;
 
-    private ServiceManager  m_serviceManager;
+    private ServiceManager m_serviceManager;
 
     // We really need this to be able to also shutdown non registered sessions
     private HashMap m_activeSessions;
+
     /**
      * @avalon.dependency type="net.java.dev.openim.session.IMClientSession:1.0" key="IMClientSession"
      * @avalon.dependency type="net.java.dev.openim.session.IMServerSession:1.0" key="IMServerSession"
      */
-    public void service( ServiceManager serviceManager ) throws org.apache.avalon.framework.service.ServiceException {
+    public void service( ServiceManager serviceManager )
+        throws org.apache.avalon.framework.service.ServiceException
+    {
         m_serviceManager = serviceManager;
     }
 
-   public void initialize() throws java.lang.Exception {
-      m_activeSessions = new HashMap();
-   }
-    
-    //-------------------------------------------------------------------------
-    public IMServerSession getNewServerSession() throws Exception {
-		IMServerSession session = (IMServerSession)m_serviceManager.lookup( "IMServerSession" );
-                // Are server session even unregistered?
-         return session;
+    public void initialize()
+        throws java.lang.Exception
+    {
+        m_activeSessions = new HashMap();
     }
-	//-------------------------------------------------------------------------
-	public IMClientSession getNewClientSession() throws Exception {
-		IMClientSession session = (IMClientSession)m_serviceManager.lookup( "IMClientSession" );
-                synchronized(m_activeSessions) {
-                   m_activeSessions.put(new Long(session.getId()), session); 
-                }
-		 return session;
-	}
+
     //-------------------------------------------------------------------------
-    public void release( IMSession session ){
-        if( session != null ){
-            try{
-                if( !session.isClosed() ){
+    public IMServerSession getNewServerSession()
+        throws Exception
+    {
+        IMServerSession session = (IMServerSession) m_serviceManager.lookup( "IMServerSession" );
+        // Are server session even unregistered?
+        return session;
+    }
+
+    //-------------------------------------------------------------------------
+    public IMClientSession getNewClientSession()
+        throws Exception
+    {
+        IMClientSession session = (IMClientSession) m_serviceManager.lookup( "IMClientSession" );
+        synchronized ( m_activeSessions )
+        {
+            m_activeSessions.put( new Long( session.getId() ), session );
+        }
+        return session;
+    }
+
+    //-------------------------------------------------------------------------
+    public void release( IMSession session )
+    {
+        if ( session != null )
+        {
+            try
+            {
+                if ( !session.isClosed() )
+                {
                     session.close();
                 }
-                else{
-                    getLogger().warn( "Session "+ session.getId() +" already diposed" );
+                else
+                {
+                    getLogger().warn( "Session " + session.getId() + " already diposed" );
                 }
-            } catch( Exception e ){
-                getLogger().warn( "Session "+ session.getId() +" release failure " + e.getMessage(), e );
-            } 
+            }
+            catch ( Exception e )
+            {
+                getLogger().warn( "Session " + session.getId() + " release failure " + e.getMessage(), e );
+            }
             // Remove from sessionsMap
-            synchronized(m_activeSessions) {
-               m_activeSessions.remove( new Long( session.getId()) );
+            synchronized ( m_activeSessions )
+            {
+                m_activeSessions.remove( new Long( session.getId() ) );
             }
         } // if
     }
 
-    
+
     //-------------------------------------------------------------------------
-    public void  releaseSessions() {
-       getLogger().debug( "Releasing sessions " );
-       // Avoid concurrent mod
-       Map clonedSessions = (Map)m_activeSessions.clone();
-       Iterator it = clonedSessions.values().iterator();
-       while ( it.hasNext()) {
-          IMSession sess = (IMSession)it.next();
-          release( sess );
-       } // end of while ()
+    public void releaseSessions()
+    {
+        getLogger().debug( "Releasing sessions " );
+        // Avoid concurrent mod
+        Map clonedSessions = (Map) m_activeSessions.clone();
+        Iterator it = clonedSessions.values().iterator();
+        while ( it.hasNext() )
+        {
+            IMSession sess = (IMSession) it.next();
+            release( sess );
+        } // end of while ()
     }
-    
+
 }
 
 

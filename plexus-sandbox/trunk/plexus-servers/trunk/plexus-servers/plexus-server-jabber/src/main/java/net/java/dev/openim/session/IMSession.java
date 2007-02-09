@@ -26,39 +26,51 @@ import org.xmlpull.v1.XmlPullParserException;
 
 
 /**
- * @version 1.0
  * @author AlAg
  * @author PV
+ * @version 1.0
  */
-public interface IMSession 
+public interface IMSession
 {
-    public static final int    UNKNOWN_CONNECTION = 0; 
-    public static final int    C2S_CONNECTION = 1; 
-    public static final int    S2S_L2R_CONNECTION = 2;
-    public static final int    S2S_R2L_CONNECTION = 3;   
+    public static final int UNKNOWN_CONNECTION = 0;
+    public static final int C2S_CONNECTION = 1;
+    public static final int S2S_L2R_CONNECTION = 2;
+    public static final int S2S_R2L_CONNECTION = 3;
 
-    public void setup( Socket socket ) throws Exception;
-	public boolean isClosed();
+    public void setup( Socket socket )
+        throws Exception;
+
+    public boolean isClosed();
+
     public void close();
 
-    
+
     public long getId();
 
     public XmlPullParser getXmlPullParser();
+
     public XmlPullParserFactory getXMLParserFactory();
 
     public int getConnectionType();
 
-    public void writeOutputStream( String s ) throws IOException;
-    public void writeOutputStream( Transitable s ) throws IOException;
+    public void writeOutputStream( String s )
+        throws IOException;
+
+    public void writeOutputStream( Transitable s )
+        throws IOException;
+
     public String getEncoding();
-    
+
     public void setRouter( IMRouter router );
+
     public IMRouter getRouter();
-    public void setStreams(Streams streams);
+
+    public void setStreams( Streams streams );
+
     public Streams getStreams();
 
-    public void roundTripNode(Writer out) throws XmlPullParserException, java.io.IOException;
+    public void roundTripNode( Writer out )
+        throws XmlPullParserException, java.io.IOException;
 }
 
 

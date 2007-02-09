@@ -14,11 +14,12 @@ package net.java.dev.openim.data;
 import net.java.dev.openim.data.jabber.User;
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface UsersManager 
+public interface UsersManager
 {
-    public User getNewUser() throws Exception;
+    public User getNewUser()
+        throws Exception;
 }
 

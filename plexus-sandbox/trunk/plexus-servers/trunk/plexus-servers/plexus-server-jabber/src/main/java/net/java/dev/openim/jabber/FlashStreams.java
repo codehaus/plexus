@@ -11,11 +11,11 @@
 package net.java.dev.openim.jabber;
 
 
-
 /**
- * @version 1.0
  * @author Pra
+ * @version 1.0
  */
-public interface FlashStreams extends Streams
+public interface FlashStreams
+    extends Streams
 {
 }

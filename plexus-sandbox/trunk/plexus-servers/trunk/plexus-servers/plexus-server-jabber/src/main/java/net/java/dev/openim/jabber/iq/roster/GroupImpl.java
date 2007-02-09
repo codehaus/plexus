@@ -11,26 +11,29 @@
 package net.java.dev.openim.jabber.iq.roster;
 
 
-
-
 import net.java.dev.openim.DefaultSessionProcessor;
 import net.java.dev.openim.data.jabber.IMRosterItem;
 import net.java.dev.openim.session.IMSession;
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="iq.roster.Group" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.iq.roster.Group"
- *
- * @version 1.0
- * @author AlAg
  */
-public class GroupImpl extends DefaultSessionProcessor implements Group {
+public class GroupImpl
+    extends DefaultSessionProcessor
+    implements Group
+{
 
-    public void processText( final IMSession session, final Object context ) throws Exception {
-        ((IMRosterItem)context).setGroup( session.getXmlPullParser().getText().trim() );
+    public void processText( final IMSession session,
+                             final Object context )
+        throws Exception
+    {
+        ( (IMRosterItem) context ).setGroup( session.getXmlPullParser().getText().trim() );
     }
 
-    
+
 }
 
 

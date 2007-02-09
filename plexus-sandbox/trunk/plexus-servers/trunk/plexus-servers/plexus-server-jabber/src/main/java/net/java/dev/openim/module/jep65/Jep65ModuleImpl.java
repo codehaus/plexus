@@ -27,39 +27,47 @@ import org.apache.avalon.framework.configuration.ConfigurationException;
 import java.util.List;
 
 
-
 /**
  * @author AlAg
  * @author PV
  */
-public class Jep65ModuleImpl extends AbstractLogEnabled 
-implements ServerModule, Serviceable, Configurable {
-    
-    
-    
+public class Jep65ModuleImpl
+    extends AbstractLogEnabled
+    implements ServerModule, Serviceable, Configurable
+{
+
+
     //-------------------------------------------------------------------------
-    public void configure(Configuration configuration) throws ConfigurationException {
+    public void configure( Configuration configuration )
+        throws ConfigurationException
+    {
     }
-    
+
     //-------------------------------------------------------------------------
-    public void service( ServiceManager serviceManager) throws ServiceException {
+    public void service( ServiceManager serviceManager )
+        throws ServiceException
+    {
     }
-     
+
     //-------------------------------------------------------------------------
-    public ServerModuleIdentity getId() {
+    public ServerModuleIdentity getId()
+    {
         return null;
     }
 
-    public ServerModuleFeatures getFeatures() {
+    public ServerModuleFeatures getFeatures()
+    {
         return null;
     }
 
-    public List getHostNameList() {
+    public List getHostNameList()
+    {
         return null;
     }
 
-    public SessionProcessor getProcessor(String eventName) {
-        return null; 
+    public SessionProcessor getProcessor( String eventName )
+    {
+        return null;
     }
 
 

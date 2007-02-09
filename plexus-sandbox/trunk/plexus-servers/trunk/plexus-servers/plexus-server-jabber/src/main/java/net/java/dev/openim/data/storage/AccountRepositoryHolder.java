@@ -11,23 +11,24 @@
 package net.java.dev.openim.data.storage;
 
 
-
 import java.util.List;
 
 import net.java.dev.openim.data.Account;
 
 
-
 /*
- * @version 1.0
- *
- * @author AlAg
- */
-public interface AccountRepositoryHolder 
+* @version 1.0
+*
+* @author AlAg
+*/
+public interface AccountRepositoryHolder
 {
     public void setAccount( Account account );
+
     public Account getAccount( String username );
+
     public List getAccountList( String searchPattern );
+
     public Account removeAccount( String username );
 }
 

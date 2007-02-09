@@ -15,10 +15,14 @@ package net.java.dev.openim.data.storage;
  *
  * @author AlAg
  */
-public interface PrivateRepositoryHolder 
+public interface PrivateRepositoryHolder
 {
-    public void setData( String username, String key, String data );
-    public String getData( String username, String key );
+    public void setData( String username,
+                         String key,
+                         String data );
+
+    public String getData( String username,
+                           String key );
 }
 
 

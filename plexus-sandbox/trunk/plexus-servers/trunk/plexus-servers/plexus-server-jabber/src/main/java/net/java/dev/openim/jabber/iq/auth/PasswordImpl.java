@@ -17,19 +17,24 @@ import net.java.dev.openim.session.IMSession;
 
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="iq.auth.Password" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.iq.auth.Password"
- *
- * @version 1.0
- * @author AlAg
  */
-public class PasswordImpl extends DefaultSessionProcessor implements Password {
-    
-    public void processText( final IMSession session, final Object context ) throws Exception {
-        ((IMClientSession)session).getUser().setPassword( session.getXmlPullParser().getText().trim() );
+public class PasswordImpl
+    extends DefaultSessionProcessor
+    implements Password
+{
+
+    public void processText( final IMSession session,
+                             final Object context )
+        throws Exception
+    {
+        ( (IMClientSession) session ).getUser().setPassword( session.getXmlPullParser().getText().trim() );
     }
 
-    
+
 }
 
 

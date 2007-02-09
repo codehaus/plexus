@@ -13,15 +13,24 @@ package net.java.dev.openim;
 import net.java.dev.openim.session.IMServerSession;
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface S2SConnectorManager {
-    
+public interface S2SConnectorManager
+{
+
     public void setConnectionHandler( IMConnectionHandler connectionHandler );
-    
-    public IMServerSession getCurrentRemoteSession( String hostname ) throws Exception;
-    public IMServerSession getRemoteSessionWaitForValidation( String hostname, long timeout ) throws Exception;
-    
-    public void verifyRemoteHost( String hostname, String dialbackValue, String id, IMServerSession session ) throws Exception;
+
+    public IMServerSession getCurrentRemoteSession( String hostname )
+        throws Exception;
+
+    public IMServerSession getRemoteSessionWaitForValidation( String hostname,
+                                                              long timeout )
+        throws Exception;
+
+    public void verifyRemoteHost( String hostname,
+                                  String dialbackValue,
+                                  String id,
+                                  IMServerSession session )
+        throws Exception;
 } // class

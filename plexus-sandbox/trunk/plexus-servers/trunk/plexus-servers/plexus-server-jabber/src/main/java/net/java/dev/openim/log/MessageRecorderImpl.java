@@ -21,26 +21,31 @@ import net.java.dev.openim.data.jabber.MessagePacket;
 import net.java.dev.openim.data.Transitable;
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="MessageRecorder" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.log.MessageRecorder"
- *
- * @version 1.0
- * @author AlAg
  */
 public class MessageRecorderImpl
-extends AbstractLogEnabled implements MessageRecorder, Configurable {
+    extends AbstractLogEnabled
+    implements MessageRecorder, Configurable
+{
 
     //-------------------------------------------------------------------------
-    public void configure(Configuration configuration) 
-    throws org.apache.avalon.framework.configuration.ConfigurationException {
-        
+    public void configure( Configuration configuration )
+        throws org.apache.avalon.framework.configuration.ConfigurationException
+    {
+
     }
- 
-    
+
+
     //-------------------------------------------------------------------------
-    public void record( Transitable message ){
-        if( getLogger().isInfoEnabled() ){
-            if( message instanceof MessagePacket ){
+    public void record( Transitable message )
+    {
+        if ( getLogger().isInfoEnabled() )
+        {
+            if ( message instanceof MessagePacket )
+            {
                 getLogger().info( new Date() + " " + message.toString() );
             }
         }

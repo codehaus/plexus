@@ -19,33 +19,35 @@ import org.apache.avalon.framework.logger.AbstractLogEnabled;
 import net.java.dev.openim.data.jabber.User;
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="UsersManager" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.data.UsersManager"
- *
- * @version 1.0
- * @author AlAg
  */
-public class UsersManagerImpl extends AbstractLogEnabled
-implements UsersManager, Serviceable {
-    
-    
+public class UsersManagerImpl
+    extends AbstractLogEnabled
+    implements UsersManager, Serviceable
+{
 
-    private ServiceManager  m_serviceManager;
-    /**
-     * @avalon.dependency type="net.java.dev.openim.data.jabber.User:1.0" key="User"
-     */
-    public void service( ServiceManager serviceManager ) throws org.apache.avalon.framework.service.ServiceException {
+
+    private ServiceManager m_serviceManager;
+
+    /** @avalon.dependency type="net.java.dev.openim.data.jabber.User:1.0" key="User" */
+    public void service( ServiceManager serviceManager )
+        throws org.apache.avalon.framework.service.ServiceException
+    {
         m_serviceManager = serviceManager;
     }
 
- 
-    
+
     //-------------------------------------------------------------------------
-    public User getNewUser() throws Exception {
-        return (User)m_serviceManager.lookup( "User" );
+    public User getNewUser()
+        throws Exception
+    {
+        return (User) m_serviceManager.lookup( "User" );
     }
- 
-    
+
+
 }
 
 

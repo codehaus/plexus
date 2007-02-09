@@ -13,15 +13,15 @@ package net.java.dev.openim;
 import net.java.dev.openim.session.IMSession;
 
 
-
-
-/**
- * @author AlAg
- */
-public interface SessionProcessor 
+/** @author AlAg */
+public interface SessionProcessor
 {
-    public void process( IMSession session ) throws Exception;
-    public void process( IMSession session, Object context ) throws Exception;
+    public void process( IMSession session )
+        throws Exception;
+
+    public void process( IMSession session,
+                         Object context )
+        throws Exception;
 }
 
 

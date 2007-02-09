@@ -11,19 +11,17 @@
 package net.java.dev.openim.jabber;
 
 
-
 import net.java.dev.openim.SessionProcessor;
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface Streams extends SessionProcessor
+public interface Streams
+    extends SessionProcessor
 {
-   /**
-    * Get the namespace of the stream.
-    */
-   public String getNamespace();
+    /** Get the namespace of the stream. */
+    public String getNamespace();
 }
 
 

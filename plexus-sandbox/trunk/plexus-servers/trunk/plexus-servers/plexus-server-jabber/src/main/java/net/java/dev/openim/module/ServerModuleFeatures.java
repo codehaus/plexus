@@ -11,28 +11,38 @@ import java.io.StringWriter;
  * @author PV
  * @version 1.0
  */
-public class ServerModuleFeatures {
+public class ServerModuleFeatures
+{
     private Set m_features = new HashSet();
 
-    public Set getFeatures() { return m_features; }
+    public Set getFeatures()
+    {
+        return m_features;
+    }
 
-    public String toString(String encoding) {
+    public String toString( String encoding )
+    {
         StringWriter sw = new StringWriter();
         Iterator i = getFeatures().iterator();
-        while (i.hasNext()) {
+        while ( i.hasNext() )
+        {
             String feature = (String) i.next();
-            Element e = new Element("feature");
-            e.setAttribute("var", feature);
-            try {
-                e.writeXML(sw, "", encoding);
-            } catch(Exception ex) {
-                ex.printStackTrace(System.err);
+            Element e = new Element( "feature" );
+            e.setAttribute( "var", feature );
+            try
+            {
+                e.writeXML( sw, "", encoding );
+            }
+            catch ( Exception ex )
+            {
+                ex.printStackTrace( System.err );
             }
         }
         return sw.toString();
     }
 
-    public String toString() {
-        return toString("");
+    public String toString()
+    {
+        return toString( "" );
     }
 }

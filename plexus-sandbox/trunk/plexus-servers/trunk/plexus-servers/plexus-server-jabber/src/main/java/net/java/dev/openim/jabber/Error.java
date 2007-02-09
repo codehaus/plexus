@@ -13,10 +13,11 @@ package net.java.dev.openim.jabber;
 import net.java.dev.openim.SessionProcessor;
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface Error extends SessionProcessor
+public interface Error
+    extends SessionProcessor
 {
 }
 

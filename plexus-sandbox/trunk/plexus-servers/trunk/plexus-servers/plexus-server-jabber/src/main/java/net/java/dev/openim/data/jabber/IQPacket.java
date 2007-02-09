@@ -15,19 +15,26 @@ import net.java.dev.openim.data.Deferrable;
 import ctu.jabber.data.Packet;
 import org.xmlpull.v1.XmlPullParser;
 
-/**
- * @author PV
- */
-public class IQPacket extends Packet implements Transitable, Deferrable
+/** @author PV */
+public class IQPacket
+    extends Packet
+    implements Transitable, Deferrable
 {
-    public static final String TYPE_GET     = "get";
-    public static final String TYPE_SET     = "set";
-    public static final String TYPE_RESULT  = "result";
-    public static final String TYPE_ERROR   = "error";
-    
+    public static final String TYPE_GET = "get";
+    public static final String TYPE_SET = "set";
+    public static final String TYPE_RESULT = "result";
+    public static final String TYPE_ERROR = "error";
+
     // Constructors
-    public IQPacket() { super("iq"); }
-    public IQPacket(XmlPullParser xpp) { super(xpp); }
+    public IQPacket()
+    {
+        super( "iq" );
+    }
+
+    public IQPacket( XmlPullParser xpp )
+    {
+        super( xpp );
+    }
 
 }
 

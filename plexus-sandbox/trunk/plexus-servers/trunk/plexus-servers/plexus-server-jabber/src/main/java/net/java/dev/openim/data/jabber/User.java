@@ -18,32 +18,42 @@ import java.util.List;
  *
  * @author AlAg
  */
-public interface User 
+public interface User
 {
-    
+
     public void setName( String username );
+
     public String getName();
-    
+
     public void setHostname( String hostname );
+
     public String getHostname();
-    
+
     public void setPassword( String password );
+
     public String getPassword();
-    
+
     public void setDigest( String digest );
+
     public String getDigest();
-    
+
     public void setResource( String resource );
+
     public String getResource();
-    
+
     public boolean isAuthenticationTypeSupported( int type );
-    public void authenticate( String sessionId ) throws Exception;
-    
+
+    public void authenticate( String sessionId )
+        throws Exception;
+
     public String getJID();
+
     public String getNameAndRessource();
+
     public String getJIDAndRessource();
 
     public void setRosterItemList( List rosterlist );
+
     public List getRosterItemList();
 
     // should be removed when using another component container 

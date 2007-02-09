@@ -25,67 +25,96 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 
 /**
- * @avalon.component version="1.0" name="ModuleManager" lifestyle="singleton"
- * @avalon.service type="net.java.dev.openim.ModuleManager"
- *
- * @version 1.0
  * @author AlAg
  * @author PV
+ * @version 1.0
+ * @avalon.component version="1.0" name="ModuleManager" lifestyle="singleton"
+ * @avalon.service type="net.java.dev.openim.ModuleManager"
  */
-public class ModuleManagerImpl extends AbstractLogEnabled 
-    implements ModuleManager, Serviceable, Configurable {
+public class ModuleManagerImpl
+    extends AbstractLogEnabled
+    implements ModuleManager, Serviceable, Configurable
+{
 
     private HashSet m_moduleList = new HashSet();
 
     //-------------------------------------------------------------------------
-    public void configure(Configuration configuration) throws ConfigurationException {
+    public void configure( Configuration configuration )
+        throws ConfigurationException
+    {
     }
-    
+
     //-------------------------------------------------------------------------
-    public void service( ServiceManager serviceManager) throws ServiceException {
+    public void service( ServiceManager serviceManager )
+        throws ServiceException
+    {
     }
-     
-    public void registerModule(ServerModule module) {
-        if (module == null) return;
-        synchronized(m_moduleList) {
-            m_moduleList.add(module);
+
+    public void registerModule( ServerModule module )
+    {
+        if ( module == null )
+        {
+            return;
+        }
+        synchronized ( m_moduleList )
+        {
+            m_moduleList.add( module );
         }
     }
 
-    public void unregisterModule(ServerModule module) {
-        if (module == null) return;
-        synchronized(m_moduleList) {
-            m_moduleList.remove(module);
+    public void unregisterModule( ServerModule module )
+    {
+        if ( module == null )
+        {
+            return;
+        }
+        synchronized ( m_moduleList )
+        {
+            m_moduleList.remove( module );
         }
     }
 
-    public ServerModule[] getModules() {
-        synchronized(m_moduleList) {
+    public ServerModule[] getModules()
+    {
+        synchronized ( m_moduleList )
+        {
             return (ServerModule[]) m_moduleList.toArray();
         }
     }
-    
-    public ServerModule getModule(String discoveryName) {
+
+    public ServerModule getModule( String discoveryName )
+    {
         ServerModule result = null;
-        synchronized(m_moduleList) {
+        synchronized ( m_moduleList )
+        {
             Iterator iter = m_moduleList.iterator();
-            while (iter.hasNext()) {
+            while ( iter.hasNext() )
+            {
                 ServerModule next = (ServerModule) iter.next();
-                if (next.getId().getName() == discoveryName) {
-                    result = next; break;
+                if ( next.getId().getName() == discoveryName )
+                {
+                    result = next;
+                    break;
                 }
             }
         }
         return result;
     }
 
-    public ServerModule getModuleByHostname(String hostname) {
-        if (hostname == null) return null;
-        synchronized(m_moduleList) {
+    public ServerModule getModuleByHostname( String hostname )
+    {
+        if ( hostname == null )
+        {
+            return null;
+        }
+        synchronized ( m_moduleList )
+        {
             Iterator iter = m_moduleList.iterator();
-            while (iter.hasNext()) {
+            while ( iter.hasNext() )
+            {
                 ServerModule next = (ServerModule) iter.next();
-                if (next.getHostNameList().contains(hostname)) {
+                if ( next.getHostNameList().contains( hostname ) )
+                {
                     return next;
                 }
             }

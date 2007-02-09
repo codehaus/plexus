@@ -15,10 +15,10 @@ import net.java.dev.openim.data.Transitable;
 
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface MessageLogger 
+public interface MessageLogger
 {
     public void log( Transitable message );
 }

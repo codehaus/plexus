@@ -11,9 +11,6 @@
 package net.java.dev.openim.jabber.iq.oob;
 
 
-
-
-
 import net.java.dev.openim.DefaultSessionProcessor;
 
 import net.java.dev.openim.data.jabber.IQPacket;
@@ -23,32 +20,34 @@ import net.java.dev.openim.session.IMSession;
 import java.io.StringWriter;
 
 
-
-
-
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="iq.oob.Query" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.iq.oob.Query"
- *
- * @version 1.0
- * @author AlAg
  */
-public class QueryImpl extends DefaultSessionProcessor implements Query {
+public class QueryImpl
+    extends DefaultSessionProcessor
+    implements Query
+{
 
-    
+
     //-------------------------------------------------------------------------
-    public void process( final IMSession session, final Object context ) throws Exception{
+    public void process( final IMSession session,
+                         final Object context )
+        throws Exception
+    {
 
         StringWriter sw = new StringWriter();
-        session.roundTripNode(sw);
+        session.roundTripNode( sw );
         String data = sw.toString();
 
-        IQPacket iq = ((IQPacket)context);
-        iq.setFrom( ((IMClientSession)session).getUser().getJIDAndRessource() );
-        iq.addSerializedChild(data);
+        IQPacket iq = ( (IQPacket) context );
+        iq.setFrom( ( (IMClientSession) session ).getUser().getJIDAndRessource() );
+        iq.addSerializedChild( data );
         session.getRouter().route( session, iq );
     }
-    
-    
+
+
 }
 

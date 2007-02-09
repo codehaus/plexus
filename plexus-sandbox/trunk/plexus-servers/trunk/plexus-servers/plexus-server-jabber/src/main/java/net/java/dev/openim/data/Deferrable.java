@@ -11,12 +11,9 @@
 package net.java.dev.openim.data;
 
 
-
-
-/**
- * @author AlAg
- */
-public interface Deferrable extends java.io.Serializable
+/** @author AlAg */
+public interface Deferrable
+    extends java.io.Serializable
 {
 }
 

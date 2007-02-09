@@ -11,26 +11,32 @@
 package net.java.dev.openim.data;
 
 /**
- * @version 1.0
- *
  * @author AlAg
+ * @version 1.0
  */
-public interface Account {
-    
+public interface Account
+{
+
     public static final int AUTH_TYPE_PLAIN = 1;
     public static final int AUTH_TYPE_DIGEST = 2;
-    
+
     public void setName( String name );
+
     public String getName();
 
-    
+
     public void setPassword( String password );
+
     public String getPassword();
-    
+
 
     public boolean isAuthenticationTypeSupported( int type );
-    public void authenticate( int type, String value, String sessionId ) throws Exception;
-        
-    
+
+    public void authenticate( int type,
+                              String value,
+                              String sessionId )
+        throws Exception;
+
+
 }
 

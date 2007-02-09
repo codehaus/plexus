@@ -14,40 +14,40 @@ import net.java.dev.openim.module.ServerModule;
 
 
 /**
- * @version 1.0
  * @author AlAg
  * @author PV
+ * @version 1.0
  */
-public interface ModuleManager 
+public interface ModuleManager
 {
     /**
      * Registers a server module.
+     *
      * @param module The module to be inserted.
      */
     public void registerModule( ServerModule module );
 
     /**
      * Unregisters a server module.
+     *
      * @param module The module to be removed.
      */
     public void unregisterModule( ServerModule module );
 
-    /**
-     * @return An array of server modules.
-     */
+    /** @return An array of server modules. */
     public ServerModule[] getModules();
 
     /**
      * @param discoveryId Id of the searched module.
      * @return A found module or null.
      */
-    public ServerModule getModule(String discoveryId);
+    public ServerModule getModule( String discoveryId );
 
     /**
      * @param hostname
      * @return A server module with the specified hostname or null when not found.
      */
-    public ServerModule getModuleByHostname(String hostname);
+    public ServerModule getModuleByHostname( String hostname );
 }
 
 

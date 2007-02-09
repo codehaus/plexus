@@ -19,83 +19,102 @@ import net.java.dev.openim.data.jabber.IMPresence;
 import net.java.dev.openim.tools.JIDParser;
 
 
-
-
 /**
- *
- * @avalon.component version="1.0" name="IMPresenceHolder" lifestyle="singleton"
- * @avalon.service type="net.java.dev.openim.IMPresenceHolder"
- *
- * @version 1.0
  * @author AlAg
  * @author PV
+ * @version 1.0
+ * @avalon.component version="1.0" name="IMPresenceHolder" lifestyle="singleton"
+ * @avalon.service type="net.java.dev.openim.IMPresenceHolder"
  */
-public class IMPresenceHolderImpl extends AbstractLogEnabled implements IMPresenceHolder {
+public class IMPresenceHolderImpl
+    extends AbstractLogEnabled
+    implements IMPresenceHolder
+{
 
     Map m_presenceMap = new HashMap();
     Set m_presenceListeners = new HashSet();
 
-    public void setPresence( String jid, IMPresence presence ){
-        synchronized( m_presenceMap ){
+    public void setPresence( String jid,
+                             IMPresence presence )
+    {
+        synchronized ( m_presenceMap )
+        {
             String name = JIDParser.getName( jid );
-            Map map = (Map)m_presenceMap.get( name );
-            if( map == null ){
+            Map map = (Map) m_presenceMap.get( name );
+            if ( map == null )
+            {
                 map = new HashMap();
             }
             map.put( jid, presence );
             m_presenceMap.put( name, map );
         }
-        synchronized(m_presenceListeners) {
+        synchronized ( m_presenceListeners )
+        {
             Iterator iListeners = m_presenceListeners.iterator();
-            while (iListeners.hasNext()) {
+            while ( iListeners.hasNext() )
+            {
                 IMPresenceListener listener = (IMPresenceListener) iListeners.next();
-                listener.onSetPresence(jid, presence);
+                listener.onSetPresence( jid, presence );
             }
         }
     }
-    public Collection getPresence( String jid ){
+
+    public Collection getPresence( String jid )
+    {
         Collection col = null;
-        synchronized( m_presenceMap ){
+        synchronized ( m_presenceMap )
+        {
             String name = JIDParser.getName( jid );
-            Map map = (Map)m_presenceMap.get( name );
-            if( map != null ){
+            Map map = (Map) m_presenceMap.get( name );
+            if ( map != null )
+            {
                 col = map.values();
             }
         }
         return col;
     }
-    
-    public IMPresence removePresence( String jid ) {
+
+    public IMPresence removePresence( String jid )
+    {
         IMPresence presence = null;
-        synchronized( m_presenceMap ){
+        synchronized ( m_presenceMap )
+        {
             String name = JIDParser.getName( jid );
-            Map map = (Map)m_presenceMap.get( name );
-            if( map != null ){
-                presence = (IMPresence)map.remove( jid );
-                if( map.isEmpty() ){
+            Map map = (Map) m_presenceMap.get( name );
+            if ( map != null )
+            {
+                presence = (IMPresence) map.remove( jid );
+                if ( map.isEmpty() )
+                {
                     m_presenceMap.remove( map );
                 }
             }
         }
-        synchronized(m_presenceListeners) {
+        synchronized ( m_presenceListeners )
+        {
             Iterator iListeners = m_presenceListeners.iterator();
-            while (iListeners.hasNext()) {
+            while ( iListeners.hasNext() )
+            {
                 IMPresenceListener listener = (IMPresenceListener) iListeners.next();
-                listener.onRemovePresence(jid);
+                listener.onRemovePresence( jid );
             }
         }
         return presence;
     }
 
-    public void registerListener(IMPresenceListener listener) {
-        synchronized (m_presenceListeners) {
-            m_presenceListeners.add(listener);
+    public void registerListener( IMPresenceListener listener )
+    {
+        synchronized ( m_presenceListeners )
+        {
+            m_presenceListeners.add( listener );
         }
     }
 
-    public void unregisterListener(IMPresenceListener listener) {
-        synchronized(m_presenceListeners) {
-            m_presenceListeners.remove(listener);
+    public void unregisterListener( IMPresenceListener listener )
+    {
+        synchronized ( m_presenceListeners )
+        {
+            m_presenceListeners.remove( listener );
         }
     }
 }

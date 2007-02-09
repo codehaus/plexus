@@ -11,7 +11,6 @@
 package net.java.dev.openim.jabber.server;
 
 
-
 import org.xmlpull.v1.XmlPullParser;
 
 import net.java.dev.openim.DefaultSessionProcessor;
@@ -20,31 +19,37 @@ import net.java.dev.openim.session.IMSession;
 
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="server.Iq" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.server.Iq"
- *
- * @version 1.0
- * @author AlAg
  */
-public class IqImpl extends DefaultSessionProcessor implements Iq {
+public class IqImpl
+    extends DefaultSessionProcessor
+    implements Iq
+{
 
-    /**
-     * @avalon.dependency type="net.java.dev.openim.jabber.iq.vcardtemp.VCard:1.0" key="iq.vcardtemp.VCard"
-     */
-    public void service(org.apache.avalon.framework.service.ServiceManager serviceManager) throws org.apache.avalon.framework.service.ServiceException {
+    /** @avalon.dependency type="net.java.dev.openim.jabber.iq.vcardtemp.VCard:1.0" key="iq.vcardtemp.VCard" */
+    public void service( org.apache.avalon.framework.service.ServiceManager serviceManager )
+        throws org.apache.avalon.framework.service.ServiceException
+    {
         super.service( serviceManager );
     }
-    
-    
-    
-    public void process( final IMSession session, final Object context ) throws Exception{
-        
+
+
+    public void process( final IMSession session,
+                         final Object context )
+        throws Exception
+    {
+
         XmlPullParser xpp = session.getXmlPullParser();
 
-        for( int i=0, l=xpp.getAttributeCount(); i<l; i++ ){
-            getLogger().debug( "Attribut ns: "+ xpp.getAttributeNamespace( i ) + " name: " + xpp.getAttributeName( i ) + " value: " + xpp.getAttributeValue( i ) ); 
+        for ( int i = 0, l = xpp.getAttributeCount(); i < l; i++ )
+        {
+            getLogger().debug( "Attribut ns: " + xpp.getAttributeNamespace( i ) + " name: " +
+                xpp.getAttributeName( i ) + " value: " + xpp.getAttributeValue( i ) );
         }
-        
+
         IQPacket iq = new IQPacket();
         iq.setId( xpp.getAttributeValue( "", "id" ) );
         iq.setType( xpp.getAttributeValue( "", "type" ) );
@@ -52,11 +57,10 @@ public class IqImpl extends DefaultSessionProcessor implements Iq {
         iq.setFrom( xpp.getAttributeValue( "", "from" ) );
         getLogger().debug( "Got IQ " + iq );
         super.process( session, iq );
-                
 
 
-     }
-    
+    }
+
 }
 
 

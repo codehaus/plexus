@@ -13,21 +13,24 @@ package net.java.dev.openim;
 import java.util.List;
 
 
-
-
-
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface ServerParameters 
+public interface ServerParameters
 {
     public int getLocalClientPort();
+
     public int getLocalSSLClientPort();
+
     public int getLocalServerPort();
+
     public int getLocalSSLServerPort();
+
     public List getHostNameList();
+
     public String getHostName();
+
     public int getRemoteServerPort();
 }
 
