@@ -58,9 +58,9 @@
 
 package org.codehaus.plexus.dns;
 
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.server.DefaultServer;
 import org.xbill.DNS.Cache;
 import org.xbill.DNS.Credibility;
 import org.xbill.DNS.DClass;
@@ -92,7 +92,7 @@ import java.util.List;
  * inside James
  */
 public class DNSServer
-    extends DefaultServer
+    extends AbstractLogEnabled
     implements Initializable
 {
     /**
@@ -111,22 +111,24 @@ public class DNSServer
     private byte dnsCredibility;
 
     /** The DNS servers to be used by this service */
-    private List dnsServers = new ArrayList();
+    private List dnsServers;
 
     /** The MX Comparator used in the MX sort. */
     private Comparator mxComparator = new MXRecordComparator();
 
-    /** @see org.apache.avalon.framework.configuration.Configurable#configure(Configuration) */
-    public void configure( final Configuration configuration )
-        throws ConfigurationException
+    private boolean autodiscover;
+
+    private boolean authoritative;
+    
+    public void initialize()
+        throws InitializationException
     {
-
-        final boolean autodiscover = configuration.getChild( "autodiscover" ).getValueAsBoolean( true );
-
         if ( autodiscover )
         {
             getLogger().info( "Autodiscovery is enabled - trying to discover your system's DNS Servers" );
+
             String[] serversArray = FindServer.servers();
+
             if ( serversArray != null )
             {
                 for ( int i = 0; i < serversArray.length; i++ )
@@ -137,31 +139,16 @@ public class DNSServer
             }
         }
 
-        // Get the DNS servers that this service will use for lookups
-        final Configuration serversConfiguration = configuration.getChild( "servers" );
-        final Configuration[] serverConfigurations = serversConfiguration.getChildren( "server" );
-
-        for ( int i = 0; i < serverConfigurations.length; i++ )
+        if ( dnsServers == null )
         {
-            dnsServers.add( serverConfigurations[i].getValue() );
-        }
-
-        if ( dnsServers.isEmpty() )
-        {
+            dnsServers = new ArrayList();
             getLogger().info( "No DNS servers have been specified or found by autodiscovery - adding 127.0.0.1" );
             dnsServers.add( "127.0.0.1" );
         }
 
-        final boolean authoritative = configuration.getChild( "authoritative" ).getValueAsBoolean( false );
         // TODO: Check to see if the credibility field is being used correctly.  From the
         //       docs I don't think so
         dnsCredibility = authoritative ? Credibility.AUTH_ANSWER : Credibility.NONAUTH_ANSWER;
-    }
-
-    /** @see org.apache.avalon.framework.activity.Initializable#initialize() */
-    public void initialize()
-        throws InitializationException
-    {
 
         getLogger().debug( "DNSServer init..." );
 
