@@ -1,0 +1,5 @@
+<configuration>
+    <map name="jabber:client:subject" key="client.Subject"/>
+    <map name="jabber:client:body" key="client.Body"/>
+    <map name="jabber:client:thread" key="client.Thread"/>
+</configuration>

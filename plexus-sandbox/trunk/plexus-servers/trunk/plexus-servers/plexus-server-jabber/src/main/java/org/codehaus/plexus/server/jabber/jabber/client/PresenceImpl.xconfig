@@ -1,0 +1,5 @@
+<configuration>
+    <map name="jabber:client:show" key="client.Show"/>
+    <map name="jabber:client:priority" key="client.Priority"/>
+    <map name="jabber:client:status" key="client.Status"/>
+</configuration>
