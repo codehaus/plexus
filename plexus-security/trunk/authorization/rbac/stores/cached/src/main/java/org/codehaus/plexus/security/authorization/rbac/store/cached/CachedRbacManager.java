@@ -36,7 +36,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.io.IOException;
 
 /**
  * CachedRbacManager is a wrapped RBACManager with caching.
@@ -96,6 +95,13 @@ public class CachedRbacManager
      * @plexus.requirement role-hint="userPermissions"
      */
     private EhcacheComponent userPermissionsCache;
+
+    /**
+     * cache used for effective role sets
+     *
+     * @plexus.requirement role-hint="effectiveRoleSet"
+     */
+    private EhcacheComponent effectiveRoleSetCache;
 
     public void addChildRole( Role role, Role childRole )
         throws RbacObjectInvalidException, RbacManagerException
@@ -275,8 +281,20 @@ public class CachedRbacManager
     public Set getEffectiveRoles( Role role )
         throws RbacObjectNotFoundException, RbacManagerException
     {
-        getLogger().debug( "NOT CACHED - .getEffectiveRoles(Role)" );
-        return this.rbacImpl.getEffectiveRoles( role );
+        Element el = effectiveRoleSetCache.getElement( role.getName() );
+
+        if ( el != null )
+        {
+            getLogger().debug( "using cached effective role set" );
+            return (Set) el.getObjectValue();
+        }
+        else
+        {
+            getLogger().debug( "building effective role set" );
+            Set effectiveRoleSet = this.rbacImpl.getEffectiveRoles( role );
+            userPermissionsCache.putElement( new Element( role.getName(), effectiveRoleSet ) );
+            return effectiveRoleSet;
+        }
     }
 
     public Resource getGlobalResource()
@@ -725,6 +743,9 @@ public class CachedRbacManager
         if ( role != null )
         {
             rolesCache.invalidateKey( role.getName() );
+            // if a role changes we need to invalidate the entire effective role set cache
+            // since we have no concept of the heirarchy involved in the role sets
+            effectiveRoleSetCache.getCache().removeAll();
         }
 
     }
