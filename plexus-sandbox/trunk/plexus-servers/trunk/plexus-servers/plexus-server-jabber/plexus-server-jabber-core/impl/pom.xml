@@ -135,5 +135,12 @@
       <artifactId>excalibur-thread-impl</artifactId>
       <version>2.0.0</version>
     </dependency>
+
+    <dependency>
+      <groupId>xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>1.0.1</version>
+    </dependency>
+    
   </dependencies>
 </project>
