@@ -187,4 +187,11 @@ public interface Registry
      */
     void save()
         throws RegistryException, UnsupportedOperationException;
+
+    /**
+     * Add a change listener.
+     *
+     * @param listener the listener
+     */
+    void addChangeListener( RegistryListener listener );
 }

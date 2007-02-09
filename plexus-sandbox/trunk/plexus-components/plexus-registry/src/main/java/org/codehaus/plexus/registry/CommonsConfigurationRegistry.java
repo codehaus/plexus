@@ -24,6 +24,8 @@ import org.apache.commons.configuration.FileConfiguration;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
+import org.apache.commons.configuration.AbstractConfiguration;
+import org.apache.commons.configuration.event.EventSource;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -162,6 +164,13 @@ public class CommonsConfigurationRegistry
         {
             throw new UnsupportedOperationException( "Can only save file-based configurations" );
         }
+    }
+
+    public void addChangeListener( RegistryListener listener )
+    {
+        EventSource configuration = (EventSource) this.configuration;
+
+        configuration.addConfigurationListener( new ConfigurationListenerDelegate( listener, this ) );
     }
 
     public String getString( String key )
