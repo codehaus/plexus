@@ -40,14 +40,11 @@
 
 package org.codehaus.plexus.pop3;
 
-import org.codehaus.plexus.smtp.mailbox.Mailbox;
-import org.codehaus.plexus.smtp.mailbox.MailboxManager;
-import org.codehaus.plexus.smtp.server.AbstractServer;
-import org.codehaus.plexus.smtp.server.connection.ConnectionHandler;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.server.DefaultServer;
+import org.codehaus.plexus.smtp.mailbox.Mailbox;
+import org.codehaus.plexus.smtp.mailbox.MailboxManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
