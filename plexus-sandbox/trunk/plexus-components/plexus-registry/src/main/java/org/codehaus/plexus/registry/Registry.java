@@ -123,12 +123,32 @@ public interface Registry
         throws RegistryException;
 
     /**
+     * Load configuration from the given classloader resource.
+     *
+     * @param resource the location to load the configuration from
+     * @param prefix   the location to add the configuration at in the registry
+     * @throws RegistryException if a problem occurred reading the resource to add to the registry
+     */
+    void addConfigurationFromResource( String resource, String prefix )
+        throws RegistryException;
+
+    /**
      * Load configuration from the given file.
      *
      * @param file the location to load the configuration from
      * @throws RegistryException if a problem occurred reading the resource to add to the registry
      */
     void addConfigurationFromFile( File file )
+        throws RegistryException;
+
+    /**
+     * Load configuration from the given file.
+     *
+     * @param file   the location to load the configuration from
+     * @param prefix the location to add the configuration at in the registry
+     * @throws RegistryException if a problem occurred reading the resource to add to the registry
+     */
+    void addConfigurationFromFile( File file, String prefix )
         throws RegistryException;
 
     /**

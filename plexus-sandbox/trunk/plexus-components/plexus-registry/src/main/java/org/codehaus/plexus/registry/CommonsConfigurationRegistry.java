@@ -24,7 +24,6 @@ import org.apache.commons.configuration.FileConfiguration;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
-import org.apache.commons.configuration.AbstractConfiguration;
 import org.apache.commons.configuration.event.EventSource;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
@@ -221,13 +220,19 @@ public class CommonsConfigurationRegistry
     public void addConfigurationFromResource( String resource )
         throws RegistryException
     {
+        addConfigurationFromResource( resource, null );
+    }
+
+    public void addConfigurationFromResource( String resource, String prefix )
+        throws RegistryException
+    {
         CombinedConfiguration configuration = (CombinedConfiguration) this.configuration;
         if ( resource.endsWith( ".properties" ) )
         {
             try
             {
                 getLogger().debug( "Loading properties configuration from classloader resource: " + resource );
-                configuration.addConfiguration( new PropertiesConfiguration( resource ) );
+                configuration.addConfiguration( new PropertiesConfiguration( resource ), null, prefix );
             }
             catch ( ConfigurationException e )
             {
@@ -240,7 +245,7 @@ public class CommonsConfigurationRegistry
             try
             {
                 getLogger().debug( "Loading XML configuration from classloader resource: " + resource );
-                configuration.addConfiguration( new XMLConfiguration( resource ) );
+                configuration.addConfiguration( new XMLConfiguration( resource ), null, prefix );
             }
             catch ( ConfigurationException e )
             {
@@ -258,13 +263,19 @@ public class CommonsConfigurationRegistry
     public void addConfigurationFromFile( File file )
         throws RegistryException
     {
+        addConfigurationFromFile( file, null );
+    }
+
+    public void addConfigurationFromFile( File file, String prefix )
+        throws RegistryException
+    {
         CombinedConfiguration configuration = (CombinedConfiguration) this.configuration;
         if ( file.getName().endsWith( ".properties" ) )
         {
             try
             {
                 getLogger().debug( "Loading properties configuration from file: " + file );
-                configuration.addConfiguration( new PropertiesConfiguration( file ) );
+                configuration.addConfiguration( new PropertiesConfiguration( file ), null, prefix );
             }
             catch ( ConfigurationException e )
             {
@@ -277,7 +288,7 @@ public class CommonsConfigurationRegistry
             try
             {
                 getLogger().debug( "Loading XML configuration from file: " + file );
-                configuration.addConfiguration( new XMLConfiguration( file ) );
+                configuration.addConfiguration( new XMLConfiguration( file ), null, prefix );
             }
             catch ( ConfigurationException e )
             {
