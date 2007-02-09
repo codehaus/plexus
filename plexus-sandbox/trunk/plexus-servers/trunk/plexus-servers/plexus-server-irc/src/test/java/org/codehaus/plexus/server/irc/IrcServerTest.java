@@ -20,10 +20,5 @@ public class IrcServerTest
         Server server = (Server) lookup( IrcServer.ROLE );
 
         assertNotNull( server );
-/*
-        while( true )
-        {
-        }
-*/
     }
 }
