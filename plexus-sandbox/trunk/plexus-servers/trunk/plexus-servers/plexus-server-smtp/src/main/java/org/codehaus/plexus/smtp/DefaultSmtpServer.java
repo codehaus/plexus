@@ -40,16 +40,11 @@
 
 package org.codehaus.plexus.smtp;
 
-import org.apache.avalon.framework.activity.Initializable;
-import org.apache.avalon.framework.service.Serviceable;
-import org.apache.avalon.framework.service.ServiceException;
-import org.apache.avalon.framework.service.ServiceManager;
-import org.codehaus.plexus.synapse.AbstractSynapseServer;
-import org.codehaus.plexus.synapse.handler.ServiceHandler;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
+import org.codehaus.plexus.server.ConnectionHandlingException;
 import org.codehaus.plexus.server.DefaultServer;
-import com.sun.deploy.services.ServiceManager;
+import org.codehaus.plexus.server.ServerConnectionHandler;
+
+import java.net.Socket;
 
 /**
  * Manages the interaction between the server plugins and the
@@ -60,29 +55,14 @@ import com.sun.deploy.services.ServiceManager;
  */
 public class DefaultSmtpServer
     extends DefaultServer
-    implements Serviceable, Initializable, SmtpServer
+    implements SmtpServer
 {
-    private ServiceHandler serviceHandler;
+    /** @plexus.requirement */
+    private ServerConnectionHandler handler;
 
-    /** @see Serviceable#service */
-    public void service( ServiceManager serviceManager )
-        throws ServiceException
+    public void handleConnection( Socket socket )
+        throws ConnectionHandlingException
     {
-        super.service( serviceManager );
-
-        serviceHandler = (ServiceHandler) serviceManager.lookup( ServiceHandler.class.getName() );
-    }
-
-    /** @see Initializable#initialize */
-    public void initialize()
-        throws Exception
-    {
-        super.initialize();
-
-        getReactor().registerServiceHandler( serviceHandler );
-    }
-
-    public void dispose()
-    {
+        handler.handleConnection( socket );
     }
 }

@@ -3,35 +3,18 @@ package org.codehaus.plexus.smtp.delivery;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.smtp.Address;
 import org.codehaus.plexus.smtp.SmtpMessage;
-import org.codehaus.plexus.smtp.mailbox.MailboxManager;
 import org.codehaus.plexus.smtp.mailbox.Mailbox;
-import org.apache.avalon.framework.service.Serviceable;
-import org.apache.avalon.framework.service.ServiceException;
-import org.apache.avalon.framework.service.ServiceManager;
+import org.codehaus.plexus.smtp.mailbox.MailboxManager;
 
 import java.util.Iterator;
 import java.util.List;
 
 public class FileDeliveryProcessor
     extends AbstractLogEnabled
-    implements Serviceable, DeliveryProcessor
+    implements DeliveryProcessor
 {
+    /** @plexus.requirement */
     private MailboxManager mailboxManager;
-
-    public FileDeliveryProcessor()
-    {
-    }
-
-    // ----------------------------------------------------------------------
-    // Lifecylce Management
-    // ----------------------------------------------------------------------
-
-    /** @see org.apache.avalon.framework.service.Serviceable#service */
-    public void service( ServiceManager serviceManager )
-        throws ServiceException
-    {
-        mailboxManager = (MailboxManager) serviceManager.lookup( MailboxManager.ROLE );
-    }
 
     /**
      * Delivers the specified message to the addresses specified.

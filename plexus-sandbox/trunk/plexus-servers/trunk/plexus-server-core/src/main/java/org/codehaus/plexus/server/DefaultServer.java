@@ -17,6 +17,18 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/*
+
+things that need to be built into the base server
+
+ip restricting
+user management
+security
+auditing
+command base + context
+
+ */
+
 /** @plexus.component */
 public abstract class DefaultServer
     extends AbstractLogEnabled

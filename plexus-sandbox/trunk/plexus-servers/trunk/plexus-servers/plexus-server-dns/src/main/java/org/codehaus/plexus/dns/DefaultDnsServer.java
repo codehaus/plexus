@@ -83,7 +83,9 @@ public class DefaultDnsServer
         if ( dnsServers == null )
         {
             dnsServers = new ArrayList();
+
             getLogger().info( "No DNS servers have been specified or found by autodiscovery - adding 127.0.0.1" );
+
             dnsServers.add( "127.0.0.1" );
         }
 
@@ -226,7 +228,8 @@ public class DefaultDnsServer
                                    boolean querysent,
                                    short type )
     {
-        Name name = null;
+        Name name;
+        
         try
         {
             name = Name.fromString( namestr, Name.root );
