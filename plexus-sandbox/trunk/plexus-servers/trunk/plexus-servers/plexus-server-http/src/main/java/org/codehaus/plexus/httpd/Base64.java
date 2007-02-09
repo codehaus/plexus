@@ -10,12 +10,12 @@ package org.codehaus.plexus.httpd;
 /**
  * Base 64 processor. Taken from Public Domain
  *
- * Please visit <a href="http://iharder.net/xmlizable">http://iharder.net/xmlizable</a>
+ * Please visit <a href="http://iharder.org/xmlizable">http://iharder.org/xmlizable</a>
  * periodically to check for updates or to contribute improvements.
  * </p>
  *
  * @author Robert Harder
- * @author rharder@usa.net
+ * @author rharder@usa.org
  * @version 1.3
  */
 public class Base64

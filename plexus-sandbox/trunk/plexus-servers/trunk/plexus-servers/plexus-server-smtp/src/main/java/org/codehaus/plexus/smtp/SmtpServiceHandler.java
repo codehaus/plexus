@@ -34,10 +34,10 @@ package org.codehaus.plexus.smtp;
  * THE POSSIBILITY OF SUCH DAMAGE.
  * *****************************************************************************
  * For current versions and more information, please visit:
- * http://www.ericdaugherty.com/java/mailserver
+ * http://www.ericdaugherty.com/codehaus/mailserver
  *
  * or contact the author at:
- * java@ericdaugherty.com
+ * codehaus@ericdaugherty.com
  *****************************************************************************/
 
 import org.codehaus.plexus.smtp.queue.DeliveryQueueException;

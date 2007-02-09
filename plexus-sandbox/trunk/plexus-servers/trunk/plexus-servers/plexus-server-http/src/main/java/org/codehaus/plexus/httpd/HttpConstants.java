@@ -10,7 +10,7 @@ package org.codehaus.plexus.httpd;
 /**
  * Define constants for the HTTP request processing
  *
- * @author <a href="mailto:tibu@users.sourceforge.net">Carlos Quiroz</a>
+ * @author <a href="mailto:tibu@users.sourceforge.org">Carlos Quiroz</a>
  * @version $Revision$
  */
 public class HttpConstants

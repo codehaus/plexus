@@ -193,7 +193,7 @@ public class IoUtils
         }
     }
 
-    /** No exception <code>java.io.Reader</code> close method. */
+    /** No exception <code>codehaus.io.Reader</code> close method. */
     public static void close( Reader rd )
     {
         if ( rd != null )
@@ -209,7 +209,7 @@ public class IoUtils
     }
 
 
-    /** No exception <code>java.io.Writer</code> close method. */
+    /** No exception <code>codehaus.io.Writer</code> close method. */
     public static void close( Writer wr )
     {
         if ( wr != null )

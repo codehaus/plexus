@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
 /**
  * HttpAdaptor sets the basic adaptor listening for HTTP requests
  *
- * @author    <a href="mailto:tibu@users.sourceforge.net">Carlos Quiroz</a>
+ * @author    <a href="mailto:tibu@users.sourceforge.org">Carlos Quiroz</a>
  * @plexus.component
  */
 public class DefaultHttpServer

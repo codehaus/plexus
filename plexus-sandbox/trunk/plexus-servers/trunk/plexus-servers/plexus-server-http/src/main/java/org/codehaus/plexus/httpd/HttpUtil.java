@@ -10,7 +10,7 @@ package org.codehaus.plexus.httpd;
 /**
  * Utility methods for the HTTP adaptor
  *
- * @author <a href="mailto:tibu@users.sourceforge.net">Carlos Quiroz</a>
+ * @author <a href="mailto:tibu@users.sourceforge.org">Carlos Quiroz</a>
  * @version $Revision$
  */
 public class HttpUtil

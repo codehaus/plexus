@@ -73,8 +73,8 @@ import java.util.TimeZone;
 import java.util.Vector;
 
 /**
- * This class encapsulates <code>java.util.Properties</code> to
- * add java primitives and some other java classes.
+ * This class encapsulates <code>codehaus.util.Properties</code> to
+ * add codehaus primitives and some other codehaus classes.
  *
  * @author <a href="mailto:rana_b@yahoo.com">Rana Bhattacharyya</a>
  */

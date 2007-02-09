@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
 /**
  * HttpInputStream processes an HTTP request
  *
- * @author <a href="mailto:tibu@users.sourceforge.net">Carlos Quiroz</a>
+ * @author <a href="mailto:tibu@users.sourceforge.org">Carlos Quiroz</a>
  * @version $Revision$
  */
 public class HttpInputStream extends BufferedInputStream

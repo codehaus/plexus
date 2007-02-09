@@ -32,10 +32,10 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  * *****************************************************************************
  * For current versions and more information, please visit:
- * http://www.ericdaugherty.com/java/mailserver
+ * http://www.ericdaugherty.com/codehaus/mailserver
  *
  * or contact the author at:
- * java@ericdaugherty.com
+ * codehaus@ericdaugherty.com
  *****************************************************************************/
 
 package org.codehaus.plexus.smtp.mailbox;
