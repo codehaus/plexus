@@ -57,7 +57,7 @@ public class SystemInfoAction
     private SecuritySystem securitySystem;
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="commons-configuration"
      */
     private Registry registry;
 
