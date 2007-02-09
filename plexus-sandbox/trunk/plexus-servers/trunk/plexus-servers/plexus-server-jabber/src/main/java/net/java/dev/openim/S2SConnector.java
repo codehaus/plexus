@@ -11,25 +11,38 @@
 package net.java.dev.openim;
 
 import java.io.IOException;
+
 import net.java.dev.openim.session.SessionsManager;
 import net.java.dev.openim.session.IMServerSession;
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface S2SConnector extends Runnable {
-    
-    public void setToHostname( String toHostname );    
-    public void setRouter( IMRouter router );    
+public interface S2SConnector
+    extends Runnable
+{
+
+    public void setToHostname( String toHostname );
+
+    public void setRouter( IMRouter router );
+
     public void setIMConnectionHandler( IMConnectionHandler connectionHandler );
+
     public void setSessionsManager( SessionsManager sessionManager );
-    
-    public IMServerSession getSession() throws Exception ;
-    public void sendResult() throws IOException;
-    public void sendVerify( String dialbackValue, String id ) throws IOException;
-    
-    public void run() ;
-    public boolean isAlive() ;
-    
+
+    public IMServerSession getSession()
+        throws Exception;
+
+    public void sendResult()
+        throws IOException;
+
+    public void sendVerify( String dialbackValue,
+                            String id )
+        throws IOException;
+
+    public void run();
+
+    public boolean isAlive();
+
 } // class

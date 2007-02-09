@@ -11,7 +11,6 @@
 package net.java.dev.openim.jabber.server;
 
 
-
 import org.xmlpull.v1.XmlPullParser;
 
 import net.java.dev.openim.DefaultSessionProcessor;
@@ -23,51 +22,62 @@ import net.java.dev.openim.session.IMSession;
 
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="server.Message" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.server.Message"
- *
- * @version 1.0
- * @author AlAg
  */
-public class MessageImpl extends DefaultSessionProcessor implements Message {
-    
+public class MessageImpl
+    extends DefaultSessionProcessor
+    implements Message
+{
+
     /**
      * @avalon.dependency type="net.java.dev.openim.jabber.server.Subject:1.0" key="server.Subject"
      * @avalon.dependency type="net.java.dev.openim.jabber.server.Body:1.0" key="server.Body"
      * @avalon.dependency type="net.java.dev.openim.jabber.server.Thread:1.0" key="server.Thread"
-      */
-    public void service(org.apache.avalon.framework.service.ServiceManager serviceManager) throws org.apache.avalon.framework.service.ServiceException {
+     */
+    public void service( org.apache.avalon.framework.service.ServiceManager serviceManager )
+        throws org.apache.avalon.framework.service.ServiceException
+    {
         super.service( serviceManager );
     }
 
     //-------------------------------------------------------------------------
-   
-    public void process( final IMSession session, final Object context ) throws Exception{
-        
+
+    public void process( final IMSession session,
+                         final Object context )
+        throws Exception
+    {
+
         XmlPullParser xpp = session.getXmlPullParser();
 
-        for( int i=0, l=xpp.getAttributeCount(); i<l; i++ ){
-            getLogger().debug( "Attribut ns: "+ xpp.getAttributeNamespace( i ) + " name: " + xpp.getAttributeName( i ) + " value: " + xpp.getAttributeValue( i ) ); 
+        for ( int i = 0, l = xpp.getAttributeCount(); i < l; i++ )
+        {
+            getLogger().debug( "Attribut ns: " + xpp.getAttributeNamespace( i ) + " name: " +
+                xpp.getAttributeName( i ) + " value: " + xpp.getAttributeValue( i ) );
         }
-        
+
         MessagePacket message = new MessagePacket();
         message.setTo( xpp.getAttributeValue( "", "to" ) );
         message.setType( xpp.getAttributeValue( "", "type" ) );
-        
-        if( session.getConnectionType() == IMSession.C2S_CONNECTION ){
-            message.setFrom( ((IMClientSession)session).getUser().getJIDAndRessource() );
+
+        if ( session.getConnectionType() == IMSession.C2S_CONNECTION )
+        {
+            message.setFrom( ( (IMClientSession) session ).getUser().getJIDAndRessource() );
         }
-        else{
+        else
+        {
             message.setFrom( xpp.getAttributeValue( "", "from" ) );
         }
-        
+
 
         super.process( session, message );
 
-        
+
         IMRouter router = session.getRouter();
         router.route( session, message );
-        
+
 /*        
         String iqMsg = session.getMessageData().getId();
         

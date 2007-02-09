@@ -32,175 +32,232 @@ import net.java.dev.openim.jabber.Streams;
  * @author AlAg
  * @author PV
  */
-public class DefaultSessionProcessor 
-extends AbstractLogEnabled implements SessionProcessor, Serviceable, Configurable {
-    
-    
+public class DefaultSessionProcessor
+    extends AbstractLogEnabled
+    implements SessionProcessor, Serviceable, Configurable
+{
+
+
     protected Properties m_XmlEventRole;
     protected ServiceManager m_serviceManager;
     protected StringWriter m_notProcessedData = null;
 
     //-------------------------------------------------------------------------
-    public void configure(Configuration configuration) throws org.apache.avalon.framework.configuration.ConfigurationException {
+    public void configure( Configuration configuration )
+        throws org.apache.avalon.framework.configuration.ConfigurationException
+    {
         Configuration[] children = configuration.getChildren( "map" );
         m_XmlEventRole = new Properties();
-        for( int i=0, l=children.length; i<l; i++ ){
+        for ( int i = 0, l = children.length; i < l; i++ )
+        {
             m_XmlEventRole.setProperty( children[i].getAttribute( "name" ), children[i].getAttribute( "key" ) );
         }
     }
-    
+
     //-------------------------------------------------------------------------
-    public void service( ServiceManager serviceManager) throws org.apache.avalon.framework.service.ServiceException {
+    public void service( ServiceManager serviceManager )
+        throws org.apache.avalon.framework.service.ServiceException
+    {
         m_serviceManager = serviceManager;
     }
-     
+
     //-------------------------------------------------------------------------
-    public void process( final IMSession session ) throws Exception {
+    public void process( final IMSession session )
+        throws Exception
+    {
         process( session, null );
     }
-    //-------------------------------------------------------------------------
-    public void process( final IMSession session, final Object context ) throws Exception {
-            
-        final XmlPullParser xpp = session.getXmlPullParser();
-        final String currentEventName = getEventName(session,xpp.getNamespace(),xpp.getName());
-        
-        for( int eventType = xpp.next() ; eventType != XmlPullParser.END_DOCUMENT; eventType = xpp.next() ){
 
-            
-            if( eventType == XmlPullParser.START_TAG ){
+    //-------------------------------------------------------------------------
+    public void process( final IMSession session,
+                         final Object context )
+        throws Exception
+    {
+
+        final XmlPullParser xpp = session.getXmlPullParser();
+        final String currentEventName = getEventName( session, xpp.getNamespace(), xpp.getName() );
+
+        for ( int eventType = xpp.next(); eventType != XmlPullParser.END_DOCUMENT; eventType = xpp.next() )
+        {
+
+
+            if ( eventType == XmlPullParser.START_TAG )
+            {
                 processStartTag( session, context );
             }
-            else if( eventType == XmlPullParser.TEXT ){
+            else if ( eventType == XmlPullParser.TEXT )
+            {
                 processText( session, context );
             }
-            else if( eventType == XmlPullParser.END_TAG ){
-                
-                if( currentEventName.equals( getEventName(session,xpp.getNamespace(),xpp.getName() )) ){
+            else if ( eventType == XmlPullParser.END_TAG )
+            {
+
+                if ( currentEventName.equals( getEventName( session, xpp.getNamespace(), xpp.getName() ) ) )
+                {
                     processEndTag( session, context );
                     break;
                 }
-            }    
+            }
         } // for
         //getLogger().debug( "END_DOCUMENT" );
 
     }
-    
+
     //-------------------------------------------------------------------------
-    public void processStartTag( final IMSession session, final Object context  ) throws Exception {
+    public void processStartTag( final IMSession session,
+                                 final Object context )
+        throws Exception
+    {
         final XmlPullParser xpp = session.getXmlPullParser();
-        final String eventName = getEventName(session,xpp.getNamespace(),xpp.getName()); 
-        getLogger().debug( "["+session.getId()+"] <"+eventName+">" );
+        final String eventName = getEventName( session, xpp.getNamespace(), xpp.getName() );
+        getLogger().debug( "[" + session.getId() + "] <" + eventName + ">" );
         String roleName = m_XmlEventRole.getProperty( eventName );
-        if( roleName != null ){
+        if ( roleName != null )
+        {
             SessionProcessor processor = null;
-            try{
-                processor = (SessionProcessor)m_serviceManager.lookup( roleName );
-            }catch( org.apache.avalon.framework.service.ServiceException e ){
-                getLogger().warn( "<"+eventName+"> : " + e.getMessage(), e );
+            try
+            {
+                processor = (SessionProcessor) m_serviceManager.lookup( roleName );
             }
-            if( processor != null ){
-               //getLogger().debug( "Got processor "+processor+" for " +roleName);
-                try{
+            catch ( org.apache.avalon.framework.service.ServiceException e )
+            {
+                getLogger().warn( "<" + eventName + "> : " + e.getMessage(), e );
+            }
+            if ( processor != null )
+            {
+                //getLogger().debug( "Got processor "+processor+" for " +roleName);
+                try
+                {
                     processor.process( session, context );
                 }
-                finally{
+                finally
+                {
                     //m_serviceManager.release( processor );
                 }
             }
-            else{
+            else
+            {
                 getLogger().warn( "No processor for event: " + roleName );
                 skip( xpp );
             }
         }
-        else{
-            getLogger().warn( "No rolename: "+ roleName +" / defined for event: " + eventName + " skipping" );
-            if (m_notProcessedData == null) m_notProcessedData = new StringWriter();
-            session.roundTripNode(m_notProcessedData);
+        else
+        {
+            getLogger().warn( "No rolename: " + roleName + " / defined for event: " + eventName + " skipping" );
+            if ( m_notProcessedData == null )
+            {
+                m_notProcessedData = new StringWriter();
+            }
+            session.roundTripNode( m_notProcessedData );
             // skip( xpp );
         } // else
     }
-    
+
     //-------------------------------------------------------------------------
-    public void processEndTag( final IMSession session, final Object context  ) throws Exception {
+    public void processEndTag( final IMSession session,
+                               final Object context )
+        throws Exception
+    {
         final XmlPullParser xpp = session.getXmlPullParser();
-        final String eventName = getEventName(session,xpp.getNamespace(),xpp.getName());
-        getLogger().debug( "["+session.getId()+"] </" + eventName+">" );
+        final String eventName = getEventName( session, xpp.getNamespace(), xpp.getName() );
+        getLogger().debug( "[" + session.getId() + "] </" + eventName + ">" );
     }
-    
+
     //-------------------------------------------------------------------------
-    public void processText( final IMSession session, final Object context ) throws Exception {
+    public void processText( final IMSession session,
+                             final Object context )
+        throws Exception
+    {
         final String text = session.getXmlPullParser().getText().trim();
-        if( text.length() > 0 ){
-            getLogger().debug( "[ "+text+" ]" );
+        if ( text.length() > 0 )
+        {
+            getLogger().debug( "[ " + text + " ]" );
         }
     }
-    
-    
-    
+
+
     //-------------------------------------------------------------------------
-    protected void skip( final XmlPullParser xpp ) throws XmlPullParserException, java.io.IOException {
-        
+    protected void skip( final XmlPullParser xpp )
+        throws XmlPullParserException, java.io.IOException
+    {
+
         int eventType = xpp.getEventType();
-        
-        if( eventType == XmlPullParser.START_TAG ){
- 
-            while( eventType != XmlPullParser.END_TAG ){
-                eventType = xpp.next(); 
-                if( eventType == XmlPullParser.START_TAG ){
+
+        if ( eventType == XmlPullParser.START_TAG )
+        {
+
+            while ( eventType != XmlPullParser.END_TAG )
+            {
+                eventType = xpp.next();
+                if ( eventType == XmlPullParser.START_TAG )
+                {
                     skip( xpp );
                 }
             }
         }
     }
+
     //-------------------------------------------------------------------------
-    protected StringBuffer serialize( final XmlPullParser xpp ) throws XmlPullParserException, java.io.IOException {
-        
+    protected StringBuffer serialize( final XmlPullParser xpp )
+        throws XmlPullParserException, java.io.IOException
+    {
+
         StringBuffer sb = null;
-        
+
         int eventType = xpp.getEventType();
-        
-        
-        if( eventType == XmlPullParser.START_TAG ){
-            
+
+
+        if ( eventType == XmlPullParser.START_TAG )
+        {
+
             sb = getStartElementAsStringBuffer( xpp );
             String elementName = xpp.getName();
-             
-            while( eventType != XmlPullParser.END_TAG ){
-                eventType = xpp.next(); 
-                if( eventType == XmlPullParser.START_TAG ){         
+
+            while ( eventType != XmlPullParser.END_TAG )
+            {
+                eventType = xpp.next();
+                if ( eventType == XmlPullParser.START_TAG )
+                {
                     sb.append( serialize( xpp ) );
                 }
-                else if( eventType == XmlPullParser.TEXT ){         
+                else if ( eventType == XmlPullParser.TEXT )
+                {
                     sb.append( xpp.getText() );
                 }
             } // while
-            
-            sb.append( "</" ).append( elementName ). append( ">" );
-            
+
+            sb.append( "</" ).append( elementName ).append( ">" );
+
         }
-        
+
         return sb;
     }
+
     //-------------------------------------------------------------------------
-    protected String asString( final XmlPullParser xpp ) throws XmlPullParserException {
+    protected String asString( final XmlPullParser xpp )
+        throws XmlPullParserException
+    {
         String s = null;
         int eventType = xpp.getEventType();
-        if( eventType == XmlPullParser.START_TAG ){
+        if ( eventType == XmlPullParser.START_TAG )
+        {
             s = getStartElementAsStringBuffer( xpp ).toString();
         }
-        if( eventType == XmlPullParser.TEXT ){
+        if ( eventType == XmlPullParser.TEXT )
+        {
             s = xpp.getText();
         }
-        if( eventType == XmlPullParser.END_TAG ){
+        if ( eventType == XmlPullParser.END_TAG )
+        {
             s = "</" + xpp.getName() + ">";
         }
         return s;
     }
 
-        
-        
+
     //-------------------------------------------------------------------------
-    private StringBuffer getStartElementAsStringBuffer( final XmlPullParser xpp ){
+    private StringBuffer getStartElementAsStringBuffer( final XmlPullParser xpp )
+    {
         StringBuffer sb = new StringBuffer();
 
         String elementName = xpp.getName();
@@ -208,39 +265,46 @@ extends AbstractLogEnabled implements SessionProcessor, Serviceable, Configurabl
         // no access to stream and its default namespce
 
         sb.append( "<" ).append( elementName );
-        if( elementNamespace != null && elementNamespace.length() > 0 ){
+        if ( elementNamespace != null && elementNamespace.length() > 0 )
+        {
             sb.append( " xmlns='" ).append( elementNamespace ).append( "'" );
         }
-        for( int i=0, l=xpp.getAttributeCount(); i<l; i++ ){
+        for ( int i = 0, l = xpp.getAttributeCount(); i < l; i++ )
+        {
             String value = xpp.getAttributeValue( i );
             String name = xpp.getAttributeName( i );
-            sb.append( " " ).append(  name ).append( "='" ).append( value ).append( "'" );
+            sb.append( " " ).append( name ).append( "='" ).append( value ).append( "'" );
         }
-        sb.append( ">" ) ;
+        sb.append( ">" );
         return sb;
 
     }
 
-   protected String getEventName(final IMSession session,final String currentNamespace,final String name) {
-      String ns = getNamespace( session,currentNamespace );
-      ns =  ns != null ? ns : "";
-      return ns+":"+name;
-   }
+    protected String getEventName( final IMSession session,
+                                   final String currentNamespace,
+                                   final String name )
+    {
+        String ns = getNamespace( session, currentNamespace );
+        ns = ns != null ? ns : "";
+        return ns + ":" + name;
+    }
 
-   /**
-    * Get namespace, using the Streams namespace if current is null or empty string.
-    */
-   protected String getNamespace(final IMSession session,String current) {
-      String ns = current;
-      if ( current == null || current.length() == 0) {
-         // try get the streams namespace
-         Streams s = session.getStreams();
-         if ( s != null) {
-            ns = s.getNamespace();
-         } // end of if ()
-      } // end of if ()
-      return ns;
-   }
+    /** Get namespace, using the Streams namespace if current is null or empty string. */
+    protected String getNamespace( final IMSession session,
+                                   String current )
+    {
+        String ns = current;
+        if ( current == null || current.length() == 0 )
+        {
+            // try get the streams namespace
+            Streams s = session.getStreams();
+            if ( s != null )
+            {
+                ns = s.getNamespace();
+            } // end of if ()
+        } // end of if ()
+        return ns;
+    }
 
 
 }

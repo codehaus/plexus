@@ -16,19 +16,24 @@ import net.java.dev.openim.session.IMSession;
 
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="iq.auth.Digest" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.iq.auth.Digest"
- *
- * @version 1.0
- * @author AlAg
  */
-public class DigestImpl extends DefaultSessionProcessor implements Digest {
-    
-    public void processText( final IMSession session, final Object context ) throws Exception {
-        ((IMClientSession)session).getUser().setDigest( session.getXmlPullParser().getText().trim() );
+public class DigestImpl
+    extends DefaultSessionProcessor
+    implements Digest
+{
+
+    public void processText( final IMSession session,
+                             final Object context )
+        throws Exception
+    {
+        ( (IMClientSession) session ).getUser().setDigest( session.getXmlPullParser().getText().trim() );
     }
 
-    
+
 }
 
 

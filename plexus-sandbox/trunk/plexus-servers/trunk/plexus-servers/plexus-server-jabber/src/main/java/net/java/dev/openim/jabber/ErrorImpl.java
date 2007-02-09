@@ -15,21 +15,25 @@ import net.java.dev.openim.session.IMSession;
 
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="Error" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.Error"
- *
- * @version 1.0
- * @author AlAg
  */
-public class ErrorImpl extends DefaultSessionProcessor implements Error {
+public class ErrorImpl
+    extends DefaultSessionProcessor
+    implements Error
+{
 
 
-    
-    public void processText( final IMSession session, final Object context ) throws Exception {
+    public void processText( final IMSession session,
+                             final Object context )
+        throws Exception
+    {
         String msg = session.getXmlPullParser().getText().trim();
-        getLogger().warn( session.getId() +" / "+ msg );
+        getLogger().warn( session.getId() + " / " + msg );
         throw new java.io.EOFException( msg );
-        
+
     }
 
 }

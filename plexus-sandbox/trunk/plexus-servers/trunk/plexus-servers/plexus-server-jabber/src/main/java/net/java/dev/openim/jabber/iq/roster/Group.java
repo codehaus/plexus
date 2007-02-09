@@ -13,10 +13,11 @@ package net.java.dev.openim.jabber.iq.roster;
 import net.java.dev.openim.SessionProcessor;
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface Group extends SessionProcessor 
+public interface Group
+    extends SessionProcessor
 {
 }
 

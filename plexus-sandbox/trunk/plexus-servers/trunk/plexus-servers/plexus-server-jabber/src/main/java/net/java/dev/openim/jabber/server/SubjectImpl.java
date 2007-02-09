@@ -16,18 +16,23 @@ import net.java.dev.openim.data.jabber.MessagePacket;
 import net.java.dev.openim.session.IMSession;
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="server.Subject" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.server.Subject"
- *
- * @version 1.0
- * @author AlAg
  */
-public class SubjectImpl extends DefaultSessionProcessor implements Subject{
+public class SubjectImpl
+    extends DefaultSessionProcessor
+    implements Subject
+{
 
-    public void processText( final IMSession session, final Object context ) throws Exception {
-        ((MessagePacket)context).setSubject( session.getXmlPullParser().getText().trim() );
+    public void processText( final IMSession session,
+                             final Object context )
+        throws Exception
+    {
+        ( (MessagePacket) context ).setSubject( session.getXmlPullParser().getText().trim() );
     }
-    
+
 }
 
 

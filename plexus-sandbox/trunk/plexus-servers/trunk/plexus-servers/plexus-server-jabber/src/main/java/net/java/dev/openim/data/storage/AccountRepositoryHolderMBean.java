@@ -22,11 +22,12 @@ public interface AccountRepositoryHolderMBean
      * @phoenix:mx-description Create a new account (format name/password)
      * @phoenix:mx-isWriteable true
      */
-    public void setAccount(String accountStr);
+    public void setAccount( String accountStr );
+
     /*
-     * @phoenix:@phoenix:mx-attribute
-     * @phoenix:mx-isWriteable false
-     */
+    * @phoenix:@phoenix:mx-attribute
+    * @phoenix:mx-isWriteable false
+    */
     public List getAccountList();
-    
+
 }

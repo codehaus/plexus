@@ -13,10 +13,10 @@ package net.java.dev.openim.log;
 import net.java.dev.openim.data.Transitable;
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface MessageRecorder 
+public interface MessageRecorder
 {
     public void record( Transitable message );
 }

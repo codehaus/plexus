@@ -16,13 +16,16 @@ import net.java.dev.openim.session.*;
 
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface SubscriptionManager {
-    
-    public void process( IMSession session, IMPresence presence ) throws Exception;
-    
+public interface SubscriptionManager
+{
+
+    public void process( IMSession session,
+                         IMPresence presence )
+        throws Exception;
+
 }
 
 

@@ -21,16 +21,19 @@ import java.util.List;
 
 
 /**
- * @version 1.0
  * @author AlAg
  * @author PV
+ * @version 1.0
  */
-public interface ServerModule 
+public interface ServerModule
 {
     public ServerModuleIdentity getId();
+
     public ServerModuleFeatures getFeatures();
+
     public List getHostNameList();
-    public SessionProcessor getProcessor(String eventName);
+
+    public SessionProcessor getProcessor( String eventName );
 }
 
 

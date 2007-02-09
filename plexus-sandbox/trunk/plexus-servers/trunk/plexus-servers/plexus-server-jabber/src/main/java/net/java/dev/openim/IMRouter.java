@@ -17,22 +17,27 @@ import net.java.dev.openim.session.IMClientSession;
 import net.java.dev.openim.session.IMSession;
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface IMRouter 
+public interface IMRouter
 {
     public void setS2SConnectorManager( S2SConnectorManager s2sConnectorManager );
-    public S2SConnectorManager  getS2SConnectorManager();
-    
+
+    public S2SConnectorManager getS2SConnectorManager();
+
     // client session related
     public void registerSession( IMClientSession session );
-    public void unregisterSession( IMClientSession session );
-    public List getAllRegisteredSession( String username );
-    public void releaseSessions();
-    
-    public void route( IMSession session, Transitable message ) throws java.io.IOException;
 
-    
+    public void unregisterSession( IMClientSession session );
+
+    public List getAllRegisteredSession( String username );
+
+    public void releaseSessions();
+
+    public void route( IMSession session,
+                       Transitable message )
+        throws java.io.IOException;
+
 
 }

@@ -14,18 +14,17 @@ package net.java.dev.openim.data.storage;
 import java.util.List;
 
 
-
-
 /*
- * @version 1.0
- *
- * @author AlAg
- */
-public interface RosterListRepositoryHolder 
+* @version 1.0
+*
+* @author AlAg
+*/
+public interface RosterListRepositoryHolder
 {
-    public List getRosterList( String username );    
-    
-    public void setRosterList(String username, List rosterList );
+    public List getRosterList( String username );
+
+    public void setRosterList( String username,
+                               List rosterList );
 }
 
 

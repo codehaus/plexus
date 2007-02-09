@@ -11,27 +11,31 @@
 package net.java.dev.openim.jabber.server;
 
 
-
-
 import net.java.dev.openim.DefaultSessionProcessor;
 import net.java.dev.openim.data.jabber.IMPresence;
 import net.java.dev.openim.session.IMSession;
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="server.Error" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.server.Error"
- *
- * @version 1.0
- * @author AlAg
  */
-public class ErrorImpl extends DefaultSessionProcessor implements Error {
+public class ErrorImpl
+    extends DefaultSessionProcessor
+    implements Error
+{
 
-    public void processText( final IMSession session, final Object context ) throws Exception {
+    public void processText( final IMSession session,
+                             final Object context )
+        throws Exception
+    {
         String errorCodeStr = session.getXmlPullParser().getAttributeValue( "", "code" );
-        if( errorCodeStr != null && errorCodeStr.length()>0 ){
-            ((IMPresence)context).setErrorCode( Integer.parseInt( errorCodeStr ) ); 
+        if ( errorCodeStr != null && errorCodeStr.length() > 0 )
+        {
+            ( (IMPresence) context ).setErrorCode( Integer.parseInt( errorCodeStr ) );
         }
-        ((IMPresence)context).setError( session.getXmlPullParser().getText().trim() );
+        ( (IMPresence) context ).setError( session.getXmlPullParser().getText().trim() );
     }
 
 }

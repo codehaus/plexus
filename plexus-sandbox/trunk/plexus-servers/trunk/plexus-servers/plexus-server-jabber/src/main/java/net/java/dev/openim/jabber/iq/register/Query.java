@@ -13,10 +13,11 @@ package net.java.dev.openim.jabber.iq.register;
 import net.java.dev.openim.SessionProcessor;
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface Query extends SessionProcessor
+public interface Query
+    extends SessionProcessor
 {
     public Integer CTX_SHOULD_REMOVE = new Integer( 1 );
 }

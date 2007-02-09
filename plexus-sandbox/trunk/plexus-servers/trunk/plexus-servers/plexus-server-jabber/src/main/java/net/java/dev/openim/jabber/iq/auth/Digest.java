@@ -13,10 +13,11 @@ package net.java.dev.openim.jabber.iq.auth;
 import net.java.dev.openim.SessionProcessor;
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface Digest extends SessionProcessor 
+public interface Digest
+    extends SessionProcessor
 {
 }
 

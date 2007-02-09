@@ -13,7 +13,6 @@
 package net.java.dev.openim.jabber.client;
 
 
-
 import org.xmlpull.v1.XmlPullParser;
 
 import net.java.dev.openim.*;
@@ -25,13 +24,15 @@ import net.java.dev.openim.session.IMSession;
 
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="client.Message" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.client.Message"
- *
- * @version 1.0
- * @author AlAg
  */
-public class MessageImpl extends DefaultSessionProcessor implements Message {
+public class MessageImpl
+    extends DefaultSessionProcessor
+    implements Message
+{
 
     private ServerParameters m_serverParameters;
     private ModuleManager m_moduleManager;
@@ -40,49 +41,64 @@ public class MessageImpl extends DefaultSessionProcessor implements Message {
      * @avalon.dependency type="net.java.dev.openim.jabber.client.Subject:1.0" key="client.Subject"
      * @avalon.dependency type="net.java.dev.openim.jabber.client.Body:1.0" key="client.Body"
      * @avalon.dependency type="net.java.dev.openim.jabber.client.Thread:1.0" key="client.Thread"
-     *
      * @avalon.dependency type="net.java.dev.openim.ModuleManager:1.0" key="ModuleManager"
      * @avalon.dependency type="net.java.dev.openim.ServerParameters:1.0"  key="ServerParameters"
      */
-    public void service(org.apache.avalon.framework.service.ServiceManager serviceManager) throws org.apache.avalon.framework.service.ServiceException {
+    public void service( org.apache.avalon.framework.service.ServiceManager serviceManager )
+        throws org.apache.avalon.framework.service.ServiceException
+    {
         super.service( serviceManager );
 
-        m_serverParameters = (ServerParameters) serviceManager.lookup("ServerParameters");
-        m_moduleManager = (ModuleManager) serviceManager.lookup("ModuleManager");
+        m_serverParameters = (ServerParameters) serviceManager.lookup( "ServerParameters" );
+        m_moduleManager = (ModuleManager) serviceManager.lookup( "ModuleManager" );
     }
 
     //-------------------------------------------------------------------------
-   
-    public void process( final IMSession session, final Object context ) throws Exception{
+
+    public void process( final IMSession session,
+                         final Object context )
+        throws Exception
+    {
 
         ServerModule module = null;
 
         XmlPullParser xpp = session.getXmlPullParser();
 
-        MessagePacket message = new MessagePacket(xpp);
+        MessagePacket message = new MessagePacket( xpp );
 
-        if( session instanceof IMClientSession ) {
-           if (message.getFrom().length() == 0 ) {
-              String from = ((IMClientSession)session).getUser().getJIDAndRessource();
-              message.setFrom(from);
-           }
-           // Handle ping your self
-           if (message.getTo().length() == 0 ) {
-              String to = ((IMClientSession)session).getUser().getJIDAndRessource();
-              message.setTo(to);
-           }
+        if ( session instanceof IMClientSession )
+        {
+            if ( message.getFrom().length() == 0 )
+            {
+                String from = ( (IMClientSession) session ).getUser().getJIDAndRessource();
+                message.setFrom( from );
+            }
+            // Handle ping your self
+            if ( message.getTo().length() == 0 )
+            {
+                String to = ( (IMClientSession) session ).getUser().getJIDAndRessource();
+                message.setTo( to );
+            }
         }
 
-        if ((module = m_moduleManager.getModuleByHostname(JIDParser.getHostname(message.getTo()))) != null) {
+        if ( ( module = m_moduleManager.getModuleByHostname( JIDParser.getHostname( message.getTo() ) ) ) != null )
+        {
             // the received packet is for some server module
-            SessionProcessor processor = module.getProcessor(getEventName(session, xpp.getNamespace(), xpp.getName()));
-            if (processor != null) processor.process(session, message);
+            SessionProcessor processor =
+                module.getProcessor( getEventName( session, xpp.getNamespace(), xpp.getName() ) );
+            if ( processor != null )
+            {
+                processor.process( session, message );
+            }
 
-        } else if (!m_serverParameters.getHostNameList().contains(message.getTo())) {
+        }
+        else if ( !m_serverParameters.getHostNameList().contains( message.getTo() ) )
+        {
             // the received packet is not for the server or its modules
             super.process( session, message );
-            if (this.m_notProcessedData != null) {
-                message.addSerializedChild(this.m_notProcessedData.getBuffer().toString());
+            if ( this.m_notProcessedData != null )
+            {
+                message.addSerializedChild( this.m_notProcessedData.getBuffer().toString() );
             }
             IMRouter router = session.getRouter();
             router.route( session, message );

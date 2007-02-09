@@ -12,7 +12,8 @@ import java.io.IOException;
  * @version 1.0
  */
 
-public class XMLUtils {
+public class XMLUtils
+{
 
     /**
      * Serializes the XML from parser.
@@ -22,23 +23,33 @@ public class XMLUtils {
      * @throws XmlPullParserException
      * @throws java.io.IOException
      */
-    public static void serialize(final XmlPullParser xpp, final XmlSerializer serializer, boolean ignoreDefaultNamespace) throws XmlPullParserException, java.io.IOException
+    public static void serialize( final XmlPullParser xpp,
+                                  final XmlSerializer serializer,
+                                  boolean ignoreDefaultNamespace )
+        throws XmlPullParserException, java.io.IOException
     {
-        if (xpp.getEventType() == XmlPullParser.START_TAG) {
-           // serialize start tag
-           ignoreDefaultNamespace = serializeToken(xpp, serializer, ignoreDefaultNamespace);
-           // serialize tag content
-           while (xpp.next() != XmlPullParser.END_TAG) {
-               if (xpp.getEventType() == XmlPullParser.START_TAG) {
-                    serialize(xpp, serializer, ignoreDefaultNamespace);
-               } else {
-                   serializeToken(xpp, serializer, false);
-               }
-           }
-           // serialize end tag
-           serializeToken(xpp, serializer, ignoreDefaultNamespace);
-        } else {
-            serializeToken(xpp, serializer, false);
+        if ( xpp.getEventType() == XmlPullParser.START_TAG )
+        {
+            // serialize start tag
+            ignoreDefaultNamespace = serializeToken( xpp, serializer, ignoreDefaultNamespace );
+            // serialize tag content
+            while ( xpp.next() != XmlPullParser.END_TAG )
+            {
+                if ( xpp.getEventType() == XmlPullParser.START_TAG )
+                {
+                    serialize( xpp, serializer, ignoreDefaultNamespace );
+                }
+                else
+                {
+                    serializeToken( xpp, serializer, false );
+                }
+            }
+            // serialize end tag
+            serializeToken( xpp, serializer, ignoreDefaultNamespace );
+        }
+        else
+        {
+            serializeToken( xpp, serializer, false );
         }
     }
 
@@ -50,48 +61,64 @@ public class XMLUtils {
      * @throws XmlPullParserException
      * @throws java.io.IOException
      */
-    private static boolean serializeToken(final XmlPullParser xpp, final XmlSerializer serializer, boolean ignoreDefaultNamespace) throws XmlPullParserException, java.io.IOException
+    private static boolean serializeToken( final XmlPullParser xpp,
+                                           final XmlSerializer serializer,
+                                           boolean ignoreDefaultNamespace )
+        throws XmlPullParserException, java.io.IOException
     {
-        switch (xpp.getEventType())
+        switch ( xpp.getEventType() )
         {
             case XmlPullParser.START_TAG:
-                if (xpp.getFeature(XmlPullParser.FEATURE_REPORT_NAMESPACE_ATTRIBUTES) == false)
+                if ( xpp.getFeature( XmlPullParser.FEATURE_REPORT_NAMESPACE_ATTRIBUTES ) == false )
                 {
-                    for (int i = xpp.getNamespaceCount(xpp.getDepth() - 1);
-                         i <= xpp.getNamespaceCount(xpp.getDepth()) - 1;
-                         i++)
+                    for ( int i = xpp.getNamespaceCount( xpp.getDepth() - 1 );
+                          i <= xpp.getNamespaceCount( xpp.getDepth() ) - 1; i++ )
                     {
-                        String prefix = xpp.getNamespacePrefix(i);
-                        if (prefix == null) prefix = ""; // set default namespace
-                        serializer.setPrefix(prefix, xpp.getNamespaceUri(i));
+                        String prefix = xpp.getNamespacePrefix( i );
+                        if ( prefix == null )
+                        {
+                            prefix = ""; // set default namespace
+                        }
+                        serializer.setPrefix( prefix, xpp.getNamespaceUri( i ) );
                         ignoreDefaultNamespace = false;
                     }
 
-                    if (ignoreDefaultNamespace)
-                        serializer.startTag(null, xpp.getName());
+                    if ( ignoreDefaultNamespace )
+                    {
+                        serializer.startTag( null, xpp.getName() );
+                    }
                     else
-                        serializer.startTag(xpp.getNamespace(), xpp.getName());
+                    {
+                        serializer.startTag( xpp.getNamespace(), xpp.getName() );
+                    }
 
-                } else {
+                }
+                else
+                {
                     // TODO: Check functionality
-                    serializer.startTag(xpp.getNamespace(), xpp.getName());
+                    serializer.startTag( xpp.getNamespace(), xpp.getName() );
                 }
 
-                for (int i = 0; i < xpp.getAttributeCount(); i++)
+                for ( int i = 0; i < xpp.getAttributeCount(); i++ )
                 {
-                    serializer.attribute(xpp.getAttributeNamespace(i), xpp.getAttributeName(i), xpp.getAttributeValue(i));
+                    serializer.attribute( xpp.getAttributeNamespace( i ), xpp.getAttributeName( i ),
+                                          xpp.getAttributeValue( i ) );
                 }
                 break;
 
             case XmlPullParser.END_TAG:
-                if (ignoreDefaultNamespace)
-                    serializer.endTag(null, xpp.getName());
+                if ( ignoreDefaultNamespace )
+                {
+                    serializer.endTag( null, xpp.getName() );
+                }
                 else
-                    serializer.endTag(xpp.getNamespace(), xpp.getName());
+                {
+                    serializer.endTag( xpp.getNamespace(), xpp.getName() );
+                }
                 break;
 
             case XmlPullParser.TEXT:
-                serializer.text(xpp.getText());
+                serializer.text( xpp.getText() );
                 break;
 
             default:
@@ -108,17 +135,24 @@ public class XMLUtils {
      * @throws XmlPullParserException
      * @throws IOException
      */
-    public static Element createElement(XmlPullParser xpp) throws XmlPullParserException, IOException {
-        if (xpp.getEventType() != XmlPullParser.START_TAG) return null;
+    public static Element createElement( XmlPullParser xpp )
+        throws XmlPullParserException, IOException
+    {
+        if ( xpp.getEventType() != XmlPullParser.START_TAG )
+        {
+            return null;
+        }
 
-        Element element = new Element(xpp);
-        while (xpp.next() != XmlPullParser.END_TAG) {
-            switch (xpp.getEventType()) {
+        Element element = new Element( xpp );
+        while ( xpp.next() != XmlPullParser.END_TAG )
+        {
+            switch ( xpp.getEventType() )
+            {
                 case XmlPullParser.TEXT:
-                    element.appendText(xpp.getText());
+                    element.appendText( xpp.getText() );
                     break;
                 case XmlPullParser.START_TAG:
-                    element.addChild(createElement(xpp));
+                    element.addChild( createElement( xpp ) );
                     break;
                 default:
                     break;
@@ -138,60 +172,73 @@ public class XMLUtils {
      * @param str <code>String</code> input to escape.
      * @return <code>String</code> with escaped content.
      */
-    public static String escapeElementEntities(String str, String encoding) {
+    public static String escapeElementEntities( String str,
+                                                String encoding )
+    {
 
         StringBuffer buffer;
         char ch;
         String entity;
-        if (encoding == null || encoding.length() < 1)
+        if ( encoding == null || encoding.length() < 1 )
+        {
             encoding = s_DefaultEncoding;
-        EscapeStrategy strategy = new EscapeStrategy(encoding);
+        }
+        EscapeStrategy strategy = new EscapeStrategy( encoding );
 
         buffer = null;
-        for (int i = 0; i < str.length(); i++) {
-            ch = str.charAt(i);
-            switch(ch) {
-                case '<' :
+        for ( int i = 0; i < str.length(); i++ )
+        {
+            ch = str.charAt( i );
+            switch ( ch )
+            {
+                case'<':
                     entity = "&lt;";
                     break;
-                case '>' :
+                case'>':
                     entity = "&gt;";
                     break;
-                case '&' :
+                case'&':
                     entity = "&amp;";
                     break;
-                case '\r' :
+                case'\r':
                     entity = "&#xD;";
                     break;
-                case '\n' :
+                case'\n':
                     entity = "\r\n";
                     break;
-                default :
-                    if (strategy.shouldEscape(ch)) {
-                        entity = "&#x" + Integer.toHexString(ch) + ";";
+                default:
+                    if ( strategy.shouldEscape( ch ) )
+                    {
+                        entity = "&#x" + Integer.toHexString( ch ) + ";";
                     }
-                    else {
+                    else
+                    {
                         entity = null;
                     }
                     break;
             }
-            if (buffer == null) {
-                if (entity != null) {
+            if ( buffer == null )
+            {
+                if ( entity != null )
+                {
                     // An entity occurred, so we'll have to use StringBuffer
                     // (allocate room for it plus a few more entities).
-                    buffer = new StringBuffer(str.length() + 20);
+                    buffer = new StringBuffer( str.length() + 20 );
                     // Copy previous skipped characters and fall through
                     // to pickup current character
-                    buffer.append(str.substring(0, i));
-                    buffer.append(entity);
+                    buffer.append( str.substring( 0, i ) );
+                    buffer.append( entity );
                 }
             }
-            else {
-                if (entity == null) {
-                    buffer.append(ch);
+            else
+            {
+                if ( entity == null )
+                {
+                    buffer.append( ch );
                 }
-                else {
-                    buffer.append(entity);
+                else
+                {
+                    buffer.append( entity );
                 }
             }
         }
@@ -199,7 +246,7 @@ public class XMLUtils {
         // If there were any entities, return the escaped characters
         // that we put in the StringBuffer. Otherwise, just return
         // the unmodified input string.
-        return (buffer == null) ? str : buffer.toString();
+        return ( buffer == null ) ? str : buffer.toString();
     }
 
 }

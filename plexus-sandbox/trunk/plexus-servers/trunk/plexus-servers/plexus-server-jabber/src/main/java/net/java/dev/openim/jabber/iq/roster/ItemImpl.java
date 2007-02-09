@@ -20,34 +20,38 @@ import net.java.dev.openim.DefaultSessionProcessor;
 
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="iq.roster.Item" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.iq.roster.Item"
- *
- * @version 1.0
- * @author AlAg
  */
-public class ItemImpl extends DefaultSessionProcessor implements Item {
-    
-    /**
-     * @avalon.dependency type="net.java.dev.openim.jabber.iq.roster.Group:1.0" key="iq.roster.Group"
-     */
-    public void service(org.apache.avalon.framework.service.ServiceManager serviceManager) throws org.apache.avalon.framework.service.ServiceException {
+public class ItemImpl
+    extends DefaultSessionProcessor
+    implements Item
+{
+
+    /** @avalon.dependency type="net.java.dev.openim.jabber.iq.roster.Group:1.0" key="iq.roster.Group" */
+    public void service( org.apache.avalon.framework.service.ServiceManager serviceManager )
+        throws org.apache.avalon.framework.service.ServiceException
+    {
         super.service( serviceManager );
     }
 
-    
-    public void process( final IMSession session, final Object context ) throws Exception{
+
+    public void process( final IMSession session,
+                         final Object context )
+        throws Exception
+    {
         XmlPullParser xpp = session.getXmlPullParser();
-        IMRosterItem rosterItem = (IMRosterItem)context;
+        IMRosterItem rosterItem = (IMRosterItem) context;
         rosterItem.setName( xpp.getAttributeValue( "", "name" ) );
         rosterItem.setJID( xpp.getAttributeValue( "", "jid" ) );
         rosterItem.setSubscription( xpp.getAttributeValue( "", "subscription" ) );
         rosterItem.setAsk( xpp.getAttributeValue( "", "ask" ) );
         super.process( session, context );
     }
-    
-    
-    
+
+
 }
 
 

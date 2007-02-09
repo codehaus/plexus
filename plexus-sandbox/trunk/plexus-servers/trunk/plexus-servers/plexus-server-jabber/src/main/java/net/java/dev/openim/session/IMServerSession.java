@@ -11,25 +11,29 @@
 package net.java.dev.openim.session;
 
 
-
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface IMServerSession extends IMSession
+public interface IMServerSession
+    extends IMSession
 {
     public boolean getDialbackValid();
+
     public void setDialbackValid( boolean value );
 
     public String getDialbackValue();
+
     public void setDialbackValue( String dialback );
 
     public String getRemoteHostname();
+
     public void setRemoteHostname( String hostname );
-    
+
     public IMServerSession getTwinSession();
-    public void setTwinSession( IMServerSession session );    
-    
+
+    public void setTwinSession( IMServerSession session );
+
 }
 
 

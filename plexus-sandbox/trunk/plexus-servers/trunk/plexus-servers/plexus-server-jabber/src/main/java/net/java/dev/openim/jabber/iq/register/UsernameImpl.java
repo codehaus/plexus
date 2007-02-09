@@ -11,26 +11,30 @@
 package net.java.dev.openim.jabber.iq.register;
 
 
-
 import net.java.dev.openim.DefaultSessionProcessor;
 import net.java.dev.openim.session.IMClientSession;
 import net.java.dev.openim.session.IMSession;
 
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="iq.register.Password" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.iq.register.Username"
- *
- * @version 1.0
- * @author AlAg
  */
-public class UsernameImpl extends DefaultSessionProcessor implements Username {
+public class UsernameImpl
+    extends DefaultSessionProcessor
+    implements Username
+{
 
-    public void processText( final IMSession session, final Object context ) throws Exception {
-        ((IMClientSession)session).getUser().setName( session.getXmlPullParser().getText().trim() );
+    public void processText( final IMSession session,
+                             final Object context )
+        throws Exception
+    {
+        ( (IMClientSession) session ).getUser().setName( session.getXmlPullParser().getText().trim() );
     }
 
-    
+
 }
 
 

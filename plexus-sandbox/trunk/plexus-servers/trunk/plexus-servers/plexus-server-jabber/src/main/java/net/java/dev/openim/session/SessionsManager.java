@@ -14,14 +14,19 @@ import net.java.dev.openim.session.IMSession;
 
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface SessionsManager 
+public interface SessionsManager
 {
-    public IMClientSession getNewClientSession() throws Exception;
-    public IMServerSession getNewServerSession() throws Exception;
+    public IMClientSession getNewClientSession()
+        throws Exception;
+
+    public IMServerSession getNewServerSession()
+        throws Exception;
+
     public void release( IMSession session );
-    public void  releaseSessions();
+
+    public void releaseSessions();
 }
 

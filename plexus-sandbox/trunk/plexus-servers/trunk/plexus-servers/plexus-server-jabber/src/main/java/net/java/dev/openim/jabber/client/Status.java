@@ -13,12 +13,13 @@ package net.java.dev.openim.jabber.client;
 import net.java.dev.openim.SessionProcessor;
 
 /**
- * @version 1.0
  * @author AlAg
+ * @version 1.0
  */
-public interface Status extends SessionProcessor
+public interface Status
+    extends SessionProcessor
 {
-    
+
 }
 
 

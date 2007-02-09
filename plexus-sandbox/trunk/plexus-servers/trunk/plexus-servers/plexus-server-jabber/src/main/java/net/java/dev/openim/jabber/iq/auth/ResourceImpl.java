@@ -17,19 +17,24 @@ import net.java.dev.openim.session.IMSession;
 
 
 /**
+ * @author AlAg
+ * @version 1.0
  * @avalon.component version="1.0" name="iq.auth.Resource" lifestyle="singleton"
  * @avalon.service type="net.java.dev.openim.jabber.iq.auth.Resource"
- *
- * @version 1.0
- * @author AlAg
  */
-public class ResourceImpl extends DefaultSessionProcessor implements Resource {
-    
-    public void processText( final IMSession session, final Object context ) throws Exception {
-        ((IMClientSession)session).getUser().setResource( session.getXmlPullParser().getText().trim() );
+public class ResourceImpl
+    extends DefaultSessionProcessor
+    implements Resource
+{
+
+    public void processText( final IMSession session,
+                             final Object context )
+        throws Exception
+    {
+        ( (IMClientSession) session ).getUser().setResource( session.getXmlPullParser().getText().trim() );
     }
 
-    
+
 }
 
 
