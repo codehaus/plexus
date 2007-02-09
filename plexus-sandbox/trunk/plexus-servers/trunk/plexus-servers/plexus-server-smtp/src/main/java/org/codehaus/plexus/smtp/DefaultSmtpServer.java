@@ -46,6 +46,10 @@ import org.apache.avalon.framework.service.ServiceException;
 import org.apache.avalon.framework.service.ServiceManager;
 import org.codehaus.plexus.synapse.AbstractSynapseServer;
 import org.codehaus.plexus.synapse.handler.ServiceHandler;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
+import org.codehaus.plexus.server.DefaultServer;
+import com.sun.deploy.services.ServiceManager;
 
 /**
  * Manages the interaction between the server plugins and the
@@ -55,7 +59,7 @@ import org.codehaus.plexus.synapse.handler.ServiceHandler;
  * @author Eric Daugherty
  */
 public class DefaultSmtpServer
-    extends AbstractSynapseServer
+    extends DefaultServer
     implements Serviceable, Initializable, SmtpServer
 {
     private ServiceHandler serviceHandler;
