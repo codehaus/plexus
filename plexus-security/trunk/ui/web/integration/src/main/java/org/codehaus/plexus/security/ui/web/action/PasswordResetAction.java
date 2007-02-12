@@ -92,7 +92,7 @@ public class PasswordResetAction
             List recipients = new ArrayList();
             recipients.add( user.getEmail() );
 
-            mailer.sendAccountValidationEmail( recipients, authkey, getBaseUrl() );
+            mailer.sendPasswordResetEmail( recipients, authkey, getBaseUrl() );
 
             addActionMessage( "Password reset email has been sent." );
         }

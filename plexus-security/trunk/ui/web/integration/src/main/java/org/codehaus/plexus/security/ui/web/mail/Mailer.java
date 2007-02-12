@@ -16,10 +16,6 @@ package org.codehaus.plexus.security.ui.web.mail;
  * limitations under the License.
  */
 
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.exception.MethodInvocationException;
-import org.apache.velocity.exception.ParseErrorException;
-import org.apache.velocity.exception.ResourceNotFoundException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.mailsender.MailMessage;
 import org.codehaus.plexus.mailsender.MailSender;
@@ -31,13 +27,9 @@ import org.codehaus.plexus.security.policy.UserSecurityPolicy;
 import org.codehaus.plexus.security.policy.UserValidationSettings;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.velocity.VelocityComponent;
 
-import java.io.StringWriter;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Locale;
 
 /**
  * Mailer
@@ -50,14 +42,9 @@ public class Mailer
     extends AbstractLogEnabled
 {
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="velocity"
      */
-    private UserConfiguration config;
-
-    /**
-     * @plexus.requirement
-     */
-    private VelocityComponent velocity;
+    private MailGenerator generator;
 
     /**
      * @plexus.requirement
@@ -69,92 +56,27 @@ public class Mailer
      */
     private SecuritySystem securitySystem;
 
+    /**
+     * @plexus.requirement
+     */
+    private UserConfiguration config;
+
     public void sendAccountValidationEmail( Collection recipients, AuthenticationKey authkey, String baseUrl )
     {
+        String content = generator.generateMail( "newAccountValidationEmail", authkey, baseUrl );
+
         UserSecurityPolicy policy = securitySystem.getPolicy();
         UserValidationSettings validation = policy.getUserValidationSettings();
-        VelocityContext context = createVelocityContext( authkey, baseUrl );
-
-        sendVelocityEmail( "newAccountValidationEmail", context, recipients, validation.getEmailSubject() );
-    }
-
-    private VelocityContext createVelocityContext( AuthenticationKey authkey, String appUrl )
-    {
-        VelocityContext context = new VelocityContext();
-
-        context.put( "applicationUrl", appUrl );
-
-        String feedback = config.getString( "email.feedback.path" );
-
-        if ( feedback != null )
-        {
-            if ( feedback.startsWith( "/" ) )
-            {
-                feedback = appUrl + feedback;
-            }
-
-            context.put( "feedback", feedback );
-        }
-
-        context.put( "authkey", authkey.getKey() );
-
-        context.put( "accountId", authkey.getForPrincipal() );
-
-        SimpleDateFormat dateformatter = new SimpleDateFormat( config.getString( "application.timestamp" ), Locale.US );
-
-        context.put( "requestedOn", dateformatter.format( authkey.getDateCreated() ) );
-
-        if ( authkey.getDateExpires() != null )
-        {
-            context.put( "expiresOn", dateformatter.format( authkey.getDateExpires() ) );
-        }
-        else
-        {
-            context.put( "expiresOn", "(does not expire)" );
-        }
-        return context;
+        sendMessage( recipients, validation.getEmailSubject(), content );
     }
 
     public void sendPasswordResetEmail( Collection recipients, AuthenticationKey authkey, String baseUrl )
     {
+        String content = generator.generateMail( "passwordResetEmail", authkey, baseUrl );
+
         UserSecurityPolicy policy = securitySystem.getPolicy();
         UserValidationSettings validation = policy.getUserValidationSettings();
-        VelocityContext context = createVelocityContext( authkey, baseUrl );
-
-        sendVelocityEmail( "passwordResetEmail", context, recipients, validation.getEmailSubject() );
-    }
-
-    public void sendVelocityEmail( String templateName, VelocityContext context, Collection recipients, String subject )
-    {
-        String packageName = getClass().getPackage().getName().replace( '.', '/' );
-        String templateFile = packageName + "/template/" + templateName + ".vm";
-
-        StringWriter writer = new StringWriter();
-
-        try
-        {
-            velocity.getEngine().mergeTemplate( templateFile, context, writer );
-
-            String content = writer.getBuffer().toString();
-
-            sendMessage( recipients, subject, content );
-        }
-        catch ( ResourceNotFoundException e )
-        {
-            getLogger().error( "No such template: '" + templateFile + "'." );
-        }
-        catch ( ParseErrorException e )
-        {
-            getLogger().error( "Unable to generate email for template '" + templateFile + "': " + e.getMessage(), e );
-        }
-        catch ( MethodInvocationException e )
-        {
-            getLogger().error( "Unable to generate email for template '" + templateFile + "': " + e.getMessage(), e );
-        }
-        catch ( Exception e )
-        {
-            getLogger().error( "Unable to generate email for template '" + templateFile + "': " + e.getMessage(), e );
-        }
+        sendMessage( recipients, validation.getEmailSubject(), content );
     }
 
     public void sendMessage( Collection recipients, String subject, String content )
