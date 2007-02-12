@@ -16,23 +16,23 @@ package org.codehaus.plexus.security.ui.web.action;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.authentication.AuthenticationConstants;
+import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
+import org.codehaus.plexus.security.authentication.AuthenticationException;
+import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.TokenBasedAuthenticationDataSource;
-import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
-import org.codehaus.plexus.security.authentication.AuthenticationResult;
-import org.codehaus.plexus.security.authentication.AuthenticationConstants;
-import org.codehaus.plexus.security.authentication.AuthenticationException;
 import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.keys.KeyManagerException;
 import org.codehaus.plexus.security.keys.KeyNotFoundException;
-import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.security.system.SecuritySession;
+import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.security.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.security.ui.web.util.AutoLoginCookies;
 import org.codehaus.plexus.security.user.User;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.policy.AccountLockedException;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -125,7 +125,7 @@ public class LoginAction
 
         try
         {
-            AuthenticationKey authkey = securitySystem.getKeyManager().findKey( validateMe );
+            AuthenticationKey authkey = securitySystem.getKeyManager().findKey( resetPassword );
 
             User user = securitySystem.getUserManager().findUser( authkey.getForPrincipal() );
 
@@ -204,10 +204,10 @@ public class LoginAction
 
     public String cancel()
     {
-		return CANCEL;
-	}
+        return CANCEL;
+    }
 
-	public String getUsername()
+    public String getUsername()
     {
         return username;
     }
