@@ -94,7 +94,7 @@ public abstract class AbstractSecurityAction
     protected String getBaseUrl()
     {
         HttpServletRequest req = ServletActionContext.getRequest();
-        return req.getProtocol() + "://" + req.getServerName() +
+        return req.getScheme() + "://" + req.getServerName() +
             ( req.getServerPort() == 80 ? "" : ":" + req.getServerPort() ) + req.getContextPath();
     }
 }
