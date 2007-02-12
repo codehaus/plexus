@@ -58,7 +58,7 @@ public class MailGeneratorTest
         String content = generator.generateMail( "passwordResetEmail", authkey, "baseUrl" );
 
         assertNotNull( content );
-        assertFalse( content.contains( "$" ) ); // make sure everything is properly populate
+        assertTrue( content.indexOf( "$" ) == (-1) ); // make sure everything is properly populate
     }
 
     public void testGenerateAccountValidationMail()
@@ -70,6 +70,6 @@ public class MailGeneratorTest
         String content = generator.generateMail( "newAccountValidationEmail", authkey, "baseUrl" );
 
         assertNotNull( content );
-        assertFalse( content.contains( "$" ) ); // make sure everything is properly populate
+        assertTrue( content.indexOf( "$" ) == (-1) ); // make sure everything is properly populate
     }
 }
