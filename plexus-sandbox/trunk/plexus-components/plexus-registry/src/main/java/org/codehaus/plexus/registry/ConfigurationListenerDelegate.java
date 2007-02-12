@@ -16,8 +16,8 @@ package org.codehaus.plexus.registry;
  * limitations under the License.
  */
 
-import org.apache.commons.configuration.event.ConfigurationListener;
 import org.apache.commons.configuration.event.ConfigurationEvent;
+import org.apache.commons.configuration.event.ConfigurationListener;
 
 /**
  * Commons configuration listener that delegates to the given registry listener.
@@ -42,8 +42,18 @@ public class ConfigurationListenerDelegate
         this.registry = registry;
     }
 
-    public void configurationChanged( ConfigurationEvent configurationEvent )
+    public void configurationChanged( ConfigurationEvent event )
     {
-        listener.notifyOfConfigurationChange( registry );
+        if ( event.getPropertyName() != null )
+        {
+            if ( event.isBeforeUpdate() )
+            {
+                listener.beforeConfigurationChange( registry, event.getPropertyName(), event.getPropertyValue() );
+            }
+            else
+            {
+                listener.afterConfigurationChange( registry, event.getPropertyName(), event.getPropertyValue() );
+            }
+        }
     }
 }

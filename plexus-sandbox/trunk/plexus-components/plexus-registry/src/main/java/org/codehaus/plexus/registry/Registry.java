@@ -209,9 +209,11 @@ public interface Registry
         throws RegistryException, UnsupportedOperationException;
 
     /**
-     * Add a change listener.
+     * Add a change listener. Note that settings this on the base registry will only detect 'invalidation' events, not
+     * individual changes. You should retrieve the named sub-registry to listen for changes.
      *
      * @param listener the listener
+     * @todo this isn't ideal, so maybe fix combined configuration to re-fire it's events to it's own listeners in the c-c implementation
      */
     void addChangeListener( RegistryListener listener );
 }
