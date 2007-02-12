@@ -142,6 +142,7 @@ public class LoginAction
         }
         catch ( KeyNotFoundException e )
         {
+            getLogger().info( "Invalid key requested: " + resetPassword );
             addActionError( "Unable to find the key." );
             return ERROR;
         }
@@ -187,6 +188,7 @@ public class LoginAction
         }
         catch ( KeyNotFoundException e )
         {
+            getLogger().info( "Invalid key requested: " + validateMe );
             addActionError( "Unable to find the key." );
             return ERROR;
         }
