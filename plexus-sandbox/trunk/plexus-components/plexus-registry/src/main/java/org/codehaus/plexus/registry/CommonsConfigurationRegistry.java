@@ -78,6 +78,11 @@ public class CommonsConfigurationRegistry
 
     private CommonsConfigurationRegistry( Configuration configuration )
     {
+        if ( configuration == null )
+        {
+            throw new NullPointerException( "configuration can not be null" );
+        }
+
         this.configuration = configuration;
     }
 
