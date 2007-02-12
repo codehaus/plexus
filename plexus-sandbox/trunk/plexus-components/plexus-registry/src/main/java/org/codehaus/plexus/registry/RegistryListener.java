@@ -22,9 +22,20 @@ package org.codehaus.plexus.registry;
 public interface RegistryListener
 {
     /**
+     * Notify the object that there is about to be a configuration change.
+     *
+     * @param registry      the registry that was changed
+     * @param propertyName  the property being changed
+     * @param propertyValue the value the property is about to be changed to
+     */
+    void beforeConfigurationChange( Registry registry, String propertyName, Object propertyValue );
+
+    /**
      * Notify the object that there has been a configuration change.
      *
-     * @param registry the registry that was changed
+     * @param registry      the registry that was changed
+     * @param propertyName  the property what was changed
+     * @param propertyValue the value the property was changed to
      */
-    void notifyOfConfigurationChange( Registry registry );
+    void afterConfigurationChange( Registry registry, String propertyName, Object propertyValue );
 }
