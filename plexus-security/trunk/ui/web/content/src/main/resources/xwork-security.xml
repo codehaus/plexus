@@ -59,8 +59,9 @@
       </result>
       <result name="requires-authentication">/WEB-INF/jsp/pss/requiresAuthentication.jsp</result>
       <result name="requires-authorization">/WEB-INF/jsp/pss/accessDenied.jsp</result>
-      <result name="must-change-password" type="redirect-action">
+      <result name="security-must-change-password" type="redirect-action">
         <param name="actionName">password</param>
+        <param name="namespace">/security</param>        
       </result>
     </global-results>
 

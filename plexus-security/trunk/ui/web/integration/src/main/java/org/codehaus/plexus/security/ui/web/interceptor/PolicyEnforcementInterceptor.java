@@ -16,14 +16,17 @@ package org.codehaus.plexus.security.ui.web.interceptor;
  * limitations under the License.
  */
 
-import com.opensymphony.webwork.ServletActionContext;
+import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.interceptor.Interceptor;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.security.configuration.UserConfiguration;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystemConstants;
-
-import javax.servlet.http.HttpSession;
+import org.codehaus.plexus.security.system.SecuritySystem;
+import org.codehaus.plexus.security.system.DefaultSecuritySession;
+import org.codehaus.plexus.security.user.UserManager;
+import org.codehaus.plexus.security.user.User;
 
 /**
  * Interceptor to force the user to perform actions, when required.
@@ -35,7 +38,17 @@ public class PolicyEnforcementInterceptor
         extends AbstractLogEnabled
     implements Interceptor
 {
-   private static final String SECURITY_USER_MUST_CHANGE_PASSWORD = "must-change-password";
+   private static final String SECURITY_USER_MUST_CHANGE_PASSWORD = "security-must-change-password";
+
+    /**
+     * @plexus.requirement
+     */
+    private UserConfiguration config;
+
+    /**
+     * @plexus.requirement
+     */
+    protected SecuritySystem securitySystem;
 
     public void destroy()
     {
@@ -47,36 +60,73 @@ public class PolicyEnforcementInterceptor
         //ignore
     }
 
+    /**
+     * 1) validate that the user doesn't have to change their password, if they do then re-route accordingly
+     *
+     * @param actionInvocation
+     * @return
+     * @throws Exception
+     */
     public String intercept( ActionInvocation actionInvocation )
         throws Exception
     {
-        SecuritySession session = getSecuritySession();
 
-        if ( session != null )
+        if ( config.getBoolean( "security.policy.strict.enforcement.enabled" ) )
         {
-            if ( session.getUser().isPasswordChangeRequired() )
-            {
-                getLogger().info( "User must change password - forwarding to change password page." );
+            getLogger().debug( "Enforcement: enforcing per click security policies." );
 
+
+            ActionContext context = ActionContext.getContext();
+
+            SecuritySession securitySession =
+                    (SecuritySession) context.getSession().get( SecuritySystemConstants.SECURITY_SESSION_KEY );
+
+            if ( securitySession != null )
+            {
+                UserManager userManager = securitySystem.getUserManager();
+                User user = userManager.findUser( securitySession.getUser().getPrincipal() );
+                securitySession = new DefaultSecuritySession( securitySession.getAuthenticationResult(), user );
+                context.getSession().put( SecuritySystemConstants.SECURITY_SESSION_KEY, securitySession ); 
+            }
+            else
+            {
+                getLogger().debug( "Enforcement: no user security session detected, skipping enforcement" );
+                return actionInvocation.invoke();
+            }
+
+            if ( checkForcePasswordChange( securitySession ) )
+            {
                 return SECURITY_USER_MUST_CHANGE_PASSWORD;
             }
+            
+            return actionInvocation.invoke();
         }
-
-        return actionInvocation.invoke();
-    }
-
-    private SecuritySession getSecuritySession()
-    {
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        if ( session == null )
+        else
         {
-            getLogger().debug( "No HTTP Session exists." );
-            return null;
+            getLogger().debug( "Enforcement: not processing per click security policies." );
+            return actionInvocation.invoke();
         }
-
-        SecuritySession secSession =
-            (SecuritySession) session.getAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY );
-
-        return secSession;
     }
+
+
+    private boolean checkForcePasswordChange( SecuritySession securitySession )
+    {
+        if ( config.getBoolean( "security.policy.strict.force.password.change.enabled" ) )
+        {
+            getLogger().debug( "Enforcement: checking active user password change enabled" );
+
+            if ( securitySession.getUser().isPasswordChangeRequired() )
+            {
+                getLogger().info( "Enforcement: User must change password - forwarding to change password page." );
+
+                return true;
+            }
+            else
+            {
+                getLogger().debug( "Enforcement: User doesn't need to change password." );                
+            }
+        }
+        return false;
+    }
+
 }

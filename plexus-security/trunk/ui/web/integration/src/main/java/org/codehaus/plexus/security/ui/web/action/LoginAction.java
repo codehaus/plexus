@@ -51,7 +51,7 @@ public class LoginAction
 {
     private static final String LOGIN_SUCCESS = "security-login-success";
 
-    private static final String PASSWORD_CHANGE = "must-change-password";
+    private static final String PASSWORD_CHANGE = "security-must-change-password";
 
     private static final String ACCOUNT_LOCKED = "security-login-locked";
 
@@ -88,6 +88,13 @@ public class LoginAction
         return INPUT;
     }
 
+    /**
+     * 1) check if this is a validation authentication action
+     * 2) check if this is a reset password authentication action
+     * 3) sets up a password based authentication and passes on to webLogin()
+     *
+     * @return
+     */
     public String login()
     {
         if ( StringUtils.isNotEmpty( validateMe ) )
@@ -115,6 +122,13 @@ public class LoginAction
         return webLogin( authdatasource, rememberMe );
     }
 
+    /**
+     * 1) sets up a token based authentication
+     * 2) forces a password change requirement to the user
+     * 3) passes on to webLogin()
+     *
+     * @return
+     */
     public String resetPassword()
     {
         if ( StringUtils.isEmpty( resetPassword ) )
@@ -159,6 +173,13 @@ public class LoginAction
         }
     }
 
+    /**
+     * 1) sets up a token based authentication
+     * 2) forces a password change requirement to the user
+     * 3) passes on to webLogin()
+     *
+     * @return
+     */
     public String validated()
     {
         if ( StringUtils.isEmpty( validateMe ) )
@@ -265,6 +286,16 @@ public class LoginAction
         this.rememberMe = rememberMe;
     }
 
+
+    /**
+     * 1) attempts to authentication based on the passed in data source
+     * 2) if successful sets cookies and returns LOGIN_SUCCESS
+     * 3) if failure then check what kinda failure and return error
+     *
+     * @param authdatasource
+     * @param rememberMe
+     * @return
+     */
     private String webLogin( AuthenticationDataSource authdatasource, boolean rememberMe )
     {
         // An attempt should log out your authentication tokens first!
@@ -288,6 +319,12 @@ public class LoginAction
                     autologinCookies.setRememberMeCookie( authdatasource.getPrincipal() );
                 }
                 autologinCookies.setSignonCookie( authdatasource.getPrincipal() );
+
+                // check if user is forced to change their password (also see policy enforcement interceptor)
+                if( securitySession.getUser().isPasswordChangeRequired() )
+                {
+                    return PASSWORD_CHANGE;
+                }              
 
                 return LOGIN_SUCCESS;
             }
