@@ -1,12 +1,7 @@
-/*
- * Copyright (c) 2002-2006 by OpenSymphony
- * All rights reserved.
- */
-
 package org.codehaus.plexus.xwork.interceptor;
 
 /*
- * Copyright 2006 The Codehaus.
+ * Copyright 2006-2007 The Codehaus Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,26 +16,26 @@ package org.codehaus.plexus.xwork.interceptor;
  * limitations under the License.
  */
 
-import java.util.Iterator;
-import java.util.List;
-
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.config.entities.ExceptionMappingConfig;
 import com.opensymphony.xwork.interceptor.ExceptionHolder;
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
- * <p>
+ * <p/>
  * Exception interceptor that allows ignoring exceptions. Set the result to <code>ignore</code>
  * in your <code>xwork.xml</code> file to ignore an exception when you are catching a more general
  * one.
  * </p>
- * 
- * <p>
+ * <p/>
+ * <p/>
  * <code>
- *   &lt;exception-mapping exception="MyException" result="ignore"/>
+ * &lt;exception-mapping exception="MyException" result="ignore"/>
  * </code>
  * </p>
- * 
+ *
  * @author <a href="mailto:carlos@apache.org">Carlos Sanchez</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor" role-hint="exceptionInterceptor"

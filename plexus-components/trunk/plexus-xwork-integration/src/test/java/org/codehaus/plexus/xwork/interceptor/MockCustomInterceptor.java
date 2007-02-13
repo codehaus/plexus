@@ -1,7 +1,7 @@
 package org.codehaus.plexus.xwork.interceptor;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2006-2007 The Codehaus Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import com.opensymphony.xwork.interceptor.Interceptor;
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor role-hint="testCustomInterceptor"
-
  */
 public class MockCustomInterceptor
     implements Interceptor

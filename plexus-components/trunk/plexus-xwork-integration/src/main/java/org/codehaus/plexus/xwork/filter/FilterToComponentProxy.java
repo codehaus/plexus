@@ -1,7 +1,7 @@
 package org.codehaus.plexus.xwork.filter;
 
 /*
- * Copyright 2004-2006 The Apache Software Foundation.
+ * Copyright 2006-2007 The Codehaus Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,11 @@ package org.codehaus.plexus.xwork.filter;
  * limitations under the License.
  */
 
-/* Copyright 2004, 2005, 2006 Acegi Technology Pty Limited
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-import java.io.IOException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.xwork.PlexusLifecycleListener;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -40,28 +29,23 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.xwork.PlexusLifecycleListener;
+import java.io.IOException;
 
 /**
  * <p>Delegates <code>Filter</code> requests to a Plexus component.</p>
- * 
+ * <p/>
  * <p>This class acts as a proxy on behalf of a
  * target {@link Filter} that is instantiated by the Plexus container. It is necessary to specify which target
  * {@link Filter} should be proxied as a filter initialization parameter.</p>
- * 
+ * <p/>
  * <p>To use this filter, it is necessary to specify the following filter initialization parameter:
- *  <ul>
- *      <li><code>component</code> indicates the name of the target <code>Filter</code> defined in the container.
- *      The only requirements are that this component implements the <code>javax.servlet.Filter</code>
- *      interface and is available in the <code>Container</code> under that name.</li>
- *  </ul>
+ * <ul>
+ * <li><code>component</code> indicates the name of the target <code>Filter</code> defined in the container.
+ * The only requirements are that this component implements the <code>javax.servlet.Filter</code>
+ * interface and is available in the <code>Container</code> under that name.</li>
+ * </ul>
  * </p>
- * 
+ * <p/>
  * <p>A final optional initialization parameter, <code>lifecycle</code>, determines whether the servlet container
  * or the IoC container manages the lifecycle of the proxied filter. When possible you should write your filters to be
  * managed via the IoC container interfaces. If you cannot control the filters you wish to proxy (eg
@@ -69,7 +53,7 @@ import org.codehaus.plexus.xwork.PlexusLifecycleListener;
  * javax.servlet.Filter#init(javax.servlet.FilterConfig)} and {@link javax.servlet.Filter#destroy()} methods. If this
  * case, set the <code>lifecycle</code> initialization parameter to <code>servlet-container-managed</code>. If the
  * parameter is any other value, servlet container lifecycle methods will not be delegated through to the proxy.</p>
- * 
+ *
  * @author Ben Alex
  * @author Emmanuel Venisse (evenisse at apache dot org)
  * @author <a href="mailto:carlos@apache.org">Carlos Sanchez</a>
@@ -100,7 +84,7 @@ public class FilterToComponentProxy
 
     /**
      * Lookup the delegate {@link Filter} in Plexus container
-     * 
+     *
      * @throws ServletException if this Filter or the delegate Filter are not correctly configured
      */
     private synchronized void doInit()
@@ -198,7 +182,6 @@ public class FilterToComponentProxy
      * Allows test cases to override where container is obtained from.
      *
      * @param filterConfig which can be used to find the <code>ServletContext</code>
-     *
      * @return the Plexus container
      */
     protected PlexusContainer getContainer( FilterConfig filterConfig )
