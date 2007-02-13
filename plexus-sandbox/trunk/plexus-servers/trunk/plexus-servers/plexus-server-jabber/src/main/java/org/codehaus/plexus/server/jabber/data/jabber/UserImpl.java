@@ -22,14 +22,12 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 /**
  * @author AlAg
  * @version 1.0
- * @avalon.component version="1.0" name="User" lifestyle="transient"
- * @avalon.service type="org.codehaus.plexus.server.jabber.data.jabber.User"
+ * @plexus.component
  */
 public class UserImpl
     extends AbstractLogEnabled
     implements User
 {
-
     private String m_name;
     private String m_hostname;
     private String m_password;
@@ -208,18 +206,10 @@ public class UserImpl
     public User newInstance()
     {
         UserImpl user = new UserImpl();
+
         user.enableLogging( getLogger() );
-        try
-        {
-            user.service( m_serviceManager );
-        }
-        catch ( Exception e )
-        {
-            getLogger().error( e.getMessage(), e );
-        }
+
         return user;
     }
-
-
 }
 

@@ -4,6 +4,7 @@ import org.apache.avalon.framework.component.ComponentManager;
 import org.apache.avalon.framework.component.Composable;
 import org.apache.avalon.framework.component.ComponentException;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.PhaseExecutionException;
 import org.codehaus.plexus.lifecycle.phase.AbstractPhase;
@@ -14,7 +15,7 @@ public class ComposePhase
     private static final String COMPONENT_MANAGER_ROLE =
         ComponentManager.class.getName();
 
-    public void execute( Object object, org.codehaus.plexus.component.manager.ComponentManager manager )
+    public void execute( Object object, ComponentManager manager, ClassRealm realm )
         throws PhaseExecutionException
     {
         if ( object instanceof Composable )
