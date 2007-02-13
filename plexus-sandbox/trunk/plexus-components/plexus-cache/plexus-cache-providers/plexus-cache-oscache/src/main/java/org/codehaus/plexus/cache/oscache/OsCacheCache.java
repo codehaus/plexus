@@ -36,7 +36,7 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
  * 
  * @since 3 February, 2007
  * @version $Id$
- * @author <a href="mailto:Olivier.LAMY@accor.com">Olivier Lamy</a>
+ * @author <a href="mailto:olamy@codehaus.org">Olivier Lamy</a>
  * 
  * @plexus.component role="org.codehaus.plexus.cache.Cache" role-hint="oscache"
  */
@@ -187,18 +187,18 @@ public class OsCacheCache
             Object object = this.generalCacheAdministrator.getFromCache( key.toString(), this.getRefreshPeriod() );
             if ( object != null )
             {
-                this.osCacheStatistics.increaseCacheHits();
+                this.osCacheStatistics.hit();
             }
             else
             {
-                this.osCacheStatistics.increaseCcacheMiss();
+                this.osCacheStatistics.miss();
             }
             return object;
         }
         catch ( NeedsRefreshException e )
         {
             this.generalCacheAdministrator.cancelUpdate( key.toString() );
-            this.osCacheStatistics.increaseCcacheMiss();
+            this.osCacheStatistics.miss();
             return null;
         }
     }
@@ -211,6 +211,7 @@ public class OsCacheCache
 
     public boolean hasKey( Object key )
     {
+        // TODO if null increase/decrease statistics ?
         return this.get( key ) == null;
     }
 

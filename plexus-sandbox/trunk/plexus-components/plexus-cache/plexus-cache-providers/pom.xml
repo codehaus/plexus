@@ -28,5 +28,6 @@
     <module>plexus-cache-hashmap</module>
     <module>plexus-cache-ehcache</module>
     <module>plexus-cache-oscache</module>
+    <module>plexus-cache-whirlycache</module>
   </modules>
 </project>
