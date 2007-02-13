@@ -1,24 +1,39 @@
 /**
- * 
+ *
  */
 package org.codehaus.plexus.xwork.interceptor;
 
-import java.util.HashMap;
+/*
+ * Copyright 2006-2007 The Codehaus Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-
+import com.opensymphony.xwork.config.entities.InterceptorConfig;
+import com.opensymphony.xwork.interceptor.Interceptor;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.component.composition.CompositionException;
 import org.codehaus.plexus.xwork.PlexusLifecycleListener;
 import org.codehaus.plexus.xwork.PlexusObjectFactory;
 import org.easymock.EasyMock;
 
-import com.opensymphony.xwork.config.entities.InterceptorConfig;
-import com.opensymphony.xwork.interceptor.Interceptor;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import java.util.HashMap;
 
 /**
  * Test for {@link PlexusObjectFactory} when it attempts to lookup Custom Xwork interceptors.
+ *
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
  */
@@ -33,8 +48,8 @@ public class CustomInterceptorTest
     {
         try
         {
-            MockCustomInterceptor component = (MockCustomInterceptor) lookup( Interceptor.class.getName(),
-                                                                              "testCustomInterceptor" );
+            MockCustomInterceptor component =
+                (MockCustomInterceptor) lookup( Interceptor.class.getName(), "testCustomInterceptor" );
             assertNotNull( component );
 
         }
@@ -48,6 +63,7 @@ public class CustomInterceptorTest
 
     /**
      * Tests an Interceptor lookup using the {@link PlexusObjectFactory}.
+     *
      * @throws Exception
      */
     public void testLookupWithPlexusObjectFactory()
@@ -55,8 +71,8 @@ public class CustomInterceptorTest
     {
         PlexusObjectFactory objFactory = new PlexusObjectFactory();
 
-        InterceptorConfig config = new InterceptorConfig( "testCustomInterceptor", MockCustomInterceptor.class,
-                                                          new HashMap() );
+        InterceptorConfig config =
+            new InterceptorConfig( "testCustomInterceptor", MockCustomInterceptor.class, new HashMap() );
 
         ServletContext servletContext = (ServletContext) EasyMock.createNiceMock( ServletContext.class );
 
@@ -64,7 +80,7 @@ public class CustomInterceptorTest
 
         EasyMock.expect( servletContext.getAttribute( "webwork.plexus.container" ) ).andReturn( container ).anyTimes();
 
-        EasyMock.replay( new Object[] { servletContext } );
+        EasyMock.replay( new Object[]{servletContext} );
 
         PlexusLifecycleListener listener = new PlexusLifecycleListener();
 

@@ -1,5 +1,21 @@
 package org.codehaus.plexus.xwork;
 
+/*
+ * Copyright 2006-2007 The Codehaus Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
@@ -15,7 +31,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-
 import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
@@ -38,18 +53,6 @@ public class PlexusLifecycleListener
 
     public static final String KEY = "webwork.plexus.container";
 
-    private static boolean loaded = false;
-
-    private static void setLoaded( boolean loaded )
-    {
-        PlexusLifecycleListener.loaded = loaded;
-    }
-
-    public static boolean isLoaded()
-    {
-        return loaded;
-    }
-
     public void contextInitialized( ServletContextEvent servletContextEvent )
     {
         try
@@ -69,7 +72,8 @@ public class PlexusLifecycleListener
 
             ClassWorld cw = new ClassWorld( "plexus.xwork", getClass().getClassLoader() );
 
-            PlexusContainer pc = new DefaultPlexusContainer( "xwork", containerContext, setConfigurationFile( ctx ), cw );
+            PlexusContainer pc =
+                new DefaultPlexusContainer( "xwork", containerContext, setConfigurationFile( ctx ), cw );
 
             // XXX when some app using xwork is deployed using the appserver, the parent classloader used
             // above will be the application container's classrealm.
@@ -86,8 +90,8 @@ public class PlexusLifecycleListener
 
             if ( getClass().getClassLoader() instanceof ClassRealm )
             {
-                ( (ClassRealm) cw.getRealms().iterator().next() ).setParentRealm( ( (ClassRealm) getClass()
-                    .getClassLoader() ) );
+                ( (ClassRealm) cw.getRealms().iterator().next() ).setParentRealm(
+                    (ClassRealm) getClass().getClassLoader() );
             }
 
             // So basically what this means is that for component lookups, the parent realm
@@ -103,7 +107,6 @@ public class PlexusLifecycleListener
         {
             throw new RuntimeException( e );
         }
-        setLoaded( true );
     }
 
     private Map initializeContext( ServletContext ctx, Properties properties )
@@ -185,8 +188,7 @@ public class PlexusLifecycleListener
     private File setConfigurationFile( ServletContext ctx )
         throws PlexusConfigurationResourceException
     {
-        URL url =
-            Thread.currentThread().getContextClassLoader().getResource( "META-INF/plexus/application.xml" );
+        URL url = Thread.currentThread().getContextClassLoader().getResource( "META-INF/plexus/application.xml" );
 
         if ( url == null )
         {
@@ -203,7 +205,7 @@ public class PlexusLifecycleListener
         {
             pc.dispose();
         }
-        setLoaded( false );
+        ctx.removeAttribute( KEY );
     }
 
     public void sessionCreated( HttpSessionEvent httpSessionEvent )

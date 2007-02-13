@@ -1,7 +1,7 @@
 package org.codehaus.plexus.xwork.action;
 
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2006-2007 The Codehaus Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,11 @@ package org.codehaus.plexus.xwork.action;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import com.opensymphony.webwork.interceptor.SessionAware;
 import com.opensymphony.xwork.ActionSupport;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.LogEnabled;
@@ -45,7 +46,7 @@ public abstract class PlexusActionSupport
 
     public void setSession( Map map )
     {
-       this.session = map;
+        this.session = map;
     }
 
     public void enableLogging( Logger logger )

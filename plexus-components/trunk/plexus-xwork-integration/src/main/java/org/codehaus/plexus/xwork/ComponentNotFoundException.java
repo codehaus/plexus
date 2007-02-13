@@ -1,7 +1,7 @@
 package org.codehaus.plexus.xwork;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Copyright 2006-2007 The Codehaus Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package org.codehaus.plexus.xwork;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
- * ComponentNotFoundException - Component Lookup Failed due to lack of matching implementation for specified role/class.  
+ * ComponentNotFoundException - Component Lookup Failed due to lack of matching implementation for specified role/class.
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$

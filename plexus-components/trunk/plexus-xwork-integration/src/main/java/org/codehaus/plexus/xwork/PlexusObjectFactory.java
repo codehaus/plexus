@@ -1,10 +1,20 @@
 package org.codehaus.plexus.xwork;
 
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.composition.CompositionException;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.StringUtils;
+/*
+ * Copyright 2006-2007 The Codehaus Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 import com.opensymphony.webwork.util.ObjectFactoryInitializable;
 import com.opensymphony.xwork.Action;
@@ -17,9 +27,13 @@ import com.opensymphony.xwork.config.entities.ResultConfig;
 import com.opensymphony.xwork.interceptor.Interceptor;
 import com.opensymphony.xwork.util.OgnlUtil;
 import com.opensymphony.xwork.validator.Validator;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.composition.CompositionException;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.util.StringUtils;
 
 import javax.servlet.ServletContext;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,12 +51,12 @@ public class PlexusObjectFactory
 {
     private static final String PLEXUS_COMPONENT_TYPE = "plexus.component.type";
 
-    private static final String PLEXUS_NOT_LOADED_ERROR_MSG = "********** FATAL ERROR STARTING UP "
-        + "PLEXUS-WEBWORK INTEGRATION **********\n"
-        + "Looks like the Plexus listener was not configured for your web app! \n"
-        + "You need to add the following to web.xml: \n" + "\n" + "    <listener>\n"
-        + "        <listener-class>org.codehaus.plexus.xwork.PlexusLifecycleListener</listener-class>\n"
-        + "    </listener>";
+    private static final String PLEXUS_NOT_LOADED_ERROR_MSG = "********** FATAL ERROR STARTING UP " +
+        "PLEXUS-WEBWORK INTEGRATION **********\n" +
+        "Looks like the Plexus listener was not configured for your web app! \n" +
+        "You need to add the following to web.xml: \n" + "\n" + "    <listener>\n" +
+        "        <listener-class>org.codehaus.plexus.xwork.PlexusLifecycleListener</listener-class>\n" +
+        "    </listener>";
 
     // ----------------------------------------------------------------------
     // Privates
@@ -60,14 +74,13 @@ public class PlexusObjectFactory
 
     public void init( ServletContext servletContext )
     {
-        if ( !PlexusLifecycleListener.isLoaded() )
-        {
-            // uh oh! looks like the lifecycle listener wasn't installed. Let's inform the user
-            servletContext.log( PLEXUS_NOT_LOADED_ERROR_MSG );
-            return;
-        }
-
         base = (PlexusContainer) servletContext.getAttribute( PlexusLifecycleListener.KEY );
+
+        // uh oh! looks like the lifecycle listener wasn't installed. Let's inform the user
+        if ( base == null )
+        {
+            servletContext.log( PLEXUS_NOT_LOADED_ERROR_MSG );
+        }
     }
 
     public Object buildAction( String actionName, String namespace, ActionConfig config, Map extraContext )
@@ -195,10 +208,9 @@ public class PlexusObjectFactory
     /**
      * Used to provide useful exception messages to a web-app during a lookup in {@link #getClassInstance(String)}
      *
-     * @param clazz the type of class to look up
+     * @param clazz     the type of class to look up
      * @param className the name of the specific class (or plexus role) to look up.
      * @return the class that was found.
-     *
      * @throws ComponentNotFoundException if the component was simply not found.
      * @throws ComponentCreationException if the component was found, but failed to be created correctly.
      */
@@ -288,8 +300,8 @@ public class PlexusObjectFactory
             // Fall Thru to next lookup Technique.
         }
 
-        getLogger().debug( "All standard lookups have failed for getClassInstance( \"" + className
-                               + "\" ), the following exceptions detail the problem." );
+        getLogger().debug( "All standard lookups have failed for getClassInstance( \"" + className +
+            "\" ), the following exceptions detail the problem." );
 
         Iterator it = exceptions.iterator();
         while ( it.hasNext() )
@@ -368,14 +380,13 @@ public class PlexusObjectFactory
      * Specialized Lookup supplement for standard plexus process, used to differentiate between an object
      * that just doesn't match the provided criteria, and one that did match, but failed to be created due to
      * component composition issues.
-     *
+     * <p/>
      * Used to provide useful exception messages to a web-app during a lookup in {@link #getClassInstance(String)} and
-     * {@link #lookup(String, String, Map)}
+     * {@link #lookup(String,String,Map)}
      *
-     * @param role the component role to look up
+     * @param role     the component role to look up
      * @param roleHint the hint for the plexus role (if required).
      * @return the class that was found.
-     *
      * @throws ComponentNotFoundException if the component was simply not found.
      * @throws ComponentCreationException if the component was found, but failed to be created correctly.
      */
@@ -398,12 +409,13 @@ public class PlexusObjectFactory
             {
                 if ( cause instanceof CompositionException )
                 {
-                    throw new ComponentCreationException( "Unable look up " + role + ":" + roleHint
-                        + " due to plexus misconfiguration.", e );
+                    throw new ComponentCreationException(
+                        "Unable look up " + role + ":" + roleHint + " due to plexus misconfiguration.", e );
                 }
                 cause = cause.getCause();
             }
-            throw new ComponentNotFoundException( "Failed lookup for " + role + ":" + roleHint + " in realm " + plexus.getLookupRealm(), e );
+            throw new ComponentNotFoundException(
+                "Failed lookup for " + role + ":" + roleHint + " in realm " + plexus.getLookupRealm(), e );
         }
     }
 

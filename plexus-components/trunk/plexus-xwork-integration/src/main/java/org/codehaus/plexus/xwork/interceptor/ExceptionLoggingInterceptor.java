@@ -1,7 +1,7 @@
 package org.codehaus.plexus.xwork.interceptor;
 
 /*
- * Copyright 2006 The Codehaus.
+ * Copyright 2006-2007 The Codehaus Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,14 @@ package org.codehaus.plexus.xwork.interceptor;
  * limitations under the License.
  */
 
+import com.opensymphony.xwork.ActionInvocation;
+import com.opensymphony.xwork.interceptor.ExceptionHolder;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 
-import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.ExceptionHolder;
-
 /**
  * Exception interceptor that will also log the exception.
- * 
+ *
  * @author <a href="mailto:nramirez@exist.com">Napoleon Esmundo C. Ramirez</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor" role-hint="exceptionLogging"

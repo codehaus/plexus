@@ -1,7 +1,7 @@
 package org.codehaus.plexus.xwork.action;
 
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2006-2007 The Codehaus Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@ package org.codehaus.plexus.xwork.action;
 
 import org.codehaus.plexus.PlexusTestCase;
 
-import java.io.PrintStream;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.FilterOutputStream;
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 /**
  * ActionLoggingTest:
@@ -38,7 +38,8 @@ public class ActionLoggingTest
     StringBuffer testOutput = new StringBuffer();
 
 
-    public void setUp() throws Exception
+    public void setUp()
+        throws Exception
     {
         super.setUp();
 
@@ -87,7 +88,7 @@ public class ActionLoggingTest
         public void write( byte byteArray[] )
             throws IOException
         {
-            testOutput.append( new String ( byteArray ) );
+            testOutput.append( new String( byteArray ) );
             stream.write( byteArray );
         }
 
