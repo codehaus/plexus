@@ -157,6 +157,11 @@
           <role-hint>userPermissions</role-hint>
           <field-name>userPermissionsCache</field-name>
         </requirement>
+         <requirement>
+          <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+          <role-hint>effectiveRoleSet</role-hint>
+          <field-name>effectiveRoleSetCache</field-name>
+        </requirement>
       </requirements>
     </component>
 
