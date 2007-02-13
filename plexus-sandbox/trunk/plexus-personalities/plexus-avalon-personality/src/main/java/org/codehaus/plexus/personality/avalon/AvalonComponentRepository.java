@@ -39,7 +39,7 @@ public class AvalonComponentRepository
              &&
              !componentDescriptor.getRoleHint().equals("")
              &&
-             !hasComponent( selectorRole ) )
+             !hasComponent( selectorRole, null ) )
         {
             ComponentDescriptor d = new ComponentDescriptor();
 

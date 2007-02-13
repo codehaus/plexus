@@ -10,9 +10,6 @@
  */
 package org.codehaus.plexus.server.jabber.jabber;
 
-
-import org.apache.avalon.framework.service.ServiceManager;
-
 import org.xmlpull.v1.XmlPullParser;
 
 import org.codehaus.plexus.server.jabber.ServerParameters;
@@ -24,36 +21,16 @@ import org.codehaus.plexus.server.jabber.session.IMSession;
 /**
  * @author AlAg
  * @version 1.0
- * @avalon.component version="1.0" name="Streams" lifestyle="singleton"
- * @avalon.service type="org.codehaus.plexus.server.jabber.jabber.Streams"
+ * @plexus.component
  */
 public class StreamsImpl
     extends DefaultSessionProcessor
     implements Streams
 {
-
+    /** @plexus.requirement */
     protected ServerParameters m_serverParameters;
+
     protected String m_namespace;
-
-    /**
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.ServerParameters:1.0"  key="ServerParameters"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.jabber.Error:1.0" key="Error"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.jabber.server.Iq:1.0" key="server.Iq"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.jabber.server.dialback.Result:1.0" key="server.dialback.Result"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.jabber.server.dialback.Verify:1.0" key="server.dialback.Verify"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.jabber.server.Message:1.0" key="server.Message"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.jabber.server.Presence:1.0" key="server.Presence"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.jabber.client.Iq:1.0" key="client.Iq"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.jabber.client.Presence:1.0" key="client.Presence"
-     * @avalon.dependency type="org.codehaus.plexus.server.jabber.jabber.client.Message:1.0" key="client.Message"
-     */
-    public void service( ServiceManager serviceManager )
-        throws org.apache.avalon.framework.service.ServiceException
-    {
-        m_serverParameters = (ServerParameters) serviceManager.lookup( "ServerParameters" );
-        super.service( serviceManager );
-    }
-
 
     public void process( final IMSession session,
                          final Object context )

@@ -14,13 +14,10 @@ package org.codehaus.plexus.server.jabber.data.storage;
 import java.io.File;
 
 import org.codehaus.plexus.server.jabber.tools.XStreamStore;
-
-import org.apache.avalon.framework.logger.AbstractLogEnabled;
-import org.apache.avalon.framework.activity.Initializable;
-import org.apache.avalon.framework.context.Context;
-import org.apache.avalon.framework.context.ContextException;
-import org.apache.avalon.framework.context.Contextualizable;
-
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
 
 /**
  * @author AlAg
@@ -30,7 +27,7 @@ import org.apache.avalon.framework.context.Contextualizable;
  */
 public class PrivateRepositoryHolderImpl
     extends AbstractLogEnabled
-    implements PrivateRepositoryHolder, Contextualizable, Initializable
+    implements PrivateRepositoryHolder, Contextualizable
 {
 
 

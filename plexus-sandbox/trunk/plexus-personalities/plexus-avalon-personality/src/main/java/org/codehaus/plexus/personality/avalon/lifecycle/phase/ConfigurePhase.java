@@ -9,11 +9,12 @@ import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.lifecycle.phase.AbstractPhase;
 import org.codehaus.plexus.personality.avalon.AvalonConfiguration;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.PhaseExecutionException;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 
 public class ConfigurePhase
     extends AbstractPhase
 {
-    public void execute( Object object, ComponentManager manager )
+    public void execute( Object object, ComponentManager manager, ClassRealm realm )
         throws PhaseExecutionException
     {
         if ( object instanceof Configurable )
