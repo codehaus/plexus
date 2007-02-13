@@ -1,4 +1,9 @@
-package org.codehaus.plexus.cache.oscache;
+package org.codehaus.plexus.cache.whirly;
+
+import org.codehaus.plexus.cache.CacheStatistics;
+import org.codehaus.plexus.cache.AbstractCacheStatistics;
+
+import com.whirlycott.cache.Cache;
 
 /*
  * Copyright 2001-2007 The Codehaus.
@@ -15,24 +20,20 @@ package org.codehaus.plexus.cache.oscache;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import org.codehaus.plexus.cache.CacheStatistics;
-import org.codehaus.plexus.cache.AbstractCacheStatistics;
-
-import com.opensymphony.oscache.base.Cache;
 
 /**
  * @since 3 févr. 07
  * @version $Id$
  * @author <a href="mailto:olamy@codehaus.org">Olivier Lamy</a>
  */
-public class OsCacheStatistics
+public class WhirlyCacheStatistics
     extends AbstractCacheStatistics
     implements CacheStatistics
 {
 
     private Cache cache;
 
-    protected OsCacheStatistics( Cache cache )
+    protected WhirlyCacheStatistics( Cache cache )
     {
         super();
         this.cache = cache;
@@ -43,7 +44,7 @@ public class OsCacheStatistics
      */
     public long getSize()
     {
-        return this.cache.getNbEntries();
+        return this.cache.size();
     }
 
 }
