@@ -52,6 +52,10 @@
             <level>WARN</level>
           </level>
           <level>
+            <hierarchy>com.opensymphony.xwork.interceptor</hierarchy>
+            <level>DEBUG</level>
+          </level>
+          <level>
             <hierarchy>freemarker</hierarchy>
             <level>INFO</level>
           </level>

@@ -45,7 +45,7 @@ public class AutoLoginInterceptor
     extends AbstractLogEnabled
     implements Interceptor
 {
-    static final String PASSWORD_CHANGE = "must-change-password";
+    static final String PASSWORD_CHANGE = "security-must-change-password";
 
     static final String ACCOUNT_LOCKED = "security-login-locked";
 

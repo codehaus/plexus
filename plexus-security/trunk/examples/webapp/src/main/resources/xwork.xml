@@ -10,16 +10,19 @@
        ==================================================================  -->
 
   <package name="root" extends="webwork-default" namespace="/">
+
     <interceptors>
       <interceptor name="pssForceAdminUser" class="pssForceAdminUserInterceptor"/>
       <interceptor name="pssEnvCheck" class="pssEnvironmentCheckInterceptor"/>
       <interceptor name="pssAutoLogin" class="pssAutoLoginInterceptor"/>
       <interceptor name="pssSecureActions" class="pssSecureActionInterceptor"/>
+      <interceptor name="pssPolicyEnforcement" class="pssPolicyEnforcementInterceptor"/>
       <interceptor-stack name="securedStack">
         <interceptor-ref name="defaultStack"/>
         <interceptor-ref name="pssEnvCheck"/>
         <interceptor-ref name="pssForceAdminUser"/>
         <interceptor-ref name="pssAutoLogin"/>
+        <interceptor-ref name="pssPolicyEnforcement"/>
         <interceptor-ref name="pssSecureActions"/>
       </interceptor-stack>
       <interceptor-stack name="securedPrepareParamsStack">
@@ -27,6 +30,7 @@
         <interceptor-ref name="pssEnvCheck"/>
         <interceptor-ref name="pssForceAdminUser"/>
         <interceptor-ref name="pssAutoLogin"/>
+        <interceptor-ref name="pssPolicyEnforcement"/>
         <interceptor-ref name="pssSecureActions"/>
       </interceptor-stack>
     </interceptors>
@@ -46,6 +50,11 @@
 
       <result name="security-admin-user-needed" type="redirect-action">
         <param name="actionName">addadmin</param>
+        <param name="namespace">/security</param>
+      </result>
+
+      <result name="security-must-change-password" type="redirect-action">
+        <param name="actionName">password</param>
         <param name="namespace">/security</param>
       </result>
 
