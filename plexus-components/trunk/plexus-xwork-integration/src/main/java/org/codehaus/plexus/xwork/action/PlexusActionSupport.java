@@ -33,6 +33,7 @@ import java.util.Map;
  *
  * @author Jesse McConnell <jesse@codehaus.org>
  * @version $Id:$
+ * @noinspection AbstractClassExtendsConcreteClass,CloneableClassInSecureContext,CloneableClassWithoutClone
  */
 public abstract class PlexusActionSupport
     extends ActionSupport
@@ -46,6 +47,7 @@ public abstract class PlexusActionSupport
 
     public void setSession( Map map )
     {
+        //noinspection AssignmentToCollectionOrArrayFieldFromParameter
         this.session = map;
     }
 

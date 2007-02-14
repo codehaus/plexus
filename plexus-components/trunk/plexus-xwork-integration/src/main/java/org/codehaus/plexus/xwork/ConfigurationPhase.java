@@ -34,13 +34,14 @@ import javax.servlet.ServletContext;
  *
  * @todo this is not an ideal way to do this - it would be good for the expression evaluation parts of Plexus
  * to be customisable without modifying the lifecycle
+ * @deprecated
  */
 public class ConfigurationPhase
     extends AbstractPhase
 {
     public static final String DEFAULT_CONFIGURATOR_ID = "basic";
 
-    public void execute( Object component, ComponentManager manager, ClassRealm lookupRealm )
+    public void execute( Object component, ComponentManager manager, ClassRealm realm )
         throws PhaseExecutionException
     {
         try
@@ -55,7 +56,7 @@ public class ConfigurationPhase
             }
 
             ComponentConfigurator componentConfigurator = (ComponentConfigurator) manager.getContainer().lookup(
-                ComponentConfigurator.ROLE, configuratorId, lookupRealm );
+                ComponentConfigurator.ROLE, configuratorId, realm );
 
             if ( manager.getComponentDescriptor().hasConfiguration() )
             {
@@ -64,8 +65,7 @@ public class ConfigurationPhase
 
                 componentConfigurator.configureComponent( component,
                                                           manager.getComponentDescriptor().getConfiguration(),
-                                                          new ServletExpressionEvaluator( servletContext ),
-                                                          lookupRealm );
+                                                          new ServletExpressionEvaluator( servletContext ), realm );
             }
         }
         catch ( ComponentLookupException e )

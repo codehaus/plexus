@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.codehaus.plexus.xwork.interceptor;
 
 /*
@@ -27,13 +24,18 @@ package org.codehaus.plexus.xwork.interceptor;
 public class MockComponentImpl
     implements MockComponent
 {
+    private String result;
 
     /* (non-Javadoc)
-     * @see org.codehaus.plexus.xwork.interceptor.TestComponent#execute()
-     */
+    * @see org.codehaus.plexus.xwork.interceptor.TestComponent#execute()
+    */
     public void displayResult( String result )
     {
-        System.out.println( result );
+        this.result = result;
     }
 
+    public String getResult()
+    {
+        return result;
+    }
 }

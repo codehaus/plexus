@@ -43,28 +43,21 @@ public class CustomInterceptorTest
 
     /**
      * Tests a plain Interceptor lookup that <em>does not</em> use the {@link PlexusObjectFactory}
+     *
+     * @throws Exception on errors
      */
     public void testLookup()
+        throws Exception
     {
-        try
-        {
-            MockCustomInterceptor component =
-                (MockCustomInterceptor) lookup( Interceptor.class.getName(), "testCustomInterceptor" );
-            assertNotNull( component );
-
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-            fail( "Unexpected Exception" );
-        }
-
+        MockCustomInterceptor component =
+            (MockCustomInterceptor) lookup( Interceptor.class.getName(), "testCustomInterceptor" );
+        assertNotNull( component );
     }
 
     /**
      * Tests an Interceptor lookup using the {@link PlexusObjectFactory}.
      *
-     * @throws Exception
+     * @throws Exception on errors
      */
     public void testLookupWithPlexusObjectFactory()
         throws Exception
@@ -88,17 +81,16 @@ public class CustomInterceptorTest
 
         objFactory.init( servletContext );
 
+        //noinspection CatchGenericClass,OverlyBroadCatchBlock
         try
         {
-            Interceptor interceptor = objFactory.buildInterceptor( config, new HashMap() );
+            objFactory.buildInterceptor( config, new HashMap() );
 
             fail( "Expected CompositionException" );
-            //assertNotNull( interceptor );
         }
         catch ( Exception e )
         {
             assertEquals( CompositionException.class.getName(), e.getCause().getClass().getName() );
         }
-
     }
 }

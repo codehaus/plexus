@@ -39,6 +39,7 @@ import java.util.List;
  * @author <a href="mailto:carlos@apache.org">Carlos Sanchez</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor" role-hint="exceptionInterceptor"
+ * @noinspection ClassNameSameAsAncestorName,ProhibitedExceptionDeclared,ProhibitedExceptionThrown
  */
 public class ExceptionMappingInterceptor
     extends com.opensymphony.xwork.interceptor.ExceptionMappingInterceptor
@@ -59,7 +60,7 @@ public class ExceptionMappingInterceptor
         catch ( Exception e )
         {
             List exceptionMappings = invocation.getProxy().getConfig().getExceptionMappings();
-            String mappedResult = this.findResultFromExceptions( exceptionMappings, e );
+            String mappedResult = this.findResultFromExceptionMappings( exceptionMappings, e );
             if ( mappedResult != null )
             {
                 result = mappedResult;
@@ -78,7 +79,7 @@ public class ExceptionMappingInterceptor
         return result;
     }
 
-    private String findResultFromExceptions( List exceptionMappings, Throwable t )
+    private String findResultFromExceptionMappings( List exceptionMappings, Throwable t )
     {
         String result = null;
 

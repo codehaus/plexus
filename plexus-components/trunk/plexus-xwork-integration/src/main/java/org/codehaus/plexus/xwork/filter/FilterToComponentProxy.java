@@ -64,15 +64,13 @@ public class FilterToComponentProxy
 {
     private static final Log log = LogFactory.getLog( FilterToComponentProxy.class );
 
-    private ServletContext ctx;
-
     private Filter delegate;
 
     private FilterConfig filterConfig;
 
-    private boolean initialized = false;
+    private boolean initialized;
 
-    private boolean servletContainerManaged = false;
+    private boolean servletContainerManaged;
 
     public void init( FilterConfig filterConfig )
         throws ServletException
@@ -87,7 +85,7 @@ public class FilterToComponentProxy
      *
      * @throws ServletException if this Filter or the delegate Filter are not correctly configured
      */
-    private synchronized void doInit()
+    private void doInit()
         throws ServletException
     {
         if ( initialized )
@@ -100,7 +98,7 @@ public class FilterToComponentProxy
 
         String param = filterConfig.getInitParameter( "component" );
 
-        if ( ( param != null ) && !param.equals( "" ) )
+        if ( param != null && !"".equals( param ) )
         {
             componentName = param;
         }
@@ -124,9 +122,10 @@ public class FilterToComponentProxy
             throw new ServletException( "Plexus container not found" );
         }
 
-        Object object = null;
+        Object object;
         try
         {
+            //noinspection deprecation
             object = container.lookup( componentName );
         }
         catch ( ComponentLookupException e )
@@ -172,7 +171,7 @@ public class FilterToComponentProxy
 
     public void destroy()
     {
-        if ( ( delegate != null ) && servletContainerManaged )
+        if ( delegate != null && servletContainerManaged )
         {
             delegate.destroy();
         }
@@ -186,7 +185,7 @@ public class FilterToComponentProxy
      */
     protected PlexusContainer getContainer( FilterConfig filterConfig )
     {
-        ctx = filterConfig.getServletContext();
+        ServletContext ctx = filterConfig.getServletContext();
 
         return (PlexusContainer) ctx.getAttribute( PlexusLifecycleListener.KEY );
     }
