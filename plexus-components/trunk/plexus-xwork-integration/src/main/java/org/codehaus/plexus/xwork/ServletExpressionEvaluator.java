@@ -27,6 +27,7 @@ import java.io.File;
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  * @todo possibly general purpose somewhere else in plexus, and it should be part of a delegating chain to a pure sysprop evaluator
+ * @deprecated
  */
 public class ServletExpressionEvaluator
     implements ExpressionEvaluator
