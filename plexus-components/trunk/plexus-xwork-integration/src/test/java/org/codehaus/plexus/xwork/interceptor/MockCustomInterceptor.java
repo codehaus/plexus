@@ -27,11 +27,19 @@ import com.opensymphony.xwork.interceptor.Interceptor;
 public class MockCustomInterceptor
     implements Interceptor
 {
-
     /**
      * @plexus.requirement
      */
-    MockComponent testComponent;
+    private MockComponent testComponent;
+
+    public MockCustomInterceptor()
+    {
+    }
+
+    public MockCustomInterceptor( MockComponent testComponent )
+    {
+        this.testComponent = testComponent;
+    }
 
     /* (non-Javadoc)
      * @see com.opensymphony.xwork.interceptor.Interceptor#destroy()
@@ -49,23 +57,15 @@ public class MockCustomInterceptor
         // do nothing
     }
 
-    /* (non-Javadoc)
-     * @see com.opensymphony.xwork.interceptor.Interceptor#intercept(com.opensymphony.xwork.ActionInvocation)
+    /**
+     * @noinspection ProhibitedExceptionDeclared
      */
     public String intercept( ActionInvocation invocation )
         throws Exception
     {
         String result = "Hello Custom Interceptor";
 
-        try
-        {
-            testComponent.displayResult( result );
-
-        }
-        catch ( Exception e )
-        {
-            throw e;
-        }
+        testComponent.displayResult( result );
 
         return result;
     }

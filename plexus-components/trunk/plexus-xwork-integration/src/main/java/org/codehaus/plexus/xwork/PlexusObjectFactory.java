@@ -44,6 +44,7 @@ import java.util.Map;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  * @version $Id$
+ * @noinspection ProhibitedExceptionDeclared
  */
 public class PlexusObjectFactory
     extends ObjectFactory
@@ -86,14 +87,15 @@ public class PlexusObjectFactory
     public Object buildAction( String actionName, String namespace, ActionConfig config, Map extraContext )
         throws Exception
     {
-        if ( extraContext == null )
+        Map context = extraContext;
+        if ( context == null )
         {
-            extraContext = new HashMap();
+            context = new HashMap();
         }
 
-        extraContext.put( PLEXUS_COMPONENT_TYPE, Action.class.getName() );
+        context.put( PLEXUS_COMPONENT_TYPE, Action.class.getName() );
 
-        return super.buildAction( actionName, namespace, config, extraContext );
+        return super.buildAction( actionName, namespace, config, context );
     }
 
     public Interceptor buildInterceptor( InterceptorConfig interceptorConfig, Map interceptorRefParams )
@@ -107,6 +109,7 @@ public class PlexusObjectFactory
         String message;
         Throwable cause;
 
+        //noinspection ErrorNotRethrown
         try
         {
             Map extraContext = new HashMap();
@@ -152,14 +155,15 @@ public class PlexusObjectFactory
     public Result buildResult( ResultConfig resultConfig, Map extraContext )
         throws Exception
     {
-        if ( extraContext == null )
+        Map context = extraContext;
+        if ( context == null )
         {
-            extraContext = new HashMap();
+            context = new HashMap();
         }
 
-        extraContext.put( PLEXUS_COMPONENT_TYPE, Result.class.getName() );
+        context.put( PLEXUS_COMPONENT_TYPE, Result.class.getName() );
 
-        return super.buildResult( resultConfig, extraContext );
+        return super.buildResult( resultConfig, context );
     }
 
     public Validator buildValidator( String className, Map params, Map extraContext )
@@ -384,6 +388,7 @@ public class PlexusObjectFactory
      * Used to provide useful exception messages to a web-app during a lookup in {@link #getClassInstance(String)} and
      * {@link #lookup(String,String,Map)}
      *
+     * @param plexus   the plexus container to use for looking up the component
      * @param role     the component role to look up
      * @param roleHint the hint for the plexus role (if required).
      * @return the class that was found.

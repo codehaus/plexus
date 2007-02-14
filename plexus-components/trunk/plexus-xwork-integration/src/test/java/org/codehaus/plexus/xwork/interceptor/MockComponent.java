@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.codehaus.plexus.xwork.interceptor;
 
 /*
@@ -26,6 +23,5 @@ public interface MockComponent
 {
     String ROLE = MockComponent.class.getName();
 
-    public void displayResult( String result );
-
+    void displayResult( String result );
 }

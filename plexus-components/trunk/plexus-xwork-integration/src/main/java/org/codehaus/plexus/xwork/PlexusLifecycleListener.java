@@ -32,6 +32,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,8 +73,7 @@ public class PlexusLifecycleListener
 
             ClassWorld cw = new ClassWorld( "plexus.xwork", getClass().getClassLoader() );
 
-            PlexusContainer pc =
-                new DefaultPlexusContainer( "xwork", containerContext, setConfigurationFile( ctx ), cw );
+            PlexusContainer pc = new DefaultPlexusContainer( "xwork", containerContext, getConfigurationFile(), cw );
 
             // XXX when some app using xwork is deployed using the appserver, the parent classloader used
             // above will be the application container's classrealm.
@@ -101,10 +101,12 @@ public class PlexusLifecycleListener
         }
         catch ( PlexusContainerException e )
         {
+            //noinspection ProhibitedExceptionThrown
             throw new RuntimeException( e );
         }
         catch ( PlexusConfigurationResourceException e )
         {
+            //noinspection ProhibitedExceptionThrown
             throw new RuntimeException( e );
         }
     }
@@ -145,7 +147,7 @@ public class PlexusLifecycleListener
             // bwalding: I think we'd be better off not using this exception swallower!
             properties = PropertyUtils.loadProperties( url );
         }
-        catch ( Exception e )
+        catch ( MalformedURLException e )
         {
             // michal: I don't think it is that good idea to ignore this error.
             // bwalding: it's actually pretty difficult to get here as the PropertyUtils.loadProperties absorbs all Exceptions
@@ -166,9 +168,6 @@ public class PlexusLifecycleListener
         return properties;
     }
 
-    /**
-     * Set plexus.home context variable
-     */
     private static void setPlexusHome( ServletContext context, Properties contexProperties )
     {
         String realPath = context.getRealPath( "/WEB-INF" );
@@ -185,16 +184,17 @@ public class PlexusLifecycleListener
         }
     }
 
-    private File setConfigurationFile( ServletContext ctx )
+    private File getConfigurationFile()
         throws PlexusConfigurationResourceException
     {
         URL url = Thread.currentThread().getContextClassLoader().getResource( "META-INF/plexus/application.xml" );
 
-        if ( url == null )
+        File f = null;
+        if ( url != null )
         {
-            return null;
+            f = new File( url.getFile() );
         }
-        return new File( url.getFile() );
+        return f;
     }
 
     public void contextDestroyed( ServletContextEvent servletContextEvent )
