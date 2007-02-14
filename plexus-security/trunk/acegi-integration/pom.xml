@@ -47,6 +47,12 @@
       <groupId>org.codehaus.plexus.security</groupId>
       <artifactId>plexus-security-authentication-api</artifactId>
     </dependency>
+    <!-- TODO: doesn't work with new container for some reason -->
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-10</version>
+    </dependency>
   </dependencies>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/acegi-integration</connection>
