@@ -32,11 +32,10 @@ import javax.servlet.jsp.jstl.core.ConditionalTagSupport;
  * IfAuthorizedTag:
  *
  * @author Jesse McConnell <jesse@codehaus.org>
- * @version $Id:$
+ * @version $Id$
  */
 public class IfAuthorizedTag
     extends ConditionalTagSupport
-
 {
     private String permission;
 
@@ -56,45 +55,39 @@ public class IfAuthorizedTag
         throws JspTagException
     {
 
-        Boolean authzStatusBool = (Boolean)pageContext.getAttribute( "pssCache" + permission + resource );
+        Boolean authzStatusBool = (Boolean) pageContext.getAttribute( "pssCache" + permission + resource );
+        boolean authzStatus;
 
-        if ( authzStatusBool != null )
+        if ( authzStatusBool == null )
         {
-            pageContext.setAttribute( "ifAuthorizedTag", authzStatusBool );
-            return authzStatusBool.booleanValue();
-        }
+            ActionContext context = ActionContext.getContext();
 
-        ActionContext context = ActionContext.getContext();
+            PlexusContainer container = (PlexusContainer) context.getApplication().get( PlexusLifecycleListener.KEY );
+            SecuritySession securitySession =
+                (SecuritySession) context.getSession().get( SecuritySystemConstants.SECURITY_SESSION_KEY );
 
-        PlexusContainer container = (PlexusContainer) context.getApplication().get( PlexusLifecycleListener.KEY );
-        SecuritySession securitySession = (SecuritySession) context.getSession().get( SecuritySystemConstants.SECURITY_SESSION_KEY );
-
-        try
-        {
-            SecuritySystem securitySystem = (SecuritySystem) container.lookup( SecuritySystem.ROLE );
-
-            if ( resource != null )
+            try
             {
-                boolean authzStatus = securitySystem.isAuthorized( securitySession, permission, resource );
-                pageContext.setAttribute( "ifAuthorizedTag", new Boolean( authzStatus ) );
-                pageContext.setAttribute( "pssCache" + permission + resource, new Boolean( authzStatus ) );
-                return authzStatus;
+                SecuritySystem securitySystem = (SecuritySystem) container.lookup( SecuritySystem.ROLE );
+
+                authzStatus = securitySystem.isAuthorized( securitySession, permission, resource );
+                pageContext.setAttribute( "pssCache" + permission + resource, Boolean.valueOf( authzStatus ) );
             }
-            else
+            catch ( ComponentLookupException cle )
             {
-                boolean authzStatus = securitySystem.isAuthorized( securitySession, permission );
-                pageContext.setAttribute( "ifAuthorizedTag", new Boolean( authzStatus ) );
-                pageContext.setAttribute( "pssCache" + permission + resource, new Boolean( authzStatus ) );
-                return authzStatus;
+                throw new JspTagException( "unable to locate security system", cle );
+            }
+            catch ( AuthorizationException ae )
+            {
+                throw new JspTagException( "error with authorization", ae );
             }
         }
-        catch ( ComponentLookupException cle )
+        else
         {
-            throw new JspTagException( "unable to locate security system", cle );
+            authzStatus = authzStatusBool.booleanValue();
         }
-        catch ( AuthorizationException ae )
-        {
-            throw new JspTagException( "error with authorization", ae );
-        }
+
+        pageContext.setAttribute( "ifAuthorizedTag", Boolean.valueOf( authzStatus ) );
+        return authzStatus;
     }
 }

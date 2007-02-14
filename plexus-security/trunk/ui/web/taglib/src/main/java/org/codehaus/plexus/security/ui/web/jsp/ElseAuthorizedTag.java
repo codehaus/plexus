@@ -22,17 +22,15 @@ import javax.servlet.jsp.jstl.core.ConditionalTagSupport;
  * IfAuthorizedTag:
  *
  * @author Jesse McConnell <jesse@codehaus.org>
- * @version $Id:$
+ * @version $Id$
  */
 public class ElseAuthorizedTag
     extends ConditionalTagSupport
-
 {
-
     protected boolean condition()
         throws JspTagException
     {
-        Boolean authzStatus = (Boolean)pageContext.getAttribute( "ifAuthorizedTag" );
+        Boolean authzStatus = (Boolean) pageContext.getAttribute( "ifAuthorizedTag" );
 
         if ( authzStatus != null )
         {
@@ -40,20 +38,16 @@ public class ElseAuthorizedTag
 
             return !authzStatus.booleanValue();
         }
-        else
+
+        authzStatus = (Boolean) pageContext.getAttribute( "ifAnyAuthorizedTag" );
+
+        if ( authzStatus != null )
         {
-            authzStatus = (Boolean)pageContext.getAttribute( "ifAnyAuthorizedTag" );
+            pageContext.removeAttribute( "ifAnyAuthorizedTag" );
 
-            if ( authzStatus != null )
-            {
-                pageContext.removeAttribute( "ifAnyAuthorizedTag" );
-
-                return !authzStatus.booleanValue();
-            }
-            else
-            {
-                throw new JspTagException( "ElseAuthorizedTag should follow either IfAuthorized or IfAnyAuthorized" );
-            }
+            return !authzStatus.booleanValue();
         }
+
+        throw new JspTagException( "ElseAuthorizedTag should follow either IfAuthorized or IfAnyAuthorized" );
     }
 }

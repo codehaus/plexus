@@ -37,11 +37,8 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
  * DefaultSecuritySystem:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
- * @version: $ID:$
- *
- * @plexus.component
- *   role="org.codehaus.plexus.security.system.SecuritySystem"
- *   role-hint="default"
+ * @version: $Id$
+ * @plexus.component role="org.codehaus.plexus.security.system.SecuritySystem" role-hint="default"
  */
 public class DefaultSecuritySystem
     extends AbstractLogEnabled
@@ -61,41 +58,41 @@ public class DefaultSecuritySystem
      * @plexus.requirement
      */
     private UserManager userManager;
-    
+
     /**
      * @plexus.requirement
      */
     private KeyManager keyManager;
-    
+
     /**
      * @plexus.requirement
      */
     private UserSecurityPolicy policy;
-    
+
     // ----------------------------------------------------------------------------
     // Authentication: delegate to the authnManager
     // ----------------------------------------------------------------------------
-    
+
     /**
      * delegate to the authentication system for boolean authentication checks,
      * if the result is authentic then pull the user object from the user
      * manager and add it to the session.  If the result is false return the result in
      * an authenticated session and a null user object.
-     *
+     * <p/>
      * in the event of a successful authentication and a lack of corresponding user in the
      * usermanager return a null user as well
-     *
+     * <p/>
      * //todo should this last case create a user in the usermanager?
      *
      * @param source
      * @return
      * @throws AuthenticationException
      * @throws UserNotFoundException
-     * @throws MustChangePasswordException 
-     * @throws AccountLockedException 
+     * @throws MustChangePasswordException
+     * @throws AccountLockedException
      */
     public SecuritySession authenticate( AuthenticationDataSource source )
-    throws AuthenticationException, UserNotFoundException, AccountLockedException
+        throws AuthenticationException, UserNotFoundException, AccountLockedException
     {
         // Perform Authentication.
         AuthenticationResult result = authnManager.authenticate( source );
@@ -111,7 +108,7 @@ public class DefaultSecuritySystem
                 getLogger().debug( "User '" + result.getPrincipal() + "' exists." );
                 User user = userManager.findUser( result.getPrincipal() );
                 getLogger().debug( "User: " + user );
-                
+
                 return new DefaultSecuritySession( result, user );
             }
             else
@@ -126,7 +123,7 @@ public class DefaultSecuritySystem
             return new DefaultSecuritySession( result );
         }
     }
-    
+
     public boolean isAuthenticated( AuthenticationDataSource source )
         throws AuthenticationException, UserNotFoundException, AccountLockedException
     {
@@ -149,29 +146,7 @@ public class DefaultSecuritySystem
     public AuthorizationResult authorize( SecuritySession session, Object permission )
         throws AuthorizationException
     {
-        AuthorizationDataSource source = null;
-
-        if ( session != null )
-        {
-            User user = session.getUser();
-            if ( user != null )
-            {
-                source = new AuthorizationDataSource( user.getPrincipal(), user, permission );
-            }
-        }
-
-        if ( source == null )
-        {
-            source = new AuthorizationDataSource( null, null, permission );
-        }
-        
-        return authorizer.isAuthorized( source );
-    }
-
-    public boolean isAuthorized( SecuritySession session, Object permission )
-        throws AuthorizationException
-    {
-        return authorize( session, permission ).isAuthorized();
+        return authorize( session, permission, null );
     }
 
     public AuthorizationResult authorize( SecuritySession session, Object permission, Object resource )
@@ -194,6 +169,12 @@ public class DefaultSecuritySystem
         }
 
         return authorizer.isAuthorized( source );
+    }
+
+    public boolean isAuthorized( SecuritySession session, Object permission )
+        throws AuthorizationException
+    {
+        return isAuthorized( session, permission, null );
     }
 
     public boolean isAuthorized( SecuritySession session, Object permission, Object resource )
