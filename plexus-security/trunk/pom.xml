@@ -383,7 +383,9 @@
     <module>authorization</module>
     <module>user-management</module>
     <module>ui</module>
-    <module>acegi-integration</module>
+    <!-- Restore once someone is confirmed to be using it.
+         So far, this module only causes compile problems on windows. :-( -->
+    <!-- <module>acegi-integration</module> -->
     <module>examples</module>
     <module>data-management</module>
   </modules>
