@@ -1,6 +1,5 @@
 package org.codehaus.plexus.security.ui.web.jsp;
 
-
 /*
  * Copyright 2005 The Codehaus.
  *
@@ -34,11 +33,10 @@ import java.util.StringTokenizer;
  * IfAnyAuthorizedTag:
  *
  * @author Jesse McConnell <jesse@codehaus.org>
- * @version $Id:$
+ * @version $Id$
  */
 public class IfAnyAuthorizedTag
     extends ConditionalTagSupport
-
 {
     /**
      * comma delimited list of permissions to check
@@ -67,9 +65,10 @@ public class IfAnyAuthorizedTag
             return false;
         }
 
-        PlexusContainer container = (PlexusContainer)context.getApplication().get( PlexusLifecycleListener.KEY ) ;
+        PlexusContainer container = (PlexusContainer) context.getApplication().get( PlexusLifecycleListener.KEY );
 
-        SecuritySession securitySession = (SecuritySession)context.getSession().get( SecuritySystemConstants.SECURITY_SESSION_KEY );
+        SecuritySession securitySession =
+            (SecuritySession) context.getSession().get( SecuritySystemConstants.SECURITY_SESSION_KEY );
 
         try
         {
@@ -81,25 +80,15 @@ public class IfAnyAuthorizedTag
             {
                 String permission = strtok.nextToken().trim();
 
-                if ( resource != null )
+                if ( securitySystem.isAuthorized( securitySession, permission, resource ) )
                 {
-                    if ( securitySystem.isAuthorized( securitySession, permission, resource ) )
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    if ( securitySystem.isAuthorized( securitySession, permission ) )
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
         }
-        catch ( ComponentLookupException cle)
+        catch ( ComponentLookupException cle )
         {
-            throw new JspTagException( "unable to locate the security system", cle);
+            throw new JspTagException( "unable to locate the security system", cle );
         }
         catch ( AuthorizationException ae )
         {
