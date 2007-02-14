@@ -200,8 +200,13 @@
       <!-- Plexus -->
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-component-api</artifactId>
+        <version>1.0-alpha-17</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-container-default</artifactId>
-        <version>1.0-alpha-10</version>
+        <version>1.0-alpha-17</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
@@ -237,7 +242,7 @@
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-xwork-integration</artifactId>
-        <version>1.0-alpha-2</version>
+        <version>1.0-alpha-5-SNAPSHOT</version>
       </dependency>
       <!-- Other -->
       <dependency>
@@ -293,6 +298,10 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-component-api</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>

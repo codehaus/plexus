@@ -34,12 +34,6 @@
       <artifactId>plexus-utils</artifactId>
       <version>1.2</version>
     </dependency>
-    <!-- needed to force the version and consistency -->
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-10</version>
-    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

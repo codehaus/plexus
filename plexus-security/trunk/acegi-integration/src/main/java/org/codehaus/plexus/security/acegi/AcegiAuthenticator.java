@@ -21,6 +21,7 @@ import org.acegisecurity.providers.ProviderManager;
 import org.codehaus.plexus.security.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.security.authentication.AuthenticationResult;
 import org.codehaus.plexus.security.authentication.Authenticator;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.util.Map;
 
@@ -33,6 +34,7 @@ import java.util.Map;
  * @plexus.component role="org.codehaus.plexus.security.Authenticator" role-hint="acegi"
  */
 public class AcegiAuthenticator
+    extends AbstractLogEnabled
     implements Authenticator
 {
     public String getId()
@@ -77,6 +79,7 @@ public class AcegiAuthenticator
         }
         catch ( org.acegisecurity.AuthenticationException e )
         {
+            getLogger().debug( e.getMessage(), e );
             return new AuthenticationResult( false, authsource.getUsername(), e );
         }
     }
