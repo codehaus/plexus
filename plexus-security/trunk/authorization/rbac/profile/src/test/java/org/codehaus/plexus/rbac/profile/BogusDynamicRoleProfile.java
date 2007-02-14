@@ -1,7 +1,7 @@
 package org.codehaus.plexus.rbac.profile;
 
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 /*
  * Copyright 2006 The Apache Software Foundation.
  *
@@ -23,16 +23,15 @@ import java.util.Collections;
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- *
- * @plexus.component
- *   role="org.codehaus.plexus.rbac.profile.DynamicRoleProfile"
- *   role-hint="bogus"
+ * @plexus.component role="org.codehaus.plexus.rbac.profile.DynamicRoleProfile"
+ * role-hint="bogus"
  */
 public class BogusDynamicRoleProfile
     extends AbstractDynamicRoleProfile
 {
-    public static String NAME = "BOGUS ROLE";
-    public static String OPERATION = "BOGUS-OPERATION";
+    public static final String NAME = "BOGUS ROLE";
+
+    public static final String OPERATION = "BOGUS-OPERATION";
 
     public String getRoleName( String resource )
     {

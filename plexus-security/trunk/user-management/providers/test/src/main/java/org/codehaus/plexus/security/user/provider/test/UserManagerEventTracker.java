@@ -44,7 +44,7 @@ public class UserManagerEventTracker
     public void userManagerInit( boolean freshDatabase )
     {
         countInit++;
-        lastDbFreshness = new Boolean( freshDatabase );
+        lastDbFreshness = Boolean.valueOf( freshDatabase );
     }
 
     private void addUniqueUsername( List list, User user )

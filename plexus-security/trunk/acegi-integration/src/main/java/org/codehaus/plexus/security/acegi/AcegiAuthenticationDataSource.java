@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.codehaus.plexus.security.acegi;
 
@@ -9,12 +9,12 @@ import org.codehaus.plexus.security.authentication.PasswordBasedAuthenticationDa
 import java.util.Map;
 
 /**
- * {@link AuthenticationDataSource} implementation that wraps the authentication 
- * credentials in a token map.<p> 
- * The token map is used by the {@link AcegiAuthenticator} to create a an Acegi 
- * authentication token to be used by the respective Acegi authentication 
+ * {@link AuthenticationDataSource} implementation that wraps the authentication
+ * credentials in a token map.<p>
+ * The token map is used by the {@link AcegiAuthenticator} to create a an Acegi
+ * authentication token to be used by the respective Acegi authentication
  * provider for authentication.
- * 
+ *
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
  */

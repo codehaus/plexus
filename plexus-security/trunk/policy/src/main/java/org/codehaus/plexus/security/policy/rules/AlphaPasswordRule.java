@@ -93,7 +93,8 @@ public class AlphaPasswordRule
     {
         if ( countAlphaCharacters( user.getPassword() ) < this.minimumCount )
         {
-            violations.addViolation( ALPHA_COUNT_VIOLATION, new Object[]{new Integer( minimumCount )} ); //$NON-NLS-1$
+            violations.addViolation( ALPHA_COUNT_VIOLATION,
+                                     new Object[]{Integer.valueOf( minimumCount )} ); //$NON-NLS-1$
         }
     }
 

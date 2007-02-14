@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * RbacManagerEventTracker 
+ * RbacManagerEventTracker
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -47,34 +47,35 @@ public class RbacManagerEventTracker
 
     public void rbacInit( boolean freshdb )
     {
-        LOG( "Init - freshdb: " + freshdb );
+        log( "Init - freshdb: " + freshdb );
         initCount++;
-        lastDbFreshness = new Boolean( freshdb );
+        lastDbFreshness = Boolean.valueOf( freshdb );
     }
 
     public void rbacPermissionRemoved( Permission permission )
     {
-        LOG( "Permission Removed: " + permission.getName() );
+        log( "Permission Removed: " + permission.getName() );
         addUnique( removedPermissionNames, permission.getName() );
     }
 
     public void rbacPermissionSaved( Permission permission )
     {
-        LOG( "Permission Saved: " + permission.getName() );
+        log( "Permission Saved: " + permission.getName() );
         addUnique( addedPermissionNames, permission.getName() );
     }
 
     public void rbacRoleRemoved( Role role )
     {
-        LOG( "Role Removed: " + role.getName() );
+        log( "Role Removed: " + role.getName() );
         addUnique( removedRoleNames, role.getName() );
     }
 
     public void rbacRoleSaved( Role role )
     {
-        LOG( "Role Saved: " + role.getName() );
+        log( "Role Saved: " + role.getName() );
         addUnique( addedRoleNames, role.getName() );
     }
+
     public void rbacUserAssignmentRemoved( UserAssignment userAssignment )
     {
 
@@ -84,7 +85,7 @@ public class RbacManagerEventTracker
     {
 
     }
-    
+
     private void addUnique( List list, Object obj )
     {
         if ( !list.contains( obj ) )
@@ -93,7 +94,7 @@ public class RbacManagerEventTracker
         }
     }
 
-    private void LOG( String msg )
+    private void log( String msg )
     {
         System.out.println( "[RBAC Event Tracker] " + msg );
     }

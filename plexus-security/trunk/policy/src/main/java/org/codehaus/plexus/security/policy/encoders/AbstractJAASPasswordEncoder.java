@@ -20,7 +20,6 @@ import org.codehaus.plexus.security.policy.PasswordEncoder;
 import org.codehaus.plexus.security.policy.PasswordEncodingException;
 import org.codehaus.plexus.security.user.Messages;
 import org.codehaus.plexus.util.StringUtils;
-
 import sun.misc.BASE64Encoder;
 
 import java.io.UnsupportedEncodingException;
@@ -29,7 +28,7 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Abstract Password Encoder that uses the {@link MessageDigest} from JAAS.
- * 
+ *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
@@ -37,6 +36,7 @@ public class AbstractJAASPasswordEncoder
     implements PasswordEncoder
 {
     private String algorithm;
+
     private Object systemSalt;
 
     public AbstractJAASPasswordEncoder( String algorithm )
@@ -48,20 +48,20 @@ public class AbstractJAASPasswordEncoder
     {
         this.systemSalt = salt;
     }
-    
+
     public String encodePassword( String rawPass, Object salt )
     {
         if ( rawPass == null )
         {
             throw new IllegalArgumentException( "rawPass parameter cannot be null." );
         }
-        
+
         MessageDigest md = null;
         try
         {
             md = MessageDigest.getInstance( this.algorithm );
             String precode = rawPass;
-            
+
             // Only checking for null, not using StringUtils.isNotEmpty() as
             // whitespace can make up a valid salt. 
             if ( salt != null )
@@ -72,17 +72,17 @@ public class AbstractJAASPasswordEncoder
             md.update( precode.getBytes( "UTF-8" ) ); //$NON-NLS-1$
 
             byte raw[] = md.digest();
-            String hash = ( new BASE64Encoder() ).encode( raw );
-            return hash;
+            return ( new BASE64Encoder() ).encode( raw );
         }
         catch ( NoSuchAlgorithmException e )
         {
-            throw new PasswordEncodingException( Messages.getString( "password.encoder.no.such.algoritm", 
-                                                                     this.algorithm ), e ); //$NON-NLS-1$
+            throw new PasswordEncodingException(
+                Messages.getString( "password.encoder.no.such.algoritm", this.algorithm ), e ); //$NON-NLS-1$
         }
         catch ( UnsupportedEncodingException e )
         {
-            throw new PasswordEncodingException( Messages.getString( "password.encoder.unsupported.encoding" ), e ); //$NON-NLS-1$
+            throw new PasswordEncodingException( Messages.getString( "password.encoder.unsupported.encoding" ),
+                                                 e ); //$NON-NLS-1$
         }
     }
 

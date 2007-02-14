@@ -18,29 +18,26 @@ package org.codehaus.plexus.security.authentication;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.policy.AccountLockedException;
-import org.codehaus.plexus.security.policy.MustChangePasswordException;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Set;
 
 
 /**
  * DefaultAuthenticationManager: the goal of the authentication manager is to act as a conduit for
  * authentication requests into different authentication schemes
- *
+ * <p/>
  * For example, the default implementation can be configured with any number of authenticators and will
  * sequentially try them for an authenticated result.  This allows you to have the standard user/pass
  * auth procedure followed by authentication based on a known key for 'remember me' type functionality.
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- *
- * @plexus.component
- *   role="org.codehaus.plexus.security.authentication.AuthenticationManager"
- *   role-hint="default"
+ * @plexus.component role="org.codehaus.plexus.security.authentication.AuthenticationManager"
+ * role-hint="default"
  */
 public class DefaultAuthenticationManager
     extends AbstractLogEnabled
@@ -53,8 +50,8 @@ public class DefaultAuthenticationManager
 
     public String getId()
     {
-        return "Default Authentication Manager - " + this.getClass().getName() + " : managed authenticators - "
-            + knownAuthenticators();
+        return "Default Authentication Manager - " + this.getClass().getName() + " : managed authenticators - " +
+            knownAuthenticators();
     }
 
     public AuthenticationResult authenticate( AuthenticationDataSource source )
@@ -62,12 +59,13 @@ public class DefaultAuthenticationManager
     {
         if ( authenticators == null || authenticators.size() == 0 )
         {
-            return( new AuthenticationResult( false, null, new AuthenticationException("no valid authenticators, can't authenticate") ) );                    
+            return ( new AuthenticationResult( false, null, new AuthenticationException(
+                "no valid authenticators, can't authenticate" ) ) );
         }
 
         // put AuthenticationResult exceptions in a map
         Map authnResultExceptionsMap = new HashMap();
-        for( Iterator i = authenticators.iterator(); i.hasNext(); )
+        for ( Iterator i = authenticators.iterator(); i.hasNext(); )
         {
             Authenticator authenticator = (Authenticator) i.next();
 
@@ -86,15 +84,15 @@ public class DefaultAuthenticationManager
                     Set entrySet = exceptionsMap.entrySet();
                     for ( Iterator iter = entrySet.iterator(); iter.hasNext(); )
                     {
-                        Map.Entry entry = ( Map.Entry ) iter.next();
+                        Map.Entry entry = (Map.Entry) iter.next();
                         authnResultExceptionsMap.put( entry.getKey(), entry.getValue() );
                     }
                 }
             }
         }
 
-        return ( new AuthenticationResult( false, null,  new AuthenticationException( "authentication failed on authenticators: "
-                + knownAuthenticators() ), authnResultExceptionsMap ) );
+        return ( new AuthenticationResult( false, null, new AuthenticationException(
+            "authentication failed on authenticators: " + knownAuthenticators() ), authnResultExceptionsMap ) );
     }
 
     public List getAuthenticators()
@@ -110,7 +108,7 @@ public class DefaultAuthenticationManager
         while ( it.hasNext() )
         {
             Authenticator authn = (Authenticator) it.next();
-            strbuf.append( "(" ).append( authn.getId() ).append( ") " );
+            strbuf.append( '(' ).append( authn.getId() ).append( ") " );
         }
 
         return strbuf.toString();

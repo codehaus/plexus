@@ -105,7 +105,7 @@ public class DateUtils
             }
         }
 
-        out.append( " " ).append( suffix );
+        out.append( ' ' ).append( suffix );
 
         return out.toString();
     }

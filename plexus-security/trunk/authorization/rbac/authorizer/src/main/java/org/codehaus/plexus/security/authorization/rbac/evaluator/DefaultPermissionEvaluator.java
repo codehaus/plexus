@@ -1,10 +1,10 @@
 package org.codehaus.plexus.security.authorization.rbac.evaluator;
 
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.security.rbac.Permission;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.user.UserManager;
 import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 /*
  * Copyright 2006 The Codehaus.
  *
@@ -23,7 +23,7 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 /**
  * DefaultPermissionEvaluator:
- *
+ * <p/>
  * Currently only one expression is available for evaluation, ${username} will be replaced with the username
  * of the person making the authorization check
  *
@@ -49,9 +49,9 @@ public class DefaultPermissionEvaluator
         // expression evaluation checking
         if ( permissionResource.startsWith( "${" ) )
         {
-            String tempStr = permissionResource.substring( 2, permissionResource.indexOf( "}" ) );
+            String tempStr = permissionResource.substring( 2, permissionResource.indexOf( '}' ) );
 
-            if ( "username".equals(tempStr) )
+            if ( "username".equals( tempStr ) )
             {
                 try
                 {

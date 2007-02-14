@@ -77,7 +77,7 @@ public class PasswordBasedAuthenticationDataSource
             // Intentionally not showing real password 
             sb.append( "***" );
         }
-        sb.append( "]" );
+        sb.append( ']' );
         return sb.toString();
     }
 }
