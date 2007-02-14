@@ -34,7 +34,7 @@ public abstract class AbstractHttpRequestTrackerInterceptor
 
     protected abstract String getTrackerName();
 
-    protected synchronized void addActionInvocation( ActionInvocation invocation )
+    protected synchronized ActionInvocationTracker addActionInvocation( ActionInvocation invocation )
         throws ComponentLookupException
     {
         Map sessionMap = invocation.getInvocationContext().getSession();
@@ -53,5 +53,7 @@ public abstract class AbstractHttpRequestTrackerInterceptor
         }
 
         tracker.addActionInvocation( invocation );
+
+        return tracker;
     }
 }
