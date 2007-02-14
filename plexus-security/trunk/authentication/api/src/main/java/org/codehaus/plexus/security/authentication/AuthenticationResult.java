@@ -17,8 +17,8 @@ package org.codehaus.plexus.security.authentication;
  */
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * AuthenticationResult: wrapper object for information that comes back from the authentication system
@@ -101,7 +101,7 @@ public class AuthenticationResult
         {
             sb.append( "<null>" );
         }
-        sb.append( "]" );
+        sb.append( ']' );
         return sb.toString();
     }
 }

@@ -158,7 +158,8 @@ public abstract class AbstractRBACManager
             catch ( Exception e )
             {
                 getLogger().warn(
-                    "Unable to trigger .rbacUserAssignmentSaved( UserAssignment ) to " + listener.getClass().getName(), e );
+                    "Unable to trigger .rbacUserAssignmentSaved( UserAssignment ) to " + listener.getClass().getName(),
+                    e );
             }
         }
     }
@@ -175,8 +176,8 @@ public abstract class AbstractRBACManager
             }
             catch ( Exception e )
             {
-                getLogger().warn(
-                    "Unable to trigger .rbacUserAssignmentRemoved( UserAssignment ) to " + listener.getClass().getName(), e );
+                getLogger().warn( "Unable to trigger .rbacUserAssignmentRemoved( UserAssignment ) to " +
+                    listener.getClass().getName(), e );
             }
         }
     }
@@ -395,7 +396,7 @@ public abstract class AbstractRBACManager
         throws RbacObjectNotFoundException, RbacManagerException
     {
 
-        UserAssignment ua = getUserAssignment( principal.toString() );
+        UserAssignment ua = getUserAssignment( principal );
 
         Set permissionSet = new HashSet();
 
@@ -438,7 +439,7 @@ public abstract class AbstractRBACManager
      * @throws RbacManagerException
      */
     public Map getAssignedPermissionMap( String principal )
-       throws RbacObjectNotFoundException, RbacManagerException
+        throws RbacObjectNotFoundException, RbacManagerException
     {
         return getPermissionMapByOperation( getAssignedPermissions( principal ) );
     }
@@ -449,9 +450,9 @@ public abstract class AbstractRBACManager
 
         for ( Iterator i = permissions.iterator(); i.hasNext(); )
         {
-            Permission permission = (Permission)i.next();
+            Permission permission = (Permission) i.next();
 
-            List permList = (List)userPermMap.get( permission.getOperation().getName() );
+            List permList = (List) userPermMap.get( permission.getOperation().getName() );
 
             if ( permList != null )
             {
@@ -519,7 +520,7 @@ public abstract class AbstractRBACManager
      * returns the active roles for a given principal
      * <p/>
      * NOTE: roles that are returned might have have roles themselves, if
-     * you just want all permissions then use {@link #getAssignedPermissions( String principal)}
+     * you just want all permissions then use {@link #getAssignedPermissions(Stringprincipal)}
      *
      * @param principal
      * @return
@@ -767,7 +768,7 @@ public abstract class AbstractRBACManager
 
         return roleMap;
     }
-    
+
     public void initialize()
         throws InitializationException
     {

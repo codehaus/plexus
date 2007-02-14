@@ -44,8 +44,6 @@ public class MemoryAuthorizer
     {
         Object principal = source.getPrincipal();
 
-        User user = source.getUser();
-
         Object permission = source.getPermission();
 
         // TODO: Actually use a real permission!

@@ -104,13 +104,6 @@ public class KeyStoreAuthenticator
 
     public boolean supportsDataSource( AuthenticationDataSource source )
     {
-        if ( source instanceof TokenBasedAuthenticationDataSource )
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return source instanceof TokenBasedAuthenticationDataSource;
     }
 }

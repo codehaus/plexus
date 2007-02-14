@@ -21,7 +21,6 @@ import org.codehaus.plexus.security.keys.AuthenticationKey;
 import org.codehaus.plexus.security.keys.KeyManager;
 import org.codehaus.plexus.security.keys.KeyManagerException;
 import org.codehaus.plexus.security.policy.UserSecurityPolicy;
-import org.codehaus.plexus.security.system.SecuritySystem;
 
 /**
  * Test the Mailer class.
@@ -29,8 +28,6 @@ import org.codehaus.plexus.security.system.SecuritySystem;
 public class MailGeneratorTest
     extends PlexusTestCase
 {
-    private SecuritySystem securitySystem;
-
     private MailGenerator generator;
 
     private UserSecurityPolicy policy;
@@ -58,7 +55,7 @@ public class MailGeneratorTest
         String content = generator.generateMail( "passwordResetEmail", authkey, "baseUrl" );
 
         assertNotNull( content );
-        assertTrue( content.indexOf( "$" ) == (-1) ); // make sure everything is properly populate
+        assertTrue( content.indexOf( '$' ) == -1 ); // make sure everything is properly populate
     }
 
     public void testGenerateAccountValidationMail()
@@ -70,6 +67,6 @@ public class MailGeneratorTest
         String content = generator.generateMail( "newAccountValidationEmail", authkey, "baseUrl" );
 
         assertNotNull( content );
-        assertTrue( content.indexOf( "$" ) == (-1) ); // make sure everything is properly populate
+        assertTrue( content.indexOf( '$' ) == -1 ); // make sure everything is properly populate
     }
 }

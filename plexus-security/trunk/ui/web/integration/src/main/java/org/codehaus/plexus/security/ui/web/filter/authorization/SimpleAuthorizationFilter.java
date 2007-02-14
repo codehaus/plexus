@@ -106,7 +106,7 @@ public class SimpleAuthorizationFilter
     {
         String newlocation = accessDeniedLocation;
 
-        if ( newlocation.indexOf( "?" ) == ( -1 ) )
+        if ( newlocation.indexOf( '?' ) == ( -1 ) )
         {
             newlocation += "?";
         }

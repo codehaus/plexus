@@ -69,7 +69,7 @@ public class TokenBasedAuthenticationDataSource
         sb.append( "TokenBasedAuthenticationDataSource[" );
         sb.append( "principal=" ).append( principal );
         sb.append( ",token=" ).append( token );
-        sb.append( "]" );
+        sb.append( ']' );
         return sb.toString();
     }
 }

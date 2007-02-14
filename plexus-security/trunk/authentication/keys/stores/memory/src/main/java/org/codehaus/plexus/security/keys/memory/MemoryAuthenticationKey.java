@@ -21,7 +21,7 @@ import org.codehaus.plexus.security.keys.AuthenticationKey;
 import java.util.Date;
 
 /**
- * MemoryAuthenticationKey 
+ * MemoryAuthenticationKey
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -99,7 +99,7 @@ public class MemoryAuthenticationKey
         sb.append( ",purpose=" ).append( purpose );
         sb.append( ",dateCreated=" ).append( dateCreated );
         sb.append( ",dateExpired=" ).append( dateExpires );
-        sb.append( "]" );
+        sb.append( ']' );
 
         return sb.toString();
     }

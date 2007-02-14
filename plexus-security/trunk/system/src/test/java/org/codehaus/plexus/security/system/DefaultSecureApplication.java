@@ -6,7 +6,4 @@ package org.codehaus.plexus.security.system;
 public class DefaultSecureApplication
     implements SecureApplication
 {
-    private SecuritySystem securitySystem;
-
-    
 }

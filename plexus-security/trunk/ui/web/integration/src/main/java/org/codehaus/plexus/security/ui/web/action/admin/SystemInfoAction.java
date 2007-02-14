@@ -148,7 +148,7 @@ public class SystemInfoAction
 
         String className = obj.getClass().getName();
 
-        sb.append( "(" ).append( className ).append( ") " );
+        sb.append( '(' ).append( className ).append( ") " );
 
         if ( obj instanceof List )
         {
@@ -213,7 +213,7 @@ public class SystemInfoAction
                 }
 
                 sb.append( indent );
-                sb.append( name ).append( ":" );
+                sb.append( name ).append( ':' );
 
                 Object value = readerEntry.getValue();
                 if ( value == null )
@@ -234,7 +234,7 @@ public class SystemInfoAction
             {
                 sb.append( ".get" ).append( StringUtils.capitalize( name ) ).append( "()" );
             }
-            sb.append( "]: " ).append( "(" ).append( e.getClass().getName() ).append( ") " );
+            sb.append( "]: " ).append( '(' ).append( e.getClass().getName() ).append( ") " );
             sb.append( e.getMessage() ).append( LN );
         }
     }
