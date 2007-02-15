@@ -16,8 +16,8 @@ package org.codehaus.plexus.security.ui.web.result;
  * limitations under the License.
  */
 
-import com.opensymphony.webwork.dispatcher.ServletActionRedirectResult;
 import com.opensymphony.xwork.ActionInvocation;
+import org.codehaus.plexus.xwork.result.AbstractBackTrackingResult;
 
 /**
  * SecurityExternalResult
@@ -29,7 +29,7 @@ import com.opensymphony.xwork.ActionInvocation;
  * instantiation-strategy="per-lookup"
  */
 public class SecurityExternalResult
-    extends ServletActionRedirectResult
+    extends AbstractBackTrackingResult
 {
     /**
      * @plexus.configuration default-value="pssRedirect"
@@ -41,9 +41,15 @@ public class SecurityExternalResult
     public void execute( ActionInvocation invocation )
         throws Exception
     {
-        setNamespace( "/" );
-        setActionName( externalActionName );
-        super.execute( invocation );
+        // the login redirection is not captured by the http request
+        // tracker, so we backtrack to the current request
+        if ( !setupBackTrackCurrent( invocation ))
+        {
+            setNamespace( "/" );
+            setActionName( externalActionName );
+        }
+        
+        super.execute( invocation );        
     }
 
     public String getExternalResult()
@@ -54,6 +60,6 @@ public class SecurityExternalResult
     public void setExternalResult( String externalResult )
     {
         this.externalResult = externalResult;
-    }
-
+    }    
+    
 }
