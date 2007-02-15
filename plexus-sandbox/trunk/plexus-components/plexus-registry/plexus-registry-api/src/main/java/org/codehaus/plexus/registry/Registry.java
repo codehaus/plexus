@@ -17,6 +17,7 @@ package org.codehaus.plexus.registry;
  */
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
@@ -219,4 +220,11 @@ public interface Registry
      * @todo this isn't ideal, so maybe fix combined configuration to re-fire it's events to it's own listeners in the c-c implementation
      */
     void addChangeListener( RegistryListener listener );
+
+    /**
+     * Get all the keys in this registry. Keys are only retrieved at a depth of 1.
+     *
+     * @return the set of keys
+     */
+    Collection getKeys();
 }
