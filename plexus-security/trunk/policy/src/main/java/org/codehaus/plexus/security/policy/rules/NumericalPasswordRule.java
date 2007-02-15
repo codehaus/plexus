@@ -94,7 +94,7 @@ public class NumericalPasswordRule
         if ( countDigitCharacters( user.getPassword() ) < this.minimumCount )
         {
             violations.addViolation( NUMERICAL_COUNT_VIOLATION,
-                                     new Object[]{Integer.valueOf( minimumCount )} ); //$NON-NLS-1$
+                                     new Object[]{String.valueOf( minimumCount )} ); //$NON-NLS-1$
         }
     }
 
