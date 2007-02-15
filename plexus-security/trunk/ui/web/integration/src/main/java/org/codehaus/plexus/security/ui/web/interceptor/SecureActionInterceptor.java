@@ -77,6 +77,8 @@ public class SecureActionInterceptor
 
         Action action = (Action) context.getActionInvocation().getAction();
 
+        getLogger().debug( "SecureActionInterceptor: processing " + invocation.getAction().toString() );
+
         try
         {
             if ( action instanceof SecureAction )
@@ -148,6 +150,10 @@ public class SecureActionInterceptor
 
                     return REQUIRES_AUTHORIZATION;
                 }
+            }
+            else
+            {
+                getLogger().debug( "SecureActionInterceptor: " + invocation.getAction().toString() + " not a secure action" );
             }
         }
         catch ( SecureActionException se )
