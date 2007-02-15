@@ -16,15 +16,6 @@ package org.codehaus.plexus.registry.commons;
  * limitations under the License.
  */
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-
 import org.apache.commons.configuration.CombinedConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
@@ -42,6 +33,18 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 import org.codehaus.plexus.registry.Registry;
 import org.codehaus.plexus.registry.RegistryException;
 import org.codehaus.plexus.registry.RegistryListener;
+
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Implementation of the registry component using
@@ -178,6 +181,28 @@ public class CommonsConfigurationRegistry
         EventSource configuration = (EventSource) this.configuration;
 
         configuration.addConfigurationListener( new ConfigurationListenerDelegate( listener, this ) );
+    }
+
+    public Collection getKeys()
+    {
+        Set keys = new HashSet();
+
+        for ( Iterator i = configuration.getKeys(); i.hasNext(); )
+        {
+            String key = (String) i.next();
+
+            int index = key.indexOf( '.' );
+            if ( index < 0 )
+            {
+                keys.add( key );
+            }
+            else
+            {
+                keys.add( key.substring( 0, index ) );
+            }
+        }
+
+        return keys;
     }
 
     public String getString( String key )

@@ -17,19 +17,7 @@ package org.codehaus.plexus.registry.naming;
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- */ 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Properties;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NameNotFoundException;
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
+ */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.naming.Naming;
@@ -37,11 +25,24 @@ import org.codehaus.plexus.registry.Registry;
 import org.codehaus.plexus.registry.RegistryException;
 import org.codehaus.plexus.registry.RegistryListener;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Properties;
+
 /**
  * @author <a href="mailto:Olivier.LAMY@accor.com">olamy</a>
- * @since 8 feb. 07
  * @version $Id$
  * @plexus.component role-hint="naming-registry"
+ * @since 8 feb. 07
  */
 public class NamingRegistry
     extends AbstractLogEnabled
@@ -53,13 +54,13 @@ public class NamingRegistry
     //---------------------------------------------------------------
     /**
      * can be null if useDefaultNaming (new InitialContext)
+     *
      * @plexus.requirement
      */
     private Naming naming;
 
     /**
-     * @plexus.configuration
-     *  default-value="true"
+     * @plexus.configuration default-value="true"
      */
     private boolean useDefaultNaming = true;
 
@@ -72,6 +73,7 @@ public class NamingRegistry
 
     /**
      * this is use in order to return SubRegistry (reason of private)
+     *
      * @param baseContext
      */
     private NamingRegistry( Context baseContext )
@@ -86,6 +88,7 @@ public class NamingRegistry
     //---------------------------------------------------------------
     // Internal stuffs
     //---------------------------------------------------------------     
+
     private Context getBaseContext()
         throws NamingException
     {
@@ -112,7 +115,7 @@ public class NamingRegistry
     // Registry implementation
     //---------------------------------------------------------------     
 
-    /** 
+    /**
      * @see org.codehaus.plexus.registry.Registry#getBoolean(java.lang.String)
      */
     public boolean getBoolean( String key )
@@ -131,8 +134,8 @@ public class NamingRegistry
         }
     }
 
-    /** 
-     * @see org.codehaus.plexus.registry.Registry#getBoolean(java.lang.String, boolean)
+    /**
+     * @see org.codehaus.plexus.registry.Registry#getBoolean(java.lang.String,boolean)
      */
     public boolean getBoolean( String key, boolean defaultValue )
     {
@@ -147,7 +150,7 @@ public class NamingRegistry
         return defaultValue;
     }
 
-    /** 
+    /**
      * @see org.codehaus.plexus.registry.Registry#getInt(java.lang.String)
      */
     public int getInt( String key )
@@ -166,8 +169,8 @@ public class NamingRegistry
         }
     }
 
-    /** 
-     * @see org.codehaus.plexus.registry.Registry#getInt(java.lang.String, int)
+    /**
+     * @see org.codehaus.plexus.registry.Registry#getInt(java.lang.String,int)
      */
     public int getInt( String key, int defaultValue )
     {
@@ -185,7 +188,7 @@ public class NamingRegistry
         return defaultValue;
     }
 
-    /** 
+    /**
      * @see org.codehaus.plexus.registry.Registry#getString(java.lang.String)
      */
     public String getString( String key )
@@ -204,8 +207,8 @@ public class NamingRegistry
         }
     }
 
-    /** 
-     * @see org.codehaus.plexus.registry.Registry#getString(java.lang.String, java.lang.String)
+    /**
+     * @see org.codehaus.plexus.registry.Registry#getString(java.lang.String,java.lang.String)
      */
     public String getString( String key, String defaultValue )
     {
@@ -223,7 +226,7 @@ public class NamingRegistry
         return defaultValue;
     }
 
-    /** 
+    /**
      * @see org.codehaus.plexus.registry.Registry#getList(java.lang.String)
      */
     public List getList( String key )
@@ -243,7 +246,7 @@ public class NamingRegistry
         }
     }
 
-    /** 
+    /**
      * @see org.codehaus.plexus.registry.Registry#getSubRegistry(java.lang.String)
      */
     public Registry getSubset( String key )
@@ -263,7 +266,7 @@ public class NamingRegistry
         }
     }
 
-    /** 
+    /**
      * @see org.codehaus.plexus.registry.Registry#isEmpty()
      */
     public boolean isEmpty()
@@ -279,7 +282,7 @@ public class NamingRegistry
         }
     }
 
-    /** 
+    /**
      * @see org.codehaus.plexus.registry.Registry#addConfigurationFromFile(java.io.File)
      */
     public void addConfigurationFromFile( File file )
@@ -289,7 +292,7 @@ public class NamingRegistry
 
     }
 
-    /** 
+    /**
      * @see org.codehaus.plexus.registry.Registry#addConfigurationFromResource(java.lang.String)
      */
     public void addConfigurationFromResource( String resource )
@@ -299,7 +302,7 @@ public class NamingRegistry
 
     }
 
-    /** 
+    /**
      * @see org.codehaus.plexus.registry.Registry#dump()
      */
     public String dump()
@@ -312,6 +315,12 @@ public class NamingRegistry
     {
         // TODO Auto-generated method stub
 
+    }
+
+    public Collection getKeys()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     public void addConfigurationFromFile( File file, String prefix )
