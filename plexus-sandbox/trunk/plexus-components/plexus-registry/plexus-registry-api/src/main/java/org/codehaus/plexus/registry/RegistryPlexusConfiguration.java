@@ -18,13 +18,11 @@ package org.codehaus.plexus.registry;
 
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
-import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * An implementation of the Plexus Configuration interface backed by a registry.
@@ -48,16 +46,9 @@ public class RegistryPlexusConfiguration
     private List keys;
 
     /**
-     * The value associated with the entry.
+     * The parent registry.
      */
-    private final String value;
-
-    /**
-     * List of children (with a depth of 1) in the registry.
-     */
-    private PlexusConfiguration[] children;
-
-    private static final PlexusConfiguration[] PLEXUS_CONFIGURATION = new PlexusConfiguration[0];
+    private final Registry parent;
 
     public RegistryPlexusConfiguration( Registry registry )
     {
@@ -65,25 +56,16 @@ public class RegistryPlexusConfiguration
 
         this.name = "configuration";
 
-        this.value = null;
+        this.parent = null;
     }
 
-    public RegistryPlexusConfiguration( Registry registry, String name )
+    public RegistryPlexusConfiguration( String name, Registry registry, Registry parent )
     {
+        this.name = name;
+
         this.registry = registry;
 
-        this.name = name;
-
-        this.value = null;
-    }
-
-    public RegistryPlexusConfiguration( String name, String value )
-    {
-        this.registry = null;
-
-        this.name = name;
-
-        this.value = value;
+        this.parent = parent;
     }
 
     public String getName()
@@ -92,14 +74,13 @@ public class RegistryPlexusConfiguration
     }
 
     public String getValue()
-        throws PlexusConfigurationException
     {
-        return value;
+        throw new UnsupportedOperationException( "getValue() should not be called" );
     }
 
     public String getValue( String defaultValue )
     {
-        return value != null ? value : defaultValue;
+        return defaultValue;
     }
 
     public String[] getAttributeNames()
@@ -120,24 +101,9 @@ public class RegistryPlexusConfiguration
 
     public PlexusConfiguration getChild( String name )
     {
-        PlexusConfiguration config = null;
-        if ( registry != null )
-        {
-            String value = registry.getString( name );
-            if ( value != null )
-            {
-                config = new RegistryPlexusConfiguration( name, value );
-            }
-            else
-            {
-                Registry registry = this.registry.getSubset( name );
-                if ( registry != null )
-                {
-                    config = new RegistryPlexusConfiguration( registry, name );
-                }
-            }
-        }
-        return config;
+        Registry registry = this.registry.getSubset( name );
+
+        return new RegistryPlexusConfiguration( name, registry, this.registry );
     }
 
     public PlexusConfiguration getChild( int i )
@@ -176,63 +142,21 @@ public class RegistryPlexusConfiguration
 
     public PlexusConfiguration[] getChildren()
     {
-        // TODO: this is a hack for Maps. We rely on nothing else using this - we should really have a different converter
-
-        Properties properties = registry.getProperties( "" );
-
+        List keys = getKeys();
+        PlexusConfiguration[] configurations = new PlexusConfiguration[keys.size()];
         int count = 0;
-        PlexusConfiguration[] children = new RegistryPlexusConfiguration[properties.size()];
-        for ( Iterator i = properties.keySet().iterator(); i.hasNext(); )
+        for ( Iterator i = keys.iterator(); i.hasNext(); )
         {
             String key = (String) i.next();
-            children[count] = new RegistryPlexusConfiguration( key, properties.getProperty( key ) );
+            configurations[count] = getChild( key );
             count++;
         }
-        return children;
+        return configurations;
     }
 
     public PlexusConfiguration[] getChildren( String name )
     {
-        // TODO: this is a hack for Properties. Should really change the converter when using this configurator.
-        if ( "property".equals( name ) )
-        {
-            Properties properties = registry.getProperties( "" );
-
-            int count = 0;
-            PlexusConfiguration[] children = new XmlPlexusConfiguration[properties.size()];
-            for ( Iterator i = properties.keySet().iterator(); i.hasNext(); )
-            {
-                String key = (String) i.next();
-
-                PlexusConfiguration c = new XmlPlexusConfiguration( "property" );
-                c.addChild( createCongifuration( "name", key ) );
-                c.addChild( createCongifuration( "value", properties.getProperty( key ) ) );
-
-                children[count] = c;
-                count++;
-            }
-            return children;
-        }
-        else
-        {
-            PlexusConfiguration[] children = getChildren();
-            List subset = new ArrayList();
-            for ( int i = 0; i < children.length; i++ )
-            {
-                if ( children[i].getName().equals( name ) )
-                {
-                    subset.add( children[i] );
-                }
-            }
-            return (PlexusConfiguration[]) subset.toArray( PLEXUS_CONFIGURATION );
-        }
-    }
-
-    private static XmlPlexusConfiguration createCongifuration( String name, String value )
-    {
-        XmlPlexusConfiguration plexusConfiguration = new XmlPlexusConfiguration( name );
-        plexusConfiguration.setValue( value );
-        return plexusConfiguration;
+        throw new UnsupportedOperationException( "getChildren(name) is not supported" );
     }
 
     public void addChild( PlexusConfiguration plexusConfiguration )
@@ -243,5 +167,10 @@ public class RegistryPlexusConfiguration
     public int getChildCount()
     {
         return getKeys().size();
+    }
+
+    public Registry getRegistry()
+    {
+        return parent;
     }
 }

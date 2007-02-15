@@ -22,6 +22,10 @@
       <implementation>org.codehaus.plexus.registry.DefaultComponent</implementation>
       <configuration>
         <configKey>value11</configKey>
+        <configNumber>1</configNumber>
+        <configNested>
+          <foo>baz</foo>
+        </configNested>
         <configProperties>
           <property>
             <name>key1</name>
@@ -40,6 +44,16 @@
           <item>s1</item>
           <item>s2</item>
         </configList>
+        <mergeProperties>
+          <property>
+            <name>key31</name>
+            <value>value31</value>
+          </property>
+        </mergeProperties>
+        <mergeList>
+          <item>v1</item>
+          <item>v2</item>
+        </mergeList>
       </configuration>
     </component>
     <component>

@@ -37,6 +37,8 @@ public class RegistryConfigurePhaseTest
 
         assertEquals( "value11", component.getConfigKey() );
 
+        assertEquals( 1, component.getConfigNumber() );
+
         Properties properties = new Properties();
         properties.setProperty( "key1", "value12" );
         properties.setProperty( "key2", "value13" );
@@ -52,7 +54,11 @@ public class RegistryConfigurePhaseTest
         list.add( "s2" );
         assertEquals( list, component.getConfigList() );
 
+        assertEquals( "baz", component.getConfigNested().getFoo() );
+
         assertEquals( "value1", component.getKey() );
+
+        assertEquals( 2, component.getNumber() );
 
         map = new HashMap();
         map.put( "org.jpox.PreserveCase", "always" );
@@ -64,11 +70,23 @@ public class RegistryConfigurePhaseTest
         properties.setProperty( "key", "value2" );
         assertEquals( properties, component.getProperties() );
 
-/* TODO: not yet supported
         list = new ArrayList();
         list.add( "S1" );
         list.add( "S2" );
         assertEquals( list, component.getList() );
-*/
+
+        assertEquals( "bar", component.getNested().getFoo() );
+
+        list = new ArrayList();
+        list.add( "v1" );
+        list.add( "v2" );
+        list.add( "v3" );
+        list.add( "v4" );
+        assertEquals( list, component.getMergeList() );
+
+        properties = new Properties();
+        properties.setProperty( "key31", "value31" );
+        properties.setProperty( "key32", "value32" );
+        assertEquals( properties, component.getMergeProperties() );
     }
 }

@@ -42,6 +42,43 @@ public class DefaultComponent
 
     private List configList;
 
+    private Properties mergeProperties;
+
+    private int number;
+
+    private int configNumber;
+
+    private Nested nested;
+
+    private Nested configNested;
+
+    private List mergeList;
+
+    public List getMergeList()
+    {
+        return mergeList;
+    }
+
+    public Nested getConfigNested()
+    {
+        return configNested;
+    }
+
+    public Nested getNested()
+    {
+        return nested;
+    }
+
+    public int getNumber()
+    {
+        return number;
+    }
+
+    public int getConfigNumber()
+    {
+        return configNumber;
+    }
+
     public String getConfigKey()
     {
         return configKey;
@@ -80,5 +117,10 @@ public class DefaultComponent
     public List getConfigList()
     {
         return configList;
+    }
+
+    public Properties getMergeProperties()
+    {
+        return mergeProperties;
     }
 }
