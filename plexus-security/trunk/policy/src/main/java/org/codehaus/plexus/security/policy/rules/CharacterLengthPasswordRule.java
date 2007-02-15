@@ -80,7 +80,7 @@ public class CharacterLengthPasswordRule
             /* this should caught up front during the configuration of the component */
             // TODO: Throw runtime exception instead?
             violations.addViolation( CHARACTER_LENGTH_MISCONFIGURED_VIOLATION, new Object[]{
-                Integer.valueOf( minimumCharacters ), Integer.valueOf( maximumCharacters )} ); //$NON-NLS-1$
+                String.valueOf( minimumCharacters ), String.valueOf( maximumCharacters )} ); //$NON-NLS-1$
         }
 
         String password = user.getPassword();
@@ -88,8 +88,8 @@ public class CharacterLengthPasswordRule
         if ( StringUtils.isEmpty( password ) || password.length() < minimumCharacters ||
             password.length() > maximumCharacters )
         {
-            violations.addViolation( CHARACTER_LENGTH_VIOLATION, new Object[]{Integer.valueOf( minimumCharacters ),
-                Integer.valueOf( maximumCharacters )} ); //$NON-NLS-1$
+            violations.addViolation( CHARACTER_LENGTH_VIOLATION, new Object[]{String.valueOf( minimumCharacters ),
+                String.valueOf( maximumCharacters )} ); //$NON-NLS-1$
         }
     }
 
