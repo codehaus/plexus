@@ -16,18 +16,18 @@ package org.codehaus.plexus.webdav.slide;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.webdav.test.AbstractWebdavProviderTestCase;
+import org.codehaus.plexus.webdav.test.AbstractBasicWebdavProviderTestCase;
 
 /**
- * SlideDavServerComponentTest 
+ * SlideDavServerComponentBasicTest
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class SlideDavServerComponentTest
-extends AbstractWebdavProviderTestCase
+public class SlideDavServerComponentBasicTest
+    extends AbstractBasicWebdavProviderTestCase
 {
-    public SlideDavServerComponentTest()
+    public SlideDavServerComponentBasicTest()
     {
         super();
         setProviderHint( "slide" );
