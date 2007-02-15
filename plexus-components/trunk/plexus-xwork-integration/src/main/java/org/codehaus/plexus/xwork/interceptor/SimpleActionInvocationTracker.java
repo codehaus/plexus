@@ -21,8 +21,8 @@ import com.opensymphony.xwork.ActionInvocation;
 import java.util.Stack;
 
 /**
- * @plexus.component role="org.codehaus.plexus.webwork.interceptor.ActionInvocationTracker"
- * role-hint="simple"
+ * @plexus.component role="org.codehaus.plexus.xwork.interceptor.ActionInvocationTracker"
+ * role-hint="simple"      
  * instantiation-strategy="per-lookup"
  */
 public class SimpleActionInvocationTracker

@@ -26,7 +26,7 @@ public class HttpRequestTrackerInterceptor
     extends AbstractHttpRequestTrackerInterceptor
 {
     /**
-     * @plexus.requirement role-hint="simple"
+     * @plexus.configuration default-value="simple"
      */
     private String trackerName;
 
