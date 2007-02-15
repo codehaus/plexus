@@ -192,10 +192,22 @@ public abstract class AbstractJavamailMailSender
                 protocol = session.getProperty( MAIL_TRANSPORT_PROTOCOL );
             }
 
+            String port = session.getProperty( MAIL_SMTP_PORT );
+            if ( StringUtils.isEmpty( port ) )
+            {
+                if ( protocol.endsWith( "s" ) )
+                {
+                    port = "465";
+                }
+                else
+                {
+                    port = "25";
+                }
+            }
+
             // Can't use the static Transport.send() method because it doesn't support smtps/ssl.
             Transport transport = session.getTransport( protocol );
-            transport.connect( session.getProperty( MAIL_SMTP_HOST ),
-                               new Integer( session.getProperty( MAIL_SMTP_PORT ) ).intValue(),
+            transport.connect( session.getProperty( MAIL_SMTP_HOST ), new Integer( port ).intValue(),
                                session.getProperty( MAIL_SMTP_USER ), session.getProperty( MAIL_SMTP_PASSWORD ) );
             transport.sendMessage( message, message.getAllRecipients() );
             transport.close();
