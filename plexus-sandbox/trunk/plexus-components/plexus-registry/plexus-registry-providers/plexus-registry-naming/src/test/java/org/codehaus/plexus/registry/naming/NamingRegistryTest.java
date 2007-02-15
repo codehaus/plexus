@@ -1,7 +1,7 @@
 package org.codehaus.plexus.registry.naming;
 
 /*
- * Copyright 2007, Olivier Lamy
+ * Copyright 2007 The Codehaus Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,15 @@ package org.codehaus.plexus.registry.naming;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import java.io.InputStream;
 
 import org.codehaus.plexus.registry.test.AbstractRegistryTest;
 
+import java.io.InputStream;
+
 /**
  * @author <a href="mailto:Olivier.LAMY@accor.com">olamy</a>
- * @since 8 feb. 07
  * @version $Id$
+ * @since 8 feb. 07
  */
 public class NamingRegistryTest
     extends AbstractRegistryTest

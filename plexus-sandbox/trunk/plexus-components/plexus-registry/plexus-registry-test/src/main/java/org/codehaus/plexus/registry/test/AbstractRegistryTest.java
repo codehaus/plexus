@@ -1,7 +1,7 @@
 package org.codehaus.plexus.registry.test;
 
 /*
- * Copyright 2007, Olivier Lamy
+ * Copyright 2007 The Codehaus Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,16 @@ package org.codehaus.plexus.registry.test;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import java.util.NoSuchElementException;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.registry.Registry;
 
+import java.util.NoSuchElementException;
+
 /**
  * @author <a href="mailto:Olivier.LAMY@accor.com">olamy</a>
- * @since 8 feb. 07
  * @version $Id$
+ * @since 8 feb. 07
  */
 public abstract class AbstractRegistryTest
     extends PlexusTestCase
