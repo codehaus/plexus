@@ -16,42 +16,15 @@ package org.codehaus.plexus.registry;
  * limitations under the License.
  */
 
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 /**
- * Test component.
+ * Nested class for testing.
  */
-public interface Component
+public class Nested
 {
-    String ROLE = Component.class.getName();
+    private String foo;
 
-    String getKey();
-
-    Properties getProperties();
-
-    String getConfigKey();
-
-    Properties getConfigProperties();
-
-    Map getMap();
-
-    List getList();
-
-    Map getConfigMap();
-
-    List getConfigList();
-
-    Properties getMergeProperties();
-
-    int getNumber();
-
-    int getConfigNumber();
-
-    Nested getNested();
-
-    Nested getConfigNested();
-
-    List getMergeList();
+    public String getFoo()
+    {
+        return foo;
+    }
 }

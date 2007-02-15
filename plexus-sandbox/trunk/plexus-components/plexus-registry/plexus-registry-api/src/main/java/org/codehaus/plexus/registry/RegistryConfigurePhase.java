@@ -19,12 +19,17 @@ package org.codehaus.plexus.registry;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ComponentConfigurator;
+import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup;
+import org.codehaus.plexus.component.configurator.converters.lookup.DefaultConverterLookup;
+import org.codehaus.plexus.component.configurator.expression.DefaultExpressionEvaluator;
 import org.codehaus.plexus.component.manager.ComponentManager;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.lifecycle.phase.AbstractPhase;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.PhaseExecutionException;
-import org.codehaus.plexus.util.StringUtils;
+
+import java.util.Iterator;
 
 /**
  * Configure Plexus components from the registry.
@@ -42,11 +47,23 @@ public class RegistryConfigurePhase
      */
     private Registry registry;
 
+    private ConverterLookup converterLookup;
+
+    public RegistryConfigurePhase()
+    {
+        converterLookup = new DefaultConverterLookup();
+        converterLookup.registerConverter( new RegistryMapConverter() );
+        converterLookup.registerConverter( new RegistryCollectionConverter() );
+        converterLookup.registerConverter( new RegistryStringConverter() );
+        converterLookup.registerConverter( new RegistryIntConverter() );
+    }
+
     public void execute( Object component, ComponentManager manager, ClassRealm realm )
         throws PhaseExecutionException
     {
         ComponentDescriptor descriptor = manager.getComponentDescriptor();
-        if ( !descriptor.getRole().equals( Registry.class.getName() ) )
+        if ( !descriptor.getRole().equals( Registry.class.getName() ) &&
+            !descriptor.getRole().equals( ComponentConfigurator.ROLE ) )
         {
             Registry registry = getRegistry( manager, realm );
 
@@ -60,30 +77,31 @@ public class RegistryConfigurePhase
 
             try
             {
-                String configuratorId = descriptor.getComponentConfigurator();
-
-                if ( StringUtils.isEmpty( configuratorId ) )
-                {
-                    configuratorId = "basic";
-                }
-
-                ComponentConfigurator componentConfigurator = (ComponentConfigurator) manager.getContainer().lookup(
-                    ComponentConfigurator.ROLE, configuratorId, realm );
-
                 ClassRealm componentRealm = manager.getContainer().getComponentRealm( descriptor.getRealmId() );
 
-                componentConfigurator.configureComponent( component, new RegistryPlexusConfiguration( registry ),
-                                                          componentRealm );
-            }
-            catch ( ComponentLookupException e )
-            {
-                throw new PhaseExecutionException(
-                    "Unable to auto-configure component as its configurator could not be found", e );
+                configure( component, registry, componentRealm );
             }
             catch ( ComponentConfigurationException e )
             {
                 throw new PhaseExecutionException( "Unable to auto-configure component", e );
             }
+        }
+    }
+
+    private void configure( Object component, Registry registry, ClassRealm componentRealm )
+        throws ComponentConfigurationException
+    {
+        for ( Iterator i = registry.getKeys().iterator(); i.hasNext(); )
+        {
+            String name = (String) i.next();
+            Registry subset = registry.getSubset( name );
+
+            PlexusConfiguration childConfiguration = new RegistryPlexusConfiguration( name, subset, registry );
+
+            RegistryComponentValueSetter valueSetter =
+                new RegistryComponentValueSetter( name, component, converterLookup, null );
+
+            valueSetter.configure( childConfiguration, componentRealm, new DefaultExpressionEvaluator() );
         }
     }
 
