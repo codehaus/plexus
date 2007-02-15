@@ -19,12 +19,12 @@ package org.codehaus.plexus.security.ui.web.interceptor;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.Interceptor;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.security.authorization.AuthorizationResult;
 import org.codehaus.plexus.security.system.SecuritySession;
 import org.codehaus.plexus.security.system.SecuritySystem;
 import org.codehaus.plexus.security.system.SecuritySystemConstants;
+import org.codehaus.plexus.xwork.interceptor.AbstractHttpRequestTrackerInterceptor;
 
 import java.util.Iterator;
 import java.util.List;
@@ -40,8 +40,7 @@ import java.util.List;
  * role-hint="pssSecureActionInterceptor"
  */
 public class SecureActionInterceptor
-    extends AbstractLogEnabled
-    implements Interceptor
+    extends AbstractHttpRequestTrackerInterceptor
 {
     private static final String REQUIRES_AUTHORIZATION = "requires-authorization";
 
@@ -52,6 +51,11 @@ public class SecureActionInterceptor
      */
     private SecuritySystem securitySystem;
 
+    /**
+     * @plexus.configuration default-value="simple"
+     */
+    private String trackerName;
+    
     public void destroy()
     {
 
@@ -62,6 +66,11 @@ public class SecureActionInterceptor
         getLogger().info( this.getClass().getName() + " initialized!" );
     }
 
+    protected String getTrackerName()
+    {
+        return trackerName;
+    }
+    
     /**
      * process the action to determine if it implements SecureAction and then act
      * accordingly
@@ -77,7 +86,7 @@ public class SecureActionInterceptor
 
         Action action = (Action) context.getActionInvocation().getAction();
 
-        getLogger().debug( "SecureActionInterceptor: processing " + invocation.getAction().toString() );
+        getLogger().debug( "SecureActionInterceptor: processing " + action.getClass().getName() );
 
         try
         {
@@ -110,8 +119,7 @@ public class SecureActionInterceptor
                     if ( session == null || !session.isAuthenticated() )
                     {
                         getLogger().debug( "not authenticated, need to authenticate for this action" );
-
-                        return REQUIRES_AUTHENTICATION;
+                        return processRequiresAuthentication( invocation );                        
                     }
                 }
 
@@ -125,7 +133,7 @@ public class SecureActionInterceptor
                     if ( session == null )
                     {
                         getLogger().debug( "session required for authorization to run" );
-                        return REQUIRES_AUTHENTICATION;
+                        return processRequiresAuthentication( invocation );
                     }
 
                     for ( Iterator i = authzTuples.iterator(); i.hasNext(); )
@@ -148,18 +156,18 @@ public class SecureActionInterceptor
                         }
                     }
 
-                    return REQUIRES_AUTHORIZATION;
+                    return processRequiresAuthorization( invocation );
                 }
             }
             else
             {
-                getLogger().debug( "SecureActionInterceptor: " + invocation.getAction().toString() + " not a secure action" );
+                getLogger().debug( "SecureActionInterceptor: " + action.getClass().getName() + " not a secure action" );
             }
         }
         catch ( SecureActionException se )
         {
             getLogger().error( "can't generate the SecureActionBundle, deny access: " + se.getMessage() );
-            return REQUIRES_AUTHENTICATION;
+            return processRequiresAuthentication( invocation );
         }
 
         getLogger().debug( "not a secure action " + action.getClass().getName() );
@@ -168,4 +176,18 @@ public class SecureActionInterceptor
             invocation.getAction().getClass().getName() );
         return result;
     }
+    
+    protected String processRequiresAuthorization( ActionInvocation invocation )
+        throws ComponentLookupException
+    {
+        addActionInvocation( invocation ).setBackTrack();
+        return REQUIRES_AUTHORIZATION;
+    }
+    
+    protected String processRequiresAuthentication( ActionInvocation invocation )
+        throws ComponentLookupException
+    {
+        addActionInvocation( invocation ).setBackTrack();
+        return REQUIRES_AUTHENTICATION;
+    }    
 }
