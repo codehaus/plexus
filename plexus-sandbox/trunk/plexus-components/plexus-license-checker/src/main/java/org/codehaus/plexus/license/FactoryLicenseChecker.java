@@ -1,6 +1,5 @@
 package org.codehaus.plexus.license;
 
-import java.io.File;
 /**
  *
  * Copyright 2007
@@ -33,23 +32,23 @@ public class FactoryLicenseChecker
 
     private static final String APT_EXTENSION = ".apt";
 
-    public static AbstractLicenseChecker getLicenseChecker( String filename, File startLicenseFile,
-                                                            File endLicenseFile )
+    public static AbstractLicenseChecker getLicenseChecker( String filename, String startOfLicense,
+                                                            String endOfLicense )
     {
         AbstractLicenseChecker checker = null;
 
         if ( filename.toLowerCase().endsWith( JAVA_EXTENSION ) )
         {
-            checker = new JavaLicenseChecker( startLicenseFile, endLicenseFile );
+            checker = new JavaLicenseChecker( startOfLicense, endOfLicense );
         }
         else if ( filename.toLowerCase().endsWith( XML_EXTENSION ) ||
             filename.toLowerCase().endsWith( HTM_EXTENSION ) || filename.toLowerCase().endsWith( HTML_EXTENSION ) )
         {
-            checker = new XmlLicenseChecker( startLicenseFile, endLicenseFile );
+            checker = new XmlLicenseChecker( startOfLicense, endOfLicense );
         }
         else if ( filename.toLowerCase().endsWith( APT_EXTENSION ) )
         {
-            checker = new AptLicenseChecker( startLicenseFile, endLicenseFile );
+            checker = new AptLicenseChecker( startOfLicense, endOfLicense );
         }
         return checker;
     }

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
+import java.io.InputStream;
 
 /**
  * @author John Tolentino
@@ -48,4 +49,24 @@ public class Utils
         }
         return text.toString();
     }
+
+    public static String streamToString( InputStream in )
+        throws IOException
+        {
+        StringBuffer text = new StringBuffer();
+        try
+        {
+            int b;
+            while ( ( b = in.read() ) != -1 )
+            {
+                text.append( (char) b );
+            }
+        }
+        finally
+        {
+            in.close();
+        }
+        return text.toString();
+    }
+    
 }

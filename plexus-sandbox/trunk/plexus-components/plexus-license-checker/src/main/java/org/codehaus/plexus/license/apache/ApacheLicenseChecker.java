@@ -21,57 +21,43 @@ import org.codehaus.plexus.license.reports.LicenseReporter;
 import org.codehaus.plexus.license.reports.LicenseReport;
 import org.codehaus.plexus.license.AbstractLicenseChecker;
 import org.codehaus.plexus.license.FactoryLicenseChecker;
+import org.codehaus.plexus.license.Utils;
 
 import java.util.List;
 import java.util.Iterator;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.File;
+import java.io.IOException;
 
 /**
  * @author John Tolentino
  */
 public class ApacheLicenseChecker
 {
-    private static final String START_LICENSE = "/START_LICENSE.TXT";
+    private static final String START_LICENSE = "/org/codehaus/plexus/license/apache/START_LICENSE.TXT";
 
-    private static final String END_LICENSE = "/END_LICENSE.TXT";
+    private static final String END_LICENSE = "/org/codehaus/plexus/license/apache/END_LICENSE.TXT";
 
-    private static final String EMPTY_STRING = "";
+    private static String startLicenseString;
 
-    private static File startLicenseFile;
+    private static String endLicenseString;
 
-    private static File endLicenseFile;
 
     public ApacheLicenseChecker()
     {
-        setLicenseFiles( null, null );
+        setLicenseFiles();
     }
 
-    public ApacheLicenseChecker( File startLicense, File endLicense )
+    private void setLicenseFiles()
     {
-        setLicenseFiles( startLicense, endLicense );
-    }
-
-    private void setLicenseFiles( File startLicense, File endLicense )
-    {
-        String basePath = getClass().getResource( "." ).getPath();
-        if ( ( null == startLicense ) || ( EMPTY_STRING.equals( startLicense ) ) )
+        try
         {
-            startLicenseFile = new File( basePath + START_LICENSE );
+            startLicenseString = Utils.streamToString( this.getClass().getResourceAsStream( START_LICENSE ) );
+            endLicenseString = Utils.streamToString( this.getClass().getResourceAsStream( END_LICENSE ) );
         }
-        else
+        catch ( IOException e )
         {
-            startLicenseFile = startLicense;
-        }
-
-        if ( ( null == startLicense ) || ( EMPTY_STRING.equals( startLicense ) ) )
-        {
-            endLicenseFile = new File( basePath + END_LICENSE );
-        }
-        else
-        {
-            endLicenseFile = endLicense;
+            e.printStackTrace();
         }
     }
 
@@ -128,7 +114,7 @@ public class ApacheLicenseChecker
     public void checkLicense( String filename, LicenseReporter reporter )
     {
         AbstractLicenseChecker checker =
-            FactoryLicenseChecker.getLicenseChecker( filename, startLicenseFile, endLicenseFile );
+            FactoryLicenseChecker.getLicenseChecker( filename, startLicenseString, endLicenseString );
 
         if ( null == checker )
         {

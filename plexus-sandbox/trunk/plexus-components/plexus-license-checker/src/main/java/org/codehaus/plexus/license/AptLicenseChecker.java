@@ -26,9 +26,9 @@ import java.io.File;
 public class AptLicenseChecker
     extends AbstractLicenseChecker
 {
-    public AptLicenseChecker( File startLicenseFile, File endLicenseFile )
+    public AptLicenseChecker( String startOfLicense, String endOfLicense )
     {
-        super( startLicenseFile, endLicenseFile );
+        super( startOfLicense, endOfLicense );
     }
 
     public String removeCommentCharacters( File sourceFile )
