@@ -1,0 +1,43 @@
+<document>
+  <properties>
+    <title>Available Plexus Components</title>
+    <author email="rahul@codehaus.org">Rahul Thakur</author>
+    <author email="olamy@codehaus.org">Olivier Lamy</author>
+  </properties>
+  <body>
+    <section name="List of Available Plexus Components">
+      <subsection name="Main Components">
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><a href="../plexus-components/plexus-velocity">plexus-velocity</a></td>
+            <td>Component to render velocity templates</td>
+          </tr>          
+          <tr>
+            <td><a href="../plexus-components/plexus-xwork-integration">plexus-xwork-integration</a></td>
+            <td>Provide an easy integration of Plexus with webwork.</td>
+          </tr>
+          <tr>
+            <td><a href="../plexus-components/plexus-mail-sender">plexus-mail-sender</a></td>
+            <td>Mail sender with different providers (javamail, simple)</td>
+          </tr>
+        </table>
+      </subsection>
+      <subsection name="Sandboxed Components">
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><a href="../plexus-sandbox/plexus-components/plexus-cache">plexus-cache</a></td>
+            <td>Cache API with different providers (oscache, whirlycache, hashmap)</td>
+          </tr>
+        </table>      
+      </subsection>
+    </section>
+  </body>
+</document>

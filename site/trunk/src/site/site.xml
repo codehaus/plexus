@@ -71,8 +71,13 @@
       <item name="Mailing Lists" href="mail-lists.html" />
       <item name="IRC" href="/irc.html" />
       <item name="Get Involved" href="/get-involved.html" />
-      <item name="Issue Tracking" href="/issue-tracking.html" />
     </menu>
+    
+    <menu name="Relevant Projects">
+      <item name="Plexus Common Utilities" href="plexus-utils" />
+    </menu>
+
+    
     
     <menu ref="reports" />
 
