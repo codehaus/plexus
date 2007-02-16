@@ -27,34 +27,16 @@ import java.io.File;
  */
 public abstract class AbstractLicenseChecker
 {
-    protected File startLicenseFile;
-
-    protected File endLicenseFile;
-
     private String startLicensePattern;
 
     private String endLicensePattern;
 
     public LicenseReport report;
 
-    public AbstractLicenseChecker( File startLicenseFile, File endLicenseFile )
+    public AbstractLicenseChecker( String startOfLicense, String endOfLicense )
     {
-        this.startLicenseFile = startLicenseFile;
-        this.endLicenseFile = endLicenseFile;
-        loadLicenseFile();
-    }
-
-    private void loadLicenseFile()
-    {
-        try
-        {
-            startLicensePattern = Utils.fileToString( startLicenseFile ).replaceAll( "\\s", "" );
-            endLicensePattern = Utils.fileToString( endLicenseFile ).replaceAll( "\\s", "" );
-        }
-        catch ( IOException e )
-        {
-            e.printStackTrace();
-        }
+        startLicensePattern = startOfLicense.replaceAll( "\\s", "" );
+        endLicensePattern = endOfLicense.replaceAll( "\\s", "" );
     }
 
     public abstract String removeCommentCharacters( File source )

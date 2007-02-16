@@ -27,9 +27,9 @@ public class JavaLicenseChecker
     extends AbstractLicenseChecker
 {
 
-    public JavaLicenseChecker( File startLicenseFile, File endLicenseFile )
+    public JavaLicenseChecker( String startOfLicense, String endOfLicense )
     {
-        super( startLicenseFile, endLicenseFile );
+        super( startOfLicense, endOfLicense );
     }
 
     public String removeCommentCharacters( File sourceFile )

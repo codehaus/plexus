@@ -17,8 +17,6 @@
 
 package org.codehaus.plexus.license.reports;
 
-import org.codehaus.plexus.license.reports.LicenseReport;
-
 /**
  * @author John Tolentino
  */

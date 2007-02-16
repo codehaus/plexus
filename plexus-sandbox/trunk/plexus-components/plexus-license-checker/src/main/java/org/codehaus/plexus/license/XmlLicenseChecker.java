@@ -26,9 +26,9 @@ import java.io.File;
 public class XmlLicenseChecker
     extends AbstractLicenseChecker
 {
-    public XmlLicenseChecker( File startLicenseFile, File endLicenseFile )
+    public XmlLicenseChecker( String startOfLicense, String endOfLicense )
     {
-        super( startLicenseFile, endLicenseFile );
+        super( startOfLicense, endOfLicense );
     }
 
     public String removeCommentCharacters( File sourceFile )
