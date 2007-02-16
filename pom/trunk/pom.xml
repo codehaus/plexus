@@ -4,7 +4,7 @@
   <artifactId>plexus</artifactId>
   <packaging>pom</packaging>
   <name>Plexus</name>
-  <version>1.0.10</version>
+  <version>1.0.11-SNAPSHOT</version>
   <ciManagement>
     <notifiers>
       <notifier>
@@ -243,9 +243,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/pom/tags/plexus-1.0.10</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/pom/tags/plexus-1.0.10</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/pom/tags/plexus-1.0.10</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/pom/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/pom/trunk/</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/pom/trunk/</url>
   </scm>
   <organization>
     <name>Codehaus</name>
