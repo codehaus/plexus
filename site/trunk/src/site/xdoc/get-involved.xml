@@ -1,0 +1,79 @@
+<document>
+  <properties>
+    <title>Community - Getting Involved</title>
+    <author email="rahul@codehaus.org">Rahul Thakur</author>
+    <author email="olamy@codehaus.org">Olivier Lamy</author>
+  </properties>
+  <body>
+    <section name="How do I get involved in Plexus development?">
+      <subsection name="Interested in being a part of Plexus development team.... that's great!">
+        <p>You can contribute: 
+        <ul>
+            <li>by asking questions and sharing ideas on Plexus <a href="mail-lists.html">mailing lists</a>  and on <a href="irc.html">IRC</a>
+            </li>
+            <li>by picking up issues of interest and submitting patches with Plexus team.</li>
+          </ul>
+        </p>
+      </subsection>
+      <subsection name="Reporting Issues">
+        <p>Before reporting please chose the correct project :
+          <ul>
+            <li>Plexus Container issue  <a href="http://jira.codehaus.org/browse/PLX">Plexus  (PLX)</a>
+            </li>
+            <li>Plexus Components issue  <a href="http://jira.codehaus.org/browse/PLXCOMP">Plexus Components  (PLXCOMP)</a>
+            </li>
+            <li>Plexus Redback issue  <a href="http://jira.codehaus.org/browse/PLXREDBACK">Plexus Redback  (PLXREDBACK)</a>
+            </li>
+            <li>Plexus Redback issue  <a href="http://jira.codehaus.org/browse/PLXUTILS">Plexus Utils  (PLXUTILS)</a>
+            </li>
+          </ul>
+        </p>
+      </subsection>
+      <subsection name="Creating and submitting a patch">
+        <p>First you need to create an issue in JIRA in the correct project. (ensure you have made a svn up before).</p>
+        <br />
+        <p>If your patch is a improvement or a new feature : add a junit.</p>
+        <source>
+svn diff > projectName-issueId.patch (where projectName in PLX, PLXCOMP, PLXREDBACK, PLXUTILS)      
+        </source>
+        <p>Attached the patch to the jira issue.</p>
+      </subsection>
+      <subsection name="License">
+        <p>All sources must contains the following license header :
+          <source>
+/*
+ * Copyright 2007 The Codehaus Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */     
+          </source>
+        </p>
+      </subsection>
+      <subsection name="Plexus Code Style">
+        <p>The following sections show how to set up the code style for Maven in IDEA and Eclipse. It is strongly preferred that patches use this style before they are spplied</p>
+        <subsection name="IntelliJ IDEA 4.5+">
+          <p>
+            Download <a href="codestyle/maven-idea-codestyle.xml">maven-idea-codestyle.xml</a> and copy it to ~/.IntelliJIDEA/config/codestyles then restart IDEA. On Windows, try C:\Documents and Settings&lt;username&gt;\.IntelliJIDEA\config\codestyles
+          </p>
+          <p>After this, restart IDEA and open the settings to select the new code style.</p>
+        </subsection>
+        <subsection name="Eclipse 3.2+">
+          <p>Download <a href="codestyle/maven-eclipse-codestyle.xml">maven-eclipse-codestyle.xml</a>
+          </p>
+          <p>After this, select Window > Preferences, and open up the configuration for Java > Code Style > Code Formatter. Click on the button labeled Import... and select the file you downloaded. Give the style a name, and click OK.
+          </p>
+        </subsection>
+      </subsection>
+    </section>
+  </body>
+</document>

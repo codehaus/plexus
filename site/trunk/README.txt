@@ -3,7 +3,8 @@
 
     http://docs.codehaus.org/display/HAUSMATES/Maven+Guide
 
+2)  Actually use last snapshot of doxia-book (format pdf failed on windows)
 
-2)  Use "mvn site-deploy" to publish the content.
+3)  Use "mvn site-deploy" to publish the content.
     
 
