@@ -292,7 +292,7 @@ public class CachedRbacManager
         {
             getLogger().debug( "building effective role set" );
             Set effectiveRoleSet = this.rbacImpl.getEffectiveRoles( role );
-            userPermissionsCache.putElement( new Element( role.getName(), effectiveRoleSet ) );
+            effectiveRoleSetCache.putElement( new Element( role.getName(), effectiveRoleSet ) );
             return effectiveRoleSet;
         }
     }
@@ -300,6 +300,7 @@ public class CachedRbacManager
     public Resource getGlobalResource()
         throws RbacManagerException
     {
+        /* this is very light */
         getLogger().debug( "NOT CACHED - .getGlobalResource()" );
         return this.rbacImpl.getGlobalResource();
     }
