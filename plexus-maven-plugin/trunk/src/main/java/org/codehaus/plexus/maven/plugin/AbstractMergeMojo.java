@@ -38,7 +38,7 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id: PlexusDescriptorMojo.java 2977 2006-01-05 21:05:18Z trygvis $
+ * @version $Id$
  */
 public abstract class AbstractMergeMojo
     extends AbstractMojo

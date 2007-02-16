@@ -71,6 +71,16 @@ public class PlexusComponentsReport
      */
     private String outputDirectory;
 
+    /**
+     * @parameter expression="${javaDocDestDir}" default-value="apidocs"
+     */
+    private String javaDocDestDir;
+
+    /**
+     * @parameter expression="${jxrDestDir}" default-value="xref"
+     */
+    private String jxrDestDir;
+
     // ----------------------------------------------------------------------
     // MavenReport Implementation
     // ----------------------------------------------------------------------
@@ -143,12 +153,14 @@ public class PlexusComponentsReport
         }
         catch ( JDOMException e )
         {
-            throw new MavenReportException( "Error while building document of " + componentsXml.getAbsolutePath() + ".",
+            throw new MavenReportException(
+                                            "Error while building document of " + componentsXml.getAbsolutePath() + ".",
                                             e );
         }
         catch ( IOException e )
         {
-            throw new MavenReportException( "Error while building document of " + componentsXml.getAbsolutePath() + ".",
+            throw new MavenReportException(
+                                            "Error while building document of " + componentsXml.getAbsolutePath() + ".",
                                             e );
         }
 
@@ -156,7 +168,7 @@ public class PlexusComponentsReport
         {
             ComponentSet componentSet = new ComponentSet( document.getRootElement() );
 
-            componentSet.print( sink );
+            componentSet.print( sink, javaDocDestDir, jxrDestDir );
         }
 
         sink.body_();
