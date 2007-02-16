@@ -27,20 +27,20 @@ import java.io.File;
  */
 public abstract class AbstractLicenseChecker
 {
-    private File START_LICENSE_FILE;
+    protected File startLicenseFile;
 
-    private File END_LICENSE_FILE;
+    protected File endLicenseFile;
 
-    private String START_LICENSE;
+    private String startLicensePattern;
 
-    private String END_LICENSE;
+    private String endLicensePattern;
 
     public LicenseReport report;
 
     public AbstractLicenseChecker( File startLicenseFile, File endLicenseFile )
     {
-        START_LICENSE_FILE = startLicenseFile;
-        END_LICENSE_FILE = endLicenseFile;
+        this.startLicenseFile = startLicenseFile;
+        this.endLicenseFile = endLicenseFile;
         loadLicenseFile();
     }
 
@@ -48,8 +48,8 @@ public abstract class AbstractLicenseChecker
     {
         try
         {
-            START_LICENSE = Utils.fileToString( START_LICENSE_FILE ).replaceAll( "\\s", "" );
-            END_LICENSE = Utils.fileToString( END_LICENSE_FILE ).replaceAll( "\\s", "" );
+            startLicensePattern = Utils.fileToString( startLicenseFile ).replaceAll( "\\s", "" );
+            endLicensePattern = Utils.fileToString( endLicenseFile ).replaceAll( "\\s", "" );
         }
         catch ( IOException e )
         {
@@ -66,15 +66,15 @@ public abstract class AbstractLicenseChecker
         {
             String testFile = removeCommentCharacters( new File( filename ) );
 
-            if ( testFile.lastIndexOf( START_LICENSE ) == -1 )
+            if ( testFile.lastIndexOf( startLicensePattern ) == -1 )
             {
                 reporter.error( "Can't find the start of license: " + filename );
             }
-            else if ( testFile.lastIndexOf( END_LICENSE ) == -1 )
+            else if ( testFile.lastIndexOf( endLicensePattern ) == -1 )
             {
                 reporter.error( "Can't find the end of license: " + filename );
             }
-            else if ( testFile.lastIndexOf( END_LICENSE ) < testFile.lastIndexOf( START_LICENSE ) )
+            else if ( testFile.lastIndexOf( endLicensePattern ) < testFile.lastIndexOf( startLicensePattern ) )
             {
                 reporter.error( "Improper sequence of start and end of the license: " + filename );
             }
