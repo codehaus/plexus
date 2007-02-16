@@ -18,7 +18,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-mail-sender-api</artifactId>
-      <version>1.0-alpha-6</version>
+      <version>1.0-alpha-7-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
