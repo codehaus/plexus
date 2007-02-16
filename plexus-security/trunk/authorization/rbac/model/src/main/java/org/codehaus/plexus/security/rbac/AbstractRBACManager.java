@@ -520,7 +520,7 @@ public abstract class AbstractRBACManager
      * returns the active roles for a given principal
      * <p/>
      * NOTE: roles that are returned might have have roles themselves, if
-     * you just want all permissions then use {@link #getAssignedPermissions(Stringprincipal)}
+     * you just want all permissions then use {@link #getAssignedPermissions(String principal)}
      *
      * @param principal
      * @return
