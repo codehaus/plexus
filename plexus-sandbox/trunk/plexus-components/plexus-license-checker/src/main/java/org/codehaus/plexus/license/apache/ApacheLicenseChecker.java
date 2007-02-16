@@ -15,10 +15,12 @@
  *  limitations under the License.
  */
 
-package org.codehaus.plexus.license;
+package org.codehaus.plexus.license.apache;
 
 import org.codehaus.plexus.license.reports.LicenseReporter;
 import org.codehaus.plexus.license.reports.LicenseReport;
+import org.codehaus.plexus.license.AbstractLicenseChecker;
+import org.codehaus.plexus.license.FactoryLicenseChecker;
 
 import java.util.List;
 import java.util.Iterator;
@@ -31,12 +33,15 @@ import java.io.File;
  */
 public class ApacheLicenseChecker
 {
-    private static File START_LICENSE_FILE;
+    private static final String START_LICENSE = "/START_LICENSE.TXT";
 
-    private static File END_LICENSE_FILE;
+    private static final String END_LICENSE = "/END_LICENSE.TXT";
 
     private static final String EMPTY_STRING = "";
 
+    private static File startLicenseFile;
+
+    private static File endLicenseFile;
 
     public ApacheLicenseChecker()
     {
@@ -50,22 +55,23 @@ public class ApacheLicenseChecker
 
     private void setLicenseFiles( File startLicense, File endLicense )
     {
+        String basePath = getClass().getResource( "." ).getPath();
         if ( ( null == startLicense ) || ( EMPTY_STRING.equals( startLicense ) ) )
         {
-            START_LICENSE_FILE = new File( "target/classes/org/codehaus/plexus/license/APACHE_START_LICENSE.TXT" );
+            startLicenseFile = new File( basePath + START_LICENSE );
         }
         else
         {
-            START_LICENSE_FILE = startLicense;
+            startLicenseFile = startLicense;
         }
 
         if ( ( null == startLicense ) || ( EMPTY_STRING.equals( startLicense ) ) )
         {
-            END_LICENSE_FILE = new File( "target/classes/org/codehaus/plexus/license/APACHE_END_LICENSE.TXT" );
+            endLicenseFile = new File( basePath + END_LICENSE );
         }
         else
         {
-            END_LICENSE_FILE = endLicense;
+            endLicenseFile = endLicense;
         }
     }
 
@@ -95,7 +101,7 @@ public class ApacheLicenseChecker
         }
         else
         {
-            buffer.append( "\nNo documentation errors were found.\n" );
+            buffer.append( "\nNo license errors were found.\n" );
         }
 
         PrintWriter writer = new PrintWriter( result );
@@ -122,7 +128,7 @@ public class ApacheLicenseChecker
     public void checkLicense( String filename, LicenseReporter reporter )
     {
         AbstractLicenseChecker checker =
-            FactoryLicenseChecker.getLicenseChecker( filename, START_LICENSE_FILE, END_LICENSE_FILE );
+            FactoryLicenseChecker.getLicenseChecker( filename, startLicenseFile, endLicenseFile );
 
         if ( null == checker )
         {

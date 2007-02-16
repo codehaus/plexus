@@ -20,6 +20,7 @@ package org.codehaus.plexus.license;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.license.reports.LicenseReporter;
 import org.codehaus.plexus.license.reports.LicenseReport;
+import org.codehaus.plexus.license.apache.ApacheLicenseChecker;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -51,8 +52,8 @@ public class LicenseCheckerTest
     public void testSelf()
     {
         List fileList = new ArrayList();
+        fileList.add( getBasedir() + "/src/main/java/org/codehaus/plexus/license/apache/ApacheLicenseChecker.java" );
         fileList.add( getBasedir() + "/src/main/java/org/codehaus/plexus/license/AbstractLicenseChecker.java" );
-        fileList.add( getBasedir() + "/src/main/java/org/codehaus/plexus/license/ApacheLicenseChecker.java" );
         fileList.add( getBasedir() + "/src/main/java/org/codehaus/plexus/license/AptLicenseChecker.java" );
         fileList.add( getBasedir() + "/src/main/java/org/codehaus/plexus/license/FactoryLicenseChecker.java" );
         fileList.add( getBasedir() + "/src/main/java/org/codehaus/plexus/license/JavaLicenseChecker.java" );
