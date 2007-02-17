@@ -33,7 +33,7 @@
             <th>Description</th>
           </tr>
           <tr>
-            <td><a href="../plexus-sandbox/plexus-components/plexus-cache">plexus-cache</a></td>
+            <td><a href="../plexus-components/plexus-cache">plexus-cache</a></td>
             <td>Cache API with different providers (oscache, whirlycache, hashmap)</td>
           </tr>
         </table>      
