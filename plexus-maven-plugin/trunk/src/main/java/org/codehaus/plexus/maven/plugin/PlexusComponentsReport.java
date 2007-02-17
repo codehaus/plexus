@@ -72,11 +72,15 @@ public class PlexusComponentsReport
     private String outputDirectory;
 
     /**
+     * Location of javadoc report
+     * 
      * @parameter expression="${javaDocDestDir}" default-value="apidocs"
      */
     private String javaDocDestDir;
 
     /**
+     * Location of xref report
+     * 
      * @parameter expression="${jxrDestDir}" default-value="xref"
      */
     private String jxrDestDir;
