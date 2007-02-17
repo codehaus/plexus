@@ -75,6 +75,7 @@
     
     <menu name="Relevant Projects">
       <item name="Plexus Common Utilities" href="plexus-utils" />
+      <item name="Plexus Maven Plugin" href="plexus-maven-plugin" />
     </menu>
 
     
