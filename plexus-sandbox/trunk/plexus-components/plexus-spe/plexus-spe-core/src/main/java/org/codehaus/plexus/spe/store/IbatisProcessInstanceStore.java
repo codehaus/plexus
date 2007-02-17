@@ -55,8 +55,7 @@ public class IbatisProcessInstanceStore
     {
         getLogger().info( "Creating a new process instance: " + processDescriptor.getId() + "." );
 
-        IbatisProcessInstance instance = new IbatisProcessInstance();
-        instance.setProcessId( processDescriptor.getId() );
+        IbatisProcessInstance instance = new IbatisProcessInstance( processDescriptor.getId() );
         instance.setContext( context );
         instance.setCreatedTime( System.currentTimeMillis() );
 
@@ -84,7 +83,7 @@ public class IbatisProcessInstanceStore
             // -----------------------------------------------------------------------
 
             int i = 0;
-            for ( StepDescriptor action : (List<StepDescriptor>) processDescriptor.getSteps() )
+            for ( StepDescriptor action : processDescriptor.getSteps() )
             {
                 if ( StringUtils.isEmpty( action.getExecutorId() ) )
                 {
@@ -93,12 +92,12 @@ public class IbatisProcessInstanceStore
 
                 StepInstance step = new StepInstance();
                 step.setId( Integer.toString( i ) );
-                step.setProcessInstanceId( id.toString() );
+                step.setProcessInstanceId( id );
                 step.setExecutorId( action.getExecutorId() );
 
                 sqlMap.insert( "insertStepInstance", step );
                 i++;
-                instance.getSteps().add( step );
+                instance.addStep( step );
             }
 
             sqlMap.commitTransaction();
@@ -116,6 +115,29 @@ public class IbatisProcessInstanceStore
     }
 
     public synchronized Collection<? extends ProcessInstance> getActiveInstances()
+        throws ProcessException
+    {
+        try
+        {
+            sqlMap.startTransaction();
+
+            Collection<IbatisProcessInstance> processes = sqlMap.queryForList( "selectProcessInstanceBasicRunning", null );
+
+            sqlMap.commitTransaction();
+
+            return processes;
+        }
+        catch ( SQLException e )
+        {
+            throw new ProcessException( "Error while fetcing process instance.", e );
+        }
+        finally
+        {
+            endTransaction();
+        }
+    }
+
+    public Collection<? extends ProcessInstance> getInstances()
         throws ProcessException
     {
         try
@@ -161,7 +183,7 @@ public class IbatisProcessInstanceStore
             sqlMap.delete( "deleteStepInstanceLogMessage",
                            Collections.singletonMap( "processInstanceId", processInstance.getId() ) );
 
-            for ( StepInstance step : (List<StepInstance>) processInstance.getSteps() )
+            for ( StepInstance step : processInstance.getSteps() )
             {
                 sqlMap.update( "updateStepInstance", step );
 
@@ -170,7 +192,7 @@ public class IbatisProcessInstanceStore
                 // -----------------------------------------------------------------------
 
                 int sequenceNo = 0;
-                Map parameters = new HashMap<String, Object>();
+                Map<String, Serializable> parameters = new HashMap<String, Serializable>();
                 parameters.put( "stepInstanceId", step.getId() );
                 parameters.put( "processInstanceId", processInstance.getId() );
                 for ( LogMessage logMessage : (List<LogMessage>) step.getLogMessages() )
@@ -212,12 +234,12 @@ public class IbatisProcessInstanceStore
             // Because of some iBatis bug the log messages can't be loaded properly. Waiting for 2.2.0 and 2.3.0 to be
             // uploaded to the Maven repository
 
-            for ( StepInstance stepInstance : ( (List<StepInstance>) processInstance.getSteps() ) )
+            for ( StepInstance stepInstance : processInstance.getSteps() )
             {
                 Map<String, String> parameters = new HashMap<String, String>();
                 parameters.put( "processInstanceId", processInstance.getId() );
                 parameters.put( "stepInstanceId", stepInstance.getId() );
-                List list = sqlMap.queryForList( "selectStepInstanceLogMessage", parameters );
+                List<LogMessage> list = sqlMap.queryForList( "selectStepInstanceLogMessage", parameters );
                 stepInstance.setLogMessages( list );
             }
 

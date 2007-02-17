@@ -6,8 +6,6 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.ServiceLocator;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
 import org.codehaus.plexus.spe.ProcessException;
-import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 import java.util.Collection;
 
@@ -25,18 +23,7 @@ public abstract class AbstractStepExecutor
     //
     // -----------------------------------------------------------------------
 
-    protected static String getChild( Xpp3Dom configuration, String key )
-        throws ProcessException
-    {
-        if ( configuration == null || configuration.getChild( key ) == null ||
-            StringUtils.isEmpty( configuration.getChild( key ).getValue() ) )
-        {
-            throw new ProcessException( "Invalid configuration: Missing '" + key + "'." );
-        }
-
-        return configuration.getChild( key ).getValue();
-    }
-
+/*
     protected static String getChild( Xpp3Dom configuration, String key, String defaultValue )
         throws ProcessException
     {
@@ -48,6 +35,7 @@ public abstract class AbstractStepExecutor
 
         return configuration.getChild( key ).getValue();
     }
+*/
 
     protected Object lookup( String role )
         throws ProcessException

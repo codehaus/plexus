@@ -2,16 +2,16 @@ package org.codehaus.plexus.spe.execution.jython;
 
 import org.codehaus.plexus.spe.ProcessException;
 import org.codehaus.plexus.spe.execution.AbstractStepExecutor;
-import org.codehaus.plexus.spe.execution.StepExecutor;
 import org.codehaus.plexus.spe.execution.StepEventListener;
+import org.codehaus.plexus.spe.execution.StepExecutor;
 import org.codehaus.plexus.spe.model.StepDescriptor;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.codehaus.plexus.spe.utils.DocumentWrapper;
 import org.codehaus.plexus.util.StringUtils;
 import org.python.util.PythonInterpreter;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
@@ -31,19 +31,19 @@ public class JythonStepExecutor
                          StepEventListener eventListener )
         throws ProcessException
     {
-        Xpp3Dom configuration = (Xpp3Dom) stepDescriptor.getConfiguration();
+        DocumentWrapper configuration = new DocumentWrapper( stepDescriptor.getConfiguration() );
 
         // -----------------------------------------------------------------------
         // Load and validate script
         // -----------------------------------------------------------------------
 
-        String script = AbstractStepExecutor.getChild( configuration, "script" );
+        String script = configuration.getChildText( "script" );
 
         // -----------------------------------------------------------------------
         // Load all requirements
         // -----------------------------------------------------------------------
 
-        Xpp3Dom requirements = configuration.getChild( "requirements" );
+        DocumentWrapper requirements = configuration.getOptionalChild( "requirements" );
 
         Map<String, Object> components = new HashMap<String, Object>();
 
@@ -75,42 +75,24 @@ public class JythonStepExecutor
         }
     }
 
-    private void lookupComponents( Xpp3Dom requirements, Map<String, Object> components )
+    private void lookupComponents( DocumentWrapper requirements, Map<String, Object> components )
         throws ProcessException
     {
-        for ( Xpp3Dom requirement : requirements.getChildren() )
+        for ( DocumentWrapper requirement : requirements.getChildren() )
         {
-            Xpp3Dom r = requirement.getChild( "role" );
+            String role = requirement.getChildText( "role" );
 
-            if ( r == null )
-            {
-                throw new ProcessException( "Invalid configuration: each <requirement> must have a <role>." );
-            }
-
-            String role = r.getValue();
-
-            Xpp3Dom rh = requirement.getChild( "role-hint" );
-
-            String roleHint = null;
-
-            if ( rh != null )
-            {
-                roleHint = rh.getValue();
-            }
+            String roleHint = requirement.getChildText( "role-hint", null );
 
             // -----------------------------------------------------------------------
             // Get the variable name
             // -----------------------------------------------------------------------
 
-            Xpp3Dom vn = requirement.getChild( "variable-name" );
-
-            String variableName;
+            String variableName = requirement.getChildText( "variable-name", null );
 
             // Unless the variable name is specified, use the role and role hint to calculate a variable name
-            if ( vn != null )
+            if ( variableName != null )
             {
-                variableName = vn.getValue();
-
                 if ( StringUtils.isEmpty( variableName ) )
                 {
                     throw new ProcessException( "Variable name cannot be null." );

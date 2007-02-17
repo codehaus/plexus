@@ -1,10 +1,10 @@
 package org.codehaus.plexus.spe.execution.action;
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.spe.model.StepDescriptor;
 import org.codehaus.plexus.spe.action.SaveUserAction;
 import org.codehaus.plexus.spe.User;
+import org.codehaus.plexus.spe.utils.DocumentWrapper;
 import org.codehaus.plexus.spe.execution.StepExecutor;
 import org.codehaus.plexus.spe.execution.CollectingStepEventListener;
 
@@ -24,20 +24,15 @@ public class PlexusActionStepExecutorTest
     {
         PlexusActionStepExecutor executor = (PlexusActionStepExecutor) lookup( StepExecutor.ROLE, "plexus-action" );
 
-        Xpp3Dom executorConfiguration = new Xpp3Dom( "executor-configuration" );
-        Xpp3Dom actionId = new Xpp3Dom( "actionId" );
-        actionId.setValue( "save-user" );
-        executorConfiguration.addChild( actionId );
+        DocumentWrapper executorConfiguration = new DocumentWrapper( "executor-configuration" );
+        executorConfiguration.addChildText( "actionId", "save-user" );
 
-        Xpp3Dom configuration = new Xpp3Dom( "configuration" );
-        Xpp3Dom username = new Xpp3Dom( "username" );
-        username.setValue( "trygvis" );
-        configuration.addChild( username );
+        DocumentWrapper configuration = new DocumentWrapper( "configuration" );
+        configuration.addChildText( "username", "trygvis" );
 
-        StepDescriptor descriptor = new StepDescriptor();
-        descriptor.setExecutorId( "plexus-action" );
-        descriptor.setExecutorConfiguration( executorConfiguration );
-        descriptor.setConfiguration( configuration );
+        StepDescriptor descriptor = new StepDescriptor( "plexus-action",
+                                                        executorConfiguration.getDocument(),
+                                                        configuration.getDocument() );
 
         Map<String, Serializable> context = new HashMap<String, Serializable>();
 

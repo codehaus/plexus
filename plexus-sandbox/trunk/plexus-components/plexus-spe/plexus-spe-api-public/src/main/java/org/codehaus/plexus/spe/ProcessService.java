@@ -45,4 +45,10 @@ public interface ProcessService
 
     ProcessInstance getProcessInstance( String instanceId )
         throws ProcessException;
+
+    Collection<? extends ProcessInstance> getActiveProcesses()
+        throws ProcessException;
+
+    Collection<? extends ProcessInstance> getProcesses()
+        throws ProcessException;
 }

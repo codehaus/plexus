@@ -22,6 +22,9 @@ public interface ProcessInstanceStore
     Collection<? extends ProcessInstance> getActiveInstances()
         throws ProcessException;
 
+    Collection<? extends ProcessInstance> getInstances()
+        throws ProcessException;
+
     void saveInstance( ProcessInstance processState )
         throws ProcessException;
 

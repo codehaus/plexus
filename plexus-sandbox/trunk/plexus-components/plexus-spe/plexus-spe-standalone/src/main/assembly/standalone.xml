@@ -1,0 +1,23 @@
+<assembly>
+  <id>bin</id>
+  <formats>
+    <format>tar.gz</format>
+  </formats>
+  <fileSets>
+    <fileSet>
+      <directory>src/main/etc</directory>
+      <outputDirectory>etc</outputDirectory>
+      <lineEnding>unix</lineEnding>
+    </fileSet>
+    <fileSet>
+      <directory>target/appassembler/bin</directory>
+      <outputDirectory>bin</outputDirectory>
+      <lineEnding>unix</lineEnding>
+      <fileMode>0755</fileMode>
+    </fileSet>
+    <fileSet>
+      <directory>target/appassembler/repo</directory>
+      <outputDirectory>repo</outputDirectory>
+    </fileSet>
+  </fileSets>
+</assembly>

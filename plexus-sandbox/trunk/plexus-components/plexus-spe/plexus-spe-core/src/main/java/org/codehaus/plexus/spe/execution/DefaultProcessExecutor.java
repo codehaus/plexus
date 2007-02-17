@@ -25,6 +25,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.io.Serializable;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -121,12 +122,14 @@ public class DefaultProcessExecutor
             // ----------------------------------------------------------------------
 
             ProcessInstance processInstance = store.getInstance( runtimeDescriptor.getInstanceId(), true );
-            StepInstance step = (StepInstance) processInstance.getSteps().get( runtimeDescriptor.getCurrentStep() );
+            StepInstance step = processInstance.getSteps().get( runtimeDescriptor.getCurrentStep() );
             step.setStartTime( System.currentTimeMillis() );
             store.saveInstance( processInstance );
 
+            // Copy the context so it's modifiable
             processInstance = store.getInstance( runtimeDescriptor.getInstanceId(), true );
-            stepExecutorRunner.setContext( processInstance.getContext() );
+            HashMap<String, Serializable> context = new HashMap<String, Serializable>( processInstance.getContext() );
+            stepExecutorRunner.setContext( context );
         }
         catch ( ProcessException e )
         {
@@ -195,7 +198,6 @@ public class DefaultProcessExecutor
         {
             getLogger().info( "Process completed normally. Process: " + processInstance.getProcessId() + ", instance: " + processInstance.getId() );
 
-            processInstance.setCompleted( true );
             processInstance.setEndTime( timestamp );
 
             store.saveInstance( processInstance );
@@ -213,7 +215,7 @@ public class DefaultProcessExecutor
 
         runtimeDescriptor.setCurrentStep( runtimeDescriptor.getCurrentStep() + 1 );
 
-        StepInstance nextStep = (StepInstance) processInstance.getSteps().get( runtimeDescriptor.getCurrentStep() );
+        StepInstance nextStep = processInstance.getSteps().get( runtimeDescriptor.getCurrentStep() );
         nextStep.setStartTime( timestamp );
 
         store.saveInstance( processInstance );
@@ -232,7 +234,7 @@ public class DefaultProcessExecutor
     {
         int currentStep = runtimeDescriptor.getCurrentStep();
 
-        StepDescriptor stepDescriptor = (StepDescriptor) runtimeDescriptor.getProcessDescriptor().getSteps().get( currentStep );
+        StepDescriptor stepDescriptor = runtimeDescriptor.getProcessDescriptor().getSteps().get( currentStep );
 
         StepExecutor stepExecutor = stepExecutors.get( stepDescriptor.getExecutorId() );
 
