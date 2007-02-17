@@ -81,7 +81,7 @@
       </releases>
     </repository>
   </repositories>
-
+  
   <developers>
     <developer>
       <id>jvanzyl</id>
@@ -269,5 +269,15 @@
         <version>1.0-beta-2</version>
       </extension>
     </extensions>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-release-plugin</artifactId>
+          <configuration>
+            <goals>deploy</goals>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>    
   </build>
 </project>
