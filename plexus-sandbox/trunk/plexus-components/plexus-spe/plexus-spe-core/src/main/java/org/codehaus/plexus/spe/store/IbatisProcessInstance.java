@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.Serializable;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -29,19 +30,22 @@ public class IbatisProcessInstance
     {
     }
 
+    public IbatisProcessInstance( String processId )
+    {
+        super( null, processId );
+    }
+
     public IbatisProcessInstance( ProcessInstance processInstance )
     {
-        super.setId( processInstance.getId() );
-        super.setProcessId( processInstance.getProcessId() );
+        super( processInstance.getId(),  processInstance.getProcessId() );
         super.setCreatedTime( processInstance.getCreatedTime() );
         super.setEndTime( processInstance.getEndTime() );
         super.setErrorMessage( processInstance.getErrorMessage() );
-        super.setCompleted( processInstance.isCompleted() );
         super.setSteps( processInstance.getSteps() );
         setContext( processInstance.getContext() );
     }
 
-    public boolean isContextExists()
+    public boolean isContextSet()
     {
         return contextExists;
     }
@@ -61,18 +65,18 @@ public class IbatisProcessInstance
         this.contextBytes = contextBytes;
     }
 
-    public void setContext( Map map )
+    public void setContext( Map<String, Serializable> map )
     {
         super.setContext( map );
 
         contextExists = true;
     }
 
-    public Map getContext()
+    public Map<String, Serializable> getContext()
     {
         if ( !contextExists )
         {
-            throw new RuntimeException( "This method cannot be called on a non-full object." );
+            throw new RuntimeException( "This method can only be called on a full object." );
         }
 
         return super.getContext();
@@ -123,7 +127,7 @@ public class IbatisProcessInstance
         {
             is = new ObjectInputStream( new ByteArrayInputStream( contextBytes ) );
 
-            setContext( (Map) is.readObject() );
+            setContext( (Map<String, Serializable>) is.readObject() );
         }
         catch ( IOException e )
         {

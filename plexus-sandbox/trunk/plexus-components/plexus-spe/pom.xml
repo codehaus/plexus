@@ -1,20 +1,23 @@
 <project>
-  <parent>
-    <artifactId>plexus-components</artifactId>
-    <groupId>org.codehaus.plexus</groupId>
-    <version>1.1.6</version>
-  </parent>
   <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-spe</artifactId>
   <name>Plexus Simple Process Engine</name>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+    </dependency>
+  </dependencies>
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-container-default</artifactId>
-        <version>1.0-alpha-14</version>
+        <version>1.0-alpha-18-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>ant</groupId>
@@ -94,7 +97,12 @@
     <module>plexus-spe-api-public</module>
     <module>plexus-spe-api-internal</module>
     <module>plexus-spe-core</module>
+    <module>plexus-spe-client</module>
     <module>plexus-spe-step-executor-jython</module>
     <module>plexus-spe-model</module>
+    <module>plexus-spe-rmi-api</module>
+    <module>plexus-spe-rmi-client</module>
+    <module>plexus-spe-rmi-server</module>
+    <module>plexus-spe-standalone</module>
   </modules>
 </project>

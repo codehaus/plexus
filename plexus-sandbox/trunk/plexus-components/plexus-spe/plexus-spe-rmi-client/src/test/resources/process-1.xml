@@ -1,0 +1,19 @@
+<process>
+  <id>hello-world</id>
+  <defaultExecutorId>plexus-action</defaultExecutorId>
+  <steps>
+    <step>
+      <executorConfiguration>
+        <actionId>echo-message</actionId>
+      </executorConfiguration>
+      <configuration>
+        <message>Configuration Hello World!</message>
+      </configuration>
+    </step>
+    <step>
+      <executorConfiguration>
+        <actionId>echo-message</actionId>
+      </executorConfiguration>
+    </step>
+  </steps>
+</process>

@@ -1,5 +1,7 @@
 package org.codehaus.plexus.spe.execution;
 
+import org.codehaus.plexus.spe.model.LogMessage;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +12,7 @@ import java.util.List;
 public class CollectingStepEventListener
     implements StepEventListener
 {
-    private List<String> logMessages = new ArrayList<String>();
+    private List<LogMessage> logMessages = new ArrayList<LogMessage>();
 
     // -----------------------------------------------------------------------
     // StepEventListener Implementation
@@ -18,14 +20,19 @@ public class CollectingStepEventListener
 
     public synchronized void onLogMessage( String string )
     {
-        logMessages.add( string );
+        LogMessage message = new LogMessage();
+
+        message.setMessage( string );
+        message.setTimestamp( System.currentTimeMillis() );
+
+        logMessages.add( message );
     }
 
     // -----------------------------------------------------------------------
     //
     // -----------------------------------------------------------------------
 
-    public List<String> getLogMessages()
+    public List<LogMessage> getLogMessages()
     {
         return logMessages;
     }

@@ -1,0 +1,8 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.rmi.RmiService</role>
+      <implementation>org.codehaus.plexus.rmi.DefaultRmiService</implementation>
+    </component>
+  </components>
+</component-set>

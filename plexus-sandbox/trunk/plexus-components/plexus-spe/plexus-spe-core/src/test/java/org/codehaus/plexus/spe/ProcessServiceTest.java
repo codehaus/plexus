@@ -36,7 +36,7 @@ public class ProcessServiceTest
 
         Thread.sleep( 1000 );
 
-        assertTrue( processService.hasCompleted( instanceId ) );
+        waitForCompletion( 3000, processService, instanceId );
 
         assertEquals( 2, EchoAction.messages.size() );
         assertEquals( "Configuration Hello World!", EchoAction.messages.get( 0 ) );

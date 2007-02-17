@@ -2,21 +2,20 @@ package org.codehaus.plexus.spe.execution.action;
 
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.action.Action;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ComponentConfigurator;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.spe.ProcessException;
 import org.codehaus.plexus.spe.execution.AbstractStepExecutor;
-import org.codehaus.plexus.spe.execution.StepExecutor;
 import org.codehaus.plexus.spe.execution.StepEventListener;
+import org.codehaus.plexus.spe.execution.StepExecutor;
 import org.codehaus.plexus.spe.model.StepDescriptor;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.codehaus.plexus.spe.utils.DocumentWrapper;
+import org.w3c.dom.Element;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -42,11 +41,11 @@ public class PlexusActionStepExecutor
                          StepEventListener eventListener  )
         throws ProcessException
     {
-        Xpp3Dom executorConfiguration = (Xpp3Dom) stepDescriptor.getExecutorConfiguration();
+        DocumentWrapper executorConfiguration = new DocumentWrapper( stepDescriptor.getExecutorConfiguration() );
 
-        String actionId = getChild( executorConfiguration, "actionId" );
+        String actionId = executorConfiguration.getChildText( "actionId" );
 
-        String configuratorId = getChild( executorConfiguration, "configuratorId", "basic" );
+        String configuratorId = executorConfiguration.getChildText( "configuratorId", "basic" );
 
         Action action = null;
 
@@ -111,12 +110,18 @@ public class PlexusActionStepExecutor
         // Configure the action based on the configuration
         // ----------------------------------------------------------------------
 
-        Xpp3Dom configuration = (Xpp3Dom) stepDescriptor.getConfiguration();
+        Element configuration = stepDescriptor.getConfiguration().getDocumentElement();
 
-        PlexusConfiguration componentConfiguration = new XmlPlexusConfiguration( configuration );
+        DomPlexusConfiguration componentConfiguration = new DomPlexusConfiguration( configuration );
+
+//        System.err.println( "------------------------" );
+//        DocumentUtils.dumpDocument( stepDescriptor.getConfiguration() );
+//        componentConfiguration.dump();
+//        System.err.println( "------------------------" );
 
         try
         {
+
             configurator.configureComponent( action, componentConfiguration, classRealm );
         }
         catch ( ComponentConfigurationException e )

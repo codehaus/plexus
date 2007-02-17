@@ -1,0 +1,22 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.plexus</groupId>
+    <artifactId>plexus-spe</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>plexus-spe-rmi-client</artifactId>
+  <name>Plexus Simple Process Engine RMI Client</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-spe-api-public</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-spe-rmi-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+</project>

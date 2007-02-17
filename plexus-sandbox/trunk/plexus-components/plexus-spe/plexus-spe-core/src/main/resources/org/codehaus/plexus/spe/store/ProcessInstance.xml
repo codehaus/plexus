@@ -14,8 +14,8 @@
     <result property="id"/>
     <result property="processInstanceId"/>
     <result property="executorId"/>
-    <result property="startTime" nullValue=""/>
-    <result property="endTime" nullValue="0"/>
+    <result property="startTime"/>
+    <result property="endTime"/>
     <result property="exceptionStackTrace" nullValue=""/>
     <!--This is done in code
     <result property="logMessages" select="selectStepInstanceLogMessage" column="[stepInstanceId=id, processInstanceId=processInstanceId]"/>-->
@@ -41,12 +41,14 @@
       id,
       processInstanceId,
       executorId,
-      startTime)
+      startTime,
+      endTime)
     values(
       #id#,
       #processInstanceId#,
       #executorId#,
-      #startTime#)
+      #startTime#,
+      0)
   </insert>
 
   <delete id="updateStepInstance" parameterClass="org.codehaus.plexus.spe.model.StepInstance">
@@ -121,8 +123,7 @@
     processId,
     createdTime,
     endTime,
-    errorMessage,
-    completed
+    errorMessage
   </sql>
 
   <resultMap id="processInstanceRM" class="org.codehaus.plexus.spe.store.IbatisProcessInstance">
@@ -131,7 +132,6 @@
     <result property="createdTime" column="CREATEDTIME"/>
     <result property="endTime" column="ENDTIME" nullValue="0"/>
     <result property="errorMessage" column="ERRORMESSAGE" jdbcType="VARCHAR"/>
-    <result property="completed" column="COMPLETED" nullValue=""/>
     <result property="contextBytes" column="contextBytes" nullValue=""/>
     <result property="contextExists" column="contextExists"/>
   </resultMap>
@@ -147,10 +147,17 @@
       0 as contextExists
     from
       processInstance
-    <isPropertyAvailable property="id">
+  </select>
+
+  <select id="selectProcessInstanceBasicRunning" resultMap="processInstanceRM">
+    select
+      <include refid="basicFields"/>,
+      nullif( 1, 1 ) as contextBytes, <!-- This is fucked up but I don't know how to select null -->
+      0 as contextExists
+    from
+      processInstance
     where
-      id = #id#
-    </isPropertyAvailable>
+      endTime = 0
   </select>
 
   <select id="selectProcessInstanceFull" resultMap="processInstanceRMFull">
@@ -169,11 +176,13 @@
     insert into ProcessInstance(
       processId,
       createdTime,
+      endTime,
       contextBytes
     )
     values(
       #processId#,
       #createdTime#,
+      0,
       #contextBytes#
     )
     <selectKey resultClass="int">
@@ -184,7 +193,6 @@
   <parameterMap id="updateProcessInstancePM" class="org.codehaus.plexus.spe.store.IbatisProcessInstance">
     <parameter property="endTime" jdbcType="BIGINT"/>
     <parameter property="errorMessage" jdbcType="VARCHAR"/>
-    <parameter property="completed" jdbcType="SMALLINT"/>
     <parameter property="contextBytes" jdbcType="BLOB"/>
     <!--<parameter property="contextExists"/>-->
     <parameter property="id" jdbcType="INT"/>
@@ -193,7 +201,6 @@
     update ProcessInstance set
       endTime=?,
       errorMessage=?,
-      completed=?,
       contextBytes=?
     where
       id=?

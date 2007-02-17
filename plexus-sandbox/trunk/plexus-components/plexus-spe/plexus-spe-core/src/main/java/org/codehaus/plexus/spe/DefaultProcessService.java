@@ -1,8 +1,6 @@
 package org.codehaus.plexus.spe;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
@@ -11,22 +9,19 @@ import org.codehaus.plexus.spe.execution.ProcessExecutor;
 import org.codehaus.plexus.spe.model.ProcessDescriptor;
 import org.codehaus.plexus.spe.model.ProcessInstance;
 import org.codehaus.plexus.spe.model.StepDescriptor;
-import org.codehaus.plexus.spe.model.io.xpp3.ProcessDescriptorXpp3Reader;
+import org.codehaus.plexus.spe.services.io.ProcessDescriptorIo;
 import org.codehaus.plexus.spe.store.ProcessInstanceStore;
+import org.codehaus.plexus.spe.utils.DocumentUtils;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -35,7 +30,7 @@ import java.util.Map;
  */
 public class DefaultProcessService
     extends AbstractLogEnabled
-    implements ProcessService, Initializable, Startable
+    implements ProcessService, Startable
 {
     /**
      * @plexus.requirement
@@ -52,7 +47,12 @@ public class DefaultProcessService
      */
     private ProcessEventManager eventManager;
 
-    private Map<String, ProcessDescriptor> processes = new HashMap<String, ProcessDescriptor>( );
+    /**
+     * @plexus.requirement
+     */
+    private ProcessDescriptorIo processDescriptorIo;
+
+    private Map<String, ProcessDescriptor> processes = new HashMap<String, ProcessDescriptor>();
 
     // ----------------------------------------------------------------------
     // ProcessService Implementation
@@ -77,9 +77,10 @@ public class DefaultProcessService
     public Collection<ProcessDescriptor> loadProcessDirectory( File directory )
         throws ProcessException
     {
-        if ( ! directory.isDirectory() )
+        if ( !directory.isDirectory() )
         {
-            throw new ProcessException( "The specified file is not a directory: '" + directory.getAbsolutePath() + "'." );
+            throw new ProcessException(
+                "The specified file is not a directory: '" + directory.getAbsolutePath() + "'." );
         }
 
         File[] files = directory.listFiles();
@@ -105,7 +106,8 @@ public class DefaultProcessService
             }
             catch ( MalformedURLException e )
             {
-                throw new ProcessException( "Error while reading process descriptor from '" + file.getAbsolutePath() + "'.", e );
+                throw new ProcessException(
+                    "Error while reading process descriptor from '" + file.getAbsolutePath() + "'.", e );
             }
         }
 
@@ -160,17 +162,24 @@ public class DefaultProcessService
     public ProcessInstance getProcessInstance( String instanceId )
         throws ProcessException
     {
-        return store.getInstance( instanceId, true );
+        return new ProcessInstance( store.getInstance( instanceId, true ) );
+    }
+
+    public Collection<? extends ProcessInstance> getActiveProcesses()
+        throws ProcessException
+    {
+        return copyInstances( store.getActiveInstances() );
+    }
+
+    public Collection<? extends ProcessInstance> getProcesses()
+        throws ProcessException
+    {
+        return copyInstances( store.getInstances() );
     }
 
     // ----------------------------------------------------------------------
     // Component Lifecycle
     // ----------------------------------------------------------------------
-
-    public void initialize()
-        throws InitializationException
-    {
-    }
 
     public void start()
         throws StartingException
@@ -202,6 +211,16 @@ public class DefaultProcessService
     // Private
     // ----------------------------------------------------------------------
 
+    private ProcessDescriptor loadAndValidate( URL url )
+        throws ProcessException
+    {
+        ProcessDescriptor processDescriptor = processDescriptorIo.loadDescriptor( url );
+
+        validateProcess( processDescriptor );
+
+        return processDescriptor;
+    }
+
     private void validateProcess( ProcessDescriptor process )
         throws ProcessException
     {
@@ -216,7 +235,7 @@ public class DefaultProcessService
 
         int i = 0;
 
-        for ( StepDescriptor stepDescriptor : (List<StepDescriptor>) process.getSteps() )
+        for ( StepDescriptor stepDescriptor : process.getSteps() )
         {
             if ( StringUtils.isEmpty( stepDescriptor.getExecutorId() ) )
             {
@@ -224,44 +243,34 @@ public class DefaultProcessService
 
                 if ( StringUtils.isEmpty( stepDescriptor.getExecutorId() ) )
                 {
-                    throw new ProcessException( "Invalid process descriptor: Step #" + i + " is missing 'executor id'." );
+                    throw new ProcessException(
+                        "Invalid process descriptor: Step #" + i + " is missing 'executor id'." );
                 }
             }
 
             if ( stepDescriptor.getExecutorConfiguration() == null )
             {
-                stepDescriptor.setExecutorConfiguration( new Xpp3Dom( "executorConfiguration" ) );
+                stepDescriptor.setExecutorConfiguration( DocumentUtils.getEmptyDocument( "executorConfiguration" ) );
             }
 
             if ( stepDescriptor.getConfiguration() == null )
             {
-                stepDescriptor.setConfiguration( new Xpp3Dom( "configuration" ) );
+                stepDescriptor.setConfiguration( DocumentUtils.getEmptyDocument( "configuration" ) );
             }
 
             i++;
         }
     }
 
-    private ProcessDescriptor loadAndValidate( URL url )
-        throws ProcessException
+    private Collection<? extends ProcessInstance> copyInstances( Collection<? extends ProcessInstance> processInstances )
     {
-        ProcessDescriptorXpp3Reader reader = new ProcessDescriptorXpp3Reader();
+        Collection<ProcessInstance> copies = new ArrayList<ProcessInstance>( processInstances.size() );
 
-        try
+        for ( ProcessInstance instance : processInstances )
         {
-            ProcessDescriptor processDescriptor = reader.read( new InputStreamReader( url.openStream() ) );
+            copies.add( new ProcessInstance( instance ) );
+        }
 
-            validateProcess( processDescriptor );
-
-            return processDescriptor;
-        }
-        catch ( IOException e )
-        {
-            throw new ProcessException( "Error while reading process descriptor from '" + url.toExternalForm() + "'.", e );
-        }
-        catch ( XmlPullParserException e )
-        {
-            throw new ProcessException( "Error while reading process descriptor from '" + url.toExternalForm() + "'.", e );
-        }
+        return copies;
     }
 }

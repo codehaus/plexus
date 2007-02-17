@@ -31,12 +31,12 @@ public class ProcessStoreTest
 
         ProcessInstanceStore store = (ProcessInstanceStore) lookup( ProcessInstanceStore.ROLE );
 
-        for ( ProcessInstance instance : store.getActiveInstances() )
+        for ( ProcessInstance instance : store.getInstances() )
         {
             store.deleteInstance( instance.getId() );
         }
 
-        assertEquals( 0, store.getActiveInstances().size() );
+        assertEquals( 0, store.getInstances().size() );
     }
 
     public void testSimple()
@@ -48,8 +48,7 @@ public class ProcessStoreTest
 
         ProcessDescriptor process = new ProcessDescriptor();
         process.setId( "hello-world" );
-        StepDescriptor stepDescriptor = new StepDescriptor();
-        stepDescriptor.setExecutorId( "echo-message" );
+        StepDescriptor stepDescriptor = new StepDescriptor( "echo-message" );
         process.addStep( stepDescriptor );
         store.createInstance( process, context );
     }
@@ -65,11 +64,9 @@ public class ProcessStoreTest
         // Create the process descriptor
         // -----------------------------------------------------------------------
 
-        StepDescriptor stepDescriptor1 = new StepDescriptor();
-        stepDescriptor1.setExecutorId( "echo-message" );
+        StepDescriptor stepDescriptor1 = new StepDescriptor( "echo-message" );
 
-        StepDescriptor stepDescriptor2 = new StepDescriptor();
-        stepDescriptor2.setExecutorId( "voice-message" );
+        StepDescriptor stepDescriptor2 = new StepDescriptor( "voice-message" );
 
         context.put( "message", "Hello World!" );
         context.put( "user", new User( "Trygve", 123 ) );
@@ -90,11 +87,11 @@ public class ProcessStoreTest
         assertTrue( instance.getCreatedTime() > 0 );
         assertEquals( null, instance.getErrorMessage() );
         assertEquals( 2, instance.getSteps().size() );
-        StepInstance step1 = (StepInstance) instance.getSteps().get( 0 );
+        StepInstance step1 = instance.getSteps().get( 0 );
         assertEquals( "echo-message", step1.getExecutorId() );
         assertEquals( 0, step1.getLogMessages().size() );
 
-        StepInstance step2 = (StepInstance) instance.getSteps().get( 1 );
+        StepInstance step2 = instance.getSteps().get( 1 );
         assertEquals( "voice-message", step2.getExecutorId() );
         assertEquals( 0, step2.getLogMessages().size() );
 
@@ -141,12 +138,12 @@ public class ProcessStoreTest
 
         // steps
         assertEquals( instance.getSteps().size(), actualProcess.getSteps().size() );
-        StepInstance stepInstance1 = ( (StepInstance) actualProcess.getSteps().get( 0 ) );
+        StepInstance stepInstance1 = actualProcess.getSteps().get( 0 );
         assertEquals( 0, stepInstance1.getEndTime() );
         assertEquals( instance.getId(), stepInstance1.getProcessInstanceId() );
         assertEquals( 0, stepInstance1.getLogMessages().size() );
 
-        StepInstance stepInstance2 = ( (StepInstance) actualProcess.getSteps().get( 1 ) );
+        StepInstance stepInstance2 = actualProcess.getSteps().get( 1 );
         assertEquals( 0, stepInstance2.getEndTime() );
         assertEquals( instance.getId(), stepInstance2.getProcessInstanceId() );
         assertEquals( 0, stepInstance2.getLogMessages().size() );
@@ -155,7 +152,7 @@ public class ProcessStoreTest
         // Change the context and save again
         // -----------------------------------------------------------------------
 
-        actualProcess.getContext().put( "message", "yo yo!" );
+        actualProcess.putContext( "message", "yo yo!" );
         stepInstance1.addLogMessage( createLogMessage( "step 1, message 1" ) );
         stepInstance1.addLogMessage( createLogMessage( "step 1, message 2" ) );
         stepInstance1.addLogMessage( createLogMessage( "step 1, message 3" ) );
@@ -168,16 +165,16 @@ public class ProcessStoreTest
 
         assertEquals( "yo yo!", actualProcess.getContext().get( "message" ) );
 
-        stepInstance1 = (StepInstance) actualProcess.getSteps().get( 0 );
+        stepInstance1 = actualProcess.getSteps().get( 0 );
         assertEquals( 3, stepInstance1.getLogMessages().size() );
-        assertEquals( "step 1, message 1", ( (LogMessage) stepInstance1.getLogMessages().get( 0 ) ).getMessage() );
-        assertEquals( "step 1, message 2", ( (LogMessage) stepInstance1.getLogMessages().get( 1 ) ).getMessage() );
-        assertEquals( "step 1, message 3", ( (LogMessage) stepInstance1.getLogMessages().get( 2 ) ).getMessage() );
+        assertEquals( "step 1, message 1", stepInstance1.getLogMessages().get( 0 ).getMessage() );
+        assertEquals( "step 1, message 2", stepInstance1.getLogMessages().get( 1 ).getMessage() );
+        assertEquals( "step 1, message 3", stepInstance1.getLogMessages().get( 2 ).getMessage() );
 
-        stepInstance2 = (StepInstance) actualProcess.getSteps().get( 1 );
+        stepInstance2 = actualProcess.getSteps().get( 1 );
         assertEquals( 2, stepInstance2.getLogMessages().size() );
-        assertEquals( "step 2, message 1", ( (LogMessage) stepInstance2.getLogMessages().get( 0 ) ).getMessage() );
-        assertEquals( "step 2, message 2", ( (LogMessage) stepInstance2.getLogMessages().get( 1 ) ).getMessage() );
+        assertEquals( "step 2, message 1", stepInstance2.getLogMessages().get( 0 ).getMessage() );
+        assertEquals( "step 2, message 2", stepInstance2.getLogMessages().get( 1 ).getMessage() );
     }
 
     private LogMessage createLogMessage( String message )
