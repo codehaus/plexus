@@ -91,7 +91,6 @@ public final class PlexusServletUtils
         }
         catch ( ComponentLookupException e )
         {
-            servletContext.log( "could not lookup service " + role, e );
             throw new ServletException( "could not lookup service " + role, e );
         }
     }
@@ -105,7 +104,6 @@ public final class PlexusServletUtils
         }
         catch ( ComponentLookupException e )
         {
-            servletContext.log( "could not lookup service " + role, e );
             throw new ServletException( "could not lookup service " + role, e );
         }
     }
@@ -119,7 +117,6 @@ public final class PlexusServletUtils
         }
         catch ( Exception ex )
         {
-            servletContext.log( "Exception while releasing component", ex );
             throw new ServletException( "Exception while releasing component", ex );
         }
     }
