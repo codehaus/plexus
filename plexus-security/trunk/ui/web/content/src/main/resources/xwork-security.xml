@@ -38,7 +38,7 @@
       Make sure that pssCommonStack remains above is usages.
       -->
       <interceptor-stack name="pssCommonStack">
-         <interceptor-ref name="pssEnvCheck"/>
+        <!-- <interceptor-ref name="pssEnvCheck"/>-->
          <interceptor-ref name="pssForceAdminUser"/>
          <interceptor-ref name="pssAutoLogin"/>
          <interceptor-ref name="pssPolicyEnforcement"/>
