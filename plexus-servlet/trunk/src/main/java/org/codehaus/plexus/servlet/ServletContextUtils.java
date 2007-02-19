@@ -24,23 +24,24 @@ package org.codehaus.plexus.servlet;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.StringTokenizer;
+
+import javax.servlet.ServletContext;
+
+import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
-import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.util.PropertyUtils;
-
-import javax.servlet.ServletContext;
-import java.io.File;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.util.Properties;
-import java.util.StringTokenizer;
-import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
 
 /**
  * <code>ServletContextUtils</code> provides methods to embed a Plexus
@@ -80,10 +81,8 @@ public final class ServletContextUtils
         {
             context.log( "Initializing Plexus." );
 
-            container = new DefaultPlexusContainer( null,
-                                                    resolveContextProperties( context ),
-                                                    resolveConfig( context ),
-                                                    null );
+            container = new DefaultPlexusContainer( null, resolveContextProperties( context ),
+                                                    resolveConfig( context ), null );
 
             context.setAttribute( PlexusConstants.PLEXUS_KEY, container );
 
@@ -93,8 +92,8 @@ public final class ServletContextUtils
         {
             if ( !( o instanceof PlexusContainer ) )
             {
-                throw new PlexusContainerException( "An attribute with key '" + PlexusConstants.PLEXUS_KEY +
-                    "' was in the context but it was not an instance of " + PlexusContainer.class.getName() + "." );
+                throw new PlexusContainerException( "An attribute with key '" + PlexusConstants.PLEXUS_KEY
+                    + "' was in the context but it was not an instance of " + PlexusContainer.class.getName() + "." );
             }
 
             context.log( "Plexus container already in context." );
@@ -183,7 +182,7 @@ public final class ServletContextUtils
         {
             URL resource = context.getResource( plexusConf );
 
-            System.out.println( "resource = " + resource );
+            context.log( "resource = " + resource );
 
             return resource;
         }
@@ -224,7 +223,7 @@ public final class ServletContextUtils
 
         StringTokenizer tokenizer = new StringTokenizer( string, "," );
 
-        while( tokenizer.hasMoreTokens() )
+        while ( tokenizer.hasMoreTokens() )
         {
             String token = tokenizer.nextToken();
 
@@ -243,7 +242,8 @@ public final class ServletContextUtils
                 }
                 catch ( ComponentLookupException e )
                 {
-                    throw new PlexusContainerException( "Error while looking up component '" + role + ":" + roleHint + "'", e );
+                    throw new PlexusContainerException( "Error while looking up component '" + role + ":" + roleHint
+                        + "'", e );
                 }
             }
             else
