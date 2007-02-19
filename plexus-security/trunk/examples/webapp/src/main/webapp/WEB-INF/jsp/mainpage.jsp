@@ -41,7 +41,7 @@
 
 <ol>
 <li>
-  <pss:ifAuthorized permission="user-management-user-edit" resource="${sessionScope.securitySession.user.username}">
+  <pss:ifAuthorized permission="user-management-user-list" resource="${sessionScope.securitySession.user.username}">
     You are authorized to see this content!
     <p/>
 
@@ -50,11 +50,15 @@
       <li>Go see the <ww:a href="%{userlistUrl}">userlist</ww:a>.</li>
     </ul>
 
-
   </pss:ifAuthorized>
   <pss:elseAuthorized>
-    <ww:url id="login" action="login" namespace="/security" />
-     Go Ahead <ww:a href="%{login}">Login.</ww:a>
+    <pss:ifAuthorized permission="user-management-user-edit" resource="${sessionScope.securitySession.user.username}">
+      Your logged in, you just don't have access to much...
+    </pss:ifAuthorized>
+    <pss:elseAuthorized>
+      <ww:url id="login" action="login" namespace="/security" />
+      Go Ahead <ww:a href="%{login}">Login.</ww:a>
+    </pss:elseAuthorized>
   </pss:elseAuthorized>
 
 </li>
