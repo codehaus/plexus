@@ -94,7 +94,7 @@ public class PolicyEnforcementInterceptor
                 return actionInvocation.invoke();
             }
 
-            if ( checkForcePasswordChange( securitySession ) )
+            if ( checkForcePasswordChange( securitySession, actionInvocation ) )
             {
                 return SECURITY_USER_MUST_CHANGE_PASSWORD;
             }
@@ -109,8 +109,29 @@ public class PolicyEnforcementInterceptor
     }
 
 
-    private boolean checkForcePasswordChange( SecuritySession securitySession )
+    private boolean checkForcePasswordChange( SecuritySession securitySession, ActionInvocation actionInvocation )
     {
+        /*
+         * FIXME: something less 'hackish'
+         * 
+         * these two classes should not be subject to this enforcement policy and this
+         * ideally should be governed by the interceptor stacks but that just didn't work
+         * when I was trying to solve the problem that way, psquad32 recommended I just
+         * find a way to get around this interceptor in the particular case I needed to and use
+         * "One stack to rule them all  
+         */
+        if ( "org.codehaus.plexus.security.ui.web.action.PasswordAction".equals( actionInvocation.getAction().getClass().getName() ) )
+        {
+            getLogger().debug( "Enforcement: skipping force password check on password action" );
+            return false;
+        }
+
+        if ( "org.codehaus.plexus.security.ui.web.action.LoginAction".equals( actionInvocation.getAction().getClass().getName() ) )
+        {
+            getLogger().debug( "Enforcement: skipping force password check on login action" );
+            return false;
+        }
+
         if ( config.getBoolean( "security.policy.strict.force.password.change.enabled" ) )
         {
             getLogger().debug( "Enforcement: checking active user password change enabled" );
