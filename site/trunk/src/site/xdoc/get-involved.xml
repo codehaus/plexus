@@ -39,7 +39,7 @@ svn diff > projectName-issueId.patch (where projectName in PLX, PLXCOMP, PLXREDB
         <p>Attached the patch to the jira issue.</p>
       </subsection>
       <subsection name="License">
-        <p>All sources must contains the following license header :
+        <p>All sources must contain the following license header :
           <source>
 /*
  * Copyright 2007 The Codehaus Foundation.
