@@ -594,7 +594,6 @@ public abstract class AbstractRBACManager
     private void gatherEffectiveRoles( Role role, Set roleSet )
         throws RbacObjectNotFoundException, RbacManagerException
     {
-
         if ( role.hasChildRoles() )
         {
             Iterator it = role.getChildRoleNames().listIterator();
@@ -603,13 +602,18 @@ public abstract class AbstractRBACManager
             {
                 String roleName = (String) it.next();
                 Role crole = getRole( roleName );
-
-                gatherEffectiveRoles( crole, roleSet );
+                if ( !roleSet.contains( crole ) )
+                {
+                    gatherEffectiveRoles( crole, roleSet );
+                }
             }
 
         }
 
-        roleSet.add( role );
+        if ( !roleSet.contains( role ) )
+        {
+            roleSet.add( role );
+        }
     }
 
     public Collection getEffectivelyAssignedRoles( String principal )
