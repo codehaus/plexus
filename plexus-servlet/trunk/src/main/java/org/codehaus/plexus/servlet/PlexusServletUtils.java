@@ -82,41 +82,44 @@ public final class PlexusServletUtils
         return getPlexusContainer( sc ).hasComponent( role, id );
     }
 
-    public static Object lookup( ServletContext sc, String role )
+    public static Object lookup( ServletContext servletContext, String role )
         throws ServletException
     {
         try
         {
-            return getPlexusContainer( sc ).lookup( role );
+            return getPlexusContainer( servletContext ).lookup( role );
         }
         catch ( ComponentLookupException e )
         {
+            servletContext.log( "could not lookup service " + role, e );
             throw new ServletException( "could not lookup service " + role, e );
         }
     }
 
-    public static Object lookup( ServletContext sc, String role, String id )
+    public static Object lookup( ServletContext servletContext, String role, String id )
         throws ServletException
     {
         try
         {
-            return getPlexusContainer( sc ).lookup( role, id );
+            return getPlexusContainer( servletContext ).lookup( role, id );
         }
         catch ( ComponentLookupException e )
         {
+            servletContext.log( "could not lookup service " + role, e );
             throw new ServletException( "could not lookup service " + role, e );
         }
     }
 
-    public static void release( ServletContext sc, Object service )
+    public static void release( ServletContext servletContext, Object service )
         throws ServletException
     {
         try
         {
-            getPlexusContainer( sc ).release( service );
+            getPlexusContainer( servletContext ).release( service );
         }
         catch ( Exception ex )
         {
+            servletContext.log( "Exception while releasing component", ex );
             throw new ServletException( "Exception while releasing component", ex );
         }
     }

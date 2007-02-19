@@ -1,0 +1,11 @@
+<document>
+  <properties>
+    <title>Plexus Servlet</title>
+    <author email="olamy@codehaus.org">Olivier Lamy</author>
+  </properties>
+  <body>
+    <section name="Plexus Servlet">
+      <p>Look at <a href="http://plexus.codehaus.org/guides/writing-components/07_03_from_a_web_application.html">documentation</a></p>
+    </section>
+  </body>
+</document>
