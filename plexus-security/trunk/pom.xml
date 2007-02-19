@@ -21,6 +21,9 @@
     <artifactId>plexus</artifactId>
     <version>1.0.10</version>
   </parent>
+  <prerequisites>
+    <maven>2.0.5</maven>
+  </prerequisites>
   <groupId>org.codehaus.plexus.security</groupId>
   <artifactId>plexus-security</artifactId>
   <version>1.0-alpha-10-SNAPSHOT</version>
