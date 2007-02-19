@@ -1,0 +1,115 @@
+<document>
+  <properties>
+    <title>Plexus Xwork Integration</title>
+    <author email="olamy@codehaus.org">Olivier Lamy</author>
+  </properties>
+  <body>
+    <section name="Plexus Xwork Integration Component">
+      <p>A component which provide seamless integration of your plexus components with xwork Actions.</p>
+      <br />
+      <p>Your actions will a component with other components as requirement.</p>
+      <subsection name="Configuration">
+      <p>First is to add this component in your dependencies :
+        <source>
+<![CDATA[        
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-xwork-integration</artifactId>
+        <version>1.0-alpha-5</version>
+      </dependency>       
+]]>        
+        </source>
+      </p>
+      <p>Then you need to use the <a href="http://plexus.codehaus.org/plexus-maven-plugin/">plexus-maven-plugin</a> to generated the components.xml.
+      Add this in your build section.
+        <source>
+<![CDATA[   
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <configuration>
+          <roleDefaults>
+            <roleDefault>
+              <role>com.opensymphony.xwork.Action</role>
+              <instantiation-strategy>per-lookup</instantiation-strategy>
+            </roleDefault>
+          </roleDefaults>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+]]>        
+        </source>
+      </p>
+      <p>webWork configuration, add the following line in your webwork.properties : 
+        <source>
+  webwork.objectFactory = org.codehaus.plexus.xwork.PlexusObjectFactory
+        </source>
+      </p>
+      <p>You need to add a listener which will setup the Plexus Container (<b>Note the plexus configuration runtime file used is META-INF/plexus/application.xml</b>) :
+        <source>
+<![CDATA[   
+  <listener>
+    <listener-class>org.codehaus.plexus.xwork.PlexusLifecycleListener</listener-class>
+  </listener>
+]]>           
+        </source>
+      </p>
+      <p>Plexus properties are by default loaded from file /WEB-INF/plexus.properties (you can setup the path with the servlet context parameter plexus-properties)</p>
+      </subsection>
+      <subsection name="Using">
+        <p>Your action can extends <a href="apidocs/org/codehaus/plexus/xwork/action/PlexusActionSupport.html">PlexusActionSupport</a> which provide an access to the Plexus Container.</p>
+        <br />
+        <p>Javadoc tags (see <a href="http://plexus.codehaus.org/guides/developer-guide/building-applications/cdc.html">Plexus Component Descriptor Creator</a>) :
+          <source>
+/**
+ * YourAction
+ *
+ * @plexus.component
+ *   role="com.opensymphony.xwork.Action"
+ *   role-hint="yourAction"
+ */
+public class YourAction
+    extends PlexusActionSupport   
+
+    /**
+     * @plexus.requirement
+     *   role-hint="default"
+     */
+    private Component component;      
+           
+          </source>
+        </p>
+        <p>Then in your webwork actions descriptor : 
+          <source>
+<![CDATA[            
+    <action name="actionName" class="yourAction">
+      <result name="success">succes</result>
+    </action>       
+]]>       
+          </source>
+        </p>
+        <p>You can use other webWork stuff as Plexus Components :
+          <ul>
+            <li>validator</li>
+            <li>interceptor</li>
+          </ul>
+        </p>
+        <p><b>Note</b> : for some internal requirements Plexus holds a reference on each component created (instantiation-strategy=per-lookup).
+        To prevent this leak, you can add an interceptor in your default interceptor stack (this interceptor will release your actions in the container) :
+        <source>
+<![CDATA[            
+    <interceptor name="plexusReleaseComponentInterceptor" class="plexusReleaseComponentInterceptor"/>      
+]]>        
+        </source>
+        </p>
+      </subsection>
+    </section>
+  </body>
+</document>
