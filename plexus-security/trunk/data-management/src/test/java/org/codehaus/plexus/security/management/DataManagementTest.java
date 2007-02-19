@@ -423,6 +423,6 @@ public class DataManagementTest
 
     private String convertLineEndings( String s )
     {
-        return s;
+        return s.replaceAll( "\r\n", "\n" );
     }
 }
