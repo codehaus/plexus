@@ -96,11 +96,20 @@ public final class ServletContextUtils
                     + "' was in the context but it was not an instance of " + PlexusContainer.class.getName() + "." );
             }
 
-            context.log( "Plexus container already in context." );
+            context.log( "Plexus container already in context, a child one is build." );
 
-            container = (PlexusContainer) o;
+            // make a child container. The child container load the WEB-INF/plexus.xml in the WAR.
 
-            // TODO: make a child container. The child container has to load the WEB-INF/plexus.xml in the WAR.
+            // TODO setup a special classWorld ?
+            // TODO merge with existing context values and existing properties ?
+            container = new DefaultPlexusContainer( null, resolveContextProperties( context ),
+                                                    resolveConfig( context ), null );
+
+            // TODO sure of this ?
+            container.setParentPlexusContainer( (PlexusContainer) o );
+
+            context.setAttribute( PlexusConstants.PLEXUS_KEY, container );
+
         }
 
         lookupAddToContextComponents( context );
