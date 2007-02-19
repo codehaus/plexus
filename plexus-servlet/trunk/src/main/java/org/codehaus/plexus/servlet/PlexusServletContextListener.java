@@ -24,22 +24,10 @@ package org.codehaus.plexus.servlet;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.PlexusContainerException;
-import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
-import org.codehaus.plexus.embed.Embedder;
-import org.codehaus.plexus.embed.EmbedderException;
-
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.io.IOException;
-import java.util.StringTokenizer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Iterator;
+
+import org.codehaus.plexus.PlexusContainerException;
 
 /**
  * By adding this to the listeners for your web application, a Plexus container
