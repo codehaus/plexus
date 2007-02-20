@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<plexus>
+  <components>
+  
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>hashmap</role-hint>
+      <implementation>org.codehaus.plexus.cache.hashmap.HashMapCache</implementation>
+      <configuration>
+        <cache-hit-ratio>1.0</cache-hit-ratio>
+        <cache-max-size>0</cache-max-size>
+      </configuration>
+    </component>
+    
+  </components>
+</plexus>
