@@ -7,7 +7,7 @@
   </parent>
 
   <artifactId>plexus-ehcache</artifactId>
-  <version>1.0-alpha-2-SNAPSHOT</version>
+  <version>1.0-alpha-2</version>
   <name>Plexus EHCache Components</name>
   <packaging>jar</packaging>
 
@@ -39,4 +39,10 @@
       </plugin>
     </plugins>
   </build>
+
+  <scm>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-ehcache-1.0-alpha-2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-ehcache-1.0-alpha-2</developerConnection>
+    <url>https://svn.codehaus.org/plexus/tags/plexus-ehcache-1.0-alpha-2</url>
+  </scm>
 </project>
