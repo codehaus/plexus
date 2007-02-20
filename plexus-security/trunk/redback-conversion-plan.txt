@@ -3,6 +3,7 @@ This is a temporary document to help describe the end result that the redback re
 Basic Concepts:
   1) Use "redback" not "plexus-redback" in artifact naming.
   2) Use package org.codehaus.redback.*
+  3) artifactId = module
 
 [Core Components]
   redback-authentication-api
