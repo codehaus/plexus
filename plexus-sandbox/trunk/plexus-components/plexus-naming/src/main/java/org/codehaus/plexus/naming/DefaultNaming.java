@@ -19,7 +19,6 @@ import org.apache.naming.ResourceRef;
 import org.apache.naming.config.Config;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.util.reflection.ReflectorException;
 
 /**
  * Default implementation of naming.
@@ -87,10 +86,6 @@ public class DefaultNaming
         {
             throw new InitializationException( e.getMessage(), e );
         }
-        catch ( ReflectorException e )
-        {
-            throw new InitializationException( e.getMessage(), e );
-        }
     }
 
     private static Context getOrCreate( Context initialContext, String name )
@@ -134,7 +129,7 @@ public class DefaultNaming
      * @throws NamingException if a NamingException occurs.
      */
     public synchronized void loadConfiguration()
-        throws NamingException, ClassNotFoundException, ReflectorException
+        throws NamingException, ClassNotFoundException
     {
 
         if ( environments != null )
