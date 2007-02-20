@@ -1,0 +1,22 @@
+<!-- Use a memory based User manager to test this Authenticator implementation -->
+<plexus>
+  <components>
+    <component>
+      <role>
+        org.codehaus.plexus.security.authentication.Authenticator
+      </role>
+      <role-hint>user-manager</role-hint>
+      <implementation>org.codehaus.plexus.security.authentication.user.UserManagerAuthenticator</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.security.user.UserManager</role>
+          <role-hint>memory</role-hint>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.security.policy.UserSecurityPolicy</role>
+          <field-name>securityPolicy</field-name>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+</plexus>
