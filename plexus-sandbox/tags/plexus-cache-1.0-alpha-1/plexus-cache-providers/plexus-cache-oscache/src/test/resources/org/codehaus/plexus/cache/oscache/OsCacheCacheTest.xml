@@ -1,0 +1,16 @@
+<plexus>
+  <components>
+  
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>oscache</role-hint>
+      <implementation>org.codehaus.plexus.cache.oscache.OsCacheCache</implementation>
+      <description>OsCacheCache</description>
+      <configuration>
+        <cachePath>${plexus.home}/osCache</cachePath>
+        <cachePersistenceClass>com.opensymphony.oscache.plugins.diskpersistence.DiskPersistenceListener</cachePersistenceClass>
+      </configuration>
+    </component>
+    
+  </components>
+</plexus>
