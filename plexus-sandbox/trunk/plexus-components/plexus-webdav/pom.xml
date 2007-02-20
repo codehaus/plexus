@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus</groupId>
@@ -10,7 +10,7 @@
   <groupId>org.codehaus.plexus.webdav</groupId>
   <artifactId>plexus-webdav-parent</artifactId>
   <name>Plexus WebDAV Component Parent</name>
-  <version>1.0-alpha-1-SNAPSHOT</version>
+  <version>1.0-alpha-1</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -20,8 +20,9 @@
   </modules>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-webdav</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-webdav</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-sandbox/tags/plexus-webdav-1.0-alpha-1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-sandbox/tags/plexus-webdav-1.0-alpha-1</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/tags/plexus-webdav-1.0-alpha-1</url>
   </scm>
 
   <reporting>
