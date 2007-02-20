@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-user-management-providers</artifactId>
-    <version>1.0-alpha-10-SNAPSHOT</version>
+    <version>1.0-alpha-10.1-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-user-management-provider-cached</artifactId>
   <name>Plexus Security :: User Management Provider :: Cached</name>
