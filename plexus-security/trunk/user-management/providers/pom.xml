@@ -36,6 +36,7 @@
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-user-management/plexus-security-user-management-providers</url>
   </scm>
   <modules>
+    <module>cached</module>
     <module>test</module>
     <module>memory</module>
     <module>jdo</module>
