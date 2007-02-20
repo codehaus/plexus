@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.codehaus.plexus.cache</groupId>
     <artifactId>plexus-cache-providers-parent</artifactId>
-    <version>1.0-alpha-1</version>
+    <version>1.0-alpha-2-SNAPSHOT</version>
   </parent>
 
   <artifactId>plexus-cache-hashmap</artifactId>

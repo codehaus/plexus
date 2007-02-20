@@ -10,7 +10,7 @@
   <groupId>org.codehaus.plexus.cache</groupId>
   <artifactId>plexus-cache-parent</artifactId>
   <name>Plexus Cache Component Parent</name>
-  <version>1.0-alpha-1</version>
+  <version>1.0-alpha-2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -20,9 +20,9 @@
   </modules>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-sandbox/tags/plexus-cache-1.0-alpha-1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-sandbox/tags/plexus-cache-1.0-alpha-1</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/tags/plexus-cache-1.0-alpha-1</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-cache</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-cache</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/trunk/plexus-cache-parent</url>
   </scm>
 
   <reporting>
