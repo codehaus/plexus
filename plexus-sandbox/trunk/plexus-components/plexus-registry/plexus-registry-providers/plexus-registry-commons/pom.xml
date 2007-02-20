@@ -41,7 +41,7 @@
     <dependency>
       <groupId>commons-configuration</groupId>
       <artifactId>commons-configuration</artifactId>
-      <version>1.4-SNAPSHOT</version>
+      <version>1.3</version>
       <exclusions>
         <exclusion>
           <groupId>commons-beanutils</groupId>
