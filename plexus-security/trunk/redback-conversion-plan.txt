@@ -1,0 +1,127 @@
+This is a temporary document to help describe the end result that the redback renaming should have ...
+
+Basic Concepts:
+  1) Use "redback" not "plexus-redback" in artifact naming.
+  2) Use package org.codehaus.redback.*
+
+[Core Components]
+  redback-authentication-api
+  redback-authorization-api
+  redback-configuraiton
+  redback-policy
+  redback-system
+  redback-site
+
+[Concepts]
+  redback-datamanagement
+  redback-keys-api
+  redback-keys-tests
+  redback-rbac-api
+  redback-rbac-model
+  redback-rbac-profile
+  redback-rbac-tests
+  redback-user-management-api
+  redback-user-management-tests
+
+[Providers]
+  redback-providers-common-jdo
+  redback-providers-common-ibatis [*]
+  redback-providers-common-jpa [*]
+  redback-authentication-open
+  redback-authentication-memory
+  redback-authentication-keys
+  redback-authentication-user-manager
+  redback-authorization-open
+  redback-authorization-memory
+  redback-authorization-rbac
+  redback-keys-memory
+  redback-keys-cached
+  redback-keys-jdo
+  redback-rbac-memory
+  redback-rbac-cached
+  redback-rbac-xstream
+  redback-rbac-jdo
+  redback-user-management-memory
+  redback-user-management-cached
+  redback-user-management-jdo
+
+[Integrations]
+  redback-plexus-service
+  redback-taglib
+  redback-xwork
+  redback-xwork-content [war]
+  redback-xwork-example
+  redback-struts2
+  redback-gwt
+  redback-swing
+  redback-acegi
+
+---
+Proposed Directory Structure ...
+
+redback  (pom)
+  /redback-authentication  (pom)
+    /redback-authentication-api  (jar)
+    /redback-authentication-tests  (jar)
+    /redback-authentication-providers  (pom)
+      /redback-authentication-memory  (jar)
+      /redback-authentication-open  (jar)
+  /redback-authorization  (pom)
+    /redback-authorization-api  (jar)
+    /redback-authorization-tests  (jar)
+    /redback-authorization-providers  (pom)
+      /redback-authorization-memory  (jar)
+      /redback-authorization-open  (jar)
+  /redback-configuration  (jar)
+  /redback-policy  (jar)
+  /redback-system  (jar)
+  /redback-datamanagement  (jar)
+  /redback-site  (jar)
+  /redback-common  (pom)
+    /redback-common-jdo  (jar)
+    /redback-common-ibatis  (jar)
+    /redback-common-jpa  (jar)
+  /redback-keys  (pom)
+    /redback-keys-api  (jar)
+    /redback-keys-tests  (jar)
+    /redback-authentication-keys  (jar)
+    /redback-keys-providers  (pom)
+      /redback-keys-memory  (jar)
+      /redback-keys-cached  (jar)
+      /redback-keys-jdo  (jar)
+  /redback-user-management  (pom)
+    /redback-user-management-api  (jar)
+    /redback-user-management-tests  (jar)
+    /redback-authentication-user-management (jar)
+    /redback-user-management-providers  (pom)
+      /redback-user-management-memory  (jar)
+      /redback-user-management-cached  (jar)
+      /redback-user-management-jdo  (jar)
+  /redback-rbac  (pom)
+    /redback-rbac-api  (jar)
+    /redback-rbac-model  (jar)
+    /redback-rbac-profile  (jar)
+    /redback-rbac-tests  (jar)
+    /redback-authorization-rbac  (jar)
+    /redback-rbac-providers  (pom)
+      /redback-rbac-memory  (jar)
+      /redback-rbac-cached  (jar)
+      /redback-rbac-xstream  (jar)
+      /redback-rbac-jdo  (jar)
+  /redback-integrations  (pom)
+    /redback-plexus-service  (jar)
+    /redback-taglib  (jar)
+    /redback-xwork  (pom)
+      /redback-xwork-content  (war)
+      /redback-xwork-integration  (jar)
+      /redback-xwork-example  (war)
+    /redback-struts2  (pom)
+      /redback-struts2-content  (war)
+      /redback-struts2-integration  (jar)
+      /redback-struts2-example  (war)
+    /redback-gwt  (jar)
+    /redback-swing  (jar)
+    /redback-acegi  (jar)
+ 
+
+
