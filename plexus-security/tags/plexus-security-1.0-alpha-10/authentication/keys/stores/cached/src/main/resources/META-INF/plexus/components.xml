@@ -1,0 +1,24 @@
+<component-set>
+  <components>
+
+   <!-- ================================================================
+           Caches with Long Term entries
+         ================================================================ -->
+
+    <component>
+      <role>org.codehaus.plexus.ehcache.EhcacheComponent</role>
+      <role-hint>keys</role-hint>
+      <implementation>org.codehaus.plexus.ehcache.MemoryCache</implementation>
+      <description>MemoryCache for Keys</description>
+      <configuration>
+        <eternal>false</eternal>
+        <max-elements-in-memory>1000</max-elements-in-memory>
+        <memory-eviction-policy>LRU</memory-eviction-policy>
+        <name>keysCache</name>
+        <time-to-idle-seconds>1800</time-to-idle-seconds>
+        <time-to-live-seconds>14400</time-to-live-seconds>
+      </configuration>
+    </component>
+
+  </components>
+</component-set>
