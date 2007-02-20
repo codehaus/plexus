@@ -26,8 +26,8 @@
   <packaging>pom</packaging>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/ui/web</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/ui/web</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-10.x/ui/web</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-10.x/ui/web</developerConnection>
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-ui/plexus-security-ui-web-parent</url>
   </scm>
 

@@ -51,8 +51,8 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/user-management/providers/memory</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/user-management/providers/memory</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-10.x/user-management/providers/cached</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-10.x/user-management/providers/cached</developerConnection>
   </scm>
 
   <build>
