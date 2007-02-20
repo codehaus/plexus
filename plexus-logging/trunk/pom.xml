@@ -10,13 +10,14 @@
   <packaging>pom</packaging>
   <name>Plexus Logging Parent</name>
   <modules>
-    <module>plexus-logging-provider-test</module>  
+    <module>plexus-logging-provider-test</module>
+    <module>plexus-slf4j-logging</module>
     <module>plexus-jdk-logging</module>
     <module>plexus-log4j-logging</module>
-  </modules>  
-  <scm> 
+  </modules>
+  <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-logging/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-logging/trunk</developerConnection> 
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-logging/trunk</developerConnection>
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-logging/trunk/</url>
   </scm>
 </project>
