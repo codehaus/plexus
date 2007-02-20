@@ -54,8 +54,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/ui/web/taglib</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/ui/web/taglib</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-10.x/ui/web/taglib</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-10.x/ui/web/taglib</developerConnection>
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-ui/plexus-security-ui-web-parent/plexus-security-ui-web-taglib</url>
   </scm>
 </project>
