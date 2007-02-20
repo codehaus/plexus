@@ -39,8 +39,9 @@
     items="users" 
     action="${pageContext.request.contextPath}/security/userlist!show.action"
     imagePath="${pageContext.request.contextPath}/images/pss/table/*.gif"
-     autoIncludeParameters="false" 
+    autoIncludeParameters="false" 
     title="Users"
+    filterable="true"
     showTitle="false"
     showExports="false"
     view="org.codehaus.plexus.security.ui.web.eXc.views.SecurityView" 
@@ -60,7 +61,8 @@
        imageName="xls"
        tooltip="Export Table to Excel format."/>
     <ec:row>          
-        <ec:column property="username" title="User Name">
+        <ec:column property="username" title="User Name" 
+        	filterCell="org.codehaus.plexus.security.ui.web.eXc.SecurityFilterCell">
           <img src="<c:url value="/images/pss/icon-user.gif"/>" />
           <pss:ifAuthorized permission="user-management-user-edit" resource="${user.username}">
             <ww:url id="usereditUrl" action="useredit">
@@ -80,14 +82,16 @@
             </pss:elseAuthorized>
           </pss:elseAuthorized>
         </ec:column>
-        <ec:column property="fullName" title="Full Name" alias="fullname" />
-        <ec:column property="email" title="Email" cell="org.codehaus.plexus.security.ui.web.eXc.MailtoCell" />
-        <ec:column property="permanent" cell="org.codehaus.plexus.security.ui.web.eXc.CheckboxImageCell" style="text-align: center"
-          title="Permanent" filterable="false"/> <%-- Boolean's can't be filtered --%>
-        <ec:column property="validated" cell="org.codehaus.plexus.security.ui.web.eXc.CheckboxImageCell" style="text-align: center"
-          title="Validated" filterable="false"/> <%-- Boolean's can't be filtered --%>
-        <ec:column property="locked" cell="org.codehaus.plexus.security.ui.web.eXc.CheckboxImageCell" style="text-align: center"
-          title="Locked" filterable="false"/> <%-- Boolean's can't be filtered --%>
+        <ec:column property="fullName" title="Full Name" alias="fullname" 
+        	filterCell="org.codehaus.plexus.security.ui.web.eXc.SecurityFilterCell" />
+        <ec:column property="email" title="Email" cell="org.codehaus.plexus.security.ui.web.eXc.MailtoCell" 
+        	filterCell="org.codehaus.plexus.security.ui.web.eXc.SecurityFilterCell" />
+        <ec:column property="permanent" cell="org.codehaus.plexus.security.ui.web.eXc.CheckboxImageCell" 
+        	style="text-align: center" title="Permanent" filterable="false"/> <%-- Boolean's can't be filtered --%>
+        <ec:column property="validated" cell="org.codehaus.plexus.security.ui.web.eXc.CheckboxImageCell" 
+        	style="text-align: center" title="Validated" filterable="false"/> <%-- Boolean's can't be filtered --%>
+        <ec:column property="locked" cell="org.codehaus.plexus.security.ui.web.eXc.CheckboxImageCell" 
+        	style="text-align: center" title="Locked" filterable="false"/> <%-- Boolean's can't be filtered --%>
         
         <ec:column title="Tasks" alias="tasks" sortable="false" filterable="false" styleClass="tasks">
           <c:if test="${user.permanent eq false}">
@@ -104,8 +108,11 @@
     </ec:row>    
 </ec:table></td>
 </tr>
+
+<%--
 <tr><td></td></tr>
 <tr>
+
 <td>
     <pss:ifAuthorized permission="user-management-user-create">
       <div class="task createUser">
@@ -115,19 +122,54 @@
       </div>
     </pss:ifAuthorized>
 </td>
-</tr>
+</tr> --%>
 </table>
 
 <br>
 <br>
-<b>Reports</b>
+<b>Tools</b>
 <br>
 
 <table class="tools" border="0" cellspacing="1" cellpadding="0">
 
+<tr>
+  <th class="toolHeading">Tasks</th>
+  <th class="toolHeading column">Reports</th>
+</tr>
+
+<tr>
+  <td valign="top">
+    <p class="description">The following tools are available for administrators to manipulate the user list.</p>
+     
+    <pss:ifAuthorized permission="user-management-user-create">
+      <div class="task createUser">
+        <ww:form action="usercreate!show" namespace="/security" theme="simple" method="post">
+          <ww:submit cssClass="button" value="Create New User" />
+        </ww:form>
+      </div>
+    </pss:ifAuthorized>
+
+    <div class="task showRoles">
+      <ww:form action="userlist!show" namespace="/security" theme="simple" method="get">
+        <ww:submit cssClass="button" value="Show Users In Role" />
+        
+        <ww:select list="roles"
+                   name="roleName"
+                   value="roleName"
+                   listKey="name"
+                   listValue="name"
+                   headerKey=""
+                   headerValue="Any"/>
+      </ww:form>
+    </div>
+    
+  </td>
+  
+  <td valign="top" class="column">
+    <table cellspacing="0" cellpadding="0" border="0" class="reports">
       <tr>
-        <th class="toolHeading" width="30%">Name</th>
-        <th class="toolHeading column">Types</th>
+        <th>Name</th>
+        <th>Types</th>
       </tr>
       
       <c:forEach items="${reportMap}" var="reportEntry">
@@ -148,6 +190,9 @@
           </td>
         </tr>
       </c:forEach>
+    </table>
+  </td>
+</tr>
 
 </table>
 
