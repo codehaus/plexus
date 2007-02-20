@@ -63,10 +63,12 @@ public class UserConfigurationTest
         assertEquals( "127.0.2.2", config.getString( "email.smtp.host" ) );
         // Test default value
         assertEquals( "127.0.0.1", config.getString( "email.smtp.host.bad", "127.0.0.1" ) );
+/* Requires commons-configuration 1.4
         // Test expressions
         assertEquals( "jdbc:derby:" + System.getProperty( "plexus.home" ) + "/database;create=true",
                       config.getString( "jdbc.url" ) );
         assertEquals( "foo/bar", config.getString( "test.expression" ) );
+*/
 
         assertEmpty( config.getString( "email.smtp.foo.foo" ) );
     }
