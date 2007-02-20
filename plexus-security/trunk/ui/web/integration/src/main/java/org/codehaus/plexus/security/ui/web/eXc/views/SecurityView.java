@@ -37,13 +37,13 @@ public class SecurityView
 
         getTableBuilder().titleRowSpanColumns();
         
-        filterToolbar( getHtmlBuilder(), model );
-
         navigationToolbar( getHtmlBuilder(), getTableModel() );
-
+        
         getTableBuilder().headerRow();
 
         getTableBuilder().theadEnd();
+
+        getTableBuilder().filterRow();
 
         getTableBuilder().tbodyStart();
     }
@@ -60,10 +60,5 @@ public class SecurityView
     protected void navigationToolbar( HtmlBuilder html, TableModel model )
     {
         new SecurityToolbar( html, model ).layout();
-    }
-    
-    protected void filterToolbar( HtmlBuilder html, TableModel model )
-    {
-        new FilterToolbar( html, model ).layout();
     }
 }

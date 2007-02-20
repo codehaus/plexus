@@ -64,7 +64,7 @@ public class SecurityToolbar
             return;
         }
 
-        html.td( 4 ).styleClass( BuilderConstants.COMPACT_TOOLBAR_CSS ).close();
+        html.td( 4 ).styleClass( BuilderConstants.STATUS_BAR_CSS ).close();
 
         new StatusBarBuilder( html, model ).statusMessage();
 
@@ -73,6 +73,7 @@ public class SecurityToolbar
 
     protected void columnRight( HtmlBuilder html, TableModel model )
     {
+        boolean filterable = BuilderUtils.filterable( model );
         boolean showPagination = BuilderUtils.showPagination( model );
         boolean showExports = BuilderUtils.showExports( model );
 
@@ -80,7 +81,7 @@ public class SecurityToolbar
 
         html.td( 4 ).styleClass( BuilderConstants.COMPACT_TOOLBAR_CSS ).align( "right" ).close();
 
-        html.table( 4 ).cellPadding( "0" ).cellSpacing( "0" ).close();
+        html.table( 4 ).border( "0" ).cellPadding( "1" ).cellSpacing( "2" ).close();
         html.tr( 5 ).close();
 
         if ( showPagination )
@@ -135,6 +136,24 @@ public class SecurityToolbar
                 toolbarBuilder.exportItemAsImage( export );
                 html.tdEnd();
             }
+        }
+        
+        if ( filterable )
+        {
+            if ( showExports || showPagination )
+            {
+                html.td( 5 ).close();
+                toolbarBuilder.separator();
+                html.tdEnd();
+            }
+
+            html.td( 5 ).close();
+            toolbarBuilder.filterItemAsButton();
+            html.tdEnd();
+
+            html.td( 5 ).close();
+            toolbarBuilder.clearItemAsButton();
+            html.tdEnd();
         }
 
         html.trEnd( 5 );

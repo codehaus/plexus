@@ -12,17 +12,17 @@
 
 .outerTableRegion {
 	padding: 0px 0px 0px 2px;
-  border: 1px solid gray;
+	border: 1px solid gray;
 	width: 100%;
 }
 
-.outerTableRegion table{
-    margin-left: 0px;
-    margin-right: 0px;
+.outerTableRegion table {
+	margin-left: 0px;
+	margin-right: 0px;
 }
 
-.outerTableRegion td, .outerTableRegion th{
-  padding: 2px 2px;
+.outerTableRegion td,.outerTableRegion th {
+	padding: 2px 2px;
 }
 
 .eXtremeTable .tableRegion {
@@ -35,19 +35,34 @@
 	background-color: #efefef;
 }
 
-.eXtremeTable .filterToolbar{
+.eXtremeTable .filterToolbar {
 	padding: 0px 0px 10px;
 }
 
-.eXtremeTable .filterInput{
+.eXtremeTable .filterInput {
 	padding: 5px 0px 0px 10px;
 	white-space: nowrap;
 }
 
+.extremeTable .filter .filterInputGroup {
+  border: 1px solid gray;
+  position: relative;
+}
+
+.extremeTable .filter .filterInputGroup img {
+  float: right;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
 .eXtremeTable .filter input {
 	font-family: Verdana;
+  border: 0px;
 	font-size: 10px;
-	width: 100%;
+  padding-right: 16px;
+  height: 18px;
+  width: 100%;
 }
 
 .eXtremeTable .filter select {
@@ -155,12 +170,12 @@
 }
 
 .eXtremeTable .compactToolbar {
-  font-size: 10px;
+	font-size: 10px;
 	width: 100%;
 	padding-bottom: 0px;
 }
 
-.eXtremeTable .compactToolbar table td{
+.eXtremeTable .compactToolbar table td {
 	white-space: nowrap;
 	padding-right: 4px;
 }
@@ -178,7 +193,7 @@
 }
 
 .eXtremeTable .roleSelect {
-  width: auto;
+	width: auto;
 }
 
 .eXtremeTable .formButtons {
@@ -221,59 +236,57 @@
 	margin: 0px;
 }
 
-
 table.tools {
-  border: 1px solid gray;
-	width: 100%;
-  margin-top: 7px;
+	border: 1px solid gray;
+	margin-top: 7px;
 	padding: 0px 2px 2px 2px;
 }
 
 table.tools img {
-  border: 0;
+	border: 0;
 }
 
 table.tools th.toolHeading {
 	background-color: #308dbb;
-  color: white;
-  font-size: 12px;
-  padding: 3px;
-  text-align: left;
+	color: white;
+	font-size: 12px;
+	padding: 3px;
+	text-align: left;
 }
 
 table.tools form {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 table.tools p {
-  font-size: 10px;
-  margin: 5px;
+	font-size: 10px;
+	margin: 5px;
 }
 
 table.tools .task {
-  margin-bottom: 2px;
+	margin-bottom: 2px;
 }
 
-table.tools form input,
-table.tools form select {
-  font-size: 10px;
+table.tools form input,table.tools form select {
+	font-size: 10px;
 }
 
 table.tools form .button {
-  margin-left: 15px;
-  width: 15em;
+	margin-left: 15px;
+	width: 15em;
 }
 
 table.tools .reports {
+	
 }
 
 table.tools .reports th {
-  text-align: left;
-  font-size: 11px;
+	text-align: left;
+	font-size: 11px;
 }
 
 table.tools .reports td {
-  text-align: left;
-  font-size: 10px;
+	text-align: left;
+	font-size: 10px;
 }
