@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus.cache</groupId>
     <artifactId>plexus-cache-parent</artifactId>
-    <version>1.0-alpha-1-SNAPSHOT</version>
+    <version>1.0-alpha-1</version>
   </parent>
   <artifactId>plexus-cache-test</artifactId>
   <name>Plexus Cache Tests</name>
@@ -31,7 +31,7 @@
     <dependency>
       <groupId>org.codehaus.plexus.cache</groupId>
       <artifactId>plexus-cache-api</artifactId>
-      <version>1.0-alpha-1-SNAPSHOT</version>
+      <version>1.0-alpha-1</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
