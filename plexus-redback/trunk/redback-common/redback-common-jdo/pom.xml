@@ -25,8 +25,8 @@
   <name>Plexus Redback :: JDO Common API</name>
   <packaging>jar</packaging>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/common/jdo</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/common/jdo</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-common/redback-common-jdo</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-common/redback-common-jdo</developerConnection>
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-common-parent/plexus-security-common-jdo</url>
   </scm>
   <dependencies>

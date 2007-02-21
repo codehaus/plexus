@@ -36,8 +36,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authorization/rbac/profile</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authorization/rbac/profile</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-rbac/redback-rbac-profile</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-rbac/redback-rbac-profile</developerConnection>
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-authorization/plexus-security-authorization-rbac/plexus-security-rbac-profile</url>
   </scm>
   <build>
