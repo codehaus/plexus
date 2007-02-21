@@ -3,7 +3,8 @@ This is a temporary document to help describe the end result that the redback re
 Basic Concepts:
   1) Use "redback" not "plexus-redback" in artifact naming.
   2) Use package org.codehaus.redback.*
-  3) artifactId = module
+  3) Directory name == module == artifactId
+  4) Group Concepts together.
 
 [Core Components]
   redback-authentication-api
