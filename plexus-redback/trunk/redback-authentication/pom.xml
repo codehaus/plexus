@@ -17,17 +17,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.plexus.security</groupId>
-    <artifactId>plexus-security</artifactId>
-    <version>1.0-alpha-11-SNAPSHOT</version>
+    <groupId>org.codehaus.plexus.redback</groupId>
+    <artifactId>redback</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-authentication</artifactId>
-  <name>Plexus Security :: Authentication</name>
+  <artifactId>redback-authentication</artifactId>
+  <name>Plexus Redback :: Authentication</name>
   <packaging>pom</packaging>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-user-management-api</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-users-api</artifactId>
     </dependency>
   </dependencies>
   <scm>
@@ -36,8 +36,7 @@
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-authentication</url>
   </scm>
   <modules>
-    <module>api</module>
-    <module>keys</module>
-    <module>providers</module>
+    <module>redback-authentication-api</module>    
+    <module>redback-authentication-providers</module>
   </modules>
 </project>
