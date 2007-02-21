@@ -17,16 +17,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.plexus.security</groupId>
-    <artifactId>plexus-security-authentication</artifactId>
-    <version>1.0-alpha-11-SNAPSHOT</version>
+    <groupId>org.codehaus.plexus.redback</groupId>
+    <artifactId>redback-authentication</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-authentication-api</artifactId>
-  <name>Plexus Security :: Authentication API</name>
+  <artifactId>redback-authentication-api</artifactId>
+  <name>Plexus Redback :: Authentication API</name>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-policy</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-policy</artifactId>
     </dependency>
   </dependencies>
   <scm>
