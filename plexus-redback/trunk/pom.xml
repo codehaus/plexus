@@ -21,10 +21,10 @@
     <artifactId>plexus</artifactId>
     <version>1.0.10</version>
   </parent>
-  <groupId>org.codehaus.plexus.security</groupId>
-  <artifactId>plexus-security</artifactId>
-  <version>1.0-alpha-11-SNAPSHOT</version>
-  <name>Plexus Security</name>
+  <groupId>org.codehaus.plexus.redback</groupId>
+  <artifactId>redback</artifactId>
+  <version>1.0-alpha-1-SNAPSHOT</version>
+  <name>Plexus Redback</name>
   <packaging>pom</packaging>
 
   <developers>
@@ -80,14 +80,14 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.codehaus.plexus.security</groupId>
-        <artifactId>plexus-security-configuration</artifactId>
+        <groupId>org.codehaus.plexus.redback</groupId>
+        <artifactId>redback-configuration</artifactId>
         <version>${security.version}</version>
       </dependency>
+<!--
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-system</artifactId>
@@ -225,6 +225,7 @@
         <type>war</type>
         <version>${security.version}</version>
       </dependency>
+-->
       <!-- Plexus -->
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
@@ -325,7 +326,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -338,9 +338,9 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-redback/trunk</url>
   </scm>
 
   <build>
@@ -368,21 +368,25 @@
   </build>
 
   <modules>
-    <module>configuration</module>
-    <module>common</module>
+    <module>redback-configuration</module>
+    <module>redback-common</module>
+ <!--    
     <module>system</module>
     <module>policy</module>
     <module>authentication</module>
     <module>authorization</module>
     <module>user-management</module>
     <module>ui</module>
+-->
     <!-- Restore once someone is confirmed to be using it.
          So far, this module only causes compile problems on windows. :-( -->
     <!-- <module>acegi-integration</module> -->
+<!--
     <module>examples</module>
     <module>data-management</module>
+-->
   </modules>
   <properties>
-    <security.version>1.0-alpha-11-SNAPSHOT</security.version>
+    <security.version>1.0-alpha-1-SNAPSHOT</security.version>
   </properties>
 </project>

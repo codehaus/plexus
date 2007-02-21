@@ -17,12 +17,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.plexus.security</groupId>
-    <artifactId>plexus-security-common-parent</artifactId>
-    <version>1.0-alpha-11-SNAPSHOT</version>
+    <groupId>org.codehaus.plexus.redback</groupId>
+    <artifactId>redback-common</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-common-jdo</artifactId>
-  <name>Plexus Security :: JDO Common API</name>
+  <artifactId>redback-common-jdo</artifactId>
+  <name>Plexus Redback :: JDO Common API</name>
   <packaging>jar</packaging>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/common/jdo</connection>
@@ -65,8 +65,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-configuration</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-configuration</artifactId>
     </dependency>
   </dependencies>
   <build>
