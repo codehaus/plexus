@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.memory;
+package org.codehaus.plexus.redback.authorization.memory;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -16,9 +16,9 @@ package org.codehaus.plexus.security.authorization.memory;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.rbac.AbstractRole;
-import org.codehaus.plexus.security.rbac.Permission;
-import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.redback.rbac.AbstractRole;
+import org.codehaus.plexus.redback.rbac.Permission;
+import org.codehaus.plexus.redback.rbac.Role;
 
 import java.util.ArrayList;
 import java.util.List;

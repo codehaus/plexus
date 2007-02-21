@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.user.memory;
+package org.codehaus.plexus.redback.user.memory;
 
 /*
  * Copyright 2001-2006 The Codehaus.
@@ -16,7 +16,7 @@ package org.codehaus.plexus.security.user.memory;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.redback.user.User;
 
 import java.util.ArrayList;
 import java.util.Date;

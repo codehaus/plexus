@@ -104,7 +104,7 @@
               <goal>jpox-jdo-mapping</goal>
             </goals>
             <configuration>
-              <outputDirectory>${basedir}/target/classes/org/codehaus/plexus/security/keys/jdo</outputDirectory>
+              <outputDirectory>${basedir}/target/classes/org.codehaus.plexus.redback/keys/jdo</outputDirectory>
             </configuration>
           </execution>
         </executions>

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.user.memory;
+package org.codehaus.plexus.redback.user.memory;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -16,13 +16,13 @@ package org.codehaus.plexus.security.user.memory;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.policy.UserSecurityPolicy;
-import org.codehaus.plexus.security.user.AbstractUserManager;
-import org.codehaus.plexus.security.user.PermanentUserException;
-import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.UserNotFoundException;
-import org.codehaus.plexus.security.user.memory.util.UserSorter;
+import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
+import org.codehaus.plexus.redback.user.AbstractUserManager;
+import org.codehaus.plexus.redback.user.PermanentUserException;
+import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.user.UserManager;
+import org.codehaus.plexus.redback.user.UserNotFoundException;
+import org.codehaus.plexus.redback.user.memory.util.UserSorter;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.IOException;
@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @plexus.component role="org.codehaus.plexus.security.user.UserManager"
+ * @plexus.component role="org.codehaus.plexus.redback.user.UserManager"
  * role-hint="memory"
  */
 public class MemoryUserManager
@@ -54,7 +54,7 @@ public class MemoryUserManager
         URL url = this
             .getClass()
             .getResource(
-                "META-INF/maven/org.codehaus.plexus.security/plexus-security-user-management-provider-memory/pom.properties" );
+                "META-INF/maven/org.codehaus.plexus.redback/plexus-security-user-management-provider-memory/pom.properties" );
 
         if ( url != null )
         {

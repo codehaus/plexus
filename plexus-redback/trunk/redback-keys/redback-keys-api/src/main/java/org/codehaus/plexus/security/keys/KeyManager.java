@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.keys;
+package org.codehaus.plexus.redback.keys;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package org.codehaus.plexus.rbac.profile;
 
-import org.codehaus.plexus.security.rbac.Role;
-import org.codehaus.plexus.security.rbac.Resource;
+import org.codehaus.plexus.redback.rbac.Role;
+import org.codehaus.plexus.redback.rbac.Resource;
 
 import java.util.List;
 

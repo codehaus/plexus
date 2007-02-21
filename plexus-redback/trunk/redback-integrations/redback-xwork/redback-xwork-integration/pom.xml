@@ -17,7 +17,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.plexus.security</groupId>
+    <groupId>org.codehaus.plexus.redback</groupId>
     <artifactId>plexus-security-ui-web-parent</artifactId>
     <version>1.0-alpha-11-SNAPSHOT</version>
   </parent>
@@ -28,54 +28,54 @@
     <!-- ================================================================ -->
     <!-- Core Plexus Security Dependencies -->
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-configuration</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-system</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-policy</artifactId>
     </dependency>
     <!-- User Management / Authentication -->
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-authentication-provider-user-manager</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-user-management-provider-jdo</artifactId>
     </dependency>
     <!-- Keys Management / Authentication -->
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-keys-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-keys-jdo</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-authentication-provider-keystore</artifactId>
     </dependency>
     <!-- RBAC Management / Authorization -->
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-authorization-rbac-store-cached</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-rbac-profile</artifactId>
     </dependency>
     <!-- ================================================================ -->
@@ -153,7 +153,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-keys-memory</artifactId>
       <scope>test</scope>
     </dependency>

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.memory;
+package org.codehaus.plexus.redback.authorization.memory;
 
 /*
  * Copyright 2005 The Codehaus.
@@ -17,17 +17,17 @@ package org.codehaus.plexus.security.authorization.memory;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
-import org.codehaus.plexus.security.authorization.AuthorizationException;
-import org.codehaus.plexus.security.authorization.AuthorizationResult;
-import org.codehaus.plexus.security.authorization.Authorizer;
-import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.redback.authorization.AuthorizationDataSource;
+import org.codehaus.plexus.redback.authorization.AuthorizationException;
+import org.codehaus.plexus.redback.authorization.AuthorizationResult;
+import org.codehaus.plexus.redback.authorization.Authorizer;
+import org.codehaus.plexus.redback.user.User;
 
 /**
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $Id:$
  *
- * @plexus.component role="org.codehaus.plexus.security.authorization.Authorizer"
+ * @plexus.component role="org.codehaus.plexus.redback.authorization.Authorizer"
  * role-hint="memory"
  */
 public class MemoryAuthorizer

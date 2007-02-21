@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.user.cached;
+package org.codehaus.plexus.redback.user.cached;
 
 /*
  * Copyright 2001-2006 The Codehaus.
@@ -18,8 +18,8 @@ package org.codehaus.plexus.security.user.cached;
 
 import net.sf.ehcache.CacheManager;
 
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.provider.test.AbstractUserManagerTestCase;
+import org.codehaus.plexus.redback.user.UserManager;
+import org.codehaus.plexus.redback.user.provider.test.AbstractUserManagerTestCase;
 
 /**
  * CachedUserManagerTest 

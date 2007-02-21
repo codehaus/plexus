@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.user.jdo;
+package org.codehaus.plexus.redback.user.jdo;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -22,12 +22,12 @@ import org.codehaus.plexus.jdo.PlexusObjectNotFoundException;
 import org.codehaus.plexus.jdo.PlexusStoreException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.security.policy.UserSecurityPolicy;
-import org.codehaus.plexus.security.user.AbstractUserManager;
-import org.codehaus.plexus.security.user.PermanentUserException;
-import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.UserManagerException;
-import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
+import org.codehaus.plexus.redback.user.AbstractUserManager;
+import org.codehaus.plexus.redback.user.PermanentUserException;
+import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.user.UserManagerException;
+import org.codehaus.plexus.redback.user.UserNotFoundException;
 import org.codehaus.plexus.util.StringUtils;
 
 import javax.jdo.Extent;
@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * @plexus.component role="org.codehaus.plexus.security.user.UserManager"
+ * @plexus.component role="org.codehaus.plexus.redback.user.UserManager"
  * role-hint="jdo"
  */
 public class JdoUserManager
