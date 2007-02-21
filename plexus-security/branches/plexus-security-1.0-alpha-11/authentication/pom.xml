@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security</artifactId>
-    <version>1.0-alpha-10.1-SNAPSHOT</version>
+    <version>1.0-alpha-11-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-authentication</artifactId>
   <name>Plexus Security :: Authentication</name>
@@ -31,8 +31,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-10.x/authentication</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-10.x/authentication</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-11/authentication</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-11/authentication</developerConnection>
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-authentication</url>
   </scm>
   <modules>

@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-ui-web-parent</artifactId>
-    <version>1.0-alpha-10.1-SNAPSHOT</version>
+    <version>1.0-alpha-11-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-ui-web-integration</artifactId>
   <name>Plexus Security :: UI Web :: Integration</name>
@@ -159,8 +159,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-10.x/ui/web/integration</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-10.x/ui/web/integration</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-11/ui/web/integration</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-11/ui/web/integration</developerConnection>
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-ui/plexus-security-ui-web-parent/plexus-security-ui-web-integration</url>
   </scm>
   <build>
