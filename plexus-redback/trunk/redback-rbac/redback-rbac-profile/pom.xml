@@ -17,21 +17,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.plexus.security</groupId>
-    <artifactId>plexus-security-authorization-rbac</artifactId>
-    <version>1.0-alpha-11-SNAPSHOT</version>
+    <groupId>org.codehaus.plexus.redback</groupId>
+    <artifactId>redback-rbac</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-rbac-profile</artifactId>
-  <name>Plexus Security :: RBAC Role Profiles</name>
+  <artifactId>redback-rbac-profile</artifactId>
+  <name>Plexus Redbcak :: RBAC Profiles</name>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
-      <artifactId>plexus-security-authorization-rbac-model</artifactId>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>redback-rbac-model</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
     </dependency>
     <dependency>
-      <artifactId>plexus-security-authorization-rbac-store-memory</artifactId>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <artifactId>redback-rbac-memory</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <scope>test</scope>
     </dependency>
   </dependencies>

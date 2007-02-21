@@ -22,7 +22,7 @@
     <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
   <artifactId>redback-common</artifactId>
-  <name>Plexus Redback :: Commons Parent</name>
+  <name>Plexus Redback :: Commons</name>
   <packaging>pom</packaging>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/common</connection>

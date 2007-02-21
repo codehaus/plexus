@@ -22,7 +22,7 @@
     <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
   <artifactId>redback-authentication-providers</artifactId>
-  <name>Plexus Redback :: Plexus Authentication Providers</name>
+  <name>Plexus Redback :: Authentication Providers</name>
   <packaging>pom</packaging>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authentication/providers</connection>

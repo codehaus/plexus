@@ -17,37 +17,37 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.plexus.security</groupId>
-    <artifactId>plexus-security-authorization-rbac-stores</artifactId>
-    <version>1.0-alpha-11-SNAPSHOT</version>
+    <groupId>org.codehaus.plexus.redback</groupId>
+    <artifactId>redback-rbac-providers</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-authorization-rbac-store-cached</artifactId>
-  <name>Plexus Security :: RBAC Authorization Store :: Cached</name>
+  <artifactId>redback-rbac-cached</artifactId>
+  <name>Plexus Redback :: RBAC Provider :: Cached</name>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-system</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-system</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-authorization-api</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-authorization-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-authorization-rbac-model</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-rbac-model</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-ehcache</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-authorization-rbac-store-memory</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-rbac-memory</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-authorization-rbac-store-test</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-rbac-tests</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
