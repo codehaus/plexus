@@ -64,7 +64,7 @@ public class SecurityToolbar
             return;
         }
 
-        html.td( 4 ).styleClass( BuilderConstants.STATUS_BAR_CSS ).close();
+        html.td( 4 ).styleClass( BuilderConstants.STATUS_BAR_CSS ).nowrap().close();
 
         new StatusBarBuilder( html, model ).statusMessage();
 
