@@ -17,21 +17,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.plexus.security</groupId>
-    <artifactId>plexus-security-keys-stores</artifactId>
-    <version>1.0-alpha-11-SNAPSHOT</version>
+    <groupId>org.codehaus.plexus.redback</groupId>
+    <artifactId>redback-keys-providers</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-keys-memory</artifactId>
-  <name>Plexus Security :: Key Management Memory Store</name>
+  <artifactId>redback-keys-memory</artifactId>
+  <name>Plexus Redback :: Key Management Provider :: Memory</name>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-keys-api</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-keys-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-keys-test</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-keys-tests</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

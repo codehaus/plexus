@@ -22,7 +22,7 @@
     <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
   <artifactId>redback-users</artifactId>
-  <name>Plexus Redback :: User Management Parent</name>
+  <name>Plexus Redback :: User Management</name>
   <packaging>pom</packaging>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/user-management</connection>
@@ -31,6 +31,7 @@
   </scm>
   <modules>
     <module>redback-users-api</module>
-<!--    <module>redback-providers</module> -->
+    <module>redback-users-providers</module>
+    <module>redback-users-tests</module>
   </modules>
 </project>

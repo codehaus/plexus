@@ -17,12 +17,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.plexus.security</groupId>
-    <artifactId>plexus-security-user-management-providers</artifactId>
-    <version>1.0-alpha-11-SNAPSHOT</version>
+    <groupId>org.codehaus.plexus.redback</groupId>
+    <artifactId>redback-users-providers</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-user-management-provider-jdo</artifactId>
-  <name>Plexus Security :: User Management Provider :: JDO</name>
+  <artifactId>redback-users-jdo</artifactId>
+  <name>Plexus Redback :: Users Provider :: JDO</name>
 
   <dependencies>
     <dependency>
@@ -31,16 +31,16 @@
       <version>1.2</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-common-jdo</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-common-jdo</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-policy</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-policy</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
-      <artifactId>plexus-security-user-management-provider-test</artifactId>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-users-tests</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
