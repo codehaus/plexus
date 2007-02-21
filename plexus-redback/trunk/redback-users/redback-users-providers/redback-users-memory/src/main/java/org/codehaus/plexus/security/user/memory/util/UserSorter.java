@@ -1,6 +1,6 @@
-package org.codehaus.plexus.security.user.memory.util;
+package org.codehaus.plexus.redback.user.memory.util;
 
-import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.redback.user.User;
 
 import java.util.Comparator;
 

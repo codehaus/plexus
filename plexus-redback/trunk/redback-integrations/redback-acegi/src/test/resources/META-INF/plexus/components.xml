@@ -1,9 +1,9 @@
 <plexus>
   <components>        
     <component>
-      <role>org.codehaus.plexus.security.authentication.Authenticator</role>
+      <role>org.codehaus.plexus.redback.authentication.Authenticator</role>
       <role-hint>acegi</role-hint>
-      <implementation>org.codehaus.plexus.security.acegi.AcegiAuthenticator</implementation>
+      <implementation>org.codehaus.plexus.redback.acegi.AcegiAuthenticator</implementation>
       <description>AcegiAuthenticator:</description>
       <requirements>
         <requirement>
@@ -12,7 +12,7 @@
           <role-hint>dao</role-hint>
         </requirement>
         <requirement>
-          <role>org.codehaus.plexus.security.acegi.AuthenticationTokenFactory</role>
+          <role>org.codehaus.plexus.redback.acegi.AuthenticationTokenFactory</role>
           <field-name>tokenFactory</field-name>
         </requirement>
       </requirements>

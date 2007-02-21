@@ -7,7 +7,7 @@
   <defaults>
     <default>
       <key>package</key>
-      <value>org.codehaus.plexus.security.user.jdo</value>
+      <value>org.codehaus.plexus.redback.user.jdo</value>
     </default>
   </defaults>
 
@@ -30,10 +30,10 @@
       <name>JdoUser</name>
       <version>1.0.0+</version>
       <interfaces>
-        <interface>org.codehaus.plexus.security.user.User</interface>
+        <interface>org.codehaus.plexus.redback.user.User</interface>
       </interfaces>
       <description>
-        @plexus.component role="org.codehaus.plexus.security.user.User"
+        @plexus.component role="org.codehaus.plexus.redback.user.User"
         role-hint="jdo"
       </description>
       <fields>

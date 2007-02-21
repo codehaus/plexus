@@ -1,14 +1,14 @@
 package org.codehaus.plexus.rbac.profile;
 
-import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.security.rbac.RbacManagerException;
-import org.codehaus.plexus.security.rbac.Role;
-import org.codehaus.plexus.security.rbac.Operation;
-import org.codehaus.plexus.security.rbac.Resource;
-import org.codehaus.plexus.security.rbac.Permission;
-import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.security.rbac.RbacObjectInvalidException;
-import org.codehaus.plexus.security.rbac.UserAssignment;
+import org.codehaus.plexus.redback.rbac.RBACManager;
+import org.codehaus.plexus.redback.rbac.RbacManagerException;
+import org.codehaus.plexus.redback.rbac.Role;
+import org.codehaus.plexus.redback.rbac.Operation;
+import org.codehaus.plexus.redback.rbac.Resource;
+import org.codehaus.plexus.redback.rbac.Permission;
+import org.codehaus.plexus.redback.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.redback.rbac.RbacObjectInvalidException;
+import org.codehaus.plexus.redback.rbac.UserAssignment;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.util.List;

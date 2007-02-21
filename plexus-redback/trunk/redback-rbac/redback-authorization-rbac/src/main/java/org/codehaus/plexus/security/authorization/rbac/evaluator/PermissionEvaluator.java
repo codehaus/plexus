@@ -1,6 +1,6 @@
-package org.codehaus.plexus.security.authorization.rbac.evaluator;
+package org.codehaus.plexus.redback.authorization.rbac.evaluator;
 
-import org.codehaus.plexus.security.rbac.Permission;
+import org.codehaus.plexus.redback.rbac.Permission;
 /*
  * Copyright 2005 The Apache Software Foundation.
  *

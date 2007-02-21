@@ -1,10 +1,10 @@
-package org.codehaus.plexus.security.authorization.rbac.evaluator;
+package org.codehaus.plexus.redback.authorization.rbac.evaluator;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.security.rbac.Permission;
-import org.codehaus.plexus.security.rbac.Resource;
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.redback.rbac.Permission;
+import org.codehaus.plexus.redback.rbac.Resource;
+import org.codehaus.plexus.redback.user.UserManager;
+import org.codehaus.plexus.redback.user.UserNotFoundException;
 /*
  * Copyright 2006 The Codehaus.
  *
@@ -29,7 +29,7 @@ import org.codehaus.plexus.security.user.UserNotFoundException;
  *
  * @author Jesse McConnell <jesse@codehaus.org>
  * @version $Id:$
- * @plexus.component role="org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvaluator"
+ * @plexus.component role="org.codehaus.plexus.redback.authorization.rbac.evaluator.PermissionEvaluator"
  * role-hint="default"
  */
 public class DefaultPermissionEvaluator

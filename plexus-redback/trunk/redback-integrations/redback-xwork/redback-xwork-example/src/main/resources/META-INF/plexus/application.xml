@@ -2,8 +2,8 @@
   <components>
 
     <component>
-      <role>org.codehaus.plexus.security.configuration.UserConfiguration</role>
-      <implementation>org.codehaus.plexus.security.configuration.UserConfiguration</implementation>
+      <role>org.codehaus.plexus.redback.configuration.UserConfiguration</role>
+      <implementation>org.codehaus.plexus.redback.configuration.UserConfiguration</implementation>
       <configuration>
         <configs>
           <config>${user.home}/.m2/security.properties</config>
@@ -36,7 +36,7 @@
             <level>WARN</level>
           </level>
           <level>
-            <hierarchy>org.codehaus.plexus.security</hierarchy>
+            <hierarchy>org.codehaus.plexus.redback</hierarchy>
             <level>DEBUG</level>
           </level>
           <level>

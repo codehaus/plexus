@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.rbac;
+package org.codehaus.plexus.redback.authorization.rbac;
 
 /*
  * Copyright 2001-2006 The Codehaus.
@@ -17,20 +17,20 @@ package org.codehaus.plexus.security.authorization.rbac;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.security.authorization.AuthorizationDataSource;
-import org.codehaus.plexus.security.authorization.AuthorizationException;
-import org.codehaus.plexus.security.authorization.AuthorizationResult;
-import org.codehaus.plexus.security.authorization.Authorizer;
-import org.codehaus.plexus.security.authorization.NotAuthorizedException;
-import org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvaluationException;
-import org.codehaus.plexus.security.authorization.rbac.evaluator.PermissionEvaluator;
-import org.codehaus.plexus.security.rbac.Permission;
-import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.security.rbac.RbacManagerException;
-import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.redback.authorization.AuthorizationDataSource;
+import org.codehaus.plexus.redback.authorization.AuthorizationException;
+import org.codehaus.plexus.redback.authorization.AuthorizationResult;
+import org.codehaus.plexus.redback.authorization.Authorizer;
+import org.codehaus.plexus.redback.authorization.NotAuthorizedException;
+import org.codehaus.plexus.redback.authorization.rbac.evaluator.PermissionEvaluationException;
+import org.codehaus.plexus.redback.authorization.rbac.evaluator.PermissionEvaluator;
+import org.codehaus.plexus.redback.rbac.Permission;
+import org.codehaus.plexus.redback.rbac.RBACManager;
+import org.codehaus.plexus.redback.rbac.RbacManagerException;
+import org.codehaus.plexus.redback.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.user.UserManager;
+import org.codehaus.plexus.redback.user.UserNotFoundException;
 
 import java.util.Iterator;
 import java.util.List;
@@ -43,7 +43,7 @@ import java.util.Map;
  * @version $Id:$
  *
  * @plexus.component
- *   role="org.codehaus.plexus.security.authorization.Authorizer"
+ *   role="org.codehaus.plexus.redback.authorization.Authorizer"
  *   role-hint="rbac"
  */
 public class RbacAuthorizer

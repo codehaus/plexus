@@ -119,7 +119,7 @@
               <goal>jpox-jdo-mapping</goal>
             </goals>
             <configuration>
-              <outputDirectory>${basedir}/target/classes/org/codehaus/plexus/security/authorization/rbac/jdo
+              <outputDirectory>${basedir}/target/classes/org.codehaus.plexus.redback/authorization/rbac/jdo
               </outputDirectory>
             </configuration>
           </execution>

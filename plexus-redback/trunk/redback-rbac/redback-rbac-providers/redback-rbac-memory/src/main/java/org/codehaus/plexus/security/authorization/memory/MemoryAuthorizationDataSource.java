@@ -1,6 +1,6 @@
-package org.codehaus.plexus.security.authorization.memory;
+package org.codehaus.plexus.redback.authorization.memory;
 
-import org.codehaus.plexus.security.user.User;
+import org.codehaus.plexus.redback.user.User;
 /*
  * Copyright 2005 The Apache Software Foundation.
  *

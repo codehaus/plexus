@@ -1,8 +1,8 @@
 package org.codehaus.plexus.rbac.profile;
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.security.rbac.RBACManager;
-import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.redback.rbac.RBACManager;
+import org.codehaus.plexus.redback.rbac.Role;
 /*
  * Copyright 2005 The Codehaus.
  *

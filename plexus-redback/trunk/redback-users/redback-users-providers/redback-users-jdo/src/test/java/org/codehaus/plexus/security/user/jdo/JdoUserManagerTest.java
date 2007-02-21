@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.user.jdo;
+package org.codehaus.plexus.redback.user.jdo;
 
 /*
  * Copyright 2001-2006 The Codehaus.
@@ -18,8 +18,8 @@ package org.codehaus.plexus.security.user.jdo;
 
 import org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.JdoFactory;
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.provider.test.AbstractUserManagerTestCase;
+import org.codehaus.plexus.redback.user.UserManager;
+import org.codehaus.plexus.redback.user.provider.test.AbstractUserManagerTestCase;
 import org.jpox.SchemaTool;
 
 import java.net.URL;
@@ -72,7 +72,7 @@ public class JdoUserManagerTest
         }
 
         SchemaTool.createSchemaTables( new URL[] { getClass()
-            .getResource( "/org/codehaus/plexus/security/user/jdo/package.jdo" ) }, new URL[] {}, null, false, null ); //$NON-NLS-1$
+            .getResource( "/org.codehaus.plexus.redback/user/jdo/package.jdo" ) }, new URL[] {}, null, false, null ); //$NON-NLS-1$
 
         PersistenceManagerFactory pmf = jdoFactory.getPersistenceManagerFactory();
 

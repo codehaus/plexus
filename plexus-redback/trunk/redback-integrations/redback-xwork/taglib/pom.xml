@@ -17,7 +17,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.plexus.security</groupId>
+    <groupId>org.codehaus.plexus.redback</groupId>
     <artifactId>plexus-security-ui-web-parent</artifactId>
     <version>1.0-alpha-11-SNAPSHOT</version>
   </parent>
@@ -25,11 +25,11 @@
   <name>Plexus Security :: UI Web :: Taglib</name>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-ui-web-integration</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus.security</groupId>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-system</artifactId>
     </dependency>
     <dependency>

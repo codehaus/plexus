@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.memory;
+package org.codehaus.plexus.redback.authorization.memory;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -16,8 +16,8 @@ package org.codehaus.plexus.security.authorization.memory;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.security.authorization.store.test.AbstractRbacManagerTestCase;
-import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.redback.authorization.store.test.AbstractRbacManagerTestCase;
+import org.codehaus.plexus.redback.rbac.RBACManager;
 
 /**
  * MemoryRbacManagerTest 

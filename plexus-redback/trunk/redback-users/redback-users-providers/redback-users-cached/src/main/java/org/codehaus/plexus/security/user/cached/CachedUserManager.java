@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.user.cached;
+package org.codehaus.plexus.redback.user.cached;
 
 /*
  * Copyright 2001-2006 The Codehaus.
@@ -21,10 +21,10 @@ import net.sf.ehcache.Element;
 import org.codehaus.plexus.ehcache.EhcacheComponent;
 import org.codehaus.plexus.ehcache.EhcacheUtils;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.security.user.User;
-import org.codehaus.plexus.security.user.UserManager;
-import org.codehaus.plexus.security.user.UserManagerListener;
-import org.codehaus.plexus.security.user.UserNotFoundException;
+import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.user.UserManager;
+import org.codehaus.plexus.redback.user.UserManagerListener;
+import org.codehaus.plexus.redback.user.UserNotFoundException;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ import java.util.List;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * 
- * @plexus.component role="org.codehaus.plexus.security.user.UserManager" role-hint="cached"
+ * @plexus.component role="org.codehaus.plexus.redback.user.UserManager" role-hint="cached"
  */
 public class CachedUserManager
     extends AbstractLogEnabled

@@ -7,7 +7,7 @@
       <implementation>org.codehaus.plexus.rbac.profile.BogusRoleProfile</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.security.rbac.RBACManager</role>
+          <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
           <role-hint>memory</role-hint>
         </requirement>
         <requirement>
@@ -23,7 +23,7 @@
       <implementation>org.codehaus.plexus.rbac.profile.SpiffyRoleProfile</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.security.rbac.RBACManager</role>
+          <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
           <role-hint>memory</role-hint>
         </requirement>
         <requirement>
@@ -39,7 +39,7 @@
       <implementation>org.codehaus.plexus.rbac.profile.BogusDynamicRoleProfile</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.security.rbac.RBACManager</role>
+          <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
           <role-hint>memory</role-hint>
         </requirement>
       </requirements>
@@ -51,7 +51,7 @@
       <implementation>org.codehaus.plexus.rbac.profile.MoreBogusDynamicRoleProfile</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.security.rbac.RBACManager</role>
+          <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
           <role-hint>memory</role-hint>
         </requirement>
       </requirements>

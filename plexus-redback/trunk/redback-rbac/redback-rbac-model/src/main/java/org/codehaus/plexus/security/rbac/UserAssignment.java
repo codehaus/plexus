@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.rbac;
+package org.codehaus.plexus.redback.rbac;
 
 import java.util.List;
 
