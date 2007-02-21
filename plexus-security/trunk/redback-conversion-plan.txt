@@ -2,7 +2,7 @@ This is a temporary document to help describe the end result that the redback re
 
 Basic Concepts:
   1) Use "redback" not "plexus-redback" in artifact naming.
-  2) Use package org.codehaus.redback.*
+  2) Use package org.codehaus.plexus.redback.*
   3) Directory name == module == artifactId
   4) Group Concepts together.
 
@@ -22,8 +22,8 @@ Basic Concepts:
   redback-rbac-model
   redback-rbac-profile
   redback-rbac-tests
-  redback-user-management-api
-  redback-user-management-tests
+  redback-users-api
+  redback-users-tests
 
 [Providers]
   redback-providers-common-jdo
@@ -43,9 +43,9 @@ Basic Concepts:
   redback-rbac-cached
   redback-rbac-xstream
   redback-rbac-jdo
-  redback-user-management-memory
-  redback-user-management-cached
-  redback-user-management-jdo
+  redback-users-memory
+  redback-users-cached
+  redback-users-jdo
 
 [Integrations]
   redback-plexus-service
@@ -91,14 +91,14 @@ redback  (pom)
       /redback-keys-memory  (jar)
       /redback-keys-cached  (jar)
       /redback-keys-jdo  (jar)
-  /redback-user-management  (pom)
-    /redback-user-management-api  (jar)
-    /redback-user-management-tests  (jar)
-    /redback-authentication-user-management (jar)
-    /redback-user-management-providers  (pom)
-      /redback-user-management-memory  (jar)
-      /redback-user-management-cached  (jar)
-      /redback-user-management-jdo  (jar)
+  /redback-users  (pom)
+    /redback-users-api  (jar)
+    /redback-users-tests  (jar)
+    /redback-authentication-users (jar)
+    /redback-users-providers  (pom)
+      /redback-users-memory  (jar)
+      /redback-users-cached  (jar)
+      /redback-users-jdo  (jar)
   /redback-rbac  (pom)
     /redback-rbac-api  (jar)
     /redback-rbac-model  (jar)
