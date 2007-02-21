@@ -25,8 +25,8 @@
   <name>Plexus Redback :: Key Management API</name>
   <packaging>jar</packaging>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/api</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/authentication/keys/api</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-keys/redback-keys-api</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-keys/redback-keys-api</developerConnection>
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-authentication/plexus-security-keys-parent/plexus-security-keys-api</url>
   </scm>
   <dependencies>

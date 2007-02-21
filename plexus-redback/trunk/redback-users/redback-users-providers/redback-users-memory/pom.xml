@@ -37,8 +37,8 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/user-management/providers/memory</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/user-management/providers/memory</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-users/redback-users-providers/redback-users-memory</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-users/redback-users-providers/redback-users-memory</developerConnection>
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-user-management/plexus-security-user-management-providers/plexus-security-user-management-provider-memory</url>
   </scm>
 
