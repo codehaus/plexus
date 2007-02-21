@@ -23,7 +23,7 @@
   </parent>
   <groupId>org.codehaus.plexus.security</groupId>
   <artifactId>plexus-security</artifactId>
-  <version>1.0-alpha-10.1-SNAPSHOT</version>
+  <version>1.0-alpha-11-SNAPSHOT</version>
   <name>Plexus Security</name>
   <packaging>pom</packaging>
 
@@ -338,8 +338,8 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-10.x</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-10.x</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-11</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-11</developerConnection>
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk</url>
   </scm>
 
@@ -383,6 +383,6 @@
     <module>data-management</module>
   </modules>
   <properties>
-    <security.version>1.0-alpha-10.1-SNAPSHOT</security.version>
+    <security.version>1.0-alpha-11-SNAPSHOT</security.version>
   </properties>
 </project>

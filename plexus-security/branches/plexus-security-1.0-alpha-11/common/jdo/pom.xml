@@ -19,14 +19,14 @@
   <parent>
     <groupId>org.codehaus.plexus.security</groupId>
     <artifactId>plexus-security-common-parent</artifactId>
-    <version>1.0-alpha-10.1-SNAPSHOT</version>
+    <version>1.0-alpha-11-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-security-common-jdo</artifactId>
   <name>Plexus Security :: JDO Common API</name>
   <packaging>jar</packaging>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-10.x/common/jdo</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-10.x/common/jdo</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-11/common/jdo</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/branches/plexus-security-1.0-alpha-11/common/jdo</developerConnection>
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-common-parent/plexus-security-common-jdo</url>
   </scm>
   <dependencies>
