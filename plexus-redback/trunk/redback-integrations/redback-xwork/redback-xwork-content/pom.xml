@@ -18,20 +18,20 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
-    <artifactId>plexus-security-ui-web-parent</artifactId>
-    <version>1.0-alpha-11-SNAPSHOT</version>
+    <artifactId>redback-xwork</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-ui-web</artifactId>
-  <name>Plexus Security :: UI Web :: Content War</name>
+  <artifactId>redback-xwork-content</artifactId>
+  <name>Plexus Redback :: Integration :: XWork Content War</name>
   <packaging>war</packaging>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-ui-web-integration</artifactId>
+      <artifactId>redback-xwork-integration</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-ui-web-taglib</artifactId>
+      <artifactId>redback-taglib</artifactId>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>

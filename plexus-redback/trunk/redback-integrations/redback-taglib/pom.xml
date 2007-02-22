@@ -18,19 +18,21 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
-    <artifactId>plexus-security-ui-web-parent</artifactId>
-    <version>1.0-alpha-11-SNAPSHOT</version>
+    <artifactId>redback-integrations</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-ui-web-taglib</artifactId>
-  <name>Plexus Security :: UI Web :: Taglib</name>
+  <artifactId>redback-taglib</artifactId>
+  <name>Plexus Redback :: Integration :: Taglib</name>
   <dependencies>
+  <!-- TODO is this required or not, if so then either clear dep or move into xwork
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>plexus-security-ui-web-integration</artifactId>
     </dependency>
+  -->
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-system</artifactId>
+      <artifactId>redback-system</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>

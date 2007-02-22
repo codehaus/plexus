@@ -18,65 +18,67 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
-    <artifactId>plexus-security-ui-web-parent</artifactId>
-    <version>1.0-alpha-11-SNAPSHOT</version>
+    <artifactId>redback-xwork</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-ui-web-integration</artifactId>
-  <name>Plexus Security :: UI Web :: Integration</name>
+  <artifactId>redback-xwork-integration</artifactId>
+  <name>Plexus Redback :: Integration :: XWork Integration</name>
   <packaging>jar</packaging>
   <dependencies>
     <!-- ================================================================ -->
     <!-- Core Plexus Security Dependencies -->
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-configuration</artifactId>
+      <artifactId>redback-configuration</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-system</artifactId>
+      <artifactId>redback-system</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-policy</artifactId>
+      <artifactId>redback-policy</artifactId>
     </dependency>
     <!-- User Management / Authentication -->
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-authentication-provider-user-manager</artifactId>
+      <artifactId>redback-authentication-users</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-user-management-provider-jdo</artifactId>
+      <artifactId>redback-users-jdo</artifactId>
     </dependency>
     <!-- Keys Management / Authentication -->
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-keys-api</artifactId>
+      <artifactId>redback-keys-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-keys-jdo</artifactId>
+      <artifactId>redback-keys-jdo</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-authentication-provider-keystore</artifactId>
+      <artifactId>redback-authentication-keys</artifactId>
     </dependency>
     <!-- RBAC Management / Authorization -->
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-authorization-rbac-authorizer</artifactId>
+      <artifactId>redback-authorization-rbac</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-authorization-rbac-store-cached</artifactId>
+      <artifactId>redback-rbac-cached</artifactId>
     </dependency>
+    <!-- should be transitive with cached
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-authorization-rbac-store-jdo</artifactId>
+      <artifactId>redback-rbac-jdo</artifactId>
     </dependency>
+    -->
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-rbac-profile</artifactId>
+      <artifactId>redback-rbac-profile</artifactId>
     </dependency>
     <!-- ================================================================ -->
     <!-- OTHER Dependencies -->
@@ -154,7 +156,7 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-keys-memory</artifactId>
+      <artifactId>redback-keys-memory</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
