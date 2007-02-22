@@ -28,9 +28,9 @@ import org.codehaus.plexus.redback.rbac.Permission;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.redback.user.User;
-import org.codehaus.plexus.redback.user.UserManager;
-import org.codehaus.plexus.redback.user.UserNotFoundException;
+import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserManager;
+import org.codehaus.plexus.redback.users.UserNotFoundException;
 
 import java.util.Iterator;
 import java.util.List;
