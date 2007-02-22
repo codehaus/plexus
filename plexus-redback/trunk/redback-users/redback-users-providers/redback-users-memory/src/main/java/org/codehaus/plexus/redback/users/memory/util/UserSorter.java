@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.user.memory.util;
+package org.codehaus.plexus.redback.users.memory.util;
 
 import org.codehaus.plexus.redback.user.User;
 

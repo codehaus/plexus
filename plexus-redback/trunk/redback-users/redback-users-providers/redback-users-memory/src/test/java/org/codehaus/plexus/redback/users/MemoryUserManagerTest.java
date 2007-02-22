@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback;
+package org.codehaus.plexus.redback.users;
 
 /*
  * Copyright 2005 The Codehaus.
@@ -16,9 +16,9 @@ package org.codehaus.plexus.redback;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.user.UserManager;
-import org.codehaus.plexus.redback.user.memory.MemoryUserManager;
-import org.codehaus.plexus.redback.user.provider.test.AbstractUserManagerTestCase;
+import org.codehaus.plexus.redback.users.UserManager;
+import org.codehaus.plexus.redback.users.provider.test.AbstractUserManagerTestCase;
+import org.codehaus.plexus.redback.users.memory.MemoryUserManager;
 
 /**
  * {@link MemoryUserManager} test:

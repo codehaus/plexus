@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.user.provider.test;
+package org.codehaus.plexus.redback.users.provider.test;
 
 /*
  * Copyright 2001-2006 The Codehaus.
@@ -16,8 +16,8 @@ package org.codehaus.plexus.redback.user.provider.test;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.user.User;
-import org.codehaus.plexus.redback.user.UserManagerListener;
+import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserManagerListener;
 
 import java.util.ArrayList;
 import java.util.List;

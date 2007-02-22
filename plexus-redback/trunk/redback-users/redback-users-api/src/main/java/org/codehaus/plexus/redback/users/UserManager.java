@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.user;
+package org.codehaus.plexus.redback.users;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
