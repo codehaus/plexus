@@ -15,16 +15,19 @@
   <load-on-start>
     <component>
       <role>org.codehaus.plexus.contextualizer.Contextualizer</role>
-      <role-hint>allsystemprops</role-hint>		
+      <role-hint>definedsysprops</role-hint>		
     </component>    
   </load-on-start>  
   <components>
+  
     <component>
       <role>org.codehaus.plexus.contextualizer.Contextualizer</role>
-      <role-hint>allsystemprops</role-hint>
+      <role-hint>definedsysprops</role-hint>
       <implementation>org.codehaus.plexus.contextualizer.DefaultContextualizer</implementation>
       <configuration>
-        <addAllSystemProperties>true</addAllSystemProperties>
+		<definedSystemProperties>
+		  <definedSystemProperty>user.home</definedSystemProperty>	
+		</definedSystemProperties>
 		<contextValues>
 		  <keyone>valueone</keyone>
 		</contextValues>
