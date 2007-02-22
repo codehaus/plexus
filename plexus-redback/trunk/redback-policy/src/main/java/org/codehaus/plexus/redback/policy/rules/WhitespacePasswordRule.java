@@ -19,7 +19,7 @@ package org.codehaus.plexus.redback.policy.rules;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.redback.policy.PasswordRuleViolations;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
-import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.users.User;
 
 /**
  * Basic Password Rule. Checks that password does not have whitespaces in it.

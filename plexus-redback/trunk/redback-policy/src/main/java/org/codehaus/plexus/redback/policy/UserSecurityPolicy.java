@@ -16,8 +16,8 @@ package org.codehaus.plexus.redback.policy;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.user.User;
-import org.codehaus.plexus.redback.user.UserManager;
+import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserManager;
 
 import java.util.List;
 

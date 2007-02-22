@@ -26,7 +26,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.redback.configuration.UserConfiguration;
 import org.codehaus.plexus.redback.policy.rules.MustHavePasswordRule;
-import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.users.User;
 
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -106,7 +106,7 @@
               <goal>jpox-jdo-mapping</goal>
             </goals>
             <configuration>
-              <outputDirectory>${basedir}/target/classes/org.codehaus.plexus.redback/user/jdo</outputDirectory>
+              <outputDirectory>${basedir}/target/classes/org/codehaus/plexus/redback/users/jdo</outputDirectory>
             </configuration>
           </execution>
         </executions>

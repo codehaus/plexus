@@ -240,7 +240,7 @@ public class JdoUserManager
     public void eraseDatabase()
     {
         PlexusJdoUtils.removeAll( getPersistenceManager(), JdoUser.class );
-        PlexusJdoUtils.removeAll( getPersistenceManager(), UserManagementModelloMetadata.class );
+        PlexusJdoUtils.removeAll( getPersistenceManager(), UsersManagementModelloMetadata.class );
     }
 
     public User findUser( Object principal )

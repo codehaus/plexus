@@ -17,11 +17,11 @@ package org.codehaus.plexus.redback.users.memory;
  */
 
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
-import org.codehaus.plexus.redback.user.AbstractUserManager;
-import org.codehaus.plexus.redback.user.PermanentUserException;
-import org.codehaus.plexus.redback.user.User;
-import org.codehaus.plexus.redback.user.UserManager;
-import org.codehaus.plexus.redback.user.UserNotFoundException;
+import org.codehaus.plexus.redback.users.AbstractUserManager;
+import org.codehaus.plexus.redback.users.PermanentUserException;
+import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserManager;
+import org.codehaus.plexus.redback.users.UserNotFoundException;
 import org.codehaus.plexus.redback.users.memory.util.UserSorter;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @plexus.component role="org.codehaus.plexus.redback.user.UserManager"
+ * @plexus.component role="org.codehaus.plexus.redback.users.UserManager"
  * role-hint="memory"
  */
 public class MemoryUserManager

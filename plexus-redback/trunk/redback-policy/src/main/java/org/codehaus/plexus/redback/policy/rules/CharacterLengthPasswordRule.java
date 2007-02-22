@@ -19,7 +19,7 @@ package org.codehaus.plexus.redback.policy.rules;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.redback.policy.PasswordRuleViolations;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
-import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
