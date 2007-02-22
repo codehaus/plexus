@@ -1,0 +1,22 @@
+<plexus>
+  <load-on-start>
+    <component>
+      <role>org.codehaus.plexus.contextualizer.Contextualizer</role>
+      <role-hint>allsystemprops</role-hint>		
+    </component>    
+  </load-on-start>  
+  <components>
+  
+    <component>
+      <role>org.codehaus.plexus.contextualizer.Contextualizer</role>
+      <role-hint>allsystemprops</role-hint>
+      <implementation>org.codehaus.plexus.contextualizer.DefaultContextualizer</implementation>
+      <configuration>
+        <addAllSystemProperties>true</addAllSystemProperties>
+		<contextValues>
+		  <keyone>valueone</keyone>
+		</contextValues>
+	  </configuration>
+    </component>
+  </components>
+</plexus>
