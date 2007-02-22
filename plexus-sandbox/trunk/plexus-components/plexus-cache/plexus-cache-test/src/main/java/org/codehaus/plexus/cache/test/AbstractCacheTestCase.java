@@ -16,13 +16,14 @@ package org.codehaus.plexus.cache.test;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.cache.Cache;
-import org.codehaus.plexus.cache.CacheStatistics;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.cache.Cache;
+import org.codehaus.plexus.cache.CacheStatistics;
+import org.codehaus.plexus.cache.test.examples.wine.Wine;
 
 /**
  * AbstractCacheTestCase 
@@ -132,10 +133,69 @@ public abstract class AbstractCacheTestCase
          * Leaving this commented so that future developers understand the reason we are not
          * testing this value.
          
-        double expectedHitRate = (double) expectedHits / (double) ( expectedHits + expectedMiss );
-        assertTrue( "Cache hit rate should exceed [" + expectedHitRate + "], but was actually ["
-            + stats.getCacheHitRate() + "]", expectedHitRate <= stats.getCacheHitRate() );
-            
+         double expectedHitRate = (double) expectedHits / (double) ( expectedHits + expectedMiss );
+         assertTrue( "Cache hit rate should exceed [" + expectedHitRate + "], but was actually ["
+         + stats.getCacheHitRate() + "]", expectedHitRate <= stats.getCacheHitRate() );
+         
          */
+    }
+
+    public abstract Cache getAlwaysRefresCache()
+        throws Exception;
+
+    public void testAlwaysRefresh()
+        throws Exception
+    {
+        Wine wine = new Wine( "bordeaux", "west/south of France" );
+        String key = wine.getName();
+        Cache cache = this.getAlwaysRefresCache();
+        cache.put( key, wine );
+        assertNull( cache.get( key ) );
+    }
+
+    public abstract Cache getNeverRefresCache()
+        throws Exception;
+
+    public void testNeverRefresh()
+        throws Exception
+    {
+        Cache cache = this.getNeverRefresCache();
+        Wine wine = new Wine( "bordeaux", "west/south of France" );
+        String key = wine.getName();
+        cache.put( key, wine );
+        //Thread.sleep( 1200 );
+        Object o = cache.get( key );
+        assertNotNull( o );
+        assertEquals( wine.hashCode(), o.hashCode() );
+    }
+
+    public abstract Cache getOneSecondRefresCache()
+        throws Exception;
+
+    public void testOneSecondRefresh()
+        throws Exception
+    {
+        Cache cache = this.getOneSecondRefresCache();
+        Wine wine = new Wine( "bordeaux", "west/south of France" );
+        String key = wine.getName();
+        cache.put( key, wine );
+        Thread.sleep( 1200 );
+        assertNull( cache.get( key ) );
+    }
+
+    public abstract Cache getTwoSecondRefresCache()
+        throws Exception;
+
+    public void testTwoSecondRefresh()
+        throws Exception
+    {
+        Cache cache = this.getTwoSecondRefresCache();
+        Wine wine = new Wine( "bordeaux", "west/south of France" );
+        String key = wine.getName();
+        cache.put( key, wine );
+        Thread.sleep( 1000 );
+        Object o = cache.get( key );
+        assertNotNull( o );
+        assertEquals( wine.hashCode(), o.hashCode() );
     }
 }

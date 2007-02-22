@@ -29,6 +29,41 @@
         <!--whirlyCacheName>test</whirlyCacheName-->
       </configuration>
     </component>
-    
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>alwaysrefresh</role-hint>
+      <implementation>org.codehaus.plexus.cache.whirly.WhirlyCacheCache</implementation>
+      <description></description>
+      <configuration>
+        <refreshTime>-1</refreshTime>
+      </configuration>
+    </component>	  
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>neverrefresh</role-hint>
+      <implementation>org.codehaus.plexus.cache.whirly.WhirlyCacheCache</implementation>
+      <description></description>
+      <configuration>
+        <refreshTime>100000</refreshTime>
+      </configuration>
+    </component>	 
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>onesecondrefresh</role-hint>
+      <implementation>org.codehaus.plexus.cache.whirly.WhirlyCacheCache</implementation>
+      <description></description>
+      <configuration>
+        <refreshTime>1</refreshTime>
+      </configuration>
+    </component>	   
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>twosecondrefresh</role-hint>
+      <implementation>org.codehaus.plexus.cache.whirly.WhirlyCacheCache</implementation>
+      <description></description>
+      <configuration>
+        <refreshTime>2</refreshTime>
+      </configuration>
+    </component>    
   </components>
 </plexus>

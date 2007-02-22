@@ -16,14 +16,17 @@ package org.codehaus.plexus.cache.hashmap;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.cache.Cache;
-import org.codehaus.plexus.cache.CacheStatistics;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.codehaus.plexus.cache.AbstractCacheStatistics;
+import org.codehaus.plexus.cache.Cache;
+import org.codehaus.plexus.cache.CacheStatistics;
+import org.codehaus.plexus.cache.CacheableWrapper;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * <p>
@@ -34,7 +37,16 @@ import java.util.Map;
  * Original class written by Edwin Punzalan for purposes of addressing the 
  * jira ticket <a href="http://jira.codehaus.org/browse/MRM-39">MRM-39</a>
  * </p>   
- * 
+ * <p>
+ * Configure the refreshTime in seconds value configure a ttl of object life in cache.
+ * Object get( Object key ) :
+ * <ul>
+ *   <li> &lt; 0 : method will always return null (no cache)</li>
+ *   <li> = 0 : first stored object will be return (infinite life in the cache)</li>
+ *   <li> > 0 : after a live (stored time) of refreshTime the object will be remove from the cache 
+ *              and a no object will be returned by the method</li> 
+ * </ul>
+ * </p>
  * @author Edwin Punzalan
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -42,34 +54,17 @@ import java.util.Map;
  * @plexus.component role="org.codehaus.plexus.cache.Cache" role-hint="hashmap"
  */
 public class HashMapCache
+    extends AbstractLogEnabled
     implements Cache, Initializable
 {
     class Stats
+        extends AbstractCacheStatistics
         implements CacheStatistics
     {
-        private long cacheHits;
-
-        private long cacheMiss;
 
         public Stats()
         {
-            this.cacheHits = 0;
-            this.cacheMiss = 0;
-        }
-
-        public long getCacheHits()
-        {
-            return this.cacheHits;
-        }
-
-        public long getCacheMiss()
-        {
-            return this.cacheMiss;
-        }
-
-        public double getCacheHitRate()
-        {
-            return cacheHits == 0 && cacheMiss == 0 ? 0 : (double) cacheHits / (double) ( cacheHits + cacheMiss );
+            super();
         }
 
         public long getSize()
@@ -80,21 +75,6 @@ public class HashMapCache
             }
         }
 
-        public void hit()
-        {
-            this.cacheHits++;
-        }
-
-        public void miss()
-        {
-            this.cacheMiss++;
-        }
-
-        public void clear()
-        {
-            this.cacheHits = 0;
-            this.cacheMiss = 0;
-        }
     }
 
     private Map cache;
@@ -109,11 +89,18 @@ public class HashMapCache
      */
     private int cacheMaxSize = 0;
 
+    /**
+     * 
+     * @plexus.configuration
+     *  default-value="0"
+     */
+    private int refreshTime;
+
     private Stats stats;
 
     public HashMapCache()
     {
-        
+
     }
 
     /**
@@ -136,18 +123,29 @@ public class HashMapCache
      */
     public Object get( Object key )
     {
-        Object retValue = null;
-
+        CacheableWrapper retValue = null;
+        // prevent search
+        if ( !this.isCacheAvailable() )
+        {
+            return null;
+        }
         synchronized ( cache )
         {
             if ( cache.containsKey( key ) )
             {
                 // remove and put: this promotes it to the top since we use a linked hash map
-                retValue = cache.remove( key );
+                retValue = (CacheableWrapper) cache.remove( key );
 
-                cache.put( key, retValue );
-
-                stats.hit();
+                if ( needRefresh( retValue ) )
+                {
+                    stats.miss();
+                    return null;
+                }
+                else
+                {
+                    cache.put( key, retValue );
+                    stats.hit();
+                }
             }
             else
             {
@@ -155,7 +153,25 @@ public class HashMapCache
             }
         }
 
-        return retValue;
+        return retValue == null ? null : retValue.getValue();
+    }
+
+    protected boolean needRefresh( CacheableWrapper cacheableWrapper )
+    {
+        if ( cacheableWrapper == null )
+        {
+            return true;
+        }
+        if ( this.getRefreshTime() == 0 )
+        {
+            return false;
+        }
+        boolean result = ( System.currentTimeMillis() - cacheableWrapper.getStoredTime() ) > ( this.getRefreshTime() * 1000 );
+        if ( getLogger().isDebugEnabled() )
+        {
+            getLogger().debug( cacheableWrapper + " is uptodate" + result );
+        }
+        return result;
     }
 
     public CacheStatistics getStatistics()
@@ -171,6 +187,11 @@ public class HashMapCache
      */
     public boolean hasKey( Object key )
     {
+        // prevent search
+        if ( !this.isCacheAvailable() )
+        {
+            return false;
+        }
         boolean contains;
         synchronized ( cache )
         {
@@ -212,7 +233,7 @@ public class HashMapCache
      */
     public Object put( Object key, Object value )
     {
-        Object ret = null;
+        CacheableWrapper ret = null;
 
         // remove and put: this promotes it to the top since we use a linked hash map
         synchronized ( cache )
@@ -222,14 +243,14 @@ public class HashMapCache
                 cache.remove( key );
             }
 
-            ret = cache.put( key, value );
+            ret = (CacheableWrapper) cache.put( key, new CacheableWrapper( value, System.currentTimeMillis() ) );
         }
 
         manageCache();
 
-        return ret;
+        return ret == null ? null : ret.getValue();
     }
-    
+
     /**
      * Cache the given value and map it using the given key
      *
@@ -246,7 +267,7 @@ public class HashMapCache
                 cache.remove( key );
             }
 
-            cache.put( key, value );
+            cache.put( key, new CacheableWrapper( value, System.currentTimeMillis() ) );
         }
 
         manageCache();
@@ -299,5 +320,29 @@ public class HashMapCache
                 }
             }
         }
+    }
+
+    /** 
+     * @see org.codehaus.plexus.cache.Cache#getRefreshTime()
+     */
+    public int getRefreshTime()
+    {
+        return refreshTime;
+    }
+
+    /** 
+     * @see org.codehaus.plexus.cache.Cache#setRefreshTime(int)
+     */
+    public void setRefreshTime( int refreshTime )
+    {
+        this.refreshTime = refreshTime;
+    }
+
+    /**
+     * @return
+     */
+    protected boolean isCacheAvailable()
+    {
+        return this.getRefreshTime() >= 0;
     }
 }

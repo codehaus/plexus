@@ -16,6 +16,7 @@ package org.codehaus.plexus.cache.oscache;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.cache.Cache;
 import org.codehaus.plexus.cache.test.AbstractCacheTestCase;
 
 /**
@@ -32,6 +33,30 @@ public class OsCacheCacheTest
     public String getProviderHint()
     {
         return "oscache";
+    }
+
+    public Cache getAlwaysRefresCache()
+        throws Exception
+    {
+        return (Cache) getContainer().lookup( Cache.ROLE, "alwaysrefresh" );
+    }
+
+    public Cache getNeverRefresCache()
+        throws Exception
+    {
+        return (Cache) getContainer().lookup( Cache.ROLE, "neverrefresh" );
+    }
+
+    public Cache getOneSecondRefresCache()
+        throws Exception
+    {
+        return (Cache) getContainer().lookup( Cache.ROLE, "onesecondrefresh" );
+    }
+
+    public Cache getTwoSecondRefresCache()
+        throws Exception
+    {
+        return (Cache) getContainer().lookup( Cache.ROLE, "twosecondrefresh" );
     }
 
 }

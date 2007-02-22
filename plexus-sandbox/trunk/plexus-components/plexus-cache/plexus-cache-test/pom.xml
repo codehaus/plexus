@@ -28,15 +28,14 @@
   </build>  
   
   <dependencies>
-    <dependency>
-      <groupId>org.codehaus.plexus.cache</groupId>
-      <artifactId>plexus-cache-api</artifactId>
-      <version>1.0-alpha-1</version>
-    </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.cache</groupId>
+        <artifactId>plexus-cache-api</artifactId>
+        <version>1.0-alpha-2-SNAPSHOT</version>
+      </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-16</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
