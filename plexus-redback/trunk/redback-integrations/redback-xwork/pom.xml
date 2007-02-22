@@ -18,11 +18,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
-    <artifactId>plexus-security-ui</artifactId>
-    <version>1.0-alpha-11-SNAPSHOT</version>
+    <artifactId>redback-integrations</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-ui-web-parent</artifactId>
-  <name>Plexus Security :: UI Web Parent</name>
+  <artifactId>redback-xwork</artifactId>
+  <name>Plexus Redback :: Integration :: XWork</name>
   <packaging>pom</packaging>
 
   <scm>
@@ -32,8 +32,7 @@
   </scm>
 
   <modules>
-    <module>taglib</module>
-    <module>integration</module>
-    <module>content</module>
+    <module>redback-xwork-integration</module>
+    <module>redback-xwork-content</module>
   </modules>
 </project>

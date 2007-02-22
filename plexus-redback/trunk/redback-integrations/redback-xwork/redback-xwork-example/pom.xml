@@ -16,14 +16,14 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <artifactId>plexus-security-examples</artifactId>
     <groupId>org.codehaus.plexus.redback</groupId>
-    <version>1.0-alpha-11-SNAPSHOT</version>
+    <artifactId>redback-xwork</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>plexus-security-example-webapp</artifactId>
+  <artifactId>redback-xwork-webapp</artifactId>
   <packaging>war</packaging>
-  <name>Plexus Security :: Example Webapp</name>
+  <name>Plexus Redback :: Integration :: XWork Example Webapp</name>
   <pluginRepositories>
     <pluginRepository>
       <releases>
@@ -45,13 +45,13 @@
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-ui-web</artifactId>
+      <artifactId>redback-xwork-content</artifactId>
       <type>war</type>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-ui-web-taglib</artifactId>
+      <artifactId>redback-taglib</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
