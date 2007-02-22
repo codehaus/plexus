@@ -33,5 +33,6 @@
     <module>redback-users-api</module>
     <module>redback-users-providers</module>
     <module>redback-users-tests</module>
+    <module>redback-authentication-users</module>
   </modules>
 </project>

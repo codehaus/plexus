@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.authentication.user;
+package org.codehaus.plexus.redback.authentication.users;
 
 /*
  * Copyright 2005 The Codehaus.
@@ -19,10 +19,11 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.redback.authentication.AuthenticationResult;
 import org.codehaus.plexus.redback.authentication.Authenticator;
 import org.codehaus.plexus.redback.authentication.PasswordBasedAuthenticationDataSource;
+import org.codehaus.plexus.redback.authentication.users.UserManagerAuthenticator;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
-import org.codehaus.plexus.redback.user.User;
-import org.codehaus.plexus.redback.user.UserManager;
-import org.codehaus.plexus.redback.user.UserNotFoundException;
+import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserManager;
+import org.codehaus.plexus.redback.users.UserNotFoundException;
 
 /**
  * Tests for {@link UserManagerAuthenticator} implementation.
