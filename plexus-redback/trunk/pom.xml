@@ -149,6 +149,11 @@
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.redback</groupId>
+        <artifactId>redback-authentication-keys</artifactId>
+        <version>${security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.redback</groupId>
         <artifactId>redback-authorization-api</artifactId>
         <version>${security.version}</version>
       </dependency>
@@ -208,24 +213,22 @@
         <artifactId>redback-rbac-profile</artifactId>
         <version>${security.version}</version>
       </dependency>
-<!--
       <dependency>
         <groupId>org.codehaus.plexus.redback</groupId>
-        <artifactId>plexus-security-ui-web-integration</artifactId>
+        <artifactId>redback-xwork-integration</artifactId>
         <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.redback</groupId>
-        <artifactId>plexus-security-ui-web-taglib</artifactId>
+        <artifactId>redback-taglib</artifactId>
         <version>${security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.redback</groupId>
-        <artifactId>plexus-security-ui-web</artifactId>
+        <artifactId>redback-xwork-content</artifactId>
         <type>war</type>
         <version>${security.version}</version>
       </dependency>
--->
       <!-- Plexus -->
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
@@ -378,16 +381,7 @@
     <module>redback-rbac</module>
     <module>redback-data-management</module>
     <module>redback-system</module>
-<!--    
-    <module>ui</module>
--->
-    <!-- Restore once someone is confirmed to be using it.
-         So far, this module only causes compile problems on windows. :-( -->
-    <!-- <module>acegi-integration</module> -->
-<!--
-    <module>examples</module>
-    <module>data-management</module>
--->
+    <module>redback-integrations</module>
   </modules>
   <properties>
     <security.version>1.0-alpha-1-SNAPSHOT</security.version>
