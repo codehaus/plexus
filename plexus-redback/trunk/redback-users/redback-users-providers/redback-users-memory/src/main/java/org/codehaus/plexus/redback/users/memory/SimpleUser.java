@@ -16,7 +16,7 @@ package org.codehaus.plexus.redback.users.memory;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.users.User;
 
 import java.util.ArrayList;
 import java.util.Date;
