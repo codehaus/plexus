@@ -33,7 +33,7 @@
     <module>redback-rbac-model</module>
     <module>redback-rbac-providers</module>
     <module>redback-rbac-profile</module>
-    <module>redback-authorization-rbac</module>
     <module>redback-rbac-tests</module>
+    <module>redback-authorization-rbac</module>
   </modules>
 </project>

@@ -3,8 +3,8 @@ package org.codehaus.plexus.redback.authorization.rbac.evaluator;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.redback.rbac.Permission;
 import org.codehaus.plexus.redback.rbac.Resource;
-import org.codehaus.plexus.redback.user.UserManager;
-import org.codehaus.plexus.redback.user.UserNotFoundException;
+import org.codehaus.plexus.redback.users.UserManager;
+import org.codehaus.plexus.redback.users.UserNotFoundException;
 /*
  * Copyright 2006 The Codehaus.
  *
