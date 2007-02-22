@@ -82,7 +82,7 @@ public class JdoKeyManager
     public void eraseDatabase()
     {
         PlexusJdoUtils.removeAll( getPersistenceManager(), JdoAuthenticationKey.class );
-        PlexusJdoUtils.removeAll( getPersistenceManager(), PlexusSecurityKeyManagementJdoModelloMetadata.class );
+        PlexusJdoUtils.removeAll( getPersistenceManager(), RedbackKeyManagementJdoModelloMetadata.class );
     }
 
     public AuthenticationKey findKey( String key )

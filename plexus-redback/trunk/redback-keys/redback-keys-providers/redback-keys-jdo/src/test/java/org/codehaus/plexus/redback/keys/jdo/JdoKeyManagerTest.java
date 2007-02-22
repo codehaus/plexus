@@ -76,7 +76,7 @@ public class JdoKeyManagerTest
         }
 
         SchemaTool.createSchemaTables( new URL[] { getClass()
-            .getResource( "/org.codehaus.plexus.redback/keys/jdo/package.jdo" ) }, new URL[] {}, null, false, null ); //$NON-NLS-1$
+            .getResource( "/org/codehaus/plexus/redback/keys/jdo/package.jdo" ) }, new URL[] {}, null, false, null ); //$NON-NLS-1$
 
         PersistenceManagerFactory pmf = jdoFactory.getPersistenceManagerFactory();
 

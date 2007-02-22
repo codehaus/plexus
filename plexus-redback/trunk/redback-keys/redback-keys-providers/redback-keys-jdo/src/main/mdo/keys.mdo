@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 
 <model>
-  <id>plexus-security-keys-jdo</id>
-  <name>PlexusSecurityKeyManagementJdo</name>
+  <id>redback-keys-jdo</id>
+  <name>RedbackKeyManagementJdo</name>
   <version>1.0.1</version>
-  <description>Plexus Security :: Key Management JDO Store.</description>
+  <description>Plexus Redback :: Key Management JDO Store.</description>
   <defaults>
     <default>
       <key>package</key>
@@ -31,10 +31,10 @@
       <name>JdoAuthenticationKey</name>
       <version>1.0.0+</version>
       <interfaces>
-        <interface>org.codehaus.plexus.security.keys.AuthenticationKey</interface>
+        <interface>org.codehaus.plexus.redback.keys.AuthenticationKey</interface>
       </interfaces>
       <description>
-        @plexus.component role="org.codehaus.plexus.security.keys.AuthenticationKey"
+        @plexus.component role="org.codehaus.plexus.redback.keys.AuthenticationKey"
         role-hint="jdo"
       </description>
       <fields>

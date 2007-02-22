@@ -33,5 +33,6 @@
     <module>redback-keys-api</module>
     <module>redback-keys-providers</module>
     <module>redback-keys-tests</module>
+    <module>redback-authentication-keys</module>
   </modules>
 </project>
