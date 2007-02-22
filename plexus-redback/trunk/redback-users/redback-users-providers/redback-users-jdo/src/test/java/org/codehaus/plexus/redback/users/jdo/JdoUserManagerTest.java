@@ -18,8 +18,8 @@ package org.codehaus.plexus.redback.users.jdo;
 
 import org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.JdoFactory;
-import org.codehaus.plexus.redback.user.UserManager;
-import org.codehaus.plexus.redback.user.provider.test.AbstractUserManagerTestCase;
+import org.codehaus.plexus.redback.users.UserManager;
+import org.codehaus.plexus.redback.users.provider.test.AbstractUserManagerTestCase;
 import org.jpox.SchemaTool;
 
 import java.net.URL;

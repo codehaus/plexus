@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.user;
+package org.codehaus.plexus.redback.users;
 
 /**
  * @author Jason van Zyl

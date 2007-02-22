@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.user.memory;
+package org.codehaus.plexus.redback.users.memory;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -22,7 +22,7 @@ import org.codehaus.plexus.redback.user.PermanentUserException;
 import org.codehaus.plexus.redback.user.User;
 import org.codehaus.plexus.redback.user.UserManager;
 import org.codehaus.plexus.redback.user.UserNotFoundException;
-import org.codehaus.plexus.redback.user.memory.util.UserSorter;
+import org.codehaus.plexus.redback.users.memory.util.UserSorter;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.IOException;

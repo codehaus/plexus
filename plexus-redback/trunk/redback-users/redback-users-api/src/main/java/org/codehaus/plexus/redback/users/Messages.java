@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.user;
+package org.codehaus.plexus.redback.users;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -28,7 +28,7 @@ import java.util.ResourceBundle;
  */
 public class Messages
 {
-    private static final String BUNDLE_NAME = "org.codehaus.plexus.redback.user.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "org.codehaus.plexus.redback.users.messages"; //$NON-NLS-1$
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle( BUNDLE_NAME );
 

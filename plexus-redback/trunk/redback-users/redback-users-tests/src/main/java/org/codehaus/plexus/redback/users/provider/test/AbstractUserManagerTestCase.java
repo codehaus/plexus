@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.user.provider.test;
+package org.codehaus.plexus.redback.users.provider.test;
 
 /*
  * Copyright 2001-2006 The Codehaus.
@@ -18,11 +18,11 @@ package org.codehaus.plexus.redback.user.provider.test;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
-import org.codehaus.plexus.redback.user.PermanentUserException;
-import org.codehaus.plexus.redback.user.User;
-import org.codehaus.plexus.redback.user.UserManager;
-import org.codehaus.plexus.redback.user.UserManagerException;
-import org.codehaus.plexus.redback.user.UserNotFoundException;
+import org.codehaus.plexus.redback.users.PermanentUserException;
+import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserManager;
+import org.codehaus.plexus.redback.users.UserManagerException;
+import org.codehaus.plexus.redback.users.UserNotFoundException;
 
 /**
  * AbstractUserManagerTestCase 

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.user.memory;
+package org.codehaus.plexus.redback.users.memory;
 
 /*
  * Copyright 2001-2006 The Codehaus.
