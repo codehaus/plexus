@@ -1,5 +1,8 @@
 package org.codehaus.plexus.contextualizer;
 
+import java.util.List;
+import java.util.Map;
+
 /*
  * Copyright 2007 The Codehaus Foundation.
  *
@@ -25,4 +28,42 @@ public interface Contextualizer
     /** Plexus Identifier */
     String ROLE = Contextualizer.class.getName();
 
+    
+    /**
+     * Values to add in the Plexus Context
+     * 
+     * @return Map 
+     */
+    public Map getContextValues();
+
+    /**
+     * set the values to add in the Plexus Context 
+     * 
+     * @param contextValues
+     */
+    public void setContextValues( Map contextValues );
+
+    /**
+     * adding all system properties in the Plexus Context
+     * 
+     * @return boolean
+     */
+    public boolean isAddAllSystemProperties();
+
+    /**
+     * @param addAllSystemProperties
+     */
+    public void setAddAllSystemProperties( boolean addAllSystemProperties );
+
+    /**
+     * defined sysprops to add in the Plexus Context
+     * 
+     * @return List
+     */
+    public List getDefinedSystemProperties();
+
+    /**
+     * @param definedSystemProperties
+     */
+    public void setDefinedSystemProperties( List definedSystemProperties );
 }

@@ -61,7 +61,7 @@ public class DefaultContextualizer
      * 
      * @plexus.configuration 
      */
-    private List systemProperties;
+    private List definedSystemProperties;
 
     private PlexusContainer plexusContainer;
 
@@ -111,9 +111,9 @@ public class DefaultContextualizer
                 this.plexusContainer.getContext().put( key, value );
             }
         }
-        if ( this.systemProperties != null )
+        if ( this.definedSystemProperties != null )
         {
-            for ( Iterator iterator = this.systemProperties.iterator(); iterator.hasNext(); )
+            for ( Iterator iterator = this.definedSystemProperties.iterator(); iterator.hasNext(); )
             {
                 String key = (String) iterator.next();
                 String value = System.getProperty( key );
@@ -125,6 +125,36 @@ public class DefaultContextualizer
             }
         }
 
+    }
+
+    public Map getContextValues()
+    {
+        return contextValues;
+    }
+
+    public void setContextValues( Map contextValues )
+    {
+        this.contextValues = contextValues;
+    }
+
+    public boolean isAddAllSystemProperties()
+    {
+        return addAllSystemProperties;
+    }
+
+    public void setAddAllSystemProperties( boolean addAllSystemProperties )
+    {
+        this.addAllSystemProperties = addAllSystemProperties;
+    }
+
+    public List getDefinedSystemProperties()
+    {
+        return definedSystemProperties;
+    }
+
+    public void setDefinedSystemProperties( List definedSystemProperties )
+    {
+        this.definedSystemProperties = definedSystemProperties;
     }
 
 }
