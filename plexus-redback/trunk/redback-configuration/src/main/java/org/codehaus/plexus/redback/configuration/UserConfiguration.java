@@ -50,7 +50,7 @@ public class UserConfiguration
 {
     public static final String ROLE = UserConfiguration.class.getName();
 
-    private static final String DEFAULT_CONFIG_RESOURCE = "org.codehaus.plexus.redback/config-defaults.properties";
+    private static final String DEFAULT_CONFIG_RESOURCE = "org/codehaus/plexus/redback/config-defaults.properties";
 
     /**
      * @plexus.configuration
