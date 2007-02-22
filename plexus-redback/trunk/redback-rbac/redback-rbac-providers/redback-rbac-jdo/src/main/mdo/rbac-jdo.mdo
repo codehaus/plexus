@@ -7,7 +7,7 @@
   <defaults>
     <default>
       <key>package</key>
-      <value>org.codehaus.plexus.security.authorization.rbac.jdo</value>
+      <value>org.codehaus.plexus.redback.rbac.jdo</value>
     </default>
   </defaults>
   <classes>
