@@ -16,14 +16,14 @@ package org.codehaus.plexus.redback.management;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.authorization.rbac.jdo.RbacDatabase;
-import org.codehaus.plexus.redback.authorization.rbac.jdo.io.stax.RbacJdoModelStaxReader;
-import org.codehaus.plexus.redback.authorization.rbac.jdo.io.stax.RbacJdoModelStaxWriter;
+import org.codehaus.plexus.redback.rbac.jdo.RbacDatabase;
+import org.codehaus.plexus.redback.rbac.jdo.io.stax.RbacJdoModelStaxReader;
+import org.codehaus.plexus.redback.rbac.jdo.io.stax.RbacJdoModelStaxWriter;
 import org.codehaus.plexus.redback.keys.AuthenticationKey;
 import org.codehaus.plexus.redback.keys.KeyManager;
 import org.codehaus.plexus.redback.keys.jdo.AuthenticationKeyDatabase;
-import org.codehaus.plexus.redback.keys.jdo.io.stax.PlexusSecurityKeyManagementJdoStaxReader;
-import org.codehaus.plexus.redback.keys.jdo.io.stax.PlexusSecurityKeyManagementJdoStaxWriter;
+import org.codehaus.plexus.redback.keys.jdo.io.stax.RedbackKeyManagementJdoStaxReader;
+import org.codehaus.plexus.redback.keys.jdo.io.stax.RedbackKeyManagementJdoStaxWriter;
 import org.codehaus.plexus.redback.rbac.Operation;
 import org.codehaus.plexus.redback.rbac.Permission;
 import org.codehaus.plexus.redback.rbac.RBACManager;
@@ -31,11 +31,11 @@ import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.Resource;
 import org.codehaus.plexus.redback.rbac.Role;
 import org.codehaus.plexus.redback.rbac.UserAssignment;
-import org.codehaus.plexus.redback.user.User;
-import org.codehaus.plexus.redback.user.UserManager;
-import org.codehaus.plexus.redback.user.jdo.UserDatabase;
-import org.codehaus.plexus.redback.user.jdo.io.stax.UserManagementStaxReader;
-import org.codehaus.plexus.redback.user.jdo.io.stax.UserManagementStaxWriter;
+import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserManager;
+import org.codehaus.plexus.redback.users.jdo.UserDatabase;
+import org.codehaus.plexus.redback.users.jdo.io.stax.UsersManagementStaxReader;
+import org.codehaus.plexus.redback.users.jdo.io.stax.UsersManagementStaxWriter;
 import org.codehaus.plexus.util.IOUtil;
 
 import javax.xml.stream.XMLStreamException;
@@ -93,7 +93,7 @@ public class JdoDataManagementTool
         UserDatabase database = new UserDatabase();
         database.setUsers( manager.getUsers() );
 
-        UserManagementStaxWriter writer = new UserManagementStaxWriter();
+        UsersManagementStaxWriter writer = new UsersManagementStaxWriter();
         FileWriter fileWriter = new FileWriter( new File( backupDirectory, USERS_XML_NAME ) );
         try
         {
@@ -111,7 +111,7 @@ public class JdoDataManagementTool
         AuthenticationKeyDatabase database = new AuthenticationKeyDatabase();
         database.setKeys( manager.getAllKeys() );
 
-        PlexusSecurityKeyManagementJdoStaxWriter writer = new PlexusSecurityKeyManagementJdoStaxWriter();
+        RedbackKeyManagementJdoStaxWriter writer = new RedbackKeyManagementJdoStaxWriter();
         FileWriter fileWriter = new FileWriter( new File( backupDirectory, KEYS_XML_NAME ) );
         try
         {
@@ -220,7 +220,7 @@ public class JdoDataManagementTool
     public void restoreUsersDatabase( UserManager manager, File backupDirectory )
         throws IOException, XMLStreamException
     {
-        UserManagementStaxReader reader = new UserManagementStaxReader();
+        UsersManagementStaxReader reader = new UsersManagementStaxReader();
 
         FileReader fileReader = new FileReader( new File( backupDirectory, USERS_XML_NAME ) );
 
@@ -245,7 +245,7 @@ public class JdoDataManagementTool
     public void restoreKeysDatabase( KeyManager manager, File backupDirectory )
         throws IOException, XMLStreamException
     {
-        PlexusSecurityKeyManagementJdoStaxReader reader = new PlexusSecurityKeyManagementJdoStaxReader();
+        RedbackKeyManagementJdoStaxReader reader = new RedbackKeyManagementJdoStaxReader();
 
         FileReader fileReader = new FileReader( new File( backupDirectory, KEYS_XML_NAME ) );
 
