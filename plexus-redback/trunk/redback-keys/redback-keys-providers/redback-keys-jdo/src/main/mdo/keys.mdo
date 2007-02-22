@@ -8,7 +8,7 @@
   <defaults>
     <default>
       <key>package</key>
-      <value>org.codehaus.plexus.security.keys.jdo</value>
+      <value>org.codehaus.plexus.redback.keys.jdo</value>
     </default>
   </defaults>
 
