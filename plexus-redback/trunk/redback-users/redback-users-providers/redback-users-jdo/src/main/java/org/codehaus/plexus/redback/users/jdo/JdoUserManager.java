@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.user.jdo;
+package org.codehaus.plexus.redback.users.jdo;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * @plexus.component role="org.codehaus.plexus.redback.user.UserManager"
+ * @plexus.component role="org.codehaus.plexus.redback.users.UserManager"
  * role-hint="jdo"
  */
 public class JdoUserManager
