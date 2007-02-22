@@ -16,6 +16,7 @@ package org.codehaus.plexus.cache.hashmap;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.cache.Cache;
 import org.codehaus.plexus.cache.test.AbstractCacheTestCase;
 
 /**
@@ -31,4 +32,29 @@ public class HashMapCacheTest
     {
         return "hashmap";
     }
+
+    public Cache getAlwaysRefresCache()
+        throws Exception
+    {
+        return (Cache) getContainer().lookup( Cache.ROLE, "alwaysrefresh" );
+    }
+
+    public Cache getNeverRefresCache()
+        throws Exception
+    {
+        return (Cache) getContainer().lookup( Cache.ROLE, "hashmap" );
+    }
+
+    public Cache getOneSecondRefresCache()
+        throws Exception
+    {
+        return (Cache) getContainer().lookup( Cache.ROLE, "onesecondrefresh" );
+    }
+
+    public Cache getTwoSecondRefresCache()
+        throws Exception
+    {
+        return (Cache) getContainer().lookup( Cache.ROLE, "twosecondrefresh" );
+    }
+
 }

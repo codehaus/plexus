@@ -68,7 +68,7 @@ public class OsCacheCache
 
     /**
      * cache algorithm
-     * @plexus.configuration
+     * @plexus.configuration default-value="com.opensymphony.oscache.base.algorithm.UnlimitedCache"
      */
     private String cacheAlgorithm;
 
@@ -104,6 +104,9 @@ public class OsCacheCache
      */
     private List cacheEventListeners;
 
+    /**
+     * @plexus.configuration default-value="oscache"
+     */
     private String cacheKey;
 
     /**
@@ -184,7 +187,15 @@ public class OsCacheCache
     {
         try
         {
-            Object object = this.generalCacheAdministrator.getFromCache( key.toString(), this.getRefreshPeriod() );
+            Object object = null;
+            if ( this.getRefreshPeriod() >= 0 )
+            {
+                object = this.generalCacheAdministrator.getFromCache( key.toString(), this.getRefreshPeriod() );
+            }
+            else
+            {
+                object = this.generalCacheAdministrator.getFromCache( key.toString() );
+            }
             if ( object != null )
             {
                 this.osCacheStatistics.hit();
@@ -219,7 +230,7 @@ public class OsCacheCache
     {
         this.generalCacheAdministrator.putInCache( key.toString(), value );
     }
-    
+
     public Object put( Object key, Object value )
     {
         Object previous = null;
@@ -247,6 +258,7 @@ public class OsCacheCache
         {
             // ignore this because the content will be updated
         }
+        this.generalCacheAdministrator.cancelUpdate( key.toString() );
         this.generalCacheAdministrator.flushEntry( key.toString() );
         return previous;
     }
@@ -277,7 +289,7 @@ public class OsCacheCache
 
     public String getCacheAlgorithm()
     {
-        return cacheAlgorithm;
+        return cacheAlgorithm == null ? "com.opensymphony.oscache.base.algorithm.UnlimitedCache" : cacheAlgorithm;
     }
 
     public void setCacheAlgorithm( String cacheAlgorithm )
@@ -318,7 +330,7 @@ public class OsCacheCache
 
     public String getCacheKey()
     {
-        return cacheKey;
+        return cacheKey == null ? "cacheKey" : cacheKey;
     }
 
     public void setCacheKey( String cacheKey )

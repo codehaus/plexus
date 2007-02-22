@@ -7,8 +7,8 @@
       <implementation>org.codehaus.plexus.cache.oscache.OsCacheCache</implementation>
       <description>OsCacheCache</description>
       <configuration>
-        <cachePath>${plexus.home}/osCache</cachePath>
-        <cachePersistenceClass>com.opensymphony.oscache.plugins.diskpersistence.DiskPersistenceListener</cachePersistenceClass>
+        <!--cachePath>${plexus.home}/osCache</cachePath>
+        <cachePersistenceClass>com.opensymphony.oscache.plugins.diskpersistence.DiskPersistenceListener</cachePersistenceClass-->
       </configuration>
     </component>
     

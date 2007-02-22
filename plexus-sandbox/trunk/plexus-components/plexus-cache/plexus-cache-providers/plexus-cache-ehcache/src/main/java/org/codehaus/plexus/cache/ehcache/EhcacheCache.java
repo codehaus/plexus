@@ -30,7 +30,8 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 
 /**
  * EhcacheCache 
- *
+ * configuration document  available <a href="http://ehcache.sourceforge.net/EhcacheUserGuide.html>EhcacheUserGuide</a>
+ *  
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * 

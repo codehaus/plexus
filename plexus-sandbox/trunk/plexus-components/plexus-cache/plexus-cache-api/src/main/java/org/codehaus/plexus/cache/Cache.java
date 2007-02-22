@@ -86,4 +86,5 @@ public interface Cache
      * @return the cache statistics.
      */
     public CacheStatistics getStatistics();
+
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
   <properties>
-    <title>Plexu Cache</title>
+    <title>Plexus Cache</title>
     <author email="olamy@codehaus.org">Olivier Lamy</author>
   </properties>
   <body>
@@ -11,6 +11,7 @@
           <li>simple hashmap</li>
           <li>ehcache</li>
           <li>oscache</li>
+          <li>whirlycache</li>
         </ul>
       </p>
       <subsection name="Use Case">

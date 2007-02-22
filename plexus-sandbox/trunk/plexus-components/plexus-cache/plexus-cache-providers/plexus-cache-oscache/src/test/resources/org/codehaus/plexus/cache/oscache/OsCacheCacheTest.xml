@@ -1,16 +1,79 @@
 <plexus>
   <components>
   
+	  
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>default</role-hint>
+      <implementation>org.codehaus.plexus.cache.oscache.OsCacheCache</implementation>
+      <description>OsCacheCache</description>
+      <configuration>
+		<cacheKey>default</cacheKey>
+        <!--cachePath>${plexus.home}/osCache</cachePath>
+        <cachePersistenceClass>com.opensymphony.oscache.plugins.diskpersistence.DiskPersistenceListener</cachePersistenceClass-->
+      </configuration>
+    </component>	  
     <component>
       <role>org.codehaus.plexus.cache.Cache</role>
       <role-hint>oscache</role-hint>
       <implementation>org.codehaus.plexus.cache.oscache.OsCacheCache</implementation>
       <description>OsCacheCache</description>
       <configuration>
-        <cachePath>${plexus.home}/osCache</cachePath>
-        <cachePersistenceClass>com.opensymphony.oscache.plugins.diskpersistence.DiskPersistenceListener</cachePersistenceClass>
+		<cacheKey>oscache</cacheKey>
+        <!--cachePath>${plexus.home}/osCache</cachePath>
+        <cachePersistenceClass>com.opensymphony.oscache.plugins.diskpersistence.DiskPersistenceListener</cachePersistenceClass-->
       </configuration>
     </component>
+	  
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>neverrefresh</role-hint>
+      <implementation>org.codehaus.plexus.cache.oscache.OsCacheCache</implementation>
+      <description>OsCacheCache</description>
+      <configuration>
+		<refreshPeriod>-2</refreshPeriod>
+		<cacheKey>neverrefresh</cacheKey>
+        <!--cachePath>${plexus.home}/osCache</cachePath>
+        <cachePersistenceClass>com.opensymphony.oscache.plugins.diskpersistence.DiskPersistenceListener</cachePersistenceClass-->
+      </configuration>
+    </component>	  
+	  
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>alwaysrefresh</role-hint>
+      <implementation>org.codehaus.plexus.cache.oscache.OsCacheCache</implementation>
+      <description>OsCacheCache</description>
+      <configuration>
+		<refreshPeriod>0</refreshPeriod>
+		<cacheKey>alwaysrefresh</cacheKey>		  
+        <!--cachePath>${plexus.home}/osCache</cachePath>
+        <cachePersistenceClass>com.opensymphony.oscache.plugins.diskpersistence.DiskPersistenceListener</cachePersistenceClass-->
+      </configuration>
+    </component>
+	  
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>onesecondrefresh</role-hint>
+      <implementation>org.codehaus.plexus.cache.oscache.OsCacheCache</implementation>
+      <description>OsCacheCache</description>
+      <configuration>
+		<refreshPeriod>1</refreshPeriod>
+		<cacheKey>onesecondrefresh</cacheKey>
+        <!--cachePath>${plexus.home}/osCache</cachePath>
+        <cachePersistenceClass>com.opensymphony.oscache.plugins.diskpersistence.DiskPersistenceListener</cachePersistenceClass-->
+      </configuration>
+    </component>	
+	  
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>twosecondrefresh</role-hint>
+      <implementation>org.codehaus.plexus.cache.oscache.OsCacheCache</implementation>
+      <description>OsCacheCache</description>
+      <configuration>
+		<cacheKey>twosecondrefresh</cacheKey>
+		<refreshPeriod>15</refreshPeriod>
+      </configuration>
+    </component>	    	  
     
   </components>
 </plexus>
