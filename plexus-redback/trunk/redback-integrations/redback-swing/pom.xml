@@ -18,11 +18,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
-    <artifactId>plexus-security-ui</artifactId>
-    <version>1.0-alpha-11-SNAPSHOT</version>
+    <artifactId>redback-integrations</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-ui-swing</artifactId>
-  <name>Plexus Security :: UI Swing</name>
+  <artifactId>redback-swing</artifactId>
+  <name>Plexus Redback :: Integration :: Swing</name>
   <packaging>jar</packaging>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations/swing</connection>

@@ -21,7 +21,7 @@
     <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>redback-xwork-webapp</artifactId>
+  <artifactId>redback-xwork-example</artifactId>
   <packaging>war</packaging>
   <name>Plexus Redback :: Integration :: XWork Example Webapp</name>
   <pluginRepositories>

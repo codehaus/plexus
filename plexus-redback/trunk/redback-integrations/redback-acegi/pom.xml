@@ -18,11 +18,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
-    <artifactId>plexus-security</artifactId>
-    <version>1.0-alpha-10-SNAPSHOT</version>
+    <artifactId>redback-integrations</artifactId>
+    <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <artifactId>plexus-security-acegi-integration</artifactId>
-  <name>Plexus Security :: Acegi Integration</name>
+  <artifactId>redback-acegi</artifactId>
+  <name>Plexus Redback :: Integration :: Acegi</name>
   <repositories>
    <repository>
       <id>acegi-snapshot</id>
@@ -41,11 +41,11 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-system</artifactId>
+      <artifactId>redback-system</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>plexus-security-authentication-api</artifactId>
+      <artifactId>redback-authentication-api</artifactId>
     </dependency>
     <!-- TODO: doesn't work with new container for some reason -->
     <dependency>
