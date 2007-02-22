@@ -17,7 +17,7 @@ package org.codehaus.plexus.redback.system;
  */
 
 import org.codehaus.plexus.redback.authentication.AuthenticationResult;
-import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.users.User;
 
 /**
  * @author Jason van Zyl

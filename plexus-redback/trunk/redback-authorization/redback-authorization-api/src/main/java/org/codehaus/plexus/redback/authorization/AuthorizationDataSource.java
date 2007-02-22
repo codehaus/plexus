@@ -1,6 +1,6 @@
 package org.codehaus.plexus.redback.authorization;
 
-import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.users.User;
 
 /**
  * @author Jason van Zyl

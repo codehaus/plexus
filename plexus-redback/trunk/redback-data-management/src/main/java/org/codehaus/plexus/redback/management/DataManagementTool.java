@@ -19,7 +19,7 @@ package org.codehaus.plexus.redback.management;
 import org.codehaus.plexus.redback.keys.KeyManager;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
-import org.codehaus.plexus.redback.user.UserManager;
+import org.codehaus.plexus.redback.users.UserManager;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
