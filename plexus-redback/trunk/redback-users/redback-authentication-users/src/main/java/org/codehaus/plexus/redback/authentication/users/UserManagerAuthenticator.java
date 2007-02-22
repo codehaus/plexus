@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.authentication.user;
+package org.codehaus.plexus.redback.authentication.users;
 
 /*
  * Copyright 2005 The Codehaus.
@@ -28,9 +28,9 @@ import org.codehaus.plexus.redback.policy.MustChangePasswordException;
 import org.codehaus.plexus.redback.policy.PasswordEncoder;
 import org.codehaus.plexus.redback.policy.PolicyViolationException;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
-import org.codehaus.plexus.redback.user.User;
-import org.codehaus.plexus.redback.user.UserManager;
-import org.codehaus.plexus.redback.user.UserNotFoundException;
+import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserManager;
+import org.codehaus.plexus.redback.users.UserNotFoundException;
 
 import java.util.Map;
 import java.util.HashMap;

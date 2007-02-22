@@ -6,10 +6,10 @@
         org.codehaus.plexus.redback.authentication.Authenticator
       </role>
       <role-hint>user-manager</role-hint>
-      <implementation>org.codehaus.plexus.redback.authentication.user.UserManagerAuthenticator</implementation>
+      <implementation>org.codehaus.plexus.redback.authentication.users.UserManagerAuthenticator</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.redback.user.UserManager</role>
+          <role>org.codehaus.plexus.redback.users.UserManager</role>
           <role-hint>memory</role-hint>
         </requirement>
         <requirement>
