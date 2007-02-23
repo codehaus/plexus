@@ -16,8 +16,8 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.rbac.profile.RoleProfileException;
-import org.codehaus.plexus.rbac.profile.RoleProfileManager;
+import org.codehaus.plexus.redback.rbac.profile.RoleProfileException;
+import org.codehaus.plexus.redback.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.UserAssignment;

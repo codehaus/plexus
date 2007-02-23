@@ -16,8 +16,8 @@ package org.codehaus.plexus.redback.xwork.action;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.rbac.profile.RoleProfileException;
-import org.codehaus.plexus.rbac.profile.RoleProfileManager;
+import org.codehaus.plexus.redback.rbac.profile.RoleProfileException;
+import org.codehaus.plexus.redback.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.redback.keys.AuthenticationKey;
 import org.codehaus.plexus.redback.keys.KeyManagerException;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;

@@ -17,16 +17,16 @@
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 <%@ taglib uri="/webwork" prefix="ww" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="pss" uri="/plexusSecuritySystem" %>
+<%@ taglib prefix="redback" uri="http://plexus.codehaus.org/redback/taglib-1.0" %>
 <html>
 <head>
-  <title>Plexus Security Example Webapp ::
-    <decorator:title default="Plexus Security Example Webapp"/>
+  <title>Plexus Redback XWork Example Webapp ::
+    <decorator:title default="Plexus Redback XWork Example Webapp"/>
   </title>
 
   <style type="text/css" media="all">
     @IMPORT url("/css/main.css");
-    @IMPORT url("/css/pss/table.css");
+    @IMPORT url("/css/redback/table.css");
   </style>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 </head>
@@ -35,7 +35,7 @@
 
 <div id="banner">
   <ww:url id="main" action="main" namespace="/" includeParams="none"/>
-  <h1><ww:a href="%{main}">Plexus Security Example Webapp</ww:a></h1>
+  <h1><ww:a href="%{main}">Plexus Redback XWork Example Webapp</ww:a></h1>
   <div class="clear">
   </div>
 </div>
@@ -47,7 +47,7 @@
   </div>
 
   <div class="xleft">
-    <c:import url="/WEB-INF/jsp/pss/include/securityLinks.jsp"/>
+    <c:import url="/WEB-INF/jsp/redback/include/securityLinks.jsp"/>
   </div>
   
   <div class="clear">
@@ -56,12 +56,12 @@
 
   <p class="note">
     Guest access is :
-    <pss:ifAuthorized permission="guest-access">
+    <redback:ifAuthorized permission="guest-access">
       <b>Enabled</b>
-    </pss:ifAuthorized>
-    <pss:elseAuthorized>
+    </redback:ifAuthorized>
+    <redback:elseAuthorized>
       <b>Disabled</b>
-    </pss:elseAuthorized>
+    </redback:elseAuthorized>
   </p>
 
   <p class="note">The gray content is arriving via the /WEB-INF/jsp/decorators/default.jsp managed by sitemesh.<br/>
