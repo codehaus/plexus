@@ -60,5 +60,6 @@
   <modules>
     <module>redback-xwork-integration</module>
     <module>redback-xwork-content</module>
+    <module>redback-xwork-example</module>
   </modules>
 </project>
