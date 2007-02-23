@@ -1,4 +1,4 @@
-package org.codehaus.plexus.rbac.profile;
+package org.codehaus.plexus.redback.rbac.profile;
 
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
@@ -29,7 +29,7 @@ import java.util.List;
  * @version: $ID:$
  *
  * @plexus.component
- *   role="org.codehaus.plexus.rbac.profile.RoleProfileManager"
+ *   role="org.codehaus.plexus.redback.rbac.profile.RoleProfileManager"
  *   role-hint="default"
  */
 public class DefaultRoleProfileManager
@@ -42,12 +42,12 @@ public class DefaultRoleProfileManager
     protected PlexusContainer container;
 
     /**
-     * @plexus.requirement role="org.codehaus.plexus.rbac.profile.RoleProfile"
+     * @plexus.requirement role="org.codehaus.plexus.redback.rbac.profile.RoleProfile"
      */
     protected List knownRoleProfiles;
 
     /**
-     * @plexus.requirement role="org.codehaus.plexus.rbac.profile.DynamicRoleProfile"
+     * @plexus.requirement role="org.codehaus.plexus.redback.rbac.profile.DynamicRoleProfile"
      */
     protected List knownDynamicRoleProfiles;
 
@@ -60,7 +60,7 @@ public class DefaultRoleProfileManager
      *
      * @param roleHint 
      * @return
-     * @throws org.codehaus.plexus.rbac.profile.RoleProfileException
+     * @throws org.codehaus.plexus.redback.rbac.profile.RoleProfileException
      */
     public Role getRole( String roleHint )
         throws RoleProfileException

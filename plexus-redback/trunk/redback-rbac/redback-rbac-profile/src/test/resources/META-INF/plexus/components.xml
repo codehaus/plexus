@@ -2,9 +2,9 @@
   <components>
 
     <component>
-      <role>org.codehaus.plexus.rbac.profile.RoleProfile</role>
+      <role>org.codehaus.plexus.redback.rbac.profile.RoleProfile</role>
       <role-hint>bogus</role-hint>
-      <implementation>org.codehaus.plexus.rbac.profile.BogusRoleProfile</implementation>
+      <implementation>org.codehaus.plexus.redback.rbac.profile.BogusRoleProfile</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
@@ -18,9 +18,9 @@
     </component>
 
     <component>
-      <role>org.codehaus.plexus.rbac.profile.RoleProfile</role>
+      <role>org.codehaus.plexus.redback.rbac.profile.RoleProfile</role>
       <role-hint>spiffy</role-hint>
-      <implementation>org.codehaus.plexus.rbac.profile.SpiffyRoleProfile</implementation>
+      <implementation>org.codehaus.plexus.redback.rbac.profile.SpiffyRoleProfile</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
@@ -34,9 +34,9 @@
     </component>
 
    <component>
-      <role>org.codehaus.plexus.rbac.profile.DynamicRoleProfile</role>
+      <role>org.codehaus.plexus.redback.rbac.profile.DynamicRoleProfile</role>
       <role-hint>bogus</role-hint>
-      <implementation>org.codehaus.plexus.rbac.profile.BogusDynamicRoleProfile</implementation>
+      <implementation>org.codehaus.plexus.redback.rbac.profile.BogusDynamicRoleProfile</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
@@ -46,9 +46,9 @@
     </component>
 
    <component>
-      <role>org.codehaus.plexus.rbac.profile.DynamicRoleProfile</role>
+      <role>org.codehaus.plexus.redback.rbac.profile.DynamicRoleProfile</role>
       <role-hint>more-bogus</role-hint>
-      <implementation>org.codehaus.plexus.rbac.profile.MoreBogusDynamicRoleProfile</implementation>
+      <implementation>org.codehaus.plexus.redback.rbac.profile.MoreBogusDynamicRoleProfile</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
