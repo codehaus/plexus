@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.rbac.store.cached;
+package org.codehaus.plexus.redback.rbac.cached;
 
 /*
  * Copyright 2001-2006 The Codehaus.

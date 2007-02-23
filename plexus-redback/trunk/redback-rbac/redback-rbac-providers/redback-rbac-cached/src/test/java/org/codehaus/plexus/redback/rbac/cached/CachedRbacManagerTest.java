@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.rbac.store.cached;
+package org.codehaus.plexus.redback.rbac.cached;
 
 /*
  * Copyright 2001-2006 The Codehaus.
@@ -19,17 +19,11 @@ package org.codehaus.plexus.redback.rbac.store.cached;
 import net.sf.ehcache.CacheManager;
 
 import org.codehaus.plexus.redback.rbac.RBACManager;
-import org.codehaus.plexus.redback.rbac.store.cached.CachedRbacManager;
-import org.codehaus.plexus.redback.tests.AbstractRbacManagerPerformanceTestCase;
+import org.codehaus.plexus.redback.rbac.cached.CachedRbacManager;
+import org.codehaus.plexus.redback.tests.AbstractRbacManagerTestCase;
 
-/**
- * CachedRbacManagerPerformanceTest 
- *
- * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
- * @version $Id$
- */
-public class CachedRbacManagerPerformanceTest
-    extends AbstractRbacManagerPerformanceTestCase
+public class CachedRbacManagerTest
+    extends AbstractRbacManagerTestCase
 {
     /**
      * Creates a new RbacStore which contains no data.
@@ -39,9 +33,9 @@ public class CachedRbacManagerPerformanceTest
     {
         super.setUp();
 
-        RBACManager store = (RBACManager) lookup( RBACManager.ROLE, "cached" );
-        assertTrue( store instanceof CachedRbacManager );
-        setRbacManager( store );
+        setRbacManager( (RBACManager) lookup( RBACManager.ROLE, "cached" ) );
+
+        assertTrue( getRbacManager() instanceof CachedRbacManager );
     }
 
     protected void tearDown()
