@@ -5,7 +5,9 @@ import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentC
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.context.DefaultContext;
 import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
@@ -29,6 +31,7 @@ public class CreateAppConfigurationPhase
     public void execute( AppDeploymentContext context )
         throws AppDeploymentException
     {
+
         DefaultPlexusContainer serverContainer = context.getAppServerContainer();
 
         getLogger().info( "Using appDir = " + context.getAppDir() );
@@ -39,6 +42,12 @@ public class CreateAppConfigurationPhase
 
         Map contextMap = new HashMap();
 
+        // need of values from container context to be interpolated 
+        Context containerContext = serverContainer.getContext();
+        contextMap.putAll( containerContext.getContextData() );
+        
+        // some will be override with the following code
+        
         Properties contextValues = context.getContext();
 
         if ( contextValues != null )
@@ -51,6 +60,8 @@ public class CreateAppConfigurationPhase
             }
         }
 
+
+        
         // ----------------------------------------------------------------------
         // We want to set ${app.home} and we want to create a new realm for the
         // appserver. Need to think about how to really separate the apps
@@ -107,8 +118,8 @@ public class CreateAppConfigurationPhase
         try
         {
             //noinspection IOResourceOpenedButNotSafelyClosed
-            Reader configurationReader =
-                new InterpolationFilterReader( new FileReader( context.getAppConfigurationFile() ), contextMap );
+            Reader configurationReader = new InterpolationFilterReader( new FileReader( context
+                .getAppConfigurationFile() ), contextMap );
 
             dom = Xpp3DomBuilder.build( configurationReader );
         }
