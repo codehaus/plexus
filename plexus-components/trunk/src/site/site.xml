@@ -20,6 +20,7 @@
     <links>
       <item name="Plexus" href="http://plexus.codehaus.org/"/>
     </links>  
-     <menu ref="reports" inherit="bottom" />
+    <menu ref="reports" inherit="bottom" />
+    <menu ref="modules" />
   </body>
 </project>
