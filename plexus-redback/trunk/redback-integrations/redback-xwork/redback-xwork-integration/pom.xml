@@ -70,12 +70,10 @@
       <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>redback-rbac-cached</artifactId>
     </dependency>
-    <!-- should be transitive with cached
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>redback-rbac-jdo</artifactId>
     </dependency>
-    -->
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>redback-rbac-profile</artifactId>

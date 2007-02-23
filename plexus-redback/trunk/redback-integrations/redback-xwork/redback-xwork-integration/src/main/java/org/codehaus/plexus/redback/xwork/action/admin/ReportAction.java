@@ -37,7 +37,7 @@ import java.io.IOException;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-report"
+ * role-hint="redback-report"
  * instantiation-strategy="per-lookup"
  */
 public class ReportAction

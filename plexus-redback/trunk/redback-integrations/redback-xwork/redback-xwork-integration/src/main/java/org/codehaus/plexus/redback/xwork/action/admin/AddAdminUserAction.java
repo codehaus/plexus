@@ -34,7 +34,7 @@ import org.codehaus.plexus.redback.xwork.role.profile.RoleConstants;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id: AddAdminUserAction.java 448077 2006-09-20 05:42:22Z joakime $
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-admin-account"
+ * role-hint="redback-admin-account"
  * instantiation-strategy="per-lookup"
  */
 public class AddAdminUserAction

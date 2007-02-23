@@ -33,7 +33,7 @@ import java.util.List;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor"
- * role-hint="pssEnvironmentCheckInterceptor"
+ * role-hint="redbackEnvironmentCheckInterceptor"
  */
 public class EnvironmentCheckInterceptor
     extends AbstractLogEnabled

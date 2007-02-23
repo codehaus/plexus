@@ -42,7 +42,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-login"
+ * role-hint="redback-login"
  * instantiation-strategy="per-lookup"
  */
 public class LoginAction

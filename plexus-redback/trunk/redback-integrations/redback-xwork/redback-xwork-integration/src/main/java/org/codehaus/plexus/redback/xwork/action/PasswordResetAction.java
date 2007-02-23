@@ -38,7 +38,7 @@ import java.util.List;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-password-reset"
+ * role-hint="redback-password-reset"
  * instantiation-strategy="per-lookup"
  */
 public class PasswordResetAction

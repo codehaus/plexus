@@ -32,7 +32,7 @@ import org.codehaus.plexus.redback.users.User;
  * Interceptor to force the user to perform actions, when required.
  *
  * @author Edwin Punzalan
- * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor" role-hint="pssPolicyEnforcementInterceptor"
+ * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor" role-hint="redbackPolicyEnforcementInterceptor"
  */
 public class PolicyEnforcementInterceptor
         extends AbstractLogEnabled

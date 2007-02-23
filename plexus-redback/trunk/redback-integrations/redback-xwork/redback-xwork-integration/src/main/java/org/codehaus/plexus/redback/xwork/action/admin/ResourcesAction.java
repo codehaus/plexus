@@ -34,7 +34,7 @@ import java.util.List;
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-resources"
+ * role-hint="redback-resources"
  * instantiation-strategy="per-lookup"
  */
 public class ResourcesAction

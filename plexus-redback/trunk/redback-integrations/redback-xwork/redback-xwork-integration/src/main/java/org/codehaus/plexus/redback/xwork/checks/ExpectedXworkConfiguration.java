@@ -57,46 +57,46 @@ public class ExpectedXworkConfiguration
 
             XworkPackageConfig expectedPackage = new XworkPackageConfig( "/security" );
 
-            expectedPackage.addAction( "account", "pss-account", "show" ).addResult( "input" ).addResult(
+            expectedPackage.addAction( "account", "redback-account", "show" ).addResult( "input" ).addResult(
                 "error" ).addResult( "success" );
 
-            expectedPackage.addAction( "login", "pss-login", "show" ).addResult( "input" ).addResult(
+            expectedPackage.addAction( "login", "redback-login", "show" ).addResult( "input" ).addResult(
                 "error" ).addResult( "success" );
 
-            expectedPackage.addAction( "logout", "pss-logout", "show" ).addResult( "input" ).addResult(
+            expectedPackage.addAction( "logout", "redback-logout", "show" ).addResult( "input" ).addResult(
                 "error" ).addResult( "success" );
 
-            expectedPackage.addAction( "register", "pss-register", "show" ).addResult( "input" ).addResult(
+            expectedPackage.addAction( "register", "redback-register", "show" ).addResult( "input" ).addResult(
                 "error" ).addResult( "success" );
 
-            expectedPackage.addAction( "password", "pss-password", "show" ).addResult( "input" ).addResult(
+            expectedPackage.addAction( "password", "redback-password", "show" ).addResult( "input" ).addResult(
                 "error" ).addResult( "success" );
 
             // -----------------------------------------------------------------
             // Security Admin Tests
 
-            expectedPackage.addAction( "systeminfo", "pss-sysinfo", "show" );
-            expectedPackage.addAction( "adminConsole", "pss-admin-console", "show" );
+            expectedPackage.addAction( "systeminfo", "redback-sysinfo", "show" );
+            expectedPackage.addAction( "adminConsole", "redback-admin-console", "show" );
 
-            expectedPackage.addAction( "userlist", "pss-admin-user-list", "show" ).addResult( "input" ).addResult(
+            expectedPackage.addAction( "userlist", "redback-admin-user-list", "show" ).addResult( "input" ).addResult(
                 "success" );
 
-            expectedPackage.addAction( "useredit", "pss-admin-user-edit", "edit" ).addResult( "input" ).addResult(
+            expectedPackage.addAction( "useredit", "redback-admin-user-edit", "edit" ).addResult( "input" ).addResult(
                 "error" ).addResult( "success" );
 
-            expectedPackage.addAction( "usercreate", "pss-admin-user-create", "edit" ).addResult( "input" ).addResult(
+            expectedPackage.addAction( "usercreate", "redback-admin-user-create", "edit" ).addResult( "input" ).addResult(
                 "error" ).addResult( "success" );
 
-            expectedPackage.addAction( "userdelete", "pss-admin-user-delete", "confirm" ).addResult(
+            expectedPackage.addAction( "userdelete", "redback-admin-user-delete", "confirm" ).addResult(
                 "input" ).addResult( "error" ).addResult( "success" );
 
-            expectedPackage.addAction( "assignments", "pss-assignments", "show" ).addResult( "input" ).addResult(
+            expectedPackage.addAction( "assignments", "redback-assignments", "show" ).addResult( "input" ).addResult(
                 "error" ).addResult( "success" );
 
-            expectedPackage.addAction( "roles", "pss-roles", "show" ).addResult( "input" ).addResult(
+            expectedPackage.addAction( "roles", "redback-roles", "show" ).addResult( "input" ).addResult(
                 "error" ).addResult( "success" );
 
-            expectedPackage.addAction( "permissions", "pss-permissions", "show" ).addResult( "input" ).addResult(
+            expectedPackage.addAction( "permissions", "redback-permissions", "show" ).addResult( "input" ).addResult(
                 "error" ).addResult( "success" );
 
             checkPackage( internalViolations, expectedPackage, xworkConfig );

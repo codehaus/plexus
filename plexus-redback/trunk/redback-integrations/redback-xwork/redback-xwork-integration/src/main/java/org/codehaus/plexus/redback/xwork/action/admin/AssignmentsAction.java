@@ -46,7 +46,7 @@ import java.util.Map;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-assignments"
+ * role-hint="redback-assignments"
  * instantiation-strategy="per-lookup"
  */
 public class AssignmentsAction

@@ -35,7 +35,7 @@ import java.util.List;
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-operations"
+ * role-hint="redback-operations"
  * instantiation-strategy="per-lookup"
  */
 public class OperationsAction
