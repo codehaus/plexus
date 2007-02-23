@@ -96,7 +96,7 @@
     <component>
       <role>org.codehaus.plexus.redback.authorization.Authorizer</role>
       <role-hint>rbac</role-hint>
-      <implementation>org.codehaus.plexus.redback.authorization.rbac.RbacAuthorizer</implementation>
+      <implementation>org.codehaus.plexus.redback.rbac.RbacAuthorizer</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
@@ -109,7 +109,7 @@
           <field-name>userManager</field-name>
         </requirement>
         <requirement>
-          <role>org.codehaus.plexus.redback.authorization.rbac.evaluator.PermissionEvaluator</role>
+          <role>org.codehaus.plexus.redback.rbac.evaluator.PermissionEvaluator</role>
           <role-hint>default</role-hint>
         </requirement>
       </requirements>
@@ -119,7 +119,7 @@
     <component>
       <role>org.codehaus.plexus.rbac.profile.RoleProfile</role>
       <role-hint>user-administrator</role-hint>
-      <implementation>org.codehaus.plexus.redback.ui.web.role.profile.UserAdministratorRoleProfile</implementation>
+      <implementation>org.codehaus.plexus.redback.xwork.role.profile.UserAdministratorRoleProfile</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
@@ -135,7 +135,7 @@
     <component>
       <role>org.codehaus.plexus.rbac.profile.RoleProfile</role>
       <role-hint>system-administrator</role-hint>
-      <implementation>org.codehaus.plexus.redback.ui.web.role.profile.SystemAdministratorRoleProfile</implementation>
+      <implementation>org.codehaus.plexus.redback.xwork.role.profile.SystemAdministratorRoleProfile</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
@@ -151,7 +151,7 @@
     <component>
       <role>org.codehaus.plexus.rbac.profile.RoleProfile</role>
       <role-hint>registered-user</role-hint>
-      <implementation>org.codehaus.plexus.redback.ui.web.role.profile.RegisteredUserRoleProfile</implementation>
+      <implementation>org.codehaus.plexus.redback.xwork.role.profile.RegisteredUserRoleProfile</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
@@ -167,7 +167,7 @@
     <component>
       <role>org.codehaus.plexus.rbac.profile.RoleProfile</role>
       <role-hint>guest</role-hint>
-      <implementation>org.codehaus.plexus.redback.ui.web.role.profile.GuestRoleProfile</implementation>
+      <implementation>org.codehaus.plexus.redback.xwork.role.profile.GuestRoleProfile</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.redback.rbac.RBACManager</role>

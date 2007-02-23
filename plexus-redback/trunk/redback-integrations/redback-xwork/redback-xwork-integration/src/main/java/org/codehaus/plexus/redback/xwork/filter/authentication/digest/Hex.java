@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.ui.web.action.admin;
+package org.codehaus.plexus.redback.xwork.filter.authentication.digest;
 
 /*
  * Copyright 2005-2006 The Codehaus.
@@ -16,33 +16,34 @@ package org.codehaus.plexus.redback.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.redback.xwork.action.admin.SystemInfoAction;
-
 /**
- * SystemInfoActionTest
+ * Hex
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * @todo should probably move this to plexus-utils or plexus-security-common
  */
-public class SystemInfoActionTest
-    extends PlexusTestCase
+public class Hex
 {
-    private SystemInfoAction systeminfo;
+    private static final byte[] DIGITS = "0123456789abcdef".getBytes();
 
-    protected void setUp()
-        throws Exception
+    public static String encode( byte[] data )
     {
-        super.setUp();
+        int l = data.length;
 
-        systeminfo = (SystemInfoAction) lookup( "com.opensymphony.xwork.Action", "pss-sysinfo" );
+        byte[] raw = new byte[l * 2];
+
+        for ( int i = 0, j = 0; i < l; i++ )
+        {
+            raw[j++] = DIGITS[( 0xF0 & data[i] ) >>> 4];
+            raw[j++] = DIGITS[0x0F & data[i]];
+        }
+
+        return new String( raw );
     }
 
-    public void testSystemInfoDump()
+    public static String encode( String raw )
     {
-        String result = systeminfo.show();
-        assertNotNull( result );
-        assertEquals( "success", result );
-        assertNotNull( systeminfo.getDetails() );
+        return encode( raw.getBytes() );
     }
 }

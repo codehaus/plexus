@@ -21,6 +21,7 @@ import org.codehaus.plexus.redback.keys.AuthenticationKey;
 import org.codehaus.plexus.redback.keys.KeyManager;
 import org.codehaus.plexus.redback.keys.KeyManagerException;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
+import org.codehaus.plexus.redback.xwork.mail.MailGenerator;
 
 /**
  * Test the Mailer class.
