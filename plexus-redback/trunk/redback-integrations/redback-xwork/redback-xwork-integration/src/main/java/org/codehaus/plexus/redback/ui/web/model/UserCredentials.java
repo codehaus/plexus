@@ -16,8 +16,8 @@ package org.codehaus.plexus.redback.ui.web.model;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.user.User;
-import org.codehaus.plexus.redback.user.UserManager;
+import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserManager;
 import org.codehaus.plexus.util.StringUtils;
 
 /**

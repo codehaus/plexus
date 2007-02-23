@@ -27,8 +27,8 @@ import org.codehaus.plexus.redback.ui.web.interceptor.SecureActionBundle;
 import org.codehaus.plexus.redback.ui.web.interceptor.SecureActionException;
 import org.codehaus.plexus.redback.ui.web.reports.ReportManager;
 import org.codehaus.plexus.redback.ui.web.role.profile.RoleConstants;
-import org.codehaus.plexus.redback.user.User;
-import org.codehaus.plexus.redback.user.UserManager;
+import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserManager;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;

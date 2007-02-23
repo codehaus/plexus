@@ -19,7 +19,7 @@ package org.codehaus.plexus.redback.ui.web.action;
 import org.codehaus.plexus.redback.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.redback.system.SecuritySystem;
 import org.codehaus.plexus.redback.ui.web.model.UserCredentials;
-import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
