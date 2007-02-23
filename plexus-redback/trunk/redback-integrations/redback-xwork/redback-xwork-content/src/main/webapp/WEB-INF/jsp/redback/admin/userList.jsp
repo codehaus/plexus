@@ -16,10 +16,10 @@
 
 <%@ taglib prefix="ww" uri="/webwork" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/plexusSecuritySystem" prefix="redback" %>
+<%@ taglib uri="http://plexus.codehaus.org/redback/taglib-1.0" prefix="redback" %>
 <%@ taglib uri="http://www.extremecomponents.org" prefix="ec" %>
 
-<html>
+<html> 
 <head>
   <title>[Admin] User List</title>
   <link rel="stylesheet" type="text/css" href="<ww:url value="/css/redback/table.css"/>" media="screen"/>
