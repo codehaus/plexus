@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.ui.web.jsp;
+package org.codehaus.plexus.redback.taglib.jsp;
 
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.jstl.core.ConditionalTagSupport;
