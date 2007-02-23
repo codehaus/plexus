@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.ui.web.mail;
+package org.codehaus.plexus.redback.xwork.mail;
 
 /*
 * Copyright 2005-2006 The Codehaus.
