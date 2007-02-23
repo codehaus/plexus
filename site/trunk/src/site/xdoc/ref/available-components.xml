@@ -36,6 +36,10 @@
             <td><a href="../plexus-components/plexus-cache">plexus-cache</a></td>
             <td>Cache API with different providers (oscache, whirlycache, hashmap)</td>
           </tr>
+          <tr>
+            <td><a href="../plexus-components/plexus-contextualizer">plexus-contextualizer</a></td>
+            <td>Component to add values in your Plexus Context.</td>
+          </tr>          
         </table>      
       </subsection>
     </section>
