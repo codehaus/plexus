@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.ui.web.action.admin;
+package org.codehaus.plexus.redback.xwork.checks.xwork;
 
 /*
  * Copyright 2005-2006 The Codehaus.
@@ -16,33 +16,35 @@ package org.codehaus.plexus.redback.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.redback.xwork.action.admin.SystemInfoAction;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * SystemInfoActionTest
+ * XworkActionConfig
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class SystemInfoActionTest
-    extends PlexusTestCase
+public class XworkActionConfig
 {
-    private SystemInfoAction systeminfo;
+    public String name;
 
-    protected void setUp()
-        throws Exception
+    public String clazz;
+
+    public String method;
+
+    public List results = new ArrayList();
+
+    public XworkActionConfig( String name, String className, String method )
     {
-        super.setUp();
-
-        systeminfo = (SystemInfoAction) lookup( "com.opensymphony.xwork.Action", "pss-sysinfo" );
+        this.name = name;
+        this.clazz = className;
+        this.method = method;
     }
 
-    public void testSystemInfoDump()
+    public XworkActionConfig addResult( String name )
     {
-        String result = systeminfo.show();
-        assertNotNull( result );
-        assertEquals( "success", result );
-        assertNotNull( systeminfo.getDetails() );
+        results.add( name );
+        return this;
     }
 }

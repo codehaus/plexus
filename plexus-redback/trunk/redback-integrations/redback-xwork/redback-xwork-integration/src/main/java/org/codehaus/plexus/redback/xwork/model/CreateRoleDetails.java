@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.ui.web.action.admin;
+package org.codehaus.plexus.redback.xwork.model;
 
 /*
  * Copyright 2005-2006 The Codehaus.
@@ -16,33 +16,17 @@ package org.codehaus.plexus.redback.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.redback.xwork.action.admin.SystemInfoAction;
-
 /**
- * SystemInfoActionTest
+ * CreateRoleDetails
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class SystemInfoActionTest
-    extends PlexusTestCase
+public class CreateRoleDetails
+    extends RoleDetails
 {
-    private SystemInfoAction systeminfo;
-
-    protected void setUp()
-        throws Exception
+    public CreateRoleDetails()
     {
-        super.setUp();
-
-        systeminfo = (SystemInfoAction) lookup( "com.opensymphony.xwork.Action", "pss-sysinfo" );
-    }
-
-    public void testSystemInfoDump()
-    {
-        String result = systeminfo.show();
-        assertNotNull( result );
-        assertEquals( "success", result );
-        assertNotNull( systeminfo.getDetails() );
+        super();
     }
 }

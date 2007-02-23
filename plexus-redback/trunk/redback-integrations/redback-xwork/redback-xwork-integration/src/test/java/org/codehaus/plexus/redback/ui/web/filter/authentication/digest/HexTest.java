@@ -16,6 +16,8 @@ package org.codehaus.plexus.redback.ui.web.filter.authentication.digest;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.redback.xwork.filter.authentication.digest.Hex;
+
 import junit.framework.TestCase;
 
 public class HexTest

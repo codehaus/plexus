@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.ui.web.action.admin;
+package org.codehaus.plexus.redback.xwork.eXc;
 
 /*
  * Copyright 2005-2006 The Codehaus.
@@ -16,33 +16,30 @@ package org.codehaus.plexus.redback.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.redback.xwork.action.admin.SystemInfoAction;
+import org.apache.commons.lang.StringUtils;
+import org.extremecomponents.table.bean.Column;
+import org.extremecomponents.table.cell.AbstractCell;
+import org.extremecomponents.table.core.TableModel;
 
 /**
- * SystemInfoActionTest
+ * MailtoCell
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class SystemInfoActionTest
-    extends PlexusTestCase
+public class MailtoCell
+    extends AbstractCell
 {
-    private SystemInfoAction systeminfo;
 
-    protected void setUp()
-        throws Exception
+    protected String getCellValue( TableModel model, Column column )
     {
-        super.setUp();
+        String value = column.getPropertyValueAsString();
+        if ( StringUtils.isBlank( value ) )
+        {
+            return "";
+        }
 
-        systeminfo = (SystemInfoAction) lookup( "com.opensymphony.xwork.Action", "pss-sysinfo" );
+        return "<a href=\"mailto:" + value + "\">" + value + "</a>";
     }
 
-    public void testSystemInfoDump()
-    {
-        String result = systeminfo.show();
-        assertNotNull( result );
-        assertEquals( "success", result );
-        assertNotNull( systeminfo.getDetails() );
-    }
 }

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.ui.web.action.admin;
+package org.codehaus.plexus.redback.xwork.filter.authentication;
 
 /*
  * Copyright 2005-2006 The Codehaus.
@@ -16,33 +16,36 @@ package org.codehaus.plexus.redback.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.redback.xwork.action.admin.SystemInfoAction;
+import org.codehaus.plexus.redback.authentication.AuthenticationException;
 
 /**
- * SystemInfoActionTest
+ * HttpAuthenticationException
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class SystemInfoActionTest
-    extends PlexusTestCase
+public class HttpAuthenticationException
+    extends AuthenticationException
 {
-    private SystemInfoAction systeminfo;
 
-    protected void setUp()
-        throws Exception
+    public HttpAuthenticationException()
     {
-        super.setUp();
-
-        systeminfo = (SystemInfoAction) lookup( "com.opensymphony.xwork.Action", "pss-sysinfo" );
+        super();
     }
 
-    public void testSystemInfoDump()
+    public HttpAuthenticationException( String message, Throwable cause )
     {
-        String result = systeminfo.show();
-        assertNotNull( result );
-        assertEquals( "success", result );
-        assertNotNull( systeminfo.getDetails() );
+        super( message, cause );
     }
+
+    public HttpAuthenticationException( String message )
+    {
+        super( message );
+    }
+
+    public HttpAuthenticationException( Throwable cause )
+    {
+        super( cause );
+    }
+
 }

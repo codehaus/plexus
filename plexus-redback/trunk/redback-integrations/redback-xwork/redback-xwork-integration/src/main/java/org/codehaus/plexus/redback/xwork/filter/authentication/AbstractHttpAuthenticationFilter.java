@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.ui.web.action.admin;
+package org.codehaus.plexus.redback.xwork.filter.authentication;
 
 /*
  * Copyright 2005-2006 The Codehaus.
@@ -16,33 +16,35 @@ package org.codehaus.plexus.redback.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.redback.xwork.action.admin.SystemInfoAction;
+import org.codehaus.plexus.redback.xwork.filter.PlexusServletFilter;
+
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
 
 /**
- * SystemInfoActionTest
+ * AbstractHttpAuthenticationFilter
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class SystemInfoActionTest
-    extends PlexusTestCase
+public abstract class AbstractHttpAuthenticationFilter
+    extends PlexusServletFilter
 {
-    private SystemInfoAction systeminfo;
+    private String realmName;
 
-    protected void setUp()
-        throws Exception
+    public void init( FilterConfig filterConfig )
+        throws ServletException
     {
-        super.setUp();
-
-        systeminfo = (SystemInfoAction) lookup( "com.opensymphony.xwork.Action", "pss-sysinfo" );
+        realmName = filterConfig.getInitParameter( "realm-name" );
     }
 
-    public void testSystemInfoDump()
+    public String getRealmName()
     {
-        String result = systeminfo.show();
-        assertNotNull( result );
-        assertEquals( "success", result );
-        assertNotNull( systeminfo.getDetails() );
+        return realmName;
+    }
+
+    public void setRealmName( String realmName )
+    {
+        this.realmName = realmName;
     }
 }

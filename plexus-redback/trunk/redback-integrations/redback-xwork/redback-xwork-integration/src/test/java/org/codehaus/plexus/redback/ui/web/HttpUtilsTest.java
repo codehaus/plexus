@@ -20,6 +20,8 @@ import junit.framework.TestCase;
 
 import java.util.Properties;
 
+import org.codehaus.plexus.redback.xwork.HttpUtils;
+
 /**
  * HttpUtilsTest
  *

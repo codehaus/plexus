@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.ui.web.action.admin;
+package org.codehaus.plexus.redback.xwork.action.admin;
 
 /*
  * Copyright 2005-2006 The Codehaus.
@@ -16,33 +16,26 @@ package org.codehaus.plexus.redback.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.redback.xwork.action.admin.SystemInfoAction;
+import org.codehaus.plexus.redback.xwork.action.AbstractUserCredentialsAction;
 
 /**
- * SystemInfoActionTest
+ * AbstractAdminUserCredentialsAction
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public class SystemInfoActionTest
-    extends PlexusTestCase
+public abstract class AbstractAdminUserCredentialsAction
+    extends AbstractUserCredentialsAction
 {
-    private SystemInfoAction systeminfo;
+    private String username;
 
-    protected void setUp()
-        throws Exception
+    public String getUsername()
     {
-        super.setUp();
-
-        systeminfo = (SystemInfoAction) lookup( "com.opensymphony.xwork.Action", "pss-sysinfo" );
+        return username;
     }
 
-    public void testSystemInfoDump()
+    public void setUsername( String username )
     {
-        String result = systeminfo.show();
-        assertNotNull( result );
-        assertEquals( "success", result );
-        assertNotNull( systeminfo.getDetails() );
+        this.username = username;
     }
 }

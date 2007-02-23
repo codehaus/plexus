@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.ui.web.action.admin;
+package org.codehaus.plexus.redback.xwork.filter.authentication.digest;
 
 /*
  * Copyright 2005-2006 The Codehaus.
@@ -16,33 +16,33 @@ package org.codehaus.plexus.redback.ui.web.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.redback.xwork.action.admin.SystemInfoAction;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
- * SystemInfoActionTest
+ * Digest
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * @todo move to plexus-utils in future
  */
-public class SystemInfoActionTest
-    extends PlexusTestCase
+public class Digest
 {
-    private SystemInfoAction systeminfo;
-
-    protected void setUp()
-        throws Exception
+    public static String md5Hex( String data )
     {
-        super.setUp();
-
-        systeminfo = (SystemInfoAction) lookup( "com.opensymphony.xwork.Action", "pss-sysinfo" );
+        MessageDigest digest = getDigest( "MD5" );
+        return Hex.encode( digest.digest( data.getBytes() ) );
     }
 
-    public void testSystemInfoDump()
+    public static MessageDigest getDigest( String algorithm )
     {
-        String result = systeminfo.show();
-        assertNotNull( result );
-        assertEquals( "success", result );
-        assertNotNull( systeminfo.getDetails() );
+        try
+        {
+            return MessageDigest.getInstance( algorithm );
+        }
+        catch ( NoSuchAlgorithmException e )
+        {
+            throw new RuntimeException( "Error initializing MessageDigest: " + e.getMessage(), e );
+        }
     }
 }
