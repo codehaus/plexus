@@ -1,9 +1,12 @@
-package org.codehaus.plexus.rbac.profile;
+package org.codehaus.plexus.redback.rbac.profile;
 
 import java.util.List;
 import java.util.Collections;
+
+import org.codehaus.plexus.redback.rbac.profile.AbstractRoleProfile;
+
 /*
- * Copyright 2006 The Apache Software Foundation.
+ * Copyright 2005 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,34 +28,20 @@ import java.util.Collections;
  * @version: $ID:$
  *
  * @plexus.component
- *   role="org.codehaus.plexus.rbac.profile.DynamicRoleProfile"
- *   role-hint="more-bogus"
+ *   role="org.codehaus.plexus.redback.rbac.profile.RoleProfile"
+ *   role-hint="bogus"
  */
-public class MoreBogusDynamicRoleProfile
-    extends AbstractDynamicRoleProfile
+public class BogusRoleProfile
+    extends AbstractRoleProfile
 {
-    public String getRoleName( String resource )
+    public String getRoleName()
     {
-        return "MORE BOGUS ROLE" + RoleProfileConstants.DELIMITER + resource;
+        return "bogus-role";
     }
 
     public List getOperations()
     {
-        return Collections.singletonList( "BOGUS-OPERATION" );
-    }
-
-
-    // add a child for the statis role bogus
-    public List getChildRoles()
-    {
-        return Collections.singletonList( "bogus" );
-    }
-
-
-    // add a child for the dynamic role bogus
-    public List getDynamicChildRoles( String resource )
-    {
-        return Collections.singletonList( "BOGUS ROLE" + RoleProfileConstants.DELIMITER + resource );
+        return Collections.singletonList( "bogus-operation" );
     }
 
 

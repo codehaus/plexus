@@ -1,4 +1,4 @@
-package org.codehaus.plexus.rbac.profile;
+package org.codehaus.plexus.redback.rbac.profile;
 
 import org.codehaus.plexus.redback.rbac.Role;
 /*

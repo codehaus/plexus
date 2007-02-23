@@ -1,6 +1,6 @@
-package org.codehaus.plexus.rbac.profile;
+package org.codehaus.plexus.redback.rbac.profile;
 /*
- * Copyright 2005 The Codehaus.
+ * Copyright 2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,21 @@ package org.codehaus.plexus.rbac.profile;
  */
 
 /**
- * RoleProfileConstants:
+ * RoleProfileException:
  *
- * @author: Jesse McConnell <jesse@codehaus.org>
- * @version: $ID:$
+ * @author Jesse McConnell <jmcconnell@apache.org>
+ * @version $Id:$
  */
-public class RoleProfileConstants
+public class RoleProfileException
+    extends Exception
 {
-    public static final String DELIMITER = "-";
+    public RoleProfileException( String string )
+    {
+        super( string );
+    }
 
-    public static final String SYSTEM_ADMINISTRATOR_ROLE = "System Administrator";
-
+    public RoleProfileException( String string, Throwable throwable )
+    {
+        super( string, throwable );
+    }
 }

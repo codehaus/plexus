@@ -1,4 +1,4 @@
-package org.codehaus.plexus.rbac.profile;
+package org.codehaus.plexus.redback.rbac.profile;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.redback.rbac.RBACManager;
@@ -18,6 +18,8 @@ import org.codehaus.plexus.redback.rbac.Role;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.codehaus.plexus.redback.rbac.profile.RoleProfileConstants;
+import org.codehaus.plexus.redback.rbac.profile.RoleProfileManager;
 
 /**
  * RoleProfileTest:

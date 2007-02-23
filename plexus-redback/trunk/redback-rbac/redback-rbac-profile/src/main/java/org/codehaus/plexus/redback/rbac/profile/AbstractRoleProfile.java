@@ -1,4 +1,4 @@
-package org.codehaus.plexus.rbac.profile;
+package org.codehaus.plexus.redback.rbac.profile;
 
 /*
  * Copyright 2005 The Codehaus.

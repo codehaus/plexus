@@ -1,7 +1,7 @@
-package org.codehaus.plexus.rbac.profile;
+package org.codehaus.plexus.redback.rbac.profile;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Collections;
 /*
  * Copyright 2006 The Apache Software Foundation.
  *
@@ -18,34 +18,34 @@ import java.util.List;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.redback.rbac.profile.AbstractRoleProfile;
+
 /**
  * RoleProfileTest:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- * @plexus.component role="org.codehaus.plexus.rbac.profile.DynamicRoleProfile"
- * role-hint="bogus"
+ *
+ * @plexus.component
+ *   role="org.codehaus.plexus.redback.rbac.profile.RoleProfile"
+ *   role-hint="spiffy"
  */
-public class BogusDynamicRoleProfile
-    extends AbstractDynamicRoleProfile
+public class SpiffyRoleProfile
+    extends AbstractRoleProfile
 {
-    public static final String NAME = "BOGUS ROLE";
-
-    public static final String OPERATION = "BOGUS-OPERATION";
-
-    public String getRoleName( String resource )
+    public String getRoleName()
     {
-        return NAME + RoleProfileConstants.DELIMITER + resource;
+        return "spiffy-role";
     }
 
     public List getOperations()
     {
-        return Collections.singletonList( OPERATION );
+        return Collections.singletonList( "spiffy-operation" );
     }
 
 
     public boolean isAssignable()
     {
-        return true;
+        return false;
     }
 }
