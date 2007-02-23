@@ -21,8 +21,8 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.redback.system.SecuritySystem;
 import org.codehaus.plexus.redback.ui.web.util.UserComparator;
-import org.codehaus.plexus.redback.user.User;
-import org.codehaus.plexus.redback.user.UserManager;
+import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserManager;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;

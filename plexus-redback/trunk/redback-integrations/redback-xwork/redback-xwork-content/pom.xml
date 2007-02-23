@@ -20,7 +20,7 @@
     <groupId>org.codehaus.plexus.redback</groupId>
     <artifactId>redback-xwork</artifactId>
     <version>1.0-alpha-1-SNAPSHOT</version>
-  </parent>
+  </parent> 
   <artifactId>redback-xwork-content</artifactId>
   <name>Plexus Redback :: Integration :: XWork Content War</name>
   <packaging>war</packaging>

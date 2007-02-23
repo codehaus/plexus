@@ -16,7 +16,7 @@ package org.codehaus.plexus.redback.ui.web.util;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.users.User;
 
 import java.util.Comparator;
 

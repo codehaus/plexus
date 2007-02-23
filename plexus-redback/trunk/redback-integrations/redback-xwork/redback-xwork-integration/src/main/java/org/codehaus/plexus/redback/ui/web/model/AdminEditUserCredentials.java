@@ -16,7 +16,7 @@ package org.codehaus.plexus.redback.ui.web.model;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.users.User;
 
 /**
  * AdminEditUserCredentials

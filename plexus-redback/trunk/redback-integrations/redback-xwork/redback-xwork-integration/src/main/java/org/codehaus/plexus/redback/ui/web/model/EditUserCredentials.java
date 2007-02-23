@@ -17,7 +17,7 @@ package org.codehaus.plexus.redback.ui.web.model;
  */
 
 import org.codehaus.plexus.redback.ui.web.util.DateUtils;
-import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.users.User;
 
 /**
  * EditUserCredentials

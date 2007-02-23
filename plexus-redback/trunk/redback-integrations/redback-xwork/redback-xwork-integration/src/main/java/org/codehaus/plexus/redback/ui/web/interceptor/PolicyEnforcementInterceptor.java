@@ -25,8 +25,8 @@ import org.codehaus.plexus.redback.system.SecuritySession;
 import org.codehaus.plexus.redback.system.SecuritySystemConstants;
 import org.codehaus.plexus.redback.system.SecuritySystem;
 import org.codehaus.plexus.redback.system.DefaultSecuritySession;
-import org.codehaus.plexus.redback.user.UserManager;
-import org.codehaus.plexus.redback.user.User;
+import org.codehaus.plexus.redback.users.UserManager;
+import org.codehaus.plexus.redback.users.User;
 
 /**
  * Interceptor to force the user to perform actions, when required.

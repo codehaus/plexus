@@ -229,6 +229,11 @@
         <type>war</type>
         <version>${security.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.redback</groupId>
+        <artifactId>redback-xwork-integration</artifactId>
+        <version>${security.version}</version>
+      </dependency>
       <!-- Plexus -->
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
