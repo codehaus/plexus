@@ -1,5 +1,14 @@
 package org.codehaus.plexus.appserver.application.deploy.lifecycle.phase;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
@@ -7,20 +16,10 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.context.DefaultContext;
 import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
-import java.util.HashMap;
 
 /**
  * @author Jason van Zyl
@@ -45,9 +44,9 @@ public class CreateAppConfigurationPhase
         // need of values from container context to be interpolated 
         Context containerContext = serverContainer.getContext();
         contextMap.putAll( containerContext.getContextData() );
-        
+
         // some will be override with the following code
-        
+
         Properties contextValues = context.getContext();
 
         if ( contextValues != null )
@@ -60,8 +59,6 @@ public class CreateAppConfigurationPhase
             }
         }
 
-
-        
         // ----------------------------------------------------------------------
         // We want to set ${app.home} and we want to create a new realm for the
         // appserver. Need to think about how to really separate the apps
