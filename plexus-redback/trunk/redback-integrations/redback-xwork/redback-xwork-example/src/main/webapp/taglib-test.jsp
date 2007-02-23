@@ -1,5 +1,5 @@
 <%@ taglib uri="/webwork" prefix="ww" %>
-<%@ taglib uri="/plexusSecuritySystem" prefix="pss" %>
+<%@ taglib uri="http://plexus.codehaus.org/redback/taglib-1.0" prefix="redback" %>
 <html>
     <head>
         <title>Plexus Security Example Webapp</title>
@@ -15,34 +15,34 @@
         you should see an X right here -&gt;
         <pss:ifAuthorized permission="foo">
           X
-        </pss:ifAuthorized>
+        </redback:ifAuthorized>
       </p>
       <hr/>
       <p>
-        test of the jsp tag pss:ifAuthorized 2:<br/>
+        test of the jsp tag redback:ifAuthorized 2:<br/>
         <br/>
         you should NOT see an X right here -&gt;
-        <pss:ifAuthorized permission="bar">
+        <redback:ifAuthorized permission="bar">
           X
-        </pss:ifAuthorized>
+        </redback:ifAuthorized>
       </p>
       <hr/>
       <p>
-        test of the jsp tag pss:ifAnyAuthorized 3:<br/>
+        test of the jsp tag redback:ifAnyAuthorized 3:<br/>
         <br/>
         you should see an X right here -&gt;
-        <pss:ifAnyAuthorized permissions="foo,bar">
+        <redback:ifAnyAuthorized permissions="foo,bar">
           X
-        </pss:ifAnyAuthorized>
+        </redback:ifAnyAuthorized>
       </p>
       <hr/>
       <p>
-        test of the jsp tag pss:ifAnyAuthorized 4:<br/>
+        test of the jsp tag redback:ifAnyAuthorized 4:<br/>
         <br/>
         you should NOT see an X right here -&gt;
-        <pss:ifAnyAuthorized permissions="bar,dor">
+        <redback:ifAnyAuthorized permissions="bar,dor">
           X
-        </pss:ifAnyAuthorized>
+        </redback:ifAnyAuthorized>
       </p>
       <hr/>
     </body>

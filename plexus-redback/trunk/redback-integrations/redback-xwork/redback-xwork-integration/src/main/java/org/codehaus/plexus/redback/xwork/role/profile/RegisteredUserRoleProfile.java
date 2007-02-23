@@ -16,8 +16,8 @@ package org.codehaus.plexus.redback.xwork.role.profile;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.rbac.profile.AbstractRoleProfile;
-import org.codehaus.plexus.rbac.profile.RoleProfileException;
+import org.codehaus.plexus.redback.rbac.profile.AbstractRoleProfile;
+import org.codehaus.plexus.redback.rbac.profile.RoleProfileException;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.redback.rbac.Resource;
@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- * @plexus.component role="org.codehaus.plexus.rbac.profile.RoleProfile"
+ * @plexus.component role="org.codehaus.plexus.redback.rbac.profile.RoleProfile"
  * role-hint="registered-user"
  */
 public class RegisteredUserRoleProfile

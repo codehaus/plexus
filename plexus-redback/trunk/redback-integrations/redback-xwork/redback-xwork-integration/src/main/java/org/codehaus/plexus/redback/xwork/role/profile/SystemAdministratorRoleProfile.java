@@ -16,7 +16,7 @@ package org.codehaus.plexus.redback.xwork.role.profile;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.rbac.profile.AbstractRoleProfile;
+import org.codehaus.plexus.redback.rbac.profile.AbstractRoleProfile;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +27,7 @@ import java.util.List;
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- * @plexus.component role="org.codehaus.plexus.rbac.profile.RoleProfile"
+ * @plexus.component role="org.codehaus.plexus.redback.rbac.profile.RoleProfile"
  * role-hint="system-administrator"
  */
 public class SystemAdministratorRoleProfile

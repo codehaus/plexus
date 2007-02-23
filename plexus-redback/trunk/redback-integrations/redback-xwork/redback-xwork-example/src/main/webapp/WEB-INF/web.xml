@@ -21,7 +21,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
-  <display-name>Plexus Security Example Webapp</display-name>
+  <display-name>Plexus Redback Example Webapp</display-name>
 
   <filter>
     <filter-name>webwork-cleanup</filter-name>

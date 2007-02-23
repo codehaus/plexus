@@ -117,7 +117,7 @@
 
 
     <component>
-      <role>org.codehaus.plexus.rbac.profile.RoleProfile</role>
+      <role>org.codehaus.plexus.redback.rbac.profile.RoleProfile</role>
       <role-hint>user-administrator</role-hint>
       <implementation>org.codehaus.plexus.redback.xwork.role.profile.UserAdministratorRoleProfile</implementation>
       <requirements>
@@ -133,7 +133,7 @@
     </component>
 
     <component>
-      <role>org.codehaus.plexus.rbac.profile.RoleProfile</role>
+      <role>org.codehaus.plexus.redback.rbac.profile.RoleProfile</role>
       <role-hint>system-administrator</role-hint>
       <implementation>org.codehaus.plexus.redback.xwork.role.profile.SystemAdministratorRoleProfile</implementation>
       <requirements>
@@ -149,7 +149,7 @@
     </component>
 
     <component>
-      <role>org.codehaus.plexus.rbac.profile.RoleProfile</role>
+      <role>org.codehaus.plexus.redback.rbac.profile.RoleProfile</role>
       <role-hint>registered-user</role-hint>
       <implementation>org.codehaus.plexus.redback.xwork.role.profile.RegisteredUserRoleProfile</implementation>
       <requirements>
@@ -165,7 +165,7 @@
     </component>
 
     <component>
-      <role>org.codehaus.plexus.rbac.profile.RoleProfile</role>
+      <role>org.codehaus.plexus.redback.rbac.profile.RoleProfile</role>
       <role-hint>guest</role-hint>
       <implementation>org.codehaus.plexus.redback.xwork.role.profile.GuestRoleProfile</implementation>
       <requirements>

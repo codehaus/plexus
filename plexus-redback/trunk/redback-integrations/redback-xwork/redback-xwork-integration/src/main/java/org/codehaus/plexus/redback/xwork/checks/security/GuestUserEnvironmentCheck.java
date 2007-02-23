@@ -17,8 +17,8 @@ package org.codehaus.plexus.redback.xwork.checks.security;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.rbac.profile.RoleProfileException;
-import org.codehaus.plexus.rbac.profile.RoleProfileManager;
+import org.codehaus.plexus.redback.rbac.profile.RoleProfileException;
+import org.codehaus.plexus.redback.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
