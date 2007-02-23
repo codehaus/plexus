@@ -88,15 +88,15 @@
               <directory>${basedir}/src/main/webapp</directory>
               <includes>
                 <include>META-INF</include>
-                <include>images/pss</include>
-                <include>css/pss</include>
+                <include>images/redback</include>
+                <include>css/redback</include>
                 <include>template</include>
                 <include>WEB-INF/classes</include>
                 <include>WEB-INF/lib</include>
                 <include>WEB-INF/database</include>
                 <include>WEB-INF/logs</include>
                 <include>WEB-INF/temp</include>
-                <include>WEB-INF/jsp/pss</include>
+                <include>WEB-INF/jsp/redback</include>
               </includes>
             </fileset>
           </filesets>
