@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.ui.web.jsp;
+package org.codehaus.plexus.redback.taglib.jsp;
 
 /*
  * Copyright 2005 The Codehaus.
