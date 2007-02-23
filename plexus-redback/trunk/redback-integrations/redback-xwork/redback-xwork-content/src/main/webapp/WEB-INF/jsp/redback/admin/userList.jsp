@@ -16,18 +16,18 @@
 
 <%@ taglib prefix="ww" uri="/webwork" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="/plexusSecuritySystem" prefix="pss" %>
+<%@ taglib uri="/plexusSecuritySystem" prefix="redback" %>
 <%@ taglib uri="http://www.extremecomponents.org" prefix="ec" %>
 
 <html>
 <head>
   <title>[Admin] User List</title>
-  <link rel="stylesheet" type="text/css" href="<ww:url value="/css/pss/table.css"/>" media="screen"/>
+  <link rel="stylesheet" type="text/css" href="<ww:url value="/css/redback/table.css"/>" media="screen"/>
 </head>
 
 <body>
 
-<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
+<%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
 
 <h2>[Admin] List of Users in ${roleName} Role</h2>
@@ -38,7 +38,7 @@
     var="user" 
     items="users" 
     action="${pageContext.request.contextPath}/security/userlist!show.action"
-    imagePath="${pageContext.request.contextPath}/images/pss/table/*.gif"
+    imagePath="${pageContext.request.contextPath}/images/redback/table/*.gif"
     autoIncludeParameters="false" 
     title="Users"
     filterable="true"
@@ -63,24 +63,24 @@
     <ec:row>          
         <ec:column property="username" title="User Name" 
         	filterCell="org.codehaus.plexus.security.ui.web.eXc.SecurityFilterCell">
-          <img src="<c:url value="/images/pss/icon-user.gif"/>" />
-          <pss:ifAuthorized permission="user-management-user-edit" resource="${user.username}">
+          <img src="<c:url value="/images/redback/icon-user.gif"/>" />
+          <redback:ifAuthorized permission="user-management-user-edit" resource="${user.username}">
             <ww:url id="usereditUrl" action="useredit">
               <ww:param name="username">${user.username}</ww:param>
             </ww:url>
             <ww:a href="%{usereditUrl}">${user.username}</ww:a>
-          </pss:ifAuthorized>
-          <pss:elseAuthorized>
-            <pss:ifAuthorized permission="user-management-user-role" resource="${user.username}">
+          </redback:ifAuthorized>
+          <redback:elseAuthorized>
+            <redback:ifAuthorized permission="user-management-user-role" resource="${user.username}">
               <ww:url id="usereditUrl" action="useredit">
                 <ww:param name="username">${user.username}</ww:param>
               </ww:url>
               <ww:a href="%{usereditUrl}">${user.username}</ww:a>
-            </pss:ifAuthorized>
-            <pss:elseAuthorized>
+            </redback:ifAuthorized>
+            <redback:elseAuthorized>
               ${user.username}
-            </pss:elseAuthorized>
-          </pss:elseAuthorized>
+            </redback:elseAuthorized>
+          </redback:elseAuthorized>
         </ec:column>
         <ec:column property="fullName" title="Full Name" alias="fullname" 
         	filterCell="org.codehaus.plexus.security.ui.web.eXc.SecurityFilterCell" />
@@ -95,14 +95,14 @@
         
         <ec:column title="Tasks" alias="tasks" sortable="false" filterable="false" styleClass="tasks">
           <c:if test="${user.permanent eq false}">
-            <pss:ifAuthorized permission="user-management-user-delete" resource="${user.username}">
+            <redback:ifAuthorized permission="user-management-user-delete" resource="${user.username}">
               <ww:url id="userdeleteUrl" action="userdelete">
                 <ww:param name="username">${user.username}</ww:param>
               </ww:url>
               <ww:a href="%{userdeleteUrl}" title="Delete ${user.username}">
-                <img src="<c:url value="/images/pss/delete.gif"/>" border="none"/>
+                <img src="<c:url value="/images/redback/delete.gif"/>" border="none"/>
               </ww:a>              
-            </pss:ifAuthorized>
+            </redback:ifAuthorized>
           </c:if>
         </ec:column>
     </ec:row>    
@@ -114,13 +114,13 @@
 <tr>
 
 <td>
-    <pss:ifAuthorized permission="user-management-user-create">
+    <redback:ifAuthorized permission="user-management-user-create">
       <div class="task createUser">
         <ww:form action="usercreate!show" namespace="/security" theme="simple" method="post">
           <ww:submit cssClass="button" value="Create New User" />
         </ww:form>
       </div>
-    </pss:ifAuthorized>
+    </redback:ifAuthorized>
 </td>
 </tr> --%>
 </table>
@@ -141,13 +141,13 @@
   <td valign="top">
     <p class="description">The following tools are available for administrators to manipulate the user list.</p>
      
-    <pss:ifAuthorized permission="user-management-user-create">
+    <redback:ifAuthorized permission="user-management-user-create">
       <div class="task createUser">
         <ww:form action="usercreate!show" namespace="/security" theme="simple" method="post">
           <ww:submit cssClass="button" value="Create New User" />
         </ww:form>
       </div>
-    </pss:ifAuthorized>
+    </redback:ifAuthorized>
 
     <div class="task showRoles">
       <ww:form action="userlist!show" namespace="/security" theme="simple" method="get">
@@ -185,7 +185,7 @@
           <c:forEach items="${reportEntry.value}" var="report" varStatus="status">
             <a href="<c:url value="/security/report!generate.action?reportId=${report.value.id}&reportType=${report.value.type}"/>" 
               title="${report.value.name} Report (${report.value.type} type)"><img 
-              src="<c:url value="/images/pss/table/${report.value.type}.gif"/>" /></a>
+              src="<c:url value="/images/redback/table/${report.value.type}.gif"/>" /></a>
           </c:forEach>
           </td>
         </tr>

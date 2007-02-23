@@ -24,7 +24,7 @@
 
 <body>
 
-<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
+<%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
 <h2>Validation Reminder</h2>
 

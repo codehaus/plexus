@@ -53,7 +53,7 @@
     <ww:form action="removeRolesFromUser" namespace="/security" name="removeRoles">
       <ww:hidden name="principal"/>
       <ww:hidden name="removeRolesButton" value="true"/>
-      <ww:checkboxlist list="assignedRoles" name="removeSelectedRoles" listValue="name" listKey="name" theme="pss"/>
+      <ww:checkboxlist list="assignedRoles" name="removeSelectedRoles" listValue="name" listKey="name" theme="redback"/>
       <br/>
       <ww:submit value="Remove Selected Roles" name="removeRolesButton" theme="simple" />
     </ww:form>
@@ -70,7 +70,7 @@
     <ww:form action="addRolesToUser" namespace="/security" name="addRoles">
       <ww:hidden name="principal"/>
       <ww:hidden name="addRolesButton" value="true"/>
-      <ww:checkboxlist list="availableRoles" name="addSelectedRoles" listValue="name" listKey="name" theme="pss"/>
+      <ww:checkboxlist list="availableRoles" name="addSelectedRoles" listValue="name" listKey="name" theme="redback"/>
       <br/>
       <ww:submit value="Add Selected Roles" name="addRolesButton" theme="simple" />
     </ww:form>

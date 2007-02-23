@@ -26,7 +26,7 @@
 
 <h2>Change Password</h2>
 
-<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
+<%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
 <ww:form action="password" namespace="/security" theme="xhtml" 
          id="passwordForm" method="post" name="password" cssClass="security password">
