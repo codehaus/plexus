@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.ui.web.action.admin;
+package org.codehaus.plexus.redback.xwork.action.admin;
 
 /*
  * Copyright 2005-2006 The Codehaus.

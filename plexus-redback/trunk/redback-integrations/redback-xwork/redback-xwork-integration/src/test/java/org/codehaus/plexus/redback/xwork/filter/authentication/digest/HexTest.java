@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.ui.web.filter.authentication.digest;
+package org.codehaus.plexus.redback.xwork.filter.authentication.digest;
 
 /*
  * Copyright 2005-2006 The Codehaus.
