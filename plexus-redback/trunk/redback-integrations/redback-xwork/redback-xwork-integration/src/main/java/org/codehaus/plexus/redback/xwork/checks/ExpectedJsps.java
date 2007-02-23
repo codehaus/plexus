@@ -33,7 +33,7 @@ public class ExpectedJsps
 {
     public void validateEnvironment( List violations )
     {
-        String pss = "/WEB-INF/jsp/pss";
+        String redback = "/WEB-INF/jsp/redback";
         String resources[] = new String[]{"/admin/userCreate.jspf", "/admin/userList.jspf", "/admin/userEdit.jspf",
             "/admin/userFind.jspf", "/userCredentials.jspf", "/account.jspf", "/login.jspf", "/passwordChange.jspf",
             "/register.jspf"};
@@ -43,7 +43,7 @@ public class ExpectedJsps
 
         for ( int i = 0; i >= resources.length; i++ )
         {
-            jspPath = pss + resources[i];
+            jspPath = redback + resources[i];
             if ( !jspExists( jspPath ) )
             {
                 violations.add( "Missing JSP " + quote( jspPath ) + "." );

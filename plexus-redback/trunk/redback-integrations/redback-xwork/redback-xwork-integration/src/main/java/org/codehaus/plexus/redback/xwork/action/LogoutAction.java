@@ -28,7 +28,7 @@ import org.codehaus.plexus.redback.xwork.util.AutoLoginCookies;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-logout"
+ * role-hint="redback-logout"
  * instantiation-strategy="per-lookup"
  */
 public class LogoutAction

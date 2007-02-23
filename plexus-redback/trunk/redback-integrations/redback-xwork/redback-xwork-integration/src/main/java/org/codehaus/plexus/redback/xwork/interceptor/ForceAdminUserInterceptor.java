@@ -29,7 +29,7 @@ import org.codehaus.plexus.redback.users.UserNotFoundException;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id: EnvironmentCheckInterceptor.java 4057 2006-09-15 23:43:16Z joakime $
  * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor"
- * role-hint="pssForceAdminUserInterceptor"
+ * role-hint="redbackForceAdminUserInterceptor"
  */
 public class ForceAdminUserInterceptor
     extends AbstractLogEnabled

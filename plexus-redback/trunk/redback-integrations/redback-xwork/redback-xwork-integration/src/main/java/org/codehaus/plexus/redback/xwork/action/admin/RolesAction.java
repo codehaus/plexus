@@ -34,7 +34,7 @@ import java.util.List;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-roles"
+ * role-hint="redback-roles"
  * instantiation-strategy="per-lookup"
  */
 public class RolesAction

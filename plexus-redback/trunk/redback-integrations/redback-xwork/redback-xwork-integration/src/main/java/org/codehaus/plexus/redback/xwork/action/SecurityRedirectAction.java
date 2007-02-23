@@ -25,7 +25,7 @@ import org.codehaus.plexus.xwork.action.PlexusActionSupport;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-redirect"
+ * role-hint="redback-redirect"
  * instantiation-strategy="per-lookup"
  */
 public class SecurityRedirectAction

@@ -32,7 +32,7 @@ public class SecurityExternalResult
     extends AbstractBackTrackingResult
 {
     /**
-     * @plexus.configuration default-value="pssRedirect"
+     * @plexus.configuration default-value="redbackRedirect"
      */
     private String externalActionName;
 

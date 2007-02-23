@@ -39,7 +39,7 @@ import javax.servlet.http.HttpSession;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.interceptor.Interceptor"
- * role-hint="pssAutoLoginInterceptor"
+ * role-hint="redbackAutoLoginInterceptor"
  */
 public class AutoLoginInterceptor
     extends AbstractLogEnabled

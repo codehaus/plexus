@@ -28,7 +28,7 @@ import org.codehaus.plexus.redback.xwork.role.profile.RoleConstants;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-admin-console"
+ * role-hint="redback-admin-console"
  * instantiation-strategy="per-lookup"
  */
 public class AdminConsoleAction

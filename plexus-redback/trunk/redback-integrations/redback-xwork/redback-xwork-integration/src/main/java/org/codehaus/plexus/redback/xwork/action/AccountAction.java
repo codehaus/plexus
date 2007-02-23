@@ -35,7 +35,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-account"
+ * role-hint="redback-account"
  * instantiation-strategy="per-lookup"
  */
 public class AccountAction

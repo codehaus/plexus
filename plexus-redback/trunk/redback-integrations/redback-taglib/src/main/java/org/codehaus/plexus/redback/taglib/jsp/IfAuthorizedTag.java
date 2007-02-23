@@ -55,7 +55,7 @@ public class IfAuthorizedTag
         throws JspTagException
     {
 
-        Boolean authzStatusBool = (Boolean) pageContext.getAttribute( "pssCache" + permission + resource );
+        Boolean authzStatusBool = (Boolean) pageContext.getAttribute( "redbackCache" + permission + resource );
         boolean authzStatus;
 
         if ( authzStatusBool == null )
@@ -71,7 +71,7 @@ public class IfAuthorizedTag
                 SecuritySystem securitySystem = (SecuritySystem) container.lookup( SecuritySystem.ROLE );
 
                 authzStatus = securitySystem.isAuthorized( securitySession, permission, resource );
-                pageContext.setAttribute( "pssCache" + permission + resource, Boolean.valueOf( authzStatus ) );
+                pageContext.setAttribute( "redbackCache" + permission + resource, Boolean.valueOf( authzStatus ) );
             }
             catch ( ComponentLookupException cle )
             {

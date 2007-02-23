@@ -41,7 +41,7 @@ import java.util.Set;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-sysinfo"
+ * role-hint="redback-sysinfo"
  * instantiation-strategy="per-lookup"
  */
 public class SystemInfoAction

@@ -35,7 +35,7 @@ import java.util.Iterator;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-password"
+ * role-hint="redback-password"
  * instantiation-strategy="per-lookup"
  */
 public class PasswordAction

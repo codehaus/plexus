@@ -32,7 +32,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  * @plexus.component role="com.opensymphony.xwork.Action"
- * role-hint="pss-admin-user-delete"
+ * role-hint="redback-admin-user-delete"
  * instantiation-strategy="per-lookup"
  */
 public class UserDeleteAction
