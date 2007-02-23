@@ -51,6 +51,10 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-xwork-integration</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>redback-taglib</artifactId>
     </dependency>
     <dependency>
