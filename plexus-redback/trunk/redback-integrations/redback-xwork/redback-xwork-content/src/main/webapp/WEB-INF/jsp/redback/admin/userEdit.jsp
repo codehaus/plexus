@@ -15,7 +15,7 @@
   --%>
 
 <%@ taglib prefix="ww" uri="/webwork"%>
-<%@ taglib prefix="pss" uri="/plexusSecuritySystem"%>
+<%@ taglib prefix="redback" uri="/plexusSecuritySystem"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
@@ -25,23 +25,23 @@
 
 <body>
 
-<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
+<%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
 <h2>[Admin] User Edit</h2>
 
-<pss:ifAuthorized permission="user-management-user-edit" resource="${user.username}">
+<redback:ifAuthorized permission="user-management-user-edit" resource="${user.username}">
   <ww:form action="useredit" namespace="/security" theme="xhtml"
          id="userEditForm" method="post" name="useredit" cssClass="security userEdit">
-    <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jsp" %>
+    <%@ include file="/WEB-INF/jsp/redback/include/userCredentials.jsp" %>
     <ww:checkbox label="Locked User" name="user.locked" />
     <ww:checkbox label="Force User to Change Password" name="user.passwordChangeRequired" />    
     <ww:hidden label="Username"    name="username" />
     <ww:submit value="Update" method="submit" />
     <ww:submit value="Cancel" method="cancel" />
   </ww:form>
-</pss:ifAuthorized>
+</redback:ifAuthorized>
 
-<pss:ifAuthorized permission="user-management-user-role" resource="${user.username}">
+<redback:ifAuthorized permission="user-management-user-role" resource="${user.username}">
   <c:if test="${!empty effectivelyAssignedRoles}">
   <h3>Effective Roles</h3>
 
@@ -57,7 +57,7 @@
     <ww:param name="username">${user.username}</ww:param>
   </ww:url>
   <ww:a href="%{assignmentUrl}">Edit Roles</ww:a>
-</pss:ifAuthorized>
+</redback:ifAuthorized>
 </body>
 
 </html>

@@ -15,7 +15,7 @@
   --%>
 
 <%@ taglib prefix="ww" uri="/webwork"%>
-<%@ taglib prefix="pss" uri="/plexusSecuritySystem"%>
+<%@ taglib prefix="redback" uri="/plexusSecuritySystem"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
@@ -25,11 +25,11 @@
 
 <body>
 
-<%@ include file="/WEB-INF/jsp/pss/include/rbacListNavigation.jsp" %>
+<%@ include file="/WEB-INF/jsp/redback/include/rbacListNavigation.jsp" %>
 
 <h2> [Admin] Role List </h2>
 
-<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
+<%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
 <ww:form action="roles!remove" method="post" theme="simple">
 

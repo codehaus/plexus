@@ -24,13 +24,13 @@
 
 <body>
 
-<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
+<%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
 <h2>Account Details</h2>
    
 <ww:form action="account" namespace="/security" theme="xhtml"
          id="registerForm" method="post" name="register" cssClass="security register">     
-  <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jsp" %>
+  <%@ include file="/WEB-INF/jsp/redback/include/userCredentials.jsp" %>
   <ww:submit value="Submit" method="submit" />
   <ww:submit value="Cancel" method="cancel" />
 </ww:form>

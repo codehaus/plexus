@@ -24,13 +24,13 @@
 
 <body>
 
-<c:import url="/WEB-INF/jsp/pss/include/formValidationResults.jsp" />
+<c:import url="/WEB-INF/jsp/redback/include/formValidationResults.jsp" />
 
 <h2>Create Admin User</h2>
 
 <ww:form action="addadmin!submit" namespace="/security" theme="xhtml"
          id="adminCreateForm" method="post" name="admincreate" cssClass="security adminCreate">
-  <c:import url="/WEB-INF/jsp/pss/include/userCredentials.jsp" />
+  <c:import url="/WEB-INF/jsp/redback/include/userCredentials.jsp" />
   <ww:submit value="Create Admin" />
 </ww:form>
 

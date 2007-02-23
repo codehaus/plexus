@@ -24,11 +24,11 @@
 
 <body>
 
-<%@ include file="/WEB-INF/jsp/pss/include/rbacListNavigation.jsp" %>
+<%@ include file="/WEB-INF/jsp/redback/include/rbacListNavigation.jsp" %>
 
 <h2> [Admin] Operation List </h2>
 
-<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
+<%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
 <ww:form action="operations!remove" method="post" theme="simple">
 

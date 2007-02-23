@@ -24,13 +24,13 @@
 
 <body>
 
-<%@ include file="/WEB-INF/jsp/pss/include/formValidationResults.jsp" %>
+<%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
 <h2>[Admin] User Create</h2>
 
 <ww:form action="usercreate!submit" namespace="/security" theme="xhtml"
          id="userCreateForm" method="post" name="usercreate" cssClass="security userCreate">
-  <%@ include file="/WEB-INF/jsp/pss/include/userCredentials.jsp" %>
+  <%@ include file="/WEB-INF/jsp/redback/include/userCredentials.jsp" %>
   <ww:submit value="Create User" />
 </ww:form>
 
