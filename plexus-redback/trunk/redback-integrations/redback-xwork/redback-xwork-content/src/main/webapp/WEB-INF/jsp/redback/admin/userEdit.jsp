@@ -15,7 +15,7 @@
   --%>
 
 <%@ taglib prefix="ww" uri="/webwork"%>
-<%@ taglib prefix="redback" uri="/plexusSecuritySystem"%>
+<%@ taglib prefix="redback" uri="http://plexus.codehaus.org/redback/taglib-1.0"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
