@@ -16,9 +16,9 @@ package org.codehaus.plexus.registry.naming;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.registry.test.AbstractRegistryTest;
+import java.util.Properties;
 
-import java.io.InputStream;
+import org.codehaus.plexus.registry.test.AbstractRegistryTest;
 
 /**
  * @author <a href="mailto:Olivier.LAMY@accor.com">olamy</a>
@@ -30,37 +30,47 @@ public class NamingRegistryTest
 {
 
     // need a load-on-start for org.codehaus.plexus.naming.Naming
-    protected InputStream getConfiguration()
-        throws Exception
-    {
-        return getResourceAsStream( "/plexus.xml" );
-    }
-
-    protected InputStream getConfiguration( String arg0 )
-        throws Exception
-    {
-        return this.getConfiguration();
-    }
 
     protected String getCustomConfigurationName()
     {
-        return getBasedir() + "/src/test/resources/plexus.xml";
+        return "plexus.xml";
     }
 
-    protected String getConfigurationName( String arg0 )
-        throws Exception
-    {
-        return this.getCustomConfigurationName();
-    }
-
+    /** 
+     * @see org.codehaus.plexus.registry.test.AbstractRegistryTest#getRoleHint()
+     */
     public String getRoleHint()
     {
         return "naming";
     }
 
+    /**
+     * @return
+     */
     public String getEmptyRoleHint()
     {
         return "empty-naming";
     }
 
+    public void testNaminggetKeys()
+        throws Exception
+    {
+        assertFalse( this.getRegistry().getKeys().isEmpty() );
+        assertEquals( 4, this.getRegistry().getKeys().size() );
+    }
+
+    public void testgetProperties()
+        throws Exception
+    {
+        Properties properties = this.getRegistry().getProperties( "subOne" );
+        assertEquals( 2, properties.size() );
+    }
+
+    public void testDump()
+        throws Exception
+    {
+        String dump = this.getRegistry().dump();
+        assertNotNull( dump );
+        System.out.println( "dump " + dump );
+    }
 }

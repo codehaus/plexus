@@ -18,7 +18,7 @@
   <parent>
     <groupId>org.codehaus.plexus</groupId>
     <artifactId>plexus-components</artifactId>
-    <version>1.1.9</version>
+    <version>1.1.10-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.plexus.registry</groupId>
@@ -62,12 +62,12 @@
       <dependency>
         <groupId>org.codehaus.plexus.registry</groupId>
         <artifactId>plexus-registry-api</artifactId>
-        <version>1.0-alpha-1</version>
+        <version>1.0-alpha-2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.registry</groupId>
         <artifactId>plexus-registry-test</artifactId>
-        <version>1.0-alpha-1</version>
+        <version>1.0-alpha-2-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

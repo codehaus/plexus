@@ -53,6 +53,11 @@
             <type>java.lang.String</type>
             <value>entryTwo</value>
           </environment>
+          <environment>
+            <name>subOne/subTwo/EntryFirst</name>
+            <type>java.lang.String</type>
+            <value>entryThird</value>
+          </environment>			
         </environments>
       </configuration>
     </component>

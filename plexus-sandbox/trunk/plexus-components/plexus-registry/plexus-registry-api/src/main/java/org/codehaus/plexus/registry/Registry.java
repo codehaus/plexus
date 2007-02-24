@@ -171,6 +171,7 @@ public interface Registry
     List getList( String key );
 
     /**
+     * TODO move to Map which is more generic ?
      * Get the properties at the given key in the registry.
      *
      * @param key the key to lookup
