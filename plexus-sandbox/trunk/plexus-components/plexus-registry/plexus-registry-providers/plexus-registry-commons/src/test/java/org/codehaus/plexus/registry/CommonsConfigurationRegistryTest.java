@@ -16,29 +16,34 @@ package org.codehaus.plexus.registry;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.PlexusTestCase;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Properties;
+
+import org.codehaus.plexus.registry.test.AbstractRegistryTest;
 
 /**
  * Test the commons configuration registry.
  */
 public class CommonsConfigurationRegistryTest
-    extends PlexusTestCase
+    extends AbstractRegistryTest
 {
     private Registry registry;
 
     private static final int INT_TEST_VALUE = 8080;
+
+    public String getRoleHint()
+    {
+        return "builder";
+    }
 
     public void testDefaultConfiguration()
         throws Exception
     {
         registry = (Registry) lookup( Registry.class.getName(), "default" );
 
-        assertEquals( "Check system property override", System.getProperty( "user.dir" ),
-                      registry.getString( "user.dir" ) );
+        assertEquals( "Check system property override", System.getProperty( "user.dir" ), registry
+            .getString( "user.dir" ) );
         assertEquals( "Check system property", System.getProperty( "user.home" ), registry.getString( "user.home" ) );
         assertNull( "Check other properties are not loaded", registry.getString( "test.value" ) );
     }
@@ -49,8 +54,8 @@ public class CommonsConfigurationRegistryTest
         registry = (Registry) lookup( Registry.class.getName(), "builder" );
 
         assertEquals( "Check system property override", "new user dir", registry.getString( "user.dir" ) );
-        assertEquals( "Check system property default", System.getProperty( "user.home" ),
-                      registry.getString( "user.home" ) );
+        assertEquals( "Check system property default", System.getProperty( "user.home" ), registry
+            .getString( "user.home" ) );
         assertEquals( "Check other properties are loaded", "foo", registry.getString( "test.value" ) );
         assertEquals( "Check other properties are loaded", 1, registry.getInt( "test.number" ) );
         assertTrue( "Check other properties are loaded", registry.getBoolean( "test.boolean" ) );
@@ -106,8 +111,7 @@ public class CommonsConfigurationRegistryTest
         assertEquals( "Check system property interpolation", System.getProperty( "user.home" ) + "/.m2/repository",
                       registry.getString( "repository" ) );
 
-        assertEquals( "Check configuration value interpolation", "foo/bar",
-                      registry.getString( "test.interpolation" ) );
+        assertEquals( "Check configuration value interpolation", "foo/bar", registry.getString( "test.interpolation" ) );
     }
 
     public void testAddConfigurationXmlFile()
@@ -117,8 +121,8 @@ public class CommonsConfigurationRegistryTest
 
         registry.addConfigurationFromFile( getTestFile( "src/test/resources/org/codehaus/plexus/registry/test.xml" ) );
 
-        assertEquals( "Check system property default", System.getProperty( "user.dir" ),
-                      registry.getString( "user.dir" ) );
+        assertEquals( "Check system property default", System.getProperty( "user.dir" ), registry
+            .getString( "user.dir" ) );
         assertEquals( "Check other properties are loaded", "foo", registry.getString( "test.value" ) );
     }
 
@@ -127,11 +131,11 @@ public class CommonsConfigurationRegistryTest
     {
         registry = (Registry) lookup( Registry.class.getName(), "default" );
 
-        registry.addConfigurationFromFile(
-            getTestFile( "src/test/resources/org/codehaus/plexus/registry/test.properties" ) );
+        registry
+            .addConfigurationFromFile( getTestFile( "src/test/resources/org/codehaus/plexus/registry/test.properties" ) );
 
-        assertEquals( "Check system property default", System.getProperty( "user.dir" ),
-                      registry.getString( "user.dir" ) );
+        assertEquals( "Check system property default", System.getProperty( "user.dir" ), registry
+            .getString( "user.dir" ) );
         assertEquals( "Check other properties are loaded", "baz", registry.getString( "foo.bar" ) );
         assertNull( "Check other properties are not loaded", registry.getString( "test.value" ) );
     }
@@ -143,8 +147,8 @@ public class CommonsConfigurationRegistryTest
 
         registry.addConfigurationFromResource( "org/codehaus/plexus/registry/test.xml" );
 
-        assertEquals( "Check system property default", System.getProperty( "user.dir" ),
-                      registry.getString( "user.dir" ) );
+        assertEquals( "Check system property default", System.getProperty( "user.dir" ), registry
+            .getString( "user.dir" ) );
         assertEquals( "Check other properties are loaded", "foo", registry.getString( "test.value" ) );
     }
 
@@ -155,8 +159,8 @@ public class CommonsConfigurationRegistryTest
 
         registry.addConfigurationFromResource( "org/codehaus/plexus/registry/test.properties" );
 
-        assertEquals( "Check system property default", System.getProperty( "user.dir" ),
-                      registry.getString( "user.dir" ) );
+        assertEquals( "Check system property default", System.getProperty( "user.dir" ), registry
+            .getString( "user.dir" ) );
         assertEquals( "Check other properties are loaded", "baz", registry.getString( "foo.bar" ) );
         assertNull( "Check other properties are not loaded", registry.getString( "test.value" ) );
     }
@@ -178,8 +182,8 @@ public class CommonsConfigurationRegistryTest
 
         try
         {
-            registry.addConfigurationFromFile(
-                getTestFile( "src/test/resources/org/codehaus/plexus/registry/test.foo" ) );
+            registry
+                .addConfigurationFromFile( getTestFile( "src/test/resources/org/codehaus/plexus/registry/test.foo" ) );
             fail();
         }
         catch ( RegistryException e )

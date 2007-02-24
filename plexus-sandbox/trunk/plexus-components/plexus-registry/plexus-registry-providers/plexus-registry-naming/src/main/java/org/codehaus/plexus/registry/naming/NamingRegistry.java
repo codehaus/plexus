@@ -16,17 +16,6 @@ package org.codehaus.plexus.registry.naming;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.naming.Naming;
-import org.codehaus.plexus.registry.Registry;
-import org.codehaus.plexus.registry.RegistryException;
-import org.codehaus.plexus.registry.RegistryListener;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NameNotFoundException;
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,8 +24,25 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 
+import javax.naming.CompositeName;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NameAlreadyBoundException;
+import javax.naming.NameClassPair;
+import javax.naming.NameNotFoundException;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+
+import org.apache.naming.NamingContext;
+import org.apache.naming.config.Config;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.naming.Naming;
+import org.codehaus.plexus.registry.Registry;
+import org.codehaus.plexus.registry.RegistryException;
+import org.codehaus.plexus.registry.RegistryListener;
+
 /**
- * @author <a href="mailto:Olivier.LAMY@accor.com">olamy</a>
+ * @author <a href="mailto:olamy@codehaus.org">olamy</a>
  * @version $Id$
  * @plexus.component role-hint="naming-registry"
  * @since 8 feb. 07
@@ -62,6 +68,8 @@ public class NamingRegistry
     private boolean useDefaultNaming = true;
 
     private Context baseContext;
+
+    private List registryListeners;
 
     public NamingRegistry()
     {
@@ -231,7 +239,7 @@ public class NamingRegistry
 
         try
         {
-            //with a naming only one value can be returned
+            // with a naming only one value can be returned
             String value = getString( key );
             List list = new ArrayList( 1 );
             list.add( value );
@@ -263,6 +271,92 @@ public class NamingRegistry
         }
     }
 
+    /** 
+     * @see org.codehaus.plexus.registry.Registry#getKeys()
+     */
+    public Collection getKeys()
+    {
+        try
+        {
+            NamingEnumeration namingEnumeration = this.getBaseContext().list( "" );
+            List keys = new ArrayList();
+            while ( namingEnumeration.hasMoreElements() )
+            {
+                Object o = namingEnumeration.next();
+                if ( o instanceof NameClassPair )
+                {
+                    NameClassPair nameClassPair = (NameClassPair) o;
+                    keys.add( nameClassPair.getName() );
+                }
+
+            }
+            return keys;
+        }
+        catch ( NamingException e )
+        {
+            getLogger().debug( e.getMessage(), e );
+            throw new RuntimeException( e.getMessage(), e );
+        }
+    }
+
+    /** 
+     * @see org.codehaus.plexus.registry.Registry#getProperties(java.lang.String)
+     */
+    public Properties getProperties( String key )
+    {
+        try
+        {
+            NamingEnumeration namingEnumeration = this.getBaseContext().list( key );
+            NamingRegistry subOne = (NamingRegistry) this.getSubset( key );
+            Properties properties = new Properties();
+            while ( namingEnumeration.hasMoreElements() )
+            {
+                Object o = namingEnumeration.next();
+                if ( o instanceof NameClassPair )
+                {
+                    NameClassPair nameClassPair = (NameClassPair) o;
+                    String className = nameClassPair.getClassName();
+                    String name = nameClassPair.getName();
+                    getLogger().debug( name );
+                    if ( !Context.class.isAssignableFrom( Class.forName( className ) ) )
+                    {
+                        properties.put( name, subOne.getObject( name ) );
+                    }
+                }
+            }
+            return properties;
+        }
+        catch ( NameNotFoundException e )
+        {
+            return new Properties();
+        }
+        catch ( NamingException e )
+        {
+            throw new RuntimeException( e.getMessage(), e );
+        }
+        catch ( ClassNotFoundException e )
+        {
+            throw new RuntimeException( e.getMessage(), e );
+        }
+    }
+
+    /**
+     * <b>do same as getSubset</b>
+     * @see org.codehaus.plexus.registry.Registry#getSection(java.lang.String)
+     */
+    public Registry getSection( String name )
+    {
+        return this.getSubset( name );
+    }
+
+    /** 
+     * @see org.codehaus.plexus.registry.Registry#getSubsetList(java.lang.String)
+     */
+    public List getSubsetList( String key )
+    {
+        throw new UnsupportedOperationException( "getSubsetList not supported in NamingRegistry" );
+    }
+
     /**
      * @see org.codehaus.plexus.registry.Registry#isEmpty()
      */
@@ -278,6 +372,54 @@ public class NamingRegistry
             throw new RuntimeException( e.getMessage(), e );
         }
     }
+
+    /**
+     * @see org.codehaus.plexus.registry.Registry#dump()
+     */
+    public String dump()
+    {
+        try
+        {
+            String ls = System.getProperty( "line.separator" );
+            StringBuffer dump = new StringBuffer();
+            NamingEnumeration namingEnumeration = this.getBaseContext().list( "" );
+            while ( namingEnumeration.hasMoreElements() )
+            {
+                Object o = namingEnumeration.next();
+                if ( o instanceof NameClassPair )
+                {
+                    NameClassPair nameClassPair = (NameClassPair) o;
+                    if ( nameClassPair.getClassName().equals( NamingContext.class.getName() ) )
+                    {
+                        NamingRegistry sub = new NamingRegistry( (Context) this.getObject( nameClassPair.getName() ) );
+                        dump.append( sub.dump() );
+                    }
+                    else
+                    {
+                        dump.append( "key " + nameClassPair.getName() + ", type " + nameClassPair.getClassName() );
+                        dump.append( ", value " + this.getObject( nameClassPair.getName() ) ).append( ls );
+                    }
+                }
+
+            }
+            return dump.toString();
+        }
+        catch ( NamingException e )
+        {
+            throw new RuntimeException( e.getMessage(), e );
+        }
+    }
+
+    public void addChangeListener( RegistryListener registryListener )
+    {
+        if ( this.registryListeners == null )
+        {
+            this.registryListeners = new ArrayList( 1 );
+        }
+        this.registryListeners.add( registryListener );
+    }
+
+    // loading methods 
 
     /**
      * @see org.codehaus.plexus.registry.Registry#addConfigurationFromFile(java.io.File)
@@ -299,27 +441,6 @@ public class NamingRegistry
 
     }
 
-    /**
-     * @see org.codehaus.plexus.registry.Registry#dump()
-     */
-    public String dump()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public void addChangeListener( RegistryListener listener )
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public Collection getKeys()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     public void addConfigurationFromFile( File file, String prefix )
         throws RegistryException
     {
@@ -334,23 +455,7 @@ public class NamingRegistry
 
     }
 
-    public Properties getProperties( String key )
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public Registry getSection( String name )
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public List getSubsetList( String key )
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    // write methods
 
     public void save()
         throws RegistryException, UnsupportedOperationException
@@ -361,20 +466,76 @@ public class NamingRegistry
 
     public void setBoolean( String key, boolean value )
     {
-        // TODO Auto-generated method stub
-
+        try
+        {
+            this.setValue( Boolean.toString( value ), Boolean.class.getName(), key );
+        }
+        catch ( NamingException e )
+        {
+            throw new RuntimeException( e.getMessage(), e );
+        }
     }
 
     public void setInt( String key, int value )
     {
-        // TODO Auto-generated method stub
+        try
+        {
+            this.setValue( Integer.toString( value ), Integer.class.getName(), key );
+        }
+        catch ( NamingException e )
+        {
+            throw new RuntimeException( e.getMessage(), e );
+        }
 
     }
 
     public void setString( String key, String value )
     {
-        // TODO Auto-generated method stub
+        try
+        {
+            this.setValue( value, String.class.getName(), key );
+        }
+        catch ( NamingException e )
+        {
+            throw new RuntimeException( e.getMessage(), e );
+        }
 
     }
 
+    private void setValue( String value, String javaClassName, String key )
+        throws NamingException
+    {
+        Context envContext = this.getBaseContext();
+        if ( envContext instanceof org.apache.naming.NamingContext )
+        {
+            Config.Environment config = new Config.Environment();
+            config.setName( key );
+            config.setType( javaClassName );
+            config.setValue( value );
+            try
+            {
+                CompositeName name = new CompositeName( key );
+                for ( int i = 1; i <= name.size() - 1; i++ )
+                {
+                    try
+                    {
+                        envContext.createSubcontext( name.getPrefix( i ) );
+                    }
+                    catch ( NameAlreadyBoundException e )
+                    {
+                        // The prefix is already added as a sub context
+                    }
+                }
+                envContext.bind( key, config.createValue() );
+            }
+            catch ( NameAlreadyBoundException e )
+            {
+                // skip already bind
+            }
+        }
+        else
+        {
+            throw new UnsupportedOperationException( "not supported if non org.apache.naming.NamingContext" );
+        }
+    }
 }

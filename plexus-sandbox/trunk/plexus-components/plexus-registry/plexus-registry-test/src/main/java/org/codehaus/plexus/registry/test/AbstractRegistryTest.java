@@ -22,7 +22,7 @@ import org.codehaus.plexus.registry.Registry;
 import java.util.NoSuchElementException;
 
 /**
- * @author <a href="mailto:Olivier.LAMY@accor.com">olamy</a>
+ * @author <a href="mailto:olamy@codehaus.org">olamy</a>
  * @version $Id$
  * @since 8 feb. 07
  */
@@ -125,5 +125,26 @@ public abstract class AbstractRegistryTest
         assertNotNull( getRegistry().getSubset( "none" ) );
         assertTrue( getRegistry().getSubset( "none" ).isEmpty() );
 
+    }
+
+    public void testSetBoolean()
+        throws Exception
+    {
+        getRegistry().setBoolean( "keyTrue", true );
+        assertTrue( getRegistry().getBoolean( "keyTrue" ) );
+    }
+
+    public void testSetInt()
+        throws Exception
+    {
+        getRegistry().setInt( "keyInt", 3 );
+        assertEquals( 3, getRegistry().getInt( "keyInt" ) );
+    }
+
+    public void testSetString()
+        throws Exception
+    {
+        getRegistry().setString( "what", "zorglub" );
+        assertEquals( "zorglub", getRegistry().getString( "what" ) );
     }
 }
