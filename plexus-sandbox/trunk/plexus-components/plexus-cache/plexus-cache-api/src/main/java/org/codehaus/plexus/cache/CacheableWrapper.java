@@ -1,7 +1,5 @@
 package org.codehaus.plexus.cache;
 
-import java.io.Serializable;
-
 /*
  * Copyright 2007 The Codehaus Foundation.
  *
@@ -16,6 +14,15 @@ import java.io.Serializable;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ */
+
+import java.io.Serializable;
+
+/**
+ * CacheableWrapper 
+ *
+ * @author <a href="mailto:Olivier.LAMY@accor.com">Olivier Lamy</a>
+ * @version $Id$
  */
 public class CacheableWrapper
     implements Serializable

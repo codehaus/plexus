@@ -16,7 +16,7 @@ package org.codehaus.plexus.cache.test.examples.wine;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.cache.CacheBuilder;
+import org.codehaus.plexus.cache.builder.CacheBuilder;
 
 /**
  * @since 5 February, 2007

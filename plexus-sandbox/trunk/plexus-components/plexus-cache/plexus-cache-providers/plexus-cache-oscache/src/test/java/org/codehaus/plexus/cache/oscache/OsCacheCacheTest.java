@@ -59,4 +59,8 @@ public class OsCacheCacheTest
         return (Cache) getContainer().lookup( Cache.ROLE, "twosecondrefresh" );
     }
 
+    public Class getCacheClass()
+    {
+        return OsCacheCache.class;
+    }
 }

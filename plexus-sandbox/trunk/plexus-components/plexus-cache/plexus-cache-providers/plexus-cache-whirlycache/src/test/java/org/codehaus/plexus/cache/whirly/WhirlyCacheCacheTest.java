@@ -8,9 +8,10 @@ import org.codehaus.plexus.cache.Cache;
 import org.codehaus.plexus.cache.test.AbstractCacheTestCase;
 
 /**
- * @since 5 févr. 07
- * @version $Id$
+ * 
  * @author <a href="mailto:Olivier.LAMY@accor.com">Olivier Lamy</a>
+ * @since 5 February, 2007
+ * @version $Id$
  */
 public class WhirlyCacheCacheTest
     extends AbstractCacheTestCase
@@ -42,5 +43,10 @@ public class WhirlyCacheCacheTest
         throws Exception
     {
         return (Cache) getContainer().lookup( Cache.ROLE, "twosecondrefresh" );
+    }
+
+    public Class getCacheClass()
+    {
+        return WhirlyCacheCache.class;
     }
 }
