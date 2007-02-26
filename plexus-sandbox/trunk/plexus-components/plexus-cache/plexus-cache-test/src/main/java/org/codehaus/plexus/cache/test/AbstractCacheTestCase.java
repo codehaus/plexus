@@ -25,6 +25,9 @@ import org.codehaus.plexus.cache.test.examples.wine.Wine;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * AbstractCacheTestCase 
@@ -35,6 +38,15 @@ import java.util.List;
 public abstract class AbstractCacheTestCase
     extends PlexusTestCase
 {
+    static
+    {
+        Logger logger = Logger.getLogger( "org.codehaus.plexus.cache" );
+        logger.setLevel( Level.ALL );
+        ConsoleHandler handler = new ConsoleHandler();
+        handler.setLevel( Level.ALL );
+        logger.addHandler( handler );
+    }
+    
     protected Cache cache;
 
     protected void setUp()
@@ -204,7 +216,7 @@ public abstract class AbstractCacheTestCase
 
     public void testCacheFactory()
     {
-        Cache cache = CacheFactory.getCache( "foo-factory-test", null );
+        Cache cache = CacheFactory.getInstance().getCache( "foo-factory-test", null );
 
         // This test is only here to ensure that the provider implements a Creator class.
         assertNotNull( "Cache should not be null", cache );

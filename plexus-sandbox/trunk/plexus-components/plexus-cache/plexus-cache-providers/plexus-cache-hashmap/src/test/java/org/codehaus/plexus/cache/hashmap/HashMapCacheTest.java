@@ -57,4 +57,9 @@ public class HashMapCacheTest
         return (Cache) getContainer().lookup( Cache.ROLE, "twosecondrefresh" );
     }
 
+    public Class getCacheClass()
+    {
+        return HashMapCache.class;
+    }
+
 }
