@@ -36,7 +36,7 @@
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-authentication</url>
   </scm>
   <modules>
-    <module>redback-authentication-api</module>    
+    <module>redback-authentication-api</module>
     <module>redback-authentication-providers</module>
   </modules>
 </project>

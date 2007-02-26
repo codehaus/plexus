@@ -376,16 +376,16 @@
   </build>
 
   <modules>
-    <module>redback-configuration</module>
-    <module>redback-common</module>
-    <module>redback-users</module>
-    <module>redback-policy</module>
     <module>redback-authentication</module>
     <module>redback-authorization</module>
-    <module>redback-keys</module>
+    <module>redback-configuration</module>
+    <module>redback-common</module>
+    <module>redback-policy</module>
     <module>redback-rbac</module>
-    <module>redback-data-management</module>
     <module>redback-system</module>
+    <module>redback-keys</module>
+    <module>redback-users</module>
+    <module>redback-data-management</module>
     <module>redback-integrations</module>
   </modules>
   <properties>
