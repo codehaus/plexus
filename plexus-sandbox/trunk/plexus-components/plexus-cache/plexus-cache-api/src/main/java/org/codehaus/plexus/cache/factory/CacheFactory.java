@@ -26,8 +26,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * CacheFactory - dynamic cache creation (and tracking) facility for non-plexus objects to use.
@@ -37,25 +35,31 @@ import java.util.logging.Logger;
  */
 public class CacheFactory
 {
-    private static Logger log;
+    static class CacheFactoryHolder
+    {
+        static CacheFactory instance = new CacheFactory();
+    }
 
     private static Map caches;
 
     private static CacheCreator creator;
 
-    static
+    private CacheFactory()
     {
-        log = java.util.logging.Logger.getLogger( CacheFactory.class.getName() );
-
         caches = new HashMap();
 
         try
         {
-            ClassLoader classLoader = ( new Object() ).getClass().getClassLoader();
+            ClassLoader classLoader = this.getClass().getClassLoader();
 
             if ( classLoader == null )
             {
+                System.err.println( "Using System ClassLoader." );
                 classLoader = ClassLoader.getSystemClassLoader();
+            }
+            else
+            {
+                System.err.println( "Using Object Classloader." );
             }
 
             Enumeration cachePropResources = classLoader.getResources( "META-INF/plexus-cache.properties" );
@@ -70,38 +74,48 @@ public class CacheFactory
 
                 Class creatorClass = classLoader.loadClass( creatorImpl );
                 creator = (CacheCreator) creatorClass.newInstance();
+                System.out.println( "Using creator: " + creator.getClass().getName() );
+            }
+            else
+            {
+                System.err.println( "No resource found." );
             }
 
             if ( cachePropResources.hasMoreElements() )
             {
-                log.log( Level.INFO, "More than 1 CacheCreator provider exists in classpath. "
+                System.err.println( "More than 1 CacheCreator provider exists in classpath. "
                     + "Using first one found [" + creator.getClass().getName() + "]." );
             }
         }
         catch ( IOException e )
         {
-            log.log( Level.WARNING, "Unable to initialize CacheCreator: " + e.getMessage(), e );
+            throw new ExceptionInInitializerError( e );
         }
         catch ( ClassNotFoundException e )
         {
-            log.log( Level.WARNING, "Unable to initialize CacheCreator: " + e.getMessage(), e );
+            throw new ExceptionInInitializerError( e );
         }
         catch ( InstantiationException e )
         {
-            log.log( Level.WARNING, "Unable to initialize CacheCreator: " + e.getMessage(), e );
+            throw new ExceptionInInitializerError( e );
         }
         catch ( IllegalAccessException e )
         {
-            log.log( Level.WARNING, "Unable to initialize CacheCreator: " + e.getMessage(), e );
+            throw new ExceptionInInitializerError( e );
         }
     }
 
-    public static void setCacheCreatorFactory( CacheCreator creator )
+    public static CacheFactory getInstance()
+    {
+        return CacheFactoryHolder.instance;
+    }
+
+    public void setCacheCreatorFactory( CacheCreator creator )
     {
         CacheFactory.creator = creator;
     }
 
-    public static Cache getCache( String id, CacheHints hints )
+    public Cache getCache( String id, CacheHints hints )
     {
         if ( creator == null )
         {
