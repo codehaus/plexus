@@ -1,4 +1,7 @@
-package org.codehaus.plexus.cache;
+package org.codehaus.plexus.cache.impl;
+
+import org.codehaus.plexus.cache.Cache;
+import org.codehaus.plexus.cache.CacheStatistics;
 
 /*
  * Copyright 2001-2007 The Codehaus.

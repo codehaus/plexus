@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cache;
+package org.codehaus.plexus.cache.builder;
 
 /*
  * Copyright 2001-2007 The Codehaus.
@@ -18,6 +18,8 @@ package org.codehaus.plexus.cache;
 
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.cache.Cache;
+import org.codehaus.plexus.cache.impl.NoCacheCache;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
@@ -30,11 +32,12 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 /**
  * Ability to obtain cache  
  * 
- * @since 5 February, 2007
- * @version $Id$
  * @author <a href="mailto:Olivier.LAMY@accor.com">Olivier Lamy</a>
+ * @version $Id$
+ * @since 5 February, 2007
+ * 
  * @plexus.component
- *   role="org.codehaus.plexus.cache.CacheBuilder" role-hint="default"
+ *   role="org.codehaus.plexus.cache.builder.CacheBuilder" role-hint="default"
  */
 public class DefaultCacheBuilder
     extends AbstractLogEnabled

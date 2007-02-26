@@ -16,14 +16,15 @@ package org.codehaus.plexus.cache.test;
  * limitations under the License.
  */
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.cache.Cache;
 import org.codehaus.plexus.cache.CacheStatistics;
+import org.codehaus.plexus.cache.factory.CacheFactory;
 import org.codehaus.plexus.cache.test.examples.wine.Wine;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * AbstractCacheTestCase 
@@ -197,5 +198,17 @@ public abstract class AbstractCacheTestCase
         Object o = cache.get( key );
         assertNotNull( o );
         assertEquals( wine.hashCode(), o.hashCode() );
+    }
+
+    public abstract Class getCacheClass();
+
+    public void testCacheFactory()
+    {
+        Cache cache = CacheFactory.getCache( "foo-factory-test", null );
+
+        // This test is only here to ensure that the provider implements a Creator class.
+        assertNotNull( "Cache should not be null", cache );
+        assertEquals( "Cache class", getCacheClass().getName(), cache.getClass().getName() );
+        assertTrue( "Cache should be assignable from", getCacheClass().isAssignableFrom( cache.getClass() ) );
     }
 }

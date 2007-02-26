@@ -56,4 +56,9 @@ public class EhcacheCacheTest
     {
         return (Cache) getContainer().lookup( Cache.ROLE, "twosecondrefresh" );
     }
+
+    public Class getCacheClass()
+    {
+        return EhcacheCache.class;
+    }
 }
