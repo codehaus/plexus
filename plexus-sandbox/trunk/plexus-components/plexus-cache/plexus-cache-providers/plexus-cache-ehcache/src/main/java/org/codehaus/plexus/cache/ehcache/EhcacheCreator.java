@@ -18,8 +18,10 @@ package org.codehaus.plexus.cache.ehcache;
 
 import org.apache.commons.lang.SystemUtils;
 import org.codehaus.plexus.cache.Cache;
+import org.codehaus.plexus.cache.CacheException;
 import org.codehaus.plexus.cache.CacheHints;
 import org.codehaus.plexus.cache.factory.CacheCreator;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 import java.io.File;
 
@@ -34,6 +36,7 @@ public class EhcacheCreator
 {
 
     public Cache createCache( CacheHints hints )
+        throws CacheException
     {
         EhcacheCache cache = new EhcacheCache();
 
@@ -60,6 +63,15 @@ public class EhcacheCreator
         cache.setMaxElementsInMemory( hints.getMaxElements() );
         cache.setTimeToLiveSeconds( hints.getMaxSecondsInCache() );
         cache.setTimeToIdleSeconds( hints.getIdleExpirationSeconds() );
+
+        try
+        {
+            cache.initialize();
+        }
+        catch ( InitializationException e )
+        {
+            throw new CacheException( "Unable to initialize EhcacheCache: " + e.getMessage(), e );
+        }
 
         return cache;
     }

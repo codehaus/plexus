@@ -18,8 +18,10 @@ package org.codehaus.plexus.cache.oscache;
 
 import org.apache.commons.lang.SystemUtils;
 import org.codehaus.plexus.cache.Cache;
+import org.codehaus.plexus.cache.CacheException;
 import org.codehaus.plexus.cache.CacheHints;
 import org.codehaus.plexus.cache.factory.CacheCreator;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 import java.io.File;
 
@@ -34,9 +36,10 @@ public class OsCacheCreator
 {
 
     public Cache createCache( CacheHints hints )
+        throws CacheException
     {
         OsCacheCache cache = new OsCacheCache();
-        
+
         cache.setCacheKey( hints.getName() );
 
         cache.setCachePersistenceOverflowOnly( hints.isOverflowToDisk() );
@@ -59,9 +62,18 @@ public class OsCacheCreator
 
         cache.setCapacity( hints.getMaxElements() );
         cache.setRefreshPeriod( hints.getIdleExpirationSeconds() );
-        
+
         // Does not support:  hints.getMaxSecondsInCache()
-        
+
+        try
+        {
+            cache.initialize();
+        }
+        catch ( InitializationException e )
+        {
+            throw new CacheException( "Unable to initialize OsCacheCache: " + e.getMessage(), e );
+        }
+
         return cache;
     }
 

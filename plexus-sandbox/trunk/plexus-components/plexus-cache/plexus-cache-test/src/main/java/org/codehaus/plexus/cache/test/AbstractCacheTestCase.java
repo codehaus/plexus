@@ -18,6 +18,7 @@ package org.codehaus.plexus.cache.test;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.cache.Cache;
+import org.codehaus.plexus.cache.CacheException;
 import org.codehaus.plexus.cache.CacheStatistics;
 import org.codehaus.plexus.cache.factory.CacheFactory;
 import org.codehaus.plexus.cache.test.examples.wine.Wine;
@@ -214,7 +215,7 @@ public abstract class AbstractCacheTestCase
 
     public abstract Class getCacheClass();
 
-    public void testCacheFactory()
+    public void testCacheFactory() throws CacheException
     {
         Cache cache = CacheFactory.getInstance().getCache( "foo-factory-test", null );
 
@@ -222,5 +223,16 @@ public abstract class AbstractCacheTestCase
         assertNotNull( "Cache should not be null", cache );
         assertEquals( "Cache class", getCacheClass().getName(), cache.getClass().getName() );
         assertTrue( "Cache should be assignable from", getCacheClass().isAssignableFrom( cache.getClass() ) );
+        
+        // Now do some basic set/get functions to test if the cache has been initialized (or not).
+        assertNull( cache.get( "bad wolf" ) );
+        
+        Integer fooInt = new Integer( 42 );
+        cache.put( "foo", fooInt );
+
+        Integer val = (Integer) cache.get( "foo" );
+        assertEquals( 42, val.intValue() );
+
+        assertNull( cache.get( "bar" ) );
     }
 }

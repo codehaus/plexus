@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cache.factory;
+package org.codehaus.plexus.cache;
 
 /*
  * Copyright 2001-2007 The Codehaus.
@@ -16,24 +16,34 @@ package org.codehaus.plexus.cache.factory;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.cache.Cache;
-import org.codehaus.plexus.cache.CacheException;
-import org.codehaus.plexus.cache.CacheHints;
-
 /**
- * CacheCreator - an interface for CacheCreators
+ * CacheException 
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
-public interface CacheCreator
+public class CacheException
+    extends Exception
 {
-    /**
-     * Create a Cache, initialize it, and return it.
-     * 
-     * @param cacheHint the cache hints to use.
-     * @return the created cache.
-     * @throws CacheException if there was a cache creation error.
-     */
-    public Cache createCache( CacheHints hints ) throws CacheException;
+
+    public CacheException()
+    {
+        super();
+    }
+
+    public CacheException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
+
+    public CacheException( String message )
+    {
+        super( message );
+    }
+
+    public CacheException( Throwable cause )
+    {
+        super( cause );
+    }
+
 }
