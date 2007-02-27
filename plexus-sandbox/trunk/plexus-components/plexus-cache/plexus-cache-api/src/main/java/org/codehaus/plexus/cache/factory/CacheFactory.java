@@ -17,8 +17,10 @@ package org.codehaus.plexus.cache.factory;
  */
 
 import org.codehaus.plexus.cache.Cache;
+import org.codehaus.plexus.cache.CacheException;
 import org.codehaus.plexus.cache.CacheHints;
 import org.codehaus.plexus.cache.impl.NoCacheCache;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -54,12 +56,7 @@ public class CacheFactory
 
             if ( classLoader == null )
             {
-                System.err.println( "Using System ClassLoader." );
                 classLoader = ClassLoader.getSystemClassLoader();
-            }
-            else
-            {
-                System.err.println( "Using Object Classloader." );
             }
 
             Enumeration cachePropResources = classLoader.getResources( "META-INF/plexus-cache.properties" );
@@ -74,11 +71,6 @@ public class CacheFactory
 
                 Class creatorClass = classLoader.loadClass( creatorImpl );
                 creator = (CacheCreator) creatorClass.newInstance();
-                System.out.println( "Using creator: " + creator.getClass().getName() );
-            }
-            else
-            {
-                System.err.println( "No resource found." );
             }
 
             if ( cachePropResources.hasMoreElements() )
@@ -116,6 +108,7 @@ public class CacheFactory
     }
 
     public Cache getCache( String id, CacheHints hints )
+        throws CacheException
     {
         if ( creator == null )
         {

@@ -17,8 +17,10 @@ package org.codehaus.plexus.cache.whirly;
  */
 
 import org.codehaus.plexus.cache.Cache;
+import org.codehaus.plexus.cache.CacheException;
 import org.codehaus.plexus.cache.CacheHints;
 import org.codehaus.plexus.cache.factory.CacheCreator;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 /**
  * WhirlyCacheCreator 
@@ -27,24 +29,34 @@ import org.codehaus.plexus.cache.factory.CacheCreator;
  * @version $Id$
  */
 public class WhirlyCacheCreator
-implements CacheCreator
+    implements CacheCreator
 {
 
     public Cache createCache( CacheHints hints )
+        throws CacheException
     {
         WhirlyCacheCache cache = new WhirlyCacheCache();
-        
+
         cache.setWhirlyCacheName( hints.getName() );
         cache.setRefreshTime( hints.getIdleExpirationSeconds() );
+        cache.setMaxSize( hints.getMaxElements() );
 
         /* Does not support the following
          * 
          * hints.isOverflowToDisk()
          * hints.getDiskOverflowPath()
-         * hints.getMaxElements()
          * hints.getMaxSecondsInCache()
          */
-        
+
+        try
+        {
+            cache.initialize();
+        }
+        catch ( InitializationException e )
+        {
+            throw new CacheException( "Unable to initialize WhirlyCacheCache: " + e.getMessage(), e );
+        }
+
         return cache;
     }
 

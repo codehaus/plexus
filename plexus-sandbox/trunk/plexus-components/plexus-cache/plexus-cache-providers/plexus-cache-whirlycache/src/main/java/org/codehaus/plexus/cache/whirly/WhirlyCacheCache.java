@@ -15,15 +15,18 @@ package org.codehaus.plexus.cache.whirly;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.whirlycott.cache.CacheConfiguration;
+import com.whirlycott.cache.CacheException;
+import com.whirlycott.cache.CacheManager;
+
 import org.codehaus.plexus.cache.Cache;
 import org.codehaus.plexus.cache.CacheStatistics;
 import org.codehaus.plexus.cache.CacheableWrapper;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
-import com.whirlycott.cache.CacheException;
-import com.whirlycott.cache.CacheManager;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * configuration file see https://whirlycache.dev.java.net/sample-whirlycache-xml-file.html
@@ -43,7 +46,6 @@ import com.whirlycott.cache.CacheManager;
  * @author <a href="mailto:olamy@codehaus.org">Olivier Lamy</a>
  */
 public class WhirlyCacheCache
-    extends AbstractLogEnabled
     implements Cache, Initializable
 {
     private com.whirlycott.cache.Cache whirlyCache;
@@ -57,6 +59,26 @@ public class WhirlyCacheCache
      * @plexus.configuration
      */
     private String whirlyCacheName;
+    
+    /**
+     * @plexus.configuration default-value="com.whirlycott.cache.impl.ConcurrentHashMapImpl"
+     */
+    private String backend = "com.whirlycott.cache.impl.ConcurrentHashMapImpl";
+    
+    /**
+     * @plexus.configuration default-value="com.whirlycott.cache.policy.LFUMaintenancePolicy"
+     */
+    private String policy = "com.whirlycott.cache.policy.LFUMaintenancePolicy";
+    
+    /**
+     * @plexus.configuration default-value="30"
+     */
+    private int tunerSleepTime = 30;
+    
+    /**
+     * @plexus.configuration default-value="10000"
+     */
+    private int maxSize = 10000;
 
     /**
      * 
@@ -79,12 +101,30 @@ public class WhirlyCacheCache
             }
             else
             {
-                this.whirlyCache = CacheManager.getInstance().getCache( this.whirlyCacheName );
+                String cacheNames[] = CacheManager.getInstance().getCacheNames();
+                List cacheNameList = Arrays.asList( cacheNames );
+                
+                if( cacheNameList.contains( this.whirlyCacheName ))
+                {
+                    // Cache exists! use it.
+                    this.whirlyCache = CacheManager.getInstance().getCache( this.whirlyCacheName );
+                }
+                else
+                {
+                    // Cache needs to be created.
+                    CacheConfiguration cacheConfig = new CacheConfiguration();
+                    cacheConfig.setName( this.whirlyCacheName );
+                    cacheConfig.setBackend( this.backend );
+                    cacheConfig.setPolicy( this.policy );
+                    cacheConfig.setTunerSleepTime( this.tunerSleepTime );
+                    cacheConfig.setMaxSize( this.maxSize );
+                    
+                    this.whirlyCache = CacheManager.getInstance().createCache( cacheConfig );
+                }
             }
         }
         catch ( CacheException e )
         {
-            this.getLogger().error( "CacheException " + e.getMessage(), e );
             throw new InitializationException( "CacheException " + e.getMessage(), e );
         }
         this.whirlyCacheStatistics = new WhirlyCacheStatistics( this.whirlyCache );
@@ -154,7 +194,6 @@ public class WhirlyCacheCache
     public void register( Object key, Object value )
     {
         this.whirlyCache.store( key, new CacheableWrapper( value, System.currentTimeMillis() ) );
-
     }
 
     protected boolean needRefresh( CacheableWrapper cacheableWrapper )
@@ -168,10 +207,6 @@ public class WhirlyCacheCache
             return false;
         }
         boolean result = ( System.currentTimeMillis() - cacheableWrapper.getStoredTime() ) > ( this.getRefreshTime() * 1000 );
-        if ( getLogger().isDebugEnabled() )
-        {
-            getLogger().debug( cacheableWrapper + " is uptodate" + result );
-        }
         return result;
     }
 
@@ -211,5 +246,45 @@ public class WhirlyCacheCache
     protected boolean isCacheAvailable()
     {
         return this.getRefreshTime() >= 0;
+    }
+
+    public String getBackend()
+    {
+        return backend;
+    }
+
+    public void setBackend( String backend )
+    {
+        this.backend = backend;
+    }
+
+    public int getMaxSize()
+    {
+        return maxSize;
+    }
+
+    public void setMaxSize( int maxSize )
+    {
+        this.maxSize = maxSize;
+    }
+
+    public String getPolicy()
+    {
+        return policy;
+    }
+
+    public void setPolicy( String policy )
+    {
+        this.policy = policy;
+    }
+
+    public int getTunerSleepTime()
+    {
+        return tunerSleepTime;
+    }
+
+    public void setTunerSleepTime( int tunerSleepTime )
+    {
+        this.tunerSleepTime = tunerSleepTime;
     }
 }
