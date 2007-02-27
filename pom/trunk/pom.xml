@@ -24,6 +24,13 @@
     </notifiers>
   </ciManagement>
   <inceptionYear>2001</inceptionYear>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>  
   <mailingLists>
     <mailingList>
       <name>Plexus User List</name>
