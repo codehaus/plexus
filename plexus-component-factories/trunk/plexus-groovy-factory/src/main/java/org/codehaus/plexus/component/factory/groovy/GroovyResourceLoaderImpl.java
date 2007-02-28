@@ -27,7 +27,7 @@ import groovy.lang.GroovyResourceLoader;
 /**
  * Helps to load Groovy script resources from a class loader.
  *
- * @version $Rev$ $Date$
+ * @version $Id$
  */
 public class GroovyResourceLoaderImpl
     implements GroovyResourceLoader
