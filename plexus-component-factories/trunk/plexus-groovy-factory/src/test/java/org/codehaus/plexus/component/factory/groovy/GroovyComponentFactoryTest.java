@@ -2,14 +2,14 @@ package org.codehaus.plexus.component.factory.groovy;
 
 import org.codehaus.plexus.PlexusTestCase;
 
+/**
+ * Basic tests to see if things are working or not.
+ *
+ * @version $Id$
+ */
 public class GroovyComponentFactoryTest
     extends PlexusTestCase
 {
-    public GroovyComponentFactoryTest( String name )
-    {
-        super( name );
-    }
-
     public void testComponent()
         throws Exception
     {

@@ -1,13 +1,13 @@
-import org.codehaus.plexus.component.factory.groovy.Hello;
+package org.codehaus.plexus.component.factory.groovy;
 
-class DefaultHello
+/**
+ * Base-class to help ensure that extending Groovy classes works as expected.
+ *
+ * @version $Id$
+ */
+abstract class HelloSupport
     implements Hello
 {
-    void initialize()
-    {
-        System.out.println( "initialize()" );
-    }
-
     void start()
     {
         System.out.println( "start()" );
