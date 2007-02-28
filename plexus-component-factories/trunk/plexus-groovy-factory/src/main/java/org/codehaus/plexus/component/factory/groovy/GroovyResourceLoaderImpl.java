@@ -32,7 +32,7 @@ import groovy.lang.GroovyResourceLoader;
 public class GroovyResourceLoaderImpl
     implements GroovyResourceLoader
 {
-    private ClassLoader classLoader;
+    protected ClassLoader classLoader;
 
     public GroovyResourceLoaderImpl(final ClassLoader classLoader) {
         assert classLoader != null;
@@ -44,10 +44,7 @@ public class GroovyResourceLoaderImpl
         return resolveGroovySource(className, classLoader);
     }
 
-    protected URL resolveGroovySource(final String className, final ClassLoader classLoader) {
-        assert className != null;
-        assert classLoader != null;
-
+    protected String classToResourceName(final String className) {
         // Figure out what resource to load
         String resource = className;
         if (!resource.startsWith("/")) {
@@ -58,6 +55,14 @@ public class GroovyResourceLoaderImpl
             resource += ".groovy";
         }
 
+        return resource;
+    }
+
+    protected URL resolveGroovySource(final String className, final ClassLoader classLoader) throws MalformedURLException {
+        assert className != null;
+        assert classLoader != null;
+
+        String resource = classToResourceName(className);
         URL source = classLoader.getResource(resource);
         if (source == null) {
             //

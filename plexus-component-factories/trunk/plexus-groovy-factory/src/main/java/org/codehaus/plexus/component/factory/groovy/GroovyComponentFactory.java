@@ -35,6 +35,22 @@ public class GroovyComponentFactory
         }
     }
 
+    public GroovyObject loadGroovyObject(final GroovyCodeSource source, final ClassLoader classLoader, final GroovyResourceLoader resourceLoader)
+        throws Exception
+    {
+        assert source != null;
+        assert classLoader != null;
+        assert resourceLoader != null;
+
+        GroovyClassLoader loader = new GroovyClassLoader(classLoader);
+
+        // Set the resource loader to allow peers to be loaded
+        loader.setResourceLoader(resourceLoader);
+
+        Class type = loader.parseClass(source);
+        return (GroovyObject)type.newInstance();
+    }
+
     public GroovyObject loadGroovyObject(final String className, final ClassLoader classLoader, final GroovyResourceLoader resourceLoader)
         throws Exception
     {
@@ -47,13 +63,7 @@ public class GroovyComponentFactory
             throw new ComponentInstantiationException("Missing source for: " + className);
         }
 
-        GroovyClassLoader loader = new GroovyClassLoader(classLoader);
-
-        // Set the resource loader to allow peers to be loaded
-        loader.setResourceLoader(resourceLoader);
-
-        Class type = loader.parseClass(new GroovyCodeSource(source));
-        return (GroovyObject)type.newInstance();
+        return loadGroovyObject(new GroovyCodeSource(source), classLoader, resourceLoader);
     }
 
     public GroovyObject loadGroovyObject(final String className, final ClassLoader classLoader) throws Exception {
