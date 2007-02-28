@@ -3,16 +3,51 @@
   <parent>
     <artifactId>plexus-component-factories</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0-alpha-6</version>
+    <version>1.0-alpha-9</version>
   </parent>
   <artifactId>plexus-groovy-factory</artifactId>
   <version>1.0-alpha-6-SNAPSHOT</version>
   <name>Plexus Groovy Factory</name>
+
   <dependencies>
     <dependency>
       <groupId>groovy</groupId>
-      <artifactId>groovy</artifactId>
-      <version>1.0-beta-4</version>
+      <artifactId>groovy-all</artifactId>
+      <version>1.0</version>
+    </dependency>
+    
+    <!--
+    NOTE: 1.2-alpha-4 is broke wrt DefaultStrategy.getResource(), so use a newer version
+    -->
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-classworlds</artifactId>
+      <version>1.2-alpha-7</version>
     </dependency>
   </dependencies>
+
+  <build>
+     <defaultGoal>install</defaultGoal>
+
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.4</source>
+            <target>1.4</target>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-idea-plugin</artifactId>
+          <configuration>
+            <jdkName>1.4</jdkName>
+            <jdkLevel>1.4</jdkLevel>
+          </configuration>
+        </plugin>
+    </plugins>
+  </build>
+
 </project>
