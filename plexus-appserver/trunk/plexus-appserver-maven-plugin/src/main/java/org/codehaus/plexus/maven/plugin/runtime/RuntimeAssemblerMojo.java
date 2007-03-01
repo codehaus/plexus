@@ -68,9 +68,9 @@ public class RuntimeAssemblerMojo
     private boolean addManagementAgent;
 
     /**
-     * @parameter
+     * @parameter expression="${managementArtifacts}"
      */
-    private Set customManagementArtifacts = new HashSet();
+    private HashSet managementArtifacts;
 
     public void execute()
         throws MojoExecutionException
@@ -97,11 +97,11 @@ public class RuntimeAssemblerMojo
 
         try
         {
-            if ( addManagementAgent && customManagementArtifacts.size() > 0 )
+            if ( addManagementAgent && managementArtifacts != null && managementArtifacts.size() > 0 )
             {
                 runtimeBuilder.build( runtimePath, remoteRepositories, localRepository, projectArtifacts,
                                   additionalCoreArtifacts, runtimeConfiguration, interpolationProperties,
-                                  addManagementAgent, customManagementArtifacts );
+                                  addManagementAgent, managementArtifacts );
             }
             else
             {
