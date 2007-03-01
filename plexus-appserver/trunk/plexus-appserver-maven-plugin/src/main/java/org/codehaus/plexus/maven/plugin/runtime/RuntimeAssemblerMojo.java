@@ -31,6 +31,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -66,6 +67,11 @@ public class RuntimeAssemblerMojo
      */
     private boolean addManagementAgent;
 
+    /**
+     * @parameter
+     */
+    private Set customManagementArtifacts = new HashSet();
+
     public void execute()
         throws MojoExecutionException
     {
@@ -91,9 +97,18 @@ public class RuntimeAssemblerMojo
 
         try
         {
-            runtimeBuilder.build( runtimePath, remoteRepositories, localRepository, projectArtifacts,
+            if ( addManagementAgent && customManagementArtifacts.size() > 0 )
+            {
+                runtimeBuilder.build( runtimePath, remoteRepositories, localRepository, projectArtifacts,
+                                  additionalCoreArtifacts, runtimeConfiguration, interpolationProperties,
+                                  addManagementAgent, customManagementArtifacts );
+            }
+            else
+            {
+                runtimeBuilder.build( runtimePath, remoteRepositories, localRepository, projectArtifacts,
                                   additionalCoreArtifacts, runtimeConfiguration, interpolationProperties,
                                   addManagementAgent );
+            }
         }
         catch ( PlexusRuntimeBuilderException e )
         {

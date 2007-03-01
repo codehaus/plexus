@@ -97,9 +97,27 @@ public class DefaultPlexusRuntimeBuilder
     //
     // ----------------------------------------------------------------------
 
+    public void build( File workingDirectory, List remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts, Set additionalCoreArtifacts, File containerConfiguration,
+                       Properties configurationProperties, boolean addManagementAgent )
+        throws PlexusRuntimeBuilderException
+    {
+        Set managementArtifacts = new HashSet();
+
+        if ( addManagementAgent )
+        {
+            managementArtifacts.add( "mx4j:mx4j" );
+            managementArtifacts.add( "mx4j:mx4j-remote" );
+            managementArtifacts.add( "org.livetribe:livetribe-slp" );
+            managementArtifacts.add( "backport-util-concurrent:backport-util-concurrent" );
+        }
+
+        build( workingDirectory, remoteRepositories, localRepository, projectArtifacts, additionalCoreArtifacts,
+               containerConfiguration, configurationProperties, addManagementAgent, managementArtifacts );
+    }
+
     public void build( File workingDirectory, List remoteRepositories, ArtifactRepository localRepository,
                        Set projectArtifacts, Set additionalCoreArtifacts, File containerConfiguration,
-                       Properties configurationProperties, boolean addManagementAgent )
+                       Properties configurationProperties, boolean addManagementAgent, Set managementArtifacts )
         throws PlexusRuntimeBuilderException
     {
         // ----------------------------------------------------------------------
@@ -146,10 +164,7 @@ public class DefaultPlexusRuntimeBuilder
             }
             if ( addManagementAgent )
             {
-                newAdditionalCoreArtifacts.add( "mx4j:mx4j" );
-                newAdditionalCoreArtifacts.add( "mx4j:mx4j-remote" );
-                newAdditionalCoreArtifacts.add( "org.livetribe:livetribe-slp" );
-                newAdditionalCoreArtifacts.add( "backport-util-concurrent:backport-util-concurrent" );
+                newAdditionalCoreArtifacts.addAll( managementArtifacts );
             }
 
             coreArtifacts = getCoreArtifacts( projectArtifacts, newAdditionalCoreArtifacts, remoteRepositories,
