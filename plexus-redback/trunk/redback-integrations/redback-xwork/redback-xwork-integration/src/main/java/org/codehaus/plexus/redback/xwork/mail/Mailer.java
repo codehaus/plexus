@@ -92,8 +92,7 @@ public class Mailer
 
         if ( StringUtils.isEmpty( fromAddress ) )
         {
-            getLogger().warn( "Mail Not Sent - No from address for email. subject [" + subject + "]" );
-            return;
+            fromAddress = System.getProperty("user.name") + "@localhost";
         }
 
         MailMessage message = new MailMessage();
