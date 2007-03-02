@@ -23,6 +23,8 @@ import java.util.Map;
 
 public class SavedActionInvocation
 {
+    private String namespace;
+
     private String actionName;
 
     private Map parameterMap;
@@ -31,11 +33,17 @@ public class SavedActionInvocation
 
     public SavedActionInvocation( ActionInvocation invocation )
     {
+        namespace = invocation.getProxy().getNamespace();
         actionName = invocation.getProxy().getActionName();
         methodName = invocation.getProxy().getMethod();
 
         parameterMap = new HashMap();
         parameterMap.putAll( invocation.getInvocationContext().getParameters() );
+    }
+
+    public String getNamespace()
+    {
+        return namespace;
     }
 
     public String getActionName()
@@ -52,5 +60,4 @@ public class SavedActionInvocation
     {
         return methodName;
     }
-
 }
