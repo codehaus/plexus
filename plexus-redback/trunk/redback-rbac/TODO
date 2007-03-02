@@ -11,4 +11,6 @@ Perhaps:
 * provide tooling to click through role/perm/op/resource generation for an app
 * automate graph generation of whole rbac structure
 * provide debug mode for webapps and log all authn/authz requests for page generation and render in debug output (in jsp?)
-
+* easy configuration to turn role assignablity on and off
+* easy to indicate roles need to be checked for existence by an app, like continuum with dynamic roles for each project and then archiva with repositories
+* try to avoid composition over inheritance, its a touch confusing not to mention makes plexus-maven-plugin cry
