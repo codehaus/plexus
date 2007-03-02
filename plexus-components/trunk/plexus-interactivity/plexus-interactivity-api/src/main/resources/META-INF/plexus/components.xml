@@ -20,9 +20,11 @@
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.components.interactivity.InputHandler</role>
+          <role-hint>default</role-hint>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.components.interactivity.OutputHandler</role>
+          <role-hint>default</role-hint>
         </requirement>
       </requirements>
     </component>
