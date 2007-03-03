@@ -1,7 +1,7 @@
 package $package;
 
 /**
- *
+ *  @plexus.component role="${package}.Component" role-hint="default"
  */
 public class DefaultComponent implements Component
 {
