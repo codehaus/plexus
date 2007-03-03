@@ -1,3 +1,5 @@
+/* Plexus Security - $Id$ */
+
 .eXtremeTable {
 	margin: 0px;
 	padding: 0px;
@@ -21,7 +23,7 @@
 	margin-right: 0px;
 }
 
-.outerTableRegion td,.outerTableRegion th {
+.outerTableRegion td, .outerTableRegion th {
 	padding: 2px 2px;
 }
 
@@ -45,24 +47,24 @@
 }
 
 .eXtremeTable .filter .filterInputGroup {
-  border: 1px solid gray;
-  position: relative;
-}
-
-.eXtremeTable .filter .filterInputGroup img {
-  float: right;
-  position: absolute;
-  top: 0px;
-  right: 0px;
+	border: 1px solid gray;
+	background-color: white;
+	padding-right: 16px;
+	padding-left: 1px;
+	background-image: url("../../images/pss/table/filterIcon.gif");
+	background-position: center right;
+	background-repeat: no-repeat;
 }
 
 .eXtremeTable .filter input {
 	font-family: Verdana;
-  border: 0px;
+	background: transparent;
+	border: 0px;
 	font-size: 10px;
-  padding-right: 16px;
-  height: 18px;
-  width: 100%;
+	margin: 0px;
+	margin-right: 16px;
+	height: 16px;
+	width: 100%;
 }
 
 .eXtremeTable .filter select {
