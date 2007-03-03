@@ -28,8 +28,10 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -77,12 +79,13 @@ public final class ServletContextUtils
 
         Object o = context.getAttribute( PlexusConstants.PLEXUS_KEY );
 
+        Map containerContext = initializeContext( context, resolveContextProperties( context ) );
+
         if ( o == null )
         {
             context.log( "Initializing Plexus." );
 
-            container = new DefaultPlexusContainer( null, resolveContextProperties( context ),
-                                                    resolveConfig( context ), null );
+            container = new DefaultPlexusContainer( null, containerContext, resolveConfig( context ), null );
 
             context.setAttribute( PlexusConstants.PLEXUS_KEY, container );
 
@@ -100,10 +103,9 @@ public final class ServletContextUtils
 
             // make a child container. The child container load the WEB-INF/plexus.xml in the WAR.
 
-            // TODO setup a special classWorld ?
+            // TODO setup a new classWorld ?
             // TODO merge with existing context values and existing properties ?
-            container = new DefaultPlexusContainer( null, resolveContextProperties( context ),
-                                                    resolveConfig( context ), null );
+            container = new DefaultPlexusContainer( null, containerContext, resolveConfig( context ), null );
 
             // TODO sure of this ?
             container.setParentPlexusContainer( (PlexusContainer) o );
@@ -136,6 +138,23 @@ public final class ServletContextUtils
     // -----------------------------------------------------------------------
     // Private
     // -----------------------------------------------------------------------
+
+    private Map initializeContext( ServletContext ctx, Properties properties )
+    {
+        Map map = new HashMap();
+
+        // When run inside a Maven plugin (eg, the Jetty plugin), this will pick up the Maven core class
+        // configuration instead of the webapp. While ideally Maven would isolate the plugin classes from itself,
+        // this prevents Plexus from attempting to load a container configuration file as a workaround.
+        map.put( PlexusConstants.IGNORE_CONTAINER_CONFIGURATION, Boolean.TRUE );
+
+        // used by the servlet configuration phase
+        map.put( ServletContext.class.getName(), ctx );
+
+        map.putAll( properties );
+
+        return map;
+    }
 
     private Properties resolveContextProperties( ServletContext context )
     {
