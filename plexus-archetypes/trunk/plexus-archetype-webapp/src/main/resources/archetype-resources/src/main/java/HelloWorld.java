@@ -15,11 +15,10 @@ public class HelloWorld
     public void doGet(HttpServletRequest req, HttpServletResponse res)
         throws ServletException, IOException
     {
-        if ( !hasComponent( Component.class.getName() ) )
+        if ( !hasComponent( Component.class.getName(), "default" ) )
              throw new ServletException("No component implementation available");
 
-        Component component = (Component) lookup( Component.class.getName() );
-
-        new OutputStreamWriter( res.getOutputStream() ).write( component.sayHello() );
+        Component component = (Component) lookup( Component.class.getName(), "default" );
+        res.getWriter().print( component.sayHello() );
     }
 }
