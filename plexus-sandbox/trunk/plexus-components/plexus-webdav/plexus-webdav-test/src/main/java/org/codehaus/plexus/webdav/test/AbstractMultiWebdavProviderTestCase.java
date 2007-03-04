@@ -173,4 +173,23 @@ public class AbstractMultiWebdavProviderTestCase
         assertDavFileNotExists( davSandbox, CONTEXT + "/sandbox/bar", "data.txt" );
         assertDavFileExists( davSnapshots, CONTEXT + "/snapshots/foo", "data.txt" );
     }
+
+    public void testResourceDoesNotExist()
+        throws Exception
+    {
+        // Create a few collections.
+        assertDavMkDir( davSandbox, CONTEXT + "/sandbox/bar" );
+        assertDavMkDir( davSnapshots, CONTEXT + "/snapshots/foo" );
+
+        // Create a resource
+        assertDavTouchFile( davSandbox, CONTEXT + "/sandbox/bar", "data.txt", "yo!" );
+
+        // Get bad resources URLs
+        String urlPrefix = "http://localhost:" + PORT + CONTEXT;
+        assertGet404( urlPrefix + "/sandbox/a/resource/that/does/not/exist.html" );
+        assertGet404( urlPrefix + "/" );
+        assertGet404( urlPrefix + "/snapshots/foo/index.html" );
+        assertGet404( urlPrefix + "/sandbox/bar.html" );
+        assertGet404( urlPrefix + "/nonexistant/index.html" );
+    }
 }

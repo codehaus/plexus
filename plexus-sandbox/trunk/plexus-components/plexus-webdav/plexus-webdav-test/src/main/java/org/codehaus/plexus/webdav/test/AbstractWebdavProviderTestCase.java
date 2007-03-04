@@ -16,8 +16,10 @@ package org.codehaus.plexus.webdav.test;
  * limitations under the License.
  */
 
+import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.webdav.lib.WebdavResource;
 import org.apache.webdav.lib.WebdavResources;
 import org.codehaus.plexus.PlexusTestCase;
@@ -358,5 +360,31 @@ public class AbstractWebdavProviderTestCase
         }
 
         assertDavFileExists( webdavResource, path, filename );
+    }
+
+    protected void assertGet404( String url )
+        throws IOException
+    {
+        HttpClient client = new HttpClient();
+        GetMethod method = new GetMethod( url );
+    
+        try
+        {
+            client.executeMethod( method );
+    
+            if ( method.getStatusCode() == 404 )
+            {
+                // Expected path.
+                return;
+            }
+    
+            fail( "Request for resource " + url + " should have resulted in an HTTP 404 (Not Found) response, "
+                + "instead got code " + method.getStatusCode() + " <" + method.getStatusText() + ">." );
+        }
+        catch ( HttpException e )
+        {
+            System.err.println( "HTTP Response: " + e.getReasonCode() + " " + e.getReason() );
+            throw e;
+        }
     }
 }
