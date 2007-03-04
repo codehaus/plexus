@@ -59,6 +59,13 @@ public class SimpleDavServerComponent
 
     private DAVProcessor davProcessor;
 
+    public ReplacementGetMethod methodGet;
+
+    public SimpleDavServerComponent()
+    {
+        methodGet = new ReplacementGetMethod();
+    }
+
     public String getPrefix()
     {
         return prefix;
@@ -100,7 +107,6 @@ public class SimpleDavServerComponent
     /**
      * Replace the problematic dav methods with local hacked versions.
      * 
-     * TODO: Remove when upgrading it.could.webdav to v0.5
      * @param davProcessor
      * @throws DavServerException 
      */
@@ -113,9 +119,13 @@ public class SimpleDavServerComponent
             fldInstance.setAccessible( true );
 
             Map mapInstances = (Map) fldInstance.get( davProcessor );
-            
+
             // Replace MOVE method.
+            // TODO: Remove MOVE method when upgrading it.could.webdav to v0.5
             mapInstances.put( "MOVE", (DAVMethod) new HackedMoveMethod() );
+
+            // Replace GET method.
+            mapInstances.put( "GET", (DAVMethod) methodGet );
         }
         catch ( Throwable e )
         {
@@ -162,5 +172,11 @@ public class SimpleDavServerComponent
                 triggerResourceRemoved( resource.getRelativePath() );
                 break;
         }
+    }
+    
+    public void setUseIndexHtml( boolean useIndexHtml )
+    {
+        super.setUseIndexHtml( useIndexHtml );
+        this.methodGet.setUseIndexHtml( useIndexHtml );
     }
 }

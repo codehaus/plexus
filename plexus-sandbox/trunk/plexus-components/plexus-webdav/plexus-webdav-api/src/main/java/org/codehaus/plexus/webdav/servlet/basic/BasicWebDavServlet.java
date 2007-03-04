@@ -55,6 +55,7 @@ public class BasicWebDavServlet
 
         String prefix = config.getServletName();
 
+        boolean useIndexHtml = getUseIndexHtml( config );
         File rootDir = getRootDirectory( config );
 
         if ( !rootDir.isDirectory() )
@@ -66,6 +67,7 @@ public class BasicWebDavServlet
         try
         {
             davServer = davManager.createServer( prefix, rootDir );
+            davServer.setUseIndexHtml( useIndexHtml );
             davServer.init( config );
         }
         catch ( DavServerException e )
@@ -89,8 +91,8 @@ public class BasicWebDavServlet
     }
 
     protected void service( HttpServletRequest httpRequest, HttpServletResponse httpResponse )
-    throws ServletException, IOException
-{
+        throws ServletException, IOException
+    {
         DavServerRequest davRequest = new BasicDavServerRequest( new WrappedRepositoryRequest( httpRequest ) );
 
         if ( davServer == null )
@@ -99,7 +101,7 @@ public class BasicWebDavServlet
         }
 
         requestDebug( httpRequest );
-        
+
         if ( !isAuthenticated( davRequest, httpResponse ) )
         {
             return;
@@ -109,7 +111,7 @@ public class BasicWebDavServlet
         {
             return;
         }
-        
+
         try
         {
             davServer.process( davRequest, httpResponse );
@@ -118,5 +120,10 @@ public class BasicWebDavServlet
         {
             throw new ServletException( "Unable to process request.", e );
         }
+    }
+
+    public void setUseIndexHtml( boolean useIndexHtml )
+    {
+        davServer.setUseIndexHtml( useIndexHtml );
     }
 }

@@ -28,7 +28,8 @@ import java.net.URI;
 /**
  * HackedMoveMethod - Created to address the needs for inter-repository moves.
  *
- * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
+ * @author Pier Fumagalli (Original it.could.webdav 0.4 version)
+ * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a> (Hacked Version)
  * @version $Id$
  */
 public class HackedMoveMethod

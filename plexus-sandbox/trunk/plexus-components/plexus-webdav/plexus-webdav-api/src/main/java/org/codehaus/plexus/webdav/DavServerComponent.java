@@ -35,7 +35,7 @@ public interface DavServerComponent
 {
     /** The Plexus ROLE name */
     public static final String ROLE = DavServerComponent.class.getName();
-
+    
     /**
      * Get the Prefix for this server component.
      * @return the prefix associated with this component.
@@ -47,7 +47,45 @@ public interface DavServerComponent
      * @param prefix the prefix to use.
      */
     public void setPrefix( String prefix );
+    
+    /**
+     * <p>
+     * Flag to indicate how the dav server component should treat a GET request against
+     * a DAV Collection.
+     * </p>
+     * 
+     * <p>
+     * If true, the collection being requested will be searched for an index.html (or index.htm) 
+     * file to serve back, before it defaults to displaying the collection (directory) contents.
+     * </p>
+     * 
+     * <p>
+     * If false, the collection will always be presented in as a list of contents.
+     * </p>
+     *   
+     * @return true to use the index.html instead of directory contents.
+     */
+    public boolean isUseIndexHtml();
 
+    /**
+     * <p>
+     * Flag to indicate how the dav server component should treat a GET request against
+     * a DAV Collection.
+     * </p>
+     * 
+     * <p>
+     * If true, the collection being requested will be searched for an index.html (or index.htm) 
+     * file to serve back, before it defaults to displaying the collection (directory) contents.
+     * </p>
+     * 
+     * <p>
+     * If false, the collection will always be presented in as a list of contents.
+     * </p>
+     *   
+     * @param useIndexHtml true to use the index.html instead of directory contents.
+     */
+    public void setUseIndexHtml( boolean useIndexHtml );
+    
     /**
      * Get the root directory for this server.
      * 

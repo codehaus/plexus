@@ -26,6 +26,7 @@ import org.codehaus.plexus.webdav.util.WrappedRepositoryRequest;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.Iterator;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -49,10 +50,14 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class MultiplexedWebDavServlet
     extends AbstractWebDavServlet
 {
+    private boolean useIndexHtml = false;
+    
     public void init( ServletConfig config )
         throws ServletException
     {
         super.init( config );
+        
+        this.useIndexHtml = getUseIndexHtml( config );
 
         try
         {
@@ -78,6 +83,7 @@ public abstract class MultiplexedWebDavServlet
         throws DavServerException
     {
         DavServerComponent serverComponent = getDavManager().createServer( prefix, rootDirectory );
+        serverComponent.setUseIndexHtml( useIndexHtml );
         serverComponent.init( config );
         return serverComponent;
     }
@@ -115,6 +121,15 @@ public abstract class MultiplexedWebDavServlet
         catch ( DavServerException e )
         {
             throw new ServletException( "Unable to process request.", e );
+        }
+    }
+    
+    public void setUseIndexHtml( boolean useIndexHtml )
+    {
+        for ( Iterator it = davManager.getServers().iterator(); it.hasNext(); )
+        {
+            DavServerComponent davServer = (DavServerComponent) it.next();
+            davServer.setUseIndexHtml( useIndexHtml );
         }
     }
 }
