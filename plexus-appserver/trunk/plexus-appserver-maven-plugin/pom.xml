@@ -41,4 +41,17 @@
     </dependency>
     
   </dependencies>
+
+  <!-- TODO remove when release of org.apache.maven.shared:maven-plugin-testing-harness:1.0-beta-2-SNAPSHOT -->
+  <repositories>
+    <repository>
+      <id>apache.snapshots</id>
+      <name>Apache Snapshot Repository</name>
+      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>  
+  
 </project>
