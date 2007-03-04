@@ -25,6 +25,7 @@ import org.codehaus.plexus.webdav.util.WrappedRepositoryRequest;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -90,8 +91,9 @@ public abstract class MultiplexedWebDavServlet
 
         if ( davServer == null )
         {
-            throw new ServletException( "Unable to service DAV request due to unconfigured DavServerComponent "
-                + "for prefix [" + davRequest.getPrefix() + "]." );
+            String errorMessage = "[" + davRequest.getPrefix() + "] Not Found (Likely Unconfigured).";
+            httpResponse.sendError( HttpURLConnection.HTTP_NOT_FOUND, errorMessage );
+            return;
         }
 
         requestDebug( httpRequest );
