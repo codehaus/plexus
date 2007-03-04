@@ -22,16 +22,15 @@ package org.codehaus.plexus.maven.plugin.runtime;
  * SOFTWARE.
  */
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
-import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Properties;
-import java.util.Set;
+
+import org.apache.maven.plugin.MojoExecutionException;
+import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
+import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -100,14 +99,14 @@ public class RuntimeAssemblerMojo
             if ( addManagementAgent && managementArtifacts != null && managementArtifacts.size() > 0 )
             {
                 runtimeBuilder.build( runtimePath, remoteRepositories, localRepository, projectArtifacts,
-                                  additionalCoreArtifacts, runtimeConfiguration, interpolationProperties,
-                                  addManagementAgent, managementArtifacts );
+                                      additionalCoreArtifacts, runtimeConfiguration, interpolationProperties,
+                                      addManagementAgent, managementArtifacts );
             }
             else
             {
                 runtimeBuilder.build( runtimePath, remoteRepositories, localRepository, projectArtifacts,
-                                  additionalCoreArtifacts, runtimeConfiguration, interpolationProperties,
-                                  addManagementAgent );
+                                      additionalCoreArtifacts, runtimeConfiguration, interpolationProperties,
+                                      addManagementAgent );
             }
         }
         catch ( PlexusRuntimeBuilderException e )

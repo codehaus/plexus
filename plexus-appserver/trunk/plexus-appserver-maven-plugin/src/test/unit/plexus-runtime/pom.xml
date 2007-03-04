@@ -1,0 +1,99 @@
+<!--
+/*
+ * Copyright 2007 The Codehaus Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.plexus</groupId>
+  <artifactId>test-plexus-runtime</artifactId>
+  <name>Test Plexus Runtime</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+	  <version>1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-appserver-host</artifactId>
+      <version>2.0-alpha-8-SNAPSHOT</version>
+    </dependency>
+    <!-- Services -->
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-appserver-service-jetty</artifactId>
+      <version>2.0-alpha-8-SNAPSHOT</version>
+      <type>plexus-service</type>
+    </dependency>
+    <!-- Plexus applications -->
+    <dependency>
+      <groupId>foo</groupId>
+      <artifactId>bar</artifactId>
+      <version>1.0</version>
+      <type>plexus-application</type>
+    </dependency>
+
+    <!-- Additional Core Artifacts -->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.8</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging-api</artifactId>
+      <version>1.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-appserver-maven-plugin</artifactId>
+        <version>2.0-alpha-8-SNAPSHOT</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>assemble-runtime</goal>
+              <goal>add-services</goal>
+              <goal>add-apps</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <runtimeConfiguration>${basedir}/src/test/unit/plexus-runtime/plexus.xml</runtimeConfiguration>
+          <runtimeConfigurationProperties>${basedir}/src/test/unit/plexus-runtime/plexus.properties</runtimeConfigurationProperties>
+          <runtimePath>target/plexus-runtime</runtimePath>
+          <additionalCoreArtifacts>
+            <additionalCoreArtifact>commons-logging:commons-logging-api</additionalCoreArtifact>
+            <additionalCoreArtifact>log4j:log4j</additionalCoreArtifact>
+            <additionalCoreArtifact>javax.mail:mail</additionalCoreArtifact>
+          </additionalCoreArtifacts>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+</project>
