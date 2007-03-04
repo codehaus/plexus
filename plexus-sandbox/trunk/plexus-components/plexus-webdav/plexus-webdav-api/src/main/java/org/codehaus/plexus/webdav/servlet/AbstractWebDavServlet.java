@@ -16,6 +16,8 @@ package org.codehaus.plexus.webdav.servlet;
  * limitations under the License.
  */
 
+import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
@@ -46,7 +48,9 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class AbstractWebDavServlet
     extends HttpServlet
 {
-    private boolean debug = true;
+    public static final String INIT_USE_INDEX_HTML = "dav.use.index.html";
+
+    private boolean debug = false;
 
     protected DavServerManager davManager;
 
@@ -259,5 +263,20 @@ public abstract class AbstractWebDavServlet
 
             System.out.println( "------------------------------------------------------------------------" );
         }
+    }
+
+    public abstract void setUseIndexHtml( boolean useIndexHtml );
+
+    public boolean getUseIndexHtml( ServletConfig config )
+        throws ServletException
+    {
+        String useIndexHtml = config.getInitParameter( INIT_USE_INDEX_HTML );
+
+        if ( StringUtils.isEmpty( useIndexHtml ) )
+        {
+            return false;
+        }
+
+        return BooleanUtils.toBoolean( useIndexHtml );
     }
 }

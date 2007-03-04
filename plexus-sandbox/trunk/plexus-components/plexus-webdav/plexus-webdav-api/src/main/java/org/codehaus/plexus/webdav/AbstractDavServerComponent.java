@@ -31,6 +31,7 @@ public abstract class AbstractDavServerComponent
     implements DavServerComponent
 {
     private List listeners;
+    protected boolean useIndexHtml = false;
 
     public AbstractDavServerComponent()
     {
@@ -141,5 +142,15 @@ public abstract class AbstractDavServerComponent
         }
         File resourceFile = new File( rootDir, resource );
         return resourceFile.exists();
+    }
+
+    public boolean isUseIndexHtml()
+    {
+        return this.useIndexHtml;
+    }
+
+    public void setUseIndexHtml( boolean useIndexHtml )
+    {
+        this.useIndexHtml = useIndexHtml;
     }
 }

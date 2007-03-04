@@ -70,9 +70,9 @@ public abstract class AbstractBasicWebdavProviderTestCase
         ServletHolder holder = servletHandler.addServletWithMapping( BasicWebDavServlet.class, CONTEXT + "/*" );
 
         holder.setInitParameter( "dav.root", serverRepoDir.getAbsolutePath() );
-
+        
         server.start();
-
+        
         // Setup Client Side
 
         HttpURL httpSandboxUrl = new HttpURL( "http://localhost:" + PORT + CONTEXT + "/" );
@@ -126,6 +126,7 @@ public abstract class AbstractBasicWebdavProviderTestCase
     public void testPutGet()
         throws Exception
     {
+        // Quote: Rocky
         String contents = "yo!\n";
 
         assertDavTouchFile( davRepo, CONTEXT, "data.txt", contents );
@@ -156,6 +157,7 @@ public abstract class AbstractBasicWebdavProviderTestCase
     public void testResourceCopy()
         throws Exception
     {
+        // Lyrics: Cool and the Gang - Celebrate Good Times
         String contents = "we're gonna have a good time tonite. lets celebrate. it's a celebration. "
             + "cel-e-brate good times, come on!";
 
@@ -187,6 +189,7 @@ public abstract class AbstractBasicWebdavProviderTestCase
     public void testResourceMove()
         throws Exception
     {
+        // Lyrics: Men At Work - Who Can It Be Now
         String contents = "Who can it be knocking at my door?\n" + "Make no sound, tip-toe across the floor.\n"
             + "If he hears, he'll knock all day,\n" + "I'll be trapped, and here I'll have to stay.\n"
             + "I've done no harm, I keep to myself;\n" + "There's nothing wrong with my state of mental health.\n"
@@ -220,6 +223,7 @@ public abstract class AbstractBasicWebdavProviderTestCase
     public void testResourceDelete()
         throws Exception
     {
+        // Lyrics: Men At Work - Down Under
         String contents = "Lying in a den in Bombay\n" + "With a slack jaw, and not much to say\n"
             + "I said to the man, \"Are you trying to tempt me\"\n" + "Because I come from the land of plenty?\n";
 
