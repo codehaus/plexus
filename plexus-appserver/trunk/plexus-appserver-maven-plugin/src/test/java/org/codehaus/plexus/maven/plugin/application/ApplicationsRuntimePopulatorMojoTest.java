@@ -32,25 +32,16 @@ public class ApplicationsRuntimePopulatorMojoTest
     public void testAddApp()
         throws Exception
     {
-        try
-        {
-            ApplicationsRuntimePopulatorMojo mojo = (ApplicationsRuntimePopulatorMojo) getAppServerMojo(
-                                                                                                         "src/test/unit/runtime-populator/pom.xml",
-                                                                                                         "add-apps" );
-            mojo.execute();
+        ApplicationsRuntimePopulatorMojo mojo = (ApplicationsRuntimePopulatorMojo) getAppServerMojo(
+                                                                                                     "src/test/unit/runtime-populator/pom.xml",
+                                                                                                     "add-apps" );
+        mojo.execute();
 
-            File appsDirectory = getTestFile( "target/plexus-runtime/apps" );
-            assertTrue( "no apps directory", appsDirectory.exists() );
-            assertEquals( "not only one file in apps dir", 1, appsDirectory.list().length );
-            File appArtifact = new File( appsDirectory, "bar-1.0.jar" );
-            assertTrue( "bar-1.0.jar not in apps directory", appArtifact.exists() );
-        }
-        catch ( Exception e )
-        {
-            //TODO remove
-            e.printStackTrace();
-            throw e;
-        }
+        File appsDirectory = getTestFile( "target/plexus-runtime/apps" );
+        assertTrue( "no apps directory", appsDirectory.exists() );
+        assertEquals( "not only one file in apps dir", 1, appsDirectory.list().length );
+        File appArtifact = new File( appsDirectory, "bar-1.0.jar" );
+        assertTrue( "bar-1.0.jar not in apps directory", appArtifact.exists() );
 
     }
 
