@@ -113,7 +113,7 @@ public class PasswordAction
             securitySystem.getPolicy().validatePassword( tempUser );
         }
         catch ( PasswordRuleViolationException e )
-        {
+        {        	
             PasswordRuleViolations violations = e.getViolations();
 
             if ( violations != null )
@@ -142,6 +142,11 @@ public class PasswordAction
             String encodedPassword = encoder.encodePassword( newPassword );
             user.setEncodedPassword( encodedPassword );
             user.setPassword( newPassword );
+            // TODO: (address this) check once more for password policy, some policies may require additional information
+            // only available in the actual user object, perhaps the thing to do is add a deep cloning mechanism
+            // to user so we can validate this with a test user.  Its ok to just set and test it here before 
+            // setting the updateUser, but logically its better to maintain a clear separation here
+            securitySystem.getPolicy().validatePassword( user );
             securitySystem.getUserManager().updateUser( user );
         }
         catch ( UserNotFoundException e )
@@ -149,6 +154,21 @@ public class PasswordAction
             addActionError( "Unable to update user '" + user.getUsername() + "' not found." );
             addActionError( "Likely occurs because an Administrator deleted your account." );
 
+            return ERROR;
+        }
+        catch ( PasswordRuleViolationException e )
+        {        	
+            PasswordRuleViolations violations = e.getViolations();
+
+            if ( violations != null )
+            {
+                Iterator it = violations.getLocalizedViolations().iterator();
+                while ( it.hasNext() )
+                {
+                    String violation = (String) it.next();
+                    addFieldError( "newPassword", violation );
+                }
+            }
             return ERROR;
         }
 
