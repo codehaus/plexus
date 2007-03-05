@@ -72,7 +72,7 @@
         <artifactId>plexus-appserver-maven-plugin</artifactId>
         <version>2.0-alpha-8-SNAPSHOT</version>
         <extensions>true</extensions>
-        <!--executions>
+        <executions>
           <execution>
             <phase>process-resources</phase>
             <goals>
@@ -81,16 +81,17 @@
               <goal>add-apps</goal>
             </goals>
           </execution>
-        </executions-->
+        </executions>
         <configuration>
-          <runtimeConfiguration>${basedir}/src/test/unit/plexus-runtime/plexus.xml</runtimeConfiguration>
-          <runtimeConfigurationProperties>${basedir}/src/test/unit/plexus-runtime/plexus.properties</runtimeConfigurationProperties>
           <runtimePath>target/plexus-runtime</runtimePath>
+          <!--runtimeConfiguration>${basedir}/src/test/unit/plexus-runtime/plexus.xml</runtimeConfiguration>
+          <runtimeConfigurationProperties>${basedir}/src/test/unit/plexus-runtime/plexus.properties</runtimeConfigurationProperties>
+          
           <additionalCoreArtifacts>
             <additionalCoreArtifact>commons-logging:commons-logging-api</additionalCoreArtifact>
             <additionalCoreArtifact>log4j:log4j</additionalCoreArtifact>
             <additionalCoreArtifact>javax.mail:mail</additionalCoreArtifact>
-          </additionalCoreArtifacts>
+          </additionalCoreArtifacts-->
         </configuration>
       </plugin>
 
