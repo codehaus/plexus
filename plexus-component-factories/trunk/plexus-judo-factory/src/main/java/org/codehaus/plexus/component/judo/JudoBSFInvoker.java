@@ -15,8 +15,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.plexus.component.MapOrientedComponent;
+import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringOutputStream;
 
@@ -29,6 +32,7 @@ import com.judoscript.JudoEngine;
  * @author eredmond
  */
 public class JudoBSFInvoker
+    implements MapOrientedComponent
 {
     private boolean debug;
 
@@ -271,5 +275,15 @@ public class JudoBSFInvoker
         }
 
         return scriptStream;
+    }
+
+    public void setComponentConfiguration( Map inputs ) throws ComponentConfigurationException
+    {
+        inputs.putAll( inputs );
+    }
+
+    public void addComponentRequirement( ComponentRequirement arg0, Object arg1 ) throws ComponentConfigurationException
+    {
+        
     }
 }

@@ -24,6 +24,8 @@ public class JudoComponentFactory
                                PlexusContainer container )
         throws ComponentInstantiationException
     {
+        componentDescriptor.setComponentComposer( "map-oriented" );
+
         JudoBSFInvoker invoker = new JudoBSFInvoker( componentDescriptor, classRealm );
 
         invoker.setDebug( debug );
