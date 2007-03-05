@@ -15,6 +15,8 @@ import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
 import org.codehaus.plexus.maven.plugin.runtime.testutils.ProjectStub;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.StringUtils;
 
 /*
  * Copyright 2007 The Codehaus Foundation.
@@ -39,11 +41,20 @@ import org.codehaus.plexus.maven.plugin.runtime.testutils.ProjectStub;
 public abstract class AbstractAppServerMojoTest
     extends AbstractMojoTestCase
 {
+
+    protected void setUp()
+        throws Exception
+    {
+        super.setUp();
+        File runtimeDirectory = new File( getBasedir(), "target/plexus-runtime" );
+        FileUtils.deleteDirectory( runtimeDirectory );
+    }
+
     public Mojo getAppServerMojo( String pomXml, String goal )
         throws Exception
     {
         File testPom = new File( getBasedir(), pomXml );
-        RuntimeAssemblerMojo mojo = (RuntimeAssemblerMojo) lookupMojo( goal, testPom );
+        Mojo mojo = lookupMojo( goal, testPom );
         //setVariableValueToObject( mojo, "log", new DebugEnabledLog() );
         MavenProjectStub project = new ProjectStub();
         project.setDependencies( new ArrayList() );
@@ -78,7 +89,7 @@ public abstract class AbstractAppServerMojoTest
         projectArtifacts.add( makeArtifact( "org.codehaus.plexus", "plexus-utils", "1.4" ) );
 
         project.getDependencies().add( makeDependency( "foo", "bar", "1.0", "plexus-application" ) );
-        projectArtifacts.add( makeArtifact( "foo", "bar", "1.0", "plexus-application" ) );
+        projectArtifacts.add( makeArtifact( "bar", "bar", "1.0", "plexus-application" ) );
 
         setVariableValueToObject( mojo, "project", project );
         setVariableValueToObject( mojo, "projectArtifacts", projectArtifacts );
@@ -124,8 +135,8 @@ public abstract class AbstractAppServerMojoTest
         ArtifactFactory artifactFactory = (ArtifactFactory) lookup( ArtifactFactory.ROLE );
         Artifact artifact = artifactFactory.createBuildArtifact( groupId, artifactId, version, type );
 
-        artifact.setFile( getTestFile( "src/test/repository/" + groupId.replaceAll( ".", "/" ) + "/" + artifactId + "/"
-            + artifactId + "-" + version + ".jar" ) );
+        artifact.setFile( getTestFile( "src/test/repository/" + StringUtils.replace( groupId, ".", "/" ) + "/"
+            + artifactId + "/" + version + "/" + artifactId + "-" + version + ".jar" ) );
 
         return artifact;
     }

@@ -19,6 +19,11 @@ import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/**
+ * @author <a href="mailto:olamy@codehaus.org">olamy</a>
+ * @since 4 mars 07
+ * @version $Id$
+ */
 public class ProjectStub
     extends MavenProjectStub
 {

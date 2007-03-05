@@ -77,18 +77,18 @@ public class RuntimeAssemblerMojoTest
 
         File log4j = new File( getBasedir(), "target/plexus-runtime/core/log4j-1.2.8.jar" );
         assertTrue( "log4j not in core dir", log4j.exists() );
-        
+
         File mail = new File( getBasedir(), "target/plexus-runtime/core/mail-1.4.jar" );
         assertTrue( "mail not in core dir", mail.exists() );
-        
+
         //assert on logs directory
         File logsDir = new File( getBasedir(), "target/plexus-runtime/logs" );
         assertTrue( "no logs directory", logsDir.exists() );
-        
+
         //assert on services directory
         File servicesDir = new File( getBasedir(), "target/plexus-runtime/services" );
         assertTrue( "no services directory", servicesDir.exists() );
-        
+
         //assert on temp directory
         File tempDir = new File( getBasedir(), "target/plexus-runtime/temp" );
         assertTrue( "no temp directory", tempDir.exists() );
