@@ -95,7 +95,7 @@ public abstract class AbstractAppServerMojoTest
                                        makeDependency( "org.codehaus.plexus", "plexus-appserver-service-jetty",
                                                        "2.0-alpha-8-SNAPSHOT", "plexus-service" ) );
         projectArtifacts.add( makeArtifact( "org.codehaus.plexus", "plexus-appserver-service-jetty",
-                                            "2.0-alpha-8-SNAPSHOT", "plexus-service" ) );
+                                            "2.0-alpha-8-SNAPSHOT", "plexus-service", "sar" ) );
 
         setVariableValueToObject( mojo, "project", project );
         setVariableValueToObject( mojo, "projectArtifacts", projectArtifacts );
@@ -138,11 +138,17 @@ public abstract class AbstractAppServerMojoTest
     private Artifact makeArtifact( String groupId, String artifactId, String version, String type )
         throws Exception
     {
+        return makeArtifact( groupId, artifactId, version, type, "jar" );
+    }
+
+    private Artifact makeArtifact( String groupId, String artifactId, String version, String type, String fileType )
+        throws Exception
+    {
         ArtifactFactory artifactFactory = (ArtifactFactory) lookup( ArtifactFactory.ROLE );
         Artifact artifact = artifactFactory.createBuildArtifact( groupId, artifactId, version, type );
 
         artifact.setFile( getTestFile( "src/test/repository/" + StringUtils.replace( groupId, ".", "/" ) + "/"
-            + artifactId + "/" + version + "/" + artifactId + "-" + version + ".jar" ) );
+            + artifactId + "/" + version + "/" + artifactId + "-" + version + "." + fileType ) );
 
         return artifact;
     }
