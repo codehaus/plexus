@@ -1,7 +1,8 @@
-package org.codehaus.plexus.maven.plugin.runtime;
+package org.codehaus.plexus.maven.plugin.application;
 
 import java.io.File;
 
+import org.codehaus.plexus.maven.plugin.AbstractAppServerMojoTest;
 import org.codehaus.plexus.maven.plugin.application.ApplicationsRuntimePopulatorMojo;
 
 /*

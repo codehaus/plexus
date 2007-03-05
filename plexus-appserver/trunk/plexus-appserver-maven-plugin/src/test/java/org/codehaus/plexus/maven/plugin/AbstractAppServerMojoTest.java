@@ -1,4 +1,4 @@
-package org.codehaus.plexus.maven.plugin.runtime;
+package org.codehaus.plexus.maven.plugin;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.codehaus.plexus.maven.plugin.runtime.testutils.ProjectStub;
+import org.codehaus.plexus.maven.plugin.testutils.ProjectStub;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -90,6 +90,12 @@ public abstract class AbstractAppServerMojoTest
 
         project.getDependencies().add( makeDependency( "foo", "bar", "1.0", "plexus-application" ) );
         projectArtifacts.add( makeArtifact( "bar", "bar", "1.0", "plexus-application" ) );
+
+        project.getDependencies().add(
+                                       makeDependency( "org.codehaus.plexus", "plexus-appserver-service-jetty",
+                                                       "2.0-alpha-8-SNAPSHOT", "plexus-service" ) );
+        projectArtifacts.add( makeArtifact( "org.codehaus.plexus", "plexus-appserver-service-jetty",
+                                            "2.0-alpha-8-SNAPSHOT", "plexus-service" ) );
 
         setVariableValueToObject( mojo, "project", project );
         setVariableValueToObject( mojo, "projectArtifacts", projectArtifacts );

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.maven.plugin.runtime.testutils;
+package org.codehaus.plexus.maven.plugin.testutils;
 
 import java.util.List;
 
