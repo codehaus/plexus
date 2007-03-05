@@ -126,4 +126,14 @@ public class BasicWebDavServlet
     {
         davServer.setUseIndexHtml( useIndexHtml );
     }
+
+    public DavServerComponent getDavServer()
+    {
+        return davServer;
+    }
+
+    public void setDavServer( DavServerComponent davServer )
+    {
+        this.davServer = davServer;
+    }
 }
