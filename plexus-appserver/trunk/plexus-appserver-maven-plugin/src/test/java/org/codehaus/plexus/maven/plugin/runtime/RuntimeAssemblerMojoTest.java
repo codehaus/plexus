@@ -2,6 +2,8 @@ package org.codehaus.plexus.maven.plugin.runtime;
 
 import java.io.File;
 
+import org.codehaus.plexus.maven.plugin.AbstractAppServerMojoTest;
+
 /*
  * Copyright 2007 The Codehaus Foundation.
  *
