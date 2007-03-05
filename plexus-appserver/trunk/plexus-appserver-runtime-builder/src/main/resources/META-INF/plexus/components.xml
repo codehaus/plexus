@@ -22,6 +22,7 @@
         </requirement>
         <requirement>
           <role>org.apache.maven.artifact.metadata.ArtifactMetadataSource</role>
+          <role-hint>maven</role-hint>
         </requirement>
       </requirements>
     </component>
