@@ -34,7 +34,7 @@ public interface DavServerManager
      * Create a DavServerComponent and start tracking it. 
      * 
      * @param prefix the prefix for this component.
-     * @param rootDirectory the root directory for this component's content.
+     * @param rootDirectory the root directory for this component's content.  null to not set a root directory.
      * @return the created component, suitable for use.
      * @throws DavServerException 
      */
