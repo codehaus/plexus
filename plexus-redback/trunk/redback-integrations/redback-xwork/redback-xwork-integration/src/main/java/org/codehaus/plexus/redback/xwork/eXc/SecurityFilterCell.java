@@ -21,7 +21,6 @@ import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.cell.Cell;
 import org.extremecomponents.table.core.TableConstants;
 import org.extremecomponents.table.core.TableModel;
-import org.extremecomponents.table.view.html.BuilderUtils;
 import org.extremecomponents.table.view.html.TableActions;
 import org.extremecomponents.util.HtmlBuilder;
 
@@ -65,8 +64,6 @@ public class SecurityFilterCell
         html.div();
         html.styleClass( "filterInputGroup" );
         html.close();
-
-        html.img( BuilderUtils.getImage( model, "filterIcon" ), "Filter by " + column.getTitle() );
 
         if ( !column.isFilterable() )
         {
