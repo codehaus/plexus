@@ -47,7 +47,7 @@ public class BasicWebDavServlet
     // -----------------------------------------------------------------------
     // Servlet Implementation
     // -----------------------------------------------------------------------
-
+    
     public void init( ServletConfig config )
         throws ServletException
     {
@@ -57,10 +57,10 @@ public class BasicWebDavServlet
 
         boolean useIndexHtml = getUseIndexHtml( config );
         File rootDir = getRootDirectory( config );
-
-        if ( !rootDir.isDirectory() )
+        
+        if ( rootDir != null &&  !rootDir.isDirectory() )
         {
-            throw new ServletException( "Invalid configuration, the dav root " + rootDir.getPath()
+            log( "Invalid configuration, the dav root " + rootDir.getPath()
                 + " is not a directory: [" + rootDir.getAbsolutePath() + "]" );
         }
 
@@ -84,7 +84,8 @@ public class BasicWebDavServlet
 
         if ( StringUtils.isEmpty( rootDirName ) )
         {
-            throw new ServletException( "Init Parameter '" + INIT_ROOT_DIRECTORY + "' is empty." );
+            log( "Init Parameter '" + INIT_ROOT_DIRECTORY + "' is empty." );
+            return null;
         }
 
         return new File( rootDirName );

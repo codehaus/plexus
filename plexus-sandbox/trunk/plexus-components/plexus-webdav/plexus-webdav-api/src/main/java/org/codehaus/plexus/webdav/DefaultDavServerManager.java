@@ -71,7 +71,10 @@ public class DefaultDavServerManager
             Object o = container.lookup( DavServerComponent.ROLE, providerHint );
             DavServerComponent server = (DavServerComponent) o;
             server.setPrefix( prefix );
-            server.setRootDirectory( rootDirectory );
+            if ( rootDirectory != null )
+            {
+                server.setRootDirectory( rootDirectory );
+            }
 
             servers.put( prefix, server );
 
