@@ -44,12 +44,12 @@
 	white-space: nowrap;
 }
 
-.extremeTable .filter .filterInputGroup {
+.eXtremeTable .filter .filterInputGroup {
   border: 1px solid gray;
   position: relative;
 }
 
-.extremeTable .filter .filterInputGroup img {
+.eXtremeTable .filter .filterInputGroup img {
   float: right;
   position: absolute;
   top: 0px;
