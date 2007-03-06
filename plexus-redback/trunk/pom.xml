@@ -387,6 +387,7 @@
     <module>redback-users</module>
     <module>redback-data-management</module>
     <module>redback-integrations</module>
+    <module>redback-site</module>
   </modules>
   <properties>
     <security.version>1.0-alpha-1-SNAPSHOT</security.version>
