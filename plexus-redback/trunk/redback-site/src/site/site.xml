@@ -18,18 +18,28 @@
  */
 -->
 
-<project name="Maven Release Plugin">
+<project name="Redback">
   <bannerLeft>
-    <name>Plexus RBAC Corporation</name>
-    <src>http://maven.apache.org/images/apache-maven-project.png</src>
-    <href>http://plexus.codehaus.org/</href>
+    <name>Redback</name>
+    <href>http://plexus.codehaus.org/redback</href>
   </bannerLeft>
+  <!--
   <bannerRight>
-    <src>http://maven.apache.org/images/maven-small.gif</src>
+    <name>The Codehaus</name>
+    <href>http://codehaus.org</href>
+    <src>http://media.codehaus.org/images/unity-codehaus-logo.png</src>
   </bannerRight>
+  -->
+  <skin>
+    <groupId>org.codehaus.plexus</groupId>
+    <artifactId>plexus-stylus-skin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </skin>
+ 
   <body>
     <links>
-      <item name="Maven" href="http://maven.apache.org/"/>
+      <item name="Plexus" href="http://plexus.codehaus.org/"/>
+      <item name="The Codehaus" href="http://codehaus.org" />
     </links>
 
     <menu name="Overview">
