@@ -7,6 +7,7 @@
   </parent>
   <artifactId>redback-site</artifactId>
   <name>Redback Site</name>
+  <packaging>pom</packaging>
   <build>
     <plugins>
       <plugin>
@@ -14,8 +15,31 @@
        <artifactId>maven-site-plugin</artifactId>
        <version>2.0-beta-5</version>
        <configuration>
+         <port>9000</port>
+         <tempWebappDirectory>${basedir}/target/site/tempdir</tempWebappDirectory>
        </configuration>
       </plugin>
     </plugins>
   </build>
+  <reporting>
+    <excludeDefaults>true</excludeDefaults>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>cim</report>
+              <report>issue-tracking</report>
+              <report>mailing-list</report>
+              <report>license</report>
+              <report>project-team</report>
+              <report>scm</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>

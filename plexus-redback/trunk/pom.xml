@@ -26,6 +26,11 @@
   <version>1.0-alpha-1-SNAPSHOT</version>
   <name>Plexus Redback</name>
   <packaging>pom</packaging>
+  <url>http://plexus.codehaus.org/redback</url>
+  <issueManagement>
+    <system>Jira</system>
+    <url>http://jira.codehaus.org/browse/PLXREDBACK</url>
+  </issueManagement>
 
   <developers>
     <developer>
