@@ -22,6 +22,7 @@ import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Properties;
@@ -272,6 +273,22 @@ public class CommonsConfigurationRegistryTest
         Registry registry = this.registry.getSection( "properties" );
         assertEquals( "baz", registry.getString( "foo.bar" ) );
         registry.remove( "foo.bar" );
+        assertNull( registry.getString( "foo.bar" ) );
+    }
+
+    public void testRemoveSubset()
+        throws Exception
+    {
+        registry = (Registry) lookup( Registry.class.getName(), "builder" );
+
+        registry.removeSubset( "strings" );
+        assertEquals( Collections.EMPTY_LIST, registry.getList( "strings.string" ) );
+
+        Registry registry = this.registry.getSection( "properties" );
+        assertEquals( "baz", registry.getString( "foo.bar" ) );
+        registry.remove( "foo" );
+        assertEquals( "baz", registry.getString( "foo.bar" ) );
+        registry.removeSubset( "foo" );
         assertNull( registry.getString( "foo.bar" ) );
     }
 

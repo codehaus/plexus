@@ -210,6 +210,21 @@ public class CommonsConfigurationRegistry
         configuration.clearProperty( key );
     }
 
+    public void removeSubset( String key )
+    {
+        // create temporary list since removing a key will modify the iterator from configuration
+        List keys = new ArrayList();
+        for ( Iterator i = configuration.getKeys( key ); i.hasNext(); )
+        {
+            keys.add( i.next() );
+        }
+
+        for ( Iterator i = keys.iterator(); i.hasNext(); )
+        {
+            configuration.clearProperty( (String) i.next() );
+        }
+    }
+
     public String getString( String key )
     {
         return configuration.getString( key );

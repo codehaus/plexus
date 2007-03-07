@@ -235,4 +235,11 @@ public interface Registry
      * @param key the key to remove
      */
     void remove( String key );
+
+    /**
+     * Remove a keyed subset of the registry.
+     *
+     * @param key the subset to remove
+     */
+    void removeSubset( String key );
 }
