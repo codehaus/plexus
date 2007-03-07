@@ -1,9 +1,4 @@
-package org.codehaus.plexus.maven.plugin.testutils;
-
-import java.util.List;
-
-import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-
+<!--
 /*
  * Copyright 2007 The Codehaus Foundation.
  *
@@ -19,24 +14,11 @@ import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * @author <a href="mailto:olamy@codehaus.org">olamy</a>
- * @since 4 mars 07
- * @version $Id$
- */
-public class ProjectStub
-    extends MavenProjectStub
-{
-
-    private List dependencies;
-
-    public List getDependencies()
-    {
-        return dependencies;
-    }
-
-    public void setDependencies( List dependencies )
-    {
-        this.dependencies = dependencies;
-    }
-}
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>bar</groupId>
+  <artifactId>bar</artifactId>
+  <version>1.0</version>
+  <packaging>plexus-application</packaging>
+</project>
