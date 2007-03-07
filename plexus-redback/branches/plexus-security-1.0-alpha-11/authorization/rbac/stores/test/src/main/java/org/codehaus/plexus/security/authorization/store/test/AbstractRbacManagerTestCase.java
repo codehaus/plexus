@@ -646,6 +646,28 @@ public abstract class AbstractRbacManagerTestCase
         assertEquals( 0, eventTracker.removedPermissionNames.size() );
     }
 
+    public void testUserAssignmentRemoval()
+    	throws Exception
+    {
+    	RBACManager manager = rbacManager;
+
+        Role devRole = getDeveloperRole();
+        manager.saveRole( devRole );
+       
+        // Setup User / Assignment with 1 role.
+        String username = "bob";
+        UserAssignment assignment = manager.createUserAssignment( username );
+        assignment.addRoleName( devRole );
+        assignment = manager.saveUserAssignment( assignment );
+        
+        assertTrue( rbacManager.userAssignmentExists( "bob" ) );
+        
+        rbacManager.removeUserAssignment( "bob" );
+        
+        assertFalse( rbacManager.userAssignmentExists( "bob" ) );
+        
+    }
+    
     public void testGetAssignedRoles()
         throws RbacManagerException
     {
