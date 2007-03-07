@@ -32,5 +32,16 @@
         </properties>
       </configuration>
     </component>
+    <component>
+      <role>org.codehaus.plexus.registry.Registry</role>
+      <implementation>org.codehaus.plexus.registry.commons.CommonsConfigurationRegistry</implementation>
+      <role-hint>test-save</role-hint>
+      <configuration>
+        <properties>
+          <xml fileName="${basedir}/target/test-classes/test-save.xml" config-name="org.codehaus.plexus.registry"
+               config-at="org.codehaus.plexus.registry"/>
+        </properties>
+      </configuration>
+    </component>
   </components>
 </component-set>
