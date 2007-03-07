@@ -31,7 +31,7 @@
   </p>
   <ww:hidden label="Username" name="username" />
   <ww:submit value="Delete User" />
-  <ww:submit value="Cancel" method="cancel"/>
+  <ww:submit value="Cancel" action="userdelete!cancel"/>
 </ww:form>
 
 </body>
