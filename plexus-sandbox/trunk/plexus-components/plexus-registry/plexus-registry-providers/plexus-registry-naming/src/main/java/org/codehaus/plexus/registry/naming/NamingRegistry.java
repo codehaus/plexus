@@ -16,13 +16,13 @@ package org.codehaus.plexus.registry.naming;
  * limitations under the License.
  */
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Properties;
+import org.apache.naming.NamingContext;
+import org.apache.naming.config.Config;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.naming.Naming;
+import org.codehaus.plexus.registry.Registry;
+import org.codehaus.plexus.registry.RegistryException;
+import org.codehaus.plexus.registry.RegistryListener;
 
 import javax.naming.CompositeName;
 import javax.naming.Context;
@@ -32,14 +32,13 @@ import javax.naming.NameClassPair;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-
-import org.apache.naming.NamingContext;
-import org.apache.naming.config.Config;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.naming.Naming;
-import org.codehaus.plexus.registry.Registry;
-import org.codehaus.plexus.registry.RegistryException;
-import org.codehaus.plexus.registry.RegistryListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Properties;
 
 /**
  * @author <a href="mailto:olamy@codehaus.org">olamy</a>
@@ -271,7 +270,7 @@ public class NamingRegistry
         }
     }
 
-    /** 
+    /**
      * @see org.codehaus.plexus.registry.Registry#getKeys()
      */
     public Collection getKeys()
@@ -299,7 +298,7 @@ public class NamingRegistry
         }
     }
 
-    /** 
+    /**
      * @see org.codehaus.plexus.registry.Registry#getProperties(java.lang.String)
      */
     public Properties getProperties( String key )
@@ -342,6 +341,7 @@ public class NamingRegistry
 
     /**
      * <b>do same as getSubset</b>
+     *
      * @see org.codehaus.plexus.registry.Registry#getSection(java.lang.String)
      */
     public Registry getSection( String name )
@@ -349,7 +349,7 @@ public class NamingRegistry
         return this.getSubset( name );
     }
 
-    /** 
+    /**
      * @see org.codehaus.plexus.registry.Registry#getSubsetList(java.lang.String)
      */
     public List getSubsetList( String key )
@@ -537,5 +537,10 @@ public class NamingRegistry
         {
             throw new UnsupportedOperationException( "not supported if non org.apache.naming.NamingContext" );
         }
+    }
+
+    public void remove( String key )
+    {
+        throw new UnsupportedOperationException( "not yet implemented - NamingRegistry.remove()" );
     }
 }

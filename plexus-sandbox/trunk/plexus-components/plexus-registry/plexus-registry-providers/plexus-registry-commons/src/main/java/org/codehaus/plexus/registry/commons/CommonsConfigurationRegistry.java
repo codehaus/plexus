@@ -205,6 +205,11 @@ public class CommonsConfigurationRegistry
         return keys;
     }
 
+    public void remove( String key )
+    {
+        configuration.clearProperty( key );
+    }
+
     public String getString( String key )
     {
         return configuration.getString( key );
@@ -269,8 +274,8 @@ public class CommonsConfigurationRegistry
             }
             catch ( ConfigurationException e )
             {
-                throw new RegistryException( "Unable to add configuration from resource '" + resource + "': "
-                    + e.getMessage(), e );
+                throw new RegistryException(
+                    "Unable to add configuration from resource '" + resource + "': " + e.getMessage(), e );
             }
         }
         else if ( resource.endsWith( ".xml" ) )
@@ -282,14 +287,14 @@ public class CommonsConfigurationRegistry
             }
             catch ( ConfigurationException e )
             {
-                throw new RegistryException( "Unable to add configuration from resource '" + resource + "': "
-                    + e.getMessage(), e );
+                throw new RegistryException(
+                    "Unable to add configuration from resource '" + resource + "': " + e.getMessage(), e );
             }
         }
         else
         {
-            throw new RegistryException( "Unable to add configuration from resource '" + resource
-                + "': unrecognised type" );
+            throw new RegistryException(
+                "Unable to add configuration from resource '" + resource + "': unrecognised type" );
         }
     }
 
@@ -312,8 +317,8 @@ public class CommonsConfigurationRegistry
             }
             catch ( ConfigurationException e )
             {
-                throw new RegistryException( "Unable to add configuration from file '" + file.getName() + "': "
-                    + e.getMessage(), e );
+                throw new RegistryException(
+                    "Unable to add configuration from file '" + file.getName() + "': " + e.getMessage(), e );
             }
         }
         else if ( file.getName().endsWith( ".xml" ) )
@@ -325,14 +330,14 @@ public class CommonsConfigurationRegistry
             }
             catch ( ConfigurationException e )
             {
-                throw new RegistryException( "Unable to add configuration from file '" + file.getName() + "': "
-                    + e.getMessage(), e );
+                throw new RegistryException(
+                    "Unable to add configuration from file '" + file.getName() + "': " + e.getMessage(), e );
             }
         }
         else
         {
-            throw new RegistryException( "Unable to add configuration from file '" + file.getName()
-                + "': unrecognised type" );
+            throw new RegistryException(
+                "Unable to add configuration from file '" + file.getName() + "': unrecognised type" );
         }
     }
 

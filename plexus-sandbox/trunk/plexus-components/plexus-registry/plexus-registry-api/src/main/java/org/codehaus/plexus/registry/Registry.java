@@ -228,4 +228,11 @@ public interface Registry
      * @return the set of keys
      */
     Collection getKeys();
+
+    /**
+     * Remove a keyed element from the registry.
+     *
+     * @param key the key to remove
+     */
+    void remove( String key );
 }

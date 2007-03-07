@@ -16,11 +16,15 @@ package org.codehaus.plexus.registry;
  * limitations under the License.
  */
 
+import org.apache.commons.configuration.XMLConfiguration;
+import org.codehaus.plexus.registry.test.AbstractRegistryTest;
+import org.codehaus.plexus.util.FileUtils;
+
+import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Properties;
-
-import org.codehaus.plexus.registry.test.AbstractRegistryTest;
 
 /**
  * Test the commons configuration registry.
@@ -111,7 +115,8 @@ public class CommonsConfigurationRegistryTest
         assertEquals( "Check system property interpolation", System.getProperty( "user.home" ) + "/.m2/repository",
                       registry.getString( "repository" ) );
 
-        assertEquals( "Check configuration value interpolation", "foo/bar", registry.getString( "test.interpolation" ) );
+        assertEquals( "Check configuration value interpolation", "foo/bar",
+                      registry.getString( "test.interpolation" ) );
     }
 
     public void testAddConfigurationXmlFile()
@@ -132,7 +137,8 @@ public class CommonsConfigurationRegistryTest
         registry = (Registry) lookup( Registry.class.getName(), "default" );
 
         registry
-            .addConfigurationFromFile( getTestFile( "src/test/resources/org/codehaus/plexus/registry/test.properties" ) );
+            .addConfigurationFromFile(
+                getTestFile( "src/test/resources/org/codehaus/plexus/registry/test.properties" ) );
 
         assertEquals( "Check system property default", System.getProperty( "user.dir" ), registry
             .getString( "user.dir" ) );
@@ -256,5 +262,36 @@ public class CommonsConfigurationRegistryTest
         Registry registry = this.registry.getSection( "properties" );
         assertNull( registry.getString( "test.value" ) );
         assertEquals( "baz", registry.getString( "foo.bar" ) );
+    }
+
+    public void testRemoveKey()
+        throws Exception
+    {
+        registry = (Registry) lookup( Registry.class.getName(), "builder" );
+
+        Registry registry = this.registry.getSection( "properties" );
+        assertEquals( "baz", registry.getString( "foo.bar" ) );
+        registry.remove( "foo.bar" );
+        assertNull( registry.getString( "foo.bar" ) );
+    }
+
+    public void testSaveSection()
+        throws Exception
+    {
+        File src = getTestFile( "src/test/resources/test-save.xml" );
+        File dest = getTestFile( "target/test-classes/test-save.xml" );
+        FileUtils.copyFile( src, dest );
+
+        registry = (Registry) lookup( Registry.class.getName(), "test-save" );
+
+        Registry registry = this.registry.getSection( "org.codehaus.plexus.registry" );
+        assertEquals( "check list elements", Arrays.asList( new String[]{"1", "2", "3"} ),
+                      registry.getList( "listElements.listElement" ) );
+
+        registry.remove( "listElements.listElement(1)" );
+        registry.save();
+
+        XMLConfiguration configuration = new XMLConfiguration( dest );
+        assertEquals( Arrays.asList( new String[]{"1", "3"} ), configuration.getList( "listElements.listElement" ) );
     }
 }
