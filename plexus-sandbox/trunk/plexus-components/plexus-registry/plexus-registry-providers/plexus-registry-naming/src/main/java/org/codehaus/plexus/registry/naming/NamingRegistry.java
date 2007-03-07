@@ -541,6 +541,13 @@ public class NamingRegistry
 
     public void remove( String key )
     {
+        // TODO
         throw new UnsupportedOperationException( "not yet implemented - NamingRegistry.remove()" );
+    }
+
+    public void removeSubset( String key )
+    {
+        // TODO
+        throw new UnsupportedOperationException( "not yet implemented - NamingRegistry.removeSubset()" );
     }
 }
