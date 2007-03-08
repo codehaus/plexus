@@ -16,6 +16,10 @@ package org.codehaus.plexus.security.ui.web.action.admin;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.security.rbac.RBACManager;
+import org.codehaus.plexus.security.rbac.RbacManagerException;
+import org.codehaus.plexus.security.rbac.RbacObjectInvalidException;
+import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.security.rbac.Resource;
 import org.codehaus.plexus.security.ui.web.action.AbstractSecurityAction;
 import org.codehaus.plexus.security.ui.web.action.CancellableAction;
@@ -46,7 +50,12 @@ public class UserDeleteAction
     /**
      * @plexus.requirement
      */
-    private UserManager manager;
+    private UserManager userManager;
+
+    /**
+     * @plexus.requirement role-hint="cached"
+     */
+    private RBACManager rbacManager;
 
     // ------------------------------------------------------------------
     // Action Parameters
@@ -63,7 +72,7 @@ public class UserDeleteAction
         if ( username == null )
         {
             addActionError( "Unable to delete user based on null username." );
-            return SUCCESS;
+            return ERROR;
         }
 
         return INPUT;
@@ -74,32 +83,43 @@ public class UserDeleteAction
         if ( username == null )
         {
             addActionError( "Invalid user credentials." );
-            return SUCCESS;
+            return ERROR;
         }
 
         if ( StringUtils.isEmpty( username ) )
         {
             addActionError( "Unable to delete user based on empty username." );
-            return SUCCESS;
+            return ERROR;
         }
 
         try
         {
-            manager.deleteUser( username );
+        	rbacManager.removeUserAssignment( username );
+            userManager.deleteUser( username );            
         }
         catch ( UserNotFoundException e )
         {
             addActionError( "Unable to delete non-existant user '" + username + "'" );
+        }
+        catch ( RbacObjectNotFoundException e )
+        {        	
+            // ignore, this is possible since the user may never have had roles assigned
+        }
+        catch ( RbacObjectInvalidException e )
+        {
+            addActionError( "unable to remove user role assignments for '" + username + "' because " + e.getMessage() );
+        }
+        catch ( RbacManagerException e )
+        {
+            addActionError( "unable to remove user role assignments for '" + username + "' because " + e.getMessage() );
         }
 
         return SUCCESS;
     }
 
     /**
-     * Returns the cancel result.
-     * <p/>
-     * A basic implementation would simply be to return CANCEL.
-     *
+     * Returns the cancel result. <p/> A basic implementation would simply be to return CANCEL.
+     * 
      * @return
      */
     public String cancel()
@@ -121,8 +141,7 @@ public class UserDeleteAction
         this.username = username;
     }
 
-    public SecureActionBundle initSecureActionBundle()
-        throws SecureActionException
+    public SecureActionBundle initSecureActionBundle() throws SecureActionException
     {
         SecureActionBundle bundle = new SecureActionBundle();
         bundle.setRequiresAuthentication( true );
