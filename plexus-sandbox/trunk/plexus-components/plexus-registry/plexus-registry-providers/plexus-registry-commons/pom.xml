@@ -36,6 +36,7 @@
     <dependency>
       <groupId>org.codehaus.plexus.registry</groupId>
       <artifactId>plexus-registry-test</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-configuration</groupId>
