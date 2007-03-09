@@ -21,6 +21,7 @@
       <version>1.0-alpha-18</version>
     </dependency>
   </dependencies>
+  <url>http://plexus.codehaus.org/plexus-servlet/</url>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-servlet/trunk/</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-servlet/trunk</developerConnection>
