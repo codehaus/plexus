@@ -4,7 +4,7 @@
   <artifactId>plexus</artifactId>
   <packaging>pom</packaging>
   <name>Plexus</name>
-  <version>1.0.11</version>
+  <version>1.0.12-SNAPSHOT</version>
   <ciManagement>
     <notifiers>
       <notifier>
