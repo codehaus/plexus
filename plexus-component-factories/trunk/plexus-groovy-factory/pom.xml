@@ -1,4 +1,4 @@
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>plexus-component-factories</artifactId>
@@ -6,7 +6,7 @@
     <version>1.0-alpha-9</version>
   </parent>
   <artifactId>plexus-groovy-factory</artifactId>
-  <version>1.0-alpha-6-SNAPSHOT</version>
+  <version>1.0-alpha-6</version>
   <name>Plexus Groovy Factory</name>
 
   <dependencies>
@@ -50,4 +50,10 @@
     </plugins>
   </build>
 
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-component-factories/tags/plexus-groovy-factory-1.0-alpha-6</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-component-factories/tags/plexus-groovy-factory-1.0-alpha-6</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-component-factories/tags/plexus-groovy-factory-1.0-alpha-6</url>
+  </scm>
 </project>
