@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>plexus-component-factories</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0-alpha-9</version>
+  </parent>
+  <artifactId>plexus-groovy-factory</artifactId>
+  <version>1.0-alpha-6</version>
+  <name>Plexus Groovy Factory</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>1.0</version>
+    </dependency>
+    
+    <!--
+    NOTE: 1.2-alpha-4 is broke wrt DefaultStrategy.getResource(), so use a newer version
+    -->
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-classworlds</artifactId>
+      <version>1.2-alpha-7</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+     <defaultGoal>install</defaultGoal>
+
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.4</source>
+            <target>1.4</target>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-idea-plugin</artifactId>
+          <configuration>
+            <jdkName>1.4</jdkName>
+            <jdkLevel>1.4</jdkLevel>
+          </configuration>
+        </plugin>
+    </plugins>
+  </build>
+
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-component-factories/tags/plexus-groovy-factory-1.0-alpha-6</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-component-factories/tags/plexus-groovy-factory-1.0-alpha-6</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-component-factories/tags/plexus-groovy-factory-1.0-alpha-6</url>
+  </scm>
+</project>

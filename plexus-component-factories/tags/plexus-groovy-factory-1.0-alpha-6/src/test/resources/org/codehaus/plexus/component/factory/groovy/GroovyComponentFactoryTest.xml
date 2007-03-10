@@ -1,0 +1,10 @@
+<plexus>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.component.factory.groovy.Hello</role>
+      <implementation>/org/codehaus/plexus/component/factory/groovy/HelloImpl.groovy</implementation>
+      <component-factory>groovy</component-factory>
+    </component>
+  </components>
+</plexus>
+
