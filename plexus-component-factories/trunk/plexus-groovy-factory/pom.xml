@@ -5,9 +5,22 @@
     <groupId>org.codehaus.plexus</groupId>
     <version>1.0-alpha-9</version>
   </parent>
+  
+  <name>Plexus Groovy Factory</name>
   <artifactId>plexus-groovy-factory</artifactId>
   <version>1.0-alpha-7-SNAPSHOT</version>
-  <name>Plexus Groovy Factory</name>
+  
+  <description>
+    Provides support for using Groovy components inside of Plexus.
+  </description>
+
+  <developers>
+    <developer>
+      <id>user57</id>
+      <name>Jason Dillon</name>
+      <email>jason@planet57.com</email>
+    </developer>
+  </developers>
 
   <dependencies>
     <dependency>
