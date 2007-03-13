@@ -1,0 +1,28 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.collections.TestComponent</role>
+      <role-hint>one</role-hint>
+      <implementation>org.codehaus.plexus.collections.TestComponent</implementation>
+      <configuration>
+        <value>first</value>
+      </configuration>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.collections.TestComponent</role>
+      <role-hint>two</role-hint>
+      <implementation>org.codehaus.plexus.collections.TestComponent</implementation>
+      <configuration>
+        <value>second</value>
+      </configuration>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.collections.ActiveMap</role>
+      <role-hint>test-map</role-hint>
+      <implementation>org.codehaus.plexus.collections.DefaultActiveMap</implementation>
+      <configuration>
+        <role>org.codehaus.plexus.collections.TestComponent</role>
+      </configuration>
+    </component>
+  </components>
+</component-set>

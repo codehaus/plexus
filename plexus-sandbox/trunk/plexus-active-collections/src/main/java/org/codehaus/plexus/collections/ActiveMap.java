@@ -9,6 +9,8 @@ public interface ActiveMap
     extends ActiveCollection
 {
 
+    String ROLE = ActiveMap.class.getName();
+
     boolean containsKey( Object key );
 
     boolean containsValue( Object value );
