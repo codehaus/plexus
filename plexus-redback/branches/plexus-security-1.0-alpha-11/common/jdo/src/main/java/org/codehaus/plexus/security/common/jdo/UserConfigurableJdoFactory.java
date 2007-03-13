@@ -61,7 +61,7 @@ public class UserConfigurableJdoFactory
             super.setProperty( "org.jpox.validateSchema", "false" );
             super.setProperty( "org.jpox.validateTables", "false" );
             super.setProperty( "org.jpox.validateConstraints", "false" );
-            super.setProperty( "org.jpox.transactionIsolation", "READ_UNCOMMITTED" );
+            super.setProperty( "org.jpox.transactionIsolation", "READ_COMMITTED" );
             super.setProperty( "org.jpox.rdbms.dateTimezone", "JDK_DEFAULT_TIMEZONE" );
         }
 
