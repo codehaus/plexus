@@ -25,6 +25,11 @@ public class DefaultActiveSet
     private PlexusContainer container;
 
     private Logger logger;
+    
+    public DefaultActiveSet()
+    {
+        // used for plexus init.
+    }
 
     public DefaultActiveSet( PlexusContainer container, Class role )
     {

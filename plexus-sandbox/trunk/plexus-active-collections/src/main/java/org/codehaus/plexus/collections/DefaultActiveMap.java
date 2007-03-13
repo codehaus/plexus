@@ -23,6 +23,11 @@ public class DefaultActiveMap
     private PlexusContainer container;
 
     private Logger logger;
+    
+    public DefaultActiveMap()
+    {
+        //used for plexus init.
+    }
 
     public DefaultActiveMap( PlexusContainer container, Class role )
     {
