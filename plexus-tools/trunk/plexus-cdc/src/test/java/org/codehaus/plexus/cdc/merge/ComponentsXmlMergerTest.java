@@ -50,7 +50,7 @@ public class ComponentsXmlMergerTest
     public void testBasic()
         throws Exception
     {
-        ComponentsXmlMerger merger = (ComponentsXmlMerger) lookup( Merger.ROLE );
+        ComponentsXmlMerger merger = (ComponentsXmlMerger) lookup( Merger.ROLE, "componentsXml" );
         assertNotNull( merger );
     }
 
@@ -62,7 +62,7 @@ public class ComponentsXmlMergerTest
         Document dDoc = new SAXBuilder().build( dominantXml );
         Document rDoc = new SAXBuilder().build( recessiveXml );
         // ComponentsXmlMerger merger = new ComponentsXmlMerger (dDoc);
-        Merger merger = (Merger) lookup( Merger.ROLE );
+        Merger merger = (Merger) lookup( Merger.ROLE, "componentsXml" );
         assertNotNull( merger );
         merger.merge( dDoc, rDoc );
 
