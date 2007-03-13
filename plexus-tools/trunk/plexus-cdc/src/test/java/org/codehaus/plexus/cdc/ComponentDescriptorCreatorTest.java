@@ -24,6 +24,7 @@ package org.codehaus.plexus.cdc;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.component.discovery.DefaultComponentDiscoverer;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
@@ -51,7 +52,7 @@ public class ComponentDescriptorCreatorTest
 
         ComponentDescriptor cd = getComponentDescriptor( csd, "org.codehaus.plexus.cdc.component.Service" );
 
-        assertNull( cd.getRoleHint() );
+        assertEquals( PlexusConstants.PLEXUS_DEFAULT_HINT, cd.getRoleHint() );
 
         assertEquals( "org.codehaus.plexus.cdc.component.Service", cd.getRole() );
 
