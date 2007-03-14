@@ -1,0 +1,17 @@
+ ----- 
+ Plexus Security Integration Points 
+ ----- 
+ 26 October 2006 
+ -----
+
+Plexus Security Integration
+
+ Currently there is only one integration available for use with plexus security.
+ We provide a webapp overlay that will seamlessly integrate with a webwork application to
+ provide virtually all of your security needs.  It comes configured with default system
+ administrator roles and a host of other features.  For a complete listing of what comes
+ with the webwork integration just look for that guide.
+ 
+* <a href="integration/webwork.html">Webwork</a>  
+
+
