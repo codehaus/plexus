@@ -57,7 +57,7 @@ public class UserListAction
     // ------------------------------------------------------------------
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private UserManager manager;
 
