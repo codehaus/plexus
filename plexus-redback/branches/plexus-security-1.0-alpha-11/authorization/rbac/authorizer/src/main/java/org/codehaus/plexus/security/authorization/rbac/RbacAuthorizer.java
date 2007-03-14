@@ -52,12 +52,12 @@ public class RbacAuthorizer
 {
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private RBACManager manager;
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private UserManager userManager;
 

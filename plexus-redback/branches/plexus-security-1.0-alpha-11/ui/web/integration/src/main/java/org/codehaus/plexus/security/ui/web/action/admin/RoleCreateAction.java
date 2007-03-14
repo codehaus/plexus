@@ -48,7 +48,7 @@ public class RoleCreateAction
     // ------------------------------------------------------------------
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private RBACManager manager;
 

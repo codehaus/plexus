@@ -49,7 +49,7 @@ public class UserManagerAuthenticator
     implements Authenticator
 {
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private UserManager userManager;
     
