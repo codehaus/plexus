@@ -47,7 +47,7 @@ public class TaskQueueExecutorTest
         taskQueue = (TaskQueue) lookup( TaskQueue.ROLE );
 
         // look up the taskqueueexecutor so it gets initialized
-        lookup( TaskQueueExecutor.ROLE );
+        lookup( TaskQueueExecutor.ROLE, "build-project" );
     }
 
     public void testTimeoutWithInterrupts()
