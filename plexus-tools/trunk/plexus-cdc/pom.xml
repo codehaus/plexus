@@ -8,7 +8,7 @@
   </parent>
   <artifactId>plexus-cdc</artifactId>
   <name>Plexus Component Descriptor Creator</name>
-  <version>1.0-alpha-9-SNAPSHOT</version>
+  <version>1.0-alpha-9</version>
   <dependencies>
     <dependency>
       <groupId>qdox</groupId>
@@ -26,4 +26,10 @@
       <version>1.0.4</version>
     </dependency>
   </dependencies>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-tools/tags/plexus-cdc-1.0-alpha-9</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-tools/tags/plexus-cdc-1.0-alpha-9</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-tools/tags/plexus-cdc-1.0-alpha-9</url>
+  </scm>
 </project>
