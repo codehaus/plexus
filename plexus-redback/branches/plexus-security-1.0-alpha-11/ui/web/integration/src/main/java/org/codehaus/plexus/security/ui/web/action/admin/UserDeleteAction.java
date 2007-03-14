@@ -48,7 +48,7 @@ public class UserDeleteAction
     // ------------------------------------------------------------------
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private UserManager userManager;
 
