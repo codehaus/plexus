@@ -28,7 +28,6 @@ import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaClassCache;
 import com.thoughtworks.qdox.model.JavaField;
-import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
@@ -78,6 +77,10 @@ public class PlexusDefaultComponentGleaner
     private static final String PLEXUS_LIFECYCLE_HANDLER_PARAMETER = "lifecycle-handler";
 
     private static final String PLEXUS_INSTANTIATION_STARTEGY_PARAMETER = "instantiation-strategy";
+
+    // XXX This is a duplicate of the constant in PlexusConstants, as we do not want to be tied to a
+    // particular container API
+    public static final String PLEXUS_DEFAULT_HINT = "default";
 
     // ----------------------------------------------------------------------
     // ComponentGleaner Implementation
@@ -386,7 +389,7 @@ public class PlexusDefaultComponentGleaner
 
             if ( isMap || isList )
             {
-                if ( cr.getRoleHint() != null && !cr.getRoleHint().equals( PlexusConstants.PLEXUS_DEFAULT_HINT ) )
+                if ( cr.getRoleHint() != null && !cr.getRoleHint().equals( PLEXUS_DEFAULT_HINT ) )
                 {
                     getLogger().warn( "Field: '" + field.getName() + "': A role hint cannot be specified if the " +
                         "field is a java.util.Map or a java.util.List" );
