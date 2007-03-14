@@ -1,0 +1,140 @@
+ -----
+ Plexus Security Role Profiles
+ -----
+ 26 October 2006
+ -----
+
+Plexus Security Role Profiles
+
+ There are two different way types of role profiles available in plexus-security.  A role profile is basically a
+ collection of permissions that are consistently a part of a predetermined role.  For example, in the plexus security
+ webwork integration there is a role called User Administrator.  It is a role that will always exist and will always
+ contain the permission allowing people with that role to edit all user information.  We instead of starting up
+ and application from scratch and configuring all of these kind of base roles up in order to make a workable
+ system we create a role profile for the User Administrator and then through the use of a configuration
+ webwork interceptor (for example) verify that the role has been created and exists.
+
+ Now there are two different types of role profiles.  The static role profile like the User Administrator one mentioned
+ above and one where there the resources are a little more dynamic and it is impossible to predetermine the roles.
+ These are dynamic role profiles and they can be called at anytime to generate a predetermined set of permissions for
+ a dynamic resource.  Archiva makes use of these when a new repository is added, the new respository becomes the
+ resource in the RBAC equation and new roles based off of these dynamic role profiles will be generated, granting the
+ ability to do things like edit the repository and run reports.
+
+ In essence, if you have foreknowledge of the resource concerned, or it is always the Global resource when static role
+ profiles will work, but if you need to be able to decide the resource at runtime then the dynamic role profiles are
+ for you.  The AbstractRoleProfile base class will take care of the vast majority of the heavy lifting in getting the
+ role actually created.
+
+
+* Static Role Profiles
+
+ As mentioned above, static role profiles are useful when the resources are predetermined and you just need to make sure
+ the role exists.  The following represent the methods of interest when making a static role profile.
+
+** Role Name
+
+ This is pretty obvious, it represents the actual name of the role that can be assigned.
+
++--------------------------------------+
+
+    public String getRoleName()
+    {
+        return "My Role";
+    }
+
++--------------------------------------+
+
+** Operations
+
+ These are the names of the operations that are to be created, or if already existing, bound up with the resource
+ to create a new Permission which will be assigned to the newly created role.
+
++--------------------------------------+
+
+    public List getOperations()
+    {
+        List operations = new ArrayList();
+        operations.add( RoleConstants.CONFIGURATION_EDIT_OPERATION );
+        operations.add( RoleConstants.USER_MANAGEMENT_RBAC_ADMIN_OPERATION );
+
+        return operations;
+    }
+
++--------------------------------------+
+
+** Resource
+
+ By default the following is the implementation of the getResource method in the abstract base class.  The global
+ resource is a convention used to denote that the operation in the permission is allowed to be applied regardless of
+ whatever resource is associated with it in the authorization check.
+
++--------------------------------------+
+
+    public Resource getResource()
+        throws RoleProfileException
+    {
+        try
+        {
+            return rbacManager.getGlobalResource();
+        }
+        catch ( RbacManagerException e )
+        {
+            throw new RoleProfileException( "system error with rbac manager", e );
+        }
+    }
+
++--------------------------------------+
+
+** Child Roles
+
+ Roles can have any number of roles mounted as child roles that give the role all of the permissions of the child roles.
+ We see here with this one that if this role where the System Administrator role that we would be able to grant the
+ System Administrator role all of the permissions of the User Administrator without having to manually manage the
+ Operations and Resources.
+
++--------------------------------------+
+
+    public List getChildRoles()
+    {
+        return Collections.singletonList( RoleConstants.USER_ADMINISTRATOR_ROLE );
+    }
+
++--------------------------------------+
+
+** Assignable
+
+ Some roles do not need to be available to be assigned to users, they serve as base roles in essense and can be
+ configured to not be assignable.
+
++--------------------------------------+
+
+    public boolean isAssignable()
+    {
+        return true;
+    }
+
++--------------------------------------+
+
+** Permanent
+
+ A permanent role will be prevented from being removed from the rbac system.
+
++--------------------------------------+
+
+
+    public boolean isPermanent()
+    {
+        return true;
+    }
+
++--------------------------------------+
+
+
+* Dynamic Role Profiles
+
+ Dynamic Role Profiles offer more flexibility in that the resource can be applied to the role to generate unique roles
+ customized for that particular resource.  You'll be able to see what this means when we walk through the methods
+ available below.
+
+ 
