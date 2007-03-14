@@ -50,7 +50,7 @@ public class PermissionsAction
     // ------------------------------------------------------------------
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private RBACManager manager;
 

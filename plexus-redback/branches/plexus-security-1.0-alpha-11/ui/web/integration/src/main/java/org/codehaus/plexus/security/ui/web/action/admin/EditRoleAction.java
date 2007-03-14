@@ -46,7 +46,7 @@ public class EditRoleAction
     // ------------------------------------------------------------------
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private RBACManager manager;
 

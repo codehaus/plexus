@@ -62,7 +62,7 @@ public class SystemInfoAction
     private Registry registry;
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private RBACManager rbacManager;
 

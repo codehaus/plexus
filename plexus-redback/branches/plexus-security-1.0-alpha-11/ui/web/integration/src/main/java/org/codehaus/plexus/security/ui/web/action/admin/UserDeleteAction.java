@@ -53,7 +53,7 @@ public class UserDeleteAction
     private UserManager userManager;
 
     /**
-     * @plexus.requirement role-hint="cached"
+     * @plexus.requirement role-hint="jdo"
      */
     private RBACManager rbacManager;
 
