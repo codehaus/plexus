@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.appserver.ApplicationServerConstants;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
@@ -65,18 +66,20 @@ public class CreateAppConfigurationPhase
         // from the parent container.
         // ----------------------------------------------------------------------
 
-        if ( !contextMap.containsKey( "appserver.home" ) )
+        if ( !contextMap.containsKey( ApplicationServerConstants.APP_SERVER_HOME_KEY ) )
         {
-            contextMap.put( "appserver.home", context.getAppServer().getAppServerHome().getAbsolutePath() );
+            contextMap.put( ApplicationServerConstants.APP_SERVER_HOME_KEY, context.getAppServer().getAppServerHome()
+                .getAbsolutePath() );
         }
 
-        if ( !contextMap.containsKey( "appserver.base" ) )
+        if ( !contextMap.containsKey( ApplicationServerConstants.APP_SERVER_BASE_KEY ) )
         {
-            contextMap.put( "appserver.base", context.getAppServer().getAppServerBase().getAbsolutePath() );
+            contextMap.put( ApplicationServerConstants.APP_SERVER_BASE_KEY, context.getAppServer().getAppServerBase()
+                .getAbsolutePath() );
         }
 
-        getLogger().debug( "appserver.home = " + contextMap.get( "appserver.home" ) );
-        getLogger().debug( "appserver.base = " + contextMap.get( "appserver.base" ) );
+        getLogger().debug( "appserver.home = " + contextMap.get( ApplicationServerConstants.APP_SERVER_HOME_KEY ) );
+        getLogger().debug( "appserver.base = " + contextMap.get( ApplicationServerConstants.APP_SERVER_BASE_KEY ) );
 
         // ----------------------------------------------------------------------------
         // Make the application's home directory available in the context
@@ -95,14 +98,14 @@ public class CreateAppConfigurationPhase
 
         try
         {
-            appserver = serverContainer.getContext().get( "plexus.appserver" );
+            appserver = serverContainer.getContext().get( ApplicationServerConstants.APP_SERVER_CONTEXT_KEY );
         }
         catch ( ContextException e )
         {
             // won't happen.
         }
 
-        contextMap.put( "plexus.appserver", appserver );
+        contextMap.put( ApplicationServerConstants.APP_SERVER_CONTEXT_KEY, appserver );
 
         context.setContextValues( contextMap );
 

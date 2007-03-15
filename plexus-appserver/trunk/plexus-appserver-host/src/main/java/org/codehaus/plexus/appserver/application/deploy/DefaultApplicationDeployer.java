@@ -22,6 +22,15 @@ package org.codehaus.plexus.appserver.application.deploy;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
@@ -32,6 +41,7 @@ import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentE
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.phase.AppDeploymentPhase;
 import org.codehaus.plexus.appserver.application.event.ApplicationListener;
 import org.codehaus.plexus.appserver.application.event.DefaultDeployEvent;
+import org.codehaus.plexus.appserver.application.event.DeployEvent;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.appserver.deploy.AbstractDeployer;
 import org.codehaus.plexus.appserver.service.PlexusService;
@@ -44,14 +54,6 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
@@ -99,13 +101,15 @@ public class DefaultApplicationDeployer
             try
             {
                 AppDeploymentPhase phase = (AppDeploymentPhase) appServerContainer.lookup( AppDeploymentPhase.ROLE, id,
-                                                                                           appServerContainer.getContainerRealm() );
+                                                                                           appServerContainer
+                                                                                               .getContainerRealm() );
 
                 phase.execute( context );
             }
             catch ( ComponentLookupException e )
             {
-                throw new ApplicationServerException( "The requested app server lifecycle phase cannot be found: " + id,
+                throw new ApplicationServerException(
+                                                      "The requested app server lifecycle phase cannot be found: " + id,
                                                       e );
             }
             catch ( AppDeploymentException e )
@@ -115,6 +119,7 @@ public class DefaultApplicationDeployer
                 throw new ApplicationServerException( "Error in the app server lifecycle " + id + " phase.", e );
             }
         }
+        
     }
 
     // ----------------------------------------------------------------------
@@ -132,7 +137,7 @@ public class DefaultApplicationDeployer
 
         deployJar( file, false );
 
-        DefaultDeployEvent event = createDeployEvent( profile );
+        DeployEvent event = createDeployEvent( profile );
 
         for ( Iterator itr = applicationListeners.iterator(); itr.hasNext(); )
         {
@@ -168,7 +173,7 @@ public class DefaultApplicationDeployer
 
         app.dispose();
 
-        DefaultDeployEvent event = createDeployEvent( profile );
+        DeployEvent event = createDeployEvent( profile );
 
         for ( Iterator itr = applicationListeners.iterator(); itr.hasNext(); )
         {
@@ -200,7 +205,7 @@ public class DefaultApplicationDeployer
     // Events
     // ----------------------------------------------------------------------
 
-    private DefaultDeployEvent createDeployEvent( AppRuntimeProfile runtimeProfile )
+    private DeployEvent createDeployEvent( AppRuntimeProfile runtimeProfile )
     {
         return new DefaultDeployEvent( runtimeProfile );
     }
@@ -229,6 +234,7 @@ public class DefaultApplicationDeployer
 
         try
         {
+            getLogger().info( "deleting application directory " + dir.getPath() );
             FileUtils.deleteDirectory( dir );
         }
         catch ( IOException e )
@@ -242,6 +248,7 @@ public class DefaultApplicationDeployer
         {
             throw new ApplicationServerException( "Failed to delete application: '" + applicationName + "'." );
         }
+
     }
 
     public void addApplicationListener( ApplicationListener listener )
@@ -305,4 +312,10 @@ public class DefaultApplicationDeployer
             throw new ApplicationServerException( "Cannot retrieve app server from context.", e );
         }
     }
+
+    public List getAppRuntimeProfiles()
+    {
+        return Collections.unmodifiableList( new ArrayList( this.deployments.values() ) );
+    }
+
 }

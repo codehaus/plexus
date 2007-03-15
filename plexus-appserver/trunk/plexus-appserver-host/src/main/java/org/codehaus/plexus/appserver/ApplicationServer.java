@@ -24,9 +24,10 @@ package org.codehaus.plexus.appserver;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
-
 import java.io.File;
+import java.util.List;
+
+import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -49,6 +50,12 @@ public interface ApplicationServer
     void undeploy( String id )
         throws ApplicationServerException;
 
+    /**
+     * @return List of AppRuntimeProfile
+     * @since 2.0-alpha-8
+     */
+    List getAppRuntimeProfiles();
+
     void addAppDescriptor( AppDescriptor appDescriptor );
 
     AppDescriptor getAppDescriptor( String appName );
@@ -65,4 +72,5 @@ public interface ApplicationServer
 
     void deleteApplication( String id )
         throws ApplicationServerException;
+
 }

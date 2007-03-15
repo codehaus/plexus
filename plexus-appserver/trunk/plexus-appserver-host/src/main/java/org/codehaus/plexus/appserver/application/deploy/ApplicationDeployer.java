@@ -22,6 +22,8 @@ package org.codehaus.plexus.appserver.application.deploy;
  * SOFTWARE.
  */
 
+import java.util.List;
+
 import org.codehaus.plexus.appserver.ApplicationServerException;
 import org.codehaus.plexus.appserver.application.event.ApplicationListener;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
@@ -45,4 +47,12 @@ public interface ApplicationDeployer
 
     void deleteApplication( String applicationName )
         throws ApplicationServerException;
+
+    /**
+     * <b>the returned view is unmodifiable</b> 
+     * @return List AppRuntimeProfile 
+     * @see AppRuntimeProfile
+     * @since 2.0-alpha-8
+     */
+    List getAppRuntimeProfiles();
 }
