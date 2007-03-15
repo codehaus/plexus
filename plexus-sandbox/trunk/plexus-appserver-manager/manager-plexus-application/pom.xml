@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>plexus-appserver-manager</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>2.0-alpha-8-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.plexus</groupId>
+  <artifactId>manager-plexus-application</artifactId>
+  <packaging>plexus-application</packaging>
+  <name>Plexus Application Server Manager :: Application</name>
+    <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-appserver-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <applicationConfiguration>src/conf/application.xml</applicationConfiguration>
+          <configurationsDirectory>src/conf</configurationsDirectory>
+          <configurationProperties>src/conf/plexus.properties</configurationProperties>
+          <applicationName>manager-plexus-application</applicationName>
+          <runtimeConfiguration>src/conf/plexus.xml</runtimeConfiguration>
+          <runtimeConfigurationProperties>src/conf/plexus.properties</runtimeConfigurationProperties>
+          <runtimePath>target/manager-runtime</runtimePath>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>manager-webapp</artifactId>
+      <type>war</type>
+    </dependency>
+  </dependencies>
+</project>
