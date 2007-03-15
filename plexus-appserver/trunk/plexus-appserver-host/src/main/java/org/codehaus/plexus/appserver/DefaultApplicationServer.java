@@ -24,6 +24,13 @@ package org.codehaus.plexus.appserver;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.appserver.application.deploy.ApplicationDeployer;
@@ -41,13 +48,6 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * @author <a href="mailto:jason@zenplex.com">Jason van Zyl</a>
  * @author <a href="mailto:bob@eng.werken.com">bob mcwhirter</a>
@@ -57,7 +57,6 @@ import java.util.Map;
 
 //- the containers aren't quite right. the appserver container is in the service which might not be correct
 //- the container is not initialized
-
 public class DefaultApplicationServer
     extends AbstractLogEnabled
     implements ApplicationServer, Initializable, Contextualizable, Startable
@@ -107,6 +106,14 @@ public class DefaultApplicationServer
         throws ApplicationServerException
     {
         applicationDeployer.undeploy( id );
+    }
+
+    /** 
+     * @see org.codehaus.plexus.appserver.ApplicationServer#getAppRuntimeProfiles()
+     */
+    public List getAppRuntimeProfiles()
+    {
+        return applicationDeployer.getAppRuntimeProfiles();
     }
 
     public void addAppDescriptor( AppDescriptor appDescriptor )
@@ -164,20 +171,20 @@ public class DefaultApplicationServer
     {
         container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
 
-        container.addContextValue( "plexus.appserver", this );
+        container.addContextValue( ApplicationServerConstants.APP_SERVER_CONTEXT_KEY, this );
 
-        if ( context.contains( "appserver.home" ) )
+        if ( context.contains( ApplicationServerConstants.APP_SERVER_HOME_KEY ) )
         {
-            appServerHome = new File( (String) context.get( "appserver.home" ) );
+            appServerHome = new File( (String) context.get( ApplicationServerConstants.APP_SERVER_HOME_KEY ) );
         }
         else if ( context.contains( "plexus.home" ) )
         {
             appServerHome = new File( (String) context.get( "plexus.home" ) );
         }
 
-        if ( context.contains( "appserver.base" ) )
+        if ( context.contains( ApplicationServerConstants.APP_SERVER_BASE_KEY ) )
         {
-            appServerBase = new File( (String) context.get( "appserver.base" ) );
+            appServerBase = new File( (String) context.get( ApplicationServerConstants.APP_SERVER_BASE_KEY ) );
         }
         else
         {
@@ -205,15 +212,15 @@ public class DefaultApplicationServer
 
             try
             {
-                AppServerPhase appServerPhase =
-                    (AppServerPhase) container.lookup( AppServerPhase.ROLE, appServerPhaseId );
+                AppServerPhase appServerPhase = (AppServerPhase) container.lookup( AppServerPhase.ROLE,
+                                                                                   appServerPhaseId );
 
                 appServerPhase.execute( this );
             }
             catch ( ComponentLookupException e )
             {
-                throw new StartingException(
-                    "The requested app server lifecycle phase cannot be found: " + appServerPhaseId, e );
+                throw new StartingException( "The requested app server lifecycle phase cannot be found: "
+                    + appServerPhaseId, e );
             }
             catch ( AppServerLifecycleException e )
             {
@@ -229,4 +236,5 @@ public class DefaultApplicationServer
         // 1. should shut down all the apps and services properly
         // 2. serialize any configurations
     }
+
 }
