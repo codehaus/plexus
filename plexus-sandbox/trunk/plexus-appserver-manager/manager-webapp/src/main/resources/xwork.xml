@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+/*
+ * Copyright 2007 The Codehaus Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.1.1//EN" "http://www.opensymphony.com/xwork/xwork-1.1.1.dtd">
+<xwork>
+  <include file="webwork-default.xml"/>
+  <package name="default" extends="webwork-default">
+    <interceptors>
+      <interceptor name="exception-logging" class="exceptionLogging"/>
+      <interceptor name="plexusReleaseComponentInterceptor" class="plexusReleaseComponentInterceptor"/>
+      <interceptor-stack name="plexusAppServerManagerStack">
+        <interceptor-ref name="defaultStack"/>
+        <interceptor-ref name="exception-logging"/>
+        <interceptor-ref name="plexusReleaseComponentInterceptor"/>
+      </interceptor-stack>
+    </interceptors>
+    <default-interceptor-ref name="plexusAppServerManagerStack"/>
+    <global-results>
+	  <!-- TODO error.jsp -->
+      <result name="error">/WEB-INF/jsp/error/error.jsp</result>
+      <result name="internal-error">/WEB-INF/jsp/error/error.jsp</result>
+      <result name="internalError" type="redirect">/WEB-INF/jsp/error/error.jsp</result>
+    </global-results>
+    <action name="about" class="about">
+      <result name="success">/WEB-INF/jsp/about.jsp</result>
+    </action>
+	<action name="listApplications" class="listApplications">
+	  <result name="success">/WEB-INF/jsp/applications/listApplications.jsp</result>
+	</action>
+	<action name="displayAddApplication" class="addApplication">
+	  <result name="input">/WEB-INF/jsp/applications/addApplication.jsp</result>		
+    </action>  
+	<action name="addApplication" class="addApplication">
+      <interceptor-ref name="plexusAppServerManagerStack"/>
+      <interceptor-ref name="execAndWait"/>
+      <result name="wait">/WEB-INF/jsp/wait.jsp</result>		
+	  <result name="success" type="chain">listApplications</result>	
+	  <result name="input">/WEB-INF/jsp/applications/addApplication.jsp</result>
+	</action>	  
+	<action name="deleteApplication" class="manageApplication" method="delete">
+	  <result name="success">/WEB-INF/jsp/applications/listApplications.jsp</result>	
+	  <result name="input">/WEB-INF/jsp/applications/listApplications.jsp</result>		
+	</action>	  
+  </package>
+</xwork>
