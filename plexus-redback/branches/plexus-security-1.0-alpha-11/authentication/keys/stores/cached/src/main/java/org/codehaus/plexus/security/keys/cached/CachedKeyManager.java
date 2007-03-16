@@ -40,7 +40,7 @@ public class CachedKeyManager
     implements KeyManager
 {
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private KeyManager keyImpl;
 
