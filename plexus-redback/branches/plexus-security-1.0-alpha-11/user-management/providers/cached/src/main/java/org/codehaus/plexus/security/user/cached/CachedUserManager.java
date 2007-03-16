@@ -41,7 +41,7 @@ public class CachedUserManager
     implements UserManager, UserManagerListener
 {
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private UserManager userImpl;
 
