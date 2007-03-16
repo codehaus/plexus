@@ -61,7 +61,7 @@ public class RegisterAction
     private Mailer mailer;
 
     /**
-     * @plexus.requirement role-hint="jdo"
+     * @plexus.requirement role-hint="cached"
      */
     private RBACManager rbacManager;
 

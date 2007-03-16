@@ -51,7 +51,7 @@ public class GuestUserEnvironmentCheck
     private RoleProfileManager roleProfileManager;
 
     /**
-     * @plexus.requirement role-hint="jdo"
+     * @plexus.requirement role-hint="cached"
      */
     private RBACManager rbacManager;
 

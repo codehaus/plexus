@@ -52,7 +52,7 @@ public class CsvRolesMatrix
     private SecuritySystem securitySystem;
 
     /**
-     * @plexus.requirement role-hint="jdo"
+     * @plexus.requirement role-hint="cached"
      */
     private RBACManager rbacManager;
 
