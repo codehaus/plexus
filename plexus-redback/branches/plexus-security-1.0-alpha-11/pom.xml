@@ -160,6 +160,11 @@
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.security</groupId>
+        <artifactId>plexus-security-user-management-provider-cached</artifactId>
+        <version>${security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.security</groupId>
         <artifactId>plexus-security-user-management-provider-jdo</artifactId>
         <version>${security.version}</version>
       </dependency>
