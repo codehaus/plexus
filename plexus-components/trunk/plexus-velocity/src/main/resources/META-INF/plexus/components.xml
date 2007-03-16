@@ -16,7 +16,7 @@
           </property>
           <property>
             <name>site.resource.loader.class</name>
-            <value>package org.codehaus.plexus.velocity.SiteResourceLoader</value>
+            <value>org.codehaus.plexus.velocity.SiteResourceLoader</value>
           </property>          
           <property>
             <name>velocimacro.messages.on</name>
