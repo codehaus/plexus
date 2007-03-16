@@ -2,6 +2,7 @@
   <components>
     <component>
       <role>org.codehaus.plexus.velocity.VelocityComponent</role>
+      <role-hint>default</role-hint>
       <implementation>org.codehaus.plexus.velocity.DefaultVelocityComponent</implementation>
       <configuration>
         <properties>
