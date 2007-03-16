@@ -57,12 +57,12 @@ public class UserListAction
     // ------------------------------------------------------------------
 
     /**
-     * @plexus.requirement role-hint="jdo"
+     * @plexus.requirement role-hint="cached"
      */
     private UserManager manager;
 
     /**
-     * @plexus.requirement role-hint="jdo"
+     * @plexus.requirement role-hint="cached"
      */
     private RBACManager rbac;
 

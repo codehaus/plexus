@@ -44,7 +44,7 @@ public class OperationsAction
     private static final String LIST = "list";
 
     /**
-     * @plexus.requirement role-hint="jdo"
+     * @plexus.requirement role-hint="cached"
      */
     private RBACManager manager;
 
