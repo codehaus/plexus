@@ -30,7 +30,7 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
 import org.codehaus.plexus.cdc.ComponentDescriptorCreatorException;
-import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
 
 import java.io.File;
 import java.util.Iterator;
