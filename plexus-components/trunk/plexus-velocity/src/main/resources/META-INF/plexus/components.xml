@@ -17,7 +17,11 @@
           <property>
             <name>site.resource.loader.class</name>
             <value>org.codehaus.plexus.velocity.SiteResourceLoader</value>
-          </property>          
+          </property>
+          <property>
+            <name>runtime.log.invalid.references</name>
+            <value>false</value>
+          </property>
           <property>
             <name>velocimacro.messages.on</name>
             <value>false</value>
