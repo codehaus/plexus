@@ -1,4 +1,4 @@
-package org.codehaus.plexus.component.repository.legacy;
+package org.codehaus.plexus.component.repository.cdc;
 
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
