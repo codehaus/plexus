@@ -1,0 +1,48 @@
+<document>
+  <properties>
+    <title>Plexus Maven Plugin How To</title>
+    <author email="olamy@codehaus.org">Olivier Lamy</author>
+  </properties>
+  <body>
+    <section name="Plexus Maven Plugin">
+      <p>This plugin provide some help with Maven : <a href="plugin-info.html">goals</a></p>
+      <subsection name="Component Descriptor Generation">
+        <p>A <a href="descriptor-mojo.html">mojo</a> will generate a component descriptor file.</p>
+        <br />
+        <p>The component descriptor will contains all component defined with <a href="http://plexus.codehaus.org/guides/developer-guide/building-applications/cdc.html">javadoc tags</a> in your sources.</p>
+        <br />
+        <p>Add this plugin (Automatically executes within the lifecycle phase: process-sources) as this :
+          <source>
+<![CDATA[
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+]]>            
+          </source>        
+        </p>
+      </subsection>
+      <subsection name="Component Report">
+        <p>A reporting <a href="components-report-mojo.html">mojo</a> will generated a report on  available components (<a href="http://plexus.codehaus.org/plexus-components/plexus-velocity/plexus/plexus-components.html">sample</a>).</p>
+        <br />
+        <p>Add this plugin in your reporting section as this :
+          <source>
+<![CDATA[
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+      </plugin>
+]]>            
+          </source>        
+        </p>        
+      </subsection>
+    </section>
+  </body>
+</document>
