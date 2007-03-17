@@ -1,4 +1,4 @@
-package org.codehaus.plexus.component.repository.legacy;
+package org.codehaus.plexus.component.repository.cdc;
 
 /**
  * @author <a href="mmaczka@interia.pl">Michal Maczka</a> 

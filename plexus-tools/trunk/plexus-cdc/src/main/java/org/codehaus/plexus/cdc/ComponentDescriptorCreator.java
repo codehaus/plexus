@@ -24,7 +24,7 @@ package org.codehaus.plexus.cdc;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.component.repository.legacy.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
 
 import java.io.File;
 import java.util.List;
