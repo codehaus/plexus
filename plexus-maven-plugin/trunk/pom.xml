@@ -45,7 +45,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-cdc</artifactId>
-      <version>1.0-alpha-10-SNAPSHOT</version>
+      <version>1.0-alpha-10</version>
     </dependency>
   </dependencies>
   <scm> 
