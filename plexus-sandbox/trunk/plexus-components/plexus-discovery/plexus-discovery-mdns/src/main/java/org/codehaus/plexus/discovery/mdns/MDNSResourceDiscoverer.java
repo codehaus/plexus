@@ -40,13 +40,11 @@ import org.codehaus.plexus.util.CollectionUtils;
 
 /**
  * A MulticastDNS Service Discoverer
- *
+ * 
  * @author Aldrin Leal
- * @plexus.component role="org.codehaus.plexus.discovery.ResourceDiscoverer"
- * lifecycle-handler="basic"
+ * @plexus.component role="org.codehaus.plexus.discovery.ResourceDiscoverer" lifecycle-handler="basic"
  */
-public class MDNSResourceDiscoverer
-    implements ResourceDiscoverer, ServiceListener, LogEnabled, Startable
+public class MDNSResourceDiscoverer implements ResourceDiscoverer, ServiceListener, LogEnabled, Startable
 {
     private static final int TIMEOUT_DEFAULT = 5000;
 
@@ -58,7 +56,7 @@ public class MDNSResourceDiscoverer
 
     /**
      * Instância jMDNS
-     *
+     * 
      * @plexus.requirement role-hint="org.codehaus.plexus.discovery.mdns.JmDNSWrapper"
      */
     private JmDNSWrapper jmDNSWrapper;
@@ -83,8 +81,7 @@ public class MDNSResourceDiscoverer
     {
         if ( null != this.resourceTypes )
         {
-            for ( Iterator iterServices = new ArrayList( resourceTypes )
-                .iterator(); iterServices.hasNext(); )
+            for ( Iterator iterServices = new ArrayList( resourceTypes ).iterator(); iterServices.hasNext(); )
             {
                 String curServiceType = (String) iterServices.next();
 
@@ -100,7 +97,7 @@ public class MDNSResourceDiscoverer
 
     /**
      * jmDNSWrapper Getter
-     *
+     * 
      * @return the jmDNSWrapper
      */
     public JmDNSWrapper getJmDNSWrapper()
@@ -110,8 +107,9 @@ public class MDNSResourceDiscoverer
 
     /**
      * jmDNSWrapper Setter
-     *
-     * @param jmDNSWrapper the jmDNSWrapper to set
+     * 
+     * @param jmDNSWrapper
+     *            the jmDNSWrapper to set
      */
     public void setJmDNSWrapper( JmDNSWrapper jmDNSWrapper )
     {
@@ -120,7 +118,7 @@ public class MDNSResourceDiscoverer
 
     /**
      * Returns the ID of this Service
-     *
+     * 
      * @see org.codehaus.plexus.discovery.ServiceDiscoverer#getId()
      */
     public String getId()
@@ -130,7 +128,7 @@ public class MDNSResourceDiscoverer
 
     /**
      * {@inheritDoc}
-     *
+     * 
      * @see org.codehaus.plexus.discovery.ServiceDiscoverer#getName()
      */
     public String getName()
@@ -140,7 +138,7 @@ public class MDNSResourceDiscoverer
 
     /**
      * {@inheritDoc}
-     *
+     * 
      * @see org.codehaus.plexus.discovery.ServiceDiscoverer#getUrl()
      */
     public URL getURL()
@@ -156,7 +154,7 @@ public class MDNSResourceDiscoverer
 
     /**
      * Gets the Resource Types
-     *
+     * 
      * @return the resourceTypes
      */
     public Set getResourceTypes()
@@ -166,7 +164,7 @@ public class MDNSResourceDiscoverer
 
     /**
      * Timeout (ms) Getter
-     *
+     * 
      * @return the timeout (in ms)
      */
     public int getTimeout()
@@ -176,8 +174,9 @@ public class MDNSResourceDiscoverer
 
     /**
      * Timeout (ms) Setter
-     *
-     * @param timeout the timeout to set (in ms)
+     * 
+     * @param timeout
+     *            the timeout to set (in ms)
      */
     public void setTimeout( int timeout )
     {
@@ -186,8 +185,9 @@ public class MDNSResourceDiscoverer
 
     /**
      * Sets the Resource Types
-     *
-     * @param resourceTypes the resourceTypes to set
+     * 
+     * @param resourceTypes
+     *            the resourceTypes to set
      */
     public void setResourceTypes( Set resourceTypes )
     {
@@ -206,13 +206,13 @@ public class MDNSResourceDiscoverer
 
     /**
      * Adds a bunch of Resource Service Types
-     *
-     * @param resourceTypesToInclude Collection of Resource Types to Include
+     * 
+     * @param resourceTypesToInclude
+     *            Collection of Resource Types to Include
      */
     private void addServices( Collection resourceTypesToInclude )
     {
-        for ( Iterator iterInclude = resourceTypesToInclude.iterator(); iterInclude
-            .hasNext(); )
+        for ( Iterator iterInclude = resourceTypesToInclude.iterator(); iterInclude.hasNext(); )
         {
             String resourceTypeToInclude = (String) iterInclude.next();
 
@@ -223,13 +223,13 @@ public class MDNSResourceDiscoverer
 
     /**
      * Removes a bunch of Resource Service Types
-     *
-     * @param resourceTypesToExclude Collection of Resource Types to Exclude
+     * 
+     * @param resourceTypesToExclude
+     *            Collection of Resource Types to Exclude
      */
     private void removeServices( Collection resourceTypesToExclude )
     {
-        for ( Iterator iterExclude = resourceTypesToExclude.iterator(); iterExclude
-            .hasNext(); )
+        for ( Iterator iterExclude = resourceTypesToExclude.iterator(); iterExclude.hasNext(); )
         {
             String resourceTypeToExclude = (String) iterExclude.next();
 
@@ -239,7 +239,7 @@ public class MDNSResourceDiscoverer
 
     /**
      * Boolean Predicate for Execution Status
-     *
+     * 
      * @return true if resource discoverer is alive and kicking, false otherwise
      */
     public boolean isStarted()
@@ -249,11 +249,11 @@ public class MDNSResourceDiscoverer
 
     /**
      * Starts the Service
-     *
-     * @throws StartingException Someone has set us up the bomb
+     * 
+     * @throws StartingException
+     *             Someone has set us up the bomb
      */
-    public void start()
-        throws StartingException
+    public void start() throws StartingException
     {
         try
         {
@@ -298,11 +298,11 @@ public class MDNSResourceDiscoverer
 
     /**
      * Deactivates the service
-     *
-     * @throws StoppingException Someone has set us up the bomb
+     * 
+     * @throws StoppingException
+     *             Someone has set us up the bomb
      */
-    public void stop()
-        throws StoppingException
+    public void stop() throws StoppingException
     {
         try
         {
@@ -338,15 +338,13 @@ public class MDNSResourceDiscoverer
         {
             synchronized ( this )
             {
-                serviceEvent.getDNS().requestServiceInfo( serviceEvent.getType(), serviceEvent.getName(),
-                                                          this.timeout );
+                serviceEvent.getDNS().requestServiceInfo( serviceEvent.getType(), serviceEvent.getName(), this.timeout );
             }
         }
     }
 
     /**
-     * Fired whenever a service is removed (i.e., removes from the found
-     * services)
+     * Fired whenever a service is removed (i.e., removes from the found services)
      */
     public void serviceRemoved( ServiceEvent serviceEvent )
     {
@@ -370,7 +368,7 @@ public class MDNSResourceDiscoverer
                     mddr.setType( serviceEvent.getType() );
                     mddr.setName( serviceEvent.getName() );
                     mddr.setResourceDiscoverer( this );
-                    mddr.setUrl( new URL( serviceEvent.getInfo().getURL() ) );
+                    mddr.setUrl( new URL( fixUrl( serviceEvent.getInfo().getURL() ) ) );
 
                     foundServices.put( key( serviceEvent ), mddr );
                 }
@@ -386,13 +384,28 @@ public class MDNSResourceDiscoverer
     }
 
     /**
+     * Fix broken URLs
+     * @param url url to fix
+     * @return fixed url
+     */
+    private String fixUrl( String url )
+    {
+        while ( -1 != url.indexOf( "///" ) )
+        {
+            url = url.replaceAll( "///", "//" );
+        }
+
+        return url;
+    }
+
+    /**
      * Gets a key for a given serviceEvent
-     *
+     * 
      * @param serviceEvent
      * @return name + type
      */
     private String key( ServiceEvent serviceEvent )
     {
         return serviceEvent.getName() + serviceEvent.getType();
-	}
+    }
 }
