@@ -73,7 +73,7 @@ public class PlexusLifecycleListener
 
             ClassWorld cw = new ClassWorld( "plexus.xwork", getClass().getClassLoader() );
 
-            PlexusContainer pc = new DefaultPlexusContainer( "xwork", containerContext, getConfigurationFile(), cw );
+            PlexusContainer pc = new DefaultPlexusContainer( "xwork", containerContext, getConfigurationUrl(), cw );
 
             // XXX when some app using xwork is deployed using the appserver, the parent classloader used
             // above will be the application container's classrealm.
@@ -184,17 +184,10 @@ public class PlexusLifecycleListener
         }
     }
 
-    private File getConfigurationFile()
+    private URL getConfigurationUrl()
         throws PlexusConfigurationResourceException
     {
-        URL url = Thread.currentThread().getContextClassLoader().getResource( "META-INF/plexus/application.xml" );
-
-        File f = null;
-        if ( url != null )
-        {
-            f = new File( url.getFile() );
-        }
-        return f;
+        return Thread.currentThread().getContextClassLoader().getResource( "META-INF/plexus/application.xml" );
     }
 
     public void contextDestroyed( ServletContextEvent servletContextEvent )
