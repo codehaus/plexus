@@ -1,29 +1,18 @@
 package org.codehaus.plexus.collections;
 
-import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.context.Context;
-import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.LogEnabled;
-import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
 import java.util.Set;
 
 public class DefaultActiveMap
+    extends AbstractActiveMap
     implements ActiveMap, Contextualizable, LogEnabled
 {
 
-    private String role;
-
-    private PlexusContainer container;
-
-    private Logger logger;
-    
     public DefaultActiveMap()
     {
         //used for plexus init.
@@ -31,14 +20,12 @@ public class DefaultActiveMap
 
     public DefaultActiveMap( PlexusContainer container, Class role )
     {
-        this( container, role.getName() );
+        super( container, role.getName() );
     }
 
     public DefaultActiveMap( PlexusContainer container, String role )
     {
-        this.container = container;
-        this.role = role;
-        this.logger = container.getLoggerManager().getLoggerForComponent( ActiveCollectionManager.ROLE );
+        super( container, role );
     }
 
     public boolean containsKey( Object key )
@@ -129,44 +116,4 @@ public class DefaultActiveMap
         return checkedGetMap().values();
     }
 
-    private Map getMap()
-    {
-        try
-        {
-            return checkedGetMap();
-        }
-        catch ( ComponentLookupException e )
-        {
-            logger.debug( "Failed to lookup map for role: " + role, e );
-        }
-
-        return Collections.EMPTY_MAP;
-    }
-
-    private Map checkedGetMap()
-        throws ComponentLookupException
-    {
-        return container.lookupMap( role );
-    }
-    
-    public String getRole()
-    {
-        return role;
-    }
-    
-    protected void setRole( String role )
-    {
-        this.role = role;
-    }
-
-    public void contextualize( Context context )
-        throws ContextException
-    {
-        this.container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
-    }
-
-    public void enableLogging( Logger logger )
-    {
-        this.logger = logger;
-    }
 }
