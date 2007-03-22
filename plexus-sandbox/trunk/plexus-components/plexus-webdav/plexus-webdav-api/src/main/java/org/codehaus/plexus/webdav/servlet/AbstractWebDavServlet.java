@@ -109,7 +109,7 @@ public abstract class AbstractWebDavServlet
      * To effectively not have authentication, just implement this method and always
      * return true.
      * 
-     * @param httpRequest the incoming http request.
+     * @param davRequest the incoming dav request.
      * @param httpResponse the outgoing http response.
      * @return true if user is authenticated, false if not.
      * @throws ServletException if there was a problem performing authencation.
@@ -132,7 +132,7 @@ public abstract class AbstractWebDavServlet
      * to effectively not have authorization, just implement this method and always
      * return true.
      * 
-     * @param httpRequest
+     * @param davRequest
      * @param httpResponse
      * @return
      * @throws ServletException
