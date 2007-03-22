@@ -3,10 +3,11 @@ package org.codehaus.plexus.collections;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 public interface ActiveMap
-    extends ActiveCollection
+    extends ActiveCollection, Map
 {
 
     String ROLE = ActiveMap.class.getName();

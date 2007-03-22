@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.ListIterator;
 
 public interface ActiveList
-    extends ActiveCollection
+    extends ActiveCollection, List
 {
+
+    String ROLE = ActiveList.class.getName();
 
     boolean checkedContains( Object value )
         throws ComponentLookupException;

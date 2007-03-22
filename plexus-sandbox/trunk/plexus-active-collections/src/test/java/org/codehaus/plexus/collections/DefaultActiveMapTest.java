@@ -1,27 +1,18 @@
 package org.codehaus.plexus.collections;
 
-import org.codehaus.plexus.PlexusTestCase;
 
 public class DefaultActiveMapTest
-    extends PlexusTestCase
+    extends ActiveMapTCK
 {
-    
-    private ActiveMap map;
-    
-    public void setUp() throws Exception
+
+    protected ActiveMap constructKnownBadActiveMap()
     {
-        super.setUp();
-        
-        map = (ActiveMap) lookup( ActiveMap.ROLE, "test-map" );
+        return new DefaultActiveMap( getContainer(), TestBadComponent.class );
     }
-    
-    public void testGetMappedComponents()
+
+    protected String getTestMapRoleHint()
     {
-        TestComponent comp1 = (TestComponent) map.get( "one" );
-        assertEquals( "first", comp1.getValue() );
-        
-        TestComponent comp2 = (TestComponent) map.get( "two" );
-        assertEquals( "second", comp2.getValue() );
+        return "default-active-map-test";
     }
 
 }

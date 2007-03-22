@@ -4,10 +4,13 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 
 public interface ActiveSet
-    extends ActiveCollection
+    extends ActiveCollection, Set
 {
+
+    String ROLE = ActiveSet.class.getName();
 
     public boolean contains( Object value );
 
