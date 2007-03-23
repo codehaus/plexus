@@ -23,7 +23,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.plexus.registry</groupId>
   <artifactId>plexus-registry</artifactId>
-  <version>1.0-alpha-2</version>
+  <version>1.0-alpha-3-SNAPSHOT</version>
   <name>Plexus Registry Component</name>
   <packaging>pom</packaging>
   <build>
@@ -79,10 +79,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/tags/plexus-registry-1.0-alpha-2</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/tags/plexus-registry-1.0-alpha-2</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/tags/plexus-registry-1.0-alpha-2</url>
-  </scm>
 </project>
