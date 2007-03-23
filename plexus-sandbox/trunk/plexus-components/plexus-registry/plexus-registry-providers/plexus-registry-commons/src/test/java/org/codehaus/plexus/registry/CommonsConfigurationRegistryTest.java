@@ -292,6 +292,27 @@ public class CommonsConfigurationRegistryTest
         assertNull( registry.getString( "foo.bar" ) );
     }
 
+/* TODO: for 1.4
+    public void testGetForcedCreateByName()
+        throws Exception
+    {
+        registry = (Registry) lookup( Registry.class.getName(), "forceCreate" );
+
+        String testFile = getTestFile( "target/foo-forced" ).getAbsolutePath();
+        assertFalse( FileUtils.fileExists( testFile ) );
+
+        assertNotNull( registry.getSection( "foo" ) );
+    }
+*/
+
+    public void testGetDontForceCreateByName()
+        throws Exception
+    {
+        registry = (Registry) lookup( Registry.class.getName(), "noForceCreate" );
+
+        assertNull( registry.getSection( "foo" ) );
+    }
+
     public void testSaveSection()
         throws Exception
     {
