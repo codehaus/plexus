@@ -43,5 +43,25 @@
         </properties>
       </configuration>
     </component>
+    <component>
+      <role>org.codehaus.plexus.registry.Registry</role>
+      <implementation>org.codehaus.plexus.registry.commons.CommonsConfigurationRegistry</implementation>
+      <role-hint>forceCreate</role-hint>
+      <configuration>
+        <properties>
+          <xml fileName="${basedir}/target/foo-forced" config-name="foo" config-forceCreate="true" config-optional="true"/>
+        </properties>
+      </configuration>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.registry.Registry</role>
+      <implementation>org.codehaus.plexus.registry.commons.CommonsConfigurationRegistry</implementation>
+      <role-hint>noForceCreate</role-hint>
+      <configuration>
+        <properties>
+          <xml fileName="${basedir}/target/foo" config-name="foo" config-optional="true"/>
+        </properties>
+      </configuration>
+    </component>
   </components>
 </component-set>
