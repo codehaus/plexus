@@ -41,6 +41,35 @@
           </excludes>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <version>1.3</version>
+        <executions>
+          <execution>
+            <id>create-component-descriptor</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+          <!-- 
+          <execution>
+            <id>merge</id>
+            <configuration>
+              <output>${project.build.outputDirectory}/META-INF/plexus/components.xml</output>
+              <descriptors>
+                <descriptor>${project.build.directory}/generated-resources/plexus/META-INF/plexus/components.xml</descriptor>
+                <descriptor>src/main/resources/META-INF/plexus/components.xml</descriptor>
+              </descriptors>
+            </configuration>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>merge-descriptors</goal>
+            </goals>
+          </execution>
+           -->
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
