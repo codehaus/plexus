@@ -9,6 +9,25 @@
   <version>1.0.4-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Plexus Logging Parent</name>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-logging-provider-test</artifactId>
+        <version>1.0.4-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-component-api</artifactId>
+        <version>1.0-alpha-22</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-container-default</artifactId>
+        <version>1.0-alpha-22</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <modules>
     <module>plexus-logging-provider-test</module>
     <module>plexus-slf4j-logging</module>
