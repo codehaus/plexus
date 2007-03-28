@@ -37,6 +37,10 @@ PIDDIR="."
 TOOLS_JAR="${JAVA_HOME}/lib/tools.jar"
 if $darwin; then
   TOOLS_JAR="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Classes/classes.jar"
+
+  if [ -z "$JAVA_HOME" ]; then
+    JAVA_HOME="/Library/Java/Home"
+  fi
 fi
 export TOOLS_JAR
 
