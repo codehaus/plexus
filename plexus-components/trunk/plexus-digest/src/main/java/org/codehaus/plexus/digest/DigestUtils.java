@@ -30,6 +30,20 @@ public class DigestUtils
     {
         // don't create this class
     }
+    
+    /**
+     * Take a raw checksum string and verify that it matches the expectedFilename and digester, then
+     * return the trimmed checksum string.
+     * 
+     * @param rawChecksum the raw checksum string that may include the filename.
+     * @param digester the expected digester for this checksum string.
+     * @return the trimmed checksum string (no filename portion)
+     * @throws DigesterException if there was a problem verifying the checksum string.
+     */
+    public static String cleanChecksum( String rawChecksum, Digester digester, String expectedFilename ) throws DigesterException
+    {
+        return cleanChecksum( rawChecksum, digester.getAlgorithm(), expectedFilename );
+    }
 
     public static String cleanChecksum( String checksum, String algorithm, String path )
         throws DigesterException

@@ -24,6 +24,11 @@ package org.codehaus.plexus.digest;
 public class Sha1Digester
     extends AbstractDigester
 {
+    public String getFilenameExtension()
+    {
+        return ".sha1";
+    }
+    
     public Sha1Digester()
     {
         super( new StreamingSha1Digester() );

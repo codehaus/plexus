@@ -33,6 +33,13 @@ public interface Digester
      * @return the algorithm
      */
     String getAlgorithm();
+    
+    /**
+     * The filename extension for this digester.
+     * 
+     * @return the filename extension.
+     */
+    String getFilenameExtension();
 
     /**
      * Calculate a checksum for a file.
