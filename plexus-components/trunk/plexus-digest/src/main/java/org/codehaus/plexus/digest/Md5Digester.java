@@ -24,6 +24,11 @@ package org.codehaus.plexus.digest;
 public class Md5Digester
     extends AbstractDigester
 {
+    public String getFilenameExtension()
+    {
+        return ".md5";
+    }
+    
     public Md5Digester()
     {
         super( new StreamingMd5Digester() );
