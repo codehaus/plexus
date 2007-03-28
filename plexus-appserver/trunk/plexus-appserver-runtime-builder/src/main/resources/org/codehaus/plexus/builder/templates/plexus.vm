@@ -106,7 +106,7 @@ fi
 
 MAIN_CLASS=org.codehaus.plexus.classworlds.launcher.Launcher
 
-exec "$JAVACMD" \
+exec "$JAVACMD" @{app.jvm.options}@ \
   $PLEXUS_OPTS \
   -classpath "${PLEXUS_HOME}"/core/boot/plexus-classworlds-*.jar \
   -Dclassworlds.conf="${PLEXUS_HOME}/conf/classworlds.conf"  \
