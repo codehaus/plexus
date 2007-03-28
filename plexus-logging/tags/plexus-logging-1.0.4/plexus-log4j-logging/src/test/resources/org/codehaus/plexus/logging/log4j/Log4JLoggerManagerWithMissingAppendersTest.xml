@@ -1,0 +1,13 @@
+<plexus>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.logging.LoggerManager</role>
+      <implementation>org.codehaus.plexus.logging.log4j.Log4JLoggerManager</implementation>
+      <lifecycle-handler>basic</lifecycle-handler>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+      <configuration>
+        <threshold>FATAL</threshold>
+      </configuration>
+    </component>
+  </components>
+</plexus>
