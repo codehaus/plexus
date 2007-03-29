@@ -24,6 +24,7 @@ package org.codehaus.plexus.builder.runtime;
 
 import java.io.File;
 import java.util.Properties;
+import java.util.Map;
 
 /**
  * @author Jason van Zyl
@@ -35,4 +36,6 @@ public interface PlexusRuntimeBootloaderGenerator
 
     void generate( File outputDirectory, Properties configurationProperties )
         throws PlexusRuntimeBootloaderGeneratorException;
+
+    Map getPlatformGenerators();
 }
