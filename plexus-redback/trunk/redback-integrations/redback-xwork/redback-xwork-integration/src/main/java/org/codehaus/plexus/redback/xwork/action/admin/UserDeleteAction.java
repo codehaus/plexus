@@ -45,12 +45,12 @@ public class UserDeleteAction extends AbstractSecurityAction implements Cancella
     // ------------------------------------------------------------------
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private UserManager userManager;
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private RBACManager rbacManager;
 

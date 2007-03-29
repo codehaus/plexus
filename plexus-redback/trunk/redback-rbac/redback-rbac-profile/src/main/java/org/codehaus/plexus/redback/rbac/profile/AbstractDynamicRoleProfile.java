@@ -41,7 +41,7 @@ public abstract class AbstractDynamicRoleProfile
     implements DynamicRoleProfile
 {
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     protected RBACManager rbacManager;
 

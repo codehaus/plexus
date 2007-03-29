@@ -40,7 +40,7 @@ public class MailGeneratorTest
     {
         super.setUp();
 
-        generator = (MailGenerator) lookup( MailGenerator.ROLE );
+        generator = (MailGenerator) lookup( MailGenerator.ROLE, "velocity" );
 
         policy = (UserSecurityPolicy) lookup( UserSecurityPolicy.ROLE );
 

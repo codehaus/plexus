@@ -50,17 +50,17 @@ public class DefaultSecuritySystem
     private AuthenticationManager authnManager;
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="rbac"
      */
     private Authorizer authorizer;
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private UserManager userManager;
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private KeyManager keyManager;
 
