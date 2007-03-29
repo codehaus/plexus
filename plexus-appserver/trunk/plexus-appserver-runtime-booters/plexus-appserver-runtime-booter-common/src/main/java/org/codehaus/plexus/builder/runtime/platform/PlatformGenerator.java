@@ -22,8 +22,9 @@ package org.codehaus.plexus.builder.runtime.platform;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGeneratorException;
+
 import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
 
 public interface PlatformGenerator
@@ -31,5 +32,5 @@ public interface PlatformGenerator
     String ROLE = PlatformGenerator.class.getName();
 
     void generate( File binDirectory, String resourceDir, Properties configurationProperties )
-        throws IOException;
+        throws PlexusRuntimeBootloaderGeneratorException;
 }

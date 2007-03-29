@@ -56,9 +56,8 @@ import java.util.Properties;
  * @author Jason van Zyl
  * @version $Id$
  */
-public abstract class AbstractPlexusRuntimeBootloaderGenerator
+public class GeneratorTools
     extends AbstractLogEnabled
-    implements PlexusRuntimeBootloaderGenerator
 {
     private final static String CLASSWORLDS_TEMPLATE = "org/codehaus/plexus/builder/templates/classworlds.vm";
 
@@ -71,9 +70,9 @@ public abstract class AbstractPlexusRuntimeBootloaderGenerator
     /**
      * @requirement
      */
-    protected VelocityComponent velocity;
+    public VelocityComponent velocity;
 
-    protected void executable( File file )
+    public void executable( File file )
         throws PlexusRuntimeBootloaderGeneratorException
     {
         if ( Os.isFamily( "unix" ) )
@@ -97,7 +96,7 @@ public abstract class AbstractPlexusRuntimeBootloaderGenerator
         }
     }
 
-    protected File mkdirs( File directory )
+    public File mkdirs( File directory )
         throws PlexusRuntimeBootloaderGeneratorException
     {
         if ( !directory.exists() )
@@ -112,7 +111,7 @@ public abstract class AbstractPlexusRuntimeBootloaderGenerator
         return directory;
     }
 
-    protected InputStream getResourceAsStream( String resource )
+    public InputStream getResourceAsStream( String resource )
         throws PlexusRuntimeBootloaderGeneratorException
     {
         InputStream is = getClass().getClassLoader().getResourceAsStream( resource );
@@ -129,7 +128,7 @@ public abstract class AbstractPlexusRuntimeBootloaderGenerator
     //
     // ----------------------------------------------------------------------
 
-    protected void filterCopy( File in,
+    public void filterCopy( File in,
                                File out,
                                Map map )
         throws PlexusRuntimeBootloaderGeneratorException
@@ -144,7 +143,7 @@ public abstract class AbstractPlexusRuntimeBootloaderGenerator
         }
     }
 
-    protected void filterCopy( InputStream in,
+    public void filterCopy( InputStream in,
                                File out,
                                Map map )
         throws PlexusRuntimeBootloaderGeneratorException
@@ -152,7 +151,7 @@ public abstract class AbstractPlexusRuntimeBootloaderGenerator
         filterCopy( new InputStreamReader( in ), out, map );
     }
 
-    protected void filterCopy( Reader in,
+    public void filterCopy( Reader in,
                                File out,
                                Map map )
         throws PlexusRuntimeBootloaderGeneratorException
@@ -173,7 +172,7 @@ public abstract class AbstractPlexusRuntimeBootloaderGenerator
         }
     }
 
-    protected void copyResource( String filename,
+    public void copyResource( String filename,
                                  String resource,
                                  boolean makeExecutable,
                                  File basedir )
@@ -196,7 +195,7 @@ public abstract class AbstractPlexusRuntimeBootloaderGenerator
         }
     }
 
-    protected void copyResourceToFile( String resource,
+    public void copyResourceToFile( String resource,
                                        File target )
         throws PlexusRuntimeBootloaderGeneratorException
     {
@@ -224,7 +223,7 @@ public abstract class AbstractPlexusRuntimeBootloaderGenerator
     //
     // ----------------------------------------------------------------------
 
-    private Properties loadConfigurationProperties( File configurationPropertiesFile )
+    public Properties loadConfigurationProperties( File configurationPropertiesFile )
         throws IOException, PlexusRuntimeBootloaderGeneratorException
     {
         Properties properties = new Properties();
@@ -250,7 +249,7 @@ public abstract class AbstractPlexusRuntimeBootloaderGenerator
         return properties;
     }
 
-    private void assertHasProperty( Properties properties,
+    public void assertHasProperty( Properties properties,
                                     String key )
         throws PlexusRuntimeBootloaderGeneratorException
     {
@@ -264,7 +263,7 @@ public abstract class AbstractPlexusRuntimeBootloaderGenerator
     // Velocity methods
     // ----------------------------------------------------------------------
 
-    protected void mergeTemplate( String templateName,
+    public void mergeTemplate( String templateName,
                                   File outputFileName,
                                   boolean dos )
         throws PlexusRuntimeBootloaderGeneratorException
