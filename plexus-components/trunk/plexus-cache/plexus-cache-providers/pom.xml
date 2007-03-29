@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.codehaus.plexus.cache</groupId>
     <artifactId>plexus-cache-parent</artifactId>
-    <version>1.0-alpha-2-SNAPSHOT</version>
+    <version>1.0-alpha-2</version>
   </parent>
   <artifactId>plexus-cache-providers-parent</artifactId>
   <name>Plexus Cache Providers Parent</name>
@@ -14,12 +14,12 @@
       <dependency>
         <groupId>org.codehaus.plexus.cache</groupId>
         <artifactId>plexus-cache-api</artifactId>
-        <version>1.0-alpha-2-SNAPSHOT</version>
+        <version>1.0-alpha-2</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.cache</groupId>
         <artifactId>plexus-cache-test</artifactId>
-        <version>1.0-alpha-2-SNAPSHOT</version>
+        <version>1.0-alpha-2</version>
         <scope>test</scope>
       </dependency>
   </dependencies>
