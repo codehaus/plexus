@@ -50,8 +50,9 @@ import java.util.List;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
- * @plexus.component role="org.codehaus.plexus.security.rbac.RBACManager"
- * role-hint="jdo"
+ * @plexus.component 
+ *   role="org.codehaus.plexus.redback.rbac.RBACManager"
+ *   role-hint="jdo"
  */
 public class JdoRbacManager
     extends AbstractRBACManager

@@ -50,7 +50,7 @@ public class JdoRbacManagerTest
     {
         super.setUp();
 
-        DefaultConfigurableJdoFactory jdoFactory = (DefaultConfigurableJdoFactory) lookup( JdoFactory.ROLE, "users" );
+        DefaultConfigurableJdoFactory jdoFactory = (DefaultConfigurableJdoFactory) lookup( JdoFactory.ROLE, "rbac" );
         assertEquals( DefaultConfigurableJdoFactory.class.getName(), jdoFactory.getClass().getName() );
 
         jdoFactory.setPersistenceManagerFactoryClass( "org.jpox.PersistenceManagerFactoryImpl" ); //$NON-NLS-1$
@@ -91,7 +91,7 @@ public class JdoRbacManagerTest
         }
 
         URL jdoFileUrls[] = new URL[] { getClass()
-            .getResource( "/org/codehaus/plexus/security/authorization/rbac/jdo/package.jdo" ) }; //$NON-NLS-1$
+            .getResource( "/org/codehaus/plexus/redback/rbac/jdo/package.jdo" ) }; //$NON-NLS-1$
         
         if ( ( jdoFileUrls == null ) || ( jdoFileUrls[0] == null ) )
         {

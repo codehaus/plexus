@@ -52,13 +52,13 @@ import java.util.List;
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * @plexus.component role="org.codehaus.plexus.security.authorization.rbac.store.jdo.JdoTool"
+ * @plexus.component role="org.codehaus.plexus.redback.rbac.jdo.JdoTool"
  */
 public class JdoTool
     implements Initializable, DeleteLifecycleListener, StoreLifecycleListener
 {
     /**
-     * @plexus.requirement role-hint="users"
+     * @plexus.requirement role-hint="rbac"
      */
     private JdoFactory jdoFactory;
 
