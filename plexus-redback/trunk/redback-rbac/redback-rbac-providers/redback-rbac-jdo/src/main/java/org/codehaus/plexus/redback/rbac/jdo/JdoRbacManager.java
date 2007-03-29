@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.rbac.store.jdo;
+package org.codehaus.plexus.redback.rbac.jdo;
 
 /*
  * Copyright 2005 The Apache Software Foundation.
@@ -18,24 +18,24 @@ package org.codehaus.plexus.security.authorization.rbac.store.jdo;
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.security.authorization.rbac.jdo.JdoOperation;
-import org.codehaus.plexus.security.authorization.rbac.jdo.JdoPermission;
-import org.codehaus.plexus.security.authorization.rbac.jdo.JdoResource;
-import org.codehaus.plexus.security.authorization.rbac.jdo.JdoRole;
-import org.codehaus.plexus.security.authorization.rbac.jdo.JdoUserAssignment;
-import org.codehaus.plexus.security.authorization.rbac.jdo.RbacJdoModelModelloMetadata;
-import org.codehaus.plexus.security.rbac.AbstractRBACManager;
-import org.codehaus.plexus.security.rbac.Operation;
-import org.codehaus.plexus.security.rbac.Permission;
-import org.codehaus.plexus.security.rbac.RBACManagerListener;
-import org.codehaus.plexus.security.rbac.RBACObjectAssertions;
-import org.codehaus.plexus.security.rbac.RbacManagerException;
-import org.codehaus.plexus.security.rbac.RbacObjectInvalidException;
-import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.security.rbac.RbacPermanentException;
-import org.codehaus.plexus.security.rbac.Resource;
-import org.codehaus.plexus.security.rbac.Role;
-import org.codehaus.plexus.security.rbac.UserAssignment;
+import org.codehaus.plexus.redback.rbac.jdo.JdoOperation;
+import org.codehaus.plexus.redback.rbac.jdo.JdoPermission;
+import org.codehaus.plexus.redback.rbac.jdo.JdoResource;
+import org.codehaus.plexus.redback.rbac.jdo.JdoRole;
+import org.codehaus.plexus.redback.rbac.jdo.JdoUserAssignment;
+import org.codehaus.plexus.redback.rbac.jdo.RbacJdoModelModelloMetadata;
+import org.codehaus.plexus.redback.rbac.AbstractRBACManager;
+import org.codehaus.plexus.redback.rbac.Operation;
+import org.codehaus.plexus.redback.rbac.Permission;
+import org.codehaus.plexus.redback.rbac.RBACManagerListener;
+import org.codehaus.plexus.redback.rbac.RBACObjectAssertions;
+import org.codehaus.plexus.redback.rbac.RbacManagerException;
+import org.codehaus.plexus.redback.rbac.RbacObjectInvalidException;
+import org.codehaus.plexus.redback.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.redback.rbac.RbacPermanentException;
+import org.codehaus.plexus.redback.rbac.Resource;
+import org.codehaus.plexus.redback.rbac.Role;
+import org.codehaus.plexus.redback.rbac.UserAssignment;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.rbac.store.jdo;
+package org.codehaus.plexus.redback.rbac.jdo;
 
 /*
  * Copyright 2006 The Apache Software Foundation.
@@ -17,16 +17,16 @@ package org.codehaus.plexus.security.authorization.rbac.store.jdo;
  */
 
 import junit.framework.TestCase;
-import org.codehaus.plexus.security.authorization.rbac.jdo.JdoOperation;
-import org.codehaus.plexus.security.authorization.rbac.jdo.JdoPermission;
-import org.codehaus.plexus.security.authorization.rbac.jdo.JdoResource;
-import org.codehaus.plexus.security.authorization.rbac.jdo.JdoRole;
-import org.codehaus.plexus.security.authorization.rbac.jdo.JdoUserAssignment;
-import org.codehaus.plexus.security.authorization.rbac.jdo.RbacDatabase;
-import org.codehaus.plexus.security.authorization.rbac.jdo.io.stax.RbacJdoModelStaxReader;
-import org.codehaus.plexus.security.authorization.rbac.jdo.io.stax.RbacJdoModelStaxWriter;
-import org.codehaus.plexus.security.rbac.Operation;
-import org.codehaus.plexus.security.rbac.Resource;
+import org.codehaus.plexus.redback.rbac.jdo.JdoOperation;
+import org.codehaus.plexus.redback.rbac.jdo.JdoPermission;
+import org.codehaus.plexus.redback.rbac.jdo.JdoResource;
+import org.codehaus.plexus.redback.rbac.jdo.JdoRole;
+import org.codehaus.plexus.redback.rbac.jdo.JdoUserAssignment;
+import org.codehaus.plexus.redback.rbac.jdo.RbacDatabase;
+import org.codehaus.plexus.redback.rbac.jdo.io.stax.RbacJdoModelStaxReader;
+import org.codehaus.plexus.redback.rbac.jdo.io.stax.RbacJdoModelStaxWriter;
+import org.codehaus.plexus.redback.rbac.Operation;
+import org.codehaus.plexus.redback.rbac.Resource;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
