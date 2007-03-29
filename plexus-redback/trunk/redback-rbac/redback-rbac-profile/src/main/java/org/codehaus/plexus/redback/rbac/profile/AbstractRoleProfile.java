@@ -41,7 +41,7 @@ public abstract class AbstractRoleProfile
     implements RoleProfile
 {
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     protected RBACManager rbacManager;
 

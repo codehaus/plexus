@@ -50,7 +50,7 @@ public class UserEditAction
     implements CancellableAction
 {
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private RBACManager rbacManager;
 

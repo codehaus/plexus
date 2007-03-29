@@ -46,7 +46,7 @@ public class AddAdminUserAction
     private RoleProfileManager roleManager;
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="jdo"
      */
     private RBACManager rbacManager;
 

@@ -47,12 +47,12 @@ public class TestUsersEnvironmentCheck
 {
 
     /**
-     * @plexus.requirement role-hint=default
+     * @plexus.requirement
      */
     private RoleProfileManager roleProfileManager;
 
     /**
-     * @plexus.requirement
+     * @plexus.requirement role-hint="cached"
      */
     private RBACManager rbacManager;
 
