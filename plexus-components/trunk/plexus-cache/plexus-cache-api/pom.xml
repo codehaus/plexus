@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus.cache</groupId>
-    <artifactId>plexus-cache-parent</artifactId>
+    <artifactId>plexus-cache</artifactId>
     <version>1.0-alpha-3-SNAPSHOT</version>
   </parent>
 

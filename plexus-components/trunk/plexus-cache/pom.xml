@@ -4,11 +4,11 @@
   <parent>
     <groupId>org.codehaus.plexus</groupId>
     <artifactId>plexus-components</artifactId>
-    <version>1.1.9</version>
+    <version>1.1.12</version>
   </parent>
   <groupId>org.codehaus.plexus.cache</groupId>
-  <artifactId>plexus-cache-parent</artifactId>
-  <name>Plexus Cache Component Parent</name>
+  <artifactId>plexus-cache</artifactId>
+  <name>Plexus Cache Component</name>
   <version>1.0-alpha-3-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
@@ -16,11 +16,6 @@
     <module>plexus-cache-test</module>
     <module>plexus-cache-providers</module>
   </modules>
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-cache</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-cache</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/trunk/plexus-cache-parent</url>
-  </scm>
   <dependencyManagement>
     <dependencies>
       <dependency>
