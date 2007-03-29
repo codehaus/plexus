@@ -17,7 +17,7 @@
       <name>AuthenticationKeyDatabase</name>
       <version>1.0.1+</version>
       <fields>
-        <field>
+        <field jpox.column="AUTH_KEYS">
           <name>keys</name>
           <version>1.0.1+</version>
           <association>

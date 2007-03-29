@@ -43,7 +43,7 @@
           <type>String</type>
           <identifier>true</identifier>
         </field>
-        <field>
+        <field jpox.column="USER_PASSWORD">
           <name>password</name>
           <version>1.0.0+</version>
           <type>String</type>
