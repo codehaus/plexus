@@ -1,4 +1,4 @@
-package org.codehaus.plexus.security.authorization.rbac.store.jdo;
+package org.codehaus.plexus.redback.rbac.jdo;
 
 /*
  * Copyright 2001-2006 The Apache Software Foundation.
@@ -19,12 +19,12 @@ package org.codehaus.plexus.security.authorization.rbac.store.jdo;
 import org.codehaus.plexus.jdo.JdoFactory;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.security.authorization.rbac.jdo.JdoRole;
-import org.codehaus.plexus.security.rbac.Permission;
-import org.codehaus.plexus.security.rbac.RBACManagerListener;
-import org.codehaus.plexus.security.rbac.RbacManagerException;
-import org.codehaus.plexus.security.rbac.RbacObjectNotFoundException;
-import org.codehaus.plexus.security.rbac.Role;
+import org.codehaus.plexus.redback.rbac.jdo.JdoRole;
+import org.codehaus.plexus.redback.rbac.Permission;
+import org.codehaus.plexus.redback.rbac.RBACManagerListener;
+import org.codehaus.plexus.redback.rbac.RbacManagerException;
+import org.codehaus.plexus.redback.rbac.RbacObjectNotFoundException;
+import org.codehaus.plexus.redback.rbac.Role;
 import org.codehaus.plexus.util.StringUtils;
 
 import javax.jdo.Extent;
