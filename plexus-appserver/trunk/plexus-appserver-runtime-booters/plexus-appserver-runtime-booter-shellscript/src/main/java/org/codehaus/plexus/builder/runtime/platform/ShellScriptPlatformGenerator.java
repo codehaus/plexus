@@ -24,7 +24,7 @@ package org.codehaus.plexus.builder.runtime.platform;
  *
  * @author Andrew Williams
  * @version $Id$
- * @since 1.0
+ * @since 2.0-alpha-9
  */
 public interface ShellScriptPlatformGenerator
     extends PlatformGenerator

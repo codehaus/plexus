@@ -25,11 +25,12 @@ import java.io.File;
 import java.util.Properties;
 
 /**
- * Created by IntelliJ IDEA.
+ * Simple test for shell scripts, making sure they are found and
+ * output the expected scripts.
  *
  * @author Andrew Williams
  * @version $Id$
- * @since 1.0
+ * @since 2.0-alpha-9
  */
 public class ShellScriptPlexusRuntimeBootloaderGeneratorTest
     extends PlexusTestCase
