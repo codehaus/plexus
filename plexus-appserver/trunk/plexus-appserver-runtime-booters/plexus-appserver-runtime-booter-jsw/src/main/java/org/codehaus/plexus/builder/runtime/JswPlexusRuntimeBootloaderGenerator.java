@@ -66,7 +66,7 @@ public class JswPlexusRuntimeBootloaderGenerator
         // it is common to all the JSW runtime booters.
         // ----------------------------------------------------------------------------
 
-        tools.copyResourceToFile( JSW + "/wrapper-common-32-" + JSW_VERSION + "/lib/wrapper.jar",
+        tools.copyResourceToFile( JSW + "/wrapper-common-" + JSW_VERSION + "/lib/wrapper.jar",
                                   new File( outputDirectory, "boot/wrapper.jar" ) );
     }
 
