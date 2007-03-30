@@ -21,6 +21,7 @@ package org.codehaus.plexus.builder.runtime.platform;
 
 import org.codehaus.plexus.builder.runtime.GeneratorTools;
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGeneratorException;
+import org.codehaus.plexus.builder.runtime.JswPlexusRuntimeBootloaderGenerator;
 
 import java.util.Properties;
 import java.util.Iterator;
@@ -39,7 +40,7 @@ public abstract class AbstractJswPlatformGenerator
 {
     protected static String JSW = "jsw";
 
-    protected static String JSW_VERSION = "3.2.0";
+    protected static String JSW_VERSION = JswPlexusRuntimeBootloaderGenerator.JSW_VERSION;
 
     protected GeneratorTools tools;
 

@@ -38,6 +38,8 @@ public class JswPlexusRuntimeBootloaderGenerator
 {
     private static String JSW = "jsw";
 
+    public static String JSW_VERSION = "3.2.0";
+
     Map platformGenerators;
 
     private GeneratorTools tools;
@@ -64,7 +66,8 @@ public class JswPlexusRuntimeBootloaderGenerator
         // it is common to all the JSW runtime booters.
         // ----------------------------------------------------------------------------
 
-        tools.copyResourceToFile( JSW + "/wrapper.jar", new File( outputDirectory, "boot/wrapper.jar" ) );
+        tools.copyResourceToFile( JSW + "/wrapper-common-32-" + JSW_VERSION + "/lib/wrapper.jar",
+                                  new File( outputDirectory, "boot/wrapper.jar" ) );
     }
 
     public Map getPlatformGenerators()
