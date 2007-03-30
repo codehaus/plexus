@@ -30,7 +30,7 @@ import java.util.Properties;
  *
  * @author Andrew Williams
  * @version $Id$
- * @since 1.0
+ * @since 2.0-alpha-9
  */
 public class WindowsShellScriptPlatformGenerator
     implements ShellScriptPlatformGenerator
