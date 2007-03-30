@@ -6,7 +6,31 @@
       <implementation>org.codehaus.plexus.builder.runtime.ShellScriptPlexusRuntimeBootloaderGenerator</implementation>
       <requirements>
         <requirement>
-          <role>org.codehaus.plexus.velocity.VelocityComponent</role>
+          <role>org.codehaus.plexus.builder.runtime.platform.ShellScriptPlatformGenerator</role>
+          <field-name>platformGenerators</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.builder.runtime.platform.ShellScriptPlatformGenerator</role>
+      <role-hint>unix</role-hint>
+      <implementation>org.codehaus.plexus.builder.runtime.platform.UnixShellScriptPlatformGenerator</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.builder.runtime.platform.ShellScriptPlatformGenerator</role>
+      <role-hint>windows</role-hint>
+      <implementation>org.codehaus.plexus.builder.runtime.platform.WindowsShellScriptPlatformGenerator</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
         </requirement>
       </requirements>
     </component>
