@@ -38,7 +38,7 @@ public class JswPlexusRuntimeBootloaderGenerator
 {
     private static String JSW = "jsw";
 
-    public static String JSW_VERSION = "3.2.0";
+    public static String JSW_VERSION = "3.2.3";
 
     Map platformGenerators;
 
