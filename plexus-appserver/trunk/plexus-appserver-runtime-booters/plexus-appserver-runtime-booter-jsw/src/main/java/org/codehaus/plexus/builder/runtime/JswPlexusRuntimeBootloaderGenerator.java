@@ -22,39 +22,53 @@ package org.codehaus.plexus.builder.runtime;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.builder.runtime.platform.PlatformGenerator;
+import org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator;
 
 import java.io.File;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Iterator;
 
 /**
  * @author <a href="jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  */
 public class JswPlexusRuntimeBootloaderGenerator
-    extends AbstractPlexusRuntimeBootloaderGenerator
+    implements PlexusRuntimeBootloaderGenerator
 {
     private static String JSW = "jsw";
 
-    private Map platformGenerators;
+    Map platformGenerators;
+
+    private GeneratorTools tools;
 
     public void generate( File outputDirectory, Properties configurationProperties )
         throws PlexusRuntimeBootloaderGeneratorException
     {
         // ----------------------------------------------------------------------------
-        // Look up the appropriate generator
+        // Look up the appropriate generators
         // ----------------------------------------------------------------------------
 
-        //TODO will need a generator context as i need more then properties.
+        // for now just run them all, this needs to be configurable
+        // TODO make the list we load configurable
+        Iterator platforms = platformGenerators.keySet().iterator();
+        while ( platforms.hasNext() )
+        {
+            JswPlatformGenerator platform = (JswPlatformGenerator) platformGenerators.get(platforms.next() );
 
-        PlatformGenerator generator = (PlatformGenerator) platformGenerators.get( "" );
+            platform.generate( outputDirectory, null, configurationProperties );
+        }
 
         // ----------------------------------------------------------------------------
-        // The wrapper.jar and wrapper.conf can be dealt with here because these
-        // two bits are common to all the JSW runtime booters.
+        // The wrapper.jar can be dealt with here because
+        // it is common to all the JSW runtime booters.
         // ----------------------------------------------------------------------------
 
-        copyResourceToFile( JSW + "/wrapper.jar", new File( outputDirectory, "boot/wrapper.jar" ) );
+        tools.copyResourceToFile( JSW + "/wrapper.jar", new File( outputDirectory, "boot/wrapper.jar" ) );
+    }
+
+    public Map getPlatformGenerators()
+    {
+        return platformGenerators;
     }
 }
