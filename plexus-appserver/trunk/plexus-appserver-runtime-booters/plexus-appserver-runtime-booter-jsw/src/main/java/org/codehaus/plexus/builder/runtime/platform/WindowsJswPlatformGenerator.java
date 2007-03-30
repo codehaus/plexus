@@ -49,10 +49,9 @@ public class WindowsJswPlatformGenerator
 
         tools.copyResource( WINDOWS + "/wrapper.exe", WINDOWS_SOURCE + "/bin/wrapper.exe", true, binDirectory );
         tools.copyResource( WINDOWS + "/wrapper.dll", WINDOWS_SOURCE + "/lib/wrapper.dll", false, binDirectory );
-// erm - where are these 3?
-//        tools.copyResource( WINDOWS + "/run.bat", WINDOWS_SOURCE + "/bin/run.bat", false, binDirectory );
-//        tools.copyResource( WINDOWS + "/InstallService.bat", WINDOWS_SOURCE + "/bin/InstallService.bat", false, binDirectory );
-//        tools.copyResource( WINDOWS + "/UninstallService.bat", WINDOWS_SOURCE + "/bin/UninstallService.bat", false, binDirectory );
+        tools.copyResource( WINDOWS + "/run.bat", WINDOWS_SOURCE + "/src/bin/App.bat.in", false, binDirectory );
+        tools.copyResource( WINDOWS + "/InstallService.bat", WINDOWS_SOURCE + "/src/bin/InstallApp-NT.bat.in", false, binDirectory );
+        tools.copyResource( WINDOWS + "/UninstallService.bat", WINDOWS_SOURCE + "/src/bin/UninstallApp-NT.bat.in", false, binDirectory );
 
         Properties win32Props = new Properties();
         win32Props.setProperty( "library.path", "../../bin/" + WINDOWS );
