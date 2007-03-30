@@ -4,6 +4,59 @@
       <role>org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGenerator</role>
       <role-hint>jsw</role-hint>
       <implementation>org.codehaus.plexus.builder.runtime.JswPlexusRuntimeBootloaderGenerator</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator</role>
+          <field-name>platformGenerators</field-name>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator</role>
+      <role-hint>linux</role-hint>
+      <implementation>org.codehaus.plexus.builder.runtime.platform.LinuxJswPlatformGenerator</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
+          <field-name>tools</field-name>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator</role>
+      <role-hint>windows</role-hint>
+      <implementation>org.codehaus.plexus.builder.runtime.platform.WindowsJswPlatformGenerator</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
+          <field-name>tools</field-name>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator</role>
+      <role-hint>macosx</role-hint>
+      <implementation>org.codehaus.plexus.builder.runtime.platform.MacOSXJswPlatformGenerator</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
+          <field-name>tools</field-name>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator</role>
+      <role-hint>solaris</role-hint>
+      <implementation>org.codehaus.plexus.builder.runtime.platform.SolarisJswPlatformGenerator</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
+          <field-name>tools</field-name>
+        </requirement>
+      </requirements>
     </component>
   </components>
 </component-set>
