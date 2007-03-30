@@ -1,0 +1,32 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.components.interactivity.InputHandler</role>
+      <role-hint>default</role-hint>
+      <implementation>org.codehaus.plexus.components.interactivity.DefaultInputHandler</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.components.interactivity.OutputHandler</role>
+      <role-hint>default</role-hint>
+      <implementation>org.codehaus.plexus.components.interactivity.DefaultOutputHandler</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.components.interactivity.Prompter</role>
+      <role-hint>default</role-hint>
+      <implementation>org.codehaus.plexus.components.interactivity.DefaultPrompter</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.components.interactivity.InputHandler</role>
+          <role-hint>default</role-hint>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.components.interactivity.OutputHandler</role>
+          <role-hint>default</role-hint>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+</component-set>
