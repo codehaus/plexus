@@ -8,15 +8,9 @@
   <artifactId>plexus-interactivity</artifactId>
   <packaging>pom</packaging>
   <name>Plexus Interactivity Handler Component</name>
-  <version>1.0-alpha-6</version>
+  <version>1.0-alpha-7-SNAPSHOT</version>
   <modules>
     <module>plexus-interactivity-api</module>
     <module>plexus-interactivity-jline</module>
   </modules>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/tags/plexus-interactivity-1.0-alpha-6</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/tags/plexus-interactivity-1.0-alpha-6</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/tags/plexus-interactivity-1.0-alpha-6</url>
-  </scm>
 </project>
