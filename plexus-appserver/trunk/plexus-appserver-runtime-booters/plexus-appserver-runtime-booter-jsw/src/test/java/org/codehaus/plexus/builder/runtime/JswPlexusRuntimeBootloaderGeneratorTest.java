@@ -42,7 +42,7 @@ public class JswPlexusRuntimeBootloaderGeneratorTest
     {
         super.setUp();
 
-        outDir = getTestFile( "target/tmp" );
+        outDir = getTestFile( "target/runtime" );
         outDir.mkdirs();
     }
 
