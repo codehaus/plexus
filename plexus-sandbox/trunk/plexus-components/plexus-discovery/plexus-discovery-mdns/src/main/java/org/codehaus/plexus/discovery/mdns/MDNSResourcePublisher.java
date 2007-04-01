@@ -67,9 +67,9 @@ public class MDNSResourcePublisher
     private Logger logger;
 
     /**
-     * Instância jMDNS
+     * jMDNS Instance
      *
-     * @plexus.requirement role-hint="org.codehaus.plexus.discovery.mdns.JmDNSWrapper"
+     * @plexus.requirement
      */
     private JmDNSWrapper jmDNSWrapper;
 
