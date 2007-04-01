@@ -30,7 +30,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.StoppingException;
  * JMDNSResourcePublisher
  *
  * @author Aldrin Leal
- * @plexus.component role="org.codehaus.plexus.discovery.mdns.JmDNSWrapper"
+ * @plexus.component role="org.codehaus.plexus.discovery.mdns.JmDNSWrapper" role-hint="default"
  * lifecycle-handler="basic"
  * instantiation-strategy="singleton"
  */

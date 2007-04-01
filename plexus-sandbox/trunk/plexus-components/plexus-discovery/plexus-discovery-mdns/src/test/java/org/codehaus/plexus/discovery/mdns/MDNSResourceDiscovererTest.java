@@ -65,11 +65,9 @@ public class MDNSResourceDiscovererTest
 
         String name = this.getName().substring( "test".length() );
 
-        this.resourcePublisher = (MDNSResourcePublisher) this.container
-            .lookup( ResourcePublisher.ROLE );
+        this.resourcePublisher = (MDNSResourcePublisher) lookup( ResourcePublisher.ROLE );
 
-        this.resourceDiscoverer = (MDNSResourceDiscoverer) this.container
-            .lookup( ResourceDiscoverer.ROLE, name );
+        this.resourceDiscoverer = (MDNSResourceDiscoverer) lookup( ResourceDiscoverer.ROLE, name );
     }
 
     /** Tests a simple nearby discovery */
