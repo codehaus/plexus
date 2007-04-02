@@ -89,8 +89,8 @@ public class DNSSDPublisherTest
         }
 
         File configFile = getFileFromTemplate( "named.conf", "named.conf.template" );
-        File unsecureDb = getFileFromTemplate( "db.unsecure.dnssd.test", "db.template" );
-        File secureDb = getFileFromTemplate( "db.dnssd.test", "db.template" );
+        getFileFromTemplate( "db.unsecure.dnssd.test", "db.template" );
+        getFileFromTemplate( "db.dnssd.test", "db.template" );
 
         super.setUp();
 
@@ -104,7 +104,7 @@ public class DNSSDPublisherTest
          */
         if ( !System.getProperty( "os.name" ).startsWith( "Windows" ) )
         {
-            this.nameserver = Runtime.getRuntime().exec( new String[]{"named", "-g", "-c",
+            this.nameserver = Runtime.getRuntime().exec( new String[]{"named", "-f", "-c",
                 configFile.getAbsolutePath().replaceAll( "\\\\", "/" ), "-4", "-d", "3"} );
         }
         else
@@ -112,7 +112,14 @@ public class DNSSDPublisherTest
             System.err.println( "Win32 has some issues with running named from the test. However, you can:" );
             System.err.println( "a) Grab a Win32 build from http://www.isc.org/sw/bind/" );
             System.err.println( "b) Unpack it and run named.exe with this command:" );
-            System.err.println( "  > named -g -c " + configFile.getAbsolutePath() + " -4 -d 3" );
+            System.err.println( "  > named -f -c " + configFile.getAbsolutePath() + " -4 -d 3" );
+        }
+
+        try {
+        	this.nameserver.exitValue();
+        	fail("This shouldn't return, exception should be thrown before");
+        } catch (IllegalThreadStateException exc) {
+        	;
         }
     }
 
