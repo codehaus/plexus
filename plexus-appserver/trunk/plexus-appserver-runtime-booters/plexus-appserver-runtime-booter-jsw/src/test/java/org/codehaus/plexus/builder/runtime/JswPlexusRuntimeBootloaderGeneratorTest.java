@@ -20,6 +20,7 @@ package org.codehaus.plexus.builder.runtime;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.util.PropertyUtils;
 
 import java.io.File;
 import java.util.Properties;
@@ -59,7 +60,11 @@ public class JswPlexusRuntimeBootloaderGeneratorTest
     {
         PlexusRuntimeBootloaderGenerator jswGenerator = getJswGenerator();
 
-        jswGenerator.generate( outDir, new Properties() );
+        File configurationPropertiesFile = getTestFile( "src/test/resources/configuration.properties" );
+
+        Properties configurationProperties = PropertyUtils.loadProperties( configurationPropertiesFile );
+
+        jswGenerator.generate( outDir, configurationProperties );
     }
 
     private PlexusRuntimeBootloaderGenerator getJswGenerator()

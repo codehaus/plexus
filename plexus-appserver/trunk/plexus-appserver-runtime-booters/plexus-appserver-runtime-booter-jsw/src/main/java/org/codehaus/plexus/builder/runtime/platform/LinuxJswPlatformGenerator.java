@@ -48,7 +48,7 @@ public class LinuxJswPlatformGenerator
         tools.mkdirs( linuxBinDir );
 
         File runSh = new File( linuxBinDir, "run.sh" );
-        tools.filterCopy( tools.getResourceAsStream( JSW + "/run.sh" ), runSh, configurationProperties );
+        tools.filterCopy( tools.getResourceAsStream( JSW + "/wrapper-common-" + JSW_VERSION + "/src/bin/sh.script.in" ), runSh, configurationProperties );
         tools.executable( runSh );
 
         tools.copyResource( LINUX + "/wrapper", LINUX_SOURCE + "/bin/wrapper", true, binDirectory  );
