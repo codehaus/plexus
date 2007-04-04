@@ -32,14 +32,19 @@ public class SiteResourceLoader
     public InputStream getResourceStream( String name )
         throws ResourceNotFoundException
     {
-        try
+        if ( resource != null )
         {
-            return new FileInputStream( resource );
+            try
+            {
+                return new FileInputStream( resource );
+            }
+            catch ( FileNotFoundException e )
+            {
+                throw new ResourceNotFoundException( "Cannot find resource, make sure you set the right resource." );
+            }
         }
-        catch ( FileNotFoundException e )
-        {
-            throw new ResourceNotFoundException( "Cannot find resource, make sure you set the right resource." );
-        }
+
+        return null;
     }
 
     public boolean isSourceModified( org.apache.velocity.runtime.resource.Resource resource )
