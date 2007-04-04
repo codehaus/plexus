@@ -48,7 +48,7 @@ public class MacOSXJswPlatformGenerator
         tools.mkdirs( osxBinDir );
 
         File runSh = new File( osxBinDir, "run.sh" );
-        tools.filterCopy( tools.getResourceAsStream( JSW + "/run.sh" ), runSh, configurationProperties );
+        tools.filterCopy( tools.getResourceAsStream( JSW + "/wrapper-common-" + JSW_VERSION + "/src/bin/sh.script.in" ), runSh, configurationProperties );
         tools.executable( runSh );
 
         tools.copyResource( MACOSX + "/wrapper", MACOSX_SOURCE + "/bin/wrapper", true, binDirectory  );

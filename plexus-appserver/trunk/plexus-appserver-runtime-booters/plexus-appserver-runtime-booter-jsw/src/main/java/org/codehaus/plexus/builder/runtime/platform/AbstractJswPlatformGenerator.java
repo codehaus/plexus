@@ -69,7 +69,7 @@ public abstract class AbstractJswPlatformGenerator
             }
         }
 
-        tools.filterCopy( tools.getResourceAsStream( JSW + "/wrapper.conf" ),
+        tools.filterCopy( tools.getResourceAsStream( JSW + "/wrapper-common-" + JSW_VERSION + "/src/conf/wrapper.conf.in" ),
                     new File( destDir, "wrapper.conf" ),
                     props );
     }

@@ -48,7 +48,7 @@ public class SolarisJswPlatformGenerator
         tools.mkdirs( solarisBinDir );
 
         File runSh = new File( solarisBinDir, "run.sh" );
-        tools.filterCopy( tools.getResourceAsStream( JSW + "/run.sh" ), runSh, configurationProperties );
+        tools.filterCopy( tools.getResourceAsStream( JSW + "/wrapper-common-" + JSW_VERSION + "/src/bin/sh.script.in" ), runSh, configurationProperties );
         tools.executable( runSh );
 
         tools.copyResource( SOLARIS + "/wrapper", SOLARIS_SOURCE + "/bin/wrapper", true, binDirectory  );
