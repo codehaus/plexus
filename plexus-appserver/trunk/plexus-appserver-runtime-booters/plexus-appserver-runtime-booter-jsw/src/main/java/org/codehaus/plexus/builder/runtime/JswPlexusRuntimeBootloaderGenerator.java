@@ -56,10 +56,13 @@ public class JswPlexusRuntimeBootloaderGenerator
         Iterator platforms = platformGenerators.keySet().iterator();
         while ( platforms.hasNext() )
         {
-            JswPlatformGenerator platform = (JswPlatformGenerator) platformGenerators.get(platforms.next() );
+            String platformId = (String) platforms.next();
+            JswPlatformGenerator platform = (JswPlatformGenerator) platformGenerators.get( platformId );
 
+            configurationProperties.put( "platform.id", platformId );
             platform.generate( outputDirectory, null, configurationProperties );
         }
+        configurationProperties.remove( "platform.id" );
 
         // ----------------------------------------------------------------------------
         // The wrapper.jar can be dealt with here because
