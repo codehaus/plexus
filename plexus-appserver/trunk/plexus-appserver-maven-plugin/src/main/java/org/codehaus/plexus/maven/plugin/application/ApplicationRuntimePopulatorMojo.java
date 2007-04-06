@@ -36,7 +36,7 @@ import java.io.File;
  * @goal add-app
  * @requiresDependencyResolution
  * @phase package
- * @description Adds the Plexus appliction created from this build to a Plexus runtime. This is used
+ * @description Adds the Plexus application created from this build to a Plexus runtime. This is used
  * when your Plexus runtime is housing the Plexus application created from this build. You
  * typically create the Plexus runtime and the Plexus application in this build. If you are
  * creating a Plexus runtime that houses many applications then you will want to use the add-apps
