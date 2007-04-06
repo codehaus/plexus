@@ -47,6 +47,9 @@ public class JswPlexusRuntimeBootloaderGenerator
     public void generate( File outputDirectory, Properties configurationProperties )
         throws PlexusRuntimeBootloaderGeneratorException
     {
+        File binDirectory = new File( outputDirectory, "bin" );
+        binDirectory.mkdirs();
+
         // ----------------------------------------------------------------------------
         // Look up the appropriate generators
         // ----------------------------------------------------------------------------
@@ -60,7 +63,7 @@ public class JswPlexusRuntimeBootloaderGenerator
             JswPlatformGenerator platform = (JswPlatformGenerator) platformGenerators.get( platformId );
 
             configurationProperties.put( "platform.id", platformId );
-            platform.generate( outputDirectory, null, configurationProperties );
+            platform.generate( binDirectory, null, configurationProperties );
         }
         configurationProperties.remove( "platform.id" );
 
@@ -70,7 +73,7 @@ public class JswPlexusRuntimeBootloaderGenerator
         // ----------------------------------------------------------------------------
 
         tools.copyResourceToFile( JSW + "/wrapper-common-" + JSW_VERSION + "/lib/wrapper.jar",
-                                  new File( outputDirectory, "boot/wrapper.jar" ) );
+                                  new File( outputDirectory, "core/boot/wrapper.jar" ) );
     }
 
     public Map getPlatformGenerators()
