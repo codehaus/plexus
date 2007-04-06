@@ -12,7 +12,7 @@ set.default.PLEXUS_BASE=%PLEXUS_HOME%
 #  or guarantee that the WrapperManager class is initialized.  Helper
 #  classes are provided to do this for you.  See the Integration section
 #  of the documentation for details.
-wrapper.java.mainclass=org.tanukisoftware.wrapper.WrapperSimpleApp
+wrapper.java.mainclass=org.codehaus.plexus.classworlds.launcher.Launcher
 
 # Java Classpath (include wrapper.jar)  Add class path elements as
 #  needed starting from 1
@@ -46,7 +46,7 @@ wrapper.java.initmemory=3
 wrapper.java.maxmemory=@app.max.memory@
 
 # Application parameters.  Add parameters as needed starting from 1
-wrapper.app.parameter.1=org.codehaus.plexus.classworlds.launcher.Launcher
+wrapper.app.parameter.1=
 
 #********************************************************************
 # Wrapper Logging Properties
