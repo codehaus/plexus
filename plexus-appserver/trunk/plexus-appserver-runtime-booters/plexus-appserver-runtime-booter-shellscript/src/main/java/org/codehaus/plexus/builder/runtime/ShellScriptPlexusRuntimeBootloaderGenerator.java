@@ -40,7 +40,8 @@ public class ShellScriptPlexusRuntimeBootloaderGenerator
     public void generate( File outputDirectory, Properties configurationProperties )
         throws PlexusRuntimeBootloaderGeneratorException
     {
-        tools.mkdirs( outputDirectory );
+        File binDirectory = new File( outputDirectory, "bin" );
+        tools.mkdirs( binDirectory );
 
         // ----------------------------------------------------------------------------
         // Look up the appropriate generators
@@ -55,7 +56,7 @@ public class ShellScriptPlexusRuntimeBootloaderGenerator
                 (ShellScriptPlatformGenerator) platformGenerators.get(platforms.next() );
 
             // TODO figure if we can fix / remove this second param
-            platform.generate( outputDirectory, "", configurationProperties );
+            platform.generate( binDirectory, "", configurationProperties );
         }
     }
 
