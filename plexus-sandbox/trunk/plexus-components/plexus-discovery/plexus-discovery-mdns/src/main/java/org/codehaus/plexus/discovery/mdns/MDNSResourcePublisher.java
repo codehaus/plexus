@@ -17,12 +17,7 @@
 package org.codehaus.plexus.discovery.mdns;
 
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.plexus.discovery.CodecException;
-import org.codehaus.plexus.discovery.DiscoverableResource;
-import org.codehaus.plexus.discovery.ResourceDeregistrationException;
-import org.codehaus.plexus.discovery.ResourcePublisher;
-import org.codehaus.plexus.discovery.ResourceRegistrationException;
-import org.codehaus.plexus.discovery.URLCodec;
+import org.codehaus.plexus.discovery.*;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
@@ -40,12 +35,10 @@ import java.util.Iterator;
  * A MDNS Implementation of an Resource Publisher
  *
  * @author Aldrin Leal
- * @plexus.component role="org.codehaus.plexus.discovery.ResourcePublisher"
- * lifecycle-handler="basic"
+ * @plexus.component role="org.codehaus.plexus.discovery.ResourcePublisher" role-hint="mdns"
  */
 public class MDNSResourcePublisher
-    implements ResourcePublisher, LogEnabled, Startable
-{
+        implements ResourcePublisher, LogEnabled, Startable {
     /**
      * Signal jMDNS's ServiceInfo there's no value defined
      */
@@ -76,24 +69,20 @@ public class MDNSResourcePublisher
     /**
      * Default Constructor
      */
-    public MDNSResourcePublisher()
-    {
+    public MDNSResourcePublisher() {
         reset();
     }
 
     /**
      * Reset
      */
-    private void reset()
-    {
-        if ( null != this.jmDNSWrapper )
-        {
+    private void reset() {
+        if (null != this.jmDNSWrapper) {
             this.jmDNSWrapper.getJmdns().unregisterAllServices();
         }
 
         this.started = false;
-        if ( null != this.resourceCache )
-        {
+        if (null != this.resourceCache) {
             this.resourceCache.clear();
         }
         this.resourceCache = new IdentityHashMap();
@@ -102,8 +91,7 @@ public class MDNSResourcePublisher
     /**
      * {@inheritDoc}
      */
-    public void enableLogging( Logger logger )
-    {
+    public void enableLogging(Logger logger) {
         this.logger = logger;
     }
 
@@ -112,8 +100,7 @@ public class MDNSResourcePublisher
      *
      * @return the jmDNSWrapper
      */
-    public JmDNSWrapper getJmDNSWrapper()
-    {
+    public JmDNSWrapper getJmDNSWrapper() {
         return jmDNSWrapper;
     }
 
@@ -122,8 +109,7 @@ public class MDNSResourcePublisher
      *
      * @param jmDNSWrapper the jmDNSWrapper to set
      */
-    public void setJmDNSWrapper( JmDNSWrapper jmDNSWrapper )
-    {
+    public void setJmDNSWrapper(JmDNSWrapper jmDNSWrapper) {
         this.jmDNSWrapper = jmDNSWrapper;
     }
 
@@ -131,10 +117,8 @@ public class MDNSResourcePublisher
      * {@inheritDoc}
      */
     public void start()
-        throws StartingException
-    {
-        if ( started )
-        {
+            throws StartingException {
+        if (started) {
             return;
         }
 
@@ -145,82 +129,68 @@ public class MDNSResourcePublisher
      * {@inheritDoc}
      */
     public void stop()
-        throws StoppingException
-    {
-        try
-        {
-            if ( !started )
-            {
+            throws StoppingException {
+        try {
+            if (!started) {
                 return;
             }
 
-            for ( Iterator iterResources = this.resourceCache.keySet()
-                .iterator(); iterResources.hasNext(); )
-            {
+            for (Iterator iterResources = this.resourceCache.keySet()
+                    .iterator(); iterResources.hasNext();) {
                 DiscoverableResource curResource = (DiscoverableResource) iterResources
-                    .next();
+                        .next();
 
-                this.deregisterResource( curResource );
+                this.deregisterResource(curResource);
             }
 
             reset();
         }
-        catch ( Exception exc )
-        {
-            throw new StoppingException( "stop()", exc );
+        catch (Exception exc) {
+            throw new StoppingException("stop()", exc);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public void deregisterResource( DiscoverableResource resource )
-        throws ResourceDeregistrationException
-    {
-        try
-        {
-            ServiceInfo serviceInfo = getServiceInfo( resource );
+    public void deregisterResource(DiscoverableResource resource)
+            throws ResourceDeregistrationException {
+        try {
+            ServiceInfo serviceInfo = getServiceInfo(resource);
 
-            if ( !this.jmDNSWrapper.isRunning() )
-            {
+            if (!this.jmDNSWrapper.isRunning()) {
                 return;
             }
 
-            if ( logger.isInfoEnabled() )
-            {
-                logger.info( "deregisterResource(resource=" + resource + "): serviceInfo=" + serviceInfo + ")" );
+            if (logger.isInfoEnabled()) {
+                logger.info("deregisterResource(resource=" + resource + "): serviceInfo=" + serviceInfo + ")");
             }
 
-            this.jmDNSWrapper.getJmdns().unregisterService( serviceInfo );
+            this.jmDNSWrapper.getJmdns().unregisterService(serviceInfo);
 
-            this.resourceCache.remove( serviceInfo );
+            this.resourceCache.remove(serviceInfo);
         }
-        catch ( Exception e )
-        {
-            throw new ResourceDeregistrationException( "deregisterResource()", e );
+        catch (Exception e) {
+            throw new ResourceDeregistrationException("deregisterResource()", e);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public void registerResource( DiscoverableResource resource )
-        throws ResourceRegistrationException
-    {
-        try
-        {
-            ServiceInfo serviceInfo = getServiceInfo( resource );
+    public void registerResource(DiscoverableResource resource)
+            throws ResourceRegistrationException {
+        try {
+            ServiceInfo serviceInfo = getServiceInfo(resource);
 
-            if ( logger.isInfoEnabled() )
-            {
-                logger.info( "registerResource(resource=" + resource + "): serviceInfo=" + serviceInfo + ")" );
+            if (logger.isInfoEnabled()) {
+                logger.info("registerResource(resource=" + resource + "): serviceInfo=" + serviceInfo + ")");
             }
 
-            this.jmDNSWrapper.getJmdns().registerService( serviceInfo );
+            this.jmDNSWrapper.getJmdns().registerService(serviceInfo);
         }
-        catch ( Exception e )
-        {
-            throw new ResourceRegistrationException( "registerResource()", e );
+        catch (Exception e) {
+            throw new ResourceRegistrationException("registerResource()", e);
         }
     }
 
@@ -229,20 +199,18 @@ public class MDNSResourcePublisher
      *
      * @param resource resource to retrieve/cache
      * @return serviceInfo record
-     * @throws UnsupportedEncodingException
+     * @throws UnsupportedEncodingException Invalid Encoding
      */
-    private ServiceInfo getServiceInfo( DiscoverableResource resource )
-        throws UnsupportedEncodingException
-    {
-        if ( !this.resourceCache.containsKey( resource ) )
-        {
-            ServiceInfo serviceInfo = new ServiceInfo( "_" + resource.getUrl().getProtocol() + "._tcp.local.",
-                                                       resource.getName(), resource.getUrl().getPort(), 0, 0,
-                                                       queryToHashTable( resource.getUrl() ) );
-            this.resourceCache.put( resource, serviceInfo );
+    private ServiceInfo getServiceInfo(DiscoverableResource resource)
+            throws UnsupportedEncodingException {
+        if (!this.resourceCache.containsKey(resource)) {
+            ServiceInfo serviceInfo = new ServiceInfo("_" + resource.getUrl().getProtocol() + "._tcp.local.",
+                    resource.getName(), resource.getUrl().getPort(), 0, 0,
+                    queryToHashTable(resource.getUrl()));
+            this.resourceCache.put(resource, serviceInfo);
         }
 
-        return (ServiceInfo) this.resourceCache.get( resource );
+        return (ServiceInfo) this.resourceCache.get(resource);
     }
 
     /**
@@ -254,8 +222,8 @@ public class MDNSResourcePublisher
      *
      * @param url URL to get Decoded
      * @return Hashtable with the Query from the URL, plus the Path
-     * @throws UnsupportedEncodingException
-     * @throws CodecException
+     * @throws UnsupportedEncodingException Invalid Encoding
+     * @throws CodecException               Codec Failure
      * @see URL#getQuery()
      * @see <a
      *      href="http://files.dns-sd.org/draft-cheshire-dnsext-dns-sd.txt">IETF
@@ -264,54 +232,44 @@ public class MDNSResourcePublisher
      *      href="http://svn.apache.org/repos/asf/jakarta/commons/proper/codec/tags/CODEC_1_3/src/java/org/apache/commons/codec/net/StringEncodings.java">Commons-Codec:
      *      URLCodec Source</a>
      */
-    private Hashtable queryToHashTable( URL url )
-        throws CodecException, UnsupportedEncodingException
-    {
+    private Hashtable queryToHashTable(URL url)
+            throws CodecException, UnsupportedEncodingException {
         Hashtable hashTable = new Hashtable();
 
-        if ( StringUtils.isNotEmpty( url.getPath() ) )
-        {
-            hashTable.put( "path", url.getPath() );
+        if (StringUtils.isNotEmpty(url.getPath())) {
+            hashTable.put("path", url.getPath());
         }
 
-        if ( StringUtils.isNotEmpty( url.getQuery() ) )
-        {
-            String query = new String( URLCodec.decodeUrl( url.getQuery()
-                .getBytes( URLCodec.ENCODING_US_ASCII ) ) );
-            String[] nvps = query.split( "\\&" );
+        if (StringUtils.isNotEmpty(url.getQuery())) {
+            String query = new String(URLCodec.decodeUrl(url.getQuery()
+                    .getBytes(URLCodec.ENCODING_US_ASCII)));
+            String[] nvps = query.split("\\&");
 
-            for ( int i = 0; i < nvps.length; i++ )
-            {
+            for (int i = 0; i < nvps.length; i++) {
                 String nvp = nvps[i];
-                int ndx = nvp.indexOf( '=' );
+                int ndx = nvp.indexOf('=');
 
                 /**
                  * Tests if nvp is in the n=v format
                  */
-                if ( -1 != ndx )
-                {
-                    if ( ndx != ( -1 + nvp.length() ) )
-                    {
+                if (-1 != ndx) {
+                    if (ndx != (-1 + nvp.length())) {
                         /**
                          * n=v format
                          */
-                        hashTable.put( nvp.substring( 0, ndx ), nvp
-                            .substring( 1 + ndx ) );
-                    }
-                    else
-                    {
+                        hashTable.put(nvp.substring(0, ndx), nvp
+                                .substring(1 + ndx));
+                    } else {
                         /**
                          * It is in the n= format
                          */
-                        hashTable.put( nvp.substring( 0, ndx ), NO_VALUE );
+                        hashTable.put(nvp.substring(0, ndx), NO_VALUE);
                     }
-                }
-                else
-                {
+                } else {
                     /**
                      * It seems it's in the n format
                      */
-                    hashTable.put( nvp, NO_VALUE );
+                    hashTable.put(nvp, NO_VALUE);
                 }
             }
         }
