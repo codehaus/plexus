@@ -16,8 +16,19 @@
     </component>
     <component>
       <role>org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator</role>
-      <role-hint>linux</role-hint>
-      <implementation>org.codehaus.plexus.builder.runtime.platform.LinuxJswPlatformGenerator</implementation>
+      <role-hint>linux-x86-32</role-hint>
+      <implementation>org.codehaus.plexus.builder.runtime.platform.Linux32JswPlatformGenerator</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
+          <field-name>tools</field-name>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator</role>
+      <role-hint>linux-x86-64</role-hint>
+      <implementation>org.codehaus.plexus.builder.runtime.platform.Linux64JswPlatformGenerator</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
