@@ -34,7 +34,7 @@ import java.util.Properties;
 public class WindowsJswPlatformGenerator
     extends AbstractJswPlatformGenerator
 {
-    public static final String WINDOWS = "win32";
+    public static final String WINDOWS = "windows-x86-32";
 
     public static final String WINDOWS_SOURCE = JSW + "/wrapper-windows-x86-32-" + JSW_VERSION;
 
