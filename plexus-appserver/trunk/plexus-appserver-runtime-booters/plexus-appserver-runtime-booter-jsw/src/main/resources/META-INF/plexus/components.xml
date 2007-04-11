@@ -38,7 +38,7 @@
     </component>
     <component>
       <role>org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator</role>
-      <role-hint>windows</role-hint>
+      <role-hint>windows-x86-32</role-hint>
       <implementation>org.codehaus.plexus.builder.runtime.platform.WindowsJswPlatformGenerator</implementation>
       <requirements>
         <requirement>
@@ -49,7 +49,7 @@
     </component>
     <component>
       <role>org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator</role>
-      <role-hint>macosx</role-hint>
+      <role-hint>macosx-universal-32</role-hint>
       <implementation>org.codehaus.plexus.builder.runtime.platform.MacOSXJswPlatformGenerator</implementation>
       <requirements>
         <requirement>

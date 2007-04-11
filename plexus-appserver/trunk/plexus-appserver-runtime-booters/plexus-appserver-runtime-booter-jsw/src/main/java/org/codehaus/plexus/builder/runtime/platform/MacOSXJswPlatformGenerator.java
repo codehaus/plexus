@@ -34,7 +34,7 @@ import java.util.Properties;
 public class MacOSXJswPlatformGenerator
     extends AbstractJswPlatformGenerator
 {
-    public static final String MACOSX = "macosx";
+    public static final String MACOSX = "macosx-universal-32";
 
     public static final String MACOSX_SOURCE = JSW + "/wrapper-macosx-universal-32-" + JSW_VERSION;
 
