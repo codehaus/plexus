@@ -25,7 +25,7 @@ import java.io.File;
 import java.util.Properties;
 
 /**
- * Generator to create the Solaris specific portions of the JSW booter.
+ * Generator to create the Solaris sparc 32 bit specific portions of the JSW booter.
  *
  * @author Andrew Williams
  * @version $Id$
