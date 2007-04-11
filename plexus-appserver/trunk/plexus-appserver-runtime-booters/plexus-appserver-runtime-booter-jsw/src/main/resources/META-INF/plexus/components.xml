@@ -60,8 +60,30 @@
     </component>
     <component>
       <role>org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator</role>
-      <role-hint>solaris</role-hint>
-      <implementation>org.codehaus.plexus.builder.runtime.platform.SolarisJswPlatformGenerator</implementation>
+      <role-hint>solaris-sparc-32</role-hint>
+      <implementation>org.codehaus.plexus.builder.runtime.platform.SolarisSparc32JswPlatformGenerator</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
+          <field-name>tools</field-name>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator</role>
+      <role-hint>solaris-sparc-64</role-hint>
+      <implementation>org.codehaus.plexus.builder.runtime.platform.SolarisSparc64JswPlatformGenerator</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
+          <field-name>tools</field-name>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator</role>
+      <role-hint>solaris-x86-32</role-hint>
+      <implementation>org.codehaus.plexus.builder.runtime.platform.SolarisX8632JswPlatformGenerator</implementation>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
