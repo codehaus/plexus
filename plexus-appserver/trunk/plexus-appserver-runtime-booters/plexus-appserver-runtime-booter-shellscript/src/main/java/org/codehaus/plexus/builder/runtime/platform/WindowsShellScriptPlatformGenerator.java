@@ -23,6 +23,7 @@ import org.codehaus.plexus.builder.runtime.GeneratorTools;
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGeneratorException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -44,6 +45,14 @@ public class WindowsShellScriptPlatformGenerator
                           Properties configurationProperties )
         throws PlexusRuntimeBootloaderGeneratorException
     {
-        tools.mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( binDirectory, "plexus.bat" ), false );
+        try
+        {
+            tools.mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( binDirectory, "plexus.bat" ), false,
+                                 configurationProperties );
+        }
+        catch ( IOException e )
+        {
+            throw new PlexusRuntimeBootloaderGeneratorException( "Failed to merge the shell script templates", e );
+        }
     }
 }

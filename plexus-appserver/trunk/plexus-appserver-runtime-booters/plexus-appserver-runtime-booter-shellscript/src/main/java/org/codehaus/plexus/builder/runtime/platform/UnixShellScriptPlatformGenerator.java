@@ -23,6 +23,7 @@ import org.codehaus.plexus.builder.runtime.GeneratorTools;
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGeneratorException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -45,7 +46,15 @@ public class UnixShellScriptPlatformGenerator
         throws PlexusRuntimeBootloaderGeneratorException
     {
         File plexusSh = new File( binDirectory, "plexus.sh" );
-        tools.mergeTemplate( UNIX_LAUNCHER_TEMPLATE, plexusSh, false );
+
+        try
+        {
+            tools.mergeTemplate( UNIX_LAUNCHER_TEMPLATE, plexusSh, false, configurationProperties );
+        }
+        catch ( IOException e )
+        {
+            throw new PlexusRuntimeBootloaderGeneratorException( "Failed to merge the shell script templates", e );
+        }
 
         tools.executable( plexusSh );
     }
