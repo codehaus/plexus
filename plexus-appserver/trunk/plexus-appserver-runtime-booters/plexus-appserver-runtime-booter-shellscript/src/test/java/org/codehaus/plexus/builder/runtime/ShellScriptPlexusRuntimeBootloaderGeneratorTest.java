@@ -61,8 +61,8 @@ public class ShellScriptPlexusRuntimeBootloaderGeneratorTest
 
         shellGenerator.generate( outDir, new Properties() );
 
-        assertTrue( ( new File( outDir, "plexus.sh" ) ).exists() );
-        assertTrue( ( new File( outDir, "plexus.bat" ) ).exists() );
+        assertTrue( ( new File( outDir, "bin/plexus.sh" ) ).exists() );
+        assertTrue( ( new File( outDir, "bin/plexus.bat" ) ).exists() );
     }
 
     private PlexusRuntimeBootloaderGenerator getShellGenerator()
