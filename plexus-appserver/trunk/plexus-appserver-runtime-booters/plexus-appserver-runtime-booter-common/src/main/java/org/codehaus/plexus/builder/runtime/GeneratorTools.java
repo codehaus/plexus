@@ -172,6 +172,30 @@ public class GeneratorTools
         }
     }
 
+    protected void filterCopy( File in, File out, Map map, String beginToken, String endToken )
+        throws IOException
+    {
+        filterCopy( new FileReader( in ), out, map, beginToken, endToken );
+    }
+
+    protected void filterCopy( InputStream in, File out, Map map, String beginToken, String endToken )
+        throws IOException
+    {
+        filterCopy( new InputStreamReader( in ), out, map, beginToken, endToken );
+    }
+
+    protected void filterCopy( Reader in, File out, Map map, String beginToken, String endToken )
+        throws IOException
+    {
+        InterpolationFilterReader reader = new InterpolationFilterReader( in, map, beginToken, endToken );
+
+        Writer writer = new FileWriter( out );
+
+        IOUtil.copy( reader, writer );
+
+        writer.close();
+    }
+
     public void copyResource( String filename,
                                  String resource,
                                  boolean makeExecutable,
@@ -259,57 +283,54 @@ public class GeneratorTools
         }
     }
 
+
     // ----------------------------------------------------------------------
     // Velocity methods
     // ----------------------------------------------------------------------
 
-    public void mergeTemplate( String templateName,
-                                  File outputFileName,
-                                  boolean dos )
-        throws PlexusRuntimeBootloaderGeneratorException
+    public void mergeTemplate( String templateName, File outputFileName, boolean dos,
+                                  Properties configurationProperties )
+        throws IOException, PlexusRuntimeBootloaderGeneratorException
     {
         StringWriter buffer = new StringWriter( 100 * FileUtils.ONE_KB );
 
+        File tmpFile = File.createTempFile( outputFileName.getName(), null );
+
+        //noinspection OverlyBroadCatchBlock
         try
         {
             velocity.getEngine().mergeTemplate( templateName, new VelocityContext(), buffer );
         }
         catch ( ResourceNotFoundException ex )
         {
-            throw new PlexusRuntimeBootloaderGeneratorException( "Missing Velocity template: '" + templateName + "'.",
-                                                                 ex );
+            throw new PlexusRuntimeBootloaderGeneratorException( "Missing Velocity template: '" + templateName + "'.", ex );
         }
         catch ( Exception ex )
         {
             throw new PlexusRuntimeBootloaderGeneratorException( "Exception merging the velocity template.", ex );
         }
 
-        try
+        FileOutputStream output = new FileOutputStream( tmpFile );
+
+        BufferedReader reader = new BufferedReader( new StringReader( buffer.toString() ) );
+
+        String line;
+
+        //noinspection NestedAssignment
+        while ( ( line = reader.readLine() ) != null )
         {
+            output.write( line.getBytes() );
 
-            FileOutputStream output = new FileOutputStream( outputFileName );
-
-            BufferedReader reader = new BufferedReader( new StringReader( buffer.toString() ) );
-
-            String line;
-
-            while ( ( line = reader.readLine() ) != null )
+            if ( dos )
             {
-                output.write( line.getBytes() );
-
-                if ( dos )
-                {
-                    output.write( '\r' );
-                }
-
-                output.write( '\n' );
+                output.write( '\r' );
             }
 
-            output.close();
+            output.write( '\n' );
         }
-        catch ( IOException e )
-        {
-            throw new PlexusRuntimeBootloaderGeneratorException( "Error merging template.", e );
-        }
+
+        output.close();
+
+        filterCopy( tmpFile, outputFileName, configurationProperties, "@{", "}@" );
     }
 }
