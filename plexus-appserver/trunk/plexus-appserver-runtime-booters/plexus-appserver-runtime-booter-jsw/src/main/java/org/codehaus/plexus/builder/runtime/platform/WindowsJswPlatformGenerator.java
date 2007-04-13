@@ -37,6 +37,8 @@ public class WindowsJswPlatformGenerator
     public static final String WINDOWS = "windows-x86-32";
 
     public static final String WINDOWS_SOURCE = JSW + "/wrapper-windows-x86-32-" + JSW_VERSION;
+// We are not ready for the current JSW released scripts
+    public static final String WINDOWS_SCRIPTS = JSW + "/";
 
     public void generate( File binDirectory,
                           String resourceDir,
@@ -49,9 +51,12 @@ public class WindowsJswPlatformGenerator
 
         tools.copyResource( WINDOWS + "/wrapper.exe", WINDOWS_SOURCE + "/bin/wrapper.exe", true, binDirectory );
         tools.copyResource( WINDOWS + "/wrapper.dll", WINDOWS_SOURCE + "/lib/wrapper.dll", false, binDirectory );
-        tools.copyResource( WINDOWS + "/run.bat", WINDOWS_SOURCE + "/src/bin/App.bat.in", false, binDirectory );
-        tools.copyResource( WINDOWS + "/InstallService.bat", WINDOWS_SOURCE + "/src/bin/InstallApp-NT.bat.in", false, binDirectory );
-        tools.copyResource( WINDOWS + "/UninstallService.bat", WINDOWS_SOURCE + "/src/bin/UninstallApp-NT.bat.in", false, binDirectory );
+//        tools.copyResource( WINDOWS + "/run.bat", WINDOWS_SOURCE + "/src/bin/App.bat.in", false, binDirectory );
+//        tools.copyResource( WINDOWS + "/InstallService.bat", WINDOWS_SOURCE + "/src/bin/InstallApp-NT.bat.in", false, binDirectory );
+//        tools.copyResource( WINDOWS + "/UninstallService.bat", WINDOWS_SOURCE + "/src/bin/UninstallApp-NT.bat.in", false, binDirectory );
+        tools.copyResource( WINDOWS + "/run.bat", WINDOWS_SCRIPTS + "run.bat", false, binDirectory );
+        tools.copyResource( WINDOWS + "/InstallService.bat", WINDOWS_SCRIPTS + "InstallService.bat", false, binDirectory );
+        tools.copyResource( WINDOWS + "/UninstallService.bat", WINDOWS_SCRIPTS + "UninstallService.bat", false, binDirectory );
 
         Properties win32Props = new Properties();
         win32Props.setProperty( "library.path", "../../bin/" + WINDOWS );
