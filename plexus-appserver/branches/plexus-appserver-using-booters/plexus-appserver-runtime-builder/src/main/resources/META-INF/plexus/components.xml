@@ -24,6 +24,10 @@
           <role>org.apache.maven.artifact.metadata.ArtifactMetadataSource</role>
           <role-hint>maven</role-hint>
         </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGenerator</role>
+          <field-name>runtimeBooterGenerators</field-name>
+        </requirement>
       </requirements>
     </component>
 
