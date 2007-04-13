@@ -121,7 +121,7 @@ public class ChecksumFile
     public File createChecksum( File referenceFile, Digester digester ) throws DigesterException, IOException
     {
         File checksumFile = new File( referenceFile.getAbsolutePath() + digester.getFilenameExtension() );
-        String checksum = digester.calc( checksumFile );
+        String checksum = digester.calc( referenceFile );
         FileUtils.fileWrite( checksumFile.getAbsolutePath(), checksum + "  " + referenceFile.getName() );
         return checksumFile;
     }
