@@ -1,0 +1,14 @@
+<configuration>
+  <webapps>
+    <webapp>
+      <context>/</context>
+      <path>src/test/webapp</path>
+      <listeners>
+        <http-listener>
+          <host>localhost</host>
+          <port>12345</port>
+        </http-listener>
+      </listeners>
+    </webapp>
+  </webapps>
+</configuration>
