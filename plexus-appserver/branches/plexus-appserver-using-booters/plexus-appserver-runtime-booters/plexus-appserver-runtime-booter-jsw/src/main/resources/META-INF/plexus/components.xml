@@ -1,20 +1,6 @@
 <component-set>
   <components>
     <component>
-      <role>org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGenerator</role>
-      <role-hint>jsw</role-hint>
-      <implementation>org.codehaus.plexus.builder.runtime.JswPlexusRuntimeBootloaderGenerator</implementation>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator</role>
-          <field-name>platformGenerators</field-name>
-        </requirement>
-        <requirement>
-          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
-        </requirement>
-      </requirements>
-    </component>
-    <component>
       <role>org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator</role>
       <role-hint>linux-x86-32</role-hint>
       <implementation>org.codehaus.plexus.builder.runtime.platform.Linux32JswPlatformGenerator</implementation>

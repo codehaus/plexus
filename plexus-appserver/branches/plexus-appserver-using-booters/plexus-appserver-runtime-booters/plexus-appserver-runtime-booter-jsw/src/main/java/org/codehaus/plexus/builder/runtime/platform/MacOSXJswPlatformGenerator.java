@@ -32,6 +32,9 @@ import java.util.Properties;
  * @author Andrew Williams
  * @version $Id$
  * @since 2.0-alpha-9
+ *
+ * @plexus.component role="org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator"
+ *                   role-hint="macosx-universal-32"
  */
 public class MacOSXJswPlatformGenerator
     extends AbstractJswPlatformGenerator

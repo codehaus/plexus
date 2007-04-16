@@ -33,6 +33,9 @@ import java.util.Iterator;
 /**
  * @author <a href="jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ *
+ * @plexus.component role="org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGenerator"
+ *                   role-hint="jsw"
  */
 public class JswPlexusRuntimeBootloaderGenerator
     implements PlexusRuntimeBootloaderGenerator
@@ -41,8 +44,14 @@ public class JswPlexusRuntimeBootloaderGenerator
 
     public static String JSW_VERSION = "3.2.3";
 
-    Map platformGenerators;
+    /**
+     * @plexus.requirement role="org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator"
+     */
+    private Map platformGenerators;
 
+    /**
+     * @plexus.requirement role="org.codehaus.plexus.builder.runtime.GeneratorTools"
+     */
     private GeneratorTools tools;
 
     public void generate( File outputDirectory, Properties configurationProperties )
