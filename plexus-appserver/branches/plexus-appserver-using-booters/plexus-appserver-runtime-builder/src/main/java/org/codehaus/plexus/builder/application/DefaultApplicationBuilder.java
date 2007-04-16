@@ -31,6 +31,7 @@ import org.codehaus.plexus.appserver.PlexusApplicationConstants;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
+import org.codehaus.plexus.builder.runtime.GeneratorTools;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 import org.codehaus.plexus.util.xml.XMLWriter;
@@ -53,6 +54,11 @@ public class DefaultApplicationBuilder
     extends AbstractBuilder
     implements ApplicationBuilder
 {
+    /**
+     * @plexus.requirement
+     */
+    private GeneratorTools tools;
+
     // ----------------------------------------------------------------------
     // ApplicationBuilder Implementation
     // ----------------------------------------------------------------------
@@ -92,14 +98,14 @@ public class DefaultApplicationBuilder
             // Create directory structure
             // ----------------------------------------------------------------------
 
-            File confDir = mkdirs( new File( workingDirectory, PlexusApplicationConstants.CONF_DIRECTORY ) );
+            File confDir = tools.mkdirs( new File( workingDirectory, PlexusApplicationConstants.CONF_DIRECTORY ) );
 
-            libDir = mkdirs( new File( workingDirectory, PlexusApplicationConstants.LIB_DIRECTORY ) );
+            libDir = tools.mkdirs( new File( workingDirectory, PlexusApplicationConstants.LIB_DIRECTORY ) );
 
             // TODO: why does the application have a logs directory?
-            File logsDir = mkdirs( new File( workingDirectory, "logs" ) );
+            File logsDir = tools.mkdirs( new File( workingDirectory, "logs" ) );
 
-            mkdirs( new File( workingDirectory, "META-INF/plexus" ) );
+            tools.mkdirs( new File( workingDirectory, "META-INF/plexus" ) );
 
             // ----------------------------------------------------------------------
             //
@@ -272,7 +278,7 @@ public class DefaultApplicationBuilder
                         "Could not make parent directories for " + "'" + out.getAbsolutePath() + "'." );
                 }
 
-                filterCopy( in, out, configurationProperties );
+                tools.filterCopy( in, out, configurationProperties );
             }
         }
 
@@ -280,7 +286,7 @@ public class DefaultApplicationBuilder
         // Copy the main appserver.xml
         // ----------------------------------------------------------------------
 
-        filterCopy( applicationConfiguration, new File( confDir, PlexusApplicationConstants.CONFIGURATION_FILE ),
+        tools.filterCopy( applicationConfiguration, new File( confDir, PlexusApplicationConstants.CONFIGURATION_FILE ),
                     configurationProperties );
     }
 }

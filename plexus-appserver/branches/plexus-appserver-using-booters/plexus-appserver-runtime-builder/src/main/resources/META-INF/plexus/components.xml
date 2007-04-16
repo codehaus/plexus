@@ -28,6 +28,9 @@
           <role>org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGenerator</role>
           <field-name>runtimeBooterGenerators</field-name>
         </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
+        </requirement>
       </requirements>
     </component>
 
@@ -49,6 +52,9 @@
         </requirement>
         <requirement>
           <role>org.apache.maven.artifact.metadata.ArtifactMetadataSource</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
         </requirement>
       </requirements>
     </component>
@@ -72,6 +78,9 @@
         </requirement>
         <requirement>
           <role>org.apache.maven.artifact.metadata.ArtifactMetadataSource</role>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.builder.runtime.GeneratorTools</role>
         </requirement>
       </requirements>
     </component>

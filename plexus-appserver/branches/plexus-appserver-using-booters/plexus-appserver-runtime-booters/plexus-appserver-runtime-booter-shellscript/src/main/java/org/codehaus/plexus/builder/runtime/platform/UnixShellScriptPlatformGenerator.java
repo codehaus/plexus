@@ -21,6 +21,7 @@ package org.codehaus.plexus.builder.runtime.platform;
 
 import org.codehaus.plexus.builder.runtime.GeneratorTools;
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGeneratorException;
+import org.codehaus.plexus.util.cli.CommandLineException;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,6 +57,18 @@ public class UnixShellScriptPlatformGenerator
             throw new PlexusRuntimeBootloaderGeneratorException( "Failed to merge the shell script templates", e );
         }
 
-        tools.executable( plexusSh );
+        try
+        {
+            tools.executable( plexusSh );
+        }
+        catch ( IOException e )
+        {
+            throw new PlexusRuntimeBootloaderGeneratorException( "Error whilst making linux script executable", e);
+        }
+        catch ( CommandLineException e )
+        {
+            throw new PlexusRuntimeBootloaderGeneratorException( "Error whilst making unix script executable", e);
+        }
+
     }
 }
