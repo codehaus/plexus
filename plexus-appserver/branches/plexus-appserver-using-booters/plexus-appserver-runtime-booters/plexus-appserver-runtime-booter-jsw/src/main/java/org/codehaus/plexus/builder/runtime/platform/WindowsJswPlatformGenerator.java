@@ -1,11 +1,5 @@
 package org.codehaus.plexus.builder.runtime.platform;
 
-import org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGeneratorException;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Properties;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -24,6 +18,12 @@ import java.util.Properties;
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGeneratorException;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Generator to create the Windows specific portions of the JSW booter.
