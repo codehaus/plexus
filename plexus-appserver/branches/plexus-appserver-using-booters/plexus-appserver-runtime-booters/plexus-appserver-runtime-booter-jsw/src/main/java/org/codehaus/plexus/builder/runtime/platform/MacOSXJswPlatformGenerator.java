@@ -20,8 +20,10 @@ package org.codehaus.plexus.builder.runtime.platform;
  */
 
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGeneratorException;
+import org.codehaus.plexus.util.cli.CommandLineException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -43,20 +45,31 @@ public class MacOSXJswPlatformGenerator
                           Properties configurationProperties )
         throws PlexusRuntimeBootloaderGeneratorException
     {
-        // TODO: make it configurable - we don't always want a subdir
-        File osxBinDir = new File( binDirectory, MACOSX );
-        tools.mkdirs( osxBinDir );
+        try
+        {
+            // TODO: make it configurable - we don't always want a subdir
+            File osxBinDir = new File( binDirectory, MACOSX );
+            tools.mkdirs( osxBinDir );
 
-        File runSh = new File( osxBinDir, "run.sh" );
-        tools.filterCopy( tools.getResourceAsStream( JSW + "/wrapper-common-" + JSW_VERSION + "/src/bin/sh.script.in" ), runSh, configurationProperties );
-        tools.executable( runSh );
+            File runSh = new File( osxBinDir, "run.sh" );
+            tools.filterCopy( tools.getResourceAsStream( JSW + "/wrapper-common-" + JSW_VERSION + "/src/bin/sh.script.in" ), runSh, configurationProperties );
+            tools.executable( runSh );
 
-        tools.copyResource( MACOSX + "/wrapper", MACOSX_SOURCE + "/bin/wrapper", true, binDirectory  );
-        tools.copyResource( MACOSX + "/libwrapper.jnilib", MACOSX_SOURCE + "/lib/libwrapper.jnilib", false, binDirectory );
+            tools.copyResource( MACOSX + "/wrapper", MACOSX_SOURCE + "/bin/wrapper", true, binDirectory  );
+            tools.copyResource( MACOSX + "/libwrapper.jnilib", MACOSX_SOURCE + "/lib/libwrapper.jnilib", false, binDirectory );
 
-        Properties osxProps = new Properties();
-        osxProps.setProperty( "library.path", "../../bin/" + MACOSX );
-        osxProps.setProperty( "extra.path", "" );
-        copyWrapperConf( osxBinDir, configurationProperties, osxProps );
+            Properties osxProps = new Properties();
+            osxProps.setProperty( "library.path", "../../bin/" + MACOSX );
+            osxProps.setProperty( "extra.path", "" );
+            copyWrapperConf( osxBinDir, configurationProperties, osxProps );
+        }
+        catch ( IOException e )
+        {
+            throw new PlexusRuntimeBootloaderGeneratorException( "Error whilst generating macosx script", e);
+        }
+        catch ( CommandLineException e )
+        {
+            throw new PlexusRuntimeBootloaderGeneratorException( "Error whilst making macosx script executable", e);
+        }
     }
 }

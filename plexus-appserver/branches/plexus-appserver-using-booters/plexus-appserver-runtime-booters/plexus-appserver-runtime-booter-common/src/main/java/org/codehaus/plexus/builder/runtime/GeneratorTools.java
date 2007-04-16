@@ -71,7 +71,7 @@ public class GeneratorTools
     public VelocityComponent velocity;
 
     public void executable( File file )
-        throws PlexusRuntimeBootloaderGeneratorException
+        throws IOException, CommandLineException
     {
         if ( Os.isFamily( "unix" ) )
         {
@@ -83,25 +83,18 @@ public class GeneratorTools
 
             cli.createArg().setValue( file.getAbsolutePath() );
 
-            try
-            {
-                cli.execute();
-            }
-            catch ( CommandLineException e )
-            {
-                throw new PlexusRuntimeBootloaderGeneratorException( "Error executing command line.", e );
-            }
+            cli.execute();
         }
     }
 
     public File mkdirs( File directory )
-        throws PlexusRuntimeBootloaderGeneratorException
+        throws IOException
     {
         if ( !directory.exists() )
         {
             if ( !directory.mkdirs() )
             {
-                throw new PlexusRuntimeBootloaderGeneratorException(
+                throw new IOException(
                     "Could not make directories '" + directory.getAbsolutePath() + "'." );
             }
         }
@@ -110,13 +103,13 @@ public class GeneratorTools
     }
 
     public InputStream getResourceAsStream( String resource )
-        throws PlexusRuntimeBootloaderGeneratorException
+        throws IOException
     {
         InputStream is = getClass().getClassLoader().getResourceAsStream( resource );
 
         if ( is == null )
         {
-            throw new PlexusRuntimeBootloaderGeneratorException( "Could not find resource '" + resource + "'." );
+            throw new IOException( "Could not find resource '" + resource + "'." );
         }
 
         return is;
@@ -129,22 +122,15 @@ public class GeneratorTools
     public void filterCopy( File in,
                                File out,
                                Map map )
-        throws PlexusRuntimeBootloaderGeneratorException
+        throws IOException
     {
-        try
-        {
-            filterCopy( new FileReader( in ), out, map );
-        }
-        catch ( FileNotFoundException e )
-        {
-            throw new PlexusRuntimeBootloaderGeneratorException( "Error copying resource.", e );
-        }
+        filterCopy( new FileReader( in ), out, map );
     }
 
     public void filterCopy( InputStream in,
                                File out,
                                Map map )
-        throws PlexusRuntimeBootloaderGeneratorException
+        throws IOException
     {
         filterCopy( new InputStreamReader( in ), out, map );
     }
@@ -152,22 +138,15 @@ public class GeneratorTools
     public void filterCopy( Reader in,
                                File out,
                                Map map )
-        throws PlexusRuntimeBootloaderGeneratorException
+        throws IOException
     {
         InterpolationFilterReader reader = new InterpolationFilterReader( in, map, "@", "@" );
 
-        try
-        {
-            Writer writer = new FileWriter( out );
+        Writer writer = new FileWriter( out );
 
-            IOUtil.copy( reader, writer );
+        IOUtil.copy( reader, writer );
 
-            writer.close();
-        }
-        catch ( IOException e )
-        {
-            throw new PlexusRuntimeBootloaderGeneratorException( "Error copying resource.", e );
-        }
+        writer.close();
     }
 
     protected void filterCopy( File in, File out, Map map, String beginToken, String endToken )
@@ -198,47 +177,40 @@ public class GeneratorTools
                                  String resource,
                                  boolean makeExecutable,
                                  File basedir )
-        throws PlexusRuntimeBootloaderGeneratorException
+        throws IOException
     {
         File target = new File( basedir, filename );
 
-        try
-        {
-            copyResourceToFile( resource, target );
+        copyResourceToFile( resource, target );
 
-            if ( makeExecutable )
+        if ( makeExecutable )
+        {
+            try
             {
                 executable( target );
             }
-        }
-        catch ( Exception e )
-        {
-            throw new PlexusRuntimeBootloaderGeneratorException( "Error copying resource.", e );
+            catch ( CommandLineException e )
+            {
+                throw new IOException( "Error making resource executable '" + resource + "'" );
+            }
         }
     }
 
     public void copyResourceToFile( String resource,
                                        File target )
-        throws PlexusRuntimeBootloaderGeneratorException
+        throws IOException
     {
-        try
-        {
-            InputStream is = getResourceAsStream( resource );
+        InputStream is = getResourceAsStream( resource );
 
-            mkdirs( target.getParentFile() );
+        mkdirs( target.getParentFile() );
 
-            OutputStream os = new FileOutputStream( target );
+        OutputStream os = new FileOutputStream( target );
 
-            IOUtil.copy( is, os );
+        IOUtil.copy( is, os );
 
-            IOUtil.close( is );
+        IOUtil.close( is );
 
-            IOUtil.close( os );
-        }
-        catch ( Exception e )
-        {
-            throw new PlexusRuntimeBootloaderGeneratorException( "Error copying resource.", e );
-        }
+        IOUtil.close( os );
     }
 
     // ----------------------------------------------------------------------

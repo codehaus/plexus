@@ -63,6 +63,11 @@ public class DefaultPlexusRuntimeBuilder
     extends AbstractBuilder
     implements PlexusRuntimeBuilder
 {
+    /**
+     * @plexus.requirement
+     */
+    private GeneratorTools tools;
+
     private static final String TEMPLATES = "org/codehaus/plexus/builder/templates";
 
     private static final String CLASSWORLDS_TEMPLATE = TEMPLATES + "/classworlds.vm";
@@ -194,7 +199,7 @@ public class DefaultPlexusRuntimeBuilder
 
         try
         {
-            mkdirs( workingDirectory );
+            tools.mkdirs( workingDirectory );
 
             getLogger().info( "Building runtime in " + workingDirectory.getAbsolutePath() );
 
@@ -203,21 +208,21 @@ public class DefaultPlexusRuntimeBuilder
             // ----------------------------------------------------------------------
 
             // TODO: should we set up .base separately?
-            mkdirs( getAppsDirectory( workingDirectory ) );
+            tools.mkdirs( getAppsDirectory( workingDirectory ) );
 
-            File binDir = mkdirs( new File( workingDirectory, PlexusRuntimeConstants.BIN_DIRECTORY ) );
+            File binDir = tools.mkdirs( new File( workingDirectory, PlexusRuntimeConstants.BIN_DIRECTORY ) );
 
-            File confDir = mkdirs( new File( workingDirectory, PlexusRuntimeConstants.CONF_DIRECTORY ) );
+            File confDir = tools.mkdirs( new File( workingDirectory, PlexusRuntimeConstants.CONF_DIRECTORY ) );
 
-            File coreDir = mkdirs( new File( workingDirectory, PlexusRuntimeConstants.CORE_DIRECTORY ) );
+            File coreDir = tools.mkdirs( new File( workingDirectory, PlexusRuntimeConstants.CORE_DIRECTORY ) );
 
-            File bootDir = mkdirs( new File( workingDirectory, PlexusRuntimeConstants.BOOT_DIRECTORY ) );
+            File bootDir = tools.mkdirs( new File( workingDirectory, PlexusRuntimeConstants.BOOT_DIRECTORY ) );
 
-            mkdirs( new File( workingDirectory, PlexusRuntimeConstants.LOGS_DIRECTORY ) );
+            tools.mkdirs( new File( workingDirectory, PlexusRuntimeConstants.LOGS_DIRECTORY ) );
 
-            mkdirs( new File( workingDirectory, PlexusRuntimeConstants.SERVICES_DIRECTORY ) );
+            tools.mkdirs( new File( workingDirectory, PlexusRuntimeConstants.SERVICES_DIRECTORY ) );
 
-            mkdirs( new File( workingDirectory, PlexusRuntimeConstants.TEMP_DIRECTORY ) );
+            tools.mkdirs( new File( workingDirectory, PlexusRuntimeConstants.TEMP_DIRECTORY ) );
 
             // ----------------------------------------------------------------------
             //
@@ -394,7 +399,7 @@ public class DefaultPlexusRuntimeBuilder
             }
         }
 
-        filterCopy( conf, out, configurationProperties );
+        tools.filterCopy( conf, out, configurationProperties );
     }
 
     // ----------------------------------------------------------------------
@@ -444,6 +449,6 @@ public class DefaultPlexusRuntimeBuilder
 
         output.close();
 
-        filterCopy( tmpFile, outputFileName, configurationProperties, "@{", "}@" );
+        tools.filterCopy( tmpFile, outputFileName, configurationProperties, "@{", "}@" );
     }
 }
