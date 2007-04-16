@@ -59,8 +59,6 @@ import java.util.Properties;
 public class GeneratorTools
     extends AbstractLogEnabled
 {
-    private final static String CLASSWORLDS_TEMPLATE = "org/codehaus/plexus/builder/templates/classworlds.vm";
-
     private static final String PROPERTY_APP_NAME = "app.name";
 
     private static final String PROPERTY_APP_LONG_NAME = "app.long.name";
@@ -81,9 +79,9 @@ public class GeneratorTools
 
             cli.setExecutable( "chmod" );
 
-            cli.createArgument().setValue( "+x" );
+            cli.createArg().setValue( "+x" );
 
-            cli.createArgument().setValue( file.getAbsolutePath() );
+            cli.createArg().setValue( file.getAbsolutePath() );
 
             try
             {
