@@ -43,6 +43,9 @@ public abstract class AbstractJswPlatformGenerator
 
     protected static String JSW_VERSION = JswPlexusRuntimeBootloaderGenerator.JSW_VERSION;
 
+    /**
+     * @plexus.requirement
+     */
     protected GeneratorTools tools;
 
     protected void copyWrapperConf( File destDir, Properties configurationProperties, Properties additionalProperties )

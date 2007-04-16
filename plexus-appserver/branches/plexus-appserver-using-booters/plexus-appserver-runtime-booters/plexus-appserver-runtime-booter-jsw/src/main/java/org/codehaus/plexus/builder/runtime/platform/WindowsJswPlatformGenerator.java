@@ -1,7 +1,6 @@
 package org.codehaus.plexus.builder.runtime.platform;
 
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGeneratorException;
-import org.codehaus.plexus.util.cli.CommandLineException;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +31,9 @@ import java.util.Properties;
  * @author Andrew Williams
  * @version $Id$
  * @since 2.0-alpha-9
+ *
+ * @plexus.component role="org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator"
+ *                   role-hint="windows-x86-32"
  */
 public class WindowsJswPlatformGenerator
     extends AbstractJswPlatformGenerator

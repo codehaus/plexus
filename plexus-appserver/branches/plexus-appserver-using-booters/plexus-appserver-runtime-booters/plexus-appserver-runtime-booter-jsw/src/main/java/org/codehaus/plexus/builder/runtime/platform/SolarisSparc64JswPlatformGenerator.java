@@ -13,6 +13,9 @@ import java.util.Properties;
  * @author Andrew Williams
  * @version $Id$
  * @since 2.0-alpha-9
+ *
+ * @plexus.component role="org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator"
+ *                   role-hint="solaris-sparc-64"
  */
 public class SolarisSparc64JswPlatformGenerator
     extends AbstractJswPlatformGenerator

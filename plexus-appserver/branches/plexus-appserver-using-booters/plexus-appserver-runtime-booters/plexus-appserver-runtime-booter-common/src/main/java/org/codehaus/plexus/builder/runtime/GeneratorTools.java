@@ -55,6 +55,8 @@ import java.util.Properties;
 /**
  * @author Jason van Zyl
  * @version $Id$
+ *
+ * @plexus.component role="org.codehaus.plexus.builder.runtime.GeneratorTools"
  */
 public class GeneratorTools
     extends AbstractLogEnabled
@@ -66,7 +68,7 @@ public class GeneratorTools
     private static final String PROPERTY_APP_DESCRIPTION = "app.description";
 
     /**
-     * @requirement
+     * @plexus.requirement
      */
     public VelocityComponent velocity;
 
