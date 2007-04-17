@@ -29,7 +29,7 @@ import java.net.InetAddress;
  * JMDNSResourcePublisher
  *
  * @author Aldrin Leal
- * @plexus.component role="org.codehaus.plexus.discovery.mdns.JmDNSWrapper" role-hint="default"
+ * @plexus.component role="org.codehaus.plexus.discovery.mdns.JmDNSWrapper"
  * instantiation-strategy="singleton"
  */
 public class JmDNSWrapper
