@@ -34,25 +34,13 @@ import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.project.MavenProjectBuilder;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.InterpolationFilterReader;
-import org.codehaus.plexus.util.Os;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.cli.CommandLineException;
-import org.codehaus.plexus.util.cli.Commandline;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.Writer;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -86,100 +74,6 @@ public abstract class AbstractBuilder
      * @plexus.requirement
      */
     private ArtifactMetadataSource metadata;
-
-    // ----------------------------------------------------------------------
-    // Utility methods
-    // ----------------------------------------------------------------------
-
-    protected void executable( File file )
-        throws CommandLineException, IOException
-    {
-        if ( Os.isFamily( "unix" ) )
-        {
-            Commandline cli = new Commandline();
-
-            cli.setExecutable( "chmod" );
-
-            cli.createArgument().setValue( "+x" );
-
-            cli.createArgument().setValue( file.getAbsolutePath() );
-
-            cli.execute();
-        }
-    }
-
-    protected File mkdirs( File directory )
-        throws IOException
-    {
-        if ( !directory.exists() )
-        {
-            if ( !directory.mkdirs() )
-            {
-                throw new IOException( "Could not make directories '" + directory.getAbsolutePath() + "'." );
-            }
-        }
-
-        return directory;
-    }
-
-    protected InputStream getResourceAsStream( String resource )
-        throws IOException
-    {
-        InputStream is = getClass().getClassLoader().getResourceAsStream( resource );
-
-        if ( is == null )
-        {
-            throw new IOException( "Could not find resource '" + resource + "'." );
-        }
-
-        return is;
-    }
-
-    // ----------------------------------------------------------------------
-    //
-    // ----------------------------------------------------------------------
-
-    protected void filterCopy( File in, File out, Map map )
-        throws IOException
-    {
-        filterCopy( new FileReader( in ), out, map );
-    }
-
-    protected void filterCopy( File in, File out, Map map, String beginToken, String endToken )
-        throws IOException
-    {
-        filterCopy( new FileReader( in ), out, map, beginToken, endToken );
-    }
-
-    protected void filterCopy( InputStream in, File out, Map map )
-        throws IOException
-    {
-        filterCopy( new InputStreamReader( in ), out, map );
-    }
-
-    protected void filterCopy( InputStream in, File out, Map map, String beginToken, String endToken )
-        throws IOException
-    {
-        filterCopy( new InputStreamReader( in ), out, map, beginToken, endToken );
-    }
-
-    protected void filterCopy( Reader in, File out, Map map )
-        throws IOException
-    {
-        filterCopy( in, out, map, "@", "@" );
-    }
-
-    protected void filterCopy( Reader in, File out, Map map, String beginToken, String endToken )
-        throws IOException
-    {
-        InterpolationFilterReader reader = new InterpolationFilterReader( in, map, beginToken, endToken );
-
-        Writer writer = new FileWriter( out );
-
-        IOUtil.copy( reader, writer );
-
-        writer.close();
-    }
 
     // ----------------------------------------------------------------------
     // Artifact methods

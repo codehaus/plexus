@@ -35,4 +35,21 @@
     <module>plexus-appserver-runtime-booter-jsw</module>
     <module>plexus-appserver-runtime-booter-shellscript</module>
   </modules>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <goals>
+              <goal>descriptor</goal>
+              <goal>merge-descriptors</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

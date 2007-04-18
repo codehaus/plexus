@@ -26,6 +26,7 @@ import org.codehaus.plexus.builder.runtime.JswPlexusRuntimeBootloaderGenerator;
 import java.util.Properties;
 import java.util.Iterator;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Abstract generator to aid with specific platforms of the JSW booter.
@@ -42,6 +43,9 @@ public abstract class AbstractJswPlatformGenerator
 
     protected static String JSW_VERSION = JswPlexusRuntimeBootloaderGenerator.JSW_VERSION;
 
+    /**
+     * @plexus.requirement
+     */
     protected GeneratorTools tools;
 
     protected void copyWrapperConf( File destDir, Properties configurationProperties, Properties additionalProperties )
@@ -69,8 +73,15 @@ public abstract class AbstractJswPlatformGenerator
             }
         }
 
-        tools.filterCopy( tools.getResourceAsStream( JSW + "/wrapper-common-" + JSW_VERSION + "/src/conf/wrapper.conf.in" ),
-                    new File( destDir, "wrapper.conf" ),
-                    props );
+        try
+        {
+            tools.filterCopy( tools.getResourceAsStream( JSW + "/wrapper-common-" + JSW_VERSION + "/src/conf/wrapper.conf.in" ),
+                              new File( destDir, "wrapper.conf" ),
+                              props );
+        }
+        catch ( IOException e )
+        {
+            throw new PlexusRuntimeBootloaderGeneratorException( "Error whilst copying resource", e);
+        }
     }
 }

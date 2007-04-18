@@ -25,6 +25,7 @@ package org.codehaus.plexus.builder.runtime;
 import org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Iterator;
@@ -32,6 +33,9 @@ import java.util.Iterator;
 /**
  * @author <a href="jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ *
+ * @plexus.component role="org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGenerator"
+ *                   role-hint="jsw"
  */
 public class JswPlexusRuntimeBootloaderGenerator
     implements PlexusRuntimeBootloaderGenerator
@@ -40,40 +44,53 @@ public class JswPlexusRuntimeBootloaderGenerator
 
     public static String JSW_VERSION = "3.2.3";
 
-    Map platformGenerators;
+    /**
+     * @plexus.requirement role="org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator"
+     */
+    private Map platformGenerators;
 
+    /**
+     * @plexus.requirement role="org.codehaus.plexus.builder.runtime.GeneratorTools"
+     */
     private GeneratorTools tools;
 
     public void generate( File outputDirectory, Properties configurationProperties )
         throws PlexusRuntimeBootloaderGeneratorException
     {
-        File binDirectory = new File( outputDirectory, "bin" );
-        binDirectory.mkdirs();
-
-        // ----------------------------------------------------------------------------
-        // Look up the appropriate generators
-        // ----------------------------------------------------------------------------
-
-        // for now just run them all, this needs to be configurable
-        // TODO make the list we load configurable
-        Iterator platforms = platformGenerators.keySet().iterator();
-        while ( platforms.hasNext() )
+        try
         {
-            String platformId = (String) platforms.next();
-            JswPlatformGenerator platform = (JswPlatformGenerator) platformGenerators.get( platformId );
+            File binDirectory = new File( outputDirectory, "bin" );
+            tools.mkdirs( binDirectory );
 
-            configurationProperties.put( "platform.id", platformId );
-            platform.generate( binDirectory, null, configurationProperties );
+            // ----------------------------------------------------------------------------
+            // Look up the appropriate generators
+            // ----------------------------------------------------------------------------
+
+            // for now just run them all, this needs to be configurable
+            // TODO make the list we load configurable
+            Iterator platforms = platformGenerators.keySet().iterator();
+            while ( platforms.hasNext() )
+            {
+                String platformId = (String) platforms.next();
+                JswPlatformGenerator platform = (JswPlatformGenerator) platformGenerators.get( platformId );
+
+                configurationProperties.put( "platform.id", platformId );
+                platform.generate( binDirectory, null, configurationProperties );
+            }
+            configurationProperties.remove( "platform.id" );
+
+            // ----------------------------------------------------------------------------
+            // The wrapper.jar can be dealt with here because
+            // it is common to all the JSW runtime booters.
+            // ----------------------------------------------------------------------------
+
+            tools.copyResourceToFile( JSW + "/wrapper-common-" + JSW_VERSION + "/lib/wrapper.jar",
+                                      new File( outputDirectory, "core/boot/wrapper.jar" ) );
         }
-        configurationProperties.remove( "platform.id" );
-
-        // ----------------------------------------------------------------------------
-        // The wrapper.jar can be dealt with here because
-        // it is common to all the JSW runtime booters.
-        // ----------------------------------------------------------------------------
-
-        tools.copyResourceToFile( JSW + "/wrapper-common-" + JSW_VERSION + "/lib/wrapper.jar",
-                                  new File( outputDirectory, "core/boot/wrapper.jar" ) );
+        catch ( IOException e )
+        {
+            throw new PlexusRuntimeBootloaderGeneratorException( "Error whilst creating JSW booters", e);
+        }
     }
 
     public Map getPlatformGenerators()
