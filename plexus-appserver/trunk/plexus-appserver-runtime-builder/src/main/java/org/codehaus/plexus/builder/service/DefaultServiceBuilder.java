@@ -33,6 +33,7 @@ import org.codehaus.plexus.appserver.PlexusServiceConstants;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
+import org.codehaus.plexus.builder.runtime.GeneratorTools;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
@@ -55,6 +56,11 @@ public class DefaultServiceBuilder
     extends AbstractBuilder
     implements ServiceBuilder
 {
+    /**
+     * @plexus.requirement
+     */
+    private GeneratorTools tools;
+
     // ----------------------------------------------------------------------
     // ServiceBuilder Implementation
     // ----------------------------------------------------------------------
@@ -87,9 +93,9 @@ public class DefaultServiceBuilder
             // Create directory structure
             // ----------------------------------------------------------------------
 
-            File confDir = mkdirs( new File( outputDirectory, PlexusServiceConstants.CONF_DIRECTORY ) );
+            File confDir = tools.mkdirs( new File( outputDirectory, PlexusServiceConstants.CONF_DIRECTORY ) );
 
-            libDir = mkdirs( new File( outputDirectory, PlexusServiceConstants.LIB_DIRECTORY ) );
+            libDir = tools.mkdirs( new File( outputDirectory, PlexusServiceConstants.LIB_DIRECTORY ) );
 
             // ----------------------------------------------------------------------
             //
@@ -231,7 +237,7 @@ public class DefaultServiceBuilder
 
             File out = new File( confDir, files[i] );
 
-            filterCopy( in, out, configurationProperties );
+            tools.filterCopy( in, out, configurationProperties );
         }
     }
 }

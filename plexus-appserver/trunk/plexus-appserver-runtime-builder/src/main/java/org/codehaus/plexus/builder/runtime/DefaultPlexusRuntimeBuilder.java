@@ -33,8 +33,6 @@ import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.velocity.VelocityComponent;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -48,17 +46,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Map;
 
 /**
  * @author <a href="jason@maven.org">Jason van Zyl</a>
@@ -68,15 +63,14 @@ public class DefaultPlexusRuntimeBuilder
     extends AbstractBuilder
     implements PlexusRuntimeBuilder
 {
-    private static final String JSW = "jsw";
+    /**
+     * @plexus.requirement
+     */
+    private GeneratorTools tools;
 
     private static final String TEMPLATES = "org/codehaus/plexus/builder/templates";
 
     private static final String CLASSWORLDS_TEMPLATE = TEMPLATES + "/classworlds.vm";
-
-    private static final String UNIX_LAUNCHER_TEMPLATE = TEMPLATES + "/plexus.vm";
-
-    private static final String WINDOWS_LAUNCHER_TEMPLATE = TEMPLATES + "/plexus-bat.vm";
 
     // ----------------------------------------------------------------------
     // Properties in the configurator properties file
@@ -89,9 +83,14 @@ public class DefaultPlexusRuntimeBuilder
     // ----------------------------------------------------------------------
 
     /**
-     * @requirement
+     * @plexus.requirement
      */
     protected VelocityComponent velocity;
+
+    /**
+     * @plexus.requirement
+     */
+    private Map runtimeBooterGenerators;
 
     // ----------------------------------------------------------------------
     //
@@ -200,7 +199,7 @@ public class DefaultPlexusRuntimeBuilder
 
         try
         {
-            mkdirs( workingDirectory );
+            tools.mkdirs( workingDirectory );
 
             getLogger().info( "Building runtime in " + workingDirectory.getAbsolutePath() );
 
@@ -209,21 +208,21 @@ public class DefaultPlexusRuntimeBuilder
             // ----------------------------------------------------------------------
 
             // TODO: should we set up .base separately?
-            mkdirs( getAppsDirectory( workingDirectory ) );
+            tools.mkdirs( getAppsDirectory( workingDirectory ) );
 
-            File binDir = mkdirs( new File( workingDirectory, PlexusRuntimeConstants.BIN_DIRECTORY ) );
+            File binDir = tools.mkdirs( new File( workingDirectory, PlexusRuntimeConstants.BIN_DIRECTORY ) );
 
-            File confDir = mkdirs( new File( workingDirectory, PlexusRuntimeConstants.CONF_DIRECTORY ) );
+            File confDir = tools.mkdirs( new File( workingDirectory, PlexusRuntimeConstants.CONF_DIRECTORY ) );
 
-            File coreDir = mkdirs( new File( workingDirectory, PlexusRuntimeConstants.CORE_DIRECTORY ) );
+            File coreDir = tools.mkdirs( new File( workingDirectory, PlexusRuntimeConstants.CORE_DIRECTORY ) );
 
-            File bootDir = mkdirs( new File( workingDirectory, PlexusRuntimeConstants.BOOT_DIRECTORY ) );
+            File bootDir = tools.mkdirs( new File( workingDirectory, PlexusRuntimeConstants.BOOT_DIRECTORY ) );
 
-            mkdirs( new File( workingDirectory, PlexusRuntimeConstants.LOGS_DIRECTORY ) );
+            tools.mkdirs( new File( workingDirectory, PlexusRuntimeConstants.LOGS_DIRECTORY ) );
 
-            mkdirs( new File( workingDirectory, PlexusRuntimeConstants.SERVICES_DIRECTORY ) );
+            tools.mkdirs( new File( workingDirectory, PlexusRuntimeConstants.SERVICES_DIRECTORY ) );
 
-            mkdirs( new File( workingDirectory, PlexusRuntimeConstants.TEMP_DIRECTORY ) );
+            tools.mkdirs( new File( workingDirectory, PlexusRuntimeConstants.TEMP_DIRECTORY ) );
 
             // ----------------------------------------------------------------------
             //
@@ -240,15 +239,28 @@ public class DefaultPlexusRuntimeBuilder
 
             processMainConfiguration( containerConfiguration, configurationProperties, confDir, addManagementAgent );
 
-            createSystemScripts( binDir, confDir, configurationProperties );
+            createClassworldsConfiguration( confDir, configurationProperties );
 
-            //processConfigurations();
+            Iterator generators = runtimeBooterGenerators.keySet().iterator();
+            while ( generators.hasNext() )
+            {
+                String generatorId = (String) generators.next();
+                PlexusRuntimeBootloaderGenerator generator = (PlexusRuntimeBootloaderGenerator)
+                    runtimeBooterGenerators.get( generatorId );
 
-            javaServiceWrapper( binDir, coreDir, configurationProperties );
-        }
-        catch ( CommandLineException ex )
-        {
-            throw new PlexusRuntimeBuilderException( "Exception while building the runtime.", ex );
+                System.out.print( "Generating runtime booters " + generatorId + "... ");
+
+                try
+                {
+                    generator.generate( workingDirectory, configurationProperties );
+                    System.out.println( "OK" );
+                }
+                catch ( PlexusRuntimeBootloaderGeneratorException e )
+                {
+                    System.out.println( "FAILED" );
+                    getLogger().error( e.getMessage(), e );
+                }
+            }
         }
         catch ( IOException ex )
         {
@@ -327,34 +339,10 @@ public class DefaultPlexusRuntimeBuilder
     //
     // ----------------------------------------------------------------------
 
-    private void createSystemScripts( File binDir, File confDir, Properties configurationProperties )
-        throws PlexusRuntimeBuilderException, IOException, CommandLineException
-    {
-        ClassLoader old = Thread.currentThread().getContextClassLoader();
-
-        Thread.currentThread().setContextClassLoader( this.getClass().getClassLoader() );
-
-        createClassworldsConfiguration( confDir, configurationProperties );
-
-        createLauncherScripts( binDir, configurationProperties );
-
-        Thread.currentThread().setContextClassLoader( old );
-    }
-
     private void createClassworldsConfiguration( File confDir, Properties configurationProperties )
         throws PlexusRuntimeBuilderException, IOException
     {
         mergeTemplate( CLASSWORLDS_TEMPLATE, new File( confDir, "classworlds.conf" ), true, configurationProperties );
-    }
-
-    private void createLauncherScripts( File binDir, Properties configurationProperties )
-        throws PlexusRuntimeBuilderException, IOException, CommandLineException
-    {
-        mergeTemplate( UNIX_LAUNCHER_TEMPLATE, new File( binDir, "plexus.sh" ), false, configurationProperties );
-
-        mergeTemplate( WINDOWS_LAUNCHER_TEMPLATE, new File( binDir, "plexus.bat" ), true, configurationProperties );
-
-        executable( new File( binDir, "plexus.sh" ) );
     }
 
     private void processMainConfiguration( File containerConfiguration, Properties configurationProperties,
@@ -411,127 +399,7 @@ public class DefaultPlexusRuntimeBuilder
             }
         }
 
-        filterCopy( conf, out, configurationProperties );
-    }
-
-    private void javaServiceWrapper( File binDir, File coreDir, Properties configurationProperties )
-        throws IOException, CommandLineException
-    {
-        // ----------------------------------------------------------------------
-        // Generic parts
-        // ----------------------------------------------------------------------
-
-        copyResourceToFile( JSW + "/wrapper.jar", new File( coreDir, "boot/wrapper.jar" ) );
-
-        List configurations = new ArrayList( Arrays.asList( new String[]{"linux-x86-32", "linux-x86-64",
-            "windows-x86-32", "macosx-universal-32", "solaris-x86-32", "solaris-sparc-32", "solaris-sparc-64"} ) );
-
-        for ( Iterator i = configurations.iterator(); i.hasNext(); )
-        {
-            String config = (String) i.next();
-
-            File dir = new File( binDir, config );
-
-            mkdirs( dir );
-
-            Properties properties = new Properties();
-            properties.setProperty( "library.path", "../../bin/" + config );
-
-            String wrapperExe;
-            String wrapperLib;
-            String startScript;
-
-            if ( config.startsWith( "windows" ) )
-            {
-                properties.setProperty( "extra.path", ";" );
-                wrapperExe = "wrapper.exe";
-                wrapperLib = "wrapper.dll";
-                startScript = "run.bat";
-
-                copyResourceToFile( JSW + "/InstallService.bat", new File( binDir, config + "/InstallService.bat" ) );
-                copyResourceToFile( JSW + "/UninstallService.bat",
-                                    new File( binDir, config + "/UninstallService.bat" ) );
-            }
-            else
-            {
-                properties.setProperty( "extra.path", "" );
-                wrapperExe = "wrapper";
-                startScript = "run.sh";
-                if ( config.startsWith( "mac" ) )
-                {
-                    wrapperLib = "libwrapper.jnilib";
-                }
-                else
-                {
-                    wrapperLib = "libwrapper.so";
-                }
-            }
-
-            copyResource( config + "/" + wrapperExe, true, binDir );
-            copyResource( config + "/" + wrapperLib, false, binDir );
-            copyWrapperConf( dir, configurationProperties, properties );
-
-            File runSh = new File( binDir, config + "/" + startScript );
-            filterCopy( getResourceAsStream( JSW + "/" + startScript ), runSh, configurationProperties );
-            executable( runSh );
-        }
-    }
-
-    private void copyWrapperConf( File destDir, Properties configurationProperties, Properties additionalProperties )
-        throws IOException
-    {
-        Properties props = new Properties();
-
-        if ( configurationProperties != null )
-        {
-            for ( Iterator i = configurationProperties.keySet().iterator(); i.hasNext(); )
-            {
-                String key = (String) i.next();
-
-                props.setProperty( key, configurationProperties.getProperty( key ) );
-            }
-        }
-
-        if ( additionalProperties != null )
-        {
-            for ( Iterator i = additionalProperties.keySet().iterator(); i.hasNext(); )
-            {
-                String key = (String) i.next();
-
-                props.setProperty( key, additionalProperties.getProperty( key ) );
-            }
-        }
-
-        filterCopy( getResourceAsStream( JSW + "/wrapper.conf" ), new File( destDir, "wrapper.conf" ), props );
-    }
-
-    private void copyResource( String filename, boolean makeExecutable, File basedir )
-        throws CommandLineException, IOException
-    {
-        File target = new File( basedir, filename );
-
-        copyResourceToFile( JSW + "/" + filename, target );
-
-        if ( makeExecutable )
-        {
-            executable( target );
-        }
-    }
-
-    private void copyResourceToFile( String resource, File target )
-        throws IOException
-    {
-        InputStream is = getResourceAsStream( resource );
-
-        mkdirs( target.getParentFile() );
-
-        OutputStream os = new FileOutputStream( target );
-
-        IOUtil.copy( is, os );
-
-        IOUtil.close( is );
-
-        IOUtil.close( os );
+        tools.filterCopy( conf, out, configurationProperties );
     }
 
     // ----------------------------------------------------------------------
@@ -581,6 +449,6 @@ public class DefaultPlexusRuntimeBuilder
 
         output.close();
 
-        filterCopy( tmpFile, outputFileName, configurationProperties, "@{", "}@" );
+        tools.filterCopy( tmpFile, outputFileName, configurationProperties, "@{", "}@" );
     }
 }

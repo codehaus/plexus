@@ -20,8 +20,10 @@ package org.codehaus.plexus.builder.runtime.platform;
  */
 
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBootloaderGeneratorException;
+import org.codehaus.plexus.util.cli.CommandLineException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -30,6 +32,9 @@ import java.util.Properties;
  * @author Andrew Williams
  * @version $Id$
  * @since 2.0-alpha-9
+ *
+ * @plexus.component role="org.codehaus.plexus.builder.runtime.platform.JswPlatformGenerator"
+ *                   role-hint="solaris-sparc-32"
  */
 public class SolarisSparc32JswPlatformGenerator
     extends AbstractJswPlatformGenerator
@@ -43,20 +48,31 @@ public class SolarisSparc32JswPlatformGenerator
                           Properties configurationProperties )
         throws PlexusRuntimeBootloaderGeneratorException
     {
-        // TODO: make it configurable - we don't always want a subdir
-        File solarisBinDir = new File( binDirectory, SOLARIS );
-        tools.mkdirs( solarisBinDir );
+        try
+        {
+            // TODO: make it configurable - we don't always want a subdir
+            File solarisBinDir = new File( binDirectory, SOLARIS );
+            tools.mkdirs( solarisBinDir );
 
-        File runSh = new File( solarisBinDir, "run.sh" );
-        tools.filterCopy( tools.getResourceAsStream( JSW + "/wrapper-common-" + JSW_VERSION + "/src/bin/sh.script.in" ), runSh, configurationProperties );
-        tools.executable( runSh );
+            File runSh = new File( solarisBinDir, "run.sh" );
+            tools.filterCopy( tools.getResourceAsStream( JSW + "/wrapper-common-" + JSW_VERSION + "/src/bin/sh.script.in" ), runSh, configurationProperties );
+            tools.executable( runSh );
 
-        tools.copyResource( SOLARIS + "/wrapper", SOLARIS_SOURCE + "/bin/wrapper", true, binDirectory  );
-        tools.copyResource( SOLARIS + "/libwrapper.so", SOLARIS_SOURCE + "/lib/libwrapper.so", false, binDirectory );
+            tools.copyResource( SOLARIS + "/wrapper", SOLARIS_SOURCE + "/bin/wrapper", true, binDirectory  );
+            tools.copyResource( SOLARIS + "/libwrapper.so", SOLARIS_SOURCE + "/lib/libwrapper.so", false, binDirectory );
 
-        Properties solarisProps = new Properties();
-        solarisProps.setProperty( "library.path", "../../bin/" + SOLARIS );
-        solarisProps.setProperty( "extra.path", "" );
-        copyWrapperConf( solarisBinDir, configurationProperties, solarisProps );
+            Properties solarisProps = new Properties();
+            solarisProps.setProperty( "library.path", "../../bin/" + SOLARIS );
+            solarisProps.setProperty( "extra.path", "" );
+            copyWrapperConf( solarisBinDir, configurationProperties, solarisProps );
+        }
+        catch ( IOException e )
+        {
+            throw new PlexusRuntimeBootloaderGeneratorException( "Error whilst generating solaris-32 script", e);
+        }
+        catch ( CommandLineException e )
+        {
+            throw new PlexusRuntimeBootloaderGeneratorException( "Error whilst making solaris-32 script executable", e);
+        }
     }
 }

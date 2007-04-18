@@ -20,8 +20,10 @@ package org.codehaus.plexus.builder.runtime;
  */
 
 import org.codehaus.plexus.builder.runtime.platform.ShellScriptPlatformGenerator;
+import org.codehaus.plexus.util.cli.CommandLineException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 import java.util.Map;
 import java.util.Iterator;
@@ -40,23 +42,30 @@ public class ShellScriptPlexusRuntimeBootloaderGenerator
     public void generate( File outputDirectory, Properties configurationProperties )
         throws PlexusRuntimeBootloaderGeneratorException
     {
-        File binDirectory = new File( outputDirectory, "bin" );
-        tools.mkdirs( binDirectory );
-
-        // ----------------------------------------------------------------------------
-        // Look up the appropriate generators
-        // ----------------------------------------------------------------------------
-
-        // for now just run them all, this needs to be configurable
-        // TODO make the list we load configurable
-        Iterator platforms = platformGenerators.keySet().iterator();
-        while ( platforms.hasNext() )
+        try
         {
-            ShellScriptPlatformGenerator platform =
-                (ShellScriptPlatformGenerator) platformGenerators.get(platforms.next() );
+            File binDirectory = new File( outputDirectory, "bin" );
+            tools.mkdirs( binDirectory );
 
-            // TODO figure if we can fix / remove this second param
-            platform.generate( binDirectory, "", configurationProperties );
+            // ----------------------------------------------------------------------------
+            // Look up the appropriate generators
+            // ----------------------------------------------------------------------------
+
+            // for now just run them all, this needs to be configurable
+            // TODO make the list we load configurable
+            Iterator platforms = platformGenerators.keySet().iterator();
+            while ( platforms.hasNext() )
+            {
+                ShellScriptPlatformGenerator platform =
+                    (ShellScriptPlatformGenerator) platformGenerators.get(platforms.next() );
+
+                // TODO figure if we can fix / remove this second param
+                platform.generate( binDirectory, "", configurationProperties );
+            }
+        }
+        catch ( IOException e )
+        {
+            throw new PlexusRuntimeBootloaderGeneratorException( "Unable to create shellscript booters", e);
         }
     }
 
