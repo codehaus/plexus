@@ -22,7 +22,7 @@
   <modules>
     <module>plexus-discovery-api</module>
     <module>plexus-discovery-mdns</module>
-    <module>plexus-discovery-dnssd</module>
+    <!--module>plexus-discovery-dnssd</module-->
     <module>plexus-discovery-site</module>
   </modules>
   <dependencyManagement>
