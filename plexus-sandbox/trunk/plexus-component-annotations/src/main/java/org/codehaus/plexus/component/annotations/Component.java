@@ -38,4 +38,9 @@ public @interface Component
      * The instantiation strategy for this component.
      */
     InstantiationStrategy instantiationStrategy() default InstantiationStrategy.SINGLETON;
+
+    /**
+     * The component's alias. TODO: what's this?
+     */
+    String alias() default "";
 }
