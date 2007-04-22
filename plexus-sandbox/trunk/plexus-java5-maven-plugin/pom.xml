@@ -12,6 +12,11 @@
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-cdc</artifactId>
+      <version>1.0-alpha-11-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-maven-plugin</artifactId>
       <version>1.3.6-SNAPSHOT</version>
     </dependency>
