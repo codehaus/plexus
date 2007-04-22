@@ -32,10 +32,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.cdc.ComponentDescriptorCreatorException;
 import org.codehaus.plexus.cdc.ComponentDescriptorWriter;
 import org.codehaus.plexus.component.annotations.Component;
@@ -58,17 +62,25 @@ public class PlexusJava5DescriptorMojo
     extends AbstractMojo
 {
     /**
+     * @parameter expression="${project}"
+     * @readonly
+     */
+    private MavenProject project;
+
+    /**
      * @parameter expression="${project.build.outputDirectory}
      */
     private File classesDirectory;
 
     /**
      * @parameter expression="${project.compileClasspathElements}
+     * @readonly
      */
     private List<String> classpathElements;
 
     /**
      * @parameter expression="${component.org.codehaus.plexus.cdc.ComponentDescriptorWriter}"
+     * @readonly
      */
     private ComponentDescriptorWriter writer;
 
@@ -129,6 +141,13 @@ public class PlexusJava5DescriptorMojo
                 getLog().info( "Found component " + desc.getImplementation() );
             }
         }
+
+        Resource resource = new Resource();
+        resource.setDirectory( outputDirectory.getAbsolutePath() );
+        resource.setIncludes( Collections.EMPTY_LIST );
+        resource.setExcludes( Collections.EMPTY_LIST );
+
+        project.addResource( resource );
 
         File outputFile = new File( outputDirectory, fileName );
 
@@ -232,7 +251,7 @@ public class PlexusJava5DescriptorMojo
                 req.setFieldName( f.getName() );
                 req.setFieldMappingType( f.getType().getName() );
 
-                XmlPlexusConfiguration reqConfig = new XmlPlexusConfiguration("configuration");
+                XmlPlexusConfiguration reqConfig = new XmlPlexusConfiguration( "configuration" );
 
                 for ( Configuration config : reqAnnotation.configuration() )
                 {
