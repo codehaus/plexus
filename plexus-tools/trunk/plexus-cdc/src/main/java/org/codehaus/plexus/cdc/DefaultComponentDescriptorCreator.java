@@ -24,25 +24,6 @@ package org.codehaus.plexus.cdc;
  * SOFTWARE.
  */
 
-import com.thoughtworks.qdox.JavaDocBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaSource;
-import org.codehaus.plexus.cdc.merge.Merger;
-import org.codehaus.plexus.cdc.merge.MergeException;
-import org.codehaus.plexus.component.repository.ComponentDependency;
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
-import org.codehaus.plexus.component.repository.cdc.ComponentRequirement;
-import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.configuration.PlexusConfigurationException;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
-import org.codehaus.plexus.util.xml.XMLWriter;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -52,6 +33,22 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.codehaus.plexus.cdc.merge.MergeException;
+import org.codehaus.plexus.cdc.merge.Merger;
+import org.codehaus.plexus.component.repository.ComponentDependency;
+import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.xml.XMLWriter;
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+
+import com.thoughtworks.qdox.JavaDocBuilder;
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaSource;
 
 /**
  * So, in this case it is easy enough to determine the role and the implementation.
@@ -75,12 +72,12 @@ public class DefaultComponentDescriptorCreator
     extends AbstractLogEnabled
     implements ComponentDescriptorCreator
 {
-    private static final String LS = System.getProperty( "line.separator" );
-
     // TODO: Make a list
     private ComponentGleaner gleaner;
 
     private Merger merger;
+
+    private ComponentDescriptorWriter writer;
 
     // ----------------------------------------------------------------------
     // ComponentDescriptorCreator Implementation
@@ -202,27 +199,14 @@ public class DefaultComponentDescriptorCreator
             }
         }
 
+
+
         try
         {
-            FileWriter writer = new FileWriter( outputFile );
-
-            XMLWriter w = new PrettyPrintXMLWriter( writer );
-
-            w.startElement( containerDescriptor ? "plexus" : "component-set" );
-
-            writeComponents( w, componentDescriptors );
-
-            writeDependencies( w, componentSetDescriptor );
-
-            w.endElement();
-
-            writer.write( LS );
-
-            writer.close();
-        }
-        catch ( PlexusConfigurationException e )
-        {
-            throw new ComponentDescriptorCreatorException( "Internal error while writing out the configuration", e );
+            writer.writeDescriptorSet(
+                new FileWriter( outputFile ),
+                componentSetDescriptor,
+                containerDescriptor );
         }
         catch ( IOException e )
         {
@@ -323,198 +307,19 @@ public class DefaultComponentDescriptorCreator
         }
     }
 
-    private void writeComponents( XMLWriter w, List componentDescriptors )
-        throws ComponentDescriptorCreatorException, PlexusConfigurationException
-    {
-        w.startElement( "components" );
-
-        for ( Iterator i = componentDescriptors.iterator(); i.hasNext(); )
-        {
-            w.startElement( "component" );
-
-            ComponentDescriptor cd = (ComponentDescriptor) i.next();
-
-            element( w, "alias", cd.getAlias() );
-
-            element( w, "role", cd.getRole() );
-
-            element( w, "role-hint", cd.getRoleHint() );
-
-            element( w, "implementation", cd.getImplementation() );
-
-            element( w, "version", cd.getVersion() );
-
-            element( w, "instantiation-strategy", cd.getInstantiationStrategy() );
-
-            element( w, "lifecycle-handler", cd.getLifecycleHandler() );
-
-            element( w, "description", cd.getDescription() );
-
-            writeRequirements( w, cd.getRequirements() );
-
-            writeConfiguration( w, cd.getConfiguration() );
-
-            w.endElement();
-        }
-
-        w.endElement();
-    }
-
-    private void writeRequirements( XMLWriter w, List requirements )
-    {
-        if ( requirements == null || requirements.size() == 0 )
-        {
-            return;
-        }
-
-        w.startElement( "requirements" );
-
-        for ( Iterator j = requirements.iterator(); j.hasNext(); )
-        {
-            ComponentRequirement cr = (ComponentRequirement) j.next();
-
-            w.startElement( "requirement" );
-
-            element( w, "role", cr.getRole() );
-
-            element( w, "role-hint", cr.getRoleHint() );
-
-            element( w, "field-name", cr.getFieldName() );
-
-            w.endElement();
-        }
-
-        w.endElement();
-    }
-
-    private void writeConfiguration( XMLWriter w, PlexusConfiguration configuration )
-        throws ComponentDescriptorCreatorException, PlexusConfigurationException
-    {
-        if ( configuration == null || configuration.getChildCount() == 0 )
-        {
-            return;
-        }
-
-        if ( !configuration.getName().equals( "configuration" ) )
-        {
-            throw new ComponentDescriptorCreatorException(
-                "The root node of the configuration must be " + "'configuration'." );
-        }
-
-        writePlexusConfiguration( w, configuration );
-    }
-
+    /**
+     * @deprecated do not use. Signature still here for compilation errors at runtime,
+     * but I doubt this is ever called.
+     */
     public void writeDependencies( XMLWriter w, ComponentSetDescriptor componentSetDescriptor )
     {
-        List deps = componentSetDescriptor.getDependencies();
-
-        if ( deps == null || deps.size() == 0 )
-        {
-            return;
-        }
-
-        w.startElement( "dependencies" );
-
-        for ( int i = 0; i < deps.size(); i++ )
-        {
-            writeDependencyElement( (ComponentDependency) deps.get( i ), w );
-        }
-
-        w.endElement();
-    }
-
-    private void writeDependencyElement( ComponentDependency dependency, XMLWriter w )
-    {
-        w.startElement( "dependency" );
-
-        String groupId = dependency.getGroupId();
-
-        element( w, "groupId", groupId );
-
-        String artifactId = dependency.getArtifactId();
-
-        element( w, "artifactId", artifactId );
-
-        String type = dependency.getType();
-
-        if ( type != null )
-        {
-            element( w, "type", type );
-        }
-
-        String version = dependency.getVersion();
-
-        element( w, "version", version );
-
-        w.endElement();
+        throw new UnsupportedOperationException("This operation is no longer supported");
     }
 
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
 
-    private void writePlexusConfiguration( XMLWriter xmlWriter, PlexusConfiguration c )
-        throws PlexusConfigurationException
-    {
-        if ( c.getAttributeNames().length == 0 && c.getChildCount() == 0 && c.getValue() == null )
-        {
-            return;
-        }
-
-        xmlWriter.startElement( c.getName() );
-
-        // ----------------------------------------------------------------------
-        // Write the attributes
-        // ----------------------------------------------------------------------
-
-        String[] attributeNames = c.getAttributeNames();
-
-        for ( int i = 0; i < attributeNames.length; i++ )
-        {
-            String attributeName = attributeNames[i];
-
-            xmlWriter.addAttribute( attributeName, c.getAttribute( attributeName ) );
-        }
-
-        // ----------------------------------------------------------------------
-        // Write the children
-        // ----------------------------------------------------------------------
-
-        PlexusConfiguration[] children = c.getChildren();
-
-        if ( children.length > 0 )
-        {
-            for ( int i = 0; i < children.length; i++ )
-            {
-                writePlexusConfiguration( xmlWriter, children[i] );
-            }
-        }
-        else
-        {
-            String value = c.getValue();
-
-            if ( value != null )
-            {
-                xmlWriter.writeText( value );
-            }
-        }
-
-        xmlWriter.endElement();
-    }
-
-    private void element( XMLWriter w, String name, String value )
-    {
-        if ( value == null )
-        {
-            return;
-        }
-
-        w.startElement( name );
-
-        w.writeText( value );
-
-        w.endElement();
-    }
 
 //    private List convertDependencies( List dependencies )
 //    {
