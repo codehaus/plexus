@@ -11,11 +11,18 @@
           <role>org.codehaus.plexus.cdc.merge.Merger</role>
           <role-hint>plexusXml</role-hint>
         </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.cdc.ComponentDescriptorWriter</role>
+        </requirement>
       </requirements>
     </component>
     <component>
       <role>org.codehaus.plexus.cdc.ComponentGleaner</role>
       <implementation>org.codehaus.plexus.cdc.PlexusDefaultComponentGleaner</implementation>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.cdc.ComponentDescriptorWriter</role>
+      <implementation>org.codehaus.plexus.cdc.DefaultComponentDescriptorWriter</implementation>
     </component>
     <component>
       <role>org.codehaus.plexus.cdc.merge.Merger</role>
