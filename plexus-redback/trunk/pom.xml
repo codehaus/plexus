@@ -179,9 +179,13 @@
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.redback</groupId>
+        <artifactId>redback-users-cached</artifactId>
+        <version>${security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.redback</groupId>
         <artifactId>redback-users-tests</artifactId>
         <version>${security.version}</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.redback</groupId>

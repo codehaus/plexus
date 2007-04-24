@@ -42,7 +42,15 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-users-cached</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>redback-keys-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-keys-cached</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
