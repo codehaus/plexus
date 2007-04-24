@@ -39,13 +39,16 @@ import java.util.List;
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
- * @plexus.component role="org.codehaus.plexus.redback.system.check.EnvironmentCheck"
+ * 
+ * TODO: Address comment below and add back in the component declaration
+ * 
+ * plexus.component role="org.codehaus.plexus.redback.system.check.EnvironmentCheck"
  * role-hint="ExpectedStandardWebXwork"
  */
 public class ExpectedXworkConfiguration
     extends AbstractXworkConfigurationCheck
     implements EnvironmentCheck
-{
+{	
     public void validateEnvironment( List violations )
     {
         // Get the configuration.
@@ -55,6 +58,13 @@ public class ExpectedXworkConfiguration
         {
             List internalViolations = new ArrayList();
 
+            /* PLXREDBACK-67
+             * TODO: this currently throws a violation since the standard practice is
+             * to include the xwork-security namespace in from the war overlay.  Otherwise
+             * all actions in the security namespace are also addressable from the 
+             * root default action lookup since by extending the security package thats how
+             * webwork/xwork deals with the actions
+             */
             XworkPackageConfig expectedPackage = new XworkPackageConfig( "/security" );
 
             expectedPackage.addAction( "account", "redback-account", "show" ).addResult( "input" ).addResult(
