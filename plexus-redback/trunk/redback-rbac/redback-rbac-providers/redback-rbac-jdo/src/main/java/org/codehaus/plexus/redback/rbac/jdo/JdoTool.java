@@ -58,7 +58,7 @@ public class JdoTool
     implements Initializable, DeleteLifecycleListener, StoreLifecycleListener
 {
     /**
-     * @plexus.requirement role-hint="rbac"
+     * @plexus.requirement role-hint="users"
      */
     private JdoFactory jdoFactory;
 

@@ -22,6 +22,7 @@
 
            Uses RBAC Authorizer and Keys Authorizer
          =============================================================== -->
+   <!-- 
     <component>
       <role>org.codehaus.plexus.redback.system.SecuritySystem</role>
       <implementation>org.codehaus.plexus.redback.system.DefaultSecuritySystem</implementation>
@@ -39,12 +40,12 @@
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.redback.user.UserManager</role>
-          <role-hint>jdo</role-hint>
+          <role-hint>cached</role-hint>
           <field-name>userManager</field-name>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.redback.keys.KeyManager</role>
-          <role-hint>jdo</role-hint>
+          <role-hint>cached</role-hint>
           <field-name>keyManager</field-name>
         </requirement>
         <requirement>
@@ -54,7 +55,7 @@
         </requirement>
       </requirements>
     </component>
-
+-->
     <!-- User Security Policy -->
     <component>
       <role>org.codehaus.plexus.redback.policy.UserSecurityPolicy</role>
@@ -93,6 +94,7 @@
     </component>
 
     <!-- RBAC Authorizer utilizing cached jdo rbac manager. -->
+    <!-- 
     <component>
       <role>org.codehaus.plexus.redback.authorization.Authorizer</role>
       <role-hint>rbac</role-hint>
@@ -105,7 +107,7 @@
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.redback.user.UserManager</role>
-          <role-hint>jdo</role-hint>
+          <role-hint>cached</role-hint>
           <field-name>userManager</field-name>
         </requirement>
         <requirement>
@@ -114,7 +116,7 @@
         </requirement>
       </requirements>
     </component>
-
+-->
 
     <component>
       <role>org.codehaus.plexus.redback.rbac.profile.RoleProfile</role>

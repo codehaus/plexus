@@ -35,6 +35,10 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-users-jdo</artifactId>      
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>redback-users-tests</artifactId>
       <scope>test</scope>
     </dependency>

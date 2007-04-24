@@ -46,7 +46,7 @@ public class KeyStoreAuthenticator
     implements Authenticator
 {
     /**
-     * @plexus.requirement role-hint="jdo"
+     * @plexus.requirement role-hint="cached"
      */
     private KeyManager keystore;
     
