@@ -55,7 +55,7 @@ public class MemoryUserManager
         URL url = this
             .getClass()
             .getResource(
-                "META-INF/maven/org.codehaus.plexus.redback/plexus-security-user-management-provider-memory/pom.properties" );
+                "META-INF/maven/org/codehaus/plexus/redback/redback-users-memory/pom.properties" );
 
         if ( url != null )
         {
