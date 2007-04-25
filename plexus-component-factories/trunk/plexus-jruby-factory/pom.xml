@@ -6,7 +6,7 @@
     <version>1.0-alpha-8</version>
   </parent>
   <artifactId>plexus-jruby-factory</artifactId>
-  <version>1.0-alpha-3</version>
+  <version>1.0-alpha-4-SNAPSHOT</version>
   <name>Plexus JRuby Factory</name>
 
   <repositories>
