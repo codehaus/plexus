@@ -41,7 +41,7 @@ import java.util.List;
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $ID:$
- * @plexus.component role="org.codehaus.plexus.security.system.check.EnvironmentCheck"
+ * @plexus.component role="org.codehaus.redback.system.check.EnvironmentCheck"
  * role-hint="locked-admin-check"
  */
 public class LockedAdminEnvironmentCheck extends AbstractLogEnabled implements EnvironmentCheck

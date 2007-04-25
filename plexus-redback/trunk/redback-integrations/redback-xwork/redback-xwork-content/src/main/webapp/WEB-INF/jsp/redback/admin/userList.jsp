@@ -44,8 +44,8 @@
     filterable="true"
     showTitle="false"
     showExports="false"
-    view="org.codehaus.plexus.security.ui.web.eXc.views.SecurityView" 
-    sortRowsCallback="org.codehaus.plexus.security.ui.web.eXc.ProcessUserRowsCallback"
+    view="org.codehaus.plexus.redback.xwork.eXc.views.SecurityView" 
+    sortRowsCallback="org.codehaus.plexus.redback.xwork.eXc.ProcessUserRowsCallback"
     cellspacing="2"
     cellpadding="3"
     >
@@ -62,7 +62,7 @@
        tooltip="Export Table to Excel format."/>
     <ec:row>          
         <ec:column property="username" title="User Name" 
-        	filterCell="org.codehaus.plexus.security.ui.web.eXc.SecurityFilterCell">
+        	filterCell="org.codehaus.plexus.redback.xwork.eXc.SecurityFilterCell">
           <img src="<c:url value="/images/redback/icon-user.gif"/>" />
           <redback:ifAuthorized permission="user-management-user-edit" resource="${user.username}">
             <ww:url id="usereditUrl" action="useredit">
@@ -83,14 +83,14 @@
           </redback:elseAuthorized>
         </ec:column>
         <ec:column property="fullName" title="Full Name" alias="fullname" 
-        	filterCell="org.codehaus.plexus.security.ui.web.eXc.SecurityFilterCell" />
-        <ec:column property="email" title="Email" cell="org.codehaus.plexus.security.ui.web.eXc.MailtoCell" 
-        	filterCell="org.codehaus.plexus.security.ui.web.eXc.SecurityFilterCell" />
-        <ec:column property="permanent" cell="org.codehaus.plexus.security.ui.web.eXc.CheckboxImageCell" 
+        	filterCell="org.codehaus.plexus.redback.xwork.eXc.SecurityFilterCell" />
+        <ec:column property="email" title="Email" cell="org.codehaus.plexus.redback.xwork.eXc.MailtoCell" 
+        	filterCell="org.codehaus.plexus.redback.xwork.eXc.SecurityFilterCell" />
+        <ec:column property="permanent" cell="org.codehaus.plexus.redback.xwork.eXc.CheckboxImageCell" 
         	style="text-align: center" title="Permanent" filterable="false"/> <%-- Boolean's can't be filtered --%>
-        <ec:column property="validated" cell="org.codehaus.plexus.security.ui.web.eXc.CheckboxImageCell" 
+        <ec:column property="validated" cell="org.codehaus.plexus.redback.xwork.eXc.CheckboxImageCell" 
         	style="text-align: center" title="Validated" filterable="false"/> <%-- Boolean's can't be filtered --%>
-        <ec:column property="locked" cell="org.codehaus.plexus.security.ui.web.eXc.CheckboxImageCell" 
+        <ec:column property="locked" cell="org.codehaus.plexus.redback.xwork.eXc.CheckboxImageCell" 
         	style="text-align: center" title="Locked" filterable="false"/> <%-- Boolean's can't be filtered --%>
         
         <ec:column title="Tasks" alias="tasks" sortable="false" filterable="false" styleClass="tasks">

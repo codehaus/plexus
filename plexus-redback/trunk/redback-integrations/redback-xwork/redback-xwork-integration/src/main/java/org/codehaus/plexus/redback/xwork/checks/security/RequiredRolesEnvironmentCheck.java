@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * RequiredRolesEnvironmentCheck: this environment check will check that the
- * required roles of the plexus-security-integration artifact exist to be
+ * required roles of the redback-xwork-integration artifact exist to be
  * assigned.
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
