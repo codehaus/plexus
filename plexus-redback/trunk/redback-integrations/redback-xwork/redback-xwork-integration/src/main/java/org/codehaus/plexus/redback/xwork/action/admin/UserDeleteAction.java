@@ -92,11 +92,6 @@ public class UserDeleteAction extends AbstractSecurityAction implements Cancella
         try
         {
             rbacManager.removeUserAssignment( username );
-            userManager.deleteUser( username );
-        }
-        catch ( UserNotFoundException e )
-        {
-            addActionError( "Unable to delete non-existant user '" + username + "'" );
         }
         catch ( RbacObjectNotFoundException e )
         {
@@ -109,6 +104,18 @@ public class UserDeleteAction extends AbstractSecurityAction implements Cancella
         catch ( RbacManagerException e )
         {
             addActionError( "unable to remove user role assignments for '" + username + "' because " + e.getMessage() );
+        }
+
+        if ( getActionErrors().isEmpty() )
+        {
+            try
+            {
+                userManager.deleteUser( username );
+            }
+            catch ( UserNotFoundException e )
+            {
+                addActionError( "Unable to delete non-existant user '" + username + "'" );
+            }
         }
 
         return SUCCESS;
