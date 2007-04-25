@@ -35,7 +35,7 @@
       <version>1.1.0+</version>
       <fields>
         <field>
-          <name>staticRoles</name>
+          <name>staticRoleProfiles</name>
           <version>1.1.0+</version>
           <association>
             <type>StaticRoleProfile</type>
@@ -43,7 +43,7 @@
           </association>
         </field>
         <field>
-          <name>dynamicRoles</name>
+          <name>dynamicRoleProfiles</name>
           <version>1.1.0+</version>
           <association>
             <type>DynamicRoleProfile</type>
