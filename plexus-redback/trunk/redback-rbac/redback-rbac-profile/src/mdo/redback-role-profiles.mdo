@@ -214,10 +214,17 @@
           <type>String</type>
         </field>
         <field>
+          <name>permanent</name>
+          <description>this resource should persist even if all referring permissions are removed</description>
+          <version>1.0.0+</version>
+          <type>boolean</type>
+        </field>
+        <field>
           <name>description</name>
           <version>1.0.0+</version>
           <type>String</type>
         </field>
+
     </class>
     <class>
       <name>Operation</name>
@@ -238,6 +245,12 @@
           <name>description</name>
           <version>1.0.0+</version>
           <type>String</type>
+        </field>
+        <field>
+          <name>permanent</name>
+          <description>this operation should persist even if all referring permissions are removed</description>
+          <version>1.0.0+</version>
+          <type>boolean</type>
         </field>
     </class>
     <class>
@@ -260,6 +273,12 @@
           <name>description</name>
           <version>1.0.0+</version>
           <type>String</type>
+        </field>
+        <field>
+          <name>permanent</name>
+          <description>this permission should persist even if referring roles are removed</description>
+          <version>1.0.0+</version>
+          <type>boolean</type>
         </field>
         <field>
           <name>operation</name>
