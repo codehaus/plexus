@@ -13,7 +13,7 @@
         test of the jsp tag pss:ifAuthorized 1:<br/>
         <br/>
         you should see an X right here -&gt;
-        <pss:ifAuthorized permission="foo">
+        <redback:ifAuthorized permission="foo">
           X
         </redback:ifAuthorized>
       </p>
