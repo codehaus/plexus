@@ -32,11 +32,27 @@
   <classes>
     <class rootElement="true" jpox.enabled="false" stash.storable="false">
       <name>RedbackRoleProfiles</name>
-      <version>1.1.0+</version>
+      <version>1.0.0+</version>
       <fields>
         <field>
+          <name>resources</name>
+          <version>1.0.0+</version>
+          <association>
+            <type>Resource</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>operations</name>
+          <version>1.0.0+</version>
+          <association>
+            <type>Operation</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
           <name>staticRoleProfiles</name>
-          <version>1.1.0+</version>
+          <version>1.0.0+</version>
           <association>
             <type>StaticRoleProfile</type>
             <multiplicity>*</multiplicity>
@@ -44,7 +60,7 @@
         </field>
         <field>
           <name>dynamicRoleProfiles</name>
-          <version>1.1.0+</version>
+          <version>1.0.0+</version>
           <association>
             <type>DynamicRoleProfile</type>
             <multiplicity>*</multiplicity>
@@ -54,45 +70,55 @@
     </class>
     <class>
       <name>StaticRoleProfile</name>
-      <version>1.1.0+</version>
+      <description>static role profiles specify roles that can fully be described before an application starts</description>
+      <version>1.0.0+</version>
       <fields>
         <field>
           <name>id</name>
-          <version>1.1.0+</version>
+          <version>1.0.0+</version>
           <type>int</type>
           <identifier>true</identifier>
         </field>
         <field>
           <name>name</name>
-          <version>1.1.0+</version>
+          <version>1.0.0+</version>
           <type>String</type>
         </field>
         <field>
           <name>assignable</name>
           <description>boolean specifying if a given role can assigned</description>
-          <version>1.1.0+</version>
+          <version>1.0.0+</version>
           <type>boolean</type>
           <defaultValue>false</defaultValue>
         </field>
         <field>
           <name>permanent</name>
           <description>boolean specifying if a given role can be removed once created</description>
-          <version>1.1.0+</version>
+          <version>1.0.0+</version>
           <type>boolean</type>
           <defaultValue>false</defaultValue>
         </field>
         <field>
           <name>permissions</name>
-          <version>1.1.0+</version>
+          <version>1.0.0+</version>
           <association>
             <type>Permission</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
         <field>
+          <name>parentRoles</name>
+          <description>the name of other static role profiles to have link to this role</description>
+          <version>1.0.0+</version>
+          <association>
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
           <name>childRoles</name>
-          <description>the name of other static role profiles</description>
-          <version>1.1.0+</version>
+          <description>the name of other static role profiles to assign as children to this role</description>
+          <version>1.0.0+</version>
           <association>
             <type>String</type>
             <multiplicity>*</multiplicity>
@@ -101,34 +127,35 @@
     </class>
     <class>
       <name>DynamicRoleProfile</name>
-      <version>1.1.0+</version>
+      <description>dynamic role profiles enable you to generate roles based on a resource that is determined at runtime</description>
+      <version>1.0.0+</version>
       <fields>
         <field>
           <name>id</name>
-          <version>1.1.0+</version>
+          <version>1.0.0+</version>
           <type>int</type>
           <identifier>true</identifier>
         </field>
         <field>
           <name>namePrefix</name>
-          <version>1.1.0+</version>
+          <version>1.0.0+</version>
           <type>String</type>
         </field>
         <field>
           <name>assignable</name>
-          <version>1.1.0+</version>
+          <version>1.0.0+</version>
           <type>boolean</type>
           <defaultValue>false</defaultValue>
         </field>
         <field>
           <name>permanent</name>
-          <version>1.1.0+</version>
+          <version>1.0.0+</version>
           <type>boolean</type>
           <defaultValue>false</defaultValue>
         </field>
         <field>
-          <name>Permissions</name>
-          <version>1.1.0+</version>
+          <name>permissions</name>
+          <version>1.0.0+</version>
           <association>
             <type>Permission</type>
             <multiplicity>*</multiplicity>
@@ -136,8 +163,17 @@
         </field>
         <field>
           <name>staticChildRoles</name>
-          <description>the name of the static role profiles<description>
-          <version>1.1.0+</version>
+          <description>the name of the static role profiles to create a child relationship with<description>
+          <version>1.0.0+</version>
+          <association>
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>staticParentRoles</name>
+          <description>the name of the static role profiles to have add a child relationship with<description>
+          <version>1.0.0+</version>
           <association>
             <type>String</type>
             <multiplicity>*</multiplicity>
@@ -145,32 +181,96 @@
         </field>
         <field>
           <name>dynamicChildRoles</name>
-          <description>the names of the dynamic role profiles to be linked based on the resource</description>
-          <version>1.1.0+</version>
+          <description>the namePrefix of the dynamic role profiles to be linked in a child relationship based on the resource</description>
+          <version>1.0.0+</version>
+          <association>
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>dynamicParentRoles</name>
+          <description>the namePrefix of the dynamic role profiles to be linked in a parent relationship based on the resource, these can be organized however, but completeness allows for better closure validation</description>
+          <version>1.0.0+</version>
           <association>
             <type>String</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
     </class>
-     <class>
-      <name>Permission</name>
-      <version>1.1.0+</version>
+    <class>
+      <name>Resource</name>
+      <version>1.0.0+</version>
       <fields>
         <field>
+          <name>id</name>
+          <version>1.0.0+</version>
+          <type>int</type>
+          <identifier>true</identifier>
+        </field>
+        <field>
           <name>name</name>
-          <description>default would be 'operation - resource'<description>
-          <version>1.1.0+</version>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>description</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+    </class>
+    <class>
+      <name>Operation</name>
+      <version>1.0.0+</version>
+      <fields>
+        <field>
+          <name>id</name>
+          <version>1.0.0+</version>
+          <type>int</type>
+          <identifier>true</identifier>
+        </field>
+        <field>
+          <name>name</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>description</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+    </class>
+    <class>
+      <name>Permission</name>
+      <version>1.0.0+</version>
+      <fields>
+        <field>
+          <name>id</name>
+          <version>1.0.0+</version>
+          <type>int</type>
+          <identifier>true</identifier>
+        </field>
+        <field>
+          <name>name</name>
+          <description>default should be 'operation - resource'<description>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>description</name>
+          <version>1.0.0+</version>
           <type>String</type>
         </field>
         <field>
           <name>operation</name>
-          <version>1.1.0+</version>
+          <description>the name of the operation for this permission</description>
+          <version>1.0.0+</version>
           <type>String</type>
         </field>
         <field>
           <name>resource</name>
-          <version>1.1.0+</version>
+          <description>the name of the resource for this permission</description>
+          <version>1.0.0+</version>
           <type>String</type>
         </field>
     </class>
