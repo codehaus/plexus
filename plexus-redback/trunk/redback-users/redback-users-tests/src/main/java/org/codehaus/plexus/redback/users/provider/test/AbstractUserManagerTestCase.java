@@ -18,11 +18,9 @@ package org.codehaus.plexus.redback.users.provider.test;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
-import org.codehaus.plexus.redback.users.PermanentUserException;
-import org.codehaus.plexus.redback.users.User;
-import org.codehaus.plexus.redback.users.UserManager;
-import org.codehaus.plexus.redback.users.UserManagerException;
-import org.codehaus.plexus.redback.users.UserNotFoundException;
+import org.codehaus.plexus.redback.users.*;
+
+import java.util.List;
 
 /**
  * AbstractUserManagerTestCase 
@@ -330,6 +328,113 @@ public class AbstractUserManagerTestCase
         assertEquals( 0, getEventTracker().updatedUsernames.size() );
     }
 
+    public void testFindUsersByQuery()
+    {
+        assertCleanUserManager();
+        securityPolicy.setEnabled( false );
+
+        UserManager um = getUserManager();
+
+        // create and add a few users
+        User u1 = um.createUser( "admin", "Administrator", "admin@somedomain.com" );
+        u1.setPassword( "adminpass" );
+        um.addUser( u1 );
+
+        u1 = um.createUser( "administrator", "Administrator User", "administrator@somedomain.com" );
+        u1.setPassword( "password" );
+        um.addUser( u1 );
+
+        u1 = um.createUser( "root", "Root User", "root@somedomain.com" );
+        u1.setPassword( "rootpass" );
+        um.addUser( u1 );
+
+        assertEquals( 3, um.getUsers().size() );
+
+        // Query by username
+        UserQuery query = um.createUserQuery();
+        query.setUsername( "Admin" );
+        assertEquals( 2, um.findUsersByQuery( query ).size() );
+
+        // Query by full name
+        query = um.createUserQuery();
+        query.setFullName( "Admin" );
+        assertEquals( 2, um.findUsersByQuery( query ).size() );
+
+        query = um.createUserQuery();
+        query.setFullName( "Administrator" );
+        assertEquals( 2, um.findUsersByQuery( query ).size() );
+
+        query = um.createUserQuery();
+        query.setFullName( "r User" );
+        assertEquals( 1, um.findUsersByQuery( query ).size() );
+
+        // Query by user name
+        query = um.createUserQuery();
+        query.setEmail( "somedomain" );
+        assertEquals( 3, um.findUsersByQuery( query ).size() );
+
+        // Query by email
+        query = um.createUserQuery();
+        query.setEmail( "root@" );
+        assertEquals( 1, um.findUsersByQuery( query ).size() );
+
+        // Query by illegal property
+        query = um.createUserQuery();
+        try
+        {
+            query.setOrderBy( "unknownString" );
+            fail( "Expected IllegalArgumentException" );
+        }
+        catch ( IllegalArgumentException e )
+        {
+
+        }
+
+        // Query with default ordering ascending
+        query = um.createUserQuery();
+        query.setOrderBy( UserQuery.ORDER_BY_EMAIL );
+        List users = um.findUsersByQuery( query );
+        assertEquals( 3, users.size() );
+        assertEquals( "admin@somedomain.com", ( (User) users.get( 0 ) ).getEmail() );
+
+        // Query with ordering ascending
+        query = um.createUserQuery();
+        query.setOrderBy( UserQuery.ORDER_BY_EMAIL );
+        query.setAscending( false );
+        users = um.findUsersByQuery( query );
+        assertEquals( 3, users.size() );
+        assertEquals( "root@somedomain.com", ( (User) users.get( 0 ) ).getEmail() );
+
+        // Query with ordering descending, max 2 results
+        query = um.createUserQuery();
+        query.setOrderBy( UserQuery.ORDER_BY_EMAIL );
+        query.setAscending( false );
+        query.setMaxResults( 2 );
+        users = um.findUsersByQuery( query );
+        assertEquals( 2, users.size() );
+        assertEquals( "root@somedomain.com", ( (User) users.get( 0 ) ).getEmail() );
+
+        // Query with ordering ascending, max 2 results, first result = 2 so only one result
+        query = um.createUserQuery();
+        query.setOrderBy( UserQuery.ORDER_BY_EMAIL );
+        query.setAscending( false );
+        query.setMaxResults( 2 );
+        query.setFirstResult( 2 );
+        users = um.findUsersByQuery( query );
+        assertEquals( 1, users.size() );
+        assertEquals( "admin@somedomain.com", ( (User) users.get( 0 ) ).getEmail() );
+
+        // Query on more than one field
+        query = um.createUserQuery();
+        query.setOrderBy( UserQuery.ORDER_BY_EMAIL );
+        query.setFullName( "admin" );
+        query.setEmail( "admin@" );
+        users = um.findUsersByQuery( query );
+        assertEquals( 1, users.size() );
+        assertEquals( "admin@somedomain.com", ( (User) users.get( 0 ) ).getEmail() );
+
+
+    }
     public void testUserExists()
         throws Exception
     {

@@ -25,6 +25,7 @@ import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.redback.users.UserManager;
 import org.codehaus.plexus.redback.users.UserManagerListener;
 import org.codehaus.plexus.redback.users.UserNotFoundException;
+import org.codehaus.plexus.redback.users.UserQuery;
 
 import java.util.List;
 
@@ -139,6 +140,18 @@ public class CachedUserManager
         }
     }
 
+    public UserQuery createUserQuery()
+    {
+        return userImpl.createUserQuery();
+    }
+
+
+    public List findUsersByQuery( UserQuery query )
+    {
+        getLogger().debug( "NOT CACHED - .findUsersByQuery(UserQuery)" );
+        return this.userImpl.findUsersByQuery( query );
+    }
+    
     public List findUsersByEmailKey( String emailKey, boolean orderAscending )
     {
         getLogger().debug( "NOT CACHED - .findUsersByEmailKey(String, boolean)" );
