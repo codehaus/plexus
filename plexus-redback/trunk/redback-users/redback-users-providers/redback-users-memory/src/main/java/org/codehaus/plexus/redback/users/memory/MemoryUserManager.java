@@ -20,6 +20,7 @@ import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
 import org.codehaus.plexus.redback.users.AbstractUserManager;
 import org.codehaus.plexus.redback.users.PermanentUserException;
 import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserQuery;
 import org.codehaus.plexus.redback.users.UserManager;
 import org.codehaus.plexus.redback.users.UserNotFoundException;
 import org.codehaus.plexus.redback.users.memory.util.UserSorter;
@@ -69,6 +70,41 @@ public class MemoryUserManager
             }
         }
         return "MemoryUserManager - (unknown version)";
+    }
+
+    public UserQuery createUserQuery()
+    {
+        return new SimpleUserQuery();
+    }
+
+
+    public List findUsersByQuery( UserQuery query )
+    {
+        SimpleUserQuery uq = (SimpleUserQuery) query;
+
+        List list = new ArrayList();
+
+        for ( Iterator i = users.values().iterator(); i.hasNext(); )
+        {
+            SimpleUser user = (SimpleUser) i.next();
+            boolean matches = uq.matches( user );
+            if ( matches )
+            {
+                list.add( user );
+            }
+        }
+
+        Collections.sort( list, uq.getComparator() );
+
+        List cutList = new ArrayList();
+
+        for ( long i = query.getFirstResult();
+              i < list.size() && ( query.getMaxResults() == -1 || i < query.getFirstResult() + uq.getMaxResults() );
+              i++ )
+        {
+            cutList.add( list.get( (int) i ) );
+        }
+        return cutList;
     }
 
     private Map users = new HashMap();

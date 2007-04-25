@@ -65,6 +65,14 @@ public interface UserManager
     User createUser( String username, String fullName, String emailAddress );
 
     /**
+     * Factory method to create {@link UserQuery}s based on provider specific
+     * implementations.
+     *
+     * @return the provider implementation of UserQuery
+     */
+    UserQuery createUserQuery();
+
+    /**
      * Get the List of {@link User} objects.
      *
      * @return the List of {@link User} Objects.
@@ -106,6 +114,15 @@ public interface UserManager
     List findUsersByFullNameKey( String fullNameKey, boolean orderAscending );
 
     List findUsersByEmailKey( String emailKey, boolean orderAscending );
+
+    /**
+     * Find users matching properties, ordering and range as specified by the
+     * {@link UserQuery}.
+     *
+     * @param query the query.
+     * @return a List of {@link User} objects.
+     */
+    List findUsersByQuery( UserQuery query );
 
     /**
      * Find a User using the principal.

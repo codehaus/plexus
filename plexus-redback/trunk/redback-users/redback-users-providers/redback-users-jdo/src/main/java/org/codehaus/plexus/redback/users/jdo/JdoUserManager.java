@@ -23,11 +23,7 @@ import org.codehaus.plexus.jdo.PlexusStoreException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
-import org.codehaus.plexus.redback.users.AbstractUserManager;
-import org.codehaus.plexus.redback.users.PermanentUserException;
-import org.codehaus.plexus.redback.users.User;
-import org.codehaus.plexus.redback.users.UserManagerException;
-import org.codehaus.plexus.redback.users.UserNotFoundException;
+import org.codehaus.plexus.redback.users.*;
 import org.codehaus.plexus.util.StringUtils;
 
 import javax.jdo.Extent;
@@ -64,6 +60,12 @@ public class JdoUserManager
     public String getId()
     {
         return "JDO UserManager - " + this.getClass().getName();
+    }
+
+
+    public UserQuery createUserQuery()
+    {
+        return new JdoUserQuery();
     }
 
     // ------------------------------------------------------------------
@@ -105,6 +107,49 @@ public class JdoUserManager
         return findUsers( "email", emailKey, orderAscending );
     }
 
+
+    public List findUsersByQuery( UserQuery userQuery )
+    {
+        JdoUserQuery uq = (JdoUserQuery) userQuery;
+
+        PersistenceManager pm = getPersistenceManager();
+
+        Transaction tx = pm.currentTransaction();
+
+        try
+        {
+            tx.begin();
+
+            Extent extent = pm.getExtent( JdoUser.class, true );
+
+            Query query = pm.newQuery( extent );
+
+            String ordering = uq.getOrdering();
+
+            query.setOrdering( ordering );
+
+            query.declareImports( "import java.lang.String" );
+
+            query.declareParameters( uq.getParameters() );
+
+            query.setFilter( uq.getFilter() );
+
+            query.setRange( uq.getFirstResult(),
+                            uq.getMaxResults() < 0 ? Long.MAX_VALUE : uq.getFirstResult() + uq.getMaxResults() );
+
+            List result = (List) query.executeWithArray( uq.getSearchKeys() );
+
+            result = (List) pm.detachCopyAll( result );
+
+            tx.commit();
+
+            return result;
+        }
+        finally
+        {
+            rollback( tx );
+        }
+    }
 
     private List findUsers( String searchField, String searchKey, boolean ascendingUsername )
     {
