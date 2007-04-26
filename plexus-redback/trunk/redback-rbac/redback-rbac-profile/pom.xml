@@ -35,12 +35,12 @@
       <groupId>net.java.dev.stax-utils</groupId>
       <artifactId>stax-utils</artifactId>
       <version>20060502</version>
-      <exclusions>
+     <!--  <exclusions>
         <exclusion>
           <groupId>com.bea.xml</groupId>
           <artifactId>jsr173-ri</artifactId>
         </exclusion>
-      </exclusions>
+      </exclusions>-->
     </dependency>
     <dependency>
       <groupId>stax</groupId>
@@ -69,16 +69,6 @@
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-maven-plugin</artifactId>
-        <configuration>
-          <roleDefaults>
-            <roleDefault>
-              <role>com.opensymphony.xwork.Action</role>
-              <instantiation-strategy>
-                per-lookup
-              </instantiation-strategy>
-            </roleDefault>
-          </roleDefaults>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.modello</groupId>

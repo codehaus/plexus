@@ -1,0 +1,30 @@
+<redback-rbac>
+  <resources>
+    <resource>
+      <id>global</id>
+      <name>*</name>
+      <permanent>true</permanent>
+      <description>global resource implies full access for authorization</description>
+    </resource>
+  </resources>
+  <operations>
+    <operation>
+      <id>test-operation</id>
+      <name>Test Operation</name>
+      <description>fake test operation</description>
+    </operation>
+  </operations>
+  <role-profiles>
+    <role-profile>
+      <id>test-role</id>
+      <name>Test Role</name>
+      <permissions>
+        <permission>
+          <id>test-permission</id>
+          <operation>test-operation</operation>
+          <resource>global</resource>
+        </permission>
+      </permissions>
+    </role-profile>
+  </role-profiles>
+</redback-rbac>

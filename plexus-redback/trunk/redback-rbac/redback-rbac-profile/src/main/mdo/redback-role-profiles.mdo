@@ -30,15 +30,15 @@
   </defaults>
 
   <classes>
-    <class rootElement="true" jpox.enabled="false" stash.storable="false">
-      <name>RedbackRoleProfiles</name>
+    <class rootElement="true" xml.tagName="redback-rbac">
+      <name>RedbackRbac</name>
       <version>1.0.0+</version>
       <fields>
         <field>
           <name>resources</name>
           <version>1.0.0+</version>
           <association>
-            <type>Resource</type>
+            <type>ProfileResource</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
@@ -46,11 +46,11 @@
           <name>operations</name>
           <version>1.0.0+</version>
           <association>
-            <type>Operation</type>
+            <type>ProfileOperation</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
-        <field>
+        <field xml.tagName="role-profiles">
           <name>roleProfiles</name>
           <version>1.0.0+</version>
           <association>
@@ -60,7 +60,7 @@
         </field>
       </fields>
     </class>
-    <class>
+    <class xml.tagName="role-profile">
       <name>RoleProfile</name>
       <description>role profiles specify a role and its corresponding permissions, child roles and parent roles to link to</description>
       <version>1.0.0+</version>
@@ -74,6 +74,12 @@
         <field>
           <name>name</name>
           <description>either a normal name, or 'name - ${resource}'</description>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>description</name>
+          <description>description of this role</description>
           <version>1.0.0+</version>
           <type>String</type>
         </field>
@@ -95,22 +101,22 @@
           <name>permissions</name>
           <version>1.0.0+</version>
           <association>
-            <type>Permission</type>
+            <type>ProfilePermission</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
-        <field>
+        <field xml.tagName="parent-role">
           <name>parentRoles</name>
-          <description>the name of other role profiles to have create a child relationship to this role, can accept 'foo - ${resource}'</description>
+          <description>the id of other role profiles to have create a child relationship to this role, can accept 'foo - ${resource}'</description>
           <version>1.0.0+</version>
           <association>
             <type>String</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
-        <field>
+        <field xml.tagName="child-role">
           <name>childRoles</name>
-          <description>the name of other role profiles to assign as children to this role, can accept 'foo - ${resource}'</description>
+          <description>the id of other role profiles to assign as children to this role, can accept 'foo - ${resource}'</description>
           <version>1.0.0+</version>
           <association>
             <type>String</type>
@@ -120,7 +126,7 @@
       </fields>
     </class>
     <class>
-      <name>Resource</name>
+      <name>ProfileResource</name>
       <version>1.0.0+</version>
       <fields>
         <field>
@@ -148,7 +154,7 @@
         </fields>
     </class>
     <class>
-      <name>Operation</name>
+      <name>ProfileOperation</name>
       <version>1.0.0+</version>
       <fields>
         <field>
@@ -176,7 +182,7 @@
         </fields>
     </class>
     <class>
-      <name>Permission</name>
+      <name>ProfilePermission</name>
       <version>1.0.0+</version>
       <fields>
         <field>
@@ -204,13 +210,13 @@
         </field>
         <field>
           <name>operation</name>
-          <description>the name of the operation for this permission</description>
+          <description>the id of the operation for this permission</description>
           <version>1.0.0+</version>
           <type>String</type>
         </field>
         <field>
           <name>resource</name>
-          <description>the name of the resource for this permission, can accept ${resource}</description>
+          <description>the id of the resource for this permission, can accept ${resource}</description>
           <version>1.0.0+</version>
           <type>String</type>
         </field>
