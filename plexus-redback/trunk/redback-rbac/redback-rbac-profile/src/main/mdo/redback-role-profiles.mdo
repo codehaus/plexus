@@ -25,7 +25,7 @@
   <defaults>
     <default>
       <key>package</key>
-      <value>org.codehaus.plexus.redback.role.profile</value>
+      <value>org.codehaus.plexus.redback.role.model</value>
     </default>
   </defaults>
 
