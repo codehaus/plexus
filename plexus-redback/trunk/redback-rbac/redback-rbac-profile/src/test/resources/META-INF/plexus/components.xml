@@ -2,6 +2,20 @@
   <components>
 
     <component>
+      <role>org.codehaus.plexus.redback.role.RoleProfileManager</role>
+      <role-hint>default</role-hint>
+      <implementation>org.codehaus.plexus.redback.role.DefaultRoleProfileManager</implementation>
+      <description>RoleProfileManager:</description>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
+          <role-hint>memory</role-hint>
+          <field-name>rbacManager</field-name>
+        </requirement>
+      </requirements>
+    </component>
+
+    <component>
       <role>org.codehaus.plexus.redback.rbac.profile.RoleProfile</role>
       <role-hint>bogus</role-hint>
       <implementation>org.codehaus.plexus.redback.rbac.profile.BogusRoleProfile</implementation>

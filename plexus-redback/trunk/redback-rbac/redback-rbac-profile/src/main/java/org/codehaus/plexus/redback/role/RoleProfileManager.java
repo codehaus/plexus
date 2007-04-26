@@ -16,8 +16,7 @@ package org.codehaus.plexus.redback.role;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.role.model.RedbackRoleProfiles;
-
+import org.codehaus.plexus.redback.role.model.RedbackRbac;
 
 /**
  * RoleProfileManager:
@@ -27,24 +26,36 @@ import org.codehaus.plexus.redback.role.model.RedbackRoleProfiles;
  */
 public interface RoleProfileManager
 {
+    public static final String ROLE = RoleProfileManager.class.getName();
 
     /**
      * load the model and create/verify operations, resources, etc exist and make static roles
      * @param resourceLocation
      * @throws RoleProfileException
      */
-    public abstract void loadRoleProfiles( String resourceLocation ) throws RoleProfileException;
+    public void loadRoleProfiles( String resourceLocation ) throws RoleProfileException;
 
-    public abstract void loadRoleProfiles( RedbackRoleProfiles roleProfiles ) throws RoleProfileException;
+    public void loadRoleProfiles( RedbackRbac model ) throws RoleProfileException;
 
     /**
      * locate a role with the corresponding name and generate it with the given resource, ${resource} 
-     * in the model will be replaced with this resource string
+     * in the model will be replaced with this resource string, if this resource does not exist, it 
+     * will be created.
      * 
      * @param roleName
      * @param resource
      * @throws RoleProfileException
      */
-    public abstract void generateRole( String roleName, String resource ) throws RoleProfileException;
+    public void createRole( String roleId, String resource ) throws RoleProfileException;
 
+    /**
+     * removes a role corresponding to the role Id that was manufactured with the given resource
+     * 
+     * @param roleId
+     * @param resource
+     * @throws RoleProfileException
+     */
+    public void removeRole( String roleId, String resource ) throws RoleProfileException;
+    
+    
 }
