@@ -68,7 +68,7 @@
         <field>
           <name>id</name>
           <version>1.0.0+</version>
-          <type>int</type>
+          <type>String</type>
           <identifier>true</identifier>
         </field>
         <field>
@@ -126,7 +126,7 @@
         <field>
           <name>id</name>
           <version>1.0.0+</version>
-          <type>int</type>
+          <type>String</type>
           <identifier>true</identifier>
         </field>
         <field>
@@ -154,7 +154,7 @@
         <field>
           <name>id</name>
           <version>1.0.0+</version>
-          <type>int</type>
+          <type>String</type>
           <identifier>true</identifier>
         </field>
         <field>
@@ -182,7 +182,7 @@
         <field>
           <name>id</name>
           <version>1.0.0+</version>
-          <type>int</type>
+          <type>String</type>
           <identifier>true</identifier>
         </field>
         <field>
