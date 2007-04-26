@@ -109,17 +109,23 @@ public class DefaultRoleProfileManager implements RoleProfileManager {
         if ( mergedModel == null )
         {
             mergedModel = model;
+            
+            if ( modelValidator.validate( mergedModel ) )
+            {
+                blessedModel = mergedModel;
+            }
         }
         else
         {
             mergedModel = modelMerger.merge( model );
+            
             if ( modelValidator.validate( mergedModel ) )
             {
                 blessedModel = mergedModel;
             }
         }
         
-        modelProcessor.process( model );
+        modelProcessor.process( blessedModel );
     }
 	
     /**
