@@ -1,4 +1,4 @@
-<redback-rbac>
+<redback-role-model>
   <resources>
     <resource>
       <id>global</id>
@@ -14,8 +14,8 @@
       <description>fake test operation</description>
     </operation>
   </operations>
-  <role-profiles>
-    <role-profile>
+  <roles>
+    <role>
       <id>test-role</id>
       <name>Test Role</name>
       <permissions>
@@ -25,6 +25,6 @@
           <resource>global</resource>
         </permission>
       </permissions>
-    </role-profile>
-  </role-profiles>
-</redback-rbac>
+    </role>
+  </roles>
+</redback-role-model>

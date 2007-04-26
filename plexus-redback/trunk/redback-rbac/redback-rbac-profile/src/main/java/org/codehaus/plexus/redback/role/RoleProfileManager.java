@@ -16,7 +16,7 @@ package org.codehaus.plexus.redback.role;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.role.model.RedbackRbac;
+import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 
 /**
  * RoleProfileManager:
@@ -33,9 +33,9 @@ public interface RoleProfileManager
      * @param resourceLocation
      * @throws RoleProfileException
      */
-    public void loadRoleProfiles( String resourceLocation ) throws RoleProfileException;
+    public void loadRoleModel( String resourceLocation ) throws RoleProfileException;
 
-    public void loadRoleProfiles( RedbackRbac model ) throws RoleProfileException;
+    public void loadRoleModel( RedbackRoleModel model ) throws RoleProfileException;
 
     /**
      * locate a role with the corresponding name and generate it with the given resource, ${resource} 
