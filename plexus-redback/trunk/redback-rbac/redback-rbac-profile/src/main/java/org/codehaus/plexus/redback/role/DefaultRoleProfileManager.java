@@ -28,12 +28,12 @@ import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.Resource;
 import org.codehaus.plexus.redback.rbac.Role;
-import org.codehaus.plexus.redback.role.model.ProfileOperation;
-import org.codehaus.plexus.redback.role.model.ProfilePermission;
-import org.codehaus.plexus.redback.role.model.ProfileResource;
-import org.codehaus.plexus.redback.role.model.RedbackRbac;
-import org.codehaus.plexus.redback.role.model.RoleProfile;
-import org.codehaus.plexus.redback.role.model.io.stax.RedbackRoleProfilesStaxReader;
+import org.codehaus.plexus.redback.role.model.ModelOperation;
+import org.codehaus.plexus.redback.role.model.ModelPermission;
+import org.codehaus.plexus.redback.role.model.ModelResource;
+import org.codehaus.plexus.redback.role.model.ModelRole;
+import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
+import org.codehaus.plexus.redback.role.model.io.stax.RedbackRoleModelStaxReader;
 
 /**
  * RoleProfileManager:
@@ -54,17 +54,17 @@ public class DefaultRoleProfileManager implements RoleProfileManager {
     /**
      * the merged model that can be validated as complete
      */
-    private RedbackRbac mergedModel;
+    private RedbackRoleModel mergedModel;
     
-	public void loadRoleProfiles( String resource ) throws RoleProfileException 
+	public void loadRoleModel( String resource ) throws RoleProfileException 
     {
-        RedbackRoleProfilesStaxReader reader = new RedbackRoleProfilesStaxReader();
+        RedbackRoleModelStaxReader reader = new RedbackRoleModelStaxReader();
         
         try
         {
-            RedbackRbac roleProfiles = reader.read( resource );
+            RedbackRoleModel roleProfiles = reader.read( resource );
             
-            loadRoleProfiles( roleProfiles );
+            loadRoleModel( roleProfiles );
         }
         catch ( MalformedURLException e )
         {
@@ -80,7 +80,7 @@ public class DefaultRoleProfileManager implements RoleProfileManager {
         }
     }
  
-    public void loadRoleProfiles( RedbackRbac model ) throws RoleProfileException 
+    public void loadRoleModel( RedbackRoleModel model ) throws RoleProfileException 
     {
         if ( mergedModel == null )
         {
@@ -117,11 +117,11 @@ public class DefaultRoleProfileManager implements RoleProfileManager {
         
     }
     
-    private void processResources( RedbackRbac model ) throws RoleProfileException
+    private void processResources( RedbackRoleModel model ) throws RoleProfileException
     {
         for ( Iterator i = model.getResources().iterator(); i.hasNext(); )
         {
-            ProfileResource profileResource = (ProfileResource)i.next();
+            ModelResource profileResource = (ModelResource)i.next();
             
             if ( !rbacManager.resourceExists( profileResource.getName() ) )
             {
@@ -139,11 +139,11 @@ public class DefaultRoleProfileManager implements RoleProfileManager {
         }
     }
     
-    private void processOperations( RedbackRbac model ) throws RoleProfileException
+    private void processOperations( RedbackRoleModel model ) throws RoleProfileException
     {
         for ( Iterator i = model.getOperations().iterator(); i.hasNext(); )
         {
-            ProfileOperation profileOperation = (ProfileOperation)i.next();
+            ModelOperation profileOperation = (ModelOperation)i.next();
             
             if ( !rbacManager.operationExists( profileOperation.getName() ) )
             {
@@ -163,11 +163,11 @@ public class DefaultRoleProfileManager implements RoleProfileManager {
         }
     }
     
-    private void processRoles( RedbackRbac model ) throws RoleProfileException
+    private void processRoles( RedbackRoleModel model ) throws RoleProfileException
     {
-        for ( Iterator i = model.getRoleProfiles().iterator(); i.hasNext(); )
+        for ( Iterator i = model.getRoles().iterator(); i.hasNext(); )
         {
-            RoleProfile roleProfile = (RoleProfile)i.next();
+            ModelRole roleProfile = (ModelRole)i.next();
             
             processPermissions( roleProfile.getPermissions() );
             
@@ -193,7 +193,7 @@ public class DefaultRoleProfileManager implements RoleProfileManager {
     {
         for ( Iterator i = permissions.iterator(); i.hasNext(); )
         {
-            ProfilePermission profilePermission = (ProfilePermission)i.next();
+            ModelPermission profilePermission = (ModelPermission)i.next();
             
             if ( !rbacManager.permissionExists( profilePermission.getName() ) )
             {
@@ -213,7 +213,7 @@ public class DefaultRoleProfileManager implements RoleProfileManager {
     {
         for ( Iterator i = permissions.iterator(); i.hasNext(); )
         {
-            ProfilePermission profilePermission = (ProfilePermission)i.next();
+            ModelPermission profilePermission = (ModelPermission)i.next();
             
             if ( rbacManager.permissionExists( profilePermission.getName() ) )
             {
@@ -228,7 +228,7 @@ public class DefaultRoleProfileManager implements RoleProfileManager {
      * @param newModel
      * @throws RoleProfileException
      */
-    private void combineModels( RedbackRbac newModel ) throws RoleProfileException
+    private void combineModels( RedbackRoleModel newModel ) throws RoleProfileException
     {
         
     }

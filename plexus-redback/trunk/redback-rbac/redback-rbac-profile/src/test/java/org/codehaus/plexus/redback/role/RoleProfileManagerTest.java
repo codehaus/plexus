@@ -17,12 +17,10 @@ package org.codehaus.plexus.redback.role;
  */
 
 import java.io.File;
-import java.net.URL;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.Role;
-
 
 /**
  * RoleProfileTest:
@@ -56,7 +54,7 @@ public class RoleProfileManagerTest
         
         assertNotNull( resource );
         
-        roleManager.loadRoleProfiles( resource.getAbsolutePath() );
+        roleManager.loadRoleModel( resource.getAbsolutePath() );
         
         assertTrue( rbacManager.resourceExists( "*" ) );
         assertTrue( rbacManager.operationExists( "Test Operation" ) );
