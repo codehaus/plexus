@@ -27,7 +27,7 @@ import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 public interface RoleProfileManager
 {
     public static final String ROLE = RoleProfileManager.class.getName();
-
+    
     /**
      * load the model and create/verify operations, resources, etc exist and make static roles
      * @param resourceLocation
@@ -46,7 +46,7 @@ public interface RoleProfileManager
      * @param resource
      * @throws RoleProfileException
      */
-    public void createRole( String roleId, String resource ) throws RoleProfileException;
+    public void createRole( String templateId, String resource ) throws RoleProfileException;
 
     /**
      * removes a role corresponding to the role Id that was manufactured with the given resource
@@ -55,7 +55,7 @@ public interface RoleProfileManager
      * @param resource
      * @throws RoleProfileException
      */
-    public void removeRole( String roleId, String resource ) throws RoleProfileException;
+    public void removeRole( String templateId, String resource ) throws RoleProfileException;
     
     
 }

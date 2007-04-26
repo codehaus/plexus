@@ -26,7 +26,7 @@ import org.codehaus.plexus.redback.rbac.Role;
  * RoleProfileTest:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
- * @version: $ID:$
+ * @version: $Id:$
  */
 public class RoleProfileManagerTest
     extends PlexusTestCase

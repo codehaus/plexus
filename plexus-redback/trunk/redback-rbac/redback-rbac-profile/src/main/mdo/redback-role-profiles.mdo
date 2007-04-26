@@ -196,6 +196,16 @@
           <defaultValue>false</defaultValue>
         </field>
         <field>
+          <name>permanentResource</name>
+          <description>
+            boolean specifying if the resource generated with this template can be removed once
+            created
+          </description>
+          <version>1.0.0+</version>
+          <type>boolean</type>
+          <defaultValue>false</defaultValue>
+        </field>
+        <field>
           <name>permissions</name>
           <version>1.0.0+</version>
           <association>

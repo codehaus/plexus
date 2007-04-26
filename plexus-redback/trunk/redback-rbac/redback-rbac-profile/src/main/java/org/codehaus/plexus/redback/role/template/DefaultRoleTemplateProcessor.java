@@ -29,6 +29,7 @@ import org.codehaus.plexus.redback.role.model.ModelOperation;
 import org.codehaus.plexus.redback.role.model.ModelPermission;
 import org.codehaus.plexus.redback.role.model.ModelResource;
 import org.codehaus.plexus.redback.role.model.ModelRole;
+import org.codehaus.plexus.redback.role.model.ModelTemplate;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 
 /**
@@ -48,31 +49,43 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
     private RBACManager rbacManager;
     
     
-    public void process( RedbackRoleModel model, String templateId, String resource ) throws RoleProfileException
+    public void create( RedbackRoleModel model, String templateId, String resource ) throws RoleProfileException
     {
-        processResources( model );
-        processOperations( model );
-        processRoles( model );
+        for ( Iterator i = model.getTemplates().iterator(); i.hasNext(); )
+        {
+            ModelTemplate template = (ModelTemplate)i.next();
+            
+            if ( templateId.equals( template.getId() ) )
+            {
+                processResource( template, resource );
+                processOperations( model );
+                processRoles( model );
+                
+                return;
+            }
+        }
+        
+        throw new RoleProfileException( "unknown template '" + templateId + "'");
     }
     
-    private void processResources( RedbackRoleModel model ) throws RoleProfileException
+    public void remove( RedbackRoleModel model, String templateId, String resource ) throws RoleProfileException
     {
-        for ( Iterator i = model.getResources().iterator(); i.hasNext(); )
+
+    }
+    
+    private void processResource( ModelTemplate template, String resource ) throws RoleProfileException
+    {
+        if ( !rbacManager.resourceExists( resource ) )
         {
-            ModelResource profileResource = (ModelResource)i.next();
-            
-            if ( !rbacManager.resourceExists( profileResource.getName() ) )
+            try
             {
-                try
-                {
-                    Resource resource = rbacManager.createResource( profileResource.getName() );
-                    resource.setPermanent( profileResource.isPermanent() );
-                    rbacManager.saveResource( resource );
-                }
-                catch ( RbacManagerException e )
-                {
-                    throw new RoleProfileException ( "error creating resource '" + profileResource.getName() + "'", e );
-                }
+                Resource res = rbacManager.createResource( resource );
+                res.setPermanent( template.isPermanentResource() );
+                rbacManager.saveResource( res );
+            }
+            catch ( RbacManagerException e )
+            {
+                throw new RoleProfileException( "error creating resource '" + resource + "'", e );
             }
         }
     }
