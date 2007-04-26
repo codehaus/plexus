@@ -20,7 +20,7 @@
 
 <model>
   <id>redback-role-profile</id>
-  <name>RedbackRoleProfile</name>
+  <name>RedbackRoleProfiles</name>
   <description></description>
   <defaults>
     <default>
@@ -51,26 +51,18 @@
           </association>
         </field>
         <field>
-          <name>staticRoleProfiles</name>
+          <name>roleProfiles</name>
           <version>1.0.0+</version>
           <association>
-            <type>StaticRoleProfile</type>
-            <multiplicity>*</multiplicity>
-          </association>
-        </field>
-        <field>
-          <name>dynamicRoleProfiles</name>
-          <version>1.0.0+</version>
-          <association>
-            <type>DynamicRoleProfile</type>
+            <type>RoleProfile</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
       </fields>
     </class>
     <class>
-      <name>StaticRoleProfile</name>
-      <description>static role profiles specify roles that can fully be described before an application starts</description>
+      <name>RoleProfile</name>
+      <description>role profiles specify a role and its corresponding permissions, child roles and parent roles to link to</description>
       <version>1.0.0+</version>
       <fields>
         <field>
@@ -81,6 +73,7 @@
         </field>
         <field>
           <name>name</name>
+          <description>either a normal name, or 'name - ${resource}'</description>
           <version>1.0.0+</version>
           <type>String</type>
         </field>
@@ -108,7 +101,7 @@
         </field>
         <field>
           <name>parentRoles</name>
-          <description>the name of other static role profiles to have link to this role</description>
+          <description>the name of other role profiles to have create a child relationship to this role, can accept 'foo - ${resource}'</description>
           <version>1.0.0+</version>
           <association>
             <type>String</type>
@@ -117,80 +110,7 @@
         </field>
         <field>
           <name>childRoles</name>
-          <description>the name of other static role profiles to assign as children to this role</description>
-          <version>1.0.0+</version>
-          <association>
-            <type>String</type>
-            <multiplicity>*</multiplicity>
-          </association>
-        </field>
-    </class>
-    <class>
-      <name>DynamicRoleProfile</name>
-      <description>dynamic role profiles enable you to generate roles based on a resource that is determined at runtime</description>
-      <version>1.0.0+</version>
-      <fields>
-        <field>
-          <name>id</name>
-          <version>1.0.0+</version>
-          <type>int</type>
-          <identifier>true</identifier>
-        </field>
-        <field>
-          <name>namePrefix</name>
-          <version>1.0.0+</version>
-          <type>String</type>
-        </field>
-        <field>
-          <name>assignable</name>
-          <version>1.0.0+</version>
-          <type>boolean</type>
-          <defaultValue>false</defaultValue>
-        </field>
-        <field>
-          <name>permanent</name>
-          <version>1.0.0+</version>
-          <type>boolean</type>
-          <defaultValue>false</defaultValue>
-        </field>
-        <field>
-          <name>permissions</name>
-          <version>1.0.0+</version>
-          <association>
-            <type>Permission</type>
-            <multiplicity>*</multiplicity>
-          </association>
-        </field>
-        <field>
-          <name>staticChildRoles</name>
-          <description>the name of the static role profiles to create a child relationship with<description>
-          <version>1.0.0+</version>
-          <association>
-            <type>String</type>
-            <multiplicity>*</multiplicity>
-          </association>
-        </field>
-        <field>
-          <name>staticParentRoles</name>
-          <description>the name of the static role profiles to have add a child relationship with<description>
-          <version>1.0.0+</version>
-          <association>
-            <type>String</type>
-            <multiplicity>*</multiplicity>
-          </association>
-        </field>
-        <field>
-          <name>dynamicChildRoles</name>
-          <description>the namePrefix of the dynamic role profiles to be linked in a child relationship based on the resource</description>
-          <version>1.0.0+</version>
-          <association>
-            <type>String</type>
-            <multiplicity>*</multiplicity>
-          </association>
-        </field>
-        <field>
-          <name>dynamicParentRoles</name>
-          <description>the namePrefix of the dynamic role profiles to be linked in a parent relationship based on the resource, these can be organized however, but completeness allows for better closure validation</description>
+          <description>the name of other role profiles to assign as children to this role, can accept 'foo - ${resource}'</description>
           <version>1.0.0+</version>
           <association>
             <type>String</type>
@@ -224,7 +144,6 @@
           <version>1.0.0+</version>
           <type>String</type>
         </field>
-
     </class>
     <class>
       <name>Operation</name>
@@ -265,7 +184,7 @@
         </field>
         <field>
           <name>name</name>
-          <description>default should be 'operation - resource'<description>
+          <description>default should be 'operation - resource' or 'operation - ${resource}'<description>
           <version>1.0.0+</version>
           <type>String</type>
         </field>
@@ -288,7 +207,7 @@
         </field>
         <field>
           <name>resource</name>
-          <description>the name of the resource for this permission</description>
+          <description>the name of the resource for this permission, can accept ${resource}</description>
           <version>1.0.0+</version>
           <type>String</type>
         </field>
