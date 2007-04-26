@@ -129,7 +129,7 @@ public class DefaultRoleProfileManager implements RoleProfileManager {
      */
     public void createRole( String templateId, String resource ) throws RoleProfileException
     {
-        
+        templateProcessor.create( blessedModel, templateId, resource );
     }
 
     /**
@@ -139,6 +139,6 @@ public class DefaultRoleProfileManager implements RoleProfileManager {
      */
     public void removeRole( String templateId, String resource ) throws RoleProfileException
     {
-        
+        templateProcessor.remove( blessedModel, templateId, resource );
     }   
 }
