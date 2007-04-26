@@ -16,11 +16,11 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  -->
+-->
 
 <model>
-  <id>redback-role-profile</id>
-  <name>RedbackRoleProfiles</name>
+  <id>redback-role-model</id>
+  <name>RedbackRoleModel</name>
   <description></description>
   <defaults>
     <default>
@@ -30,15 +30,15 @@
   </defaults>
 
   <classes>
-    <class rootElement="true" xml.tagName="redback-rbac">
-      <name>RedbackRbac</name>
+    <class rootElement="true" xml.tagName="redback-role-model">
+      <name>RedbackRoleModel</name>
       <version>1.0.0+</version>
       <fields>
         <field>
           <name>resources</name>
           <version>1.0.0+</version>
           <association>
-            <type>ProfileResource</type>
+            <type>ModelResource</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
@@ -46,23 +46,34 @@
           <name>operations</name>
           <version>1.0.0+</version>
           <association>
-            <type>ProfileOperation</type>
+            <type>ModelOperation</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
-        <field xml.tagName="role-profiles">
-          <name>roleProfiles</name>
+        <field>
+          <name>roles</name>
           <version>1.0.0+</version>
           <association>
-            <type>RoleProfile</type>
+            <type>ModelRole</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>templates</name>
+          <version>1.0.0+</version>
+          <association>
+            <type>ModelTemplate</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
       </fields>
     </class>
-    <class xml.tagName="role-profile">
-      <name>RoleProfile</name>
-      <description>role profiles specify a role and its corresponding permissions, child roles and parent roles to link to</description>
+    <class xml.tagName="role">
+      <name>ModelRole</name>
+      <description>
+        model roles specify a role and its corresponding permissions,
+        child roles and parent roles to link to
+      </description>
       <version>1.0.0+</version>
       <fields>
         <field>
@@ -73,7 +84,9 @@
         </field>
         <field>
           <name>name</name>
-          <description>either a normal name, or 'name - ${resource}'</description>
+          <description>
+            either a normal name, or 'name - ${resource}'
+          </description>
           <version>1.0.0+</version>
           <type>String</type>
         </field>
@@ -85,14 +98,19 @@
         </field>
         <field>
           <name>assignable</name>
-          <description>boolean specifying if a given role can assigned</description>
+          <description>
+            boolean specifying if a given role can assigned
+          </description>
           <version>1.0.0+</version>
           <type>boolean</type>
           <defaultValue>false</defaultValue>
         </field>
         <field>
           <name>permanent</name>
-          <description>boolean specifying if a given role can be removed once created</description>
+          <description>
+            boolean specifying if a given role can be removed once
+            created
+          </description>
           <version>1.0.0+</version>
           <type>boolean</type>
           <defaultValue>false</defaultValue>
@@ -101,13 +119,16 @@
           <name>permissions</name>
           <version>1.0.0+</version>
           <association>
-            <type>ProfilePermission</type>
+            <type>ModelPermission</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
         <field xml.tagName="parent-role">
           <name>parentRoles</name>
-          <description>the id of other role profiles to have create a child relationship to this role, can accept 'foo - ${resource}'</description>
+          <description>
+            the id of other role profiles to have create a child
+            relationship to this role, can accept 'foo - ${resource}'
+          </description>
           <version>1.0.0+</version>
           <association>
             <type>String</type>
@@ -116,7 +137,114 @@
         </field>
         <field xml.tagName="child-role">
           <name>childRoles</name>
-          <description>the id of other role profiles to assign as children to this role, can accept 'foo - ${resource}'</description>
+          <description>
+            the id of other role profiles to assign as children to this
+            role, can accept 'foo - ${resource}'
+          </description>
+          <version>1.0.0+</version>
+          <association>
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class xml.tagName="template">
+      <name>ModelTemplate</name>
+      <description>
+        model templates specify a role and its corresponding
+        permissions, child roles and parent roles to link to, however
+        they are generated at runtime with additional input
+      </description>
+      <version>1.0.0+</version>
+      <fields>
+        <field>
+          <name>id</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <identifier>true</identifier>
+        </field>
+        <field>
+          <name>namePrefix</name>
+          <description></description>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>description</name>
+          <description>description of this role</description>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>assignable</name>
+          <description>
+            boolean specifying if a given role can assigned
+          </description>
+          <version>1.0.0+</version>
+          <type>boolean</type>
+          <defaultValue>false</defaultValue>
+        </field>
+        <field>
+          <name>permanent</name>
+          <description>
+            boolean specifying if a given role can be removed once
+            created
+          </description>
+          <version>1.0.0+</version>
+          <type>boolean</type>
+          <defaultValue>false</defaultValue>
+        </field>
+        <field>
+          <name>permissions</name>
+          <version>1.0.0+</version>
+          <association>
+            <type>ModelPermission</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field xml.tagName="parent-role">
+          <name>parentRoles</name>
+          <description>
+            the id of other role profiles to have create a child
+            relationship to this role, can accept 'foo - ${resource}'
+          </description>
+          <version>1.0.0+</version>
+          <association>
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field xml.tagName="child-role">
+          <name>childRoles</name>
+          <description>
+            the id of other role profiles to assign as children to this
+            role, can accept 'foo - ${resource}'
+          </description>
+          <version>1.0.0+</version>
+          <association>
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field xml.tagName="parent-template">
+          <name>parentTemplates</name>
+          <description>
+            the id of other templates to have create a child
+            relationship to this role, can accept 'foo - ${resource}'
+          </description>
+          <version>1.0.0+</version>
+          <association>
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field xml.tagName="child-template">
+          <name>childTemplates</name>
+          <description>
+            the id of other templates to assign as children to this
+            role, can accept 'foo - ${resource}'
+          </description>
           <version>1.0.0+</version>
           <association>
             <type>String</type>
@@ -126,7 +254,7 @@
       </fields>
     </class>
     <class>
-      <name>ProfileResource</name>
+      <name>ModelResource</name>
       <version>1.0.0+</version>
       <fields>
         <field>
@@ -142,19 +270,32 @@
         </field>
         <field>
           <name>permanent</name>
-          <description>this resource should persist even if all referring permissions are removed</description>
+          <description>
+            this resource should persist even if all referring
+            permissions are removed
+          </description>
           <version>1.0.0+</version>
           <type>boolean</type>
+          <defaultValue>false</defaultValue>
+        </field>
+        <field>
+          <name>pattern</name>
+          <description>
+            this resource is a pattern, currently unsupported
+          </description>
+          <version>1.0.0+</version>
+          <type>boolean</type>
+          <defaultValue>false</defaultValue>
         </field>
         <field>
           <name>description</name>
           <version>1.0.0+</version>
           <type>String</type>
         </field>
-        </fields>
+      </fields>
     </class>
     <class>
-      <name>ProfileOperation</name>
+      <name>ModelOperation</name>
       <version>1.0.0+</version>
       <fields>
         <field>
@@ -175,14 +316,18 @@
         </field>
         <field>
           <name>permanent</name>
-          <description>this operation should persist even if all referring permissions are removed</description>
+          <description>
+            this operation should persist even if all referring
+            permissions are removed
+          </description>
           <version>1.0.0+</version>
           <type>boolean</type>
+          <defaultValue>false</defaultValue>
         </field>
-        </fields>
+      </fields>
     </class>
     <class>
-      <name>ProfilePermission</name>
+      <name>ModelPermission</name>
       <version>1.0.0+</version>
       <fields>
         <field>
@@ -193,7 +338,10 @@
         </field>
         <field>
           <name>name</name>
-          <description>default should be 'operation - resource' or 'operation - ${resource}'</description>
+          <description>
+            default should be 'operation - resource' or 'operation -
+            ${resource}' for templates
+          </description>
           <version>1.0.0+</version>
           <type>String</type>
         </field>
@@ -204,24 +352,33 @@
         </field>
         <field>
           <name>permanent</name>
-          <description>this permission should persist even if referring roles are removed</description>
+          <description>
+            this permission should persist even if referring roles are
+            removed
+          </description>
           <version>1.0.0+</version>
           <type>boolean</type>
+          <defaultValue>false</defaultValue>
         </field>
         <field>
           <name>operation</name>
-          <description>the id of the operation for this permission</description>
+          <description>
+            the id of the operation for this permission
+          </description>
           <version>1.0.0+</version>
           <type>String</type>
         </field>
         <field>
           <name>resource</name>
-          <description>the id of the resource for this permission, can accept ${resource}</description>
+          <description>
+            the id of the resource for this permission, can accept
+            ${resource} for templates
+          </description>
           <version>1.0.0+</version>
           <type>String</type>
         </field>
-        </fields>
+      </fields>
     </class>
   </classes>
 </model>
-          
+
