@@ -16,6 +16,8 @@ package org.codehaus.plexus.redback.role.merger;
  * limitations under the License.
  */
 
+import java.util.List;
+
 import org.codehaus.plexus.redback.role.RoleProfileException;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 
@@ -29,6 +31,9 @@ public interface RoleModelMerger
 {
     public static final String ROLE = RoleModelMerger.class.getName();
     
-    public RedbackRoleModel merge( RedbackRoleModel model ) throws RoleProfileException;
+    public boolean hasMergeErrors();
     
+    public List getMergeErrors();
+    
+    public RedbackRoleModel merge( RedbackRoleModel originalModel, RedbackRoleModel newModel ) throws RoleProfileException;
 }
