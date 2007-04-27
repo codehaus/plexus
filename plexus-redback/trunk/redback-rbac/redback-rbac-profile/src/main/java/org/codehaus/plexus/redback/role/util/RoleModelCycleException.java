@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.role;
+package org.codehaus.plexus.redback.role.util;
 
 /*
  * Copyright 2005-2006 The Codehaus.
@@ -16,22 +16,23 @@ package org.codehaus.plexus.redback.role;
  * limitations under the License.
  */
 
+
 /**
- * RoleProfileException:
+ * RoleModelCycleException:
  *
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
  */
-public class RoleProfileException
-    extends Exception
+public class RoleModelCycleException extends RuntimeException
 {
-    public RoleProfileException( String string )
+    public RoleModelCycleException( String string )
     {
         super( string );
     }
 
-    public RoleProfileException( String string, Throwable throwable )
+    public RoleModelCycleException( String string, Throwable throwable )
     {
         super( string, throwable );
     }
+
 }
