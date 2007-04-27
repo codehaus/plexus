@@ -117,7 +117,7 @@ public class DefaultRoleProfileManager implements RoleProfileManager {
         }
         else
         {
-            mergedModel = modelMerger.merge( model );
+            mergedModel = modelMerger.merge( blessedModel, model );
             
             if ( modelValidator.validate( mergedModel ) )
             {

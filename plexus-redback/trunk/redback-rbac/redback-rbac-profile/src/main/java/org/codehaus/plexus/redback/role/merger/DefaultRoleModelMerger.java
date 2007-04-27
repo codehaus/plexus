@@ -16,8 +16,20 @@ package org.codehaus.plexus.redback.role.merger;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.codehaus.plexus.redback.role.RoleProfileException;
+import org.codehaus.plexus.redback.role.model.ModelOperation;
+import org.codehaus.plexus.redback.role.model.ModelResource;
+import org.codehaus.plexus.redback.role.model.ModelRole;
+import org.codehaus.plexus.redback.role.model.ModelTemplate;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
+import org.codehaus.plexus.redback.role.util.RoleModelUtils;
 
 /**
  * DefaultRoleModelValidator: validates completeness of the model
@@ -30,10 +42,132 @@ import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
  */
 public class DefaultRoleModelMerger implements RoleModelMerger
 {
-
-    public RedbackRoleModel merge( RedbackRoleModel model ) throws RoleProfileException
+    private RedbackRoleModel mergedModel = new RedbackRoleModel();
+    
+    private List mergeErrors;
+    
+    /**
+     * merges the first and the second model and returns the merged model
+     */
+    public RedbackRoleModel merge( RedbackRoleModel originalModel, RedbackRoleModel newModel )
+        throws RoleProfileException
     {
-        return null;
+        // clear merge errors
+        mergeErrors = null;
+        
+        mergeResources( originalModel, newModel );
+        mergeOperations( originalModel, newModel );
+        mergeRoles( originalModel, newModel );
+        mergeTemplates( originalModel, newModel );
+
+        return mergedModel;
+    }
+    
+    /**
+     * reports if the last merge had errors or not, this is reset for each merge operation
+     */
+    public boolean hasMergeErrors()
+    {
+        return !( mergeErrors == null );
+    }
+    
+    public List getMergeErrors()
+    {
+        return mergeErrors;
+    }
+    
+    private void addMergeError( String error )
+    {
+        if ( mergeErrors == null )
+        {
+            mergeErrors = new ArrayList();
+        }
+        
+        mergeErrors.add( error );
+    }
+
+    private void mergeOperations( RedbackRoleModel originalModel, RedbackRoleModel newModel )
+    {
+        List operationIdList = RoleModelUtils.getOperationIdList( originalModel );
+        
+        mergedModel.setOperations( originalModel.getOperations() );
+        
+        for ( Iterator i = newModel.getOperations().iterator(); i.hasNext(); )
+        {
+            ModelOperation operation = (ModelOperation)i.next();
+            
+            if ( operationIdList.contains( operation.getId() ) )
+            {
+                addMergeError( "duplicate operation id detected: " + operation.getId() );
+            }
+            else
+            {
+                mergedModel.addOperation( operation );
+            }
+        }
+    }
+
+    private void mergeResources( RedbackRoleModel originalModel, RedbackRoleModel newModel )
+    {
+        List resourceIdList = RoleModelUtils.getResourceIdList( originalModel );
+        
+        mergedModel.setResources( originalModel.getResources() );
+        
+        for ( Iterator i = newModel.getResources().iterator(); i.hasNext(); )
+        {
+            ModelResource resource = (ModelResource)i.next();
+            
+            if ( resourceIdList.contains( resource.getId() ) )
+            {
+                addMergeError( "duplicate resource id detected: " + resource.getId() );
+            }
+            else
+            {
+                mergedModel.addResource( resource );
+            }
+        } 
+    }
+    
+    private void mergeRoles( RedbackRoleModel originalModel, RedbackRoleModel newModel )
+    {
+        List roleIdList = RoleModelUtils.getRoleIdList( originalModel );
+        
+        mergedModel.setRoles( originalModel.getRoles() );
+        
+        for ( Iterator i = newModel.getRoles().iterator(); i.hasNext(); )
+        {
+            ModelRole role = (ModelRole)i.next();
+            
+            if ( roleIdList.contains( role.getId() ) )
+            {
+                addMergeError( "duplicate role id detected: " + role.getId() );
+            }
+            else
+            {
+                mergedModel.addRole( role );
+            }
+        } 
+    }
+    
+    private void mergeTemplates( RedbackRoleModel originalModel, RedbackRoleModel newModel )
+    {
+        List templateIdList = RoleModelUtils.getTemplateIdList( originalModel );
+        
+        mergedModel.setTemplates( originalModel.getTemplates() );
+        
+        for ( Iterator i = newModel.getTemplates().iterator(); i.hasNext(); )
+        {
+            ModelTemplate template = (ModelTemplate)i.next();
+            
+            if ( templateIdList.contains( template.getId() ) )
+            {
+                addMergeError( "duplicate template id detected: " + template.getId() );
+            }
+            else
+            {
+                mergedModel.addTemplate( template );
+            }
+        } 
     }
 
 }

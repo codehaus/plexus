@@ -45,7 +45,6 @@ public abstract class AbstractDynamicRoleProfile
      */
     protected RBACManager rbacManager;
 
-
     protected Role generateRole( String resource )
         throws RoleProfileException
     {
