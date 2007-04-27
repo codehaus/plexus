@@ -123,7 +123,7 @@
             <multiplicity>*</multiplicity>
           </association>
         </field>
-        <field xml.tagName="parent-role">
+        <field>
           <name>parentRoles</name>
           <description>
             the id of other role profiles to have create a child
@@ -135,7 +135,7 @@
             <multiplicity>*</multiplicity>
           </association>
         </field>
-        <field xml.tagName="child-role">
+        <field>
           <name>childRoles</name>
           <description>
             the id of other role profiles to assign as children to this
@@ -149,7 +149,7 @@
         </field>
       </fields>
     </class>
-    <class xml.tagName="template">
+    <class>
       <name>ModelTemplate</name>
       <description>
         model templates specify a role and its corresponding
@@ -213,7 +213,7 @@
             <multiplicity>*</multiplicity>
           </association>
         </field>
-        <field xml.tagName="parent-role">
+        <field>
           <name>parentRoles</name>
           <description>
             the id of other role profiles to have create a child
@@ -225,7 +225,7 @@
             <multiplicity>*</multiplicity>
           </association>
         </field>
-        <field xml.tagName="child-role">
+        <field>
           <name>childRoles</name>
           <description>
             the id of other role profiles to assign as children to this
@@ -237,7 +237,7 @@
             <multiplicity>*</multiplicity>
           </association>
         </field>
-        <field xml.tagName="parent-template">
+        <field>
           <name>parentTemplates</name>
           <description>
             the id of other templates to have create a child
@@ -249,7 +249,7 @@
             <multiplicity>*</multiplicity>
           </association>
         </field>
-        <field xml.tagName="child-template">
+        <field>
           <name>childTemplates</name>
           <description>
             the id of other templates to assign as children to this

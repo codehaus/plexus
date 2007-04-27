@@ -16,6 +16,8 @@ package org.codehaus.plexus.redback.role.validator;
  * limitations under the License.
  */
 
+import java.util.List;
+
 import org.codehaus.plexus.redback.role.RoleProfileException;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 
@@ -28,6 +30,8 @@ import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 public interface RoleModelValidator
 {
     public static final String ROLE = RoleModelValidator.class.getName();
+    
+    public List getValidationErrors();
     
     public boolean validate( RedbackRoleModel model ) throws RoleProfileException;
     
