@@ -129,6 +129,9 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
 
     private void processRoles( RedbackRoleModel model ) throws RoleProfileException
     {
+        // FIXME these roles from the model need to be sorted so child roles and parent roles are
+        // built out correctly, working on that in the ModelRoleSorter in the utils
+        
         for ( Iterator i = model.getRoles().iterator(); i.hasNext(); )
         {
             ModelRole roleProfile = (ModelRole) i.next();
