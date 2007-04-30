@@ -54,7 +54,7 @@ public class DefaultRoleModelValidator implements RoleModelValidator
         validateParentRoleClosure( model );
         validateTemplateClosure( model );
         validateNoRoleCycles( model );
-        // FIXME implement me -> validateNoTemplateCycles( model );
+        validateNoTemplateCycles( model );
 
         if ( validationErrors == null )
         {
@@ -297,6 +297,19 @@ public class DefaultRoleModelValidator implements RoleModelValidator
      */
     private void validateNoRoleCycles( RedbackRoleModel model )
     {
+        generateRoleGraph( model );
+    }
+    
+    /**
+     * we can reuse the role graph when making the templates, its ok to pass this even if we have a 
+     * validation error from the role cycle detection, it might help catch a particularly obvious template
+     * cycle and cut down on debug time.
+     * 
+     * @param model
+     * @return
+     */
+    private DAG generateRoleGraph( RedbackRoleModel model )
+    {
         DAG roleGraph = new DAG();
 
         try
@@ -333,6 +346,81 @@ public class DefaultRoleModelValidator implements RoleModelValidator
         catch ( CycleDetectedException e )
         {
             addValidationError( "cycle detected: " + e.getMessage() );
+        }
+        
+        return roleGraph;
+    }
+    
+    /**
+     * We are not allowed to have cycles between template either, this method is to detect and 
+     * raise a red flag when that happens.  Templates are a bit more complex since they have both
+     * child and parent roles, as well as runtime parent and child templates
+     * 
+     * the id should be sufficient to test cycles here even though in runtime the id's do not need to be
+     * unique since it is the binding of a namePrefix and a resource that makes them unique
+     * 
+     * @param model
+     */
+    private void validateNoTemplateCycles( RedbackRoleModel model )
+    {
+        DAG templateGraph = generateRoleGraph( model );
+
+        try
+        {
+            for ( Iterator i = model.getTemplates().iterator(); i.hasNext(); )
+            {
+                ModelTemplate template = (ModelTemplate) i.next();
+
+                templateGraph.addVertex( template.getId() );
+
+                if ( template.getChildRoles() != null )
+                {
+                    for ( Iterator j = template.getChildRoles().iterator(); j.hasNext(); )
+                    {
+                        String childRole = (String) j.next();
+                        templateGraph.addVertex( childRole );
+
+                        templateGraph.addEdge( template.getId(), childRole );
+                    }
+                }
+                
+                if ( template.getParentRoles() != null )
+                {
+                    for ( Iterator j = template.getParentRoles().iterator(); j.hasNext(); )
+                    {
+                        String parentRole = (String) j.next();
+                        templateGraph.addVertex( parentRole );
+
+                        templateGraph.addEdge( parentRole, template.getId() );
+                    }
+                }
+                
+                if ( template.getChildTemplates() != null )
+                {
+                    for ( Iterator j = template.getChildTemplates().iterator(); j.hasNext(); )
+                    {
+                        String childTemplate = (String) j.next();
+                        templateGraph.addVertex( childTemplate );
+
+                        templateGraph.addEdge( template.getId(), childTemplate );
+                    }
+                }
+                
+                if ( template.getParentTemplates() != null )
+                {
+                    for ( Iterator j = template.getParentTemplates().iterator(); j.hasNext(); )
+                    {
+                        String parentTemplates = (String) j.next();
+                        templateGraph.addVertex( parentTemplates );
+
+                        templateGraph.addEdge( parentTemplates, template.getId() );
+                    }
+                }
+            }
+        }
+        catch ( CycleDetectedException e )
+        {
+            addValidationError( "template cycle detected: " + e.getMessage() );
         }
     }
 }

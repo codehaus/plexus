@@ -81,9 +81,7 @@ public class RoleModelValidatorTest
         assertFalse( modelValidator.validate( redback ) );
         
         assertNotNull( modelValidator.getValidationErrors() );
-        
-        assertEquals( 4, modelValidator.getValidationErrors().size() );
-        
+          
         assertTrue( checkForValidationError( modelValidator.getValidationErrors(), "eat-cornflakes-missing-operation-in-template" ) );
      
         assertTrue( checkForValidationError( modelValidator.getValidationErrors(), "can-drink-the-milk-missing-child-role" ) );
@@ -92,6 +90,8 @@ public class RoleModelValidatorTest
         
         assertTrue( checkForValidationError( modelValidator.getValidationErrors(), "cycle detected" ) );
      
+        assertTrue( checkForValidationError( modelValidator.getValidationErrors(), "template cycle detected" ) );
+        
     }
     
     private boolean checkForValidationError( List validationErrors, String errorText )    
@@ -99,7 +99,7 @@ public class RoleModelValidatorTest
         for ( Iterator i = validationErrors.iterator(); i.hasNext(); )
         {
             String error = (String)i.next();
-           
+            
             if ( error.indexOf( errorText ) != -1 )
             {
                 return true;
