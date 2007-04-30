@@ -17,6 +17,8 @@ package org.codehaus.plexus.redback.role.validator;
  */
 
 import java.io.File;
+import java.util.Iterator;
+import java.util.List;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.redback.rbac.RBACManager;
@@ -80,8 +82,30 @@ public class RoleModelValidatorTest
         
         assertNotNull( modelValidator.getValidationErrors() );
         
-        assertEquals( 3, modelValidator.getValidationErrors().size() );
+        assertEquals( 4, modelValidator.getValidationErrors().size() );
+        
+        assertTrue( checkForValidationError( modelValidator.getValidationErrors(), "eat-cornflakes-missing-operation-in-template" ) );
      
+        assertTrue( checkForValidationError( modelValidator.getValidationErrors(), "can-drink-the-milk-missing-child-role" ) );
+        
+        assertTrue( checkForValidationError( modelValidator.getValidationErrors(), "test-template-missing-child-template" ) );
+        
+        assertTrue( checkForValidationError( modelValidator.getValidationErrors(), "cycle detected" ) );
+     
+    }
+    
+    private boolean checkForValidationError( List validationErrors, String errorText )    
+    {
+        for ( Iterator i = validationErrors.iterator(); i.hasNext(); )
+        {
+            String error = (String)i.next();
+           
+            if ( error.indexOf( errorText ) != -1 )
+            {
+                return true;
+            }
+        }
+        return false;        
     }
  
 }

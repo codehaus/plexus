@@ -147,14 +147,37 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
                     role.setPermanent( roleProfile.isPermanent() );
                     role.setAssignable( roleProfile.isAssignable() );
 
+                    // add any permissions associated with this role
                     for ( Iterator j = permissions.iterator(); j.hasNext(); )
                     {
                         Permission permission = (Permission) j.next();
 
                         role.addPermission( permission );
                     }
-
+                    
+                    // add child roles to this role
+                    if ( roleProfile.getChildRoles() != null )
+                    {
+                        for ( Iterator j = roleProfile.getChildRoles().iterator(); j.hasNext(); )
+                        {
+                            String childRoleName = (String)j.next();
+                            role.addChildRoleName( childRoleName );
+                        }
+                    }                    
+                    
                     rbacManager.saveRole( role );
+                    
+                    // add link from parent roles to this new role
+                    if ( roleProfile.getParentRoles() != null )
+                    {
+                        for ( Iterator j = roleProfile.getParentRoles().iterator(); j.hasNext(); )
+                        {
+                            String parentRoleName = (String)j.next();
+                            Role parentRole = rbacManager.getRole( parentRoleName );
+                            parentRole.addChildRoleName( role.getName() );
+                            rbacManager.saveRole( parentRole );                            
+                        } 
+                    }
                 }
                 catch ( RbacManagerException e )
                 {
@@ -163,6 +186,8 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
             }
         }
     }
+    
+    
 
     private List processPermissions( List permissions ) throws RoleProfileException
     {
@@ -183,7 +208,7 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
                     Operation operation = (Operation) operationMap.get( profilePermission.getOperation() );
                     // same with resource
                     Resource resource = (Resource) resourceMap.get( profilePermission.getResource() );
-
+                    
                     permission.setOperation( operation );
                     permission.setResource( resource );
                     permission.setPermanent( profilePermission.isPermanent() );

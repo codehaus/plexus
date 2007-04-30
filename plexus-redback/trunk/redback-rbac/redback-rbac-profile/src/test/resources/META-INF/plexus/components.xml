@@ -1,11 +1,11 @@
 <plexus>
   <components>
 
-    <component>
-      <role>org.codehaus.plexus.redback.role.RoleProfileManager</role>
+   <component>
+      <role>org.codehaus.plexus.redback.role.processor.RoleModelProcessor</role>
       <role-hint>default</role-hint>
-      <implementation>org.codehaus.plexus.redback.role.DefaultRoleProfileManager</implementation>
-      <description>RoleProfileManager:</description>
+      <implementation>org.codehaus.plexus.redback.role.processor.DefaultRoleModelProcessor</implementation>
+      <description>DefaultRoleModelProcessor: inserts the components of the model that can be populated into the rbac manager</description>
       <requirements>
         <requirement>
           <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
@@ -15,60 +15,5 @@
       </requirements>
     </component>
 
-    <component>
-      <role>org.codehaus.plexus.redback.rbac.profile.RoleProfile</role>
-      <role-hint>bogus</role-hint>
-      <implementation>org.codehaus.plexus.redback.rbac.profile.BogusRoleProfile</implementation>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
-          <role-hint>memory</role-hint>
-        </requirement>
-        <requirement>
-          <role>org.codehaus.plexus.PlexusContainer</role>
-          <field-name>container</field-name>
-        </requirement>
-      </requirements>
-    </component>
-
-    <component>
-      <role>org.codehaus.plexus.redback.rbac.profile.RoleProfile</role>
-      <role-hint>spiffy</role-hint>
-      <implementation>org.codehaus.plexus.redback.rbac.profile.SpiffyRoleProfile</implementation>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
-          <role-hint>memory</role-hint>
-        </requirement>
-        <requirement>
-          <role>org.codehaus.plexus.PlexusContainer</role>
-          <field-name>container</field-name>
-        </requirement>
-      </requirements>
-    </component>
-
-   <component>
-      <role>org.codehaus.plexus.redback.rbac.profile.DynamicRoleProfile</role>
-      <role-hint>bogus</role-hint>
-      <implementation>org.codehaus.plexus.redback.rbac.profile.BogusDynamicRoleProfile</implementation>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
-          <role-hint>memory</role-hint>
-        </requirement>
-      </requirements>
-    </component>
-
-   <component>
-      <role>org.codehaus.plexus.redback.rbac.profile.DynamicRoleProfile</role>
-      <role-hint>more-bogus</role-hint>
-      <implementation>org.codehaus.plexus.redback.rbac.profile.MoreBogusDynamicRoleProfile</implementation>
-      <requirements>
-        <requirement>
-          <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
-          <role-hint>memory</role-hint>
-        </requirement>
-      </requirements>
-    </component>
   </components>
 </plexus>
