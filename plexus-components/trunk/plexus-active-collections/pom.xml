@@ -15,6 +15,7 @@
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-component-api</artifactId>
       <version>1.0-alpha-22</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
