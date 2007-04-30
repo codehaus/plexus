@@ -26,6 +26,8 @@ import org.codehaus.plexus.redback.role.model.ModelResource;
 import org.codehaus.plexus.redback.role.model.ModelRole;
 import org.codehaus.plexus.redback.role.model.ModelTemplate;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
+import org.codehaus.plexus.util.dag.CycleDetectedException;
+import org.codehaus.plexus.util.dag.DAG;
 
 /**
  * RoleModelUtils:
@@ -35,60 +37,152 @@ import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
  */
 public class RoleModelUtils
 {
-    
+
     public static List getOperationIdList( RedbackRoleModel model )
     {
         List operationsIdList = new ArrayList();
-        
+
         for ( Iterator i = model.getOperations().iterator(); i.hasNext(); )
         {
-            ModelOperation operation = (ModelOperation)i.next();
+            ModelOperation operation = (ModelOperation) i.next();
             operationsIdList.add( operation.getId() );
         }
-        
+
         return operationsIdList;
     }
-    
+
     public static List getResourceIdList( RedbackRoleModel model )
     {
         List resourceIdList = new ArrayList();
-        
+
         for ( Iterator i = model.getResources().iterator(); i.hasNext(); )
         {
-            ModelResource resource = (ModelResource)i.next();
+            ModelResource resource = (ModelResource) i.next();
             resourceIdList.add( resource.getId() );
         }
-        
+
         return resourceIdList;
     }
 
     public static List getRoleIdList( RedbackRoleModel model )
     {
         List roleIdList = new ArrayList();
-        
+
         for ( Iterator i = model.getRoles().iterator(); i.hasNext(); )
         {
-            ModelRole role = (ModelRole)i.next();
+            ModelRole role = (ModelRole) i.next();
             roleIdList.add( role.getId() );
         }
-        
+
         return roleIdList;
     }
 
     public static List getTemplateIdList( RedbackRoleModel model )
     {
         List templateIdList = new ArrayList();
-        
+
         for ( Iterator i = model.getTemplates().iterator(); i.hasNext(); )
         {
-            ModelTemplate template = (ModelTemplate)i.next();
+            ModelTemplate template = (ModelTemplate) i.next();
             templateIdList.add( template.getId() );
         }
-        
+
         return templateIdList;
-        
+
     }
 
-    
-    
+    public static DAG generateRoleGraph( RedbackRoleModel model ) throws CycleDetectedException
+    {
+        DAG roleGraph = new DAG();
+
+        for ( Iterator i = model.getRoles().iterator(); i.hasNext(); )
+        {
+            ModelRole role = (ModelRole) i.next();
+
+            roleGraph.addVertex( role.getId() );
+
+            if ( role.getChildRoles() != null )
+            {
+                for ( Iterator j = role.getChildRoles().iterator(); j.hasNext(); )
+                {
+                    String childRole = (String) j.next();
+                    roleGraph.addVertex( childRole );
+
+                    roleGraph.addEdge( role.getId(), childRole );
+                }
+            }
+
+            if ( role.getParentRoles() != null )
+            {
+                for ( Iterator j = role.getParentRoles().iterator(); j.hasNext(); )
+                {
+                    String parentRole = (String) j.next();
+                    roleGraph.addVertex( parentRole );
+
+                    roleGraph.addEdge( parentRole, role.getId() );
+                }
+            }
+        }
+
+        return roleGraph;
+    }
+
+    public static DAG generateTemplateGraph( RedbackRoleModel model ) throws CycleDetectedException
+    {
+        DAG templateGraph = generateRoleGraph( model );
+
+        for ( Iterator i = model.getTemplates().iterator(); i.hasNext(); )
+        {
+            ModelTemplate template = (ModelTemplate) i.next();
+
+            templateGraph.addVertex( template.getId() );
+
+            if ( template.getChildRoles() != null )
+            {
+                for ( Iterator j = template.getChildRoles().iterator(); j.hasNext(); )
+                {
+                    String childRole = (String) j.next();
+                    templateGraph.addVertex( childRole );
+
+                    templateGraph.addEdge( template.getId(), childRole );
+                }
+            }
+
+            if ( template.getParentRoles() != null )
+            {
+                for ( Iterator j = template.getParentRoles().iterator(); j.hasNext(); )
+                {
+                    String parentRole = (String) j.next();
+                    templateGraph.addVertex( parentRole );
+
+                    templateGraph.addEdge( parentRole, template.getId() );
+                }
+            }
+
+            if ( template.getChildTemplates() != null )
+            {
+                for ( Iterator j = template.getChildTemplates().iterator(); j.hasNext(); )
+                {
+                    String childTemplate = (String) j.next();
+                    templateGraph.addVertex( childTemplate );
+
+                    templateGraph.addEdge( template.getId(), childTemplate );
+                }
+            }
+
+            if ( template.getParentTemplates() != null )
+            {
+                for ( Iterator j = template.getParentTemplates().iterator(); j.hasNext(); )
+                {
+                    String parentTemplates = (String) j.next();
+                    templateGraph.addVertex( parentTemplates );
+
+                    templateGraph.addEdge( parentTemplates, template.getId() );
+                }
+            }
+        }
+
+        return templateGraph;
+    }
+
 }

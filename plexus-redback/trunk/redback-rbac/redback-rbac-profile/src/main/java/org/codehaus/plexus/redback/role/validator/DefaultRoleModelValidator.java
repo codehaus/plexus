@@ -21,14 +21,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.codehaus.plexus.redback.role.RoleProfileException;
-import org.codehaus.plexus.redback.role.model.ModelOperation;
 import org.codehaus.plexus.redback.role.model.ModelPermission;
 import org.codehaus.plexus.redback.role.model.ModelRole;
 import org.codehaus.plexus.redback.role.model.ModelTemplate;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 import org.codehaus.plexus.redback.role.util.RoleModelUtils;
 import org.codehaus.plexus.util.dag.CycleDetectedException;
-import org.codehaus.plexus.util.dag.DAG;
 
 /**
  * DefaultRoleModelValidator: validates completeness of the model
@@ -290,67 +288,23 @@ public class DefaultRoleModelValidator implements RoleModelValidator
     }
 
     /**
-     * We are not allowed to have cycles between roles, this method is to detect and raise a red flag
-     * when that happens.
+     * We are not allowed to have cycles between roles, this method is to detect and raise a red flag when that happens.
      * 
      * @param model
      */
     private void validateNoRoleCycles( RedbackRoleModel model )
     {
-        generateRoleGraph( model );
-    }
-    
-    /**
-     * we can reuse the role graph when making the templates, its ok to pass this even if we have a 
-     * validation error from the role cycle detection, it might help catch a particularly obvious template
-     * cycle and cut down on debug time.
-     * 
-     * @param model
-     * @return
-     */
-    private DAG generateRoleGraph( RedbackRoleModel model )
-    {
-        DAG roleGraph = new DAG();
-
         try
         {
-            for ( Iterator i = model.getRoles().iterator(); i.hasNext(); )
-            {
-                ModelRole role = (ModelRole) i.next();
-
-                roleGraph.addVertex( role.getId() );
-
-                if ( role.getChildRoles() != null )
-                {
-                    for ( Iterator j = role.getChildRoles().iterator(); j.hasNext(); )
-                    {
-                        String childRole = (String) j.next();
-                        roleGraph.addVertex( childRole );
-
-                        roleGraph.addEdge( role.getId(), childRole );
-                    }
-                }
-                
-                if ( role.getParentRoles() != null )
-                {
-                    for ( Iterator j = role.getParentRoles().iterator(); j.hasNext(); )
-                    {
-                        String parentRole = (String) j.next();
-                        roleGraph.addVertex( parentRole );
-
-                        roleGraph.addEdge( parentRole, role.getId() );
-                    }
-                }
-            }
+            RoleModelUtils.generateRoleGraph( model );
         }
         catch ( CycleDetectedException e )
         {
             addValidationError( "cycle detected: " + e.getMessage() );
         }
-        
-        return roleGraph;
     }
     
+   
     /**
      * We are not allowed to have cycles between template either, this method is to detect and 
      * raise a red flag when that happens.  Templates are a bit more complex since they have both
@@ -363,60 +317,9 @@ public class DefaultRoleModelValidator implements RoleModelValidator
      */
     private void validateNoTemplateCycles( RedbackRoleModel model )
     {
-        DAG templateGraph = generateRoleGraph( model );
-
         try
         {
-            for ( Iterator i = model.getTemplates().iterator(); i.hasNext(); )
-            {
-                ModelTemplate template = (ModelTemplate) i.next();
-
-                templateGraph.addVertex( template.getId() );
-
-                if ( template.getChildRoles() != null )
-                {
-                    for ( Iterator j = template.getChildRoles().iterator(); j.hasNext(); )
-                    {
-                        String childRole = (String) j.next();
-                        templateGraph.addVertex( childRole );
-
-                        templateGraph.addEdge( template.getId(), childRole );
-                    }
-                }
-                
-                if ( template.getParentRoles() != null )
-                {
-                    for ( Iterator j = template.getParentRoles().iterator(); j.hasNext(); )
-                    {
-                        String parentRole = (String) j.next();
-                        templateGraph.addVertex( parentRole );
-
-                        templateGraph.addEdge( parentRole, template.getId() );
-                    }
-                }
-                
-                if ( template.getChildTemplates() != null )
-                {
-                    for ( Iterator j = template.getChildTemplates().iterator(); j.hasNext(); )
-                    {
-                        String childTemplate = (String) j.next();
-                        templateGraph.addVertex( childTemplate );
-
-                        templateGraph.addEdge( template.getId(), childTemplate );
-                    }
-                }
-                
-                if ( template.getParentTemplates() != null )
-                {
-                    for ( Iterator j = template.getParentTemplates().iterator(); j.hasNext(); )
-                    {
-                        String parentTemplates = (String) j.next();
-                        templateGraph.addVertex( parentTemplates );
-
-                        templateGraph.addEdge( parentTemplates, template.getId() );
-                    }
-                }
-            }
+            RoleModelUtils.generateTemplateGraph( model );
         }
         catch ( CycleDetectedException e )
         {
