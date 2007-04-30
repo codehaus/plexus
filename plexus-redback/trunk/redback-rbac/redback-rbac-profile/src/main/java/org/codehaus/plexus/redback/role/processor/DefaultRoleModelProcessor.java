@@ -34,6 +34,10 @@ import org.codehaus.plexus.redback.role.model.ModelPermission;
 import org.codehaus.plexus.redback.role.model.ModelResource;
 import org.codehaus.plexus.redback.role.model.ModelRole;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
+import org.codehaus.plexus.redback.role.util.RoleModelUtils;
+import org.codehaus.plexus.util.dag.CycleDetectedException;
+import org.codehaus.plexus.util.dag.DAG;
+import org.codehaus.plexus.util.dag.TopologicalSorter;
 
 /**
  * DefaultRoleModelProcessor: inserts the components of the model that can be populated into the rbac manager
@@ -129,12 +133,20 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
 
     private void processRoles( RedbackRoleModel model ) throws RoleProfileException
     {
-        // FIXME these roles from the model need to be sorted so child roles and parent roles are
-        // built out correctly, working on that in the ModelRoleSorter in the utils
-        
-        for ( Iterator i = model.getRoles().iterator(); i.hasNext(); )
+        List sortedGraph;
+        try
         {
-            ModelRole roleProfile = (ModelRole) i.next();
+            sortedGraph = TopologicalSorter.sort( RoleModelUtils.generateRoleGraph( model ) );
+        }
+        catch ( CycleDetectedException e )
+        {
+            throw new RoleProfileException( "cycle detected: this should have been caught in validation", e );
+        }
+        
+        for ( Iterator i = sortedGraph.iterator(); i.hasNext(); )
+        {
+            String roleId = (String) i.next();
+            ModelRole roleProfile = RoleModelUtils.getModelRole( model, roleId );
 
             List permissions = processPermissions( roleProfile.getPermissions() );
 

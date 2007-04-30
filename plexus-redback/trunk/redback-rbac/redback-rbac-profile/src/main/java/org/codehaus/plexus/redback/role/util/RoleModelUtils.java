@@ -90,6 +90,30 @@ public class RoleModelUtils
         return templateIdList;
 
     }
+    
+    /**
+     * WARNING: can return null
+     * 
+     * @param model
+     * @param roleId
+     * @return
+     */
+    public static ModelRole getModelRole( RedbackRoleModel model, String roleId )
+    {
+        ModelRole mrole = null;
+
+        for ( Iterator i = model.getRoles().iterator(); i.hasNext(); )
+        {
+            ModelRole role = (ModelRole) i.next();
+
+            if ( roleId.equals( role.getId() ) )
+
+            {
+                mrole = role;
+            }
+        }
+        return mrole;
+    }
 
     public static DAG generateRoleGraph( RedbackRoleModel model ) throws CycleDetectedException
     {
