@@ -78,6 +78,7 @@
           <execution>
             <goals>
               <goal>java</goal>
+              <goal>xsd</goal>
               <goal>stax-reader</goal>
               <goal>stax-writer</goal>
             </goals>
