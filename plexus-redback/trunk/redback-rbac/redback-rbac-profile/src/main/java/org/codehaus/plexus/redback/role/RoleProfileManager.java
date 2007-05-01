@@ -51,6 +51,8 @@ public interface RoleProfileManager
     /**
      * removes a role corresponding to the role Id that was manufactured with the given resource
      * 
+     * it also removes any user assignments for that role
+     * 
      * @param roleId
      * @param resource
      * @throws RoleProfileException

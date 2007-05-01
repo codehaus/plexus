@@ -26,6 +26,7 @@ import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.Resource;
 import org.codehaus.plexus.redback.rbac.Role;
+import org.codehaus.plexus.redback.rbac.UserAssignment;
 import org.codehaus.plexus.redback.role.RoleProfileException;
 import org.codehaus.plexus.redback.role.model.ModelOperation;
 import org.codehaus.plexus.redback.role.model.ModelPermission;
@@ -75,8 +76,77 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
     
     public void remove( RedbackRoleModel model, String templateId, String resource ) throws RoleProfileException
     {
-
+        for ( Iterator i = model.getTemplates().iterator(); i.hasNext(); )
+        {
+            ModelTemplate template = (ModelTemplate)i.next();
+            
+            if ( templateId.equals( template.getId() ) )
+            {   
+                removeTemplatedRole( model, template, resource );
+                return;
+            }
+        }
+        
+        throw new RoleProfileException( "unknown template '" + templateId + "'");
     }
+    
+    
+    private void removeTemplatedRole( RedbackRoleModel model, ModelTemplate template, String resource )
+        throws RoleProfileException
+    {
+        String roleName = template.getNamePrefix() + template.getDelimiter() + resource;
+
+        try
+        {
+            Role role = rbacManager.getRole( roleName );            
+            
+            if ( !role.isPermanent() )
+            {         
+                // remove the user assignments
+                List rolesList = new ArrayList();
+                rolesList.add( role );
+                
+                List userAssignments = rbacManager.getUserAssignmentsForRoles( rolesList  );
+                
+                for ( Iterator i = userAssignments.iterator(); i.hasNext(); )
+                {
+                    UserAssignment assignment = (UserAssignment)i.next();
+                    assignment.removeRoleName( role );
+                    rbacManager.saveUserAssignment( assignment );
+                }                
+                
+                // remove the role
+                rbacManager.removeRole( role );
+                
+                // remove the permissions
+                for ( Iterator i = template.getPermissions().iterator(); i.hasNext(); )
+                {
+                    ModelPermission permission = (ModelPermission)i.next();
+                    if ( !permission.isPermanent() )
+                    {
+                        rbacManager.removePermission( permission.getName() + template.getDelimiter() + resource );
+                    }
+                }
+                
+                // check if we want to remove the resources
+                Resource rbacResource = rbacManager.getResource( resource );
+                
+                if ( !rbacResource.isPermanent() )
+                {
+                    rbacManager.removeResource( rbacResource );
+                }                             
+            }
+            else
+            {
+                throw new RoleProfileException( "unable to remove role, it is flagged permanent" );
+            }
+        }
+        catch ( RbacManagerException e )
+        {
+            throw new RoleProfileException( "unable to remove role: " + roleName, e );
+        }
+    }
+    
     
     private void processResource( ModelTemplate template, String resource ) throws RoleProfileException
     {
