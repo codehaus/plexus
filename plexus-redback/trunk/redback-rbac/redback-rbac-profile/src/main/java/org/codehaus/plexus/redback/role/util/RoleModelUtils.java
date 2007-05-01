@@ -17,7 +17,10 @@ package org.codehaus.plexus.redback.role.util;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.codehaus.plexus.redback.role.RoleProfileException;
@@ -28,6 +31,7 @@ import org.codehaus.plexus.redback.role.model.ModelTemplate;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 import org.codehaus.plexus.util.dag.CycleDetectedException;
 import org.codehaus.plexus.util.dag.DAG;
+import org.codehaus.plexus.util.dag.TopologicalSorter;
 
 /**
  * RoleModelUtils:
@@ -209,4 +213,24 @@ public class RoleModelUtils
         return templateGraph;
     }
 
+    public static List reverseTopologicalSortedRoleList( RedbackRoleModel model ) throws CycleDetectedException
+    {
+        LinkedList sortedGraph = (LinkedList)TopologicalSorter.sort( RoleModelUtils.generateRoleGraph( model ) );
+        LinkedList resortedGraph = new LinkedList();
+       
+
+        while ( !sortedGraph.isEmpty() )
+        { 
+            resortedGraph.add( sortedGraph.removeLast() );
+        }
+        
+       
+        for ( Iterator i = resortedGraph.iterator(); i.hasNext(); )
+        {
+            System.out.println( "Role Id: " + (String)i.next() );
+        }
+        
+        return resortedGraph;
+    }
+    
 }

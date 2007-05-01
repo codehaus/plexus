@@ -17,6 +17,7 @@ package org.codehaus.plexus.redback.role.processor;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -136,16 +137,19 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
         List sortedGraph;
         try
         {
-            sortedGraph = TopologicalSorter.sort( RoleModelUtils.generateRoleGraph( model ) );
+            sortedGraph = RoleModelUtils.reverseTopologicalSortedRoleList( model );
         }
         catch ( CycleDetectedException e )
         {
             throw new RoleProfileException( "cycle detected: this should have been caught in validation", e );
         }
-        
+       
         for ( Iterator i = sortedGraph.iterator(); i.hasNext(); )
         {
             String roleId = (String) i.next();
+            
+            System.out.println(" making role " + roleId ); 
+            
             ModelRole roleProfile = RoleModelUtils.getModelRole( model, roleId );
 
             List permissions = processPermissions( roleProfile.getPermissions() );
@@ -184,12 +188,15 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
                     {
                         for ( Iterator j = roleProfile.getParentRoles().iterator(); j.hasNext(); )
                         {
-                            String parentRoleName = (String)j.next();
-                            Role parentRole = rbacManager.getRole( parentRoleName );
+                            String parentRoleId = (String)j.next();
+                            ModelRole parentModelRole = RoleModelUtils.getModelRole( model, parentRoleId );
+                            Role parentRole = rbacManager.getRole( parentModelRole.getName() );
                             parentRole.addChildRoleName( role.getName() );
-                            rbacManager.saveRole( parentRole );                            
+                            rbacManager.saveRole( parentRole );                                                    
                         } 
                     }
+                  
+                        
                 }
                 catch ( RbacManagerException e )
                 {
