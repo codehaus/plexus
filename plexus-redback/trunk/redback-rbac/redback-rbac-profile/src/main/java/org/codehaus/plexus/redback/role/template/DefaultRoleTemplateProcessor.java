@@ -100,7 +100,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
     {
         String templateName = template.getNamePrefix() + template.getDelimiter() + resource;
         
-        List permissions = processPermissions( template, resource );
+        List permissions = processPermissions( model, template, resource );
 
         if ( !rbacManager.roleExists( templateName ) )
         {
@@ -223,7 +223,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
 
     }
     
-    private List processPermissions( ModelTemplate template, String resource ) throws RoleProfileException
+    private List processPermissions( RedbackRoleModel model, ModelTemplate template, String resource ) throws RoleProfileException
     {
         List rbacPermissions = new ArrayList();        
         
@@ -239,8 +239,8 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                 {
                     Permission permission = rbacManager.createPermission( permissionName );
 
-                    // get the operation out of the map we stored it in when we created it _by_ the id in the model
-                    Operation rbacOperation = rbacManager.getOperation( profilePermission.getOperation() );
+                    ModelOperation modelOperation = RoleModelUtils.getModelOperation( model, profilePermission.getOperation() ) ;
+                    Operation rbacOperation = rbacManager.getOperation( modelOperation.getName() );
                     
                     Resource rbacResource = rbacManager.getResource( resource );
                     

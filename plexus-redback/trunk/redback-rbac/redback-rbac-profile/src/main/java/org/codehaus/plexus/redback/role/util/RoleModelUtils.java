@@ -141,6 +141,29 @@ public class RoleModelUtils
         }
         return mtemplate;
     }
+    
+    /**
+     * WARNING: can return null
+     * 
+     * @param model
+     * @param operationId
+     * @return
+     */
+    public static ModelOperation getModelOperation( RedbackRoleModel model, String operationId )
+    {
+        ModelOperation moperation = null;
+
+        for ( Iterator i = model.getOperations().iterator(); i.hasNext(); )
+        {
+            ModelOperation operation = (ModelOperation) i.next();
+
+            if ( operationId.equals( operation.getId() ) )
+            {
+                moperation = operation;
+            }
+        }
+        return moperation;
+    }
 
     public static DAG generateRoleGraph( RedbackRoleModel model ) throws CycleDetectedException
     {
