@@ -81,6 +81,10 @@ public class RoleTemplateProcessorTest
         
         assertTrue( rbacManager.roleExists( templateName ) );
         
+        templateProcessor.remove( redback, "test-template", "foo" );
+        
+        assertFalse( rbacManager.roleExists( templateName ) );
+        
     }
  
  
