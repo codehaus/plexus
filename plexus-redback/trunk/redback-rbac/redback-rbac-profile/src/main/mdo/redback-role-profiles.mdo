@@ -171,6 +171,13 @@
           <type>String</type>
         </field>
         <field>
+          <name>delimiter</name>
+          <description></description>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <defaultValue> - </defaultValue>
+        </field>
+        <field>
           <name>description</name>
           <description>description of this role</description>
           <version>1.0.0+</version>

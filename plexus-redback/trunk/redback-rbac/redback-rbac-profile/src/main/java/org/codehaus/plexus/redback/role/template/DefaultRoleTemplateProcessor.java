@@ -16,10 +16,12 @@ package org.codehaus.plexus.redback.role.template;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.codehaus.plexus.redback.rbac.Operation;
+import org.codehaus.plexus.redback.rbac.Permission;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.Resource;
@@ -31,6 +33,7 @@ import org.codehaus.plexus.redback.role.model.ModelResource;
 import org.codehaus.plexus.redback.role.model.ModelRole;
 import org.codehaus.plexus.redback.role.model.ModelTemplate;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
+import org.codehaus.plexus.redback.role.util.RoleModelUtils;
 
 /**
  * DefaultRoleTemplateProcessor: inserts the components of a template into the rbac manager
@@ -48,7 +51,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
      */
     private RBACManager rbacManager;
     
-    
+      
     public void create( RedbackRoleModel model, String templateId, String resource ) throws RoleProfileException
     {
         for ( Iterator i = model.getTemplates().iterator(); i.hasNext(); )
@@ -57,9 +60,11 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
             
             if ( templateId.equals( template.getId() ) )
             {
+                // resource can be special
                 processResource( template, resource );
-                processOperations( model );
-                processRoles( model );
+               
+                // templates are roles that have yet to be paired with a resource for creation
+                processTemplate( model, template, resource );
                 
                 return;
             }
@@ -90,66 +95,183 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
         }
     }
     
-    private void processOperations( RedbackRoleModel model ) throws RoleProfileException
+    
+    private void processTemplate( RedbackRoleModel model, ModelTemplate template, String resource ) throws RoleProfileException
     {
-        for ( Iterator i = model.getOperations().iterator(); i.hasNext(); )
+        String templateName = template.getNamePrefix() + template.getDelimiter() + resource;
+        
+        List permissions = processPermissions( template, resource );
+
+        if ( !rbacManager.roleExists( templateName ) )
         {
-            ModelOperation profileOperation = (ModelOperation)i.next();
-            
-            if ( !rbacManager.operationExists( profileOperation.getName() ) )
+            try
             {
+                Role role = rbacManager.createRole( templateName );
+                role.setDescription( template.getDescription() );
+                role.setPermanent( template.isPermanent() );
+                role.setAssignable( template.isAssignable() );
+                
+                // add any permissions associated with this role
+                for ( Iterator j = permissions.iterator(); j.hasNext(); )
+                {
+                    Permission permission = (Permission) j.next();
+
+                    role.addPermission( permission );
+                }
+                
+                // add child roles to this role
+                if ( template.getChildRoles() != null )
+                {
+                    for ( Iterator j = template.getChildRoles().iterator(); j.hasNext(); )
+                    {
+                        String childRoleId = (String) j.next();
+                        ModelRole childRoleProfile = RoleModelUtils.getModelRole( model, childRoleId );
+                        role.addChildRoleName( childRoleProfile.getName() );
+                    }
+
+                }  
+                
+                // add child templates to this role, be nice and make them if they don't exist
+                if ( template.getChildTemplates() != null )
+                {
+                    for ( Iterator j = template.getChildTemplates().iterator(); j.hasNext(); )
+                    {
+                        String childTemplateId = (String)j.next();
+                        ModelTemplate childModelTemplate = RoleModelUtils.getModelTemplate( model, childTemplateId );
+                        
+                        if ( childModelTemplate == null )
+                        {
+                            throw new RoleProfileException( "error obtaining child template from model: template " + templateName + " # child template: " + childTemplateId );                           
+                        }
+                        
+                        String childRoleName = childModelTemplate.getNamePrefix() + childModelTemplate.getDelimiter() + resource;
+                        
+                        // check if the role exists, if it does then add it as a child, otherwise make it and add it
+                        // this should be safe since validation should protect us from template cycles
+                        if ( rbacManager.roleExists( childRoleName ) )
+                        {
+                            role.addChildRoleName( childRoleName ); 
+                        }
+                        else
+                        {
+                            processTemplate( model, childModelTemplate, resource );
+                            
+                            role.addChildRoleName( childRoleName );
+                        }                      
+                    }
+                }
+                
+                // this role needs to be saved since it now needs to be added as a child role by 
+                // another role
+                rbacManager.saveRole( role );
+                
+                // add link from parent roles to this new role
+                if ( template.getParentRoles() != null )
+                {
+                    for ( Iterator j = template.getParentRoles().iterator(); j.hasNext(); )
+                    {
+                        String parentRoleId = (String)j.next();
+                        ModelRole parentModelRole = RoleModelUtils.getModelRole( model, parentRoleId );
+                        Role parentRole = rbacManager.getRole( parentModelRole.getName() );
+                        parentRole.addChildRoleName( role.getName() );
+                        rbacManager.saveRole( parentRole );                                                    
+                    } 
+                }
+                
+                // add child templates to this role, be nice and make them if they don't exist
+                if ( template.getParentTemplates() != null )
+                {
+                    for ( Iterator j = template.getParentTemplates().iterator(); j.hasNext(); )
+                    {
+                        String parentTemplateId = (String)j.next();
+                        ModelTemplate parentModelTemplate = RoleModelUtils.getModelTemplate( model, parentTemplateId );
+                        
+                        if ( parentModelTemplate == null )
+                        {
+                            throw new RoleProfileException( "error obtaining parent template from model: template " + templateName + " # child template: " + parentTemplateId );                           
+                        }
+                        
+                        String parentRoleName = parentModelTemplate.getNamePrefix() + parentModelTemplate.getDelimiter() + resource;
+                        
+                        // check if the role exists, if it does then add it as a child, otherwise make it and add it
+                        // this should be safe since validation should protect us from template cycles
+                        if ( rbacManager.roleExists( parentRoleName ) )
+                        {
+                            Role parentRole = rbacManager.getRole( parentRoleName );
+                            
+                            parentRole.addChildRoleName( role.getName() );
+                            rbacManager.saveRole( parentRole );
+                        }
+                        else
+                        {
+                            processTemplate( model, parentModelTemplate, resource );
+                            
+                            Role parentRole = rbacManager.getRole( parentRoleName );
+                            
+                            parentRole.addChildRoleName( role.getName() );
+                            rbacManager.saveRole( parentRole );
+                        }                      
+                    }
+                }
+                
+            }
+            catch ( RbacManagerException e )
+            {
+                throw new RoleProfileException( "error creating role '" + templateName + "'", e );
+            }
+        }
+
+    }
+    
+    private List processPermissions( ModelTemplate template, String resource ) throws RoleProfileException
+    {
+        List rbacPermissions = new ArrayList();        
+        
+        for ( Iterator i = template.getPermissions().iterator(); i.hasNext(); )
+        {
+            ModelPermission profilePermission = (ModelPermission)i.next();
+            String permissionName = profilePermission.getName() + template.getDelimiter() + resource;
+            
+            if ( !rbacManager.permissionExists( permissionName ) )
+            {   
+              
                 try
                 {
-                    Operation operation = rbacManager.createOperation( profileOperation.getName() );
-                    operation.setPermanent( profileOperation.isPermanent() );
-                    operation.setDescription( profileOperation.getDescription() );
-                    rbacManager.saveOperation( operation );
+                    Permission permission = rbacManager.createPermission( permissionName );
+
+                    // get the operation out of the map we stored it in when we created it _by_ the id in the model
+                    Operation rbacOperation = rbacManager.getOperation( profilePermission.getOperation() );
+                    
+                    Resource rbacResource = rbacManager.getResource( resource );
+                    
+                    permission.setOperation( rbacOperation );
+                    permission.setResource( rbacResource );
+                    permission.setPermanent( profilePermission.isPermanent() );
+                    permission.setDescription( profilePermission.getDescription() );
+
+                    rbacManager.savePermission( permission );
+
+                    rbacPermissions.add( permission );
                     
                 }
                 catch ( RbacManagerException e )
                 {
-                    throw new RoleProfileException ( "error creating resource '" + profileOperation.getName() + "'", e );
+                    throw new RoleProfileException( "unable to create permission: " + permissionName );
                 }
             }
-        }
-    }
-    
-    private void processRoles( RedbackRoleModel model ) throws RoleProfileException
-    {
-        for ( Iterator i = model.getRoles().iterator(); i.hasNext(); )
-        {
-            ModelRole roleProfile = (ModelRole)i.next();
-            
-            processPermissions( roleProfile.getPermissions() );
-            
-            if ( !rbacManager.roleExists( roleProfile.getName() ) )
+            else
             {
                 try
                 {
-                    Role role = rbacManager.createRole( roleProfile.getName() );
-                    role.setDescription( roleProfile.getDescription() );
-                    role.setPermanent( roleProfile.isPermanent() );
-                    role.setAssignable( roleProfile.isAssignable() );
-                    rbacManager.saveRole( role );
+                    rbacPermissions.add( rbacManager.getPermission( permissionName ) );
                 }
                 catch ( RbacManagerException e )
                 {
-                    throw new RoleProfileException ( "error creating resource '" + roleProfile.getName() + "'", e );
+                    throw new RoleProfileException( "unable to get permission: " + permissionName );
                 }
             }
         }
-    }
-    
-    private void processPermissions( List permissions ) throws RoleProfileException
-    {
-        for ( Iterator i = permissions.iterator(); i.hasNext(); )
-        {
-            ModelPermission profilePermission = (ModelPermission)i.next();
-            
-            if ( !rbacManager.permissionExists( profilePermission.getName() ) )
-            {
-
-            }
-        }
+        
+        return rbacPermissions;
     }
 }

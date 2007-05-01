@@ -111,12 +111,35 @@ public class RoleModelUtils
             ModelRole role = (ModelRole) i.next();
 
             if ( roleId.equals( role.getId() ) )
-
             {
                 mrole = role;
             }
         }
         return mrole;
+    }
+    
+    
+    /**
+     * WARNING: can return null
+     * 
+     * @param model
+     * @param templateId
+     * @return
+     */
+    public static ModelTemplate getModelTemplate( RedbackRoleModel model, String templateId )
+    {
+        ModelTemplate mtemplate = null;
+
+        for ( Iterator i = model.getTemplates().iterator(); i.hasNext(); )
+        {
+            ModelTemplate template = (ModelTemplate) i.next();
+
+            if ( templateId.equals( template.getId() ) )
+            {
+                mtemplate = template;
+            }
+        }
+        return mtemplate;
     }
 
     public static DAG generateRoleGraph( RedbackRoleModel model ) throws CycleDetectedException
