@@ -14,6 +14,18 @@
         </requirement>
       </requirements>
     </component>
-
+    <component>
+      <role>org.codehaus.plexus.redback.role.template.RoleTemplateProcessor</role>
+      <role-hint>default</role-hint>
+      <implementation>org.codehaus.plexus.redback.role.template.DefaultRoleTemplateProcessor</implementation>
+      <description>DefaultRoleTemplateProcessor: inserts the components of a template into the rbac manager</description>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.redback.rbac.RBACManager</role>
+          <role-hint>memory</role-hint>
+          <field-name>rbacManager</field-name>
+        </requirement>
+      </requirements>
+    </component>
   </components>
 </plexus>

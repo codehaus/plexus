@@ -176,8 +176,9 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
                     {
                         for ( Iterator j = roleProfile.getChildRoles().iterator(); j.hasNext(); )
                         {
-                            String childRoleName = (String)j.next();
-                            role.addChildRoleName( childRoleName );
+                            String childRoleId = (String)j.next();
+                            ModelRole childRoleProfile = RoleModelUtils.getModelRole( model, childRoleId );
+                            role.addChildRoleName( childRoleProfile.getName() );
                         }
                     }                    
                     
