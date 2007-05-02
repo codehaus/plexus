@@ -23,8 +23,8 @@
     <artifactId>redback-rbac</artifactId>
     <version>1.0-alpha-1-SNAPSHOT</version>
   </parent>
-  <artifactId>redback-rbac-profile</artifactId>
-  <name>Plexus Redback :: RBAC Profiles</name>
+  <artifactId>redback-rbac-role-manager</artifactId>
+  <name>Plexus Redback :: RBAC Role Manager</name>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
