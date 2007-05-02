@@ -24,8 +24,12 @@ package org.codehaus.plexus.resource.loader;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.io.InputStream;
+
+import org.codehaus.plexus.resource.PlexusResource;
 import org.codehaus.plexus.resource.loader.AbstractResourceLoaderTest;
-import org.codehaus.plexus.resource.loader.AbstractResourceLoaderTest;
+
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -52,5 +56,17 @@ public class FileResourceLoaderTest
         assertMissingResource( "/foo.txt" );
 
         assertMissingResource( "foo.txt" );
+    }
+
+    public void testPlexusResource()
+        throws Exception
+    {
+        ResourceLoader resourceLoader = (ResourceLoader) lookup( ResourceLoader.ROLE );
+        PlexusResource resource = resourceLoader.getResource( "/dir/file.txt" );
+        final File f = new File( "src/test/file-resources", "/dir/file.txt");
+        assertEquals( f.getAbsolutePath(), resource.getFile().getPath() );
+        assertEquals( f.toURI(), resource.getURI() );
+        assertEquals( f.toURI().toURL(), resource.getURL() );
+        assertEquals( f.getAbsolutePath(), resource.getName() );
     }
 }

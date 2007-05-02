@@ -25,7 +25,10 @@ package org.codehaus.plexus.resource.loader;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.resource.PlexusResource;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -43,5 +46,19 @@ public abstract class AbstractResourceLoader
     public void addSearchPath( String path )
     {
         paths.add( path );
+    }
+
+    public InputStream getResourceAsInputStream( String name ) throws ResourceNotFoundException
+    {
+        PlexusResource resource = getResource( name );
+        try
+        {
+            return resource.getInputStream();
+        }
+        catch ( IOException e )
+        {
+            throw new ResourceIOException( "Failed to open resource " + resource.getName()
+                                           + ": " + e.getMessage(), e );
+        }
     }
 }

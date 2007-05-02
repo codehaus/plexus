@@ -1,11 +1,40 @@
 package org.codehaus.plexus.resource.loader;
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2004, The Codehaus
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.resource.PlexusResource;
+
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.UndeclaredThrowableException;
+import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -111,24 +140,12 @@ public class JarResourceLoader
      * @throws ResourceNotFoundException if template not found
      *                                   in the file template path.
      */
-    public InputStream getResourceAsInputStream( String source)
+    public PlexusResource getResource( String source )
         throws ResourceNotFoundException
     {
-        InputStream results = null;
-
         if ( source == null || source.length() == 0 )
         {
             throw new ResourceNotFoundException( "Need to have a resource!" );
-        }
-
-        if ( source == null || source.length() == 0 )
-        {
-            String msg = "JAR resource error : argument " + source +
-                " contains .. and may be trying to access " + "content outside of template root.  Rejected.";
-
-            getLogger().error( "JarResourceLoader : " + msg );
-
-            throw new ResourceNotFoundException( msg );
         }
 
         /*
@@ -143,13 +160,10 @@ public class JarResourceLoader
         {
             String jarurl = (String) entryDirectory.get( source );
 
-            if ( jarfiles.containsKey( jarurl ) )
+            final JarHolder holder = (JarHolder) jarfiles.get( jarurl );
+            if ( holder != null )
             {
-                JarHolder holder = (JarHolder) jarfiles.get( jarurl );
-
-                results = holder.getResource( source );
-                
-                return results;
+                return holder.getPlexusResource( source );
             }
         }
 

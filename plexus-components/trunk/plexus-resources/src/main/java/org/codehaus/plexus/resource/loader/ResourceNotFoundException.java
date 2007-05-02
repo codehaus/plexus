@@ -31,6 +31,8 @@ package org.codehaus.plexus.resource.loader;
 public class ResourceNotFoundException
     extends Exception
 {
+    private static final long serialVersionUID = -566548849252110330L;
+
     public ResourceNotFoundException( String name )
     {
         super( "Could not find resource '" + name + "'." );

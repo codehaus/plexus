@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.codehaus.plexus.resource.PlexusResource;
+
 /**
  * @author Jason van Zyl
  * @plexus.component role-hint="url"
@@ -24,15 +26,13 @@ public class URLResourceLoader
      * @throws ResourceNotFoundException if template not found
      *                                   in the file template path.
      */
-    public InputStream getResourceAsInputStream( String name )
+    public PlexusResource getResource( String name )
         throws ResourceNotFoundException
     {
         if ( name == null || name.length() == 0 )
         {
             throw new ResourceNotFoundException( "URLResourceLoader : No template name provided" );
         }
-
-        InputStream inputStream = null;
 
         Exception exception = null;
 
@@ -44,7 +44,7 @@ public class URLResourceLoader
             {
                 URL u = new URL( path + name );
 
-                inputStream = u.openStream();
+                final InputStream inputStream = u.openStream();
 
                 if ( inputStream != null )
                 {
@@ -56,7 +56,18 @@ public class URLResourceLoader
                     // save this root for later re-use
                     templateRoots.put( name, path );
 
-                    break;
+                    return new URLPlexusResource( u ){
+                        private boolean useSuper;
+                        public synchronized InputStream getInputStream() throws IOException
+                        {
+                            if ( !useSuper )
+                            {
+                                useSuper = true;
+                                return inputStream;
+                            }
+                            return super.getInputStream();
+                        }
+                    };
                 }
             }
             catch ( IOException ioe )
@@ -76,21 +87,16 @@ public class URLResourceLoader
         }
 
         // if we never found the template
-        if ( inputStream == null )
+        String msg;
+        if ( exception == null )
         {
-            String msg;
-            if ( exception == null )
-            {
-                msg = "URLResourceLoader : Resource '" + name + "' not found.";
-            }
-            else
-            {
-                msg = exception.getMessage();
-            }
-            // convert to a general Velocity ResourceNotFoundException
-            throw new ResourceNotFoundException( msg );
+            msg = "URLResourceLoader : Resource '" + name + "' not found.";
         }
-
-        return inputStream;
+        else
+        {
+            msg = exception.getMessage();
+        }
+        // convert to a general Velocity ResourceNotFoundException
+        throw new ResourceNotFoundException( msg );
     }
 }

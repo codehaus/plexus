@@ -24,40 +24,50 @@ package org.codehaus.plexus.resource.loader;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 
 import org.codehaus.plexus.resource.PlexusResource;
-import org.codehaus.plexus.resource.loader.AbstractResourceLoader;
-import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
+
 
 /**
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
- * @plexus.component role-hint="classloader"
+ * Implementation of {@link PlexusResource} for files.
  */
-public class ThreadContextClasspathResourceLoader
-    extends AbstractResourceLoader
+public class FilePlexusResource implements PlexusResource
 {
-    // ----------------------------------------------------------------------
-    // ResourceLoader Implementation
-    // ----------------------------------------------------------------------
+    private final File file;
 
-    public PlexusResource getResource( String name )
-        throws ResourceNotFoundException
+    public FilePlexusResource( File file )
     {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        this.file = file;
+    }
 
-        if ( classLoader == null )
-        {
-            throw new ResourceNotFoundException( name );
-        }
+    public File getFile() throws IOException
+    {
+        return file;
+    }
 
-        final URL url = classLoader.getResource( name );
-        if ( url == null )
-        {
-            throw new ResourceNotFoundException( name );
-        }
+    public InputStream getInputStream() throws IOException
+    {
+        return new FileInputStream( file );
+    }
 
-        return new URLPlexusResource( url );
+    public String getName()
+    {
+        return file.getPath();
+    }
+
+    public URI getURI() throws IOException
+    {
+        return file.toURI();
+    }
+
+    public URL getURL() throws IOException
+    {
+        return file.toURI().toURL();
     }
 }

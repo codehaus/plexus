@@ -24,40 +24,20 @@ package org.codehaus.plexus.resource.loader;
  * SOFTWARE.
  */
 
-import java.net.URL;
-
-import org.codehaus.plexus.resource.PlexusResource;
-import org.codehaus.plexus.resource.loader.AbstractResourceLoader;
-import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
 
 /**
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
- * @plexus.component role-hint="classloader"
+ * An instance of this class is thrown, if the {@link ResourceManager}, or
+ * {@link ResourceLoader} encounters an {@link IOException}, which indicates
+ * that the resource exists, but wasn't accessible.
  */
-public class ThreadContextClasspathResourceLoader
-    extends AbstractResourceLoader
-{
-    // ----------------------------------------------------------------------
-    // ResourceLoader Implementation
-    // ----------------------------------------------------------------------
+public class ResourceIOException extends ResourceNotFoundException {
+    private static final long serialVersionUID = 1342518075415496931L;
 
-    public PlexusResource getResource( String name )
-        throws ResourceNotFoundException
-    {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    public ResourceIOException(String name, Throwable cause) {
+        super(name, cause);
+    }
 
-        if ( classLoader == null )
-        {
-            throw new ResourceNotFoundException( name );
-        }
-
-        final URL url = classLoader.getResource( name );
-        if ( url == null )
-        {
-            throw new ResourceNotFoundException( name );
-        }
-
-        return new URLPlexusResource( url );
+    public ResourceIOException(String name) {
+        super(name);
     }
 }

@@ -1,5 +1,10 @@
 package org.codehaus.plexus.resource.loader;
 
+import java.io.InputStream;
+import java.net.URL;
+
+import org.codehaus.plexus.resource.PlexusResource;
+
 /*
  * The MIT License
  *
@@ -24,8 +29,6 @@ package org.codehaus.plexus.resource.loader;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.resource.loader.AbstractResourceLoaderTest;
-import org.codehaus.plexus.resource.loader.ResourceLoader;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -57,8 +60,6 @@ public class ThreadContextClasspathResourceLoaderTest
     public void testLookupWithANullThreadContextClassLoader()
         throws Exception
     {
-        ResourceLoader resourceLoader = (ResourceLoader) lookup( ResourceLoader.ROLE );
-
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
         Thread.currentThread().setContextClassLoader( null );
@@ -68,5 +69,17 @@ public class ThreadContextClasspathResourceLoaderTest
         assertMissingResource( "dir/classpath.txt" );
 
         Thread.currentThread().setContextClassLoader( loader );
+    }
+
+    public void testPlexusResource()
+        throws Exception
+    {
+        ResourceLoader resourceLoader = (ResourceLoader) lookup( ResourceLoader.ROLE );
+        PlexusResource resource = resourceLoader.getResource( "/dir/classpath.txt" );
+        assertNull( resource.getFile() );
+        assertNull( resource.getURI() );
+        URL url = Thread.currentThread().getContextClassLoader().getResource( "/dir/classpath.txt" );
+        assertEquals( url, resource.getURL() );
+        assertEquals( url.toExternalForm(), resource.getName() );
     }
 }

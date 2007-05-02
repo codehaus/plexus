@@ -26,6 +26,8 @@ package org.codehaus.plexus.resource.loader;
 
 import java.io.InputStream;
 
+import org.codehaus.plexus.resource.PlexusResource;
+
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -34,8 +36,21 @@ public interface ResourceLoader
 {
     String ROLE = ResourceLoader.class.getName();
 
+    /**
+     * @deprecated Use {@link getResource(String)}.
+     */
     InputStream getResourceAsInputStream( String name )
         throws ResourceNotFoundException;
 
     void addSearchPath( String path );
+
+    /**
+     * Returns the resource with the given name.
+     * @param name The resources name.
+     * @return The resource with the given name.
+     * @throws ResourceNotFoundException The resource wasn't found, or wasn't
+     *   available.
+     */
+    PlexusResource getResource( String name )
+        throws ResourceNotFoundException;
 }
