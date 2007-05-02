@@ -27,7 +27,7 @@ import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.tools.ant.taskdefs.optional.extension.resolvers.URLResolver;
+import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.redback.rbac.RBACManager;
@@ -87,7 +87,12 @@ public class DefaultRoleManager implements RoleManager, Initializable {
     /**
      * @plexus.requirement role-hint="cached"
      */
-    private RBACManager rbacManager; 
+    private RBACManager rbacManager;
+    
+    /**
+     * @plexus.requirement
+     */
+    private PlexusContainer container;
     
 	public void loadRoleModel( URL resource ) throws RoleProfileException 
     {
@@ -234,9 +239,14 @@ public class DefaultRoleManager implements RoleManager, Initializable {
         {
             URL baseResource = RoleManager.class.getResource( "/META-INF/redback/redback-core.xml" );
          
+            if ( baseResource == null )
+            {
+                throw new InitializationException( "unable to initialize role manager, missing redback-core.xml" );
+            }
+            
             loadRoleModel( baseResource );
             
-            Enumeration enumerator = RoleManager.class.getClassLoader().getResources( "/META-INF/redback/redback.xml" );
+            Enumeration enumerator = RoleManager.class.getClassLoader().getResources( "META-INF/redback/redback.xml" );
             
             while ( enumerator.hasMoreElements() )
             {
