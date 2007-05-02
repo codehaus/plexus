@@ -16,6 +16,8 @@ package org.codehaus.plexus.redback.role;
  * limitations under the License.
  */
 
+import java.net.URL;
+
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 
 /**
@@ -33,7 +35,7 @@ public interface RoleManager
      * @param resourceLocation
      * @throws RoleProfileException
      */
-    public void loadRoleModel( String resourceLocation ) throws RoleProfileException;
+    public void loadRoleModel( URL resourceLocation ) throws RoleProfileException;
 
     public void loadRoleModel( RedbackRoleModel model ) throws RoleProfileException;
 
