@@ -57,7 +57,9 @@ public class RoleManagerTest
         
         assertTrue( rbacManager.resourceExists( "*" ) );
         assertTrue( rbacManager.operationExists( "Test Operation" ) );
-        
+        assertTrue( rbacManager.roleExists( "Test Role" ) );
+        assertTrue( rbacManager.roleExists( "Test Role 1" ) );
+        assertTrue( rbacManager.roleExists( "Test Role 2" ) );
     }
  
  
