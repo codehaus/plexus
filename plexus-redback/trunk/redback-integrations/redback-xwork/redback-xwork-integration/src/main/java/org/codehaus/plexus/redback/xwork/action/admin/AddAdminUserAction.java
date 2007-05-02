@@ -16,17 +16,17 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.rbac.profile.RoleProfileException;
-import org.codehaus.plexus.redback.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.UserAssignment;
+import org.codehaus.plexus.redback.role.RoleManager;
+import org.codehaus.plexus.redback.role.RoleProfileException;
 import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.redback.users.UserManager;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionBundle;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionException;
 import org.codehaus.plexus.redback.xwork.model.EditUserCredentials;
-import org.codehaus.plexus.redback.xwork.role.profile.RoleConstants;
+import org.codehaus.plexus.redback.xwork.role.RoleConstants;
 
 /**
  * AddAdminUserAction
@@ -43,7 +43,7 @@ public class AddAdminUserAction
     /**
      * @plexus.requirement
      */
-    private RoleProfileManager roleManager;
+    private RoleManager roleManager;
 
     /**
      * @plexus.requirement role-hint="jdo"
@@ -109,20 +109,11 @@ public class AddAdminUserAction
 
         try
         {
-            UserAssignment ua = rbacManager.createUserAssignment( u.getPrincipal().toString() );
-            ua.addRoleName( roleManager.getRole( "system-administrator" ) );
-            ua.setPermanent( true );
-            rbacManager.saveUserAssignment( ua );
+            roleManager.assignRole( "system-administrator", u.getPrincipal().toString() );
         }
         catch ( RoleProfileException rpe )
         {
             addActionError( "Unable to assign system administrator role" );
-            return ERROR;
-        }
-        catch ( RbacManagerException e )
-        {
-            addActionError( "Unable to assign system administrator role" );
-            getLogger().error( "System error:", e );
             return ERROR;
         }
 

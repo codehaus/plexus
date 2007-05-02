@@ -31,7 +31,7 @@ import org.codehaus.plexus.redback.xwork.action.AbstractUserCredentialsAction;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionBundle;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionException;
 import org.codehaus.plexus.redback.xwork.model.AdminEditUserCredentials;
-import org.codehaus.plexus.redback.xwork.role.profile.RoleConstants;
+import org.codehaus.plexus.redback.xwork.role.RoleConstants;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.xwork.role.profile;
+package org.codehaus.plexus.redback.xwork.role;
 
 /*
  * Copyright 2005-2006 The Codehaus.
