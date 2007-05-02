@@ -28,6 +28,7 @@ import java.util.List;
 import javax.xml.stream.XMLStreamException;
 
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.redback.rbac.RBACManager;
@@ -52,7 +53,7 @@ import org.codehaus.plexus.redback.role.validator.RoleModelValidator;
  * @plexus.component role="org.codehaus.plexus.redback.role.RoleManager"
  *   role-hint="default"
  */
-public class DefaultRoleManager implements RoleManager, Initializable {
+public class DefaultRoleManager extends AbstractLogEnabled implements RoleManager, Initializable {
 
     /**
      * the blessed model that has been validated as complete
@@ -128,6 +129,19 @@ public class DefaultRoleManager implements RoleManager, Initializable {
             {
                 blessedModel = mergedModel;
             }
+            else
+            {
+                List validationErrors = modelValidator.getValidationErrors();
+
+                getLogger().error( "Validation Error: " + model.getApplication() );
+                
+                for ( Iterator i = validationErrors.iterator(); i.hasNext(); )
+                {                                  
+                    getLogger().error( (String)i.next() );
+                }
+                
+                throw new RoleProfileException( "Validation Error: " + model.getApplication() );
+            }
         }
         else
         {
@@ -136,6 +150,19 @@ public class DefaultRoleManager implements RoleManager, Initializable {
             if ( modelValidator.validate( mergedModel ) )
             {
                 blessedModel = mergedModel;
+            }
+            else
+            {
+                List validationErrors = modelValidator.getValidationErrors();
+                
+                getLogger().error( "Validation Error: " + model.getApplication() );
+                
+                for ( Iterator i = validationErrors.iterator(); i.hasNext(); )
+                {                                  
+                    getLogger().error( (String)i.next() );
+                }
+                
+                throw new RoleProfileException( "Validation Error: " + model.getApplication() );
             }
         }
         
