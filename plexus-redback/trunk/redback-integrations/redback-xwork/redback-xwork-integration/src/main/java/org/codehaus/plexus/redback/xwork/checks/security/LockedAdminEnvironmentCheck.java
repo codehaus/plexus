@@ -16,22 +16,19 @@ package org.codehaus.plexus.redback.xwork.checks.security;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
-import org.codehaus.plexus.redback.rbac.RBACManager;
-import org.codehaus.plexus.redback.rbac.RbacManagerException;
-import org.codehaus.plexus.redback.rbac.Role;
-import org.codehaus.plexus.redback.rbac.UserAssignment;
-import org.codehaus.plexus.redback.system.SecuritySystem;
-import org.codehaus.plexus.redback.system.check.EnvironmentCheck;
-import org.codehaus.plexus.redback.xwork.role.RoleConstants;
-import org.codehaus.plexus.redback.users.User;
-import org.codehaus.plexus.redback.users.UserManager;
-import org.codehaus.plexus.redback.users.UserNotFoundException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.redback.rbac.RBACManager;
+import org.codehaus.plexus.redback.rbac.RbacManagerException;
+import org.codehaus.plexus.redback.rbac.UserAssignment;
+import org.codehaus.plexus.redback.system.check.EnvironmentCheck;
+import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserManager;
+import org.codehaus.plexus.redback.users.UserNotFoundException;
+import org.codehaus.plexus.redback.xwork.role.RoleConstants;
 
 /**
  * LockedAdminEnvironmentCheck: checks if accounts marked as system administrator are locked

@@ -16,17 +16,18 @@ package org.codehaus.plexus.redback.xwork.interceptor;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.redback.configuration.UserConfiguration;
+import org.codehaus.plexus.redback.system.DefaultSecuritySession;
+import org.codehaus.plexus.redback.system.SecuritySession;
+import org.codehaus.plexus.redback.system.SecuritySystem;
+import org.codehaus.plexus.redback.system.SecuritySystemConstants;
+import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserManager;
+
 import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.interceptor.Interceptor;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.redback.configuration.UserConfiguration;
-import org.codehaus.plexus.redback.system.SecuritySession;
-import org.codehaus.plexus.redback.system.SecuritySystemConstants;
-import org.codehaus.plexus.redback.system.SecuritySystem;
-import org.codehaus.plexus.redback.system.DefaultSecuritySession;
-import org.codehaus.plexus.redback.users.UserManager;
-import org.codehaus.plexus.redback.users.User;
 
 /**
  * Interceptor to force the user to perform actions, when required.

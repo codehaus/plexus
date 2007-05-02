@@ -16,9 +16,9 @@ package org.codehaus.plexus.redback.xwork.interceptor;
  * limitations under the License.
  */
 
-import com.opensymphony.xwork.Action;
-import com.opensymphony.xwork.ActionContext;
-import com.opensymphony.xwork.ActionInvocation;
+import java.util.Iterator;
+import java.util.List;
+
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.redback.authorization.AuthorizationResult;
 import org.codehaus.plexus.redback.system.SecuritySession;
@@ -26,8 +26,9 @@ import org.codehaus.plexus.redback.system.SecuritySystem;
 import org.codehaus.plexus.redback.system.SecuritySystemConstants;
 import org.codehaus.plexus.xwork.interceptor.AbstractHttpRequestTrackerInterceptor;
 
-import java.util.Iterator;
-import java.util.List;
+import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
+import com.opensymphony.xwork.ActionInvocation;
 
 /**
  * SecureActionInterceptor: Interceptor that will detect webwork actions that implement the SecureAction

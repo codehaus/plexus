@@ -16,6 +16,10 @@ package org.codehaus.plexus.redback.xwork.mail;
  * limitations under the License.
  */
 
+import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
@@ -24,10 +28,6 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.redback.configuration.UserConfiguration;
 import org.codehaus.plexus.redback.keys.AuthenticationKey;
 import org.codehaus.plexus.velocity.VelocityComponent;
-
-import java.io.StringWriter;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 /**
  * Mail generator component implementation using velocity.

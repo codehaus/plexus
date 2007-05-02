@@ -16,6 +16,8 @@ package org.codehaus.plexus.redback.xwork.eXc.views;
  * limitations under the License.
  */
 
+import java.util.Iterator;
+
 import org.extremecomponents.table.bean.Export;
 import org.extremecomponents.table.core.TableModel;
 import org.extremecomponents.table.view.html.BuilderConstants;
@@ -24,8 +26,6 @@ import org.extremecomponents.table.view.html.StatusBarBuilder;
 import org.extremecomponents.table.view.html.ToolbarBuilder;
 import org.extremecomponents.table.view.html.TwoColumnRowLayout;
 import org.extremecomponents.util.HtmlBuilder;
-
-import java.util.Iterator;
 
 /**
  * SecurityToolbar

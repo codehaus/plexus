@@ -16,7 +16,10 @@ package org.codehaus.plexus.redback.xwork.util;
  * limitations under the License.
  */
 
-import com.opensymphony.webwork.ServletActionContext;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.redback.keys.AuthenticationKey;
 import org.codehaus.plexus.redback.keys.KeyManager;
@@ -26,9 +29,7 @@ import org.codehaus.plexus.redback.policy.CookieSettings;
 import org.codehaus.plexus.redback.system.SecuritySystem;
 import org.codehaus.plexus.util.StringUtils;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.opensymphony.webwork.ServletActionContext;
 
 /**
  * AutoLoginCookies

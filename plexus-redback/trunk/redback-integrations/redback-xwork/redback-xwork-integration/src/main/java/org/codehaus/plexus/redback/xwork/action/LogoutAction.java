@@ -16,11 +16,11 @@ package org.codehaus.plexus.redback.xwork.action;
  * limitations under the License.
  */
 
-import com.opensymphony.webwork.dispatcher.SessionMap;
-
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionBundle;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionException;
 import org.codehaus.plexus.redback.xwork.util.AutoLoginCookies;
+
+import com.opensymphony.webwork.dispatcher.SessionMap;
 
 /**
  * LogoutAction

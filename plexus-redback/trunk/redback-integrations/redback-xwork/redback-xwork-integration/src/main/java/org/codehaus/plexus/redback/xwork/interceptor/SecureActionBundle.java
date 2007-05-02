@@ -16,10 +16,10 @@ package org.codehaus.plexus.redback.xwork.interceptor;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.rbac.Resource;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.codehaus.plexus.redback.rbac.Resource;
 
 /**
  * SecureActionBundle:

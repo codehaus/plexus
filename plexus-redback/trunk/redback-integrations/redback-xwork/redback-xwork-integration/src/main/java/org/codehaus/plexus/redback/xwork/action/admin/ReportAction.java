@@ -16,8 +16,11 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  * limitations under the License.
  */
 
-import com.opensymphony.module.sitemesh.filter.PageResponseWrapper;
-import com.opensymphony.webwork.ServletActionContext;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.codehaus.plexus.redback.rbac.Resource;
 import org.codehaus.plexus.redback.xwork.action.AbstractSecurityAction;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionBundle;
@@ -27,9 +30,8 @@ import org.codehaus.plexus.redback.xwork.reports.ReportException;
 import org.codehaus.plexus.redback.xwork.reports.ReportManager;
 import org.codehaus.plexus.redback.xwork.role.RoleConstants;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import com.opensymphony.module.sitemesh.filter.PageResponseWrapper;
+import com.opensymphony.webwork.ServletActionContext;
 
 /**
  * ReportAction

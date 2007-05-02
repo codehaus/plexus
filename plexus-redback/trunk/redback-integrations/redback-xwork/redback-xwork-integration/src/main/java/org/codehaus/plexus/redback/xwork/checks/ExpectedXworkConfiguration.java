@@ -16,13 +16,14 @@ package org.codehaus.plexus.redback.xwork.checks;
  * limitations under the License.
  */
 
-import com.opensymphony.xwork.config.Configuration;
-import com.opensymphony.xwork.config.ConfigurationManager;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.plexus.redback.system.check.EnvironmentCheck;
 import org.codehaus.plexus.redback.xwork.checks.xwork.XworkPackageConfig;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.opensymphony.xwork.config.Configuration;
+import com.opensymphony.xwork.config.ConfigurationManager;
 
 /**
  * <p/>

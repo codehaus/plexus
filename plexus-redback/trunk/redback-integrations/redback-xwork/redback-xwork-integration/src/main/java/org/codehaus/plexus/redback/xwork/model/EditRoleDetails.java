@@ -16,10 +16,10 @@ package org.codehaus.plexus.redback.xwork.model;
  * limitations under the License.
  */
 
+import java.util.Iterator;
+
 import org.codehaus.plexus.redback.rbac.Permission;
 import org.codehaus.plexus.redback.rbac.Role;
-
-import java.util.Iterator;
 
 /**
  * EditRoleDetails - Existing user Role Details.

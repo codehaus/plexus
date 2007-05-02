@@ -16,13 +16,13 @@ package org.codehaus.plexus.redback.xwork.filter.authentication.digest;
  * limitations under the License.
  */
 
+import java.util.Properties;
+
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.redback.xwork.HttpUtils;
 import org.codehaus.plexus.redback.xwork.filter.authentication.HttpAuthenticationException;
 import org.codehaus.plexus.util.Base64;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.util.Properties;
 
 /**
  * HttpDigestHeader
