@@ -25,7 +25,7 @@ import org.codehaus.plexus.redback.xwork.interceptor.SecureActionException;
 import org.codehaus.plexus.redback.xwork.reports.Report;
 import org.codehaus.plexus.redback.xwork.reports.ReportException;
 import org.codehaus.plexus.redback.xwork.reports.ReportManager;
-import org.codehaus.plexus.redback.xwork.role.profile.RoleConstants;
+import org.codehaus.plexus.redback.xwork.role.RoleConstants;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;

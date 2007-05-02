@@ -17,8 +17,6 @@ package org.codehaus.plexus.redback.xwork.checks.security;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.redback.rbac.profile.RoleProfileException;
-import org.codehaus.plexus.redback.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
@@ -26,7 +24,7 @@ import org.codehaus.plexus.redback.rbac.Role;
 import org.codehaus.plexus.redback.rbac.UserAssignment;
 import org.codehaus.plexus.redback.system.SecuritySystem;
 import org.codehaus.plexus.redback.system.check.EnvironmentCheck;
-import org.codehaus.plexus.redback.xwork.role.profile.RoleConstants;
+import org.codehaus.plexus.redback.xwork.role.RoleConstants;
 import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.redback.users.UserManager;
 import org.codehaus.plexus.redback.users.UserNotFoundException;

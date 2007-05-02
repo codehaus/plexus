@@ -16,14 +16,14 @@ package org.codehaus.plexus.redback.xwork.action;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.rbac.profile.RoleProfileException;
-import org.codehaus.plexus.redback.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.redback.keys.AuthenticationKey;
 import org.codehaus.plexus.redback.keys.KeyManagerException;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.UserAssignment;
+import org.codehaus.plexus.redback.role.RoleManager;
+import org.codehaus.plexus.redback.role.RoleProfileException;
 import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.redback.users.UserManager;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionBundle;
@@ -68,7 +68,7 @@ public class RegisterAction
     /**
      * @plexus.requirement
      */
-    private RoleProfileManager roleManager;
+    private RoleManager roleManager;
 
     private CreateUserCredentials user;
 
@@ -136,23 +136,12 @@ public class RegisterAction
 
         try
         {
-            // assign the base role for all users
-            UserAssignment ua = rbacManager.createUserAssignment( u.getPrincipal().toString() );
-            List roles = new ArrayList();
-            roles.add( roleManager.getRole( "registered-user" ).getName() );
-            ua.setRoleNames( roles );
-            rbacManager.saveUserAssignment( ua );
+            roleManager.assignRole( "registered-user", u.getPrincipal().toString() );
         }
         catch ( RoleProfileException rpe )
         {
             addActionError( "Unable to assign core register user role to new user" );
             getLogger().error( "RoleProfile Error: " + rpe.getMessage(), rpe );
-            return ERROR;
-        }
-        catch ( RbacManagerException e )
-        {
-            addActionError( "Unable to assign core register user role to new user" );
-            getLogger().error( "System error:", e );
             return ERROR;
         }
 

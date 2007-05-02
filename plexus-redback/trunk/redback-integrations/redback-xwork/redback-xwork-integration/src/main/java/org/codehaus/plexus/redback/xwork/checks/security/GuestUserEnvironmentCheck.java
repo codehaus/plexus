@@ -17,13 +17,13 @@ package org.codehaus.plexus.redback.xwork.checks.security;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.redback.rbac.profile.RoleProfileException;
-import org.codehaus.plexus.redback.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.Role;
 import org.codehaus.plexus.redback.rbac.UserAssignment;
+import org.codehaus.plexus.redback.role.RoleManager;
+import org.codehaus.plexus.redback.role.RoleProfileException;
 import org.codehaus.plexus.redback.system.SecuritySystem;
 import org.codehaus.plexus.redback.system.check.EnvironmentCheck;
 import org.codehaus.plexus.redback.users.User;
@@ -48,7 +48,7 @@ public class GuestUserEnvironmentCheck
     /**
      * @plexus.requirement
      */
-    private RoleProfileManager roleProfileManager;
+    private RoleManager roleManager;
 
     /**
      * @plexus.requirement role-hint="jdo"
@@ -97,21 +97,11 @@ public class GuestUserEnvironmentCheck
 
             try
             {
-                Role guestRole = roleProfileManager.getRole( "guest" );
-                UserAssignment ua = rbacManager.createUserAssignment( guest.getPrincipal().toString() );
-                ua.addRoleName( guestRole );
-                ua.setPermanent( true );
-                rbacManager.saveUserAssignment( ua );
-
+                roleManager.assignRole( "guest", guest.getPrincipal().toString() );           
             }
             catch ( RoleProfileException rpe )
             {
                 violations.add( "unable to initialize guest user properly: " + rpe.getMessage() );
-            }
-            catch ( RbacManagerException e )
-            {
-                violations.add( "unable to initialize guest user properly: " + e.getMessage() );
-                getLogger().warn( "System error:", e );
             }
 
             checked = true;
