@@ -17,24 +17,24 @@ package org.codehaus.plexus.redback.role;
  */
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.codehaus.plexus.redback.rbac.Operation;
+import org.apache.tools.ant.taskdefs.optional.extension.resolvers.URLResolver;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
-import org.codehaus.plexus.redback.rbac.Resource;
 import org.codehaus.plexus.redback.rbac.Role;
 import org.codehaus.plexus.redback.rbac.UserAssignment;
 import org.codehaus.plexus.redback.role.merger.RoleModelMerger;
-import org.codehaus.plexus.redback.role.model.ModelOperation;
-import org.codehaus.plexus.redback.role.model.ModelPermission;
-import org.codehaus.plexus.redback.role.model.ModelResource;
-import org.codehaus.plexus.redback.role.model.ModelRole;
 import org.codehaus.plexus.redback.role.model.ModelTemplate;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 import org.codehaus.plexus.redback.role.model.io.stax.RedbackRoleModelStaxReader;
@@ -52,7 +52,7 @@ import org.codehaus.plexus.redback.role.validator.RoleModelValidator;
  * @plexus.component role="org.codehaus.plexus.redback.role.RoleManager"
  *   role-hint="default"
  */
-public class DefaultRoleManager implements RoleManager {
+public class DefaultRoleManager implements RoleManager, Initializable {
 
     /**
      * the blessed model that has been validated as complete
@@ -89,13 +89,13 @@ public class DefaultRoleManager implements RoleManager {
      */
     private RBACManager rbacManager; 
     
-	public void loadRoleModel( String resource ) throws RoleProfileException 
+	public void loadRoleModel( URL resource ) throws RoleProfileException 
     {
         RedbackRoleModelStaxReader reader = new RedbackRoleModelStaxReader();
         
         try
         {
-            RedbackRoleModel roleProfiles = reader.read( resource );
+            RedbackRoleModel roleProfiles = reader.read( new InputStreamReader( resource.openStream() ) );
             
             loadRoleModel( roleProfiles );
         }
@@ -226,5 +226,32 @@ public class DefaultRoleManager implements RoleManager {
         }
         
         templateProcessor.remove( blessedModel, templateId, oldResource );
-    }     
+    }
+
+    public void initialize() throws InitializationException
+    {
+        try
+        {
+            URL baseResource = RoleManager.class.getResource( "/META-INF/redback/redback-core.xml" );
+         
+            loadRoleModel( baseResource );
+            
+            Enumeration enumerator = RoleManager.class.getClassLoader().getResources( "/META-INF/redback/redback.xml" );
+            
+            while ( enumerator.hasMoreElements() )
+            {
+                URL redbackResource = (URL)enumerator.nextElement();
+                
+                loadRoleModel( redbackResource );
+            }
+        }
+        catch ( RoleProfileException e )
+        {
+            throw new InitializationException( "unable to initialize RoleManager", e );
+        }
+        catch ( IOException e )
+        {
+            throw new InitializationException( "unable to initialize RoleManager, problem with redback.xml loading", e );
+        }        
+    }         
 }

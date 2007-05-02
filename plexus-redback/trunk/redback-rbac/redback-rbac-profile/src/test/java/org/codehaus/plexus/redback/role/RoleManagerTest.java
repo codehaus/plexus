@@ -16,20 +16,23 @@ package org.codehaus.plexus.redback.role;
  * limitations under the License.
  */
 
+import java.io.File;
+
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.redback.rbac.RBACManager;
 
 /**
- * RoleProfileTest:
+ * RoleManagerTest:
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $Id:$
  */
-public class RoleProfileManagerTest
+public class RoleManagerTest
     extends PlexusTestCase
 {
-    //private RBACManager rbacManager;
+    private RBACManager rbacManager;
 
-    //private RoleProfileManager roleManager;
+    private RoleManager roleManager;
 
     /**
      * Creates a new RbacStore which contains no data.
@@ -39,23 +42,22 @@ public class RoleProfileManagerTest
     {
         super.setUp();
 
-        //rbacManager = (RBACManager) lookup ( RBACManager.ROLE, "memory" );
+        rbacManager = (RBACManager) lookup ( RBACManager.ROLE, "memory" );
 
-        //roleManager = (RoleProfileManager) lookup ( RoleProfileManager.ROLE, "default" );
+        roleManager = (RoleManager) lookup ( RoleManager.ROLE, "default" );
     }
     
     public void testLoading() throws Exception 
     {
-        /*
-        File resource = new File( getBasedir() + "/target/test-classes/META-INF/role-test-1/redback.xml");
+        //File resource = new File( getBasedir() + "/target/test-classes/META-INF/role-test-1/redback.xml");
         
-        assertNotNull( resource );
+        //assertNotNull( resource );
         
-        roleManager.loadRoleModel( resource.getAbsolutePath() );
+        //roleManager.loadRoleModel( resource.getAbsolutePath() );
         
         assertTrue( rbacManager.resourceExists( "*" ) );
         assertTrue( rbacManager.operationExists( "Test Operation" ) );
-        */
+        
     }
  
  

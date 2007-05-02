@@ -21,6 +21,7 @@
       <permissions>
         <permission>
           <id>test-permission</id>
+          <name>Test Permission</name>
           <operation>test-operation</operation>
           <resource>global</resource>
         </permission>
