@@ -16,7 +16,7 @@
         <permission>
           <id>test-permission-2</id>
           <name>Test Permission 2</name>
-          <operation>test-operation 2</operation>
+          <operation>test-operation-2</operation>
           <resource>global</resource>
         </permission>        
       </permissions>
