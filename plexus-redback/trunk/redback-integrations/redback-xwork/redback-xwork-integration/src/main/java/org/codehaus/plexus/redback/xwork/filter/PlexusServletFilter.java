@@ -16,16 +16,17 @@ package org.codehaus.plexus.redback.xwork.filter;
  * limitations under the License.
  */
 
-import com.opensymphony.xwork.ActionContext;
+import javax.servlet.Filter;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
 import org.codehaus.plexus.xwork.PlexusLifecycleListener;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
+import com.opensymphony.xwork.ActionContext;
 
 /**
  * PlexusServletFilter

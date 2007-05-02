@@ -16,16 +16,17 @@ package org.codehaus.plexus.redback.xwork.interceptor;
  * limitations under the License.
  */
 
-import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.Interceptor;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.codehaus.plexus.redback.system.check.EnvironmentCheck;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import com.opensymphony.xwork.ActionInvocation;
+import com.opensymphony.xwork.interceptor.Interceptor;
 
 /**
  * EnvironmentCheckInterceptor

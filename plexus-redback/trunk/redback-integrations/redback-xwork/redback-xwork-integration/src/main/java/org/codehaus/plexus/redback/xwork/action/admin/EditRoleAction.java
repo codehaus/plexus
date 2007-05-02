@@ -16,6 +16,9 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.Resource;
@@ -25,9 +28,6 @@ import org.codehaus.plexus.redback.xwork.interceptor.SecureActionBundle;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionException;
 import org.codehaus.plexus.redback.xwork.role.RoleConstants;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * EditRoleAction

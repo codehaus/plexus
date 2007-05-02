@@ -16,17 +16,17 @@ package org.codehaus.plexus.redback.xwork.checks;
  * limitations under the License.
  */
 
-import com.opensymphony.xwork.config.Configuration;
-import com.opensymphony.xwork.config.entities.ActionConfig;
-import com.opensymphony.xwork.config.entities.PackageConfig;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.codehaus.plexus.redback.xwork.checks.xwork.XworkActionConfig;
 import org.codehaus.plexus.redback.xwork.checks.xwork.XworkPackageConfig;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.opensymphony.xwork.config.Configuration;
+import com.opensymphony.xwork.config.entities.ActionConfig;
+import com.opensymphony.xwork.config.entities.PackageConfig;
 
 /**
  * AbstractXworkConfigurationCheck

@@ -16,8 +16,9 @@ package org.codehaus.plexus.redback.xwork.result;
  * limitations under the License.
  */
 
-import com.opensymphony.xwork.ActionInvocation;
 import org.codehaus.plexus.xwork.result.AbstractBackTrackingResult;
+
+import com.opensymphony.xwork.ActionInvocation;
 
 /**
  * SecurityExternalResult

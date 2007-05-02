@@ -16,12 +16,13 @@ package org.codehaus.plexus.redback.xwork.action;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.plexus.redback.keys.AuthenticationKey;
 import org.codehaus.plexus.redback.keys.KeyManagerException;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
 import org.codehaus.plexus.redback.rbac.RBACManager;
-import org.codehaus.plexus.redback.rbac.RbacManagerException;
-import org.codehaus.plexus.redback.rbac.UserAssignment;
 import org.codehaus.plexus.redback.role.RoleManager;
 import org.codehaus.plexus.redback.role.RoleProfileException;
 import org.codehaus.plexus.redback.users.User;
@@ -30,9 +31,6 @@ import org.codehaus.plexus.redback.xwork.interceptor.SecureActionBundle;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionException;
 import org.codehaus.plexus.redback.xwork.mail.Mailer;
 import org.codehaus.plexus.redback.xwork.model.CreateUserCredentials;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * RegisterAction

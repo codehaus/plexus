@@ -16,6 +16,8 @@ package org.codehaus.plexus.redback.xwork.action;
  * limitations under the License.
  */
 
+import java.util.Iterator;
+
 import org.codehaus.plexus.redback.policy.PasswordEncoder;
 import org.codehaus.plexus.redback.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.redback.policy.PasswordRuleViolations;
@@ -26,8 +28,6 @@ import org.codehaus.plexus.redback.users.UserNotFoundException;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionBundle;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionException;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.util.Iterator;
 
 /**
  * PasswordAction

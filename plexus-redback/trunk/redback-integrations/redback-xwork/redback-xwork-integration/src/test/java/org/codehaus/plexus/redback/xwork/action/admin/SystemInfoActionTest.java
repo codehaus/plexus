@@ -17,7 +17,6 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.redback.xwork.action.admin.SystemInfoAction;
 
 /**
  * SystemInfoActionTest

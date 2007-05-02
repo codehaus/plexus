@@ -16,9 +16,8 @@ package org.codehaus.plexus.redback.xwork.interceptor;
  * limitations under the License.
  */
 
-import com.opensymphony.webwork.ServletActionContext;
-import com.opensymphony.xwork.ActionInvocation;
-import com.opensymphony.xwork.interceptor.Interceptor;
+import javax.servlet.http.HttpSession;
+
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.redback.authentication.AuthenticationException;
 import org.codehaus.plexus.redback.authentication.AuthenticationResult;
@@ -31,7 +30,9 @@ import org.codehaus.plexus.redback.system.SecuritySystemConstants;
 import org.codehaus.plexus.redback.users.UserNotFoundException;
 import org.codehaus.plexus.redback.xwork.util.AutoLoginCookies;
 
-import javax.servlet.http.HttpSession;
+import com.opensymphony.webwork.ServletActionContext;
+import com.opensymphony.xwork.ActionInvocation;
+import com.opensymphony.xwork.interceptor.Interceptor;
 
 /**
  * AutoLoginInterceptor

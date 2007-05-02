@@ -17,8 +17,6 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  */
 
 import org.codehaus.plexus.redback.rbac.RBACManager;
-import org.codehaus.plexus.redback.rbac.RbacManagerException;
-import org.codehaus.plexus.redback.rbac.UserAssignment;
 import org.codehaus.plexus.redback.role.RoleManager;
 import org.codehaus.plexus.redback.role.RoleProfileException;
 import org.codehaus.plexus.redback.users.User;

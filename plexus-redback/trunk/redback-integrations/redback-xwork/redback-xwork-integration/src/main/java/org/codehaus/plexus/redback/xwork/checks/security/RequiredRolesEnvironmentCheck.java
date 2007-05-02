@@ -16,13 +16,11 @@ package org.codehaus.plexus.redback.xwork.checks.security;
  * limitations under the License.
  */
 
+import java.util.List;
+
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.redback.rbac.RBACManager;
-import org.codehaus.plexus.redback.rbac.Role;
-import org.codehaus.plexus.redback.role.RoleManager;
 import org.codehaus.plexus.redback.system.check.EnvironmentCheck;
-
-import java.util.List;
 
 /**
  * RequiredRolesEnvironmentCheck: this environment check will check that the

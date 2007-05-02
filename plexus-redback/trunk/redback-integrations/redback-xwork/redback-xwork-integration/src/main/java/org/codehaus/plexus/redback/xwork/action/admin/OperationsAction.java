@@ -16,6 +16,9 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  * limitations under the License.
  */
 
+import java.util.Collections;
+import java.util.List;
+
 import org.codehaus.plexus.redback.rbac.Operation;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
@@ -25,9 +28,6 @@ import org.codehaus.plexus.redback.xwork.interceptor.SecureActionException;
 import org.codehaus.plexus.redback.xwork.role.RoleConstants;
 import org.codehaus.plexus.redback.xwork.util.OperationSorter;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * OperationsAction:

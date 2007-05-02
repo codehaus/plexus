@@ -16,9 +16,9 @@ package org.codehaus.plexus.redback.xwork.checks;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.system.check.EnvironmentCheck;
-
 import java.util.List;
+
+import org.codehaus.plexus.redback.system.check.EnvironmentCheck;
 
 /**
  * ExpectedXworkActions

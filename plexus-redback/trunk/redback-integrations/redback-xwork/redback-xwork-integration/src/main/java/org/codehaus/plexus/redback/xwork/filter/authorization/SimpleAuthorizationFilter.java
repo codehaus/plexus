@@ -16,11 +16,7 @@ package org.codehaus.plexus.redback.xwork.filter.authorization;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.authorization.AuthorizationException;
-import org.codehaus.plexus.redback.system.SecuritySession;
-import org.codehaus.plexus.redback.system.SecuritySystem;
-import org.codehaus.plexus.redback.xwork.filter.PlexusServletFilter;
-import org.codehaus.plexus.util.StringUtils;
+import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -28,7 +24,12 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.codehaus.plexus.redback.authorization.AuthorizationException;
+import org.codehaus.plexus.redback.system.SecuritySession;
+import org.codehaus.plexus.redback.system.SecuritySystem;
+import org.codehaus.plexus.redback.xwork.filter.PlexusServletFilter;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * SimpleAuthorizationFilter

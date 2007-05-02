@@ -16,11 +16,9 @@ package org.codehaus.plexus.redback.xwork;
  * limitations under the License.
  */
 
-import junit.framework.TestCase;
-
 import java.util.Properties;
 
-import org.codehaus.plexus.redback.xwork.HttpUtils;
+import junit.framework.TestCase;
 
 /**
  * HttpUtilsTest

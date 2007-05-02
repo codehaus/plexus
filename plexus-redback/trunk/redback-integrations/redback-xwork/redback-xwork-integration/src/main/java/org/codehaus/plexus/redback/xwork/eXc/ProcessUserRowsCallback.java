@@ -16,15 +16,15 @@ package org.codehaus.plexus.redback.xwork.eXc;
  * limitations under the License.
  */
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import org.codehaus.plexus.redback.xwork.util.UserComparator;
 import org.extremecomponents.table.callback.ProcessRowsCallback;
 import org.extremecomponents.table.core.TableConstants;
 import org.extremecomponents.table.core.TableModel;
 import org.extremecomponents.table.limit.Sort;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * ProcessUserRowsCallback - Efficient and safe sort callback for user manager provided user lists.

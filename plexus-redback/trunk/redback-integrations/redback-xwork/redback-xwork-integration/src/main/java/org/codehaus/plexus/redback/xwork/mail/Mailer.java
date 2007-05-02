@@ -16,6 +16,9 @@ package org.codehaus.plexus.redback.xwork.mail;
  * limitations under the License.
  */
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.mailsender.MailMessage;
 import org.codehaus.plexus.mailsender.MailSender;
@@ -27,9 +30,6 @@ import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
 import org.codehaus.plexus.redback.policy.UserValidationSettings;
 import org.codehaus.plexus.redback.system.SecuritySystem;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * Mailer

@@ -16,9 +16,9 @@ package org.codehaus.plexus.redback.xwork.util;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.rbac.Resource;
-
 import java.util.Comparator;
+
+import org.codehaus.plexus.redback.rbac.Resource;
 
 /**
  * ResourceSorter

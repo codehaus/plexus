@@ -16,6 +16,11 @@ package org.codehaus.plexus.redback.xwork.filter.authentication.basic;
  * limitations under the License.
  */
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.codehaus.plexus.redback.authentication.AuthenticationException;
 import org.codehaus.plexus.redback.authentication.AuthenticationResult;
 import org.codehaus.plexus.redback.authentication.PasswordBasedAuthenticationDataSource;
@@ -24,10 +29,6 @@ import org.codehaus.plexus.redback.policy.MustChangePasswordException;
 import org.codehaus.plexus.redback.xwork.filter.authentication.HttpAuthenticator;
 import org.codehaus.plexus.util.Base64;
 import org.codehaus.plexus.util.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * HttpBasicAuthentication

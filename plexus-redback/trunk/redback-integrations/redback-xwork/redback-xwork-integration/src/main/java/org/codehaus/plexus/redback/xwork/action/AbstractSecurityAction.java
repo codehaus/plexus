@@ -16,7 +16,10 @@ package org.codehaus.plexus.redback.xwork.action;
  * limitations under the License.
  */
 
-import com.opensymphony.webwork.ServletActionContext;
+import java.util.Iterator;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.codehaus.plexus.redback.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.redback.policy.PasswordRuleViolations;
 import org.codehaus.plexus.redback.system.SecuritySession;
@@ -26,8 +29,7 @@ import org.codehaus.plexus.redback.xwork.interceptor.SecureActionBundle;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionException;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Iterator;
+import com.opensymphony.webwork.ServletActionContext;
 
 /**
  * AbstractSecurityAction

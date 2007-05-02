@@ -16,10 +16,10 @@ package org.codehaus.plexus.redback.xwork.filter.authentication;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.xwork.filter.PlexusServletFilter;
-
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
+
+import org.codehaus.plexus.redback.xwork.filter.PlexusServletFilter;
 
 /**
  * AbstractHttpAuthenticationFilter

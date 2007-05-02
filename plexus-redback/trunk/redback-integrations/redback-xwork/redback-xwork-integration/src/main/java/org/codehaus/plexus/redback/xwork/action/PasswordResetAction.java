@@ -16,6 +16,9 @@ package org.codehaus.plexus.redback.xwork.action;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.plexus.redback.keys.AuthenticationKey;
 import org.codehaus.plexus.redback.keys.KeyManager;
 import org.codehaus.plexus.redback.keys.KeyManagerException;
@@ -28,9 +31,6 @@ import org.codehaus.plexus.redback.xwork.interceptor.SecureActionBundle;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionException;
 import org.codehaus.plexus.redback.xwork.mail.Mailer;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * PasswordResetAction

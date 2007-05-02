@@ -16,6 +16,9 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.plexus.redback.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
@@ -32,9 +35,6 @@ import org.codehaus.plexus.redback.xwork.interceptor.SecureActionException;
 import org.codehaus.plexus.redback.xwork.model.AdminEditUserCredentials;
 import org.codehaus.plexus.redback.xwork.role.RoleConstants;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * UserEditAction

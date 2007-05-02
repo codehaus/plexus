@@ -16,11 +16,7 @@ package org.codehaus.plexus.redback.xwork.filter.authentication.digest;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.redback.authentication.AuthenticationException;
-import org.codehaus.plexus.redback.xwork.filter.authentication.AbstractHttpAuthenticationFilter;
-import org.codehaus.plexus.redback.xwork.filter.authentication.HttpAuthenticator;
-import org.codehaus.plexus.redback.xwork.filter.authentication.basic.HttpBasicAuthentication;
+import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -29,7 +25,12 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.redback.authentication.AuthenticationException;
+import org.codehaus.plexus.redback.xwork.filter.authentication.AbstractHttpAuthenticationFilter;
+import org.codehaus.plexus.redback.xwork.filter.authentication.HttpAuthenticator;
+import org.codehaus.plexus.redback.xwork.filter.authentication.basic.HttpBasicAuthentication;
 
 /**
  * HttpDigestAuthenticationFilter.

@@ -16,14 +16,6 @@ package org.codehaus.plexus.redback.xwork.reports;
  * limitations under the License.
  */
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.redback.system.SecuritySystem;
-import org.codehaus.plexus.redback.users.User;
-import org.codehaus.plexus.redback.users.UserManager;
-import org.codehaus.plexus.redback.xwork.util.UserComparator;
-
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
@@ -33,6 +25,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.redback.system.SecuritySystem;
+import org.codehaus.plexus.redback.users.User;
+import org.codehaus.plexus.redback.users.UserManager;
+import org.codehaus.plexus.redback.xwork.util.UserComparator;
 
 /**
  * CsvUserList

@@ -16,9 +16,9 @@ package org.codehaus.plexus.redback.xwork;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.util.StringUtils;
-
 import java.util.Properties;
+
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Collection of Utility methods useful in an Http environment.
