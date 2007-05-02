@@ -1,9 +1,9 @@
 package org.codehaus.plexus.redback.rbac.profile;
 
-import org.codehaus.plexus.redback.rbac.Role;
-import org.codehaus.plexus.redback.rbac.Resource;
-
 import java.util.List;
+
+import org.codehaus.plexus.redback.rbac.Resource;
+import org.codehaus.plexus.redback.rbac.Role;
 
 /*
  * Copyright 2005 The Codehaus.

@@ -16,6 +16,11 @@ package org.codehaus.plexus.redback.rbac.profile;
  * limitations under the License.
  */
 
+import java.util.Iterator;
+import java.util.List;
+
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.redback.rbac.Operation;
 import org.codehaus.plexus.redback.rbac.Permission;
@@ -24,11 +29,6 @@ import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.RbacObjectNotFoundException;
 import org.codehaus.plexus.redback.rbac.Resource;
 import org.codehaus.plexus.redback.rbac.Role;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.PlexusContainer;
-
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * AbstractRoleProfile:

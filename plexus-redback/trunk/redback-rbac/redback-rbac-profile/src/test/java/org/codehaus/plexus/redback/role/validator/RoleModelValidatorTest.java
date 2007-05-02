@@ -21,8 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.redback.rbac.RBACManager;
-import org.codehaus.plexus.redback.rbac.Role;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 import org.codehaus.plexus.redback.role.model.io.stax.RedbackRoleModelStaxReader;
 
