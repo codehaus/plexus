@@ -4,6 +4,7 @@ package org.codehaus.plexus.resource.loader;
 public class FileResourceCreationException
     extends Exception
 {
+    private static final long serialVersionUID = 3203687211821479687L;
 
     public FileResourceCreationException( String string )
     {

@@ -26,18 +26,17 @@ package org.codehaus.plexus.resource;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.resource.loader.FileResourceCreationException;
+import org.codehaus.plexus.resource.loader.ResourceIOException;
 import org.codehaus.plexus.resource.loader.ResourceLoader;
 import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
-import org.codehaus.plexus.resource.loader.FileResourceLoader;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Writer;
+import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -61,100 +60,51 @@ public class DefaultResourceManager
     // ResourceManager Implementation
     // ----------------------------------------------------------------------
 
-    //TODO: we should tell the user where we have searched for the resource so if it fails they can
-    // debug easier (jvz)
     public InputStream getResourceAsInputStream( String name )
         throws ResourceNotFoundException
     {
-        InputStream is = null;
-
-        for ( Iterator i = resourceLoaders.values().iterator(); i.hasNext(); )
+        PlexusResource resource = getResource( name );
+        try
         {
-            ResourceLoader resourceLoader = (ResourceLoader) i.next();
-
-            try
-            {
-                is = resourceLoader.getResourceAsInputStream( name );
-
-                getLogger().debug( "The resource " + "'" + name + "'" + " found using the " + resourceLoader + "." );
-
-                break;
-            }
-            catch ( ResourceNotFoundException e )
-            {
-                // ignore and continue to the next loader
-            }
+            return resource.getInputStream();
         }
-
-        if ( is == null )
+        catch ( IOException e )
         {
-            throw new ResourceNotFoundException( name );
+            throw new ResourceIOException( "Failed to open resource " + resource.getName()
+                                           + ": " + e.getMessage(), e );
         }
-
-        return is;
     }
 
     public File getResourceAsFile( String name )
         throws ResourceNotFoundException, FileResourceCreationException
     {
-        return getResourceAsFile( name, null );
+        return getResourceAsFile( getResource( name ) );
     }
 
     public File getResourceAsFile( String name,
                                    String outputPath )
         throws ResourceNotFoundException, FileResourceCreationException
     {
-        // Optimization for File to File fetches
-        File f = FileResourceLoader.getResourceAsFile( name, outputPath, outputDirectory );
-
-        if ( f != null )
-        {
-            return f;
-        }
-
-        // End optimization
-
-        InputStream is = getResourceAsInputStream( name );
-
-        InputStreamReader reader = new InputStreamReader( is );
-
-        Writer writer;
-
-        File outputFile;
-
         if ( outputPath == null )
         {
-            outputFile = FileUtils.createTempFile( "plexus-resources", "tmp", null );
+            return getResourceAsFile( name );
         }
-        else
-        {
-            if ( outputDirectory != null )
-            {
-                outputFile = new File( outputDirectory, outputPath );
-            }
-            else
-            {
-                outputFile = new File( outputPath );
-            }
-        }
-
+        PlexusResource resource = getResource( name );
         try
         {
-            if ( !outputFile.getParentFile().exists() )
+            File f = resource.getFile();
+            if ( f != null )
             {
-                outputFile.getParentFile().mkdirs();
+                return f;
             }
-
-            writer = new FileWriter( outputFile );
-
-            IOUtil.copy( reader, writer );
         }
         catch ( IOException e )
         {
-            throw new FileResourceCreationException( "Cannot create file-based resource.", e );
+            // Ignore this, try to make use of resource.getInputStream().
         }
-
-        return outputFile;
+        File f = new File( outputPath );
+        createResourceAsFile( resource, f );
+        return f;
     }
 
     public File resolveLocation( String name,
@@ -200,5 +150,77 @@ public class DefaultResourceManager
         ResourceLoader loader = (ResourceLoader) resourceLoaders.get( id );
 
         loader.addSearchPath( path );
+    }
+
+    public PlexusResource getResource( String name ) throws ResourceNotFoundException {
+        for ( Iterator i = resourceLoaders.values().iterator(); i.hasNext(); )
+        {
+            ResourceLoader resourceLoader = (ResourceLoader) i.next();
+
+            try
+            {
+                PlexusResource resource = resourceLoader.getResource( name );
+
+                getLogger().debug( "The resource " + "'" + name + "'" + " was found as " + resource.getName() + "." );
+
+                return resource;
+            }
+            catch ( ResourceNotFoundException e )
+            {
+                // ignore and continue to the next loader
+            }
+        }
+
+        throw new ResourceNotFoundException( name );
+    }
+
+    public File getResourceAsFile( PlexusResource resource )
+            throws FileResourceCreationException {
+        try
+        {
+            File f = resource.getFile();
+            if ( f != null )
+            {
+                return f;
+            }
+        }
+        catch ( IOException e )
+        {
+            // Ignore this, try to make use of resource.getInputStream().
+        }
+
+        final File outputFile = FileUtils.createTempFile( "plexus-resources", "tmp", outputDirectory );
+        createResourceAsFile( resource, outputFile );
+        return outputFile;
+    }
+
+    public void createResourceAsFile( PlexusResource resource, File outputFile )
+            throws FileResourceCreationException {
+        InputStream is = null;
+        OutputStream os = null;
+        try
+        {
+            is = resource.getInputStream();
+            File dir = outputFile.getParentFile();
+            if ( !dir.isDirectory()  &&  !dir.mkdirs() )
+            {
+                throw new FileResourceCreationException( "Failed to create directory " + dir.getPath() );
+            }
+            os = new FileOutputStream( outputFile );
+            IOUtil.copy( is, os );
+            is.close();
+            is = null;
+            os.close();
+            os = null;
+        }
+        catch ( IOException e )
+        {
+            throw new FileResourceCreationException( "Cannot create file-based resource:" + e.getMessage(), e );
+        }
+        finally
+        {
+            IOUtil.close( is );
+            IOUtil.close( os );
+        }
     }
 }

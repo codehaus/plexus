@@ -67,4 +67,24 @@ public interface ResourceManager
     File resolveLocation( String location )
         throws IOException;
 
+    /**
+     * Searches for a resource with the given name.
+     * @since 1.0-alpha-5
+     */
+    PlexusResource getResource( String name ) throws ResourceNotFoundException;
+
+    /**
+     * Returns a file with the given resources contents. If the resource
+     * is already available as a file, returns that file. Otherwise, a
+     * file in the resource managers output directory is created and the
+     * resource is downloaded to that file.
+     * @since 1.0-alpha-5
+     */
+    File getResourceAsFile( PlexusResource resource ) throws FileResourceCreationException;
+
+    /**
+     * Downloads the resource to the given output file.
+     * @since 1.0-alpha-5
+     */
+    void createResourceAsFile( PlexusResource resource, File outputFile ) throws FileResourceCreationException;
 }

@@ -1,13 +1,17 @@
 package org.codehaus.plexus.resource.loader;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.JarURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
+import org.codehaus.plexus.resource.PlexusResource;
 
 /**
  * A small wrapper around a Jar
@@ -114,11 +118,39 @@ public class JarHolder
     {
         return urlpath;
     }
+
+    public PlexusResource getPlexusResource( final String name )
+    {
+        final JarEntry entry = theJar.getJarEntry( name );
+        if ( entry == null )
+        {
+            return null;
+        }
+        return new PlexusResource(){
+            public File getFile() throws IOException
+            {
+                return null;
+            }
+
+            public InputStream getInputStream() throws IOException
+            {
+                return theJar.getInputStream( entry );
+            }
+
+            public String getName()
+            {
+                return conn.getJarFileURL() + name;
+            }
+
+            public URI getURI() throws IOException
+            {
+                return null;
+            }
+
+            public URL getURL() throws IOException
+            {
+                return new URL( conn.getJarFileURL(), name );
+            }
+        };
+    }
 }
-
-
-
-
-
-
-

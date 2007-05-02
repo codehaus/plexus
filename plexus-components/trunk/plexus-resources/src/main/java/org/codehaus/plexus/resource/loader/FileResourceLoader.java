@@ -25,16 +25,15 @@ package org.codehaus.plexus.resource.loader;
  */
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
 
+import org.codehaus.plexus.resource.PlexusResource;
 import org.codehaus.plexus.resource.loader.AbstractResourceLoader;
 import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
 import org.codehaus.plexus.util.FileUtils;
+
+import com.sun.naming.internal.ResourceManager;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -51,34 +50,26 @@ public class FileResourceLoader
     // ResourceLoader Implementation
     // ----------------------------------------------------------------------
 
-    public InputStream getResourceAsInputStream( String name )
+    public PlexusResource getResource( String name )
         throws ResourceNotFoundException
     {
         for ( Iterator it = paths.iterator(); it.hasNext(); )
         {
             String path = (String) it.next();
 
-            File file = new File( path, name );
+            final File file = new File( path, name );
 
             if ( file.canRead() )
             {
-                try
-                {
-                    return new FileInputStream( file );
-                }
-                catch ( FileNotFoundException e )
-                {
-                    // this really shouldn't happen as the file already is
-                    // verified as readable
-
-                    throw new ResourceNotFoundException( name );
-                }
+                return new FilePlexusResource( file );
             }
         }
-
         throw new ResourceNotFoundException( name );
     }
 
+    /**
+     * @deprecated Use {@link ResourceManager#getResourceAsFile( PlexusResource )}.
+     */
     public static File getResourceAsFile( String name,
                                           String outputPath,
                                           File outputDirectory )

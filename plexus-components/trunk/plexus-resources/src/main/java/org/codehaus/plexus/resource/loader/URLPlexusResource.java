@@ -24,40 +24,49 @@ package org.codehaus.plexus.resource.loader;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 
 import org.codehaus.plexus.resource.PlexusResource;
-import org.codehaus.plexus.resource.loader.AbstractResourceLoader;
-import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
+
 
 /**
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
- * @plexus.component role-hint="classloader"
+ * Implementation of {@link PlexusResource} for URL's.
  */
-public class ThreadContextClasspathResourceLoader
-    extends AbstractResourceLoader
+public class URLPlexusResource implements PlexusResource
 {
-    // ----------------------------------------------------------------------
-    // ResourceLoader Implementation
-    // ----------------------------------------------------------------------
+    private final URL url;
 
-    public PlexusResource getResource( String name )
-        throws ResourceNotFoundException
+    public URLPlexusResource( URL url )
     {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        this.url = url;
+    }
 
-        if ( classLoader == null )
-        {
-            throw new ResourceNotFoundException( name );
-        }
+    public File getFile() throws IOException
+    {
+        return null;
+    }
 
-        final URL url = classLoader.getResource( name );
-        if ( url == null )
-        {
-            throw new ResourceNotFoundException( name );
-        }
+    public InputStream getInputStream() throws IOException
+    {
+        return url.openStream();
+    }
 
-        return new URLPlexusResource( url );
+    public String getName()
+    {
+        return url.toExternalForm();
+    }
+
+    public URI getURI() throws IOException
+    {
+        return null;
+    }
+
+    public URL getURL() throws IOException
+    {
+        return url;
     }
 }
