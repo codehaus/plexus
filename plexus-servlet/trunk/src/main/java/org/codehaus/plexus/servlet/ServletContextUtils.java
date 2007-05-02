@@ -210,6 +210,11 @@ public final class ServletContextUtils
         {
             URL resource = context.getResource( plexusConf );
 
+            if ( resource == null )
+            {
+                resource = Thread.currentThread().getContextClassLoader().getResource( "META-INF/plexus/application.xml" );
+            }
+
             context.log( "resource = " + resource );
 
             return resource;
