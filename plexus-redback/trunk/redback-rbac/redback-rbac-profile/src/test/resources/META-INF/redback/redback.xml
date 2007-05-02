@@ -1,4 +1,6 @@
 <redback-role-model>
+  <version>1.0.0</version>
+  <application>test app</application>
   <operations>
     <operation>
       <id>test-operation-2</id>
