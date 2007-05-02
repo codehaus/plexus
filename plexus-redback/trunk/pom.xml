@@ -219,7 +219,7 @@
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.redback</groupId>
-        <artifactId>redback-rbac-profile</artifactId>
+        <artifactId>redback-rbac-role-manager</artifactId>
         <version>${security.version}</version>
       </dependency>
       <dependency>
