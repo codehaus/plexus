@@ -36,6 +36,7 @@ import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.Role;
 import org.codehaus.plexus.redback.rbac.UserAssignment;
 import org.codehaus.plexus.redback.role.merger.RoleModelMerger;
+import org.codehaus.plexus.redback.role.model.ModelRole;
 import org.codehaus.plexus.redback.role.model.ModelTemplate;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 import org.codehaus.plexus.redback.role.model.io.stax.RedbackRoleModelStaxReader;
@@ -258,6 +259,62 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
         }
         
         templateProcessor.remove( blessedModel, templateId, oldResource );
+    }
+
+    
+    public void assignRole( String roleId, String principal ) throws RoleProfileException
+    {
+        ModelRole modelRole = RoleModelUtils.getModelRole( blessedModel, roleId );
+
+        if ( modelRole == null )
+        {
+            throw new RoleProfileException( "Unable to assign role: " + roleId + " does not exist." );
+        }
+
+        try
+        {
+            UserAssignment userAssignment;
+
+            if ( rbacManager.userAssignmentExists( principal ) )
+            {
+                userAssignment = rbacManager.getUserAssignment( principal );
+            }
+            else
+            {
+                userAssignment = rbacManager.createUserAssignment( principal );
+            }
+            
+            userAssignment.addRoleName( modelRole.getName() );
+            rbacManager.saveUserAssignment( userAssignment );
+        }
+        catch ( RbacManagerException e )
+        {
+            throw new RoleProfileException( "Unable to assign role: unable to manage user assignment", e );
+        }
+    }
+    
+    
+
+    public boolean roleExists( String roleId ) throws RoleProfileException
+    {
+        ModelRole modelRole = RoleModelUtils.getModelRole( blessedModel, roleId );
+
+        if ( modelRole == null )
+        {
+            return false;
+        }       
+        else
+        {
+            if ( rbacManager.roleExists( modelRole.getName() ) )
+            {
+                return true;
+            }
+            else
+            {     
+                // perhaps try and reload the model here?
+                throw new RoleProfileException( "breakdown in role management, role exists in configuration but was not created in underlying store" );
+            }
+        }           
     }
 
     public void initialize() throws InitializationException

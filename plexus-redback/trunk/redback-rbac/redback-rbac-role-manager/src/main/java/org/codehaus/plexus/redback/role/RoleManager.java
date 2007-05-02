@@ -75,4 +75,23 @@ public interface RoleManager
      */
     public void updateRole( String templateId, String oldResource, String newResource ) throws RoleProfileException;
     
+    
+    /**
+     * Assigns the role indicated by the roleId to the given principal
+     * 
+     * @param roleId
+     * @param principal
+     * @throws RoleProfileException
+     */
+    public void assignRole( String roleId, String principal ) throws RoleProfileException;
+    
+    
+    /**
+     * true of a role exists with the given roleId
+     * 
+     * @param roleId
+     * @return
+     * @throws RoleProfileException
+     */
+    public boolean roleExists( String roleId ) throws RoleProfileException;
 }
