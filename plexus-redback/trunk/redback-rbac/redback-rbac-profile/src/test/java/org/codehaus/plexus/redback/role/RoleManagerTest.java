@@ -16,8 +16,6 @@ package org.codehaus.plexus.redback.role;
  * limitations under the License.
  */
 
-import java.io.File;
-
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 
