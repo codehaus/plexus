@@ -24,9 +24,9 @@ import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
  * @author: Jesse McConnell <jesse@codehaus.org>
  * @version: $Id:$
  */
-public interface RoleProfileManager
+public interface RoleManager
 {
-    public static final String ROLE = RoleProfileManager.class.getName();
+    public static final String ROLE = RoleManager.class.getName();
     
     /**
      * load the model and create/verify operations, resources, etc exist and make static roles
@@ -59,5 +59,18 @@ public interface RoleProfileManager
      */
     public void removeRole( String templateId, String resource ) throws RoleProfileException;
     
+    
+    /**
+     * allows for a role coming from a template to be renamed effectively swapping out the bits of it that 
+     * were labeled with the oldResource with the newResource
+     * 
+     * it also manages any user assignments for that role
+     * 
+     * @param templateId
+     * @param oldResource
+     * @param newResource
+     * @throws RoleProfileException
+     */
+    public void updateRole( String templateId, String oldResource, String newResource ) throws RoleProfileException;
     
 }

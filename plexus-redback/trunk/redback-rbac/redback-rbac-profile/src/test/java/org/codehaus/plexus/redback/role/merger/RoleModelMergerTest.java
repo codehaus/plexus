@@ -19,8 +19,6 @@ package org.codehaus.plexus.redback.role.merger;
 import java.io.File;
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.redback.rbac.RBACManager;
-import org.codehaus.plexus.redback.rbac.Role;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 import org.codehaus.plexus.redback.role.model.io.stax.RedbackRoleModelStaxReader;
 

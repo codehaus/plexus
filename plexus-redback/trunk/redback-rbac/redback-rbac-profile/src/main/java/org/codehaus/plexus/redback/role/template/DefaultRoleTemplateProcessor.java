@@ -26,11 +26,9 @@ import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.Resource;
 import org.codehaus.plexus.redback.rbac.Role;
-import org.codehaus.plexus.redback.rbac.UserAssignment;
 import org.codehaus.plexus.redback.role.RoleProfileException;
 import org.codehaus.plexus.redback.role.model.ModelOperation;
 import org.codehaus.plexus.redback.role.model.ModelPermission;
-import org.codehaus.plexus.redback.role.model.ModelResource;
 import org.codehaus.plexus.redback.role.model.ModelRole;
 import org.codehaus.plexus.redback.role.model.ModelTemplate;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
@@ -101,20 +99,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
             Role role = rbacManager.getRole( roleName );            
             
             if ( !role.isPermanent() )
-            {         
-                // remove the user assignments
-                List rolesList = new ArrayList();
-                rolesList.add( role );
-                
-                List userAssignments = rbacManager.getUserAssignmentsForRoles( rolesList  );
-                
-                for ( Iterator i = userAssignments.iterator(); i.hasNext(); )
-                {
-                    UserAssignment assignment = (UserAssignment)i.next();
-                    assignment.removeRoleName( role );
-                    rbacManager.saveUserAssignment( assignment );
-                }                
-                
+            {                        
                 // remove the role
                 rbacManager.removeRole( role );
                 
