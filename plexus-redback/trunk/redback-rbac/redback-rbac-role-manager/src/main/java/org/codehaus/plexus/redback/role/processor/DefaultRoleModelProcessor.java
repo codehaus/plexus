@@ -79,7 +79,7 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
 
                     Resource resource = rbacManager.createResource( profileResource.getName() );
                     resource.setPermanent( profileResource.isPermanent() );
-                    rbacManager.saveResource( resource );
+                    resource = rbacManager.saveResource( resource );
 
                     // store for use in permission creation
                     resourceMap.put( profileResource.getId(), resource );
@@ -111,7 +111,7 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
                     Operation operation = rbacManager.createOperation( profileOperation.getName() );
                     operation.setPermanent( profileOperation.isPermanent() );
                     operation.setDescription( profileOperation.getDescription() );
-                    rbacManager.saveOperation( operation );
+                    operation = rbacManager.saveOperation( operation );
 
                     // store for use in permission creation
                     operationMap.put( profileOperation.getId(), operation );
@@ -124,7 +124,7 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
             }
             catch ( RbacManagerException e )
             {
-                throw new RoleProfileException( "error creating resource '" + profileOperation.getName() + "'", e );
+                throw new RoleProfileException( "error creating operation '" + profileOperation.getName() + "'", e );
             }
         }
     }
@@ -144,8 +144,6 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
         for ( Iterator i = sortedGraph.iterator(); i.hasNext(); )
         {
             String roleId = (String) i.next();
-            
-            System.out.println(" making role " + roleId ); 
             
             ModelRole roleProfile = RoleModelUtils.getModelRole( model, roleId );
 
@@ -198,7 +196,7 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
                 }
                 catch ( RbacManagerException e )
                 {
-                    throw new RoleProfileException( "error creating resource '" + roleProfile.getName() + "'", e );
+                    throw new RoleProfileException( "error creating role '" + roleProfile.getName() + "'", e );
                 }
             }
         }
@@ -231,7 +229,7 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
                     permission.setPermanent( profilePermission.isPermanent() );
                     permission.setDescription( profilePermission.getDescription() );
 
-                    rbacManager.savePermission( permission );
+                    permission = rbacManager.savePermission( permission );
 
                     rbacPermissions.add( permission );
 
