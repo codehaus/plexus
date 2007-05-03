@@ -17,13 +17,10 @@ package org.codehaus.plexus.redback.example.web;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.redback.rbac.profile.RoleProfileException;
-import org.codehaus.plexus.redback.rbac.profile.RoleProfileManager;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
 import org.codehaus.plexus.redback.rbac.RBACManager;
-import org.codehaus.plexus.redback.rbac.RbacManagerException;
-import org.codehaus.plexus.redback.rbac.Role;
-import org.codehaus.plexus.redback.rbac.UserAssignment;
+import org.codehaus.plexus.redback.role.RoleManager;
+import org.codehaus.plexus.redback.role.RoleProfileException;
 import org.codehaus.plexus.redback.system.SecuritySystem;
 import org.codehaus.plexus.redback.system.check.EnvironmentCheck;
 import org.codehaus.plexus.redback.users.User;
@@ -49,7 +46,7 @@ public class TestUsersEnvironmentCheck
     /**
      * @plexus.requirement
      */
-    private RoleProfileManager roleProfileManager;
+    private RoleManager roleManager;
 
     /**
      * @plexus.requirement role-hint="cached"
@@ -94,18 +91,11 @@ public class TestUsersEnvironmentCheck
 
         try
         {
-            Role registeredUserRole = roleProfileManager.getRole( "registered-user" );
-            UserAssignment ua = rbacManager.createUserAssignment( user.getPrincipal().toString() );
-            ua.addRoleName( registeredUserRole );
-            rbacManager.saveUserAssignment( ua );
+            roleManager.assignRole( "registered-user", user.getPrincipal().toString() );     
         }
         catch ( RoleProfileException e )
         {
             getLogger().warn( "Unable to set role: ", e );
-        }
-        catch ( RbacManagerException e )
-        {
-            getLogger().warn( "System error:", e );
         }
     }
 

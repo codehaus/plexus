@@ -55,8 +55,12 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>redback-taglib</artifactId>
+      <artifactId>redback-rbac-role-manager</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-taglib</artifactId>
+    </dependency> 
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-log4j-logging</artifactId>
