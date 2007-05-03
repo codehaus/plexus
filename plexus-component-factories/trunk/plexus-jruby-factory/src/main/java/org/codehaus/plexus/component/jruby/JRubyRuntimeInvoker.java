@@ -1,11 +1,6 @@
 package org.codehaus.plexus.component.jruby;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -21,7 +16,6 @@ import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.util.StringOutputStream;
-import org.jruby.IRuby;
 import org.jruby.Ruby;
 import org.jruby.RubyException;
 import org.jruby.RubyFixnum;
@@ -37,11 +31,13 @@ import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.javasupport.JavaObject;
 import org.jruby.javasupport.JavaUtil;
 import org.jruby.parser.ParserSupport;
+import org.jruby.runtime.Block;
 import org.jruby.runtime.GlobalVariable;
 import org.jruby.runtime.IAccessor;
 import org.jruby.runtime.builtin.IRubyObject;
+import org.jruby.util.NormalizedFile;
 
-public class JRubyRuntimeInvoker extends JRubyBSFInvoker
+public class JRubyRuntimeInvoker implements JRubyInvoker
 {
     private boolean assumePrintLoop;
 
@@ -65,6 +61,8 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
 
     private Reader reader;
 
+    private Ruby runtime;
+
     private ComponentDescriptor componentDescriptor;
 
     /**
@@ -72,8 +70,6 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
      */
     public JRubyRuntimeInvoker( Reader scriptReader )
     {
-        super( scriptReader );
-
         this.reader = scriptReader;
     }
 
@@ -84,10 +80,13 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
      */
     public JRubyRuntimeInvoker( ComponentDescriptor componentDescriptor, ClassRealm classRealm )
     {
-        super( componentDescriptor, classRealm );
-
         this.componentDescriptor = componentDescriptor;
         this.classRealm = classRealm.getClassLoader();
+    }
+
+    public void setRuntime( Ruby runtime )
+    {
+        this.runtime = runtime;
     }
 
     /**
@@ -191,7 +190,7 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
     public Object invoke()
         throws IOException, ComponentInstantiationException
     {
-        return invoke( System.out, System.err );
+        return invoke( null, null );
     }
 
     /**
@@ -201,8 +200,17 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
     public Object invoke( OutputStream stdout, OutputStream stderr )
         throws IOException, ComponentInstantiationException
     {
+        if( stdout == null )
+        {
+            stdout = System.out;
+        }
+        if( stderr == null )
+        {
+            stderr = System.err;
+        }
+
         Reader theReader = reader;
-    
+
         // Use the given reader, unless it it null. Then load one.
         if ( theReader == null )
         {
@@ -232,11 +240,34 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
                 throw new ComponentInstantiationException( "If no classRealm is given in the constructor, a script Reader must be set." );
             }
         }
-    
-        System.setProperty("jruby.script", ".");
-    	System.setProperty("jruby.shell", "/bin/sh");
-    	System.setProperty("jruby.home", ".");
-    	System.setProperty("jruby.lib", ".");
+
+        String shell = "/bin/sh";
+        String osName = System.getProperty( "os.name" );
+        if( osName != null && osName.startsWith( "Win" ) )
+        {
+            shell = "cmd.exe";
+        }
+
+        System.setProperty( "jruby.script", "<invoker>" );
+        if( System.getProperty( "jruby.shell" ) == null )
+        {
+            System.setProperty( "jruby.shell", shell );
+        }
+        if( System.getProperty( "jruby.home" ) == null )
+        {
+            System.setProperty( "jruby.home", new NormalizedFile( System.getProperty("user.dir"), ".jruby" ).getAbsolutePath() );
+        }
+        if( System.getProperty( "jruby.lib" ) == null )
+        {
+            System.setProperty( "jruby.lib", new NormalizedFile( System.getProperty("jruby.home"), "lib" ).getAbsolutePath() );
+        }
+
+        boolean isExternalRuntime = true;
+        if ( runtime == null )
+        {
+            isExternalRuntime = false;
+            runtime = Ruby.getDefaultInstance();
+        }
 
         Object result = null;
         ClassLoader oldClassLoader = null;
@@ -246,8 +277,6 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
             oldClassLoader = Thread.currentThread().getContextClassLoader();
         }
         StringOutputStream bos = null;
-        BufferedReader bin = null;
-        BufferedReader err = null;
         try
         {
             if ( classLoader != null )
@@ -259,19 +288,28 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
 
 //            injectInputs( new OutputStreamWriter( bos ) );
 
-            int read = -1;
+            bos.write( "require 'java'\n".getBytes() );
+
+//          TODO: Stop doing this! HACK HACK HACK
             // append the required output streams to the head of temp file.
-            for ( Iterator iter = reqLibs.iterator(); iter.hasNext(); )
+//            for ( Iterator iter = reqLibs.iterator(); iter.hasNext(); )
+//            {
+//                String reqLibPath = (String) iter.next();
+//                InputStream ris = getFileStream( reqLibPath );
+//                while ( ( read = ris.read() ) != -1 )
+//                {
+//                    bos.write( read );
+//                }
+//                ris.close();
+//            }
+
+            for( Iterator iter = reqLibs.iterator(); iter.hasNext(); )
             {
-                String reqLibPath = (String) iter.next();
-                InputStream ris = getFileStream( reqLibPath );
-                while ( ( read = ris.read() ) != -1 )
-                {
-                    bos.write( read );
-                }
-                ris.close();
+                String scriptName = (String)iter.next();
+                RubyKernel.require(runtime.getTopSelf(), runtime.newString(scriptName), Block.NULL_BLOCK );
             }
 
+            int read = -1;
             while ( ( read = theReader.read() ) != -1 )
             {
                 bos.write( read );
@@ -284,10 +322,6 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
             	System.out.println( bos.toString() );
             }
 
-//            StringOutputStream stdout = new StringOutputStream();
-//            StringOutputStream stderr = new StringOutputStream();
-
-            IRuby runtime = Ruby.getDefaultInstance();
             result = runInterpreter( runtime, bos.toString(), stdout, stderr );
 
             if( result == null || ((IRubyObject)result).isNil() )
@@ -296,39 +330,8 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
             }
             else
             {
-                result = JavaEmbedUtils.rubyToJava(runtime, (IRubyObject)result, Object.class);
+                result = JavaEmbedUtils.rubyToJava( runtime, (IRubyObject)result, Object.class );
             }
-
-//            String output = stdout.toString();
-//            if ( output != null && output.length() > 0 )
-//            {
-//            	for (StringTokenizer tokens = new StringTokenizer( output, "\n" ); tokens.hasMoreTokens();)
-//            	{
-//	            	log.info( tokens.nextToken() );
-//				}
-//            }
-//
-//            String error = stderr.toString();
-//            if ( error != null && error.length() > 0 )
-//            {
-//            	for (StringTokenizer tokens = new StringTokenizer( error, "\n" ); tokens.hasMoreTokens();)
-//            	{
-//            		log.error( tokens.nextToken() );
-//				}
-//            	//throw new MojoExecutionException( error );
-//            }
-
-//            if ( !returned.isNil() )
-//            {
-//            	if ( "Hash".equals( returned.getType().getBaseName() ) )
-//            	{
-//            		result = ((RubyHash)returned).getValueMap();
-//            	}
-//            }
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
         }
         finally
         {
@@ -337,60 +340,29 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
                 Thread.currentThread().setContextClassLoader( oldClassLoader );
             }
 
+            if ( runtime != null )
+            {
+                // Only tear down the runtime if it was set externally
+                if ( !isExternalRuntime )
+                {
+                    runtime.tearDown();
+                }
+            }
+
             try
             {
                 if ( bos != null )
+                {
                     bos.close();
+                }
             }
             catch ( IOException e )
             {
-                e.printStackTrace();
-
-            }
-
-            try
-            {
-                if ( bin != null )
-                    bin.close();
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-
-            }
-
-            try
-            {
-                if ( err != null )
-                    err.close();
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-
+                // e.printStackTrace();
             }
         }
         return result;
     }
-
-//    private void injectInputs( Writer w )
-//	    throws IOException
-//	{
-//	    w.write( "$INPUTS = Hash.new;\n" );
-//	    if ( !inputs.isEmpty() )
-//	    {
-//	        for ( Iterator iter = inputs.entrySet().iterator(); iter.hasNext(); )
-//	        {
-//	            Map.Entry entry = (Map.Entry) iter.next();
-//	            w.write( "$INPUTS[\'" );
-//	            w.write( (String) entry.getKey() );
-//	            w.write( "\'] = \'" );
-//	            w.write( (String) entry.getValue() ); // TODO: replace with escape chars? (including newlines)
-//	            w.write( "\';\n" );
-//	        }
-//	        w.flush();
-//	    }
-//	}
 
     private String buildLibs()
     {
@@ -414,74 +386,56 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
 	    }
 	    return "";
     }
+//
+//    /** First search the classrealm... if is does not exist, turn the string to a File */
+//    private InputStream getFileStream( String resourceName )
+//        throws ComponentInstantiationException
+//    {
+//        InputStream scriptStream = null;
+//        if ( classRealm != null )
+//        {
+//            scriptStream = classRealm.getResourceAsStream( resourceName );
+//            if ( scriptStream == null )
+//            {
+//                File resourceFile = new File( resourceName );
+//                if ( resourceFile.exists() )
+//                {
+//                    try
+//                    {
+//                        scriptStream = new FileInputStream( resourceFile );
+//                    }
+//                    catch ( FileNotFoundException e )
+//                    {
+//                        throw new ComponentInstantiationException( "Volitle file. This should not happen!", e );
+//                    }
+//                }
+//            }
+//        }
+//        else
+//        {
+//            scriptStream = Thread.currentThread().getContextClassLoader().getResourceAsStream( resourceName );
+//        }
+//
+//        if ( scriptStream == null )
+//        {
+//            StringBuffer buf = new StringBuffer( "Cannot find: " + resourceName + " in classpath" );
+//            if ( classRealm != null )
+//            {
+//                buf.append( ":" );
+//                for ( int i = 0; i < ((URLClassLoader) classRealm ).getURLs().length; i++ )
+//                {
+//                    URL constituent = ((URLClassLoader) classRealm ).getURLs()[i];
+//                    buf.append( "\n   [" + i + "]  " + constituent );
+//                }
+//            }
+//            throw new ComponentInstantiationException( buf.toString() );
+//        }
+//
+//        return scriptStream;
+//    }
 
 
-//	private void appendConvertedPath( StringBuffer b, String filePath )
-//	{
-//	    String osName = System.getProperty("os.name");
-//	    if ( osName.startsWith("Win") )
-//	    {
-//	        b.append( "\"" );
-//	        b.append( filePath );
-//	        b.append( "\"" );
-//	    }
-//	    else    // Just assume *nix
-//	    {
-//	        // Replace all spaces with "\ "
-//	        b.append( filePath.replaceAll(" ", "\\ ") );
-//	    }
-//	}
-
-
-    /** First search the classrealm... if is does not exist, turn the string to a File */
-    private InputStream getFileStream( String resourceName )
-        throws ComponentInstantiationException
-    {
-        InputStream scriptStream = null;
-        if ( classRealm != null )
-        {
-            scriptStream = classRealm.getResourceAsStream( resourceName );
-            if ( scriptStream == null )
-            {
-                File resourceFile = new File( resourceName );
-                if ( resourceFile.exists() )
-                {
-                    try
-                    {
-                        scriptStream = new FileInputStream( resourceFile );
-                    }
-                    catch ( FileNotFoundException e )
-                    {
-                        throw new ComponentInstantiationException( "Volitle file. This should not happen!", e );
-                    }
-                }
-            }
-        }
-        else
-        {
-            scriptStream = Thread.currentThread().getContextClassLoader().getResourceAsStream( resourceName );
-        }
-
-        if ( scriptStream == null )
-        {
-            StringBuffer buf = new StringBuffer( "Cannot find: " + resourceName + " in classpath" );
-            if ( classRealm != null )
-            {
-                buf.append( ":" );
-                for ( int i = 0; i < ((URLClassLoader) classRealm ).getURLs().length; i++ )
-                {
-                    URL constituent = ((URLClassLoader) classRealm ).getURLs()[i];
-                    buf.append( "\n   [" + i + "]  " + constituent );
-                }
-            }
-            throw new ComponentInstantiationException( buf.toString() );
-        }
-
-        return scriptStream;
-    }
-
-
-    private IRubyObject runInterpreter( IRuby runtime, String script, OutputStream out, OutputStream err )
+    private IRubyObject runInterpreter( Ruby runtime, String script, OutputStream out, OutputStream err )
     {
     	try
     	{
@@ -496,40 +450,37 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
                 Object value = entry.getValue();
                 if ( key != null && value != null )
                 {
-                    runtime.getGlobalVariables().define(GlobalVariable.variableName(key),
-                                                        new BeanGlobalVariable(runtime, value, value.getClass()));
+                    runtime.getGlobalVariables().define( GlobalVariable.variableName( key ),
+                                                        new BeanGlobalVariable( runtime, value, value.getClass() ) );
                 }
             }
-            
+
             Node parsedScript = getParsedScript( runtime, script );
+
+//            ThreadContext tc = runtime.getCurrentContext();
+//            return EvaluationState.eval( runtime, tc, parsedScript, tc.getFrameSelf(), Block.NULL_BLOCK );
+
+//            return runtime.compileAndRun( parsedScript );
             return runtime.eval( parsedScript );
     	}
         catch (JumpException je)
         {
         	if (je.getJumpType() == JumpException.JumpType.RaiseJump) {
-        		RubyException raisedException = ((RaiseException)je).getException();
+        	    RubyException raisedException = ((RaiseException)je).getException();
 
         		if (raisedException.isKindOf(runtime.getClass("SystemExit"))) {
                 	RubyFixnum status = (RubyFixnum)raisedException.getInstanceVariable("status");
-                	return status;
+                	throw new JRubySystemExitException( (int)status.getLongValue() );
         		} else {
-		            runtime.printError(raisedException);
-		            return raisedException;
+                    throw je;
         		}
-        	} else if (je.getJumpType() == JumpException.JumpType.ThrowJump) {
-	            runtime.printError((RubyException)je.getTertiaryData());
-	            return (RubyException)je.getTertiaryData();
         	} else {
         		throw je;
         	}
         }
-    	finally
-    	{
-    		runtime.tearDown();
-    	}
     }
 
-    private Node getParsedScript( IRuby runtime, String script )
+    private Node getParsedScript( Ruby runtime, String script )
     {
         Node result = runtime.parse( script, "<script>", runtime.getCurrentContext().getCurrentScope() );
         if ( assumePrintLoop )
@@ -545,27 +496,22 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
 
     // Build script args
 
-    private void initializeRuntime( final IRuby runtime, final OutputStream out, final OutputStream err )
+    private void initializeRuntime( final Ruby runtime, final OutputStream out, final OutputStream err )
     {
     	// new String[]{} are script args... can we pass in script args?
     	String[] args = new String[1];
     	args[0] = buildLibs();
         IRubyObject argumentArray = runtime.newArray( JavaUtil.convertJavaArrayToRuby( runtime, args ) );
-        runtime.setVerbose(runtime.newBoolean( warning == 2 ));
+        runtime.setVerbose( runtime.newBoolean( warning == 2 ) );
 
-
-        IRubyObject stdout = new RubyIO( runtime, out ); //RubyIO.fdOpen(runtime, RubyIO.STDOUT);
-        IRubyObject stderr = new RubyIO( runtime, err ); //RubyIO.fdOpen(runtime, RubyIO.STDERR);
+        IRubyObject stdout = new RubyIO( runtime, out );
+        IRubyObject stderr = new RubyIO( runtime, err );
 
         runtime.defineVariable(new OutputGlobalVariable(runtime, "$stdout", stdout));
         runtime.defineVariable(new OutputGlobalVariable(runtime, "$stderr", stderr));
         runtime.defineVariable(new OutputGlobalVariable(runtime, "$>", stdout));
         runtime.defineVariable(new OutputGlobalVariable(runtime, "$defout", stdout));
         runtime.defineVariable(new OutputGlobalVariable(runtime, "$deferr", stderr));
-
-        runtime.defineGlobalConstant("STDOUT", stdout);
-        runtime.defineGlobalConstant("STDERR", stderr);
-
 
         runtime.getGlobalVariables().define("$VERBOSE", new IAccessor() {
             public IRubyObject getValue() {
@@ -598,17 +544,17 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
         while ( iter.hasNext() )
         {
             String scriptName = (String) iter.next();
-            RubyKernel.require(runtime.getTopSelf(), runtime.newString(scriptName));
+            RubyKernel.require(runtime.getTopSelf(), runtime.newString(scriptName), Block.NULL_BLOCK );
         }
     }
 
-    private void defineGlobal(IRuby runtime, String name, boolean value)
+    private void defineGlobal(Ruby runtime, String name, boolean value)
     {
         runtime.getGlobalVariables().defineReadonly(name, new ValueAccessor(value ? runtime.getTrue() : runtime.getNil()));
     }
 
     private static class OutputGlobalVariable extends GlobalVariable {
-        public OutputGlobalVariable(IRuby runtime, String name, IRubyObject value) {
+        public OutputGlobalVariable(Ruby runtime, String name, IRubyObject value) {
             super(runtime, name, value);
         }
         public IRubyObject set(IRubyObject value) {
@@ -630,11 +576,11 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
 
     private static class BeanGlobalVariable implements IAccessor 
     {
-        private IRuby runtime;
+        private Ruby runtime;
         private Object value;
         private Class type;
 
-        public BeanGlobalVariable(IRuby runtime, Object value, Class type)
+        public BeanGlobalVariable( Ruby runtime, Object value, Class type)
         {
             this.runtime = runtime;
             this.value = value;
@@ -644,16 +590,19 @@ public class JRubyRuntimeInvoker extends JRubyBSFInvoker
         public IRubyObject getValue()
         {
             IRubyObject result = JavaUtil.convertJavaToRuby(runtime, value, type);
-            if (result instanceof JavaObject)
+            if(result instanceof JavaObject)
             {
-                return JavaObject.wrap(runtime, result);
+                return runtime.getModule("JavaUtilities").callMethod( runtime.getCurrentContext(), "wrap", result );
             }
-            return result;
+            else
+            {
+                return result;
+            }
         }
 
-        public IRubyObject setValue(IRubyObject irvalue)
+        public IRubyObject setValue( IRubyObject irvalue )
         {
-            value = JavaUtil.convertArgument(Java.ruby_to_java(runtime.getObject(), irvalue), type);
+            value = JavaUtil.convertArgument( Java.ruby_to_java( runtime.getObject(), irvalue, Block.NULL_BLOCK ), type );
             return irvalue;
         }
     }

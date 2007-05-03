@@ -7,7 +7,7 @@ import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.factory.AbstractComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
-import org.codehaus.plexus.component.jruby.JRubyBSFInvoker;
+import org.codehaus.plexus.component.jruby.JRubyRuntimeInvoker;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 /** @author eredmond */
@@ -29,7 +29,7 @@ public class JRubyComponentFactory
                                PlexusContainer container )
         throws ComponentInstantiationException
     {
-        JRubyBSFInvoker invoker = new JRubyBSFInvoker( componentDescriptor, classRealm );
+        JRubyRuntimeInvoker invoker = new JRubyRuntimeInvoker( componentDescriptor, classRealm );
 
         invoker.setAssumeLoop( assumeLoop );
         invoker.setAssumePrintLoop( assumePrintLoop );

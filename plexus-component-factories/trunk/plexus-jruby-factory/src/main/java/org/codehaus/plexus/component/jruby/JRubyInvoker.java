@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
-import org.jruby.IRuby;
+import org.jruby.Ruby;
 
 /**
  * Configures and invokes the JRuby runtime. The "invoke" method executes a given
@@ -30,7 +30,7 @@ public interface JRubyInvoker
      * down when done via tearDown() method.
      * @param runtime
      */
-    public void setRuntime( IRuby runtime );
+    public void setRuntime( Ruby runtime );
 
     /**
      * As per the Ruby command line arg -n.
@@ -82,8 +82,8 @@ public interface JRubyInvoker
 
     /**
      * Appends an input value with the given key to the Ruby
-     * script by prepending the following code to the Ruby script:
-     *  $INPUT['key'] = value;
+     * script bas a global... similar to
+     *  $key = value
      * 
      * @param key
      * @param value
