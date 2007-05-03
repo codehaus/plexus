@@ -97,8 +97,11 @@
           <operation>user-management-rbac-admin</operation>
           <resource>global</resource>
           <permanent>true</permanent> 
-        </permission>       
+        </permission>             
       </permissions>
+      <childRoles>
+        <childRole>user-administrator</childRole>
+      </childRoles> 
     </role>
     <role>
       <id>user-administrator</id>
