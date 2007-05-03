@@ -1,5 +1,3 @@
-require 'java'
-
 include_class 'org.codehaus.plexus.component.factory.jruby.Executor'
 
 class JExecute < Executor
@@ -8,4 +6,5 @@ class JExecute < Executor
   end
 end
 
-return JExecute.new
+#return value cannot be prefixed by 'return' keyword
+JExecute.new

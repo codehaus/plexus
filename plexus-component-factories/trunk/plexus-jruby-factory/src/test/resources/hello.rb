@@ -1,4 +1,3 @@
-#require 'rbyaml'
 
 class Hello
   def print( greeting )

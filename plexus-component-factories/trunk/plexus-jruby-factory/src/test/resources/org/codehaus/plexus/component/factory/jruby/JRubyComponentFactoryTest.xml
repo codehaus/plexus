@@ -7,6 +7,18 @@
     </component>
 
     <component>
+      <role>exit</role>
+      <implementation>/exit.rb</implementation>
+      <component-factory>jruby</component-factory>
+    </component>
+
+    <component>
+      <role>exception</role>
+      <implementation>/exception.rb</implementation>
+      <component-factory>jruby</component-factory>
+    </component>
+
+    <component>
       <role>gem</role>
       <implementation>/gem.rb</implementation>
       <component-factory>jruby</component-factory>
@@ -15,12 +27,6 @@
     <component>
       <role>execute</role>
       <implementation>/execute.rb</implementation>
-      <component-factory>jruby</component-factory>
-    </component>
-
-    <component>
-      <role>junit</role>
-      <implementation>/junit.rb</implementation>
       <component-factory>jruby</component-factory>
     </component>
 
