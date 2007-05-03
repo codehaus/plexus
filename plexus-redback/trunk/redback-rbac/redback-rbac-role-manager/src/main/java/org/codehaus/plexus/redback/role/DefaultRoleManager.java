@@ -53,6 +53,7 @@ import org.codehaus.plexus.redback.role.validator.RoleModelValidator;
  * 
  * @plexus.component role="org.codehaus.plexus.redback.role.RoleManager"
  *   role-hint="default"
+ *   instantiation-strategy="singleton"
  */
 public class DefaultRoleManager extends AbstractLogEnabled implements RoleManager, Initializable {
 
@@ -347,5 +348,12 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
         {
             throw new InitializationException( "unable to initialize RoleManager, problem with redback.xml loading", e );
         }        
-    }         
+    }
+
+    public RedbackRoleModel getModel()
+    {
+        return blessedModel;
+    } 
+    
+    
 }

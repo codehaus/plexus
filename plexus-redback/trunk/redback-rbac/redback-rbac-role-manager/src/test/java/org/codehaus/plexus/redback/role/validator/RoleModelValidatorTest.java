@@ -92,6 +92,25 @@ public class RoleModelValidatorTest
         
     }
     
+    public void testCore() throws Exception 
+    {
+        File resource = new File( getBasedir() + "/src/test/validation-tests/redback-core.xml");
+        
+        assertNotNull( resource );
+        
+        RedbackRoleModelStaxReader modelReader = new RedbackRoleModelStaxReader();
+        
+        RedbackRoleModel redback = modelReader.read( resource.getAbsolutePath() );
+        
+        assertNotNull( redback );
+        
+        RoleModelValidator modelValidator = (RoleModelValidator)lookup( RoleModelValidator.ROLE, "default" );
+        
+        assertTrue( modelValidator.validate( redback ) );
+        
+        assertNull( modelValidator.getValidationErrors() );
+    }
+    
     private boolean checkForValidationError( List validationErrors, String errorText )    
     {
         for ( Iterator i = validationErrors.iterator(); i.hasNext(); )

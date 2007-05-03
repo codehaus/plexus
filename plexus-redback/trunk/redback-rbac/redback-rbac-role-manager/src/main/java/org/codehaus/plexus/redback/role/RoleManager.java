@@ -94,4 +94,10 @@ public interface RoleManager
      * @throws RoleProfileException
      */
     public boolean roleExists( String roleId ) throws RoleProfileException;
+    
+    
+    /**
+     * get the blessed model, the current operating instructions for all things role management
+     */
+    public RedbackRoleModel getModel();
 }

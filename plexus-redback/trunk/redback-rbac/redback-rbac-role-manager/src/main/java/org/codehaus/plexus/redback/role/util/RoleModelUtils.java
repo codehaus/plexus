@@ -261,16 +261,9 @@ public class RoleModelUtils
         LinkedList sortedGraph = (LinkedList)TopologicalSorter.sort( RoleModelUtils.generateRoleGraph( model ) );
         LinkedList resortedGraph = new LinkedList();
        
-
         while ( !sortedGraph.isEmpty() )
         { 
             resortedGraph.add( sortedGraph.removeLast() );
-        }
-        
-       
-        for ( Iterator i = resortedGraph.iterator(); i.hasNext(); )
-        {
-            System.out.println( "Role Id: " + (String)i.next() );
         }
         
         return resortedGraph;
