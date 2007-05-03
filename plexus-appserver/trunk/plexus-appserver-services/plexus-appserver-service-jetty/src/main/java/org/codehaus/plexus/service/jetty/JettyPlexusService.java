@@ -50,6 +50,7 @@ import java.io.File;
 import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -303,7 +304,7 @@ public class JettyPlexusService
                 context.getVirtualHost() + "'." );
         }
 
-        for ( Iterator j = context.getListeners().iterator(); j.hasNext(); )
+        for ( Iterator j = ( context.getListeners() == null ? Collections.EMPTY_LIST : context.getListeners() ).iterator(); j.hasNext(); )
         {
             HttpListener httpListener = (HttpListener) j.next();
 
@@ -398,7 +399,7 @@ public class JettyPlexusService
     private void removeListeners( List listeners )
         throws PlexusServiceException
     {
-        for ( Iterator listenerIterator = listeners.iterator(); listenerIterator.hasNext(); )
+        for ( Iterator listenerIterator = ( context.getListeners() == null ? Collections.EMPTY_LIST : context.getListeners() ).iterator(); listenerIterator.hasNext(); )
         {
             HttpListener listener = (HttpListener) listenerIterator.next();
 
