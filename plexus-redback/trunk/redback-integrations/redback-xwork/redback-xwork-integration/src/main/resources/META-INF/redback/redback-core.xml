@@ -154,7 +154,7 @@
         <permission>
           <id>access-user-list</id>
           <name>Access User List</name>
-          <operation>user-management-user-role</operation>
+          <operation>user-management-user-list</operation>
           <resource>global</resource>
           <permanent>true</permanent>
         </permission>
