@@ -46,13 +46,7 @@ public class RoleManagerTest
     }
     
     public void testLoading() throws Exception 
-    {
-        //File resource = new File( getBasedir() + "/target/test-classes/META-INF/role-test-1/redback.xml");
-        
-        //assertNotNull( resource );
-        
-        //roleManager.loadRoleModel( resource.getAbsolutePath() );
-        
+    {       
         assertTrue( rbacManager.resourceExists( "*" ) );
         assertTrue( rbacManager.operationExists( "Test Operation" ) );
         assertTrue( rbacManager.roleExists( "Test Role" ) );

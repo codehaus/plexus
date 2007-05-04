@@ -52,6 +52,7 @@ public class DefaultRoleModelMerger implements RoleModelMerger
         // clear merge errors
         mergeErrors = null;
         
+        mergeModelInformation( originalModel, newModel );
         mergeResources( originalModel, newModel );
         mergeOperations( originalModel, newModel );
         mergeRoles( originalModel, newModel );
@@ -83,6 +84,20 @@ public class DefaultRoleModelMerger implements RoleModelMerger
         mergeErrors.add( error );
     }
 
+    /**
+     * perhaps this ought to do something else with the versions, its not clear at this point what the version will be
+     * the version of the model for the role manager, or the version of the goop in the target application, so just
+     * be benign with it for the time being.
+     * 
+     * @param originalModel
+     * @param newModel
+     */
+    private void mergeModelInformation( RedbackRoleModel originalModel, RedbackRoleModel newModel )
+    {
+        mergedModel.setApplication( originalModel.getApplication() + "//" + newModel.getApplication() );
+        mergedModel.setVersion( originalModel.getVersion() + "//" + newModel.getVersion() );
+    }
+    
     private void mergeOperations( RedbackRoleModel originalModel, RedbackRoleModel newModel )
     {
         List operationIdList = RoleModelUtils.getOperationIdList( originalModel );
