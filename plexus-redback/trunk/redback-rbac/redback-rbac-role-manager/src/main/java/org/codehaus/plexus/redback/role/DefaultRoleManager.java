@@ -97,7 +97,7 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
      */
     private PlexusContainer container;
     
-	public void loadRoleModel( URL resource ) throws RoleProfileException 
+	public void loadRoleModel( URL resource ) throws RoleManagerException 
     {
         RedbackRoleModelStaxReader reader = new RedbackRoleModelStaxReader();
         
@@ -109,19 +109,19 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
         }
         catch ( MalformedURLException e )
         {
-            throw new RoleProfileException( "error locating redback profile", e );
+            throw new RoleManagerException( "error locating redback profile", e );
         }
         catch ( IOException e )
         {
-            throw new RoleProfileException( "error reading redback profile", e );
+            throw new RoleManagerException( "error reading redback profile", e );
         }
         catch ( XMLStreamException e )
         {
-            throw new RoleProfileException( "error parsing redback profile", e );
+            throw new RoleManagerException( "error parsing redback profile", e );
         }
     }
  
-    public void loadRoleModel( RedbackRoleModel model ) throws RoleProfileException 
+    public void loadRoleModel( RedbackRoleModel model ) throws RoleManagerException 
     {
         if ( mergedModel == null )
         {
@@ -142,7 +142,7 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
                     getLogger().error( (String)i.next() );
                 }
                 
-                throw new RoleProfileException( "Validation Error: " + model.getApplication() );
+                throw new RoleManagerException( "Validation Error: " + model.getApplication() );
             }
         }
         else
@@ -164,7 +164,7 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
                     getLogger().error( (String)i.next() );
                 }
                 
-                throw new RoleProfileException( "Validation Error: " + model.getApplication() );
+                throw new RoleManagerException( "Validation Error: " + model.getApplication() );
             }
         }
         
@@ -176,7 +176,7 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
      * ${resource} expression
      * 
      */
-    public void createRole( String templateId, String resource ) throws RoleProfileException
+    public void createTemplatedRole( String templateId, String resource ) throws RoleManagerException
     {
         templateProcessor.create( blessedModel, templateId, resource );
     }
@@ -186,7 +186,7 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
      * ${resource} expression
      * 
      */
-    public void removeRole( String templateId, String resource ) throws RoleProfileException
+    public void removeTemplatedRole( String templateId, String resource ) throws RoleManagerException
     {
         ModelTemplate template = RoleModelUtils.getModelTemplate( blessedModel, templateId );
     
@@ -212,7 +212,7 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
         }
         catch ( RbacManagerException e )
         {
-            throw new RoleProfileException( "unable to remove role", e );
+            throw new RoleManagerException( "unable to remove role", e );
         }
 
         templateProcessor.remove( blessedModel, templateId, resource );
@@ -225,7 +225,7 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
      * because of the use of the name as an identifier
      * 
      */
-    public void updateRole( String templateId, String oldResource, String newResource ) throws RoleProfileException
+    public void updateRole( String templateId, String oldResource, String newResource ) throws RoleManagerException
     {
         // make the new role
         templateProcessor.create( blessedModel, templateId, newResource );
@@ -256,20 +256,20 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
         }
         catch ( RbacManagerException e )
         {
-            throw new RoleProfileException( "unable to update role", e );
+            throw new RoleManagerException( "unable to update role", e );
         }
         
         templateProcessor.remove( blessedModel, templateId, oldResource );
     }
 
     
-    public void assignRole( String roleId, String principal ) throws RoleProfileException
+    public void assignRole( String roleId, String principal ) throws RoleManagerException
     {
         ModelRole modelRole = RoleModelUtils.getModelRole( blessedModel, roleId );
 
         if ( modelRole == null )
         {
-            throw new RoleProfileException( "Unable to assign role: " + roleId + " does not exist." );
+            throw new RoleManagerException( "Unable to assign role: " + roleId + " does not exist." );
         }
 
         try
@@ -290,13 +290,44 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
         }
         catch ( RbacManagerException e )
         {
-            throw new RoleProfileException( "Unable to assign role: unable to manage user assignment", e );
+            throw new RoleManagerException( "Unable to assign role: unable to manage user assignment", e );
         }
     }
     
     
 
-    public boolean roleExists( String roleId ) throws RoleProfileException
+    public void unassignRole( String roleId, String principal ) throws RoleManagerException
+    {
+        ModelRole modelRole = RoleModelUtils.getModelRole( blessedModel, roleId );
+
+        if ( modelRole == null )
+        {
+            throw new RoleManagerException( "Unable to assign role: " + roleId + " does not exist." );
+        }
+
+        try
+        {
+            UserAssignment userAssignment;
+
+            if ( rbacManager.userAssignmentExists( principal ) )
+            {
+                userAssignment = rbacManager.getUserAssignment( principal );
+            }
+            else
+            {
+                throw new RoleManagerException( "UserAssignment for principal " + principal + "does not exist, can't unassign role." );
+            }
+            
+            userAssignment.removeRoleName( modelRole.getName() );
+            rbacManager.saveUserAssignment( userAssignment );
+        }
+        catch ( RbacManagerException e )
+        {
+            throw new RoleManagerException( "Unable to assign role: unable to manage user assignment", e );
+        }
+    }
+
+    public boolean roleExists( String roleId ) throws RoleManagerException
     {
         ModelRole modelRole = RoleModelUtils.getModelRole( blessedModel, roleId );
 
@@ -313,7 +344,7 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
             else
             {     
                 // perhaps try and reload the model here?
-                throw new RoleProfileException( "breakdown in role management, role exists in configuration but was not created in underlying store" );
+                throw new RoleManagerException( "breakdown in role management, role exists in configuration but was not created in underlying store" );
             }
         }           
     }
@@ -340,7 +371,7 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
                 loadRoleModel( redbackResource );
             }
         }
-        catch ( RoleProfileException e )
+        catch ( RoleManagerException e )
         {
             throw new InitializationException( "unable to initialize RoleManager", e );
         }

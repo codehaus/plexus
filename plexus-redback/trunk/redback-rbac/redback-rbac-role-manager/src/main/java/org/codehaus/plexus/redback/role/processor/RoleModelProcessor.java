@@ -16,7 +16,7 @@ package org.codehaus.plexus.redback.role.processor;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.role.RoleProfileException;
+import org.codehaus.plexus.redback.role.RoleManagerException;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 
 /**
@@ -29,6 +29,6 @@ public interface RoleModelProcessor
 {
     public static final String ROLE = RoleModelProcessor.class.getName();
     
-    public void process( RedbackRoleModel model ) throws RoleProfileException;
+    public void process( RedbackRoleModel model ) throws RoleManagerException;
     
 }

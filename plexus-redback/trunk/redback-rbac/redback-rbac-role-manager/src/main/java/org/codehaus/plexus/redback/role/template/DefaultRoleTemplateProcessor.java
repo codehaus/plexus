@@ -26,7 +26,7 @@ import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.Resource;
 import org.codehaus.plexus.redback.rbac.Role;
-import org.codehaus.plexus.redback.role.RoleProfileException;
+import org.codehaus.plexus.redback.role.RoleManagerException;
 import org.codehaus.plexus.redback.role.model.ModelOperation;
 import org.codehaus.plexus.redback.role.model.ModelPermission;
 import org.codehaus.plexus.redback.role.model.ModelRole;
@@ -51,7 +51,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
     private RBACManager rbacManager;
     
       
-    public void create( RedbackRoleModel model, String templateId, String resource ) throws RoleProfileException
+    public void create( RedbackRoleModel model, String templateId, String resource ) throws RoleManagerException
     {
         for ( Iterator i = model.getTemplates().iterator(); i.hasNext(); )
         {
@@ -69,10 +69,10 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
             }
         }
         
-        throw new RoleProfileException( "unknown template '" + templateId + "'");
+        throw new RoleManagerException( "unknown template '" + templateId + "'");
     }
     
-    public void remove( RedbackRoleModel model, String templateId, String resource ) throws RoleProfileException
+    public void remove( RedbackRoleModel model, String templateId, String resource ) throws RoleManagerException
     {
         for ( Iterator i = model.getTemplates().iterator(); i.hasNext(); )
         {
@@ -85,12 +85,12 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
             }
         }
         
-        throw new RoleProfileException( "unknown template '" + templateId + "'");
+        throw new RoleManagerException( "unknown template '" + templateId + "'");
     }
     
     
     private void removeTemplatedRole( RedbackRoleModel model, ModelTemplate template, String resource )
-        throws RoleProfileException
+        throws RoleManagerException
     {
         String roleName = template.getNamePrefix() + template.getDelimiter() + resource;
 
@@ -123,17 +123,17 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
             }
             else
             {
-                throw new RoleProfileException( "unable to remove role, it is flagged permanent" );
+                throw new RoleManagerException( "unable to remove role, it is flagged permanent" );
             }
         }
         catch ( RbacManagerException e )
         {
-            throw new RoleProfileException( "unable to remove role: " + roleName, e );
+            throw new RoleManagerException( "unable to remove role: " + roleName, e );
         }
     }
     
     
-    private void processResource( ModelTemplate template, String resource ) throws RoleProfileException
+    private void processResource( ModelTemplate template, String resource ) throws RoleManagerException
     {
         if ( !rbacManager.resourceExists( resource ) )
         {
@@ -145,13 +145,13 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
             }
             catch ( RbacManagerException e )
             {
-                throw new RoleProfileException( "error creating resource '" + resource + "'", e );
+                throw new RoleManagerException( "error creating resource '" + resource + "'", e );
             }
         }
     }
     
     
-    private void processTemplate( RedbackRoleModel model, ModelTemplate template, String resource ) throws RoleProfileException
+    private void processTemplate( RedbackRoleModel model, ModelTemplate template, String resource ) throws RoleManagerException
     {
         String templateName = template.getNamePrefix() + template.getDelimiter() + resource;
         
@@ -196,7 +196,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                         
                         if ( childModelTemplate == null )
                         {
-                            throw new RoleProfileException( "error obtaining child template from model: template " + templateName + " # child template: " + childTemplateId );                           
+                            throw new RoleManagerException( "error obtaining child template from model: template " + templateName + " # child template: " + childTemplateId );                           
                         }
                         
                         String childRoleName = childModelTemplate.getNamePrefix() + childModelTemplate.getDelimiter() + resource;
@@ -243,7 +243,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                         
                         if ( parentModelTemplate == null )
                         {
-                            throw new RoleProfileException( "error obtaining parent template from model: template " + templateName + " # child template: " + parentTemplateId );                           
+                            throw new RoleManagerException( "error obtaining parent template from model: template " + templateName + " # child template: " + parentTemplateId );                           
                         }
                         
                         String parentRoleName = parentModelTemplate.getNamePrefix() + parentModelTemplate.getDelimiter() + resource;
@@ -272,13 +272,13 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
             }
             catch ( RbacManagerException e )
             {
-                throw new RoleProfileException( "error creating role '" + templateName + "'", e );
+                throw new RoleManagerException( "error creating role '" + templateName + "'", e );
             }
         }
 
     }
     
-    private List processPermissions( RedbackRoleModel model, ModelTemplate template, String resource ) throws RoleProfileException
+    private List processPermissions( RedbackRoleModel model, ModelTemplate template, String resource ) throws RoleManagerException
     {
         List rbacPermissions = new ArrayList();        
         
@@ -311,7 +311,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                 }
                 catch ( RbacManagerException e )
                 {
-                    throw new RoleProfileException( "unable to create permission: " + permissionName );
+                    throw new RoleManagerException( "unable to create permission: " + permissionName );
                 }
             }
             else
@@ -322,7 +322,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                 }
                 catch ( RbacManagerException e )
                 {
-                    throw new RoleProfileException( "unable to get permission: " + permissionName );
+                    throw new RoleManagerException( "unable to get permission: " + permissionName );
                 }
             }
         }

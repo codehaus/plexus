@@ -22,15 +22,15 @@ package org.codehaus.plexus.redback.role;
  * @author Jesse McConnell <jmcconnell@apache.org>
  * @version $Id:$
  */
-public class RoleProfileException
+public class RoleManagerException
     extends Exception
 {
-    public RoleProfileException( String string )
+    public RoleManagerException( String string )
     {
         super( string );
     }
 
-    public RoleProfileException( String string, Throwable throwable )
+    public RoleManagerException( String string, Throwable throwable )
     {
         super( string, throwable );
     }

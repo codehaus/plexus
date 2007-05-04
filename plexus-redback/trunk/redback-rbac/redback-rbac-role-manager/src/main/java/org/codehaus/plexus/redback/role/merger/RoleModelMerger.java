@@ -18,7 +18,7 @@ package org.codehaus.plexus.redback.role.merger;
 
 import java.util.List;
 
-import org.codehaus.plexus.redback.role.RoleProfileException;
+import org.codehaus.plexus.redback.role.RoleManagerException;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 
 /**
@@ -35,5 +35,5 @@ public interface RoleModelMerger
     
     public List getMergeErrors();
     
-    public RedbackRoleModel merge( RedbackRoleModel originalModel, RedbackRoleModel newModel ) throws RoleProfileException;
+    public RedbackRoleModel merge( RedbackRoleModel originalModel, RedbackRoleModel newModel ) throws RoleManagerException;
 }
