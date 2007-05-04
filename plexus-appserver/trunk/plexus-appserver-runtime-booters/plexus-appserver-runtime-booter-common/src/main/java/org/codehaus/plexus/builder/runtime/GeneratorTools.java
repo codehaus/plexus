@@ -81,9 +81,9 @@ public class GeneratorTools
 
             cli.setExecutable( "chmod" );
 
-            cli.createArg().setValue( "+x" );
+            cli.createArgument().setValue( "+x" );
 
-            cli.createArg().setValue( file.getAbsolutePath() );
+            cli.createArgument().setValue( file.getAbsolutePath() );
 
             cli.execute();
         }
