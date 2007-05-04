@@ -399,7 +399,7 @@ public class JettyPlexusService
     private void removeListeners( List listeners )
         throws PlexusServiceException
     {
-        for ( Iterator listenerIterator = ( context.getListeners() == null ? Collections.EMPTY_LIST : context.getListeners() ).iterator(); listenerIterator.hasNext(); )
+        for ( Iterator listenerIterator = ( listeners == null ? Collections.EMPTY_LIST : listeners ).iterator(); listenerIterator.hasNext(); )
         {
             HttpListener listener = (HttpListener) listenerIterator.next();
 
