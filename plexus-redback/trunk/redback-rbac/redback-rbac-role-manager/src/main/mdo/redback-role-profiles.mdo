@@ -92,6 +92,7 @@
           <name>id</name>
           <version>1.0.0+</version>
           <type>String</type>
+          <required>true</required>
           <identifier>true</identifier>
         </field>
         <field>
@@ -100,6 +101,7 @@
             either a normal name, or 'name - ${resource}'
           </description>
           <version>1.0.0+</version>
+          <required>true</required>
           <type>String</type>
         </field>
         <field>
@@ -160,6 +162,17 @@
           </association>
         </field>
       </fields>
+      <codeSegments>
+        <codeSegment>
+          <version>1.0.0</version>
+          <code><![CDATA[
+              public String toString()
+              {
+                return "[" + getId() + "," + getName() + "]";
+              }
+          ]]></code>
+        </codeSegment>
+      </codeSegments>
     </class>
     <class>
       <name>ModelTemplate</name>
@@ -281,6 +294,17 @@
           </association>
         </field>
       </fields>
+      <codeSegments>
+        <codeSegment>
+          <version>1.0.0</version>
+          <code><![CDATA[
+              public String toString()
+              {
+                return "[" + getId() + "," + getNamePrefix() + "]";
+              }
+          ]]></code>
+        </codeSegment>
+      </codeSegments>
     </class>
     <class>
       <name>ModelResource</name>
@@ -290,12 +314,14 @@
           <name>id</name>
           <version>1.0.0+</version>
           <type>String</type>
+          <required>true</required>
           <identifier>true</identifier>
         </field>
         <field>
           <name>name</name>
           <version>1.0.0+</version>
           <type>String</type>
+          <required>true</required>
         </field>
         <field>
           <name>permanent</name>
@@ -322,6 +348,17 @@
           <type>String</type>
         </field>
       </fields>
+      <codeSegments>
+        <codeSegment>
+          <version>1.0.0</version>
+          <code><![CDATA[
+              public String toString()
+              {
+                return "[" + getId() + "," + getName() + "]";
+              }
+          ]]></code>
+        </codeSegment>
+      </codeSegments>
     </class>
     <class>
       <name>ModelOperation</name>
@@ -356,6 +393,17 @@
           <defaultValue>false</defaultValue>
         </field>
       </fields>
+      <codeSegments>
+        <codeSegment>
+          <version>1.0.0</version>
+          <code><![CDATA[
+              public String toString()
+              {
+                return "[" + getId() + "," + getName() + "]";
+              }
+          ]]></code>
+        </codeSegment>
+      </codeSegments>
     </class>
     <class>
       <name>ModelPermission</name>
@@ -370,10 +418,6 @@
         </field>
         <field>
           <name>name</name>
-          <description>
-            default should be 'operation - resource' or 'operation -
-            ${resource}' for templates
-          </description>
           <version>1.0.0+</version>
           <required>true</required>
           <type>String</type>
@@ -413,6 +457,17 @@
           <type>String</type>
         </field>
       </fields>
+      <codeSegments>
+        <codeSegment>
+          <version>1.0.0</version>
+          <code><![CDATA[
+              public String toString()
+              {
+                return "[" + getId() + "," + getName() + "," + getOperation() + "," + getResource() + "]";
+              }
+          ]]></code>
+        </codeSegment>
+      </codeSegments>
     </class>
   </classes>
 </model>

@@ -1,4 +1,6 @@
 <redback-role-model>
+  <application>validator test</application>
+  <version>1.0.0</version>
   <resources>
     <resource>
       <id>cornflakes</id>
@@ -32,6 +34,7 @@
       <permissions>
         <permission>
           <id>eat-cornflakes-permission</id>
+          <name>Eat Cornflakes</name>
           <operation>eat-cornflakes</operation>
           <resource>cornflakes</resource>
         </permission>
@@ -46,6 +49,7 @@
       <permissions>
         <permission>
           <id>drink-milk-permission</id>
+          <name>Drink Milk</name>
           <operation>drink-milk</operation>
           <resource>milk</resource>
         </permission>
@@ -62,6 +66,7 @@
       <permissions>
         <permission>
           <id>eat-cornflakes-permission</id>
+          <name>Eat Cornflakes</name>
           <operation>eat-cornflakes</operation>
           <resource>cornflakes</resource>
         </permission>
@@ -76,6 +81,7 @@
       <permissions>
         <permission>
           <id>eat-cornflakes-permission</id>
+          <name>Eat Cornflakes</name>
           <operation>eat-cornflakes</operation>
           <resource>cornflakes</resource>
         </permission>

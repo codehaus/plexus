@@ -1,4 +1,6 @@
 <redback-role-model>
+  <application>Processor Test 1</application>
+  <version>1.0.0</version>
   <resources>
     <resource>
       <id>cornflakes</id>

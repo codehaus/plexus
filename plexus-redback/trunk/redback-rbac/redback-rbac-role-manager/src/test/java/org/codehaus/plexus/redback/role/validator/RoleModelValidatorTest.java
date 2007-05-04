@@ -80,6 +80,8 @@ public class RoleModelValidatorTest
         
         assertNotNull( modelValidator.getValidationErrors() );
           
+        assertTrue( checkForValidationError( modelValidator.getValidationErrors(), "missing application name" ) );
+        
         assertTrue( checkForValidationError( modelValidator.getValidationErrors(), "eat-cornflakes-missing-operation-in-template" ) );
      
         assertTrue( checkForValidationError( modelValidator.getValidationErrors(), "can-drink-the-milk-missing-child-role" ) );
