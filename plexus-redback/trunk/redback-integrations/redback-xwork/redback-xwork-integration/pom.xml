@@ -24,7 +24,7 @@
   <artifactId>redback-xwork-integration</artifactId>
   <name>Plexus Redback :: Integration :: XWork Integration</name>
   <packaging>jar</packaging>
-  <dependencies>
+  <dependencies> 
     <!-- ================================================================ -->
     <!-- Core Plexus Security Dependencies -->
     <dependency>

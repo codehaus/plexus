@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.codehaus.plexus.redback.role.RoleProfileException;
+import org.codehaus.plexus.redback.role.RoleManagerException;
 import org.codehaus.plexus.redback.role.model.ModelPermission;
 import org.codehaus.plexus.redback.role.model.ModelRole;
 import org.codehaus.plexus.redback.role.model.ModelTemplate;
@@ -41,7 +41,7 @@ public class DefaultRoleModelValidator implements RoleModelValidator
 {
     private List validationErrors;
 
-    public boolean validate( RedbackRoleModel model ) throws RoleProfileException
+    public boolean validate( RedbackRoleModel model ) throws RoleManagerException
     {
         validationErrors = null;
 

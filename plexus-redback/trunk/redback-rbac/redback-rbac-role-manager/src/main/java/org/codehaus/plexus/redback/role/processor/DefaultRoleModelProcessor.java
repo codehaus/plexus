@@ -28,7 +28,7 @@ import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.Resource;
 import org.codehaus.plexus.redback.rbac.Role;
-import org.codehaus.plexus.redback.role.RoleProfileException;
+import org.codehaus.plexus.redback.role.RoleManagerException;
 import org.codehaus.plexus.redback.role.model.ModelOperation;
 import org.codehaus.plexus.redback.role.model.ModelPermission;
 import org.codehaus.plexus.redback.role.model.ModelResource;
@@ -56,7 +56,7 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
 
     private Map operationMap = new HashMap();
 
-    public void process( RedbackRoleModel model ) throws RoleProfileException
+    public void process( RedbackRoleModel model ) throws RoleManagerException
     {
         // must process resources and operations first, they are required for the
         // permissions in the roles to add in correctly
@@ -66,7 +66,7 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
         processRoles( model );
     }
 
-    private void processResources( RedbackRoleModel model ) throws RoleProfileException
+    private void processResources( RedbackRoleModel model ) throws RoleManagerException
     {
         for ( Iterator i = model.getResources().iterator(); i.hasNext(); )
         {
@@ -92,12 +92,12 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
             }
             catch ( RbacManagerException e )
             {
-                throw new RoleProfileException( "error creating resource '" + profileResource.getName() + "'", e );
+                throw new RoleManagerException( "error creating resource '" + profileResource.getName() + "'", e );
             }
         }
     }
 
-    private void processOperations( RedbackRoleModel model ) throws RoleProfileException
+    private void processOperations( RedbackRoleModel model ) throws RoleManagerException
     {
         for ( Iterator i = model.getOperations().iterator(); i.hasNext(); )
         {
@@ -124,12 +124,12 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
             }
             catch ( RbacManagerException e )
             {
-                throw new RoleProfileException( "error creating operation '" + profileOperation.getName() + "'", e );
+                throw new RoleManagerException( "error creating operation '" + profileOperation.getName() + "'", e );
             }
         }
     }
 
-    private void processRoles( RedbackRoleModel model ) throws RoleProfileException
+    private void processRoles( RedbackRoleModel model ) throws RoleManagerException
     {
         List sortedGraph;
         try
@@ -138,7 +138,7 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
         }
         catch ( CycleDetectedException e )
         {
-            throw new RoleProfileException( "cycle detected: this should have been caught in validation", e );
+            throw new RoleManagerException( "cycle detected: this should have been caught in validation", e );
         }
        
         for ( Iterator i = sortedGraph.iterator(); i.hasNext(); )
@@ -196,7 +196,7 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
                 }
                 catch ( RbacManagerException e )
                 {
-                    throw new RoleProfileException( "error creating role '" + roleProfile.getName() + "'", e );
+                    throw new RoleManagerException( "error creating role '" + roleProfile.getName() + "'", e );
                 }
             }
         }
@@ -204,7 +204,7 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
     
     
 
-    private List processPermissions( List permissions ) throws RoleProfileException
+    private List processPermissions( List permissions ) throws RoleManagerException
     {
         List rbacPermissions = new ArrayList();
 
@@ -241,7 +241,7 @@ public class DefaultRoleModelProcessor implements RoleModelProcessor
             }
             catch ( RbacManagerException e )
             {
-                throw new RoleProfileException( "error creating permission '" + profilePermission.getName() + "'", e );
+                throw new RoleManagerException( "error creating permission '" + profilePermission.getName() + "'", e );
             }
         }
         return rbacPermissions;

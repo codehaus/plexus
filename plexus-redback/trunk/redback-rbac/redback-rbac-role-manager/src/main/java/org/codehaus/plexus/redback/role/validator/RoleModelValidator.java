@@ -18,7 +18,7 @@ package org.codehaus.plexus.redback.role.validator;
 
 import java.util.List;
 
-import org.codehaus.plexus.redback.role.RoleProfileException;
+import org.codehaus.plexus.redback.role.RoleManagerException;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 
 /**
@@ -33,6 +33,6 @@ public interface RoleModelValidator
     
     public List getValidationErrors();
     
-    public boolean validate( RedbackRoleModel model ) throws RoleProfileException;
+    public boolean validate( RedbackRoleModel model ) throws RoleManagerException;
     
 }

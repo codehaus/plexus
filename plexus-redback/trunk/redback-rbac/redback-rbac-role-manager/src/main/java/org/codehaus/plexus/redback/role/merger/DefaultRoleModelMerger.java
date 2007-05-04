@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.codehaus.plexus.redback.role.RoleProfileException;
+import org.codehaus.plexus.redback.role.RoleManagerException;
 import org.codehaus.plexus.redback.role.model.ModelOperation;
 import org.codehaus.plexus.redback.role.model.ModelResource;
 import org.codehaus.plexus.redback.role.model.ModelRole;
@@ -47,7 +47,7 @@ public class DefaultRoleModelMerger implements RoleModelMerger
      * merges the first and the second model and returns the merged model
      */
     public RedbackRoleModel merge( RedbackRoleModel originalModel, RedbackRoleModel newModel )
-        throws RoleProfileException
+        throws RoleManagerException
     {
         // clear merge errors
         mergeErrors = null;

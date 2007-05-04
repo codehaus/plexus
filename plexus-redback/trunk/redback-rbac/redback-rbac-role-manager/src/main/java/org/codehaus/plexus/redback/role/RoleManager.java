@@ -33,11 +33,11 @@ public interface RoleManager
     /**
      * load the model and create/verify operations, resources, etc exist and make static roles
      * @param resourceLocation
-     * @throws RoleProfileException
+     * @throws RoleManagerException
      */
-    public void loadRoleModel( URL resourceLocation ) throws RoleProfileException;
+    public void loadRoleModel( URL resourceLocation ) throws RoleManagerException;
 
-    public void loadRoleModel( RedbackRoleModel model ) throws RoleProfileException;
+    public void loadRoleModel( RedbackRoleModel model ) throws RoleManagerException;
 
     /**
      * locate a role with the corresponding name and generate it with the given resource, ${resource} 
@@ -46,9 +46,9 @@ public interface RoleManager
      * 
      * @param roleName
      * @param resource
-     * @throws RoleProfileException
+     * @throws RoleManagerException
      */
-    public void createRole( String templateId, String resource ) throws RoleProfileException;
+    public void createTemplatedRole( String templateId, String resource ) throws RoleManagerException;
 
     /**
      * removes a role corresponding to the role Id that was manufactured with the given resource
@@ -57,9 +57,9 @@ public interface RoleManager
      * 
      * @param roleId
      * @param resource
-     * @throws RoleProfileException
+     * @throws RoleManagerException
      */
-    public void removeRole( String templateId, String resource ) throws RoleProfileException;
+    public void removeTemplatedRole( String templateId, String resource ) throws RoleManagerException;
     
     
     /**
@@ -71,9 +71,9 @@ public interface RoleManager
      * @param templateId
      * @param oldResource
      * @param newResource
-     * @throws RoleProfileException
+     * @throws RoleManagerException
      */
-    public void updateRole( String templateId, String oldResource, String newResource ) throws RoleProfileException;
+    public void updateRole( String templateId, String oldResource, String newResource ) throws RoleManagerException;
     
     
     /**
@@ -81,21 +81,28 @@ public interface RoleManager
      * 
      * @param roleId
      * @param principal
-     * @throws RoleProfileException
+     * @throws RoleManagerException
      */
-    public void assignRole( String roleId, String principal ) throws RoleProfileException;
+    public void assignRole( String roleId, String principal ) throws RoleManagerException;
     
+    /**
+     * Unassigns the role indicated by the role id from the given principal
+     * 
+     * @param roleId
+     * @param principal
+     * @throws RoleManagerException
+     */
+    public void unassignRole( String roleId, String principal ) throws RoleManagerException;
     
     /**
      * true of a role exists with the given roleId
      * 
      * @param roleId
      * @return
-     * @throws RoleProfileException
+     * @throws RoleManagerException
      */
-    public boolean roleExists( String roleId ) throws RoleProfileException;
-    
-    
+    public boolean roleExists( String roleId ) throws RoleManagerException;
+
     /**
      * get the blessed model, the current operating instructions for all things role management
      */

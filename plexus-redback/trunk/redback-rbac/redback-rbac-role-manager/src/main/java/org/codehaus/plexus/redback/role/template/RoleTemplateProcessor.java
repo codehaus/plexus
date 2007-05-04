@@ -16,7 +16,7 @@ package org.codehaus.plexus.redback.role.template;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.role.RoleProfileException;
+import org.codehaus.plexus.redback.role.RoleManagerException;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 
 /**
@@ -29,7 +29,7 @@ public interface RoleTemplateProcessor
 {
     public static final String ROLE = RoleTemplateProcessor.class.getName();
     
-    public void create( RedbackRoleModel model, String templateId, String resource ) throws RoleProfileException;
+    public void create( RedbackRoleModel model, String templateId, String resource ) throws RoleManagerException;
     
-    public void remove( RedbackRoleModel model, String templateId, String resource ) throws RoleProfileException;   
+    public void remove( RedbackRoleModel model, String templateId, String resource ) throws RoleManagerException;   
 }
