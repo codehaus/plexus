@@ -65,6 +65,8 @@ public class JRubyRuntimeInvoker implements JRubyInvoker
 
     private ComponentDescriptor componentDescriptor;
 
+    private String currentDirectory;
+
     /**
      * Create a reader JRubyInvoker that reads a JRuby script from the given reader.
      */
@@ -267,6 +269,11 @@ public class JRubyRuntimeInvoker implements JRubyInvoker
         {
             isExternalRuntime = false;
             runtime = Ruby.getDefaultInstance();
+            
+            if ( currentDirectory != null )
+            {
+                runtime.setCurrentDirectory( currentDirectory );
+            }
         }
 
         Object result = null;
@@ -605,5 +612,10 @@ public class JRubyRuntimeInvoker implements JRubyInvoker
             value = JavaUtil.convertArgument( Java.ruby_to_java( runtime.getObject(), irvalue, Block.NULL_BLOCK ), type );
             return irvalue;
         }
+    }
+
+    public void setCurrentDirectory( String currentDirectory )
+    {
+        this.currentDirectory = currentDirectory;
     }
 }

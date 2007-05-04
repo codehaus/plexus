@@ -89,6 +89,14 @@ public interface JRubyInvoker
      * @param value
      */
     public void inputValue( String key, Object value );
+    
+    /**
+     * Sets the current working directory for the JRuby interpreter. NOTE: If the interpreter is
+     * created externally to this invoker instance, the current directory will not be set.
+     * 
+     * @param currentDirectory
+     */
+    public void setCurrentDirectory( String currentDirectory );
 
     /**
      * Invokes the script after all other values are set.
