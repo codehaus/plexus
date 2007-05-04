@@ -29,8 +29,10 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.jdo.DefaultConfigurableJdoFactory;
 import org.codehaus.plexus.jdo.JdoFactory;
 import org.codehaus.plexus.redback.rbac.RBACManager;
+import org.codehaus.plexus.redback.rbac.Role;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 import org.codehaus.plexus.redback.role.model.io.stax.RedbackRoleModelStaxReader;
+import org.codehaus.plexus.redback.role.validator.RoleModelValidator;
 
 import org.jpox.SchemaTool;
 
@@ -45,6 +47,8 @@ public class RoleModelProcessorTest
 {
     private RBACManager rbacManager;
 
+    private RoleModelValidator modelValidator;
+    
     private RoleModelProcessor roleProcessor;
 
     /**
@@ -121,10 +125,12 @@ public class RoleModelProcessorTest
         */
         rbacManager = (RBACManager) lookup ( RBACManager.ROLE, "memory" );
 
+        modelValidator = (RoleModelValidator) lookup ( RoleModelValidator.ROLE, "default" );
+        
         roleProcessor = (RoleModelProcessor) lookup ( RoleModelProcessor.ROLE, "default" );
     }
     
-    public void testProcessing1() throws Exception 
+    public void testProcessing() throws Exception 
     {
         File resource = new File( getBasedir() + "/src/test/processor-tests/redback-1.xml");
         
@@ -136,13 +142,15 @@ public class RoleModelProcessorTest
         
         assertNotNull( redback );
         
+        assertTrue( modelValidator.validate( redback ) );
+        
         roleProcessor.process( redback );
         
         assertTrue( rbacManager.resourceExists( "cornflakes" ) );
         
     }
  
-    public void testProcessing2() throws Exception 
+    public void testMultipleProcessing() throws Exception 
     {
         rbacManager.eraseDatabase();
         
@@ -156,9 +164,13 @@ public class RoleModelProcessorTest
         
         assertNotNull( redback );
         
+        assertTrue( modelValidator.validate( redback ) );
         
         roleProcessor.process( redback );
         roleProcessor.process( redback );
-        roleProcessor.process( redback );
+        
+        Role systemAdmin = rbacManager.getRole( "System Administrator" );
+        
+        assertTrue( systemAdmin.hasChildRoles() );
     }
 }
