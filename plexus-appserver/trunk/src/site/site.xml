@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Plexus">
+  <bannerLeft>
+    <name>Plexus</name>
+    <href>http://plexus.codehaus.org/</href>
+    <src>/images/plexus-logo.png</src>
+  </bannerLeft>
+  <!-- bannerRight>
+    <name>The Codehaus</name>
+    <href>http://codehaus.org</href>
+    <src>http://media.codehaus.org/images/unity-codehaus-logo.png</src>
+  </bannerRight -->
+  <skin>
+    <groupId>org.codehaus.plexus</groupId>
+    <artifactId>plexus-stylus-skin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </skin>
+  <body>
+    <head>
+      <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    </head>
+    
+    <links>
+      <item name="Plexus" href="http://plexus.codehaus.org" />
+      <item name="The Codehaus" href="http://codehaus.org" />
+    </links>
+    
+  
+    <menu name="Guides">
+      <item name="Overview" href="/index.html" />
+    </menu>
+
+    <menu name="Community">
+      <item name="Mailing Lists" href="mail-lists.html" />
+      <item name="IRC" href="/irc.html" />
+      <item name="Get Involved" href="/get-involved.html" />
+    </menu>
+    
+    <menu name="Relevant Projects">
+      <item name="Plexus Common Utilities" href="plexus-utils" />
+      <item name="Plexus Maven Plugin" href="plexus-maven-plugin" />
+    </menu>
+    
+    <menu ref="reports" />
+
+  </body>
+</project>
