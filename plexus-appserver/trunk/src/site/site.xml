@@ -31,18 +31,5 @@
       <item name="Overview" href="/index.html" />
     </menu>
 
-    <menu name="Community">
-      <item name="Mailing Lists" href="mail-lists.html" />
-      <item name="IRC" href="/irc.html" />
-      <item name="Get Involved" href="/get-involved.html" />
-    </menu>
-    
-    <menu name="Relevant Projects">
-      <item name="Plexus Common Utilities" href="plexus-utils" />
-      <item name="Plexus Maven Plugin" href="plexus-maven-plugin" />
-    </menu>
-    
-    <menu ref="reports" />
-
   </body>
 </project>

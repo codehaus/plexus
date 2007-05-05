@@ -11,7 +11,7 @@ Overview
   What is a Plexus Service? 
 
   Plexus Service is a Plexus Component implementation that complies with the
-  API contract specified in the PlexusService interface and is independent in 
+  API contract specified in the <<<org.codehaus.plexus.appserver.service.PlexusService>>> interface and is independent in 
   itself.
 
   A good example is the Continuum application that is packaged up with Plexus
@@ -21,9 +21,6 @@ Overview
   service needs to be started before the Continuum web application can be 
   deployed to it.
 
-  A Plexus Service is actually a Plexus Component . 
-
-  <<<org.codehaus.plexus.appserver.service.PlexusService>>>
 
   When the Plexus container loads up a Plexus Service, it expects it to 
   implement the following operations derived from the <<<PlexusService>>> 
