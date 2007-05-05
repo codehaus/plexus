@@ -27,9 +27,9 @@ Overview
   interface.
 
 +------+  
-  void afterApplicationStart(AppRuntimeProfile, PlexusConfiguration) 
-    throws PlexusServiceException; 
-
+  void beforeApplicationStart( AppRuntimeProfile appRuntimeProfile, 
+    PlexusConfiguration serviceConfiguration ) throws PlexusServiceException;
+  
 
   void afterApplicationStart( AppRuntimeProfile appRuntimeProfile, 
     PlexusConfiguration serviceConfiguration ) throws PlexusServiceException
@@ -46,6 +46,47 @@ Overview
   Service from the ROLE it is assigned. 
 
   <<<org.codehaus.plexus.appserver.service.PlexusService>>>
+
+
+Plexus Service Lifecycle
+
+  The operations specified in the PlexusService interface define a Service's 
+  lifecycle.
+
+  When the Plexus runtime loads up a discovered Plexus Service, the lifecycle 
+  hooks are invoked and allow the PlexusService implementation to configure 
+  itself or clean up its resources, as is appropriate for the phase. 
+
+  Lets take a look at what the different operation available in the 
+  PlexusService interface are for and how a PlexusService implmentation might 
+  be expected to implement them. 
+
++------+
+  void beforeApplicationStart( AppRuntimeProfile appRuntimeProfile, 
+    PlexusConfiguration serviceConfiguration ) throws PlexusServiceException;
++------+
+
+  This Lifecycle operation is called on the loaded Service just before a 
+  target application (i.e, the Plexus Application being started) is marked as
+  STARTED. The Service is expected to initialized and configure itself in this 
+  phase. The Service is said to have STARTED when this operation returns. 
+
++------+
+  void afterApplicationStart( AppRuntimeProfile appRuntimeProfile, 
+    PlexusConfiguration serviceConfiguration ) throws PlexusServiceException
++------+
+
+  This operation is called after the target Plexus application has been 
+  started. <<TODO: Expand more on this >>
+
++------+
+  void applicationStop( AppRuntimeProfile runtimeProfile )
+    throws PlexusServiceException;
++------+
+
+  This lifecycle operation is called on the loaded service just when the target
+  Plexus application is requested to be stopped. The Service implementation is 
+  expected to clean up its resources in this phase. 
 
 
 
