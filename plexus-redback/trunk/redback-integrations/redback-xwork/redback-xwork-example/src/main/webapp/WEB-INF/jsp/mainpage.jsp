@@ -41,7 +41,7 @@
 
 <ol>
 <li>
-  <redback:ifAuthorized permission="user-management-user-list" resource="${sessionScope.securitySession.user.username}">
+  <redback:ifAuthorized permission="user-management-user-list">
     You are authorized to see this content!
     <p/>
 
