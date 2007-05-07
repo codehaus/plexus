@@ -282,47 +282,51 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
     {
         List rbacPermissions = new ArrayList();        
         
-        for ( Iterator i = template.getPermissions().iterator(); i.hasNext(); )
+        if ( template.getPermissions() != null )
         {
-            ModelPermission profilePermission = (ModelPermission)i.next();
-            String permissionName = profilePermission.getName() + template.getDelimiter() + resource;
-            
-            if ( !rbacManager.permissionExists( permissionName ) )
-            {   
-              
-                try
-                {
-                    Permission permission = rbacManager.createPermission( permissionName );
-
-                    ModelOperation modelOperation = RoleModelUtils.getModelOperation( model, profilePermission.getOperation() ) ;
-                    Operation rbacOperation = rbacManager.getOperation( modelOperation.getName() );
-                    
-                    Resource rbacResource = rbacManager.getResource( resource );
-                    
-                    permission.setOperation( rbacOperation );
-                    permission.setResource( rbacResource );
-                    permission.setPermanent( profilePermission.isPermanent() );
-                    permission.setDescription( profilePermission.getDescription() );
-
-                    rbacManager.savePermission( permission );
-
-                    rbacPermissions.add( permission );
-                    
-                }
-                catch ( RbacManagerException e )
-                {
-                    throw new RoleManagerException( "unable to create permission: " + permissionName );
-                }
-            }
-            else
+            for ( Iterator i = template.getPermissions().iterator(); i.hasNext(); )
             {
-                try
+                ModelPermission profilePermission = (ModelPermission) i.next();
+                String permissionName = profilePermission.getName() + template.getDelimiter() + resource;
+
+                if ( !rbacManager.permissionExists( permissionName ) )
                 {
-                    rbacPermissions.add( rbacManager.getPermission( permissionName ) );
+
+                    try
+                    {
+                        Permission permission = rbacManager.createPermission( permissionName );
+
+                        ModelOperation modelOperation =
+                            RoleModelUtils.getModelOperation( model, profilePermission.getOperation() );
+                        Operation rbacOperation = rbacManager.getOperation( modelOperation.getName() );
+
+                        Resource rbacResource = rbacManager.getResource( resource );
+
+                        permission.setOperation( rbacOperation );
+                        permission.setResource( rbacResource );
+                        permission.setPermanent( profilePermission.isPermanent() );
+                        permission.setDescription( profilePermission.getDescription() );
+
+                        rbacManager.savePermission( permission );
+
+                        rbacPermissions.add( permission );
+
+                    }
+                    catch ( RbacManagerException e )
+                    {
+                        throw new RoleManagerException( "unable to create permission: " + permissionName );
+                    }
                 }
-                catch ( RbacManagerException e )
+                else
                 {
-                    throw new RoleManagerException( "unable to get permission: " + permissionName );
+                    try
+                    {
+                        rbacPermissions.add( rbacManager.getPermission( permissionName ) );
+                    }
+                    catch ( RbacManagerException e )
+                    {
+                        throw new RoleManagerException( "unable to get permission: " + permissionName );
+                    }
                 }
             }
         }

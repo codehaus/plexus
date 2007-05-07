@@ -102,6 +102,15 @@ public interface RoleManager
      * @throws RoleManagerException
      */
     public boolean roleExists( String roleId ) throws RoleManagerException;
+    
+    /**
+     * true of a role exists with the given roleId
+     * 
+     * @param roleId
+     * @return
+     * @throws RoleManagerException
+     */
+    public boolean templatedRoleExists( String templateId, String resource ) throws RoleManagerException;
 
     /**
      * get the blessed model, the current operating instructions for all things role management
