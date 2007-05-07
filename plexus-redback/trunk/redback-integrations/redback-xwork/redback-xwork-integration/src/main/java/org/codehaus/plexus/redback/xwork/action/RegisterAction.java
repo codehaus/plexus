@@ -24,7 +24,7 @@ import org.codehaus.plexus.redback.keys.KeyManagerException;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.role.RoleManager;
-import org.codehaus.plexus.redback.role.RoleProfileException;
+import org.codehaus.plexus.redback.role.RoleManagerException;
 import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.redback.users.UserManager;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionBundle;
@@ -136,7 +136,7 @@ public class RegisterAction
         {
             roleManager.assignRole( "registered-user", u.getPrincipal().toString() );
         }
-        catch ( RoleProfileException rpe )
+        catch ( RoleManagerException rpe )
         {
             addActionError( "Unable to assign core register user role to new user" );
             getLogger().error( "RoleProfile Error: " + rpe.getMessage(), rpe );
