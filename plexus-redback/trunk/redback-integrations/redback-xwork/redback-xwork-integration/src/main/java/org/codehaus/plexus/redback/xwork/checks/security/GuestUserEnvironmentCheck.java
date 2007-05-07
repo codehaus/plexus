@@ -22,7 +22,7 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.role.RoleManager;
-import org.codehaus.plexus.redback.role.RoleProfileException;
+import org.codehaus.plexus.redback.role.RoleManagerException;
 import org.codehaus.plexus.redback.system.SecuritySystem;
 import org.codehaus.plexus.redback.system.check.EnvironmentCheck;
 import org.codehaus.plexus.redback.users.User;
@@ -96,7 +96,7 @@ public class GuestUserEnvironmentCheck
             {
                 roleManager.assignRole( "guest", guest.getPrincipal().toString() );           
             }
-            catch ( RoleProfileException rpe )
+            catch ( RoleManagerException rpe )
             {
                 violations.add( "unable to initialize guest user properly: " + rpe.getMessage() );
             }
