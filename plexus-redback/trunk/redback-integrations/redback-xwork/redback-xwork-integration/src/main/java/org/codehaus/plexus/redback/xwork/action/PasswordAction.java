@@ -27,7 +27,9 @@ import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.redback.users.UserNotFoundException;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionBundle;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionException;
+import org.codehaus.plexus.redback.xwork.util.AutoLoginCookies;
 import org.codehaus.plexus.util.StringUtils;
+import com.opensymphony.webwork.dispatcher.SessionMap;
 
 /**
  * PasswordAction
@@ -62,6 +64,12 @@ public class PasswordAction
     private String newPasswordConfirm;
 
     private boolean provideExisting;
+
+    /**
+     * @plexus.requirement
+     */
+    private AutoLoginCookies autologinCookies;
+
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
@@ -186,11 +194,21 @@ public class PasswordAction
          * external link
          */
         if ( !provideExisting )
-        {
+        {                                              
             return RegisterAction.REGISTER_SUCCESS;
         }
         else
         {
+            autologinCookies.removeRememberMeCookie();
+            autologinCookies.removeSignonCookie();
+
+            setAuthTokens( null );
+
+            if ( super.session != null )
+            {
+                ( (SessionMap) super.session ).invalidate();
+            }
+
             return SUCCESS;
         }
     }
