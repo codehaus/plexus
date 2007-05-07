@@ -142,12 +142,26 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
                     getLogger().error( (String)i.next() );
                 }
                 
-                throw new RoleManagerException( "Validation Error: " + model.getApplication() );
+                throw new RoleManagerException( "Validation Error: " + mergedModel.getApplication() );
             }
         }
         else
         {
             mergedModel = modelMerger.merge( blessedModel, model );
+            
+            if ( modelMerger.hasMergeErrors() )
+            {
+                List mergeErrors = modelMerger.getMergeErrors();
+                
+                getLogger().error( "Merge Error: " + mergedModel.getApplication() );
+                
+                for ( Iterator i = mergeErrors.iterator(); i.hasNext(); )
+                {                                  
+                    getLogger().error( (String)i.next() );
+                }
+                
+                throw new RoleManagerException( "Merge Error: " + mergedModel.getApplication() );
+            }
             
             if ( modelValidator.validate( mergedModel ) )
             {
@@ -157,14 +171,14 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
             {
                 List validationErrors = modelValidator.getValidationErrors();
                 
-                getLogger().error( "Validation Error: " + model.getApplication() );
+                getLogger().error( "Validation Error: " + mergedModel.getApplication() );
                 
                 for ( Iterator i = validationErrors.iterator(); i.hasNext(); )
                 {                                  
                     getLogger().error( (String)i.next() );
                 }
                 
-                throw new RoleManagerException( "Validation Error: " + model.getApplication() );
+                throw new RoleManagerException( "Validation Error: " + mergedModel.getApplication() );
             }
         }
         
@@ -345,6 +359,28 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
             {     
                 // perhaps try and reload the model here?
                 throw new RoleManagerException( "breakdown in role management, role exists in configuration but was not created in underlying store" );
+            }
+        }           
+    }
+    
+    public boolean templatedRoleExists( String templateId, String resource ) throws RoleManagerException
+    {
+        ModelTemplate modelTemplate = RoleModelUtils.getModelTemplate( blessedModel, templateId );
+
+        // template not existing is valid to check, it will throw exception on trying to create
+        if ( modelTemplate == null )
+        {
+            return false;
+        }       
+        else
+        {
+            if ( rbacManager.roleExists( modelTemplate.getNamePrefix() + modelTemplate.getDelimiter() + resource ) )
+            {
+                return true;
+            }
+            else
+            {     
+                return false;
             }
         }           
     }
