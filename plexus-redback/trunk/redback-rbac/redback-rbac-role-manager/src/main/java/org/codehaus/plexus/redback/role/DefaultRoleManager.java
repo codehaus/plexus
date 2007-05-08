@@ -22,8 +22,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -68,6 +70,11 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
     private RedbackRoleModel mergedModel;
     
     /**
+     * a map of the resources, and the model that they loaded
+     */
+    private Map knownResources = new HashMap();
+    
+    /**
      * @plexus.requirement role-hint="default"
      */
     private RoleModelMerger modelMerger;
@@ -103,9 +110,26 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
         
         try
         {
-            RedbackRoleModel roleProfiles = reader.read( new InputStreamReader( resource.openStream() ) );
+            RedbackRoleModel roleModel = reader.read( new InputStreamReader( resource.openStream() ) );
             
-            loadRoleModel( roleProfiles );
+            boolean loaded = false; 
+            
+            for ( Iterator i = knownResources.keySet().iterator(); i.hasNext(); )
+            {
+                String applicationName = (String)i.next();
+                
+                if ( applicationName.equals( roleModel.getApplication() ) )
+                {
+                    loaded = true;
+                }
+            }
+            
+            if ( !loaded )
+            {
+                knownResources.put( roleModel.getApplication(), roleModel );
+            
+                loadRoleModel( roleModel );
+            }
         }
         catch ( MalformedURLException e )
         {
@@ -394,7 +418,7 @@ public class DefaultRoleManager extends AbstractLogEnabled implements RoleManage
             if ( baseResource == null )
             {
                 throw new InitializationException( "unable to initialize role manager, missing redback-core.xml" );
-            }
+            }        
             
             loadRoleModel( baseResource );
             

@@ -161,6 +161,22 @@ public class RoleModelUtils
         }
         return moperation;
     }
+    
+    public static ModelResource getModelResource( RedbackRoleModel model, String resourceId )
+    {
+        ModelResource mresource = null;
+
+        for ( Iterator i = model.getResources().iterator(); i.hasNext(); )
+        {
+            ModelResource resource = (ModelResource) i.next();
+
+            if ( resourceId.equals( resource.getId() ) )
+            {
+                mresource = resource;
+            }
+        }
+        return mresource;
+    }
 
     public static DAG generateRoleGraph( RedbackRoleModel model ) throws CycleDetectedException
     {
