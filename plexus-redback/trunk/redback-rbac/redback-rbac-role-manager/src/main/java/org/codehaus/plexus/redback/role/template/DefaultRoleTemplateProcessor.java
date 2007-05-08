@@ -29,6 +29,7 @@ import org.codehaus.plexus.redback.rbac.Role;
 import org.codehaus.plexus.redback.role.RoleManagerException;
 import org.codehaus.plexus.redback.role.model.ModelOperation;
 import org.codehaus.plexus.redback.role.model.ModelPermission;
+import org.codehaus.plexus.redback.role.model.ModelResource;
 import org.codehaus.plexus.redback.role.model.ModelRole;
 import org.codehaus.plexus.redback.role.model.ModelTemplate;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
@@ -108,20 +109,8 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                 {
                     ModelPermission permission = (ModelPermission)i.next();
                     if ( !permission.isPermanent() )
-                    {
-                        String permissionResource = RoleModelUtils.getModelResource( model, permission.getResource() ).getName();
-                        
-                        if ( permissionResource.startsWith( "${" ) )
-                        {
-                            String tempStr = permissionResource.substring( 2, permissionResource.indexOf( '}' ) );
-
-                            if ( "resource".equals( tempStr ) )
-                            {
-                                permissionResource = resource;
-                            }
-                        }
-                        
-                        rbacManager.removePermission( permission.getName() + template.getDelimiter() + permissionResource );
+                    {                        
+                        rbacManager.removePermission( permission.getName() + template.getDelimiter() + resolveResource( model, permission, resource ) );
                     }
                 }
                 
@@ -310,20 +299,8 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                         ModelOperation modelOperation =
                             RoleModelUtils.getModelOperation( model, profilePermission.getOperation() );
                         Operation rbacOperation = rbacManager.getOperation( modelOperation.getName() );
-
-                        // TODO replace with an expression evaluator, if resource from permission decl is ${resource} 
-                        // then replace with resource being passed in. 
-                        String permissionResource = RoleModelUtils.getModelResource( model, profilePermission.getResource() ).getName();
-                        
-                        if ( permissionResource.startsWith( "${" ) )
-                        {
-                            String tempStr = permissionResource.substring( 2, permissionResource.indexOf( '}' ) );
-
-                            if ( "resource".equals( tempStr ) )
-                            {
-                                permissionResource = resource;
-                            }
-                        }
+                                                
+                        String permissionResource = resolveResource( model, profilePermission, resource );
                         
                         Resource rbacResource = rbacManager.getResource( permissionResource );
 
@@ -359,5 +336,34 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
         }
         
         return rbacPermissions;
+    }
+    
+    
+    private String resolveResource( RedbackRoleModel model, ModelPermission permission, String resource )
+    {
+        String permissionResource = permission.getResource();
+        
+        // if permission's resource is ${resource}, return the resource passed in
+        if ( permissionResource.startsWith( "${" ) )
+        {
+            String tempStr = permissionResource.substring( 2, permissionResource.indexOf( '}' ) );
+
+            if ( "resource".equals( tempStr ) )
+            {
+                return resource;
+            }
+        }
+        
+        // resolve resource id from permission to the actual resource 
+        ModelResource resolvedResource = RoleModelUtils.getModelResource( model, permissionResource );
+        
+        if ( resolvedResource != null )
+        {
+            return resolvedResource.getName();
+        }
+        else
+        {
+            return null;
+        }        
     }
 }
