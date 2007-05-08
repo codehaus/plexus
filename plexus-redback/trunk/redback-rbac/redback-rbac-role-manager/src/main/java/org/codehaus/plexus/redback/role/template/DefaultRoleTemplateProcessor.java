@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.codehaus.plexus.redback.authorization.rbac.evaluator.PermissionEvaluationException;
 import org.codehaus.plexus.redback.rbac.Operation;
 import org.codehaus.plexus.redback.rbac.Permission;
 import org.codehaus.plexus.redback.rbac.RBACManager;
@@ -34,7 +33,6 @@ import org.codehaus.plexus.redback.role.model.ModelRole;
 import org.codehaus.plexus.redback.role.model.ModelTemplate;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 import org.codehaus.plexus.redback.role.util.RoleModelUtils;
-import org.codehaus.plexus.redback.users.UserNotFoundException;
 
 /**
  * DefaultRoleTemplateProcessor: inserts the components of a template into the rbac manager
@@ -111,7 +109,19 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                     ModelPermission permission = (ModelPermission)i.next();
                     if ( !permission.isPermanent() )
                     {
-                        rbacManager.removePermission( permission.getName() + template.getDelimiter() + resource );
+                        String permissionResource = RoleModelUtils.getModelResource( model, permission.getResource() ).getName();
+                        
+                        if ( permissionResource.startsWith( "${" ) )
+                        {
+                            String tempStr = permissionResource.substring( 2, permissionResource.indexOf( '}' ) );
+
+                            if ( "resource".equals( tempStr ) )
+                            {
+                                permissionResource = resource;
+                            }
+                        }
+                        
+                        rbacManager.removePermission( permission.getName() + template.getDelimiter() + permissionResource );
                     }
                 }
                 
@@ -130,7 +140,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
         }
         catch ( RbacManagerException e )
         {
-            throw new RoleManagerException( "unable to remove role: " + roleName, e );
+            throw new RoleManagerException( "unable to remove templated role: " + roleName, e );
         }
     }
     
@@ -303,7 +313,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
 
                         // TODO replace with an expression evaluator, if resource from permission decl is ${resource} 
                         // then replace with resource being passed in. 
-                        String permissionResource = permission.getResource().getIdentifier();
+                        String permissionResource = RoleModelUtils.getModelResource( model, profilePermission.getResource() ).getName();
                         
                         if ( permissionResource.startsWith( "${" ) )
                         {
@@ -317,7 +327,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                         
                         Resource rbacResource = rbacManager.getResource( permissionResource );
 
-                        permission.setName( rbacOperation.getName() + "-" + rbacResource.getIdentifier() );
+                        permission.setName( rbacOperation.getName() + template.getDelimiter() + rbacResource.getIdentifier() );
                         permission.setOperation( rbacOperation );
                         permission.setResource( rbacResource );
                         permission.setPermanent( profilePermission.isPermanent() );
@@ -330,6 +340,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                     }
                     catch ( RbacManagerException e )
                     {
+                        e.printStackTrace();
                         throw new RoleManagerException( "unable to create permission: " + permissionName );
                     }
                 }
