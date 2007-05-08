@@ -183,7 +183,6 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                         ModelRole childRoleProfile = RoleModelUtils.getModelRole( model, childRoleId );
                         role.addChildRoleName( childRoleProfile.getName() );
                     }
-
                 }  
                 
                 // add child templates to this role, be nice and make them if they don't exist
@@ -307,7 +306,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                         permission.setPermanent( profilePermission.isPermanent() );
                         permission.setDescription( profilePermission.getDescription() );
 
-                        rbacManager.savePermission( permission );
+                        permission = rbacManager.savePermission( permission );
 
                         rbacPermissions.add( permission );
 
