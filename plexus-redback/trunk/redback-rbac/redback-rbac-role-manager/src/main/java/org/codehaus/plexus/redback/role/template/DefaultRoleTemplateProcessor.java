@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.codehaus.plexus.redback.authorization.rbac.evaluator.PermissionEvaluationException;
 import org.codehaus.plexus.redback.rbac.Operation;
 import org.codehaus.plexus.redback.rbac.Permission;
 import org.codehaus.plexus.redback.rbac.RBACManager;
@@ -33,6 +34,7 @@ import org.codehaus.plexus.redback.role.model.ModelRole;
 import org.codehaus.plexus.redback.role.model.ModelTemplate;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 import org.codehaus.plexus.redback.role.util.RoleModelUtils;
+import org.codehaus.plexus.redback.users.UserNotFoundException;
 
 /**
  * DefaultRoleTemplateProcessor: inserts the components of a template into the rbac manager
@@ -299,8 +301,23 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                             RoleModelUtils.getModelOperation( model, profilePermission.getOperation() );
                         Operation rbacOperation = rbacManager.getOperation( modelOperation.getName() );
 
-                        Resource rbacResource = rbacManager.getResource( resource );
+                        // TODO replace with an expression evaluator, if resource from permission decl is ${resource} 
+                        // then replace with resource being passed in. 
+                        String permissionResource = permission.getResource().getIdentifier();
+                        
+                        if ( permissionResource.startsWith( "${" ) )
+                        {
+                            String tempStr = permissionResource.substring( 2, permissionResource.indexOf( '}' ) );
 
+                            if ( "resource".equals( tempStr ) )
+                            {
+                                permissionResource = resource;
+                            }
+                        }
+                        
+                        Resource rbacResource = rbacManager.getResource( permissionResource );
+
+                        permission.setName( rbacOperation.getName() + "-" + rbacResource.getIdentifier() );
                         permission.setOperation( rbacOperation );
                         permission.setResource( rbacResource );
                         permission.setPermanent( profilePermission.isPermanent() );
