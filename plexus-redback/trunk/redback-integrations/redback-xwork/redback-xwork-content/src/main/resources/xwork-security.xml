@@ -236,6 +236,10 @@
       <result name="list">/WEB-INF/jsp/redback/admin/resourceList.jsp</result>
     </action>
 
+    <action name="roleModel" class="redback-role-model" method="view">
+      <result name="success">/WEB-INF/jsp/redback/admin/roleModel.jsp</result>
+    </action>
+
   </package>
 
 </xwork>
