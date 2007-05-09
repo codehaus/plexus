@@ -89,7 +89,7 @@ public class JpoxRoleManagerTest
             System.setProperty( (String) entry.getKey(), (String) entry.getValue() );
         }
 
-        URL jdoFileUrls[] = new URL[] { RBACManager.class
+        URL jdoFileUrls[] = new URL[] { getClass()
             .getResource( "/org/codehaus/plexus/redback/rbac/jdo/package.jdo" ) }; //$NON-NLS-1$
         
         if ( ( jdoFileUrls == null ) || ( jdoFileUrls[0] == null ) )

@@ -49,10 +49,16 @@ public abstract class AbstractRoleManagerTest extends PlexusTestCase
         roleManager.createTemplatedRole( "test-template-2", "foo" );
         
         assertTrue( roleManager.templatedRoleExists( "test-template-2", "foo" ) );
+        assertTrue( roleManager.templatedRoleExists( "test-template", "foo" ) );
         
         roleManager.updateRole( "test-template-2", "foo", "bar" );
         
         assertTrue( roleManager.templatedRoleExists( "test-template-2", "bar" ) );
+        assertTrue( roleManager.templatedRoleExists( "test-template", "bar" ) );
+        
+        roleManager.createTemplatedRole( "test-template-2", "hot" );
+        
+        assertTrue( roleManager.templatedRoleExists( "test-template-2", "hot" ) );
     }
 
 }

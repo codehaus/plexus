@@ -67,8 +67,7 @@
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>redback-rbac-model</artifactId>
-    </dependency>
-    
+    </dependency>  
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>redback-common-jdo</artifactId>
