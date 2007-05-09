@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<model jpox.table-prefix="SECURITY_">
+<model jpox.mapping-in-package="true"
+       jpox.table-prefix="SECURITY_">
   <!-- TODO: there is no reason this model is JDO specific. Shouldn't it be the basis for the various providers? It would dramatically reduce the code in -memory, for example -->
   <id>rbac-jdo</id>
   <name>RbacJdoModel</name>
