@@ -39,12 +39,8 @@ import org.jpox.SchemaTool;
  * @version: $Id:$
  */
 public class JpoxRoleManagerTest
-    extends PlexusTestCase
+    extends AbstractRoleManagerTest
 {
-    private RBACManager rbacManager;
-
-    private RoleManager roleManager;
-
     /**
      * Creates a new RbacStore which contains no data.
      */
@@ -93,7 +89,7 @@ public class JpoxRoleManagerTest
             System.setProperty( (String) entry.getKey(), (String) entry.getValue() );
         }
 
-        URL jdoFileUrls[] = new URL[] { getClass()
+        URL jdoFileUrls[] = new URL[] { RBACManager.class
             .getResource( "/org/codehaus/plexus/redback/rbac/jdo/package.jdo" ) }; //$NON-NLS-1$
         
         if ( ( jdoFileUrls == null ) || ( jdoFileUrls[0] == null ) )
@@ -119,15 +115,5 @@ public class JpoxRoleManagerTest
 
         roleManager = (RoleManager) lookup ( RoleManager.ROLE, "jpox" );
     }
-    
-    public void testLoading() throws Exception 
-    {       
-        assertTrue( rbacManager.resourceExists( "*" ) );
-        assertTrue( rbacManager.operationExists( "Test Operation" ) );
-        assertTrue( rbacManager.roleExists( "Test Role" ) );
-        assertTrue( rbacManager.roleExists( "Test Role 1" ) );
-        assertTrue( rbacManager.roleExists( "Test Role 2" ) );
-    }
- 
  
 }
