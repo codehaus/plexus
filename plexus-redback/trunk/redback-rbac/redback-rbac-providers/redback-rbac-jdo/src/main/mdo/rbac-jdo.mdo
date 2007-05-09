@@ -163,7 +163,9 @@
             true if this object is permanent.
           </description>
         </field>
-        <field jpox.indexed="true" jpox.column="RBAC_OPERATION">
+        <field jpox.indexed="true" 
+               jpox.persistence-modifier="persistent"
+               jpox.column="RBAC_OPERATION">
           <name>operation</name>
           <version>1.0.0+</version>
           <association stash.part="true" 
@@ -174,7 +176,9 @@
             <multiplicity>1</multiplicity>
           </association>
         </field>
-        <field jpox.indexed="true" jpox.column="RBAC_RESOURCE">
+        <field jpox.indexed="true" 
+               jpox.persistence-modifier="persistent"
+               jpox.column="RBAC_RESOURCE">
           <name>resource</name>
           <version>1.0.0+</version>
           <association stash.part="true" 
