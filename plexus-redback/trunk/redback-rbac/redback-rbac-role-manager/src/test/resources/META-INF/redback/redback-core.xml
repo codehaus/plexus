@@ -116,9 +116,21 @@
       <permissions>
         <permission>
           <id>eat-cornflakes-permission</id>
-          <name>Eat Cornflakes</name>
+          <name>Eat 1 Cornflakes</name>
           <operation>eat-cornflakes</operation>
           <resource>cornflakes</resource>
+        </permission>
+        <permission>
+          <id>eat-cornflakes-permission-2</id>
+          <name>Eat 2 Cornflakes</name>
+          <operation>eat-cornflakes</operation>
+          <resource>global</resource>
+        </permission>
+        <permission>
+          <id>eat-cornflakes-permission-3</id>
+          <name>Eat 3 Cornflakes</name>
+          <operation>eat-cornflakes</operation>
+          <resource>${resource}</resource>
         </permission>
       </permissions>
       <childTemplates>

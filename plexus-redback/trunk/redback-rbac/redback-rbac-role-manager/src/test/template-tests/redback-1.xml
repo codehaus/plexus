@@ -83,6 +83,18 @@
           <operation>eat-cornflakes</operation>
           <resource>cornflakes</resource>
         </permission>
+        <permission>
+          <id>eat-cornflakes-permission-2</id>
+          <name>Eat Cornflakes</name>
+          <operation>eat-cornflakes</operation>
+          <resource>global</resource>
+        </permission>
+        <permission>
+          <id>eat-cornflakes-permission-3</id>
+          <name>Eat Cornflakes</name>
+          <operation>eat-cornflakes</operation>
+          <resource>${resource}</resource>
+        </permission>
       </permissions>
       <childTemplates>
         <childTemplate>test-template</childTemplate>
