@@ -224,7 +224,10 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
 
                 // this role needs to be saved since it now needs to be added as a child role by 
                 // another role
-                rbacManager.saveRole( role );
+                if ( !rbacManager.roleExists( role.getName() ) )
+                {                
+                    role = rbacManager.saveRole( role );
+                }
 
                 // add link from parent roles to this new role
                 if ( template.getParentRoles() != null )
