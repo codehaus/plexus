@@ -107,20 +107,11 @@
             <goals>
               <goal>java</goal>
               <goal>jpox-metadata-class</goal>
+              <goal>jpox-jdo-mapping</goal>
               <!-- TODO: Move these to plexus-security-authorization-rbac-model -->
               <goal>stax-reader</goal>
               <goal>stax-writer</goal>
             </goals>
-          </execution>
-          <execution>
-            <id>jpox-jdo-mapping</id>
-            <goals>
-              <goal>jpox-jdo-mapping</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${basedir}/target/classes/org/codehaus/plexus/redback/rbac/jdo
-              </outputDirectory>
-            </configuration>
           </execution>
         </executions>
       </plugin>
