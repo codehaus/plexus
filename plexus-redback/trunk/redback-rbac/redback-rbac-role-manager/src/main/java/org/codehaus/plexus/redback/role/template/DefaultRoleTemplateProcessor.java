@@ -287,11 +287,10 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
             for ( Iterator i = template.getPermissions().iterator(); i.hasNext(); )
             {
                 ModelPermission profilePermission = (ModelPermission) i.next();
-                String permissionName = profilePermission.getName() + template.getDelimiter() + resource;
+                String permissionName = profilePermission.getName() + template.getDelimiter() + resolveResource( model, profilePermission, resource );
 
                 if ( !rbacManager.permissionExists( permissionName ) )
                 {
-
                     try
                     {
                         Permission permission = rbacManager.createPermission( permissionName );
@@ -304,7 +303,6 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                         
                         Resource rbacResource = rbacManager.getResource( permissionResource );
 
-                        permission.setName( rbacOperation.getName() + template.getDelimiter() + rbacResource.getIdentifier() );
                         permission.setOperation( rbacOperation );
                         permission.setResource( rbacResource );
                         permission.setPermanent( profilePermission.isPermanent() );
