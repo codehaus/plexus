@@ -26,12 +26,8 @@ import org.codehaus.plexus.redback.rbac.RBACManager;
  * @version: $Id:$
  */
 public class RoleManagerTest
-    extends PlexusTestCase
+    extends AbstractRoleManagerTest
 {
-    private RBACManager rbacManager;
-
-    private RoleManager roleManager;
-
     /**
      * Creates a new RbacStore which contains no data.
      */
@@ -43,15 +39,6 @@ public class RoleManagerTest
         rbacManager = (RBACManager) lookup ( RBACManager.ROLE, "memory" );
 
         roleManager = (RoleManager) lookup ( RoleManager.ROLE, "default" );
-    }
-    
-    public void testLoading() throws Exception 
-    {       
-        assertTrue( rbacManager.resourceExists( "*" ) );
-        assertTrue( rbacManager.operationExists( "Test Operation" ) );
-        assertTrue( rbacManager.roleExists( "Test Role" ) );
-        assertTrue( rbacManager.roleExists( "Test Role 1" ) );
-        assertTrue( rbacManager.roleExists( "Test Role 2" ) );
     }
  
  

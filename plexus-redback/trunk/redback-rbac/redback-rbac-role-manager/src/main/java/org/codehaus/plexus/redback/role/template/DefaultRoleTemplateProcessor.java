@@ -50,46 +50,44 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
      * @plexus.requirement role-hint="cached"
      */
     private RBACManager rbacManager;
-    
-      
+
     public void create( RedbackRoleModel model, String templateId, String resource ) throws RoleManagerException
     {
         for ( Iterator i = model.getTemplates().iterator(); i.hasNext(); )
         {
-            ModelTemplate template = (ModelTemplate)i.next();
-            
+            ModelTemplate template = (ModelTemplate) i.next();
+
             if ( templateId.equals( template.getId() ) )
             {
                 // resource can be special
                 processResource( template, resource );
-               
+
                 // templates are roles that have yet to be paired with a resource for creation
                 processTemplate( model, template, resource );
-                
+
                 return;
             }
         }
-        
-        throw new RoleManagerException( "unknown template '" + templateId + "'");
+
+        throw new RoleManagerException( "unknown template '" + templateId + "'" );
     }
-    
+
     public void remove( RedbackRoleModel model, String templateId, String resource ) throws RoleManagerException
     {
         for ( Iterator i = model.getTemplates().iterator(); i.hasNext(); )
         {
-            ModelTemplate template = (ModelTemplate)i.next();
-            
+            ModelTemplate template = (ModelTemplate) i.next();
+
             if ( templateId.equals( template.getId() ) )
-            {   
+            {
                 removeTemplatedRole( model, template, resource );
                 return;
             }
         }
-        
-        throw new RoleManagerException( "unknown template '" + templateId + "'");
+
+        throw new RoleManagerException( "unknown template '" + templateId + "'" );
     }
-    
-    
+
     private void removeTemplatedRole( RedbackRoleModel model, ModelTemplate template, String resource )
         throws RoleManagerException
     {
@@ -97,30 +95,33 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
 
         try
         {
-            Role role = rbacManager.getRole( roleName );            
-            
+            Role role = rbacManager.getRole( roleName );
+
             if ( !role.isPermanent() )
-            {                        
+            {
                 // remove the role
                 rbacManager.removeRole( role );
-                
+
                 // remove the permissions
                 for ( Iterator i = template.getPermissions().iterator(); i.hasNext(); )
                 {
-                    ModelPermission permission = (ModelPermission)i.next();
+                    ModelPermission permission = (ModelPermission) i.next();
                     if ( !permission.isPermanent() )
-                    {                        
-                        rbacManager.removePermission( permission.getName() + template.getDelimiter() + resolveResource( model, permission, resource ) );
+                    {
+                        rbacManager.removePermission( permission.getName() + template.getDelimiter()
+                                        + resolvePermissionResource( model, permission, resource ) );
                     }
                 }
-                
+
                 // check if we want to remove the resources
                 Resource rbacResource = rbacManager.getResource( resource );
-                
+
                 if ( !rbacResource.isPermanent() )
                 {
                     rbacManager.removeResource( rbacResource );
-                }                             
+                }
+                
+                // todo find dangling child role references and smoke
             }
             else
             {
@@ -131,9 +132,12 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
         {
             throw new RoleManagerException( "unable to remove templated role: " + roleName, e );
         }
+        catch ( RoleTemplateProcessorException e )
+        {
+            throw new RoleManagerException( "unable to remove templated role, error resolving resource: Role:" + roleName + " Resource: " + resource, e );
+        }
     }
-    
-    
+
     private void processResource( ModelTemplate template, String resource ) throws RoleManagerException
     {
         if ( !rbacManager.resourceExists( resource ) )
@@ -150,12 +154,12 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
             }
         }
     }
-    
-    
-    private void processTemplate( RedbackRoleModel model, ModelTemplate template, String resource ) throws RoleManagerException
+
+    private void processTemplate( RedbackRoleModel model, ModelTemplate template, String resource )
+        throws RoleManagerException
     {
         String templateName = template.getNamePrefix() + template.getDelimiter() + resource;
-        
+
         List permissions = processPermissions( model, template, resource );
 
         if ( !rbacManager.roleExists( templateName ) )
@@ -166,7 +170,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                 role.setDescription( template.getDescription() );
                 role.setPermanent( template.isPermanent() );
                 role.setAssignable( template.isAssignable() );
-                
+
                 // add any permissions associated with this role
                 for ( Iterator j = permissions.iterator(); j.hasNext(); )
                 {
@@ -174,7 +178,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
 
                     role.addPermission( permission );
                 }
-                
+
                 // add child roles to this role
                 if ( template.getChildRoles() != null )
                 {
@@ -184,91 +188,95 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                         ModelRole childRoleProfile = RoleModelUtils.getModelRole( model, childRoleId );
                         role.addChildRoleName( childRoleProfile.getName() );
                     }
-                }  
-                
+                }
+
                 // add child templates to this role, be nice and make them if they don't exist
                 if ( template.getChildTemplates() != null )
                 {
                     for ( Iterator j = template.getChildTemplates().iterator(); j.hasNext(); )
                     {
-                        String childTemplateId = (String)j.next();
+                        String childTemplateId = (String) j.next();
                         ModelTemplate childModelTemplate = RoleModelUtils.getModelTemplate( model, childTemplateId );
-                        
+
                         if ( childModelTemplate == null )
                         {
-                            throw new RoleManagerException( "error obtaining child template from model: template " + templateName + " # child template: " + childTemplateId );                           
+                            throw new RoleManagerException( "error obtaining child template from model: template "
+                                            + templateName + " # child template: " + childTemplateId );
                         }
-                        
-                        String childRoleName = childModelTemplate.getNamePrefix() + childModelTemplate.getDelimiter() + resource;
-                        
+
+                        String childRoleName =
+                            childModelTemplate.getNamePrefix() + childModelTemplate.getDelimiter() + resource;
+
                         // check if the role exists, if it does then add it as a child, otherwise make it and add it
                         // this should be safe since validation should protect us from template cycles
                         if ( rbacManager.roleExists( childRoleName ) )
                         {
-                            role.addChildRoleName( childRoleName ); 
+                            role.addChildRoleName( childRoleName );
                         }
                         else
                         {
                             processTemplate( model, childModelTemplate, resource );
-                            
+
                             role.addChildRoleName( childRoleName );
-                        }                      
+                        }
                     }
                 }
-                
+
                 // this role needs to be saved since it now needs to be added as a child role by 
                 // another role
                 rbacManager.saveRole( role );
-                
+
                 // add link from parent roles to this new role
                 if ( template.getParentRoles() != null )
                 {
                     for ( Iterator j = template.getParentRoles().iterator(); j.hasNext(); )
                     {
-                        String parentRoleId = (String)j.next();
+                        String parentRoleId = (String) j.next();
                         ModelRole parentModelRole = RoleModelUtils.getModelRole( model, parentRoleId );
                         Role parentRole = rbacManager.getRole( parentModelRole.getName() );
                         parentRole.addChildRoleName( role.getName() );
-                        rbacManager.saveRole( parentRole );                                                    
-                    } 
+                        rbacManager.saveRole( parentRole );
+                    }
                 }
-                
+
                 // add child templates to this role, be nice and make them if they don't exist
                 if ( template.getParentTemplates() != null )
                 {
                     for ( Iterator j = template.getParentTemplates().iterator(); j.hasNext(); )
                     {
-                        String parentTemplateId = (String)j.next();
+                        String parentTemplateId = (String) j.next();
                         ModelTemplate parentModelTemplate = RoleModelUtils.getModelTemplate( model, parentTemplateId );
-                        
+
                         if ( parentModelTemplate == null )
                         {
-                            throw new RoleManagerException( "error obtaining parent template from model: template " + templateName + " # child template: " + parentTemplateId );                           
+                            throw new RoleManagerException( "error obtaining parent template from model: template "
+                                            + templateName + " # child template: " + parentTemplateId );
                         }
-                        
-                        String parentRoleName = parentModelTemplate.getNamePrefix() + parentModelTemplate.getDelimiter() + resource;
-                        
+
+                        String parentRoleName =
+                            parentModelTemplate.getNamePrefix() + parentModelTemplate.getDelimiter() + resource;
+
                         // check if the role exists, if it does then add it as a child, otherwise make it and add it
                         // this should be safe since validation should protect us from template cycles
                         if ( rbacManager.roleExists( parentRoleName ) )
                         {
                             Role parentRole = rbacManager.getRole( parentRoleName );
-                            
+
                             parentRole.addChildRoleName( role.getName() );
                             rbacManager.saveRole( parentRole );
                         }
                         else
                         {
                             processTemplate( model, parentModelTemplate, resource );
-                            
+
                             Role parentRole = rbacManager.getRole( parentRoleName );
-                            
+
                             parentRole.addChildRoleName( role.getName() );
                             rbacManager.saveRole( parentRole );
-                        }                      
+                        }
                     }
                 }
-                
+
             }
             catch ( RbacManagerException e )
             {
@@ -277,30 +285,34 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
         }
 
     }
-    
-    private List processPermissions( RedbackRoleModel model, ModelTemplate template, String resource ) throws RoleManagerException
+
+    private List processPermissions( RedbackRoleModel model, ModelTemplate template, String resource )
+        throws RoleManagerException
     {
-        List rbacPermissions = new ArrayList();        
-        
+        List rbacPermissions = new ArrayList();
+
         if ( template.getPermissions() != null )
         {
             for ( Iterator i = template.getPermissions().iterator(); i.hasNext(); )
             {
-                ModelPermission profilePermission = (ModelPermission) i.next();
-                String permissionName = profilePermission.getName() + template.getDelimiter() + resolveResource( model, profilePermission, resource );
-
-                if ( !rbacManager.permissionExists( permissionName ) )
+                try
                 {
-                    try
+                    ModelPermission profilePermission = (ModelPermission) i.next();
+                    String permissionName =
+                        profilePermission.getName() + template.getDelimiter()
+                                        + resolvePermissionResource( model, profilePermission, resource );
+
+                    if ( !rbacManager.permissionExists( permissionName ) )
                     {
+
                         Permission permission = rbacManager.createPermission( permissionName );
 
                         ModelOperation modelOperation =
                             RoleModelUtils.getModelOperation( model, profilePermission.getOperation() );
                         Operation rbacOperation = rbacManager.getOperation( modelOperation.getName() );
-                                                
-                        String permissionResource = resolveResource( model, profilePermission, resource );
-                        
+
+                        String permissionResource = resolvePermissionResource( model, profilePermission, resource );
+
                         Resource rbacResource = rbacManager.getResource( permissionResource );
 
                         permission.setOperation( rbacOperation );
@@ -313,34 +325,34 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                         rbacPermissions.add( permission );
 
                     }
-                    catch ( RbacManagerException e )
+                    else
                     {
-                        e.printStackTrace();
-                        throw new RoleManagerException( "unable to create permission: " + permissionName );
+
+                        rbacPermissions.add( rbacManager.getPermission( permissionName ) );
+
                     }
                 }
-                else
+                catch ( RbacManagerException e )
                 {
-                    try
-                    {
-                        rbacPermissions.add( rbacManager.getPermission( permissionName ) );
-                    }
-                    catch ( RbacManagerException e )
-                    {
-                        throw new RoleManagerException( "unable to get permission: " + permissionName );
-                    }
+                    e.printStackTrace();
+                    throw new RoleManagerException( "unable to generate templated role: " + e.getMessage(), e );
+                }
+                catch ( RoleTemplateProcessorException e )
+                {
+                    e.printStackTrace();
+                    throw new RoleManagerException( "unable to resolve resource: " + resource, e );
                 }
             }
         }
-        
+
         return rbacPermissions;
     }
-    
-    
-    private String resolveResource( RedbackRoleModel model, ModelPermission permission, String resource )
+
+    private String resolvePermissionResource( RedbackRoleModel model, ModelPermission permission, String resource )
+        throws RoleTemplateProcessorException
     {
         String permissionResource = permission.getResource();
-        
+
         // if permission's resource is ${resource}, return the resource passed in
         if ( permissionResource.startsWith( "${" ) )
         {
@@ -351,17 +363,22 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                 return resource;
             }
         }
-        
-        // resolve resource id from permission to the actual resource 
-        ModelResource resolvedResource = RoleModelUtils.getModelResource( model, permissionResource );
-        
+
+        return resolveResource( model, resource );
+    }
+
+    private String resolveResource( RedbackRoleModel model, String resource ) throws RoleTemplateProcessorException
+    {
+        ModelResource resolvedResource = RoleModelUtils.getModelResource( model, resource );
+
         if ( resolvedResource != null )
         {
             return resolvedResource.getName();
         }
         else
         {
-            return null;
-        }        
+            return resource;
+            //throw new RoleTemplateProcessorException( "unable to resolve resource to its name/identifier" );
+        }
     }
 }
