@@ -29,7 +29,7 @@
 
 <h2> [Admin] Role Model </h2>
 
-	<p>These are the resources, operations, roles and role templates that are known by the role manager. They are not the current content of the RBAC store as those contains the resource, operations, and roles declared below _and_ any dynamic data created from creating new roles from the templates below.</p>
+	<p>These are the resources, operations, roles and role templates that are known by the role manager. They are not the current content of the RBAC store as those contain the resource, operations, and roles declared below _and_ any dynamic data created from creating new roles from the templates below.</p>
 
 <%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
