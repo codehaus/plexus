@@ -61,6 +61,8 @@ public class PasswordResetAction
 
     private String username;
 
+    private String passwordResetText = "If the user was found, a message has been sent.";
+    
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
@@ -94,14 +96,14 @@ public class PasswordResetAction
 
             mailer.sendPasswordResetEmail( recipients, authkey, getBaseUrl() );
 
-            addActionMessage( "Password reset email has been sent." );
+            addActionMessage( passwordResetText );
         }
         catch ( UserNotFoundException e )
         {
             // Intentionally misdirect user.
             // This is done to prevent a malicious user from attempting to ascertain the
             // validity of usernames.
-            addActionMessage( "Password reset email has been sent." );
+            addActionMessage( passwordResetText );
 
             getLogger().info( "Password Reset on non-existant user [" + username + "]." );
         }
