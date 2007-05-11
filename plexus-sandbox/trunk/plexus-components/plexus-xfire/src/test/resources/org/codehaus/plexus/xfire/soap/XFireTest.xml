@@ -1,0 +1,8 @@
+<plexus>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.xfire.soap.Echo</role>
+      <implementation>org.codehaus.plexus.xfire.soap.DefaultEcho</implementation>
+    </component>
+  </components>
+</plexus>

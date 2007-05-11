@@ -1,0 +1,117 @@
+<?xml version="1.0" ?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements.  See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership.  The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License.  You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+-->
+
+<model>
+  <id>plexus-xfire-service-model</id>
+  <name>PlexusXFireServiceModel</name>
+  <description></description>
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>org.codehaus.plexus.xfire.config</value>
+    </default>
+  </defaults>
+
+  <classes>
+    <class rootElement="true" xml.tagName="plexusXFireServiceModel">
+      <name>PlexusXFireServiceModel</name>
+      <version>1.0.0+</version>
+      <fields>
+        <field>
+          <name>version</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <required>true</required>          
+        </field>
+        <field>
+          <name>plexusXFireServices</name>
+          <version>1.0.0+</version>
+          <association>
+            <type>PlexusXFireService</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class xml.tagName="plexusXFireService">
+      <name>PlexusXFireService</name>
+      <version>1.0.0+</version>
+      <interfaces>
+        <interface>org.codehaus.plexus.xfire.soap.SoapServiceConfiguration</interface>
+      </interfaces>
+      <fields>
+        <field>
+          <name>className</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <required>true</required>          
+        </field>
+        <field>
+          <name>name</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <required>true</required>          
+        </field>
+        <field>
+          <name>namespace</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <required>true</required>          
+        </field>
+        <field>
+          <name>style</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <required>true</required>          
+        </field>
+        <field>
+          <name>use</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <required>true</required>          
+        </field>
+        <field>
+          <name>scope</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <required>true</required>          
+        </field>
+        <field>
+          <name>soapVersion</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <required>true</required>          
+        </field>
+        <field>
+          <name>wsdlVersion</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <required>true</required>          
+        </field>
+        <field>
+          <name>wsdlUrl</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <required>true</required>          
+        </field>
+      </fields>
+    </class>
+  </classes>
+</model>

@@ -1,0 +1,14 @@
+<plexusXFireServiceModel>
+  <version>1.0.0</version>
+  <plexusXFireServices>
+  <plexusXFireService>
+    <className>org.codehaus.plexus.xfire.soap.Echo</className>
+    <name>EchoService</name>
+    <namespace>echo</namespace>
+    <style>document</style>
+    <use>literal</use>
+    <soapVersion>1.1</soapVersion>
+    <scope>application</scope>
+  </plexusXFireService>
+  </plexusXFireServices>
+</plexusXFireServiceModel>

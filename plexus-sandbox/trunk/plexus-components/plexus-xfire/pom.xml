@@ -7,15 +7,15 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-xfire</artifactId>
   <name>XFire Plexus</name>
-  <version>1.1.2</version>
+  <version>1.1.3-SNAPSHOT</version>
   <properties>
-    <xfireVersion>1.2-RC</xfireVersion>
+    <xfireVersion>1.2.6</xfireVersion>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-11-SNAPSHOT</version>
+      <version>1.0-alpha-20</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.xfire</groupId>
@@ -52,5 +52,69 @@
       <artifactId>junit</artifactId>
       <version>3.8.1</version>     
     </dependency>
+    <dependency>
+      <groupId>net.java.dev.stax-utils</groupId>
+      <artifactId>stax-utils</artifactId>
+      <version>20060502</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.bea.xml</groupId>
+          <artifactId>jsr173-ri</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>stax</groupId>
+      <artifactId>stax-api</artifactId>
+      <version>1.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>stax</groupId>
+      <artifactId>stax</artifactId>
+      <version>1.1.1-dev</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>xmlbeans</groupId>
+          <artifactId>xmlbeans-jsr173-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+        <version>1.3.3</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>descriptor</goal>
+              <goal>merge-descriptors</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.modello</groupId>
+        <artifactId>modello-maven-plugin</artifactId>
+        <version>1.0-alpha-15</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+              <goal>xsd</goal>
+              <goal>stax-reader</goal>
+              <goal>stax-writer</goal>
+            </goals>
+            <configuration>
+              <model>src/main/mdo/plexus-xfire-services.mdo</model>
+              <version>1.0.0</version>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
