@@ -5,6 +5,8 @@ package org.codehaus.plexus.xfire.soap;
  */
 public interface SoapServiceConfigurationSource
 {
+    public static final String ROLE = SoapServiceConfigurationSource.class.getName();
+    
     SoapServiceConfiguration getConfiguration()
         throws SoapServiceConfigurationSourceRetrievalException;
 }

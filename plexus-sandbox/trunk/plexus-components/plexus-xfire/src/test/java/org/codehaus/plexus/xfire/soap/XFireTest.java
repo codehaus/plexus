@@ -8,6 +8,7 @@ import org.codehaus.plexus.PlexusTestCase;
 public class XFireTest
     extends PlexusTestCase
 {
+    
     public void testConstruction()
         throws Exception
     {
