@@ -2,7 +2,7 @@
   <parent>
     <artifactId>plexus-logging</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.4</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-color-logging</artifactId>
@@ -12,17 +12,15 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-component-api</artifactId>
-      <version>1.0-alpha-16-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-16-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-logging-provider-test</artifactId>
-      <version>1.0-alpha-2</version>
+      <version>1.0.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
