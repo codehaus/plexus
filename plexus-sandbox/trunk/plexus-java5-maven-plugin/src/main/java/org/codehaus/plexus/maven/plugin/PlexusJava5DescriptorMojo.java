@@ -39,7 +39,6 @@ import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.cdc.ComponentDescriptorCreatorException;
 import org.codehaus.plexus.cdc.ComponentDescriptorWriter;
 import org.codehaus.plexus.component.annotations.Component;
@@ -134,7 +133,8 @@ public class PlexusJava5DescriptorMojo
 
         for ( String file : scanner.getIncludedFiles() )
         {
-            ComponentDescriptor desc = scan( cl, file.substring( 0, file.lastIndexOf( ".class" ) ).replace( '/', '.' ) );
+            ComponentDescriptor desc = scan( cl, file
+                .substring( 0, file.lastIndexOf( ".class" ) ).replace( '\\', '.' ).replace( '/', '.' ) );
             if ( desc != null )
             {
                 cset.addComponentDescriptor( desc );
@@ -151,7 +151,7 @@ public class PlexusJava5DescriptorMojo
 
         File outputFile = new File( outputDirectory, fileName );
 
-        if ( !outputFile.getParentFile().mkdirs() )
+        if ( !outputFile.getParentFile().exists() && !outputFile.getParentFile().mkdirs() )
         {
             throw new MojoExecutionException( "Cannot create directory " + outputFile.getParent() );
         }
@@ -200,16 +200,14 @@ public class PlexusJava5DescriptorMojo
 
             desc.setConfiguration( new XmlPlexusConfiguration( "configuration" ) );
 
-            Class<?> cur = c;
-            while ( !Object.class.isAssignableFrom( cur ) )
-            {
-                scan( cur, desc );
-                cur = cur.getSuperclass();
-            }
-
             if ( getLog().isDebugEnabled() )
             {
                 getLog().debug( "  Component found: " + desc.getHumanReadableKey() );
+            }
+
+            for ( Class<?> cur = c; !cur.isAssignableFrom( Object.class ); cur = cur.getSuperclass() )
+            {
+                scan( cur, desc );
             }
 
             return desc;
@@ -225,6 +223,11 @@ public class PlexusJava5DescriptorMojo
     {
         for ( Field f : cur.getDeclaredFields() )
         {
+            if ( getLog().isDebugEnabled() )
+            {
+                getLog().debug( "    Scanning field " + f );
+            }
+
             Parameter paramAnnotation = f.getAnnotation( Parameter.class );
 
             if ( paramAnnotation != null )
@@ -246,7 +249,14 @@ public class PlexusJava5DescriptorMojo
                 ComponentRequirement req = new ComponentRequirement();
                 desc.addRequirement( req );
 
-                req.setRole( reqAnnotation.role().getName() );
+                if ( reqAnnotation.role().isAssignableFrom( Object.class ) )
+                {
+                    req.setRole( f.getType().getName() );
+                }
+                else
+                {
+                    req.setRole( reqAnnotation.role().getName() );
+                }
                 req.setRoleHint( reqAnnotation.hint() );
                 req.setFieldName( f.getName() );
                 req.setFieldMappingType( f.getType().getName() );
@@ -271,6 +281,12 @@ public class PlexusJava5DescriptorMojo
                 // that's impossible because we don't know the implementation..
                 // What I'd like to do is:
                 // req.setConfiguration( reqConfig );
+
+                if ( getLog().isDebugEnabled() )
+                {
+                    getLog().debug( "      Requirement: " + req.getHumanReadableKey() );
+                }
+
             }
         }
     }
