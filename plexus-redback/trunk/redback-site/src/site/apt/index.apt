@@ -1,11 +1,10 @@
- -----
+ ----- 
  Redback
+ ----- 
+ 26 October 2006 
  -----
- 26 October 2006
- -----
 
-Introduction
+ Introduction
 
- Redback is cool.
-
- But we should have a better introduction then that.
+ Redback is a security framework for applications.  It comes with a role based access control implementation for managing authorization.  
+ 
