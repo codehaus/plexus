@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.codehaus.plexus</groupId>
     <artifactId>plexus-containers</artifactId>
-    <version>1.0-alpha-23-SNAPSHOT</version>
+    <version>1.0-alpha-25-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-component-annotations</artifactId>
   <name>Plexus Component Annotations</name>
@@ -19,10 +19,4 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-component-api</artifactId>
-    </dependency>
-  </dependencies>
 </project>
