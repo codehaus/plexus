@@ -100,7 +100,7 @@ fi
 echo "Using PLEXUS_HOME:   $PLEXUS_HOME"
 echo "Using PLEXUS_BASE:   $PLEXUS_BASE"
 echo "Using PLEXUS_TMPDIR: $PLEXUS_TMPDIR"
-if [ $JAVA_HOME ] ; then
+if [ ! -z "$JAVA_HOME" ] ; then
   echo "Using JAVA_HOME:     $JAVA_HOME"
 fi
 
