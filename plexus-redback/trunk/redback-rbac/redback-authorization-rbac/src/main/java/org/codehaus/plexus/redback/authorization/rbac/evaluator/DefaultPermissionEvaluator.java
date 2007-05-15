@@ -37,7 +37,7 @@ public class DefaultPermissionEvaluator
     implements PermissionEvaluator
 {
     /**
-     * @plexus.requirement role-hint="jdo"
+     * @plexus.requirement role-hint="cached"
      */
     private UserManager userManager;
 
