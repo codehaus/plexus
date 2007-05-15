@@ -57,7 +57,7 @@ public class AssignmentsAction
     // ------------------------------------------------------------------
 
     /**
-     * @plexus.requirement role-hint="jdo"
+     * @plexus.requirement role-hint="cached"
      */
     private RBACManager manager;
 
