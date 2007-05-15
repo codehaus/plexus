@@ -47,7 +47,7 @@ public class JdoKeyManager
     implements Initializable
 {
     /**
-     * @plexus.requirement role-hint="cached"
+     * @plexus.requirement role-hint="jdo"
      */
     private JdoFactory jdoFactory;
 
