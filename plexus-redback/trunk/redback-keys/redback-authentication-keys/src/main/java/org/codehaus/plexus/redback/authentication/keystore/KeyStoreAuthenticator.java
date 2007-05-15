@@ -51,7 +51,7 @@ public class KeyStoreAuthenticator
     private KeyManager keystore;
     
     /**
-     * @plexus.requirement role-hint="jdo"
+     * @plexus.requirement role-hint="cached"
      */
     private UserManager userManager;
 
