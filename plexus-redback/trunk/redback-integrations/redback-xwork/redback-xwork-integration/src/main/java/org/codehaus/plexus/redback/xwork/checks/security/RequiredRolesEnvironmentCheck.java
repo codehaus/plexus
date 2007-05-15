@@ -38,7 +38,7 @@ public class RequiredRolesEnvironmentCheck
 {
 
     /**
-     * @plexus.requirement role-hint="jdo"
+     * @plexus.requirement role-hint="cached"
      */
     private RBACManager rbacManager;
 
