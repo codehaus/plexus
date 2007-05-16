@@ -84,6 +84,9 @@ public class AutoLoginInterceptor
             getLogger().debug( "User already authenticated." );
 
             checkCookieConsistency( securitySession );
+            
+            // update single sign on cookie
+            autologinCookies.setSignonCookie( securitySession.getUser().getUsername() );
         }
         else
         {
