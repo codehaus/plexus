@@ -148,6 +148,10 @@ public class AutoLoginCookies
              * web contexts.
              */
             Cookie cookie = createCookie( SIGNON_KEY, authkey.getKey(), settings.getDomain(), settings.getPath() );
+            if ( timeout > 0 )
+            {
+                cookie.setMaxAge( timeout );
+            }
             ServletActionContext.getResponse().addCookie( cookie );
 
         }
