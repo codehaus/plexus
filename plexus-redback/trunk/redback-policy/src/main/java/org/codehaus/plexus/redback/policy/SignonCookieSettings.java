@@ -33,7 +33,8 @@ public class SignonCookieSettings
     public void initialize()
         throws InitializationException
     {
-        cookieTimeout = config.getInt( "security.signon.timeout" );
+        // cookie timeouts in the configuration settings is labeled to be in minutes, so adjust to minutes
+        cookieTimeout = config.getInt( "security.signon.timeout" ) * 60;
         domain = config.getString( "security.signon.domain" );
         path = config.getString( "security.signon.path" );
     }
