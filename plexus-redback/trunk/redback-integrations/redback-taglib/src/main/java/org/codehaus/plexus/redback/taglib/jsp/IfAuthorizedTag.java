@@ -58,6 +58,8 @@ public class IfAuthorizedTag
         Boolean authzStatusBool = (Boolean) pageContext.getAttribute( "redbackCache" + permission + resource );
         boolean authzStatus;
 
+        //long execTime = System.currentTimeMillis();
+        
         if ( authzStatusBool == null )
         {
             ActionContext context = ActionContext.getContext();
@@ -81,10 +83,13 @@ public class IfAuthorizedTag
             {
                 throw new JspTagException( "error with authorization", ae );
             }
+            
+            //System.out.println( "[PERF] " + "redbackCache" + permission + resource + " Time: " + (System.currentTimeMillis() - execTime) ); 
         }
         else
         {
             authzStatus = authzStatusBool.booleanValue();
+            //System.out.println( "[PERF][Cached] " + "redbackCache" + permission + resource + " Time: " + (System.currentTimeMillis() - execTime) ); 
         }
 
         pageContext.setAttribute( "ifAuthorizedTag", Boolean.valueOf( authzStatus ) );
