@@ -103,15 +103,16 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
                 rbacManager.removeRole( role );
 
                 // remove the permissions
-                for ( Iterator i = template.getPermissions().iterator(); i.hasNext(); )
-                {
-                    ModelPermission permission = (ModelPermission) i.next();
-                    if ( !permission.isPermanent() )
-                    {
-                        rbacManager.removePermission( permission.getName() + template.getDelimiter()
-                                        + resolvePermissionResource( model, permission, resource ) );
-                    }
-                }
+                // todo, do this in a better way too, permissions can be shared across multiple roles and that could blow chunks here.
+                //for ( Iterator i = template.getPermissions().iterator(); i.hasNext(); )
+                //{
+                //    ModelPermission permission = (ModelPermission) i.next();
+                //    if ( !permission.isPermanent() )
+                //    {                                                                        
+                //            rbacManager.removePermission( permission.getName() + template.getDelimiter()
+                //                       + resolvePermissionResource( model, permission, resolvePermissionResource( model, permission, resource ) ) );                     
+                //   }
+                //}
 
                 // check if we want to remove the resources
                 Resource rbacResource = rbacManager.getResource( resource );
@@ -133,10 +134,10 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
         {
             throw new RoleManagerException( "unable to remove templated role: " + roleName, e );
         }
-        catch ( RoleTemplateProcessorException e )
-        {
-            throw new RoleManagerException( "unable to remove templated role, error resolving resource: Role:" + roleName + " Resource: " + resource, e );
-        }
+        //catch ( RoleTemplateProcessorException e )
+        //{
+        //    throw new RoleManagerException( "unable to remove templated role, error resolving resource: Role:" + roleName + " Resource: " + resource, e );
+        //}
     }
 
     private void processResource( ModelTemplate template, String resource ) throws RoleManagerException
@@ -368,7 +369,17 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
             }
         }
 
-        return resolveResource( model, resource );
+        // check if the resource resolves to declared operation
+        String declaredResource = resolveResource( model, permission.getResource() );
+        if ( declaredResource != null  )
+        {
+            return declaredResource;
+        }
+        else            
+        {
+            // either niether of the above apply, then its the resource.
+            return resource;
+        }
     }
 
     private String resolveResource( RedbackRoleModel model, String resource ) throws RoleTemplateProcessorException
@@ -381,8 +392,7 @@ public class DefaultRoleTemplateProcessor implements RoleTemplateProcessor
         }
         else
         {
-            return resource;
-            //throw new RoleTemplateProcessorException( "unable to resolve resource to its name/identifier" );
+            return null;
         }
     }
 }
