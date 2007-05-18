@@ -34,6 +34,7 @@ import org.codehaus.plexus.jetty.configuration.ProxyHttpListener;
 import org.codehaus.plexus.jetty.configuration.ServletContext;
 import org.codehaus.plexus.jetty.configuration.WebContext;
 import org.codehaus.plexus.jetty.configuration.Webapp;
+import org.codehaus.plexus.jetty.configuration.Servlet;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.util.FileUtils;
@@ -60,8 +61,8 @@ import java.util.Vector;
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author Jason van Zyl
+ * @author Andrew Williams
  * @version $Id: JettyServletContainer.java 4167 2006-09-20 20:31:27Z evenisse $
- * @todo need to be able to deploy individual servlets
  * @todo could we filter web.xml files via jetty somehow?
  */
 public abstract class AbstractJettyServletContainer
@@ -268,26 +269,55 @@ public abstract class AbstractJettyServletContainer
 
         context.setClassLoader( appRuntimeProfile.getApplicationRealm() );
 
+        if ( servletContext.getPath() != null && servletContext.getServlet() != null )
+        {
+            deployServlet( servletContext.getName(), servletContext.getPath(), servletContext.getServlet(),
+                           servletContext.getInitParameters(), context );
+        }
+
+        if ( servletContext.getServlets() != null )
+        {
+            for ( Iterator s = servletContext.getServlets().iterator(); s.hasNext(); )
+            {
+                deployServlet( (Servlet) s.next(), context );
+            }
+        }
+    }
+
+    private void deployServlet( Servlet servlet, ServletHttpContext context )
+        throws ServletContainerException
+    {
+        deployServlet( servlet.getName(), servlet.getPath(), servlet.getServletClass(), servlet.getInitParameters(),
+                       context);
+    }
+
+    private void deployServlet( String name, String path, String servletClass, List initParams, ServletHttpContext context )
+        throws ServletContainerException
+    {
+        if ( name == null )
+        {
+            name = servletClass;
+        }
+
         try
         {
-            ServletHolder servletHolder =
-                context.addServlet( servletContext.getName(), servletContext.getPath(), servletContext.getServlet() );
+            ServletHolder servletHolder = context.addServlet( name, path, servletClass );
 
             // ----------------------------------------------------------------------------
             // Setup any init parameters
             // ----------------------------------------------------------------------------
 
-            if ( servletContext.getInitParameters() != null )
+            if ( initParams != null )
             {
-                for ( Iterator i = servletContext.getInitParameters().iterator(); i.hasNext(); )
+                for ( Iterator i = initParams.iterator(); i.hasNext(); )
                 {
                     InitParameter param = (InitParameter) i.next();
 
-                    String name = param.getName();
+                    String paramName = param.getName();
 
-                    String value = param.getValue();
+                    String paramValue = param.getValue();
 
-                    getLogger().info( "Setting init-param [" + name + " = " + value + "]" );
+                    getLogger().info( "Setting init-param [" + paramName + " = " + paramValue + "]" );
 
                     String directive = param.getDirective();
 
@@ -295,26 +325,26 @@ public abstract class AbstractJettyServletContainer
                     {
                         if ( "create-directory".equals( directive ) )
                         {
-                            FileUtils.mkdir( value );
+                            FileUtils.mkdir( paramValue );
                         }
                     }
 
-                    servletHolder.setInitParameter( name, value );
+                    servletHolder.setInitParameter( paramName, paramValue );
                 }
             }
         }
         catch ( ClassNotFoundException e )
         {
-            throw new ServletContainerException( "Cannot find the servlet " + servletContext.getServlet(), e );
+            throw new ServletContainerException( "Cannot find the servlet " + servletClass, e );
         }
         catch ( InstantiationException e )
         {
-            throw new ServletContainerException( "Cannot instantiate the servlet " + servletContext.getServlet(), e );
+            throw new ServletContainerException( "Cannot instantiate the servlet " + servletClass, e );
         }
         catch ( IllegalAccessException e )
         {
             throw new ServletContainerException(
-                "Illegal access trying to use the servlet " + servletContext.getServlet(), e );
+                "Illegal access trying to use the servlet " + servletClass, e );
         }
 
         addContext( context );

@@ -32,6 +32,7 @@ import org.codehaus.plexus.jetty.configuration.ProxyHttpListener;
 import org.codehaus.plexus.jetty.configuration.ServiceConfiguration;
 import org.codehaus.plexus.jetty.configuration.WebContext;
 import org.codehaus.plexus.jetty.configuration.Webapp;
+import org.codehaus.plexus.jetty.configuration.ServletContext;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 
@@ -45,12 +46,20 @@ import java.util.List;
 public class DefaultServiceConfigurationBuilderTest
     extends PlexusTestCase
 {
+    ServiceConfigurationBuilder configurationBuilder;
+
+    public void setUp()
+        throws Exception
+    {
+        super.setUp();
+
+        configurationBuilder =
+            (ServiceConfigurationBuilder) lookup( ServiceConfigurationBuilder.ROLE );
+    }
+
     public void testBasic()
         throws Exception
     {
-        ServiceConfigurationBuilder configurationBuilder =
-            (ServiceConfigurationBuilder) lookup( ServiceConfigurationBuilder.ROLE );
-
         Xpp3Dom dom = Xpp3DomBuilder.build(
             new FileReader( getTestFile( "src/test/resources/full-configuration-example.xml" ) ) );
 
@@ -162,5 +171,26 @@ public class DefaultServiceConfigurationBuilderTest
         assertEquals( "localhost", proxyHttpListener.getProxyHost() );
 
         assertEquals( 80, proxyHttpListener.getProxyPort() );
+    }
+
+    public void testServlets()
+        throws Exception
+    {
+        Xpp3Dom dom = Xpp3DomBuilder.build(
+            new FileReader( getTestFile( "src/test/resources/jetty-servlets.xml" ) ) );
+
+        PlexusConfiguration plexusConfiguration = new XmlPlexusConfiguration( dom );
+
+        ServiceConfiguration configuration =
+            configurationBuilder.buildConfiguration( plexusConfiguration, getContainer().getContainerRealm() );
+
+        assertNotNull( configuration.getServletContexts() );
+
+        assertEquals( ServletContext.class, configuration.getServletContexts().get( 0 ).getClass() );
+        ServletContext context = (ServletContext) configuration.getServletContexts().get( 0 );
+
+        assertNotNull( context.getServlets() );
+
+        assertEquals( 2, context.getServlets().size() );
     }
 }

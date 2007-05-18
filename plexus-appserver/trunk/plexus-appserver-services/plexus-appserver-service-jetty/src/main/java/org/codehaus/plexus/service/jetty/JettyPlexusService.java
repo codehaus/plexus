@@ -183,7 +183,7 @@ public class JettyPlexusService
         {
             ServletContext servletContext = (ServletContext) i.next();
 
-            getLogger().info( "Deploying servlet " + servletContext.getName() + " with context path of " +
+            getLogger().info( "Deploying servlet context " + servletContext.getName() + " with path of " +
                 servletContext.getContext() );
 
             try
