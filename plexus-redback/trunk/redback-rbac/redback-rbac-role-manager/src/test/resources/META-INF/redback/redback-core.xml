@@ -97,7 +97,7 @@
   <templates>
   <template>
     <id>test-template</id>
-      <namePrefix>Foo</namePrefix>
+      <namePrefix>Foo 1</namePrefix>
       <permissions>
         <permission>
           <id>eat-cornflakes-permission</id>
@@ -112,7 +112,7 @@
     </template>
     <template>
       <id>test-template-2</id>
-      <namePrefix>Foo</namePrefix>
+      <namePrefix>Foo 2</namePrefix>
       <permissions>
         <permission>
           <id>eat-cornflakes-permission</id>

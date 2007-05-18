@@ -19,6 +19,7 @@ package org.codehaus.plexus.redback.role.template;
 import java.io.File;
 
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.redback.rbac.Permission;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.Role;
 import org.codehaus.plexus.redback.role.model.ModelTemplate;
@@ -77,9 +78,19 @@ public class RoleTemplateProcessorTest
         
         String templateName = template.getNamePrefix() + template.getDelimiter() + "foo";
         
-        assertTrue( rbacManager.resourceExists( "cornflakes" ) );        
+        assertTrue( rbacManager.resourceExists( "cornflakes name" ) );        
         
         assertTrue( rbacManager.roleExists( templateName ) );
+        
+        Role testRole = rbacManager.getRole( templateName );
+        
+        assertNotNull( testRole );
+        
+        Permission testPermission = (Permission)testRole.getPermissions().get( 0 );
+        
+        assertNotNull( testPermission );
+        
+        assertEquals( "Eat Cornflakes - cornflakes name", testPermission.getName() );
         
         templateProcessor.remove( redback, "test-template", "foo" );
         

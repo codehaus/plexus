@@ -2,7 +2,7 @@
   <resources>
     <resource>
       <id>cornflakes</id>
-      <name>cornflakes</name>
+      <name>cornflakes name</name>
       <permanent>true</permanent>
       <description>my breakfast cereal</description>
     </resource>
