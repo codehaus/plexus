@@ -384,6 +384,9 @@ public class DefaultRoleModelValidator implements RoleModelValidator
     private void validateTemplateClosure( RedbackRoleModel model )
     {
         List templateIdList = RoleModelUtils.getTemplateIdList( model );
+        
+        // template name prefix must be unique
+        List templateNamePrefixList = new ArrayList();
 
         for ( Iterator i = model.getTemplates().iterator(); i.hasNext(); )
         {
@@ -415,6 +418,15 @@ public class DefaultRoleModelValidator implements RoleModelValidator
                                         + " in child templates of template " + template.getId() );
                     }
                 }
+            }
+            
+            if ( !templateNamePrefixList.contains( template.getNamePrefix() ) )
+            {
+                templateNamePrefixList.add( template.getNamePrefix() );
+            }
+            else
+            {
+                addValidationError( "duplicate name prefix detected: " + template.getNamePrefix() );
             }
         }
     }

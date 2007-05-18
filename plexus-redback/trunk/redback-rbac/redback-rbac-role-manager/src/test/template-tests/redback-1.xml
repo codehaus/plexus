@@ -75,23 +75,23 @@
     </template>
     <template>
       <id>test-template-2</id>
-      <namePrefix>Foo</namePrefix>
+      <namePrefix>Foo 2</namePrefix>
       <permissions>
         <permission>
           <id>eat-cornflakes-permission</id>
-          <name>Eat Cornflakes</name>
+          <name>Eat Cornflakes 1</name>
           <operation>eat-cornflakes</operation>
           <resource>cornflakes</resource>
         </permission>
         <permission>
           <id>eat-cornflakes-permission-2</id>
-          <name>Eat Cornflakes</name>
+          <name>Eat Cornflakes 2</name>
           <operation>eat-cornflakes</operation>
           <resource>global</resource>
         </permission>
         <permission>
           <id>eat-cornflakes-permission-3</id>
-          <name>Eat Cornflakes</name>
+          <name>Eat Cornflakes 3</name>
           <operation>eat-cornflakes</operation>
           <resource>${resource}</resource>
         </permission>

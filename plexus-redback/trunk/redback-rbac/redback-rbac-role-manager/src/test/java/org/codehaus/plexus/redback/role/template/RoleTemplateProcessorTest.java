@@ -20,6 +20,7 @@ import java.io.File;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.redback.rbac.RBACManager;
+import org.codehaus.plexus.redback.rbac.Role;
 import org.codehaus.plexus.redback.role.model.ModelTemplate;
 import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 import org.codehaus.plexus.redback.role.model.io.stax.RedbackRoleModelStaxReader;
@@ -84,7 +85,23 @@ public class RoleTemplateProcessorTest
         
         assertFalse( rbacManager.roleExists( templateName ) );
         
+        templateProcessor.create( redback, "test-template-2", "foo" );
+        
+        ModelTemplate template2 = RoleModelUtils.getModelTemplate( redback, "test-template-2" );
+        
+        String templateName2 = template2.getNamePrefix() + template2.getDelimiter() + "foo";
+        
+        assertTrue( rbacManager.roleExists( templateName2 ) );
+        
+        Role role = rbacManager.getRole( templateName2 );
+        
+        assertNotNull( role );
+        
+        assertEquals( 3, template2.getPermissions().size() );
+        assertEquals( 3, role.getPermissions().size() );
+        
+        assertEquals( 1, role.getChildRoleNames().size() );
+        
     }
- 
- 
+  
 }
