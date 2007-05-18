@@ -10,10 +10,24 @@ public class ServletContext
 {
     private String name;
 
+    /**
+     * This is going to be removed in favour of the servlet list
+     * @deprecated
+     */
     private String path;
 
+    /**
+     * This is going to be removed in favour of the servlet list
+     * @deprecated
+     */
     private String servlet;
 
+    private List servlets;
+
+    /**
+     * This is going to be removed in favour of the servlet list
+     * @deprecated
+     */
     private List initParameters;
 
     public String getName()
@@ -29,6 +43,11 @@ public class ServletContext
     public String getServlet()
     {
         return servlet;
+    }
+
+    public List getServlets()
+    {
+        return servlets;
     }
 
     public List getInitParameters()
