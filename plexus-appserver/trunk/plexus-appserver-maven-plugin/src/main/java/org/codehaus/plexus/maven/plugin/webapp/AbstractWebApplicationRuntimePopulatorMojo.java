@@ -19,18 +19,23 @@ package org.codehaus.plexus.maven.plugin.webapp;
  * under the License.
  */
 
-import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.archiver.jar.JarArchiver;
-import org.apache.maven.plugin.MojoExecutionException;
-
-import java.util.Properties;
-import java.io.File;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import org.apache.maven.plugin.MojoExecutionException;
+import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.archiver.jar.JarArchiver;
+import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.InterpolationFilterReader;
 
 /**
  * The base for the appserver web application -> plexus-application wrapper
@@ -51,7 +56,26 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
      * @parameter expression="${webappMappings}"
      */
     protected Properties webappMappings;
+    
+    /**
+     * Will be interpolated Map containing :
+     * <ul>
+     *   <li>webappPort = webappPort</li>
+     *   <li>warFilePath = ${plexus.home}/lib/ + war.getName</li>
+     *   <li>contextPath= webAppMappings groupId:artifactId -> value webApp context</li>
+     *   <li>all applicationProperties</li>
+     * </ul>
+     * @parameter expression="${applicationFile}"
+     */
+    protected File applicationFile;
+    
+    /**
+     * Application properties.
+     * @parameter expression="${applicationProperties}"
+     */
+    protected Properties applicationProperties;
 
+    
     public File wrapWebApplication( File war, String context, int port )
         throws MojoExecutionException
     {
@@ -76,7 +100,56 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
             out = new BufferedWriter( new FileWriter( plexusConf ) );
             out.write( "<plexus>\n</plexus>\n" );
             out.close();
+            if(this.applicationFile == null)
+            {
+                generateApplicationFile( confDir, war, context, port );
+            }
+            else
+            {
+                generateApplicationFileWithInterpolation( confDir, war, context );
+            }
 
+            File metaDir = new File( appDir, "META-INF/plexus" );
+            metaDir.mkdirs();
+            File appMeta = new File( metaDir, "application.xml" );
+            out = new BufferedWriter( new FileWriter( appMeta ) );
+            out.write( "<plexus-appserver><name>" + warName + "</name></plexus-appserver>\n" );
+            out.close();
+
+            out = null;
+
+            try
+            {
+                JarArchiver jarArchiver = new JarArchiver();
+                File applicationJar = new File( target, warName + "-plexus-application" + ".jar" );
+                jarArchiver.addDirectory( appDir );
+                jarArchiver.setDestFile( applicationJar );
+                jarArchiver.createArchive();
+
+                return applicationJar;
+            }
+            catch ( ArchiverException e )
+            {
+                throw new MojoExecutionException( "Error while packaging the web application into the runtime.", e );
+            }
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "Error while copying the appserver into the runtime.", e );
+        }
+        finally
+        {
+            IOUtil.close( out );
+        }
+    }
+    
+    private void generateApplicationFile(File confDir, File war, String context, int port)
+      throws IOException
+    {
+        BufferedWriter out = null;
+        try
+        {
+        
             File appConf = new File( confDir, "application.xml" );
             out = new BufferedWriter( new FileWriter( appConf ) );
             out.write( "<application>\n" +
@@ -102,48 +175,36 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
                 "  </services>\n" +
                 "</application>\n" );
             out.close();
-
-            File metaDir = new File( appDir, "META-INF/plexus" );
-            metaDir.mkdirs();
-            File appMeta = new File( metaDir, "application.xml" );
-            out = new BufferedWriter( new FileWriter( appMeta ) );
-            out.write( "<plexus-appserver><name>" + warName + "</name></plexus-appserver>\n" );
+        } finally
+        {
+            IOUtil.close( out );
+        }   
+    }
+    
+    private void generateApplicationFileWithInterpolation(File confDir, File war, String context)
+        throws IOException
+    {
+        
+        BufferedWriter out = null;
+        
+        try
+        {        
+            Map interpolationDatas = new HashMap();
+            interpolationDatas.put( "webappPort", Integer.toString( webappPort ) );
+            interpolationDatas.put( "warFilePath", "${plexus.home}/lib/" + war.getName() );
+            interpolationDatas.put( "contextPath", context );
+            getLog().info( "Use applicationProperties " +  applicationProperties == null ? "empty" : applicationProperties.toString() );
+            interpolationDatas.putAll( this.applicationProperties == null ? Collections.EMPTY_MAP : applicationProperties );
+            InterpolationFilterReader interpolationFilterReader = 
+                new InterpolationFilterReader( new FileReader( this.applicationFile), interpolationDatas );
+            File appConf = new File( confDir, "application.xml" );
+            out = new BufferedWriter( new FileWriter( appConf ) );
+            out.write( IOUtil.toString( interpolationFilterReader ) );
             out.close();
-
-            out = null;
-
-            Archiver archiver = new JarArchiver();
-
-            try
-            {
-                File applicationJar = new File( target, warName + "-plexus-application" + ".jar" );
-                archiver.addDirectory( appDir );
-                archiver.setDestFile( applicationJar );
-                archiver.createArchive();
-
-                return applicationJar;
-            }
-            catch ( ArchiverException e )
-            {
-                throw new MojoExecutionException( "Error while packaging the web application into the runtime.", e );
-            }
-        }
-        catch ( IOException e )
+        } finally
         {
-            throw new MojoExecutionException( "Error while copying the appserver into the runtime.", e );
+            IOUtil.close( out );
         }
-        finally
-        {
-            if ( out != null )
-            {
-                try
-                {
-                    out.close();
-                }
-                catch ( IOException e )
-                {
-                }
-            }
-        }
+        
     }
 }
