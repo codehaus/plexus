@@ -34,5 +34,13 @@
       </exclusions>
     </dependency>
   </dependencies>
+	
+	<reporting>
+	  <plugins>
+      <plugin>
+        <artifactId>maven-plugin-plugin</artifactId>
+      </plugin>
+	  </plugins>
+	</reporting>
  
 </project>
