@@ -186,7 +186,7 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
     {
         
         BufferedWriter out = null;
-        
+        InterpolationFilterReader interpolationFilterReader = null;
         try
         {        
             Map interpolationDatas = new HashMap();
@@ -195,15 +195,17 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
             interpolationDatas.put( "contextPath", context );
             getLog().info( "Use applicationProperties " +  applicationProperties == null ? "empty" : applicationProperties.toString() );
             interpolationDatas.putAll( this.applicationProperties == null ? Collections.EMPTY_MAP : applicationProperties );
-            InterpolationFilterReader interpolationFilterReader = 
+            interpolationFilterReader = 
                 new InterpolationFilterReader( new FileReader( this.applicationFile), interpolationDatas );
             File appConf = new File( confDir, "application.xml" );
             out = new BufferedWriter( new FileWriter( appConf ) );
             out.write( IOUtil.toString( interpolationFilterReader ) );
+            interpolationFilterReader.close();
             out.close();
         } finally
         {
             IOUtil.close( out );
+            IOUtil.close( interpolationFilterReader );
         }
         
     }
