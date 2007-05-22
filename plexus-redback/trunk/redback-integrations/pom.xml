@@ -31,9 +31,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-security/trunk/ui</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-security/trunk/ui</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-ui</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-redback/trunk/redback-integrations</url>
   </scm>
   <modules>
     <module>redback-xwork</module>
