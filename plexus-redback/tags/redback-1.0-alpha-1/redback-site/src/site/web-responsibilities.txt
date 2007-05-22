@@ -1,0 +1,137 @@
+
+Plexus Security Web Integration
+
+Reponsibilities.
+
+plexus-security/ui/web - Authentication Actions and Views.
+
+   namespace: /security/admin  (Administrator Tools Only)
+
+      /userlist.action
+                         Views:     User List
+                         Commands:  Show List
+                         Results:   Show List             [userlist.action]
+                         Links:     Create User <form>    [usercreate.action]
+                                    Edit User <form>      [useredit.action]
+                         From:      User Triggered.
+
+      /userfind.action
+                         Views:     Show Search Box
+                         Commands:  Find User
+                         Results:   Edit User             [userfind.action]
+                         Links:     Self <form>           [userfind.action]
+                         From:      Find User Form.
+
+      /useredit.action
+                         Views:     Show Edit Page
+                         Commands:  Display User Details
+                                    Submit User Details
+                         Links:     Self <form>           [useredit.action]
+                         Results:   Display User Details  [useredit.action]
+                                    Show List             [userlist.action]
+                         From:      User List Row Button.
+                                    Find User Result.
+
+      /usercreate.action
+                         Views:     Show New User Page
+                         Commands:  Display New User Page
+                                    Submit New User Details
+                         Links:     Self <form>           [usercreate.action]
+                         Results:   Edit User             [useredit.action]
+                                    Display User Details  [usercreate.action]
+                         From:      User List Button.
+
+      /userdelete.action
+                         Views:     Show Delete Confirmation Page.
+                         Commands:  Confirm Delete User
+                                    Delete User
+                         Links:     Self <form>           [userdelete.action]
+                                    Display User List     [userlist.action]
+                         From:      User List Row Screen Button.
+                                    User Edit Screen Button.
+
+      /systeminfo.action
+
+   namespace: /security  (General Access Tools)
+
+      /login.action
+                         Views:     Show Login Page
+                         Commands:  Show Login Page
+                                    Perform Login
+                         Results:   Main Page ???
+                                    Login Page
+                         Links:     Self <form>
+                         From:      User triggered.
+                                    Authentication Framework - Must Authn Exception?
+
+      /logout.action
+
+      /status.action
+
+      /account.action
+                         Views:     Show Account Details <form>
+                         Commands:  Display Account Details.
+                                    Submit New Account Details.
+                         Result:    Account Details (on error)
+                                    Main Page ???
+                         From:      User triggered.
+
+      /register.action
+                         Views:     New User Registration Page
+                         Commands:  Display New User Registration Page
+                                    Submit New User Registration.
+                         Result:    New User Registration Page (on error)
+                                    Main Page ???
+                         From:      User triggered.
+
+      /password.action
+                         Views:     Password Change Password Page.
+                         Commands:  Display Change Password Page.
+                                    Submit Password Change.
+                         Result:    Password Change Screen (on error)
+                                    Main Page ???
+                         From:      User triggered.
+                                    Authentication Framework - Password Change Exception.
+                                    Security Policy - Password Expired Exception.
+
+plexus-security/ui/web-rbac - Authorizations Actions and Views.
+
+   namespace: /security/admin  (Administrator Tools Only)
+
+      /assignments.action
+                         Views:     Current Roles View.
+                                    Available Roles View.
+                         Commands:  Grant Role.
+                                    Drop Role.
+                         Result:    Current Roles View.
+                                    Available Roles View.
+                         From:      Current Roles Form.
+                                    Available Roles Form.
+
+     /roles.action
+                         Views:     Show All Roles
+                                    Edit Role Details
+                         Commands:  Create Role.
+                                    Remove Role.
+                                    Edit Role.
+                         Result:    Edit Role Details.
+                                    Show All Roles.
+                                    Admin Main Page ??
+                         From:      Show All Roles Row.
+                                    Edit Role Details Form.
+                                    Current Roles View.     [assignments!current.action]
+
+     /permissions.action
+                         Views:     Show Permissions List.
+                                    Edit Permission.
+                                    Create Permission.
+                         Commands:  Create Permission.
+                                    Remove Permission.
+                                    Update Permission.
+                         Result:    Show Permissions List.
+                                    Edit Permission.
+                         From:      Show Permissions List.
+                                    Edit Permission.
+                                    Show Role Details        [roles!details.action]
+
+
