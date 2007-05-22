@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
     <artifactId>redback-integrations</artifactId>
-    <version>1.0-alpha-1-SNAPSHOT</version>
+    <version>1.0-alpha-1</version>
   </parent>
   <artifactId>redback-xwork</artifactId>
   <name>Plexus Redback :: Integration :: XWork</name>
@@ -52,9 +52,9 @@
     </dependencies>
   </dependencyManagement>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations/redback-xwork</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations/redback-xwork</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-redback/trunk/redback-integrations/redback-xwork</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-1</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-redback/tags/redback-1.0-alpha-1</url>
   </scm>
 
   <modules>
