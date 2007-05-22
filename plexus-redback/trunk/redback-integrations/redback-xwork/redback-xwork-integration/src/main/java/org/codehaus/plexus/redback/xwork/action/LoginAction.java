@@ -89,13 +89,7 @@ public class LoginAction
     // ------------------------------------------------------------------
 
     public String show()
-    {
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        if ( session != null )
-        {
-            session.removeAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY );
-        }
-        
+    {       
         return INPUT;
     }
 
