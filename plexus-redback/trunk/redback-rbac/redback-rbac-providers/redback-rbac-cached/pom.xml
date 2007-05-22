@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
     <artifactId>redback-rbac-providers</artifactId>
-    <version>1.0-alpha-1-SNAPSHOT</version>
+    <version>1.0-alpha-1</version>
   </parent>
   <artifactId>redback-rbac-cached</artifactId>
   <name>Plexus Redback :: RBAC Provider :: Cached</name>
@@ -61,9 +61,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-rbac/redback-rbac-providers/redback-rbac-cached</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-rbac/redback-rbac-providers/redback-rbac-cached</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-authorization/plexus-security-authorization-rbac/plexus-security-authorization-rbac-stores/plexus-security-authorization-rbac-store-cached</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-1</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/tags/redback-1.0-alpha-1</url>
   </scm>
   <build>
     <plugins>
