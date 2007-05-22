@@ -23,7 +23,7 @@
   </parent>
   <groupId>org.codehaus.plexus.redback</groupId>
   <artifactId>redback</artifactId>
-  <version>1.0-alpha-1</version>
+  <version>1.0-alpha-2-SNAPSHOT</version>
   <name>Plexus Redback</name>
   <packaging>pom</packaging>
   <url>http://plexus.codehaus.org/redback</url>
@@ -355,9 +355,9 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-1</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-redback/tags/redback-1.0-alpha-1</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-redback/trunk</url>
   </scm>
 
   <build>
@@ -403,6 +403,6 @@
     <module>redback-site</module>
   </modules>
   <properties>
-    <security.version>1.0-alpha-1</security.version>
+    <security.version>1.0-alpha-2-SNAPSHOT</security.version>
   </properties>
 </project>
