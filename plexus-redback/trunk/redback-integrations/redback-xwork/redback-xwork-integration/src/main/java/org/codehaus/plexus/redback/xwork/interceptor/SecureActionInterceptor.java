@@ -19,6 +19,8 @@ package org.codehaus.plexus.redback.xwork.interceptor;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.redback.authorization.AuthorizationResult;
 import org.codehaus.plexus.redback.system.SecuritySession;
@@ -26,6 +28,7 @@ import org.codehaus.plexus.redback.system.SecuritySystem;
 import org.codehaus.plexus.redback.system.SecuritySystemConstants;
 import org.codehaus.plexus.xwork.interceptor.AbstractHttpRequestTrackerInterceptor;
 
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ActionInvocation;
@@ -188,6 +191,13 @@ public class SecureActionInterceptor
     protected String processRequiresAuthentication( ActionInvocation invocation )
         throws ComponentLookupException
     {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        
+        if ( session != null )
+        {
+            session.removeAttribute( SecuritySystemConstants.SECURITY_SESSION_KEY );
+        }
+        
         addActionInvocation( invocation ).setBackTrack();
         return REQUIRES_AUTHENTICATION;
     }    
