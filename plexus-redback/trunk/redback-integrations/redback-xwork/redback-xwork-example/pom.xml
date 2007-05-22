@@ -188,7 +188,7 @@
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations/redback-xwork/redback-xwork-example</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations/redback-xwork/redback-xwork-example</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-examples/plexus-security-example-webapp</url>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-redback/trunk/redback-integrations/redback-xwork/redback-xwork-example</url>
   </scm>
   
     <profiles>
