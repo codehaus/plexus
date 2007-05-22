@@ -89,7 +89,7 @@ public class LoginAction
     // ------------------------------------------------------------------
 
     public String show()
-    {       
+    {             
         return INPUT;
     }
 
