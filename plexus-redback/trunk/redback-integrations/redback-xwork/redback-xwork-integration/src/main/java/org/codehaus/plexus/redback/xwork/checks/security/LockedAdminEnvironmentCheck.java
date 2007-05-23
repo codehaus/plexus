@@ -35,8 +35,8 @@ import org.codehaus.plexus.redback.xwork.role.RoleConstants;
  * and unlocks them on startup.
  *
  * @author: Jesse McConnell <jesse@codehaus.org>
- * @version: $ID:$
- * @plexus.component role="org.codehaus.redback.system.check.EnvironmentCheck"
+ * @version: $Id:$
+ * @plexus.component role="org.codehaus.plexus.redback.system.check.EnvironmentCheck"
  * role-hint="locked-admin-check"
  */
 public class LockedAdminEnvironmentCheck extends AbstractLogEnabled implements EnvironmentCheck
