@@ -70,15 +70,15 @@ public interface JRubyInvoker
 
     /**
      * Adds a library as per the Ruby command line arg -I.
-     * @param libPath
+     * @param libPaths
      */
-    public void addLibPath( String libPath );
+    public void setLibraryPaths( String[] libPaths );
 
     /**
      * Adds a 'require' file as per the Ruby command line arg -r.
-     * @param reqLib
+     * @param reqLibs
      */
-    public void addReqLib( String reqLib );
+    public void setRequires( String[] reqLibs );
 
     /**
      * Appends an input value with the given key to the Ruby
