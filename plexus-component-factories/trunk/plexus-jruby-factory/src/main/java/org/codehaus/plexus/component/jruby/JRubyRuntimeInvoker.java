@@ -6,6 +6,8 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -53,7 +55,7 @@ public class JRubyRuntimeInvoker implements JRubyInvoker
 
     private Map inputs = new HashMap();
 
-    private List libPaths = new LinkedList();
+    private List libPaths;
 
     private List reqLibs = new LinkedList();
 
@@ -158,18 +160,24 @@ public class JRubyRuntimeInvoker implements JRubyInvoker
      * Adds a library as per the Ruby command line arg -I.
      * @param libPath
      */
-    public void addLibPath( String libPath )
+    public void setLibraryPaths( String[] libPaths )
     {
-        this.libPaths.add( libPath );
+        if( libPaths != null )
+        {
+            this.libPaths = Arrays.asList( libPaths );
+        }
     }
 
     /**
      * Adds a 'require' file as per the Ruby command line arg -r.
      * @param reqLib
      */
-    public void addReqLib( String reqLib )
+    public void setRequires( String[] reqLibs )
     {
-        this.reqLibs.add( reqLib );
+        if( reqLibs != null )
+        {
+            this.reqLibs = Arrays.asList( reqLibs );
+        }
     }
 
     /**
@@ -376,7 +384,7 @@ public class JRubyRuntimeInvoker implements JRubyInvoker
 	    String pathSeperator = System.getProperty( "path.separator" );
 	    pathSeperator = pathSeperator == null ? ";" : pathSeperator;
 
-	    if ( !libPaths.isEmpty() )
+	    if ( libPaths != null && !libPaths.isEmpty() )
 	    {
 	        StringBuffer libs = new StringBuffer();
 	        libs.append( "-I" );
@@ -545,7 +553,7 @@ public class JRubyRuntimeInvoker implements JRubyInvoker
         // TODO this is a fake cause we have no real process number in Java
         runtime.getGlobalVariables().defineReadonly("$$", new ValueAccessor(runtime.newFixnum(runtime.hashCode())));
         runtime.defineVariable(new RubyGlobal.StringGlobalVariable(runtime, "$0", runtime.newString( "<script>" ))); //filename)));
-        runtime.getLoadService().init( libPaths );
+        runtime.getLoadService().init( libPaths != null ? libPaths : Collections.EMPTY_LIST );
         Iterator iter = reqLibs.iterator();
 
         while ( iter.hasNext() )

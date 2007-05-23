@@ -22,7 +22,7 @@ public class JRubyComponentFactory
     protected boolean processLineEnds;
     protected String[] libraryPaths;
     protected String[] requires;
-    protected Map mapInputs;
+    protected Map inputs;
 
     public Object newInstance( ComponentDescriptor componentDescriptor,
                                ClassRealm classRealm,
@@ -37,26 +37,12 @@ public class JRubyComponentFactory
         invoker.setWarning( warning );
         invoker.setDebug( debug );
         invoker.setProcessLineEnds( processLineEnds );
+        invoker.setLibraryPaths( libraryPaths );
+        invoker.setRequires( requires );
 
-        if( libraryPaths != null )
+        if( inputs != null )
         {
-            for( int i=0; i<libraryPaths.length; i++ )
-            {
-                invoker.addLibPath( libraryPaths[i] );
-            }
-        }
-
-        if( requires != null )
-        {
-            for( int i=0; i<requires.length; i++ )
-            {
-                invoker.addReqLib( requires[i] );
-            }
-        }
-
-        if( mapInputs != null )
-        {
-            for( Iterator iter = mapInputs.entrySet().iterator(); iter.hasNext(); )
+            for( Iterator iter = inputs.entrySet().iterator(); iter.hasNext(); )
             {
                 Map.Entry entry = (Map.Entry)iter.next();
 

@@ -15,6 +15,15 @@ import org.codehaus.plexus.util.StringOutputStream;
 public class JRubyComponentFactoryTest
     extends PlexusTestCase
 {
+    public void testRequires()
+        throws Exception
+    {
+        JRubyInvoker invoker = (JRubyInvoker)lookup( "requires" );
+        assertNotNull( invoker );
+
+        invoker.invoke();
+    }
+
     public void testExit()
         throws Exception
     {

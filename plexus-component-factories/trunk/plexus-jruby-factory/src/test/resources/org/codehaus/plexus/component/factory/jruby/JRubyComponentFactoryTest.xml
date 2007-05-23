@@ -7,6 +7,17 @@
     </component>
 
     <component>
+      <role>requires</role>
+      <implementation>/req.rb</implementation>
+      <component-factory>jruby</component-factory>
+      <configuration>
+        <libraryPaths>
+          <libraryPath>lib</libraryPath>
+        </libraryPaths>
+      </configuration>
+    </component>
+
+    <component>
       <role>exit</role>
       <implementation>/exit.rb</implementation>
       <component-factory>jruby</component-factory>

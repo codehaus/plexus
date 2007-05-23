@@ -9,20 +9,6 @@
   <version>1.0-beta-1-SNAPSHOT</version>
   <name>Plexus JRuby Factory</name>
 
-  <repositories>
-    <repository>
-      <id>codehaus</id>
-      <url>http://repository.codehaus.org/</url>
-    </repository>
-    <repository>
-      <id>codehaus-snap</id>
-      <url>http://snapshots.repository.codehaus.org/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
   <dependencies>
     <dependency>
       <groupId>org.jruby</groupId>
