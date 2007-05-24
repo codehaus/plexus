@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.authentication.basic;
+package org.codehaus.plexus.redback.http.authentication.basic;
 
 /*
  * Copyright 2005-2006 The Codehaus.
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
 import org.codehaus.plexus.redback.authentication.AuthenticationException;
 import org.codehaus.plexus.redback.authentication.AuthenticationResult;
 import org.codehaus.plexus.redback.authentication.PasswordBasedAuthenticationDataSource;
-import org.codehaus.plexus.redback.authentication.SessionBasedHttpAuthenticator;
+import org.codehaus.plexus.redback.http.authentication.SessionBasedHttpAuthenticator;
 import org.codehaus.plexus.redback.policy.AccountLockedException;
 import org.codehaus.plexus.redback.policy.MustChangePasswordException;
 import org.codehaus.plexus.util.Base64;

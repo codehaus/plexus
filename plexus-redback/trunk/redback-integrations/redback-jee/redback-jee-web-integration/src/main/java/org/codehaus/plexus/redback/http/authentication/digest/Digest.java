@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.authentication.digest;
+package org.codehaus.plexus.redback.http.authentication.digest;
 
 /*
  * Copyright 2005-2006 The Codehaus.

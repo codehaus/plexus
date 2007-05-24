@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.authentication.digest;
+package org.codehaus.plexus.redback.http.authentication.digest;
 
 /*
  * Copyright 2005-2006 The Codehaus.
@@ -16,35 +16,34 @@ package org.codehaus.plexus.redback.authentication.digest;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.authentication.HttpAuthenticationException;
-
 /**
- * NonceExpirationException
+ * Hex
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
+ * @todo should probably move this to plexus-utils or plexus-security-common
  */
-public class NonceExpirationException
-    extends HttpAuthenticationException
+public class Hex
 {
+    private static final byte[] DIGITS = "0123456789abcdef".getBytes();
 
-    public NonceExpirationException()
+    public static String encode( byte[] data )
     {
-        super();
+        int l = data.length;
+
+        byte[] raw = new byte[l * 2];
+
+        for ( int i = 0, j = 0; i < l; i++ )
+        {
+            raw[j++] = DIGITS[( 0xF0 & data[i] ) >>> 4];
+            raw[j++] = DIGITS[0x0F & data[i]];
+        }
+
+        return new String( raw );
     }
 
-    public NonceExpirationException( String message, Throwable cause )
+    public static String encode( String raw )
     {
-        super( message, cause );
-    }
-
-    public NonceExpirationException( String message )
-    {
-        super( message );
-    }
-
-    public NonceExpirationException( Throwable cause )
-    {
-        super( cause );
+        return encode( raw.getBytes() );
     }
 }

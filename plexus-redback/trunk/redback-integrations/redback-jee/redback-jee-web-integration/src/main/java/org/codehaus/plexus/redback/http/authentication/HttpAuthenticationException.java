@@ -1,4 +1,6 @@
-package org.codehaus.plexus.redback.authentication;
+package org.codehaus.plexus.redback.http.authentication;
+
+import org.codehaus.plexus.redback.authentication.AuthenticationException;
 
 /**
  * HttpAuthenticationException

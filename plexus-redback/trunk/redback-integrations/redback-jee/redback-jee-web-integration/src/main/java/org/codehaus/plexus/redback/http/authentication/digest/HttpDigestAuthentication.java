@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.authentication.digest;
+package org.codehaus.plexus.redback.http.authentication.digest;
 
 /*
  * Copyright 2005-2006 The Codehaus.
@@ -25,13 +25,13 @@ import javax.servlet.http.HttpSession;
 import org.codehaus.plexus.redback.authentication.AuthenticationException;
 import org.codehaus.plexus.redback.authentication.AuthenticationResult;
 import org.codehaus.plexus.redback.authentication.TokenBasedAuthenticationDataSource;
-import org.codehaus.plexus.redback.authentication.SessionBasedHttpAuthenticator;
+import org.codehaus.plexus.redback.http.authentication.HttpAuthenticationException;
+import org.codehaus.plexus.redback.http.authentication.SessionBasedHttpAuthenticator;
 import org.codehaus.plexus.redback.policy.AccountLockedException;
 import org.codehaus.plexus.redback.policy.MustChangePasswordException;
 import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.redback.users.UserManager;
 import org.codehaus.plexus.redback.users.UserNotFoundException;
-import org.codehaus.plexus.redback.authentication.HttpAuthenticationException;
 import org.codehaus.plexus.util.Base64;
 import org.codehaus.plexus.util.StringUtils;
 
