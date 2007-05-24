@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.authentication.digest;
+package org.codehaus.plexus.redback.http.authentication.digest;
 
 /*
  * Copyright 2005-2006 The Codehaus.
@@ -19,8 +19,8 @@ package org.codehaus.plexus.redback.authentication.digest;
 import java.util.Properties;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.redback.xwork.HttpUtils;
-import org.codehaus.plexus.redback.authentication.HttpAuthenticationException;
+import org.codehaus.plexus.redback.http.HttpUtils;
+import org.codehaus.plexus.redback.http.authentication.HttpAuthenticationException;
 import org.codehaus.plexus.util.Base64;
 import org.codehaus.plexus.util.StringUtils;
 

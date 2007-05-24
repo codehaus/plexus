@@ -1,6 +1,9 @@
-package org.codehaus.plexus.redback.authentication;
+package org.codehaus.plexus.redback.http.authentication;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.redback.authentication.AuthenticationException;
+import org.codehaus.plexus.redback.authentication.AuthenticationDataSource;
+import org.codehaus.plexus.redback.authentication.AuthenticationResult;
 import org.codehaus.plexus.redback.system.SecuritySystem;
 import org.codehaus.plexus.redback.system.SecuritySession;
 import org.codehaus.plexus.redback.policy.AccountLockedException;

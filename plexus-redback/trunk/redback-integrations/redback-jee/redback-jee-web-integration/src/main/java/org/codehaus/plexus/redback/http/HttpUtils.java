@@ -1,4 +1,4 @@
-package org.codehaus.plexus.redback.xwork;
+package org.codehaus.plexus.redback.http;
 
 /*
  * Copyright 2005-2006 The Codehaus.
