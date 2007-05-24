@@ -18,30 +18,31 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
-    <artifactId>redback</artifactId>
+    <artifactId>redback-integrations</artifactId>
     <version>1.0-alpha-2-SNAPSHOT</version>
   </parent>
-  <artifactId>redback-integrations</artifactId>
-  <name>Plexus Redback :: Integrations</name>
+  <artifactId>redback-jee</artifactId>
+  <name>Plexus Redback :: Integration :: J(2)EE</name>
   <packaging>pom</packaging>
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.plexus.redback</groupId>
-      <artifactId>redback-system</artifactId>
-    </dependency>
-  </dependencies>
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-redback/trunk/redback-integrations</url>
-  </scm>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>2.4</version>
+        <scope>provided</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <modules>
-    <module>redback-xwork</module>
-    <module>redback-taglib</module>
-    <module>redback-jee</module>
-<!--
-    <module>redback-swing</module>
-    <module>redback-acegi</module>
--->
+    <module>redback-jee-web-integration</module>
   </modules>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations/redback-jee</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations/redback-jee</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-redback/trunk/redback-integrations/redback-jee</url>
+  </scm>
 </project>
