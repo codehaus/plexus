@@ -41,7 +41,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @author Andrew Williams
  * @version $Id$
- * @plexus.component role="org.codehaus.plexus.redback.authentication.HttpAuthenticator"
+ * @plexus.component role="org.codehaus.plexus.redback.http.authentication.HttpAuthenticator"
  * role-hint="digest"
  */
 public class HttpDigestAuthentication
