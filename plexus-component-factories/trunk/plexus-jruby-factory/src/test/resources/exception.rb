@@ -1,2 +1,2 @@
 
-raise Exception
+raise 'hello, I am an exception'

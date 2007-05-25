@@ -46,7 +46,7 @@ public class JRubyComponentFactory
             {
                 Map.Entry entry = (Map.Entry)iter.next();
 
-                invoker.inputValue( (String)entry.getKey(), entry.getValue() );
+                invoker.putGlobal( (String)entry.getKey(), entry.getValue() );
             }
         }
 

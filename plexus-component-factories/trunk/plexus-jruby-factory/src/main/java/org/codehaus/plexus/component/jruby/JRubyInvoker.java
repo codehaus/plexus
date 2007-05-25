@@ -88,7 +88,7 @@ public interface JRubyInvoker
      * @param key
      * @param value
      */
-    public void inputValue( String key, Object value );
+    public void putGlobal( String key, Object value );
     
     /**
      * Sets the current working directory for the JRuby interpreter. NOTE: If the interpreter is

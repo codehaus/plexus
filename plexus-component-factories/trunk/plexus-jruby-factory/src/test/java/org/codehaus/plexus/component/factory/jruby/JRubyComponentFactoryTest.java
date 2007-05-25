@@ -5,8 +5,11 @@ import java.util.StringTokenizer;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.component.jruby.JRubyInvoker;
+import org.codehaus.plexus.component.jruby.JRubyRuntimeInvoker;
 import org.codehaus.plexus.component.jruby.JRubySystemExitException;
 import org.codehaus.plexus.util.StringOutputStream;
+import org.jruby.exceptions.JumpException;
+import org.jruby.exceptions.RaiseException;
 
 /**
  * 
@@ -54,8 +57,9 @@ public class JRubyComponentFactoryTest
 
           fail();
       }
-      catch( Exception e )
+      catch( JumpException e )
       {
+          JRubyRuntimeInvoker.printREStackTrace( (RaiseException)e, System.err );
           // should throw an exception
       }
     }
@@ -66,7 +70,7 @@ public class JRubyComponentFactoryTest
         JRubyInvoker invoker = (JRubyInvoker)lookup( "hello" );
         assertNotNull( invoker );
 
-        invoker.inputValue( "hello_from", JRubyComponentFactoryTest.class );
+        invoker.putGlobal( "hello_from", JRubyComponentFactoryTest.class );
 
         invoker.invoke();
     }
@@ -86,7 +90,7 @@ public class JRubyComponentFactoryTest
         JRubyInvoker invoker = (JRubyInvoker)lookup( "hello" );
         assertNotNull( invoker );
     
-        invoker.inputValue( "hello_from", JRubyComponentFactoryTest.class );
+        invoker.putGlobal( "hello_from", JRubyComponentFactoryTest.class );
     
         StringOutputStream stdout = new StringOutputStream();
         StringOutputStream stderr = new StringOutputStream();
@@ -101,7 +105,7 @@ public class JRubyComponentFactoryTest
         JRubyInvoker invoker = (JRubyInvoker) lookup( "execute" );
         assertNotNull( invoker );
 
-        invoker.inputValue( "random", new Random() );
+        invoker.putGlobal( "random", new Random() );
 
         Executor result = (Executor)invoker.invoke();
         result.execute();
@@ -116,7 +120,7 @@ public class JRubyComponentFactoryTest
 //  JRubyInvoker invoker = (JRubyInvoker) lookup( "gem" );
 //  assertNotNull( invoker );
 //
-//  invoker.inputValue( "args", "install rake" );
+//  invoker.putGlobal( "args", "install rake" );
 //
 //  invoker.invoke();
 //}
