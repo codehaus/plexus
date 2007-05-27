@@ -1,0 +1,9 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.component.factory.ComponentFactory</role>
+      <implementation>org.codehaus.plexus.component.factory.jruby.JRubyComponentFactory</implementation>
+      <role-hint>jruby</role-hint>
+    </component>
+  </components>
+</component-set>

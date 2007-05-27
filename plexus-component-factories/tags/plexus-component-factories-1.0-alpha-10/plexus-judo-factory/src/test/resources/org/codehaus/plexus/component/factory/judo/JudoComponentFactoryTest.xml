@@ -1,0 +1,20 @@
+<plexus>
+  <components>
+    <component>
+      <role>hello</role>
+      <implementation>/hello.judo</implementation>
+      <component-factory>judo</component-factory>
+    </component>
+
+    <component>
+      <role>injected</role>
+      <implementation>/injected.judo</implementation>
+      <component-factory>judo</component-factory>
+      <configuration>
+        <inputs>
+          <key>value</key>
+        </inputs>
+      </configuration>
+    </component>
+  </components>
+</plexus>
