@@ -14,13 +14,19 @@
     <dependency>
       <groupId>org.codehaus.plexus.webdav</groupId>
       <artifactId>plexus-webdav-api</artifactId>
-      <version>1.0-alpha-2</version>
+      <version>1.0-alpha-3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus.webdav</groupId>
       <artifactId>plexus-webdav-test</artifactId>
       <version>1.0-alpha-2</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.3</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
