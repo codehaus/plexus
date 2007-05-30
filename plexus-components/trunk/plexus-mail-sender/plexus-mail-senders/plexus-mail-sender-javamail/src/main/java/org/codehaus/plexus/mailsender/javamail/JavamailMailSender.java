@@ -133,15 +133,15 @@ public class JavamailMailSender
         {
             addProperty( AbstractJavamailMailSender.MAIL_TRANSPORT_PROTOCOL, "smtps" );
             addProperty( "mail.smtps.socketFactory.class", DummySSLSocketFactory.class.getName() );
-
-            if ( tlsEnabled )
-            {
-                addProperty( AbstractJavamailMailSender.MAIL_SMTP_STARTTLS_ENABLE, "true" );
-            }
         }
         else
         {
             removeProperty( "mail.smtps.socketFactory.class" );
+        }
+
+        if ( tlsEnabled )
+        {
+            addProperty( AbstractJavamailMailSender.MAIL_SMTP_STARTTLS_ENABLE, "true" );
         }
     }
 }
