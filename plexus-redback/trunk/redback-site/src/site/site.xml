@@ -43,24 +43,24 @@
     </links>
 
     <menu name="Overview">
-      <item name="Introduction" href="introduction.html"/>
+      <item name="Introduction" href="index.html"/>
       <item name="Authentication" href="authentication.html"/>
-      <item name="Role Based Access Control" href="rbac.html"/>
+      <item name="Authorization" href="authorization.html"/>
       <item name="User Management" href="user-management.html"/>
-      <item name="Webapp Integration" href="integration.html"/>
+      <item name="Key Stores" href="key-store.html"/>
     </menu>
     
     <menu name="Integration">
       <item name="General" href="integration/general.html"/>
       <item name="Webwork" href="integration/webwork.html"/>
+      <item name="Acegi" href="integration/acegi.html"/>
       <item name="XFire" href="integration/xfire.html"/>
-      <item name="Plugins" href="integration/plugins.html"/>
     </menu>
 
     <menu name="Role Based Access Control">
       <item name="Introduction" href="rbac/introduction.html"/>
       <item name="Role Management" href="rbac/role-management.html"/>
-      <item name="Profiles" href="rbac/profiles.html"/>
+      <item name="Resource Links" href="rbac/resource-links.html"/>
     </menu>
     
     ${reports}
