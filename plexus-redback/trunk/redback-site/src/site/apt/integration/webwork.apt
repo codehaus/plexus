@@ -1,10 +1,10 @@
  ----- 
- Plexus Security Webwork Integration
+ Webwork Integration
  ----- 
  26 October 2006 
  -----
 
-Plexus Security Webwork Integration
+Redback Webwork Integration
 
   <<NOTE>>: This has changed dramatically and may not be correct.
 
@@ -22,6 +22,10 @@ Plexus Security Webwork Integration
  component configuration.  Many of these are brought in transitively by the integration dependency, but we'll list
  thos and their associated configuration as well.
 
+
+* Plugin Configuration
+
+  Configuring a couple of maven plugins with the information here can significantly make working with the war overlay easier.  (insert link to plugins.html here)
 
 * Important Files
 
