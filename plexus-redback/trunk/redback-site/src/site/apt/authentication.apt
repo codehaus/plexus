@@ -1,0 +1,23 @@
+ -----
+ Authentication       
+ -----
+ 2 June 2007
+ -----
+
+Redback Authentication
+
+  Redback currently supports the following authentication mechanisms:
+  
+  * username/password for redback-users 
+
+  * keystore based for redback-keys
+
+  []
+
+  Support is being actively worked on or considered for:
+ 
+  * ACEGI (effectively using their setup for authentication purposes)
+
+  * LDAP
+
+  []
