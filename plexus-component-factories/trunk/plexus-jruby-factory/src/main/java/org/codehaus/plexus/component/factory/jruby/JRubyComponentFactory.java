@@ -3,12 +3,13 @@ package org.codehaus.plexus.component.factory.jruby;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.factory.AbstractComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.jruby.JRubyRuntimeInvoker;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
+
 
 /** @author eredmond */
 public class JRubyComponentFactory
