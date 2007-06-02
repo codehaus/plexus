@@ -42,4 +42,11 @@
       </plugin>
     </plugins>
   </reporting>
+  <distributionManagement>
+   <site>
+      <id>redback-site</id>
+      <name>Plexus Redback Website</name>
+      <url>dav:https://dav.codehaus.org/plexus/redback/</url>
+    </site>
+  </distributionManagement>
 </project>
