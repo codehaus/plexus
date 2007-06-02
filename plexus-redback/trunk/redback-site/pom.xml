@@ -6,7 +6,7 @@
     <version>1.0-alpha-2-SNAPSHOT</version>
   </parent>
   <artifactId>redback-site</artifactId>
-  <name>Redback Site</name>
+  <name>Plexus Redback :: Site</name>
   <packaging>pom</packaging>
   <build>
     <plugins>
