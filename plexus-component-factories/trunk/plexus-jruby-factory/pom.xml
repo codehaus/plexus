@@ -3,10 +3,10 @@
   <parent>
     <artifactId>plexus-component-factories</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0-alpha-8</version>
+    <version>1.0-alpha-11-SNAPSHOT</version>
   </parent>
   <artifactId>plexus-jruby-factory</artifactId>
-  <version>1.0-beta-2-SNAPSHOT</version>
+  <version>1.0-beta-3-SNAPSHOT</version>
   <name>Plexus JRuby Factory</name>
 
   <dependencies>

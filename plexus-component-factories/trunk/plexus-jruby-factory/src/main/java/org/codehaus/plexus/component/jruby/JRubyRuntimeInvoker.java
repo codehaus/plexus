@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.jruby.Ruby;
@@ -86,7 +86,7 @@ public class JRubyRuntimeInvoker implements JRubyInvoker
     public JRubyRuntimeInvoker( ComponentDescriptor componentDescriptor, ClassRealm classRealm )
     {
         this.componentDescriptor = componentDescriptor;
-        this.classRealm = classRealm.getClassLoader();
+        this.classRealm = classRealm;
     }
 
     public void setRuntime( Ruby runtime )
