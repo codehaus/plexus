@@ -1,6 +1,6 @@
 #! /bin/sh
 
-PLEXUS_OPTS="$PLEXUS_OPTS -Xmx@{app.max.memory}@" 
+PLEXUS_OPTS="$PLEXUS_OPTS -Xms@{app.init.memory}@ -Xmx@{app.max.memory}@" 
 
 # OS specific support.  $var _must_ be set to either true or false.
 cygwin=false
