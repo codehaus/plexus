@@ -40,7 +40,7 @@ wrapper.java.additional.7.stripquotes=TRUE
 wrapper.java.additional.8=@app.jvm.options@
 
 # Initial Java Heap Size (in MB)
-wrapper.java.initmemory=3
+wrapper.java.initmemory=@app.init.memory@
 
 # Maximum Java Heap Size (in MB)
 wrapper.java.maxmemory=@app.max.memory@
