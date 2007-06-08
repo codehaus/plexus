@@ -3,12 +3,12 @@
   <parent>
     <artifactId>plexus-component-factories</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0-alpha-9</version>
+    <version>1.0-alpha-10</version>
   </parent>
   
   <name>Plexus Groovy Factory</name>
   <artifactId>plexus-groovy-factory</artifactId>
-  <version>1.0-alpha-7-SNAPSHOT</version>
+  <version>1.0-beta-1-SNAPSHOT</version>
   
   <description>
     Provides support for using Groovy components inside of Plexus.
@@ -21,12 +21,12 @@
       <email>jason@planet57.com</email>
     </developer>
   </developers>
-
+  
   <dependencies>
     <dependency>
-      <groupId>groovy</groupId>
+      <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>1.0</version>
+      <version>1.1-BETA-2-SNAPSHOT</version>
     </dependency>
     
     <!--
