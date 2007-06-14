@@ -190,6 +190,9 @@ public class DefaultPlexusRuntimeBuilder
         configurationProperties.setProperty( "app.max.memory",
                                              configurationProperties.getProperty( "app.max.memory", "128m" ) );
 
+        configurationProperties.setProperty( "app.init.memory", 
+                                             configurationProperties.getProperty( "app.init.memory", "3m" ) );
+
         configurationProperties.setProperty( "app.jvm.options",
                                              configurationProperties.getProperty( "app.jvm.options", "" ) );
 
