@@ -51,6 +51,13 @@ public class SimpleDavServerComponent
     extends AbstractDavServerComponent
     implements DAVListener
 {
+    /**
+     * @plexus.requirement 
+     *              role="it.could.webdav.DAVMethod"
+     *              role-hint="get-with-indexing"
+     */
+    public ReplacementGetMethod methodGet;
+    
     private String prefix;
 
     private File rootDirectory;
@@ -58,13 +65,6 @@ public class SimpleDavServerComponent
     private DAVRepository davRepository;
 
     private DAVProcessor davProcessor;
-
-    public ReplacementGetMethod methodGet;
-
-    public SimpleDavServerComponent()
-    {
-        methodGet = new ReplacementGetMethod();
-    }
 
     public String getPrefix()
     {
