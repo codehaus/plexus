@@ -10,7 +10,7 @@
   <groupId>org.codehaus.plexus.webdav</groupId>
   <artifactId>plexus-webdav-parent</artifactId>
   <name>Plexus WebDAV Component Parent</name>
-  <version>1.0-alpha-3</version>
+  <version>1.0-alpha-4-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -20,9 +20,9 @@
   </modules>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-sandbox/tags/plexus-webdav-1.0-alpha-3</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-sandbox/tags/plexus-webdav-1.0-alpha-3</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/tags/plexus-webdav-1.0-alpha-3</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-webdav</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-webdav</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/tags/plexus-components-1.1.8/plexus-webdav-parent</url>
   </scm>
 
   <reporting>
