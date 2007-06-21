@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.codehaus.plexus.webdav</groupId>
     <artifactId>plexus-webdav-parent</artifactId>
-    <version>1.0-alpha-3-SNAPSHOT</version>
+    <version>1.0-alpha-3</version>
   </parent>
   <artifactId>plexus-webdav-test</artifactId>
   <name>Plexus WebDAV Tests</name>
