@@ -57,6 +57,8 @@ public class ProcessAppMetadataPhase
 
         // we need to parse again as we have now an updated plexus.home and app.home
         context.setAppMetadata( new XmlPlexusConfiguration( parseMetadata( context.getPar(), context.getContextValues() ) ) );
+
+        getLogger().info( "Using appDir = " + context.getAppDir() );
     }
 
     private Xpp3Dom parseMetadata( File par, Map contextValues )

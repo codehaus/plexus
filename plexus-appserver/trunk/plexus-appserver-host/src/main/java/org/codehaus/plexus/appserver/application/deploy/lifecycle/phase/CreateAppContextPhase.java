@@ -25,8 +25,6 @@ public class CreateAppContextPhase
 
         DefaultPlexusContainer serverContainer = context.getAppServerContainer();
 
-        getLogger().info( "Using appDir = " + context.getAppDir() );
-
         // ----------------------------------------------------------------------------
         // Create the containers context value mappings
         // ----------------------------------------------------------------------------
