@@ -26,15 +26,16 @@ package org.codehaus.plexus.appserver;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Andrew Williams
  * @version $Id$
  */
 public class PlexusApplicationConstants
 {
     public static final String CONF_DIRECTORY = "conf";
 
-    public static final String CONFIGURATION_FILE = "application.xml";
+    public static final String CONFIGURATION_FILE = "META-INF/plexus/application.xml";
 
     public static final String LIB_DIRECTORY = "lib";
 
-    public static final String METADATA_FILE = "META-INF/plexus/application.xml";
+    public static final String METADATA_FILE = "appserver.xml";
 }

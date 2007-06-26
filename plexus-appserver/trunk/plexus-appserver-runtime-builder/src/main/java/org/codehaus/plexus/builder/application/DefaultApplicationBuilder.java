@@ -33,12 +33,15 @@ import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.builder.runtime.GeneratorTools;
 import org.codehaus.plexus.util.DirectoryScanner;
-import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
-import org.codehaus.plexus.util.xml.XMLWriter;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+import org.codehaus.plexus.util.xml.Xpp3DomWriter;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -48,6 +51,7 @@ import java.util.Set;
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Andrew Williams
  * @version $Id$
  */
 public class DefaultApplicationBuilder
@@ -90,7 +94,7 @@ public class DefaultApplicationBuilder
                 applicationConfiguration.getAbsolutePath() + "'." );
         }
 
-        File libDir;
+        File libDir, confDir;
 
         try
         {
@@ -98,7 +102,7 @@ public class DefaultApplicationBuilder
             // Create directory structure
             // ----------------------------------------------------------------------
 
-            File confDir = tools.mkdirs( new File( workingDirectory, PlexusApplicationConstants.CONF_DIRECTORY ) );
+            confDir = tools.mkdirs( new File( workingDirectory, PlexusApplicationConstants.CONF_DIRECTORY ) );
 
             libDir = tools.mkdirs( new File( workingDirectory, PlexusApplicationConstants.LIB_DIRECTORY ) );
 
@@ -115,6 +119,14 @@ public class DefaultApplicationBuilder
 
             processConfigurations( confDir, applicationConfiguration, configurationProperties,
                                    configurationsDirectory );
+
+            // ----------------------------------------------------------------------
+            // Copy the main appserver.xml
+            // ----------------------------------------------------------------------
+
+            tools.filterCopy( applicationConfiguration, new File( workingDirectory,
+                                                                  PlexusApplicationConstants.CONFIGURATION_FILE ),
+                              configurationProperties );
         }
         catch ( IOException e )
         {
@@ -173,35 +185,63 @@ public class DefaultApplicationBuilder
         // Make the generated plexus descriptor
         // ----------------------------------------------------------------------
 
+        FileWriter writer = null;
         try
         {
-            File descriptor = new File( workingDirectory, PlexusApplicationConstants.METADATA_FILE );
+            File descriptor = new File( confDir, PlexusApplicationConstants.METADATA_FILE );
 
-            FileWriter writer = new FileWriter( descriptor );
+            Xpp3Dom dom;
 
-            XMLWriter xmlWriter = new PrettyPrintXMLWriter( writer );
+            if ( !descriptor.exists() )
+            {
+                dom = new Xpp3Dom( "plexus-appserver" );
+            }
+            else
+            {
+                FileReader reader = new FileReader( descriptor );
 
-            writer.write( System.getProperty( "line.separator" ) );
+                try
+                {
+                    dom = Xpp3DomBuilder.build( new FileReader( descriptor ) );
+                }
+                catch ( XmlPullParserException e )
+                {
+                    throw new ApplicationBuilderException( "Error reading the application metadata file " +
+                        PlexusApplicationConstants.METADATA_FILE + "." );
+                }
+                finally
+                {
+                    reader.close();
+                }
+            }
 
-            xmlWriter.startElement( "plexus-appserver" );
+            Xpp3Dom name = new Xpp3Dom( "name" );
+            name.setValue( applicationName );
+            dom.addChild( name );
 
-            xmlWriter.startElement( "name" );
+            writer = new FileWriter( descriptor );
 
-            xmlWriter.writeText( applicationName );
-
-            xmlWriter.endElement(); // name
-
-            // TODO: Add a list of all artifacts
-
-            xmlWriter.endElement(); // plexus-appserver
-
-            writer.write( System.getProperty( "line.separator" ) );
+            Xpp3DomWriter.write( writer, dom );
 
             writer.close();
         }
         catch ( IOException e )
         {
             throw new ApplicationBuilderException( "Error while writing the appserver descriptor.", e );
+        }
+        finally
+        {
+            if ( writer != null )
+            {
+                try
+                {
+                    writer.close();
+                }
+                catch ( IOException e )
+                {
+                    /* never mind */
+                }
+            }
         }
     }
 
@@ -281,12 +321,5 @@ public class DefaultApplicationBuilder
                 tools.filterCopy( in, out, configurationProperties );
             }
         }
-
-        // ----------------------------------------------------------------------
-        // Copy the main appserver.xml
-        // ----------------------------------------------------------------------
-
-        tools.filterCopy( applicationConfiguration, new File( confDir, PlexusApplicationConstants.CONFIGURATION_FILE ),
-                    configurationProperties );
     }
 }

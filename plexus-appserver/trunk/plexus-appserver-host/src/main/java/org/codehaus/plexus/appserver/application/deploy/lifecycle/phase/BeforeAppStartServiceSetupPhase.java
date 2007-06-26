@@ -9,6 +9,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * @author Jason van Zyl
+ * @author Andrew Williams
  */
 public class BeforeAppStartServiceSetupPhase
     extends AbstractAppDeploymentPhase
@@ -16,7 +17,7 @@ public class BeforeAppStartServiceSetupPhase
     public void execute( AppDeploymentContext context )
         throws AppDeploymentException
     {
-        PlexusConfiguration[] services = context.getAppConfiguration().getChild( "services" ).getChildren( "service" );
+        PlexusConfiguration[] services = context.getAppMetadata().getChild( "services" ).getChildren( "service" );
 
         for ( int i = 0; i < services.length; i++ )
         {

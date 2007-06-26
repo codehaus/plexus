@@ -6,6 +6,7 @@ import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 
 /**
  * @author Jason van Zyl
+ * @author Andrew Williams
  */
 public class CreateAppRuntimeProfilePhase
     extends AbstractAppDeploymentPhase
@@ -15,8 +16,7 @@ public class CreateAppRuntimeProfilePhase
     {
         AppRuntimeProfile profile = new AppRuntimeProfile( context.getApplicationId(),
                                                            context.getApplicationsDirectory(), context.getPar(),
-                                                           context.getAppServerContainer(),
-                                                           context.getAppConfiguration() );
+                                                           context.getAppServerContainer() );
 
         context.setAppRuntimeProfile( profile );
     }

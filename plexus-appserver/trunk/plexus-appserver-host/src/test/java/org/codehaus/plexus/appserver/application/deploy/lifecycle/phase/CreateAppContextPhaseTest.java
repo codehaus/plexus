@@ -3,6 +3,7 @@ package org.codehaus.plexus.appserver.application.deploy.lifecycle.phase;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.appserver.ApplicationServer;
+import org.codehaus.plexus.appserver.PlexusApplicationConstants;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 
 import java.io.File;
@@ -31,10 +32,10 @@ import java.io.File;
  * SOFTWARE.
  */
 
-public class CreateAppConfigurationPhaseTest
+public class CreateAppContextPhaseTest
     extends PlexusTestCase
 {
-    private CreateAppConfigurationPhase phase;
+    private CreateAppContextPhase phase;
 
     private AppDeploymentContext context;
 
@@ -55,10 +56,10 @@ public class CreateAppConfigurationPhaseTest
         context = new AppDeploymentContext( new File( applicationsDirectory, "dummy.jar" ), applicationsDirectory, null,
                                             appServerContainer, appServer, false );
         File appDir = new File( applicationsDirectory, "dummy" );
-        context.setAppConfigurationFile( new File( appDir, "conf/application.xml" ) );
+        context.setAppConfigurationFile( new File( appDir, "conf/" + PlexusApplicationConstants.METADATA_FILE ) );
         context.setAppDir( appDir );
 
-        phase = (CreateAppConfigurationPhase) lookup( AppDeploymentPhase.ROLE, "create-app-configuration" );
+        phase = (CreateAppContextPhase) lookup( AppDeploymentPhase.ROLE, "create-app-context" );
     }
 
     public void testAppServerDefaultHome()

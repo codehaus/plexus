@@ -9,6 +9,7 @@ import java.io.File;
 
 /**
  * @author Jason van Zyl
+ * @author Andrew Williams
  */
 public class ValidateAppPhase
     extends AbstractAppDeploymentPhase
@@ -33,13 +34,13 @@ public class ValidateAppPhase
         File serverAppConfigDir =
             new File( context.getAppServer().getAppServerBase(), PlexusRuntimeConstants.CONF_DIRECTORY );
         File appConfigDir = new File( serverAppConfigDir, appId );
-        File applicationConfigurationFile = new File( appConfigDir, PlexusApplicationConstants.CONFIGURATION_FILE );
+        File applicationConfigurationFile = new File( appConfigDir, PlexusApplicationConstants.METADATA_FILE );
 
         if ( !applicationConfigurationFile.exists() )
         {
             // otherwise, fallback to the deployed application's conf/application.xml
             appConfigDir = new File( appDir, PlexusApplicationConstants.CONF_DIRECTORY );
-            applicationConfigurationFile = new File( appConfigDir, PlexusApplicationConstants.CONFIGURATION_FILE );
+            applicationConfigurationFile = new File( appConfigDir, PlexusApplicationConstants.METADATA_FILE );
         }
 
         if ( !applicationConfigurationFile.exists() )
