@@ -27,6 +27,7 @@ package org.codehaus.plexus.appserver.application.deploy.lifecycle.phase;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.appserver.ApplicationServer;
+import org.codehaus.plexus.appserver.PlexusApplicationConstants;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 import org.codehaus.plexus.util.FileUtils;
@@ -75,7 +76,7 @@ public class ValidateAppPhaseTest
         context.setAppDir( appDir );
         new File( appDir, "lib" ).mkdirs();
 
-        File confFile = new File( appDir, "conf/application.xml" );
+        File confFile = new File( appDir, "conf/" + PlexusApplicationConstants.METADATA_FILE );
         confFile.getParentFile().mkdirs();
         FileUtils.fileWrite( confFile.getAbsolutePath(), appId );
 
@@ -90,13 +91,14 @@ public class ValidateAppPhaseTest
         String appId = "overridden-configuration";
         context.setApplicationId( appId );
         File appDir = new File( applicationsDirectory, appId );
-        File origConfFile = new File( appDir, "conf/application.xml" );
+        File origConfFile = new File( appDir, "conf/" + PlexusApplicationConstants.METADATA_FILE );
         origConfFile.getParentFile().mkdirs();
         FileUtils.fileWrite( origConfFile.getAbsolutePath(), appId );
         context.setAppDir( appDir );
         new File( appDir, "lib" ).mkdirs();
 
-        File confFile = new File( appServerHome, "conf/overridden-configuration/application.xml" );
+        File confFile = new File( appServerHome, "conf/overridden-configuration/" +
+            PlexusApplicationConstants.METADATA_FILE );
         confFile.getParentFile().mkdirs();
         FileUtils.fileWrite( confFile.getAbsolutePath(), appId );
 
@@ -110,12 +112,13 @@ public class ValidateAppPhaseTest
         String appId = "no-configuration";
         context.setApplicationId( appId );
         File appDir = new File( applicationsDirectory, appId );
-        File origConfFile = new File( appDir, "conf/application.xml" );
+        File origConfFile = new File( appDir, "conf/" + PlexusApplicationConstants.METADATA_FILE );
         origConfFile.getParentFile().mkdirs();
         context.setAppDir( appDir );
         new File( appDir, "lib" ).mkdirs();
 
-        File confFile = new File( appServerHome, "conf/overridden-configuration/application.xml" );
+        File confFile = new File( appServerHome, "conf/overridden-configuration/" +
+            PlexusApplicationConstants.METADATA_FILE);
         confFile.getParentFile().mkdirs();
 
         try
@@ -138,7 +141,7 @@ public class ValidateAppPhaseTest
         File appDir = new File( applicationsDirectory, appId );
         context.setAppDir( appDir );
 
-        File confFile = new File( appDir, "conf/application.xml" );
+        File confFile = new File( appDir, "conf/" + PlexusApplicationConstants.METADATA_FILE );
         confFile.getParentFile().mkdirs();
         FileUtils.fileWrite( confFile.getAbsolutePath(), appId );
 

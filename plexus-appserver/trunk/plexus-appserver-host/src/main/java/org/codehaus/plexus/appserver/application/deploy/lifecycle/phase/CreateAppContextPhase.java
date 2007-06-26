@@ -1,9 +1,5 @@
 package org.codehaus.plexus.appserver.application.deploy.lifecycle.phase;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,19 +9,14 @@ import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.appserver.ApplicationServerConstants;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.util.InterpolationFilterReader;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 /**
  * @author Jason van Zyl
+ * @author Andrew Williams
  */
-public class CreateAppConfigurationPhase
+public class CreateAppContextPhase
     extends AbstractAppDeploymentPhase
 {
     public void execute( AppDeploymentContext context )
@@ -42,7 +33,7 @@ public class CreateAppConfigurationPhase
 
         Map contextMap = new HashMap();
 
-        // need of values from container context to be interpolated 
+        // need of values from container context to be interpolated
         Context containerContext = serverContainer.getContext();
         contextMap.putAll( containerContext.getContextData() );
 
@@ -82,13 +73,6 @@ public class CreateAppConfigurationPhase
         getLogger().debug( "appserver.base = " + contextMap.get( ApplicationServerConstants.APP_SERVER_BASE_KEY ) );
 
         // ----------------------------------------------------------------------------
-        // Make the application's home directory available in the context
-        // ----------------------------------------------------------------------------
-        contextMap.put( "plexus.home", context.getAppDir().getAbsolutePath() );
-
-        contextMap.put( "app.home", context.getAppDir().getAbsolutePath() );
-
-        // ----------------------------------------------------------------------------
         // Make the user's home directory available in the context
         // ----------------------------------------------------------------------------
         //noinspection AccessOfSystemProperties
@@ -108,40 +92,5 @@ public class CreateAppConfigurationPhase
         contextMap.put( ApplicationServerConstants.APP_SERVER_CONTEXT_KEY, appserver );
 
         context.setContextValues( contextMap );
-
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
-        Xpp3Dom dom = null;
-
-        try
-        {
-            //noinspection IOResourceOpenedButNotSafelyClosed
-            Reader configurationReader = new InterpolationFilterReader( new FileReader( context
-                .getAppConfigurationFile() ), contextMap );
-
-            dom = Xpp3DomBuilder.build( configurationReader );
-        }
-        catch ( FileNotFoundException e )
-        {
-            // we skipped this once already, ignore it this time.
-            // Would be better to preload it instead.
-        }
-        catch ( IOException e )
-        {
-            throw new AppDeploymentException( "Error processing application configurator.", e );
-        }
-        catch ( XmlPullParserException e )
-        {
-            throw new AppDeploymentException( "Error processing application configurator.", e );
-        }
-
-        if ( dom != null )
-        {
-            PlexusConfiguration applicationConfiguration = new XmlPlexusConfiguration( dom );
-
-            context.setAppConfiguration( applicationConfiguration );
-        }
     }
 }

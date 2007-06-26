@@ -40,6 +40,7 @@ import java.util.Map;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @author Andrew Williams
  * @version $Id$
  */
 public class AppRuntimeProfile
@@ -56,8 +57,6 @@ public class AppRuntimeProfile
 
     private PlexusContainer applicationServerContainer;
 
-    private PlexusConfiguration applicationConfiguration;
-
     private Map serviceMap;
 
     private Map plexusConfigurationMap;
@@ -68,8 +67,7 @@ public class AppRuntimeProfile
     //
     // ----------------------------------------------------------------------
 
-    public AppRuntimeProfile( String name, File home, File lib, PlexusContainer applicationServerContainer,
-                              PlexusConfiguration applicationConfiguration )
+    public AppRuntimeProfile( String name, File home, File lib, PlexusContainer applicationServerContainer )
     {
         this.name = name;
 
@@ -81,8 +79,6 @@ public class AppRuntimeProfile
             new ClassWorld( "plexus.application." + name, applicationServerContainer.getContainerRealm() );
 
         this.applicationServerContainer = applicationServerContainer;
-
-        this.applicationConfiguration = applicationConfiguration;
 
         serviceMap = new HashMap();
 
@@ -145,11 +141,6 @@ public class AppRuntimeProfile
     public PlexusContainer getApplicationServerContainer()
     {
         return applicationServerContainer;
-    }
-
-    public PlexusConfiguration getApplicationConfiguration()
-    {
-        return applicationConfiguration;
     }
 
     public List getServices()

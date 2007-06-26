@@ -36,13 +36,14 @@ import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
+import org.codehaus.plexus.appserver.PlexusApplicationConstants;
 
 /**
  * The base for the appserver web application -> plexus-application wrapper
  *
  * @author Andrew Williams
  * @version $Id$
- * @since 1.0
+ * @since 1.0-alpha-10
  */
 public abstract class AbstractWebApplicationRuntimePopulatorMojo
     extends AbstractAppServerMojo
@@ -102,21 +103,12 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
             out.close();
             if(this.applicationFile == null)
             {
-                generateApplicationFile( confDir, war, context, port );
+                generateApplicationFile( confDir, war, warName, context, port );
             }
             else
             {
                 generateApplicationFileWithInterpolation( confDir, war, context );
             }
-
-            File metaDir = new File( appDir, "META-INF/plexus" );
-            metaDir.mkdirs();
-            File appMeta = new File( metaDir, "application.xml" );
-            out = new BufferedWriter( new FileWriter( appMeta ) );
-            out.write( "<plexus-appserver><name>" + warName + "</name></plexus-appserver>\n" );
-            out.close();
-
-            out = null;
 
             try
             {
@@ -143,16 +135,17 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
         }
     }
     
-    private void generateApplicationFile(File confDir, File war, String context, int port)
+    private void generateApplicationFile(File confDir, File war, String name, String context, int port)
       throws IOException
     {
         BufferedWriter out = null;
         try
         {
         
-            File appConf = new File( confDir, "application.xml" );
+            File appConf = new File( confDir, PlexusApplicationConstants.METADATA_FILE );
             out = new BufferedWriter( new FileWriter( appConf ) );
-            out.write( "<application>\n" +
+            out.write( "<plexus-appserver>\n" +
+                "  <name>" + name + "</name>\n" +
                 "  <services>\n" +
                 "    <service>\n" +
                 "      <id>jetty</id>\n" +
@@ -173,7 +166,7 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
                 "      </configuration>\n" +
                 "    </service>\n" +
                 "  </services>\n" +
-                "</application>\n" );
+                "</plexus-appserver>\n" );
             out.close();
         } finally
         {
@@ -197,7 +190,7 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
             interpolationDatas.putAll( this.applicationProperties == null ? Collections.EMPTY_MAP : applicationProperties );
             interpolationFilterReader = 
                 new InterpolationFilterReader( new FileReader( this.applicationFile), interpolationDatas );
-            File appConf = new File( confDir, "application.xml" );
+            File appConf = new File( confDir, PlexusApplicationConstants.METADATA_FILE );
             out = new BufferedWriter( new FileWriter( appConf ) );
             out.write( IOUtil.toString( interpolationFilterReader ) );
             interpolationFilterReader.close();

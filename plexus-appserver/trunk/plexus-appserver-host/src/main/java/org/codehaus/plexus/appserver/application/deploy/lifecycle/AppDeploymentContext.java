@@ -11,6 +11,7 @@ import java.util.Properties;
 
 /**
  * @author Jason van Zyl
+ * @author Andrew Williams
  */
 public class AppDeploymentContext
 {
@@ -28,7 +29,7 @@ public class AppDeploymentContext
 
     private String applicationId;
 
-    private PlexusConfiguration appConfiguration;
+    private PlexusConfiguration appMetadata;
 
     private AppRuntimeProfile appRuntimeProfile;
 
@@ -109,14 +110,14 @@ public class AppDeploymentContext
         this.applicationId = applicationId;
     }
 
-    public PlexusConfiguration getAppConfiguration()
+    public PlexusConfiguration getAppMetadata()
     {
-        return appConfiguration;
+        return appMetadata;
     }
 
-    public void setAppConfiguration( PlexusConfiguration appConfiguration )
+    public void setAppMetadata( PlexusConfiguration appMetadata )
     {
-        this.appConfiguration = appConfiguration;
+        this.appMetadata = appMetadata;
     }
 
     public AppRuntimeProfile getAppRuntimeProfile()
