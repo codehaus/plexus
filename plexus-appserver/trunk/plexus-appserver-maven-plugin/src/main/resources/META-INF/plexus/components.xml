@@ -47,6 +47,7 @@
       <role-hint>plexus-service</role-hint>
       <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
       <configuration>
+        <language>java</language>
         <type>plexus-service</type>
         <extension>sar</extension>
         <packaging>plexus-service</packaging>
@@ -58,6 +59,7 @@
       <role-hint>plexus-application</role-hint>
       <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
       <configuration>
+        <language>java</language>
         <type>plexus-application</type>
         <extension>jar</extension>
         <packaging>plexus-application</packaging>
