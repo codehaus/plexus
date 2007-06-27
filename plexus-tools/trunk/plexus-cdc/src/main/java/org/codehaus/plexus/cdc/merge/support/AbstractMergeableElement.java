@@ -32,9 +32,7 @@ import org.jdom.Content;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Collections;
 import java.util.Set;
-import java.util.Arrays;
 import java.util.HashSet;
 
 /**
@@ -128,7 +126,7 @@ public abstract class AbstractMergeableElement
     public void merge( Mergeable me, MergeStrategy strategy )
         throws MergeException
     {
-        // TODO set up a unit test for this!        
+        // TODO set up a unit test for this!
         strategy.apply( this, me );
     }
 

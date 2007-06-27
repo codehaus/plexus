@@ -24,9 +24,8 @@ package org.codehaus.plexus.cdc.merge;
  * SOFTWARE.
  */
 
-import org.jdom.Document;
-import org.codehaus.plexus.cdc.merge.support.ComponentSetElement;
 import org.codehaus.plexus.cdc.merge.support.PlexusRootElement;
+import org.jdom.Document;
 
 /**
  * Plexus XML merger. This is a superset of the components xml merger so can be used in its place if necessary.
