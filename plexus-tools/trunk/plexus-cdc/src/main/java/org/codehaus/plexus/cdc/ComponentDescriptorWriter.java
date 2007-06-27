@@ -26,10 +26,8 @@ package org.codehaus.plexus.cdc;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.List;
 
 import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
-import org.codehaus.plexus.util.xml.XMLWriter;
 
 /**
  * @author <a href="mailto:kenney@neonics.com">Kenney Westerhof</a>

@@ -82,6 +82,11 @@ public class DefaultComponentDescriptorWriter
         throws ComponentDescriptorCreatorException,
             PlexusConfigurationException
     {
+        if ( componentDescriptors == null )
+        {
+            return;
+        }
+
         w.startElement( "components" );
 
         for ( Iterator i = componentDescriptors.iterator(); i.hasNext(); )

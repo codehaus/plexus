@@ -25,13 +25,7 @@ package org.codehaus.plexus.cdc.merge;
  */
 
 import org.codehaus.plexus.cdc.merge.support.ComponentSetElement;
-import org.codehaus.plexus.util.IOUtil;
 import org.jdom.Document;
-import org.jdom.output.XMLOutputter;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
@@ -47,8 +41,8 @@ public class ComponentsXmlMerger
     public Document merge( Document dDocument, Document rDocument )
         throws MergeException
     {
-        // TODO: Ideally we don't want to manipulate the original 
-        // dominant document but use its copy for merge.        
+        // TODO: Ideally we don't want to manipulate the original
+        // dominant document but use its copy for merge.
         //Document mDoc = (Document) dDocument.clone();        // doesn't merge properly
         Document mDoc = dDocument;
         ComponentSetElement dCSE = new ComponentSetElement( mDoc.getRootElement() );
