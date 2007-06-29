@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>cargo-core</artifactId>
+    <groupId>org.codehaus.cargo</groupId>
+    <version>0.9</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>cargo-core-container-plexus</groupId>
+  <artifactId>cargo-core-container-plexus</artifactId>
+  <version>0.9-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.cargo</groupId>
+      <artifactId>cargo-core-api-generic</artifactId>
+      <version>0.9</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-appserver-host</artifactId>
+      <version>2.0-alpha-9</version>
+    </dependency>
+  </dependencies>
+</project>
+
