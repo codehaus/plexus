@@ -240,6 +240,14 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Herve Boutemy</name>
+      <id>hboutemy</id>
+      <email>hboutemy@codehaus.org</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
   <dependencies>
     <dependency>
@@ -303,6 +311,6 @@
           </configuration>
         </plugin>
       </plugins>
-    </pluginManagement>    
+    </pluginManagement>
   </build>
 </project>
