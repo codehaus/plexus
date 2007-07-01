@@ -1,8 +1,11 @@
 package org.codehaus.plexus.appserver.application.deploy.lifecycle.phase;
 
+import java.util.Iterator;
+
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 import org.codehaus.plexus.appserver.service.PlexusService;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.StringUtils;
@@ -32,9 +35,13 @@ public class BeforeAppStartServiceSetupPhase
 
             PlexusService service;
 
+            ClassRealm serviceLookupRealm = context.getAppServerContainer().getLookupRealm();
             try
             {
-                service = (PlexusService) context.getAppServerContainer().lookup( PlexusService.ROLE, id );
+                service = (PlexusService) context.getAppServerContainer().lookup(
+                    PlexusService.ROLE,
+                    id,
+                    serviceLookupRealm );
             }
             catch ( ComponentLookupException e )
             {

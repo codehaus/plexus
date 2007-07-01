@@ -1,7 +1,12 @@
 package org.codehaus.plexus.appserver.service.deploy.lifecycle.phase;
 
+import java.util.Iterator;
+import java.util.List;
+
+import org.codehaus.plexus.MutablePlexusContainer;
 import org.codehaus.plexus.appserver.service.deploy.lifecycle.ServiceDeploymentContext;
 import org.codehaus.plexus.appserver.service.deploy.lifecycle.ServiceDeploymentException;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.exception.ComponentRepositoryException;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 
@@ -16,7 +21,14 @@ public class DiscoverServiceComponentsPhase
     {
         try
         {
-            context.getContainer().discoverComponents( context.getContainer().getContainerRealm() );
+            List l = ( (MutablePlexusContainer) context.getContainer() ).discoverComponents( context.getRealm(), true );
+
+            // add component descriptors to the container itself, retaining the classrealm separation.
+            for ( Iterator it = l.iterator(); it.hasNext(); )
+            {
+                ( (MutablePlexusContainer) context.getContainer() ).addComponentDescriptor( (ComponentDescriptor) it
+                    .next() );
+            }
         }
         catch ( PlexusConfigurationException e )
         {
