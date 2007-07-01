@@ -57,7 +57,7 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
      * @parameter expression="${webappMappings}"
      */
     protected Properties webappMappings;
-    
+
     /**
      * Will be interpolated Map containing :
      * <ul>
@@ -69,14 +69,19 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
      * @parameter expression="${applicationFile}"
      */
     protected File applicationFile;
-    
+
     /**
      * Application properties.
      * @parameter expression="${applicationProperties}"
      */
     protected Properties applicationProperties;
 
-    
+    /**
+     * The service id to use for the servletcontainer service. Defaults to 'jetty'.
+     * @parameter
+     */
+    private String servletContainerServiceId = "jetty";
+
     public File wrapWebApplication( File war, String context, int port )
         throws MojoExecutionException
     {
@@ -134,21 +139,21 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
             IOUtil.close( out );
         }
     }
-    
+
     private void generateApplicationFile(File confDir, File war, String name, String context, int port)
       throws IOException
     {
         BufferedWriter out = null;
         try
         {
-        
+
             File appConf = new File( confDir, PlexusApplicationConstants.METADATA_FILE );
             out = new BufferedWriter( new FileWriter( appConf ) );
             out.write( "<plexus-appserver>\n" +
                 "  <name>" + name + "</name>\n" +
                 "  <services>\n" +
                 "    <service>\n" +
-                "      <id>jetty</id>\n" +
+                "      <id>" + servletContainerServiceId + "</id>\n" +
                 "      <configuration>\n" +
                 "        <webapps>\n" +
                 "          <webapp>\n" +
@@ -171,24 +176,24 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
         } finally
         {
             IOUtil.close( out );
-        }   
+        }
     }
-    
+
     private void generateApplicationFileWithInterpolation(File confDir, File war, String context)
         throws IOException
     {
-        
+
         BufferedWriter out = null;
         InterpolationFilterReader interpolationFilterReader = null;
         try
-        {        
+        {
             Map interpolationDatas = new HashMap();
             interpolationDatas.put( "webappPort", Integer.toString( webappPort ) );
             interpolationDatas.put( "warFilePath", "${plexus.home}/lib/" + war.getName() );
             interpolationDatas.put( "contextPath", context );
             getLog().info( "Use applicationProperties " +  applicationProperties == null ? "empty" : applicationProperties.toString() );
             interpolationDatas.putAll( this.applicationProperties == null ? Collections.EMPTY_MAP : applicationProperties );
-            interpolationFilterReader = 
+            interpolationFilterReader =
                 new InterpolationFilterReader( new FileReader( this.applicationFile), interpolationDatas );
             File appConf = new File( confDir, PlexusApplicationConstants.METADATA_FILE );
             out = new BufferedWriter( new FileWriter( appConf ) );
@@ -200,6 +205,6 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
             IOUtil.close( out );
             IOUtil.close( interpolationFilterReader );
         }
-        
+
     }
 }
