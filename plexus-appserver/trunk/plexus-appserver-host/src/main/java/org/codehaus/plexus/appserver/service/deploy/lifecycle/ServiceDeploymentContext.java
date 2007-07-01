@@ -1,6 +1,9 @@
 package org.codehaus.plexus.appserver.service.deploy.lifecycle;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
+import org.codehaus.plexus.classworlds.realm.NoSuchRealmException;
 
 import java.io.File;
 
@@ -9,27 +12,53 @@ import java.io.File;
  */
 public class ServiceDeploymentContext
 {
-    String serviceId;
+    private String serviceId;
 
-    File sar;
+    private File sar;
 
-    File servicesDirectory;
+    private File servicesDirectory;
 
-    DefaultPlexusContainer container;
+    private DefaultPlexusContainer container;
 
     // ----------------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------------
 
-    File serviceDirectory;
+    private File serviceDirectory;
+
+    private ClassRealm realm;
 
     public ServiceDeploymentContext( String serviceId, File sar, File servicesDirectory,
-                                     DefaultPlexusContainer container )
+        DefaultPlexusContainer container )
+        throws ServiceDeploymentException
     {
         this.serviceId = serviceId;
         this.sar = sar;
         this.servicesDirectory = servicesDirectory;
         this.container = container;
+        this.realm = container.getContainerRealm();
+
+//
+//        try
+//        {
+//            this.realm = container.getClassWorld().newRealm( "service." + serviceId, container.getContainerRealm() );
+//        }
+//        catch ( DuplicateRealmException e )
+//        {
+//            try
+//            {
+//                container.getClassWorld().disposeRealm( "service." + serviceId );
+//                this.realm = container.getClassWorld().newRealm( "service." + serviceId, container.getContainerRealm() );
+//            }
+//            catch ( NoSuchRealmException e1 )
+//            {
+//                throw new ServiceDeploymentException( "Cannot create service realm", e1 );
+//            }
+//            catch ( DuplicateRealmException e1 )
+//            {
+//                throw new ServiceDeploymentException( "Cannot create service realm", e1 );
+//            }
+//        }
     }
 
     public String getServiceId()
@@ -64,5 +93,10 @@ public class ServiceDeploymentContext
     public File getServiceDirectory()
     {
         return serviceDirectory;
+    }
+
+    public ClassRealm getRealm()
+    {
+        return realm;
     }
 }

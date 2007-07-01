@@ -116,10 +116,10 @@ public class DefaultApplicationDeployer
             {
                 // TODO: this should rollback the phases executed so far. For example, a failure in the
                 // post-app-container-init-service-call phase means the application is loaded, but it cannot be undeployed
-                throw new ApplicationServerException( "Error in the app server lifecycle " + id + " phase.", e );
+                throw new ApplicationServerException( "Error in the app server lifecycle " + id + " phase while deploying " + file, e );
             }
         }
-        
+
     }
 
     // ----------------------------------------------------------------------

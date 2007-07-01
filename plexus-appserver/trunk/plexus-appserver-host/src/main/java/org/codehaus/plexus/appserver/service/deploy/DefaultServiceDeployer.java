@@ -22,6 +22,10 @@ package org.codehaus.plexus.appserver.service.deploy;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.util.Iterator;
+import java.util.List;
+
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.appserver.ApplicationServerException;
@@ -35,10 +39,6 @@ import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-
-import java.io.File;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author <a href="mailto:dan@envoisolutions.com">Dan Diephouse</a>
@@ -88,7 +88,7 @@ public class DefaultServiceDeployer
             }
             catch ( ServiceDeploymentException e )
             {
-                throw new ApplicationServerException( "Error executing service deployment id.", e );
+                throw new ApplicationServerException( "Error executing service deployment phase " + phaseId, e );
             }
         }
     }

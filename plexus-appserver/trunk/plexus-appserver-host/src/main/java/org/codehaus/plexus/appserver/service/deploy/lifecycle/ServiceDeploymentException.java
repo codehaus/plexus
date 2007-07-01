@@ -1,10 +1,12 @@
 package org.codehaus.plexus.appserver.service.deploy.lifecycle;
 
+import org.codehaus.plexus.appserver.ApplicationServerException;
+
 /**
  * @author Jason van Zyl
  */
 public class ServiceDeploymentException
-    extends Exception
+    extends ApplicationServerException
 {
     public ServiceDeploymentException( String string )
     {
@@ -18,6 +20,6 @@ public class ServiceDeploymentException
 
     public ServiceDeploymentException( Throwable throwable )
     {
-        super( throwable );
+        super( null, throwable );
     }
 }

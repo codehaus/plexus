@@ -4,6 +4,7 @@ import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.appserver.PlexusServiceConstants;
 import org.codehaus.plexus.appserver.service.deploy.lifecycle.ServiceDeploymentContext;
 import org.codehaus.plexus.appserver.service.deploy.lifecycle.ServiceDeploymentException;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
@@ -38,7 +39,7 @@ public class ProcessServiceConfigurationPhase
 
             PlexusConfiguration serviceConfig = PlexusTools.buildConfiguration( config.getPath(), reader );
 
-            startComponents( serviceConfig, context.getContainer() );
+            startComponents( serviceConfig, context.getContainer(), context.getRealm() );
         }
         catch ( FileNotFoundException e )
         {
@@ -54,7 +55,7 @@ public class ProcessServiceConfigurationPhase
         }
     }
 
-    private void startComponents( PlexusConfiguration serviceConfig, DefaultPlexusContainer container )
+    private void startComponents( PlexusConfiguration serviceConfig, DefaultPlexusContainer container, ClassRealm realm )
         throws PlexusConfigurationException, ComponentLookupException
     {
         PlexusConfiguration[] loadOnStartComponents =
@@ -84,11 +85,11 @@ public class ProcessServiceConfigurationPhase
 
             if ( roleHint == null )
             {
-                container.lookup( role );
+                container.lookup( role, realm );
             }
             else
             {
-                container.lookup( role, roleHint );
+                container.lookup( role, roleHint, realm );
             }
         }
     }

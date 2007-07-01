@@ -37,6 +37,7 @@ public class AppInitializationPhase
 
             applicationContainer = new DefaultPlexusContainer( name, context.getContextValues(), context
                 .getAppConfigurationFile().getAbsoluteFile(), context.getAppRuntimeProfile().getApplicationWorld() );
+
             applicationContainer.setParentPlexusContainer( context.getAppServerContainer() );
         }
         catch ( PlexusContainerException e )
