@@ -39,6 +39,7 @@ public class CreateAppContextPhase
 
         Properties contextValues = context.getContext();
 
+        // XXX This code never executes since the context is always empty.
         if ( contextValues != null )
         {
             for ( Iterator i = contextValues.keySet().iterator(); i.hasNext(); )

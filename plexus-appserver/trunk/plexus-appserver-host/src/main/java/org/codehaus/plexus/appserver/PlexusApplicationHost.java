@@ -22,15 +22,22 @@ package org.codehaus.plexus.appserver;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import org.codehaus.plexus.util.interpolation.EnvarBasedValueSource;
+import org.codehaus.plexus.util.interpolation.MapBasedValueSource;
+import org.codehaus.plexus.util.interpolation.RegexBasedInterpolator;
 
 // Container host plexus container is configured and initialized
 // The appserver component is looked up
@@ -78,7 +85,6 @@ public class PlexusApplicationHost
     //
     // ----------------------------------------------------------------------
 
-
     public void start( ClassWorld classWorld )
         throws Exception
     {
@@ -99,12 +105,14 @@ public class PlexusApplicationHost
 
         if ( configurationResource == null )
         {
-            File conf = new File( new File( appserverBase, PlexusRuntimeConstants.CONF_DIRECTORY ),
-                                  PlexusRuntimeConstants.CONFIGURATION_FILE );
+            File conf = new File(
+                new File( appserverBase, PlexusRuntimeConstants.CONF_DIRECTORY ),
+                PlexusRuntimeConstants.CONFIGURATION_FILE );
             if ( !conf.exists() )
             {
-                conf = new File( new File( appserverHome, PlexusRuntimeConstants.CONF_DIRECTORY ),
-                                 PlexusRuntimeConstants.CONFIGURATION_FILE );
+                conf = new File(
+                    new File( appserverHome, PlexusRuntimeConstants.CONF_DIRECTORY ),
+                    PlexusRuntimeConstants.CONFIGURATION_FILE );
 
                 if ( !conf.exists() )
                 {
@@ -116,11 +124,30 @@ public class PlexusApplicationHost
 
         Map context = new HashMap();
 
+        String propFile = System.getProperty( "appserver.properties" );
+        if ( propFile != null )
+        {
+            Properties p = new Properties();
+            p.load( new FileInputStream( propFile ) );
+
+            RegexBasedInterpolator ip = new RegexBasedInterpolator();
+            ip.addValueSource( new MapBasedValueSource( p ) );
+            ip.addValueSource( new MapBasedValueSource( System.getProperties() ) );
+
+            for ( Enumeration n = p.propertyNames(); n.hasMoreElements(); )
+            {
+                String pn = (String) n.nextElement();
+                String pv = ip.interpolate( p.getProperty( pn ), "" );
+
+                System.out.println( "Adding property " + pn + "=" + pv );
+                context.put( pn, pv );
+            }
+        }
+
         context.put( "plexus.home", plexusHome );
         context.put( "appserver.home", appserverHome.getAbsolutePath() );
         context.put( "appserver.base", appserverBase.getAbsolutePath() );
-        context.put( "plexus.work",
-                     new File( appserverBase, PlexusRuntimeConstants.WORK_DIRECTORY ).getAbsolutePath() );
+        context.put( "plexus.work", new File( appserverBase, PlexusRuntimeConstants.WORK_DIRECTORY ).getAbsolutePath() );
 
         File plexusTemp = new File( appserverBase, PlexusRuntimeConstants.TEMP_DIRECTORY );
         context.put( "plexus.temp", plexusTemp.getAbsolutePath() );
@@ -200,7 +227,7 @@ public class PlexusApplicationHost
                 }
                 catch ( InterruptedException e )
                 {
-                    //ignore
+                    // ignore
                 }
             }
         }
@@ -222,7 +249,7 @@ public class PlexusApplicationHost
     }
 
     // ----------------------------------------------------------------------
-    //  Startup
+    // Startup
     // ----------------------------------------------------------------------
 
     /**
@@ -254,7 +281,7 @@ public class PlexusApplicationHost
                 }
                 catch ( InterruptedException e )
                 {
-                    //ignore
+                    // ignore
                 }
             }
 
