@@ -1,6 +1,6 @@
 #! /bin/sh
 
-PLEXUS_OPTS="$PLEXUS_OPTS -Xms@{app.init.memory}@ -Xmx@{app.max.memory}@" 
+PLEXUS_OPTS="$PLEXUS_OPTS -Xms@{app.init.memory}@ -Xmx@{app.max.memory}@"
 
 # OS specific support.  $var _must_ be set to either true or false.
 cygwin=false
@@ -95,6 +95,11 @@ if $darwin; then
   TOOLS_JAR="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Classes/classes.jar"
 fi
 
+PROP_PROP=""
+if [ -f "$PLEXUS_HOME/conf/plexus.properties" ]; then
+  PROP_PROP="-Dappserver.properties=$PLEXUS_HOME/conf/plexus.properties"
+fi
+
 # ----- Execute The Requested Command -----------------------------------------
 
 echo "Using PLEXUS_HOME:   $PLEXUS_HOME"
@@ -116,4 +121,5 @@ exec "$JAVACMD" @{app.jvm.options}@ \
   -Dtools.jar="$TOOLS_JAR" \
   -Dplexus.home="${PLEXUS_HOME}" \
   -Dappserver.base="${PLEXUS_BASE}" \
+  $PROP_PROP \
   $MAIN_CLASS $@

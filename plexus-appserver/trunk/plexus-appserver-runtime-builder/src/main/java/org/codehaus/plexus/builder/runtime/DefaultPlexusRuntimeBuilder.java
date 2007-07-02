@@ -22,6 +22,21 @@ package org.codehaus.plexus.builder.runtime;
  * SOFTWARE.
  */
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
@@ -33,6 +48,7 @@ import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.velocity.VelocityComponent;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -40,20 +56,6 @@ import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-import java.util.Map;
 
 /**
  * @author <a href="jason@maven.org">Jason van Zyl</a>
@@ -97,7 +99,7 @@ public class DefaultPlexusRuntimeBuilder
     // ----------------------------------------------------------------------
 
     public void build( File workingDirectory, List remoteRepositories, ArtifactRepository localRepository, Set projectArtifacts, Set additionalCoreArtifacts, File containerConfiguration,
-                       Properties configurationProperties, boolean addManagementAgent )
+                       File containerContextProperties, Properties configurationProperties, boolean addManagementAgent )
         throws PlexusRuntimeBuilderException
     {
         Set managementArtifacts = new HashSet();
@@ -111,12 +113,12 @@ public class DefaultPlexusRuntimeBuilder
         }
 
         build( workingDirectory, remoteRepositories, localRepository, projectArtifacts, additionalCoreArtifacts,
-               containerConfiguration, configurationProperties, addManagementAgent, managementArtifacts );
+               containerConfiguration, containerContextProperties, configurationProperties, addManagementAgent, managementArtifacts );
     }
 
     public void build( File workingDirectory, List remoteRepositories, ArtifactRepository localRepository,
                        Set projectArtifacts, Set additionalCoreArtifacts, File containerConfiguration,
-                       Properties configurationProperties, boolean addManagementAgent, Set managementArtifacts )
+                       File containerContextProperties, Properties configurationProperties, boolean addManagementAgent, Set managementArtifacts )
         throws PlexusRuntimeBuilderException
     {
         // ----------------------------------------------------------------------
@@ -190,7 +192,7 @@ public class DefaultPlexusRuntimeBuilder
         configurationProperties.setProperty( "app.max.memory",
                                              configurationProperties.getProperty( "app.max.memory", "128m" ) );
 
-        configurationProperties.setProperty( "app.init.memory", 
+        configurationProperties.setProperty( "app.init.memory",
                                              configurationProperties.getProperty( "app.init.memory", "3m" ) );
 
         configurationProperties.setProperty( "app.jvm.options",
@@ -234,6 +236,21 @@ public class DefaultPlexusRuntimeBuilder
             copyArtifacts( workingDirectory, bootDir, bootArtifacts );
 
             copyArtifacts( workingDirectory, coreDir, coreArtifacts );
+
+            if ( containerContextProperties != null )
+            {
+                File rcpTarget = new File( confDir, "plexus.properties" );
+
+                try
+                {
+                    IOUtil.copy( new FileInputStream( containerContextProperties ), new FileOutputStream( rcpTarget ) );
+                }
+                catch ( IOException e )
+                {
+                    throw new PlexusRuntimeBuilderException( "Cannot copy " + containerContextProperties + " to "
+                        + rcpTarget, e );
+                }
+            }
 
             // ----------------------------------------------------------------------
             // We need to separate between the container configurator that you want
