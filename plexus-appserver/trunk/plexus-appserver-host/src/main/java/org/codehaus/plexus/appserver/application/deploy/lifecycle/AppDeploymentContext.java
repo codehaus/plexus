@@ -23,6 +23,7 @@ public class AppDeploymentContext
 
     private DefaultPlexusContainer appServerContainer;
 
+    // XXX This field is never set
     private Properties context;
 
     private Map contextValues;
@@ -80,11 +81,13 @@ public class AppDeploymentContext
 
     // Properties
 
+    // XXX this method always returns null
     public Properties getContext()
     {
         return context;
     }
 
+    // XXX this method is never called
     public void setContext( Properties context )
     {
         this.context = context;
