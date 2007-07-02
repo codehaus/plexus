@@ -24,6 +24,8 @@ package org.codehaus.plexus.maven.plugin.runtime;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Properties;
@@ -31,6 +33,7 @@ import java.util.Properties;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.builder.runtime.PlexusRuntimeBuilderException;
 import org.codehaus.plexus.maven.plugin.AbstractAppServerMojo;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -57,6 +60,14 @@ public class RuntimeAssemblerMojo
     private File runtimeConfigurationProperties;
 
     /**
+     * This is a property file that's placed in conf/ and is used at runtime to interpolate the conf/plexus.xml.
+     *
+     * @parameter expression="${runtimeContextProperties}"
+     * @required
+     */
+    private File runtimeContextProperties;
+
+    /**
      * @parameter expression="${additionalCoreArtifacts}"
      */
     private HashSet additionalCoreArtifacts;
@@ -74,10 +85,6 @@ public class RuntimeAssemblerMojo
     public void execute()
         throws MojoExecutionException
     {
-        // ----------------------------------------------------------------------
-        //
-        // ----------------------------------------------------------------------
-
         Properties interpolationProperties = new Properties();
 
         if ( runtimeConfigurationProperties != null )
@@ -98,15 +105,30 @@ public class RuntimeAssemblerMojo
         {
             if ( addManagementAgent && managementArtifacts != null && managementArtifacts.size() > 0 )
             {
-                runtimeBuilder.build( runtimePath, remoteRepositories, localRepository, projectArtifacts,
-                                      additionalCoreArtifacts, runtimeConfiguration, interpolationProperties,
-                                      addManagementAgent, managementArtifacts );
+                runtimeBuilder.build(
+                    runtimePath,
+                    remoteRepositories,
+                    localRepository,
+                    projectArtifacts,
+                    additionalCoreArtifacts,
+                    runtimeConfiguration,
+                    runtimeContextProperties,
+                    interpolationProperties,
+                    addManagementAgent,
+                    managementArtifacts );
             }
             else
             {
-                runtimeBuilder.build( runtimePath, remoteRepositories, localRepository, projectArtifacts,
-                                      additionalCoreArtifacts, runtimeConfiguration, interpolationProperties,
-                                      addManagementAgent );
+                runtimeBuilder.build(
+                    runtimePath,
+                    remoteRepositories,
+                    localRepository,
+                    projectArtifacts,
+                    additionalCoreArtifacts,
+                    runtimeConfiguration,
+                    runtimeContextProperties,
+                    interpolationProperties,
+                    addManagementAgent );
             }
         }
         catch ( PlexusRuntimeBuilderException e )

@@ -48,7 +48,6 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.Properties;
 

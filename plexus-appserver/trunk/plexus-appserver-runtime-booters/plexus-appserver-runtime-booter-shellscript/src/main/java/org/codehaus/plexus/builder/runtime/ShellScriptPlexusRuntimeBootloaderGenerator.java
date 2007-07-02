@@ -19,14 +19,13 @@ package org.codehaus.plexus.builder.runtime;
  * under the License.
  */
 
-import org.codehaus.plexus.builder.runtime.platform.ShellScriptPlatformGenerator;
-import org.codehaus.plexus.util.cli.CommandLineException;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
-import java.util.Map;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+
+import org.codehaus.plexus.builder.runtime.platform.ShellScriptPlatformGenerator;
 
 /**
  * @author <a href="jason@maven.org">Jason van Zyl</a>

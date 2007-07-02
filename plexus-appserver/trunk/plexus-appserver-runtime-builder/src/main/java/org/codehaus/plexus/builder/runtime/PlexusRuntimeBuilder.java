@@ -40,12 +40,13 @@ public interface PlexusRuntimeBuilder
 
     void build( File workingDirectory, List remoteRepositories, ArtifactRepository localRepository,
                 Set projectArtifacts, Set additionalCoreArtifacts, File containerConfiguration,
-                Properties configurationProperties, boolean addManagementAgent )
+                File containerContextProperties, Properties configurationProperties, boolean addManagementAgent )
         throws PlexusRuntimeBuilderException;
 
     void build( File workingDirectory, List remoteRepositories, ArtifactRepository localRepository,
                 Set projectArtifacts, Set additionalCoreArtifacts, File containerConfiguration,
-                Properties configurationProperties, boolean addManagementAgent, Set managementArtifacts )
+                File containerContextProperties, Properties configurationProperties, boolean addManagementAgent,
+                Set managementArtifacts )
         throws PlexusRuntimeBuilderException;
 
     void bundle( File outputFile, File workingDirectory )

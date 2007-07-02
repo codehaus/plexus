@@ -56,7 +56,7 @@ public class PlexusRuntimeBuilderTest
 
         runtimeBuilder.build( getWorkingDirectory(), new ArrayList(), getLocalArtifactRepository(),
                               getProjectArtifacts(), getAdditionalCoreArtifacts(), plexusConfiguration,
-                              configurationProperties, false );
+                              null, configurationProperties, false );
 
         // assert on script in bin
         File shLauncher = new File( getWorkingDirectory(), "bin/plexus.sh" );
@@ -76,7 +76,7 @@ public class PlexusRuntimeBuilderTest
         File classWorldsJar = new File( getWorkingDirectory(), "core/boot/plexus-classworlds-1.2-alpha-7.jar" );
         assertTrue( "classworlds not in core/boot", classWorldsJar.exists() );
 
-        // assert on core artifacts 
+        // assert on core artifacts
         // container(s), appserver-host and plexus-utils
         File componentApiJar = new File( getWorkingDirectory(), "core/plexus-component-api-1.0-alpha-18.jar" );
         assertTrue( "plexus-component-api not in core dir", componentApiJar.exists() );
