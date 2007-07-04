@@ -40,8 +40,8 @@ public interface ApplicationBuilder
 
     void assemble( String applicationName, File workingDirectory, List remoteRepositories,
                    ArtifactRepository localRepository, Set projectArtifacts, Set additionalCoreArtifacts,
-                   Set serviceArtifacts, File applicationConfiguration, File configurationsDirectory,
-                   Properties configurationProperties )
+                   Set serviceArtifacts, File appserverXmlFile, File applicationXmlFile,
+                   File configurationsDirectory, Properties configurationProperties )
         throws ApplicationBuilderException;
 
     void bundle( File outputFile, File workingDirectory )

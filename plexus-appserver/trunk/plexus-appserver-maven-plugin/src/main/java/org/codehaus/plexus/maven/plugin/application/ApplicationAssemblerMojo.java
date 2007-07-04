@@ -53,6 +53,12 @@ public class ApplicationAssemblerMojo
     private File applicationConfiguration;
 
     /**
+     * @parameter expression="${applicationConfiguration}"
+     *            default-value="${basedir}/src/main/resources/META-INF/plexus/application.xml"
+     */
+    private File applicationXmlFile;
+
+    /**
      * @parameter expression="${configurationsDirectory}"
      */
     private File configurationsDirectory;
@@ -100,8 +106,9 @@ public class ApplicationAssemblerMojo
         // Build the appserver
         // ----------------------------------------------------------------------
 
-        getLog().debug( "Building the appserver '" + applicationName + "' into '" +
-            applicationAssemblyDirectory.getAbsolutePath() + "'." );
+        getLog().debug(
+            "Building the appserver '" + applicationName + "' into '" + applicationAssemblyDirectory.getAbsolutePath()
+                + "'." );
 
         Properties interpolationProperties = new Properties();
 
@@ -121,9 +128,18 @@ public class ApplicationAssemblerMojo
 
         try
         {
-            applicationBuilder.assemble( applicationName, applicationAssemblyDirectory, remoteRepositories,
-                                         localRepository, projectArtifacts, additionalCoreArtifacts, services,
-                                         applicationConfiguration, configurationsDirectory, interpolationProperties );
+            applicationBuilder.assemble(
+                applicationName,
+                applicationAssemblyDirectory,
+                remoteRepositories,
+                localRepository,
+                projectArtifacts,
+                additionalCoreArtifacts,
+                services,
+                applicationConfiguration,
+                applicationXmlFile != null && applicationXmlFile.isFile() ? applicationXmlFile : null,
+                configurationsDirectory,
+                interpolationProperties );
         }
         catch ( ApplicationBuilderException e )
         {

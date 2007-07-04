@@ -250,6 +250,12 @@ public class DefaultPlexusRuntimeBuilder
                     throw new PlexusRuntimeBuilderException( "Cannot copy " + containerContextProperties + " to "
                         + rcpTarget, e );
                 }
+
+                configurationProperties.put( "appserver.properties", "%PLEXUS_BASE%/conf/plexus.properties" );
+            }
+            else
+            {
+                configurationProperties.put( "appserver.properties", "" );
             }
 
             // ----------------------------------------------------------------------
