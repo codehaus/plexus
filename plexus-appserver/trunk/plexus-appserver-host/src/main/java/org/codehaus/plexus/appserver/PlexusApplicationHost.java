@@ -24,7 +24,6 @@ package org.codehaus.plexus.appserver;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +34,6 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
-import org.codehaus.plexus.util.interpolation.EnvarBasedValueSource;
 import org.codehaus.plexus.util.interpolation.MapBasedValueSource;
 import org.codehaus.plexus.util.interpolation.RegexBasedInterpolator;
 

@@ -17,8 +17,6 @@ public class DiscoverServiceComponentsPhase
     {
         try
         {
-            getLogger().info("Scanning servicerealm " + context.getRealm().getId() + " for components: ");
-            context.getRealm().display();
             ( (MutablePlexusContainer) context.getContainer() ).discoverComponents( context.getRealm(), true );
         }
         catch ( PlexusConfigurationException e )
