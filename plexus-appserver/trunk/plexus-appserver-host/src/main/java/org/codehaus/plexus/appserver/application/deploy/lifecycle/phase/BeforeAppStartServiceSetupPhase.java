@@ -1,7 +1,5 @@
 package org.codehaus.plexus.appserver.application.deploy.lifecycle.phase;
 
-import java.util.Iterator;
-
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentException;
 import org.codehaus.plexus.appserver.service.PlexusService;
