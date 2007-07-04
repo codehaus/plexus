@@ -22,6 +22,17 @@ package org.codehaus.plexus.builder.application;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
@@ -33,20 +44,11 @@ import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.builder.runtime.GeneratorTools;
 import org.codehaus.plexus.util.DirectoryScanner;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.Xpp3DomWriter;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
@@ -68,9 +70,8 @@ public class DefaultApplicationBuilder
     // ----------------------------------------------------------------------
 
     public void assemble( String applicationName, File workingDirectory, List remoteRepositories,
-                          ArtifactRepository localRepository, Set projectArtifacts, Set additionalCoreArtifacts,
-                          Set serviceArtifacts, File applicationConfiguration, File configurationsDirectory,
-                          Properties configurationProperties )
+        ArtifactRepository localRepository, Set projectArtifacts, Set additionalCoreArtifacts, Set serviceArtifacts,
+        File appserverXmlFile, File applicationXmlFile, File configurationsDirectory, Properties configurationProperties )
         throws ApplicationBuilderException
     {
         // ----------------------------------------------------------------------
@@ -84,17 +85,11 @@ public class DefaultApplicationBuilder
 
         if ( configurationsDirectory != null && !configurationsDirectory.isDirectory() )
         {
-            throw new ApplicationBuilderException(
-                "The configurations directory isn't a directory: '" + configurationsDirectory.getAbsolutePath() + "." );
+            throw new ApplicationBuilderException( "The configurations directory isn't a directory: '"
+                + configurationsDirectory.getAbsolutePath() + "." );
         }
 
-        if ( !applicationConfiguration.exists() )
-        {
-            throw new ApplicationBuilderException( "The appserver configurator file doesn't exist: '" +
-                applicationConfiguration.getAbsolutePath() + "'." );
-        }
-
-        File libDir, confDir;
+        File libDir, confDir, metaInfDir;
 
         try
         {
@@ -105,6 +100,8 @@ public class DefaultApplicationBuilder
             confDir = tools.mkdirs( new File( workingDirectory, PlexusApplicationConstants.CONF_DIRECTORY ) );
 
             libDir = tools.mkdirs( new File( workingDirectory, PlexusApplicationConstants.LIB_DIRECTORY ) );
+
+            metaInfDir = tools.mkdirs( new File( workingDirectory, "META-INF/plexus" ) );
 
             // TODO: why does the application have a logs directory?
             File logsDir = tools.mkdirs( new File( workingDirectory, "logs" ) );
@@ -117,16 +114,18 @@ public class DefaultApplicationBuilder
 
             new FileWriter( new File( logsDir, "foo" ) ).close();
 
-            processConfigurations( confDir, applicationConfiguration, configurationProperties,
-                                   configurationsDirectory );
+            processConfigurations( confDir, appserverXmlFile, configurationProperties, configurationsDirectory );
 
             // ----------------------------------------------------------------------
             // Copy the main appserver.xml
             // ----------------------------------------------------------------------
 
-            tools.filterCopy( applicationConfiguration, new File( workingDirectory,
-                                                                  PlexusApplicationConstants.CONFIGURATION_FILE ),
-                              configurationProperties );
+            if ( applicationXmlFile != null )
+            {
+                tools.filterCopy( applicationXmlFile, new File(
+                    workingDirectory,
+                    PlexusApplicationConstants.CONFIGURATION_FILE ), configurationProperties );
+            }
         }
         catch ( IOException e )
         {
@@ -145,8 +144,12 @@ public class DefaultApplicationBuilder
 
             excludedArtifacts.addAll( getBootArtifacts( projectArtifacts, remoteRepositories, localRepository, true ) );
 
-            excludedArtifacts.addAll( getCoreArtifacts( projectArtifacts, additionalCoreArtifacts, remoteRepositories,
-                                                        localRepository, true ) );
+            excludedArtifacts.addAll( getCoreArtifacts(
+                projectArtifacts,
+                additionalCoreArtifacts,
+                remoteRepositories,
+                localRepository,
+                true ) );
 
             serviceArtifacts = findArtifacts( remoteRepositories, localRepository, serviceArtifacts, true, null );
 
@@ -154,8 +157,9 @@ public class DefaultApplicationBuilder
 
             excludedArtifacts.addAll( getExcludedArtifacts( projectArtifacts, remoteRepositories, localRepository ) );
 
-            ArtifactFilter filter = new AndArtifactFilter( new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
-                                                           new GroupArtifactTypeArtifactFilter( excludedArtifacts ) );
+            ArtifactFilter filter = new AndArtifactFilter(
+                new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
+                new GroupArtifactTypeArtifactFilter( excludedArtifacts ) );
 
             artifacts = findArtifacts( remoteRepositories, localRepository, projectArtifacts, true, filter );
         }
@@ -206,8 +210,8 @@ public class DefaultApplicationBuilder
                 }
                 catch ( XmlPullParserException e )
                 {
-                    throw new ApplicationBuilderException( "Error reading the application metadata file " +
-                        PlexusApplicationConstants.METADATA_FILE + "." );
+                    throw new ApplicationBuilderException( "Error reading the application metadata file "
+                        + PlexusApplicationConstants.METADATA_FILE + "." );
                 }
                 finally
                 {
@@ -268,9 +272,10 @@ public class DefaultApplicationBuilder
     //
     // ----------------------------------------------------------------------
 
-    private void processConfigurations( File confDir, File applicationConfiguration, Properties configurationProperties,
-                                        File configurationsDirectory )
-        throws IOException, ApplicationBuilderException
+    private void processConfigurations( File confDir, File applicationConfiguration,
+        Properties configurationProperties, File configurationsDirectory )
+        throws IOException,
+            ApplicationBuilderException
     {
         // ----------------------------------------------------------------------
         // Process the configurations
@@ -282,21 +287,8 @@ public class DefaultApplicationBuilder
 
             scanner.setBasedir( configurationsDirectory );
 
-            List excludes = new ArrayList();
-
             // TODO: centralize this list
-            excludes.add( "**/CVS/**" );
-
-            excludes.add( "**/.svn/**" );
-
-            /*
-            if ( configurationProperties != null )
-            {
-                excludes.add( configurationProperties.getAbsolutePath() );
-            }
-            */
-
-            scanner.setExcludes( (String[]) excludes.toArray( new String[excludes.size()] ) );
+            scanner.setExcludes( new String[] { "**/CVS/**", "**/.svn/**" } );
 
             scanner.scan();
 
@@ -314,11 +306,48 @@ public class DefaultApplicationBuilder
 
                 if ( !parent.isDirectory() && !parent.mkdirs() )
                 {
-                    throw new ApplicationBuilderException(
-                        "Could not make parent directories for " + "'" + out.getAbsolutePath() + "'." );
+                    throw new ApplicationBuilderException( "Could not make parent directories for " + "'"
+                        + out.getAbsolutePath() + "'." );
                 }
 
                 tools.filterCopy( in, out, configurationProperties );
+            }
+        }
+    }
+
+    private void processMetaInfResources( File metaInfDir, File metaInfDirectory )
+        throws IOException,
+            ApplicationBuilderException
+    {
+        if ( metaInfDirectory != null )
+        {
+            DirectoryScanner scanner = new DirectoryScanner();
+
+            scanner.setBasedir( metaInfDirectory );
+
+            // TODO: centralize this list
+            scanner.setExcludes( new String[] { "**/CVS/**", "**/.svn/**" } );
+            scanner.scan();
+
+            String[] files = scanner.getIncludedFiles();
+
+            for ( int i = 0; i < files.length; i++ )
+            {
+                String file = files[i];
+
+                File in = new File( metaInfDirectory, file );
+
+                File out = new File( metaInfDir, file );
+
+                File parent = out.getParentFile();
+
+                if ( !parent.isDirectory() && !parent.mkdirs() )
+                {
+                    throw new ApplicationBuilderException( "Could not make parent directories for " + "'"
+                        + out.getAbsolutePath() + "'." );
+                }
+
+                IOUtil.copy( new FileInputStream( in ), new FileOutputStream( out ) );
             }
         }
     }
