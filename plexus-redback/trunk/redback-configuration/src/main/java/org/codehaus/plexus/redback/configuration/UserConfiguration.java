@@ -71,7 +71,26 @@ public class UserConfiguration
         {
             performLegacyInitialization();
 
-            registry.addConfigurationFromResource( DEFAULT_CONFIG_RESOURCE, PREFIX );
+            try
+            {
+                registry.addConfigurationFromResource( DEFAULT_CONFIG_RESOURCE, PREFIX );
+            }
+            catch ( RegistryException e )
+            {
+                // Ok, not found in context classloader; try the one in this jar.
+
+                ClassLoader prevCl = Thread.currentThread().getContextClassLoader();
+                try
+                {
+
+                    Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );
+                    registry.addConfigurationFromResource( DEFAULT_CONFIG_RESOURCE, PREFIX );
+                }
+                finally
+                {
+                    Thread.currentThread().setContextClassLoader( prevCl );
+                }
+            }
         }
         catch ( RegistryException e )
         {
@@ -87,7 +106,8 @@ public class UserConfiguration
     }
 
     private void performLegacyInitialization()
-        throws InitializationException, RegistryException
+        throws InitializationException,
+            RegistryException
     {
         ExpressionEvaluator evaluator = new DefaultExpressionEvaluator();
         evaluator.addExpressionSource( new SystemPropertyExpressionSource() );
