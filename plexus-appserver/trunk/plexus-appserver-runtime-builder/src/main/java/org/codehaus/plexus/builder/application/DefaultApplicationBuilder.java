@@ -158,8 +158,10 @@ public class DefaultApplicationBuilder
             excludedArtifacts.addAll( getExcludedArtifacts( projectArtifacts, remoteRepositories, localRepository ) );
 
             ArtifactFilter filter = new AndArtifactFilter(
-                new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
-                new GroupArtifactTypeArtifactFilter( excludedArtifacts ) );
+                new GroupArtifactTypeArtifactFilter( excludedArtifacts ),
+                new AndArtifactFilter(
+                    new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
+                    new ScopeExcludeArtifactFilter( Artifact.SCOPE_PROVIDED ) ) );
 
             artifacts = findArtifacts( remoteRepositories, localRepository, projectArtifacts, true, filter );
         }
