@@ -56,6 +56,11 @@ public class ServiceAssemblerMojo
     private File serviceConfiguration;
 
     /**
+     * @parameter expression="${applicationXmlFile}"
+     */
+    private File applicationXmlFile;
+
+    /**
      * @parameter expression="${configurationsDirectory}"
      */
     private File configurationsDirectory;
@@ -96,8 +101,26 @@ public class ServiceAssemblerMojo
 
         try
         {
-            builder.build( serviceName, serviceAssemblyDirectory, serviceJar, remoteRepositories, localRepository,
-                           projectArtifacts, serviceConfiguration, configurationsDirectory, interpolationProperties );
+            if ( applicationXmlFile == null )
+            {
+                applicationXmlFile = new File( basedir, "src/main/resources/META-INF/plexus/application.xml" );
+                if ( !applicationXmlFile.isFile() )
+                {
+                    applicationXmlFile = null;
+                }
+            }
+
+            builder.build(
+                serviceName,
+                serviceAssemblyDirectory,
+                serviceJar,
+                remoteRepositories,
+                localRepository,
+                projectArtifacts,
+                serviceConfiguration,
+                applicationXmlFile.isFile() ? applicationXmlFile : null,
+                configurationsDirectory,
+                interpolationProperties );
 
             // ----------------------------------------------------------------------
             // Bundle the service

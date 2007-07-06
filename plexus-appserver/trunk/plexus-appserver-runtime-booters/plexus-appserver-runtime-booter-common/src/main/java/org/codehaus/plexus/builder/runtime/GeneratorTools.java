@@ -54,7 +54,6 @@ import java.util.Properties;
 /**
  * @author Jason van Zyl
  * @version $Id$
- *
  * @plexus.component role="org.codehaus.plexus.builder.runtime.GeneratorTools"
  */
 public class GeneratorTools
@@ -72,7 +71,8 @@ public class GeneratorTools
     public VelocityComponent velocity;
 
     public void executable( File file )
-        throws IOException, CommandLineException
+        throws IOException,
+            CommandLineException
     {
         if ( Os.isFamily( "unix" ) )
         {
@@ -95,12 +95,33 @@ public class GeneratorTools
         {
             if ( !directory.mkdirs() )
             {
-                throw new IOException(
-                    "Could not make directories '" + directory.getAbsolutePath() + "'." );
+                throw new IOException( "Could not make directories '" + directory.getAbsolutePath() + "'." );
             }
         }
 
         return directory;
+    }
+
+    /**
+     * Creates parent directories for file.
+     *
+     * @param file
+     * @return the file parameter
+     * @throws IOException
+     */
+    public File mkParentDirs( File file )
+        throws IOException
+    {
+        File directory = file.getParentFile();
+        if ( !directory.exists() )
+        {
+            if ( !directory.mkdirs() )
+            {
+                throw new IOException( "Could not make directories '" + directory.getAbsolutePath() + "'." );
+            }
+        }
+
+        return file;
     }
 
     public InputStream getResourceAsStream( String resource )
@@ -120,25 +141,19 @@ public class GeneratorTools
     //
     // ----------------------------------------------------------------------
 
-    public void filterCopy( File in,
-                               File out,
-                               Map map )
+    public void filterCopy( File in, File out, Map map )
         throws IOException
     {
         filterCopy( new FileReader( in ), out, map );
     }
 
-    public void filterCopy( InputStream in,
-                               File out,
-                               Map map )
+    public void filterCopy( InputStream in, File out, Map map )
         throws IOException
     {
         filterCopy( new InputStreamReader( in ), out, map );
     }
 
-    public void filterCopy( Reader in,
-                               File out,
-                               Map map )
+    public void filterCopy( Reader in, File out, Map map )
         throws IOException
     {
         InterpolationFilterReader reader = new InterpolationFilterReader( in, map, "@", "@" );
@@ -174,10 +189,7 @@ public class GeneratorTools
         writer.close();
     }
 
-    public void copyResource( String filename,
-                                 String resource,
-                                 boolean makeExecutable,
-                                 File basedir )
+    public void copyResource( String filename, String resource, boolean makeExecutable, File basedir )
         throws IOException
     {
         File target = new File( basedir, filename );
@@ -197,8 +209,7 @@ public class GeneratorTools
         }
     }
 
-    public void copyResourceToFile( String resource,
-                                       File target )
+    public void copyResourceToFile( String resource, File target )
         throws IOException
     {
         InputStream is = getResourceAsStream( resource );
@@ -219,7 +230,8 @@ public class GeneratorTools
     // ----------------------------------------------------------------------
 
     public Properties loadConfigurationProperties( File configurationPropertiesFile )
-        throws IOException, PlexusRuntimeBootloaderGeneratorException
+        throws IOException,
+            PlexusRuntimeBootloaderGeneratorException
     {
         Properties properties = new Properties();
 
@@ -244,8 +256,7 @@ public class GeneratorTools
         return properties;
     }
 
-    public void assertHasProperty( Properties properties,
-                                    String key )
+    public void assertHasProperty( Properties properties, String key )
         throws PlexusRuntimeBootloaderGeneratorException
     {
         if ( StringUtils.isEmpty( properties.getProperty( key ) ) )
@@ -254,27 +265,28 @@ public class GeneratorTools
         }
     }
 
-
     // ----------------------------------------------------------------------
     // Velocity methods
     // ----------------------------------------------------------------------
 
-    public void mergeTemplate( String templateName, File outputFileName, boolean dos,
-                                  Properties configurationProperties )
-        throws IOException, PlexusRuntimeBootloaderGeneratorException
+    public void mergeTemplate( String templateName, File outputFileName, boolean dos, Properties configurationProperties )
+        throws IOException,
+            PlexusRuntimeBootloaderGeneratorException
     {
         StringWriter buffer = new StringWriter( 100 * FileUtils.ONE_KB );
 
         File tmpFile = File.createTempFile( outputFileName.getName(), null );
 
-        //noinspection OverlyBroadCatchBlock
+        // noinspection OverlyBroadCatchBlock
         try
         {
             velocity.getEngine().mergeTemplate( templateName, new VelocityContext(), buffer );
         }
         catch ( ResourceNotFoundException ex )
         {
-            throw new PlexusRuntimeBootloaderGeneratorException( "Missing Velocity template: '" + templateName + "'.", ex );
+            throw new PlexusRuntimeBootloaderGeneratorException(
+                "Missing Velocity template: '" + templateName + "'.",
+                ex );
         }
         catch ( Exception ex )
         {
@@ -287,7 +299,7 @@ public class GeneratorTools
 
         String line;
 
-        //noinspection NestedAssignment
+        // noinspection NestedAssignment
         while ( ( line = reader.readLine() ) != null )
         {
             output.write( line.getBytes() );
