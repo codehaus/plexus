@@ -28,6 +28,12 @@ public abstract class AbstractAppServerMojo
     protected File target;
 
     /**
+     * @parameter expression="${project.build.outputDirectory}"
+     * @required
+     */
+    protected File classesDirectory;
+
+    /**
      * @parameter expression="${project.build.finalName}"
      * @required
      */

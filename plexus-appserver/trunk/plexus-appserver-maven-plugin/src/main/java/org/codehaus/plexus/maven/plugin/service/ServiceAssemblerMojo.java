@@ -56,9 +56,9 @@ public class ServiceAssemblerMojo
     private File serviceConfiguration;
 
     /**
-     * @parameter expression="${applicationXmlFile}"
+     * @parameter expression="${componentsXmlFile}"
      */
-    private File applicationXmlFile;
+    private File componentsXmlFile;
 
     /**
      * @parameter expression="${configurationsDirectory}"
@@ -101,12 +101,12 @@ public class ServiceAssemblerMojo
 
         try
         {
-            if ( applicationXmlFile == null )
+            if ( componentsXmlFile == null )
             {
-                applicationXmlFile = new File( basedir, "src/main/resources/META-INF/plexus/application.xml" );
-                if ( !applicationXmlFile.isFile() )
+                componentsXmlFile = new File( classesDirectory, "META-INF/plexus/components.xml" );
+                if ( !componentsXmlFile.isFile() )
                 {
-                    applicationXmlFile = null;
+                    componentsXmlFile = null;
                 }
             }
 
@@ -118,7 +118,7 @@ public class ServiceAssemblerMojo
                 localRepository,
                 projectArtifacts,
                 serviceConfiguration,
-                applicationXmlFile.isFile() ? applicationXmlFile : null,
+                componentsXmlFile,
                 configurationsDirectory,
                 interpolationProperties );
 
