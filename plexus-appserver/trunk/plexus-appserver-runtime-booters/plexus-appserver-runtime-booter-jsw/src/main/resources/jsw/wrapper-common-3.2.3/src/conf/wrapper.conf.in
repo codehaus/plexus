@@ -38,6 +38,8 @@ wrapper.java.additional.6.stripquotes=TRUE
 wrapper.java.additional.7=-Dplexus.system.path="%PATH%;"
 wrapper.java.additional.7.stripquotes=TRUE
 wrapper.java.additional.8=@app.jvm.options@
+wrapper.java.additional.9=-Dappserver.properties="@appserver.properties@"
+wrapper.java.additional.9.stripquotes=TRUE
 
 # Initial Java Heap Size (in MB)
 wrapper.java.initmemory=@app.init.memory@
