@@ -67,7 +67,7 @@ public class DefaultServiceBuilder
     // ----------------------------------------------------------------------
 
     public void build( String serviceName, File outputDirectory, File serviceJar, List remoteRepositories,
-        ArtifactRepository localRepository, Set serviceArtifacts, File serviceConfiguration, File applicationXmlFile,
+        ArtifactRepository localRepository, Set serviceArtifacts, File serviceConfiguration, File componentsXmlFile,
         File configurationsDirectory, Properties configurationProperties )
         throws ServiceBuilderException
     {
@@ -104,11 +104,13 @@ public class DefaultServiceBuilder
 
             processConfigurations( confDir, serviceConfiguration, configurationProperties, configurationsDirectory );
 
-            if ( applicationXmlFile != null )
+            if ( componentsXmlFile != null )
             {
-                tools.filterCopy( applicationXmlFile, tools.mkParentDirs( new File(
-                    outputDirectory,
-                    PlexusApplicationConstants.CONFIGURATION_FILE ) ), configurationProperties );
+                tools.filterCopy(
+                    componentsXmlFile,
+                    tools.mkParentDirs( new File( outputDirectory, PlexusServiceConstants.CLASSES_DIRECTORY
+                        + "/META-INF/plexus/components.xml" ) ),
+                    configurationProperties );
             }
         }
         catch ( IOException e )
@@ -218,7 +220,10 @@ public class DefaultServiceBuilder
                 + plexusConfigurationFile.getAbsolutePath() + "'." );
         }
 
-        FileUtils.copyFile( plexusConfigurationFile, new File( confDir, PlexusServiceConstants.CONFIGURATION_FILE ) );
+        tools.filterCopy(
+            plexusConfigurationFile,
+            new File( confDir, PlexusServiceConstants.CONFIGURATION_FILE ),
+            configurationProperties );
 
         // ----------------------------------------------------------------------
         // Process the configurations
