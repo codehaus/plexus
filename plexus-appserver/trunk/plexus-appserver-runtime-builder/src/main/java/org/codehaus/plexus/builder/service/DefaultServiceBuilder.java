@@ -29,6 +29,7 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+import org.codehaus.plexus.appserver.PlexusApplicationConstants;
 import org.codehaus.plexus.appserver.PlexusServiceConstants;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
@@ -66,8 +67,8 @@ public class DefaultServiceBuilder
     // ----------------------------------------------------------------------
 
     public void build( String serviceName, File outputDirectory, File serviceJar, List remoteRepositories,
-                       ArtifactRepository localRepository, Set serviceArtifacts, File serviceConfiguration,
-                       File configurationsDirectory, Properties configurationProperties )
+        ArtifactRepository localRepository, Set serviceArtifacts, File serviceConfiguration, File applicationXmlFile,
+        File configurationsDirectory, Properties configurationProperties )
         throws ServiceBuilderException
     {
         // ----------------------------------------------------------------------
@@ -81,8 +82,8 @@ public class DefaultServiceBuilder
 
         if ( configurationsDirectory != null && !configurationsDirectory.isDirectory() )
         {
-            throw new ServiceBuilderException(
-                "The configurations directory isn't a directory: '" + configurationsDirectory.getAbsolutePath() + "." );
+            throw new ServiceBuilderException( "The configurations directory isn't a directory: '"
+                + configurationsDirectory.getAbsolutePath() + "." );
         }
 
         File libDir;
@@ -102,10 +103,17 @@ public class DefaultServiceBuilder
             // ----------------------------------------------------------------------
 
             processConfigurations( confDir, serviceConfiguration, configurationProperties, configurationsDirectory );
+
+            if ( applicationXmlFile != null )
+            {
+                tools.filterCopy( applicationXmlFile, tools.mkParentDirs( new File(
+                    outputDirectory,
+                    PlexusApplicationConstants.CONFIGURATION_FILE ) ), configurationProperties );
+            }
         }
         catch ( IOException e )
         {
-            throw new ServiceBuilderException( "Error while processing the configurations." );
+            throw new ServiceBuilderException( "Error while processing the configurations: " + e.getMessage(), e );
         }
 
         // ----------------------------------------------------------------------------
@@ -133,11 +141,16 @@ public class DefaultServiceBuilder
 
             excludedArtifacts.addAll( getBootArtifacts( serviceArtifacts, remoteRepositories, localRepository, true ) );
 
-            excludedArtifacts.addAll( getCoreArtifacts( serviceArtifacts, Collections.EMPTY_SET, remoteRepositories,
-                                                        localRepository, true ) );
+            excludedArtifacts.addAll( getCoreArtifacts(
+                serviceArtifacts,
+                Collections.EMPTY_SET,
+                remoteRepositories,
+                localRepository,
+                true ) );
 
-            ArtifactFilter filter = new AndArtifactFilter( new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
-                                                           new GroupArtifactTypeArtifactFilter( excludedArtifacts ) );
+            ArtifactFilter filter = new AndArtifactFilter(
+                new ScopeExcludeArtifactFilter( Artifact.SCOPE_TEST ),
+                new GroupArtifactTypeArtifactFilter( excludedArtifacts ) );
 
             artifacts = findArtifacts( remoteRepositories, localRepository, serviceArtifacts, true, filter );
         }
@@ -191,8 +204,9 @@ public class DefaultServiceBuilder
     // ----------------------------------------------------------------------
 
     private void processConfigurations( File confDir, File plexusConfigurationFile, Properties configurationProperties,
-                                        File configurationsDirectory )
-        throws ServiceBuilderException, IOException
+        File configurationsDirectory )
+        throws ServiceBuilderException,
+            IOException
     {
         // ----------------------------------------------------------------------
         // Copy the main plexus.xml
@@ -200,8 +214,8 @@ public class DefaultServiceBuilder
 
         if ( !plexusConfigurationFile.exists() )
         {
-            throw new ServiceBuilderException(
-                "The appserver configurator file doesn't exist: '" + plexusConfigurationFile.getAbsolutePath() + "'." );
+            throw new ServiceBuilderException( "The appserver configurator file doesn't exist: '"
+                + plexusConfigurationFile.getAbsolutePath() + "'." );
         }
 
         FileUtils.copyFile( plexusConfigurationFile, new File( confDir, PlexusServiceConstants.CONFIGURATION_FILE ) );

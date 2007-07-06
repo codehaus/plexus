@@ -53,8 +53,7 @@ public class ApplicationAssemblerMojo
     private File applicationConfiguration;
 
     /**
-     * @parameter expression="${applicationConfiguration}"
-     *            default-value="${basedir}/src/main/resources/META-INF/plexus/application.xml"
+     * @parameter expression="${applicationXmlFile}"
      */
     private File applicationXmlFile;
 
@@ -128,6 +127,15 @@ public class ApplicationAssemblerMojo
 
         try
         {
+            if ( applicationXmlFile == null )
+            {
+                applicationXmlFile = new File( basedir, "src/main/resources/META-INF/plexus/application.xml" );
+                if ( !applicationXmlFile.isFile() )
+                {
+                    applicationXmlFile = null;
+                }
+            }
+
             applicationBuilder.assemble(
                 applicationName,
                 applicationAssemblyDirectory,
@@ -137,7 +145,7 @@ public class ApplicationAssemblerMojo
                 additionalCoreArtifacts,
                 services,
                 applicationConfiguration,
-                applicationXmlFile != null && applicationXmlFile.isFile() ? applicationXmlFile : null,
+                applicationXmlFile,
                 configurationsDirectory,
                 interpolationProperties );
         }

@@ -42,7 +42,7 @@ public interface ServiceBuilder
 
     void build( String servicename, File outputDirectory, File classes, List remoteRepositories,
                 ArtifactRepository localRespository, Set serviceArtifacts, File plexusConfiguration,
-                File configurationsDirectory, Properties configurationProperties )
+                File configurationsDirectory, File applicationXmlFile, Properties configurationProperties )
         throws ServiceBuilderException;
 
     void bundle( File outputFile, File workingDirectory )

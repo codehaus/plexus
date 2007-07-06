@@ -23,8 +23,6 @@ package org.codehaus.plexus.builder.application;
  */
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -44,7 +42,6 @@ import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.builder.AbstractBuilder;
 import org.codehaus.plexus.builder.runtime.GeneratorTools;
 import org.codehaus.plexus.util.DirectoryScanner;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.Xpp3DomWriter;
@@ -69,7 +66,7 @@ public class DefaultApplicationBuilder
     // ApplicationBuilder Implementation
     // ----------------------------------------------------------------------
 
-    public void assemble( String applicationName, File workingDirectory, List remoteRepositories,
+    public void assemble( String applicationName, File outputDirectory, List remoteRepositories,
         ArtifactRepository localRepository, Set projectArtifacts, Set additionalCoreArtifacts, Set serviceArtifacts,
         File appserverXmlFile, File applicationXmlFile, File configurationsDirectory, Properties configurationProperties )
         throws ApplicationBuilderException
@@ -89,7 +86,7 @@ public class DefaultApplicationBuilder
                 + configurationsDirectory.getAbsolutePath() + "." );
         }
 
-        File libDir, confDir, metaInfDir;
+        File libDir, confDir;
 
         try
         {
@@ -97,16 +94,14 @@ public class DefaultApplicationBuilder
             // Create directory structure
             // ----------------------------------------------------------------------
 
-            confDir = tools.mkdirs( new File( workingDirectory, PlexusApplicationConstants.CONF_DIRECTORY ) );
+            confDir = tools.mkdirs( new File( outputDirectory, PlexusApplicationConstants.CONF_DIRECTORY ) );
 
-            libDir = tools.mkdirs( new File( workingDirectory, PlexusApplicationConstants.LIB_DIRECTORY ) );
-
-            metaInfDir = tools.mkdirs( new File( workingDirectory, "META-INF/plexus" ) );
+            libDir = tools.mkdirs( new File( outputDirectory, PlexusApplicationConstants.LIB_DIRECTORY ) );
 
             // TODO: why does the application have a logs directory?
-            File logsDir = tools.mkdirs( new File( workingDirectory, "logs" ) );
+            File logsDir = tools.mkdirs( new File( outputDirectory, "logs" ) );
 
-            tools.mkdirs( new File( workingDirectory, "META-INF/plexus" ) );
+            tools.mkdirs( new File( outputDirectory, "META-INF/plexus" ) );
 
             // ----------------------------------------------------------------------
             //
@@ -116,15 +111,11 @@ public class DefaultApplicationBuilder
 
             processConfigurations( confDir, appserverXmlFile, configurationProperties, configurationsDirectory );
 
-            // ----------------------------------------------------------------------
-            // Copy the main appserver.xml
-            // ----------------------------------------------------------------------
-
             if ( applicationXmlFile != null )
             {
-                tools.filterCopy( applicationXmlFile, new File(
-                    workingDirectory,
-                    PlexusApplicationConstants.CONFIGURATION_FILE ), configurationProperties );
+                tools.filterCopy( applicationXmlFile, tools.mkParentDirs( new File(
+                    outputDirectory,
+                    PlexusApplicationConstants.CONFIGURATION_FILE ) ), configurationProperties );
             }
         }
         catch ( IOException e )
@@ -180,7 +171,7 @@ public class DefaultApplicationBuilder
 
         try
         {
-            copyArtifacts( workingDirectory, libDir, artifacts );
+            copyArtifacts( outputDirectory, libDir, artifacts );
         }
         catch ( IOException e )
         {
@@ -313,43 +304,6 @@ public class DefaultApplicationBuilder
                 }
 
                 tools.filterCopy( in, out, configurationProperties );
-            }
-        }
-    }
-
-    private void processMetaInfResources( File metaInfDir, File metaInfDirectory )
-        throws IOException,
-            ApplicationBuilderException
-    {
-        if ( metaInfDirectory != null )
-        {
-            DirectoryScanner scanner = new DirectoryScanner();
-
-            scanner.setBasedir( metaInfDirectory );
-
-            // TODO: centralize this list
-            scanner.setExcludes( new String[] { "**/CVS/**", "**/.svn/**" } );
-            scanner.scan();
-
-            String[] files = scanner.getIncludedFiles();
-
-            for ( int i = 0; i < files.length; i++ )
-            {
-                String file = files[i];
-
-                File in = new File( metaInfDirectory, file );
-
-                File out = new File( metaInfDir, file );
-
-                File parent = out.getParentFile();
-
-                if ( !parent.isDirectory() && !parent.mkdirs() )
-                {
-                    throw new ApplicationBuilderException( "Could not make parent directories for " + "'"
-                        + out.getAbsolutePath() + "'." );
-                }
-
-                IOUtil.copy( new FileInputStream( in ), new FileOutputStream( out ) );
             }
         }
     }
