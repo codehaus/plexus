@@ -206,6 +206,10 @@ public abstract class AbstractBuilder
             {
                 resolvedArtifacts.add( artifact );
 
+                if ( artifact.isSnapshot() )
+                {
+                    return artifact.getBaseVersion();
+                }
                 return artifact.getVersion();
             }
         }
