@@ -39,6 +39,7 @@ import java.util.StringTokenizer;
 
 import javax.servlet.ServletContext;
 
+import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.MutablePlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
@@ -103,16 +104,18 @@ public final class ServletContextUtils
             context.log( "Plexus container already in context, creating child container" );
 
             // make a child container. The child container load the WEB-INF/classes/META-INF/application.xml the WAR.
-
-            // TODO setup a new classWorld ?
             // TODO merge with existing context values and existing properties ?
 
             MutablePlexusContainer parentContainer = (MutablePlexusContainer) o;
 
+            // Don't specify any classworld, either with the thread context loader or the parent
+            // container realm, or even the parent classworld, since then the
+            // components in WEB-INF/lib won't be discovered.
+
             container = new DefaultPlexusContainer(
                 parentContainer.getName() + "-war",
                 containerContext,
-                parentContainer.getClassWorld(),
+                null,
                 resolveConfig( context ),
                 parentContainer );
 
