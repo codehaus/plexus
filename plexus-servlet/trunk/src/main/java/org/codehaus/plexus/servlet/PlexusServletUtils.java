@@ -115,9 +115,11 @@ public final class PlexusServletUtils
         {
             getPlexusContainer( servletContext ).release( service );
         }
-        catch ( Exception ex )
+        catch ( Exception e )
         {
-            throw new ServletException( "Exception while releasing component", ex );
+        e.printStackTrace();
+
+            throw new ServletException( "Exception while releasing component", e );
         }
     }
 }
