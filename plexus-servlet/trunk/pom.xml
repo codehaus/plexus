@@ -18,12 +18,12 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-component-api</artifactId>
-      <version>1.0-alpha-22</version>
+      <version>1.0-alpha-26-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-22</version>
+      <version>1.0-alpha-26-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <url>http://plexus.codehaus.org/plexus-servlet/</url>

@@ -25,6 +25,8 @@ package org.codehaus.plexus.servlet;
  */
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ import java.util.StringTokenizer;
 import javax.servlet.ServletContext;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.MutablePlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
@@ -46,8 +49,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 import org.codehaus.plexus.util.PropertyUtils;
 
 /**
- * <code>ServletContextUtils</code> provides methods to embed a Plexus
- * container within a Servlet context.
+ * <code>ServletContextUtils</code> provides methods to embed a Plexus container within a Servlet context.
  *
  * @author <a href="mhw@kremvax.net">Mark Wilkinson</a>
  * @version $Id$
@@ -63,10 +65,9 @@ public final class ServletContextUtils
     private List components = new ArrayList();
 
     /**
-     * Create a Plexus container using the {@link org.codehaus.plexus.DefaultPlexusContainer}. This method
-     * should be called from an environment where a
-     * <code>ServletContext</code> is available. It will create and initialize
-     * the Plexus container and place references to the container into the context.
+     * Create a Plexus container using the {@link org.codehaus.plexus.DefaultPlexusContainer}. This method should be
+     * called from an environment where a <code>ServletContext</code> is available. It will create and initialize the
+     * Plexus container and place references to the container into the context.
      *
      * @param context The servlet context to place the container in.
      * @return a Plexus container that has been initialized and started.
@@ -85,7 +86,7 @@ public final class ServletContextUtils
         {
             context.log( "Initializing Plexus." );
 
-            container = new DefaultPlexusContainer( null, containerContext, resolveConfig( context ), null );
+            container = new DefaultPlexusContainer( null, containerContext, null, resolveConfig( context ), null );
 
             context.setAttribute( PlexusConstants.PLEXUS_KEY, container );
 
@@ -99,19 +100,23 @@ public final class ServletContextUtils
                     + "' was in the context but it was not an instance of " + PlexusContainer.class.getName() + "." );
             }
 
-            context.log( "Plexus container already in context, a child one is build." );
+            context.log( "Plexus container already in context, creating child container" );
 
-            // make a child container. The child container load the WEB-INF/plexus.xml in the WAR.
+            // make a child container. The child container load the WEB-INF/classes/META-INF/application.xml the WAR.
 
             // TODO setup a new classWorld ?
             // TODO merge with existing context values and existing properties ?
-            container = new DefaultPlexusContainer( null, containerContext, resolveConfig( context ), null );
 
-            // TODO sure of this ?
-            container.setParentPlexusContainer( (PlexusContainer) o );
+            MutablePlexusContainer parentContainer = (MutablePlexusContainer) o;
+
+            container = new DefaultPlexusContainer(
+                parentContainer.getName() + "-war",
+                containerContext,
+                parentContainer.getClassWorld(),
+                resolveConfig( context ),
+                parentContainer );
 
             context.setAttribute( PlexusConstants.PLEXUS_KEY, container );
-
         }
 
         lookupAddToContextComponents( context );
@@ -178,7 +183,8 @@ public final class ServletContextUtils
         catch ( Exception e )
         {
             // michal: I don't think it is that good idea to ignore this error.
-            // bwalding: it's actually pretty difficult to get here as the PropertyUtils.loadProperties absorbs all Exceptions
+            // bwalding: it's actually pretty difficult to get here as the PropertyUtils.loadProperties absorbs all
+            // Exceptions
             context.log( "Could not load plexus context properties from: '" + filename + "'" );
         }
 
@@ -196,7 +202,7 @@ public final class ServletContextUtils
         return properties;
     }
 
-    private URL resolveConfig( ServletContext context )
+    private InputStream resolveConfig( ServletContext context )
         throws PlexusContainerException
     {
         String plexusConf = context.getInitParameter( PlexusServletUtils.PLEXUS_CONFIG_PARAM );
@@ -212,14 +218,19 @@ public final class ServletContextUtils
 
             if ( resource == null )
             {
-                resource = Thread.currentThread().getContextClassLoader().getResource( "META-INF/plexus/application.xml" );
+                resource = Thread.currentThread().getContextClassLoader().getResource(
+                    "META-INF/plexus/application.xml" );
             }
 
             context.log( "resource = " + resource );
 
-            return resource;
+            return resource == null ? null : resource.openStream();
         }
         catch ( MalformedURLException e )
+        {
+            throw new PlexusContainerException( "Error while getting URL to '" + plexusConf + "'", e );
+        }
+        catch ( IOException e )
         {
             throw new PlexusContainerException( "Error while getting URL to '" + plexusConf + "'", e );
         }
