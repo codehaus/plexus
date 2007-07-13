@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Plexus Contextualizer</title>
+    <author email="olamy@codehaus.org">Olivier Lamy</author>
+  </properties>
+  <body>
+    <section name="Plexus Contextualizer">
+      <p>General Purpose is to add values in Plexus Context with adding this component in the load-on-start section</p>
+      <subsection name="All System Properties">
+        <p>Adding all system properties and a value (key : keyone with value : valueone) in your Plexus Context 
+        <source>
+<![CDATA[
+<plexus>
+  <load-on-start>
+    <component>
+      <role>org.codehaus.plexus.contextualizer.Contextualizer</role>
+      <role-hint>definedsysprops</role-hint>		
+    </component>    
+  </load-on-start>  
+  <components>
+  
+    <component>
+      <role>org.codehaus.plexus.contextualizer.Contextualizer</role>
+      <role-hint>definedsysprops</role-hint>
+      <implementation>org.codehaus.plexus.contextualizer.DefaultContextualizer</implementation>
+      <configuration>
+		<definedSystemProperties>
+		  <definedSystemProperty>user.home</definedSystemProperty>	
+		</definedSystemProperties>
+		<contextValues>
+		  <keyone>valueone</keyone>
+		</contextValues>
+	  </configuration>
+    </component>
+  </components>
+</plexus>
+]]>
+  </source>         
+          </p>
+      </subsection>
+      <subsection name="Only defined System Properties">
+        <p>Adding only defined system properties (only user.home) and a value (key : keyone with value : valueone) in your Plexus Context 
+        <source>
+<![CDATA[
+<plexus>
+  <load-on-start>
+    <component>
+      <role>org.codehaus.plexus.contextualizer.Contextualizer</role>
+      <role-hint>allsystemprops</role-hint>		
+    </component>    
+  </load-on-start>  
+  <components>
+  
+    <component>
+      <role>org.codehaus.plexus.contextualizer.Contextualizer</role>
+      <role-hint>allsystemprops</role-hint>
+      <implementation>org.codehaus.plexus.contextualizer.DefaultContextualizer</implementation>
+      <configuration>
+		<systemProperties>
+		  <systemProperty>user.home</systemProperty>	
+		</systemProperties>
+		<contextValues>
+		  <keyone>valueone</keyone>
+		</contextValues>
+	  </configuration>
+    </component>
+  </components>
+</plexus>
+]]>
+  </source>         
+          </p>
+      </subsection>      
+    </section>
+  </body>
+</document>
