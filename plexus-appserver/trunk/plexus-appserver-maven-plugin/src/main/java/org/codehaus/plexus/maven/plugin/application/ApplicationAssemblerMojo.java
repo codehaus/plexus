@@ -58,6 +58,11 @@ public class ApplicationAssemblerMojo
     private File applicationXmlFile;
 
     /**
+     * @parameter expression="${plexusXmlFile}"
+     */
+    private File plexusXmlFile;
+
+    /**
      * @parameter expression="${configurationsDirectory}"
      */
     private File configurationsDirectory;
@@ -136,6 +141,15 @@ public class ApplicationAssemblerMojo
                 }
             }
 
+            if ( plexusXmlFile == null )
+            {
+                plexusXmlFile = new File( basedir, "src/main/resources/META-INF/plexus/plexus.xml" );
+                if ( !plexusXmlFile.isFile() )
+                {
+                    plexusXmlFile = null;
+                }
+            }
+
             applicationBuilder.assemble(
                 applicationName,
                 applicationAssemblyDirectory,
@@ -146,6 +160,7 @@ public class ApplicationAssemblerMojo
                 services,
                 applicationConfiguration,
                 applicationXmlFile,
+                plexusXmlFile,
                 configurationsDirectory,
                 interpolationProperties );
         }
