@@ -68,7 +68,7 @@ public class DefaultApplicationBuilder
 
     public void assemble( String applicationName, File outputDirectory, List remoteRepositories,
         ArtifactRepository localRepository, Set projectArtifacts, Set additionalCoreArtifacts, Set serviceArtifacts,
-        File appserverXmlFile, File applicationXmlFile, File configurationsDirectory, Properties configurationProperties )
+        File appserverXmlFile, File applicationXmlFile, File plexusXmlFile, File configurationsDirectory, Properties configurationProperties )
         throws ApplicationBuilderException
     {
         // ----------------------------------------------------------------------
@@ -101,8 +101,6 @@ public class DefaultApplicationBuilder
             // TODO: why does the application have a logs directory?
             File logsDir = tools.mkdirs( new File( outputDirectory, "logs" ) );
 
-            tools.mkdirs( new File( outputDirectory, "META-INF/plexus" ) );
-
             // ----------------------------------------------------------------------
             //
             // ----------------------------------------------------------------------
@@ -117,6 +115,14 @@ public class DefaultApplicationBuilder
                     outputDirectory,
                     PlexusApplicationConstants.CONFIGURATION_FILE ) ), configurationProperties );
             }
+
+            if ( plexusXmlFile != null )
+            {
+                tools.filterCopy( plexusXmlFile, tools.mkParentDirs( new File(
+                    outputDirectory,
+                    PlexusApplicationConstants.PLEXUS_XML_FILE ) ), configurationProperties );
+            }
+
         }
         catch ( IOException e )
         {

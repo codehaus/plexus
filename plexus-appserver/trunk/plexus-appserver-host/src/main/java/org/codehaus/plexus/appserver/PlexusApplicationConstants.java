@@ -35,6 +35,8 @@ public class PlexusApplicationConstants
 
     public static final String CONFIGURATION_FILE = "META-INF/plexus/application.xml";
 
+    public static final String PLEXUS_XML_FILE = "META-INF/plexus/plexus.xml";
+
     public static final String LIB_DIRECTORY = "lib";
 
     public static final String METADATA_FILE = "appserver.xml";
