@@ -12,6 +12,8 @@
   
   <description>
     Provides support for using Groovy components inside of Plexus.
+    
+    *DEPRECATED* Use http://svn.codehaus.org/mojo/trunk/mojo/groovy/groovy-plexus-factory/ instead.
   </description>
 
   <developers>
