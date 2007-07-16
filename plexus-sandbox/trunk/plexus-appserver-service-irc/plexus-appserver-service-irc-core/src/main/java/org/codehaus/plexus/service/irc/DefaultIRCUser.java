@@ -7,31 +7,38 @@ package org.codehaus.plexus.service.irc;
  * Time: 19:13:59
  * To change this template use File | Settings | File Templates.
  */
-public class DefaultIRCUser implements IRCUser {
+public class DefaultIRCUser
+    implements IRCUser
+{
 
-  private String nick, login, host;
+    private String nick, login, host;
 
-  public DefaultIRCUser(String nick, String login, String host) {
-    this.nick = nick;
-    this.login = login;
-    this.host = host;
-  }
+    public DefaultIRCUser( String nick, String login, String host )
+    {
+        this.nick = nick;
+        this.login = login;
+        this.host = host;
+    }
 
-  public DefaultIRCUser(org.schwering.irc.lib.IRCUser user) {
-    this.nick = user.getNick();
-    this.login = user.getUsername();
-    this.host = user.getHost();
-  }
+    public DefaultIRCUser( org.schwering.irc.lib.IRCUser user )
+    {
+        this.nick = user.getNick();
+        this.login = user.getUsername();
+        this.host = user.getHost();
+    }
 
-  public String getNick() {
-    return nick;
-  }
+    public String getNick()
+    {
+        return nick;
+    }
 
-  public String getLogin() {
-    return login;
-  }
+    public String getLogin()
+    {
+        return login;
+    }
 
-  public String getHost() {
-    return host;
-  }
+    public String getHost()
+    {
+        return host;
+    }
 }

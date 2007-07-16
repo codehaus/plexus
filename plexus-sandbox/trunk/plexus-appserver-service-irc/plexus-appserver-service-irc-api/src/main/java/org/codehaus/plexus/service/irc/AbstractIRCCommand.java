@@ -6,14 +6,20 @@ package org.codehaus.plexus.service.irc;
  * Date: 29-Jul-2006
  * Time: 21:27:51
  */
-public abstract class AbstractIRCCommand implements IRCCommand {
-  public void onCommand(String channel, IRCUser user, String message) { }
+public abstract class AbstractIRCCommand
+    implements IRCCommand
+{
+    public void onCommand( String channel, IRCUser user, String message )
+    {
+    }
 
-  public void onPrivateCommand(IRCUser user, String message) {
-    onCommand(user.getNick(), user, message);
-  }
+    public void onPrivateCommand( IRCUser user, String message )
+    {
+        onCommand( user.getNick(), user, message );
+    }
 
-  public String getHelp(String parameters) {
-    return "No help avaialble for this command";
-  }
+    public String getHelp( String parameters )
+    {
+        return "No help avaialble for this command";
+    }
 }
