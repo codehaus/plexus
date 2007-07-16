@@ -1,6 +1,9 @@
 package org.codehaus.plexus.service.irc;
 
+import java.io.IOException;
+
 import org.codehaus.plexus.appserver.service.PlexusService;
+import org.codehaus.plexus.appserver.service.PlexusServiceException;
 import org.codehaus.plexus.appserver.application.profile.AppRuntimeProfile;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 
@@ -51,12 +54,18 @@ public class PlexusIRCService implements PlexusService {
    */
   private org.codehaus.plexus.service.irc.IRCServiceManager manager;
 
-  public void beforeApplicationStart(AppRuntimeProfile applicationRuntimeProfile, PlexusConfiguration plexusConfiguration) throws Exception {
-    manager.connect(host, nick, pass, username, realname);
-    manager.join(channel);
-
+  public void beforeApplicationStart(AppRuntimeProfile applicationRuntimeProfile, PlexusConfiguration plexusConfiguration) throws PlexusServiceException {
+    try {
+      manager.connect(host, nick, pass, username, realname);
+      manager.join(channel);
+    } catch (IOException e) {
+      throw new PlexusServiceException("Error starting IRC service", e);
+    }
   }
 
-  public void afterApplicationStart(AppRuntimeProfile applicationRuntimeProfile, PlexusConfiguration plexusConfiguration) throws Exception {
+  public void afterApplicationStart(AppRuntimeProfile applicationRuntimeProfile, PlexusConfiguration plexusConfiguration) throws PlexusServiceException {
+  }
+
+  public void applicationStop( AppRuntimeProfile runtimeProfile ) throws PlexusServiceException {
   }
 }
