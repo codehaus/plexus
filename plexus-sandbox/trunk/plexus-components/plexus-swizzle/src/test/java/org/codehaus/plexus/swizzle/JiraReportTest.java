@@ -83,7 +83,15 @@ public class JiraReportTest
         throws Exception
     {
         // release information should implicitly be loaded when the release template is used
-        useTemplate( JiraReport.RELEASE, "Test 0.3.0", false, "org/codehaus/plexus/swizzle/ReleaseExpectedResult.txt" );
+        if ( System.getProperty( "os.name" ).toLowerCase().indexOf( "windows" ) != -1 )
+        {
+          useTemplate( JiraReport.RELEASE, "Test 0.3.0", false, "org/codehaus/plexus/swizzle/ReleaseExpectedResult.txt" );
+        }
+        else
+        {
+
+          useTemplate( JiraReport.RELEASE, "Test 0.3.0", false, "org/codehaus/plexus/swizzle/ReleaseExpectedResult-unix.txt" );
+        }
     }
 
     // TODO: This test will fail if timezone is enabled in formatting and ran from a different timezone.
@@ -91,8 +99,9 @@ public class JiraReportTest
     public void testUserProvidedTemplate()
         throws Exception
     {
-        useTemplate( "org/codehaus/plexus/swizzle/MyResolvedIssuesTemplate.vm", "Test 0.1.1", true,
+          useTemplate( "org/codehaus/plexus/swizzle/MyResolvedIssuesTemplate.vm", "Test 0.1.1", true,
                      "org/codehaus/plexus/swizzle/MyResolvedIssuesExpectedResult.txt" );
+
     }
 
     private void useTemplate( String template, String version, boolean releaseInfoNeeded, String expectedResult )
