@@ -31,6 +31,7 @@
             <td>Version ${previousReleaseVersion} released on ${lastReleaseDate}</td>
 #end
           </tr>
+        </table>
       </div>
     </section>
   </body>
