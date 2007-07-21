@@ -23,6 +23,7 @@
             <td>Last Release</td>
             <td>Version Test 0.1.0 released on 2006/07/04 12:00:00</td>
           </tr>
+        </table>
       </div>
     </section>
   </body>

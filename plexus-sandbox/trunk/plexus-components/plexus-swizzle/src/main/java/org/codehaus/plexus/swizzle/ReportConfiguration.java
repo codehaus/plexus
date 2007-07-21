@@ -217,7 +217,7 @@ public class ReportConfiguration
     {
         String scmType = "UNKNOWN";
 
-        if ( scmConnection.contains( "scm:" + SVN + ":" ) )
+        if ( scmConnection.indexOf( "scm:" + SVN + ":" ) != -1 )
         {
             scmType = SVN;
         }

@@ -8,11 +8,11 @@
       <h3>Swizzle <a href="http://jira.codehaus.org/browse/SWIZZLE?report=com.atlassian.jira.plugin.system.project:roadmap-panel">(Road Map)</a></h3>
       <table>
         <tr>
-          <th>TOTAL VOTES: 2</th>
+          <th>TOTAL VOTES: 4</th>
           <th>DESCRIPTION</th>
         </tr>
         <tr>
-          <td>2</td>
+          <td>4</td>
           <td><a href="http://jira.codehaus.org/browse/SWIZZLE-10">[SWIZZLE-10]</a> <![CDATA[Beer fridge for the garage]]></td>
         </tr>
       </table>

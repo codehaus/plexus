@@ -17,14 +17,18 @@
 
 package org.codehaus.plexus.swizzle;
 
-import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.IOException;
+import java.io.PrintStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URL;
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.util.IOUtil;
+import org.custommonkey.xmlunit.Diff;
+import org.jdom.Document;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 /**
  * @author jtolentino
@@ -122,8 +126,8 @@ public class JiraReportTest
         String expected = Utils.streamToString( resource.openStream() );
 
         String actual = new String( baos.toByteArray() );
-
-        assertEquals( expected, actual );
+        assertXmlIdentical( expected, actual );
+        //assertEquals( expected, actual );
     }
 
     private void loadReleaseInfo( ReportConfiguration configuration )
@@ -138,6 +142,34 @@ public class JiraReportTest
         configuration.setDocckResultDetails( "target/test-classes/org/codehaus/plexus/swizzle/docck-successful.txt" );
         configuration.setLicenseCheckPassed( false );
         configuration.setLicenseCheckResultDetails( "target/test-classes/org/codehaus/plexus/swizzle/license-failed.txt" );
+    }
+
+
+
+    public void assertXmlIdentical( String expected, String test )
+        throws Exception
+    {
+        String expectedXml = prettyXmlPrint( expected );
+        String testXml = prettyXmlPrint( test );
+        Diff diff = new Diff( expectedXml, testXml );
+        StringBuffer diffMessage = new StringBuffer();
+        assertTrue( " xml diff not identical " + diff.appendMessage( diffMessage ).toString(), diff.identical() );
+    }
+
+    public String prettyXmlPrint( String xml )
+        throws Exception
+    {
+        SAXBuilder saxBuilder = new SAXBuilder();
+        Document document = saxBuilder.build( new StringReader( xml ) );
+        XMLOutputter outp = new XMLOutputter();
+
+        outp.setFormat( Format.getPrettyFormat() );
+
+        StringWriter sw = new StringWriter();
+
+        outp.output( document, sw );
+        return sw.getBuffer().toString();
+
     }
 
 }
