@@ -1,25 +1,15 @@
 <project>
+  <parent>
+    <groupId>org.codehaus.plexus</groupId>
+    <artifactId>plexus-components</artifactId>
+    <version>1.1.12</version>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-swizzle</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-alpha-1-SNAPSHOT</version>
   <name>Plexus Swizzle Component</name>
   <url>http://plexus.codehaus.org</url>
-  <repositories>
-    <repository>
-      <id>codehaus.org</id>
-      <url>http://snapshots.repository.codehaus.org</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
   <dependencies>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-9</version>
-    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -29,7 +19,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-velocity</artifactId>
-      <version>1.1.4</version>
+      <version>1.1.6</version>
       <scope>test</scope>
     </dependency>
     <dependency>
