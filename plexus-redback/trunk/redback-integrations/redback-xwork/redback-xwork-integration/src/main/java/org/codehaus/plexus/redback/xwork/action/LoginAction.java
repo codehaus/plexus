@@ -16,6 +16,9 @@ package org.codehaus.plexus.redback.xwork.action;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.codehaus.plexus.redback.authentication.AuthenticationConstants;
@@ -116,7 +119,7 @@ public class LoginAction
 
         if ( StringUtils.isEmpty( username ) )
         {
-            addFieldError( "username", "Username cannot be empty." );
+            addFieldError( "username", getText( "username.required" ) );
             return ERROR;
         }
 
@@ -138,7 +141,7 @@ public class LoginAction
     {
         if ( StringUtils.isEmpty( resetPassword ) )
         {
-            addActionError( "Reset Password key missing." );
+            addActionError( getText( "reset.password.missing" ) );
             return ERROR;
         }
 
@@ -162,18 +165,18 @@ public class LoginAction
         catch ( KeyNotFoundException e )
         {
             getLogger().info( "Invalid key requested: " + resetPassword );
-            addActionError( "Unable to find the key." );
+            addActionError( getText( "cannot.find.key" ) );
             return ERROR;
         }
         catch ( KeyManagerException e )
         {
-            addActionError( "Unable to process key at this time.  Please try again later." );
+            addActionError( getText( "cannot.find.key.at.the.moment" ) );
             getLogger().warn( "Key Manager error: ", e );
             return ERROR;
         }
         catch ( UserNotFoundException e )
         {
-            addActionError( "Unable to find user." );
+            addActionError( getText( "cannot.find.user" ) );
             return ERROR;
         }
     }
@@ -189,7 +192,7 @@ public class LoginAction
     {
         if ( StringUtils.isEmpty( validateMe ) )
         {
-            addActionError( "Validation failure key missing." );
+            addActionError( getText( "validation.failure.key.missing" ) );
             return ERROR;
         }
 
@@ -215,17 +218,17 @@ public class LoginAction
         catch ( KeyNotFoundException e )
         {
             getLogger().info( "Invalid key requested: " + validateMe );
-            addActionError( "Unable to find the key." );
+            addActionError( getText( "cannot.find.key" ) );
             return ERROR;
         }
         catch ( KeyManagerException e )
         {
-            addActionError( "Unable to process key at this time.  Please try again later." );
+            addActionError( getText( "cannot.find.key.at.the.momment" ) );
             return ERROR;
         }
         catch ( UserNotFoundException e )
         {
-            addActionError( "Unable to find user." );
+            addActionError( getText( "cannot.find.user" ) );
             return ERROR;
         }
     }
@@ -344,16 +347,16 @@ public class LoginAction
                 {
                     if ( result.getExceptionsMap().get( AuthenticationConstants.AUTHN_NO_SUCH_USER ) != null )
                     {
-                        addActionError( "You have entered an incorrect username and/or password" );
+                        addActionError( getText( "incorrect.username.password" ) );
                     }
                     else
                     {
-                        addActionError( "Authentication failed" );
+                        addActionError( getText( "authentication.failed" ) );
                     }
                 }
                 else
                 {
-                    addActionError( "Authentication failed" );
+                    addActionError( getText( "authentication.failed" ) );
                 }
 
                 return ERROR;
@@ -361,17 +364,22 @@ public class LoginAction
         }
         catch ( AuthenticationException ae )
         {
-            addActionError( ae.getMessage() );
+            List list = new ArrayList();
+            list.add( ae.getMessage() );
+            addActionError( getText( "authentication.exception", list ) );
             return ERROR;
         }
         catch ( UserNotFoundException ue )
         {
-            addActionError( ue.getMessage() );
+            List list = new ArrayList();
+            list.add( username );
+            list.add( ue.getMessage() );
+            addActionError( getText( "user.not.found.exception", list ) );
             return ERROR;
         }
         catch ( AccountLockedException e )
         {
-            addActionError( "Your Account is Locked." );
+            addActionError( getText( "account.locked" ) );
             return ACCOUNT_LOCKED;
         }
     }

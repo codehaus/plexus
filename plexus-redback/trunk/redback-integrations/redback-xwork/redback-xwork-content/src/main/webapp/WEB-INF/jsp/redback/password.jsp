@@ -18,25 +18,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>Change Password</title>
+  <title><ww:text name="password.page.title"/></title>
 </head>
 
 <body onload="javascript:document.forms['password'].existingPassword.focus();">
 
-<h2>Change Password</h2>
+<h2><ww:text name="password.section.title"/></h2>
 
 <%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
 <ww:form action="password" namespace="/security" theme="xhtml" 
          id="passwordForm" method="post" name="password" cssClass="security password">
   <c:if test="${provideExisting}">
-    <ww:password  label="Existing Password" name="existingPassword" size="20" required="true" />
+    <ww:password  label="%{getText('password.existing')}" name="existingPassword" size="20" required="true" />
   </c:if>
-  <ww:password  label="New Password" name="newPassword" size="20" required="true" />
-  <ww:password  label="Confirm New Password" name="newPasswordConfirm" size="20" required="true" />
-  <ww:submit value="Change Password" method="submit" />
-  <ww:submit value="Cancel" method="cancel" />
+  <ww:password  label="%{getText('password.new')}" name="newPassword" size="20" required="true" />
+  <ww:password  label="%{getText('password.confirm.new')}" name="newPasswordConfirm" size="20" required="true" />
+  <ww:submit value="%{getText('password.change')}" method="submit" />
+  <ww:submit value="%{getText('cancel')}" method="cancel" />
 </ww:form>
 
 <ul class="tips">
@@ -44,5 +45,5 @@
 </ul>
 
 </body>
-
+</ww:i18n>
 </html>

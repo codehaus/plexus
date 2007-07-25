@@ -120,7 +120,7 @@ public class AssignmentsAction
     {
         if ( StringUtils.isEmpty( principal ) )
         {
-            addActionError( "Cannot use AssignmentsAction for RBAC Edit User with an empty principal." );
+            addActionError( getText( "rbac.edit.user.empty.principal" ) );
             return ERROR;
         }
 
@@ -129,7 +129,9 @@ public class AssignmentsAction
 
         if ( !userManager.userExists( principal ) )
         {
-            addActionError( "User '" + principal + "' does not exist." );
+            List list = new ArrayList();
+            list.add( principal );
+            addActionError( getText( "user.does.not.exist", list ) );
             return ERROR;
         }
 
@@ -139,7 +141,7 @@ public class AssignmentsAction
 
             if ( u == null )
             {
-                addActionError( "Unable to operate on null user." );
+                addActionError( getText( "cannot.operate.on.null.user" ) );
                 return ERROR;
             }
 
@@ -147,7 +149,10 @@ public class AssignmentsAction
         }
         catch ( UserNotFoundException e )
         {
-            addActionError( "Unable to get User '" + principal + "': " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( principal );
+            list.add( e.getMessage() );
+            addActionError( getText( "user.not.found.exception", list ) );
             return ERROR;
         }
 
@@ -240,7 +245,9 @@ public class AssignmentsAction
                 }
                 catch ( RbacManagerException ne )
                 {
-                    addActionError( "error adding the selected roles: " + ne.getMessage() );
+                    List list = new ArrayList();
+                    list.add( ne.getMessage() );
+                    addActionError( getText( "error.adding.selected.roles", list ) );
                     return ERROR;
                 }
             }
@@ -269,7 +276,9 @@ public class AssignmentsAction
                 }
                 catch ( RbacManagerException ne )
                 {
-                    addActionError( "error removing the selected roles: " + ne.getMessage() );
+                    List list = new ArrayList();
+                    list.add( ne.getMessage() );
+                    addActionError( getText( "error.removing.selected.roles", list ) );
                     return ERROR;
                 }
             }

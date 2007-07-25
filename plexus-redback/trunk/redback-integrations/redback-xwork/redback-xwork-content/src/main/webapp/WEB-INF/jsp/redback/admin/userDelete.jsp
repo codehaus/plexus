@@ -17,23 +17,24 @@
 <%@ taglib prefix="ww" uri="/webwork"%>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>[Admin] User Delete</title>
+  <title><ww:text name="user.delete.page.title"/></title>
 </head>
 
 <body>
 
-<h2>[Admin] User Delete</h2>
+<h2><ww:text name="user.delete.section.title"/></h2>
 
 <ww:form action="userdelete!submit" namespace="/security">
   <p>
-    The following user will be deleted: <b><ww:property value="username"/></b>
+    <ww:text name="user.delete.message"/>: <b><ww:property value="username"/></b>
   </p>
   <ww:hidden label="Username" name="username" />
-  <ww:submit value="Delete User" />
-  <ww:submit value="Cancel" action="userdelete!cancel"/>
+  <ww:submit value="%{getText('user.delete')}" />
+  <ww:submit value="%{getText('cancel')}" action="userdelete!cancel"/>
 </ww:form>
 
 </body>
-
+</ww:i18n>
 </html>

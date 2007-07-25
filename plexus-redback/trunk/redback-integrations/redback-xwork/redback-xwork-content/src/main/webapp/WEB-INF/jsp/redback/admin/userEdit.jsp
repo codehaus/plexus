@@ -19,31 +19,32 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>[Admin] User Edit</title>
+  <title><ww:text name="user.edit.page.title"/></title>
 </head>
 
 <body>
 
 <%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
-<h2>[Admin] User Edit</h2>
+<h2><ww:text name="user.edit.section.title"/></h2>
 
 <redback:ifAuthorized permission="user-management-user-edit" resource="${user.username}">
   <ww:form action="useredit" namespace="/security" theme="xhtml"
          id="userEditForm" method="post" name="useredit" cssClass="security userEdit">
     <%@ include file="/WEB-INF/jsp/redback/include/userCredentials.jsp" %>
-    <ww:checkbox label="Locked User" name="user.locked" />
-    <ww:checkbox label="Force User to Change Password" name="user.passwordChangeRequired" />    
+    <ww:checkbox label="%{getText('user.edit.locked.user')}" name="user.locked" />
+    <ww:checkbox label="%{getText('user.edit.force.user.change.password')}" name="user.passwordChangeRequired" />    
     <ww:hidden label="Username"    name="username" />
-    <ww:submit value="Update" method="submit" />
-    <ww:submit value="Cancel" method="cancel" />
+    <ww:submit value="%{getText('update')}" method="submit" />
+    <ww:submit value="%{getText('cancel')}" method="cancel" />
   </ww:form>
 </redback:ifAuthorized>
 
 <redback:ifAuthorized permission="user-management-user-role" resource="${user.username}">
   <c:if test="${!empty effectivelyAssignedRoles}">
-  <h3>Effective Roles</h3>
+  <h3><ww:text name="effective.roles"/></h3>
 
   <ul>
     <ww:iterator id="role" value="effectivelyAssignedRoles">
@@ -56,8 +57,8 @@
   <ww:url id="assignmentUrl" action="assignments">
     <ww:param name="username">${user.username}</ww:param>
   </ww:url>
-  <ww:a href="%{assignmentUrl}">Edit Roles</ww:a>
+  <ww:a href="%{assignmentUrl}"><ww:text name="user.edit.roles"/></ww:a>
 </redback:ifAuthorized>
 </body>
-
+</ww:i18n>
 </html>

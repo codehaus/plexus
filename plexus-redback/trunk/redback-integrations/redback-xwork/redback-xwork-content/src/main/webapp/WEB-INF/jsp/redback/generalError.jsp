@@ -18,17 +18,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>Error Occurred</title>
+  <title><ww:text name="general.error.page.title"/></title>
 </head>
 
 <body>
 
-<h1>Error Occurred</h1>
+<h1><ww:text name="general.error.page.section"/></h1>
 
 <ww:actionerror />
 
 <ww:actionmessage />
 
 </body>
+</ww:i18n>
 </html>

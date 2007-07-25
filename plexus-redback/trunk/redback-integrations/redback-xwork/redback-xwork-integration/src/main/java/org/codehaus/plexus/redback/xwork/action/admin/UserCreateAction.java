@@ -16,6 +16,9 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
 import org.codehaus.plexus.redback.rbac.Resource;
 import org.codehaus.plexus.redback.users.User;
@@ -63,7 +66,7 @@ public class UserCreateAction
         if ( user == null )
         {
             user = new CreateUserCredentials();
-            addActionError( "Invalid user credentials." );
+            addActionError( getText( "invalid.user.credentials" ) );
             return ERROR;
         }
 
@@ -79,7 +82,9 @@ public class UserCreateAction
         {
             // Means that the role name doesn't exist.
             // We need to fail fast and return to the previous page.
-            addActionError( "User '" + user.getUsername() + "' already exists." );
+            List list = new ArrayList();
+            list.add( user.getUsername() );
+            addActionError( getText( "user.already.exists", list ) );
         }
 
         if ( hasActionErrors() || hasFieldErrors() )

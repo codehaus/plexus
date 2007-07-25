@@ -18,21 +18,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>Password Reset</title>
+  <title><ww:text name="password.reset.page.title"/></title>
 </head>
 
 <body>
 
 <p>
-  Password Reset Successful.
+  <ww:text name="password.reset.message"/>
 </p>
 
 <p>
 <ww:url id="loginUrl" action="login" />
-Go to <ww:a href="%{loginUrl}">Login</ww:a>
+<ww:text name="password.reset.go.to"/><ww:a href="%{loginUrl}"><ww:text name="login"/></ww:a>
 </p>
 
 </body>
-
+</ww:i18n>
 </html>

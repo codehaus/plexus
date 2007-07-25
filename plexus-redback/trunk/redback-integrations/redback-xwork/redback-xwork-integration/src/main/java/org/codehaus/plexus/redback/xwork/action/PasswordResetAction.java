@@ -61,8 +61,6 @@ public class PasswordResetAction
 
     private String username;
 
-    private String passwordResetText = "If the user was found, a message has been sent.";
-    
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
@@ -76,7 +74,7 @@ public class PasswordResetAction
     {
         if ( StringUtils.isEmpty( username ) )
         {
-            addFieldError( "username", "Username cannot be empty." );
+            addFieldError( "username", getText( "username.cannot.be.empty" ) );
             return INPUT;
         }
 
@@ -96,20 +94,20 @@ public class PasswordResetAction
 
             mailer.sendPasswordResetEmail( recipients, authkey, getBaseUrl() );
 
-            addActionMessage( passwordResetText );
+            addActionMessage( getText( "password.reset.success" ) );
         }
         catch ( UserNotFoundException e )
         {
-            // Intentionally misdirect user.
+            // By default, the success and failure messages are the same.
             // This is done to prevent a malicious user from attempting to ascertain the
             // validity of usernames.
-            addActionMessage( passwordResetText );
+            addActionMessage( getText( "password.reset.failure" ) );
 
             getLogger().info( "Password Reset on non-existant user [" + username + "]." );
         }
         catch ( KeyManagerException e )
         {
-            addActionError( "Internal system error prevented generation of Password reset email." );
+            addActionError( getText( "password.reset.email.generation.failure" ) );
             getLogger().info( "Unable to issue password reset.", e );
         }
 

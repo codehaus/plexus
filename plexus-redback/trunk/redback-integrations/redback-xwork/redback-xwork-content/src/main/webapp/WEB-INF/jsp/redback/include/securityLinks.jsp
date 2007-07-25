@@ -23,24 +23,24 @@
   <c:when test="${sessionScope.securitySession.authenticated != true}">
     <ww:url id="loginUrl" action="login" namespace="/security" includeParams="none"/>
     <ww:url id="registerUrl" action="register" namespace="/security" includeParams="none"/>
-    <ww:a href="%{loginUrl}">Login</ww:a> - <ww:a href="%{registerUrl}">Register</ww:a>
+    <ww:a href="%{loginUrl}"><ww:text name="login"/></ww:a> - <ww:a href="%{registerUrl}"><ww:text name="register"/></ww:a>
   </c:when>
   <c:otherwise>
     <ww:url id="logoutUrl" action="logout" namespace="/security" includeParams="none"/>
     <ww:url id="accountUrl" action="account" namespace="/security" includeParams="none" />
     
-    Current User: 
+    <ww:text name="current.user"/>
     <c:choose>
       <c:when test="${sessionScope.securitySession.user != null}">
         <span class="fullname"><ww:a href="%{accountUrl}" cssClass="edit">${sessionScope.securitySession.user.fullName}</ww:a></span>
         (<span class="username">${sessionScope.securitySession.user.username}</span>)
       </c:when>
       <c:otherwise>
-        <span class="fullname">Unknown User</span>
+        <span class="fullname"><ww:text name="unknown.user"/></span>
       </c:otherwise>
     </c:choose>
-    - <ww:a href="%{accountUrl}" cssClass="edit">Edit Details</ww:a>
-    - <ww:a href="%{logoutUrl}" cssClass="logout">Logout</ww:a>
+    - <ww:a href="%{accountUrl}" cssClass="edit"><ww:text name="edit.details"/></ww:a>
+    - <ww:a href="%{logoutUrl}" cssClass="logout"><ww:text name="logout"/></ww:a>
   </c:otherwise>
 </c:choose>
 

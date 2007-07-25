@@ -98,7 +98,7 @@ public class RoleCreateAction
     {
         if ( addpermission == null )
         {
-            addActionError( "Unable to add null permission." );
+            addActionError( getText( "cannot.add.null.permission" ) );
             return ERROR;
         }
 
@@ -123,7 +123,7 @@ public class RoleCreateAction
 
         if ( StringUtils.isEmpty( roleName ) )
         {
-            addActionError( "Unable to create role with empty name." );
+            addActionError( getText( "cannot.add.empty.role" ) );
             return ERROR;
         }
 
@@ -155,11 +155,16 @@ public class RoleCreateAction
 
             manager.saveRole( _role );
 
-            addActionMessage( "Successfully Saved Role '" + roleName + "'" );
+            List list = new ArrayList();
+            list.add( roleName );
+            addActionMessage( getText( "save.role.success", list ) );
         }
         catch ( RbacManagerException e )
         {
-            addActionError( "Unable to get Role '" + roleName + "': " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( roleName );
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.get.role", list ) );
             return ERROR;
         }
 

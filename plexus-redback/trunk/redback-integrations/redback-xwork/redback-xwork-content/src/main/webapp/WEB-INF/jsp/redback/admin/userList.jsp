@@ -20,8 +20,9 @@
 <%@ taglib uri="http://www.extremecomponents.org" prefix="ec" %>
 
 <html> 
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>[Admin] User List</title>
+  <title><ww:text name="user.list.page.title"/></title>
   <link rel="stylesheet" type="text/css" href="<ww:url value="/css/redback/table.css"/>" media="screen"/>
 </head>
 
@@ -29,8 +30,16 @@
 
 <%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
+<!-- ec on redback should not be dependent on the resource bundle of the project using it -->
+<ww:set name="username" value="%{getText('username')}"/>
+<ww:set name="fullName" value="%{getText('full.name')}"/>
+<ww:set name="email" value="%{getText('email')}"/>
+<ww:set name="permanent" value="%{getText('user.list.permanent')}"/>
+<ww:set name="validated" value="%{getText('user.list.validated')}"/>
+<ww:set name="locked" value="%{getText('user.list.locked')}"/>
+<ww:set name="tasks" value="%{getText('user.list.tasks')}"/>
 
-<h2>[Admin] List of Users in ${roleName} Role</h2>
+<h2><ww:text name="user.list.section.title.1"/>${roleName}<ww:text name="user.list.section.title.2"/></h2>
 
 <table class="outerTableRegion" cellpadding="0" cellspacing="0">
 <tr>
@@ -61,7 +70,7 @@
        imageName="xls"
        tooltip="Export Table to Excel format."/>
     <ec:row>          
-        <ec:column property="username" title="User Name" 
+        <ec:column property="username" title="${username}" 
         	filterCell="org.codehaus.plexus.redback.xwork.eXc.SecurityFilterCell">
           <img src="<c:url value="/images/redback/icon-user.gif"/>" />
           <redback:ifAuthorized permission="user-management-user-edit" resource="${user.username}">
@@ -82,24 +91,24 @@
             </redback:elseAuthorized>
           </redback:elseAuthorized>
         </ec:column>
-        <ec:column property="fullName" title="Full Name" alias="fullname" 
+        <ec:column property="fullName" title="${fullName}" alias="fullname" 
         	filterCell="org.codehaus.plexus.redback.xwork.eXc.SecurityFilterCell" />
-        <ec:column property="email" title="Email" cell="org.codehaus.plexus.redback.xwork.eXc.MailtoCell" 
+        <ec:column property="email" title="${email}" cell="org.codehaus.plexus.redback.xwork.eXc.MailtoCell" 
         	filterCell="org.codehaus.plexus.redback.xwork.eXc.SecurityFilterCell" />
         <ec:column property="permanent" cell="org.codehaus.plexus.redback.xwork.eXc.CheckboxImageCell" 
-        	style="text-align: center" title="Permanent" filterable="false"/> <%-- Boolean's can't be filtered --%>
+        	style="text-align: center" title="${permanent}" filterable="false"/> <%-- Boolean's can't be filtered --%>
         <ec:column property="validated" cell="org.codehaus.plexus.redback.xwork.eXc.CheckboxImageCell" 
-        	style="text-align: center" title="Validated" filterable="false"/> <%-- Boolean's can't be filtered --%>
+        	style="text-align: center" title="${validated}" filterable="false"/> <%-- Boolean's can't be filtered --%>
         <ec:column property="locked" cell="org.codehaus.plexus.redback.xwork.eXc.CheckboxImageCell" 
-        	style="text-align: center" title="Locked" filterable="false"/> <%-- Boolean's can't be filtered --%>
+        	style="text-align: center" title="${locked}" filterable="false"/> <%-- Boolean's can't be filtered --%>
         
-        <ec:column title="Tasks" alias="tasks" sortable="false" filterable="false" styleClass="tasks">
+        <ec:column title="${tasks}" alias="tasks" sortable="false" filterable="false" styleClass="tasks">
           <c:if test="${user.permanent eq false}">
             <redback:ifAuthorized permission="user-management-user-delete" resource="${user.username}">
               <ww:url id="userdeleteUrl" action="userdelete">
                 <ww:param name="username">${user.username}</ww:param>
               </ww:url>
-              <ww:a href="%{userdeleteUrl}" title="Delete ${user.username}">
+              <ww:a href="%{userdeleteUrl}" title="%{getText('delete')} ${user.username}">
                 <img src="<c:url value="/images/redback/delete.gif"/>" border="none"/>
               </ww:a>              
             </redback:ifAuthorized>
@@ -127,31 +136,31 @@
 
 <br>
 <br>
-<b>Tools</b>
+<b><ww:text name="user.list.tools"/></b>
 <br>
 
 <table class="tools" border="0" cellspacing="1" cellpadding="0">
 
 <tr>
-  <th class="toolHeading">Tasks</th>
-  <th class="toolHeading column">Reports</th>
+  <th class="toolHeading"><ww:text name="user.list.tasks"/></th>
+  <th class="toolHeading column"><ww:text name="user.list.reports"/></th>
 </tr>
 
 <tr>
   <td valign="top">
-    <p class="description">The following tools are available for administrators to manipulate the user list.</p>
+    <p class="description"><ww:text name="user.list.message"/></p>
      
     <redback:ifAuthorized permission="user-management-user-create">
       <div class="task createUser">
         <ww:form action="usercreate!show" namespace="/security" theme="simple" method="post">
-          <ww:submit cssClass="button" value="Create New User" />
+          <ww:submit cssClass="button" value="%{getText('user.list.create.new.user')}" />
         </ww:form>
       </div>
     </redback:ifAuthorized>
 
     <div class="task showRoles">
       <ww:form action="userlist!show" namespace="/security" theme="simple" method="get">
-        <ww:submit cssClass="button" value="Show Users In Role" />
+        <ww:submit cssClass="button" value="%{getText('user.list.show.users.in.role')}" />
         
         <ww:select list="roles"
                    name="roleName"
@@ -168,8 +177,8 @@
   <td valign="top" class="column">
     <table cellspacing="0" cellpadding="0" border="0" class="reports">
       <tr>
-        <th>Name</th>
-        <th>Types</th>
+        <th><ww:text name="name"/></th>
+        <th><ww:text name="user.list.types"/></th>
       </tr>
       
       <c:forEach items="${reportMap}" var="reportEntry">
@@ -197,5 +206,5 @@
 </table>
 
 </body>
-
+</ww:i18n>
 </html>

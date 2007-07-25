@@ -17,6 +17,6 @@
 <%@ taglib prefix="ww" uri="/webwork"%>
 
 <ww:form cssClass="find" action="user" name="find" method="post" namespace="/security/admin">
-  <ww:textfield label="Find a user" name="username" />
-  <ww:submit value="Search" />
+  <ww:textfield label="%{getText('user.find')}" name="username" />
+  <ww:submit value="%{getText('search')}" />
 </ww:form>

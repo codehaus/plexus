@@ -16,6 +16,7 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,7 +65,9 @@ public class RolesAction
         }
         catch ( RbacManagerException e )
         {
-            addActionError( "Unable to list all roles: " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.list.all.roles", list ) );
             getLogger().error( "System error:", e );
             allRoles = Collections.EMPTY_LIST;
         }

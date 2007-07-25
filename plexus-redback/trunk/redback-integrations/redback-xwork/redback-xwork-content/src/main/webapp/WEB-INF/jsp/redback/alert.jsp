@@ -18,8 +18,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>Security Alert Page</title>
+  <title><ww:text name="alert.page.title"/></title>
 </head>
 
 <body>
@@ -27,7 +28,7 @@
 <div id="contentArea">
   <div id="searchBox">
     <div id="results">
-      You are not authorized for this activity.
+      <ww:text name="alert.message"/>
     </div>
   </div>
 </div>
@@ -37,5 +38,5 @@
 </div>
 
 </body>
-
+</ww:i18n>
 </html>

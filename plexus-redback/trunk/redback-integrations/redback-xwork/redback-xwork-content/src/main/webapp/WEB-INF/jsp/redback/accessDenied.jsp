@@ -17,14 +17,14 @@
 <%@ taglib prefix="ww" uri="/webwork" %>
 
 <html>
-
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>Security Alert - Access Denied</title>
+  <title><ww:text name="access.denied.page.title"/></title>
 </head>
 
 <body>
 
-<h4>Security Alert - Access Denied</h4>
+<h4><ww:text name="access.denied.section.title"/></h4>
 
 <div id="results">
   <%-- This is where the "Account Created Successfully" type message goes. --%>
@@ -38,10 +38,9 @@
 </div>
 
 <p>
-  The action you attempted requires permissions that you do not have.
-  Please contact your administrator to be granted the appropriate permissions.
+  <ww.text name="access.denied.message"/>
 </p>
 
 </body>
-
+</ww:i18n>
 </html>

@@ -16,6 +16,7 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -89,7 +90,9 @@ public class PermissionsAction
         }
         catch ( RbacManagerException e )
         {
-            addActionError( "Unable to list all permissions: " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.list.all.permissions", list ) );
             getLogger().error( "System error:", e );
             allPermissions = Collections.EMPTY_LIST;
         }
@@ -101,13 +104,13 @@ public class PermissionsAction
     {
         if ( name == null )
         {
-            addActionError( "Unable to edit null permission name." );
+            addActionError( getText( "cannot.edit.null.permission" ) );
             return ERROR;
         }
 
         if ( StringUtils.isEmpty( name ) )
         {
-            addActionError( "Unable to edit empty permission name." );
+            addActionError( getText( "cannot.edit.empty.permission" ) );
             return ERROR;
         }
 
@@ -123,7 +126,7 @@ public class PermissionsAction
             Permission permission = manager.getPermission( name );
             if ( permission == null )
             {
-                addActionError( "Unable to operate on null permission." );
+                addActionError( getText( "cannot.operate.null.permission" ) );
                 return ERROR;
             }
 
@@ -143,7 +146,10 @@ public class PermissionsAction
         }
         catch ( RbacManagerException e )
         {
-            addActionError( "Unable to get Permission '" + name + "': " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( name );
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.get.permission", list ) );
             return ERROR;
         }
 
@@ -154,13 +160,13 @@ public class PermissionsAction
     {
         if ( name == null )
         {
-            addActionError( "Unable to edit null role name." );
+            addActionError( getText( "cannot.edit.null.permission" ) );
             return ERROR;
         }
 
         if ( StringUtils.isEmpty( name ) )
         {
-            addActionError( "Unable to edit empty role name." );
+            addActionError( getText( "cannot.edit.empty.permission" ) );
             return ERROR;
         }
 
@@ -190,11 +196,16 @@ public class PermissionsAction
 
             manager.savePermission( permission );
 
-            addActionMessage( "Successfully Saved Permission '" + name + "'" );
+            List list = new ArrayList();
+            list.add( name );
+            addActionMessage( getText( "save.permission.success", list ) );
         }
         catch ( RbacManagerException e )
         {
-            addActionError( "Unable to get Permission '" + name + "': " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( name );
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.get.permission", list ) );
             return ERROR;
         }
 

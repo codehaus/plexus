@@ -10,5 +10,5 @@
     <ww:form action="user" name="removeRole" method="post" namespace="/security/admin">
       <ww:hidden name="principal" value="${username}" />
       <ww:select name="roleName" list="assignedRoles" labelposition="top" />
-      <ww:submit value="Remove" />
+      <ww:submit value="%{getText('remove')}" />
     </ww:form>

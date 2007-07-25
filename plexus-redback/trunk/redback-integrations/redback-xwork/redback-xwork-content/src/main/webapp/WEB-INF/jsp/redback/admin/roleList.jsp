@@ -19,15 +19,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>[Admin] Role List</title>
+  <title><ww:text name="role.list.page.title"/></title>
 </head>
 
 <body>
 
 <%@ include file="/WEB-INF/jsp/redback/include/rbacListNavigation.jsp" %>
 
-<h2> [Admin] Role List </h2>
+<h2><ww:text name="role.list.section.title"/></h2>
 
 <%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
@@ -40,8 +41,8 @@
         <thead>
           <tr>
             <th>&nbsp;</th>
-            <th>Role Name</th>
-            <th>Role Description</th>
+            <th><ww:text name="role.name"/></th>
+            <th><ww:text name="role.description"/></th>
           </tr>
         </thead>
         
@@ -63,13 +64,13 @@
         </c:forEach>
       </c:when>
       <c:otherwise>
-        <p><em>No Roles Available</em></p>
+        <p><em><ww:text name="role.list.no.roles.available"/></em></p>
       </c:otherwise>
     </c:choose>
     
     <tr>
       <td colspan="3">
-        <ww:submit value="Remove Selected Roles" />
+        <ww:submit value="%{getText('remove.selected.roles')}" />
       </td>
     </tr>
 
@@ -77,5 +78,6 @@
   
 </ww:form>
 
-  </body>
+</body>
+</ww:i18n>
 </html>

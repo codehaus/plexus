@@ -16,6 +16,9 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.RbacObjectInvalidException;
@@ -68,7 +71,7 @@ public class UserDeleteAction extends AbstractSecurityAction implements Cancella
     {
         if ( username == null )
         {
-            addActionError( "Unable to delete user based on null username." );
+            addActionError( getText( "cannot.remove.user.null.username" ) );
             return SUCCESS;
         }
 
@@ -79,13 +82,13 @@ public class UserDeleteAction extends AbstractSecurityAction implements Cancella
     {
         if ( username == null )
         {
-            addActionError( "Invalid user credentials." );
+            addActionError( getText( "invalid.user.credentials" ) );
             return SUCCESS;
         }
 
         if ( StringUtils.isEmpty( username ) )
         {
-            addActionError( "Unable to delete user based on empty username." );
+            addActionError( getText( "cannot.remove.user.empty.username" ) );
             return SUCCESS;
         }
 
@@ -99,11 +102,17 @@ public class UserDeleteAction extends AbstractSecurityAction implements Cancella
         }
         catch ( RbacObjectInvalidException e )
         {
-            addActionError( "unable to remove user role assignments for '" + username + "' because " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( username );
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.remove.user.role", list ) );
         }
         catch ( RbacManagerException e )
         {
-            addActionError( "unable to remove user role assignments for '" + username + "' because " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( username );
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.remove.user.role", list ) );
         }
 
         if ( getActionErrors().isEmpty() )
@@ -114,7 +123,9 @@ public class UserDeleteAction extends AbstractSecurityAction implements Cancella
             }
             catch ( UserNotFoundException e )
             {
-                addActionError( "Unable to delete non-existant user '" + username + "'" );
+                List list = new ArrayList();
+                list.add( username );
+                addActionError( getText( "cannot.remove.user.non.existent", list ) );
             }
         }
 

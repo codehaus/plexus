@@ -70,13 +70,13 @@ public class EditRoleAction
     {
         if ( name == null )
         {
-            addActionError( "Unable to edit null role name." );
+            addActionError( getText( "cannot.edit.null.role" ) );
             return ERROR;
         }
 
         if ( StringUtils.isEmpty( name ) )
         {
-            addActionError( "Unable to edit empty role name." );
+            addActionError( getText( "cannot.edit.empty.role" ) );
             return ERROR;
         }
 
@@ -92,7 +92,7 @@ public class EditRoleAction
             Role role = manager.getRole( name );
             if ( role == null )
             {
-                addActionError( "Unable to operate on null role." );
+                addActionError( getText( "cannot.operate.null.role" ) );
                 return ERROR;
             }
 
@@ -102,7 +102,10 @@ public class EditRoleAction
         }
         catch ( RbacManagerException e )
         {
-            addActionError( "Unable to get Role '" + name + "': " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( name );
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.get.role", list ) );
             return ERROR;
         }
 
@@ -113,13 +116,13 @@ public class EditRoleAction
     {
         if ( name == null )
         {
-            addActionError( "Unable to edit null role name." );
+            addActionError( getText( "cannot.edit.null.role" ) );
             return ERROR;
         }
 
         if ( StringUtils.isEmpty( name ) )
         {
-            addActionError( "Unable to edit empty role name." );
+            addActionError( getText( "cannot.edit.empty.role" ) );
             return ERROR;
         }
 
@@ -141,11 +144,16 @@ public class EditRoleAction
 
             manager.saveRole( role );
 
-            addActionMessage( "Successfully Saved Role '" + name + "'" );
+            List list = new ArrayList();
+            list.add( name );
+            addActionMessage( getText( "save.role.success", list ) );
         }
         catch ( RbacManagerException e )
         {
-            addActionError( "Unable to get Role '" + name + "': " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( name );
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.get.role", list ) );
             return ERROR;
         }
 
