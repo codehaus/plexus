@@ -23,9 +23,9 @@
 <ww:url id="operationsUrl" action="operations" namespace="/security" method="list"/>
 <ww:url id="resourcesUrl" action="resources" namespace="/security" method="list"/>
 
-<ww:a href="%{rolesUrl}">Roles</ww:a> | 
-<ww:a href="%{permissionsUrl}">Permissions</ww:a> | 
-<ww:a href="%{operationsUrl}">Operations</ww:a> | 
-<ww:a href="%{resourcesUrl}">Resources</ww:a> 
+<ww:a href="%{rolesUrl}"><ww:text name="roles"/></ww:a> | 
+<ww:a href="%{permissionsUrl}"><ww:text name="permissions"/></ww:a> | 
+<ww:a href="%{operationsUrl}"><ww:text name="operations"/></ww:a> | 
+<ww:a href="%{resourcesUrl}"><ww:text name="resources"/></ww:a> 
 
 </div>

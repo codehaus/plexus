@@ -18,35 +18,35 @@
 
 <c:choose>
   <c:when test="${user.edit}">
-    <ww:label     label="Username"         name="user.username" />
+    <ww:label     label="%{getText('username')}"         name="user.username" />
     <ww:hidden    name="user.username" />
   </c:when>
   <c:otherwise>
-    <ww:textfield label="Username"         name="user.username" size="30" required="true"/>
+    <ww:textfield label="%{getText('username')}"         name="user.username" size="30" required="true"/>
   </c:otherwise>
 </c:choose>
 
-  <ww:textfield label="Full Name"        name="user.fullName" size="30" required="true"/>
-  <ww:textfield label="Email Address"    name="user.email" size="50"    required="true"/>
+  <ww:textfield label="%{getText('full.name')}"        name="user.fullName" size="30" required="true"/>
+  <ww:textfield label="%{getText('email.address')}"    name="user.email" size="50"    required="true"/>
   <c:choose>
     <c:when test="${self}">
-      <ww:password  label="Current Password"         name="oldPassword" size="20" required="true"/>
-      <ww:password  label="New Password"         name="user.password" size="20" required="true"/>
+      <ww:password  label="%{getText('current.password')}"         name="oldPassword" size="20" required="true"/>
+      <ww:password  label="%{getText('new.password')}"         name="user.password" size="20" required="true"/>
     </c:when>
     <c:otherwise>
-      <ww:password  label="Password"         name="user.password" size="20" required="true"/>
+      <ww:password  label="%{getText('password')}"         name="user.password" size="20" required="true"/>
     </c:otherwise>
   </c:choose>
-  <ww:password  label="Confirm Password" name="user.confirmPassword" size="20" required="true"/>
+  <ww:password  label="%{getText('confirm.password')}" name="user.confirmPassword" size="20" required="true"/>
 
 <ww:if test="%{user.timestampAccountCreation != null}">
-  <ww:label     label="Account Creation"     name="user.timestampAccountCreation" />
+  <ww:label     label="%{getText('account.creation')}"     name="user.timestampAccountCreation" />
 </ww:if>
 
 <ww:if test="%{user.timestampLastLogin != null}">
-  <ww:label     label="Last Login"           name="user.timestampLastLogin" />
+  <ww:label     label="%{getText('last.login')}"           name="user.timestampLastLogin" />
 </ww:if>
 
 <ww:if test="%{user.timestampLastPasswordChange != null}">
-  <ww:label     label="Last Password Change" name="user.timestampLastPasswordChange" />
+  <ww:label     label="%{getText('last.password.change')}" name="user.timestampLastPasswordChange" />
 </ww:if>

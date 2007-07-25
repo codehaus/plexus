@@ -19,21 +19,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>[Admin] Role Summary</title>
+  <title><ww:text name="role.summary.page.title"/></title>
 </head>
 
 <body>
 
 <%@ include file="/WEB-INF/jsp/redback/include/rbacListNavigation.jsp" %>
 
-<h2> [Admin] Role Summary </h2>
+<h2><ww:text name="role.summary.section.title"/></h2>
 
 <%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
     <ul>
       <ww:iterator id="role" value="allRoles">
-        <li>Role: ${role.name}</li>
+        <li><ww:text name="role"/>: ${role.name}</li>
         <ul>
         <ww:iterator id="permission" value="#role.permissions">
           <li>P[${permission.name}] (${permission.operation.name}, ${permission.resource.identifier})</li>
@@ -42,5 +43,6 @@
       </ww:iterator>
     </ul>
 
-  </body>
+</body>
+</ww:i18n>
 </html>

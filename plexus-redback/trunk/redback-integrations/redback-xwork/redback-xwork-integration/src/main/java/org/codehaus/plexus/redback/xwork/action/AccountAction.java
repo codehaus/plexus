@@ -16,6 +16,9 @@ package org.codehaus.plexus.redback.xwork.action;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.plexus.redback.policy.PasswordEncoder;
 import org.codehaus.plexus.redback.policy.PasswordRuleViolationException;
 import org.codehaus.plexus.redback.system.DefaultSecuritySession;
@@ -62,7 +65,7 @@ public class AccountAction
 
         if ( !session.isAuthenticated() )
         {
-            addActionError( "Unable to show your account. Not logged in." );
+            addActionError( getText( "cannot.show.account.login.required" ) );
             return REQUIRES_AUTHENTICATION;
         }
 
@@ -70,13 +73,13 @@ public class AccountAction
 
         if ( username == null )
         {
-            addActionError( "Unable to edit user with null username." );
+            addActionError( getText( "cannot.edit.user.null.username" ) );
             return ERROR;
         }
 
         if ( StringUtils.isEmpty( username ) )
         {
-            addActionError( "Unable to edit user with empty username." );
+            addActionError( getText( "cannot.edit.user.empty.username" ) );
             return ERROR;
         }
 
@@ -86,7 +89,9 @@ public class AccountAction
         {
             // Means that the role name doesn't exist.
             // We need to fail fast and return to the previous page.
-            addActionError( "User '" + username + "' does not exist." );
+            List list = new ArrayList();
+            list.add( username );
+            addActionError( getText( "user.does.not.exist", list ) );
             return ERROR;
         }
 
@@ -97,7 +102,7 @@ public class AccountAction
             User u = manager.findUser( username );
             if ( u == null )
             {
-                addActionError( "Unable to operate on null user." );
+                addActionError( getText( "cannot.operate.on.null.user" ) );
                 return ERROR;
             }
 
@@ -105,7 +110,10 @@ public class AccountAction
         }
         catch ( UserNotFoundException e )
         {
-            addActionError( "Unable to get User '" + username + "': " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( username );
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.get.user", list ) );
             return ERROR;
         }
 
@@ -118,7 +126,7 @@ public class AccountAction
 
         if ( !session.isAuthenticated() )
         {
-            addActionError( "Unable to show your account. Not logged in." );
+            addActionError( getText( "cannot.show.account.login.required" ) );
             return REQUIRES_AUTHENTICATION;
         }
 
@@ -126,25 +134,25 @@ public class AccountAction
 
         if ( username == null )
         {
-            addActionError( "Unable to edit user with null username." );
+            addActionError( getText( "cannot.edit.user.null.username" ) );
             return ERROR;
         }
 
         if ( StringUtils.isEmpty( username ) )
         {
-            addActionError( "Unable to edit user with empty username." );
+            addActionError( getText( "cannot.edit.user.empty.username" ) );
             return ERROR;
         }
 
         if ( user == null )
         {
-            addActionError( "Unable to edit user with null user credentials." );
+            addActionError( getText( "cannot.edit.user.null.credentials" ) );
             return ERROR;
         }
 
         if ( !user.getPassword().equals( user.getConfirmPassword() ) )
         {
-            addFieldError( "user.confirmPassword", "Password confirmation failed.  Passwords do not match." );
+            addFieldError( "user.confirmPassword", getText( "password.confimation.failed" ) );
             return ERROR;
         }
 
@@ -154,7 +162,9 @@ public class AccountAction
         {
             // Means that the role name doesn't exist.
             // We need to fail fast and return to the previous page.
-            addActionError( "User '" + username + "' does not exist." );
+            List list = new ArrayList();
+            list.add( username );
+            addActionError( getText( "user.does.not.exist", list ) );
             return ERROR;
         }
 
@@ -165,7 +175,7 @@ public class AccountAction
             User u = manager.findUser( username );
             if ( u == null )
             {
-                addActionError( "Unable to operate on null user." );
+                addActionError( getText( "cannot.operate.on.null.user" ) );
                 return ERROR;
             }
             
@@ -175,7 +185,7 @@ public class AccountAction
 
                 if ( !encoder.isPasswordValid( u.getEncodedPassword(), oldPassword ) )
                 {
-                    addFieldError( "oldPassword", "Password provided does not match existing." );
+                    addFieldError( "oldPassword", getText( "password.provided.does.not.match.existing" ) );
                     return ERROR;
                 }
                 
@@ -201,7 +211,10 @@ public class AccountAction
         }
         catch ( UserNotFoundException e )
         {
-            addActionError( "Unable to find User '" + username + "': " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( username );
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.get.user", list ) );
             return ERROR;
         }
         catch ( PasswordRuleViolationException e )

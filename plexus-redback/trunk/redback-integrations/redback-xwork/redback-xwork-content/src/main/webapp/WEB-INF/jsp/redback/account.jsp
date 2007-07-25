@@ -18,23 +18,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>Account Details</title>
+  <title><ww:text name="account.details.page.title"/></title>
 </head>
 
 <body>
 
 <%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
-<h2>Account Details</h2>
+<h2><ww:text name="account.details.section.title"/></h2>
    
 <ww:form action="account" namespace="/security" theme="xhtml"
          id="registerForm" method="post" name="register" cssClass="security register">     
   <%@ include file="/WEB-INF/jsp/redback/include/userCredentials.jsp" %>
-  <ww:submit value="Submit" method="submit" />
-  <ww:submit value="Cancel" method="cancel" />
+  <ww:submit value="%{getText('submit')}" method="submit" />
+  <ww:submit value="%{getText('cancel')}" method="cancel" />
 </ww:form>
 
 </body>
-
+</ww:i18n>
 </html>

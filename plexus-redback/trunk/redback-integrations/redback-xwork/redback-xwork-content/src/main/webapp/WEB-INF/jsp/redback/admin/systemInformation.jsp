@@ -18,17 +18,19 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>[Admin] System Information</title>
+  <title><ww:text name="system.info.page.title"/></title>
 </head>
 
 <body>
 
-<h4>Security System Information</h4>
+<h4><ww:text name="system.info.section.title"/></h4>
 
 <pre>
 ${details}
 </pre>
 
 </body>
+</ww:i18n>
 </html>

@@ -18,13 +18,14 @@
 
 <html>
 
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>Security Alert - Action Requires Authentication</title>
+  <title><ww:text name="requires.authentication.page.title"/></title>
 </head>
 
 <body>
 
-<h4>Security Alert - Action Requires Authentication</h4>
+<h4><ww:text name="requires.authentication.section.title"/></h4>
 
 <div id="results">
   <%-- This is where the "Account Created Successfully" type message goes. --%>
@@ -38,16 +39,16 @@
 </div>
 
 <p>
-  The action you attempted requires that you authenticate yourself.
+  <ww:text name="requires.authentication.message"/>
 </p>
 
 <ol>
 <li>
   <ww:url id="login" action="login" namespace="/security" />
-  Go Ahead <ww:a href="%{login}">Login.</ww:a>
+  <ww:text name="requires.authentication.go.ahead"/><ww:a href="%{login}"><ww:text name="login"/></ww:a>
 </li>
 </ol>
 
 </body>
-
+</ww:i18n>
 </html>

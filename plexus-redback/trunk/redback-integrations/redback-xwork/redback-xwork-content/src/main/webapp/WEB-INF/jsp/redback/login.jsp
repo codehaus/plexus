@@ -18,23 +18,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>Login Page</title>
+  <title><ww:text name="login.page.title"/></title>
 </head>
 
 <body onload="javascript:document.forms['login'].username.focus();">
 
-<h2>Login</h2>
+<h2><ww:text name="login.section.title"/></h2>
 
 <%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
 <ww:form action="login" namespace="/security" theme="xhtml" 
          id="loginForm" method="post" name="login" cssClass="security login">
-  <ww:textfield label="Username" name="username" size="30" required="true" />
-  <ww:password  label="Password" name="password" size="20" required="true" />
-  <ww:checkbox label="Remember Me" name="rememberMe" value="false" />
-  <ww:submit value="Login" method="login" />
-  <ww:submit value="Cancel" method="cancel" />
+  <ww:textfield label="%{getText('username')}" name="username" size="30" required="true" />
+  <ww:password  label="%{getText('password')}" name="password" size="20" required="true" />
+  <ww:checkbox label="%{getText('login.remember.me')}" name="rememberMe" value="false" />
+  <ww:submit value="%{getText('login')}" method="login" />
+  <ww:submit value="%{getText('cancel')}" method="cancel" />
 </ww:form>
 
 <%-- TODO: Figure out how to auto-focus to first field --%>
@@ -48,17 +49,17 @@
   </li>
     --%>
   <li>
-     Need an Account?
+     <ww:text name="login.need.an.account"/>
      <ww:url id="registerUrl" action="register" />
-     <ww:a href="%{registerUrl}">Register!</ww:a>
+     <ww:a href="%{registerUrl}"><ww:text name="login.register"/></ww:a>
   </li>
   <li>
-     Forgot your Password? 
+     <ww:text name="login.forgot.your.password"/>
      <ww:url id="forgottenPassword" action="passwordReset" />
-     <ww:a href="%{forgottenPassword}">Request a password reset.</ww:a>
+     <ww:a href="%{forgottenPassword}"><ww:text name="login.request.password.reset"/></ww:a>
   </li>
 </ul>
 
 </body>
-
+</ww:i18n>
 </html>

@@ -93,7 +93,7 @@ public class RegisterAction
         if ( user == null )
         {
             user = new CreateUserCredentials();
-            addActionError( "Invalid user credentials." );
+            addActionError( getText( "invalid.user.credentials" ) );
             return ERROR;
         }
 
@@ -119,7 +119,9 @@ public class RegisterAction
         {
             // Means that the role name doesn't exist.
             // We need to fail fast and return to the previous page.
-            addActionError( "User '" + user.getUsername() + "' already exists." );
+            List list = new ArrayList();
+            list.add( user.getUsername() );
+            addActionError( getText( "user.already.exists", list ) );
         }
 
         if ( hasActionErrors() || hasFieldErrors() )
@@ -138,7 +140,7 @@ public class RegisterAction
         }
         catch ( RoleManagerException rpe )
         {
-            addActionError( "Unable to assign core register user role to new user" );
+            addActionError( getText( "assign.role.failure" ) );
             getLogger().error( "RoleProfile Error: " + rpe.getMessage(), rpe );
             return ERROR;
         }
@@ -165,7 +167,7 @@ public class RegisterAction
             }
             catch ( KeyManagerException e )
             {
-                addActionError( "Unable to process new user registration request." );
+                addActionError( getText( "cannot.register.user" ) );
                 getLogger().error( "Unable to register a new user.", e );
                 return ERROR;
             }

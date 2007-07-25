@@ -54,22 +54,22 @@ public abstract class AbstractUserCredentialsAction
     {
         if ( StringUtils.isEmpty( internalUser.getUsername() ) )
         {
-            addFieldError( "user.username", "User Name is required." );
+            addFieldError( "user.username", getText( "username.required" ) );
         }
 
         if ( StringUtils.isEmpty( internalUser.getFullName() ) )
         {
-            addFieldError( "user.fullName", "Full Name is required." );
+            addFieldError( "user.fullName", getText( "fullName.required" ) );
         }
 
         if ( StringUtils.isEmpty( internalUser.getEmail() ) )
         {
-            addFieldError( "user.email", "Email Address is required." );
+            addFieldError( "user.email", getText( "email.required" ) );
         }
 
         if ( !StringUtils.equals( internalUser.getPassword(), internalUser.getConfirmPassword() ) )
         {
-            addFieldError( "user.confirmPassword", "Passwords do not match." );
+            addFieldError( "user.confirmPassword", getText( "passwords.does.not.match" ) );
         }
     }
 
@@ -95,7 +95,7 @@ public abstract class AbstractUserCredentialsAction
 
         if ( ( StringUtils.isEmpty( internalUser.getPassword() ) ) )
         {
-            addFieldError( "user.password", "Password is required." );
+            addFieldError( "user.password", getText( "password.required" ) );
         }
     }
 }

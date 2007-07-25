@@ -16,6 +16,7 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -69,7 +70,9 @@ public class OperationsAction
         }
         catch ( RbacManagerException e )
         {
-            addActionError( "Unable to list all operations: " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.list.all.operations", list ) );
             getLogger().error( "System error:", e );
             allOperations = Collections.EMPTY_LIST;
         }
@@ -89,7 +92,9 @@ public class OperationsAction
         }
         catch ( RbacManagerException e )
         {
-            addActionError( "Unable to save operation: " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( operationName );
+            addActionError( getText( "cannot.save.operation", list ) );
             getLogger().error( "System error:", e );
             allOperations = Collections.EMPTY_LIST;
         }
@@ -105,7 +110,9 @@ public class OperationsAction
         }
         catch ( RbacManagerException ne )
         {
-            addActionError( "Unable to remove operation '" + operationName + "'" );
+            List list = new ArrayList();
+            list.add( operationName );
+            addActionError( getText( "cannot.remove.operation", list ) );
             return ERROR;
         }
         return LIST;

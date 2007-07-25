@@ -18,6 +18,8 @@ package org.codehaus.plexus.redback.xwork.action.admin;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -63,7 +65,9 @@ public class ReportAction
         }
         catch ( ReportException e )
         {
-            addActionError( "Unable to find report: " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.get.report", list ) );
             return ERROR;
         }
 
@@ -95,14 +99,14 @@ public class ReportAction
         }
         catch ( ReportException e )
         {
-            String emsg = "Unable to generate report.";
+            String emsg = getText( "cannot.generate.report" );
             addActionError( emsg );
             getLogger().error( emsg, e );
             return ERROR;
         }
         catch ( IOException e )
         {
-            String emsg = "Unable to generate report.";
+            String emsg = getText( "cannot.generate.report" );
             addActionError( emsg );
             getLogger().error( emsg, e );
             return ERROR;

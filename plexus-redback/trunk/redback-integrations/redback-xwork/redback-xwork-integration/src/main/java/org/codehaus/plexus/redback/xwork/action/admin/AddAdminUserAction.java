@@ -65,7 +65,7 @@ public class AddAdminUserAction
         if ( user == null )
         {
             user = new EditUserCredentials( RoleConstants.ADMINISTRATOR_ACCOUNT_NAME );
-            addActionError( "Invalid admin credentials, try again." );
+            addActionError( getText( "invalid.admin.credentials" ) );
             return ERROR;
         }
 
@@ -81,7 +81,7 @@ public class AddAdminUserAction
         {
             // Means that the role name exist already.
             // We need to fail fast and return to the previous page.
-            addActionError( "Admin User exists in database (someone else probably created the user before you)." );
+            addActionError( getText( "admin.user.already.exists" ) );
             return ERROR;
         }
 
@@ -94,7 +94,7 @@ public class AddAdminUserAction
             userManager.createUser( RoleConstants.ADMINISTRATOR_ACCOUNT_NAME, user.getFullName(), user.getEmail() );
         if ( u == null )
         {
-            addActionError( "Unable to operate on null user." );
+            addActionError( getText( "cannot.operate.on.null.user" ) );
             return ERROR;
         }
 
@@ -111,7 +111,7 @@ public class AddAdminUserAction
         }
         catch ( RoleManagerException rpe )
         {
-            addActionError( "Unable to assign system administrator role" );
+            addActionError( getText( "cannot.assign.admin.role" ) );
             return ERROR;
         }
 

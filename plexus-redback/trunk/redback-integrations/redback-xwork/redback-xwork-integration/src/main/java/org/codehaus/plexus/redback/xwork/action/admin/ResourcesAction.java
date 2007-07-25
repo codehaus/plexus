@@ -16,6 +16,7 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  * limitations under the License.
  */
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,7 +69,9 @@ public class ResourcesAction
         }
         catch ( RbacManagerException e )
         {
-            addActionError( "Unable to list all resources: " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.list.all.resources", list ) );
             getLogger().error( "System error:", e );
             allResources = Collections.EMPTY_LIST;
         }
@@ -89,7 +92,9 @@ public class ResourcesAction
         }
         catch ( RbacManagerException e )
         {
-            addActionError( "Unable to save resource: " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.save.resource", list ) );
             getLogger().error( "System error:", e );
             allResources = Collections.EMPTY_LIST;
         }
@@ -105,7 +110,9 @@ public class ResourcesAction
         }
         catch ( RbacManagerException ne )
         {
-            addActionError( "unable to locate resource to remove " + resourceIdentifier );
+            List list = new ArrayList();
+            list.add( resourceIdentifier );
+            addActionError( getText( "cannot.remove.resource", list ) );
             return ERROR;
         }
         return LIST;

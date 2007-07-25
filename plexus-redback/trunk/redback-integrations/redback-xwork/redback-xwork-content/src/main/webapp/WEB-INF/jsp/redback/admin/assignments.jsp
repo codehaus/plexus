@@ -18,24 +18,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>[Admin] User Edit</title>
+  <title><ww:text name="assignments.page.title"/></title>
 </head>
 
 <body>
 
-<h2>[Admin] User Roles</h2>
+<h2><ww:text name="assignments.section.title"/></h2>
 
     <div class="axial">
       <table border="1" cellspacing="2" cellpadding="3" width="100%">
-        <ww:label label="%{getText('Username')}" name="principal"/>
-        <ww:label label="%{getText('Full Name')}" name="user.fullName"/>
-        <ww:label label="%{getText('Email')}" name="user.email"/>
+        <ww:label label="%{getText('username')}" name="principal"/>
+        <ww:label label="%{getText('full.name')}" name="user.fullName"/>
+        <ww:label label="%{getText('email')}" name="user.email"/>
       </table>
     </div>
     
 <c:if test="${!empty effectivelyAssignedRoles}">
-<h3>Effective Roles</h3>
+<h3><ww:text name="effective.roles"/></h3>
 
   <ul>
     <ww:iterator id="role" value="effectivelyAssignedRoles">
@@ -45,7 +46,7 @@
 
 </c:if>
 
-<h3>Assigned Roles</h3>
+<h3><ww:text name="assignments.assigned.roles"/></h3>
 
 <c:choose>
   <c:when test="${!empty assignedRoles}">
@@ -55,15 +56,15 @@
       <ww:hidden name="removeRolesButton" value="true"/>
       <ww:checkboxlist list="assignedRoles" name="removeSelectedRoles" listValue="name" listKey="name" theme="redback"/>
       <br/>
-      <ww:submit value="Remove Selected Roles" name="removeRolesButton" theme="simple" />
+      <ww:submit value="%{getText('assignments.remove.roles')}" name="removeRolesButton" theme="simple" />
     </ww:form>
   </c:when>
   <c:otherwise>
-    <p><em>No Roles Assigned (yet)</em></p>
+    <p><em><ww:text name="assignments.no.roles"/></em></p>
   </c:otherwise>
 </c:choose>
 
-<h3>Available Roles</h3>
+<h3><ww:text name="assignments.available.roles"/></h3>
 
 <c:choose>
   <c:when test="${!empty availableRoles}">
@@ -72,14 +73,14 @@
       <ww:hidden name="addRolesButton" value="true"/>
       <ww:checkboxlist list="availableRoles" name="addSelectedRoles" listValue="name" listKey="name" theme="redback"/>
       <br/>
-      <ww:submit value="Add Selected Roles" name="addRolesButton" theme="simple" />
+      <ww:submit value="%{getText('assignments.add.roles')}" name="addRolesButton" theme="simple" />
     </ww:form>
   </c:when>
   <c:otherwise>
-    <p><em>No Roles Available to Grant</em></p>
+    <p><em><ww:text name="assignments.no.roles.to.grant"/></em></p>
   </c:otherwise>
 </c:choose>
 
 </body>
-
+</ww:i18n>
 </html>

@@ -19,79 +19,80 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>[Admin] Role Model</title>
+  <title><ww:text name="role.model.page.title"/></title>
 </head>
 
 <body>
 
 <%@ include file="/WEB-INF/jsp/redback/include/rbacListNavigation.jsp" %>
 
-<h2> [Admin] Role Model </h2>
+<h2><ww:text name="role.model.section.title"/></h2>
 
-	<p>These are the resources, operations, roles and role templates that are known by the role manager. They are not the current content of the RBAC store as those contain the resource, operations, and roles declared below _and_ any dynamic data created from creating new roles from the templates below.</p>
+	<p><ww:text name="role.model.message"/></p>
 
 <%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
 	<h4>${model.application}</h4>
 
-	<h5>Resources:</h5>
+	<h5><ww:text name="resources"/>:</h5>
     <ul>
       <ww:iterator id="resource" value="model.resources">
       <li>
-        Id: ${resource.id}<br/>
-        Name: ${resource.name}<br/>
-        Permanent: ${resource.permanent}<br/>
+        <ww:text name="role.model.id"/>: ${resource.id}<br/>
+        <ww:text name="role.model.name"/>: ${resource.name}<br/>
+        <ww:text name="role.model.permanent"/>: ${resource.permanent}<br/>
         <br/>
       </li>
       </ww:iterator>
     </ul>
 
-	<h5>Operations:</h5>
+	<h5><ww:text name="operations"/>:</h5>
     <ul>
       <ww:iterator id="operation" value="model.operations">
         <li>
-	        Id: ${operation.id}<br/>
-        	Name: ${operation.name}<br/>
-        	Permanent: ${operation.permanent}<br/>
+	        <ww:text name="role.model.id"/>: ${operation.id}<br/>
+        	<ww:text name="role.model.name"/>: ${operation.name}<br/>
+        	<ww:text name="role.model.permanent"/>: ${operation.permanent}<br/>
         	<br/>
        	</li>
       </ww:iterator>
     </ul>
     
-    <h5>Roles:</h5>
+    <h5><ww:text name="roles"/>:</h5>
     <ul>
       <ww:iterator id="role" value="model.roles">        
         <li>
-            Id: ${role.id}<br/>
-       		Name: ${role.name}<br/>
-       		Permanent: ${role.permanent}<br/>
-       		Assignable: ${role.assignable}<br/>
-       		Permissions:
+            <ww:text name="role.model.id"/>: ${role.id}<br/>
+       		<ww:text name="role.model.name"/>: ${role.name}<br/>
+       		<ww:text name="role.model.permanent"/>: ${role.permanent}<br/>
+       		<ww:text name="role.model.assignable"/>: ${role.assignable}<br/>
+       		<ww:text name="permissions"/>:
        		<ul>
        		  <ww:iterator id="permission" value="#role.permissions">
        		  	<li>
-       		  	  Id: ${permission.id}<br/>
-       		  	  Name: ${permission.name}<br/>
-       		  	  Permanent: ${permission.permanent}<br/>
-       		  	  Operation Id: ${permission.operation}<br/>
-       		  	  Resource Id: ${permission.resource}<br/>
+       		  	  <ww:text name="role.model.id"/>: ${permission.id}<br/>
+       		  	  <ww:text name="role.model.name"/>: ${permission.name}<br/>
+       		  	  <ww:text name="role.model.permanent"/>: ${permission.permanent}<br/>
+       		  	  <ww:text name="role.model.operation.id"/>: ${permission.operation}<br/>
+       		  	  <ww:text name="role.model.resource.id"/>: ${permission.resource}<br/>
        		  	</li>
        		  </ww:iterator>
        		</ul>
-       		Child Roles:
+       		<ww:text name="role.model.child.roles"/>:
        		<ul>
        		  <ww:iterator id="childRole" value="#role.childRoles">
        		  	<li>
-       		  	  Role Id: ${childRole}<br/>
+       		  	  <ww:text name="role.model.role.id"/>: ${childRole}<br/>
        		  	</li>
        		  </ww:iterator>
        		</ul> 
-       		Parent Roles:
+       		<ww:text name="role.model.parent.roles"/>:
        		<ul>
        		  <ww:iterator id="parentRole" value="#role.parentRoles">
        		  	<li>
-       		  	  Role Id: ${parentRole}<br/>
+       		  	  <ww:text name="role.model.role.id"/>: ${parentRole}<br/>
        		  	</li>
        		  </ww:iterator>
        		</ul> 
@@ -100,56 +101,56 @@
       </ww:iterator>
     </ul>
     
-    <h5>Templates:</h5>
+    <h5><ww:text name="role.model.templates"/>:</h5>
     <ul>
         <ww:iterator id="template" value="model.templates">        
         <li>
-            Id: ${template.id}<br/>
-       		Name Prefix: ${template.namePrefix}<br/>
-       		Permanent: ${template.permanent}<br/>
-       		Assignable: ${template.assignable}<br/>
-       		Delimiter: ${template.delimiter}<br/>
-       		Permissions:
+            <ww:text name="role.model.id"/>: ${template.id}<br/>
+       		<ww:text name="role.model.name.prefix"/>: ${template.namePrefix}<br/>
+       		<ww:text name="role.model.permanent"/>: ${template.permanent}<br/>
+       		<ww:text name="role.model.assignable"/>: ${template.assignable}<br/>
+       		<ww:text name="role.model.delimeter"/>: ${template.delimiter}<br/>
+       		<ww:text name="permissions"/>:
        		<ul>
        		  <ww:iterator id="permission" value="#template.permissions">
        		  	<li>
-       		  	  Id: ${permission.id}<br/>
-       		  	  Name: ${permission.name}<br/>
-       		  	  Permanent: ${permission.permanent}<br/>
-       		  	  Operation Id: ${permission.operation}<br/>
-       		  	  Resource Id: ${permission.resource}<br/>
+       		  	  <ww:text name="role.model.id"/>: ${permission.id}<br/>
+       		  	  <ww:text name="role.model.name"/>: ${permission.name}<br/>
+       		  	  <ww:text name="role.model.permanent"/>: ${permission.permanent}<br/>
+       		  	  <ww:text name="role.model.operation.id"/>: ${permission.operation}<br/>
+       		  	  <ww:text name="role.model.resource.id"/>: ${permission.resource}<br/>
        		  	</li>
        		  </ww:iterator>
        		</ul>
-       		Child Roles:
+       		<ww:text name="role.model.child.roles"/>:
        		<ul>
        		  <ww:iterator id="childRole" value="#template.childRoles">
        		  	<li>
-       		  	  Role Id: ${childRole}<br/>
+       		  	  <ww:text name="role.model.role.id"/>: ${childRole}<br/>
        		  	</li>
        		  </ww:iterator>
        		</ul> 
-       		Parent Roles:
+       		<ww:text name="role.model.parent.roles"/>:
        		<ul>
        		  <ww:iterator id="parentRole" value="#template.parentRoles">
        		  	<li>
-       		  	  Role Id: ${parentRole}<br/>
+       		  	  <ww:text name="role.model.role.id"/>: ${parentRole}<br/>
        		  	</li>
        		  </ww:iterator>
        		</ul> 
-       		Child Templates:
+       		<ww:text name="role.model.child.templates"/>:
        		<ul>
        		  <ww:iterator id="childTemplate" value="#template.childTemplates">
        		  	<li>
-       		  	  Template Id: ${childTemplate}<br/>
+       		  	  <ww:text name="role.model.template.id"/>: ${childTemplate}<br/>
        		  	</li>
        		  </ww:iterator>
        		</ul> 
-       		Parent Templates:
+       		<ww:text name="role.model.parent.templates"/>:
        		<ul>
        		  <ww:iterator id="parentTemplate" value="#template.parentTemplates">
        		  	<li>
-       		  	  Template Id: ${parentTemplate}<br/>
+       		  	  <ww:text name="role.model.template.id"/>: ${parentTemplate}<br/>
        		  	</li>
        		  </ww:iterator>
        		</ul> 
@@ -158,5 +159,6 @@
       </ww:iterator>
     </ul>
 
-  </body>
+</body>
+</ww:i18n>
 </html>

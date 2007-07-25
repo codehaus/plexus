@@ -12,5 +12,5 @@
     <ww:form action="user" name="grantRole" method="post" namespace="/security/admin">
       <ww:hidden name="principal" value="${username}" />
       <ww:select name="roleName" list="availableRoles" labelposition="top" />
-      <ww:submit value="Grant" />
+      <ww:submit value="%{getText('grant')}" />
     </ww:form>

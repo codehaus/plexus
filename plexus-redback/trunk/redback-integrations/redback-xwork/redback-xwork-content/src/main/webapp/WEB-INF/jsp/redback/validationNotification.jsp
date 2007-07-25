@@ -18,25 +18,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>Validation Notification Page</title>
+  <title><ww:text name="validation.notification.page.title"/></title>
 </head>
 
 <body>
 
 <%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
-<h2>Validation Reminder</h2>
+<h2><ww:text name="validation.notification.section.title"/></h2>
 
 <p>
-  A validation email has been sent to the email address you provided (${user.email})
-  Please check for the email validation link sent to you.
+  <ww:text name="validation.notification.message.1"/>(${user.email})<ww:text name="validation.notification.message.2"/>
 </p>
 
 <p>
-  This account (${user.username}) will remain locked until it is validated.
+  <ww:text name="validation.notification.message.3"/>(${user.email})<ww:text name="validation.notification.message.4"/>
 </p>
 
 </body>
-
+</ww:i18n>
 </html>

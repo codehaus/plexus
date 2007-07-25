@@ -18,23 +18,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>Request Password Reset</title>
+  <title><ww:text name="request.password.reset.page.title"/></title>
 </head>
 
 <body onload="javascript:document.forms['passwordReset'].username.focus();">
 
-<h2>Request Password Reset</h2>
+<h2><ww:text name="request.password.reset.section.title"/></h2>
 
 <%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
 <ww:form action="passwordReset" namespace="/security" theme="xhtml" 
          id="passwordResetForm" method="post" name="passwordReset" cssClass="security passwordReset">
-  <ww:textfield label="Username" name="username" size="30" required="true" />
-  <ww:submit value="Request Reset" method="reset" />
-  <ww:submit value="Cancel" method="cancel" />
+  <ww:textfield label="%{getText('username')}" name="username" size="30" required="true" />
+  <ww:submit value="%{getText('request.password.reset')}" method="reset" />
+  <ww:submit value="%{getText('cancel')}" method="cancel" />
 </ww:form>
 
 </body>
-
+</ww:i18n>
 </html>

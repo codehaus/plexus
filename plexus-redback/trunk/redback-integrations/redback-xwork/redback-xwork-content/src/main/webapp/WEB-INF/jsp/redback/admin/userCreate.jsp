@@ -18,22 +18,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
+<ww:i18n name="org.codehaus.plexus.redback.xwork.default">
 <head>
-  <title>[Admin] User Create</title>
+  <title><ww:text name="user.create.page.title"/></title>
 </head>
 
 <body>
 
 <%@ include file="/WEB-INF/jsp/redback/include/formValidationResults.jsp" %>
 
-<h2>[Admin] User Create</h2>
+<h2><ww:text name="user.create.section.title"/></h2>
 
 <ww:form action="usercreate!submit" namespace="/security" theme="xhtml"
          id="userCreateForm" method="post" name="usercreate" cssClass="security userCreate">
   <%@ include file="/WEB-INF/jsp/redback/include/userCredentials.jsp" %>
-  <ww:submit value="Create User" />
+  <ww:submit value="%{getText('user.create')}" />
 </ww:form>
 
 </body>
-
+</ww:i18n>
 </html>

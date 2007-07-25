@@ -75,13 +75,13 @@ public class UserEditAction
     {
         if ( getUsername() == null )
         {
-            addActionError( "Unable to edit user with null username." );
+            addActionError( getText( "cannot.edit.user.null.username" ) );
             return ERROR;
         }
 
         if ( StringUtils.isEmpty( getUsername() ) )
         {
-            addActionError( "Unable to edit user with empty username." );
+            addActionError( getText( "cannot.edit.user.empty.username" ) );
             return ERROR;
         }
 
@@ -91,7 +91,9 @@ public class UserEditAction
         {
             // Means that the role name doesn't exist.
             // We need to fail fast and return to the previous page.
-            addActionError( "User '" + getUsername() + "' does not exist." );
+            List list = new ArrayList();
+            list.add( getUsername() );
+            addActionError( getText( "user.does.not.exist", list ) );
             return ERROR;
         }
 
@@ -101,7 +103,7 @@ public class UserEditAction
 
             if ( u == null )
             {
-                addActionError( "Unable to operate on null user." );
+                addActionError( getText( "cannot.operate.on.null.user" ) );
                 return ERROR;
             }
 
@@ -118,7 +120,10 @@ public class UserEditAction
         }
         catch ( UserNotFoundException e )
         {
-            addActionError( "Unable to get User '" + getUsername() + "': " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( getUsername() );
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.get.user", list ) );
             return ERROR;
         }
 
@@ -130,19 +135,19 @@ public class UserEditAction
     {
         if ( getUsername() == null )
         {
-            addActionError( "Unable to edit user with null username." );
+            addActionError( getText( "cannot.edit.user.null.username" ) );
             return ERROR;
         }
 
         if ( StringUtils.isEmpty( getUsername() ) )
         {
-            addActionError( "Unable to edit user with empty username." );
+            addActionError( getText( "cannot.edit.user.empty.username" ) );
             return ERROR;
         }
 
         if ( user == null )
         {
-            addActionError( "Unable to edit user with null user credentials." );
+            addActionError( getText( "cannot.edit.user.null.credentials" ) );
             return ERROR;
         }
 
@@ -162,7 +167,9 @@ public class UserEditAction
         {
             // Means that the role name doesn't exist.
             // We need to fail fast and return to the previous page.
-            addActionError( "User '" + getUsername() + "' does not exist." );
+            List list = new ArrayList();
+            list.add( getUsername() );
+            addActionError( getText( "user.does.not.exist", list ) );
             return ERROR;
         }
 
@@ -171,7 +178,7 @@ public class UserEditAction
             User u = manager.findUser( getUsername() );
             if ( u == null )
             {
-                addActionError( "Unable to operate on null user." );
+                addActionError( getText( "cannot.operate.on.null.user" ) );
                 return ERROR;
             }
 
@@ -196,7 +203,10 @@ public class UserEditAction
         }
         catch ( UserNotFoundException e )
         {
-            addActionError( "Unable to find User '" + getUsername() + "': " + e.getMessage() );
+            List list = new ArrayList();
+            list.add( getUsername() );
+            list.add( e.getMessage() );
+            addActionError( getText( "cannot.find.user", list ) );
             return ERROR;
         }
         catch ( PasswordRuleViolationException pe )

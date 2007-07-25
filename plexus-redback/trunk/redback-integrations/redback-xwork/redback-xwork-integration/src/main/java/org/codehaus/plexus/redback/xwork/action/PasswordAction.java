@@ -16,6 +16,8 @@ package org.codehaus.plexus.redback.xwork.action;
  * limitations under the License.
  */
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.codehaus.plexus.redback.policy.PasswordEncoder;
@@ -92,12 +94,12 @@ public class PasswordAction
 
         if ( StringUtils.isEmpty( newPassword ) )
         {
-            addFieldError( "newPassword", "New Password cannot be empty." );
+            addFieldError( "newPassword", getText( "newPassword.cannot.be.empty" ) );
         }
 
         if ( !StringUtils.equals( newPassword, newPasswordConfirm ) )
         {
-            addFieldError( "newPassword", "Password confirmation failed.  Passwords do not match." );
+            addFieldError( "newPassword", getText( "password.confimation.failed" ) );
         }
 
         User user = session.getUser();
@@ -109,7 +111,7 @@ public class PasswordAction
         {
             if ( !encoder.isPasswordValid( user.getEncodedPassword(), existingPassword ) )
             {
-                addFieldError( "existingPassword", "Password does not match existing." );
+                addFieldError( "existingPassword", getText( "password.provided.does.not.match.existing" ) );
             }
         }
 
@@ -159,8 +161,10 @@ public class PasswordAction
         }
         catch ( UserNotFoundException e )
         {
-            addActionError( "Unable to update user '" + user.getUsername() + "' not found." );
-            addActionError( "Likely occurs because an Administrator deleted your account." );
+            List list = new ArrayList();
+            list.add( user.getUsername() );
+            addActionError( getText( "cannot.update.user.not.found", list ) );
+            addActionError( getText( "admin.deleted.account" ) );
 
             return ERROR;
         }
