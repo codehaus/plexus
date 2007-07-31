@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorld;
@@ -163,7 +165,13 @@ public class PlexusApplicationHost
             plexusTemp.mkdirs();
         }
 
-        container = new DefaultPlexusContainer( "appserver", context, configurationResource, classWorld );
+        ContainerConfiguration cc = new DefaultContainerConfiguration();
+        cc.setName( "appserver" );
+        cc.setContext( context );
+        cc.setClassWorld( classWorld );
+        cc.setContainerConfiguration( configurationResource.getAbsolutePath() );
+
+        container = new DefaultPlexusContainer( cc );
 
         this.configurationResource = configurationResource;
 

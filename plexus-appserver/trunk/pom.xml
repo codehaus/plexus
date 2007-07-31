@@ -14,12 +14,12 @@
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-component-api</artifactId>
-        <version>1.0-alpha-26</version>
+        <version>1.0-alpha-30</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-container-default</artifactId>
-        <version>1.0-alpha-26</version>
+        <version>1.0-alpha-30</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -27,7 +27,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>1.4.1</version>
+      <version>1.4.5</version>
     </dependency>
   </dependencies>
   <modules>

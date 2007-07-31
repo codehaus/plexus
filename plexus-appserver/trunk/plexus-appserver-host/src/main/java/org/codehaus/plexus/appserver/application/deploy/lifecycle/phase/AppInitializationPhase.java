@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 
+import org.codehaus.plexus.ContainerConfiguration;
+import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.appserver.application.deploy.lifecycle.AppDeploymentContext;
@@ -41,8 +43,18 @@ public class AppInitializationPhase
             InputStream in = context.getAppConfigurationFile() == null ? null : new FileInputStream( context
                 .getAppConfigurationFile().getAbsoluteFile() );
 
-            applicationContainer = new DefaultPlexusContainer( name, context.getContextValues(), context
-                .getAppRuntimeProfile().getApplicationWorld(), in, context.getAppServerContainer() );
+            ContainerConfiguration cc= new DefaultContainerConfiguration();
+            cc.setName( name );
+            cc.setContext( context.getContextValues() );
+            cc.setClassWorld( context
+                .getAppRuntimeProfile().getApplicationWorld() );
+            cc.setContainerConfiguration( context.getAppConfigurationFile()==null?null:context.getAppConfigurationFile().getAbsolutePath() );
+            cc.setParentContainer( context.getAppServerContainer() );
+
+            applicationContainer = new DefaultPlexusContainer( cc );
+
+//            applicationContainer = new DefaultPlexusContainer( name, context.getContextValues(), context
+//                .getAppRuntimeProfile().getApplicationWorld(), in, context.getAppServerContainer() );
         }
         catch ( PlexusContainerException e )
         {
