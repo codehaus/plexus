@@ -21,7 +21,7 @@ public class JettyServiceTest
         PlexusService service = (PlexusService) lookup( PlexusService.ROLE, "jetty" );
 
         DefaultPlexusContainer container = (DefaultPlexusContainer) getContainer();
-        AppRuntimeProfile profile = new AppRuntimeProfile( "test", null, null, container, null );
+        AppRuntimeProfile profile = new AppRuntimeProfile( "test", null, null, container );
         profile.setApplicationContainer( container );
 
         Xpp3Dom dom = Xpp3DomBuilder.build( new FileReader( getTestFile( "src/test/resources/test-service.xml" ) ) );

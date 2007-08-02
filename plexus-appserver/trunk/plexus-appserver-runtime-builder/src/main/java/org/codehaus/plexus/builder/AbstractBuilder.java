@@ -122,9 +122,6 @@ public abstract class AbstractBuilder
         resolveVersion( "org.codehaus.plexus", "plexus-container-default", projectArtifacts, ignoreIfMissing,
                         artifacts );
 
-        resolveVersion( "org.codehaus.plexus", "plexus-component-api", projectArtifacts, ignoreIfMissing,
-                        artifacts );
-
         resolveVersion( "org.codehaus.plexus", "plexus-appserver-host", projectArtifacts, ignoreIfMissing, artifacts );
 
         resolveVersion( "org.codehaus.plexus", "plexus-utils", projectArtifacts, ignoreIfMissing, artifacts );
